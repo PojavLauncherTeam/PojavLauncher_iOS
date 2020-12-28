@@ -17,7 +17,7 @@ Minecraft: Java Edition launcher for iOS
 - Use OpenJDK 16 from Procursus to get real Java environment.
 - (Temporary) Use JavaFX to get a fresh GLES context.
 - Use GL4ES for OpenGL -> OpenGL ES translator.
-- Use our own [LWJGL3 iOS port](https://github.com/PojavLauncherTeam/lwjgl3).
+- Use our [LWJGL3 iOS port](https://github.com/PojavLauncherTeam/lwjgl3).
 - Use same launch method as PojavLauncher Android.
 
 ## Installing OpenJDK 16
