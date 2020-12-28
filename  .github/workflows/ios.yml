@@ -1,0 +1,26 @@
+name: iOS build
+
+on:
+  [push]
+
+jobs:
+  build:
+    runs-on: macOS-latest
+    steps:
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '11.7.0'
+
+      - uses: actions/checkout@v2
+
+      - name: RoboVM Build
+        run: |
+          chmod +x gradlew
+          ./gradlew -Probovm.archs=arm64 clean createIPA
+          
+      - name: Upload IPA
+        uses: actions/upload-artifact@v2
+        with:
+          name: PojavLauncher
+          path: build/robovm/PojavLauncher.ipa
+

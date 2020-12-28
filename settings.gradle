@@ -1,0 +1,13 @@
+pluginManagement {
+    repositories {
+        maven {
+            url "https://nexus.gluonhq.com/nexus/content/repositories/public-snapshots"
+        }
+        maven {
+            url "https://nexus.gluonhq.com/nexus/content/repositories/releases"
+        }
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'PojavLauncher'
