@@ -21,7 +21,7 @@ Minecraft: Java Edition launcher for iOS, based on [PojavLauncher Android](https
 - Use same launch method as PojavLauncher Android.
 
 ## Installing OpenJDK 16
-- Download [openjdk-16-jre • Procursus](https://apt.procurs.us/pool/main/iphoneos-arm64/1600/openjdk-16-jre_16.0.0%2Bgit20201217.8383f41-1_iphoneos-arm.deb) .deb file (~40mb).
+- Download [openjdk-16-jre • Procursus](https://www.ios-repo-updates.com/repository/procursus/package/openjdk-16-jre) .deb file (~40mb).
 
 ### For jailbroken iOS device (without Procursus)
 - ssh to iOS or use a terminal, type these commands
