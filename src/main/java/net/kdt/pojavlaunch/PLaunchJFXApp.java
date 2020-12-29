@@ -46,7 +46,11 @@ public class PLaunchJFXApp extends Application {
         MinecraftAccount acc = new MinecraftAccount();
         JMinecraftVersionList.Version version = Tools.getVersionInfo(mcver);
         
-        Tools.launchMinecraft(acc, version);
+        try {
+            Tools.launchMinecraft(acc, version);
+        } catch (Throwable th) {
+            Tools.showError(th);
+        }
         
 /*
         net.minecraft.client.main.Main.main(new String[]{

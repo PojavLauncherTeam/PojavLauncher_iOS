@@ -15,6 +15,10 @@ import net.kdt.pojavlaunch.utils.*;
 import net.kdt.pojavlaunch.value.*;
 import org.lwjgl.glfw.*;
 
+import org.robovm.apple.foundation.*;
+import org.robovm.apple.uikit.*;
+import org.robovm.pods.dialog.*;
+
 public final class Tools
 {
     public static final boolean ENABLE_DEV_FEATURES = true; // BuildConfig.DEBUG;
@@ -351,80 +355,38 @@ public final class Tools
             showError(ctx, e);
         }
     }
-
-    public static void showError(Context ctx, Throwable e) {
-        showError(ctx, e, false);
+*/
+    public static void showError(Throwable e) {
+        showError(e, false);
     }
 
-    public static void showError(final Context ctx, final Throwable e, final boolean exitIfOk) {
-        showError(ctx, R.string.global_error, e, exitIfOk, false);
+    public static void showError(final Throwable e, final boolean exitIfOk) {
+        showError("Error", e, exitIfOk, false);
     }
 
-    public static void showError(final Context ctx, final int titleId, final Throwable e, final boolean exitIfOk) {
-        showError(ctx, titleId, e, exitIfOk, false);
+    public static void showError(final String title, final Throwable e, final boolean exitIfOk) {
+        showError(title, e, exitIfOk, false);
     }
 
-    private static void showError(final Context ctx, final int titleId, final Throwable e, final boolean exitIfOk, final boolean showMore) {
-        e.printStackTrace();
+    private static void showError(final String title, final Throwable e, final boolean exitIfOk, final boolean showMore) {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        e.printStackTrace(pw);
+        pw.flush();
         
-        Runnable runnable = new Runnable(){
-
-            @Override
-            public void run()
-            {
-                final String errMsg = showMore ? Log.getStackTraceString(e): e.getMessage();
-                new AlertDialog.Builder((Context) ctx)
-                    .setTitle(titleId)
-                    .setMessage(errMsg)
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener(){
-
-                        @Override
-                        public void onClick(DialogInterface p1, int p2)
-                        {
-                            if(exitIfOk) {
-                                if (ctx instanceof BaseMainActivity) {
-                                    BaseMainActivity.fullyExit();
-                                } else if (ctx instanceof Activity) {
-                                    ((Activity) ctx).finish();
-                                }
-                            }
-                        }
-                    })
-                    .setNegativeButton(showMore ? R.string.error_show_less : R.string.error_show_more, new DialogInterface.OnClickListener(){
-
-                        @Override
-                        public void onClick(DialogInterface p1, int p2)
-                        {
-                            showError(ctx, titleId, e, exitIfOk, !showMore);
-                        }
-                    })
-                    .setNeutralButton(android.R.string.copy, new DialogInterface.OnClickListener(){
-
-                        @Override
-                        public void onClick(DialogInterface p1, int p2)
-                        {
-                            android.content.ClipboardManager mgr = (android.content.ClipboardManager) ctx.getSystemService(Context.CLIPBOARD_SERVICE);
-                            mgr.setPrimaryClip(ClipData.newPlainText("error", Log.getStackTraceString(e)));
-                            if(exitIfOk) {
-                                if (ctx instanceof BaseMainActivity) {
-                                    BaseMainActivity.fullyExit();
-                                } else {
-                                    ((Activity) ctx).finish();
-                                }
-                            }
-                        }
-                    })
-                    //.setNegativeButton("Report (not available)", null)
-                    .setCancelable(!exitIfOk)
-                    .show();
+        System.err.println(sw.toString());
+        
+        Platform.getPlatform().runOnUIThread(() -> {
+            WindowAlertController alertController = new WindowAlertController(title, sw.toString(), UIAlertControllerStyle.Alert);
+            alertController.addAction(new UIAlertAction("OK",
+            UIAlertActionStyle.Default, (action) -> {
+                alertController.dismissViewController(true, null);
+                if (exitIfOk) {
+                    System.exit(0);
+                }
             }
-        };
-
-        if (ctx instanceof Activity) {
-            ((Activity) ctx).runOnUiThread(runnable);
-        } else {
-            runnable.run();
-        }
+        ));
+        alertController.show();
     }
 
     public static void dialogOnUiThread(final Activity ctx, final CharSequence title, final CharSequence message) {

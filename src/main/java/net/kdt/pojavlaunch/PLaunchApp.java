@@ -6,10 +6,8 @@ import javafx.application.Application;
 
 import org.lwjgl.glfw.CallbackBridge;
 
-import org.robovm.apple.foundation.Foundation;
-import org.robovm.apple.foundation.NSAutoreleasePool;
+import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
-
 import org.robovm.pods.dialog.*;
 
 import net.kdt.pojavlaunch.prefs.*;
@@ -57,7 +55,7 @@ public class PLaunchApp extends UIApplicationDelegateAdapter {
 //                    WindowAlertController alertController = new WindowAlertController("Error", sw.toString(), UIAlertControllerStyle.Alert);
 //                    alertController.addAction(new UIAlertAction("OK",
 //                        UIAlertActionStyle.Default, (action) -> {
-//                            alertController.didDismiss();
+//                            alertController.dismissViewController(true, null);
 //                        }
 //                    ));
 //                    alertController.show();  
