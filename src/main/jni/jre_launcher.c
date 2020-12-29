@@ -166,11 +166,18 @@ Java_net_kdt_pojavlaunch_utils_JREUtils_redirectLogcat(JNIEnv *env, jclass clazz
 
     // spawn the logging thread
     if(pthread_create(&logger, 0, logger_thread, 0) == -1) {
-        __android_log_write(ANDROID_LOG_ERROR,tag,"Error while spawning logging thread. JRE output won't be logged.");
+        printf("Error while spawning logging thread. JRE output won't be logged.\n");
     }
 
     pthread_detach(logger);
-    __android_log_write(ANDROID_LOG_INFO,tag,"Starting logging STDIO as jrelog:V");
+    printf("Starting logging STDIO as jrelog:V\n");
 */
+    
+    char fullpath[200];
+    vsprintf(fullpath, "%s/Documents/latestlog.txt", getenv("HOME"));
+    freopen(fullpath, "w+", stderr);
+    freopen(fullpath, "w+", stdout);
+    
+    printf("Begin log\n");
 }
 

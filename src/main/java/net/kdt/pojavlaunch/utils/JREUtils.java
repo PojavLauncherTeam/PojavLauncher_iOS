@@ -198,6 +198,9 @@ public class JREUtils
         }
         ctx.appendlnToLog("Executing JVM: \"" + sbJavaArgs.toString() + "\"");
 */
+
+        redirectLogcat();
+
         setJavaEnvironment();
         initJavaRuntime();
         chdir(Tools.DIR_GAME_NEW);
