@@ -1,8 +1,4 @@
-#ifdef __ANDROID__
-#include <android/log.h>
-
-#define TAG "LaunchJVM"
-#endif
+#include <stdio.h>
 
 #ifdef __cplusplus
 extern "C" {
