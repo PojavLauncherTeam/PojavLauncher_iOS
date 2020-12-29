@@ -73,7 +73,7 @@ static jint launchJVM(int margc, char** margv) {
        fprintf(logFile, "JLI lib = NULL: %s\n", dlerror());
        return -1;
    }
-   fprintf(logFile, Found JLI lib\n");
+   fprintf(logFile, "Found JLI lib\n");
 
    JLI_Launch_func *pJLI_Launch =
           (JLI_Launch_func *)dlsym(libjli, "JLI_Launch");
@@ -82,7 +82,7 @@ static jint launchJVM(int margc, char** margv) {
 
    if (NULL == pJLI_Launch) {
        fprintf(logFile, "JLI_Launch = NULL\n");
-       return -1;
+       return -2;
    }
 
    fprintf(logFile, "Calling JLI_Launch\n");
