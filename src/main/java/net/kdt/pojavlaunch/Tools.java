@@ -379,12 +379,13 @@ public final class Tools
         Platform.getPlatform().runOnUIThread(() -> {
             WindowAlertController alertController = new WindowAlertController(title, sw.toString(), UIAlertControllerStyle.Alert);
             alertController.addAction(new UIAlertAction("OK",
-            UIAlertActionStyle.Default, (action) -> {
-                alertController.dismissViewController(true, null);
-                if (exitIfOk) {
-                    System.exit(0);
-                }
-            }
+                UIAlertActionStyle.Default, (action) -> {
+                    alertController.dismissViewController(true, null);
+                    if (exitIfOk) {
+                        System.exit(0);
+                    }
+                })
+            );
         });
         alertController.show();
     }
