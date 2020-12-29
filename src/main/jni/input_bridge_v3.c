@@ -12,6 +12,7 @@
  
 #include "jni.h"
 #include <assert.h>
+#include <stdlib.h>
 
 #include "log.h"
 #include "utils.h"
