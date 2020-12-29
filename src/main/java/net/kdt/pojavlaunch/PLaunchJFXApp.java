@@ -7,10 +7,13 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.shape.Circle;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import net.kdt.pojavlaunch.utils.*;
 import net.kdt.pojavlaunch.value.*;
+
+import org.lwjgl.glfw.CallbackBridge;
 
 public class PLaunchJFXApp extends Application {
     public void start(Stage stage) {
