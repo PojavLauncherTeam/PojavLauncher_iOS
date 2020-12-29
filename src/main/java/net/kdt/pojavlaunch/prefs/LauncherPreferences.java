@@ -1,6 +1,6 @@
 package net.kdt.pojavlaunch.prefs;
 
-import android.content.*;
+import java.io.*;
 import java.util.*;
 import net.kdt.pojavlaunch.*;
 

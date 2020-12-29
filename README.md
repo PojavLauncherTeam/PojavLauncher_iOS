@@ -1,5 +1,5 @@
 # PojavLauncher_iOS
-Minecraft: Java Edition launcher for iOS
+Minecraft: Java Edition launcher for iOS, based on [PojavLauncher Android](https://github.com/PojavLauncherTeam/PojavLauncher).
 
 ## Navigation
 - [Introduction](#introduction)
@@ -41,3 +41,6 @@ dpkg -i /path/to/openjdk-16-jre.deb
 
 ## Credits & Third party components and their licenses
 - [OpenJDK 16](https://www.ios-repo-updates.com/repository/procursus/package/openjdk-16-jre): GNU GPLv2 license.
+- GL4ES
+- Boardwalk JVM Launcher.
+

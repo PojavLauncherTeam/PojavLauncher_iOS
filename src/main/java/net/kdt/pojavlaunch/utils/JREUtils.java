@@ -172,9 +172,7 @@ public class JREUtils
             Libcore.os.setenv(env.getKey(), env.getValue(), true);
         }
         
-        if (shell == null) {
-            setLdLibraryPath(LD_LIBRARY_PATH);
-        }
+        setLdLibraryPath(LD_LIBRARY_PATH);
         
         // return ldLibraryPath;
     }
@@ -197,7 +195,7 @@ public class JREUtils
         }
         ctx.appendlnToLog("Executing JVM: \"" + sbJavaArgs.toString() + "\"");
 */
-        setJavaEnvironment(null);
+        setJavaEnvironment();
         initJavaRuntime();
         chdir(Tools.DIR_GAME_NEW);
 
