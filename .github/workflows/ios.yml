@@ -1,7 +1,7 @@
 name: iOS build
 
 on:
-  [push]
+  [push, workflow_dispatch]
 
 jobs:
   build:
