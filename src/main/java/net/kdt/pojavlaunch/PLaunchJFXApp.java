@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
+import net.kdt.pojavlaunch.utils.*;
 import net.kdt.pojavlaunch.value.*;
 
 public class PLaunchJFXApp extends Application {
@@ -16,6 +17,8 @@ public class PLaunchJFXApp extends Application {
         Rectangle2D bounds = Screen.getPrimary().getBounds();
         CallbackBridge.windowWidth = bounds.getWidth();
         CallbackBridge.windowHeight = bounds.getHeight();
+        
+        JREUtils.saveGLContext();
     
 /*
         Circle circ = new Circle(40, 40, 30);

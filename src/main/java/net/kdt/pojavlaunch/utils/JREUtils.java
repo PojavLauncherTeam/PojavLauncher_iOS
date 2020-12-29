@@ -226,7 +226,7 @@ public class JREUtils
     public static native boolean dlopen(String libPath);
     public static native void redirectLogcat();
     public static native void setLdLibraryPath(String ldLibraryPath);
-    public static native void setupBridgeWindow(Object surface);
+    public static native void saveGLContext();
     
     // Obtain AWT screen pixels to render on Android SurfaceView
     public static native int[] renderAWTScreenFrame(/* Object canvas, int width, int height */);
