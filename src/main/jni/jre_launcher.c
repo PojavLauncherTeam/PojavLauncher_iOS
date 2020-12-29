@@ -117,7 +117,7 @@ JNIEXPORT jint JNICALL Java_com_oracle_dalvik_VMLauncher_launchJVM(JNIEnv *env, 
     dalvikJNIEnvPtr_ANDROID = env;
 
     if (argsArray == NULL) {
-        fprintf(logFile, Args array null, returning\n");
+        fprintf(logFile, "Args array null, returning\n");
         //handle error
         return 0;
     }
