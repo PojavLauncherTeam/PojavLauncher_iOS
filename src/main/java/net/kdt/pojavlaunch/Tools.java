@@ -18,6 +18,7 @@ import org.lwjgl.glfw.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.pods.dialog.*;
+import org.robovm.pods.*;
 
 public final class Tools
 {
@@ -386,8 +387,8 @@ public final class Tools
                     }
                 })
             );
+            alertController.show();
         });
-        alertController.show();
     }
 /*
     public static void dialogOnUiThread(final Activity ctx, final CharSequence title, final CharSequence message) {
