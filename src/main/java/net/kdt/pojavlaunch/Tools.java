@@ -9,13 +9,14 @@ import java.net.URL;
 import java.nio.charset.*;
 import java.util.*;
 import java.util.zip.*;
+import net.kdt.pojavlaunch.prefs.*;
 import net.kdt.pojavlaunch.utils.*;
 import net.kdt.pojavlaunch.value.*;
 import org.lwjgl.glfw.*;
 
 public final class Tools
 {
-    public static final boolean ENABLE_DEV_FEATURES = BuildConfig.DEBUG;
+    public static final boolean ENABLE_DEV_FEATURES = true; // BuildConfig.DEBUG;
 
     public static String APP_NAME = "null";
     
@@ -62,10 +63,10 @@ public final class Tools
         javaArgList.add(versionInfo.mainClass);
         javaArgList.addAll(Arrays.asList(launchArgs));
 
-        JREUtils.launchJavaVM(ctx, javaArgList);
+        JREUtils.launchJavaVM(javaArgList);
     }
     
-    public static void getJavaArgs(Context ctx, List<String> javaArgList) {
+    public static void getJavaArgs(List<String> javaArgList) {
         List<String> overrideableArgList = new ArrayList<String>();
 
         overrideableArgList.add("-Djava.home=" + Tools.DIR_HOME_JRE);

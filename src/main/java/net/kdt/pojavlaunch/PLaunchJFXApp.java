@@ -18,8 +18,8 @@ import org.lwjgl.glfw.CallbackBridge;
 public class PLaunchJFXApp extends Application {
     public void start(Stage stage) {
         Rectangle2D bounds = Screen.getPrimary().getBounds();
-        CallbackBridge.windowWidth = bounds.getWidth();
-        CallbackBridge.windowHeight = bounds.getHeight();
+        CallbackBridge.windowWidth = (int) bounds.getWidth();
+        CallbackBridge.windowHeight = (int) bounds.getHeight();
         
         JREUtils.saveGLContext();
     
@@ -44,7 +44,7 @@ public class PLaunchJFXApp extends Application {
         }
         
         MinecraftAccount acc = new MinecraftAccount();
-        JMinecraftVersionLis.Version version = Tools.getVersionInfo(mcver);
+        JMinecraftVersionList.Version version = Tools.getVersionInfo(mcver);
         
         Tools.launchMinecraft(acc, version);
         

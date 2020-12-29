@@ -6,7 +6,10 @@ import com.oracle.dalvik.*;
 import java.io.*;
 import java.util.*;
 import net.kdt.pojavlaunch.*;
+import net.kdt.pojavlaunch.prefs.*;
 import org.lwjgl.glfw.*;
+
+import libcore.io.*;
 
 public class JREUtils
 {
@@ -16,7 +19,7 @@ public class JREUtils
     private static String nativeLibDir;
 
     public static String findInLdLibPath(String libName) {
-        for (String libPath : Os.getenv("LD_LIBRARY_PATH").split(":")) {
+        for (String libPath : Libcore.os.getenv("LD_LIBRARY_PATH").split(":")) {
             File f = new File(libPath, libName);
             if (f.exists() && f.isFile()) {
                 return f.getAbsolutePath();
@@ -140,13 +143,13 @@ public class JREUtils
         Map<String, String> envMap = new ArrayMap<>();
         envMap.put("JAVA_HOME", Tools.DIR_HOME_JRE);
         envMap.put("HOME", Tools.DIR_GAME_NEW);
-        envMap.put("TMPDIR", ctx.getCacheDir().getAbsolutePath());
+        envMap.put("TMPDIR", System.getProperty("java.io.tmpdir"));
         envMap.put("LIBGL_MIPMAP", "3");
         
         // Fix white color on banner and sheep, since GL4ES 1.1.5
         envMap.put("LIBGL_NORMALIZE", "1");
    
-        envMap.put("MESA_GLSL_CACHE_DIR", ctx.getCacheDir().getAbsolutePath());
+        envMap.put("MESA_GLSL_CACHE_DIR", System.getProperty("java.io.tmpdir"));
         envMap.put("LD_LIBRARY_PATH", LD_LIBRARY_PATH);
         // envMap.put("PATH", Tools.DIR_HOME_JRE + "/bin:" + Os.getenv("PATH"));
     
@@ -177,12 +180,12 @@ public class JREUtils
     }
     
     public static int launchJavaVM(final List<String> args) throws Throwable {
-        JREUtils.relocateLibPath(ctx);
+        JREUtils.relocateLibPath();
         // ctx.appendlnToLog("LD_LIBRARY_PATH = " + JREUtils.LD_LIBRARY_PATH);
 
         List<String> javaArgList = new ArrayList<String>();
         javaArgList.add(Tools.DIR_HOME_JRE + "/bin/java");
-        Tools.getJavaArgs(ctx, javaArgList);
+        Tools.getJavaArgs(javaArgList);
 
         javaArgList.addAll(args);
         
@@ -194,9 +197,9 @@ public class JREUtils
         }
         ctx.appendlnToLog("Executing JVM: \"" + sbJavaArgs.toString() + "\"");
 */
-        JREUtils.setJavaEnvironment(ctx, null);
-        JREUtils.initJavaRuntime();
-        JREUtils.chdir(Tools.DIR_GAME_NEW);
+        setJavaEnvironment(null);
+        initJavaRuntime();
+        chdir(Tools.DIR_GAME_NEW);
 
         final int exitCode = VMLauncher.launchJVM(javaArgList.toArray(new String[0]));
         System.out.println("Java Exit code: " + exitCode);

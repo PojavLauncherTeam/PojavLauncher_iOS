@@ -12,6 +12,10 @@ import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UIApplicationDelegateAdapter;
 import org.robovm.apple.uikit.UIApplicationLaunchOptions;
 
+import org.robovm.pods.dialog.*;
+
+import net.kdt.pojavlaunch.prefs.*;
+
 public class PLaunchApp extends UIApplicationDelegateAdapter {
 
     @Override
@@ -74,6 +78,8 @@ public class PLaunchApp extends UIApplicationDelegateAdapter {
             throw new RuntimeException(th);
         }
 */
+
+        LauncherPreferences.loadPreferences();
 
         System.setProperty("java.library.path", Tools.DIR_DATA + "/Frameworks");
 
