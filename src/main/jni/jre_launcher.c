@@ -64,28 +64,7 @@ typedef jint JLI_Launch_func(int argc, char ** argv, /* main argc, argc */
         jint ergo                               /* ergonomics class policy */
 );
 
-typedef jint java_main_func(int argc, char ** argv);
-
 static jint launchJVM(int margc, char** margv) {
-   void* binjava = dlopen("/usr/lib/jvm/java-16-openjdk/bin/java", RTLD_GLOBAL);
-   if (NULL == binjava) {
-       printf("java binary = NULL: %s\n", dlerror());
-       return -1;
-   }
-   
-   java_main_func *pJLI_Main =
-          (java_main_func *)dlsym(binjava, "main");
-
-   if (NULL == pJLI_Main) {
-       printf("main = NULL\n");
-       return -1;
-   }
-
-   printf("Calling java main\n");
-
-   return pJLI_Main(margc, margv);
-   
-/*
    void* libjli = dlopen("/usr/lib/jvm/java-16-openjdk/lib/libjli.dylib", RTLD_LAZY | RTLD_GLOBAL);
    
    // Boardwalk: silence
@@ -152,6 +131,11 @@ JNIEXPORT jint JNICALL Java_com_oracle_dalvik_VMLauncher_launchJVM(JNIEnv *env, 
    
     return res;
 }
+
+static jint main(int argc, char** argv) {
+    launchJVM(argc, argv);
+}
+
 static int pfd[2];
 static pthread_t logger;
 static const char* tag = "jrelog";
