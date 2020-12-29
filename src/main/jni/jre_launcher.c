@@ -64,9 +64,28 @@ typedef jint JLI_Launch_func(int argc, char ** argv, /* main argc, argc */
         jint ergo                               /* ergonomics class policy */
 );
 
+typedef jint java_main_func(int argc, char ** argv);
+
 static jint launchJVM(int margc, char** margv) {
-   dlopen("/usr/lib/jvm/java-16-openjdk/bin/java", RTLD_GLOBAL);
+   void* binjava = dlopen("/usr/lib/jvm/java-16-openjdk/bin/java", RTLD_GLOBAL);
+   if (NULL == binjava) {
+       printf("java binary = NULL: %s\n", dlerror());
+       return -1;
+   }
    
+   java_main_func *pJLI_Main =
+          (java_main_func *)dlsym(binjava, "main");
+
+   if (NULL == pJLI_Main) {
+       printf("main = NULL\n");
+       return -1;
+   }
+
+   printf("Calling java main\n");
+
+   return pJLI_Main(margc, margv);
+   
+/*
    void* libjli = dlopen("/usr/lib/jvm/java-16-openjdk/lib/libjli.dylib", RTLD_LAZY | RTLD_GLOBAL);
    
    // Boardwalk: silence
@@ -84,7 +103,7 @@ static jint launchJVM(int margc, char** margv) {
 
    if (NULL == pJLI_Launch) {
        printf("JLI_Launch = NULL\n");
-       return -2;
+       return -1;
    }
 
    printf("Calling JLI_Launch\n");
@@ -98,11 +117,6 @@ static jint launchJVM(int margc, char** margv) {
                    *margv, // (const_launcher != NULL) ? const_launcher : *margv,
                    (const_jargs != NULL) ? JNI_TRUE : JNI_FALSE,
                    const_cpwildcard, const_javaw, const_ergo_class);
-/*
-   return pJLI_Launch(argc, argv, 
-       0, NULL, 0, NULL, FULL_VERSION,
-       DOT_VERSION, *margv, *margv, // "java", "openjdk",
-       JNI_FALSE, JNI_TRUE, JNI_FALSE, 0);
 */
 }
 
