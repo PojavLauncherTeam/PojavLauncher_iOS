@@ -35,7 +35,7 @@ public final class Tools
     // New since 3.3.1
     public static String DIR_ACCOUNT_NEW;
     public static String DIR_ACCOUNT_OLD;
-    public static final String DIR_GAME_HOME = System.getProperty("user.home") + "/Documents"
+    public static final String DIR_GAME_HOME = System.getProperty("user.home") + "/Documents";
     public static final String DIR_GAME_NEW = DIR_GAME_HOME + "/minecraft";
     
     // New since 3.0.0
