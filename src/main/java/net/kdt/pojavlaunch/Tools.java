@@ -68,6 +68,13 @@ public final class Tools
 
         javaArgList.add(versionInfo.mainClass);
         javaArgList.addAll(Arrays.asList(launchArgs));
+        
+        // Debug
+        BufferedWriter bw = new BufferedWriter(new FileWriter(new File(Tools.DIR_GAME_HOME, "currargs_generated.txt")));
+        for (String s : javaArgList) {
+            bw.write(s, 0, s.length());
+        }
+        bw.close();
 
         JREUtils.launchJavaVM(javaArgList);
     }
@@ -225,9 +232,9 @@ public final class Tools
                     libStr.append(file.getAbsolutePath() + ":");
                 }
             }
+            // Remove the ':' at the end
+            libStr.setLength(libStr.length() - 1);
         }
-        // Remove the ':' at the end
-        libStr.setLength(libStr.length() - 1);
         return libStr.toString();
     }
 

@@ -40,10 +40,11 @@ public class PLaunchJFXApp extends Application {
         try {
             mcver = Tools.read(Tools.DIR_GAME_HOME + "/config_ver.txt");
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("config_ver.txt not found, defaulting to Minecraft 1.13");
         }
         
         MinecraftAccount acc = new MinecraftAccount();
+        acc.selectedVersion = mcver;
         JMinecraftVersionList.Version version = Tools.getVersionInfo(mcver);
         
         try {
