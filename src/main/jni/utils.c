@@ -82,9 +82,9 @@ JNIEXPORT jboolean JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_dlopen(JNIEnv
 	const char *nameUtf = (*env)->GetStringUTFChars(env, name, 0);
 	void* handle = dlopen(nameUtf, RTLD_GLOBAL | RTLD_LAZY);
 	if (!handle) {
-		printf("dlopen %s failed: %s", nameUtf, dlerror());
+		printf("dlopen %s failed: %s\n", nameUtf, dlerror());
 	} else {
-		printf("dlopen %s success", nameUtf);
+		printf("dlopen %s success\n", nameUtf);
 	}
 	(*env)->ReleaseStringUTFChars(env, name, nameUtf);
 	return handle != NULL;
