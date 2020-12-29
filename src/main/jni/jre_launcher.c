@@ -65,15 +65,15 @@ typedef jint JLI_Launch_func(int argc, char ** argv, /* main argc, argc */
 );
 
 static jint launchJVM(int margc, char** margv) {
-   void* libjli = dlopen("libjli.dylib", RTLD_LAZY | RTLD_GLOBAL);
+   void* libjli = dlopen("/usr/lib/jvm/java-16-openjdk/lib/libjli.dylib", RTLD_LAZY | RTLD_GLOBAL);
    
    // Boardwalk: silence
    // LOGD("JLI lib = %x", (int)libjli);
    if (NULL == libjli) {
-       fprintf(logFile, "JLI lib = NULL: %s\n", dlerror());
+       printf("JLI lib = NULL: %s\n", dlerror());
        return -1;
    }
-   fprintf(logFile, "Found JLI lib\n");
+   printf("Found JLI lib\n");
 
    JLI_Launch_func *pJLI_Launch =
           (JLI_Launch_func *)dlsym(libjli, "JLI_Launch");
@@ -81,11 +81,11 @@ static jint launchJVM(int margc, char** margv) {
     // LOGD("JLI_Launch = 0x%x", *(int*)&pJLI_Launch);
 
    if (NULL == pJLI_Launch) {
-       fprintf(logFile, "JLI_Launch = NULL\n");
+       printf("JLI_Launch = NULL\n");
        return -2;
    }
 
-   fprintf(logFile, "Calling JLI_Launch\n");
+   printf("Calling JLI_Launch\n");
 
    return pJLI_Launch(margc, margv,
                    0, NULL, // sizeof(const_jargs) / sizeof(char *), const_jargs,
@@ -117,7 +117,7 @@ JNIEXPORT jint JNICALL Java_com_oracle_dalvik_VMLauncher_launchJVM(JNIEnv *env, 
     dalvikJNIEnvPtr_ANDROID = env;
 
     if (argsArray == NULL) {
-        fprintf(logFile, "Args array null, returning\n");
+        printf("Args array null, returning\n");
         //handle error
         return 0;
     }
@@ -125,14 +125,14 @@ JNIEXPORT jint JNICALL Java_com_oracle_dalvik_VMLauncher_launchJVM(JNIEnv *env, 
     int argc = (*env)->GetArrayLength(env, argsArray);
     char **argv = convert_to_char_array(env, argsArray);
     
-    fprintf(logFile, "Done processing args\n");
+    printf("Done processing args\n");
 
     res = launchJVM(argc, argv);
 
-    fprintf(logFile, "Going to free args\n");
+    printf("Going to free args\n");
     free_char_array(env, argsArray, argv);
     
-    fprintf(logFile, "Free done\n");
+    printf("Free done\n");
    
     return res;
 }
