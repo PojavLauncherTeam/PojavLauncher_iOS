@@ -205,6 +205,7 @@ public class JREUtils
         final int exitCode = VMLauncher.launchJVM(javaArgList.toArray(new String[0]));
         System.out.println("Java Exit code: " + exitCode);
         if (exitCode != 0) {
+            Tools.showError(new Exception("Java exited with code " + exitCode));
 /*
             ctx.runOnUiThread(new Runnable(){
                     @Override

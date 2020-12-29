@@ -68,10 +68,10 @@ static jint launchJVM(int margc, char** margv) {
    // Boardwalk: silence
    // LOGD("JLI lib = %x", (int)libjli);
    if (NULL == libjli) {
-       LOGE("JLI lib = NULL: %s", dlerror());
+       prinf("JLI lib = NULL: %s\n", dlerror());
        return -1;
    }
-   LOGD("Found JLI lib");
+   printf("Found JLI lib\n");
 
    JLI_Launch_func *pJLI_Launch =
           (JLI_Launch_func *)dlsym(libjli, "JLI_Launch");
@@ -79,11 +79,11 @@ static jint launchJVM(int margc, char** margv) {
     // LOGD("JLI_Launch = 0x%x", *(int*)&pJLI_Launch);
 
    if (NULL == pJLI_Launch) {
-       LOGE("JLI_Launch = NULL");
+       printf("JLI_Launch = NULL\n");
        return -1;
    }
 
-   LOGD("Calling JLI_Launch");
+   printf("Calling JLI_Launch\n");
 
    return pJLI_Launch(margc, margv,
                    0, NULL, // sizeof(const_jargs) / sizeof(char *), const_jargs,
@@ -115,7 +115,7 @@ JNIEXPORT jint JNICALL Java_com_oracle_dalvik_VMLauncher_launchJVM(JNIEnv *env, 
     dalvikJNIEnvPtr_ANDROID = env;
 
     if (argsArray == NULL) {
-        LOGE("Args array null, returning");
+        printf("Args array null, returning\n");
         //handle error
         return 0;
     }
@@ -123,14 +123,14 @@ JNIEXPORT jint JNICALL Java_com_oracle_dalvik_VMLauncher_launchJVM(JNIEnv *env, 
     int argc = (*env)->GetArrayLength(env, argsArray);
     char **argv = convert_to_char_array(env, argsArray);
     
-    LOGD("Done processing args");
+    printf("Done processing args\n");
 
     res = launchJVM(argc, argv);
 
-    LOGD("Going to free args");
+    printf("Going to free args\n");
     free_char_array(env, argsArray, argv);
     
-    LOGD("Free done");
+    printf("Free done\n");
    
     return res;
 }

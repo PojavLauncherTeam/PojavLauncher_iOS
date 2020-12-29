@@ -46,6 +46,8 @@ jboolean isGrabbing;
 
 // JNI_OnLoad
 jint JNI_OnLoad_pojavexec(JavaVM* vm, void* reserved) {
+    printf("libpojavexec loaded from vm=%p\n", vm);
+
     if (dalvikJavaVMPtr == NULL) {
         //Save dalvik global JavaVM pointer
         dalvikJavaVMPtr = vm;
