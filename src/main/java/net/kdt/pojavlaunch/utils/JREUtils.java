@@ -1,15 +1,18 @@
 package net.kdt.pojavlaunch.utils;
 
-import libcore.io.*;
+import android.util.*;
 
 import com.oracle.dalvik.*;
+
 import java.io.*;
 import java.util.*;
-import net.kdt.pojavlaunch.*;
-import net.kdt.pojavlaunch.prefs.*;
-import org.lwjgl.glfw.*;
 
 import libcore.io.*;
+
+import net.kdt.pojavlaunch.*;
+import net.kdt.pojavlaunch.prefs.*;
+
+import org.lwjgl.glfw.*;
 
 public class JREUtils
 {

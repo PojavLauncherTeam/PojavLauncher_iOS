@@ -33,7 +33,7 @@ public class PLaunchApp extends UIApplicationDelegateAdapter {
             WindowAlertController alertController = new WindowAlertController("Error", "OpenJDK is not installed. Please install before enter launcher.", UIAlertControllerStyle.Alert);
             alertController.addAction(new UIAlertAction("OK",
                 UIAlertActionStyle.Default, (action) -> {
-                    alertController.didDismiss();
+                    alertController.dismissViewController(true, null);
                 }
             ));
             alertController.show();  
