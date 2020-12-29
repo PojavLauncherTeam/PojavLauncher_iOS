@@ -22,7 +22,7 @@ jobs:
           cmake .. -G Xcode -DCMAKE_TOOLCHAIN_FILE=ios.toolchain.cmake -DPLATFORM=OS64
           cmake --build . --config Release --target pojavexec
           cd ../..
-          cp jni/build/Release/libpojavexec.a jniLibs/
+          cp jni/build/Release-iphoneos/libpojavexec.a jniLibs/
 
       - name: RoboVM Build
         run: |
