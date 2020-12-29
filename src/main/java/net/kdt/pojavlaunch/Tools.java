@@ -29,10 +29,10 @@ public final class Tools
     public static String DIR_ACCOUNT_NEW;
     public static String DIR_ACCOUNT_OLD;
     public static final String DIR_GAME_HOME = System.getProperty("user.home");
-    public static final String DIR_GAME_NEW = DIR_GAME_HOME + "/.minecraft";
+    public static final String DIR_GAME_NEW = DIR_GAME_HOME + "/minecraft";
     
     // New since 3.0.0
-    public static String DIR_HOME_JRE;
+    public static String DIR_HOME_JRE = "/usr/lib/jvm/java-16-openjdk";
     public static String DIRNAME_HOME_JRE = "lib";
 
     // New since 2.4.2
@@ -47,7 +47,7 @@ public final class Tools
     
     public static final String LIBNAME_OPTIFINE = "optifine:OptiFine";
 
-    public static void launchMinecraft(final LoggableActivity ctx, MinecraftAccount profile, JMinecraftVersionList.Version versionInfo) throws Throwable {
+    public static void launchMinecraft(MinecraftAccount profile, JMinecraftVersionList.Version versionInfo) throws Throwable {
         String[] launchArgs = getMinecraftArgs(profile, versionInfo);
 
         // ctx.appendlnToLog("Minecraft Args: " + Arrays.toString(launchArgs));
@@ -69,14 +69,14 @@ public final class Tools
         List<String> overrideableArgList = new ArrayList<String>();
 
         overrideableArgList.add("-Djava.home=" + Tools.DIR_HOME_JRE);
-        overrideableArgList.add("-Djava.io.tmpdir=" + ctx.getCacheDir().getAbsolutePath());
+        overrideableArgList.add("-Djava.io.tmpdir=" + System.getProperty("java.io.tmpdir"));
         
-        overrideableArgList.add("-Duser.home=" + new File(Tools.DIR_GAME_NEW).getParent());
+        overrideableArgList.add("-Duser.home=" + Tools.DIR_GAME_HOME);
         overrideableArgList.add("-Duser.language=" + System.getProperty("user.language"));
         // overrideableArgList.add("-Duser.timezone=GMT");
 
-        overrideableArgList.add("-Dos.name=Linux");
-        overrideableArgList.add("-Dos.version=Android-" + Build.VERSION.RELEASE);
+        overrideableArgList.add("-Dos.name=Darwin");
+        overrideableArgList.add("-Dos.version=iOS-" + System.getProperty("os.version"));
 
         overrideableArgList.add("-Dpojav.path.minecraft=" + Tools.DIR_GAME_NEW);
         overrideableArgList.add("-Dpojav.path.private.account=" + Tools.DIR_ACCOUNT_NEW);
@@ -84,7 +84,7 @@ public final class Tools
         // javaArgList.add("-Dorg.lwjgl.libname=liblwjgl3.so");
         // javaArgList.add("-Dorg.lwjgl.system.jemalloc.libname=libjemalloc.so");
        
-        overrideableArgList.add("-Dorg.lwjgl.opengl.libname=libgl04es.so");
+        overrideableArgList.add("-Dorg.lwjgl.opengl.libname=libGL.dylib");
         // overrideableArgList.add("-Dorg.lwjgl.opengl.libname=libgl4es_115.so");
         
         // javaArgList.add("-Dorg.lwjgl.opengl.libname=libRegal.so");
@@ -267,13 +267,13 @@ public final class Tools
 
         return libStr.toString();
     }
-
+/*
     public static DisplayMetrics getDisplayMetrics(Activity ctx) {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ctx.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         return displayMetrics;
     }
-/*
+
     public static void setFullscreen(Activity act) {
         final View decorView = act.getWindow().getDecorView();
         decorView.setOnSystemUiVisibilityChangeListener (new View.OnSystemUiVisibilityChangeListener() {

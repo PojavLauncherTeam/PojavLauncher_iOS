@@ -4,6 +4,8 @@ import java.io.*;
 
 import javafx.application.Application;
 
+import org.lwjgl.glfw.CallbackBridge;
+
 import org.robovm.apple.foundation.Foundation;
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.uikit.UIApplication;
@@ -15,15 +17,25 @@ public class PLaunchApp extends UIApplicationDelegateAdapter {
     @Override
     public boolean didFinishLaunching(UIApplication application,
         UIApplicationLaunchOptions launchOptions) {
-        
-        Thread launchThread = new Thread() {
-            @Override
-            public void run() {
-                Application.launch(PLaunchJFXApp.class);
-            }
-        };
-        launchThread.setDaemon(true);
-        launchThread.start();
+        File f = new File(Tools.DIR_HOME_JRE);
+        if (f.exists()) {
+            Thread launchThread = new Thread() {
+                @Override
+                public void run() {
+                    Application.launch(PLaunchJFXApp.class);
+                }
+            };
+            launchThread.setDaemon(true);
+            launchThread.start();
+        } else {
+            WindowAlertController alertController = new WindowAlertController("Error", "OpenJDK is not installed. Please install before enter launcher.", UIAlertControllerStyle.Alert);
+            alertController.addAction(new UIAlertAction("OK",
+                UIAlertActionStyle.Default, (action) -> {
+                    alertController.didDismiss();
+                }
+            ));
+            alertController.show();  
+        }
 
         return true;
     }
@@ -63,12 +75,20 @@ public class PLaunchApp extends UIApplicationDelegateAdapter {
         }
 */
 
-        System.setProperty("java.library.path", System.getProperty("java.home") + "/Frameworks");
+        System.setProperty("java.library.path", Tools.DIR_DATA + "/Frameworks");
 
         System.setProperty("javafx.verbose", "true");
-        System.setProperty("prism.verbose", "true");
+        System.setProperty("javafx.platform", "ios");
         System.setProperty("glass.platform", "ios");
+        System.setProperty("jfxmedia.platforms", "IOSPlatform");
+        System.setProperty("com.sun.javafx.isEmbedded", "true");
         
+        System.setProperty("prism.verbose", "true");
+        System.setProperty("prism.allowhidpi", "true");
+        System.setProperty("prism.mintexturesize", "16");
+        System.setProperty("prism.static.libraries", "true");
+        System.setProperty("prism.useNativeIIO", "false");
+
         System.out.println("Starting UI...");
         NSAutoreleasePool pool = new NSAutoreleasePool();
         UIApplication.main(args, null, PLaunchApp.class);

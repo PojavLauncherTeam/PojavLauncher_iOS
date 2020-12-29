@@ -123,14 +123,14 @@ public class JREUtils
 */
     }
     
-    public static void relocateLibPath(Context ctx) throws Exception {
+    public static void relocateLibPath() throws Exception {
         StringBuilder ldLibraryPath = new StringBuilder();
         ldLibraryPath.append(
             // To make libjli.so ignore re-execute
             Tools.DIR_HOME_JRE + "/" + Tools.DIRNAME_HOME_JRE + "/server:" +
             Tools.DIR_HOME_JRE + "/" +  Tools.DIRNAME_HOME_JRE + "/jli:" +
             Tools.DIR_HOME_JRE + "/" + Tools.DIRNAME_HOME_JRE + ":" +
-            Tools.datapath + "/Frameworks"
+            Tools.DIR_DATA + "/Frameworks"
         );
         
         LD_LIBRARY_PATH = ldLibraryPath.toString();
@@ -176,7 +176,7 @@ public class JREUtils
         // return ldLibraryPath;
     }
     
-    public static int launchJavaVM(final LoggableActivity ctx, final List<String> args) throws Throwable {
+    public static int launchJavaVM(final List<String> args) throws Throwable {
         JREUtils.relocateLibPath(ctx);
         // ctx.appendlnToLog("LD_LIBRARY_PATH = " + JREUtils.LD_LIBRARY_PATH);
 
@@ -199,8 +199,9 @@ public class JREUtils
         JREUtils.chdir(Tools.DIR_GAME_NEW);
 
         final int exitCode = VMLauncher.launchJVM(javaArgList.toArray(new String[0]));
-        ctx.appendlnToLog("Java Exit code: " + exitCode);
+        System.out.println("Java Exit code: " + exitCode);
         if (exitCode != 0) {
+/*
             ctx.runOnUiThread(new Runnable(){
                     @Override
                     public void run() {
@@ -216,6 +217,7 @@ public class JREUtils
                         dialog.show();
                     }
                 });
+*/
         }
         return exitCode;
     }
