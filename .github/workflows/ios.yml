@@ -15,10 +15,10 @@ jobs:
       
       - name: Native build
         run: |
-          wget https://github.com/leetal/ios-cmake/raw/master/ios.toolchain.cmake
           cd src/main/jni
           mkdir build
           cd build
+          wget https://github.com/leetal/ios-cmake/raw/master/ios.toolchain.cmake
           cmake .. -G Xcode -DCMAKE_TOOLCHAIN_FILE=ios.toolchain.cmake -DSTATICLIB=ON -DPLATFORM=OS64
           cmake --build . --config Release --target GL
           cd ../..
