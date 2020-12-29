@@ -74,7 +74,7 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_setLdLibraryPath(
 	// jclass exception_cls = (*env)->FindClass(env, "java/lang/UnsatisfiedLinkError");
 	
 	const char* ldLibPathUtf = (*env)->GetStringUTFChars(env, ldLibraryPath, 0);
-    setenv("LD_LIBRARY_PATH", ldLibPathUtf);
+    setenv("LD_LIBRARY_PATH", ldLibPathUtf, 1);
 	(*env)->ReleaseStringUTFChars(env, ldLibraryPath, ldLibPathUtf);
 }
 
