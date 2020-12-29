@@ -164,7 +164,7 @@ Java_net_kdt_pojavlaunch_utils_JREUtils_redirectLogcat(JNIEnv *env, jclass clazz
     dup2(pfd[1], 1);
     dup2(pfd[1], 2);
 
-    /* spawn the logging thread */
+    // spawn the logging thread
     if(pthread_create(&logger, 0, logger_thread, 0) == -1) {
         __android_log_write(ANDROID_LOG_ERROR,tag,"Error while spawning logging thread. JRE output won't be logged.");
     }
