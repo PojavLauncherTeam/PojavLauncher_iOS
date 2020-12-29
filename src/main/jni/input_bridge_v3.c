@@ -10,7 +10,7 @@
  * - Implements glfwSetCursorPos() to handle grab camera pos correctly.
  */
  
-#include <jni.h>
+#include "jni.h"
 #include <assert.h>
 
 #include "log.h"

@@ -22,7 +22,7 @@
  * or visit www.oracle.com if you need additional information or have any
  * questions.
  */
-#include <jni.h>
+#include "jni.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <dlfcn.h>
