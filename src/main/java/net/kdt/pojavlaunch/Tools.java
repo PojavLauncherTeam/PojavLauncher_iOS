@@ -388,7 +388,7 @@ public final class Tools
         ));
         alertController.show();
     }
-
+/*
     public static void dialogOnUiThread(final Activity ctx, final CharSequence title, final CharSequence message) {
         ctx.runOnUiThread(new Runnable(){
 
