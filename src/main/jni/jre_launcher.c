@@ -96,7 +96,6 @@ static jint launchJVM(int margc, char** margv) {
                    *margv, // (const_launcher != NULL) ? const_launcher : *margv,
                    (const_jargs != NULL) ? JNI_TRUE : JNI_FALSE,
                    const_cpwildcard, const_javaw, const_ergo_class);
-*/
 }
 
 /*
