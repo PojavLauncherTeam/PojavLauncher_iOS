@@ -63,7 +63,7 @@ typedef jint JLI_Launch_func(int argc, char ** argv, /* main argc, argc */
 );
 
 static jint launchJVM(int margc, char** margv) {
-   void* libjli = dlopen("libjli.so", RTLD_LAZY | RTLD_GLOBAL);
+   void* libjli = dlopen("libjli.dylib", RTLD_LAZY | RTLD_GLOBAL);
    
    // Boardwalk: silence
    // LOGD("JLI lib = %x", (int)libjli);
