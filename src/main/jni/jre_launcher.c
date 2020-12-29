@@ -137,9 +137,9 @@ JNIEXPORT jint JNICALL Java_com_oracle_dalvik_VMLauncher_launchJVM(JNIEnv *env, 
 static int pfd[2];
 static pthread_t logger;
 static const char* tag = "jrelog";
+static FILE* logFile;
 
 static void *logger_thread() {
-/*
     ssize_t  rsize;
     char buf[512];
     while((rsize = read(pfd[0], buf, sizeof(buf)-1)) > 0) {
@@ -147,15 +147,16 @@ static void *logger_thread() {
             rsize=rsize-1;
         }
         buf[rsize]=0x00;
-        __android_log_write(ANDROID_LOG_SILENT,tag,buf);
+        fprintf(logFile, buf);
     }
-*/
 }
 
 JNIEXPORT void JNICALL
-Java_net_kdt_pojavlaunch_utils_JREUtils_redirectLogcat(JNIEnv *env, jclass clazz) {
-/*
-    // TODO: implement redirectLogcat()
+Java_net_kdt_pojavlaunch_utils_JREUtils_redirectLogcat(JNIEnv *env, jclass clazz, jstring path) {
+    char *path_c = (*env)->GetStringUTFChars(env, path, 0);
+    logFile = fopen(path_c, "w");
+    (*env)->ReleaseStringUTFChars(env, path, path_c);
+
     setvbuf(stdout, 0, _IOLBF, 0); // make stdout line-buffered
     setvbuf(stderr, 0, _IONBF, 0); // make stderr unbuffered
 
@@ -171,13 +172,5 @@ Java_net_kdt_pojavlaunch_utils_JREUtils_redirectLogcat(JNIEnv *env, jclass clazz
 
     pthread_detach(logger);
     printf("Starting logging STDIO as jrelog:V\n");
-*/
-    
-    char fullpath[200];
-    vsprintf(fullpath, "%s/Documents/latestlog.txt", getenv("HOME"));
-    freopen(fullpath, "w+", stderr);
-    freopen(fullpath, "w+", stdout);
-    
-    printf("Begin log\n");
 }
 

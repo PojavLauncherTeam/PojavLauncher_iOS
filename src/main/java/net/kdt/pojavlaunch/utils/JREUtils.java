@@ -199,7 +199,7 @@ public class JREUtils
         ctx.appendlnToLog("Executing JVM: \"" + sbJavaArgs.toString() + "\"");
 */
 
-        redirectLogcat();
+        redirectLogcat(Tools.DIR_GAME_HOME + "/latestlog.txt");
 
         setJavaEnvironment();
         initJavaRuntime();
@@ -232,7 +232,7 @@ public class JREUtils
 
     public static native int chdir(String path);
     public static native boolean dlopen(String libPath);
-    public static native void redirectLogcat();
+    public static native void redirectLogcat(String path);
     public static native void setLdLibraryPath(String ldLibraryPath);
     public static native void saveGLContext();
     
