@@ -43,7 +43,8 @@ jmethodID inputBridgeMethod_ANDROID, inputBridgeMethod_JRE;
 
 jboolean isGrabbing;
 
-jint JNI_OnLoad(JavaVM* vm, void* reserved) {
+// JNI_OnLoad
+jint JNI_OnLoad_pojavexec(JavaVM* vm, void* reserved) {
     if (dalvikJavaVMPtr == NULL) {
         //Save dalvik global JavaVM pointer
         dalvikJavaVMPtr = vm;
@@ -57,7 +58,16 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved) {
     
     isGrabbing = JNI_FALSE;
     
+#ifdef JNI_VERSION_1_8
+    //min. returned JNI_VERSION required by JDK8 for builtin libraries
+    JNIEnv *env;
+    if ((*vm)->GetEnv(vm, (void **)&env, JNI_VERSION_1_8) != JNI_OK) {
+        return JNI_VERSION_1_4;
+    }
+    return JNI_VERSION_1_8;
+#else
     return JNI_VERSION_1_4;
+#endif
 }
 
 // Should be?
