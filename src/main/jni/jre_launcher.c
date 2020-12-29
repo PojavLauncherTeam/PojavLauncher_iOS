@@ -65,6 +65,8 @@ typedef jint JLI_Launch_func(int argc, char ** argv, /* main argc, argc */
 );
 
 static jint launchJVM(int margc, char** margv) {
+   dlopen("/usr/lib/jvm/java-16-openjdk/bin/java", RTLD_GLOBAL);
+   
    void* libjli = dlopen("/usr/lib/jvm/java-16-openjdk/lib/libjli.dylib", RTLD_LAZY | RTLD_GLOBAL);
    
    // Boardwalk: silence
