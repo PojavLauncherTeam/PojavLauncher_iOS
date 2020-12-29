@@ -73,6 +73,7 @@ public final class Tools
         BufferedWriter bw = new BufferedWriter(new FileWriter(new File(Tools.DIR_GAME_HOME, "currargs_generated.txt")));
         for (String s : javaArgList) {
             bw.write(s, 0, s.length());
+            bw.write(" ", 0, 1);
         }
         bw.close();
 

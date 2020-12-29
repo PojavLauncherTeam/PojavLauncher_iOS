@@ -47,6 +47,8 @@ static const jboolean const_javaw = JNI_FALSE;
 static const jboolean const_cpwildcard = JNI_TRUE;
 static const jint const_ergo_class = 0; // DEFAULT_POLICY
 
+static FILE* logFile;
+
 typedef jint JNI_CreateJavaVM_func(JavaVM **pvm, void **penv, void *args);
 
 typedef jint JLI_Launch_func(int argc, char ** argv, /* main argc, argc */
@@ -68,10 +70,10 @@ static jint launchJVM(int margc, char** margv) {
    // Boardwalk: silence
    // LOGD("JLI lib = %x", (int)libjli);
    if (NULL == libjli) {
-       printf("JLI lib = NULL: %s\n", dlerror());
+       fprintf(logFile, "JLI lib = NULL: %s\n", dlerror());
        return -1;
    }
-   printf("Found JLI lib\n");
+   fprintf(logFile, Found JLI lib\n");
 
    JLI_Launch_func *pJLI_Launch =
           (JLI_Launch_func *)dlsym(libjli, "JLI_Launch");
@@ -79,11 +81,11 @@ static jint launchJVM(int margc, char** margv) {
     // LOGD("JLI_Launch = 0x%x", *(int*)&pJLI_Launch);
 
    if (NULL == pJLI_Launch) {
-       printf("JLI_Launch = NULL\n");
+       fprintf(logFile, "JLI_Launch = NULL\n");
        return -1;
    }
 
-   printf("Calling JLI_Launch\n");
+   fprintf(logFile, "Calling JLI_Launch\n");
 
    return pJLI_Launch(margc, margv,
                    0, NULL, // sizeof(const_jargs) / sizeof(char *), const_jargs,
@@ -115,7 +117,7 @@ JNIEXPORT jint JNICALL Java_com_oracle_dalvik_VMLauncher_launchJVM(JNIEnv *env, 
     dalvikJNIEnvPtr_ANDROID = env;
 
     if (argsArray == NULL) {
-        printf("Args array null, returning\n");
+        fprintf(logFile, Args array null, returning\n");
         //handle error
         return 0;
     }
@@ -123,22 +125,21 @@ JNIEXPORT jint JNICALL Java_com_oracle_dalvik_VMLauncher_launchJVM(JNIEnv *env, 
     int argc = (*env)->GetArrayLength(env, argsArray);
     char **argv = convert_to_char_array(env, argsArray);
     
-    printf("Done processing args\n");
+    fprintf(logFile, "Done processing args\n");
 
     res = launchJVM(argc, argv);
 
-    printf("Going to free args\n");
+    fprintf(logFile, "Going to free args\n");
     free_char_array(env, argsArray, argv);
     
-    printf("Free done\n");
+    fprintf(logFile, "Free done\n");
    
     return res;
 }
 static int pfd[2];
 static pthread_t logger;
 static const char* tag = "jrelog";
-static FILE* logFile;
-
+/*
 static void *logger_thread() {
     ssize_t  rsize;
     char buf[512];
@@ -150,13 +151,13 @@ static void *logger_thread() {
         fprintf(logFile, buf);
     }
 }
-
+*/
 JNIEXPORT void JNICALL
 Java_net_kdt_pojavlaunch_utils_JREUtils_redirectLogcat(JNIEnv *env, jclass clazz, jstring path) {
     char *path_c = (*env)->GetStringUTFChars(env, path, 0);
     logFile = fopen(path_c, "w");
     (*env)->ReleaseStringUTFChars(env, path, path_c);
-
+/*
     setvbuf(stdout, 0, _IOLBF, 0); // make stdout line-buffered
     setvbuf(stderr, 0, _IONBF, 0); // make stderr unbuffered
 
@@ -171,6 +172,15 @@ Java_net_kdt_pojavlaunch_utils_JREUtils_redirectLogcat(JNIEnv *env, jclass clazz
     }
 
     pthread_detach(logger);
+*/
+
+    int fd = fileno(logFile);
+
+    dup2(fd, 1);
+    dup2(fd, 2);
+
+    close(fd);
+
     printf("Starting logging STDIO as jrelog:V\n");
 }
 
