@@ -68,7 +68,7 @@ static jint launchJVM(int margc, char** margv) {
    // Boardwalk: silence
    // LOGD("JLI lib = %x", (int)libjli);
    if (NULL == libjli) {
-       prinf("JLI lib = NULL: %s\n", dlerror());
+       printf("JLI lib = NULL: %s\n", dlerror());
        return -1;
    }
    printf("Found JLI lib\n");
