@@ -23,7 +23,7 @@ public final class VMLauncher {
                 
                 String mainClass = "";
                 int mainClassIndex;
-                for (mainClassIndex = -1; mainClassIndex < args.size(); mainClassIndex++) {
+                for (mainClassIndex = 0; mainClassIndex < args.size(); mainClassIndex++) {
                     if (!args.get(mainClassIndex).startsWith("-")) {
                         mainClass = args.get(mainClassIndex);
                         break;
