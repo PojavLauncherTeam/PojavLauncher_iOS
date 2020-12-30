@@ -73,6 +73,15 @@ static jint launchJVM(int margc, char** margv) {
    }
    printf("Found JLI lib\n");
 
+   // Avoid re-exec java to main thread
+   void *bool_started_obj = dlsym(libjli, "started");
+   if (NULL == bool_started_obj) {
+       printf("re-exec.started = NULL: %s\n", dlerror());
+       return -2;
+   }
+   jboolean *bool_started_ptr = (jboolean *) bool_started_obj;
+   *bool_started_ptr = JNI_TRUE;
+
    JLI_Launch_func *pJLI_Launch =
           (JLI_Launch_func *)dlsym(libjli, "JLI_Launch");
     // Boardwalk: silence
@@ -80,7 +89,7 @@ static jint launchJVM(int margc, char** margv) {
 
    if (NULL == pJLI_Launch) {
        printf("JLI_Launch = NULL\n");
-       return -1;
+       return -3;
    }
 
    printf("Calling JLI_Launch\n");
