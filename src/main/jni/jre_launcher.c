@@ -47,8 +47,6 @@ static const jboolean const_javaw = JNI_FALSE;
 static const jboolean const_cpwildcard = JNI_TRUE;
 static const jint const_ergo_class = 0; // DEFAULT_POLICY
 
-static FILE* logFile;
-
 typedef jint JNI_CreateJavaVM_func(JavaVM **pvm, void **penv, void *args);
 
 typedef jint JLI_Launch_func(int argc, char ** argv, /* main argc, argc */
@@ -131,47 +129,11 @@ JNIEXPORT jint JNICALL Java_com_oracle_dalvik_VMLauncher_launchJVM(JNIEnv *env, 
     return res;
 }
 
-static jint main(int argc, char** argv) {
-    launchJVM(argc, argv);
-}
-
-static int pfd[2];
-static pthread_t logger;
-static const char* tag = "jrelog";
-/*
-static void *logger_thread() {
-    ssize_t  rsize;
-    char buf[512];
-    while((rsize = read(pfd[0], buf, sizeof(buf)-1)) > 0) {
-        if(buf[rsize-1]=='\n') {
-            rsize=rsize-1;
-        }
-        buf[rsize]=0x00;
-        fprintf(logFile, buf);
-    }
-}
-*/
 JNIEXPORT void JNICALL
 Java_net_kdt_pojavlaunch_utils_JREUtils_redirectLogcat(JNIEnv *env, jclass clazz, jstring path) {
     char *path_c = (*env)->GetStringUTFChars(env, path, 0);
-    logFile = fopen(path_c, "w");
+    FILE* logFile = fopen(path_c, "w");
     (*env)->ReleaseStringUTFChars(env, path, path_c);
-/*
-    setvbuf(stdout, 0, _IOLBF, 0); // make stdout line-buffered
-    setvbuf(stderr, 0, _IONBF, 0); // make stderr unbuffered
-
-    // create the pipe and redirect stdout and stderr 
-    pipe(pfd);
-    dup2(pfd[1], 1);
-    dup2(pfd[1], 2);
-
-    // spawn the logging thread
-    if(pthread_create(&logger, 0, logger_thread, 0) == -1) {
-        printf("Error while spawning logging thread. JRE output won't be logged.\n");
-    }
-
-    pthread_detach(logger);
-*/
 
     int fd = fileno(logFile);
 
