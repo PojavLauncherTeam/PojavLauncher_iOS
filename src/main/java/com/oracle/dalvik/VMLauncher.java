@@ -21,29 +21,24 @@ public final class VMLauncher {
                 String classpath = args.remove(cpPath + 1);
                 args.set(cpPath, "-Djava.class.path=" + classpath);
                 
-                String mainClass = "";
+                List<String> vmArgs = new ArrayList<>();
+                List<String> mainArgs = new ArrayList<>();
+                String mainClass = null;
                 int mainClassIndex;
-                for (mainClassIndex = 0; mainClassIndex < args.size(); mainClassIndex++) {
-                    if (!args.get(mainClassIndex).startsWith("-")) {
-                        mainClass = args.get(mainClassIndex);
-                        break;
+                for (String arg : args) {
+                    if (!arg.startsWith("-") && mainClass == null) {
+                        mainClass = arg;
+                        continue;
+                    }
+                    
+                    if (mainClass == null) {
+                        vmArgs.add(arg);
+                    } else {
+                        mainArgs.add(arg);
                     }
                 }
                 
-                mainClassIndex++;
-                String[] mainArgs = new String[args.size() - mainClassIndex];
-                System.arraycopy(
-                    args.toArray(new String[0]), mainClassIndex,
-                    mainArgs, 0, mainArgs.length
-                );
-
-                String[] vmArgs = new String[mainClassIndex - 2];
-                System.arraycopy(
-                    args.toArray(new String[0]), 0,
-                    vmArgs, 0, vmArgs.length
-                );
-                
-                return createLaunchMainJVM(vmArgs, mainClass, mainArgs);
+                return createLaunchMainJVM(vmArgs.toArray(new String[0]), mainClass, mainArgs.toArray(new String[0]));
             } else {
                 throw new RuntimeException("Invalid or unsupported classpath type");
             }
