@@ -205,7 +205,7 @@ public class JREUtils
         initJavaRuntime();
         chdir(Tools.DIR_GAME_NEW);
 
-        final int exitCode = VMLauncher.launchJVM(javaArgList.toArray(new String[0]));
+        final int exitCode = VMLauncher.launchJVM(false, javaArgList);
         System.out.println("Java Exit code: " + exitCode);
         if (exitCode != 0) {
             Tools.showError(new Exception("Java exited with code " + exitCode));
