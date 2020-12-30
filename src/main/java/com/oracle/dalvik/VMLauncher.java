@@ -37,7 +37,7 @@ public final class VMLauncher {
                     mainArgs, 0, mainArgs.length
                 );
 
-                String[] vmArgs = new String[args.size() - mainArgs.length - 2];
+                String[] vmArgs = new String[mainClassIndex - 2];
                 System.arraycopy(
                     args.toArray(new String[0]), 0,
                     vmArgs, 0, vmArgs.length
