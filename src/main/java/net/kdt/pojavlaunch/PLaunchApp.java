@@ -22,10 +22,31 @@ public class PLaunchApp extends UIApplicationDelegateAdapter {
             Thread launchThread = new Thread() {
                 @Override
                 public void run() {
-                    Application.launch(PLaunchJFXApp.class);
+                    // Application.launch(PLaunchJFXApp.class);
+                    
+        // Start Minecraft there!
+        File file = new File(Tools.DIR_GAME_NEW);
+        file.mkdirs();
+        
+        String mcver = "1.13";
+        try {
+            mcver = Tools.read(Tools.DIR_GAME_HOME + "/config_ver.txt");
+        } catch (IOException e) {
+            System.out.println("config_ver.txt not found, defaulting to Minecraft 1.13");
+        }
+        
+        MinecraftAccount acc = new MinecraftAccount();
+        acc.selectedVersion = mcver;
+        JMinecraftVersionList.Version version = Tools.getVersionInfo(mcver);
+        
+        try {
+            Tools.launchMinecraft(acc, version);
+        } catch (Throwable th) {
+            Tools.showError(th);
+        }
                 }
             };
-            launchThread.setDaemon(true);
+            // launchThread.setDaemon(true);
             launchThread.start();
         } else {
             WindowAlertController alertController = new WindowAlertController("Error", "OpenJDK is not installed. Please install before enter launcher.", UIAlertControllerStyle.Alert);
