@@ -35,6 +35,8 @@
 
 #include "utils.h"
 
+typedef jint JNI_CreateJavaVM_func(JavaVM **pvm, void **penv, void *args);
+
 JNIEXPORT jint JNICALL Java_com_oracle_dalvik_VMLauncher_createLaunchMainJVM(JNIEnv *env, jclass clazz, jobjectArray vmArgArr, jstring mainClassStr, jobjectArray mainArgArr) {
     void *libjvm = dlopen("/usr/lib/jvm/java-16-openjdk/lib/server/libjvm.dylib", RTLD_NOW + RTLD_GLOBAL);
     if (libjvm == NULL) {
@@ -94,8 +96,6 @@ static const char** const_appclasspath = NULL;
 static const jboolean const_javaw = JNI_FALSE;
 static const jboolean const_cpwildcard = JNI_TRUE;
 static const jint const_ergo_class = 0; // DEFAULT_POLICY
-
-typedef jint JNI_CreateJavaVM_func(JavaVM **pvm, void **penv, void *args);
 
 typedef jint JLI_Launch_func(int argc, char ** argv, /* main argc, argc */
         int jargc, const char** jargv,          /* java args */
