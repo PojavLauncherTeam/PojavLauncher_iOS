@@ -13,6 +13,23 @@ jobs:
 
       - uses: actions/checkout@v2
       
+      - name: static to dylib
+        run: |
+          cd jniLibs
+          clang -fpic -shared -Wl,-all_load libglass.a -o libglass.dylib
+          clang -fpic -shared -Wl,-all_load libjavafx_font.a -o libjavafx_font.dylib
+          clang -fpic -shared -Wl,-all_load libjavafx_iio.a -o libjavafx_iio.dylib
+          clang -fpic -shared -Wl,-all_load libjavafx_ios_webnode.a -o libjavafx_ios_webnode.dylib
+          clang -fpic -shared -Wl,-all_load libjfxmedia.a -o libjfxmedia.dylib
+          clang -fpic -shared -Wl,-all_load libprism_common.a -o libprism_common.dylib
+          clang -fpic -shared -Wl,-all_load libprism_es2.a -o libprism_es2.dylib
+      
+      - name: Upload IPA
+        uses: actions/upload-artifact@v2
+        with:
+          name: dylib
+          path: jniLibs
+
       - name: Native build
         run: |
           cd Natives
