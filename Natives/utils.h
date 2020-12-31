@@ -27,12 +27,5 @@ void free_char_array(JNIEnv *env, jobjectArray jstringArray, const char **charAr
 
 void closeGLFWWindow();
 
-// JavaFX GLES init
-void *getCurrentContext();
-jboolean makeCurrentContext(void *context);
-jboolean clearCurrentContext(void *context);
-jboolean flushBuffer(void *context);
-void setSwapInterval(void *context, int interval);
-
 #endif // _BINARY_UTILS_H_
 

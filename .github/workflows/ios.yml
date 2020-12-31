@@ -23,12 +23,6 @@ jobs:
 #          clang -fpic -shared -Wl,-all_load libjfxmedia.a -o libjfxmedia.dylib
 #          clang -fpic -shared -Wl,-all_load libprism_common.a -o libprism_common.dylib
 #          clang -fpic -shared -Wl,-all_load libprism_es2.a -o libprism_es2.dylib
-      
-      - name: Upload IPA
-        uses: actions/upload-artifact@v2
-        with:
-          name: dylib
-          path: jniLibs
 
       - name: Native build
         run: |

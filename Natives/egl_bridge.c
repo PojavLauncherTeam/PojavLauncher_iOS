@@ -70,6 +70,9 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglSwapBuffers(JNIEnv 
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglSwapInterval(JNIEnv *env, jclass clazz, jint interval) {
 	// return eglSwapInterval(potatoBridge.eglDisplay, interval);
 	// setSwapInterval(CURR_GL_CONTEXT. interval);
+	
+	printf("FIXME: swap interval at runtime is not supported on iOS!");
+	
 	return JNI_FALSE;
 }
 
