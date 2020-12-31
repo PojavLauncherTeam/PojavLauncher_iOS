@@ -18,7 +18,7 @@ jobs:
           cd jniLibs
           a2dylib () { 
             clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk \
-                  -miphoneos-version-min=11 -arch arm64 \
+                  -miphoneos-version-min=11 -arch arm64 -ObjC \
                   -framework UIKit -framework OpenGLES -framework QuartzCore -framework CoreGraphics -framework CoreText \
                   -framework ImageIO -framework MobileCoreServices -framework AVFoundation -framework CoreMedia -framework MediaPlayer -framework AudioToolbox \
                   -fpic -shared -Wl,-all_load lib$1.a -o lib$1.dylib
