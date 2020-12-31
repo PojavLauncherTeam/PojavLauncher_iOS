@@ -42,7 +42,7 @@
 #endif
 
 void *createContext() {
-    return (void *) [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+    return (__bridge void *) [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
 }
 
 void *getCurrentContext() {
@@ -52,7 +52,7 @@ void *getCurrentContext() {
 
 jboolean makeCurrentContext(void *context) {
     // fprintf(stderr, "IOSWindowSystemInterface : makeCurrentContext %x\n", context);
-    if ([EAGLContext setCurrentContext:(EAGLContext *)jlong_to_ptr( context)] == YES) {
+    if ([EAGLContext setCurrentContext:jlong_to_ptr((__bridge EAGLContext *) context)] == YES) {
         return JNI_TRUE;
     }
 
