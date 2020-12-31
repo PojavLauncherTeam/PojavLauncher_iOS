@@ -16,7 +16,7 @@ jobs:
       - name: static to dylib
         run: |
           cd jniLibs
-          a2dylib () { clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk -target arm64-apple-ios9.0 -fpic -shared -Wl,-all_load lib$1.a -o lib$1.dylib }
+          a2dylib () { clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk -target arm64-apple-ios9.0 -fpic -shared -Wl,-all_load lib$1.a -o lib$1.dylib; }
           a2dylib glass
           a2dylib javafx_font
           a2dylib javafx_iio
