@@ -34,6 +34,7 @@ typedef jint JLI_Launch_func(int argc, char ** argv, /* main argc, argc */
 );
 
 void append(char* s, char* c) {
+    printf("Appending %s\n", c);
     int len;
     for (len = strlen(s); c[len] != '\0'; len++) {
         s[len] = c[len];
@@ -42,6 +43,7 @@ void append(char* s, char* c) {
 }
 
 int launchJVM() {
+    printf("Beginning JVM launch\n");
     char documentDir[1000], log_path[1000], main_jar[1000], args_path[1000];
     append(documentDir, getenv("HOME"));
     append(documentDir, "/Documents");
@@ -55,13 +57,13 @@ int launchJVM() {
     append(main_jar, getenv("APPDIR"));
     append(main_jar, "/launcher.jar");
 
+    printf("Staring logging STDIO as jrelog:V\n");
     // Redirect stdio to latestlog.txt
     FILE* logFile = fopen(log_path, "w");
     int log_fd = fileno(logFile);
     dup2(log_fd, 1);
     dup2(log_fd, 2);
     close(log_fd);
-    printf("Started logging STDIO as jrelog\n");
     
     int margv = 0;
     char* margc[1000];
