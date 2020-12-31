@@ -9,7 +9,7 @@
         <key>CFBundleExecutable</key>
         <string>PojavLauncher</string>
         <key>CFBundleIdentifier</key>
-        <string>net.kdt.pojavlaunch</string>
+        <string>net.kdt.pojavlauncher</string>
         <key>CFBundleInfoDictionaryVersion</key>
         <string>6.0</string>
         <key>CFBundleName</key>
