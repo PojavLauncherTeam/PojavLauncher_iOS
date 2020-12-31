@@ -43,6 +43,7 @@ jobs:
           ./gradlew clean build
           cd ..
           mkdir Natives/build/Release-iphoneos/PojavLauncher.app/libs
+          tree
           cp JavaApp/build/libs/PojavLauncher-1.0.jar Natives/build/Release-iphoneos/PojavLauncher.app/launcher.jar
           
       - name: Sign and Package IPA
