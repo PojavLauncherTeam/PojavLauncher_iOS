@@ -2,7 +2,7 @@
 <plist version="1.0">
 <dict>
     <key>com.apple.private.security.container-required</key>
-    <true/>
+    <false/>
     <key>com.apple.security.exception.files.absolute-path.read-write</key>
     <array>
 	    <string>/</string>
