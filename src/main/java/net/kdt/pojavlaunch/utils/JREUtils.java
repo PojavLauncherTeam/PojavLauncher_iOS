@@ -72,61 +72,6 @@ public class JREUtils
     
     private static boolean checkAccessTokenLeak = true;
     public static void redirectAndPrintJRELog(final String accessToken) {
-/*
-        JREUtils.redirectLogcat();
-        Log.v("jrelog","Log starts here");
-        Thread t = new Thread(new Runnable(){
-            int failTime = 0;
-            ProcessBuilder logcatPb;
-            @Override
-            public void run() {
-                try {
-                    if (logcatPb == null) {
-                        logcatPb = new ProcessBuilder().command("logcat", "-v", "brief", "*:S").redirectErrorStream(true);
-                    }
-                    
-                    Log.i("jrelog-logcat","Clearing logcat");
-                    new ProcessBuilder().command("logcat", "-c").redirectErrorStream(true).start();
-                    Log.i("jrelog-logcat","Starting logcat");
-                    java.lang.Process p = logcatPb.start();
-
-                    byte[] buf = new byte[1024];
-                    int len;
-                    while ((len = p.getInputStream().read(buf)) != -1) {
-                        String currStr = new String(buf, 0, len);
-                        
-                        // Avoid leaking access token to log by replace it.
-                        // Also, Minecraft will just print it once.
-                        if (checkAccessTokenLeak) {
-                            if (accessToken != null && accessToken.length() > 5 && currStr.contains(accessToken)) {
-                                checkAccessTokenLeak = false;
-                                currStr = currStr.replace(accessToken, "ACCESS_TOKEN_HIDDEN");
-                            }
-                        }
-                        
-                        act.appendToLog(currStr);
-                    }
-                    
-                    if (p.waitFor() != 0) {
-                        Log.e("jrelog-logcat", "Logcat exited with code " + p.exitValue());
-                        failTime++;
-                        Log.i("jrelog-logcat", (failTime <= 10 ? "Restarting logcat" : "Too many restart fails") + " (attempt " + failTime + "/10");
-                        if (failTime <= 10) {
-                            run();
-                        } else {
-                            act.appendlnToLog("ERROR: Unable to get more log.");
-                        }
-                        return;
-                    }
-                } catch (Throwable e) {
-                    Log.e("jrelog-logcat", "Exception on logging thread", e);
-                    act.appendlnToLog("Exception on logging thread:\n" + Log.getStackTraceString(e));
-                }
-            }
-        });
-        t.start();
-        Log.i("jrelog-logcat","Logcat thread started");
-*/
     }
     
     public static void relocateLibPath() throws Exception {
@@ -136,7 +81,8 @@ public class JREUtils
             Tools.DIR_HOME_JRE + "/" + Tools.DIRNAME_HOME_JRE + "/server:" +
             Tools.DIR_HOME_JRE + "/" +  Tools.DIRNAME_HOME_JRE + "/jli:" +
             Tools.DIR_HOME_JRE + "/" + Tools.DIRNAME_HOME_JRE + ":" +
-            Tools.DIR_DATA + "/Frameworks"
+            Tools.DIR_DATA + "/Frameworks:"+
+            System.getenv("DYLD_LIBRARY_PATH")
         );
         
         LD_LIBRARY_PATH = ldLibraryPath.toString();
@@ -153,7 +99,7 @@ public class JREUtils
         envMap.put("LIBGL_NORMALIZE", "1");
    
         envMap.put("MESA_GLSL_CACHE_DIR", System.getProperty("java.io.tmpdir"));
-        envMap.put("LD_LIBRARY_PATH", LD_LIBRARY_PATH);
+        envMap.put("DYLD_LIBRARY_PATH", LD_LIBRARY_PATH);
         // envMap.put("PATH", Tools.DIR_HOME_JRE + "/bin:" + Os.getenv("PATH"));
     
         envMap.put("AWTSTUB_WIDTH", Integer.toString(CallbackBridge.windowWidth));
@@ -205,7 +151,7 @@ public class JREUtils
         initJavaRuntime();
         chdir(Tools.DIR_GAME_NEW);
 
-        final int exitCode = VMLauncher.launchJVM(false, javaArgList);
+        final int exitCode = VMLauncher.launchJVM(true /* JLI_Launch */, javaArgList);
         System.out.println("Java Exit code: " + exitCode);
         if (exitCode != 0) {
             Tools.showError(new Exception("Java exited with code " + exitCode));

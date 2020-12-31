@@ -14,13 +14,14 @@ long shared_awt_surface;
 
 char** convert_to_char_array(JNIEnv *env, jobjectArray jstringArray) {
 	int num_rows = (*env)->GetArrayLength(env, jstringArray);
-	char **cArray = (char **) malloc(num_rows * sizeof(char*));
+	char **cArray = (char **) malloc((num_rows + 1) * sizeof(char*));
 	jstring row;
 	
 	for (int i = 0; i < num_rows; i++) {
 		row = (jstring) (*env)->GetObjectArrayElement(env, jstringArray, i);
 		cArray[i] = (char*)(*env)->GetStringUTFChars(env, row, 0);
     }
+    cArray[num_rows] = NULL;
 	
     return cArray;
 }
