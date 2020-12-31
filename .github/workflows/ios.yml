@@ -35,6 +35,12 @@ jobs:
           cd ../..
           cp Natives/build/Release-iphoneos/libpojavexec.dylib PojavLauncher.app/Frameworks/
 
+      - name: Upload built natives
+        uses: actions/upload-artifact@v2
+        with:
+          name: app
+          path: Natives/build/Release-iphoneos
+
       - name: Java Build
         run: |
           cd JavaApp

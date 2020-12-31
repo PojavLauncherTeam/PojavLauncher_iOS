@@ -29,6 +29,16 @@ void terminateEgl() {
     // clearCurrentContext(CURR_GL_CONTEXT);
 }
 
+JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_setenv(JNIEnv *env, jclass clazz, jstring name, jstring value, jboolean overwrite) {
+    char const *name_c = (*env)->GetStringUTFChars(env, name, NULL);
+    char const *value_c = (*env)->GetStringUTFChars(env, value, NULL);
+
+    setenv(name_c, value_c, overwrite);
+
+    (*env)->ReleaseStringUTFChars(env, name, name_c);
+    (*env)->ReleaseStringUTFChars(env, value, value_c);
+}
+
 JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_saveGLContext(JNIEnv* env, jclass clazz) {
     CURR_GL_CONTEXT = createContext();
     // getCurrentContext();

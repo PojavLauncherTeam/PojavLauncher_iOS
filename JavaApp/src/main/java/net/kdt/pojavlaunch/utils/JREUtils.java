@@ -7,7 +7,7 @@ import com.oracle.dalvik.*;
 import java.io.*;
 import java.util.*;
 
-import libcore.io.*;
+// import libcore.io.*;
 
 import net.kdt.pojavlaunch.*;
 import net.kdt.pojavlaunch.prefs.*;
@@ -22,7 +22,7 @@ public class JREUtils
     private static String nativeLibDir;
 
     public static String findInLdLibPath(String libName) {
-        for (String libPath : Libcore.os.getenv("LD_LIBRARY_PATH").split(":")) {
+        for (String libPath : System.getenv("LD_LIBRARY_PATH").split(":")) {
             File f = new File(libPath, libName);
             if (f.exists() && f.isFile()) {
                 return f.getAbsolutePath();
@@ -32,6 +32,7 @@ public class JREUtils
     }
     
     public static void initJavaRuntime() {
+/*
         dlopen(findInLdLibPath("libjli.dylib"));
         dlopen(findInLdLibPath("libjvm.dylib"));
         dlopen(findInLdLibPath("libverify.dylib"));
@@ -43,6 +44,7 @@ public class JREUtils
         dlopen(findInLdLibPath("libawt_headless.dylib"));
         dlopen(findInLdLibPath("libfreetype.dylib"));
         dlopen(findInLdLibPath("libfontmanager.dylib"));
+*/
 
         dlopen(nativeLibDir + "/libopenal.dylib");
 /*
@@ -118,7 +120,7 @@ public class JREUtils
         }
         
         for (Map.Entry<String, String> env : envMap.entrySet()) {
-            Libcore.os.setenv(env.getKey(), env.getValue(), true);
+            setenv(env.getKey(), env.getValue(), true);
         }
         
         setLdLibraryPath(LD_LIBRARY_PATH);
@@ -181,6 +183,7 @@ public class JREUtils
     public static native void redirectLogcat(String path);
     public static native void setLdLibraryPath(String ldLibraryPath);
     public static native void saveGLContext();
+    public static native void setenv(String key, String value, boolean overwrite);
     
     // Obtain AWT screen pixels to render on Android SurfaceView
     public static native int[] renderAWTScreenFrame(/* Object canvas, int width, int height */);
