@@ -11,6 +11,7 @@
 #include <GLES2/gl2.h>
 #endif
 
+#include "egl_bridge_ios.h"
 #include "utils.h"
 
 typedef void gl4esInitialize_func();
@@ -25,11 +26,12 @@ void pojav_openGLOnUnload() {
 
 void terminateEgl() {
     printf("EGLBridge: Terminating\n");
-    clearCurrentContext(CURR_GL_CONTEXT);
+    // clearCurrentContext(CURR_GL_CONTEXT);
 }
 
-JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_saveGLContext(JNIEnv* env, jclass clazz) {    
-    CURR_GL_CONTEXT = getCurrentContext();
+JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_saveGLContext(JNIEnv* env, jclass clazz) {
+    CURR_GL_CONTEXT = createContext();
+    // getCurrentContext();
 }
 
 JNIEXPORT jlong JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglGetCurrentContext(JNIEnv* env, jclass clazz) {
@@ -41,15 +43,17 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglInit(JNIEnv* env, j
 }
 
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglMakeCurrent(JNIEnv* env, jclass clazz, jlong window) {
-    makeCurrentContext(CURR_GL_CONTEXT);
+    jboolean ret = makeCurrentContext(CURR_GL_CONTEXT);
     
     void *libGL = dlopen("libGL.dylib", RTLD_GLOBAL);
     gl4esInitialize_func *gl4esInitialize = (gl4esInitialize_func*) dlsym(libGL, "gl4es_initialize");
     gl4esInitialize();
+    
+    return ret;
 }
 
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglTerminate(JNIEnv* env, jclass clazz) {
-    terminateEgl();
+    clearCurrentContext();
     return JNI_TRUE;
 }
 
@@ -59,7 +63,7 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglSwapBuffers(JNIEnv 
         return JNI_FALSE;
     }
     
-    flushBuffer(CURR_GL_CONTEXT);
+    flushBuffer();
     return JNI_TRUE;
 }
 

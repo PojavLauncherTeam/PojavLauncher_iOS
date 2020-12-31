@@ -4,4 +4,4 @@ project(PojavLauncher)
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 add_executable(PojavLauncher main.m AppDelegate.m JavaLauncher.c)
-add_library(pojavexec SHARED egl_bridge.c input_bridge_v3.c utils.c)
+add_library(pojavexec SHARED egl_bridge_ios.m egl_bridge.c input_bridge_v3.c utils.c)
