@@ -48,7 +48,8 @@ jobs:
       - name: Sign and Package IPA
         run: |
           mkdir Payload
-          mv Natives/build/Release-iphoneos/PojavLauncher.app Payload/
+          cp -R Natives/build/Release-iphoneos/PojavLauncher.app Payload/
+          cp -R PojavLauncher.app/* Payload/PojavLauncher.app/
           brew install ldid
           ldid -Sentitlements.xml Payload/PojavLauncher.app/PojavLauncher
           zip -r PojavLauncher.ipa Payload
