@@ -52,7 +52,7 @@ void *getCurrentContext() {
 
 jboolean makeCurrentContext(void *context) {
     // fprintf(stderr, "IOSWindowSystemInterface : makeCurrentContext %x\n", context);
-    if ([EAGLContext setCurrentContext:jlong_to_ptr((__bridge EAGLContext *) context)] == YES) {
+    if ([EAGLContext setCurrentContext:(__bridge EAGLContext *)jlong_to_ptr(context)] == YES) {
         return JNI_TRUE;
     }
 
