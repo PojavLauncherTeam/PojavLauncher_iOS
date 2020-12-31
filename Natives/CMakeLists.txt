@@ -7,7 +7,8 @@ set(CMAKE_C_FLAGS "-x objective-c")
 set(RESOURCE_FILES
   resources/*)
   
-set_target_properties(ExecutableTarget PROPERTIES
+# ExecutableTarget PROPERTIES
+set_target_properties(
   MACOSX_BUNDLE TRUE
   MACOSX_FRAMEWORK_IDENTIFIER org.cmake.ExecutableTarget
   MACOSX_BUNDLE_INFO_PLIST "Info.plist"
