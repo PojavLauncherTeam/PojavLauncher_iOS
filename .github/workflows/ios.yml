@@ -49,7 +49,7 @@ jobs:
         run: |
           mkdir Payload
           cp -R Natives/build/Release-iphoneos/PojavLauncher.app Payload/
-          cp -R PojavLauncher.app/* Payload/PojavLauncher.app/
+          # cp -R PojavLauncher.app/* Payload/PojavLauncher.app/
           brew install ldid
           ldid -Sentitlements.xml Payload/PojavLauncher.app/PojavLauncher
           zip -r PojavLauncher.ipa Payload
