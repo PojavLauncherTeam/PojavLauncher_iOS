@@ -81,8 +81,9 @@ int launchJVM() {
         fclose(argsFile);
     }
     
-    margc[margv++] = "-jar";
+    margc[margv++] = "-cp";
     margc[margv++] = main_jar;
+    margc[margv++] = "net.kdt.pojavlaunch.PLaunchApp";
 
     // Load java
     void* libjli = dlopen("/usr/lib/jvm/java-16-openjdk/lib/libjli.dylib", RTLD_LAZY | RTLD_GLOBAL);

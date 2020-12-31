@@ -11,6 +11,7 @@ import org.robovm.apple.uikit.*;
 import org.robovm.pods.dialog.*;
 */
 import net.kdt.pojavlaunch.prefs.*;
+import net.kdt.pojavlaunch.utils.*;
 import net.kdt.pojavlaunch.value.*;
 
 public class PLaunchApp /* extends UIApplicationDelegateAdapter */ {

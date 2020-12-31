@@ -33,13 +33,8 @@ jobs:
           cmake .. -G Xcode -DCMAKE_TOOLCHAIN_FILE=ios.toolchain.cmake -DPLATFORM=OS64 -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED="NO" -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY=""
           cmake --build . --config Release --target pojavexec PojavLauncher
           cd ../..
-          cp Natives/build/Release-iphoneos/libpojavexec.dylib PojavLauncher.app/Frameworks/
-
-      - name: Upload built natives
-        uses: actions/upload-artifact@v2
-        with:
-          name: app
-          path: Natives/build/Release-iphoneos
+          mkdir -p Natives/build/Release-iphoneos/PojavLauncher.app/Frameworks
+          cp Natives/build/Release-iphoneos/libpojavexec.dylib Natives/build/Release-iphoneos/PojavLauncher.app/Frameworks/
 
       - name: Java Build
         run: |
@@ -47,13 +42,14 @@ jobs:
           chmod +x gradlew
           ./gradlew clean build
           cd ..
-          mkdir PojavLauncher.app/libs
-          cp JavaApp/build/libs/*.jar PojavLauncher.app/libs
+          mkdir Natives/build/Release-iphoneos/PojavLauncher.app/libs
+          cp JavaApp/build/libs/pojavlauncher-1.0.jar Natives/build/Release-iphoneos/PojavLauncher.app/launcher.jar
           
-      - name: Package IPA
+      - name: Sign and Package IPA
         run: |
           mkdir Payload
-          mv PojavLauncher.app Payload/
+          mv Natives/build/Release-iphoneos/PojavLauncher.app Payload/
+          codesign -fs "PojavLauncher" --entitlements entitlements.xml Payload/PojavLauncher.app/PojavLauncher
           zip -r PojavLauncher.ipa Payload
           
       - name: Upload IPA
