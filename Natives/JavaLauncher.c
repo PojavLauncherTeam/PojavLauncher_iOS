@@ -52,7 +52,7 @@ int launchJVM() {
     append(args_path, documentDir);
     append(args_path, "/overrideargs.txt");
 
-    append(main_jar, getenv("APPDIR");
+    append(main_jar, getenv("APPDIR"));
     append(main_jar, "/launcher.jar");
 
     // Redirect stdio to latestlog.txt
@@ -108,8 +108,8 @@ int launchJVM() {
                    0, NULL, // sizeof(const_appclasspath) / sizeof(char *), const_appclasspath,
                    FULL_VERSION,
                    DOT_VERSION,
-                   *margv, // (const_progname != NULL) ? const_progname : *margv,
-                   *margv, // (const_launcher != NULL) ? const_launcher : *margv,
+                   (const_progname != NULL) ? const_progname : *margv,
+                   (const_launcher != NULL) ? const_launcher : *margv,
                    (const_jargs != NULL) ? JNI_TRUE : JNI_FALSE,
                    const_cpwildcard, const_javaw, const_ergo_class);
 }
