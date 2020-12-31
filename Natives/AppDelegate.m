@@ -3,7 +3,7 @@
 //
 
 #import "AppDelegate.h"
-#import "CounterService.h"
+#import "JavaLauncher.h"
 
 @interface AppDelegate ()
 
@@ -14,8 +14,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   
-  // Initialize the CounterService
-  [CounterService init];
+  launchJVM();
 
   return YES;
 }

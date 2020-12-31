@@ -1,21 +1,6 @@
-buildscript {
-    ext {
-        roboVMVersion = "2.3.11"
-    }
-
-    repositories {
-        mavenLocal()
-        mavenCentral()
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-    }
-    dependencies {
-        classpath "com.mobidevelop.robovm:robovm-gradle-plugin:${roboVMVersion}"
-    }
-}
-
 // Apply the plugin
 apply plugin: 'java'
-apply plugin: 'robovm'
+// apply plugin: 'robovm'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
 // apply plugin: 'org.javafxports.jfxmobile'
@@ -28,33 +13,12 @@ repositories {
 }
 
 dependencies {
-    implementation "com.mobidevelop.robovm:robovm-rt:${roboVMVersion}"
-    implementation "com.mobidevelop.robovm:robovm-cocoatouch:${roboVMVersion}"
-    
-    implementation "org.robovm:robopods-dialog-ios:1.14.0"
-    
     implementation "com.google.code.gson:gson:2.8.6"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
-
+/*
 ext {
     mainClassName = "net.kdt.pojavlaunch.PLaunchApp"
-}
-
-robovm {
-    iosSignIdentity = ""
-    iosProvisioningProfile = ""
-    iosSkipSigning = true
-}
-
-/*
-jfxmobile {
-    ios {
-        forceLinkClasses = [ 'org.lwjgl.**.*', 
-                             'com.gluonhq.**.*'
-                           ]
-        infoPList = file('src/ios/Default-Info.plist')
-   }
 }
 */

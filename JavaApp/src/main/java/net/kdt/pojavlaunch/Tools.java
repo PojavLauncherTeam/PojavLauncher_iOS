@@ -14,12 +14,12 @@ import net.kdt.pojavlaunch.prefs.*;
 import net.kdt.pojavlaunch.utils.*;
 import net.kdt.pojavlaunch.value.*;
 import org.lwjgl.glfw.*;
-
+/*
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.pods.dialog.*;
 import org.robovm.pods.*;
-
+*/
 public final class Tools
 {
     public static final boolean ENABLE_DEV_FEATURES = true; // BuildConfig.DEBUG;
@@ -384,7 +384,7 @@ public final class Tools
         pw.flush();
         
         System.err.println(sw.toString());
-        
+/*
         Platform.getPlatform().runOnUIThread(() -> {
             WindowAlertController alertController = new WindowAlertController(title, sw.toString(), UIAlertControllerStyle.Alert);
             alertController.addAction(new UIAlertAction("OK",
@@ -397,6 +397,7 @@ public final class Tools
             );
             alertController.show();
         });
+*/
     }
 /*
     public static void dialogOnUiThread(final Activity ctx, final CharSequence title, final CharSequence message) {

@@ -5,15 +5,16 @@ import java.io.*;
 import javafx.application.Application;
 
 import org.lwjgl.glfw.CallbackBridge;
-
+/*
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.pods.dialog.*;
-
+*/
 import net.kdt.pojavlaunch.prefs.*;
+import net.kdt.pojavlaunch.value.*;
 
-public class PLaunchApp extends UIApplicationDelegateAdapter {
-
+public class PLaunchApp /* extends UIApplicationDelegateAdapter */ {
+/*
     @Override
     public boolean didFinishLaunching(UIApplication application,
         UIApplicationLaunchOptions launchOptions) {
@@ -39,7 +40,7 @@ public class PLaunchApp extends UIApplicationDelegateAdapter {
 
         return true;
     }
-    
+*/
     public static void main(String[] args) {
 /*
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
@@ -90,10 +91,31 @@ public class PLaunchApp extends UIApplicationDelegateAdapter {
         System.setProperty("prism.mintexturesize", "16");
         System.setProperty("prism.static.libraries", "true");
         System.setProperty("prism.useNativeIIO", "false");
-
-        System.out.println("Starting UI...");
-        NSAutoreleasePool pool = new NSAutoreleasePool();
-        UIApplication.main(args, null, PLaunchApp.class);
-        pool.drain();
+        
+        CallbackBridge.windowWidth = (int) 1280; // bounds.getWidth();
+        CallbackBridge.windowHeight = (int) 720; // bounds.getHeight();
+        
+        JREUtils.saveGLContext();
+    
+        // Start Minecraft there!
+        File file = new File(Tools.DIR_GAME_NEW);
+        file.mkdirs();
+        
+        String mcver = "1.13";
+        try {
+            mcver = Tools.read(Tools.DIR_GAME_HOME + "/config_ver.txt");
+        } catch (IOException e) {
+            System.out.println("config_ver.txt not found, defaulting to Minecraft 1.13");
+        }
+        
+        MinecraftAccount acc = new MinecraftAccount();
+        acc.selectedVersion = mcver;
+        JMinecraftVersionList.Version version = Tools.getVersionInfo(mcver);
+        
+        try {
+            Tools.launchMinecraft(acc, version);
+        } catch (Throwable th) {
+            Tools.showError(th);
+        }
     }
 }

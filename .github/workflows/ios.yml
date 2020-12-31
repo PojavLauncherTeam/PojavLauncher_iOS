@@ -15,23 +15,33 @@ jobs:
       
       - name: Native build
         run: |
-          cd src/main/jni
+          cd Natives
           mkdir build
           cd build
           wget https://github.com/leetal/ios-cmake/raw/master/ios.toolchain.cmake
-          cmake .. -G Xcode -DCMAKE_TOOLCHAIN_FILE=ios.toolchain.cmake -DPLATFORM=OS64
+          cmake .. -G Xcode -DCMAKE_TOOLCHAIN_FILE=ios.toolchain.cmake -DPLATFORM=OS64 -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED="NO" -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY="
           cmake --build . --config Release --target pojavexec
           cd ../..
-          cp jni/build/Release-iphoneos/libpojavexec.a jniLibs/
+          cp Natives/build/Release-iphoneos/libpojavexec.dylib PojavLauncher.app/Frameworks/
 
-      - name: RoboVM Build
+      - name: Java Build
         run: |
+          cd JavaApp
           chmod +x gradlew
-          ./gradlew -Probovm.archs=arm64 clean createIPA
+          ./gradlew clean build
+          cd ..
+          mkdir PojavLauncher.app/libs
+          cp JavaApp/build/libs/*.jar PojavLauncher.app/libs
+          
+      - name: Package IPA
+        run: |
+          mkdir Payload
+          mv PojavLauncher.app Payload/
+          zip -r PojavLauncher.ipa Payload
           
       - name: Upload IPA
         uses: actions/upload-artifact@v2
         with:
           name: PojavLauncher
-          path: build/robovm/PojavLauncher.ipa
+          path: PojavLauncher.ipa
 
