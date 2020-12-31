@@ -16,14 +16,15 @@ jobs:
       - name: static to dylib
         run: |
           cd jniLibs
-          clang -target arm64-apple-ios9.0 -fpic -shared -Wl,-all_load libglass.a -o libglass.dylib
-          clang -target arm64-apple-ios9.0 -fpic -shared -Wl,-all_load libjavafx_font.a -o libjavafx_font.dylib
-          clang -target arm64-apple-ios9.0 -fpic -shared -Wl,-all_load libjavafx_iio.a -o libjavafx_iio.dylib
-          clang -target arm64-apple-ios9.0 -fpic -shared -Wl,-all_load libjavafx_ios_webnode.a -o libjavafx_ios_webnode.dylib
-          clang -target arm64-apple-ios9.0 -fpic -shared -Wl,-all_load libjfxmedia.a -o libjfxmedia.dylib
-          clang -target arm64-apple-ios9.0 -fpic -shared -Wl,-all_load libprism_common.a -o libprism_common.dylib
-          clang -target arm64-apple-ios9.0 -fpic -shared -Wl,-all_load libprism_es2.a -o libprism_es2.dylib
-      
+          a2dylib { clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk -target arm64-apple-ios9.0 -fpic -shared -Wl,-all_load lib$1.a -o lib$1.dylib }
+          a2dylib glass
+          a2dylib javafx_font
+          a2dylib javafx_iio
+          a2dylib javafx_ios_webnode
+          a2dylib jfxmedia
+          a2dylib prism_common
+          a2dylib prism_es2
+          
       - name: Upload IPA
         uses: actions/upload-artifact@v2
         with:
