@@ -6,9 +6,9 @@
 #import "JavaLauncher.h"
 
 #import <Foundation/Foundation.h>
-
-#import "utils.h"
 #import <math.h>
+
+#include "utils.h"
 
 @interface AppDelegate ()
 

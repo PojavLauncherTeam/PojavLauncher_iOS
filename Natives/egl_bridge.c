@@ -25,7 +25,7 @@ void pojav_openGLOnUnload() {
 }
 
 void terminateEgl() {
-    printf("EGLBridge: Terminating\n");
+    debug("ES2Bridge: Terminating\n");
     // clearCurrentContext(CURR_GL_CONTEXT);
 }
 
@@ -53,6 +53,7 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglInit(JNIEnv* env, j
 }
 
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglMakeCurrent(JNIEnv* env, jclass clazz, jlong window) {
+    debug("ES2Bridge: Initializing\n");
     jboolean ret = makeCurrentContext(CURR_GL_CONTEXT);
     
     void *libGL = dlopen("libGL.dylib", RTLD_GLOBAL);
@@ -81,7 +82,7 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglSwapInterval(JNIEnv
 	// return eglSwapInterval(potatoBridge.eglDisplay, interval);
 	// setSwapInterval(CURR_GL_CONTEXT. interval);
 	
-	printf("FIXME: swap interval at runtime is not supported on iOS!");
+	debug("FIXME: swap interval at runtime is not supported on iOS!");
 	
 	return JNI_FALSE;
 }

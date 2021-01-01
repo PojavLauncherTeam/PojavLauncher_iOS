@@ -47,32 +47,14 @@ jmethodID inputBridgeMethod_ANDROID, inputBridgeMethod_JRE;
 jboolean isGrabbing;
 
 // JNI_OnLoad
-jint JNI_OnLoad_pojavexec(JavaVM* vm, void* reserved) {
-    printf("libpojavexec loaded from vm=%p\n", vm);
-
-    if (dalvikJavaVMPtr == NULL) {
-        //Save dalvik global JavaVM pointer
-        dalvikJavaVMPtr = vm;
-        (*vm)->GetEnv(vm, (void**) &dalvikJNIEnvPtr_ANDROID, JNI_VERSION_1_4);
-        
-        isUseStackQueueCall = JNI_FALSE;
-    } else if (dalvikJavaVMPtr != vm) {
-        runtimeJavaVMPtr = vm;
-        (*vm)->GetEnv(vm, (void**) &runtimeJNIEnvPtr_JRE, JNI_VERSION_1_4);
-    }
+jint JNI_OnLoad(JavaVM* vm, void* reserved) {
+    debug("libpojavexec loaded from vm=%p\n", vm);
+    runtimeJavaVMPtr = vm;
+    (*vm)->GetEnv(vm, (void**) &runtimeJNIEnvPtr_JRE, JNI_VERSION_1_4);
     
     isGrabbing = JNI_FALSE;
     
-#ifdef JNI_VERSION_1_8
-    //min. returned JNI_VERSION required by JDK8 for builtin libraries
-    JNIEnv *env;
-    if ((*vm)->GetEnv(vm, (void **)&env, JNI_VERSION_1_8) != JNI_OK) {
-        return JNI_VERSION_1_4;
-    }
-    return JNI_VERSION_1_8;
-#else
     return JNI_VERSION_1_4;
-#endif
 }
 
 // Should be?
@@ -85,8 +67,7 @@ void JNI_OnUnload(JavaVM* vm, void* reserved) {
     DetachCurrentThread(vm);
 */
 
-    dalvikJNIEnvPtr_JRE = NULL;
-    runtimeJNIEnvPtr_ANDROID = NULL;
+    runtimeJNIEnvPtr_JRE = NULL;
 }
 
 #define ADD_CALLBACK_WWIN(NAME) \
@@ -129,7 +110,7 @@ jboolean attachThread(bool isAndroid, JNIEnv** secondJNIEnvPtr) {
 
 void getJavaInputBridge(jclass* clazz, jmethodID* method) {
 #ifdef DEBUG
-    LOGD("Debug: Initializing input bridge, method.isNull=%d, jnienv.isNull=%d\n", *method == NULL, runtimeJNIEnvPtr_ANDROID == NULL);
+    debug("Debug: Initializing input bridge, method.isNull=%d, jnienv.isNull=%d\n", *method == NULL, runtimeJNIEnvPtr_ANDROID == NULL);
 #endif
     if (*method == NULL && runtimeJNIEnvPtr_ANDROID != NULL) {
         *clazz = (*runtimeJNIEnvPtr_ANDROID)->FindClass(runtimeJNIEnvPtr_ANDROID, "org/lwjgl/glfw/CallbackBridge");
@@ -141,10 +122,10 @@ void getJavaInputBridge(jclass* clazz, jmethodID* method) {
 
 void sendData(int type, int i1, int i2, int i3, int i4) {
 #ifdef DEBUG
-    LOGD("Debug: Send data, jnienv.isNull=%d\n", runtimeJNIEnvPtr_ANDROID == NULL);
+    debug("Debug: Send data, jnienv.isNull=%d\n", runtimeJNIEnvPtr_ANDROID == NULL);
 #endif
     if (runtimeJNIEnvPtr_ANDROID == NULL) {
-        LOGE("BUG: Input is ready but thread is not attached yet.");
+        debug("BUG: Input is ready but thread is not attached yet.");
         return;
     }
     (*runtimeJNIEnvPtr_ANDROID)->CallStaticVoidMethod(
@@ -173,8 +154,16 @@ void closeGLFWWindow() {
 }
 
 void callback_AppDelegate_didFinishLaunching(int width, int height) {
+    debug("Received AppDelegate callback, width=%d, height=%d\n", width, height);
+
+    assert(runtimeJNIEnvPtr_JRE != NULL)
+    
     jclass clazz = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "org/lwjgl/glfw/CallbackBridge");
+    assert(clazz != NULL)
+    
     jmethodID method = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, clazz, "callback_AppDelegate_didFinishLaunching", "(II)V");
+    assert(method != NULL)
+    
     (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
         runtimeJNIEnvPtr_JRE,
         clazz, method,
@@ -183,9 +172,6 @@ void callback_AppDelegate_didFinishLaunching(int width, int height) {
 }
 
 JNIEXPORT jint JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeLaunchUI(JNIEnv* env, jclass clazz, jobjectArray args) {
-    // Save the JNIEnv pointer for AppDelegate callback 
-    runtimeJNIEnvPtr_JRE = env;
-    
 	int argc = (*env)->GetArrayLength(env, args);
     char **argv = convert_to_char_array(env, args);
     return launchUI(argc, argv);

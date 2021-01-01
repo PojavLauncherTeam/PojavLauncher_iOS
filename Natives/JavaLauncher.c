@@ -37,15 +37,6 @@ typedef jint JLI_Launch_func(int argc, char ** argv, /* main argc, argc */
         jint ergo                               /* ergonomics class policy */
 );
 
-void append(char* s, char* c) {
-    debug("Appending %s\n", c);
-    int len;
-    for (len = strlen(s); c[len] != '\0'; len++) {
-        s[len] = c[len];
-    }
-    s[len+1] = '\0';
-}
-
 int launchJVM(int argc, char *argv[]) {
     debug("Beginning JVM launch\n");
     
