@@ -4,6 +4,7 @@
 
 #import "AppDelegate.h"
 #import "JavaLauncher.h"
+#import <Foundation/Foundation.h>
 
 @interface AppDelegate ()
 

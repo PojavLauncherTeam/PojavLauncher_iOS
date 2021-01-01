@@ -4,12 +4,12 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <string.h>
-#include <bool.h>
 
 #include <sys/stat.h>
 #include <sys/types.h>
 
 #include "jni.h"
+#include "log.h"
 #include "JavaLauncher.h"
 
 // PojavLancher: fixme: are these wrong?
@@ -38,7 +38,7 @@ typedef jint JLI_Launch_func(int argc, char ** argv, /* main argc, argc */
 );
 
 void append(char* s, char* c) {
-    printf("Appending %s\n", c);
+    debug("Appending %s\n", c);
     int len;
     for (len = strlen(s); c[len] != '\0'; len++) {
         s[len] = c[len];
@@ -47,13 +47,13 @@ void append(char* s, char* c) {
 }
 
 int launchJVM(int argc, char *argv[]) {
-    printf("Beginning JVM launch\n");
+    debug("Beginning JVM launch\n");
     
     char *args_path = "/var/mobile/Documents/minecraft/overrideargs.txt";
     char *log_path = "/var/mobile/Documents/minecraft/latestlog.txt";
     char *main_jar = "/Applications/PojavLauncher.app/launcher.jar";
     
-    printf("Staring logging STDIO as jrelog:V\n");
+    debug("Staring logging STDIO as jrelog:V\n");
     // Redirect stdio to latestlog.txt
     FILE* logFile = fopen(log_path, "w");
     int log_fd = fileno(logFile);
@@ -66,7 +66,7 @@ int launchJVM(int argc, char *argv[]) {
     // Check if JVM restarts
     if (!started) {
         margv[margc++] = "/usr/lib/jvm/java-16-openjdk/bin/java";
-        printf("Reading custom JVM args (overrideargs.txt)");
+        debug("Reading custom JVM args (overrideargs.txt)");
         char jvmargs[10000];
         FILE* argsFile = fopen(args_path, "r");
         if (argsFile) {
@@ -92,23 +92,23 @@ int launchJVM(int argc, char *argv[]) {
     void* libjli = dlopen("/usr/lib/jvm/java-16-openjdk/lib/libjli.dylib", RTLD_LAZY | RTLD_GLOBAL);
 
     if (NULL == libjli) {
-        printf("JLI lib = NULL: %s\n", dlerror());
+        debug("JLI lib = NULL: %s\n", dlerror());
         return -1;
     }
-    printf("Found JLI lib\n");
+    debug("Found JLI lib\n");
 
     JLI_Launch_func *pJLI_Launch =
           (JLI_Launch_func *)dlsym(libjli, "JLI_Launch");
           
     if (NULL == pJLI_Launch) {
-        printf("JLI_Launch = NULL\n");
+        debug("JLI_Launch = NULL\n");
         return -2;
     }
 
-    printf("Calling JLI_Launch\n");
+    debug("Calling JLI_Launch\n");
     
     int targc = started ? argc : margc;
-    char *targv[] targv = started ? argv : margv;
+    char **targv = started ? argv : margv;
     
     if (!started) {
         started = true;
