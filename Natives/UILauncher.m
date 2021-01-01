@@ -7,8 +7,8 @@
 
 #include "JavaLauncher.h"
 
-int launchUI() {
+int launchUI(int argc, char *argv[]) {
   @autoreleasepool {
-      return UIApplicationMain(first_argc, first_argv, nil, NSStringFromClass([AppDelegate class]));
+      return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
   }
 }

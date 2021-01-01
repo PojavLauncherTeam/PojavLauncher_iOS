@@ -14,6 +14,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   
+  NSLog(@"Hello from app launch!");
   // TODO callback
 
   return YES;

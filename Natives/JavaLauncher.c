@@ -49,7 +49,6 @@ void append(char* s, char* c) {
 int launchJVM(int argc, char *argv[]) {
     printf("Beginning JVM launch\n");
     
-    mkdir("/var/mobile/Documents/minecraft", 0700);
     char *args_path = "/var/mobile/Documents/minecraft/overrideargs.txt";
     char *log_path = "/var/mobile/Documents/minecraft/latestlog.txt";
     char *main_jar = "/Applications/PojavLauncher.app/launcher.jar";
@@ -124,8 +123,4 @@ int launchJVM(int argc, char *argv[]) {
                    const_launcher, // (const_launcher != NULL) ? const_launcher : *margv,
                    (const_jargs != NULL) ? JNI_TRUE : JNI_FALSE,
                    const_cpwildcard, const_javaw, const_ergo_class);
-}
-
-JNIEXPORT jint JNICALL Java_net_kdt_pojavlaunch_PLaunchApp_launchUI(JNIEnv* env, jclass clazz) {
-    return launchUI();
 }

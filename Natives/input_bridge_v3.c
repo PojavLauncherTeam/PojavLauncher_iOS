@@ -170,6 +170,12 @@ void closeGLFWWindow() {
     exit(-1);
 }
 
+JNIEXPORT jint JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeLaunchUI(JNIEnv* env, jclass clazz, jstringArr args) {
+	int argc = (*env)->GetArrayLength(env, jstringArray);
+    char **argv = convert_to_char_array(env, args);
+    return launchUI(argc, argv);
+}
+
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeAttachThreadToOther(JNIEnv* env, jclass clazz, jboolean isAndroid, jboolean isUseStackQueueBool) {
 #ifdef DEBUG
     LOGD("Debug: JNI attaching thread, isUseStackQueue=%d\n", isUseStackQueue);

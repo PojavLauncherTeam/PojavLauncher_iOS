@@ -1,8 +1,7 @@
 package net.kdt.pojavlaunch;
 
 import java.io.*;
-
-import javafx.application.Application;
+import java.util.Arrays;
 
 import org.lwjgl.glfw.CallbackBridge;
 /*
@@ -77,8 +76,9 @@ public class PLaunchApp /* extends UIApplicationDelegateAdapter */ {
         }
 */
 
+        System.out.println("Input args: " + Arrays.toString(args));
         System.out.println("We are on java now! Starting UI...");
-        launchUI();
+        org.lwjgl.glfw.CallbackBridge.nativeLaunchUI(args);
 
         LauncherPreferences.loadPreferences();
 
@@ -122,6 +122,4 @@ public class PLaunchApp /* extends UIApplicationDelegateAdapter */ {
             Tools.showError(th);
         }
     }
-    
-    public static native void launchUI();
 }
