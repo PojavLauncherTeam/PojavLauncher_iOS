@@ -55,9 +55,11 @@ public class PLaunchApp {
     }
     
     public static void launchMinecraft() {
+        System.out.println("Saving GLES context");
         JREUtils.saveGLContext();
     
         // Start Minecraft there!
+        System.out.println("Finding a version");
         File file = new File(Tools.DIR_GAME_NEW);
         file.mkdirs();
         
