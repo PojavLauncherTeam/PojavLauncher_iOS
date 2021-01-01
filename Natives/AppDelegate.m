@@ -14,7 +14,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   
-  launchJVM();
+  // launchJVM();
 
   return YES;
 }
