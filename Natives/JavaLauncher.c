@@ -42,7 +42,7 @@ int launchJVM(int argc, char *argv[]) {
     
     char *args_path = "/var/mobile/Documents/minecraft/overrideargs.txt";
     char *log_path = "/var/mobile/Documents/minecraft/latestlog.txt";
-    char *main_jar = "/Applications/PojavLauncher.app/launcher.jar";
+    char *classpath = "/Applications/PojavLauncher.app/libs/launcher.jar:/Applications/PojavLauncher.app/libs/ExagearApacheCommons.jar:/Applications/PojavLauncher.app/libs/gson-2.8.6.jar:/Applications/PojavLauncher.app/libs/jsr305.jar";
     
     debug("Staring logging STDIO as jrelog:V\n");
     // Redirect stdio to latestlog.txt
@@ -74,7 +74,7 @@ int launchJVM(int argc, char *argv[]) {
             fclose(argsFile);
         }
         margv[margc++] = "-cp";
-        margv[margc++] = main_jar;
+        margv[margc++] = classpath;
         margv[margc++] = "net.kdt.pojavlaunch.PLaunchApp";
         
         for (int i = 0; i < argc; i++) {
