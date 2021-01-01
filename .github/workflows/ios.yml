@@ -24,6 +24,10 @@ jobs:
 #          clang -fpic -shared -Wl,-all_load libprism_common.a -o libprism_common.dylib
 #          clang -fpic -shared -Wl,-all_load libprism_es2.a -o libprism_es2.dylib
 
+      - name: Setup Dependencies
+        run: |
+          brew install ldid dpkg fakeroot
+
       - name: Native build
         run: |
           cd Natives
@@ -47,15 +51,15 @@ jobs:
           
       - name: Sign and Package IPA
         run: |
-          mkdir Payload
-          cp -R Natives/build/Release-iphoneos/PojavLauncher.app Payload/
-          brew install ldid
-          ldid -Sentitlements.xml Payload/PojavLauncher.app/PojavLauncher
-          zip -r PojavLauncher.ipa Payload
+          mkdir -p packages/pojavlauncher_iphoneos-arm/{DEBIAN,Applications,var/lib/pojavlauncher}
+          cp -R Natives/build/Release-iphoneos/PojavLauncher.app packages/pojavlauncher_iphoneos-arm/Applications
+          cp control packages/pojavlauncher_iphoneos-arm/DEBIAN
+          ldid -Sentitlements.xml packages/pojavlauncher_iphoneos-arm/Applications/PojavLauncher.app
+          fakeroot dpkg-deb -b packages/pojavlauncher_iphoneos-arm
           
       - name: Upload IPA
         uses: actions/upload-artifact@v2
         with:
-          name: PojavLauncher
-          path: PojavLauncher.ipa
+          name: PojavLauncher deb
+          path: packages/pojavlauncher_iphoneos-arm.deb
 
