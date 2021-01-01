@@ -109,7 +109,7 @@ int launchJVM(int argc, char *argv[]) {
     debug("Calling JLI_Launch\n");
     
     int targc = started ? argc : margc;
-    char *targv[] targv = started ? argv : margv;
+    char **targv = started ? argv : margv;
     
     if (!started) {
         started = true;
