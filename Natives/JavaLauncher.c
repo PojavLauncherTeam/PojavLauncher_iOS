@@ -4,6 +4,7 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <string.h>
+#include <bool.h>
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -45,7 +46,7 @@ void append(char* s, char* c) {
     s[len+1] = '\0';
 }
 
-int launchJVM() {
+int launchJVM(int argc, char *argv[]) {
     printf("Beginning JVM launch\n");
     
     mkdir("/var/mobile/Documents/minecraft", 0700);
@@ -61,28 +62,33 @@ int launchJVM() {
     dup2(log_fd, 2);
     close(log_fd);
     
-    int margv = 0;
-    char* margc[1000];
-    margc[margv++] = "/usr/lib/jvm/java-16-openjdk/bin/java";
-    
-    printf("Reading custom JVM args (overrideargs.txt)");
-    char jvmargs[10000];
-    FILE* argsFile = fopen(args_path, "r");
-    if (argsFile) {
-        fscanf(argsFile, "%s", jvmargs);
-        char *pch;
-        pch = strtok(jvmargs, " ");
-        while (pch != NULL) {
-            margc[margv++] = pch;
-            pch = strtok(NULL, " ");
+    int margc = 0;
+    char* margv[1000];
+    // Check if JVM restarts
+    if (!started) {
+        margv[margc++] = "/usr/lib/jvm/java-16-openjdk/bin/java";
+        printf("Reading custom JVM args (overrideargs.txt)");
+        char jvmargs[10000];
+        FILE* argsFile = fopen(args_path, "r");
+        if (argsFile) {
+            fscanf(argsFile, "%s", jvmargs);
+            char *pch;
+            pch = strtok(jvmargs, " ");
+            while (pch != NULL) {
+                margv[margc++] = pch;
+                pch = strtok(NULL, " ");
+            }
+            fclose(argsFile);
         }
-        fclose(argsFile);
+        margv[margc++] = "-cp";
+        margv[margc++] = main_jar;
+        margv[margc++] = "net.kdt.pojavlaunch.PLaunchApp";
+        
+        for (int i = 0; i < argc; i++) {
+            margv[margc++] = argv[i];
+        }
     }
     
-    margc[margv++] = "-cp";
-    margc[margv++] = main_jar;
-    margc[margv++] = "net.kdt.pojavlaunch.PLaunchApp";
-
     // Load java
     void* libjli = dlopen("/usr/lib/jvm/java-16-openjdk/lib/libjli.dylib", RTLD_LAZY | RTLD_GLOBAL);
 
@@ -101,8 +107,15 @@ int launchJVM() {
     }
 
     printf("Calling JLI_Launch\n");
+    
+    int targc = started ? argc : margc;
+    char *targv[] targv = started ? argv : margv;
+    
+    if (!started) {
+        started = true;
+    }
 
-    return pJLI_Launch(margc, margv,
+    return pJLI_Launch(targc, targv,
                    0, NULL, // sizeof(const_jargs) / sizeof(char *), const_jargs,
                    0, NULL, // sizeof(const_appclasspath) / sizeof(char *), const_appclasspath,
                    FULL_VERSION,
@@ -111,4 +124,8 @@ int launchJVM() {
                    const_launcher, // (const_launcher != NULL) ? const_launcher : *margv,
                    (const_jargs != NULL) ? JNI_TRUE : JNI_FALSE,
                    const_cpwildcard, const_javaw, const_ergo_class);
+}
+
+JNIEXPORT jint JNICALL Java_net_kdt_pojavlaunch_PLaunchApp_launchUI(JNIEnv* env, jclass clazz) {
+    return launchUI();
 }

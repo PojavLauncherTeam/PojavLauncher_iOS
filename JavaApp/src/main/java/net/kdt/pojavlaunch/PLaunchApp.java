@@ -77,6 +77,9 @@ public class PLaunchApp /* extends UIApplicationDelegateAdapter */ {
         }
 */
 
+        System.out.println("We are on java now! Starting UI...");
+        launchUI();
+
         LauncherPreferences.loadPreferences();
 
         System.setProperty("java.library.path", Tools.DIR_DATA + "/Frameworks");
@@ -119,4 +122,6 @@ public class PLaunchApp /* extends UIApplicationDelegateAdapter */ {
             Tools.showError(th);
         }
     }
+    
+    public static native void launchUI();
 }
