@@ -52,9 +52,8 @@ jobs:
           
       - name: Sign and Package IPA
         run: |
-          mkdir -p packages/pojavlauncher_iphoneos-arm/{DEBIAN,Applications,var/lib/pojavlauncher,usr/lib/pojavlauncher}
+          mkdir -p packages/pojavlauncher_iphoneos-arm/{DEBIAN,Applications,var/lib/pojavlauncher}
           cp -R Natives/build/Release-iphoneos/PojavLauncher.app packages/pojavlauncher_iphoneos-arm/Applications
-          mv packages/pojavlauncher_iphoneos-arm/Applications/PojavLauncher.app/Frameworks/*.dylib packages/pojavlauncher_iphoneos-arm/usr/lib/pojavlauncher/
           cp control packages/pojavlauncher_iphoneos-arm/DEBIAN
           ldid -Sentitlements.xml packages/pojavlauncher_iphoneos-arm/Applications/PojavLauncher.app
           fakeroot dpkg-deb -b packages/pojavlauncher_iphoneos-arm
