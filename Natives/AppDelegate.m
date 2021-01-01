@@ -16,7 +16,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   
   NSLog(@"Hello from app launch!");
-  launchJVM();
+  // TODO callback
 
   return YES;
 }
