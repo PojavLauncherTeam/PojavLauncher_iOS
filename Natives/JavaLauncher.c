@@ -59,14 +59,15 @@ int launchJVM(int argc, char *argv[]) {
         margv[margc++] = "/usr/lib/jvm/java-16-openjdk/bin/java";
         margv[margc++] = "-XstartOnFirstThread";
         margv[margc++] = "-Djava.library.path=/Applications/PojavLauncher.app/Frameworks";
-        debug("Reading custom JVM args (overrideargs.txt)");
         char jvmargs[10000];
         FILE* argsFile = fopen(args_path, "r");
-        if (argsFile) {
+        debug("Reading custom JVM args (overrideargs.txt), opened=%d\n", argsFile != NULL);
+        if (argsFile != NULL) {
             fscanf(argsFile, "%s", jvmargs);
             char *pch;
             pch = strtok(jvmargs, " ");
             while (pch != NULL) {
+                debug("Added custom arg: %s\n", pck);
                 margv[margc++] = pch;
                 pch = strtok(NULL, " ");
             }

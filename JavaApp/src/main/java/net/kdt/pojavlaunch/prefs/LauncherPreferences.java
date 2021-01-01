@@ -72,7 +72,7 @@ public class LauncherPreferences
         }
 */
 
-        File argsFile = new File(Tools.DIR_GAME_HOME, "overrideargs.txt");
+        File argsFile = new File(Tools.DIR_GAME_NEW, "overrideargs.txt");
         try {
             if (!argsFile.exists()) {
                 argsFile.createNewFile();
