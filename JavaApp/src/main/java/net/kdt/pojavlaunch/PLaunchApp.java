@@ -13,34 +13,7 @@ import net.kdt.pojavlaunch.prefs.*;
 import net.kdt.pojavlaunch.utils.*;
 import net.kdt.pojavlaunch.value.*;
 
-public class PLaunchApp /* extends UIApplicationDelegateAdapter */ {
-/*
-    @Override
-    public boolean didFinishLaunching(UIApplication application,
-        UIApplicationLaunchOptions launchOptions) {
-        File f = new File(Tools.DIR_HOME_JRE);
-        if (f.exists()) {
-            Thread launchThread = new Thread() {
-                @Override
-                public void run() {
-                    Application.launch(PLaunchJFXApp.class);
-                }
-            };
-            launchThread.setDaemon(true);
-            launchThread.start();
-        } else {
-            WindowAlertController alertController = new WindowAlertController("Error", "OpenJDK is not installed. Please install before enter launcher.", UIAlertControllerStyle.Alert);
-            alertController.addAction(new UIAlertAction("OK",
-                UIAlertActionStyle.Default, (action) -> {
-                    alertController.dismissViewController(true, null);
-                }
-            ));
-            alertController.show();  
-        }
-
-        return true;
-    }
-*/
+public class PLaunchApp {
     public static void main(String[] args) {
 /*
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
@@ -75,30 +48,13 @@ public class PLaunchApp /* extends UIApplicationDelegateAdapter */ {
             throw new RuntimeException(th);
         }
 */
-
-        System.out.println("Input args: " + Arrays.toString(args));
         System.out.println("We are on java now! Starting UI...");
         org.lwjgl.glfw.CallbackBridge.nativeLaunchUI(args);
 
         LauncherPreferences.loadPreferences();
-
-        System.setProperty("java.library.path", Tools.DIR_DATA + "/Frameworks");
-
-        System.setProperty("javafx.verbose", "true");
-        System.setProperty("javafx.platform", "ios");
-        System.setProperty("glass.platform", "ios");
-        System.setProperty("jfxmedia.platforms", "IOSPlatform");
-        System.setProperty("com.sun.javafx.isEmbedded", "true");
-        
-        System.setProperty("prism.verbose", "true");
-        System.setProperty("prism.allowhidpi", "true");
-        System.setProperty("prism.mintexturesize", "16");
-        System.setProperty("prism.static.libraries", "true");
-        System.setProperty("prism.useNativeIIO", "false");
-        
-        CallbackBridge.windowWidth = (int) 1280; // bounds.getWidth();
-        CallbackBridge.windowHeight = (int) 720; // bounds.getHeight();
-        
+    }
+    
+    public static void launchMinecraft() {
         JREUtils.saveGLContext();
     
         // Start Minecraft there!

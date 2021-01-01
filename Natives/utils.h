@@ -26,6 +26,7 @@ jobjectArray convert_from_char_array(JNIEnv *env, char **charArray, int num_rows
 void free_char_array(JNIEnv *env, jobjectArray jstringArray, const char **charArray);
 
 void closeGLFWWindow();
+void callback_AppDelegate_didFinishLaunching(int width, int height);
 
 #endif // _BINARY_UTILS_H_
 

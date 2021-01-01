@@ -146,6 +146,12 @@ public class CallbackBridge {
         }
         return currMods;
     }
+    
+    public static void callback_AppDelegate_didFinishLaunching(int width, int height) {
+        windowWidth = width;
+        windowHeight = height;
+        net.kdt.pojavlaunch.PLaunchApp.launchMinecraft();
+    }
 
     public static native boolean nativeAttachThreadToOther(boolean isAndroid, boolean isUsePushPoll);
     /*

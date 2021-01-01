@@ -172,7 +172,20 @@ void closeGLFWWindow() {
     exit(-1);
 }
 
+void callback_AppDelegate_didFinishLaunching(int width, int height) {
+    jclass clazz = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "org/lwjgl/glfw/CallbackBridge");
+    jmethodID method = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, *clazz, "callback_AppDelegate_didFinishLaunching", "(II)V");
+    (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
+        runtimeJNIEnvPtr_JRE,
+        clazz, method,
+        width, height
+    );
+}
+
 JNIEXPORT jint JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeLaunchUI(JNIEnv* env, jclass clazz, jobjectArray args) {
+    // Save the JNIEnv pointer for AppDelegate callback 
+    runtimeJNIEnvPtr_JRE = env;
+    
 	int argc = (*env)->GetArrayLength(env, args);
     char **argv = convert_to_char_array(env, args);
     return launchUI(argc, argv);
