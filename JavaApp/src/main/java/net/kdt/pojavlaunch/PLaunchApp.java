@@ -51,6 +51,8 @@ public class PLaunchApp {
         if (args[0].startsWith("/Applications/")) {
             System.out.println("We are on java now! Starting UI...");
             org.lwjgl.glfw.CallbackBridge.nativeLaunchUI(args);
+        } else {
+            launchMinecraft();
         }
 
         LauncherPreferences.loadPreferences();
