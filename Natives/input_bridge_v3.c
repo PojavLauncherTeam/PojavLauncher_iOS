@@ -172,7 +172,7 @@ void closeGLFWWindow() {
     exit(-1);
 }
 
-JNIEXPORT jint JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeLaunchUI(JNIEnv* env, jclass clazz, jstringArray args) {
+JNIEXPORT jint JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeLaunchUI(JNIEnv* env, jclass clazz, jobjectArray args) {
 	int argc = (*env)->GetArrayLength(env, jstringArray);
     char **argv = convert_to_char_array(env, args);
     return launchUI(argc, argv);
