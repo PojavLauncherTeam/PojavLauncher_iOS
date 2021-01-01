@@ -29,7 +29,7 @@ public final class Tools
     public static final Gson GLOBAL_GSON = new GsonBuilder().setPrettyPrinting().create();
     
     public static final String URL_HOME = "https://pojavlauncherteam.github.io/PojavLauncher";
-    public static String DIR_DATA = "/Applications/PojavLauncher.app"
+    public static String DIR_DATA = "/Applications/PojavLauncher.app";
     public static String CURRENT_ARCHITECTURE;
 
     // New since 3.3.1
@@ -59,12 +59,12 @@ public final class Tools
 
         // ctx.appendlnToLog("Minecraft Args: " + Arrays.toString(launchArgs));
 
-        String launchClassPath = generateLaunchClassPath(profile.selectedVersion);
+        String launchClassPath = getLWJGL3ClassPath() + ":" + generateLaunchClassPath(profile.selectedVersion);
 
         List<String> javaArgList = new ArrayList<String>();
         
         javaArgList.add("-cp");
-        javaArgList.add(getLWJGL3ClassPath() + ":" + launchClassPath);
+        javaArgList.add(launchClassPath);
 
         javaArgList.add(versionInfo.mainClass);
         javaArgList.addAll(Arrays.asList(launchArgs));
@@ -76,6 +76,17 @@ public final class Tools
             bw.write(" ", 0, 1);
         }
         bw.close();
+
+        List<URL> urlList = new ArrayList<>();
+        for (String s : launchClassPath.split(":")) {
+            if (!s.isEmpty()) {
+                urlList.add(new File(s).toURI().toURL());
+            }
+        }
+        URLClassLoader loader = new URLClassLoader(urlList.toArray(new URL[0]), Tools.class.getClass().getClassLoader());
+        Class<?> clazz = loader.loadClass(versionInfo.mainClass);
+        Method method = clazz.getMethod("main", String[].class);
+        method.invoke(null, new Object[]{Arrays.asList(launchArgs)});
 
         JREUtils.launchJavaVM(javaArgList);
     }
