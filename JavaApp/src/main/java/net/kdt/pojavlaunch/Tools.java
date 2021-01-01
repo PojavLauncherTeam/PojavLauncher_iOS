@@ -88,11 +88,12 @@ public final class Tools
         URLClassLoader loader = new URLClassLoader(urlList.toArray(new URL[0]), Tools.class.getClassLoader());
         Class<?> clazz = loader.loadClass(versionInfo.mainClass);
         Method method = clazz.getMethod("main", String[].class);
-        method.invoke(null, new Object[]{Arrays.asList(launchArgs)});
+        method.invoke(null, new Object[]{launchArgs});
         
         } catch (Throwable th) {
             throw new RuntimeException(th);
         }
+        
         }).start();
     
         // JREUtils.launchJavaVM(javaArgList);
@@ -100,17 +101,17 @@ public final class Tools
     
     public static void getJavaArgs(List<String> javaArgList) {
         List<String> overrideableArgList = new ArrayList<String>();
-
+/*
         overrideableArgList.add("-Djava.home=" + Tools.DIR_HOME_JRE);
         overrideableArgList.add("-Djava.io.tmpdir=" + System.getProperty("java.io.tmpdir"));
         
         overrideableArgList.add("-Duser.home=" + Tools.DIR_GAME_HOME);
         overrideableArgList.add("-Duser.language=" + System.getProperty("user.language"));
-        // overrideableArgList.add("-Duser.timezone=GMT");
+        overrideableArgList.add("-Duser.timezone=GMT");
 
         overrideableArgList.add("-Dos.name=Darwin");
         overrideableArgList.add("-Dos.version=iOS-" + System.getProperty("os.version"));
-
+*/
         overrideableArgList.add("-Dpojav.path.minecraft=" + Tools.DIR_GAME_NEW);
         overrideableArgList.add("-Dpojav.path.private.account=" + Tools.DIR_ACCOUNT_NEW);
         
