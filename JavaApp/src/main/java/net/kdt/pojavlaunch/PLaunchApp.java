@@ -48,7 +48,7 @@ public class PLaunchApp {
             throw new RuntimeException(th);
         }
 */
-        if (args[0].startsWith("/Applications/") {
+        if (args[0].startsWith("/Applications/")) {
             System.out.println("We are on java now! Starting UI...");
             org.lwjgl.glfw.CallbackBridge.nativeLaunchUI();
         }
