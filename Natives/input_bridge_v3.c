@@ -92,7 +92,7 @@ ADD_CALLBACK_WWIN(WindowSize);
 
 jboolean attachThread(bool isAndroid, JNIEnv** secondJNIEnvPtr) {
 #ifdef DEBUG
-    LOGD("Debug: Attaching %s thread to %s, javavm.isNull=%d\n", isAndroid ? "Android" : "JRE", isAndroid ? "JRE" : "Android", (isAndroid ? runtimeJavaVMPtr : dalvikJavaVMPtr) == NULL);
+    debug("Debug: Attaching %s thread to %s, javavm.isNull=%d\n", isAndroid ? "Android" : "JRE", isAndroid ? "JRE" : "Android", (isAndroid ? runtimeJavaVMPtr : dalvikJavaVMPtr) == NULL);
 #endif
 
     if (*secondJNIEnvPtr != NULL || (!isUseStackQueueCall)) return JNI_TRUE;
@@ -156,13 +156,13 @@ void closeGLFWWindow() {
 void callback_AppDelegate_didFinishLaunching(int width, int height) {
     debug("Received AppDelegate callback, width=%d, height=%d\n", width, height);
 
-    assert(runtimeJNIEnvPtr_JRE != NULL)
+    assert(runtimeJNIEnvPtr_JRE != NULL);
     
     jclass clazz = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "org/lwjgl/glfw/CallbackBridge");
-    assert(clazz != NULL)
+    assert(clazz != NULL);
     
     jmethodID method = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, clazz, "callback_AppDelegate_didFinishLaunching", "(II)V");
-    assert(method != NULL)
+    assert(method != NULL);
     
     (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
         runtimeJNIEnvPtr_JRE,
