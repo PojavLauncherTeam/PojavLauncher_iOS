@@ -88,7 +88,7 @@ public final class Tools
         Method method = clazz.getMethod("main", String[].class);
         method.invoke(null, new Object[]{Arrays.asList(launchArgs)});
 
-        JREUtils.launchJavaVM(javaArgList);
+        // JREUtils.launchJavaVM(javaArgList);
     }
     
     public static void getJavaArgs(List<String> javaArgList) {

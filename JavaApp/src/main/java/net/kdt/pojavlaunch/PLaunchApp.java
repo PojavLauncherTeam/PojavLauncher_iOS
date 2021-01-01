@@ -67,6 +67,7 @@ public class PLaunchApp {
         } catch (IOException e) {
             System.out.println("config_ver.txt not found, defaulting to Minecraft 1.13");
         }
+        System.out.println("Launching Minecraft " + mcver);
         
         MinecraftAccount acc = new MinecraftAccount();
         acc.selectedVersion = mcver;
