@@ -4,6 +4,7 @@
 
 #import "AppDelegate.h"
 #import "JavaLauncher.h"
+#import <Foundation/Foundation.h>
 
 @interface AppDelegate ()
 
@@ -14,6 +15,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   
+  NSLog(@"Hello from app launch!");
   // TODO callback
 
   return YES;
