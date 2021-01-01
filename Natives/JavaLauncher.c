@@ -59,7 +59,7 @@ int launchJVM(int argc, char *argv[]) {
         margv[margc++] = "/usr/lib/jvm/java-16-openjdk/bin/java";
         margv[margc++] = "-XstartOnFirstThread";
         margv[margc++] = "-Djava.library.path=/Applications/PojavLauncher.app/Frameworks";
-        matgv[margc++] = "-Dorg.lwjgl.opengl.libname=libGL.dylib";
+        margv[margc++] = "-Dorg.lwjgl.opengl.libname=libGL.dylib";
         char jvmargs[10000];
         FILE* argsFile = fopen(args_path, "r");
         debug("Reading custom JVM args (overrideargs.txt), opened=%d\n", argsFile != NULL);
