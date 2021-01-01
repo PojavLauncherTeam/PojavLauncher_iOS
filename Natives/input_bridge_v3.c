@@ -174,7 +174,7 @@ void closeGLFWWindow() {
 
 void callback_AppDelegate_didFinishLaunching(int width, int height) {
     jclass clazz = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "org/lwjgl/glfw/CallbackBridge");
-    jmethodID method = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, *clazz, "callback_AppDelegate_didFinishLaunching", "(II)V");
+    jmethodID method = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, clazz, "callback_AppDelegate_didFinishLaunching", "(II)V");
     (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
         runtimeJNIEnvPtr_JRE,
         clazz, method,
