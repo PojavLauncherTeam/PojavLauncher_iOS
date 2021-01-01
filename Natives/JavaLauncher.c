@@ -44,19 +44,12 @@ void append(char* s, char* c) {
 
 int launchJVM() {
     printf("Beginning JVM launch\n");
-    char documentDir[1000], log_path[1000], main_jar[1000], args_path[1000];
-    append(documentDir, getenv("HOME"));
-    append(documentDir, "/Documents");
     
-    append(log_path, documentDir);
-    append(log_path, "/latestlog.txt");
-
-    append(args_path, documentDir);
-    append(args_path, "/overrideargs.txt");
-
-    append(main_jar, getenv("APPDIR"));
-    append(main_jar, "/launcher.jar");
-
+    mkdir("/var/mobile/Documents/minecraft", 0700);
+    char *args_path = "/var/mobile/Documents/minecraft/overrideargs.txt";
+    char *log_path = "/var/mobile/Documents/minecraft/latestlog.txt";
+    char *main_jar = "/Applications/PojavLauncher.app/launcher.jar";
+    
     printf("Staring logging STDIO as jrelog:V\n");
     // Redirect stdio to latestlog.txt
     FILE* logFile = fopen(log_path, "w");

@@ -39,6 +39,7 @@ jobs:
           cd ../..
           mkdir -p Natives/build/Release-iphoneos/PojavLauncher.app/Frameworks
           cp Natives/build/Release-iphoneos/libpojavexec.dylib Natives/build/Release-iphoneos/PojavLauncher.app/Frameworks/
+          cp -R Natives/resources/* Natives/build/Release-iphoneos/PojavLauncher.app/
 
       - name: Java Build
         run: |
