@@ -33,6 +33,8 @@ public class CallbackBridge {
     // TODO send grab state event to Android
     
     static {
+        System.loadLibrary("pojavlaunch");
+    
         INPUT_DEBUG_ENABLED = Boolean.parseBoolean(System.getProperty("glfwstub.debugInput", "false"));
     }
     
