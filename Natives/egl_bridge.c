@@ -14,6 +14,8 @@
 #include "egl_bridge_ios.h"
 #include "utils.h"
 
+#include "log.h"
+
 typedef void gl4esInitialize_func();
 
 // Called from JNI_OnLoad of liblwjgl_opengl
