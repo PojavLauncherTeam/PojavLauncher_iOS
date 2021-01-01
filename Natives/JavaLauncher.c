@@ -42,7 +42,7 @@ int launchJVM(int argc, char *argv[]) {
     
     char *args_path = "/var/mobile/Documents/minecraft/overrideargs.txt";
     char *log_path = "/var/mobile/Documents/minecraft/latestlog.txt";
-    char *classpath = "/Applications/PojavLauncher.app/libs/launcher.jar:/Applications/PojavLauncher.app/libs/ExagearApacheCommons.jar:/Applications/PojavLauncher.app/libs/gson-2.8.6.jar:/Applications/PojavLauncher.app/libs/jsr305.jar";
+    char *classpath = "/Applications/PojavLauncher.app/libs/launcher.jar:/Applications/PojavLauncher.app/libs/ExagearApacheCommons.jar:/Applications/PojavLauncher.app/libs/gson-2.8.6.jar:/Applications/PojavLauncher.app/libs/jsr305.jar:/Applications/PojavLauncher.app/libs/lwjgl3-minecraft.jar";
     
     debug("Staring logging STDIO as jrelog:V\n");
     // Redirect stdio to latestlog.txt

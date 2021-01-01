@@ -58,7 +58,7 @@ public final class Tools
 
         // ctx.appendlnToLog("Minecraft Args: " + Arrays.toString(launchArgs));
 
-        final String launchClassPath = getLWJGL3ClassPath() + ":" + generateLaunchClassPath(profile.selectedVersion);
+        final String launchClassPath = generateLaunchClassPath(profile.selectedVersion);
 
         List<String> javaArgList = new ArrayList<String>();
         
@@ -242,11 +242,11 @@ public final class Tools
     public static String getPatchedFile(String version) {
         return DIR_HOME_VERSION + "/" + version + "/" + version + ".jar";
     }
-
+/*
     private static String getLWJGL3ClassPath() {
         StringBuilder libStr = new StringBuilder();
         File lwjgl3Folder = new File(Tools.DIR_GAME_NEW, "lwjgl3");
-        if (/* info.arguments != null && */ lwjgl3Folder.exists()) {
+        if (/* info.arguments != null && @lwjgl3Folder.exists()) {
             for (File file: lwjgl3Folder.listFiles()) {
                 if (file.getName().endsWith(".jar")) {
                     libStr.append(file.getAbsolutePath() + ":");
@@ -257,7 +257,7 @@ public final class Tools
         }
         return libStr.toString();
     }
-
+*/
     private static boolean isClientFirst = false;
     public static String generateLaunchClassPath(String version) {
         StringBuilder libStr = new StringBuilder(); //versnDir + "/" + version + "/" + version + ".jar:";

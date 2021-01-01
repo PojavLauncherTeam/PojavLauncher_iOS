@@ -1,27 +1,87 @@
 package org.lwjgl.glfw;
-
 import java.io.*;
 import java.util.*;
-import net.kdt.pojavlaunch.*;
+import android.util.*;
 
 public class CallbackBridge {
-    public static final int ANDROID_TYPE_GRAB_STATE = 0;
-    
     public static final int CLIPBOARD_COPY = 2000;
     public static final int CLIPBOARD_PASTE = 2001;
     
+    public static final int EVENT_TYPE_CHAR = 1000;
+    public static final int EVENT_TYPE_CHAR_MODS = 1001;
+    public static final int EVENT_TYPE_CURSOR_ENTER = 1002;
+    public static final int EVENT_TYPE_CURSOR_POS = 1003;
+    public static final int EVENT_TYPE_FRAMEBUFFER_SIZE = 1004;
+    public static final int EVENT_TYPE_KEY = 1005;
+    public static final int EVENT_TYPE_MOUSE_BUTTON = 1006;
+    public static final int EVENT_TYPE_SCROLL = 1007;
+    public static final int EVENT_TYPE_WINDOW_SIZE = 1008;
+    
+    public static final int ANDROID_TYPE_GRAB_STATE = 0;
+
+    // Should pending events be limited?
+    volatile public static List<Integer[]> PENDING_EVENT_LIST = new ArrayList<>();
+    volatile public static boolean PENDING_EVENT_READY = false;
+    
+    public static final boolean INPUT_DEBUG_ENABLED;
+    
+    private static boolean inputReady;
+    
+    // TODO send grab state event to Android
+    
+    static {
+        INPUT_DEBUG_ENABLED = Boolean.parseBoolean(System.getProperty("glfwstub.debugInput", "false"));
+    }
+    
+// BEGIN launcher side
     public static volatile int windowWidth, windowHeight;
     public static int mouseX, mouseY;
     public static boolean mouseLeft;
     public static StringBuilder DEBUG_STRING = new StringBuilder();
     
+    
+    public static native void nativeLaunchUI(String[] uiArgs);
+    public static void callback_AppDelegate_didFinishLaunching(int width, int height) {
+        windowWidth = width;
+        windowHeight = height;
+        net.kdt.pojavlaunch.PLaunchApp.launchMinecraft();
+    }
+    
+    public static boolean nativeIsGrabbing() {
+        return GLFW.mGLFWIsGrabbing;
+    }
+    
+    private static void nativeSendCursorPos(int x, int y) {
+        if (!inputReady) return;
+        GLFW.mGLFWCursorX = x;
+        GLFW.mGLFWCursorY = y;
+    }
+    private static void nativeSendKeycode(int keycode, char keychar, int scancode, int action, int mods) {
+        if (!inputReady) return;
+        // TODO keycode
+        // PENDING_EVENT_LIST.add(new Integer[]{EVENR_TYPE_CHAR_MODS});
+    }
+    private static void nativeSendMouseButton(int button, int action, int mods) {
+        if (!inputReady) return;
+        PENDING_EVENT_LIST.add(new Integer[]{EVENT_TYPE_MOUSE_BUTTON, button, action, mods, 0});
+    }
+    private static void nativeSendScroll(double xoffset, double yoffset) {
+        if (!inputReady) return;
+        PENDING_EVENT_LIST.add(new Integer[]{EVENT_TYPE_SCROLL, (int) xoffset, (int) yoffset, 0, 0});
+    }
+    private static void nativeSendScreenSize(int width, int height) {
+        if (!inputReady) return;
+        PENDING_EVENT_LIST.add(new Integer[]{EVENT_TYPE_FRAMEBUFFER_SIZE, width, height, 0, 0});
+        PENDING_EVENT_LIST.add(new Integer[]{EVENT_TYPE_WINDOW_SIZE, width, height, 0, 0});
+    }
+
     // volatile private static boolean isGrabbing = false;
 
     public static void putMouseEventWithCoords(int button, int x, int y /* , int dz, long nanos */) {
         putMouseEventWithCoords(button, 1, x, y);
         putMouseEventWithCoords(button, 0, x, y);
     }
-    
+
     public static void putMouseEventWithCoords(int button, int state, int x, int y /* , int dz, long nanos */) {
         sendCursorPos(x, y);
         sendMouseKeycode(button, CallbackBridge.getCurrentMods(), state == 1);
@@ -30,31 +90,26 @@ public class CallbackBridge {
     private static boolean threadAttached;
     public static void sendCursorPos(int x, int y) {
         if (!threadAttached) {
-            threadAttached = CallbackBridge.nativeAttachThreadToOther(true, true /* TODO BaseMainActivity.isInputStackCall */);
+            threadAttached = true; // CallbackBridge.nativeAttachThreadToOther(true, true /* TODO BaseMainActivity.isInputStackCall */);
         }
-        
+
         DEBUG_STRING.append("CursorPos=" + x + ", " + y + "\n");
         mouseX = x;
         mouseY = y;
         nativeSendCursorPos(x, y);
     }
-    
-    public static void sendPrepareGrabInitialPos() {
-        DEBUG_STRING.append("Prepare set grab initial posititon");
-        sendMouseKeycode(-1, CallbackBridge.getCurrentMods(), false);
-    }
 
     public static void sendKeycode(int keycode, char keychar, int scancode, int modifiers, boolean isDown) {
         DEBUG_STRING.append("KeyCode=" + keycode + ", Char=" + keychar);
         // TODO CHECK: This may cause input issue, not receive input!
-/*
-        if (!nativeSendCharMods((int) keychar, modifiers) || !nativeSendChar(keychar)) {
-            nativeSendKey(keycode, 0, isDown ? 1 : 0, modifiers);
-        }
-*/
+        /*
+         if (!nativeSendCharMods((int) keychar, modifiers) || !nativeSendChar(keychar)) {
+         nativeSendKey(keycode, 0, isDown ? 1 : 0, modifiers);
+         }
+         */
 
         nativeSendKeycode(keycode, keychar, scancode, isDown ? 1 : 0, modifiers);
-        
+
         // sendData(JRE_TYPE_KEYCODE_CONTROL, keycode, Character.toString(keychar), Boolean.toString(isDown), modifiers);
     }
 
@@ -68,7 +123,7 @@ public class CallbackBridge {
         sendMouseKeycode(keycode, CallbackBridge.getCurrentMods(), true);
         sendMouseKeycode(keycode, CallbackBridge.getCurrentMods(), false);
     }
-    
+
     public static void sendScroll(double xoffset, double yoffset) {
         DEBUG_STRING.append("ScrollX=" + xoffset + ",ScrollY=" + yoffset);
         nativeSendScroll(xoffset, yoffset);
@@ -77,60 +132,19 @@ public class CallbackBridge {
     public static void sendUpdateWindowSize(int w, int h) {
         nativeSendScreenSize(w, h);
     }
-
+    
     public static boolean isGrabbing() {
-        // return isGrabbing;
         return nativeIsGrabbing();
     }
-
-    // Called from JRE side
-    public static String accessAndroidClipboard(int type, String copy) {
-        switch (type) {
-            case CLIPBOARD_COPY:
-                // BaseMainActivity.GLOBAL_CLIPBOARD.setPrimaryClip(ClipData.newPlainText("Copy", copy));
-                return null;
-                
-            case CLIPBOARD_PASTE:
-                /*
-                if (BaseMainActivity.GLOBAL_CLIPBOARD.hasPrimaryClip() && BaseMainActivity.GLOBAL_CLIPBOARD.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
-                    return BaseMainActivity.GLOBAL_CLIPBOARD.getPrimaryClip().getItemAt(0).getText().toString();
-                } else {
-                    return "";
-                }
-                */
-                return "";
-                
-            default: return null;
-        }
+   
+    public static void sendPrepareGrabInitialPos() {
+        DEBUG_STRING.append("Prepare set grab initial posititon");
+        // TODO grab mode
+        // nativeSendMouseKeycode(-1, CallbackBridge.getCurrentMods(), false);
     }
-    public static void receiveCallback(int type, String data) {
-        switch (type) {
-            case ANDROID_TYPE_GRAB_STATE:
-                // isGrabbing = Boolean.parseBoolean(data);
-                break;
-        }
-    }
-/*
-    private static String currData;
-    public static void sendData(int type, Object... dataArr) {
-        currData = "";
-        for (int i = 0; i < dataArr.length; i++) {
-            if (dataArr[i] instanceof Integer) {
-                currData += Integer.toString((int) dataArr[i]);
-            } else if (dataArr[i] instanceof String) {
-                currData += (String) dataArr[i];
-            } else {
-                currData += dataArr[i].toString();
-            }
-            currData += (i + 1 < dataArr.length ? ":" : "");
-        }
-        nativeSendData(true, type, currData);
-    }
-    private static native void nativeSendData(boolean isAndroid, int type, String data);
-*/
-
+    
     public static boolean holdingAlt, holdingCapslock, holdingCtrl,
-        holdingNumlock, holdingShift;
+    holdingNumlock, holdingShift;
     public static int getCurrentMods() {
         int currMods = 0;
         if (holdingAlt) {
@@ -146,31 +160,42 @@ public class CallbackBridge {
         }
         return currMods;
     }
+// END launcher side
     
-    public static void callback_AppDelegate_didFinishLaunching(int width, int height) {
-        windowWidth = width;
-        windowHeight = height;
-        net.kdt.pojavlaunch.PLaunchApp.launchMinecraft();
+    public static void sendGrabbing(boolean grab, int xset, int yset) {
+        // sendData(ANDROID_TYPE_GRAB_STATE, Boolean.toString(grab));
+        
+        GLFW.mGLFWIsGrabbing = grab;
+        nativeSetGrabbing(grab, xset, yset);
     }
-
-    public static native boolean nativeAttachThreadToOther(boolean isAndroid, boolean isUsePushPoll);
-    /*
-    private static native boolean nativeSendChar(char codepoint);
-    // GLFW: GLFWCharModsCallback deprecated, but is Minecraft still use?
-    private static native boolean nativeSendCharMods(char codepoint, int mods);
-    */
-    // private static native void nativeSendCursorEnter(int entered);
-    private static native void nativeSendCursorPos(int x, int y);
-    private static native void nativeSendKeycode(int keycode, char keychar, int scancode, int action, int mods);
-    private static native void nativeSendMouseButton(int button, int action, int mods);
-    private static native void nativeSendScroll(double xoffset, double yoffset);
-    private static native void nativeSendScreenSize(int width, int height);
     
-    public static native boolean nativeIsGrabbing();
-    public static native void nativeLaunchUI(String[] uiArgs);
+	// Called from Android side
+	public static void receiveCallback(int type, int i1, int i2, int i3, int i4) {
+       /*
+        if (INPUT_DEBUG_ENABLED) {
+            System.out.println("LWJGL GLFW Callback received type=" + Integer.toString(type) + ", data=" + i1 + ", " + i2 + ", " + i3 + ", " + i4);
+        }
+        */
+        if (PENDING_EVENT_READY) {
+            if (type == EVENT_TYPE_CURSOR_POS) {
+                GLFW.mGLFWCursorX = i1;
+                GLFW.mGLFWCursorY = i2;
+            } else {
+                PENDING_EVENT_LIST.add(new Integer[]{type, i1, i2, i3, i4});
+            }
+        } // else System.out.println("Event input is not ready yet!");
+	}
     
-    static {
-        System.loadLibrary("pojavexec");
+    // public static native void nativeSendData(boolean isAndroid, int type, String data);
+    public static boolean nativeSetInputReady(boolean ready) {
+        inputReady = ready;
+        return true;
     }
+    public static String nativeClipboard(int action, String copy) {
+        // TODO copy paste
+        return "";
+    }
+    
+    private static native void nativeSetGrabbing(boolean grab, int xset, int yset);
 }
 
