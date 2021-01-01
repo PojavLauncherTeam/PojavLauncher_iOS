@@ -29,13 +29,13 @@ public final class Tools
     public static final Gson GLOBAL_GSON = new GsonBuilder().setPrettyPrinting().create();
     
     public static final String URL_HOME = "https://pojavlauncherteam.github.io/PojavLauncher";
-    public static String DIR_DATA = System.getProperty("java.home");
+    public static String DIR_DATA = "/Applications/PojavLauncher.app"
     public static String CURRENT_ARCHITECTURE;
 
     // New since 3.3.1
     public static String DIR_ACCOUNT_NEW;
     public static String DIR_ACCOUNT_OLD;
-    public static final String DIR_GAME_HOME = System.getProperty("user.home") + "/Documents";
+    public static final String DIR_GAME_HOME = "/var/mobile/Documents";
     public static final String DIR_GAME_NEW = DIR_GAME_HOME + "/minecraft";
     
     // New since 3.0.0
