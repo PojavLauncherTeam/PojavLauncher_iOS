@@ -5,6 +5,9 @@
 #include <unistd.h>
 #include <string.h>
 
+#include <sys/stat.h>
+#include <sys/types.h>
+
 #include "jni.h"
 #include "JavaLauncher.h"
 
