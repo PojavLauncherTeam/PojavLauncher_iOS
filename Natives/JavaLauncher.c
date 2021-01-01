@@ -67,7 +67,7 @@ int launchJVM(int argc, char *argv[]) {
             char *pch;
             pch = strtok(jvmargs, " ");
             while (pch != NULL) {
-                debug("Added custom arg: %s\n", pck);
+                debug("Added custom arg: %s\n", pch);
                 margv[margc++] = pch;
                 pch = strtok(NULL, " ");
             }
