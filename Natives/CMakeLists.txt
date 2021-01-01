@@ -4,7 +4,7 @@ project(PojavLauncher)
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(CMAKE_C_FLAGS "-x objective-c")
 
-add_executable(PojavLauncher main.m AppDelegate.m JavaLauncher.c)
+add_executable(PojavLauncher main.m log.m AppDelegate.m JavaLauncher.c)
 target_link_libraries(PojavLauncher
     "-framework UIKit"
 )
