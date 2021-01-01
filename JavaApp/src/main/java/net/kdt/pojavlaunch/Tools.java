@@ -54,12 +54,12 @@ public final class Tools
     
     public static final String LIBNAME_OPTIFINE = "optifine:OptiFine";
 
-    public static void launchMinecraft(MinecraftAccount profile, JMinecraftVersionList.Version versionInfo) throws Throwable {
+    public static void launchMinecraft(MinecraftAccount profile, final JMinecraftVersionList.Version versionInfo) throws Throwable {
         String[] launchArgs = getMinecraftArgs(profile, versionInfo);
 
         // ctx.appendlnToLog("Minecraft Args: " + Arrays.toString(launchArgs));
 
-        String launchClassPath = getLWJGL3ClassPath() + ":" + generateLaunchClassPath(profile.selectedVersion);
+        final String launchClassPath = getLWJGL3ClassPath() + ":" + generateLaunchClassPath(profile.selectedVersion);
 
         List<String> javaArgList = new ArrayList<String>();
         
@@ -77,13 +77,14 @@ public final class Tools
         }
         bw.close();
 
-        List<URL> urlList = new ArrayList<>();
+        final List<URL> urlList = new ArrayList<>();
         for (String s : launchClassPath.split(":")) {
             if (!s.isEmpty()) {
                 urlList.add(new File(s).toURI().toURL());
             }
         }
-        URLClassLoader loader = new URLClassLoader(urlList.toArray(new URL[0]), Tools.class.getClass().getClassLoader());
+        
+        URLClassLoader loader = new URLClassLoader(urlList.toArray(new URL[0]), Tools.class.getClassLoader());
         Class<?> clazz = loader.loadClass(versionInfo.mainClass);
         Method method = clazz.getMethod("main", String[].class);
         method.invoke(null, new Object[]{Arrays.asList(launchArgs)});
