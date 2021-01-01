@@ -75,13 +75,7 @@ public final class GL {
     @Nullable
     private static GLXCapabilities capabilitiesGLX;
 
-	private static final boolean isUsingRegal;
-
     static {
-		isUsingRegal = System.getProperty("org.lwjgl.opengl.libname").contains("libRegal.so");
-        // if (isUsingRegal)
-            
-		
         Library.loadSystem(System::load, System::loadLibrary, GL.class, "org.lwjgl.opengl", Platform.mapLibraryNameBundled("lwjgl_opengl"));
 
         MAX_VERSION = apiParseVersion(Configuration.OPENGL_MAXVERSION);
@@ -91,8 +85,6 @@ public final class GL {
         }
     }
     
-    private static native void nativeRegalMakeCurrent();
-
     private GL() {}
 
     /** Ensures that the lwjgl_opengl shared library has been loaded. */
@@ -172,7 +164,7 @@ public final class GL {
                         private final long glXGetProcAddress;
 
                         {
-                            long GetProcAddress = library.getFunctionAddress(isUsingRegal ? "glGetProcAddressREGAL" : "glXGetProcAddress");
+                            long GetProcAddress = library.getFunctionAddress("glXGetProcAddress");
                             if (GetProcAddress == NULL) {
                                 GetProcAddress = library.getFunctionAddress("glXGetProcAddressARB");
                             }
@@ -348,9 +340,6 @@ public final class GL {
         // This fixed framebuffer issue on 1.13+ 64-bit by another making current
         GLFW.nativeEglMakeCurrent(1);
         
-        if (isUsingRegal /* && Long.parseLong(System.getProperty("glfwstub.internal.glthreadid", "-1")) != Thread.currentThread().getId() */) {
-            nativeRegalMakeCurrent();
-        }
         // System.setProperty("glfwstub.internal.glthreadid", Long.toString(Thread.currentThread().getId()));
         
         FunctionProvider functionProvider = GL.functionProvider;
