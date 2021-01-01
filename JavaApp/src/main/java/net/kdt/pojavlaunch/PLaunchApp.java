@@ -60,15 +60,14 @@ public class PLaunchApp {
     
         // Start Minecraft there!
         System.out.println("Finding a version");
-        File file = new File(Tools.DIR_GAME_NEW);
-        file.mkdirs();
-        
         String mcver = "1.13";
+        /*
         try {
-            mcver = Tools.read(Tools.DIR_GAME_HOME + "/config_ver.txt");
+            mcver = Tools.read(Tools.DIR_GAME_NEW + "/config_ver.txt");
         } catch (IOException e) {
             System.out.println("config_ver.txt not found, defaulting to Minecraft 1.13");
         }
+        */
         System.out.println("Launching Minecraft " + mcver);
         
         MinecraftAccount acc = new MinecraftAccount();
