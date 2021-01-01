@@ -17,6 +17,8 @@
 #include "log.h"
 #include "utils.h"
 
+#include "JavaLauncher.h"
+
 #define EVENT_TYPE_CHAR 1000
 #define EVENT_TYPE_CHAR_MODS 1001
 #define EVENT_TYPE_CURSOR_ENTER 1002
@@ -170,7 +172,7 @@ void closeGLFWWindow() {
     exit(-1);
 }
 
-JNIEXPORT jint JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeLaunchUI(JNIEnv* env, jclass clazz, jstringArr args) {
+JNIEXPORT jint JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeLaunchUI(JNIEnv* env, jclass clazz, jstringArray args) {
 	int argc = (*env)->GetArrayLength(env, jstringArray);
     char **argv = convert_to_char_array(env, args);
     return launchUI(argc, argv);
