@@ -83,15 +83,15 @@ public final class Tools
             }
         }
         
-        new Thread(() -> {
+        // new Thread(() -> {
         
         URLClassLoader loader = new URLClassLoader(urlList.toArray(new URL[0]), Tools.class.getClassLoader());
         Class<?> clazz = loader.loadClass(versionInfo.mainClass);
         Method method = clazz.getMethod("main", String[].class);
         method.invoke(null, new Object[]{Arrays.asList(launchArgs)});
         
-        }).start();
-
+        // }).start();
+    
         // JREUtils.launchJavaVM(javaArgList);
     }
     
