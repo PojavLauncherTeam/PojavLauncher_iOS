@@ -6,7 +6,6 @@
 #import "JavaLauncher.h"
 
 #import <Foundation/Foundation.h>
-#import <GLKit/GLKit.h>
 #import <math.h>
 
 #include "utils.h"
