@@ -934,15 +934,17 @@ public class GLFW
 		mGLFWGammaRamp = ramp;
 	}
 
+	private static long mGLFWCurrentGLContextThread = -1;
 	public static void glfwMakeContextCurrent(long window) {
         long currentGLThreadId = Thread.currentThread().getId();
         // Long.parseLong(System.getProperty("glfwstub.internal.glthreadid", "-1"));
         System.out.println("GLFW: glfwMakeContextCurrent() calling from thread ID " + currentGLThreadId + ", name: " + Thread.currentThread().getName());
-        if (currentGLThreadId != -1 && currentGLThreadId != Thread.currentThread().getId()) {
+        if (currentGLThreadId != -1 && currentGLThreadId != mGLFWCurrentGLContextThread) {
             System.out.println("GLFW: Current context is set, creating shared context");
             if (!nativeEglMakeCurrent(window)) {
                 throw new RuntimeException("eglMakeCurrent() failed, check log file for more details");
             }
+            mGLFWCurrentGLContextThread = currentGLThreadID;
         } else {
             System.out.println("GLFW: glfwMakeContextCurrent() request is skipped");
         }
