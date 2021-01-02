@@ -51,9 +51,9 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_saveGLContext(JNI
     debug("makeCurrent success");
     
     void *libGL = dlopen("libGL.dylib", RTLD_GLOBAL);
-    assert(libGL != NULL);
+    debug("libGL = %p", libGL);
     gl4esInitialize_func *gl4esInitialize = (gl4esInitialize_func*) dlsym(libGL, "initialize_gl4es");
-    assert(gl4esInitialize != NULL);
+    debug("initialize_gl4es = %p", gl4esInitialize);
     gl4esInitialize();
     debug("GL4ES init success");
 }
