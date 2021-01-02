@@ -60,11 +60,11 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglInit(JNIEnv* env, j
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglMakeCurrent(JNIEnv* env, jclass clazz, jlong window) {
     debug("ES2Bridge: Initializing\n");
     jboolean ret = makeCurrentContext(CURR_GL_CONTEXT);
-    
+/*
     void *libGL = dlopen("libGL.dylib", RTLD_GLOBAL);
     gl4esInitialize_func *gl4esInitialize = (gl4esInitialize_func*) dlsym(libGL, "gl4es_initialize");
     gl4esInitialize();
-    
+*/
     return ret;
 }
 
