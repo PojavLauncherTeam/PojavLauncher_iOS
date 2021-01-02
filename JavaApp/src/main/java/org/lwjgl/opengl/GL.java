@@ -346,6 +346,13 @@ public final class GL {
         if (functionProvider == null) {
             throw new IllegalStateException("OpenGL library has not been loaded.");
         }
+        
+        long GL4ESInit = functionProvider.getFunctionAddress("initialize_gl4es");
+        if (GL4ESInit == NULL) {
+            throw new IllegalStateException("initialize_gl4es() could not be found. Make sure that the OpenGL library is GL4ES.");
+            }
+        }
+        callV(GL4ESInit);
 
         GLCapabilities caps = null;
 
