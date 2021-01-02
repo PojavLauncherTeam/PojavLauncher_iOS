@@ -7,6 +7,7 @@ set(CMAKE_C_FLAGS "-x objective-c")
 add_executable(PojavLauncher main.c log.m JavaLauncher.c)
 target_link_libraries(PojavLauncher
     "-framework UIKit"
+    "-framework OpenGLES"
 )
 set_target_properties(PojavLauncher PROPERTIES
   MACOSX_BUNDLE TRUE
