@@ -384,10 +384,16 @@ public final class GL {
                         throw new IllegalStateException("There is no OpenGL context current in the current thread.");
                     }
 
-                    APIVersion apiVersion = apiParseVersion(versionString);
+                    try {
+                        APIVersion apiVersion = apiParseVersion(versionString);
 
-                    majorVersion = apiVersion.major;
-                    minorVersion = apiVersion.minor;
+                        majorVersion = apiVersion.major;
+                        minorVersion = apiVersion.minor;
+                    } catch (IllegalArgumentException e) {
+                        e.printStackTrace();
+                        majorVersion = 2;
+                        minorVersion = 1;
+                    }
                 }
             }
 
