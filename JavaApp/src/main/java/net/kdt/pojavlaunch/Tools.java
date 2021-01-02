@@ -83,7 +83,7 @@ public final class Tools
             }
         }
         
-        new Thread(() -> { try {
+        // new Thread(() -> { try {
         
         URLClassLoader loader = new URLClassLoader(urlList.toArray(new URL[0]), Tools.class.getClassLoader());
         Class<?> clazz = loader.loadClass(versionInfo.mainClass);
@@ -94,7 +94,7 @@ public final class Tools
             throw new RuntimeException(th);
         }
         
-        }).start();
+        // }).start();
     
         // JREUtils.launchJavaVM(javaArgList);
     }
