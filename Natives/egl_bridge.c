@@ -71,7 +71,7 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglMakeCurrent(JNIEnv*
     
     gl4esInitialize();
     debug("GL4ES init success");
-    
+
     return ret;
 }
 
