@@ -47,6 +47,9 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_saveGLContext(JNI
         debug("OpenGLES context is NULL...");
         assert(CURR_GL_CONTEXT != NULL);
     }
+    
+    // Clear current GL context to later set on another thread
+    clearCurrentContext();
 }
 
 JNIEXPORT jlong JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglGetCurrentContext(JNIEnv* env, jclass clazz) {
@@ -60,7 +63,7 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglInit(JNIEnv* env, j
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglMakeCurrent(JNIEnv* env, jclass clazz, jlong window) {
     debug("ES2Bridge: making current\n");
     
-    jboolean ret = 1; // makeCurrentContext(CURR_GL_CONTEXT);
+    jboolean ret = makeCurrentContext(CURR_GL_CONTEXT);
     
     void *libGL = dlopen("libGL.dylib", RTLD_GLOBAL);
     debug("libGL = %p", libGL);
