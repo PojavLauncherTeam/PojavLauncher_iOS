@@ -56,7 +56,6 @@ jboolean makeCurrentContext(void *context) {
             glClearColor(0.4f, 0.4f, 0.4f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
             flushBuffer();
-            debug("Drawn frame");
         return JNI_TRUE;
     }
 
