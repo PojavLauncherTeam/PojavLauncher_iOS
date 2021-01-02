@@ -496,22 +496,7 @@ public class GLFW
 
 	public static boolean mGLFWIsGrabbing, mGLFWIsInputReady, mGLFWIsUseStackQueue = false;
 
-	private static final String PROP_WINDOW_WIDTH = "glfwstub.windowWidth";
-	private static final String PROP_WINDOW_HEIGHT= "glfwstub.windowHeight";
-
 	static {
-        String windowWidth = System.getProperty(PROP_WINDOW_WIDTH);
-        String windowHeight = System.getProperty(PROP_WINDOW_HEIGHT);
-		if (windowWidth == null || windowHeight == null) {
-			System.err.println("Warning: Property " + PROP_WINDOW_WIDTH + " or " + PROP_WINDOW_HEIGHT + " not set, defaulting to 1280 and 720");
-
-			mGLFWWindowWidth = 1280;
-            mGLFWWindowHeight = 720;
-		} else {
-            mGLFWWindowWidth = Integer.parseInt(windowWidth);
-            mGLFWWindowHeight = Integer.parseInt(windowHeight);
-        }
-        
         // Minecraft triggers a glfwPollEvents() on splash screen, so update window size there.
         CallbackBridge.receiveCallback(CallbackBridge.EVENT_TYPE_FRAMEBUFFER_SIZE, mGLFWWindowWidth, mGLFWWindowHeight, 0, 0);
         CallbackBridge.receiveCallback(CallbackBridge.EVENT_TYPE_WINDOW_SIZE, mGLFWWindowWidth, mGLFWWindowHeight, 0, 0);
