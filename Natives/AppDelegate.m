@@ -31,7 +31,8 @@
     
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
-    [self.view setNeedsDisplay]
+    view.enableSetNeedsDisplay = YES;
+    [glview setNeedsDisplay]
     
   return YES;
 }
