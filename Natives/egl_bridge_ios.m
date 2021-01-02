@@ -53,9 +53,11 @@ void *getCurrentContext() {
 jboolean makeCurrentContext(void *context) {
     // fprintf(stderr, "IOSWindowSystemInterface : makeCurrentContext %x\n", context);
     if ([EAGLContext setCurrentContext:(__bridge EAGLContext *)jlong_to_ptr(context)] == YES) {
+/*
             glClearColor(0.4f, 0.4f, 0.4f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
             flushBuffer();
+*/
         return JNI_TRUE;
     }
 

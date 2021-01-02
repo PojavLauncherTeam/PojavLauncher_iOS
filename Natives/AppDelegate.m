@@ -31,18 +31,12 @@
     
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
-    view.enableSetNeedsDisplay = YES;
-    [view setNeedsDisplay];
     
-  return YES;
-}
-
-#pragma mark - GLKViewDelegate
-
-- (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
+    [EAGLContext setCurrentContext:context];
+    
     int width_c = (int) roundf([[UIScreen mainScreen] bounds].size.width);
     int height_c = (int) roundf([[UIScreen mainScreen] bounds].size.height);
     callback_AppDelegate_didFinishLaunching(width_c, height_c);
+    
+    return YES;
 }
-
-@end

@@ -60,8 +60,7 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglInit(JNIEnv* env, j
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglMakeCurrent(JNIEnv* env, jclass clazz, jlong window) {
     debug("ES2Bridge: making current\n");
     
-    jboolean ret = makeCurrentContext(CURR_GL_CONTEXT);
-    debug("ES2Bridge: makeCurrent() returns %d\n", ret);
+    jboolean ret = 1; // makeCurrentContext(CURR_GL_CONTEXT);
     
     void *libGL = dlopen("libGL.dylib", RTLD_GLOBAL);
     debug("libGL = %p", libGL);
