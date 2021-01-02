@@ -16,7 +16,6 @@
 
 @implementation AppDelegate
 
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   
     NSLog(@"Hello from app launch!");
@@ -40,3 +39,5 @@
     
     return YES;
 }
+
+@end
