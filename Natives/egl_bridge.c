@@ -52,19 +52,15 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_saveGLContext(JNI
 JNIEXPORT jlong JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglGetCurrentContext(JNIEnv* env, jclass clazz) {
     return (jlong) (uintptr_t) CURR_GL_CONTEXT;
 }
-
+/*
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglInit(JNIEnv* env, jclass clazz) {
     return JNI_TRUE;
 }
-
-JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglMakeCurrent(JNIEnv* env, jclass clazz, jlong window) {
-    debug("ES2Bridge: Initializing\n");
-    jboolean ret = makeCurrentContext(CURR_GL_CONTEXT);
-/*
-    void *libGL = dlopen("libGL.dylib", RTLD_GLOBAL);
-    gl4esInitialize_func *gl4esInitialize = (gl4esInitialize_func*) dlsym(libGL, "gl4es_initialize");
-    gl4esInitialize();
 */
+JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglMakeCurrent(JNIEnv* env, jclass clazz, jlong window) {
+    debug("ES2Bridge: making current\n");
+    jboolean ret = makeCurrentContext(CURR_GL_CONTEXT);
+    debug("ES2Bridge: makeCurrent() returns %d\n", ret);
     return ret;
 }
 

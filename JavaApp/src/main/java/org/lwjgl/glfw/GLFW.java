@@ -567,7 +567,7 @@ public class GLFW
 	}
 
     private static native long nativeEglGetCurrentContext();
-	private static native boolean nativeEglInit();
+	// private static native boolean nativeEglInit();
 	public static native boolean nativeEglMakeCurrent(long window);
 	private static native boolean nativeEglTerminate();
 	private static native boolean nativeEglSwapBuffers();
@@ -768,7 +768,7 @@ public class GLFW
     
 	public static boolean glfwInit() {
         mGLFWInitialTime = (double) System.nanoTime();
-		return nativeEglInit();
+		return true; // nativeEglInit();
     }
 
 	public static void glfwTerminate() {
@@ -944,7 +944,7 @@ public class GLFW
             if (!nativeEglMakeCurrent(window)) {
                 throw new RuntimeException("eglMakeCurrent() failed, check log file for more details");
             }
-            mGLFWCurrentGLContextThread = currentGLThreadID;
+            mGLFWCurrentGLContextThread = currentGLThreadId;
         } else {
             System.out.println("GLFW: glfwMakeContextCurrent() request is skipped");
         }
