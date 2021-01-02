@@ -42,7 +42,7 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_setenv(JNIEnv *en
 }
 
 JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_saveGLContext(JNIEnv* env, jclass clazz) {
-    CURR_GL_CONTEXT = createContext();
+    CURR_GL_CONTEXT = getCurrentContext();
     if (CURR_GL_CONTEXT == NULL) {
         debug("OpenGLES context is NULL...");
         assert(CURR_GL_CONTEXT != NULL);
