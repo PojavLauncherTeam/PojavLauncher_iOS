@@ -34,7 +34,9 @@ public class PLaunchApp {
         try {
             File mcDir = new File("/var/mobile/Documents/minecraft");
             mcDir.mkdirs();
-            Tools.write(mcDir.getAbsolutePath() + "/config_ver.txt", "1.16.5");
+            if (!new File(mcDir, "config_ver.txt").exists()) {
+                Tools.write(mcDir.getAbsolutePath() + "/config_ver.txt", "1.16.5");
+            }
         } catch (Throwable th) {
             th.printStackTrace();
         }
