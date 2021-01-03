@@ -180,9 +180,16 @@ public final class GL {
                     break;
                 case MACOSX:
                     functionProvider = new SharedLibraryGL(OPENGL) {
+                        private final long gl4es_GetProcAddress = library.getFunctionAddress("gl4es_GetProcAddress");
+                        
                         @Override
                         long getExtensionAddress(long name) {
-                            return NULL;
+                            return gl4es_GetProcAddress == NULL ? NULL : callPP(name, gl4es_GetProcAddress);
+                        }
+                        
+                        @Override
+                        long getFunctionAddress(String name) {
+                            return super.getFunctionAddress("gl4es_" + name);
                         }
                     };
                     break;
