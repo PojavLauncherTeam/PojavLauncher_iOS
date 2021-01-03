@@ -96,6 +96,13 @@ void *initCurrentContext() {
     NSLog(@"Binding framebuffer");
     glBindFramebuffer(GL_FRAMEBUFFER, FrameBuffer);
     
+
+    NSLog(@“Testing”);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    flushBuffer();
+    NSLog(@"glGetError() returns %d", glGetError());
+
     return ptr_to_jlong(ctx);
 }
 
@@ -120,6 +127,12 @@ jboolean makeCurrentContextShared(void *context) {
         return JNI_FALSE;
     }
     
+    NSLog(@“Testing”);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    flushBuffer();
+    NSLog(@"glGetError() returns %d", glGetError());
+
     return JNI_TRUE;
 }
 
