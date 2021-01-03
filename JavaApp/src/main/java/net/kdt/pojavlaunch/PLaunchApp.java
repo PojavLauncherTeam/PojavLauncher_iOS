@@ -14,7 +14,7 @@ import net.kdt.pojavlaunch.utils.*;
 import net.kdt.pojavlaunch.value.*;
 
 public class PLaunchApp {
-    public JMinecraftVersionList mVersionList;
+    public static JMinecraftVersionList mVersionList;
     public static void main(String[] args) throws Throwable {
         if (args[0].startsWith("/Applications/")) {
             System.out.println("We are on java now! Starting UI...");
@@ -42,7 +42,7 @@ public class PLaunchApp {
         
         MinecraftAccount acc = new MinecraftAccount();
         acc.selectedVersion = mcver;
-        JMinecraftVersionList.Version version = findVersion(mcver);
+        JMinecraftVersionList.Version verInfo = findVersion(mcver);
         
         try {
             final String downVName = "/" + mcver + "/" + mcver;
@@ -54,7 +54,7 @@ public class PLaunchApp {
             
             if (verInfo.url != null && !new File(verJsonDir).exists()) {
                 System.out.println("Downloading " + mcver + ".json");
-                Tools.downloadFile(version.url, verJsonDir);
+                Tools.downloadFile(verInfo.url, verJsonDir);
             }
             
             verInfo = Tools.getVersionInfo(mcver);
@@ -67,7 +67,7 @@ public class PLaunchApp {
                     libItem.name.startsWith("net.java.jinput") ||
                     libItem.name.startsWith("org.lwjgl")
                 ) { // Black list
-                    publishProgress("1", "Ignored " + libItem.name);
+                    System.out.println("Ignored " + libItem.name);
                     // Thread.sleep(100);
                 } else {
                     String[] libInfo = libItem.name.split(":");
@@ -89,7 +89,7 @@ public class PLaunchApp {
                         }
                         try {
                             libPathURL = libItem.downloads.artifact.url;
-                            Tools.downloadFileMonitored(libPathURL, outLib.getAbsolutePath());
+                            Tools.downloadFile(libPathURL, outLib.getAbsolutePath());
                         } catch (Throwable th) {
                         /*
                             if (!skipIfFailed) {
@@ -106,7 +106,7 @@ public class PLaunchApp {
                 }
             }
             
-            System.out.printon("Downloading " + mcver + ".jar");
+            System.out.println("Downloading " + mcver + ".jar");
             File minecraftMainFile = new File(minecraftMainJar);
             if (!minecraftMainFile.exists() || minecraftMainFile.length() == 0l) {
                 Tools.downloadFile(verInfo.downloads.values().toArray(new MinecraftClientInfo[0])[0].url, minecraftMainJar);
@@ -119,7 +119,7 @@ public class PLaunchApp {
         Tools.launchMinecraft(acc, version);
     }
     
-    private JMinecraftVersionList.Version findVersion(String version) {
+    private static JMinecraftVersionList.Version findVersion(String version) {
         if (mVersionList != null) {
             for (JMinecraftVersionList.Version valueVer: mVersionList.versions) {
                 if (valueVer.id.equals(version)) {
