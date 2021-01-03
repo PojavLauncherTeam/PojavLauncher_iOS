@@ -116,7 +116,7 @@ public class PLaunchApp {
         }
         
         System.out.println("Launching Minecraft " + mcver);
-        Tools.launchMinecraft(acc, version);
+        Tools.launchMinecraft(acc, verInfo);
     }
     
     private static JMinecraftVersionList.Version findVersion(String version) {
