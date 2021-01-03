@@ -41,7 +41,7 @@ int launchJVM(int argc, char *argv[]) {
     debug("Beginning JVM launch\n");
     setenv("LIBGL_FB", "1", 1);
     setenv("LIBGL_MIPMAP", "3", 1);
-    senenv("LIBGL_NORMALIZE", "1", 1);
+    setenv("LIBGL_NORMALIZE", "1", 1);
     
     char *args_path = "/var/mobile/Documents/minecraft/overrideargs.txt";
     char *log_path = "/var/mobile/Documents/minecraft/latestlog.txt";
