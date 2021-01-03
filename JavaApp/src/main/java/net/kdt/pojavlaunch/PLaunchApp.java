@@ -119,7 +119,7 @@ public class PLaunchApp {
         Tools.launchMinecraft(acc, version);
     }
     
-    private JMinecraftVersionList.Version findVersion(List<String> vanillaVerList : String version) {
+    private JMinecraftVersionList.Version findVersion(String version) {
         if (mVersionList != null) {
             for (JMinecraftVersionList.Version valueVer: mVersionList.versions) {
                 if (valueVer.id.equals(version)) {
