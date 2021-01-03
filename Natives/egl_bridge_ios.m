@@ -62,7 +62,7 @@ void *initCurrentContext() {
     GLKView* glkView = obtainGLKView();
 
     EAGLContext *ctx = [EAGLContext currentContext];
-    
+/*
     NSLog(@"Initializing framebuffer");
     glGenFramebuffers(1, &FrameBuffer);
     glGenRenderbuffers(1, &RenderBuffer);
@@ -96,7 +96,7 @@ void *initCurrentContext() {
     
     NSLog(@"Binding framebuffer");
     glBindFramebuffer(GL_FRAMEBUFFER, FrameBuffer);
-
+*/
     return ptr_to_jlong(ctx);
 }
 
@@ -147,10 +147,10 @@ jboolean clearCurrentContext() {
 }
 
 void flushBuffer() {
-    glBindRenderbuffer(GL_RENDERBUFFER, RenderBuffer);
+    // glBindRenderbuffer(GL_RENDERBUFFER, RenderBuffer);
 
     [[EAGLContext currentContext] presentRenderbuffer:GL_RENDERBUFFER];
     
     // prepare new buffer
-    glBindFramebuffer(GL_FRAMEBUFFER, FrameBuffer);
+    // glBindFramebuffer(GL_FRAMEBUFFER, FrameBuffer);
 }
