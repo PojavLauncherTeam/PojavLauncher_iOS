@@ -188,7 +188,7 @@ public final class GL {
                         }
                         
                         @Override
-                        long getFunctionAddress(String name) {
+                        long getFunctionAddress(CharSequence functionName) {
                             return super.getFunctionAddress("gl4es_" + name);
                         }
                     };
