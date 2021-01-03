@@ -59,14 +59,17 @@ GLuint FrameBuffer;
 GLuint DepthBuffer;
 int Width, Height;
 void *initCurrentContext() {
+    NSLog(@"Obtaining GLKView");
     Main_obtainGLKView *obtainGLKView = (Main_obtainGLKView *) dlsym(RTLD_DEFAULT, "obtainGLKView");
     if (obtainGLKView = nil) {
-        NSLog(@"Unable to locate obtainGLKView");
+        NSLog(@"Could not locate obtainGLKView");
+        return nil;
     }
     GLKView* glkView = obtainGLKView();
 
     EAGLContext *ctx = [EAGLContext currentContext];
     
+    NSLog(@"Initializing framebuffer");
     glGenFramebuffers(1, &FrameBuffer);
     glGenRenderbuffers(1, &RenderBuffer);
     glGenRenderbuffers(1, &DepthBuffer);
@@ -74,9 +77,10 @@ void *initCurrentContext() {
     glBindFramebuffer(GL_FRAMEBUFFER, FrameBuffer);
     glBindRenderbuffer(GL_RENDERBUFFER, RenderBuffer);
 
+    NSLog(@"Initializing renderbuffer");
     if ([ctx renderbufferStorage:GL_RENDERBUFFER fromDrawable:(CAEAGLLayer*)glkView.layer] == NO) {
         NSLog(@"error calling MainContext renderbufferStorage");
-        return;
+        return nil;
     }
 
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, RenderBuffer);
@@ -90,10 +94,12 @@ void *initCurrentContext() {
 
     glFlush();
 
+    NSLog(@"Checking framebuffer status");
     if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         NSLog(@"failed to make complete framebuffer object %x", glCheckFramebufferStatus(GL_FRAMEBUFFER));
     }
     
+    NSLog(@"Binding framebuffer");
     glBindFramebuffer(GL_FRAMEBUFFER, FrameBuffer);
     
     return ptr_to_jlong(ctx);
