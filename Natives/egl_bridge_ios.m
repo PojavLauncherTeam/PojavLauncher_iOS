@@ -97,7 +97,7 @@ void *initCurrentContext() {
     glBindFramebuffer(GL_FRAMEBUFFER, FrameBuffer);
     
 
-    NSLog(@“Testing”);
+    NSLog(@"Testing");
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     flushBuffer();
@@ -127,7 +127,7 @@ jboolean makeCurrentContextShared(void *context) {
         return JNI_FALSE;
     }
     
-    NSLog(@“Testing”);
+    NSLog(@"Testing");
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     flushBuffer();
