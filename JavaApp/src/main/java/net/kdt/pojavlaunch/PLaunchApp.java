@@ -14,40 +14,8 @@ import net.kdt.pojavlaunch.utils.*;
 import net.kdt.pojavlaunch.value.*;
 
 public class PLaunchApp {
-    public static void main(String[] args) {
-/*
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            @Override
-            public void uncaughtException(Thread thread, final Throwable ex) {
-                StringWriter sw = new StringWriter();
-                PrintWriter pw = new PrintWriter(sw);
-                ex.printStackTrace(pw);
-                pw.flush();
-                System.err.println("UNCAUGHT EXCEPTION: " + sw.toString());
-
-//                Platform.getPlatform().runOnUIThread(() -> {
-//                    WindowAlertController alertController = new WindowAlertController("Error", sw.toString(), UIAlertControllerStyle.Alert);
-//                    alertController.addAction(new UIAlertAction("OK",
-//                        UIAlertActionStyle.Default, (action) -> {
-//                            alertController.dismissViewController(true, null);
-//                        }
-//                    ));
-//                    alertController.show();  
-//                });
-
-            }
-        });
-        
-        try {
-            PrintStream filePrintStream = new PrintStream(new FileOutputStream(System.getenv("HOME") + "/log_output.txt"));
-            System.setOut(filePrintStream);
-            System.setErr(filePrintStream);
-
-            System.out.println("Starting UI...");
-        } catch (Throwable th) {
-            throw new RuntimeException(th);
-        }
-*/
+    public JMinecraftVersionList mVersionList;
+    public static void main(String[] args) throws Throwable {
         if (args[0].startsWith("/Applications/")) {
             System.out.println("We are on java now! Starting UI...");
             org.lwjgl.glfw.CallbackBridge.nativeLaunchUI(args);
@@ -58,7 +26,7 @@ public class PLaunchApp {
         LauncherPreferences.loadPreferences();
     }
     
-    public static void launchMinecraft() {
+    public static void launchMinecraft() throws Throwable {
         System.out.println("Saving GLES context");
         JREUtils.saveGLContext();
     
@@ -72,15 +40,95 @@ public class PLaunchApp {
             System.out.println("config_ver.txt not found, defaulting to Minecraft 1.13");
         }
         
-        System.out.println("Launching Minecraft " + mcver);
         MinecraftAccount acc = new MinecraftAccount();
         acc.selectedVersion = mcver;
-        JMinecraftVersionList.Version version = Tools.getVersionInfo(mcver);
+        JMinecraftVersionList.Version version = findVersion(mcver);
         
         try {
-            Tools.launchMinecraft(acc, version);
-        } catch (Throwable th) {
-            Tools.showError(th);
+            final String downVName = "/" + mcver + "/" + mcver;
+            String minecraftMainJar = Tools.DIR_HOME_VERSION + downVName + ".jar";
+            String verJsonDir = Tools.DIR_HOME_VERSION + downVName + ".json";
+            
+            System.out.println("Downloading version list");
+            mVersionList = Tools.GLOBAL_GSON.fromJson(DownloadUtils.downloadString("https://launchermeta.mojang.com/mc/game/version_manifest.json"), JMinecraftVersionList.class);
+            
+            if (verInfo.url != null && !new File(verJsonDir).exists()) {
+                System.out.println("Downloading " + mcver + ".json");
+                Tools.downloadFile(version.url, verJsonDir);
+            }
+            
+            verInfo = Tools.getVersionInfo(mcver);
+            
+            File outLib;
+            String libPathURL;
+                
+            for (final DependentLibrary libItem : verInfo.libraries) {
+                if (
+                    libItem.name.startsWith("net.java.jinput") ||
+                    libItem.name.startsWith("org.lwjgl")
+                ) { // Black list
+                    publishProgress("1", "Ignored " + libItem.name);
+                    // Thread.sleep(100);
+                } else {
+                    String[] libInfo = libItem.name.split(":");
+                    String libArtifact = Tools.artifactToPath(libInfo[0], libInfo[1], libInfo[2]);
+                    outLib = new File(Tools.DIR_HOME_LIBRARY + "/" + libArtifact);
+                    outLib.getParentFile().mkdirs();
+
+                    if (!outLib.exists()) {
+                        System.out.println("Downloading " + libItem.name);
+
+                        boolean skipIfFailed = false;
+
+                        if (libItem.downloads == null || libItem.downloads.artifact == null) {
+                            MinecraftLibraryArtifact artifact = new MinecraftLibraryArtifact();
+                            artifact.url = (libItem.url == null ? "https://libraries.minecraft.net/" : libItem.url) + libArtifact;
+                            libItem.downloads = new DependentLibrary.LibraryDownloads(artifact);
+
+                            skipIfFailed = true;
+                        }
+                        try {
+                            libPathURL = libItem.downloads.artifact.url;
+                            Tools.downloadFileMonitored(libPathURL, outLib.getAbsolutePath());
+                        } catch (Throwable th) {
+                        /*
+                            if (!skipIfFailed) {
+                                throw th;
+                            } else {
+                                th.printStackTrace();
+                                publishProgress("0", th.getMessage());
+                            }
+                        */
+                        
+                            System.out.println("Download failed");
+                        }
+                    }
+                }
+            }
+            
+            System.out.printon("Downloading " + mcver + ".jar");
+            File minecraftMainFile = new File(minecraftMainJar);
+            if (!minecraftMainFile.exists() || minecraftMainFile.length() == 0l) {
+                Tools.downloadFile(verInfo.downloads.values().toArray(new MinecraftClientInfo[0])[0].url, minecraftMainJar);
+            }
+        } catch (IOException e) {
+            System.out.println("Download error, skipping");
         }
+        
+        System.out.println("Launching Minecraft " + mcver);
+        Tools.launchMinecraft(acc, version);
+    }
+    
+    private JMinecraftVersionList.Version findVersion(List<String> vanillaVerList : String version) {
+        if (mVersionList != null) {
+            for (JMinecraftVersionList.Version valueVer: mVersionList.versions) {
+                if (valueVer.id.equals(version)) {
+                    return valueVer;
+                }
+            }
+        }
+
+        // Custom version, inherits from base.
+        return Tools.getVersionInfo(version);
     }
 }
