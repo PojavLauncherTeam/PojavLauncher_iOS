@@ -9,5 +9,6 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
+GLKView* obtainGLKView();
 
 @end

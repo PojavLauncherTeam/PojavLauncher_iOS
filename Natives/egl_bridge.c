@@ -42,7 +42,7 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_setenv(JNIEnv *en
 }
 
 JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_saveGLContext(JNIEnv* env, jclass clazz) {
-    CURR_GL_CONTEXT = getCurrentContext();
+    CURR_GL_CONTEXT = initCurrentContext();
     if (CURR_GL_CONTEXT == NULL) {
         debug("OpenGLES context is NULL...");
         assert(CURR_GL_CONTEXT != NULL);
@@ -63,7 +63,11 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglInit(JNIEnv* env, j
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglMakeCurrent(JNIEnv* env, jclass clazz, jlong window) {
     debug("ES2Bridge: making current\n");
     
-    jboolean ret = 1; // makeCurrentContext(CURR_GL_CONTEXT);
+    jboolean ret = makeCurrentContextShared(CURR_GL_CONTEXT);
+    
+    if (!ret) {
+        return ret;
+    }
 
     void *libGL = dlopen("libGL.dylib", RTLD_GLOBAL);
     debug("libGL = %p", libGL);

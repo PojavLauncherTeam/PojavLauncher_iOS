@@ -16,13 +16,18 @@
 
 @implementation AppDelegate
 
+GLKView* mGLKView;
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   
     NSLog(@"Hello from app launch!");
     
     // self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
-    EAGLContext * context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+    EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
+    if (context == nil) {
+        context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+    }
     GLKView *view = [[GLKView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     view.context = context;
     view.delegate = self;
@@ -35,9 +40,15 @@
     
     int width_c = (int) roundf([[UIScreen mainScreen] bounds].size.width);
     int height_c = (int) roundf([[UIScreen mainScreen] bounds].size.height);
+    
+    mGLKView = view;
     callback_AppDelegate_didFinishLaunching(width_c, height_c);
     
     return YES;
+}
+
+GLKView* obtainGLKView() {
+    return mGLKView;
 }
 
 @end
