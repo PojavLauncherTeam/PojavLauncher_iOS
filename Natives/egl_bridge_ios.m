@@ -63,7 +63,7 @@ void *initCurrentContext() {
     if (!obtainGLKView) {
         NSLog(@"Unable to locate obtainGLKView");
     }
-    GLKView* view = obtainGLKView();
+    GLKView* glkView = obtainGLKView();
 
     EAGLContext *ctx = [EAGLContext currentContext];
     
@@ -74,8 +74,7 @@ void *initCurrentContext() {
     glBindFramebuffer(GL_FRAMEBUFFER, FrameBuffer);
     glBindRenderbuffer(GL_RENDERBUFFER, RenderBuffer);
 
-    if (![ctx renderbufferStorage:GL_RENDERBUFFER fromDrawable:(CAEAGLLayer*)View.layer])
-    {
+    if (![ctx renderbufferStorage:GL_RENDERBUFFER fromDrawable:(CAEAGLLayer*)glkView.layer]) {
         NSLog(@"error calling MainContext renderbufferStorage");
         return;
     }
@@ -102,13 +101,11 @@ void *initCurrentContext() {
 
 jboolean makeCurrentContextShared(void *context) {
     EAGLSharegroup *group = ((__bridge EAGLContext *) context).sharegroup;
-    EAGLContext sharedContext = nil;
-    
     if (!group) {
         NSLog(@"Could not get sharegroup from the main context");
     }
     
-    sharedContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3 sharegroup:group];
+    EAGLContext sharedContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3 sharegroup:group];
     if (!sharedContext) {
         sharedContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2 sharegroup:group];
         if (!sharedContext) {
