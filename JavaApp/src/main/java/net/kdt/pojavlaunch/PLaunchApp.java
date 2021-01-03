@@ -42,7 +42,10 @@ public class PLaunchApp {
         
         MinecraftAccount acc = new MinecraftAccount();
         acc.selectedVersion = mcver;
-        JMinecraftVersionList.Version verInfo = findVersion(mcver);
+        
+        new File(Tools.DIR_HOME_VERSION + "/" + mcver).mkdirs();
+        
+        JMinecraftVersionList.Version verInfo = null;
         
         try {
             final String downVName = "/" + mcver + "/" + mcver;
@@ -52,6 +55,7 @@ public class PLaunchApp {
             System.out.println("Downloading version list");
             mVersionList = Tools.GLOBAL_GSON.fromJson(DownloadUtils.downloadString("https://launchermeta.mojang.com/mc/game/version_manifest.json"), JMinecraftVersionList.class);
             
+            verInfo = findVersion(mcver);
             if (verInfo.url != null && !new File(verJsonDir).exists()) {
                 System.out.println("Downloading " + mcver + ".json");
                 Tools.downloadFile(verInfo.url, verJsonDir);
