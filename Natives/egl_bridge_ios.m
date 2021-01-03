@@ -105,7 +105,7 @@ jboolean makeCurrentContextShared(void *context) {
         NSLog(@"Could not get sharegroup from the main context");
     }
     
-    EAGLContext sharedContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3 sharegroup:group];
+    EAGLContext *sharedContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3 sharegroup:group];
     if (!sharedContext) {
         sharedContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2 sharegroup:group];
         if (!sharedContext) {
