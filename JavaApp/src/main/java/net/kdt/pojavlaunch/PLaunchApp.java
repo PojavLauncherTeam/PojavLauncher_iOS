@@ -26,7 +26,7 @@ public class PLaunchApp {
         LauncherPreferences.loadPreferences();
     }
     
-    public static void launchMinecraft() throws Throwable {
+    public static void launchMinecraft() {
         System.out.println("Saving GLES context");
         JREUtils.saveGLContext();
     
@@ -116,7 +116,11 @@ public class PLaunchApp {
         }
         
         System.out.println("Launching Minecraft " + mcver);
-        Tools.launchMinecraft(acc, verInfo);
+        try {
+            Tools.launchMinecraft(acc, verInfo);
+        } catch (Throwable th) {
+            throw new RuntimeException(th);
+        }
     }
     
     private static JMinecraftVersionList.Version findVersion(String version) {
