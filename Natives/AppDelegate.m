@@ -10,13 +10,13 @@
 
 #include "utils.h"
 
+GLKView* mGLKView;
+
 @interface AppDelegate ()
 
 @end
 
 @implementation AppDelegate
-
-GLKView* mGLKView;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   
@@ -47,8 +47,8 @@ GLKView* mGLKView;
     return YES;
 }
 
+@end
+
 GLKView* obtainGLKView() {
     return mGLKView;
 }
-
-@end
