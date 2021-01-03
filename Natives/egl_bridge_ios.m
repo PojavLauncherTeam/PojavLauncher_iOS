@@ -60,7 +60,7 @@ GLuint DepthBuffer;
 int Width, Height;
 void *initCurrentContext() {
     Main_obtainGLKView *obtainGLKView = (Main_obtainGLKView *) dlsym(RTLD_DEFAULT, "obtainGLKView");
-    if (!obtainGLKView) {
+    if (obtainGLKView = nil) {
         NSLog(@"Unable to locate obtainGLKView");
     }
     GLKView* glkView = obtainGLKView();
@@ -74,7 +74,7 @@ void *initCurrentContext() {
     glBindFramebuffer(GL_FRAMEBUFFER, FrameBuffer);
     glBindRenderbuffer(GL_RENDERBUFFER, RenderBuffer);
 
-    if (![ctx renderbufferStorage:GL_RENDERBUFFER fromDrawable:(CAEAGLLayer*)glkView.layer]) {
+    if ([ctx renderbufferStorage:GL_RENDERBUFFER fromDrawable:(CAEAGLLayer*)glkView.layer] == NO) {
         NSLog(@"error calling MainContext renderbufferStorage");
         return;
     }
@@ -101,23 +101,26 @@ void *initCurrentContext() {
 
 jboolean makeCurrentContextShared(void *context) {
     EAGLSharegroup *group = ((__bridge EAGLContext *) context).sharegroup;
-    if (!group) {
+    if (group == nil) {
         NSLog(@"Could not get sharegroup from the main context");
+        return JNI_FALSE;
     }
     
     EAGLContext *sharedContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3 sharegroup:group];
-    if (!sharedContext) {
+    if (sharedContext == nil) {
         sharedContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2 sharegroup:group];
-        if (!sharedContext) {
+        if (sharedContext == nil) {
             NSLog(@"Could not create sharedContext");
             return JNI_FALSE;
         }
     }
     
-    if (!makeCurrentContext((__bridge void *) sharedContext)){
+    if (makeCurrentContext((__bridge void *) sharedContext) == JNI_FALSE){
         NSLog(@"Could not make current sharedContext");
         return JNI_FALSE;
     }
+    
+    return JNI_TRUE;
 }
 
 jboolean makeCurrentContext(void *context) {
@@ -125,7 +128,7 @@ jboolean makeCurrentContext(void *context) {
         return JNI_TRUE;
     }
 
-    return JNI_TRUE;
+    return JNI_FALSE;
 }
 
 jboolean clearCurrentContext() {
