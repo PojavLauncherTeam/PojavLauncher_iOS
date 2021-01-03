@@ -57,6 +57,7 @@ typedef GLKView* Main_obtainGLKView();
 GLuint RenderBuffer;
 GLuint FrameBuffer;
 GLuint DepthBuffer;
+int Width, Height;
 void *initCurrentContext() {
     Main_obtainGLKView *obtainGLKView = (Main_obtainGLKView *) dlsym(RTLD_DEFAULT, "obtainGLKView");
     if (!obtainGLKView) {
@@ -66,35 +67,35 @@ void *initCurrentContext() {
 
     EAGLContext *ctx = [EAGLContext currentContext];
     
-    glGenFramebuffersOES(1, &FrameBuffer);
-    glGenRenderbuffersOES(1, &RenderBuffer);
-    glGenRenderbuffersOES(1, &DepthBuffer);
+    glGenFramebuffers(1, &FrameBuffer);
+    glGenRenderbuffers(1, &RenderBuffer);
+    glGenRenderbuffers(1, &DepthBuffer);
 
-    glBindFramebufferOES(GL_FRAMEBUFFER_OES, FrameBuffer);
-    glBindRenderbufferOES(GL_RENDERBUFFER_OES, RenderBuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, FrameBuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, RenderBuffer);
 
-    if (![MainContext renderbufferStorage:GL_RENDERBUFFER_OES fromDrawable:(CAEAGLLayer*)View.layer])
+    if (![ctx renderbufferStorage:GL_RENDERBUFFER fromDrawable:(CAEAGLLayer*)View.layer])
     {
         NSLog(@"error calling MainContext renderbufferStorage");
         return;
     }
 
-    glFramebufferRenderbufferOES(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_RENDERBUFFER_OES, RenderBuffer);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, RenderBuffer);
 
-    glGetRenderbufferParameterivOES(GL_RENDERBUFFER_OES, GL_RENDERBUFFER_WIDTH_OES, &Width);
-    glGetRenderbufferParameterivOES(GL_RENDERBUFFER_OES, GL_RENDERBUFFER_HEIGHT_OES, &Height);
+    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &Width);
+    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &Height);
 
-    glBindRenderbufferOES(GL_RENDERBUFFER_OES, DepthBuffer);
-    glRenderbufferStorageOES(GL_RENDERBUFFER_OES, GL_DEPTH_COMPONENT16_OES, Width, Height);
-    glFramebufferRenderbufferOES(GL_FRAMEBUFFER_OES, GL_DEPTH_ATTACHMENT_OES, GL_RENDERBUFFER_OES, DepthBuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, DepthBuffer);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, Width, Height);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, DepthBuffer);
 
     glFlush();
 
-    if(glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES) != GL_FRAMEBUFFER_COMPLETE_OES) {
-        NSLog(@"failed to make complete framebuffer object %x", glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES));
+    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+        NSLog(@"failed to make complete framebuffer object %x", glCheckFramebufferStatus(GL_FRAMEBUFFER));
     }
     
-    glBindFramebufferOES(GL_FRAMEBUFFER_OES, FrameBuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, FrameBuffer);
     
     return ptr_to_jlong(ctx);
 }
@@ -139,10 +140,10 @@ jboolean clearCurrentContext() {
 }
 
 void flushBuffer() {
-    glBindRenderbufferOES(GL_RENDERBUFFER_OES, RenderBuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, RenderBuffer);
 
     [[EAGLContext currentContext] presentRenderbuffer:GL_RENDERBUFFER];
     
     // prepare new buffer
-    glBindFramebufferOES(GL_FRAMEBUFFER_OES, FrameBuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, FrameBuffer);
 }
