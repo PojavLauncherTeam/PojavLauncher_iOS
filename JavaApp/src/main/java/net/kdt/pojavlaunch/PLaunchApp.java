@@ -70,6 +70,7 @@ public class PLaunchApp {
                 UIKit.updateProgressSafe(0, "config_ver.txt not found, defaulting to Minecraft 1.16.5");
             }
 
+            AccountJNI.CURRENT_ACCOUNT.selectedVersion = mcver;
             UIKit.updateProgressSafe(0, "Selected Minecraft version: " + mcver);
 
             try {
