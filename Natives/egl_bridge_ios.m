@@ -91,17 +91,11 @@ void *initCurrentContext() {
     NSLog(@"Checking framebuffer status");
     if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         NSLog(@"failed to make complete framebuffer object %x", glCheckFramebufferStatus(GL_FRAMEBUFFER));
+        return nil;
     }
     
     NSLog(@"Binding framebuffer");
     glBindFramebuffer(GL_FRAMEBUFFER, FrameBuffer);
-    
-
-    NSLog(@"Testing");
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-    flushBuffer();
-    NSLog(@"glGetError() returns %d", glGetError());
 
     return ptr_to_jlong(ctx);
 }
