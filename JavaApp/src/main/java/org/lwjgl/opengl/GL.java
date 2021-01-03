@@ -132,7 +132,18 @@ public final class GL {
 
         @Override
         public long getFunctionAddress(ByteBuffer functionName) {
-            long address = getExtensionAddress(memAddress(functionName));
+            long address = NULL;
+        
+            // Try locate GL4ES function first
+            String funcName = memASCII(functionName);
+            if (!funcName.startsWith("gl4es_gl")) {
+                address = getFunctionAddress("gl4es_" + funcName);
+                System.out.println(funcName + " = " + address);
+            }
+        
+            if (address == NULL) {
+                address = getExtensionAddress(memAddress(functionName));
+            }
             if (address == NULL) {
                 address = library.getFunctionAddress(functionName);
                 if (address == NULL && DEBUG_FUNCTIONS) {
@@ -185,11 +196,6 @@ public final class GL {
                         @Override
                         long getExtensionAddress(long name) {
                             return gl4es_GetProcAddress == NULL ? NULL : callPP(name, gl4es_GetProcAddress);
-                        }
-                        
-                        @Override
-                        long getFunctionAddress(CharSequence functionName) {
-                            return super.getFunctionAddress("gl4es_" + name);
                         }
                     };
                     break;
