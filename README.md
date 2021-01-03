@@ -61,16 +61,14 @@ chmod 755 *.sh
 - [x] OpenAL: use @kcat's openal-soft
 - [x] Input pipe implementation
 - [x] Account authentication (partial).
-- [ ] Does it work? Partial.
-- Currently, only Minecraft 1.14+ fully works.
-- Forge won't work, but Fabric and OptiFine will.
+- [x] Does it work? Partial.
+- Currently, only Minecraft 1.6.1+ tested to fully works.
+- Forge and Fabric API won't work, but Fabric Loader and OptiFine will.
 
 ## Known issues
 - Mojang authentication might not work, but copying logged in account json from Android will work.
-- Camera position will be jumped to random location on first time touch.
-- 1.12.2 and below only render a tiny panorama at bottom left corner.
-- Other versions will crash for various reasons: Narrator crash, etc...
-- It may crash sometimes, but try launch again until you get it works.
+- (Some versions) Camera position will be jumped to random location on first time touch.
+- It might crash sometimes, but try launch again until you get it works.
 
 ## Installing OpenJDK 16
 ### For Chimera/Odyssey bootstrap
@@ -87,7 +85,6 @@ chmod 755 *.sh
 ## Directory locations
 - Account json directory: `/var/mobile/Documents/.pojavlauncher/accounts`.
 - Minecraft home directory: `/var/mobile/Documents/minecraft`.
-- Select a version: edit `/var/mobile/Documents/minecraft/config_ver.txt`, put to Minecraft version want to start.
 
 ## License
 - PojavLauncher is licensed under [GNU GPLv3](https://github.com/khanhduytran0/PojavLauncher_iOS/blob/master/LICENSE).
