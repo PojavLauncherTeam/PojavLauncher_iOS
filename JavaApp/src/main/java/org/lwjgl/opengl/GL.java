@@ -138,7 +138,6 @@ public final class GL {
             String funcName = memASCII(functionName);
             if (!funcName.startsWith("gl4es_gl")) {
                 address = getFunctionAddress("gl4es_" + funcName);
-                System.out.println(funcName + " = " + address);
             }
         
             if (address == NULL) {
