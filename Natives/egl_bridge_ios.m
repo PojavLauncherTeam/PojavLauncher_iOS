@@ -29,6 +29,7 @@
 #import <GLKit/GLKit.h>
 #import <dlfcn.h>
 
+#import "AppDelegate.h"
 #import "egl_bridge_ios.h"
 
 #include <OpenGLES/ES2/gl.h>
@@ -52,19 +53,12 @@ void *getCurrentContext() {
     return ptr_to_jlong(ctx);
 }
 
-typedef GLKView* Main_obtainGLKView();
-
 GLuint RenderBuffer;
 GLuint FrameBuffer;
 GLuint DepthBuffer;
 int Width, Height;
 void *initCurrentContext() {
     NSLog(@"Obtaining GLKView");
-    Main_obtainGLKView *obtainGLKView = (Main_obtainGLKView *) dlsym(RTLD_DEFAULT, "obtainGLKView");
-    if (obtainGLKView = nil) {
-        NSLog(@"Could not locate obtainGLKView");
-        return nil;
-    }
     GLKView* glkView = obtainGLKView();
 
     EAGLContext *ctx = [EAGLContext currentContext];
