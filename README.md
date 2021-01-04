@@ -10,7 +10,7 @@ Minecraft: Java Edition launcher for iOS, based on [PojavLauncher Android](https
 - [Credits & Third party components and their licenses](#credits--third-party-components-and-their-licenses)
 
 ## Introduction
-- Not finished yet!
+- This is an attempt to get Minecraft Java run on a jailbroken iOS.
 - There's no eta on this project.
 
 ## How can it work?
@@ -18,6 +18,14 @@ Minecraft: Java Edition launcher for iOS, based on [PojavLauncher Android](https
 - Use GL4ES for OpenGL -> OpenGL ES translator.
 - Use our [LWJGL3 iOS port](https://github.com/PojavLauncherTeam/lwjgl3).
 - Use same launch method as PojavLauncher Android.
+
+## Current status
+- [x] Java Runtime Environment: OpenJDK 16.
+- [x] LWJGL3 iOS port: works
+- [x] OpenGL: GL4ES
+- [x] Did Minecraft recognize OpenGL?
+- [ ] Does it work?
+- Current error: `GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT` tested on Minecraft 1.13, 1.14 and 1.15.2 (probably all other versions).
 
 ## Installing OpenJDK 16
 - Download [openjdk-16-jre • Procursus](https://www.ios-repo-updates.com/repository/procursus/package/openjdk-16-jre) .deb file (~40mb).
