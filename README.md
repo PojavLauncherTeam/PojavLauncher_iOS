@@ -38,8 +38,20 @@ Minecraft: Java Edition launcher for iOS, based on [PojavLauncher Android](https
 ### For non-jailbroken devices
 - It’s not possible...
 
-## Credits & Third party components and their licenses
-- [OpenJDK 16](https://www.ios-repo-updates.com/repository/procursus/package/openjdk-16-jre): GNU GPLv2 license.
-- GL4ES
-- Boardwalk JVM Launcher.
+## Want a try or debug?
+- Minecraft home directory: `/var/mobile/Documents/minecraft`.
+- Select a version: edit `/var/mobile/Documents/minecraft/config_ver.txt`, put to Minecraft version want to start.
 
+
+## License
+- PojavLauncher is licensed under [GNU GPLv3](https://github.com/khanhduytran0/PojavLauncher_iOS/blob/master/LICENSE).
+
+## Contributing
+Contributions are welcome! We welcome any type of contribution, not only code. Any code change should be submitted as a pull request. The description should explain what the code does and give steps to execute it.
+
+## Credits & Third party components and their licenses
+- [Boardwalk](https://github.com/zhuowei/Boardwalk) (JVM Launcher): Unknown License/[Apache License 2.0](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE) or GNU GPLv2.
+- [GL4ES](https://github.com/ptitSeb/gl4es): [MIT License](https://github.com/ptitSeb/gl4es/blob/master/LICENSE).<br>
+- [OpenJDK](https://www.ios-repo-updates.com/repository/procursus/package/openjdk-16-jre): [GNU GPLv2 License](https://openjdk.java.net/legal/gplv2+ce.html).<br>
+- [LWJGL3](https://github.com/PojavLauncherTeam/lwjgl3): [BSD-3 License](https://github.com/LWJGL/lwjgl3/blob/master/LICENSE.md).
+- [LWJGLX](https://github.com/PojavLauncherTeam/lwjglx) (LWJGL2 API compatibility layer for LWJGL3): unknown license.<br>
