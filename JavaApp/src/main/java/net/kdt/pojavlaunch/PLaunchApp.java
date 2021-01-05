@@ -3,12 +3,10 @@ package net.kdt.pojavlaunch;
 import java.io.*;
 import java.util.Arrays;
 
+import javafx.application.Application;
+
 import org.lwjgl.glfw.CallbackBridge;
-/*
-import org.robovm.apple.foundation.*;
-import org.robovm.apple.uikit.*;
-import org.robovm.pods.dialog.*;
-*/
+
 import net.kdt.pojavlaunch.prefs.*;
 import net.kdt.pojavlaunch.utils.*;
 import net.kdt.pojavlaunch.value.*;
@@ -24,6 +22,20 @@ public class PLaunchApp {
         }
 
         LauncherPreferences.loadPreferences();
+    }
+    
+    public static void applicationDidFinishLaunching() {
+        
+    @Override
+    public boolean didFinishLaunching(UIApplication application,
+        Thread launchThread = new Thread() {
+            @Override
+            public void run() {
+                Application.launch(PLaunchJFXApp.class);
+            }
+        };
+        launchThread.setDaemon(true);
+        launchThread.start();
     }
     
     public static void launchMinecraft() {

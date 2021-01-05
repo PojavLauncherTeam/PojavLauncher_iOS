@@ -49,7 +49,7 @@ public class CallbackBridge {
     public static void callback_AppDelegate_didFinishLaunching(int width, int height) {
         windowWidth = width;
         windowHeight = height;
-        net.kdt.pojavlaunch.PLaunchApp.launchMinecraft();
+        net.kdt.pojavlaunch.PLaunchApp.applicationDidFinishLaunching();
     }
     
     public static boolean nativeIsGrabbing() {

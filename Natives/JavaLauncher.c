@@ -1,3 +1,4 @@
+#include <dirent.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <dlfcn.h>
@@ -45,7 +46,23 @@ int launchJVM(int argc, char *argv[]) {
     
     char *args_path = "/var/mobile/Documents/minecraft/overrideargs.txt";
     char *log_path = "/var/mobile/Documents/minecraft/latestlog.txt";
-    char *classpath = "/Applications/PojavLauncher.app/libs/launcher.jar:/Applications/PojavLauncher.app/libs/ExagearApacheCommons.jar:/Applications/PojavLauncher.app/libs/gson-2.8.6.jar:/Applications/PojavLauncher.app/libs/jsr305.jar:/Applications/PojavLauncher.app/libs/lwjgl3-minecraft.jar";
+    char classpath[10000];
+    
+    // "/Applications/PojavLauncher.app/libs/launcher.jar:/Applications/PojavLauncher.app/libs/ExagearApacheCommons.jar:/Applications/PojavLauncher.app/libs/gson-2.8.6.jar:/Applications/PojavLauncher.app/libs/jsr305.jar:/Applications/PojavLauncher.app/libs/lwjgl3-minecraft.jar";
+    
+    // Generate classpath
+    DIR *d;
+    struct dirent *dir;
+    d = opendir("/Applications/PojavLauncher.app/libs");
+    int cplen = 0;
+    if (d) {
+        while ((dir = readdir(d)) != NULL) {
+            cplen += sprintf(classpath, dir->d_name);
+            classpath[cplen] = ':';
+            cplen ++;
+        }
+        closedir(d);
+    }
     
     debug("Staring logging STDIO as jrelog:V\n");
     // Redirect stdio to latestlog.txt
