@@ -14,7 +14,7 @@ public class PLaunchJFXApp extends Application {
         Circle circ = new Circle(40, 40, 30);
         Group root = new Group(circ);
         Scene scene = new Scene(root, 400, 300);
-        stage.setTitle("My JavaFX Application");
+        stage.setTitle("JavaFX Application");
         stage.setScene(scene);
         stage.show();
 */

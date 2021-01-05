@@ -14,7 +14,7 @@ import net.kdt.pojavlaunch.value.*;
 public class PLaunchApp {
     public static JMinecraftVersionList mVersionList;
     public static void main(String[] args) throws Throwable {
-        System.setProperty("os.name", "iOS");
+        // System.setProperty("os.name", "iOS");
         System.setProperty("javafx.verbose", "true");
         System.setProperty("javafx.platform", "ios");
         System.setProperty("glass.platform", "ios");
@@ -38,6 +38,7 @@ public class PLaunchApp {
     }
     
     public static void applicationDidFinishLaunching() {
+/*
         Thread launchThread = new Thread() {
             @Override
             public void run() {
@@ -46,6 +47,9 @@ public class PLaunchApp {
         };
         launchThread.setDaemon(true);
         launchThread.start();
+*/
+
+        launchMinecrart();
     }
     
     public static void launchMinecraft() {
