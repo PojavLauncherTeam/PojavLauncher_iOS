@@ -25,9 +25,6 @@ public class PLaunchApp {
     }
     
     public static void applicationDidFinishLaunching() {
-        
-    @Override
-    public boolean didFinishLaunching(UIApplication application,
         Thread launchThread = new Thread() {
             @Override
             public void run() {
