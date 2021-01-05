@@ -43,9 +43,26 @@ int launchJVM(int argc, char *argv[]) {
     setenv("LIBGL_MIPMAP", "3", 1);
     setenv("LIBGL_NORMALIZE", "1", 1);
     
+    char *java_libs_dir = "/Applications/PojavLauncher.app/libs";
+    
     char *args_path = "/var/mobile/Documents/minecraft/overrideargs.txt";
     char *log_path = "/var/mobile/Documents/minecraft/latestlog.txt";
-    char *classpath = "/Applications/PojavLauncher.app/libs/launcher.jar:/Applications/PojavLauncher.app/libs/ExagearApacheCommons.jar:/Applications/PojavLauncher.app/libs/gson-2.8.6.jar:/Applications/PojavLauncher.app/libs/jsr305.jar:/Applications/PojavLauncher.app/libs/lwjgl3-minecraft.jar";
+    char classpath[10000];
+    
+    // "/Applications/PojavLauncher.app/libs/launcher.jar:/Applications/PojavLauncher.app/libs/ExagearApacheCommons.jar:/Applications/PojavLauncher.app/libs/gson-2.8.6.jar:/Applications/PojavLauncher.app/libs/jsr305.jar:/Applications/PojavLauncher.app/libs/lwjgl3-minecraft.jar";
+    
+    // Generate classpath
+    DIR *d;
+    struct dirent *dir;
+    d = opendir(java_libs_dir);
+    int cplen = 0;
+    if (d) {
+        while ((dir = readdir(d)) != NULL) {
+            cplen += sprintf(classpath + cplen, "%s/%s:", java_libs_dir, dir->d_name);
+        }
+        closedir(d);
+    }
+    debug("Classpath generated: %s", classpath);
     
     debug("Staring logging STDIO as jrelog:V\n");
     // Redirect stdio to latestlog.txt
