@@ -14,6 +14,18 @@ import net.kdt.pojavlaunch.value.*;
 public class PLaunchApp {
     public static JMinecraftVersionList mVersionList;
     public static void main(String[] args) throws Throwable {
+        System.setProperty("javafx.verbose", "true");
+        System.setProperty("javafx.platform", "ios");
+        System.setProperty("glass.platform", "ios");
+        System.setProperty("jfxmedia.platforms", "IOSPlatform");
+        System.setProperty("com.sun.javafx.isEmbedded", "true");
+
+        System.setProperty("prism.verbose", "true");
+        System.setProperty("prism.allowhidpi", "true");
+        System.setProperty("prism.mintexturesize", "16");
+        System.setProperty("prism.static.libraries", "false");
+        System.setProperty("prism.useNativeIIO", "false");
+        
         if (args[0].startsWith("/Applications/")) {
             System.out.println("We are on java now! Starting UI...");
             org.lwjgl.glfw.CallbackBridge.nativeLaunchUI(args);
