@@ -1,4 +1,4 @@
-package net.kdt.plaunch;
+package net.kdt.pojavlaunch;
 
 import java.io.*;
 
