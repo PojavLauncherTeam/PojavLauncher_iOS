@@ -31,6 +31,7 @@ GLKView* mGLKView;
     GLKView *view = [[GLKView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     view.context = context;
     view.delegate = self;
+    view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
     [self.window addSubview:view];
     
     self.window.backgroundColor = [UIColor whiteColor];
