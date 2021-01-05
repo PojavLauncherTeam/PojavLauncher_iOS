@@ -5,7 +5,6 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <string.h>
-#include <dirent.h>
 
 #include <sys/stat.h>
 #include <sys/types.h>

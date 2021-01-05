@@ -14,6 +14,7 @@ import net.kdt.pojavlaunch.value.*;
 public class PLaunchApp {
     public static JMinecraftVersionList mVersionList;
     public static void main(String[] args) throws Throwable {
+        System.setProperty("os.name", "iOS");
         System.setProperty("javafx.verbose", "true");
         System.setProperty("javafx.platform", "ios");
         System.setProperty("glass.platform", "ios");

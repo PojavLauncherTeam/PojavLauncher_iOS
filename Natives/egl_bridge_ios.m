@@ -53,85 +53,9 @@ void *getCurrentContext() {
     return ptr_to_jlong(ctx);
 }
 
-GLuint RenderBuffer;
-GLuint FrameBuffer;
-GLuint DepthBuffer;
-int Width, Height;
-void *initCurrentContext() {
-    NSLog(@"Obtaining GLKView");
-    GLKView* glkView = obtainGLKView();
-
-    EAGLContext *ctx = [EAGLContext currentContext];
-/*
-    NSLog(@"Initializing framebuffer");
-    glGenFramebuffers(1, &FrameBuffer);
-    glGenRenderbuffers(1, &RenderBuffer);
-    glGenRenderbuffers(1, &DepthBuffer);
-
-    glBindFramebuffer(GL_FRAMEBUFFER, FrameBuffer);
-    glBindRenderbuffer(GL_RENDERBUFFER, RenderBuffer);
-
-    NSLog(@"Initializing renderbuffer");
-    if ([ctx renderbufferStorage:GL_RENDERBUFFER fromDrawable:(CAEAGLLayer*)glkView.layer] == NO) {
-        NSLog(@"error calling MainContext renderbufferStorage");
-        return nil;
-    }
-
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, RenderBuffer);
-
-    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &Width);
-    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &Height);
-
-    glBindRenderbuffer(GL_RENDERBUFFER, DepthBuffer);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, Width, Height);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, DepthBuffer);
-
-    glFlush();
-
-    NSLog(@"Checking framebuffer status");
-    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-        NSLog(@"failed to make complete framebuffer object %x", glCheckFramebufferStatus(GL_FRAMEBUFFER));
-        return nil;
-    }
-    
-    NSLog(@"Binding framebuffer");
-    glBindFramebuffer(GL_FRAMEBUFFER, FrameBuffer);
-*/
-    return ptr_to_jlong(ctx);
-}
-
-jboolean makeCurrentContextShared(void *context) {
-    EAGLSharegroup *group = ((__bridge EAGLContext *) context).sharegroup;
-    if (group == nil) {
-        NSLog(@"Could not get sharegroup from the main context");
-        return JNI_FALSE;
-    }
-    
-    EAGLContext *sharedContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3 sharegroup:group];
-    if (sharedContext == nil) {
-        sharedContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2 sharegroup:group];
-        if (sharedContext == nil) {
-            NSLog(@"Could not create sharedContext");
-            return JNI_FALSE;
-        }
-    }
-    
-    if (makeCurrentContext((__bridge void *) sharedContext) == JNI_FALSE){
-        NSLog(@"Could not make current sharedContext");
-        return JNI_FALSE;
-    }
-    
-    NSLog(@"Testing");
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-    flushBuffer();
-    NSLog(@"glGetError() returns %d", glGetError());
-
-    return JNI_TRUE;
-}
-
 jboolean makeCurrentContext(void *context) {
     if ([EAGLContext setCurrentContext:(__bridge EAGLContext *)jlong_to_ptr(context)] == YES) {
+        glViewport(0, 0, width_c, height_c);
         return JNI_TRUE;
     }
 

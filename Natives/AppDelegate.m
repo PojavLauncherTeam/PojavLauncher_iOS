@@ -10,7 +10,7 @@
 
 #include "utils.h"
 
-GLKView* mGLKView;
+// GLKView* mGLKView;
 
 @interface AppDelegate ()
 
@@ -19,7 +19,7 @@ GLKView* mGLKView;
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  
+/*
     NSLog(@"Hello from app launch!");
     
     // self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -38,18 +38,20 @@ GLKView* mGLKView;
     [self.window makeKeyAndVisible];
     
     [EAGLContext setCurrentContext:context];
-    
-    int width_c = (int) roundf([[UIScreen mainScreen] bounds].size.width);
-    int height_c = (int) roundf([[UIScreen mainScreen] bounds].size.height);
-    
+        
     mGLKView = view;
+*/
+    width_c = (int) roundf([[UIScreen mainScreen] bounds].size.width);
+    height_c = (int) roundf([[UIScreen mainScreen] bounds].size.height);
+    
     callback_AppDelegate_didFinishLaunching(width_c, height_c);
     
     return YES;
 }
 
 @end
-
+/*
 GLKView* obtainGLKView() {
     return mGLKView;
 }
+*/
