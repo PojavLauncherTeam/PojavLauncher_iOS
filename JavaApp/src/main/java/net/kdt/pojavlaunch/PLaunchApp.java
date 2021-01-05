@@ -49,7 +49,7 @@ public class PLaunchApp {
         launchThread.start();
 */
 
-        launchMinecrart();
+        launchMinecraft();
     }
     
     public static void launchMinecraft() {
