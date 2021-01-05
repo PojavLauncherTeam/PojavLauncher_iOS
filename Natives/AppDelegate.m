@@ -8,6 +8,9 @@
 #import <Foundation/Foundation.h>
 #import <math.h>
 
+#include <dirent.h>
+#include <stdio.h>
+
 #include "utils.h"
 
 GLKView* mGLKView;
