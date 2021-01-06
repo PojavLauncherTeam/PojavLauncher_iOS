@@ -37,6 +37,10 @@ jobs:
           cmake .. -G Xcode -DCMAKE_TOOLCHAIN_FILE=ios.toolchain.cmake -DPLATFORM=OS64 -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED="NO" -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY=""
           cmake --build . --config Release --target pojavexec PojavLauncher
           cd ../..
+          
+          mkdir -p Natives/build/Release-iphoneos/PojavLauncher.app/Base.lproj
+          ibtool --compile Natives/build/Release-iphoneos/PojavLauncher.app/Base.lproj/Main.storyboardc Natives/en.lproj/Main.storyboard
+          
           mkdir -p Natives/build/Release-iphoneos/PojavLauncher.app/Frameworks
           cp Natives/build/Release-iphoneos/libpojavexec.dylib Natives/build/Release-iphoneos/PojavLauncher.app/Frameworks/
           cp -R Natives/resources/* Natives/build/Release-iphoneos/PojavLauncher.app/

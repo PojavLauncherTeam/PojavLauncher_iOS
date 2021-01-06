@@ -24,6 +24,8 @@
         <string>2</string>
         <key>LSRequiresIPhoneOS</key>
         <true/>
+        	<key>UIMainStoryboardFile</key>
+        	<string>Main</string>
         <key>UIDeviceFamily</key>
         <array>
             <integer>1</integer>
@@ -32,6 +34,7 @@
         <key>UIRequiredDeviceCapabilities</key>
         <array>
             <string>arm64</string>
+		    <string>opengles-2</string>
         </array>
         <key>UISupportedInterfaceOrientations</key>
         <array>
