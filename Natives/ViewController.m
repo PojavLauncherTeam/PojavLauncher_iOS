@@ -41,7 +41,7 @@
     [super viewWillAppear:animated];
 
     [self setPaused:YES];
-    resumeOnDidBecomeActive = NO;
+    [self setResumeOnDidBecomeActive:NO];
 }
 
 - (void)dealloc
