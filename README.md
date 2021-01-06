@@ -24,8 +24,9 @@ Minecraft: Java Edition launcher for iOS, based on [PojavLauncher Android](https
 - [x] LWJGL3 iOS port: works
 - [x] OpenGL: GL4ES
 - [x] Did Minecraft recognize OpenGL?
-- [ ] Does it work?
-- Current error: `GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT` tested on Minecraft 1.13, 1.14 and 1.15.2 (probably all other versions).
+- [ ] Does it work? Partial.
+- Currently, only rd-132211 (the oldest Minecraft version :V) works. It may crash sometimes, but try launch again until you get it works.
+- Other versions will give error: `GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT` tested on Minecraft 1.13, 1.14 and 1.15.2 (probably almost any other versions).
 
 ## Installing OpenJDK 16
 - Download [openjdk-16-jre • Procursus](https://www.ios-repo-updates.com/repository/procursus/package/openjdk-16-jre) .deb file (~40mb).
