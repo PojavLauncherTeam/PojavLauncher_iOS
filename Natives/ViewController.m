@@ -1,8 +1,8 @@
 #import "ViewController.h"
 #include "utils.h"
 
-#include <OpenGLES/ES2/gl.h>
-#include <OpenGLES/ES2/glext.h>
+#import <OpenGLES/ES2/gl.h>
+#import <OpenGLES/ES2/glext.h>
 
 @interface ViewController () {
 }
