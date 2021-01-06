@@ -36,6 +36,14 @@
     [self setupGL];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self setPaused:YES];
+    resumeOnDidBecomeActive = NO;
+}
+
 - (void)dealloc
 {
     if ([EAGLContext currentContext] == self.context) {
@@ -46,8 +54,7 @@
 - (void)setupGL
 {
     [EAGLContext setCurrentContext:self.context];
-    self.paused = YES;
-
+    
     glClearColor(0.1, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
