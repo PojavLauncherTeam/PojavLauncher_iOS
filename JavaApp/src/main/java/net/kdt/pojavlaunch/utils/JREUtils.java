@@ -103,9 +103,6 @@ public class JREUtils
         envMap.put("MESA_GLSL_CACHE_DIR", System.getProperty("java.io.tmpdir"));
         envMap.put("DYLD_LIBRARY_PATH", LD_LIBRARY_PATH);
         // envMap.put("PATH", Tools.DIR_HOME_JRE + "/bin:" + Os.getenv("PATH"));
-    
-        envMap.put("AWTSTUB_WIDTH", Integer.toString(CallbackBridge.windowWidth));
-        envMap.put("AWTSTUB_HEIGHT", Integer.toString(CallbackBridge.windowHeight));
         
         File customEnvFile = new File(Tools.DIR_GAME_NEW, "custom_env.txt");
         if (customEnvFile.exists() && customEnvFile.isFile()) {

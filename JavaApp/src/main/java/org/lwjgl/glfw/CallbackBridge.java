@@ -39,7 +39,6 @@ public class CallbackBridge {
     }
     
 // BEGIN launcher side
-    public static volatile int windowWidth, windowHeight;
     public static int mouseX, mouseY;
     public static boolean mouseLeft;
     public static StringBuilder DEBUG_STRING = new StringBuilder();
@@ -47,8 +46,8 @@ public class CallbackBridge {
     
     public static native void nativeLaunchUI(String[] uiArgs);
     public static void callback_AppDelegate_didFinishLaunching(int width, int height) {
-        windowWidth = width;
-        windowHeight = height;
+        GLFW.mGLFWWindowWidth = width;
+        GLFW.mGLFWWindowHeight = height;
         net.kdt.pojavlaunch.PLaunchApp.applicationDidFinishLaunching();
     }
     

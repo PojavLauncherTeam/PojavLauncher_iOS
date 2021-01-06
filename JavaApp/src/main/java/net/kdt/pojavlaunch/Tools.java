@@ -129,8 +129,8 @@ public final class Tools
         // overrideableArgList.add("-Dorg.lwjgl.util.DebugLoader=true");
 
         // GLFW Stub width height
-        overrideableArgList.add("-Dglfwstub.windowWidth=" + CallbackBridge.windowWidth);
-        overrideableArgList.add("-Dglfwstub.windowHeight=" + CallbackBridge.windowHeight);
+        overrideableArgList.add("-Dglfwstub.windowWidth=" + GLFW.mGLFWWindowWidth);
+        overrideableArgList.add("-Dglfwstub.windowHeight=" + GLFW.mGLFWWindowHeight);
         overrideableArgList.add("-Dglfwstub.initEgl=false");
 
         overrideableArgList.add("-Dnet.minecraft.clientmodname=" + Tools.APP_NAME);
