@@ -38,6 +38,8 @@ GLKView* mGLKView;
     [self.window makeKeyAndVisible];
     
     [EAGLContext setCurrentContext:context];
+
+    [view display];
         
     mGLKView = view;
 
