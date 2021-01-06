@@ -54,7 +54,7 @@
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
     glClear(GL_COLOR_BUFFER_BIT);
-    callback_AppDelegate_didFinishLaunching(width_c, height_c);
+    callback_AppDelegate_didFinishLaunching(rect.width, rect.height);
 }
 
 @end
