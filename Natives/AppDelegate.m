@@ -39,7 +39,7 @@ GLKView* mGLKView;
     
     [EAGLContext setCurrentContext:context];
 
-    [view display];
+    [view bindDrawable];
         
     mGLKView = view;
 
