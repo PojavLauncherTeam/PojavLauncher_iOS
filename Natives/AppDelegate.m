@@ -42,9 +42,12 @@ GLKView* mGLKView;
     [view bindDrawable];
         
     mGLKView = view;
+    
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    CGFloat screenScale = [[UIScreen mainScreen] scale];
 
-    width_c = (int) roundf([[UIScreen mainScreen] bounds].size.width);
-    height_c = (int) roundf([[UIScreen mainScreen] bounds].size.height);
+    width_c = (int) roundf(screenBounds.size.width * screenScale);
+    height_c = (int) roundf(screenBounds.size.height * screenScale);
     
     callback_AppDelegate_didFinishLaunching(width_c, height_c);
     
