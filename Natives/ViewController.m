@@ -51,10 +51,15 @@
 
 #pragma mark - GLKView and GLKViewController delegate methods
 
+int called = 0;
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
-    glClear(GL_COLOR_BUFFER_BIT);
-    callback_AppDelegate_didFinishLaunching(rect.size.width, rect.size.height);
+    if (!called) {
+        called = 1;
+        glClear(GL_COLOR_BUFFER_BIT);
+        callback_AppDelegate_didFinishLaunching(rect.size.width, rect.size.height);
+        self.paused = YES;
+    }
 }
 
 @end
