@@ -91,7 +91,7 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglSwapBuffers(JNIEnv 
         return JNI_FALSE;
     }
     
-    // flushBuffer();
+    flushBuffer();
     return JNI_TRUE;
 }
 
