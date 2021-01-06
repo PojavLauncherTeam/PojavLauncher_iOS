@@ -55,7 +55,7 @@ void *getCurrentContext() {
 
 jboolean makeCurrentContext(void *context) {
     if ([EAGLContext setCurrentContext:(__bridge EAGLContext *)jlong_to_ptr(context)] == YES) {
-        glViewport(0, 0, width_c, height_c);
+        // glViewport(0, 0, width_c, height_c);
         return JNI_TRUE;
     }
 
