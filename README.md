@@ -1,9 +1,12 @@
+![iOS build](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/workflows/iOS%20build/badge.svg)
+
 # PojavLauncher_iOS
 Minecraft: Java Edition launcher for iOS, based on [PojavLauncher Android](https://github.com/PojavLauncherTeam/PojavLauncher).
 
 ## Navigation
 - [Introduction](#introduction)
 - [Building](#building)
+- [How can it work?](#How-can-it-work?)
 - [Current status](#current-status)
 - [License](#license)
 - [Contributing](#contributing)
@@ -11,7 +14,27 @@ Minecraft: Java Edition launcher for iOS, based on [PojavLauncher Android](https
 
 ## Introduction
 - This is an attempt to get Minecraft Java run on a jailbroken iOS.
-- There's no eta on this project.
+
+## Building
+Requirements:
+- Mac OS X (tested: 10.15)
+- XCode (tested: 11.7.0)
+- JDK 1.8 or higher installed
+- `ldid`, `dpkg` and `fakeroot` to package.
+Run in this directory
+```
+# Install required packages
+brew install ldid dpkg fakeroot
+
+# Build natives part
+bash build_natives.sh
+
+# Build java part
+bash build_javaapp.sh
+
+# Sign with entitlements and package
+bash build_package.sh
+```
 
 ## How can it work?
 - Use OpenJDK 16 from Procursus to get real Java environment.
