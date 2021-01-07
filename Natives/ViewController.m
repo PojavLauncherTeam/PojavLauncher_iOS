@@ -65,6 +65,7 @@
     int height_c = (int) roundf(screenBounds.size.height * screenScale);
     // glViewport(0, 0, width_c, height_c);
     
+    [(GLKView *)self.view bindDrawable];
     callback_AppDelegate_didFinishLaunching(width_c, height_c);
 }
 
