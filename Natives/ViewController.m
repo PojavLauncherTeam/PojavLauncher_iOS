@@ -55,8 +55,8 @@
 {
     [EAGLContext setCurrentContext:self.context];
     
-    glClearColor(0.1, 0.1f, 0.1f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    // glClearColor(0.1, 0.1f, 0.1f, 1.0f);
+    // glClear(GL_COLOR_BUFFER_BIT);
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];
