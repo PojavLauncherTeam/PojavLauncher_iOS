@@ -24,20 +24,28 @@ Minecraft: Java Edition launcher for iOS, based on [PojavLauncher Android](https
 - [x] LWJGL3 iOS port: works
 - [x] OpenGL: GL4ES
 - [x] Did Minecraft recognize OpenGL?
+- [ ] OpenAL: not included yet, maybe use iOS built-in OpenAL?
+- [ ] Input pipe implementation
 - [ ] Does it work? Partial.
-- Currently, only rd-132211 (the oldest Minecraft version :V) works. It may crash sometimes, but try launch again until you get it works.
-- Other versions will give error: `GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT` tested on Minecraft 1.13, 1.14 and 1.15.2 (probably almost any other versions).
+- Currently, only rd-132211 (the oldest Minecraft version :V) fully works.
+- 1.6.x only render a tiny panorama at bottom left corner.
+- 1.7.2 to 1.12.2 will crash because of framebuffer.
+- 1.13+ will crash for various reasons: missing LWJGL JNI methods, missing OpenAL, Narrator crash, etc...
+- It may crash sometimes, but try launch again until you get it works.
 
 ## Installing OpenJDK 16
 - Download [openjdk-16-jre • Procursus](https://www.ios-repo-updates.com/repository/procursus/package/openjdk-16-jre) .deb file (~40mb).
 
-### For jailbroken iOS device
-- Jailbreak use Odyssey
+### For Odyssey bootstrap
 - Add Procursus repository (https://apt.procurs.us).
 - Find and install `java-16-openjdk`.
 
-### For non-jailbroken devices
-- It’s not possible...
+### For other jailbreak bootstrap
+- Download [openjdk-16-jre.deb](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/releases/download/v16-openjdk/openjdk-16-jre_16.0.0_iphoneos-arm.deb).
+- Install and open Filza File manager.
+- Go to where the .deb file downloaded.
+- Open it and press Install.
+- If everything fine, it will ends up with `Setting up ...`.
 
 ## Want a try or debug?
 - Minecraft home directory: `/var/mobile/Documents/minecraft`.
