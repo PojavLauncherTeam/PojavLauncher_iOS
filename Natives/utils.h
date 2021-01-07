@@ -5,6 +5,7 @@
 #include "jni.h"
 
 void* CURR_GL_CONTEXT;
+void* GL4ES_HANDLE;
 
 JavaVM* runtimeJavaVMPtr;
 JNIEnv* runtimeJNIEnvPtr_ANDROID;
