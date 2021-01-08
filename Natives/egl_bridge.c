@@ -17,7 +17,7 @@
 #include "log.h"
 
 typedef void gl4esInitialize_func();
-struct gl4esSwapBuffers_func();
+typedef void gl4esSwapBuffers_func();
 
 gl4esSwapBuffers_func *gl4esSwapBuffers;
 
