@@ -72,8 +72,6 @@ jboolean clearCurrentContext() {
 
 void flushBuffer() {
     // glBindRenderbuffer(GL_RENDERBUFFER, RenderBuffer);
-    
-    glFlush();
 
     [[EAGLContext currentContext] presentRenderbuffer:GL_RENDERBUFFER];
     
