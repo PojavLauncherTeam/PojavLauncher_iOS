@@ -17,9 +17,9 @@
 #include "log.h"
 
 typedef void gl4esInitialize_func();
-typedef void gl4esSwapBuffers_func();
+// typedef void gl4esSwapBuffers_func();
 
-gl4esSwapBuffers_func *gl4esSwapBuffers;
+// gl4esSwapBuffers_func *gl4esSwapBuffers;
 
 // Called from JNI_OnLoad of liblwjgl_opengl
 void pojav_openGLOnLoad() {
@@ -77,7 +77,7 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglMakeCurrent(JNIEnv*
     gl4esInitialize_func *gl4esInitialize = (gl4esInitialize_func*) dlsym(GL4ES_HANDLE, "initialize_gl4es");
     // debug("initialize_gl4es = %p", gl4esInitialize);
     
-    gl4esSwapBuffers = (gl4esSwapBuffers_func*) dlsym(GL4ES_HANDLE, "gl4es_SwapBuffers_currentContext");
+    // gl4esSwapBuffers = (gl4esSwapBuffers_func*) dlsym(GL4ES_HANDLE, "gl4es_SwapBuffers_currentContext");
     
     gl4esInitialize();
     debug("GL4ES init success");
@@ -96,8 +96,8 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglSwapBuffers(JNIEnv 
         return JNI_FALSE;
     }
     
-    gl4esSwapBuffers();
-    // flushBuffer();
+    // gl4esSwapBuffers();
+    flushBuffer();
     return JNI_TRUE;
 }
 
