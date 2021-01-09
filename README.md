@@ -51,10 +51,10 @@ bash build_package.sh
 - [ ] OpenAL: not included yet, maybe use iOS built-in OpenAL?
 - [ ] Input pipe implementation
 - [ ] Does it work? Partial.
-- Currently, only rd-132211 (the oldest Minecraft version :V) fully works.
+- Currently, only rd-132211 and are-132328 (oldest Minecraft versions :V) fully works.
 - 1.6.x only render a tiny panorama at bottom left corner.
 - 1.7.2 to 1.12.2 will crash because of framebuffer.
-- 1.13+ will crash for various reasons: missing LWJGL JNI methods, missing OpenAL, Narrator crash, etc...
+- Other versions will crash for various reasons: missing LWJGL JNI methods, missing OpenAL, Narrator crash, etc...
 - It may crash sometimes, but try launch again until you get it works.
 
 ## Installing OpenJDK 16
