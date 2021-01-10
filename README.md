@@ -20,22 +20,28 @@ Minecraft: Java Edition launcher for iOS, based on [PojavLauncher Android](https
 Requirements:
 - Mac OS X (tested: 10.15)
 - XCode (tested: 11.7.0)
-- JDK 1.8 installed
+- JDK 8 installed
 - `gradle` to build Java part.
-- `wget`, `ldid`, `dpkg` and `fakeroot` to package.
+- `cmake`, `wget`, `ldid`, `dpkg` and `fakeroot` to package.
 Run in this directory
 ```
+# Only run if you haven't installed JDK 8
+brew install adoptopenjdk8
+
 # Install required packages
-brew instal wget ldid dpkg fakeroot gradle
+brew install cmake wget ldid dpkg fakeroot gradle
+
+# Give exec perm
+chmod 755 *.sh
 
 # Build natives part
-bash build_natives.sh
+./build_natives.sh
 
 # Build java part
-bash build_javaapp.sh
+./build_javaapp.sh
 
 # Sign with entitlements and package
-bash build_package.sh
+./build_package.sh
 ```
 
 ## How can it work?
