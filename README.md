@@ -21,11 +21,11 @@ Requirements:
 - XCode (tested: 11.7.0)
 - JDK 1.8 installed
 - `gradle` to build Java part.
-- `ldid`, `dpkg` and `fakeroot` to package.
+- `cmake`, `wget`, `ldid`, `dpkg` and `fakeroot` to package.
 Run in this directory
 ```
 # Install required packages
-brew install wget ldid dpkg fakeroot gradle
+brew install cmake wget ldid dpkg fakeroot gradle
 
 # Build natives part
 bash build_natives.sh
