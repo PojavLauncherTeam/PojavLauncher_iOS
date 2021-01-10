@@ -14,6 +14,7 @@ Minecraft: Java Edition launcher for iOS, based on [PojavLauncher Android](https
 
 ## Introduction
 - This is an attempt to get Minecraft Java run on a jailbroken iOS.
+- Minimum requirements: device running iOS 12 or newer.
 
 ## Building
 Requirements:
