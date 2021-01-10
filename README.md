@@ -25,7 +25,7 @@ Requirements:
 Run in this directory
 ```
 # Install required packages
-brew install ldid dpkg fakeroot gradle
+brew install wget ldid dpkg fakeroot gradle
 
 # Build natives part
 bash build_natives.sh
