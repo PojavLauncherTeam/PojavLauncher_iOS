@@ -67,7 +67,7 @@
     callback_AppDelegate_didFinishLaunching(width_c, height_c);
 }
 
-- (void)sendTouchEvent(NSSet *)touches withEvent:(int)event
+- (void)sendTouchEvent:(NSSet *)touches withEvent:(int)event
 {
     UITouch* touchEvent = [touches anyObject];
     CGPoint locationInView = [touchEvent locationInView:self.view];
