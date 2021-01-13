@@ -79,21 +79,21 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesBegan: touches withEvent: event];
-    [self sendTouchEvent: touches withEvent: ACTION_DOWN);
+    [self sendTouchEvent: touches withEvent: ACTION_DOWN];
 }
 
 // Equals to Android ACTION_MOVE
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesMoved: touches withEvent: event];
-    [self sendTouchEvent: touches withEvent: ACTION_MOVE);
+    [self sendTouchEvent: touches withEvent: ACTION_MOVE];
 }
 
 // Equals to Android ACTION_UP
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesEnded: touches withEvent: event];
-    [self sendTouchEvent: touches withEvent: ACTION_UP);
+    [self sendTouchEvent: touches withEvent: ACTION_UP];
 }
 
 // #pragma mark - GLKView and GLKViewController delegate methods
