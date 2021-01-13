@@ -13,13 +13,6 @@
 
 @end
 
-void sendTouchEvent(NSSet* touches, int event) {
-    UITouch* touchEvent = [touches anyObject];
-    CGPoint locationInView = [touchEvent locationInView:self.view];
-    CGPoint normalizedPoint = getNormalizedPoint(self.view, locationInView);
-    callback_ViewController_onTouch(event, normalizedPoint.x, normalizedPoint.y);
-}
-
 @implementation ViewController
 
 - (void)viewDidLoad
@@ -72,6 +65,13 @@ void sendTouchEvent(NSSet* touches, int event) {
     int height_c = (int) roundf(screenBounds.size.height * screenScale);
     // glViewport(0, 0, width_c, height_c);
     callback_AppDelegate_didFinishLaunching(width_c, height_c);
+}
+
+void sendTouchEvent(NSSet* touches, int event) {
+    UITouch* touchEvent = [touches anyObject];
+    CGPoint locationInView = [touchEvent locationInView:self.view];
+    CGPoint normalizedPoint = getNormalizedPoint(self.view, locationInView);
+    callback_ViewController_onTouch(event, normalizedPoint.x, normalizedPoint.y);
 }
 
 // Equals to Android ACTION_DOWN
