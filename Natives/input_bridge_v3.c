@@ -178,19 +178,19 @@ void callback_ViewController_onTouch(int event, int x, int y) {
     // Because UI init after JVM init, this should not be null
     assert (runtimeJNIEnvPtr_JRE != NULL);
     
-    if (!inputBridgeClass) {
-        inputBridgeClass = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "org/lwjgl/glfw/CallbackBridge");
-        assert(inputBridgeClass != NULL);
+    if (!inputBridgeClass_ANDROID) {
+        inputBridgeClass_ANDROID = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "org/lwjgl/glfw/CallbackBridge");
+        assert(inputBridgeClass_ANDROID != NULL);
     }
     
     if (!touchBridgeMethod) {
-        touchBridgeMethod = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, clazz, "callback_ViewController_onTouch", "(III)V");
+        touchBridgeMethod = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, inputBridgeClass_ANDROID, "callback_ViewController_onTouch", "(III)V");
         assert(touchBridgeMethod != NULL);
     }
     
     (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
         runtimeJNIEnvPtr_JRE,
-        clazz, method,
+        inputBridgeClass_ANDROID, touchBridgeMethod,
         event, x, y
     );
 }
