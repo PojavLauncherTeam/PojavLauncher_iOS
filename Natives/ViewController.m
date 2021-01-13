@@ -70,8 +70,8 @@
 void sendTouchEvent(NSSet* touches, int event) {
     UITouch* touchEvent = [touches anyObject];
     CGPoint locationInView = [touchEvent locationInView:self.view];
-    CGPoint normalizedPoint = getNormalizedPoint(self.view, locationInView);
-    callback_ViewController_onTouch(event, normalizedPoint.x, normalizedPoint.y);
+    // CGPoint normalizedPoint = getNormalizedPoint(self.view, locationInView);
+    callback_ViewController_onTouch(event, locationInView.x, locationInView.y /* normalizedPoint.x, normalizedPoint.y */);
 }
 
 // Equals to Android ACTION_DOWN
