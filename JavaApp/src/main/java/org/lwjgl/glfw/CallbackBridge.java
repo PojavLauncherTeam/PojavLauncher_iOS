@@ -231,7 +231,7 @@ public class CallbackBridge {
         return "";
     }
     
-    private native void nativeSetGrabbing(boolean grab, int xset, int yset) {
+    private static void nativeSetGrabbing(boolean grab, int xset, int yset) {
         mouseX = xset;
         mouseY = yset;
     }
