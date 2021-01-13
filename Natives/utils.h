@@ -4,6 +4,10 @@
 #include <stdbool.h>
 #include "jni.h"
 
+#define ACTION_DOWN 0
+#define ACTION_UP 1
+#define ACTION_MOVE 2
+
 void* CURR_GL_CONTEXT;
 void* GL4ES_HANDLE;
 
@@ -28,6 +32,7 @@ void free_char_array(JNIEnv *env, jobjectArray jstringArray, const char **charAr
 
 void closeGLFWWindow();
 void callback_AppDelegate_didFinishLaunching(int width, int height);
+void callback_ViewController_onTouch(int event, int x, int y);
 
 #endif // _BINARY_UTILS_H_
 

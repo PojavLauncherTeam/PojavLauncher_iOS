@@ -44,6 +44,8 @@ int grabCursorX, grabCursorY, lastCursorX, lastCursorY;
 jclass inputBridgeClass_ANDROID, inputBridgeClass_JRE;
 jmethodID inputBridgeMethod_ANDROID, inputBridgeMethod_JRE;
 
+jmethodID touchBridgeMethod;
+
 jboolean isGrabbing;
 
 // JNI_OnLoad
@@ -156,6 +158,7 @@ void closeGLFWWindow() {
 void callback_AppDelegate_didFinishLaunching(int width, int height) {
     debug("Received AppDelegate callback, width=%d, height=%d\n", width, height);
 
+    // Because UI init after JVM init, this should not be null
     assert(runtimeJNIEnvPtr_JRE != NULL);
     
     jclass clazz = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "org/lwjgl/glfw/CallbackBridge");
@@ -168,6 +171,27 @@ void callback_AppDelegate_didFinishLaunching(int width, int height) {
         runtimeJNIEnvPtr_JRE,
         clazz, method,
         width, height
+    );
+}
+
+void callback_ViewController_onTouch(int event, int x, int y) {
+    // Because UI init after JVM init, this should not be null
+    assert (runtimeJNIEnvPtr_JRE != NULL);
+    
+    if (!inputBridgeClass) {
+        inputBridgeClass = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "org/lwjgl/glfw/CallbackBridge");
+        assert(inputBridgeClass != NULL);
+    }
+    
+    if (!touchBridgeMethod) {
+        touchBridgeMethod = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, clazz, "callback_ViewController_onTouch", "(III)V");
+        assert(touchBridgeMethod != NULL);
+    }
+    
+    (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
+        runtimeJNIEnvPtr_JRE,
+        clazz, method,
+        event, x, y
     );
 }
 

@@ -13,6 +13,13 @@
 
 @end
 
+void sendTouchEvent(NSSet* touches, int event) {
+    UITouch* touchEvent = [touches anyObject];
+    CGPoint locationInView = [touchEvent locationInView:self.view];
+    CGPoint normalizedPoint = getNormalizedPoint(self.view, locationInView);
+    callback_ViewController_onTouch(event, normalizedPoint.x, normalizedPoint.y);
+}
+
 @implementation ViewController
 
 - (void)viewDidLoad
@@ -67,17 +74,26 @@
     callback_AppDelegate_didFinishLaunching(width_c, height_c);
 }
 
-#pragma mark - GLKView and GLKViewController delegate methods
-/*
-int called = 0;
-- (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
+// Equals to Android ACTION_DOWN
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    if (!called) {
-        called = 1;
-        glClear(GL_COLOR_BUFFER_BIT);
-        callback_AppDelegate_didFinishLaunching(rect.size.width, rect.size.height);
-        self.paused = YES;
-    }
+    [super touchesBegan: touches withEvent: event];
+    sendTouchEvent(touches, ACTION_DOWN);
 }
-*/
+
+// Equals to Android ACTION_MOVE
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesMoved: touches withEvent: event];
+    sendTouchEvent(touches, ACTION_MOVE);
+}
+
+// Equals to Android ACTION_UP
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesEnded: touches withEvent: event];
+    sendTouchEvent(touches, ACTION_UP);
+}
+
+// #pragma mark - GLKView and GLKViewController delegate methods
 @end

@@ -65,8 +65,6 @@ chmod 755 *.sh
 - It may crash sometimes, but try launch again until you get it works.
 
 ## Installing OpenJDK 16
-- Download [openjdk-16-jre • Procursus](https://www.ios-repo-updates.com/repository/procursus/package/openjdk-16-jre) .deb file (~40mb).
-
 ### For Odyssey bootstrap
 - Add Procursus repository (https://apt.procurs.us).
 - Find and install `java-16-openjdk`.

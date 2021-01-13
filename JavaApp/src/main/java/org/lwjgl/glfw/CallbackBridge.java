@@ -21,6 +21,10 @@ public class CallbackBridge {
     public static final int EVENT_TYPE_WINDOW_SIZE = 1008;
     
     public static final int ANDROID_TYPE_GRAB_STATE = 0;
+    
+    public static final int ACTION_DOWN = 0;
+    public static final int ACTION_UP = 1;
+    public static final int ACTION_MOVE = 2;
 
     // Should pending events be limited?
     volatile public static List<Integer[]> PENDING_EVENT_LIST = new ArrayList<>();
@@ -39,7 +43,7 @@ public class CallbackBridge {
     }
     
 // BEGIN launcher side
-    public static int mouseX, mouseY;
+    public static int mouseX, mouseY, mouseLastX, mouseLastY;
     public static boolean mouseLeft;
     public static StringBuilder DEBUG_STRING = new StringBuilder();
     
@@ -48,7 +52,34 @@ public class CallbackBridge {
     public static void callback_AppDelegate_didFinishLaunching(int width, int height) {
         GLFW.mGLFWWindowWidth = width;
         GLFW.mGLFWWindowHeight = height;
+        mouseX = width / 2;
+        mouseY = height / 2;
         net.kdt.pojavlaunch.PLaunchApp.applicationDidFinishLaunching();
+    }
+    
+    public static void callback_ViewController_onTouch(int event, int x, int y) {
+        switch (event) {
+            case ACTION_DOWN:
+            case ACTION_UP:
+                mouseLastX = x;
+                mouseLastY = y;
+                break;
+                
+            case ACTION_MOVE:
+                if (GLFW.mGLFWIsGrabbing) {
+                    mouseX += x - mouseLastX;
+                    mouseY += y - mouseLastY;
+                    
+                    mouseLastX = x;
+                    mouseLastY = y;
+                } else {
+                    mouseX = x;
+                    mouseY = y;
+                }
+                break;
+        }
+        
+        sendCursorPos(mouseX, mouseY);
     }
     
     public static boolean nativeIsGrabbing() {
@@ -200,6 +231,9 @@ public class CallbackBridge {
         return "";
     }
     
-    private static native void nativeSetGrabbing(boolean grab, int xset, int yset);
+    private static native void nativeSetGrabbing(boolean grab, int xset, int yset) {
+        mouseX = xset;
+        mouseY = yset;
+    }
 }
 
