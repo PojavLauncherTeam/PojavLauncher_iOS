@@ -65,7 +65,7 @@ chmod 755 *.sh
 - It may crash sometimes, but try launch again until you get it works.
 
 ## Installing OpenJDK 16
-### For Odyssey bootstrap
+### For Chimera/Odyssey bootstrap
 - Add Procursus repository (https://apt.procurs.us).
 - Find and install `java-16-openjdk`.
 
