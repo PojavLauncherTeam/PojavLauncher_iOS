@@ -6,8 +6,9 @@ Minecraft: Java Edition launcher for iOS, based on [PojavLauncher Android](https
 ## Navigation
 - [Introduction](#introduction)
 - [Building](#building)
-- [How can it work?](#How-can-it-work?)
+- [How can it work?](#how-can-it-work)
 - [Current status](#current-status)
+- [Known issues](#known-issues)
 - [License](#license)
 - [Contributing](#contributing)
 - [Credits & Third party components and their licenses](#credits--third-party-components-and-their-licenses)
@@ -59,10 +60,13 @@ chmod 755 *.sh
 - [ ] Input pipe implementation
 - [ ] Does it work? Partial.
 - Currently, only rd-132211 and rd-132328 (oldest Minecraft versions :V) fully works.
+
+## Known issues
 - 1.6.x only render a tiny panorama at bottom left corner.
 - 1.7.2 to 1.12.2 will crash because of framebuffer.
 - Other versions will crash for various reasons: missing LWJGL JNI methods, missing OpenAL, Narrator crash, etc...
 - It may crash sometimes, but try launch again until you get it works.
+- App may be crashed if rotate screen, open Notification Center or put app to background.
 
 ## Installing OpenJDK 16
 ### For Chimera/Odyssey bootstrap
@@ -79,7 +83,6 @@ chmod 755 *.sh
 ## Want a try or debug?
 - Minecraft home directory: `/var/mobile/Documents/minecraft`.
 - Select a version: edit `/var/mobile/Documents/minecraft/config_ver.txt`, put to Minecraft version want to start.
-
 
 ## License
 - PojavLauncher is licensed under [GNU GPLv3](https://github.com/khanhduytran0/PojavLauncher_iOS/blob/master/LICENSE).
