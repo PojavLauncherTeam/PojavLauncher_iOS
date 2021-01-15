@@ -58,10 +58,12 @@ chmod 755 *.sh
 - [x] Did Minecraft recognize OpenGL?
 - [ ] OpenAL: not included yet, maybe use iOS built-in OpenAL?
 - [ ] Input pipe implementation
+ + [x] Mouse touch implementation
 - [ ] Does it work? Partial.
-- Currently, only rd-132211 and rd-132328 (oldest Minecraft versions :V) fully works.
+- Currently, only rd-132211, rd-132328 and rd-20090515 (oldest Minecraft versions :V) fully works.
 
 ## Known issues
+- Camera position will be jumped to random location on first time touch.
 - 1.6.x only render a tiny panorama at bottom left corner.
 - 1.7.2 to 1.12.2 will crash because of framebuffer.
 - Other versions will crash for various reasons: missing LWJGL JNI methods, missing OpenAL, Narrator crash, etc...
