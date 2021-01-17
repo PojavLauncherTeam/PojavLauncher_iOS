@@ -6,11 +6,15 @@ import jdpi.awt.Image;
 public class BufferedImage extends Image {
 	private java.awt.image.BufferedImage mImg;
     public BufferedImage(int width, int height, int imageType) {
-		mImg = new java.awt.image.BufferedImage(width, height, imageType);
+		this(new java.awt.image.BufferedImage(width, height, imageType));
+	}
+	
+	public BufferedImage(java.awt.image.BufferedImage img) {
+		mImg = img;
 	}
 	
 	public Graphics getGraphics() {
-		return new Graphics2D(mImg.getGraphics());
+		return new Graphics2D((java.awt.Graphics2D) mImg.getGraphics());
 	}
 
 	public Graphics2D createGraphics() {

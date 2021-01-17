@@ -4,10 +4,6 @@ import jdpi.awt.image.*;
 
 public class Graphics {
     protected java.awt.Graphics2D g2d;
-    
-    public Graphics(java.awt.Graphics g2d) {
-		this((java.awt.Graphics2D) g2d);
-	}
 
 	public Graphics(java.awt.Graphics2D g2d) {
 		this.g2d = g2d;
