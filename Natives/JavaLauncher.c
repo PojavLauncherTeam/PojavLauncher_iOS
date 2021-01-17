@@ -58,6 +58,7 @@ int launchJVM(int argc, char *argv[]) {
     d = opendir(java_libs_dir);
     int cplen = 0;
     if (d) {
+        cplen += sprintf(classpath + cplen, "-Xbootclasspath/a:");
         while ((dir = readdir(d)) != NULL) {
             cplen += sprintf(classpath + cplen, "%s/%s:", java_libs_dir, dir->d_name);
         }
@@ -95,7 +96,7 @@ int launchJVM(int argc, char *argv[]) {
             }
             fclose(argsFile);
         }
-        margv[margc++] = "-cp";
+        // margv[margc++] = "-cp";
         margv[margc++] = classpath;
         margv[margc++] = "net.kdt.pojavlaunch.PLaunchApp";
         
