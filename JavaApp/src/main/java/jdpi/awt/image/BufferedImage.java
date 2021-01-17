@@ -1,5 +1,6 @@
 package jdpi.awt.image;
 
+import jdpi.awt.*;
 import jdpi.awt.Image;
 
 public class BufferedImage extends Image {
