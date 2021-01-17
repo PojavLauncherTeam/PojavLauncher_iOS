@@ -19,8 +19,9 @@ public class ImageIO {
 	}
 
 	public static BufferedImage read(URL input) throws IOException {
-		BufferedImage img = read(input.openStream());
-		input.close();
+	    InputStream is = input.openStream();
+		BufferedImage img = read(is);
+		is.close();
 		return img;
 	}
 
