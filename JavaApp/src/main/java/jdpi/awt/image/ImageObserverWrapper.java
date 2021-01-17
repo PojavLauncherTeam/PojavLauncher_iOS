@@ -8,8 +8,10 @@ public class ImageObserverWrapper {
             @Override
             public boolean imageUpdate(java.awt.Image img, int infoflags, int x, int y, int width, int height) {
                 if (img instanceof java.awt.image.BufferedImage) {
-                    observer.imageUpdate(new BufferedImage((java.awt.image.BufferedImage) img), infoflags, x, y, width, height);
+                    return observer.imageUpdate(new BufferedImage((java.awt.image.BufferedImage) img), infoflags, x, y, width, height);
                 }
+
+                return false;
             }
         };
     }
