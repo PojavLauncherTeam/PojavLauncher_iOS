@@ -1,4 +1,4 @@
-package net.zhuoweizhang.makeshift.java.awt;
+package jdpi.awt;
 
 public class BorderLayout extends LayoutManager {
 }

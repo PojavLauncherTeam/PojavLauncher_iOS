@@ -1,11 +1,11 @@
-package jdpi.awt;
+package jdpi.awt.image;
 
 import jdpi.awt.Image;
 
-public class BufferedImage extends Inage {
-	private java.awt.BufferedImage mImg;
+public class BufferedImage extends Image {
+	private java.awt.image.BufferedImage mImg;
     public BufferedImage(int width, int height, int imageType) {
-		mImg = new java.awt.BufferedImage(width, height, imageType);
+		mImg = new java.awt.image.BufferedImage(width, height, imageType);
 	}
 	
 	public Graphics getGraphics() {
@@ -33,10 +33,10 @@ public class BufferedImage extends Inage {
 	}
 
 	public WritableRaster getRaster() {
-		return new WritableRaster(mIng.getRaster());
+		return new WritableRaster(this);
 	} 
 	
-	public java.awt.BufferedImage getBaseImage() {
+	public java.awt.image.BufferedImage getBaseImage() {
 		return mImg;
 	}
 }
