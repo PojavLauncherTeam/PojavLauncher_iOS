@@ -31,6 +31,6 @@ public class Graphics {
 
 	public boolean drawImage(Image image, int x, int y, ImageObserver observer) {
 		if (!(image instanceof BufferedImage)) return true;
-		return g2d.drawImage(((BufferedImage) image).getBaseImage(), x, y, observer);
+		return g2d.drawImage(((BufferedImage) image).getBaseImage(), x, y, ImageObserverWrapper.wrap(observer));
 	}
 }
