@@ -1,17 +1,63 @@
+/*
+ * Copyright (c) 2002-2008 LWJGL Project
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ * * Redistributions of source code must retain the above copyright
+ *   notice, this list of conditions and the following disclaimer.
+ *
+ * * Redistributions in binary form must reproduce the above copyright
+ *   notice, this list of conditions and the following disclaimer in the
+ *   documentation and/or other materials provided with the distribution.
+ *
+ * * Neither the name of 'LWJGL' nor the names of
+ *   its contributors may be used to endorse or promote products derived
+ *   from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+ * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package org.lwjgl.input;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.lwjgl.glfw.GLFW;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.InputImplementation;
 
+/**
+ * <br>
+ * A raw Keyboard interface. This can be used to poll the current state of the
+ * keys, or read all the keyboard presses / releases since the last read.
+ *
+ * @author cix_foo <cix_foo@users.sourceforge.net>
+ * @author elias_naur <elias_naur@users.sourceforge.net>
+ * @author Brian Matzon <brian@matzon.dk>
+ * @version $Revision$
+ * $Id$
+ */
 public class Keyboard {
-	
+	/** Internal use - event size in bytes */
+	public static final int EVENT_SIZE = 4 + 1 + 4 + 8 + 1;
+
 	/**
 	 * The special character meaning that no
 	 * character was translated for the event.
@@ -150,47 +196,54 @@ public class Keyboard {
 	public static final int KEY_DELETE          = 0xD3; /* Delete on arrow keypad */
 	public static final int KEY_CLEAR           = 0xDA; /* Clear key (Mac) */
 	public static final int KEY_LMETA           = 0xDB; /* Left Windows/Option key */
+	/**
+	 * The left windows key, mapped to KEY_LMETA
+	 *
+	 * @deprecated Use KEY_LMETA instead
+	 */
 	public static final int KEY_LWIN            = KEY_LMETA; /* Left Windows key */
 	public static final int KEY_RMETA            = 0xDC; /* Right Windows/Option key */
+	/**
+	 * The right windows key, mapped to KEY_RMETA
+	 *
+	 * @deprecated Use KEY_RMETA instead
+	 */
 	public static final int KEY_RWIN            = KEY_RMETA; /* Right Windows key */
 	public static final int KEY_APPS            = 0xDD; /* AppMenu key */
 	public static final int KEY_POWER           = 0xDE;
 	public static final int KEY_SLEEP           = 0xDF;
 
-	private static EventQueue queue = new EventQueue(32);
-	// private static int maxEvents = 32;
-
-	// private static int eventCount = 0;
-	// private static int currentEventPos = -1;
-	// private static int nextEventPos = 0;
-
-	private static int[] keyEvents = new int[queue.getMaxEvents()];
-	private static boolean[] keyEventStates = new boolean[queue.getMaxEvents()];
-	private static long[] nanoTimeEvents = new long[queue.getMaxEvents()];
-	private static char[] keyEventChars = new char[256];
-
-	private static boolean repeatEvents = false;
-	private static int latestEventKey = 0;
-
+	/*	public static final int STATE_ON							= 0;
+        public static final int STATE_OFF						 = 1;
+        public static final int STATE_UNKNOWN				 = 2;
+    */
 	public static final int KEYBOARD_SIZE = 256;
 
+	/** Buffer size in events */
+	private static final int BUFFER_SIZE = 50;
+
+	/** Key names */
 	private static final String[] keyName = new String[KEYBOARD_SIZE];
 	private static final Map<String, Integer> keyMap = new HashMap<String, Integer>(253);
+	private static int counter;
 
 	static {
 		// Use reflection to find out key names
 		Field[] fields = Keyboard.class.getFields();
 		try {
-			for (Field field : fields) {
-				if (Modifier.isStatic(field.getModifiers()) && Modifier.isPublic(field.getModifiers())
-						&& Modifier.isFinal(field.getModifiers()) && field.getType().equals(int.class)
-						&& field.getName().startsWith("KEY_") && !field.getName().endsWith(
-								"WIN")) { /* Don't use deprecated names */
+			for ( Field field : fields ) {
+				if ( Modifier.isStatic(field.getModifiers())
+						&& Modifier.isPublic(field.getModifiers())
+						&& Modifier.isFinal(field.getModifiers())
+						&& field.getType().equals(int.class)
+						&& field.getName().startsWith("KEY_")
+						&& !field.getName().endsWith("WIN") ) { /* Don't use deprecated names */
 
 					int key = field.getInt(null);
 					String name = field.getName().substring(4);
 					keyName[key] = name;
 					keyMap.put(name, key);
+					counter++;
 				}
 
 			}
@@ -199,99 +252,178 @@ public class Keyboard {
 
 	}
 
-	public static void addKeyEvent(int key, int status) {
-		// eventCount++;
-		// if (eventCount > maxEvents) eventCount = maxEvents;
+	/** The number of keys supported */
+	private static final int keyCount = counter;
 
-		switch (status) {
-		case GLFW.GLFW_REPEAT:
-			if (!repeatEvents)
-				break;
-		case GLFW.GLFW_RELEASE:
-		case GLFW.GLFW_PRESS:
-			keyEvents[queue.getNextPos()] = KeyCodes.toLwjglKey(key);
-			keyEventStates[queue.getNextPos()] = status == GLFW.GLFW_PRESS || status == GLFW.GLFW_REPEAT;
+	/** Has the keyboard been created? */
+	private static boolean created;
 
-			nanoTimeEvents[queue.getNextPos()] = Sys.getNanoTime();
+	/** Are repeat events enabled? */
+	private static boolean repeat_enabled;
 
-			queue.add();
-		}
-		/*
-		 * nextEventPos++; if (nextEventPos == maxEvents) nextEventPos = 0;
-		 * 
-		 * if (currentEventPos == nextEventPos) currentEventPos++; if
-		 * (currentEventPos == maxEvents) currentEventPos = 0;
-		 */
+	/** The keys status from the last poll */
+	private static final ByteBuffer keyDownBuffer = BufferUtils.createByteBuffer(KEYBOARD_SIZE);
+
+	/**
+	 * The key events from the last read: a sequence of pairs of key number,
+	 * followed by state. The state is followed by
+	 * a 4 byte code point representing the translated character.
+	 */
+	private static ByteBuffer readBuffer;
+
+	/** current event */
+	private static KeyEvent current_event = new KeyEvent();
+
+	/** scratch event */
+	private static KeyEvent tmp_event = new KeyEvent();
+
+	/** One time initialization */
+	private static boolean initialized;
+
+	private static InputImplementation implementation;
+
+	/**
+	 * Keyboard cannot be constructed.
+	 */
+	private Keyboard() {
 	}
 
-	public static void addCharEvent(int key, char c) {
-		int index = KeyCodes.toLwjglKey(key);
-		keyEventChars[index] = c;
+	/**
+	 * Static initialization
+	 */
+	private static void initialize() {
+		if (initialized)
+			return;
+		Sys.initialize();
+		initialized = true;
 	}
 
-        public static boolean areRepeatEventsEnabled() {
-                return false;
-        }
+	/**
+	 * "Create" the keyboard with the given implementation. This is used
+	 * reflectively from AWTInputAdapter.
+	 *
+	 * @throws LWJGLException if the keyboard could not be created for any reason
+	 */
+	private static void create(InputImplementation impl) throws LWJGLException {
+		if (created)
+			return;
+		if (!initialized)
+			initialize();
+		implementation = impl;
+		implementation.createKeyboard();
+		created = true;
+		readBuffer = ByteBuffer.allocate(EVENT_SIZE*BUFFER_SIZE);
+		reset();
+	}
 
+	/**
+	 * "Create" the keyboard. The display must first have been created. The
+	 * reason for this is so the keyboard has a window to "focus" in.
+	 *
+	 * @throws LWJGLException if the keyboard could not be created for any reason
+	 */
 	public static void create() throws LWJGLException {
+			if (!Display.isCreated()) throw new IllegalStateException("Display must be created.");
 
+			create((InputImplementation) GLFWInputImplementation.singleton);
 	}
 
-	public static boolean isKeyDown(int key) {
-		int k = GLFW.glfwGetKey(Display.getWindow(), KeyCodes.toGlfwKey(key));
-
-		return k == GLFW.GLFW_PRESS || k == GLFW.GLFW_REPEAT;
+	private static void reset() {
+		readBuffer.limit(0);
+		for (int i = 0; i < keyDownBuffer.remaining(); i++)
+			keyDownBuffer.put(i, (byte)0);
+		current_event.reset();
 	}
 
+	/**
+	 * @return true if the keyboard has been created
+	 */
+	public static boolean isCreated() {
+			return created;
+	}
+
+	/**
+	 * "Destroy" the keyboard
+	 */
+	public static void destroy() {
+			if (!created)
+				return;
+			created = false;
+			implementation.destroyKeyboard();
+			reset();
+	}
+
+	/**
+	 * Polls the keyboard for its current state. Access the polled values using the
+	 * <code>isKeyDown</code> method.
+	 * By using this method, it is possible to "miss" keyboard keys if you don't
+	 * poll fast enough.
+	 *
+	 * To use buffered values, you have to call <code>next</code> for each event you
+	 * want to read. You can query which key caused the event by using
+	 * <code>getEventKey</code>. To get the state of that key, for that event, use
+	 * <code>getEventKeyState</code> - finally use <code>getEventCharacter</code> to get the
+	 * character for that event.
+	 *
+	 * NOTE: This method does not query the operating system for new events. To do that,
+	 * Display.processMessages() (or Display.update()) must be called first.
+	 *
+	 * @see org.lwjgl.input.Keyboard#isKeyDown(int key)
+	 * @see org.lwjgl.input.Keyboard#next()
+	 * @see org.lwjgl.input.Keyboard#getEventKey()
+	 * @see org.lwjgl.input.Keyboard#getEventKeyState()
+	 * @see org.lwjgl.input.Keyboard#getEventCharacter()
+	 */
 	public static void poll() {
-		// TODO
+			if (!created)
+				throw new IllegalStateException("Keyboard must be created before you can poll the device");
+			implementation.pollKeyboard(keyDownBuffer);
+			read();
 	}
 
-	public static void enableRepeatEvents(boolean enable) {
-		// TODO
-		// System.out.println("TODO: Implement
-		// Keyboad.enableRepeatEvents(boolean)");
-		repeatEvents = enable;
+	private static void read() {
+		readBuffer.compact();
+		implementation.readKeyboard(readBuffer);
+		readBuffer.flip();
 	}
 
-	public static boolean isRepeatEvent() {
-		// TODO
-		return repeatEvents;
+	/**
+	 * Checks to see if a key is down.
+	 * @param key Keycode to check
+	 * @return true if the key is down according to the last poll()
+	 */
+	public static boolean isKeyDown(int key) {
+			if (!created)
+				throw new IllegalStateException("Keyboard must be created before you can query key state");
+			return keyDownBuffer.get(key) != 0;
 	}
 
-	public static boolean next() {
-		return queue.next();
-		/*
-		 * if (eventCount == 0) return false;
-		 * 
-		 * eventCount--; currentEventPos++; if (currentEventPos == maxEvents)
-		 * currentEventPos = 0;
-		 * 
-		 * return true;
-		 */
+	/**
+	 * Checks whether one of the state keys are "active"
+	 *
+	 * @param key State key to test (KEY_CAPITAL | KEY_NUMLOCK | KEY_SYSRQ)
+	 * @return STATE_ON if on, STATE_OFF if off and STATE_UNKNOWN if the state is unknown
+	 */
+/*	public static int isStateKeySet(int key) {
+		if (!created)
+			throw new IllegalStateException("Keyboard must be created before you can query key state");
+		return implementation.isStateKeySet(key);
 	}
-
-	public static int getEventKey() {
-		return keyEvents[queue.getCurrentPos()];
-	}
-
-	public static char getEventCharacter() {
-		return keyEventChars[getEventKey()];
-	}
-
-	public static boolean getEventKeyState() {
-		return keyEventStates[queue.getCurrentPos()];
-	}
-
-	public static long getEventNanoseconds() {
-		return nanoTimeEvents[queue.getCurrentPos()];
-	}
-
-	public static String getKeyName(int key) {
+*/
+	/**
+	 * Gets a key's name
+	 * @param key The key
+	 * @return a String with the key's human readable name in it or null if the key is unnamed
+	 */
+	public static synchronized String getKeyName(int key) {
 		return keyName[key];
 	}
 
-	public static int getKeyIndex(java.lang.String keyName) {
+	/**
+	 * Get's a key's index. If the key is unrecognised then KEY_NONE is returned.
+	 * @param keyName The key name
+	 */
+	public static synchronized int getKeyIndex(String keyName) {
 		Integer ret = keyMap.get(keyName);
 		if (ret == null)
 			return KEY_NONE;
@@ -299,11 +431,152 @@ public class Keyboard {
 			return ret;
 	}
 
-	public static boolean isCreated() {
-		return Display.isCreated();
+	/**
+	 * Gets the number of keyboard events waiting after doing a buffer enabled poll().
+	 * @return the number of keyboard events
+	 */
+	public static int getNumKeyboardEvents() {
+			if (!created)
+				throw new IllegalStateException("Keyboard must be created before you can read events");
+			int old_position = readBuffer.position();
+			int num_events = 0;
+			while (readNext(tmp_event) && (!tmp_event.repeat || repeat_enabled))
+				num_events++;
+			readBuffer.position(old_position);
+			return num_events;
 	}
 
-	public static void destroy() {
+	/**
+	 * Gets the next keyboard event. You can query which key caused the event by using
+	 * <code>getEventKey</code>. To get the state of that key, for that event, use
+	 * <code>getEventKeyState</code> - finally use <code>getEventCharacter</code> to get the
+	 * character for that event.
+	 *
+	 * @see org.lwjgl.input.Keyboard#getEventKey()
+	 * @see org.lwjgl.input.Keyboard#getEventKeyState()
+	 * @see org.lwjgl.input.Keyboard#getEventCharacter()
+	 * @return true if a keyboard event was read, false otherwise
+	 */
+	public static boolean next() {
+			if (!created)
+				throw new IllegalStateException("Keyboard must be created before you can read events");
 
+			boolean result;
+			while ((result = readNext(current_event)) && current_event.repeat && !repeat_enabled)
+				;
+			return result;
+	}
+
+	/**
+	 * Controls whether repeat events are reported or not. If repeat events
+	 * are enabled, key down events are reported when a key is pressed and held for
+	 * a OS dependent amount of time. To distinguish a repeat event from a normal event,
+	 * use isRepeatEvent().
+	 *
+	 * @see org.lwjgl.input.Keyboard#getEventKey()
+	 */
+	public static void enableRepeatEvents(boolean enable) {
+			repeat_enabled = enable;
+	}
+
+	/**
+	 * Check whether repeat events are currently reported or not.
+	 *
+	 * @return true is repeat events are reported, false if not.
+	 * @see org.lwjgl.input.Keyboard#getEventKey()
+	 */
+	public static boolean areRepeatEventsEnabled() {
+			return repeat_enabled;
+	}
+
+	private static boolean readNext(KeyEvent event) {
+		if (readBuffer.hasRemaining()) {
+			event.key = readBuffer.getInt() & 0xFF;
+			event.state = readBuffer.get() != 0;
+			event.character = readBuffer.getInt();
+			event.nanos = readBuffer.getLong();
+			event.repeat = readBuffer.get() == 1;
+			return true;
+		} else
+			return false;
+	}
+
+	/**
+	 * @return Number of keys on this keyboard
+	 */
+	public static int getKeyCount() {
+		return keyCount;
+	}
+
+	/**
+	 * @return The character from the current event
+	 */
+	public static char getEventCharacter() {
+			return (char)current_event.character;
+	}
+
+	/**
+	 * Please note that the key code returned is NOT valid against the
+	 * current keyboard layout. To get the actual character pressed call
+	 * getEventCharacter
+	 *
+	 * @return The key from the current event
+	 */
+	public static int getEventKey() {
+			return current_event.key;
+	}
+
+	/**
+	 * Gets the state of the key that generated the
+	 * current event
+	 *
+	 * @return True if key was down, or false if released
+	 */
+	public static boolean getEventKeyState() {
+			return current_event.state;
+	}
+
+	/**
+	 * Gets the time in nanoseconds of the current event.
+	 * Only useful for relative comparisons with other
+	 * Keyboard events, as the absolute time has no defined
+	 * origin.
+	 * @return The time in nanoseconds of the current event
+	 */
+	public static long getEventNanoseconds() {
+			return current_event.nanos;
+	}
+
+	/**
+	 * @see org.lwjgl.input.Keyboard#enableRepeatEvents(boolean)
+	 * @return true if the current event is a repeat event, false if
+	 * the current event is not a repeat even or if repeat events are disabled.
+	 */
+	public static boolean isRepeatEvent() {
+			return current_event.repeat;
+	}
+
+	private static final class KeyEvent {
+		/** The current keyboard character being examined */
+		private int character;
+
+		/** The current keyboard event key being examined */
+		private int key;
+
+		/** The current state of the key being examined in the event queue */
+		private boolean state;
+
+		/** The current event time */
+		private long nanos;
+
+		/** Is the current event a repeated event? */
+		private boolean repeat;
+
+		private void reset() {
+			character = 0;
+			key = 0;
+			state = false;
+			repeat = false;
+		}
 	}
 }
