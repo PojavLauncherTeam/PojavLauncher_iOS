@@ -156,45 +156,52 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglMakeCurrent(JNIEnv*
 
     if (window != 0x1) {
         printf("Making current on window %p\n", window);
-    EGLBoolean success = eglMakeCurrent(
+        EGLBoolean success = eglMakeCurrent(
             potatoBridge.eglDisplay,
             potatoBridge.eglSurface,
             potatoBridge.eglSurface,
             /* window==0 ? EGL_NO_CONTEXT : */ (EGLContext *) window
-    );
-    if (success == EGL_FALSE) {
-        printf("Error: eglMakeCurrent() failed: %p\n", eglGetError());
-    }
+        );
+        if (success == EGL_FALSE) {
+            printf("Error: eglMakeCurrent() failed: %p\n", eglGetError());
+        }
 
-    // Test
+        // Test
 #ifdef GLES_TEST
-    glClearColor(0.4f, 0.4f, 0.4f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-    eglSwapBuffers(potatoBridge.eglDisplay, potatoBridge.eglSurface);
-    printf("First frame error: %p\n", eglGetError());
+        glClearColor(0.4f, 0.4f, 0.4f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        eglSwapBuffers(potatoBridge.eglDisplay, potatoBridge.eglSurface);
+        printf("First frame error: %p\n", eglGetError());
 #endif
+        if (success == EGL_TRUE) {
+            GL4ES_HANDLE = dlopen("libGL.dylib", RTLD_GLOBAL);
+            debug("libGL = %p", GL4ES_HANDLE);
+    
+            gl4esInitialize_func *gl4esInitialize = (gl4esInitialize_func*) dlsym(GL4ES_HANDLE, "initialize_gl4es");
+            // debug("initialize_gl4es = %p", gl4esInitialize);
+    
+            // gl4esSwapBuffers = (gl4esSwapBuffers_func*) dlsym(GL4ES_HANDLE, "gl4es_SwapBuffers_currentContext");
+    
+            gl4esInitialize();
+            debug("GL4ES init success");
+        }
 
-    GL4ES_HANDLE = dlopen("libGL.dylib", RTLD_GLOBAL);
-    debug("libGL = %p", GL4ES_HANDLE);
-    
-    gl4esInitialize_func *gl4esInitialize = (gl4esInitialize_func*) dlsym(GL4ES_HANDLE, "initialize_gl4es");
-    // debug("initialize_gl4es = %p", gl4esInitialize);
-    
-    // gl4esSwapBuffers = (gl4esSwapBuffers_func*) dlsym(GL4ES_HANDLE, "gl4es_SwapBuffers_currentContext");
-    
-    gl4esInitialize();
-    debug("GL4ES init success");
+        // idk this should convert or just `return success;`...
+        return success == EGL_TRUE ? JNI_TRUE : JNI_FALSE;
+    } else {
+        (*env)->ThrowNew(env,(*env)->FindClass(env,"java/lang/Exception"),"Trace exception");
+        //return JNI_TRUE;
+    }
 
     return ret;
 }
 
-JNIEXPORT void JNICALL
-Java_org_lwjgl_glfw_GLFW_nativeEglDetachOnCurrentThread(JNIEnv *env, jclass clazz) {
+JNIEXPORT void JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglDetachOnCurrentThread(JNIEnv *env, jclass clazz) {
     //Obstruct the context on the current thread
     eglMakeCurrent(potatoBridge.eglDisplay, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
 }
-JNIEXPORT jlong JNICALL
-Java_org_lwjgl_glfw_GLFW_nativeEglCreateContext(JNIEnv *env, jclass clazz, jlong contextSrc) {
+
+JNIEXPORT jlong JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglCreateContext(JNIEnv *env, jclass clazz, jlong contextSrc) {
     EGLContext* ctx;
 
     if (contextSrc == 0) {
@@ -206,6 +213,7 @@ Java_org_lwjgl_glfw_GLFW_nativeEglCreateContext(JNIEnv *env, jclass clazz, jlong
     //(*env)->ThrowNew(env,(*env)->FindClass(env,"java/lang/Exception"),"Trace exception");
     return (long)ctx;
 }
+
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglTerminate(JNIEnv* env, jclass clazz) {
     terminateEgl();
     return JNI_TRUE;
