@@ -37,15 +37,15 @@
 
     [self setupGL];
 }
-/*
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
 
-    [self setPaused:YES];
-    [self setResumeOnDidBecomeActive:NO];
+    [view setPaused:YES];
+    [view setResumeOnDidBecomeActive:NO];
 }
-*/
+
 - (void)dealloc
 {
     if ([MGLContext currentContext] == self.context) {

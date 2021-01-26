@@ -32,6 +32,7 @@
 #import "AppDelegate.h"
 #import "egl_bridge_ios.h"
 
+#include "EGL/egl.h"
 #include "GLES2/gl2.h"
 #include "GLES2/gl2ext.h"
 
@@ -44,17 +45,17 @@
 #endif
 
 void *createContext() {
-    EAGLContext *ctx = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+    MGLContext *ctx = [[MGLContext alloc] initWithAPI:kMGLRenderingAPIOpenGLES2];
     return ptr_to_jlong(ctx);
 }
 
 void *getCurrentContext() {
-    EAGLContext *ctx = [EAGLContext currentContext];
+    MGLContext *ctx = [MGLContext currentContext];
     return ptr_to_jlong(ctx);
 }
 
 jboolean makeCurrentContext(void *context) {
-    if ([EAGLContext setCurrentContext:(__bridge EAGLContext *)jlong_to_ptr(context)] == YES) {
+    if ([MGLContext setCurrentContext:(__bridge MGLContext *)jlong_to_ptr(context)] == YES) {
         // glViewport(0, 0, width_c, height_c);
         return JNI_TRUE;
     }
@@ -63,7 +64,7 @@ jboolean makeCurrentContext(void *context) {
 }
 
 jboolean clearCurrentContext() {
-    if ([EAGLContext setCurrentContext:nil] == YES) {
+    if ([MGLContext setCurrentContext:nil] == YES) {
         return JNI_TRUE;
     }
 
@@ -73,7 +74,9 @@ jboolean clearCurrentContext() {
 void flushBuffer() {
     // glBindRenderbuffer(GL_RENDERBUFFER, RenderBuffer);
 
-    [[EAGLContext currentContext] presentRenderbuffer:GL_RENDERBUFFER];
+    // [[MGLContext currentContext] presentRenderbuffer:GL_RENDERBUFFER];
+    
+    eglSwapBuffers();
     
     // prepare new buffer
     // glBindFramebuffer(GL_FRAMEBUFFER, FrameBuffer);
