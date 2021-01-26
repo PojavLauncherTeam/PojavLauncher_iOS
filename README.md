@@ -35,6 +35,9 @@ brew install cmake wget ldid dpkg fakeroot gradle
 # Give exec perm
 chmod 755 *.sh
 
+# Build EGL lib
+./build_libegl.sh
+
 # Build natives part
 ./build_natives.sh
 
@@ -94,6 +97,7 @@ Contributions are welcome! We welcome any type of contribution, not only code. A
 
 ## Credits & Third party components and their licenses
 - [Boardwalk](https://github.com/zhuowei/Boardwalk) (JVM Launcher): Unknown License/[Apache License 2.0](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE) or GNU GPLv2.
+- [libegl](https://github.com/davidandreoletti/libegl) by @davidandreoletti: [MIT License](https://github.com/davidandreoletti/libegl/blob/master/LICENCE).
 - [GL4ES](https://github.com/ptitSeb/gl4es) by @ptitSeb: [MIT License](https://github.com/ptitSeb/gl4es/blob/master/LICENSE).<br>
 - [OpenJDK 16](https://www.ios-repo-updates.com/repository/procursus/package/openjdk-16-jre) porter to iOS by @Diatrus: [GNU GPLv2 License](https://openjdk.java.net/legal/gplv2+ce.html).<br>
 - [LWJGL3](https://github.com/PojavLauncherTeam/lwjgl3): [BSD-3 License](https://github.com/LWJGL/lwjgl3/blob/master/LICENSE.md).

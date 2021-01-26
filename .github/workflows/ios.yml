@@ -16,6 +16,9 @@ jobs:
       - name: Setup Dependencies
         run: brew install ldid dpkg fakeroot
 
+      - name: libEGL build
+        run: bash build_libegl.sh
+
       - name: Native build
         run: bash build_natives.sh
 
