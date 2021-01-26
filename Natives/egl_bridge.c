@@ -11,7 +11,6 @@
 #include "GLES2/gl2.h"
 #endif
 
-#include "egl_bridge_ios.h"
 #include "utils.h"
 
 #include "log.h"
