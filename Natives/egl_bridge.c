@@ -62,8 +62,9 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_saveGLContext(JNI
 
 void terminateEgl() {
     printf("EGLBridge: Terminating\n");
-/*
+
     eglMakeCurrent(potatoBridge.eglDisplay, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
+/*
     eglDestroySurface(potatoBridge.eglDisplay, potatoBridge.eglSurface);
     eglDestroyContext(potatoBridge.eglDisplay, potatoBridge.eglContext);
     eglTerminate(potatoBridge.eglDisplay);
