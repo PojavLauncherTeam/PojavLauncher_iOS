@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include <sys/types.h>
 
+#include "EGL/egl.h"
+
 #ifdef GLES_TEST
 #include "GLES2/gl2.h"
 #endif
