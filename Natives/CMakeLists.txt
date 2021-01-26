@@ -18,5 +18,6 @@ target_link_libraries(pojavexec
     "-framework UIKit"
     "-framework GLKit"
     "-framework OpenGLES"
+    "L."
     "-lEGL"
 )
