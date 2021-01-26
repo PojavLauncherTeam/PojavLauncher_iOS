@@ -79,6 +79,10 @@ JNIEXPORT jlong JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglGetCurrentContext(JNIE
     return eglGetCurrentContext();
 }
 
+static const EGLint ctx_attribs[] = {
+        EGL_CONTEXT_CLIENT_VERSION, 2,
+        EGL_NONE
+};
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglInit(JNIEnv* env, jclass clazz) {
 /*
     if (potatoBridge.eglDisplay == NULL || potatoBridge.eglDisplay == EGL_NO_DISPLAY) {
@@ -143,7 +147,7 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglInit(JNIEnv* env, j
 */
 
     printf("EGLBridge: Initialized!\n");
-    printf("EGLBridge: ThreadID=%d\n", gettid());
+    // printf("EGLBridge: ThreadID=%d\n", gettid());
     printf("EGLBridge: EGLDisplay=%p, EGLSurface=%p\n",
 /* window==0 ? EGL_NO_CONTEXT : */
            potatoBridge.eglDisplay,
