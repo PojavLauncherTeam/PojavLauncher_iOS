@@ -32,7 +32,9 @@
     GLKView *view = (GLKView *)self.view;
     view.context = self.context;
     view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
-    
+
+    [view bindDrawable];
+
     [self setupGL];
 }
 
