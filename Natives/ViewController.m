@@ -31,13 +31,13 @@
     
     MGLKView *view = (MGLKView *)self.view;
     view.context = self.context;
-    view.drawableDepthFormat = MGLKViewDrawableDepthFormat24;
+    view.drawableDepthFormat = MGLDrawableDepthFormat24;
 
     //[view bindDrawable];
 
     [self setupGL];
 }
-
+/*
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -45,7 +45,7 @@
     [self setPaused:YES];
     [self setResumeOnDidBecomeActive:NO];
 }
-
+*/
 - (void)dealloc
 {
     if ([MGLContext currentContext] == self.context) {
