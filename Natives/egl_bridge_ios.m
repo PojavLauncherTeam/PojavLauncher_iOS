@@ -26,14 +26,14 @@
  */
 
 #import <UIKit/UIKit.h>
-#import <GLKit/GLKit.h>
+#import "MGLKit.h"
 #import <dlfcn.h>
 
 #import "AppDelegate.h"
 #import "egl_bridge_ios.h"
 
-#include <OpenGLES/ES2/gl.h>
-#include <OpenGLES/ES2/glext.h>
+#include "GLES2/gl2.h"
+#include "GLES2/gl2ext.h"
 
 #if defined (_LP64)
 # define jlong_to_ptr(a) ((void*)(a))

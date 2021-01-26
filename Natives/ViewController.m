@@ -1,13 +1,13 @@
 #import "ViewController.h"
 #include "utils.h"
 
-#import <OpenGLES/ES2/gl.h>
-#import <OpenGLES/ES2/glext.h>
+#include "GLES2/gl2.h"
+#include "GLES2/gl2ext.h"
 
 @interface ViewController () {
 }
 
-@property (strong, nonatomic) EAGLContext *context;
+@property (strong, nonatomic) MGLContext *context;
 
 - (void)setupGL;
 
@@ -19,19 +19,19 @@
 {
     [super viewDidLoad];
     
-    self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
+    self.context = [[MGLContext alloc] initWithAPI:kMGLRenderingAPIOpenGLES3];
 
     if (!self.context) {
-        self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+        self.context = [[MGLContext alloc] initWithAPI:kMGLRenderingAPIOpenGLES2];
     }
 
     if (!self.context) {
         NSLog(@"Failed to create ES context");
     }
     
-    GLKView *view = (GLKView *)self.view;
+    MGLKView *view = (MGLKView *)self.view;
     view.context = self.context;
-    view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
+    view.drawableDepthFormat = MGLKViewDrawableDepthFormat24;
 
     //[view bindDrawable];
 
@@ -48,14 +48,14 @@
 
 - (void)dealloc
 {
-    if ([EAGLContext currentContext] == self.context) {
-        [EAGLContext setCurrentContext:nil];
+    if ([MGLContext currentContext] == self.context) {
+        [MGLContext setCurrentContext:nil];
     }
 }
 
 - (void)setupGL
 {
-    [EAGLContext setCurrentContext:self.context];
+    [MGLContext setCurrentContext:self.context];
     
     // glClearColor(0.1, 0.1f, 0.1f, 1.0f);
     // glClear(GL_COLOR_BUFFER_BIT);

@@ -2,7 +2,7 @@
 //  AppDelegate.h
 //
 
-#import <GLKit/GLKit.h>
+#import "MGLKit.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

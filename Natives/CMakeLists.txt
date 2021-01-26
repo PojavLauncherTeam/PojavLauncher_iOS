@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.6)
 project(PojavLauncher)
 
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-set(CMAKE_C_FLAGS "-x objective-c")
+set(CMAKE_C_FLAGS "-x objective-c -Iresources/Frameworks/MetalANGLE.framework/Headers")
 
 add_executable(PojavLauncher main.c log.m JavaLauncher.c)
 target_link_libraries(PojavLauncher
@@ -13,11 +13,9 @@ set_target_properties(PojavLauncher PROPERTIES
   MACOSX_FRAMEWORK_IDENTIFIER org.cmake.ExecutableTarget
   MACOSX_BUNDLE_INFO_PLIST "../Info.plist")
 
-add_library(pojavexec SHARED log.m AppDelegate.m UILauncher.m ViewController.m egl_bridge_ios.m egl_bridge.c input_bridge_v3.c utils.c)
+add_library(pojavexec SHARED log.m AppDelegate.m UILauncher.m ViewController.m egl_bridge.c input_bridge_v3.c utils.c)
 target_link_libraries(pojavexec
+    "-Fresources/Frameworks"
     "-framework UIKit"
-    "-framework GLKit"
-    "-framework OpenGLES"
-    "-L."
-    "-lEGL"
+    "-framework MetalANGLE"
 )
