@@ -33,18 +33,22 @@
     view.context = self.context;
     view.drawableDepthFormat = MGLDrawableDepthFormat24;
 
+    // [view setPaused:YES];
+    // [view setResumeOnDidBecomeActive:NO];
+
+    view.enableSetNeedsDisplay = YES;
+
     //[view bindDrawable];
 
     [self setupGL];
 }
 
+/*
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    [view setPaused:YES];
-    [view setResumeOnDidBecomeActive:NO];
 }
+*/
 
 - (void)dealloc
 {
