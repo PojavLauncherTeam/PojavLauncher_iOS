@@ -18,8 +18,6 @@
 #include "log.h"
 
 struct PotatoBridge {
-	/* ANativeWindow */ void* androidWindow;
-	    
 	/* EGLContext */ void* eglContextOld;
 	/* EGLContext */ void* eglContext;
 	/* EGLDisplay */ void* eglDisplay;
@@ -56,33 +54,32 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_setenv(JNIEnv *en
 }
 
 JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_saveGLContext(JNIEnv* env, jclass clazz) {
+    potatoBridge.eglContext = eglGetCurrentContext();
+    potatoBridge.eglDisplay = eglGetCurrentDisplay();
+    potatoBridge.eglSurface = eglGetCurrentSurface(EGL_DRAW);
+    eglMakeCurrent(potatoBridge.eglDisplay, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
 }
 
 void terminateEgl() {
     printf("EGLBridge: Terminating\n");
+/*
     eglMakeCurrent(potatoBridge.eglDisplay, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
     eglDestroySurface(potatoBridge.eglDisplay, potatoBridge.eglSurface);
     eglDestroyContext(potatoBridge.eglDisplay, potatoBridge.eglContext);
     eglTerminate(potatoBridge.eglDisplay);
     eglReleaseThread();
-    
+*/
     potatoBridge.eglContext = EGL_NO_CONTEXT;
     potatoBridge.eglDisplay = EGL_NO_DISPLAY;
     potatoBridge.eglSurface = EGL_NO_SURFACE;
 }
 
-JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_setupBridgeWindow(JNIEnv* env, jclass clazz, jobject surface) {    
-    potatoBridge.androidWindow = ANativeWindow_fromSurface(env, surface);   
-}
-
 JNIEXPORT jlong JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglGetCurrentContext(JNIEnv* env, jclass clazz) {
     return eglGetCurrentContext();
 }
-static const EGLint ctx_attribs[] = {
-        EGL_CONTEXT_CLIENT_VERSION, 2,
-        EGL_NONE
-};
+
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglInit(JNIEnv* env, jclass clazz) {
+/*
     if (potatoBridge.eglDisplay == NULL || potatoBridge.eglDisplay == EGL_NO_DISPLAY) {
         potatoBridge.eglDisplay = eglGetDisplay(EGL_DEFAULT_DISPLAY);
         if (potatoBridge.eglDisplay == EGL_NO_DISPLAY) {
@@ -126,8 +123,6 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglInit(JNIEnv* env, j
         return JNI_FALSE;
     }
 
-    ANativeWindow_setBuffersGeometry(potatoBridge.androidWindow, 0, 0, vid);
-
     eglBindAPI(EGL_OPENGL_ES_API);
 
     potatoBridge.eglSurface = eglCreateWindowSurface(potatoBridge.eglDisplay, config, potatoBridge.androidWindow, NULL);
@@ -144,7 +139,7 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglInit(JNIEnv* env, j
         assert(eglGetConfigAttrib(potatoBridge.eglDisplay, config, EGL_SURFACE_TYPE, &val));
         assert(val & EGL_WINDOW_BIT);
     }
-
+*/
 
     printf("EGLBridge: Initialized!\n");
     printf("EGLBridge: ThreadID=%d\n", gettid());
