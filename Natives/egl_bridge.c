@@ -211,7 +211,7 @@ JNIEXPORT jlong JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglCreateContext(JNIEnv *
     } else {
         ctx = eglCreateContext(potatoBridge.eglDisplay,config,(void*)contextSrc,ctx_attribs);
     }
-    printf("Created CTX pointer = %p\n",ctx);
+    printf("Created CTX pointer=%p, shareCtx=%p\n", ctx, contextSrc);
     //(*env)->ThrowNew(env,(*env)->FindClass(env,"java/lang/Exception"),"Trace exception");
     return (long)ctx;
 }
