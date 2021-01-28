@@ -1,13 +1,16 @@
 #import "ViewController.h"
+#import "egl_bridge_ios.h"
 #include "utils.h"
 
-#import <OpenGLES/ES2/gl.h>
-#import <OpenGLES/ES2/glext.h>
+#include "EGL/egl.h"
+
+#include "GLES2/gl2.h"
+#include "GLES2/gl2ext.h"
 
 @interface ViewController () {
 }
 
-@property (strong, nonatomic) EAGLContext *context;
+@property (strong, nonatomic) MGLContext *context;
 
 - (void)setupGL;
 
@@ -18,47 +21,50 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+   
+    viewController = self;
     
-    self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
+    MGLKView *view = glView = (MGLKView *)self.view;
+    view.drawableDepthFormat = MGLDrawableDepthFormat24;
+    view.enableSetNeedsDisplay = YES;
+
+    self.context = [[MGLContext alloc] initWithAPI:kMGLRenderingAPIOpenGLES3];
 
     if (!self.context) {
-        self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+        self.context = [[MGLContext alloc] initWithAPI:kMGLRenderingAPIOpenGLES2];
     }
 
     if (!self.context) {
         NSLog(@"Failed to create ES context");
     }
     
-    GLKView *view = (GLKView *)self.view;
     view.context = self.context;
-    view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
+#ifndef USE_EGL
+    glContext = self.context;
+#endif
 
-    //[view bindDrawable];
+    [MGLContext setCurrentContext:self.context];
 
     [self setupGL];
 }
 
+/*
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    [self setPaused:YES];
-    [self setResumeOnDidBecomeActive:NO];
 }
+*/
 
 - (void)dealloc
 {
-    if ([EAGLContext currentContext] == self.context) {
-        [EAGLContext setCurrentContext:nil];
+    if ([MGLContext currentContext] == self.context) {
+        [MGLContext setCurrentContext:nil];
     }
 }
 
 - (void)setupGL
 {
-    [EAGLContext setCurrentContext:self.context];
-    
-    // glClearColor(0.1, 0.1f, 0.1f, 1.0f);
-    // glClear(GL_COLOR_BUFFER_BIT);
+    [MGLContext setCurrentContext:self.context];
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];
@@ -67,6 +73,15 @@
     int height_c = (int) roundf(screenBounds.size.height * screenScale);
     // glViewport(0, 0, width_c, height_c);
     callback_AppDelegate_didFinishLaunching(width_c, height_c);
+}
+
+- (void)mglkView:(MGLKView *)view drawInRect:(CGRect)rect {
+    // glClearColor(0.6f, 0.6f, 0.6f, 1.0f);
+    // glClear(GL_COLOR_BUFFER_BIT);
+    // [self setNeedsDisplay]
+    // NSLog(@"swapbuffer");
+
+    [super pause];
 }
 
 - (void)sendTouchEvent:(NSSet *)touches withEvent:(int)event

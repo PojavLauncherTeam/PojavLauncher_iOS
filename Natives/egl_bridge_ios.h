@@ -1,9 +1,15 @@
 #pragma once
 
+#ifndef USE_EGL
+
+#import "MGLKit.h"
 #include "jni.h"
 
-void *createContext();
-void *getCurrentContext();
-jboolean makeCurrentContext(void *context);
+MGLContext *glContext;
+MGLKViewController *viewController;
+
+jboolean makeSharedContext();
 jboolean clearCurrentContext();
-void flushBuffer();
+void swapBuffers();
+
+#endif

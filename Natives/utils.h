@@ -8,7 +8,6 @@
 #define ACTION_UP 1
 #define ACTION_MOVE 2
 
-void* CURR_GL_CONTEXT;
 void* GL4ES_HANDLE;
 
 JavaVM* runtimeJavaVMPtr;

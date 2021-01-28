@@ -1,6 +1,10 @@
 #import <UIKit/UIKit.h>
-#import <GLKit/GLKit.h>
+#import "MGLKit.h"
 
-@interface ViewController : GLKViewController
+MGLKView *glView;
+
+@interface ViewController : MGLKViewController
+// MGLKViewController
+// UIViewController
 
 @end
