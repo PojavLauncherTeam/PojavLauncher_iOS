@@ -60,7 +60,7 @@ chmod 755 *.sh
 - [ ] Input pipe implementation
  + [x] Mouse touch implementation
 - [ ] Does it work? Partial.
-- Currently, only rd-132211, rd-132328 and rd-20090515 (oldest Minecraft versions :V) fully works.
+- Currently, tested that 1.16.x works up to splash screen.
 
 ## Known issues
 - Camera position will be jumped to random location on first time touch.
