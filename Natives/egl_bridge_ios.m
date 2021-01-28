@@ -43,4 +43,8 @@ jboolean clearCurrentContext() {
     return JNI_FALSE;
 }
 
+void swapBuffers() {
+    [viewController resume];
+}
+
 #endif

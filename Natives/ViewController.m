@@ -2,6 +2,8 @@
 #import "egl_bridge_ios.h"
 #include "utils.h"
 
+#include "EGL/egl.h"
+
 #include "GLES2/gl2.h"
 #include "GLES2/gl2ext.h"
 
@@ -19,6 +21,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+   
+    viewController = self;
     
     MGLKView *view = glView = (MGLKView *)self.view;
     view.drawableDepthFormat = MGLDrawableDepthFormat24;
@@ -74,6 +78,10 @@
 - (void)mglkView:(MGLKView *)view drawInRect:(CGRect)rect {
     // glClearColor(0.6f, 0.6f, 0.6f, 1.0f);
     // glClear(GL_COLOR_BUFFER_BIT);
+    // [self setNeedsDisplay]
+    NSLog(@"swapbuffer");
+
+    [super pause];
 }
 
 - (void)sendTouchEvent:(NSSet *)touches withEvent:(int)event

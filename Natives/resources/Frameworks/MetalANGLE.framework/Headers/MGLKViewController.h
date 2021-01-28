@@ -33,6 +33,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(weak, nonatomic, readonly) MGLKView *glView;
 
+- (void)pause;
+- (void)resume;
+
 @end
 
 NS_ASSUME_NONNULL_END

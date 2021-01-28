@@ -10,10 +10,7 @@
 #include "egl_bridge_ios.h"
 
 #include "EGL/egl.h"
-
-#ifdef GLES_TEST
 #include "GLES2/gl2.h"
-#endif
 
 #include "utils.h"
 
@@ -254,12 +251,21 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglTerminate(JNIEnv* e
 }
 
 bool stopMakeCurrent;
+int swappedBuffers;
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglSwapBuffers(JNIEnv *env, jclass clazz) {
     if (stopMakeCurrent) {
         return JNI_FALSE;
     }
 
-    jboolean result = (jboolean) 1; // eglSwapBuffers(potatoBridge.eglDisplay, potatoBridge.eglSurface);
+    // swapBuffers();
+    jboolean result;
+    if (swappedBuffers < 1) {
+        ++swappedBuffers;
+        swapBuffers();
+    } else {
+        result = (jboolean) eglSwapBuffers(potatoBridge.eglDisplay, eglGetCurrentSurface(EGL_DRAW));
+    }
+
     if (!result) {
         EGLint error = eglGetError();
         debug("eglSwapBuffers error: %p", error);

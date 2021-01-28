@@ -6,8 +6,10 @@
 #include "jni.h"
 
 MGLContext *glContext;
+MGLKViewController *viewController;
 
 jboolean makeSharedContext();
 jboolean clearCurrentContext();
+void swapBuffers();
 
 #endif
