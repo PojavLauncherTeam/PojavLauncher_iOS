@@ -161,8 +161,6 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglInit(JNIEnv* env, j
 }
 
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglMakeCurrent(JNIEnv* env, jclass clazz, jlong window) {
-    setenv("LIBGL_FB", "0", 1);
-
     if (window != 0x1) {
         debug("Making current on window %p", window);
         EGLBoolean success; 
