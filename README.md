@@ -47,6 +47,7 @@ chmod 755 *.sh
 
 ## How can it work?
 - Use OpenJDK 16 from Procursus to get real Java environment.
+- Use MetalANGLE for OpenGL ES -> Metal translator.
 - Use GL4ES for OpenGL -> OpenGL ES translator.
 - Use our [LWJGL3 iOS port](https://github.com/PojavLauncherTeam/lwjgl3).
 - Use same launch method as PojavLauncher Android.
@@ -56,11 +57,11 @@ chmod 755 *.sh
 - [x] LWJGL3 iOS port: works
 - [x] OpenGL: GL4ES
 - [x] Did Minecraft recognize OpenGL?
-- [ ] OpenAL: not included yet, maybe use iOS built-in OpenAL?
+- [x] OpenAL: use @kcat's openal-soft
 - [ ] Input pipe implementation
  + [x] Mouse touch implementation
 - [ ] Does it work? Partial.
-- Currently, tested that 1.16.x works up to splash screen.
+- Currently, tested that 1.15+ works up to menu screen.
 
 ## Known issues
 - Camera position will be jumped to random location on first time touch.
