@@ -61,15 +61,13 @@ chmod 755 *.sh
 - [ ] Input pipe implementation
  + [x] Mouse touch implementation
 - [ ] Does it work? Partial.
-- Currently, tested that 1.15+ works up to menu screen.
+- Currently, tested that 1.14+ works up to menu screen.
 
 ## Known issues
 - Camera position will be jumped to random location on first time touch.
-- 1.6.x only render a tiny panorama at bottom left corner.
-- 1.7.2 to 1.12.2 will crash because of framebuffer.
-- Other versions will crash for various reasons: missing LWJGL JNI methods, missing OpenAL, Narrator crash, etc...
+- 1.12.2 and below only render a tiny panorama at bottom left corner.
+- Other versions will crash for various reasons: Narrator crash, etc...
 - It may crash sometimes, but try launch again until you get it works.
-- App may be crashed if rotate screen, open Notification Center or put app to background.
 
 ## Installing OpenJDK 16
 ### For Chimera/Odyssey bootstrap
