@@ -22,10 +22,6 @@ public class CallbackBridge {
     
     public static final int ANDROID_TYPE_GRAB_STATE = 0;
     
-    public static final int ACTION_DOWN = 0;
-    public static final int ACTION_UP = 1;
-    public static final int ACTION_MOVE = 2;
-
     // Should pending events be limited?
     volatile public static List<Integer[]> PENDING_EVENT_LIST = new ArrayList<>();
     volatile public static boolean PENDING_EVENT_READY = false;
