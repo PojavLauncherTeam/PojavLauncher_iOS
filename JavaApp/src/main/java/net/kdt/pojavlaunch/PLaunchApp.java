@@ -8,6 +8,7 @@ import javafx.application.Application;
 import org.lwjgl.glfw.CallbackBridge;
 
 import net.kdt.pojavlaunch.prefs.*;
+import net.kdt.pojavlaunch.uikit.*;
 import net.kdt.pojavlaunch.utils.*;
 import net.kdt.pojavlaunch.value.*;
 
@@ -29,7 +30,7 @@ public class PLaunchApp {
         
         if (args[0].startsWith("/Applications/")) {
             System.out.println("We are on java now! Starting UI...");
-            org.lwjgl.glfw.CallbackBridge.nativeLaunchUI(args);
+            UIKit.launchUI(args);
         } else {
             launchMinecraft();
         }

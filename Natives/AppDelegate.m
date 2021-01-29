@@ -9,7 +9,8 @@
     self.window = window;
     [self.window setWindowLevel:3000.0];
     [self.window makeKeyAndVisible];
-    self.window.backgroundColor = [UIColor blackColor];
+    self.window.backgroundColor = [UIColor whiteColor];
+
     LauncherViewController *vc = [[LauncherViewController alloc] init];
     self.window.rootViewController = vc;
     

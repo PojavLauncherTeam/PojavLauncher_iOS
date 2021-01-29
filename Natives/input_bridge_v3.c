@@ -14,6 +14,8 @@
 #include <assert.h>
 #include <stdlib.h>
 
+#include "ios_uikit_bridge.h"
+
 #include "log.h"
 #include "utils.h"
 
@@ -44,7 +46,8 @@ int grabCursorX, grabCursorY, lastCursorX, lastCursorY;
 jclass inputBridgeClass_ANDROID, inputBridgeClass_JRE;
 jmethodID inputBridgeMethod_ANDROID, inputBridgeMethod_JRE;
 
-jmethodID touchBridgeMethod;
+jclass uikitBridgeClass;
+jmethodID uikitBridgeTouchMethod;
 
 jboolean isGrabbing;
 
@@ -161,7 +164,7 @@ void callback_AppDelegate_didFinishLaunching(int width, int height) {
     // Because UI init after JVM init, this should not be null
     assert(runtimeJNIEnvPtr_JRE != NULL);
     
-    jclass clazz = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "org/lwjgl/glfw/CallbackBridge");
+    jclass clazz = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "net/kdt/pojavlaunch/uikit/UIKit");
     assert(clazz != NULL);
     
     jmethodID method = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, clazz, "callback_AppDelegate_didFinishLaunching", "(II)V");
@@ -178,24 +181,28 @@ void callback_SurfaceViewController_onTouch(int event, int x, int y) {
     // Because UI init after JVM init, this should not be null
     assert (runtimeJNIEnvPtr_JRE != NULL);
     
-    if (!inputBridgeClass_ANDROID) {
-        inputBridgeClass_ANDROID = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "org/lwjgl/glfw/CallbackBridge");
-        assert(inputBridgeClass_ANDROID != NULL);
+    if (!uikitBridgeClass) {
+        uikitBridgeClass = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "net/kdt/pojavlaunch/uikit/UIKit");
+        assert(uikitBridgeClass != NULL);
     }
     
-    if (!touchBridgeMethod) {
-        touchBridgeMethod = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, inputBridgeClass_ANDROID, "callback_SurfaceViewController_onTouch", "(III)V");
-        assert(touchBridgeMethod != NULL);
+    if (!uikitBridgeTouchMethod) {
+        uikitBridgeTouchMethod = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(uikitBridgeClass, inputBridgeClass_ANDROID, "callback_SurfaceViewController_onTouch", "(III)V");
+        assert(uikitBridgeTouchMethod != NULL);
     }
     
     (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
         runtimeJNIEnvPtr_JRE,
-        inputBridgeClass_ANDROID, touchBridgeMethod,
+        uikitBridgeClass, uikitBridgeTouchMethod,
         event, x, y
     );
 }
 
-JNIEXPORT jint JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeLaunchUI(JNIEnv* env, jclass clazz, jobjectArray args) {
+JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_runOnUIThread(JNIEnv* env, jclass clazz, jobject callback) {
+    UIKit_runOnUIThread(callback);
+}
+
+JNIEXPORT jint JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_launchUI(JNIEnv* env, jclass clazz, jobjectArray args) {
 	int argc = (*env)->GetArrayLength(env, args);
     char **argv = convert_to_char_array(env, args);
     return launchUI(argc, argv);

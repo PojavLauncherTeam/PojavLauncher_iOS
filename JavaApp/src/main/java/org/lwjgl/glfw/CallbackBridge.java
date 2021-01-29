@@ -47,41 +47,6 @@ public class CallbackBridge {
     public static boolean mouseLeft;
     public static StringBuilder DEBUG_STRING = new StringBuilder();
     
-    
-    public static native void nativeLaunchUI(String[] uiArgs);
-    public static void callback_AppDelegate_didFinishLaunching(int width, int height) {
-        GLFW.mGLFWWindowWidth = width;
-        GLFW.mGLFWWindowHeight = height;
-        mouseX = width / 2;
-        mouseY = height / 2;
-        net.kdt.pojavlaunch.PLaunchApp.applicationDidFinishLaunching();
-    }
-    
-    public static void callback_SurfaceViewController_onTouch(int event, int x, int y) {
-        switch (event) {
-            case ACTION_DOWN:
-            case ACTION_UP:
-                mouseLastX = x;
-                mouseLastY = y;
-                break;
-                
-            case ACTION_MOVE:
-                if (GLFW.mGLFWIsGrabbing) {
-                    mouseX += x - mouseLastX;
-                    mouseY += y - mouseLastY;
-                    
-                    mouseLastX = x;
-                    mouseLastY = y;
-                } else {
-                    mouseX = x;
-                    mouseY = y;
-                }
-                break;
-        }
-        
-        sendCursorPos(mouseX, mouseY);
-    }
-    
     public static boolean nativeIsGrabbing() {
         return GLFW.mGLFWIsGrabbing;
     }
