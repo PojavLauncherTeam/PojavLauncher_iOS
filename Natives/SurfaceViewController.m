@@ -23,8 +23,8 @@
     [super viewDidLoad];
    
     viewController = self;
-    
-    MGLKView *view = glView = (MGLKView *)self.view;
+
+    MGLKView *view = glView = (MGLKView *) self.view;
     view.drawableDepthFormat = MGLDrawableDepthFormat24;
     view.enableSetNeedsDisplay = YES;
 

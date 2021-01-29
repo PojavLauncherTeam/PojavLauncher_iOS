@@ -1,4 +1,6 @@
 #import "LauncherViewController.h"
+#import "SurfaceViewController.h"
+
 #include "utils.h"
 
 @interface LauncherViewController () {
@@ -22,14 +24,19 @@
 
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth;
-    [button setTitle:@"Launch" forState:UIControlStateNormal];
+    [button setTitle:@"Play" forState:UIControlStateNormal];
     button.frame = CGRectMake(10.0, 10.0, 100.0, 50.0);
-    [button addTarget:self action:@selector(showSinaWeiboUserClickHandler:) forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:self action:@selector(launchMinecraft:) forControlEvents:UIControlEventTouchUpInside];
     [scrollView addSubview:button];
 
     self.view = scrollView;
-    
-    // [self.view addSubview:scrollView];
+}
+
+- (void)launchMinecraft:(id)sender
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MinecraftSurface" bundle:nil];
+    SurfaceViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"MinecraftSurfaceVC"];
+    [self presentViewController:vc animated:YES completion:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
