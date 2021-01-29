@@ -7,7 +7,7 @@
 #import "AppDelegate.h"
 #import "egl_bridge_ios.h"
 
-#import "ViewController.h"
+#import "SurfaceViewController.h"
 
 #include "GLES2/gl2.h"
 #include "GLES2/gl2ext.h"
