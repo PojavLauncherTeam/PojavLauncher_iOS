@@ -1,10 +1,18 @@
 #import "AppDelegate.h"
 
+#import "LauncherViewController.h"
+
 @implementation AppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    // Override point for customization after application launch.
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    UIWindow *window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    self.window = window;
+    [self.window setWindowLevel:3000.0];
+    [self.window makeKeyAndVisible];
+    self.window.backgroundColor = [UIColor blackColor];
+    LauncherViewController *vc = [[LauncherViewController alloc] init];
+    self.window.rootViewController = vc;
+    
     return YES;
 }
 							
