@@ -31,7 +31,7 @@ void free_char_array(JNIEnv *env, jobjectArray jstringArray, const char **charAr
 
 void closeGLFWWindow();
 void callback_AppDelegate_didFinishLaunching(int width, int height);
-void callback_ViewController_onTouch(int event, int x, int y);
+void callback_SurfaceViewController_onTouch(int event, int x, int y);
 
 #endif // _BINARY_UTILS_H_
 

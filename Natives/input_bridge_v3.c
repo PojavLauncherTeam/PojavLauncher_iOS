@@ -174,7 +174,7 @@ void callback_AppDelegate_didFinishLaunching(int width, int height) {
     );
 }
 
-void callback_ViewController_onTouch(int event, int x, int y) {
+void callback_SurfaceViewController_onTouch(int event, int x, int y) {
     // Because UI init after JVM init, this should not be null
     assert (runtimeJNIEnvPtr_JRE != NULL);
     
@@ -184,7 +184,7 @@ void callback_ViewController_onTouch(int event, int x, int y) {
     }
     
     if (!touchBridgeMethod) {
-        touchBridgeMethod = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, inputBridgeClass_ANDROID, "callback_ViewController_onTouch", "(III)V");
+        touchBridgeMethod = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, inputBridgeClass_ANDROID, "callback_SurfaceViewController_onTouch", "(III)V");
         assert(touchBridgeMethod != NULL);
     }
     

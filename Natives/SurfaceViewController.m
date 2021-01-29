@@ -1,4 +1,4 @@
-#import "ViewController.h"
+#import "SurfaceViewController.h"
 #import "egl_bridge_ios.h"
 #include "utils.h"
 
@@ -7,7 +7,7 @@
 #include "GLES2/gl2.h"
 #include "GLES2/gl2ext.h"
 
-@interface ViewController () {
+@interface SurfaceViewController () {
 }
 
 @property (strong, nonatomic) MGLContext *context;
@@ -16,7 +16,7 @@
 
 @end
 
-@implementation ViewController
+@implementation SurfaceViewController
 
 - (void)viewDidLoad
 {
@@ -86,10 +86,13 @@
 
 - (void)sendTouchEvent:(NSSet *)touches withEvent:(int)event
 {
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    CGFloat screenScale = [[UIScreen mainScreen] scale];
+
     UITouch* touchEvent = [touches anyObject];
     CGPoint locationInView = [touchEvent locationInView:self.view];
     // CGPoint normalizedPoint = getNormalizedPoint(self.view, locationInView);
-    callback_ViewController_onTouch(event, locationInView.x, locationInView.y /* normalizedPoint.x, normalizedPoint.y */);
+    callback_SurfaceViewController_onTouch(event, locationInView.x * screenScale, locationInView.y * screenScale /* normalizedPoint.x, normalizedPoint.y */);
 }
 
 // Equals to Android ACTION_DOWN

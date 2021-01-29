@@ -57,7 +57,7 @@ public class CallbackBridge {
         net.kdt.pojavlaunch.PLaunchApp.applicationDidFinishLaunching();
     }
     
-    public static void callback_ViewController_onTouch(int event, int x, int y) {
+    public static void callback_SurfaceViewController_onTouch(int event, int x, int y) {
         switch (event) {
             case ACTION_DOWN:
             case ACTION_UP:

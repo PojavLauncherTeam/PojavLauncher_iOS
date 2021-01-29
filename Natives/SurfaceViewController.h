@@ -3,7 +3,7 @@
 
 MGLKView *glView;
 
-@interface ViewController : MGLKViewController
+@interface SurfaceViewController : MGLKViewController
 // MGLKViewController
 // UIViewController
 
