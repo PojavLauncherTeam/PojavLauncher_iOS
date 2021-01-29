@@ -187,7 +187,7 @@ void callback_SurfaceViewController_onTouch(int event, int x, int y) {
     }
     
     if (!uikitBridgeTouchMethod) {
-        uikitBridgeTouchMethod = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(uikitBridgeClass, inputBridgeClass_ANDROID, "callback_SurfaceViewController_onTouch", "(III)V");
+        uikitBridgeTouchMethod = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, uikitBridgeClass, "callback_SurfaceViewController_onTouch", "(III)V");
         assert(uikitBridgeTouchMethod != NULL);
     }
     
