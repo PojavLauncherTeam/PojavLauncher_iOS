@@ -13,7 +13,7 @@ cd ../..
 
 # Compile storyboard
 mkdir -p Natives/build/Release-iphoneos/PojavLauncher.app/Base.lproj
-ibtool --compile Natives/build/Release-iphoneos/PojavLauncher.app/Base.lproj/Main.storyboardc Natives/en.lproj/Main.storyboard
+ibtool --compile Natives/build/Release-iphoneos/PojavLauncher.app/Base.lproj/MinecraftSurface.storyboardc Natives/en.lproj/MinecraftSurface.storyboard
 
 # Copy to target app
 mkdir -p Natives/build/Release-iphoneos/PojavLauncher.app/Frameworks
