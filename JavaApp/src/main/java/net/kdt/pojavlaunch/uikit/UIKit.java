@@ -17,13 +17,13 @@ public class UIKit {
     
     public static void callback_SurfaceViewController_onTouch(int event, int x, int y) {
         switch (event) {
-            case CallbackBridge.ACTION_DOWN:
-            case CallbackBridge.ACTION_UP:
+            case ACTION_DOWN:
+            case ACTION_UP:
                 CallbackBridge.mouseLastX = x;
                 CallbackBridge.mouseLastY = y;
                 break;
                 
-            case CallbackBridge.ACTION_MOVE:
+            case ACTION_MOVE:
                 if (GLFW.mGLFWIsGrabbing) {
                     CallbackBridge.mouseX += x - CallbackBridge.mouseLastX;
                     CallbackBridge.mouseY += y - CallbackBridge.mouseLastY;
