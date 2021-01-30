@@ -21,16 +21,6 @@
 
 #include "JavaLauncher.h"
 
-#define EVENT_TYPE_CHAR 1000
-#define EVENT_TYPE_CHAR_MODS 1001
-#define EVENT_TYPE_CURSOR_ENTER 1002
-#define EVENT_TYPE_CURSOR_POS 1003
-#define EVENT_TYPE_FRAMEBUFFER_SIZE 1004
-#define EVENT_TYPE_KEY 1005
-#define EVENT_TYPE_MOUSE_BUTTON 1006
-#define EVENT_TYPE_SCROLL 1007
-#define EVENT_TYPE_WINDOW_SIZE 1008
-
 typedef void GLFW_invoke_Char_func(void* window, unsigned int codepoint);
 typedef void GLFW_invoke_CharMods_func(void* window, unsigned int codepoint, int mods);
 typedef void GLFW_invoke_CursorEnter_func(void* window, int entered);

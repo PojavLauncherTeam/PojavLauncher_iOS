@@ -77,19 +77,20 @@
 }
 
 ADD_BUTTON_DEF(tab) {
-    
+    sendData(EVENT_TYPE_KEY, GLFW_KEY_TAB, 0, held, 0);
+    // type, keycode, scancode, action, mods
 }
 
 ADD_BUTTON_DEF(enter) {
-    NSLog(@"Enter held state: %d", held);
+    sendData(EVENT_TYPE_KEY, GLFW_KEY_ENTER, 0, held, 0);
 }
 
 ADD_BUTTON_DEF(escape) {
-    NSLog(@"Escape held state: %d", held);
+    sendData(EVENT_TYPE_KEY, GLFW_KEY_ESCAPE, 0, held, 0);
 }
 
 ADD_BUTTON_DEF(f3) {
-    
+    sendData(EVENT_TYPE_KEY, GLFW_KEY_F3, 0, held, 0);
 }
 
 /*
