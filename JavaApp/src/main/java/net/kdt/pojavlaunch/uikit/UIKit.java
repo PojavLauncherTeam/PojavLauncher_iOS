@@ -45,10 +45,10 @@ public class UIKit {
         CallbackBridge.sendCursorPos(CallbackBridge.mouseX, CallbackBridge.mouseY);
     }
     
-    public static void updateProgressSafe(final int percent, final String message) {
+    public static void updateProgressSafe(final float progress, final String message) {
         System.out.println(message);
         runOnUIThread(() -> {
-            updateProgress(percent, message);
+            updateProgress(progress, ((int) progress)*100 + "% - " + message);
         });
     }
 
@@ -60,7 +60,7 @@ public class UIKit {
     public static native void runOnUIThread(UIKitCallback callback);
     
     // Update progress
-    public static native void updateProgress(int percent, String message);
+    public static native void updateProgress(float progress, String message);
     
     // Start SurfaceViewController
     public static native void launchMinecraftSurface();

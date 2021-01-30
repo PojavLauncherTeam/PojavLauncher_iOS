@@ -219,9 +219,9 @@ void callback_SurfaceViewController_onTouch(int event, int x, int y) {
     );
 }
 
-JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_updateProgress(JNIEnv* env, jclass clazz, jint percent, jstring message) {
+JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_updateProgress(JNIEnv* env, jclass clazz, jfloat progress, jstring message) {
 	const char *message_c = (*env)->GetStringUTFChars(env, message, 0);
-	UIKit_updateProgress((float) percent / 100.0, message_c);
+	UIKit_updateProgress(progress, message_c);
 	(*env)->ReleaseStringUTFChars(env, message, message_c);
 }
 

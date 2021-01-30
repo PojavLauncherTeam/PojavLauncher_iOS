@@ -46,9 +46,10 @@ public class PLaunchApp {
     public static void installMinecraft() {
         new Thread(() -> {
         
-        int currProgress, totalProgress;
+        int currProgress = 0;
+        float totalProgress = 0;
         
-        UIKit.updateProgressSafe(currProgress, "Finding a version");
+        UIKit.updateProgressSafe(0, "Finding a version");
         String mcver = "1.16.5";
         
         try {
@@ -57,7 +58,7 @@ public class PLaunchApp {
             UIKit.updateProgressSafe(currProgress, "config_ver.txt not found, defaulting to Minecraft 1.16.5");
         }
         
-        UIKit.updateProgressSafe(currProgress, "Selected Minecraft version: " + mcver);
+        UIKit.updateProgressSafe(0, "Selected Minecraft version: " + mcver);
         
         Thread.sleep(1000);
         
@@ -74,12 +75,12 @@ public class PLaunchApp {
             String minecraftMainJar = Tools.DIR_HOME_VERSION + downVName + ".jar";
             String verJsonDir = Tools.DIR_HOME_VERSION + downVName + ".json";
             
-            UIKit.updateProgressSafe(currProgress, "Downloading version list");
+            UIKit.updateProgressSafe(0, "Downloading version list");
             mVersionList = Tools.GLOBAL_GSON.fromJson(DownloadUtils.downloadString("https://launchermeta.mojang.com/mc/game/version_manifest.json"), JMinecraftVersionList.class);
             
             verInfo = findVersion(mcver);
             if (verInfo.url != null && !new File(verJsonDir).exists()) {
-                UIKit.updateProgressSafe(currProgress, "Downloading " + mcver + ".json");
+                UIKit.updateProgressSafe(0, "Downloading " + mcver + ".json");
                 Tools.downloadFile(verInfo.url, verJsonDir);
             }
             
@@ -94,7 +95,8 @@ public class PLaunchApp {
                     libItem.name.startsWith("net.java.jinput") ||
                     libItem.name.startsWith("org.lwjgl")
                 ) { // Black list
-                    UIKit.updateProgressSafe(currProgress++, "Ignored " + libItem.name);
+                    currProgress++;
+                    UIKit.updateProgressSafe(currProgress / maxProgress, "Ignored " + libItem.name);
                     // Thread.sleep(100);
                 } else {
                     String[] libInfo = libItem.name.split(":");
@@ -103,7 +105,8 @@ public class PLaunchApp {
                     outLib.getParentFile().mkdirs();
 
                     if (!outLib.exists()) {
-                        UIKit.updateProgressSafe(currProgress++, "Downloading " + libItem.name);
+                        currProgress++;
+                    UIKit.updateProgressSafe(currProgress / maxProgress, "Downloading " + libItem.name);
 
                         boolean skipIfFailed = false;
 
@@ -119,13 +122,14 @@ public class PLaunchApp {
                             Tools.downloadFile(libPathURL, outLib.getAbsolutePath());
                         } catch (Throwable th) {
                             th.printStackTrace();
-                            UIKit.updateProgressSafe(0, "Download failed");
+                            UIKit.updateProgressSafe(currProgress / maxProgress, "Download failed");
                         }
                     }
                 }
             }
             
-            UIKit.updateProgressSafe(currProgress++, "Downloading " + mcver + ".jar");
+            currProgress++;
+            UIKit.updateProgressSafe(currProgress / maxProgress, "Downloading " + mcver + ".jar");
             File minecraftMainFile = new File(minecraftMainJar);
             if (!minecraftMainFile.exists() || minecraftMainFile.length() == 0l) {
                 Tools.downloadFile(verInfo.downloads.values().toArray(new MinecraftClientInfo[0])[0].url, minecraftMainJar);
@@ -134,7 +138,7 @@ public class PLaunchApp {
             // TODO download assets
             
         } catch (IOException e) {
-            UIKit.updateProgressSafe(currProgress, "Download error, skipping");
+            UIKit.updateProgressSafe(currProgress / maxProgress, "Download error, skipping");
             e.printStackTrace();
         }
         
