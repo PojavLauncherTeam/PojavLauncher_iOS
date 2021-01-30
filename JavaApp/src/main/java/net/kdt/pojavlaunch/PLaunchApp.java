@@ -153,7 +153,7 @@ public class PLaunchApp {
         System.out.println("Saving GLES context");
         JREUtils.saveGLContext();
         
-        System.out.println("Launching Minecraft " + mcver);
+        System.out.println("Launching Minecraft " + mVersion.id);
         try {
             Tools.launchMinecraft(mAccount, mVersion);
         } catch (Throwable th) {

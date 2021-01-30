@@ -17,7 +17,7 @@ public class UIKit {
         GLFW.mGLFWWindowHeight = height;
         CallbackBridge.mouseX = width / 2;
         CallbackBridge.mouseY = height / 2;
-        launchMinecraft();
+        PLaunchApp.launchMinecraft();
     }
     
     public static void callback_SurfaceViewController_onTouch(int event, int x, int y) {
