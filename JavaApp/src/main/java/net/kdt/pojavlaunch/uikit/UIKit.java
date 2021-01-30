@@ -47,9 +47,7 @@ public class UIKit {
     
     public static void updateProgressSafe(final float progress, final String message) {
         System.out.println(message);
-        runOnUIThread(() -> {
-            updateProgress(progress, ((int) progress)*100 + "% - " + message);
-        });
+        updateProgress(progress, ((int) progress)*100 + "% - " + message);
     }
 
     static {
@@ -57,7 +55,7 @@ public class UIKit {
     }
     
     public static native int launchUI(String[] uiArgs);
-    public static native void runOnUIThread(UIKitCallback callback);
+    // public static native void runOnUIThread(UIKitCallback callback);
     
     // Update progress
     public static native void updateProgress(float progress, String message);

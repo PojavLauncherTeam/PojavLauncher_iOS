@@ -145,9 +145,7 @@ public class PLaunchApp {
         mAccount = acc;
         mVersion = verInfo;
         
-        UIKit.runOnUIThread(() -> {
-            UIKit.launchMinecraftSurface();
-        });
+        UIKit.launchMinecraftSurface();
         
         }).start();
     }
