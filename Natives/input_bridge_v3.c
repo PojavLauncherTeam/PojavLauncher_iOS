@@ -159,7 +159,6 @@ void closeGLFWWindow() {
 }
 
 void callback_LauncherViewController_installMinecraft() {
-    
     // Because UI init after JVM init, this should not be null
     assert(runtimeJNIEnvPtr_JRE != NULL);
     
@@ -168,9 +167,8 @@ void callback_LauncherViewController_installMinecraft() {
         assert(uikitBridgeClass != NULL);
     }
     
-    jmethodID method = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, uikitBridgeClass, "callback_LauncherViewController_installMinecraft", "(II)V");
+    jmethodID method = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, uikitBridgeClass, "callback_LauncherViewController_installMinecraft", "()V");
     assert(method != NULL);
-    
     (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
         runtimeJNIEnvPtr_JRE,
         uikitBridgeClass, method

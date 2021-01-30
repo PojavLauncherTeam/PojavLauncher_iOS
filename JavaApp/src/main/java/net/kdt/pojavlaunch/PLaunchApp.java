@@ -53,7 +53,7 @@ public class PLaunchApp {
         try {
             mcver = Tools.read(Tools.DIR_GAME_NEW + "/config_ver.txt");
         } catch (IOException e) {
-            UIKit.updateProgressSafe(currProgress, "config_ver.txt not found, defaulting to Minecraft 1.16.5");
+            UIKit.updateProgressSafe(0, "config_ver.txt not found, defaulting to Minecraft 1.16.5");
         }
         
         UIKit.updateProgressSafe(0, "Selected Minecraft version: " + mcver);
