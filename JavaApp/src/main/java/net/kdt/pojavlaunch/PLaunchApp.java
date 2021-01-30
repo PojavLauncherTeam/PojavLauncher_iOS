@@ -45,7 +45,7 @@ public class PLaunchApp {
         new Thread(() -> {
         
         int currProgress = 0;
-        float totalProgress = 0;
+        float maxProgress = 0;
         
         UIKit.updateProgressSafe(0, "Finding a version");
         String mcver = "1.16.5";
@@ -83,7 +83,7 @@ public class PLaunchApp {
             }
             
             verInfo = Tools.getVersionInfo(mcver);
-            totalProgress = verInfo.libraries.length + 1; // + verInfo.assetslength
+            maxProgress = verInfo.libraries.length + 1; // + verInfo.assetslength
             
             File outLib;
             String libPathURL;
