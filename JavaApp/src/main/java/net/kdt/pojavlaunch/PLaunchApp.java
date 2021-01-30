@@ -3,8 +3,6 @@ package net.kdt.pojavlaunch;
 import java.io.*;
 import java.util.Arrays;
 
-import javafx.application.Application;
-
 import org.lwjgl.glfw.CallbackBridge;
 
 import net.kdt.pojavlaunch.prefs.*;
