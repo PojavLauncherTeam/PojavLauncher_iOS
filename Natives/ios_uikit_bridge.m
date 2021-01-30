@@ -12,8 +12,8 @@ void UIKit_runOnUIThread(jobject callback) {
         JNIEnv *env;
         (*runtimeJavaVMPtr)->GetEnv(runtimeJavaVMPtr, &env, JNI_VERSION_1_4);
         jclass clazz = (*env)->GetObjectClass(env, callback);
-        jmethodID method = (*env)->GetStaticMethodID(env, clazz, "onCallback", "()V");
-        (*env)->CallStaticVoidMethod(
+        jmethodID method = (*env)->GetMethodID(env, clazz, "onCallback", "()V");
+        (*env)->CallVoidMethod(
             env, callback, method
         );
     });
