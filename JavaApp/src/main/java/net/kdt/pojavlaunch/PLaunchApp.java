@@ -58,7 +58,9 @@ public class PLaunchApp {
         
         UIKit.updateProgressSafe(0, "Selected Minecraft version: " + mcver);
         
-        Thread.sleep(1000);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {}
         
         // dummy account
         MinecraftAccount acc = new MinecraftAccount();
