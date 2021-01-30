@@ -48,6 +48,9 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved) {
     (*vm)->GetEnv(vm, (void**) &runtimeJNIEnvPtr_JRE, JNI_VERSION_1_4);
     
     isGrabbing = JNI_FALSE;
+
+    // temporary only
+    isUseStackQueueCall = 1;
     
     return JNI_VERSION_1_4;
 }
@@ -116,6 +119,11 @@ void getJavaInputBridge(jclass* clazz, jmethodID* method) {
 }
 
 void sendData(int type, int i1, int i2, int i3, int i4) {
+    if (runtimeJNIEnvPtr_ANDROID == NULL) {
+        (*runtimeJavaVMPtr)->GetEnv(runtimeJavaVMPtr, (void**) &runtimeJNIEnvPtr_ANDROID, JNI_VERSION_1_4);
+        getJavaInputBridge(&inputBridgeClass_ANDROID, &inputBridgeMethod_ANDROID);
+    }
+
 #ifdef DEBUG
     debug("Debug: Send data, jnienv.isNull=%d\n", runtimeJNIEnvPtr_ANDROID == NULL);
 #endif
@@ -205,10 +213,6 @@ void callback_SurfaceViewController_onTouch(int event, int x, int y) {
         uikitBridgeClass, uikitBridgeTouchMethod,
         event, x, y
     );
-}
-
-void callback_SurfaceViewController_onKey(int keycode, int state) {
-    
 }
 
 JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_updateProgress(JNIEnv* env, jclass clazz, jfloat progress, jstring message) {
