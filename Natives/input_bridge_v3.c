@@ -158,21 +158,42 @@ void closeGLFWWindow() {
     exit(-1);
 }
 
-void callback_AppDelegate_didFinishLaunching(int width, int height) {
-    debug("Received AppDelegate callback, width=%d, height=%d\n", width, height);
-
+void callback_LauncherViewController_installMinecraft() {
+    
     // Because UI init after JVM init, this should not be null
     assert(runtimeJNIEnvPtr_JRE != NULL);
     
-    jclass clazz = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "net/kdt/pojavlaunch/uikit/UIKit");
-    assert(clazz != NULL);
+    if (!uikitBridgeClass) {
+        uikitBridgeClass = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "net/kdt/pojavlaunch/uikit/UIKit");
+        assert(uikitBridgeClass != NULL);
+    }
     
-    jmethodID method = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, clazz, "callback_AppDelegate_didFinishLaunching", "(II)V");
+    jmethodID method = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, uikitBridgeClass, "callback_LauncherViewController_installMinecraft", "(II)V");
     assert(method != NULL);
     
     (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
         runtimeJNIEnvPtr_JRE,
-        clazz, method,
+        uikitBridgeClass, method
+    );
+}
+
+void callback_SurfaceViewController_launchMinecraft(int width, int height) {
+    debug("Received SurfaceViewController callback, width=%d, height=%d\n", width, height);
+
+    // Because UI init after JVM init, this should not be null
+    assert(runtimeJNIEnvPtr_JRE != NULL);
+    
+    if (!uikitBridgeClass) {
+        uikitBridgeClass = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "net/kdt/pojavlaunch/uikit/UIKit");
+        assert(uikitBridgeClass != NULL);
+    }
+    
+    jmethodID method = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, uikitBridgeClass, "callback_SurfaceViewController_launchMinecraft", "(II)V");
+    assert(method != NULL);
+    
+    (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
+        runtimeJNIEnvPtr_JRE,
+        uikitBridgeClass, method,
         width, height
     );
 }
@@ -196,6 +217,16 @@ void callback_SurfaceViewController_onTouch(int event, int x, int y) {
         uikitBridgeClass, uikitBridgeTouchMethod,
         event, x, y
     );
+}
+
+JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_updateProgress(JNIEnv* env, jclass clazz, jint percent, jstring message) {
+	const char *message_c = (*env)->GetStringUTFChars(env, message, 0);
+	UIKit_updateProgress((float) percent / 100.0, message_c);
+	(*env)->ReleaseStringUTFChars(env, message, message_c);
+}
+
+JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_launchMinecraftSurface(JNIEnv* env, jclass clazz) {
+    UIKit_launchMinecraftSurfaceVC();
 }
 
 JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_runOnUIThread(JNIEnv* env, jclass clazz, jobject callback) {

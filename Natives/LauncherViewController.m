@@ -1,5 +1,4 @@
 #import "LauncherViewController.h"
-#import "SurfaceViewController.h"
 
 #include "utils.h"
 
@@ -19,28 +18,26 @@
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];
     
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, screenBounds.size.width, screenBounds.size.height)];
+    UIScrollView *scrollView = self.view = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, screenBounds.size.width, screenBounds.size.height)];
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
-    UIProgressView *progress = [[UIProgressView alloc] initWithFrame:CGRectMake(4.0, 4.0, screenBounds.size.width - 8.0, 40.0)];
-    progress.progress = 0.5;
-    [scrollView addSubview:progress];
+    install_progress_bar = [[UIProgressView alloc] initWithFrame:CGRectMake(4.0, 4.0, screenBounds.size.width - 8.0, 40.0)];
+    [scrollView addSubview:install_progress_bar];
 
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth;
     [button setTitle:@"Play" forState:UIControlStateNormal];
-    button.frame = CGRectMake(10.0, 10.0, 100.0, 50.0);
+    button.frame = CGRectMake(10.0, 20.0, 100.0, 50.0);
     [button addTarget:self action:@selector(launchMinecraft:) forControlEvents:UIControlEventTouchUpInside];
     [scrollView addSubview:button];
-
-    self.view = scrollView;
+    
+    install_progress_text = [[UILabel alloc] initWithFrame:CGRectMake(120.0, 20.0, screenBounds.size.width - 124.0, 50.0)];
+    [scrollView addSubview:install_progress_text];
 }
 
 - (void)launchMinecraft:(id)sender
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MinecraftSurface" bundle:nil];
-    SurfaceViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"MinecraftSurfaceVC"];
-    [self presentViewController:vc animated:YES completion:nil];
+    callback_LauncherViewController_installMinecraft();
 }
 
 - (void)viewWillAppear:(BOOL)animated

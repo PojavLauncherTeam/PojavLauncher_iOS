@@ -30,7 +30,8 @@ jobjectArray convert_from_char_array(JNIEnv *env, char **charArray, int num_rows
 void free_char_array(JNIEnv *env, jobjectArray jstringArray, const char **charArray);
 
 void closeGLFWWindow();
-void callback_AppDelegate_didFinishLaunching(int width, int height);
+void callback_LauncherViewController_installMinecraft();
+void callback_SurfaceViewController_launchMinecraft(int width, int height);
 void callback_SurfaceViewController_onTouch(int event, int x, int y);
 
 #endif // _BINARY_UTILS_H_
