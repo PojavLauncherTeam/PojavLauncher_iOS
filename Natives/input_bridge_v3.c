@@ -226,11 +226,11 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_updateProgress(JNIEn
 JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_launchMinecraftSurface(JNIEnv* env, jclass clazz) {
     UIKit_launchMinecraftSurfaceVC();
 }
-
+/*
 JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_runOnUIThread(JNIEnv* env, jclass clazz, jobject callback) {
     UIKit_runOnUIThread(callback);
 }
-
+*/
 JNIEXPORT jint JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_launchUI(JNIEnv* env, jclass clazz, jobjectArray args) {
 	int argc = (*env)->GetArrayLength(env, args);
     char **argv = convert_to_char_array(env, args);
