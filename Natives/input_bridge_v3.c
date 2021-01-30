@@ -217,6 +217,10 @@ void callback_SurfaceViewController_onTouch(int event, int x, int y) {
     );
 }
 
+void callback_SurfaceViewController_onKey(int keycode, int state) {
+    
+}
+
 JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_updateProgress(JNIEnv* env, jclass clazz, jfloat progress, jstring message) {
 	const char *message_c = (*env)->GetStringUTFChars(env, message, 0);
 	UIKit_updateProgress(progress, message_c);
