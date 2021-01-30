@@ -20,6 +20,11 @@
     button_##KEY.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.3f]; \
     button_##KEY.tintColor = [UIColor whiteColor]; \
     [self.view addSubview:button_##KEY];
+
+#define ADD_BUTTON_VISIBLE(NAME, KEY, RECT) \
+    ADD_BUTTON(NAME, KEY, RECT); \
+    togglableVisibleButtons[++togglableVisibleButtonIndex] = button_##KEY;
+    
     
 #define ADD_BUTTON_DEF(KEY) \
     - (void)executebtn_##KEY##_down { \
@@ -29,6 +34,17 @@
         [self executebtn_##KEY:0]; \
     } \
     - (void)executebtn_##KEY:(int)held
+
+#define ADD_BUTTON_DEF_KEY(KEY, KEYCODE) \
+    ADD_BUTTON_DEF(KEY) { \
+        sendData(EVENT_TYPE_KEY, KEYCODE, 0, held, 0); \
+    }
+
+#define BTN_RECT 80.0, 30.0
+#define BTN_SQUARE 50.0, 50.0
+
+int togglableVisibleButtonIndex = -1;
+UIButton* togglableVisibleButtons[100];
 
 @interface SurfaceViewController () {
 }
@@ -45,10 +61,41 @@
 {
     [super viewDidLoad];
 
-    ADD_BUTTON(@"Tab", tab, CGRectMake(10.0, 10.0, 50.0, 50.0));
-    ADD_BUTTON(@"Enter", enter, CGRectMake(10.0, 70.0, 50.0, 50.0));
-    ADD_BUTTON(@"Esc", escape, CGRectMake(10.0, 130.0, 50.0, 50.0));
-    ADD_BUTTON(@"F3", f3, CGRectMake(10.0, 190.0, 50.0, 50.0));
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    CGFloat screenScale = [[UIScreen mainScreen] scale];
+
+    int width = (int) roundf(screenBounds.size.width);
+    int height = (int) roundf(screenBounds.size.height);
+
+    // Custom button
+    // ADD_BUTTON(@"F1", f1, CGRectMake(5, 5, width, height));
+
+    // TODO
+    ADD_BUTTON(@"GUI", special_togglebtn, CGRectMake(5, height - 5 - 50, BTN_SQUARE));
+    ADD_BUTTON_VISIBLE(@"Keyboard", special_keyboard, CGRectMake(5 * 3 + 80 * 2, 5, BTN_RECT));
+
+    ADD_BUTTON_VISIBLE(@"Pri", special_mouse_pri, CGRectMake(5, height - 5 * 3 - 50 * 3, BTN_SQUARE));
+    ADD_BUTTON_VISIBLE(@"Sec", special_mouse_sec, CGRectMake(5 * 3 + 50 * 2, height - 5 * 3 - 50 * 3, BTN_SQUARE));
+
+    ADD_BUTTON_VISIBLE(@"Debug", f3, CGRectMake(5, 5, BTN_RECT));
+    ADD_BUTTON_VISIBLE(@"Chat", t, CGRectMake(5 * 2 + 80, 5, BTN_RECT));
+    ADD_BUTTON_VISIBLE(@"Tab", tab, CGRectMake(5 * 4 + 80 * 3, 5, BTN_RECT));
+    ADD_BUTTON_VISIBLE(@"3rd", f5, CGRectMake(5, 5 * 2 + 30.0, BTN_RECT));
+
+    ADD_BUTTON_VISIBLE(@"▲", w, CGRectMake(5 * 2 + 50, height - 5 * 3 - 50 * 3, BTN_SQUARE));
+    ADD_BUTTON_VISIBLE(@"◀", a, CGRectMake(5, height - 5 * 2 - 50 * 2, BTN_SQUARE));
+    ADD_BUTTON_VISIBLE(@"▼", s, CGRectMake(5 * 2 + 50, height - 5 - 50, BTN_SQUARE));
+    ADD_BUTTON_VISIBLE(@"▶", d, CGRectMake(5 * 3 + 50 * 2, height - 5 * 2 - 50 * 2, BTN_SQUARE));
+    ADD_BUTTON_VISIBLE(@"◇", left_shift, CGRectMake(5 * 2 + 50, height - 5 * 2 - 50 * 2, BTN_SQUARE));
+    ADD_BUTTON_VISIBLE(@"Inv", e, CGRectMake(5 * 3 + 50 * 2, height - 5 - 50, BTN_SQUARE));
+
+    ADD_BUTTON_VISIBLE(@"⬛", space, CGRectMake(width - 5 * 2 - 50 * 2, height - 5 * 2 - 50 * 2, BTN_SQUARE));
+
+    ADD_BUTTON_VISIBLE(@"Esc", special_escape, CGRectMake(width - 5 - 80, height - 5 - 30, BTN_RECT));
+
+    // ADD_BUTTON_VISIBLE(@"Enter", enter, CGRectMake(5, 70.0, BTN_SQUARE));
+
+    [self executebtn_special_togglebtn:0];
 
     viewController = self;
 
@@ -76,22 +123,45 @@
     [self setupGL];
 }
 
-ADD_BUTTON_DEF(tab) {
-    sendData(EVENT_TYPE_KEY, GLFW_KEY_TAB, 0, held, 0);
-    // type, keycode, scancode, action, mods
+// sendData: type, keycode, scancode, action, mods
+
+int currentVisibility = 1;
+ADD_BUTTON_DEF(special_togglebtn) {
+    if (held == 0) {
+        currentVisibility = !currentVisibility;
+        for (int i = 0; i < togglableVisibleButtonIndex + 1; i++) {
+            togglableVisibleButtons[i].hidden = currentVisibility;
+        }
+    }
 }
 
-ADD_BUTTON_DEF(enter) {
-    sendData(EVENT_TYPE_KEY, GLFW_KEY_ENTER, 0, held, 0);
+ADD_BUTTON_DEF(special_keyboard) {
+    // TODO
 }
 
-ADD_BUTTON_DEF(escape) {
-    sendData(EVENT_TYPE_KEY, GLFW_KEY_ESCAPE, 0, held, 0);
+ADD_BUTTON_DEF(special_mouse_pri) {
+    // TODO
 }
 
-ADD_BUTTON_DEF(f3) {
-    sendData(EVENT_TYPE_KEY, GLFW_KEY_F3, 0, held, 0);
+ADD_BUTTON_DEF(special_mouse_sec) {
+    // TODO
 }
+
+ADD_BUTTON_DEF_KEY(f3, GLFW_KEY_F3)
+ADD_BUTTON_DEF_KEY(f5, GLFW_KEY_F5)
+ADD_BUTTON_DEF_KEY(t, GLFW_KEY_T)
+ADD_BUTTON_DEF_KEY(tab, GLFW_KEY_TAB)
+
+ADD_BUTTON_DEF_KEY(w, GLFW_KEY_W)
+ADD_BUTTON_DEF_KEY(a, GLFW_KEY_A)
+ADD_BUTTON_DEF_KEY(s, GLFW_KEY_S)
+ADD_BUTTON_DEF_KEY(d, GLFW_KEY_D)
+ADD_BUTTON_DEF_KEY(e, GLFW_KEY_E)
+
+ADD_BUTTON_DEF_KEY(left_shift, GLFW_KEY_LEFT_SHIFT)
+
+ADD_BUTTON_DEF_KEY(space, GLFW_KEY_SPACE)
+ADD_BUTTON_DEF_KEY(escape, GLFW_KEY_ESCAPE)
 
 /*
 - (void)viewWillAppear:(BOOL)animated
@@ -114,10 +184,9 @@ ADD_BUTTON_DEF(f3) {
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];
 
-    int width_c = (int) roundf(screenBounds.size.width * screenScale);
-    int height_c = (int) roundf(screenBounds.size.height * screenScale);
-    // glViewport(0, 0, width_c, height_c);
-    callback_SurfaceViewController_launchMinecraft(width_c, height_c);
+    int width = (int) roundf(screenBounds.size.width * screenScale);
+    int height = (int) roundf(screenBounds.size.height * screenScale);
+    callback_SurfaceViewController_launchMinecraft(width, height);
 }
 
 - (void)mglkView:(MGLKView *)view drawInRect:(CGRect)rect {
