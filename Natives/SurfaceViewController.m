@@ -1,11 +1,34 @@
 #import "SurfaceViewController.h"
 #import "egl_bridge_ios.h"
+#import "ios_uikit_bridge.h"
+
+#include "glfw_keycodes.h"
 #include "utils.h"
 
 #include "EGL/egl.h"
 
 #include "GLES2/gl2.h"
 #include "GLES2/gl2ext.h"
+
+#define ADD_BUTTON(NAME, KEY, RECT) \
+    UIButton *button_##KEY = [UIButton buttonWithType:UIButtonTypeRoundedRect]; \
+    button_##KEY.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth; \
+    [button_##KEY setTitle:NAME forState:UIControlStateNormal]; \
+    button_##KEY.frame = RECT; \
+    [button_##KEY addTarget:self action:@selector(executebtn_##KEY##_down) forControlEvents:UIControlEventTouchDown]; \
+    [button_##KEY addTarget:self action:@selector(executebtn_##KEY##_up) forControlEvents:UIControlEventTouchUpInside]; \
+    button_##KEY.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.3f]; \
+    button_##KEY.tintColor = [UIColor whiteColor]; \
+    [self.view addSubview:button_##KEY];
+    
+#define ADD_BUTTON_DEF(KEY) \
+    - (void)executebtn_##KEY##_down { \
+        [self executebtn_##KEY:1]; \
+    } \
+    - (void)executebtn_##KEY##_up { \
+        [self executebtn_##KEY:0]; \
+    } \
+    - (void)executebtn_##KEY:(int)held
 
 @interface SurfaceViewController () {
 }
@@ -21,10 +44,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-   
+
+    ADD_BUTTON(@"Tab", tab, CGRectMake(10.0, 10.0, 50.0, 50.0));
+    ADD_BUTTON(@"Enter", enter, CGRectMake(10.0, 70.0, 50.0, 50.0));
+    ADD_BUTTON(@"Esc", escape, CGRectMake(10.0, 130.0, 50.0, 50.0));
+    ADD_BUTTON(@"F3", f3, CGRectMake(10.0, 190.0, 50.0, 50.0));
+
     viewController = self;
-    
-    MGLKView *view = glView = (MGLKView *)self.view;
+
+    MGLKView *view = glView = (MGLKView *) self.view;
     view.drawableDepthFormat = MGLDrawableDepthFormat24;
     view.enableSetNeedsDisplay = YES;
 
@@ -46,6 +74,23 @@
     [MGLContext setCurrentContext:self.context];
 
     [self setupGL];
+}
+
+ADD_BUTTON_DEF(tab) {
+    sendData(EVENT_TYPE_KEY, GLFW_KEY_TAB, 0, held, 0);
+    // type, keycode, scancode, action, mods
+}
+
+ADD_BUTTON_DEF(enter) {
+    sendData(EVENT_TYPE_KEY, GLFW_KEY_ENTER, 0, held, 0);
+}
+
+ADD_BUTTON_DEF(escape) {
+    sendData(EVENT_TYPE_KEY, GLFW_KEY_ESCAPE, 0, held, 0);
+}
+
+ADD_BUTTON_DEF(f3) {
+    sendData(EVENT_TYPE_KEY, GLFW_KEY_F3, 0, held, 0);
 }
 
 /*
@@ -72,7 +117,7 @@
     int width_c = (int) roundf(screenBounds.size.width * screenScale);
     int height_c = (int) roundf(screenBounds.size.height * screenScale);
     // glViewport(0, 0, width_c, height_c);
-    callback_AppDelegate_didFinishLaunching(width_c, height_c);
+    callback_SurfaceViewController_launchMinecraft(width_c, height_c);
 }
 
 - (void)mglkView:(MGLKView *)view drawInRect:(CGRect)rect {
