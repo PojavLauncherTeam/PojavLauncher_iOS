@@ -174,8 +174,8 @@ ADD_BUTTON_DEF(special_togglebtn) {
 }
 
 -(void)inputViewDidReturn {
-    sendData(EVENT_TYPE_ENTER, GLFW_KEY_BACKSPACE, 0, 1, 0);
-    sendData(EVENT_TYPE_ENTER, GLFW_KEY_BACKSPACE, 0, 0, 0);
+    sendData(EVENT_TYPE_KEY, GLFW_KEY_ENTER, 0, 1, 0);
+    sendData(EVENT_TYPE_KEY, GLFW_KEY_ENTER, 0, 0, 0);
 }
 
 ADD_BUTTON_DEF(special_keyboard) {
