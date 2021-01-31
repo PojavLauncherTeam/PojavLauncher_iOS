@@ -77,6 +77,7 @@ UITextField *inputView;
 
     inputView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.5f];
     [inputView addTarget:self action:@selector(inputViewDidChange:) forControlEvents:UIControlEventEditingChanged];
+    [inputView addTarget:self action:@selector(inputViewDidReturn) forControlEvents:UIControlEventEditingDidEndOnExit];
 
     // Custom button
     // ADD_BUTTON(@"F1", f1, CGRectMake(5, 5, width, height));
@@ -170,6 +171,11 @@ ADD_BUTTON_DEF(special_togglebtn) {
 
     // To detects backspace
     textView.text = @"a";
+}
+
+-(void)inputViewDidReturn {
+    sendData(EVENT_TYPE_ENTER, GLFW_KEY_BACKSPACE, 0, 1, 0);
+    sendData(EVENT_TYPE_ENTER, GLFW_KEY_BACKSPACE, 0, 0, 0);
 }
 
 ADD_BUTTON_DEF(special_keyboard) {
