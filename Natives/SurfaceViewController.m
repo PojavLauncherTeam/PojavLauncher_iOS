@@ -45,6 +45,9 @@
 
 int togglableVisibleButtonIndex = -1;
 UIButton* togglableVisibleButtons[100];
+UITextField *inputView;
+
+// TODO: key modifiers impl
 
 @interface SurfaceViewController () {
 }
@@ -66,6 +69,14 @@ UIButton* togglableVisibleButtons[100];
 
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height);
+    
+    inputView = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+
+    // To detects backspace
+    inputView.text = @"a";
+
+    inputView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.5f];
+    [inputView addTarget:self action:@selector(inputViewDidChange:) forControlEvents:UIControlEventEditingChanged];
 
     // Custom button
     // ADD_BUTTON(@"F1", f1, CGRectMake(5, 5, width, height));
@@ -94,6 +105,8 @@ UIButton* togglableVisibleButtons[100];
     ADD_BUTTON_VISIBLE(@"Esc", escape, CGRectMake(width - 5 - 80, height - 5 - 30, BTN_RECT));
 
     // ADD_BUTTON_VISIBLE(@"Enter", enter, CGRectMake(5, 70.0, BTN_SQUARE));
+    
+    [self.view addSubview:inputView];
 
     [self executebtn_special_togglebtn:0];
 
@@ -135,16 +148,46 @@ ADD_BUTTON_DEF(special_togglebtn) {
     }
 }
 
+/*
+- (BOOL)textView:(UITextView *)inputView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    NSLog(@"input");
+}
+*/
+
+-(void)inputViewDidChange :(UITextField *) textView {
+    if ([textView.text length] <= 1) {
+        sendData(EVENT_TYPE_KEY, GLFW_KEY_BACKSPACE, 0, 1, 0);
+        sendData(EVENT_TYPE_KEY, GLFW_KEY_BACKSPACE, 0, 0, 0);
+    } else {
+        NSString *newText = [textView.text substringFromIndex:1];
+        int charLength = [newText length];
+        char *charText = [newText UTF8String];
+        for (int i = 0; i < charLength; i++) {
+            sendData(EVENT_TYPE_CHAR_MODS, (unsigned int) charText[i], /* mods */ 0, 0, 0);
+        }
+    }
+
+    // To detects backspace
+    textView.text = @"a";
+}
+
 ADD_BUTTON_DEF(special_keyboard) {
-    // TODO
+    if (held == 0) {
+        if (inputView.isFirstResponder == YES) {
+            [inputView resignFirstResponder];
+        } else {
+            [inputView becomeFirstResponder];
+        }
+    }
 }
 
 ADD_BUTTON_DEF(special_mouse_pri) {
-    // TODO
+    sendData(EVENT_TYPE_MOUSE_BUTTON, GLFW_MOUSE_BUTTON_LEFT, held, 0, 0);
 }
 
 ADD_BUTTON_DEF(special_mouse_sec) {
-    // TODO
+    sendData(EVENT_TYPE_MOUSE_BUTTON, GLFW_MOUSE_BUTTON_RIGHT, held, 0, 0);
 }
 
 ADD_BUTTON_DEF_KEY(f3, GLFW_KEY_F3)
