@@ -91,7 +91,7 @@ UIButton* togglableVisibleButtons[100];
 
     ADD_BUTTON_VISIBLE(@"⬛", space, CGRectMake(width - 5 * 2 - 50 * 2, height - 5 * 2 - 50 * 2, BTN_SQUARE));
 
-    ADD_BUTTON_VISIBLE(@"Esc", special_escape, CGRectMake(width - 5 - 80, height - 5 - 30, BTN_RECT));
+    ADD_BUTTON_VISIBLE(@"Esc", escape, CGRectMake(width - 5 - 80, height - 5 - 30, BTN_RECT));
 
     // ADD_BUTTON_VISIBLE(@"Enter", enter, CGRectMake(5, 70.0, BTN_SQUARE));
 

@@ -195,9 +195,6 @@ void callback_SurfaceViewController_launchMinecraft(int width, int height) {
 }
 
 void callback_SurfaceViewController_onTouch(int event, int x, int y) {
-    // Because UI init after JVM init, this should not be null
-    assert (runtimeJNIEnvPtr_JRE != NULL);
-    
     if (!uikitBridgeClass) {
         uikitBridgeClass = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "net/kdt/pojavlaunch/uikit/UIKit");
         assert(uikitBridgeClass != NULL);
