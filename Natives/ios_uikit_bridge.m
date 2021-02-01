@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 
 #import "AppDelegate.h"
+#import "SceneDelegate.h"
 #import "LauncherViewController.h"
 #import "SurfaceViewController.h"
 
@@ -16,7 +17,13 @@ void UIKit_updateProgress(float progress, char* message) {
 
 void UIKit_launchMinecraftSurfaceVC() {
     dispatch_async(dispatch_get_main_queue(), ^{
-        LauncherViewController *rootController = (LauncherViewController*)[[(AppDelegate*) [[UIApplication sharedApplication]delegate] window] rootViewController];
+        LauncherViewController *rootController = nil;
+        if (@available(iOS 13.0, *)) {
+            rootController = UIApplication.sharedApplication.windows.lastObject.rootViewController;
+        } else {
+            rootController =(LauncherViewController*) [[(AppDelegate*) [[UIApplication sharedApplication]delegate] window] rootViewController];
+        }
+        
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MinecraftSurface" bundle:nil];
         SurfaceViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"MinecraftSurfaceVC"];
         vc.modalPresentationStyle = UIModalPresentationFullScreen;
