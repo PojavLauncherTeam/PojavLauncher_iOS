@@ -40,6 +40,19 @@ public class PLaunchApp {
         LauncherPreferences.loadPreferences();
     }
 
+    // Called from SurfaceViewController
+    public static void launchMinecraft() {
+        System.out.println("Saving GLES context");
+        JREUtils.saveGLContext();
+        
+        System.out.println("Launching Minecraft " + mVersion.id);
+        try {
+            Tools.launchMinecraft(mAccount, mVersion);
+        } catch (Throwable th) {
+            throw new RuntimeException(th);
+        }
+    }
+    
     public static void installMinecraft() {
         new Thread(() -> {
         
@@ -189,16 +202,30 @@ public class PLaunchApp {
         }
     }
     
-    // Called from SurfaceViewController
-    public static void launchMinecraft() {
-        System.out.println("Saving GLES context");
-        JREUtils.saveGLContext();
-        
-        System.out.println("Launching Minecraft " + mVersion.id);
-        try {
-            Tools.launchMinecraft(mAccount, mVersion);
-        } catch (Throwable th) {
-            throw new RuntimeException(th);
+    
+    public static final String MINECRAFT_RES = "https://resources.download.minecraft.net/";
+
+    public JAssets downloadIndex(String versionName, File output) throws Throwable {
+        if (!output.exists()) {
+            output.getParentFile().mkdirs();
+            DownloadUtils.downloadFile(verInfo.assetIndex != null ? verInfo.assetIndex.url : "https://s3.amazonaws.com/Minecraft.Download/indexes/" + versionName + ".json", output);
+        }
+
+        return Tools.GLOBAL_GSON.fromJson(Tools.read(output.getAbsolutePath()), JAssets.class);
+    }
+
+    public void downloadAsset(JAssetInfo asset, File objectsDir) throws IOException, Throwable {
+        String assetPath = asset.hash.substring(0, 2) + "/" + asset.hash;
+        File outFile = new File(objectsDir, assetPath);
+        if (!outFile.exists()) {
+            DownloadUtils.downloadFile(MINECRAFT_RES + assetPath, outFile);
+        }
+    }
+    public void downloadAssetMapped(JAssetInfo asset, String assetName, File resDir) throws Throwable {
+        String assetPath = asset.hash.substring(0, 2) + "/" + asset.hash;
+        File outFile = new File(resDir,"/"+assetName);
+        if (!outFile.exists()) {
+            DownloadUtils.downloadFile(MINECRAFT_RES + assetPath, outFile);
         }
     }
     
