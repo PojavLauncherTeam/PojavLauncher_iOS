@@ -49,8 +49,8 @@ public class CallbackBridge {
     
     private static void nativeSendCursorPos(int x, int y) {
         if (!inputReady) return;
-        GLFW.mGLFWCursorX = x;
-        GLFW.mGLFWCursorY = y;
+        GLFW.mGLFWCursorX = x + GLFW.internalGetWindow(window).x;
+        GLFW.mGLFWCursorY = y + GLFW.internalGetWindow(window).y;
     }
     private static void nativeSendKeycode(int keycode, char keychar, int scancode, int action, int mods) {
         if (!inputReady) return;
