@@ -1000,8 +1000,15 @@ public class GLFW
 	}
 
 	public static void glfwSetWindowPos(long window, int x, int y) {
-        internalGetWindow(window).x = x;
-        internalGetWindow(window).y = y;
+        // internalGetWindow(window).x = x;
+        // internalGetWindow(window).y = y;
+        
+        internalGetWindow(window).x = 0;
+        internalGetWindow(window).y = 0;
+        
+	    if (x != 0 || y != 0) {
+	        mGLFWWindowPosCallback.invoke(window, 0, 0);
+	    }
     }
     
     public static void glfwSetWindowSize(long window, int width, int height) {

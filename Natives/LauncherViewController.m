@@ -11,7 +11,6 @@
 
 @implementation LauncherViewController
 
-FILE* configver_file;
 UITextField* versionTextField;
 
 - (void)viewDidLoad
@@ -20,7 +19,7 @@ UITextField* versionTextField;
 
     [self setTitle:@"PojavLauncher"];
 
-    configver_file = fopen("/var/mobile/Documents/minecraft/config_ver.txt", "rw");
+    FILE *configver_file = fopen("/var/mobile/Documents/minecraft/config_ver.txt", "rw");
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];
@@ -49,6 +48,7 @@ UITextField* versionTextField;
     [versionTextField addTarget:versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     versionTextField.placeholder = @"Minecraft version";
     versionTextField.text = [NSString stringWithUTF8String:configver];
+    fclose(configver_file);
     [scrollView addSubview:versionTextField];
     
     install_progress_bar = [[UIProgressView alloc] initWithFrame:CGRectMake(4.0, height - 58.0, width - 8.0, 6.0)];
@@ -75,9 +75,9 @@ UITextField* versionTextField;
 
 - (void)launchMinecraft:(id)sender
 {
-    char *mcVersionChar = [versionTextField.text UTF8String];
-    fprintf(configver_file, mcVersionChar);
+    [(UIButton*) sender setEnabled:NO];
 
+    [versionTextField.text writeToFile:@"/var/mobile/Documents/minecraft/config_ver.txt" atomically:NO encoding:NSUTF8StringEncoding error:nil];
     callback_LauncherViewController_installMinecraft();
 }
 
