@@ -29,6 +29,15 @@ public class PLaunchApp {
         System.setProperty("prism.static.libraries", "false");
         System.setProperty("prism.useNativeIIO", "false");
 */
+
+        // User might remove the minecraft folder, this can cause crashes, safety recrete it
+        try {
+            File mcDir = new File("/var/mobile/Documents/minecraft");
+            mcDir.mkdirs();
+            Tools.write(mcDir.getAbsolutePath() + "/config_ver.txt", "1.16.5");
+        } catch (Throwable th) {
+            th.printStackTrace();
+        }
         
         if (args[0].startsWith("/Applications/")) {
             System.out.println("We are on java now! Starting UI...");
