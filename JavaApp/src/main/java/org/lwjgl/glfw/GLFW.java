@@ -1012,6 +1012,7 @@ public class GLFW
     }
     
 	public static void glfwShowWindow(long window) {
+	    System.out.println("GLFW: Showing window " + window + ", x=" + x + ", y=" + y);
         nglfwSetShowingWindow(window);
     }
 	public static void glfwWindowHint(int hint, int value) {}

@@ -104,7 +104,7 @@ public class HelloWorld {
 		org.lwjgl.opengl.GL.createCapabilities();
 
 		// Set the clear color
-		glClearColor(0.0f, 0.2f, 0.0f, 0.0f);
+		glClearColor(0.0f, 0.2f, 0.0f, 1.0f);
 
 		// Run the rendering loop until the user has attempted to close
 		// the window or has pressed the ESCAPE key.
@@ -119,6 +119,8 @@ public class HelloWorld {
 			glfwPollEvents();
             
             if (System.currentTimeMillis() - lastTime >= 5000) {
+                glClearColor(grabbing ? 0.0f : 0.2f, grabbing ? 0.2f : 0.0f, 0.0f, 1.0f);
+                
                 lastTime = System.currentTimeMillis();
                 grabbing = !grabbing;
                 glfwSetInputMode(window, GLFW_CURSOR, grabbing ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_HIDDEN);
