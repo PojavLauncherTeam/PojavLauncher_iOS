@@ -12,56 +12,23 @@ jobs:
           xcode-version: '11.7.0'
 
       - uses: actions/checkout@v2
-      
-#      - name: static to dylib
-#        run: |
-#          cd jniLibs
-#          clang -fpic -shared -Wl,-all_load libglass.a -o libglass.dylib
-#          clang -fpic -shared -Wl,-all_load libjavafx_font.a -o libjavafx_font.dylib
-#          clang -fpic -shared -Wl,-all_load libjavafx_iio.a -o libjavafx_iio.dylib
-#          clang -fpic -shared -Wl,-all_load libjavafx_ios_webnode.a -o libjavafx_ios_webnode.dylib
-#          clang -fpic -shared -Wl,-all_load libjfxmedia.a -o libjfxmedia.dylib
-#          clang -fpic -shared -Wl,-all_load libprism_common.a -o libprism_common.dylib
-#          clang -fpic -shared -Wl,-all_load libprism_es2.a -o libprism_es2.dylib
 
       - name: Setup Dependencies
-        run: |
-          brew install ldid dpkg fakeroot
+        run: brew install ldid dpkg fakeroot
 
       - name: Native build
-        run: |
-          cd Natives
-          mkdir build
-          cd build
-          wget https://github.com/leetal/ios-cmake/raw/master/ios.toolchain.cmake
-          cmake .. -G Xcode -DCMAKE_TOOLCHAIN_FILE=ios.toolchain.cmake -DPLATFORM=OS64 -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED="NO" -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY=""
-          cmake --build . --config Release --target pojavexec PojavLauncher
-          cd ../..
-          mkdir -p Natives/build/Release-iphoneos/PojavLauncher.app/Frameworks
-          cp Natives/build/Release-iphoneos/libpojavexec.dylib Natives/build/Release-iphoneos/PojavLauncher.app/Frameworks/
-          cp -R Natives/resources/* Natives/build/Release-iphoneos/PojavLauncher.app/
+        run: bash build_natives.sh
 
-      - name: Java Build
-        run: |
-          cd JavaApp
-          chmod +x gradlew
-          ./gradlew clean build
-          cd ..
-          mkdir Natives/build/Release-iphoneos/PojavLauncher.app/libs
-          cp JavaApp/build/libs/PojavLauncher.jar Natives/build/Release-iphoneos/PojavLauncher.app/libs/launcher.jar
-          cp JavaApp/libs/* Natives/build/Release-iphoneos/PojavLauncher.app/libs/
+      - name: Java app Build
+        run: bash build_javaapp.sh
           
-      - name: Sign and Package IPA
-        run: |
-          mkdir -p packages/pojavlauncher_iphoneos-arm/{DEBIAN,Applications,var/mobile/Documents/minecraft}
-          cp -R Natives/build/Release-iphoneos/PojavLauncher.app packages/pojavlauncher_iphoneos-arm/Applications
-          cp control packages/pojavlauncher_iphoneos-arm/DEBIAN
-          ldid -Sentitlements.xml packages/pojavlauncher_iphoneos-arm/Applications/PojavLauncher.app
-          fakeroot dpkg-deb -b packages/pojavlauncher_iphoneos-arm
+      - name: Sign and Package deb
+        run: bash build_package.sh
           
       - name: Upload IPA
         uses: actions/upload-artifact@v2
         with:
           name: PojavLauncher deb
           path: packages/pojavlauncher_iphoneos-arm.deb
+
 

@@ -1,37 +1,100 @@
+![iOS build](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/workflows/iOS%20build/badge.svg)
+
 # PojavLauncher_iOS
 Minecraft: Java Edition launcher for iOS, based on [PojavLauncher Android](https://github.com/PojavLauncherTeam/PojavLauncher).
 
 ## Navigation
 - [Introduction](#introduction)
 - [Building](#building)
+- [How can it work?](#how-can-it-work)
 - [Current status](#current-status)
+- [Known issues](#known-issues)
 - [License](#license)
 - [Contributing](#contributing)
 - [Credits & Third party components and their licenses](#credits--third-party-components-and-their-licenses)
 
 ## Introduction
-- Not finished yet!
-- There's no eta on this project.
+- This is an attempt to get Minecraft Java run on a jailbroken iOS.
+- Minimum requirements: device running iOS 12 or newer.
+
+## Building
+Requirements:
+- Mac OS X (tested: 10.15)
+- XCode (tested: 11.7.0)
+- JDK 8 installed
+- `gradle` to build Java part.
+- `cmake`, `wget`, `ldid`, `dpkg` and `fakeroot` to package.
+Run in this directory
+```
+# Only run if you haven't installed JDK 8
+brew install adoptopenjdk8
+
+# Install required packages
+brew install cmake wget ldid dpkg fakeroot gradle
+
+# Give exec perm
+chmod 755 *.sh
+
+# Build natives part
+./build_natives.sh
+
+# Build java part
+./build_javaapp.sh
+
+# Sign with entitlements and package
+./build_package.sh
+```
 
 ## How can it work?
 - Use OpenJDK 16 from Procursus to get real Java environment.
+- Use MetalANGLE for OpenGL ES -> Metal translator.
 - Use GL4ES for OpenGL -> OpenGL ES translator.
 - Use our [LWJGL3 iOS port](https://github.com/PojavLauncherTeam/lwjgl3).
 - Use same launch method as PojavLauncher Android.
 
-## Installing OpenJDK 16
-- Download [openjdk-16-jre • Procursus](https://www.ios-repo-updates.com/repository/procursus/package/openjdk-16-jre) .deb file (~40mb).
+## Current status
+- [x] Java Runtime Environment: OpenJDK 16.
+- [x] LWJGL3 iOS port: works
+- [x] OpenGL: GL4ES
+- [x] Did Minecraft recognize OpenGL?
+- [x] OpenAL: use @kcat's openal-soft
+- [ ] Input pipe implementation
+ + [x] Mouse touch implementation
+- [ ] Does it work? Partial.
+- Currently, tested that 1.14+ works up to menu screen.
 
-### For jailbroken iOS device
-- Jailbreak use Odyssey
+## Known issues
+- Camera position will be jumped to random location on first time touch.
+- 1.12.2 and below only render a tiny panorama at bottom left corner.
+- Other versions will crash for various reasons: Narrator crash, etc...
+- It may crash sometimes, but try launch again until you get it works.
+
+## Installing OpenJDK 16
+### For Chimera/Odyssey bootstrap
 - Add Procursus repository (https://apt.procurs.us).
 - Find and install `java-16-openjdk`.
 
-### For non-jailbroken devices
-- It’s not possible...
+### For other jailbreak bootstrap
+- Download [openjdk-16-jre.deb](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/releases/download/v16-openjdk/openjdk-16-jre_16.0.0_iphoneos-arm.deb).
+- Install and open Filza File manager.
+- Go to where the .deb file downloaded.
+- Open it and press Install.
+- If everything fine, it will ends up with `Setting up ...`.
+
+## Want a try or debug?
+- Minecraft home directory: `/var/mobile/Documents/minecraft`.
+- Select a version: edit `/var/mobile/Documents/minecraft/config_ver.txt`, put to Minecraft version want to start.
+
+## License
+- PojavLauncher is licensed under [GNU GPLv3](https://github.com/khanhduytran0/PojavLauncher_iOS/blob/master/LICENSE).
+
+## Contributing
+Contributions are welcome! We welcome any type of contribution, not only code. Any code change should be submitted as a pull request. The description should explain what the code does and give steps to execute it.
 
 ## Credits & Third party components and their licenses
-- [OpenJDK 16](https://www.ios-repo-updates.com/repository/procursus/package/openjdk-16-jre): GNU GPLv2 license.
-- GL4ES
-- Boardwalk JVM Launcher.
-
+- [Boardwalk](https://github.com/zhuowei/Boardwalk) (JVM Launcher): Unknown License/[Apache License 2.0](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE) or GNU GPLv2.
+- [GL4ES](https://github.com/ptitSeb/gl4es) by @ptitSeb: [MIT License](https://github.com/ptitSeb/gl4es/blob/master/LICENSE).<br>
+- [MetalANGLE](https://github.com/kakashidinho/metalangle) by @kakashidinho and ANGLE team: [BSD License 2.0](https://github.com/kakashidinho/metalangle/blob/master/LICENSE).
+- [OpenJDK 16](https://www.ios-repo-updates.com/repository/procursus/package/openjdk-16-jre) porter to iOS by @Diatrus: [GNU GPLv2 License](https://openjdk.java.net/legal/gplv2+ce.html).<br>
+- [LWJGL3](https://github.com/PojavLauncherTeam/lwjgl3): [BSD-3 License](https://github.com/LWJGL/lwjgl3/blob/master/LICENSE.md).
+- [LWJGLX](https://github.com/PojavLauncherTeam/lwjglx) (LWJGL2 API compatibility layer for LWJGL3): unknown license.<br>

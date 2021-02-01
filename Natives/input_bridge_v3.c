@@ -14,20 +14,12 @@
 #include <assert.h>
 #include <stdlib.h>
 
+#include "ios_uikit_bridge.h"
+
 #include "log.h"
 #include "utils.h"
 
 #include "JavaLauncher.h"
-
-#define EVENT_TYPE_CHAR 1000
-#define EVENT_TYPE_CHAR_MODS 1001
-#define EVENT_TYPE_CURSOR_ENTER 1002
-#define EVENT_TYPE_CURSOR_POS 1003
-#define EVENT_TYPE_FRAMEBUFFER_SIZE 1004
-#define EVENT_TYPE_KEY 1005
-#define EVENT_TYPE_MOUSE_BUTTON 1006
-#define EVENT_TYPE_SCROLL 1007
-#define EVENT_TYPE_WINDOW_SIZE 1008
 
 typedef void GLFW_invoke_Char_func(void* window, unsigned int codepoint);
 typedef void GLFW_invoke_CharMods_func(void* window, unsigned int codepoint, int mods);
@@ -44,6 +36,9 @@ int grabCursorX, grabCursorY, lastCursorX, lastCursorY;
 jclass inputBridgeClass_ANDROID, inputBridgeClass_JRE;
 jmethodID inputBridgeMethod_ANDROID, inputBridgeMethod_JRE;
 
+jclass uikitBridgeClass;
+jmethodID uikitBridgeTouchMethod;
+
 jboolean isGrabbing;
 
 // JNI_OnLoad
@@ -53,6 +48,9 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved) {
     (*vm)->GetEnv(vm, (void**) &runtimeJNIEnvPtr_JRE, JNI_VERSION_1_4);
     
     isGrabbing = JNI_FALSE;
+
+    // temporary only
+    isUseStackQueueCall = 1;
     
     return JNI_VERSION_1_4;
 }
@@ -121,6 +119,11 @@ void getJavaInputBridge(jclass* clazz, jmethodID* method) {
 }
 
 void sendData(int type, int i1, int i2, int i3, int i4) {
+    if (runtimeJNIEnvPtr_ANDROID == NULL) {
+        (*runtimeJavaVMPtr)->GetEnv(runtimeJavaVMPtr, (void**) &runtimeJNIEnvPtr_ANDROID, JNI_VERSION_1_4);
+        getJavaInputBridge(&inputBridgeClass_ANDROID, &inputBridgeMethod_ANDROID);
+    }
+
 #ifdef DEBUG
     debug("Debug: Send data, jnienv.isNull=%d\n", runtimeJNIEnvPtr_ANDROID == NULL);
 #endif
@@ -153,25 +156,77 @@ void closeGLFWWindow() {
     exit(-1);
 }
 
-void callback_AppDelegate_didFinishLaunching(int width, int height) {
-    debug("Received AppDelegate callback, width=%d, height=%d\n", width, height);
-
+void callback_LauncherViewController_installMinecraft() {
+    // Because UI init after JVM init, this should not be null
     assert(runtimeJNIEnvPtr_JRE != NULL);
     
-    jclass clazz = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "org/lwjgl/glfw/CallbackBridge");
-    assert(clazz != NULL);
+    if (!uikitBridgeClass) {
+        uikitBridgeClass = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "net/kdt/pojavlaunch/uikit/UIKit");
+        assert(uikitBridgeClass != NULL);
+    }
     
-    jmethodID method = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, clazz, "callback_AppDelegate_didFinishLaunching", "(II)V");
+    jmethodID method = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, uikitBridgeClass, "callback_LauncherViewController_installMinecraft", "()V");
+    assert(method != NULL);
+    (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
+        runtimeJNIEnvPtr_JRE,
+        uikitBridgeClass, method
+    );
+}
+
+void callback_SurfaceViewController_launchMinecraft(int width, int height) {
+    debug("Received SurfaceViewController callback, width=%d, height=%d\n", width, height);
+
+    // Because UI init after JVM init, this should not be null
+    assert(runtimeJNIEnvPtr_JRE != NULL);
+    
+    if (!uikitBridgeClass) {
+        uikitBridgeClass = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "net/kdt/pojavlaunch/uikit/UIKit");
+        assert(uikitBridgeClass != NULL);
+    }
+    
+    jmethodID method = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, uikitBridgeClass, "callback_SurfaceViewController_launchMinecraft", "(II)V");
     assert(method != NULL);
     
     (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
         runtimeJNIEnvPtr_JRE,
-        clazz, method,
+        uikitBridgeClass, method,
         width, height
     );
 }
 
-JNIEXPORT jint JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeLaunchUI(JNIEnv* env, jclass clazz, jobjectArray args) {
+void callback_SurfaceViewController_onTouch(int event, int x, int y) {
+    if (!uikitBridgeClass) {
+        uikitBridgeClass = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "net/kdt/pojavlaunch/uikit/UIKit");
+        assert(uikitBridgeClass != NULL);
+    }
+    
+    if (!uikitBridgeTouchMethod) {
+        uikitBridgeTouchMethod = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, uikitBridgeClass, "callback_SurfaceViewController_onTouch", "(III)V");
+        assert(uikitBridgeTouchMethod != NULL);
+    }
+    
+    (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
+        runtimeJNIEnvPtr_JRE,
+        uikitBridgeClass, uikitBridgeTouchMethod,
+        event, x, y
+    );
+}
+
+JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_updateProgress(JNIEnv* env, jclass clazz, jfloat progress, jstring message) {
+	const char *message_c = (*env)->GetStringUTFChars(env, message, 0);
+	UIKit_updateProgress(progress, message_c);
+	(*env)->ReleaseStringUTFChars(env, message, message_c);
+}
+
+JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_launchMinecraftSurface(JNIEnv* env, jclass clazz) {
+    UIKit_launchMinecraftSurfaceVC();
+}
+/*
+JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_runOnUIThread(JNIEnv* env, jclass clazz, jobject callback) {
+    UIKit_runOnUIThread(callback);
+}
+*/
+JNIEXPORT jint JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_launchUI(JNIEnv* env, jclass clazz, jobjectArray args) {
 	int argc = (*env)->GetArrayLength(env, args);
     char **argv = convert_to_char_array(env, args);
     return launchUI(argc, argv);
@@ -298,7 +353,7 @@ JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendCursorPos(JN
         }
         
         if (!isUseStackQueueCall) {
-            GLFW_invoke_CursorPos(showingWindow, (double) (isGrabbing ? grabCursorX : x), (double) (isGrabbing ? grabCursorY : y));
+            GLFW_invoke_CursorPos(showingWindow, (double) (x), (double) (y));
         } else {
             sendData(EVENT_TYPE_CURSOR_POS, (isGrabbing ? grabCursorX : x), (isGrabbing ? grabCursorY : y), 0, 0);
         }

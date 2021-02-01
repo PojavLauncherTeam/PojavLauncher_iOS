@@ -21,7 +21,7 @@ public class CallbackBridge {
     public static final int EVENT_TYPE_WINDOW_SIZE = 1008;
     
     public static final int ANDROID_TYPE_GRAB_STATE = 0;
-
+    
     // Should pending events be limited?
     volatile public static List<Integer[]> PENDING_EVENT_LIST = new ArrayList<>();
     volatile public static boolean PENDING_EVENT_READY = false;
@@ -39,18 +39,9 @@ public class CallbackBridge {
     }
     
 // BEGIN launcher side
-    public static volatile int windowWidth, windowHeight;
-    public static int mouseX, mouseY;
+    public static int mouseX, mouseY, mouseLastX, mouseLastY;
     public static boolean mouseLeft;
     public static StringBuilder DEBUG_STRING = new StringBuilder();
-    
-    
-    public static native void nativeLaunchUI(String[] uiArgs);
-    public static void callback_AppDelegate_didFinishLaunching(int width, int height) {
-        windowWidth = width;
-        windowHeight = height;
-        net.kdt.pojavlaunch.PLaunchApp.launchMinecraft();
-    }
     
     public static boolean nativeIsGrabbing() {
         return GLFW.mGLFWIsGrabbing;
@@ -81,10 +72,22 @@ public class CallbackBridge {
     }
 
     // volatile private static boolean isGrabbing = false;
-
+    public static class PusherRunnable implements Runnable {
+        int button; int x; int y;
+        public PusherRunnable(int button, int x, int y) {
+           this.button = button;
+           this.x = x;
+           this.y = y;
+        }
+        @Override
+        public void run() {
+            putMouseEventWithCoords(button, 1, x, y);
+            try { Thread.sleep(40); } catch (InterruptedException e) {}
+            putMouseEventWithCoords(button, 0, x, y);
+        }
+    }
     public static void putMouseEventWithCoords(int button, int x, int y /* , int dz, long nanos */) {
-        putMouseEventWithCoords(button, 1, x, y);
-        putMouseEventWithCoords(button, 0, x, y);
+        new Thread(new PusherRunnable(button,x,y)).run();
     }
 
     public static void putMouseEventWithCoords(int button, int state, int x, int y /* , int dz, long nanos */) {
@@ -201,6 +204,9 @@ public class CallbackBridge {
         return "";
     }
     
-    private static native void nativeSetGrabbing(boolean grab, int xset, int yset);
+    private static void nativeSetGrabbing(boolean grab, int xset, int yset) {
+        mouseX = xset;
+        mouseY = yset;
+    }
 }
 

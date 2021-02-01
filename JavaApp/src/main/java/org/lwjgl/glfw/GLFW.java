@@ -24,6 +24,8 @@ import java.util.*;
 
 public class GLFW
 {
+	static FloatBuffer joystickData = (FloatBuffer)FloatBuffer.allocate(8).flip();
+	static ByteBuffer buttonData = (ByteBuffer)ByteBuffer.allocate(8).flip();
     /** The major version number of the GLFW library. This is incremented when the API is changed in non-compatible ways. */
     public static final int GLFW_VERSION_MAJOR = 3;
 
@@ -495,22 +497,9 @@ public class GLFW
     private static ArrayMap<Long, GLFWWindowProperties> mGLFWWindowMap;
 
 	public static boolean mGLFWIsGrabbing, mGLFWIsInputReady, mGLFWIsUseStackQueue = false;
-
-	private static final String PROP_WINDOW_WIDTH = "glfwstub.windowWidth";
-	private static final String PROP_WINDOW_HEIGHT= "glfwstub.windowHeight";
-
+    public static final byte[] keyDownBuffer = new byte[316];
+    public static long mainContext = 0;
 	static {
-        String windowWidth = System.getProperty(PROP_WINDOW_WIDTH);
-        String windowHeight = System.getProperty(PROP_WINDOW_HEIGHT);
-		if (windowWidth == null || windowHeight == null) {
-			System.err.println("Warning: Property " + PROP_WINDOW_WIDTH + " or " + PROP_WINDOW_HEIGHT + " not set, defaulting to 1280 and 720");
-
-			mGLFWWindowWidth = 1280;
-            mGLFWWindowHeight = 720;
-		} else {
-            mGLFWWindowWidth = Integer.parseInt(windowWidth);
-            mGLFWWindowHeight = Integer.parseInt(windowHeight);
-        }
         
         // Minecraft triggers a glfwPollEvents() on splash screen, so update window size there.
         CallbackBridge.receiveCallback(CallbackBridge.EVENT_TYPE_FRAMEBUFFER_SIZE, mGLFWWindowWidth, mGLFWWindowHeight, 0, 0);
@@ -569,6 +558,8 @@ public class GLFW
     private static native long nativeEglGetCurrentContext();
 	private static native boolean nativeEglInit();
 	public static native boolean nativeEglMakeCurrent(long window);
+	public static native void nativeEglDetachOnCurrentThread();
+	public static native long nativeEglCreateContext(long contextSrc);
 	private static native boolean nativeEglTerminate();
 	private static native boolean nativeEglSwapBuffers();
 	private static native boolean nativeEglSwapInterval(int inverval);
@@ -765,10 +756,14 @@ public class GLFW
     public static GLFWWindowSizeCallback glfwSetWindowSizeCallback(@NativeType("GLFWwindow *") long window, @Nullable @NativeType("GLFWwindowsizefun") GLFWWindowSizeCallbackI cbfun) {
         return mGLFWWindowSizeCallback = GLFWWindowSizeCallback.createSafe(nglfwSetWindowSizeCallback(window, memAddressSafe(cbfun)));
     }
-    
+    static boolean isGLFWReady;
 	public static boolean glfwInit() {
-        mGLFWInitialTime = (double) System.nanoTime();
-		return nativeEglInit();
+		if (!isGLFWReady) {
+            // CallbackBridge.nativeAttachThreadToOther(false, false);
+			mGLFWInitialTime = (double) System.nanoTime();
+			isGLFWReady = nativeEglInit();
+	    }
+	    return isGLFWReady;
     }
 
 	public static void glfwTerminate() {
@@ -935,17 +930,9 @@ public class GLFW
 	}
 
 	public static void glfwMakeContextCurrent(long window) {
-        long currentGLThreadId = Thread.currentThread().getId();
-        // Long.parseLong(System.getProperty("glfwstub.internal.glthreadid", "-1"));
-        System.out.println("GLFW: glfwMakeContextCurrent() calling from thread ID " + currentGLThreadId + ", name: " + Thread.currentThread().getName());
-        if (currentGLThreadId != -1 && currentGLThreadId != Thread.currentThread().getId()) {
-            System.out.println("GLFW: Current context is set, creating shared context");
-            if (!nativeEglMakeCurrent(window)) {
-                throw new RuntimeException("eglMakeCurrent() failed, check log file for more details");
-            }
-        } else {
-            System.out.println("GLFW: glfwMakeContextCurrent() request is skipped");
-        }
+    	//Probably not the best idea to rely on program's internals to share the contexts...
+    	// new Exception("Trace exception").printStackTrace();
+        nativeEglMakeCurrent(window);
 	}
 
 	public static void glfwSwapBuffers(long window) {
@@ -979,23 +966,23 @@ public class GLFW
 	// GLFW Window functions
     public static long glfwCreateWindow(int width, int height, CharSequence title, long monitor, long share) {
         EventLoop.OffScreen.check();
+			// Create an ACTUAL EGL context
+			long ptr = nativeEglCreateContext(share);
+            //nativeEglMakeCurrent(ptr);
+			GLFWWindowProperties win = new GLFWWindowProperties();
+			// win.width = width;
+			// win.height = height;
 
-        // A good idea to fake pointer
-        long ptr = System.currentTimeMillis();
-        
-        GLFWWindowProperties win = new GLFWWindowProperties();
-        // win.width = width;
-        // win.height = height;
-        
-        win.width = mGLFWWindowWidth;
-        win.height = mGLFWWindowHeight;
-        
-        win.title = title;
-        
-        mGLFWWindowMap.put(ptr, win);
+			win.width = mGLFWWindowWidth;
+			win.height = mGLFWWindowHeight;
 
-		// Prevent NULL check
-		return ptr;
+			win.title = title;
+
+			mGLFWWindowMap.put(ptr, win);
+			mainContext = ptr;
+			return ptr;
+        //Return our context
+
 	}
 
 	public static void glfwDestroyWindow(long window) {
@@ -1013,8 +1000,15 @@ public class GLFW
 	}
 
 	public static void glfwSetWindowPos(long window, int x, int y) {
-        internalGetWindow(window).x = x;
-        internalGetWindow(window).y = y;
+        // internalGetWindow(window).x = x;
+        // internalGetWindow(window).y = y;
+        
+        internalGetWindow(window).x = 0;
+        internalGetWindow(window).y = 0;
+        
+	    if (x != 0 || y != 0) {
+	        mGLFWWindowPosCallback.invoke(window, 0, 0);
+	    }
     }
     
     public static void glfwSetWindowSize(long window, int width, int height) {
@@ -1025,6 +1019,7 @@ public class GLFW
     }
     
 	public static void glfwShowWindow(long window) {
+	    System.out.println("GLFW: Showing window " + window + ", x=" + internalGetWindow(window).x + ", y=" + internalGetWindow(window).y);
         nglfwSetShowingWindow(window);
     }
 	public static void glfwWindowHint(int hint, int value) {}
@@ -1088,6 +1083,7 @@ public class GLFW
                         break;
                     case CallbackBridge.EVENT_TYPE_KEY:
                         if (mGLFWKeyCallback != null) {
+                        	keyDownBuffer[dataArr[1]-32]=(byte)(int)dataArr[3];
                             mGLFWKeyCallback.invoke(ptr, dataArr[1], dataArr[2], dataArr[3], dataArr[4]);
                         }
                         break;
@@ -1172,7 +1168,7 @@ public class GLFW
     }
 
     public static int glfwGetKey(@NativeType("GLFWwindow *") long window, int key) {
-        return 0;
+        return keyDownBuffer[key-32];
     }
 
     public static int glfwGetMouseButton(@NativeType("GLFWwindow *") long window, int button) {
@@ -1221,4 +1217,51 @@ public class GLFW
     public static String glfwGetClipboardString(@NativeType("GLFWwindow *") long window) {
         return CallbackBridge.nativeClipboard(CallbackBridge.CLIPBOARD_PASTE, null);
     }
+
+    public static boolean glfwJoystickPresent(int jid) {
+		if(jid == 0) {
+			return true;
+		}else return false;
+	}
+    public static String glfwGetJoystickName(int jid) {
+    	if(jid == 0) {
+			return "AIC event bus controller";
+		}else return null;
+	}
+	public static FloatBuffer glfwGetJoystickAxes(int jid) {
+    	if(jid == 0) {
+    		return joystickData;
+		}else return null;
+	}
+	public static ByteBuffer glfwGetJoystickButtons(int jid) {
+		if(jid == 0) {
+			return buttonData;
+		}else return null;
+	}
+	public static ByteBuffer glfwGetjoystickHats(int jid) {
+        return null;
+	}
+	public static boolean glfwJoystickIsGamepad(int jid) {
+    	if(jid == 0) return true;
+    	else return false;
+	}
+	public static String glfwGetJoystickGUID(int jid) {
+    	if(jid == 0) return "aio0";
+    	else return null;
+	}
+	public static long glfwGetJoystickUserPointer(int jid) {
+    	return 0;
+	}
+	public static void glfwSetJoystickUserPointer(int jid, long pointer) {
+
+	}
+	public static boolean glfwUpdateGamepadMappings(ByteBuffer string) {
+return false;
+	}
+	public static String glfwGetGamepadName(int jid) {
+    	return null;
+	}
+	public static boolean glfwGetGamepadState(int jid, GLFWGamepadState state) {
+    	return false;
+	}
 }

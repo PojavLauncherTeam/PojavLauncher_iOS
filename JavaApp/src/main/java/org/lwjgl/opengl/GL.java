@@ -132,7 +132,17 @@ public final class GL {
 
         @Override
         public long getFunctionAddress(ByteBuffer functionName) {
-            long address = getExtensionAddress(memAddress(functionName));
+            long address = NULL;
+        
+            // Try locate GL4ES function first
+            String funcName = memASCII(functionName);
+            if (!funcName.startsWith("gl4es_gl")) {
+                address = getFunctionAddress("gl4es_" + funcName);
+            }
+        
+            if (address == NULL) {
+                address = getExtensionAddress(memAddress(functionName));
+            }
             if (address == NULL) {
                 address = library.getFunctionAddress(functionName);
                 if (address == NULL && DEBUG_FUNCTIONS) {
@@ -180,9 +190,11 @@ public final class GL {
                     break;
                 case MACOSX:
                     functionProvider = new SharedLibraryGL(OPENGL) {
+                        private final long gl4es_GetProcAddress = library.getFunctionAddress("gl4es_GetProcAddress");
+                        
                         @Override
                         long getExtensionAddress(long name) {
-                            return NULL;
+                            return gl4es_GetProcAddress == NULL ? NULL : callPP(name, gl4es_GetProcAddress);
                         }
                     };
                     break;
@@ -338,7 +350,7 @@ public final class GL {
     @SuppressWarnings("AssignmentToMethodParameter")
     public static GLCapabilities createCapabilities(boolean forwardCompatible) {
         // This fixed framebuffer issue on 1.13+ 64-bit by another making current
-        GLFW.nativeEglMakeCurrent(1);
+        // GLFW.nativeEglMakeCurrent(1);
         
         // System.setProperty("glfwstub.internal.glthreadid", Long.toString(Thread.currentThread().getId()));
         
@@ -384,10 +396,16 @@ public final class GL {
                         throw new IllegalStateException("There is no OpenGL context current in the current thread.");
                     }
 
-                    APIVersion apiVersion = apiParseVersion(versionString);
+                    try {
+                        APIVersion apiVersion = apiParseVersion(versionString);
 
-                    majorVersion = apiVersion.major;
-                    minorVersion = apiVersion.minor;
+                        majorVersion = apiVersion.major;
+                        minorVersion = apiVersion.minor;
+                    } catch (IllegalArgumentException e) {
+                        e.printStackTrace();
+                        majorVersion = 2;
+                        minorVersion = 1;
+                    }
                 }
             }
 

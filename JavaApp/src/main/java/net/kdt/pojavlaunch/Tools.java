@@ -83,20 +83,19 @@ public final class Tools
             }
         }
         
-        // new Thread(() -> { try {
+        new Thread(() -> { try {
         
-        URLClassLoader loader = new URLClassLoader(urlList.toArray(new URL[0]), Tools.class.getClassLoader());
+        URLClassLoader loader = new URLClassLoader(urlList.toArray(new URL[0]), ClassLoader.getSystemClassLoader());
         Class<?> clazz = loader.loadClass(versionInfo.mainClass);
         Method method = clazz.getMethod("main", String[].class);
         method.invoke(null, new Object[]{launchArgs});
-        /*
+    
         } catch (Throwable th) {
             throw new RuntimeException(th);
         }
         
         }).start();
-        */
-    
+        
         // JREUtils.launchJavaVM(javaArgList);
     }
     
@@ -130,8 +129,8 @@ public final class Tools
         // overrideableArgList.add("-Dorg.lwjgl.util.DebugLoader=true");
 
         // GLFW Stub width height
-        overrideableArgList.add("-Dglfwstub.windowWidth=" + CallbackBridge.windowWidth);
-        overrideableArgList.add("-Dglfwstub.windowHeight=" + CallbackBridge.windowHeight);
+        overrideableArgList.add("-Dglfwstub.windowWidth=" + GLFW.mGLFWWindowWidth);
+        overrideableArgList.add("-Dglfwstub.windowHeight=" + GLFW.mGLFWWindowHeight);
         overrideableArgList.add("-Dglfwstub.initEgl=false");
 
         overrideableArgList.add("-Dnet.minecraft.clientmodname=" + Tools.APP_NAME);
