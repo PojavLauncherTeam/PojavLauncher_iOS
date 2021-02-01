@@ -178,7 +178,7 @@ public class PLaunchApp {
                 }
                 
                 currProgress++;
-                UIKit.updateProgressSafe(currProgress / maxProgress, "Downloading " + assetsObjects.keySet().toArray(new String[0])[downloadedSs]));
+                UIKit.updateProgressSafe(currProgress / maxProgress, "Downloading " + assetsObjects.keySet().toArray(new String[0])[downloadedSs]);
                 if(!assets.map_to_resources) downloadAsset(asset, objectsDir);
                 else downloadAssetMapped(asset,(assetsObjects.keySet().toArray(new String[0])[downloadedSs]),outputDir);
                 downloadedSs++;
