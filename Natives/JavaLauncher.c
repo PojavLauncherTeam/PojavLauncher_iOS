@@ -82,6 +82,7 @@ int launchJVM(int argc, char *argv[]) {
         margv[margc++] = "-XstartOnFirstThread";
         margv[margc++] = "-Djava.library.path=/Applications/PojavLauncher.app/Frameworks";
         margv[margc++] = "-Dorg.lwjgl.opengl.libname=libGL.dylib";
+        margv[margc++] = "-Dorg.lwjgl.system.allocator=system";
         char jvmargs[10000];
         FILE* argsFile = fopen(args_path, "r");
         debug("Reading custom JVM args (overrideargs.txt), opened=%d\n", argsFile != NULL);
