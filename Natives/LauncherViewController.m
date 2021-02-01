@@ -18,16 +18,23 @@ UITextField* versionTextField;
 {
     [super viewDidLoad];
 
+    [self setTitle:@"PojavLauncher"];
+
     configver_file = fopen("/var/mobile/Documents/minecraft/config_ver.txt", "rw");
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];
 
     int width = (int) roundf(screenBounds.size.width);
-    int height = (int) roundf(screenBounds.size.height);
+    int height = (int) roundf(screenBounds.size.height) - self.navigationController.navigationBar.frame.size.height;
 
     UIScrollView *scrollView = self.view = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+
+    // Update color mode once
+    if(@available(iOS 13.0, *)) {
+        [self traitCollectionDidChange:nil];
+    }
 
     char configver[1024];
     fscanf(configver_file, "%s", configver);
@@ -56,6 +63,14 @@ UITextField* versionTextField;
     
     install_progress_text = [[UILabel alloc] initWithFrame:CGRectMake(120.0, height - 54.0, width - 124.0, 50.0)];
     [scrollView addSubview:install_progress_text];
+}
+
+-(void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection API_AVAILABLE(ios(13.0)) {
+    if (UITraitCollection.currentTraitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
+        self.view.backgroundColor = [UIColor blackColor];
+    } else {
+        self.view.backgroundColor = [UIColor whiteColor];
+    }
 }
 
 - (void)launchMinecraft:(id)sender

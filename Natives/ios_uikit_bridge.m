@@ -19,6 +19,7 @@ void UIKit_launchMinecraftSurfaceVC() {
         LauncherViewController *rootController = (LauncherViewController*)[[(AppDelegate*) [[UIApplication sharedApplication]delegate] window] rootViewController];
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MinecraftSurface" bundle:nil];
         SurfaceViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"MinecraftSurfaceVC"];
+        vc.modalPresentationStyle = UIModalPresentationFullScreen;
         [rootController presentViewController:vc animated:YES completion:nil];
     });
 }
