@@ -11,26 +11,14 @@ import net.kdt.pojavlaunch.utils.*;
 import net.kdt.pojavlaunch.value.*;
 
 public class PLaunchApp {
+    private static float currProgress;
+
     public static JMinecraftVersionList mVersionList;
     public static MinecraftAccount mAccount;
     public static JMinecraftVersionList.Version mVersion;
+
     public static void main(String[] args) throws Throwable {
-        // System.setProperty("os.name", "iOS");
-/*
-        System.setProperty("javafx.verbose", "true");
-        System.setProperty("javafx.platform", "ios");
-        System.setProperty("glass.platform", "ios");
-        System.setProperty("jfxmedia.platforms", "IOSPlatform");
-        System.setProperty("com.sun.javafx.isEmbedded", "true");
-
-        System.setProperty("prism.verbose", "true");
-        System.setProperty("prism.allowhidpi", "true");
-        System.setProperty("prism.mintexturesize", "16");
-        System.setProperty("prism.static.libraries", "false");
-        System.setProperty("prism.useNativeIIO", "false");
-*/
-
-        // User might remove the minecraft folder, this can cause crashes, safety recrete it
+        // User might remove the minecraft folder, this can cause crashes, safety re-create it
         try {
             File mcDir = new File("/var/mobile/Documents/minecraft");
             mcDir.mkdirs();
@@ -55,7 +43,7 @@ public class PLaunchApp {
     public static void installMinecraft() {
         new Thread(() -> {
         
-        int currProgress = 0;
+        currProgress = 0;
         float maxProgress = 0;
         
         UIKit.updateProgressSafe(0, "Finding a version");
@@ -86,6 +74,8 @@ public class PLaunchApp {
             String minecraftMainJar = Tools.DIR_HOME_VERSION + downVName + ".jar";
             String verJsonDir = Tools.DIR_HOME_VERSION + downVName + ".json";
             
+            JAssets assets = null;
+            
             UIKit.updateProgressSafe(0, "Downloading version list");
             mVersionList = Tools.GLOBAL_GSON.fromJson(DownloadUtils.downloadString("https://launchermeta.mojang.com/mc/game/version_manifest.json"), JMinecraftVersionList.class);
             
@@ -96,7 +86,15 @@ public class PLaunchApp {
             }
             
             verInfo = Tools.getVersionInfo(mcver);
-            maxProgress = verInfo.libraries.length + 1; // + verInfo.assetslength
+            try {
+                UIKit.updateProgressSafe(0, "Downloading " + mcver + ".json assets info");
+                assets = downloadIndex(verInfo.assets, new File(Tools.ASSETS_PATH, "indexes/" + verInfo.assets + ".json"));
+            } catch (IOException e) {
+                UIKit.updateProgressSafe(0, "Error: " + e.getMessage());
+                e.printStackTrace();
+            }
+                
+            maxProgress = verInfo.libraries.length + 1 + (assets == null ? 0 : assets.objects.size());
             
             File outLib;
             String libPathURL;
@@ -146,6 +144,10 @@ public class PLaunchApp {
                 Tools.downloadFile(verInfo.downloads.values().toArray(new MinecraftClientInfo[0])[0].url, minecraftMainJar);
             }
             
+            if (assets != null) {
+                downloadAssets(assets, verInfo.assets, assets.map_to_resources ? new File(Tools.OBSOLETE_RESOURCES_PATH) : new File(Tools.ASSETS_PATH));
+            }
+            
             // TODO download assets
             
         } catch (IOException e) {
@@ -159,6 +161,32 @@ public class PLaunchApp {
         UIKit.launchMinecraftSurface();
         
         }).start();
+    }
+    
+    public void downloadAssets(JAssets assets, String assetsVersion, File outputDir) throws IOException, Throwable {
+        File hasDownloadedFile = new File(outputDir, "downloaded/" + assetsVersion + ".downloaded");
+        if (!hasDownloadedFile.exists()) {
+            System.out.println("Assets begin time: " + System.currentTimeMillis());
+            Map<String, JAssetInfo> assetsObjects = assets.objects;
+            mActivity.mLaunchProgress.setMax(assetsObjects.size());
+            zeroProgress();
+            File objectsDir = new File(outputDir, "objects");
+            int downloadedSs = 0;
+            for (JAssetInfo asset : assetsObjects.values()) {
+                if (!mActivity.mIsAssetsProcessing) {
+                    return;
+                }
+                
+                currProgress++;
+                UIKit.updateProgressSafe(currProgress / maxProgress, "Downloading " + assetsObjects.keySet().toArray(new String[0])[downloadedSs]));
+                if(!assets.map_to_resources) downloadAsset(asset, objectsDir);
+                else downloadAssetMapped(asset,(assetsObjects.keySet().toArray(new String[0])[downloadedSs]),outputDir);
+                downloadedSs++;
+            }
+            hasDownloadedFile.getParentFile().mkdirs();
+            hasDownloadedFile.createNewFile();
+            System.out.println("Assets end time: " + System.currentTimeMillis());
+        }
     }
     
     // Called from SurfaceViewController
