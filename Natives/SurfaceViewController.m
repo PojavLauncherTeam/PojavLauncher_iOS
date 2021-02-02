@@ -204,8 +204,8 @@ ADD_BUTTON_DEF(special_resize) {
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];
 
-    int width = (int) roundf(screenBounds.size.width);
-    int height = (int) roundf(screenBounds.size.height);
+    int width = (int) roundf(screenBounds.size.width * screenScale);
+    int height = (int) roundf(screenBounds.size.height * screenScale);
 
     Java_org_lwjgl_glfw_CallbackBridge_nativeSendScreenSize(NULL, NULL, width, height);
     Java_org_lwjgl_glfw_CallbackBridge_nativeSendWindowPos(NULL, NULL, 0, 0);
