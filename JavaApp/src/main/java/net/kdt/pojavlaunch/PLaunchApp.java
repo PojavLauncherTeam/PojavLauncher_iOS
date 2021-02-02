@@ -168,7 +168,7 @@ public class PLaunchApp {
 
             mAccount = acc;
 
-            UIKit.launchMinecraftSurface();
+            UIKit.launchMinecraftSurface(mVersion.arguments != null);
 
         }).start();
     }

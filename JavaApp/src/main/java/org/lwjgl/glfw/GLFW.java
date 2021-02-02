@@ -572,6 +572,7 @@ public class GLFW
     private static native long nglfwSetKeyCallback(long window, long ptr);
     private static native long nglfwSetMouseButtonCallback(long window, long ptr);
     private static native long nglfwSetScrollCallback(long window, long ptr);
+    private static native long nglfwSetWindowPosCallback(long window, long ptr);
     private static native long nglfwSetWindowSizeCallback(long window, long ptr);
     // private static native void nglfwSetInputReady();
     private static native void nglfwSetShowingWindow(long window);
@@ -738,11 +739,7 @@ public class GLFW
     }
 
     public static GLFWWindowPosCallback glfwSetWindowPosCallback(@NativeType("GLFWwindow *") long window, @Nullable @NativeType("GLFWwindowposfun") GLFWWindowPosCallbackI cbfun) {
-        GLFWWindowPosCallback lastCallback = mGLFWWindowPosCallback;
-        if (cbfun == null) mGLFWWindowPosCallback = null;
-        else mGLFWWindowPosCallback = GLFWWindowPosCallback.create(cbfun);
-
-        return lastCallback;
+        return mGLFWWindowPosCallback = GLFWWindowPosCallback.createSafe(nglfwSetWindowPosCallback(window, memAddressSafe(cbfun)));
     }
 
     public static GLFWWindowRefreshCallback glfwSetWindowRefreshCallback(@NativeType("GLFWwindow *") long window, @Nullable @NativeType("GLFWwindowrefreshfun") GLFWWindowRefreshCallbackI cbfun) {
@@ -1089,6 +1086,9 @@ public class GLFW
                         if (mGLFWScrollCallback != null) {
                             mGLFWScrollCallback.invoke(ptr, dataArr[1], dataArr[2]);
                         }
+                        break;
+                    case CallbackBridge.EVENT_TYPE_WINDOW_POS:
+                        glfwSetWindowPos(ptr, dataArr[1], dataArr[2]);
                         break;
                     case CallbackBridge.EVENT_TYPE_FRAMEBUFFER_SIZE:
                     case CallbackBridge.EVENT_TYPE_WINDOW_SIZE:

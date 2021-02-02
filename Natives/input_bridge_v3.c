@@ -30,6 +30,7 @@ typedef void GLFW_invoke_Key_func(void* window, int key, int scancode, int actio
 typedef void GLFW_invoke_MouseButton_func(void* window, int button, int action, int mods);
 typedef void GLFW_invoke_Scroll_func(void* window, double xoffset, double yoffset);
 typedef void GLFW_invoke_WindowSize_func(void* window, int width, int height);
+typedef void GLFW_invoke_WindowPos_func(void* window, int x, int y);
 
 int grabCursorX, grabCursorY, lastCursorX, lastCursorY;
 
@@ -48,9 +49,6 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved) {
     (*vm)->GetEnv(vm, (void**) &runtimeJNIEnvPtr_JRE, JNI_VERSION_1_4);
     
     isGrabbing = JNI_FALSE;
-
-    // temporary only
-    isUseStackQueueCall = 1;
     
     return JNI_VERSION_1_4;
 }
@@ -85,6 +83,7 @@ ADD_CALLBACK_WWIN(Key);
 ADD_CALLBACK_WWIN(MouseButton);
 ADD_CALLBACK_WWIN(Scroll);
 ADD_CALLBACK_WWIN(WindowSize);
+ADD_CALLBACK_WWIN(WindowPos);
 
 #undef ADD_CALLBACK_WWIN
 
@@ -218,7 +217,8 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_updateProgress(JNIEn
 	(*env)->ReleaseStringUTFChars(env, message, message_c);
 }
 
-JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_launchMinecraftSurface(JNIEnv* env, jclass clazz) {
+JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_launchMinecraftSurface(JNIEnv* env, jclass clazz, jboolean isUseStackQueueBool) {
+    isUseStackQueueCall = (int) isUseStackQueueBool;
     UIKit_launchMinecraftSurfaceVC();
 }
 /*
@@ -428,6 +428,16 @@ JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendScroll(JNIEn
             sendData(EVENT_TYPE_SCROLL, xoffset, yoffset, 0, 0);
         } else {
             GLFW_invoke_Scroll(showingWindow, (double) xoffset, (double) yoffset);
+        }
+    }
+}
+
+JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendWindowPos(JNIEnv* env, jclass clazz, jint x, jint y) {
+    if (GLFW_invoke_WindowPos && isInputReady) {
+        if (isUseStackQueueCall) {
+            sendData(EVENT_TYPE_WINDOW_POS, x, y, 0, 0);
+        } else {
+            GLFW_invoke_WindowPos(showingWindow, c, y);;
         }
     }
 }

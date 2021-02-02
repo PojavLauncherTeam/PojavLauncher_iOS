@@ -18,7 +18,8 @@ public class CallbackBridge {
     public static final int EVENT_TYPE_KEY = 1005;
     public static final int EVENT_TYPE_MOUSE_BUTTON = 1006;
     public static final int EVENT_TYPE_SCROLL = 1007;
-    public static final int EVENT_TYPE_WINDOW_SIZE = 1008;
+    public static final int EVENT_TYPE_WINDOW_POS = 1008;
+    public static final int EVENT_TYPE_WINDOW_SIZE = 1009;
     
     public static final int ANDROID_TYPE_GRAB_STATE = 0;
     
@@ -69,6 +70,10 @@ public class CallbackBridge {
         if (!inputReady) return;
         PENDING_EVENT_LIST.add(new Integer[]{EVENT_TYPE_FRAMEBUFFER_SIZE, width, height, 0, 0});
         PENDING_EVENT_LIST.add(new Integer[]{EVENT_TYPE_WINDOW_SIZE, width, height, 0, 0});
+    }
+    private static void nativeSendWindowPos(int x, int y) {
+        if (!inputReady) return;
+        PENDING_EVENT_LIST.add(new Integer[]{EVENT_TYPE_WINDOW_POS, x, y, 0, 0});
     }
 
     // volatile private static boolean isGrabbing = false;

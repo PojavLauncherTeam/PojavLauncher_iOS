@@ -37,7 +37,7 @@
 
 #define ADD_BUTTON_DEF_KEY(KEY, KEYCODE) \
     ADD_BUTTON_DEF(KEY) { \
-        sendData(EVENT_TYPE_KEY, KEYCODE, 0, held, 0); \
+        Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, KEYCODE, 0, held, 0); \
     }
 
 #define BTN_RECT 80.0, 30.0
@@ -101,6 +101,8 @@ UITextField *inputView;
     ADD_BUTTON_VISIBLE(@"⬛", space, CGRectMake(width - 5 * 2 - 50 * 2, height - 5 * 2 - 50 * 2, BTN_SQUARE));
 
     ADD_BUTTON_VISIBLE(@"Esc", escape, CGRectMake(width - 5 - 80, height - 5 - 30, BTN_RECT));
+    
+    ADD_BUTTON_VISIBLE(@"Resize", special_resize, CGRectMake(width - 5 - 80, 5, BTN_RECT));
 
     // ADD_BUTTON_VISIBLE(@"Enter", enter, CGRectMake(5, 70.0, BTN_SQUARE));
     
@@ -156,14 +158,14 @@ ADD_BUTTON_DEF(special_togglebtn) {
 
 -(void)inputViewDidChange {
     if ([inputView.text length] <= 1) {
-        sendData(EVENT_TYPE_KEY, GLFW_KEY_BACKSPACE, 0, 1, 0);
-        sendData(EVENT_TYPE_KEY, GLFW_KEY_BACKSPACE, 0, 0, 0);
+    Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_BACKSPACE, 0, 1, 0);
+    Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_BACKSPACE, 0, 0, 0);
     } else {
         NSString *newText = [inputView.text substringFromIndex:2];
         int charLength = [newText length];
         char *charText = [newText UTF8String];
         for (int i = 0; i < charLength; i++) {
-            sendData(EVENT_TYPE_CHAR_MODS, (unsigned int) charText[i], /* mods */ 0, 0, 0);
+            Java_org_lwjgl_glfw_CallbackBridge_nativeSendCharMods(NULL, NULL, (jchar) charText[i], /* mods */ 0);
         }
     }
 
@@ -178,8 +180,8 @@ ADD_BUTTON_DEF(special_togglebtn) {
 }
 
 -(void)inputViewDidReturn {
-    sendData(EVENT_TYPE_KEY, GLFW_KEY_ENTER, 0, 1, 0);
-    sendData(EVENT_TYPE_KEY, GLFW_KEY_ENTER, 0, 0, 0);
+    Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_ENTER, 0, 1, 0);
+    Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_ENTER, 0, 0, 0);
 }
 
 ADD_BUTTON_DEF(special_keyboard) {
@@ -191,11 +193,22 @@ ADD_BUTTON_DEF(special_keyboard) {
 }
 
 ADD_BUTTON_DEF(special_mouse_pri) {
-    sendData(EVENT_TYPE_MOUSE_BUTTON, GLFW_MOUSE_BUTTON_LEFT, held, 0, 0);
+    Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, GLFW_MOUSE_BUTTON_LEFT, held, 0);
 }
 
 ADD_BUTTON_DEF(special_mouse_sec) {
-    sendData(EVENT_TYPE_MOUSE_BUTTON, GLFW_MOUSE_BUTTON_RIGHT, held, 0, 0);
+    Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, GLFW_MOUSE_BUTTON_RIGHT, held, 0);
+}
+
+ADD_BUTTON_DEF(special_resize) {
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    CGFloat screenScale = [[UIScreen mainScreen] scale];
+
+    int width = (int) roundf(screenBounds.size.width);
+    int height = (int) roundf(screenBounds.size.height);
+
+    Java_org_lwjgl_glfw_CallbackBridge_nativeSendScreenSize(NULL, NULL, width, height);
+    Java_org_lwjgl_glfw_CallbackBridge_nativeSendWindowPos(NULL, NULL, 0, 0);
 }
 
 ADD_BUTTON_DEF_KEY(f3, GLFW_KEY_F3)

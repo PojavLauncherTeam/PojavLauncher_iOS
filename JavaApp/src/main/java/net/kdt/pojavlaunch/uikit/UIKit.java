@@ -61,5 +61,5 @@ public class UIKit {
     public static native void updateProgress(float progress, String message);
     
     // Start SurfaceViewController
-    public static native void launchMinecraftSurface();
+    public static native void launchMinecraftSurface(boolean isUseStackQueueBool);
 }
