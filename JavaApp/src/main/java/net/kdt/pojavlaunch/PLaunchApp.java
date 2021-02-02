@@ -135,8 +135,6 @@ public class PLaunchApp {
                                 MinecraftLibraryArtifact artifact = new MinecraftLibraryArtifact();
                                 artifact.url = (libItem.url == null ? "https://libraries.minecraft.net/" : libItem.url) + libArtifact;
                                 libItem.downloads = new DependentLibrary.LibraryDownloads(artifact);
-
-                                skipIfFailed = true;
                             }
                             try {
                                 libPathURL = libItem.downloads.artifact.url;
