@@ -17,6 +17,8 @@ public class PLaunchApp {
     public static MinecraftAccount mAccount;
     public static JMinecraftVersionList.Version mVersion;
     public static boolean mIsAssetsProcessing = false;
+    public static Thread[] assetThreads = new Thread[30];
+    public static int assetThrIndex = -1;
 
     public static void main(String[] args) throws Throwable {
         // User might remove the minecraft folder, this can cause crashes, safety re-create it
@@ -173,7 +175,7 @@ public class PLaunchApp {
         }).start();
     }
 
-    public static void downloadAssets(JAssets assets, String assetsVersion, File outputDir) throws IOException {
+    public static void downloadAssets(final JAssets assets, String assetsVersion, final File outputDir) throws IOException {
         File hasDownloadedFile = new File(outputDir, "downloaded/" + assetsVersion + ".downloaded");
         if (!hasDownloadedFile.exists()) {
             System.out.println("Assets begin time: " + System.currentTimeMillis());
@@ -181,7 +183,8 @@ public class PLaunchApp {
             File objectsDir = new File(outputDir, "objects");
             int downloadedSs = 0;
             for (JAssetInfo asset : assetsObjects.values()) {
-                currProgress++;
+                assetThread[assetThrIndex++] = new Thread(() -> {
+                
                 mIsAssetsProcessing = !UIKit.updateProgressSafe(currProgress / maxProgress, "Downloading " + assetsObjects.keySet().toArray(new String[0])[downloadedSs]);
                 
                 if (!mIsAssetsProcessing) {
@@ -190,7 +193,23 @@ public class PLaunchApp {
 
                 if(!assets.map_to_resources) downloadAsset(asset, objectsDir);
                 else downloadAssetMapped(asset,(assetsObjects.keySet().toArray(new String[0])[downloadedSs]),outputDir);
+                currProgress++;
                 downloadedSs++;
+                
+                });
+                
+                boolean isAllThreadsDone = false;
+                while (!isAllThreadsDone) {
+                    isAllThreadsDone = true;
+                    for (int i = 0; i < assetThreads.length; i++) {
+                        Thread thr = assetThread[i];
+                        isAllThreadsDone &= thr == null || !thr.isAlive();
+                        
+                        if (thr != null && !thr.isAlive()) {
+                            assetThread[i] = null;
+                        }
+                    }
+                }
             }
             hasDownloadedFile.getParentFile().mkdirs();
             hasDownloadedFile.createNewFile();
