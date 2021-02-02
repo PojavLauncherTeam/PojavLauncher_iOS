@@ -1,7 +1,7 @@
 package net.kdt.pojavlaunch;
 
 import java.io.*;
-import java.util.Arrays;
+import java.util.*;
 
 import org.lwjgl.glfw.CallbackBridge;
 
@@ -11,11 +11,12 @@ import net.kdt.pojavlaunch.utils.*;
 import net.kdt.pojavlaunch.value.*;
 
 public class PLaunchApp {
-    private static float currProgress;
+    private static float currProgress, maxProgress;
 
     public static JMinecraftVersionList mVersionList;
     public static MinecraftAccount mAccount;
     public static JMinecraftVersionList.Version mVersion;
+    public static boolean mIsAssetsProcessing = false;
 
     public static void main(String[] args) throws Throwable {
         // User might remove the minecraft folder, this can cause crashes, safety re-create it
@@ -57,7 +58,7 @@ public class PLaunchApp {
         new Thread(() -> {
         
         currProgress = 0;
-        float maxProgress = 0;
+        maxProgress = 0;
         
         UIKit.updateProgressSafe(0, "Finding a version");
         String mcver = "1.16.5";
@@ -158,6 +159,7 @@ public class PLaunchApp {
             }
             
             if (assets != null) {
+                mIsAssetsProcessing = true;
                 downloadAssets(assets, verInfo.assets, assets.map_to_resources ? new File(Tools.OBSOLETE_RESOURCES_PATH) : new File(Tools.ASSETS_PATH));
             }
             
@@ -176,17 +178,15 @@ public class PLaunchApp {
         }).start();
     }
     
-    public void downloadAssets(JAssets assets, String assetsVersion, File outputDir) throws IOException, Throwable {
+    public static void downloadAssets(JAssets assets, String assetsVersion, File outputDir) throws IOException, Throwable {
         File hasDownloadedFile = new File(outputDir, "downloaded/" + assetsVersion + ".downloaded");
         if (!hasDownloadedFile.exists()) {
             System.out.println("Assets begin time: " + System.currentTimeMillis());
             Map<String, JAssetInfo> assetsObjects = assets.objects;
-            mActivity.mLaunchProgress.setMax(assetsObjects.size());
-            zeroProgress();
             File objectsDir = new File(outputDir, "objects");
             int downloadedSs = 0;
             for (JAssetInfo asset : assetsObjects.values()) {
-                if (!mActivity.mIsAssetsProcessing) {
+                if (!mIsAssetsProcessing) {
                     return;
                 }
                 
@@ -205,23 +205,23 @@ public class PLaunchApp {
     
     public static final String MINECRAFT_RES = "https://resources.download.minecraft.net/";
 
-    public JAssets downloadIndex(String versionName, File output) throws Throwable {
+    public static JAssets downloadIndex(String versionName, File output) throws Throwable {
         if (!output.exists()) {
             output.getParentFile().mkdirs();
-            DownloadUtils.downloadFile(verInfo.assetIndex != null ? verInfo.assetIndex.url : "https://s3.amazonaws.com/Minecraft.Download/indexes/" + versionName + ".json", output);
+            DownloadUtils.downloadFile(mVersion.assetIndex != null ? mVersion.assetIndex.url : "https://s3.amazonaws.com/Minecraft.Download/indexes/" + versionName + ".json", output);
         }
 
         return Tools.GLOBAL_GSON.fromJson(Tools.read(output.getAbsolutePath()), JAssets.class);
     }
 
-    public void downloadAsset(JAssetInfo asset, File objectsDir) throws IOException, Throwable {
+    public static void downloadAsset(JAssetInfo asset, File objectsDir) throws IOException, Throwable {
         String assetPath = asset.hash.substring(0, 2) + "/" + asset.hash;
         File outFile = new File(objectsDir, assetPath);
         if (!outFile.exists()) {
             DownloadUtils.downloadFile(MINECRAFT_RES + assetPath, outFile);
         }
     }
-    public void downloadAssetMapped(JAssetInfo asset, String assetName, File resDir) throws Throwable {
+    public static void downloadAssetMapped(JAssetInfo asset, String assetName, File resDir) throws Throwable {
         String assetPath = asset.hash.substring(0, 2) + "/" + asset.hash;
         File outFile = new File(resDir,"/"+assetName);
         if (!outFile.exists()) {
