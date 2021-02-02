@@ -74,7 +74,7 @@ UITextField *inputView;
 
     inputView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.0f];
     [inputView addTarget:self action:@selector(inputViewDidChange) forControlEvents:UIControlEventEditingChanged];
-    [inputView addTarget:self action:@selector(inputViewDidReturn) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [inputView addTarget:self action:@selector(inputViewDidReturn) forControlEvents:UIControlEventEditingDidEnd];
     [inputView addTarget:self action:@selector(inputViewDidClick) forControlEvents:UIControlEventTouchDown];
 
     // Custom button

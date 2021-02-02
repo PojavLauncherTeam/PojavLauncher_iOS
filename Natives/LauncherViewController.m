@@ -81,6 +81,10 @@ UITextField* versionTextField;
     callback_LauncherViewController_installMinecraft();
 }
 
+-(BOOL)prefersStatusBarHidden {
+    return YES;
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
