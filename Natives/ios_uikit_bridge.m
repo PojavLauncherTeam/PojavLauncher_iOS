@@ -8,11 +8,29 @@
 #include "ios_uikit_bridge.h"
 #include "utils.h"
 
-void UIKit_updateProgress(float progress, char* message) {
+jboolean skipDownloadAssets;
+
+jboolean UIKit_updateProgress(float progress, char* message) {
     dispatch_async(dispatch_get_main_queue(), ^{
         install_progress_bar.progress = progress;
         install_progress_text.text = [NSString stringWithUTF8String:message];
     });
+    return skipDownloadAssets;
+}
+
+void UIKit_skipDownloadAssets() {
+    [install_button setEnabled:NO];
+    skipDownloadAssets = JNI_TRUE;
+}
+
+void UIKit_setButtonSkippable() {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [install_button setEnabled:YES];
+        [install_button setTitle:@"Skip" forState:UIControlStateNormal];
+        [install_button addTarget:self action:@selector(UIKit_skipDownloadAssets) forControlEvents:UIControlEventTouchUpInside];
+    });
+
+    skipDownloadAssets = JNI_FALSE;
 }
 
 void UIKit_launchMinecraftSurfaceVC() {

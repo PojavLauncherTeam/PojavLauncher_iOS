@@ -181,12 +181,13 @@ public class PLaunchApp {
             File objectsDir = new File(outputDir, "objects");
             int downloadedSs = 0;
             for (JAssetInfo asset : assetsObjects.values()) {
+                currProgress++;
+                mIsAssetsProcessing = !UIKit.updateProgressSafe(currProgress / maxProgress, "Downloading " + assetsObjects.keySet().toArray(new String[0])[downloadedSs]);
+                
                 if (!mIsAssetsProcessing) {
                     return;
                 }
 
-                currProgress++;
-                UIKit.updateProgressSafe(currProgress / maxProgress, "Downloading " + assetsObjects.keySet().toArray(new String[0])[downloadedSs]);
                 if(!assets.map_to_resources) downloadAsset(asset, objectsDir);
                 else downloadAssetMapped(asset,(assetsObjects.keySet().toArray(new String[0])[downloadedSs]),outputDir);
                 downloadedSs++;

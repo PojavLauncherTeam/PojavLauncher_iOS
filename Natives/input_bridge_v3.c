@@ -211,10 +211,15 @@ void callback_SurfaceViewController_onTouch(int event, int x, int y) {
     );
 }
 
-JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_updateProgress(JNIEnv* env, jclass clazz, jfloat progress, jstring message) {
+JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_setButtonSkippable(JNIEnv* env, jclass clazz) {
+    UIKit_setButtonSkippable();
+}
+
+JNIEXPORT jboolean JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_updateProgress(JNIEnv* env, jclass clazz, jfloat progress, jstring message) {
 	const char *message_c = (*env)->GetStringUTFChars(env, message, 0);
-	UIKit_updateProgress(progress, message_c);
+	jboolean skipDownloadAssets = UIKit_updateProgress(progress, message_c);
 	(*env)->ReleaseStringUTFChars(env, message, message_c);
+	return skipDownloadAssets;
 }
 
 JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_launchMinecraftSurface(JNIEnv* env, jclass clazz, jboolean isUseStackQueueBool) {

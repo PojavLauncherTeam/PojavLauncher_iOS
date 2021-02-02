@@ -54,12 +54,12 @@ UITextField* versionTextField;
     install_progress_bar = [[UIProgressView alloc] initWithFrame:CGRectMake(4.0, height - 58.0, width - 8.0, 6.0)];
     [scrollView addSubview:install_progress_bar];
 
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth;
-    [button setTitle:@"Play" forState:UIControlStateNormal];
-    button.frame = CGRectMake(10.0, height - 54.0, 100.0, 50.0);
-    [button addTarget:self action:@selector(launchMinecraft:) forControlEvents:UIControlEventTouchUpInside];
-    [scrollView addSubview:button];
+    install_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    install_button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth;
+    [install_button setTitle:@"Play" forState:UIControlStateNormal];
+    install_button.frame = CGRectMake(10.0, height - 54.0, 100.0, 50.0);
+    [install_button addTarget:self action:@selector(launchMinecraft:) forControlEvents:UIControlEventTouchUpInside];
+    [scrollView addSubview:install_button];
     
     install_progress_text = [[UILabel alloc] initWithFrame:CGRectMake(120.0, height - 54.0, width - 124.0, 50.0)];
     [scrollView addSubview:install_progress_text];
