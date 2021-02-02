@@ -70,19 +70,16 @@ UITextField *inputView;
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height);
     
-    inputView = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    inputView = [[UITextField alloc] initWithFrame:CGRectMake(5 * 3 + 80 * 2, 5, BTN_RECT)];
 
-    // To detects backspace
-    inputView.text = @"a";
-
-    inputView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.5f];
-    [inputView addTarget:self action:@selector(inputViewDidChange:) forControlEvents:UIControlEventEditingChanged];
+    inputView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.0f];
+    [inputView addTarget:self action:@selector(inputViewDidChange) forControlEvents:UIControlEventEditingChanged];
     [inputView addTarget:self action:@selector(inputViewDidReturn) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [inputView addTarget:self action:@selector(inputViewDidClick) forControlEvents:UIControlEventTouchDown];
 
     // Custom button
     // ADD_BUTTON(@"F1", f1, CGRectMake(5, 5, width, height));
 
-    // TODO
     ADD_BUTTON(@"GUI", special_togglebtn, CGRectMake(5, height - 5 - 50, BTN_SQUARE));
     ADD_BUTTON_VISIBLE(@"Keyboard", special_keyboard, CGRectMake(5 * 3 + 80 * 2, 5, BTN_RECT));
 
@@ -108,6 +105,7 @@ UITextField *inputView;
     // ADD_BUTTON_VISIBLE(@"Enter", enter, CGRectMake(5, 70.0, BTN_SQUARE));
     
     [self.view addSubview:inputView];
+    [inputView becomeFirstResponder];
 
     [self executebtn_special_togglebtn:0];
 
@@ -156,12 +154,12 @@ ADD_BUTTON_DEF(special_togglebtn) {
 }
 */
 
--(void)inputViewDidChange :(UITextField *) textView {
-    if ([textView.text length] <= 1) {
+-(void)inputViewDidChange {
+    if ([inputView.text length] <= 1) {
         sendData(EVENT_TYPE_KEY, GLFW_KEY_BACKSPACE, 0, 1, 0);
         sendData(EVENT_TYPE_KEY, GLFW_KEY_BACKSPACE, 0, 0, 0);
     } else {
-        NSString *newText = [textView.text substringFromIndex:1];
+        NSString *newText = [inputView.text substringFromIndex:2];
         int charLength = [newText length];
         char *charText = [newText UTF8String];
         for (int i = 0; i < charLength; i++) {
@@ -169,8 +167,14 @@ ADD_BUTTON_DEF(special_togglebtn) {
         }
     }
 
-    // To detects backspace
-    textView.text = @"a";
+    // Reset to default value
+    inputView.text = @"  ";
+}
+
+-(void)inputViewDidClick {
+    // Zero the input field so user will no longer able to select text inside.
+    inputView.alpha = 0.0f;
+    inputView.text = @"  ";
 }
 
 -(void)inputViewDidReturn {
@@ -180,11 +184,9 @@ ADD_BUTTON_DEF(special_togglebtn) {
 
 ADD_BUTTON_DEF(special_keyboard) {
     if (held == 0) {
-        if (inputView.isFirstResponder == YES) {
-            [inputView resignFirstResponder];
-        } else {
-            [inputView becomeFirstResponder];
-        }
+        [inputView resignFirstResponder];
+        inputView.alpha = 1.0f;
+        inputView.text = @"";
     }
 }
 
