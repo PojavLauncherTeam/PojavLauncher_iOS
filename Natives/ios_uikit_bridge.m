@@ -27,7 +27,7 @@ void UIKit_setButtonSkippable() {
     dispatch_async(dispatch_get_main_queue(), ^{
         [install_button setEnabled:YES];
         [install_button setTitle:@"Skip" forState:UIControlStateNormal];
-        [install_button addTarget:self action:@selector(UIKit_skipDownloadAssets) forControlEvents:UIControlEventTouchUpInside];
+        [install_button addTarget:install_button action:@selector(UIKit_skipDownloadAssets) forControlEvents:UIControlEventTouchUpInside];
     });
 
     skipDownloadAssets = JNI_FALSE;
