@@ -437,7 +437,7 @@ JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendWindowPos(JN
         if (isUseStackQueueCall) {
             sendData(EVENT_TYPE_WINDOW_POS, x, y, 0, 0);
         } else {
-            GLFW_invoke_WindowPos(showingWindow, c, y);;
+            GLFW_invoke_WindowPos(showingWindow, x, y);
         }
     }
 }
