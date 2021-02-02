@@ -183,7 +183,7 @@ public class PLaunchApp {
             File objectsDir = new File(outputDir, "objects");
             int downloadedSs = 0;
             for (JAssetInfo asset : assetsObjects.values()) {
-                assetThread[assetThrIndex++] = new Thread(() -> {
+                assetThreads[assetThrIndex++] = new Thread(() -> {
                 
                 mIsAssetsProcessing = !UIKit.updateProgressSafe(currProgress / maxProgress, "Downloading " + assetsObjects.keySet().toArray(new String[0])[downloadedSs]);
                 
@@ -202,11 +202,11 @@ public class PLaunchApp {
                 while (!isAllThreadsDone) {
                     isAllThreadsDone = true;
                     for (int i = 0; i < assetThreads.length; i++) {
-                        Thread thr = assetThread[i];
+                        Thread thr = assetThreads[i];
                         isAllThreadsDone &= thr == null || !thr.isAlive();
                         
                         if (thr != null && !thr.isAlive()) {
-                            assetThread[i] = null;
+                            assetThreads[i] = null;
                         }
                     }
                 }
