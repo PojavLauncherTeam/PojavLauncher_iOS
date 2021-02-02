@@ -99,7 +99,7 @@ public class PLaunchApp {
                     Tools.downloadFile(verInfo.url, verJsonDir);
                 }
 
-                verInfo = Tools.getVersionInfo(mcver);
+                mVersion = verInfo = Tools.getVersionInfo(mcver);
                 try {
                     UIKit.updateProgressSafe(0, "Downloading " + mcver + ".json assets info");
                     assets = downloadIndex(verInfo.assets, new File(Tools.ASSETS_PATH, "indexes/" + verInfo.assets + ".json"));
@@ -167,7 +167,6 @@ public class PLaunchApp {
             }
 
             mAccount = acc;
-            mVersion = verInfo;
 
             UIKit.launchMinecraftSurface();
 
