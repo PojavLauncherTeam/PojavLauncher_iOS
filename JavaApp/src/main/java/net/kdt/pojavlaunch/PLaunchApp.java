@@ -2,6 +2,7 @@ package net.kdt.pojavlaunch;
 
 import java.io.*;
 import java.util.*;
+import ava.util.concurrent.*;
 
 import org.lwjgl.glfw.CallbackBridge;
 
@@ -17,8 +18,6 @@ public class PLaunchApp {
     public static MinecraftAccount mAccount;
     public static JMinecraftVersionList.Version mVersion;
     public static boolean mIsAssetsProcessing = false;
-    public static Thread[] assetThreads = new Thread[30];
-    public static int assetThrIndex = 0;
 
     public static void main(String[] args) throws Throwable {
         // User might remove the minecraft folder, this can cause crashes, safety re-create it
@@ -177,17 +176,22 @@ public class PLaunchApp {
 
     private static int downloadedSs = 0;
     public static void downloadAssets(final JAssets assets, String assetsVersion, final File outputDir) throws IOException {
+        ArrayBlockingQueue<Runnable> workQueue = new ArrayBlockingQueue<>(100);
+        RejectedExecutionHandler handler = new ThreadPoolExecutor.CallerRunsPolicy();
+        final ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(5, 40, 500, TimeUnit.SECONDS, workQueue, handler);
+        
+        }
         File hasDownloadedFile = new File(outputDir, "downloaded/" + assetsVersion + ".downloaded");
         if (!hasDownloadedFile.exists()) {
             System.out.println("Assets begin time: " + System.currentTimeMillis());
             Map<String, JAssetInfo> assetsObjects = assets.objects;
             File objectsDir = new File(outputDir, "objects");
             for (JAssetInfo asset : assetsObjects.values()) {
-                assetThreads[assetThrIndex] = new Thread(() -> {
-                
+                threadPoolExecutor.execute(() -> {
                 mIsAssetsProcessing = !UIKit.updateProgressSafe(currProgress / maxProgress, "Downloading " + assetsObjects.keySet().toArray(new String[0])[downloadedSs]);
                 
                 if (!mIsAssetsProcessing) {
+                    threadPoolExecutor.shutdownNow();
                     return;
                 }
 
@@ -202,24 +206,6 @@ public class PLaunchApp {
                 downloadedSs++;
                 
                 });
-                assetThreads[assetThrIndex].start();
-                assetThrIndex++;
-
-                if (assetThrIndex == assetThreads.length) {
-                    boolean isAllThreadsDone = false;
-                    while (!isAllThreadsDone) {
-                        isAllThreadsDone = true;
-                        for (int i = 0; i < assetThreads.length; i++) {
-                            Thread thr = assetThreads[i];
-                            isAllThreadsDone &= thr == null || !thr.isAlive();
-                            if (thr != null && !thr.isAlive()) {
-                                assetThreads[i] = null;
-                            }
-                        }
-                    }
-
-                    assetThrIndex = 0;
-                }
             }
             hasDownloadedFile.getParentFile().mkdirs();
             hasDownloadedFile.createNewFile();
