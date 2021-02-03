@@ -217,6 +217,8 @@ public class PLaunchApp {
                             }
                         }
                     }
+
+                    assetThrIndex = 0;
                 }
             }
             hasDownloadedFile.getParentFile().mkdirs();
