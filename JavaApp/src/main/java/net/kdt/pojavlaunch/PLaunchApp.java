@@ -2,7 +2,7 @@ package net.kdt.pojavlaunch;
 
 import java.io.*;
 import java.util.*;
-import ava.util.concurrent.*;
+import java.util.concurrent.*;
 
 import org.lwjgl.glfw.CallbackBridge;
 
