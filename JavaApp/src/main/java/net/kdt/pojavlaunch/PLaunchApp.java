@@ -175,13 +175,13 @@ public class PLaunchApp {
         }).start();
     }
 
+    private static int downloadedSs = 0;
     public static void downloadAssets(final JAssets assets, String assetsVersion, final File outputDir) throws IOException {
         File hasDownloadedFile = new File(outputDir, "downloaded/" + assetsVersion + ".downloaded");
         if (!hasDownloadedFile.exists()) {
             System.out.println("Assets begin time: " + System.currentTimeMillis());
             Map<String, JAssetInfo> assetsObjects = assets.objects;
             File objectsDir = new File(outputDir, "objects");
-            int downloadedSs = 0;
             for (JAssetInfo asset : assetsObjects.values()) {
                 assetThreads[assetThrIndex++] = new Thread(() -> {
                 
@@ -191,8 +191,13 @@ public class PLaunchApp {
                     return;
                 }
 
-                if(!assets.map_to_resources) downloadAsset(asset, objectsDir);
-                else downloadAssetMapped(asset,(assetsObjects.keySet().toArray(new String[0])[downloadedSs]),outputDir);
+                try {
+                    if(!assets.map_to_resources) downloadAsset(asset, objectsDir);
+                    else downloadAssetMapped(asset,(assetsObjects.keySet().toArray(new String[0])[downloadedSs]),outputDir);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    mIsAssetsProcessing = false;
+                }
                 currProgress++;
                 downloadedSs++;
                 
