@@ -179,8 +179,7 @@ public class PLaunchApp {
         ArrayBlockingQueue<Runnable> workQueue = new ArrayBlockingQueue<>(100);
         RejectedExecutionHandler handler = new ThreadPoolExecutor.CallerRunsPolicy();
         final ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(5, 40, 500, TimeUnit.SECONDS, workQueue, handler);
-        
-        }
+
         File hasDownloadedFile = new File(outputDir, "downloaded/" + assetsVersion + ".downloaded");
         if (!hasDownloadedFile.exists()) {
             System.out.println("Assets begin time: " + System.currentTimeMillis());
