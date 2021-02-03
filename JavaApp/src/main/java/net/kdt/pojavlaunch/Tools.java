@@ -85,12 +85,14 @@ public final class Tools
         }
         
         new Thread(() -> { try {
+            System.out.println("Args init finished. Now starting game");
         
-        URLClassLoader loader = new URLClassLoader(urlList.toArray(new URL[0]), ClassLoader.getSystemClassLoader());
-        Class<?> clazz = loader.loadClass(versionInfo.mainClass);
-        Method method = clazz.getMethod("main", String[].class);
-        method.invoke(null, new Object[]{launchArgs});
-    
+            URLClassLoader loader = new URLClassLoader(urlList.toArray(new URL[0]), ClassLoader.getSystemClassLoader());
+            Class<?> clazz = loader.loadClass(versionInfo.mainClass);
+            Method method = clazz.getMethod("main", String[].class);
+            method.invoke(null, new Object[]{launchArgs});
+        
+            System.out.println("It went past main(). Should not reach here!");
         } catch (Throwable th) {
             throw new RuntimeException(th);
         }
