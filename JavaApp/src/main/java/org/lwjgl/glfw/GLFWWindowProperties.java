@@ -10,4 +10,12 @@ public class GLFWWindowProperties {
     public boolean shouldClose, isInitialSizeCalled, isCursorEntered;
     public Map<Integer, Integer> inputModes = new HashMap<>();
     public Map<Integer, Integer> windowAttribs = new HashMap<>();
+    
+    @Override
+    public String toString() {
+        return "width=" + width + ", " +
+          "height=" + height + ", " +
+          "x=" + x + ", " +
+          "y=" + y + ", ";
+    }
 }

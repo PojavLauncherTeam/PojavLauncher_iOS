@@ -500,11 +500,6 @@ public class GLFW
     public static final byte[] keyDownBuffer = new byte[316];
     public static long mainContext = 0;
 	static {
-        
-        // Minecraft triggers a glfwPollEvents() on splash screen, so update window size there.
-        CallbackBridge.receiveCallback(CallbackBridge.EVENT_TYPE_FRAMEBUFFER_SIZE, mGLFWWindowWidth, mGLFWWindowHeight, 0, 0);
-        CallbackBridge.receiveCallback(CallbackBridge.EVENT_TYPE_WINDOW_SIZE, mGLFWWindowWidth, mGLFWWindowHeight, 0, 0);
-
 		try {
             System.loadLibrary("pojavexec");
         } catch (UnsatisfiedLinkError e) {
@@ -967,13 +962,13 @@ public class GLFW
 			long ptr = nativeEglCreateContext(share);
             //nativeEglMakeCurrent(ptr);
 			GLFWWindowProperties win = new GLFWWindowProperties();
-			// win.width = width;
-			// win.height = height;
 
-			win.width = mGLFWWindowWidth;
-			win.height = mGLFWWindowHeight;
+			win.width = width;
+			win.height = height;
 
 			win.title = title;
+			
+	        System.out.println("GLFW: Created window " + title + ", " + win.toString());
 
 			mGLFWWindowMap.put(ptr, win);
 			mainContext = ptr;
@@ -1009,7 +1004,7 @@ public class GLFW
     }
     
 	public static void glfwShowWindow(long window) {
-	    System.out.println("GLFW: Showing window " + window + ", x=" + internalGetWindow(window).x + ", y=" + internalGetWindow(window).y);
+	    System.out.println("GLFW: Showing window " + window + ", " + internalGetWindow(window).toString());
         nglfwSetShowingWindow(window);
     }
 	public static void glfwWindowHint(int hint, int value) {}
