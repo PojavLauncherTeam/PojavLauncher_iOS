@@ -144,7 +144,7 @@ UITextField *inputView;
     if (sender.state == UIGestureRecognizerStateRecognized) {
         CGFloat screenScale = [[UIScreen mainScreen] scale];
         CGPoint locationInView = [sender locationInView:[sender.view superview]];
-        callback_SurfaceViewController_onTouch(event, locationInView.x * screenScale, locationInView.y * screenScale);
+        callback_SurfaceViewController_onTouch(ACTION_MOVE, locationInView.x * screenScale, locationInView.y * screenScale);
         
         Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL,
             isGrabbing == JNI_TRUE ? GLFW_MOUSE_BUTTON_RIGHT : GLFW_MOUSE_BUTTON_LEFT, 1, 0);
