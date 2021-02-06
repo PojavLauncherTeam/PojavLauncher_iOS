@@ -45,6 +45,7 @@
 
 int togglableVisibleButtonIndex = -1;
 UIButton* togglableVisibleButtons[100];
+UIView *touchView;
 UITextField *inputView;
 
 // TODO: key modifiers impl
@@ -69,6 +70,17 @@ UITextField *inputView;
 
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height);
+    
+    touchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(surfaceOnClick:)];
+    tapGesture.numberOfTapsRequired = 1;
+    [touchView addGestureRecognizer:tapGesture];
+
+    UILongPressGestureRecognizer *longpressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(surfaceOnLongpress:)];
+    [touchView addGestureRecognizer:longpressGesture];
+
+    [self.view addSubview:touchView];
     
     inputView = [[UITextField alloc] initWithFrame:CGRectMake(5 * 3 + 80 * 2, 5, BTN_RECT)];
 
@@ -114,13 +126,6 @@ UITextField *inputView;
     MGLKView *view = glView = (MGLKView *) self.view;
     view.drawableDepthFormat = MGLDrawableDepthFormat24;
     view.enableSetNeedsDisplay = YES;
-    
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(surfaceOnClick:)];
-    tapGesture.numberOfTapsRequired = 1;
-    [view addGestureRecognizer:tapGesture];
-
-    UILongPressGestureRecognizer *longpressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(surfaceOnLongpress:)];
-    [view addGestureRecognizer:longpressGesture];
 
     // Init GLES
     self.context = [[MGLContext alloc] initWithAPI:kMGLRenderingAPIOpenGLES3];
@@ -293,9 +298,10 @@ BOOL isNotifRemoved;
 - (void)sendTouchEvent:(NSSet *)touches withEvent:(int)event
 {
     UITouch* touchEvent = [touches anyObject];
-    CGPoint locationInView = [touchEvent locationInView:self.view];
-    
-    [self sendTouchPoint:locationInView withEvent:event];
+    if ([touchEvent view] == touchView) {
+        CGPoint locationInView = [touchEvent locationInView:touchView];
+        [self sendTouchPoint:locationInView withEvent:event];
+    }
 }
 
 - (void)sendTouchPoint:(CGPoint)location withEvent:(int)event{
