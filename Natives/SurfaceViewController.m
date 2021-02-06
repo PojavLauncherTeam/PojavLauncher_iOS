@@ -115,9 +115,12 @@ UITextField *inputView;
     view.drawableDepthFormat = MGLDrawableDepthFormat24;
     view.enableSetNeedsDisplay = YES;
     
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(triggerClickEvent:)];
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(surfaceOnClick:)];
     tapGesture.numberOfTapsRequired = 1;
     [view addGestureRecognizer:tapGesture];
+
+    UILongPressGestureRecognizer *longpressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(surfaceOnLongpress:)];
+    [view addGestureRecognizer:longpressGesture];
 
     // Init GLES
     self.context = [[MGLContext alloc] initWithAPI:kMGLRenderingAPIOpenGLES3];
@@ -140,16 +143,34 @@ UITextField *inputView;
     [self setupGL];
 }
 
-- (void)triggerClickEvent:(UITapGestureRecognizer *)sender {
+- (void)surfaceOnClick:(UITapGestureRecognizer *)sender {
     if (sender.state == UIGestureRecognizerStateRecognized) {
-        CGFloat screenScale = [[UIScreen mainScreen] scale];
-        CGPoint locationInView = [sender locationInView:[sender.view superview]];
-        callback_SurfaceViewController_onTouch(ACTION_MOVE, locationInView.x * screenScale, locationInView.y * screenScale);
+        if (isGrabbing == JNI_FALSE) {
+            CGPoint locationInView = [sender locationInView:[sender.view superview]];
+            [self sendTouchPoint:locationInView withEvent:ACTION_MOVE];
+        }
         
         Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL,
             isGrabbing == JNI_TRUE ? GLFW_MOUSE_BUTTON_RIGHT : GLFW_MOUSE_BUTTON_LEFT, 1, 0);
         Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL,
             isGrabbing == JNI_TRUE ? GLFW_MOUSE_BUTTON_RIGHT : GLFW_MOUSE_BUTTON_LEFT, 0, 0);
+    }
+}
+
+-(void)surfaceOnLongpress:(UILongPressGestureRecognizer *)sender
+{
+    if (sender.state == UIGestureRecognizerStateBegan) {
+        Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, GLFW_MOUSE_BUTTON_LEFT, 1, 0);
+    } else if (sender.state == UIGestureRecognizerStateChanged) {
+        CGPoint locationInView = [sender locationInView:[sender.view superview]];
+        [self sendTouchPoint:locationInView withEvent:ACTION_MOVE];
+    } else {
+        if (sender.state == UIGestureRecognizerStateCancelled
+            || sender.state == UIGestureRecognizerStateFailed
+            || sender.state == UIGestureRecognizerStateEnded)
+        {
+            Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, GLFW_MOUSE_BUTTON_LEFT, 0, 0);
+        }
     }
 }
 
@@ -260,12 +281,15 @@ ADD_BUTTON_DEF_KEY(escape, GLFW_KEY_ESCAPE)
 
 - (void)sendTouchEvent:(NSSet *)touches withEvent:(int)event
 {
-    CGFloat screenScale = [[UIScreen mainScreen] scale];
-
     UITouch* touchEvent = [touches anyObject];
     CGPoint locationInView = [touchEvent locationInView:self.view];
     
-    callback_SurfaceViewController_onTouch(event, locationInView.x * screenScale, locationInView.y * screenScale /* normalizedPoint.x, normalizedPoint.y */);
+    [self sendTouchPoint:locationInView withEvent:event];
+}
+
+- (void)sendTouchPoint:(CGPoint)location withEvent:(int)event{
+    CGFloat screenScale = [[UIScreen mainScreen] scale];
+    callback_SurfaceViewController_onTouch(ACTION_MOVE, location.x * screenScale, location.y * screenScale);
 }
 
 // Equals to Android ACTION_DOWN
