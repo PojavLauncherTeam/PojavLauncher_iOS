@@ -181,6 +181,9 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglMakeCurrent(JNIEnv*
             debug("Error: eglMakeCurrent() failed: %p", eglGetError());
         }
 
+        debug("EGLBridge: Trigger an initial swapBuffers");
+        swapBuffers();
+
         // Test
 #ifdef GLES_TEST
         glClearColor(0.4f, 0.4f, 0.4f, 1.0f);
@@ -252,20 +255,13 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglTerminate(JNIEnv* e
 }
 
 bool stopMakeCurrent;
-int swappedBuffers;
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglSwapBuffers(JNIEnv *env, jclass clazz) {
     if (stopMakeCurrent) {
         return JNI_FALSE;
     }
 
     // swapBuffers();
-    jboolean result;
-    if (swappedBuffers < 1) {
-        ++swappedBuffers;
-        swapBuffers();
-    } else {
-        result = (jboolean) eglSwapBuffers(potatoBridge.eglDisplay, eglGetCurrentSurface(EGL_DRAW));
-    }
+    jboolean result = (jboolean) eglSwapBuffers(potatoBridge.eglDisplay, eglGetCurrentSurface(EGL_DRAW));
 
     if (!result) {
         EGLint error = eglGetError();
