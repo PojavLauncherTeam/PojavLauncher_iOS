@@ -289,7 +289,7 @@ ADD_BUTTON_DEF_KEY(escape, GLFW_KEY_ESCAPE)
 
 - (void)sendTouchPoint:(CGPoint)location withEvent:(int)event{
     CGFloat screenScale = [[UIScreen mainScreen] scale];
-    callback_SurfaceViewController_onTouch(ACTION_MOVE, location.x * screenScale, location.y * screenScale);
+    callback_SurfaceViewController_onTouch(event, location.x * screenScale, location.y * screenScale);
 }
 
 // Equals to Android ACTION_DOWN
