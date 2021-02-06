@@ -145,11 +145,9 @@ UITextField *inputView;
 
 - (void)surfaceOnClick:(UITapGestureRecognizer *)sender {
     if (sender.state == UIGestureRecognizerStateRecognized) {
-        if (isGrabbing == JNI_FALSE) {
-            CGPoint locationInView = [sender locationInView:[sender.view superview]];
-            [self sendTouchPoint:locationInView withEvent:ACTION_MOVE];
-        }
-        
+        CGPoint locationInView = [sender locationInView:[sender.view superview]];
+        [self sendTouchPoint:locationInView withEvent:ACTION_DOWN];
+        [self sendTouchPoint:locationInView withEvent:ACTION_MOVE];
         Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL,
             isGrabbing == JNI_TRUE ? GLFW_MOUSE_BUTTON_RIGHT : GLFW_MOUSE_BUTTON_LEFT, 1, 0);
         Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL,
@@ -289,7 +287,9 @@ ADD_BUTTON_DEF_KEY(escape, GLFW_KEY_ESCAPE)
 
 - (void)sendTouchPoint:(CGPoint)location withEvent:(int)event{
     CGFloat screenScale = [[UIScreen mainScreen] scale];
-    callback_SurfaceViewController_onTouch(event, location.x * screenScale, location.y * screenScale);
+    // callback_SurfaceViewController_onTouch(event, location.x * screenScale, location.y * screenScale);
+    
+    Java_org_lwjgl_glfw_CallbackBridge_nativeSendCursorPos(NULL, NULL, location.x * screenScale, location.y * screenScale);
 }
 
 // Equals to Android ACTION_DOWN
