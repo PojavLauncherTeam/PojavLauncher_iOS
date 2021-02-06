@@ -1149,6 +1149,7 @@ public class GLFW
 
     public static void glfwSetInputMode(@NativeType("GLFWwindow *") long window, int mode, int value) {
         if (mode == GLFW_CURSOR) {
+            System.out.println("GLFW: glfwSetInputMode(GLFW_CURSOR, " + value + ")");
             switch (value) {
                 case GLFW_CURSOR_DISABLED:
                     CallbackBridge.sendGrabbing(true, (int) mGLFWCursorX, (int) mGLFWCursorY);
