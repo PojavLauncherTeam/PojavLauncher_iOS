@@ -101,8 +101,6 @@ UITextField *inputView;
     ADD_BUTTON_VISIBLE(@"⬛", space, CGRectMake(width - 5 * 2 - 50 * 2, height - 5 * 2 - 50 * 2, BTN_SQUARE));
 
     ADD_BUTTON_VISIBLE(@"Esc", escape, CGRectMake(width - 5 - 80, height - 5 - 30, BTN_RECT));
-    
-    ADD_BUTTON_VISIBLE(@"Resize", special_resize, CGRectMake(width - 5 - 80, 5, BTN_RECT));
 
     // ADD_BUTTON_VISIBLE(@"Enter", enter, CGRectMake(5, 70.0, BTN_SQUARE));
     
@@ -116,7 +114,12 @@ UITextField *inputView;
     MGLKView *view = glView = (MGLKView *) self.view;
     view.drawableDepthFormat = MGLDrawableDepthFormat24;
     view.enableSetNeedsDisplay = YES;
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(triggerClickEvent:)];
+    tapGesture.numberOfTapsRequired = 1;
+    [view addGestureRecognizer:tapGesture];
 
+    // Init GLES
     self.context = [[MGLContext alloc] initWithAPI:kMGLRenderingAPIOpenGLES3];
 
     if (!self.context) {
@@ -137,24 +140,18 @@ UITextField *inputView;
     [self setupGL];
 }
 
-// sendData: type, keycode, scancode, action, mods
-
-int currentVisibility = 1;
-ADD_BUTTON_DEF(special_togglebtn) {
-    if (held == 0) {
-        currentVisibility = !currentVisibility;
-        for (int i = 0; i < togglableVisibleButtonIndex + 1; i++) {
-            togglableVisibleButtons[i].hidden = currentVisibility;
-        }
+- (void)triggerClickEvent:(UITapGestureRecognizer *)sender {
+    if (sender.state == UIGestureRecognizerStateRecognized) {
+        CGFloat screenScale = [[UIScreen mainScreen] scale];
+        CGPoint locationInView = [sender locationInView:[sender.view superview]];
+        callback_SurfaceViewController_onTouch(event, locationInView.x * screenScale, locationInView.y * screenScale);
+        
+        Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL,
+            isGrabbing == JNI_TRUE ? GLFW_MOUSE_BUTTON_RIGHT : GLFW_MOUSE_BUTTON_LEFT, 1, 0);
+        Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL,
+            isGrabbing == JNI_TRUE ? GLFW_MOUSE_BUTTON_RIGHT : GLFW_MOUSE_BUTTON_LEFT, 0, 0);
     }
 }
-
-/*
-- (BOOL)textView:(UITextView *)inputView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
-{
-    NSLog(@"input");
-}
-*/
 
 -(void)inputViewDidChange {
     if ([inputView.text length] <= 1) {
@@ -184,6 +181,16 @@ ADD_BUTTON_DEF(special_togglebtn) {
     Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_ENTER, 0, 0, 0);
 }
 
+int currentVisibility = 1;
+ADD_BUTTON_DEF(special_togglebtn) {
+    if (held == 0) {
+        currentVisibility = !currentVisibility;
+        for (int i = 0; i < togglableVisibleButtonIndex + 1; i++) {
+            togglableVisibleButtons[i].hidden = currentVisibility;
+        }
+    }
+}
+
 ADD_BUTTON_DEF(special_keyboard) {
     if (held == 0) {
         [inputView resignFirstResponder];
@@ -198,17 +205,6 @@ ADD_BUTTON_DEF(special_mouse_pri) {
 
 ADD_BUTTON_DEF(special_mouse_sec) {
     Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, GLFW_MOUSE_BUTTON_RIGHT, held, 0);
-}
-
-ADD_BUTTON_DEF(special_resize) {
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    CGFloat screenScale = [[UIScreen mainScreen] scale];
-
-    int width = (int) roundf(screenBounds.size.width * screenScale);
-    int height = (int) roundf(screenBounds.size.height * screenScale);
-
-    Java_org_lwjgl_glfw_CallbackBridge_nativeSendScreenSize(NULL, NULL, width, height);
-    Java_org_lwjgl_glfw_CallbackBridge_nativeSendWindowPos(NULL, NULL, 0, 0);
 }
 
 ADD_BUTTON_DEF_KEY(f3, GLFW_KEY_F3)
@@ -264,12 +260,11 @@ ADD_BUTTON_DEF_KEY(escape, GLFW_KEY_ESCAPE)
 
 - (void)sendTouchEvent:(NSSet *)touches withEvent:(int)event
 {
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];
 
     UITouch* touchEvent = [touches anyObject];
     CGPoint locationInView = [touchEvent locationInView:self.view];
-    // CGPoint normalizedPoint = getNormalizedPoint(self.view, locationInView);
+    
     callback_SurfaceViewController_onTouch(event, locationInView.x * screenScale, locationInView.y * screenScale /* normalizedPoint.x, normalizedPoint.y */);
 }
 
