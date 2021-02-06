@@ -40,8 +40,6 @@ jmethodID inputBridgeMethod_ANDROID, inputBridgeMethod_JRE;
 jclass uikitBridgeClass;
 jmethodID uikitBridgeTouchMethod;
 
-jboolean isGrabbing;
-
 // JNI_OnLoad
 jint JNI_OnLoad(JavaVM* vm, void* reserved) {
     debug("libpojavexec loaded from vm=%p\n", vm);

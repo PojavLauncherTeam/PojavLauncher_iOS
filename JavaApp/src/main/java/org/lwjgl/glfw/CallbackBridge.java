@@ -178,6 +178,9 @@ public class CallbackBridge {
     public static void sendGrabbing(boolean grab, int xset, int yset) {
         // sendData(ANDROID_TYPE_GRAB_STATE, Boolean.toString(grab));
         
+        mouseX = xset;
+        mouseY = yset;
+        
         GLFW.mGLFWIsGrabbing = grab;
         nativeSetGrabbing(grab, xset, yset);
     }
@@ -209,9 +212,6 @@ public class CallbackBridge {
         return "";
     }
     
-    private static void nativeSetGrabbing(boolean grab, int xset, int yset) {
-        mouseX = xset;
-        mouseY = yset;
-    }
+    private static native void nativeSetGrabbing(boolean grab, int xset, int yset);
 }
 

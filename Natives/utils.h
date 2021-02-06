@@ -33,6 +33,8 @@ long showingWindow;
 
 bool isInputReady, isCursorEntered, isPrepareGrabPos, isUseStackQueueCall;
 
+jboolean isGrabbing;
+
 int savedWidth, savedHeight;
 
 jboolean attachThread(bool isAndroid, JNIEnv** secondJNIEnvPtr);
