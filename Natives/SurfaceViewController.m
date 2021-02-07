@@ -75,6 +75,8 @@ UITextField *inputView;
 
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(surfaceOnClick:)];
     tapGesture.numberOfTapsRequired = 1;
+    tapGesture.numberOfTouchesRequired = 1;
+    tapGesture.cancelsTouchesInView = NO;
     [touchView addGestureRecognizer:tapGesture];
 
     UILongPressGestureRecognizer *longpressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(surfaceOnLongpress:)];
@@ -150,10 +152,6 @@ UITextField *inputView;
 
 - (void)surfaceOnClick:(UITapGestureRecognizer *)sender {
     if (sender.state == UIGestureRecognizerStateRecognized) {
-        if (isGrabbing == JNI_FALSE) {
-            CGPoint locationInView = [sender locationInView:[sender.view superview]];
-            [self sendTouchPoint:locationInView withEvent:ACTION_MOVE];
-        }
         Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL,
             isGrabbing == JNI_TRUE ? GLFW_MOUSE_BUTTON_RIGHT : GLFW_MOUSE_BUTTON_LEFT, 1, 0);
         Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL,

@@ -24,6 +24,10 @@ public class UIKit {
         switch (event) {
             case ACTION_DOWN:
             case ACTION_UP:
+                if (!GLFW.mGLFWIsGrabbing) {
+                    CallbackBridge.mouseX = x;
+                    CallbackBridge.mouseY = y;
+                }
                 CallbackBridge.mouseLastX = x;
                 CallbackBridge.mouseLastY = y;
                 break;
