@@ -1,5 +1,6 @@
 package net.kdt.pojavlaunch.uikit;
 
+import net.kdt.pojavlaunch.utils.MCOptionUtils;
 import net.kdt.pojavlaunch.PLaunchApp;
 import org.lwjgl.glfw.*;
 
