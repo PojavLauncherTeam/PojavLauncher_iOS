@@ -48,6 +48,7 @@ void closeGLFWWindow();
 void callback_LauncherViewController_installMinecraft();
 void callback_SurfaceViewController_launchMinecraft(int width, int height);
 void callback_SurfaceViewController_onTouch(int event, int x, int y);
+int callback_SurfaceViewController_touchHotbar(int x, int y);
 
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendChar(JNIEnv* env, jclass clazz, jchar codepoint /* jint codepoint */);
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendCharMods(JNIEnv* env, jclass clazz, jchar codepoint, jint mods);

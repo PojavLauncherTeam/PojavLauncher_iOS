@@ -5,6 +5,7 @@ import java.util.*;
 import android.util.*;
 
 import net.kdt.pojavlaunch.*;
+import net.kdt.pojavlaunch.uikit.UIKit;
 
 public class CallbackBridge {
     public static final int CLIPBOARD_COPY = 2000;
@@ -177,6 +178,10 @@ public class CallbackBridge {
     
     public static void sendGrabbing(boolean grab, int xset, int yset) {
         // sendData(ANDROID_TYPE_GRAB_STATE, Boolean.toString(grab));
+        
+        if (grab) {
+            UIKit.updateMCGuiScale();
+        }
         
         mouseX = xset;
         mouseY = yset;

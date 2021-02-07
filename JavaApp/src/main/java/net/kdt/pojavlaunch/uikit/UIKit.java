@@ -8,6 +8,8 @@ public class UIKit {
     public static final int ACTION_UP = 1;
     public static final int ACTION_MOVE = 2;
     
+    private static int guiScale;
+    
     public static void callback_LauncherViewController_installMinecraft() {
         PLaunchApp.installMinecraft();
     }
@@ -49,6 +51,18 @@ public class UIKit {
         CallbackBridge.sendCursorPos(CallbackBridge.mouseX, CallbackBridge.mouseY);
     }
     
+    public static void updateMCGuiScale() {
+        MCOptionUtils.load();
+        String str = MCOptionUtils.get("guiScale");
+        guiScale = (str == null ? 0 :Integer.parseInt(str));
+
+        int scale = Math.max(Math.min(GLFW.mGLFWWindowWidth / 320, GLFW.mGLFWWindowHeight / 240), 1);
+        if(scale < guiScale || guiScale == 0){
+            guiScale = scale;
+            updateMCGuiScale(guiScale);
+        }
+    }
+    
     public static boolean updateProgressSafe(final float progress, final String message) {
         System.out.println(message);
         return updateProgress(progress, ((int) (progress * 100)) + "% - " + message);
@@ -60,6 +74,8 @@ public class UIKit {
     
     public static native int launchUI(String[] uiArgs);
     // public static native void runOnUIThread(UIKitCallback callback);
+    
+    private static native void updateMCGuiScale(int scale);
     
     // Update progress
     public static native boolean updateProgress(float progress, String message);

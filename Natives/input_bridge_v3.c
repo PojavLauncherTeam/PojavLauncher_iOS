@@ -14,6 +14,7 @@
 #include <assert.h>
 #include <stdlib.h>
 
+#include "glfw_keycodes.h"
 #include "ios_uikit_bridge.h"
 
 #include "log.h"
@@ -207,6 +208,34 @@ void callback_SurfaceViewController_onTouch(int event, int x, int y) {
         uikitBridgeClass, uikitBridgeTouchMethod,
         event, x, y
     );
+}
+
+const int hotbarKeys[9] = {
+    GLFW_KEY_1, GLFW_KEY_2, GLFW_KEY_3,
+    GLFW_KEY_4, GLFW_KEY_5, GLFW_KEY_6,
+    GLFW_KEY_7, GLFW_KEY_8, GLFW_KEY_9
+};
+int guiScale = 1, scaleFactor = 1;
+int mcscale(int input) {
+    return (int)((guiScale * input)/scaleFactor);
+}
+int callback_SurfaceViewController_touchHotbar(int x, int y) {
+    if (isGrabbing == JNI_FALSE) {
+        return -1;
+    }
+    
+    int barHeight = mcscale(20);
+    int barWidth = mcscale(180);
+    int barX = (savedWidth / 2) - (barWidth / 2);
+    int barY = savedHeight - barHeight;
+    if (x < barX || x >= barX + barWidth || y < barY || y >= barY + barHeight) {
+        return -1;
+    }
+    return hotbarKeys[((x - barX) / mcscale(180 / 9)) % 9];
+}
+
+JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_updateMCGuiScale(JNIEnv* env, jclass clazz, jint scale) {
+    guiScale = scale;
 }
 
 JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_setButtonSkippable(JNIEnv* env, jclass clazz) {

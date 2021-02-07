@@ -47,6 +47,7 @@ int togglableVisibleButtonIndex = -1;
 UIButton* togglableVisibleButtons[100];
 UIView *touchView;
 UITextField *inputView;
+BOOL shouldTriggerClick = NO;
 
 // TODO: key modifiers impl
 
@@ -70,6 +71,9 @@ UITextField *inputView;
 
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height);
+    
+    savedWidth = roundf(width * screenScale);
+    savedHeight = roundf(height * screenScale);
     
     touchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
 
@@ -151,27 +155,49 @@ UITextField *inputView;
 }
 
 - (void)surfaceOnClick:(UITapGestureRecognizer *)sender {
-    if (sender.state == UIGestureRecognizerStateRecognized) {
-        Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL,
-            isGrabbing == JNI_TRUE ? GLFW_MOUSE_BUTTON_RIGHT : GLFW_MOUSE_BUTTON_LEFT, 1, 0);
-        Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL,
-            isGrabbing == JNI_TRUE ? GLFW_MOUSE_BUTTON_RIGHT : GLFW_MOUSE_BUTTON_LEFT, 0, 0);
+    if (sender.state == UIGestureRecognizerStateRecognized &&
+      shouldTriggerClick == YES) {
+        CGFloat screenScale = [[UIScreen mainScreen] scale];
+        CGPoint location = [sender locationInView:[sender.view superview]];
+        int hotbarItem = callback_SurfaceViewController_touchHotbar(location.x * screenScale, location.y * screenScale);
+        
+        if (hotbarItem == -1) {
+            Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL,
+                isGrabbing == JNI_TRUE ? GLFW_MOUSE_BUTTON_RIGHT : GLFW_MOUSE_BUTTON_LEFT, 1, 0);
+            Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL,
+                isGrabbing == JNI_TRUE ? GLFW_MOUSE_BUTTON_RIGHT : GLFW_MOUSE_BUTTON_LEFT, 0, 0);
+        } else {
+            Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, hotbarItem, 0, 1, 0);
+            Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, hotbarItem, 0, 0, 0);
+        }
     }
 }
 
 -(void)surfaceOnLongpress:(UILongPressGestureRecognizer *)sender
 {
+    CGFloat screenScale = [[UIScreen mainScreen] scale];
+    CGPoint location = [sender locationInView:[sender.view superview]];
+    int hotbarItem = callback_SurfaceViewController_touchHotbar(location.x * screenScale, location.y * screenScale);
     if (sender.state == UIGestureRecognizerStateBegan) {
-        Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, GLFW_MOUSE_BUTTON_LEFT, 1, 0);
+        if (hotbarItem == -1) {
+            Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, GLFW_MOUSE_BUTTON_LEFT, 1, 0);
+        } else {
+            Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_Q, 0, 1, 0);
+        }
     } else if (sender.state == UIGestureRecognizerStateChanged) {
-        CGPoint locationInView = [sender locationInView:[sender.view superview]];
-        [self sendTouchPoint:locationInView withEvent:ACTION_MOVE];
+        if (hotbarItem == -1) {
+            [self sendTouchPoint:location withEvent:ACTION_MOVE];
+        }
     } else {
         if (sender.state == UIGestureRecognizerStateCancelled
             || sender.state == UIGestureRecognizerStateFailed
             || sender.state == UIGestureRecognizerStateEnded)
         {
-            Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, GLFW_MOUSE_BUTTON_LEFT, 0, 0);
+            if (hotbarItem == -1) {
+                Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, GLFW_MOUSE_BUTTON_LEFT, 0, 0);
+            } else {
+                Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_Q, 0, 0, 0);
+            }
         }
     }
 }
@@ -304,7 +330,9 @@ BOOL isNotifRemoved;
 
 - (void)sendTouchPoint:(CGPoint)location withEvent:(int)event{
     CGFloat screenScale = [[UIScreen mainScreen] scale];
+    if (callback_SurfaceViewController_touchHotbar(location.x * screenScale, location.y * screenScale) == -1) {
         callback_SurfaceViewController_onTouch(event, location.x * screenScale, location.y * screenScale);
+    }
     
     // Java_org_lwjgl_glfw_CallbackBridge_nativeSendCursorPos(NULL, NULL, location.x * screenScale, location.y * screenScale);
 }
@@ -314,6 +342,7 @@ BOOL isNotifRemoved;
 {
     [super touchesBegan: touches withEvent: event];
     [self sendTouchEvent: touches withEvent: ACTION_DOWN];
+    shouldTriggerClick = YES;
 }
 
 // Equals to Android ACTION_MOVE
@@ -321,6 +350,7 @@ BOOL isNotifRemoved;
 {
     [super touchesMoved: touches withEvent: event];
     [self sendTouchEvent: touches withEvent: ACTION_MOVE];
+    shouldTriggerClick = NO;
 }
 
 // Equals to Android ACTION_UP
