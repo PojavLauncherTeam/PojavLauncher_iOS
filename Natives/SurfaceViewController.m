@@ -337,11 +337,13 @@ BOOL isNotifRemoved;
     // Java_org_lwjgl_glfw_CallbackBridge_nativeSendCursorPos(NULL, NULL, location.x * screenScale, location.y * screenScale);
 }
 
+int touchesMovedCount;
 // Equals to Android ACTION_DOWN
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesBegan: touches withEvent: event];
     [self sendTouchEvent: touches withEvent: ACTION_DOWN];
+    touchesMovedCount = 0;
     shouldTriggerClick = YES;
 }
 
@@ -350,7 +352,9 @@ BOOL isNotifRemoved;
 {
     [super touchesMoved: touches withEvent: event];
     [self sendTouchEvent: touches withEvent: ACTION_MOVE];
-    shouldTriggerClick = NO;
+    if (touchesMovedCount >= 1) {
+        shouldTriggerClick = NO;
+    } else ++touchesMovedCount;
 }
 
 // Equals to Android ACTION_UP
