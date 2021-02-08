@@ -1,6 +1,6 @@
 
 #import "SceneDelegate.h"
-#import "LauncherViewController.h"
+#import "LoginViewController.h"
 
 @interface SceneDelegate ()
 
@@ -12,7 +12,7 @@
 - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions  API_AVAILABLE(ios(13.0)) API_AVAILABLE(ios(13.0)) API_AVAILABLE(ios(13.0)){
     
     if (@available(iOS 13.0, *)) {
-        LauncherViewController *vc = [[LauncherViewController alloc] init];
+        LoginViewController *vc = [[LoginViewController alloc] init];
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
         UIWindowScene *windowScene = (UIWindowScene *)scene;
         self.window = [[UIWindow alloc] initWithWindowScene:windowScene];

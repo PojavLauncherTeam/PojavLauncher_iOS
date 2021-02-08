@@ -509,8 +509,8 @@ public final class Tools
                             
                             if (libAddedName.equals(libName)) {
                                 System.out.println("Library " + libName + ": Replaced version " + 
-                                    lib.name.substring(libName.length() + 1) + " with " +
-                                    libAdded.name.substring(libAddedName.length() + 1));
+                                    libAdded.name.substring(libAddedName.length() + 1) + " with " +
+                                    lib.name.substring(libName.length() + 1));
                                 libList.set(i, lib);
                                 continue loop_1;
                             }

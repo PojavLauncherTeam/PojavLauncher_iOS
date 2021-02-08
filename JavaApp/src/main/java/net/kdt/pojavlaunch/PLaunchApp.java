@@ -15,8 +15,8 @@ public class PLaunchApp {
     private static float currProgress, maxProgress;
 
     public static JMinecraftVersionList mVersionList;
-    public static MinecraftAccount mAccount;
-    public static JMinecraftVersionList.Version mVersion;
+    public static volatile MinecraftAccount mAccount;
+    public static volatile JMinecraftVersionList.Version mVersion;
     public static boolean mIsAssetsProcessing = false;
 
     public static void main(String[] args) throws Throwable {

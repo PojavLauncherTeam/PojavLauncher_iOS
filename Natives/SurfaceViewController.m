@@ -120,7 +120,7 @@ BOOL shouldTriggerClick = NO;
 
     ADD_BUTTON_VISIBLE(@"Esc", escape, CGRectMake(width - 5 - 80, height - 5 - 30, BTN_RECT));
 
-    // ADD_BUTTON_VISIBLE(@"Enter", enter, CGRectMake(5, 70.0, BTN_SQUARE));
+    ADD_BUTTON_VISIBLE(@"Fullscreen", f11, CGRectMake(width - 5 - 80, 5, BTN_RECT));
     
     [self.view addSubview:inputView];
     [inputView becomeFirstResponder];
@@ -258,6 +258,7 @@ ADD_BUTTON_DEF(special_mouse_sec) {
 
 ADD_BUTTON_DEF_KEY(f3, GLFW_KEY_F3)
 ADD_BUTTON_DEF_KEY(f5, GLFW_KEY_F5)
+ADD_BUTTON_DEF_KEY(f11, GLFW_KEY_F11)
 ADD_BUTTON_DEF_KEY(t, GLFW_KEY_T)
 ADD_BUTTON_DEF_KEY(tab, GLFW_KEY_TAB)
 

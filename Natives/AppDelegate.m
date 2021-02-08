@@ -1,5 +1,5 @@
 #import "AppDelegate.h"
-#import "LauncherViewController.h"
+#import "LoginViewController.h"
 #import "SceneDelegate.h"
 
 @implementation AppDelegate
@@ -8,7 +8,7 @@
     if (@available(iOS 13.0, *)) {
         
     } else {
-        LauncherViewController *vc = [[LauncherViewController alloc] init];
+        LoginViewController *vc = [[LoginViewController alloc] init];
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
         self.window = ([[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]]);
         self.window.rootViewController = nav;
