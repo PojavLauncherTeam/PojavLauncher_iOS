@@ -44,6 +44,8 @@ int launchJVM(int argc, char *argv[]) {
     setenv("LIBGL_MIPMAP", "3", 1);
     setenv("LIBGL_NORMALIZE", "1", 1);
     
+    chdir("/var/mobile/Documents/minecraft");
+    
     char *java_libs_dir = "/Applications/PojavLauncher.app/libs";
     
     char *args_path = "/var/mobile/Documents/minecraft/overrideargs.txt";
