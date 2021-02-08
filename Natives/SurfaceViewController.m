@@ -108,6 +108,7 @@ BOOL shouldTriggerClick = NO;
     ADD_BUTTON_VISIBLE(@"Chat", t, CGRectMake(5 * 2 + 80, 5, BTN_RECT));
     ADD_BUTTON_VISIBLE(@"Tab", tab, CGRectMake(5 * 4 + 80 * 3, 5, BTN_RECT));
     ADD_BUTTON_VISIBLE(@"Opti-Zoom", c, CGRectMake(5 * 5 + 80 * 4, 5, BTN_RECT));
+    ADD_BUTTON_VISIBLE(@"Offhand", f, CGRectMake(5 * 6 + 80 * 5, 5, BTN_RECT));
     ADD_BUTTON_VISIBLE(@"3rd", f5, CGRectMake(5, 5 * 2 + 30.0, BTN_RECT));
 
     ADD_BUTTON_VISIBLE(@"▲", w, CGRectMake(5 * 2 + 50, height - 5 * 3 - 50 * 3, BTN_SQUARE));
@@ -261,6 +262,7 @@ ADD_BUTTON_DEF_KEY(f3, GLFW_KEY_F3)
 ADD_BUTTON_DEF_KEY(f5, GLFW_KEY_F5)
 ADD_BUTTON_DEF_KEY(t, GLFW_KEY_T)
 ADD_BUTTON_DEF_KEY(c, GLFW_KEY_C)
+ADD_BUTTON_DEF_KEY(f, GLFW_KEY_C)
 ADD_BUTTON_DEF_KEY(tab, GLFW_KEY_TAB)
 
 ADD_BUTTON_DEF_KEY(w, GLFW_KEY_W)
