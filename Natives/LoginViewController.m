@@ -6,8 +6,6 @@
 @interface LoginViewController () {
 }
 
-// - (void)method
-
 @end
 
 @implementation LoginViewController
@@ -17,7 +15,7 @@
 
     [self setTitle:@"PojavLauncher"];
 
-    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:nil action:nil];
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
     [self.navigationItem setBackBarButtonItem:backItem];
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
@@ -25,8 +23,9 @@
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height) - self.navigationController.navigationBar.frame.size.height;
 
-    UIScrollView *scrollView = self.view = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    [self.view addSubview:scrollView];
 
     // Update color mode once
     if(@available(iOS 13.0, *)) {
@@ -39,7 +38,7 @@
     
     UIButton *button_login_mojang = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [button_login_mojang setTitle:@"Mojang login" forState:UIControlStateNormal];
-    button_login_mojang.frame = CGRectMake(widthSplit, (height - 50.0) / 2.0 - 4.0 - 50.0, width - widthSplit * 2.0, 50.0);
+    button_login_mojang.frame = CGRectMake(widthSplit, (height - 50.0) / 2.0 - 4.0 - 50.0, (width - widthSplit * 2.0) / 2 - 2.0, 50.0);
     button_login_mojang.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
     button_login_mojang.layer.cornerRadius = 5;
     [button_login_mojang setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -48,7 +47,7 @@
     
     UIButton *button_login_microsoft = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [button_login_microsoft setTitle:@"Microsoft login" forState:UIControlStateNormal];
-    button_login_microsoft.frame = CGRectMake(widthSplit, (height - 50.0) / 2.0, width - widthSplit * 2.0, 50.0);
+    button_login_microsoft.frame = CGRectMake(widthSplit + (width - widthSplit * 2.0) / 2.0 + 2.0, (height - 50.0) / 2.0 - 4.0 - 50.0, (width - widthSplit * 2.0) / 2 - 2.0, 50.0);
     button_login_microsoft.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
     button_login_microsoft.layer.cornerRadius = 5;
     [button_login_microsoft setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -57,12 +56,21 @@
     
     UIButton *button_login_offline = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [button_login_offline setTitle:@"Offline login" forState:UIControlStateNormal];
-    button_login_offline.frame = CGRectMake(widthSplit, (height - 50.0) / 2.0 + 4.0 + 50.0, width - widthSplit * 2.0, 50.0);
+    button_login_offline.frame = CGRectMake(widthSplit, (height - 50.0) / 2.0, width - widthSplit * 2.0, 50.0);
     button_login_offline.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
     button_login_offline.layer.cornerRadius = 5;
     [button_login_offline setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button_login_offline addTarget:self action:@selector(loginOffline) forControlEvents:UIControlEventTouchUpInside];
     [scrollView addSubview:button_login_offline];
+
+    UIButton *button_login_account = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [button_login_account setTitle:@"Select account" forState:UIControlStateNormal];
+    button_login_account.frame = CGRectMake(widthSplit, (height - 50.0) / 2.0 + 4.0 + 50.0, width - widthSplit * 2.0, 50.0);
+    button_login_account.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
+    button_login_account.layer.cornerRadius = 5;
+    [button_login_account setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [button_login_account addTarget:self action:@selector(loginAccount) forControlEvents:UIControlEventTouchUpInside];
+    [scrollView addSubview:button_login_account];
 }
 
 -(void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection API_AVAILABLE(ios(13.0)) {
@@ -85,9 +93,87 @@
     [self enterLauncher];
 }
 
+- (void)loginAccount {
+/*
+    UIViewController *controller = [[UIViewController alloc] init];
+    UITableView *alertTableView;
+alertTableView  = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, 300, 300)];
+    alertTableView.delegate = self;
+    alertTableView.dataSource = self;
+    alertTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
+    [alertTableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
+    [controller.view addSubview:alertTableView];
+    [controller.view bringSubviewToFront:alertTableView];
+    [controller.view setUserInteractionEnabled:YES];
+    [alertTableView setUserInteractionEnabled:YES];
+    [alertTableView setAllowsSelection:YES];
+*/
+
+    LoginListViewController *controller = [[LoginListViewController alloc] init];
+    [self presentViewController:controller animated:YES completion:nil];
+}
+
 - (void)enterLauncher {
     LauncherViewController *vc = [[LauncherViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+@end
+
+@interface LoginListViewController () {
+}
+
+@end
+
+@implementation LoginListViewController
+
+NSMutableArray *accountList;
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+
+    if (accountList == nil) {
+        accountList = [NSMutableArray array];
+    } else {
+        [accountList removeAllObjects];
+    }
+    
+    [accountList addObject:@"mojangacc1"];
+    [accountList addObject:@"themsacc"];
+    [accountList addObject:@"offlineme"];
+
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+
+    int width = (int) roundf(screenBounds.size.width);
+    int height = (int) roundf(screenBounds.size.height) - self.navigationController.navigationBar.frame.size.height;
+
+    self.view.frame = CGRectMake(width / 6, height / 6, width - width / 3, height);
+
+    UITableView *tableView = [[UITableView alloc]initWithFrame:self.view.frame];
+    tableView.delegate = self;
+    tableView.dataSource = self;
+    tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
+    [tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
+    [self.view addSubview:tableView];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [accountList count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *simpleTableIdentifier = @"SimpleTableCell";
+ 
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+ 
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+    }
+ 
+    cell.textLabel.text = [accountList objectAtIndex:indexPath.row];
+    return cell;
 }
 
 @end

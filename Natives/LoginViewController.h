@@ -3,3 +3,8 @@
 @interface LoginViewController : UIViewController
 
 @end
+
+@interface LoginListViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
+
+@end
+
