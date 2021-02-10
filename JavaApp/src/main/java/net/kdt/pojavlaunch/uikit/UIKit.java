@@ -76,6 +76,8 @@ public class UIKit {
     public static native int launchUI(String[] uiArgs);
     // public static native void runOnUIThread(UIKitCallback callback);
     
+    public static native void showError(String title, String message, boolean exitIfOk);
+    
     private static native void updateMCGuiScale(int scale);
     
     // Update progress

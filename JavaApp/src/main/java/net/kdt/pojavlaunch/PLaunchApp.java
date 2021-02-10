@@ -15,7 +15,6 @@ public class PLaunchApp {
     private static float currProgress, maxProgress;
 
     public static JMinecraftVersionList mVersionList;
-    public static volatile MinecraftAccount mAccount;
     public static volatile JMinecraftVersionList.Version mVersion;
     public static boolean mIsAssetsProcessing = false;
 
@@ -24,8 +23,7 @@ public class PLaunchApp {
         try {
             File mcDir = new File("/var/mobile/Documents/minecraft");
             mcDir.mkdirs();
-            File pojavDir = new File("/var/mobile/Documents/.pojavlauncher/accounts");
-            pojavDir.mkdirs();
+            new File(DIR_ACCOUNT_NEW).mkdirs();
             if (!new File(mcDir, "config_ver.txt").exists()) {
                 Tools.write(mcDir.getAbsolutePath() + "/config_ver.txt", "1.16.5");
             }
@@ -51,9 +49,9 @@ public class PLaunchApp {
 
         System.out.println("Launching Minecraft " + mVersion.id);
         try {
-            Tools.launchMinecraft(mAccount, mVersion);
+            Tools.launchMinecraft(AccountJNI.CURRENT_ACCOUNT, mVersion);
         } catch (Throwable th) {
-            throw new RuntimeException(th);
+            Tools.showError(th);
         }
     }
 
@@ -77,10 +75,6 @@ public class PLaunchApp {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {}
-
-            // dummy account
-            MinecraftAccount acc = new MinecraftAccount();
-            acc.selectedVersion = mcver;
 
             new File(Tools.DIR_HOME_VERSION + "/" + mcver).mkdirs();
 
@@ -174,8 +168,6 @@ public class PLaunchApp {
                 UIKit.updateProgressSafe(currProgress / maxProgress, "Download error, skipping");
                 e.printStackTrace();
             }
-
-            mAccount = acc;
 
             UIKit.launchMinecraftSurface(mVersion.arguments != null);
 

@@ -6,16 +6,10 @@ import java.io.*;
 import java.util.*;
 import net.kdt.pojavlaunch.*;
 
-public class LoginTask extends AsyncTask<String, Void, String[]>
-{
+public class LoginTask {
     private YggdrasilAuthenticator authenticator = new YggdrasilAuthenticator();
     //private String TAG = "MojangAuth-login";
     private LoginListener listener;
-    
-    public LoginTask setLoginListener(LoginListener listener) {
-        this.listener = listener;
-        return this;
-    }
     
     private UUID getRandomUUID() {
         return UUID.randomUUID();
@@ -29,12 +23,12 @@ public class LoginTask extends AsyncTask<String, Void, String[]>
     }
     
     @Override
-    protected String[] doInBackground(String[] args) {
+    protected String[] run(String username, String password) {
         ArrayList<String> str = new ArrayList<String>();
         str.add("ERROR");
         try{
             try{
-                AuthenticateResponse response = authenticator.authenticate(args[0], args[1], getRandomUUID());
+                AuthenticateResponse response = authenticator.authenticate(username, password, getRandomUUID());
                 if (response.selectedProfile == null) {
                     str.add("Can't login a demo account!\n");
                 } else {
@@ -58,11 +52,5 @@ public class LoginTask extends AsyncTask<String, Void, String[]>
             str.add(e.getMessage());
         }
         return str.toArray(new String[0]);
-    }
-    
-    @Override
-    protected void onPostExecute(String[] result) {
-        listener.onLoginDone(result);
-        super.onPostExecute(result);
     }
 }

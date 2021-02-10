@@ -31,11 +31,11 @@ public final class Tools
     public static String DIR_DATA = "/Applications/PojavLauncher.app";
     public static String CURRENT_ARCHITECTURE;
 
-    // New since 3.3.1
-    public static String DIR_ACCOUNT_NEW;
-    public static String DIR_ACCOUNT_OLD;
     public static final String DIR_GAME_HOME = "/var/mobile/Documents";
     public static final String DIR_GAME_NEW = DIR_GAME_HOME + "/minecraft";
+    
+    public static final String DIR_APP_DATA = DIR_GAME_HOME + "/.pojavlauncher";
+    public static final String DIR_ACCOUNT_NEW = DIR_APP_DATA + "/accounts";
     
     // New since 3.0.0
     public static String DIR_HOME_JRE = "/usr/lib/jvm/java-16-openjdk";
@@ -94,7 +94,7 @@ public final class Tools
         
             System.out.println("It went past main(). Should not reach here!");
         } catch (Throwable th) {
-            throw new RuntimeException(th);
+            showError(th);
         }
         
         }).start();
@@ -406,6 +406,9 @@ public final class Tools
         pw.flush();
         
         System.err.println(sw.toString());
+        
+        UIKit.showError(title, sw.toString(), exitIfOk);
+        
 /*
         Platform.getPlatform().runOnUIThread(() -> {
             WindowAlertController alertController = new WindowAlertController(title, sw.toString(), UIAlertControllerStyle.Alert);

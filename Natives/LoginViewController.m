@@ -6,6 +6,21 @@
 
 #include "utils.h"
 
+void loginAccount(LoginViewController *controller, int type, char* username_c, char* password_c) {
+    JNIEnv *env;
+    (*runtimeJavaVMPtr)->GetEnv(runtimeJavaVMPtr, (void**) &env, JNI_VERSION_1_4);
+
+    jstring username = (*env)->NewStringUTF(env, username_c);
+    jstring password = (*env)->NewStringUTF(env, password_c);
+
+    jclass clazz = (*env)->FindClass(env, "net/kdt/pojavlaunch/uikit/AccountJNI");
+    jmethodID method = (*env)->GetStaticMethodID(env, clazz, "loginAccount", "(ILjava/lang/String;Ljava/lang/String)Z");
+    jboolean result = (*env)->CallStaticBooleanMethod(env, clazz, method, type, username, password);
+    if (result == JNI_TRUE) {
+        [controller enterLauncher];
+    }
+}
+
 @interface LoginViewController () {
 }
 

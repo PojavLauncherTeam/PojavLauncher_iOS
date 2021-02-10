@@ -8,37 +8,24 @@ import java.util.*;
 import net.kdt.pojavlaunch.*;
 import net.kdt.pojavlaunch.value.*;
 
-public class InvalidateTokenTask extends AsyncTask<String, Void, Throwable> {
+public class InvalidateTokenTask {
     private YggdrasilAuthenticator authenticator = new YggdrasilAuthenticator();
     //private Gson gson = new Gson();
     private MinecraftAccount profilePath;
-
-    private Context ctx;
-    private String path;
-
-    public InvalidateTokenTask(Context ctx) {
-        this.ctx = ctx;
-    }
+    private String name;
 
     @Override
-    public Throwable doInBackground(String... args) {
-        path = args[0];
+    public Throwable run(String name) {
+        this.name = name;
         try {
-            this.profilePath = MinecraftAccount.load(args[0]);
+            this.profilePath = MinecraftAccount.load(name);
             this.authenticator.invalidate(profilePath.accessToken,
                 UUID.fromString(profilePath.isMicrosoft ? profilePath.profileId : profilePath.clientToken /* should be? */));
+            new File(Tools.DIR_ACCOUNT_NEW, name + ".json").delete();
             return null;
         } catch (Throwable e) {
             return e;
         }
-    }
-
-    @Override
-    public void onPostExecute(Throwable result) {
-        if (result != null) {
-            Tools.showError(ctx, result);
-        }
-        new File(path).delete();
     }
 }
 

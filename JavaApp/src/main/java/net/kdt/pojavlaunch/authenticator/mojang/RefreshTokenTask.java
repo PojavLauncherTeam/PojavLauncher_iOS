@@ -1,41 +1,19 @@
 package net.kdt.pojavlaunch.authenticator.mojang;
 
-import android.content.*;
-import android.os.*;
 import com.google.gson.*;
 import java.util.*;
 import net.kdt.pojavlaunch.*;
 import net.kdt.pojavlaunch.authenticator.mojang.yggdrasil.*;
-import android.app.*;
 import net.kdt.pojavlaunch.value.*;
 
-public class RefreshTokenTask extends AsyncTask<String, Void, Throwable> {
+public class RefreshTokenTask {
     private YggdrasilAuthenticator authenticator = new YggdrasilAuthenticator();
-    //private Gson gson = new Gson();
-    private RefreshListener listener;
     private MinecraftAccount profilePath;
 
-    private Context ctx;
-    private ProgressDialog build;
-
-    public RefreshTokenTask(Context ctx, RefreshListener listener) {
-        this.ctx = ctx;
-        this.listener = listener;
-    }
-
     @Override
-    public void onPreExecute() {
-        build = new ProgressDialog(ctx);
-        build.setMessage(ctx.getString(R.string.global_waiting));
-        build.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        build.setCancelable(false);
-        build.show();
-    }
-
-    @Override
-    public Throwable doInBackground(String... args) {
+    public Throwable run(String name) {
         try {
-            this.profilePath = MinecraftAccount.load(args[0]);
+            this.profilePath = MinecraftAccount.load(name);
             int responseCode = 400;
             responseCode = this.authenticator.validate(profilePath.accessToken).statusCode;
             if (responseCode >= 200 && responseCode < 300) {
@@ -59,16 +37,6 @@ public class RefreshTokenTask extends AsyncTask<String, Void, Throwable> {
             return null;
         } catch (Throwable e) {
             return e;
-        }
-    }
-
-    @Override
-    public void onPostExecute(Throwable result) {
-        build.dismiss();
-        if (result == null) {
-            listener.onSuccess(null);
-        } else {
-            listener.onFailed(result);
         }
     }
 }
