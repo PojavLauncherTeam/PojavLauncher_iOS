@@ -58,10 +58,10 @@ chmod 755 *.sh
 - [x] OpenGL: GL4ES
 - [x] Did Minecraft recognize OpenGL?
 - [x] OpenAL: use @kcat's openal-soft
-- [ ] Input pipe implementation
- + [x] Mouse touch implementation
+- [x] Input pipe implementation
 - [ ] Does it work? Partial.
-- Currently, tested that 1.14+ works up to menu screen.
+- Currently, only Minecraft 1.14+ fully works.
+- Forge won't work, but Fabric and OptiFine will.
 
 ## Known issues
 - Camera position will be jumped to random location on first time touch.
