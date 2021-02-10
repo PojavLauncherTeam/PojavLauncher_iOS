@@ -2,7 +2,7 @@
 
 set -e
 
-mkdir -p packages/pojavlauncher_iphoneos-arm/{DEBIAN,Applications,var/mobile/Documents/minecraft}
+mkdir -p packages/pojavlauncher_iphoneos-arm/{DEBIAN,Applications,var/mobile/Documents/minecraft,var/mobile/Documents/.pojavlauncher}
 cp -R Natives/build/Release-iphoneos/PojavLauncher.app packages/pojavlauncher_iphoneos-arm/Applications
 cp control packages/pojavlauncher_iphoneos-arm/DEBIAN
 

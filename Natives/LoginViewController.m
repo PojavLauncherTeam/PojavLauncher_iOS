@@ -1,3 +1,6 @@
+#include <dirent.h>
+#include <stdio.h>
+
 #import "LauncherViewController.h"
 #import "LoginViewController.h"
 
@@ -109,8 +112,8 @@ alertTableView  = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, 300, 300)];
     [alertTableView setAllowsSelection:YES];
 */
 
-    LoginListViewController *controller = [[LoginListViewController alloc] init];
-    [self presentViewController:controller animated:YES completion:nil];
+    LoginListViewController *vc = [[LoginListViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)enterLauncher {
@@ -132,29 +135,43 @@ NSMutableArray *accountList;
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    [self setTitle:@"Select account"];
+
     if (accountList == nil) {
         accountList = [NSMutableArray array];
     } else {
         [accountList removeAllObjects];
     }
     
-    [accountList addObject:@"mojangacc1"];
-    [accountList addObject:@"themsacc"];
-    [accountList addObject:@"offlineme"];
+    DIR *d;
+    struct dirent *dir;
+    d = opendir("/var/mobile/Documents/.pojavlauncher/accounts");
+    if (d) {
+        int i = 0;
+        while ((dir = readdir(d)) != NULL) {
+            // Skip "." and ".."
+            if (i < 2) {
+                i++;
+                continue;
+            } else if ([@(dir->d_name) hasSuffix:@".json"]) {
+                NSString *trimmedName= [@(dir->d_name) substringToIndex:((int)[@(dir->d_name) length] - 5)];
+                [accountList addObject:trimmedName];
+            }
+        }
+        closedir(d);
+    }
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
 
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height) - self.navigationController.navigationBar.frame.size.height;
 
-    self.view.frame = CGRectMake(width / 6, height / 6, width - width / 3, height);
+    // self.view.frame = CGRectMake(width / 6, height / 6, width - width / 3, height);
 
-    UITableView *tableView = [[UITableView alloc]initWithFrame:self.view.frame];
-    tableView.delegate = self;
-    tableView.dataSource = self;
-    tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
-    [tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
-    [self.view addSubview:tableView];
+    // UITableView *tableView = [[UITableView alloc]initWithFrame:self.view.frame];
+    // tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
+    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
+    // [self.view addSubview:tableView];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -164,8 +181,7 @@ NSMutableArray *accountList;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *simpleTableIdentifier = @"SimpleTableCell";
- 
+    NSString *simpleTableIdentifier = @"cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
  
     if (cell == nil) {
@@ -174,6 +190,17 @@ NSMutableArray *accountList;
  
     cell.textLabel.text = [accountList objectAtIndex:indexPath.row];
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSInteger rowNo = indexPath.row;
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // delete
+    }    
 }
 
 @end

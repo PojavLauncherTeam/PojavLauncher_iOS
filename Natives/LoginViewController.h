@@ -4,7 +4,7 @@
 
 @end
 
-@interface LoginListViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
+@interface LoginListViewController : UITableViewController
 
 @end
 

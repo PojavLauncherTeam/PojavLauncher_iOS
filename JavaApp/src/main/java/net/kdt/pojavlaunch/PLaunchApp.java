@@ -24,6 +24,8 @@ public class PLaunchApp {
         try {
             File mcDir = new File("/var/mobile/Documents/minecraft");
             mcDir.mkdirs();
+            File pojavDir = new File("/var/mobile/Documents/.pojavlauncher/accounts");
+            pojavDir.mkdirs();
             if (!new File(mcDir, "config_ver.txt").exists()) {
                 Tools.write(mcDir.getAbsolutePath() + "/config_ver.txt", "1.16.5");
             }
@@ -92,10 +94,16 @@ public class PLaunchApp {
                 JAssets assets = null;
 
                 UIKit.updateProgressSafe(0, "Downloading version list");
-                mVersionList = Tools.GLOBAL_GSON.fromJson(DownloadUtils.downloadString("https://launchermeta.mojang.com/mc/game/version_manifest.json"), JMinecraftVersionList.class);
+                try {
+                    mVersionList = Tools.GLOBAL_GSON.fromJson(DownloadUtils.downloadString("https://launchermeta.mojang.com/mc/game/version_manifest.json"), JMinecraftVersionList.class);
+                } catch (IOException e) {
+                    UIKit.updateProgressSafe(0, "Error: " + e.getMessage());
+                    e.printStackTrace();
+                }
 
                 verInfo = findVersion(mcver);
-                if (verInfo.url != null && !new File(verJsonDir).exists()) {
+                if (verInfo.url != null && !new File(verJsonDir).exists() && mVersionList != null) {
+                    // mVersionList != null is for checking if user have network connection
                     UIKit.updateProgressSafe(0, "Downloading " + mcver + ".json");
                     Tools.downloadFile(verInfo.url, verJsonDir);
                 }
