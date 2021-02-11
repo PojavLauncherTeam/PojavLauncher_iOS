@@ -122,7 +122,7 @@ BOOL shouldTriggerClick = NO;
 
     ADD_BUTTON_VISIBLE(@"Esc", escape, CGRectMake(width - 5 - 80, height - 5 - 30, BTN_RECT));
 
-    // ADD_BUTTON_VISIBLE(@"Enter", enter, CGRectMake(5, 70.0, BTN_SQUARE));
+    // ADD_BUTTON_VISIBLE(@"Fullscreen", f11, CGRectMake(width - 5 - 80, 5, BTN_RECT));
     
     [self.view addSubview:inputView];
     [inputView becomeFirstResponder];
@@ -211,9 +211,9 @@ BOOL shouldTriggerClick = NO;
     } else {
         NSString *newText = [inputView.text substringFromIndex:2];
         int charLength = [newText length];
-        char *charText = [newText UTF8String];
+        //char16_t *charText = [newText UTF16String];
         for (int i = 0; i < charLength; i++) {
-            Java_org_lwjgl_glfw_CallbackBridge_nativeSendCharMods(NULL, NULL, (jchar) charText[i], /* mods */ 0);
+            Java_org_lwjgl_glfw_CallbackBridge_nativeSendCharMods(NULL, NULL, (jchar) [newText characterAtIndex:i] /* charText[i] */, /* mods */ 0);
         }
     }
 
@@ -260,6 +260,7 @@ ADD_BUTTON_DEF(special_mouse_sec) {
 
 ADD_BUTTON_DEF_KEY(f3, GLFW_KEY_F3)
 ADD_BUTTON_DEF_KEY(f5, GLFW_KEY_F5)
+// ADD_BUTTON_DEF_KEY(f11, GLFW_KEY_F11)
 ADD_BUTTON_DEF_KEY(t, GLFW_KEY_T)
 ADD_BUTTON_DEF_KEY(c, GLFW_KEY_C)
 ADD_BUTTON_DEF_KEY(f, GLFW_KEY_F)

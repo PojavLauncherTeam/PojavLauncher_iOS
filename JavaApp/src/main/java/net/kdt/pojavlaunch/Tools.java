@@ -1,18 +1,41 @@
 package net.kdt.pojavlaunch;
 
-import android.util.*;
-import com.google.gson.*;
-import com.oracle.dalvik.*;
-import java.io.*;
-import java.lang.reflect.*;
-import java.net.*;
-import java.nio.charset.*;
-import java.util.*;
-import java.util.zip.*;
-import net.kdt.pojavlaunch.prefs.*;
-import net.kdt.pojavlaunch.utils.*;
-import net.kdt.pojavlaunch.value.*;
-import org.lwjgl.glfw.*;
+import android.util.ArrayMap;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
+import net.kdt.pojavlaunch.prefs.LauncherPreferences;
+import net.kdt.pojavlaunch.uikit.UIKit;
+import net.kdt.pojavlaunch.utils.DownloadUtils;
+import net.kdt.pojavlaunch.utils.JSONUtils;
+import net.kdt.pojavlaunch.value.DependentLibrary;
+import net.kdt.pojavlaunch.value.MinecraftAccount;
+import org.lwjgl.glfw.GLFW;
 /*
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
@@ -31,11 +54,11 @@ public final class Tools
     public static String DIR_DATA = "/Applications/PojavLauncher.app";
     public static String CURRENT_ARCHITECTURE;
 
-    // New since 3.3.1
-    public static String DIR_ACCOUNT_NEW;
-    public static String DIR_ACCOUNT_OLD;
     public static final String DIR_GAME_HOME = "/var/mobile/Documents";
     public static final String DIR_GAME_NEW = DIR_GAME_HOME + "/minecraft";
+    
+    public static final String DIR_APP_DATA = DIR_GAME_HOME + "/.pojavlauncher";
+    public static final String DIR_ACCOUNT_NEW = DIR_APP_DATA + "/accounts";
     
     // New since 3.0.0
     public static String DIR_HOME_JRE = "/usr/lib/jvm/java-16-openjdk";
@@ -94,7 +117,7 @@ public final class Tools
         
             System.out.println("It went past main(). Should not reach here!");
         } catch (Throwable th) {
-            throw new RuntimeException(th);
+            showError(th);
         }
         
         }).start();
@@ -406,6 +429,9 @@ public final class Tools
         pw.flush();
         
         System.err.println(sw.toString());
+        
+        UIKit.showError(title, sw.toString(), exitIfOk);
+        
 /*
         Platform.getPlatform().runOnUIThread(() -> {
             WindowAlertController alertController = new WindowAlertController(title, sw.toString(), UIAlertControllerStyle.Alert);
@@ -509,8 +535,8 @@ public final class Tools
                             
                             if (libAddedName.equals(libName)) {
                                 System.out.println("Library " + libName + ": Replaced version " + 
-                                    lib.name.substring(libName.length() + 1) + " with " +
-                                    libAdded.name.substring(libAddedName.length() + 1));
+                                    libAdded.name.substring(libAddedName.length() + 1) + " with " +
+                                    lib.name.substring(libName.length() + 1));
                                 libList.set(i, lib);
                                 continue loop_1;
                             }

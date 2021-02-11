@@ -1,5 +1,4 @@
-#ifndef _BINARY_UTILS_H_
-#define _BINARY_UTILS_H_
+#pragma once
 
 #include <stdbool.h>
 #include "jni.h"
@@ -60,5 +59,4 @@ JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendScreenSize(J
 JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendScroll(JNIEnv* env, jclass clazz, jdouble xoffset, jdouble yoffset);
 JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendWindowPos(JNIEnv* env, jclass clazz, jint x, jint y);
 
-#endif // _BINARY_UTILS_H_
 

@@ -15,8 +15,7 @@ public class PLaunchApp {
     private static float currProgress, maxProgress;
 
     public static JMinecraftVersionList mVersionList;
-    public static MinecraftAccount mAccount;
-    public static JMinecraftVersionList.Version mVersion;
+    public static volatile JMinecraftVersionList.Version mVersion;
     public static boolean mIsAssetsProcessing = false;
 
     public static void main(String[] args) throws Throwable {
@@ -24,6 +23,7 @@ public class PLaunchApp {
         try {
             File mcDir = new File("/var/mobile/Documents/minecraft");
             mcDir.mkdirs();
+            new File(Tools.DIR_ACCOUNT_NEW).mkdirs();
             if (!new File(mcDir, "config_ver.txt").exists()) {
                 Tools.write(mcDir.getAbsolutePath() + "/config_ver.txt", "1.16.5");
             }
@@ -49,9 +49,9 @@ public class PLaunchApp {
 
         System.out.println("Launching Minecraft " + mVersion.id);
         try {
-            Tools.launchMinecraft(mAccount, mVersion);
+            Tools.launchMinecraft(AccountJNI.CURRENT_ACCOUNT, mVersion);
         } catch (Throwable th) {
-            throw new RuntimeException(th);
+            Tools.showError(th);
         }
     }
 
@@ -70,15 +70,12 @@ public class PLaunchApp {
                 UIKit.updateProgressSafe(0, "config_ver.txt not found, defaulting to Minecraft 1.16.5");
             }
 
+            AccountJNI.CURRENT_ACCOUNT.selectedVersion = mcver;
             UIKit.updateProgressSafe(0, "Selected Minecraft version: " + mcver);
 
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {}
-
-            // dummy account
-            MinecraftAccount acc = new MinecraftAccount();
-            acc.selectedVersion = mcver;
 
             new File(Tools.DIR_HOME_VERSION + "/" + mcver).mkdirs();
 
@@ -92,10 +89,16 @@ public class PLaunchApp {
                 JAssets assets = null;
 
                 UIKit.updateProgressSafe(0, "Downloading version list");
-                mVersionList = Tools.GLOBAL_GSON.fromJson(DownloadUtils.downloadString("https://launchermeta.mojang.com/mc/game/version_manifest.json"), JMinecraftVersionList.class);
+                try {
+                    mVersionList = Tools.GLOBAL_GSON.fromJson(DownloadUtils.downloadString("https://launchermeta.mojang.com/mc/game/version_manifest.json"), JMinecraftVersionList.class);
+                } catch (IOException e) {
+                    UIKit.updateProgressSafe(0, "Error: " + e.getMessage());
+                    e.printStackTrace();
+                }
 
                 verInfo = findVersion(mcver);
-                if (verInfo.url != null && !new File(verJsonDir).exists()) {
+                if (verInfo.url != null && !new File(verJsonDir).exists() && mVersionList != null) {
+                    // mVersionList != null is for checking if user have network connection
                     UIKit.updateProgressSafe(0, "Downloading " + mcver + ".json");
                     Tools.downloadFile(verInfo.url, verJsonDir);
                 }
@@ -166,8 +169,6 @@ public class PLaunchApp {
                 UIKit.updateProgressSafe(currProgress / maxProgress, "Download error, skipping");
                 e.printStackTrace();
             }
-
-            mAccount = acc;
 
             UIKit.launchMinecraftSurface(mVersion.arguments != null);
 
