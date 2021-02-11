@@ -6,9 +6,9 @@ import net.kdt.pojavlaunch.value.MinecraftAccount;
 
 public class AccountJNI {
     public static final int TYPE_SELECTACC = 0;
-    public static final int TYPE_MICROSOFT = 0;
-    public static final int TYPE_MOJANG = 0;
-    public static final int TYPE_OFFLINE = 0;
+    public static final int TYPE_MICROSOFT = 1;
+    public static final int TYPE_MOJANG = 2;
+    public static final int TYPE_OFFLINE = 3;
     
     public static volatile MinecraftAccount CURRENT_ACCOUNT;
 

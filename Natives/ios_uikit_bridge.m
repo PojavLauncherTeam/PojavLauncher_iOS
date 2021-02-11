@@ -46,7 +46,8 @@ dispatch_async(dispatch_get_main_queue(), ^{
 jboolean UIKit_updateProgress(float progress, const char* message) {
     dispatch_async(dispatch_get_main_queue(), ^{
         install_progress_bar.progress = progress;
-        install_progress_text.text = [NSString stringWithUTF8String:message];
+        install_progress_text.text = [[NSString alloc] initWithUTF8String:message];
+        // @(message);
     });
     return skipDownloadAssets;
 }

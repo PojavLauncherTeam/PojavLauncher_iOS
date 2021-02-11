@@ -6,18 +6,32 @@
 
 #include "utils.h"
 
+#define TYPE_SELECTACC 0
+#define TYPE_MICROSOFT 1
+#define TYPE_MOJANG 2
+#define TYPE_OFFLINE 3
+    
 void loginAccount(LoginViewController *controller, int type, char* username_c, char* password_c) {
     JNIEnv *env;
-    (*runtimeJavaVMPtr)->GetEnv(runtimeJavaVMPtr, (void**) &env, JNI_VERSION_1_4);
+    (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &env, NULL);
 
     jstring username = (*env)->NewStringUTF(env, username_c);
     jstring password = (*env)->NewStringUTF(env, password_c);
 
     jclass clazz = (*env)->FindClass(env, "net/kdt/pojavlaunch/uikit/AccountJNI");
-    jmethodID method = (*env)->GetStaticMethodID(env, clazz, "loginAccount", "(ILjava/lang/String;Ljava/lang/String)Z");
+    assert(clazz);
+    
+    jmethodID method = (*env)->GetStaticMethodID(env, clazz, "loginAccount", "(ILjava/lang/String;Ljava/lang/String;)Z");
+    assert(method);
+    
     jboolean result = (*env)->CallStaticBooleanMethod(env, clazz, method, type, username, password);
+    
+    (*runtimeJavaVMPtr)->DetachCurrentThread(runtimeJavaVMPtr);
+    
     if (result == JNI_TRUE) {
-        [controller enterLauncher];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [controller enterLauncher];
+        });
     }
 }
 
@@ -99,8 +113,56 @@ void loginAccount(LoginViewController *controller, int type, char* username_c, c
     }
 }
 
+- (void)loginUsername:(int)type {
+    UIAlertController *controller = [UIAlertController alertControllerWithTitle: @"Login"
+        message: @(type == TYPE_MOJANG ?
+        "Account type: Mojang" : "Account type: Offline")
+        preferredStyle:UIAlertControllerStyleAlert];
+    [controller addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        if (type == TYPE_MOJANG) {
+            textField.placeholder = @"Email or username";
+        } else {
+            textField.placeholder = @"Username";
+        }
+        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        textField.borderStyle = UITextBorderStyleRoundedRect;
+    }];
+    if (type == TYPE_MOJANG) {
+        [controller addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+            textField.placeholder = @"Password";
+            textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+            textField.borderStyle = UITextBorderStyleRoundedRect;
+            textField.secureTextEntry = YES;
+        }];
+    }
+    [controller addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        NSArray *textFields = controller.textFields;
+        UITextField *usernameField = textFields[0];
+
+        const char *username = [usernameField.text UTF8String];
+        if (type == TYPE_MOJANG) {
+            UITextField *passwordField = textFields[1];
+            const char *password = [passwordField.text UTF8String];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+                loginAccount(self, TYPE_MOJANG, username, password);
+            });
+        } else {
+            if (usernameField.text.length < 3 || usernameField.text.length > 16) {
+                controller.message = @"Username must be at least 3 characters and maximum 16 characters";
+                [self presentViewController:controller animated:YES completion:nil];
+            } else {
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+                    loginAccount(self, TYPE_OFFLINE, username, "");
+                });
+            }
+        }
+    }]];
+    [controller addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:controller animated:YES completion:nil];
+}
+
 - (void)loginMojang {
-    [self enterLauncher];
+    [self loginUsername:TYPE_MOJANG];
 }
 
 - (void)loginMicrosoft {
@@ -108,25 +170,10 @@ void loginAccount(LoginViewController *controller, int type, char* username_c, c
 }
 
 - (void)loginOffline {
-    [self enterLauncher];
+    [self loginUsername:TYPE_OFFLINE];
 }
 
 - (void)loginAccount {
-/*
-    UIViewController *controller = [[UIViewController alloc] init];
-    UITableView *alertTableView;
-alertTableView  = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, 300, 300)];
-    alertTableView.delegate = self;
-    alertTableView.dataSource = self;
-    alertTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
-    [alertTableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
-    [controller.view addSubview:alertTableView];
-    [controller.view bringSubviewToFront:alertTableView];
-    [controller.view setUserInteractionEnabled:YES];
-    [alertTableView setUserInteractionEnabled:YES];
-    [alertTableView setAllowsSelection:YES];
-*/
-
     LoginListViewController *vc = [[LoginListViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -158,6 +205,7 @@ NSMutableArray *accountList;
         [accountList removeAllObjects];
     }
     
+    // List accounts
     DIR *d;
     struct dirent *dir;
     d = opendir("/var/mobile/Documents/.pojavlauncher/accounts");
@@ -181,12 +229,7 @@ NSMutableArray *accountList;
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height) - self.navigationController.navigationBar.frame.size.height;
 
-    // self.view.frame = CGRectMake(width / 6, height / 6, width - width / 3, height);
-
-    // UITableView *tableView = [[UITableView alloc]initWithFrame:self.view.frame];
-    // tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
-    // [self.view addSubview:tableView];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -214,7 +257,12 @@ NSMutableArray *accountList;
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // delete
+        NSString *str = [accountList objectAtIndex:indexPath.row];
+        char accPath[1024];
+        sprintf(accPath, "/var/mobile/Documents/.pojavlauncher/accounts/%s.json", [str UTF8String]);
+        remove(accPath);
+        [accountList removeObjectAtIndex:indexPath.row];
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }    
 }
 

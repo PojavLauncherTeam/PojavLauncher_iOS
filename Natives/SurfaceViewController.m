@@ -211,9 +211,9 @@ BOOL shouldTriggerClick = NO;
     } else {
         NSString *newText = [inputView.text substringFromIndex:2];
         int charLength = [newText length];
-        char *charText = [newText UTF8String];
+        //char16_t *charText = [newText UTF16String];
         for (int i = 0; i < charLength; i++) {
-            Java_org_lwjgl_glfw_CallbackBridge_nativeSendCharMods(NULL, NULL, (jchar) charText[i], /* mods */ 0);
+            Java_org_lwjgl_glfw_CallbackBridge_nativeSendCharMods(NULL, NULL, (jchar) [newText characterAtIndex:i] /* charText[i] */, /* mods */ 0);
         }
     }
 
