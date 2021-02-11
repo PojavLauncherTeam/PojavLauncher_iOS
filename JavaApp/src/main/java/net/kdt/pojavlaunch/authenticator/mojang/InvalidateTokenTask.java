@@ -14,18 +14,12 @@ public class InvalidateTokenTask {
     private MinecraftAccount profilePath;
     private String name;
 
-    @Override
-    public Throwable run(String name) {
+    public void run(String name) throws Throwable {
         this.name = name;
-        try {
-            this.profilePath = MinecraftAccount.load(name);
-            this.authenticator.invalidate(profilePath.accessToken,
-                UUID.fromString(profilePath.isMicrosoft ? profilePath.profileId : profilePath.clientToken /* should be? */));
-            new File(Tools.DIR_ACCOUNT_NEW, name + ".json").delete();
-            return null;
-        } catch (Throwable e) {
-            return e;
-        }
+        this.profilePath = MinecraftAccount.load(name);
+        this.authenticator.invalidate(profilePath.accessToken,
+                                      UUID.fromString(profilePath.isMicrosoft ? profilePath.profileId : profilePath.clientToken /* should be? */));
+        new File(Tools.DIR_ACCOUNT_NEW, name + ".json").delete();
     }
 }
 
