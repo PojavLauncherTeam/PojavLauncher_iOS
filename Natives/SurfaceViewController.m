@@ -48,6 +48,7 @@ UIButton* togglableVisibleButtons[100];
 UIView *touchView;
 UITextField *inputView;
 BOOL shouldTriggerClick = NO;
+BOOL shouldTriggerEnter = NO;
 
 // TODO: key modifiers impl
 
@@ -122,7 +123,7 @@ BOOL shouldTriggerClick = NO;
 
     ADD_BUTTON_VISIBLE(@"Esc", escape, CGRectMake(width - 5 - 80, height - 5 - 30, BTN_RECT));
 
-    // ADD_BUTTON_VISIBLE(@"Enter", enter, CGRectMake(5, 70.0, BTN_SQUARE));
+    // ADD_BUTTON_VISIBLE(@"Fullscreen", f11, CGRectMake(width - 5 - 80, 5, BTN_RECT));
     
     [self.view addSubview:inputView];
     [inputView becomeFirstResponder];
@@ -211,9 +212,9 @@ BOOL shouldTriggerClick = NO;
     } else {
         NSString *newText = [inputView.text substringFromIndex:2];
         int charLength = [newText length];
-        char *charText = [newText UTF8String];
+        //char16_t *charText = [newText UTF16String];
         for (int i = 0; i < charLength; i++) {
-            Java_org_lwjgl_glfw_CallbackBridge_nativeSendCharMods(NULL, NULL, (jchar) charText[i], /* mods */ 0);
+            Java_org_lwjgl_glfw_CallbackBridge_nativeSendCharMods(NULL, NULL, (jchar) [newText characterAtIndex:i] /* charText[i] */, /* mods */ 0);
         }
     }
 
@@ -225,11 +226,14 @@ BOOL shouldTriggerClick = NO;
     // Zero the input field so user will no longer able to select text inside.
     inputView.alpha = 0.0f;
     inputView.text = @"  ";
+    shouldTriggerEnter = YES;
 }
 
 -(void)inputViewDidReturn {
-    Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_ENTER, 0, 1, 0);
-    Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_ENTER, 0, 0, 0);
+    if (shouldTriggerEnter == YES) {
+        Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_ENTER, 0, 1, 0);
+        Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_ENTER, 0, 0, 0);
+    }
 }
 
 int currentVisibility = 1;
@@ -244,6 +248,7 @@ ADD_BUTTON_DEF(special_togglebtn) {
 
 ADD_BUTTON_DEF(special_keyboard) {
     if (held == 0) {
+        shouldTriggerEnter = NO;
         [inputView resignFirstResponder];
         inputView.alpha = 1.0f;
         inputView.text = @"";
@@ -260,6 +265,7 @@ ADD_BUTTON_DEF(special_mouse_sec) {
 
 ADD_BUTTON_DEF_KEY(f3, GLFW_KEY_F3)
 ADD_BUTTON_DEF_KEY(f5, GLFW_KEY_F5)
+// ADD_BUTTON_DEF_KEY(f11, GLFW_KEY_F11)
 ADD_BUTTON_DEF_KEY(t, GLFW_KEY_T)
 ADD_BUTTON_DEF_KEY(c, GLFW_KEY_C)
 ADD_BUTTON_DEF_KEY(f, GLFW_KEY_F)

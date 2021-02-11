@@ -33,6 +33,8 @@ UITextField* versionTextField;
     // Update color mode once
     if(@available(iOS 13.0, *)) {
         [self traitCollectionDidChange:nil];
+    } else {
+        self.view.backgroundColor = [UIColor whiteColor];
     }
 
     char configver[1024];
@@ -83,11 +85,6 @@ UITextField* versionTextField;
 
 -(BOOL)prefersStatusBarHidden {
     return YES;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
 }
 
 @end

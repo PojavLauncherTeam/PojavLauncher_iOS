@@ -58,12 +58,14 @@ chmod 755 *.sh
 - [x] OpenGL: GL4ES
 - [x] Did Minecraft recognize OpenGL?
 - [x] OpenAL: use @kcat's openal-soft
-- [ ] Input pipe implementation
- + [x] Mouse touch implementation
+- [x] Input pipe implementation
+- [x] Account authentication (partial).
 - [ ] Does it work? Partial.
-- Currently, tested that 1.14+ works up to menu screen.
+- Currently, only Minecraft 1.14+ fully works.
+- Forge won't work, but Fabric and OptiFine will.
 
 ## Known issues
+- Mojang authentication might not work, but copying logged in account json from Android will work.
 - Camera position will be jumped to random location on first time touch.
 - 1.12.2 and below only render a tiny panorama at bottom left corner.
 - Other versions will crash for various reasons: Narrator crash, etc...
@@ -81,7 +83,8 @@ chmod 755 *.sh
 - Open it and press Install.
 - If everything fine, it will ends up with `Setting up ...`.
 
-## Want a try or debug?
+## Directory locations
+- Account json directory: `/var/mobile/Documents/.pojavlauncher/accounts`.
 - Minecraft home directory: `/var/mobile/Documents/minecraft`.
 - Select a version: edit `/var/mobile/Documents/minecraft/config_ver.txt`, put to Minecraft version want to start.
 
@@ -93,8 +96,8 @@ Contributions are welcome! We welcome any type of contribution, not only code. A
 
 ## Credits & Third party components and their licenses
 - [Boardwalk](https://github.com/zhuowei/Boardwalk) (JVM Launcher): Unknown License/[Apache License 2.0](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE) or GNU GPLv2.
-- [GL4ES](https://github.com/ptitSeb/gl4es) by @ptitSeb: [MIT License](https://github.com/ptitSeb/gl4es/blob/master/LICENSE).<br>
+- [GL4ES](https://github.com/ptitSeb/gl4es) by @lunixbochs @ptitSeb: [MIT License](https://github.com/ptitSeb/gl4es/blob/master/LICENSE).<br>
 - [MetalANGLE](https://github.com/kakashidinho/metalangle) by @kakashidinho and ANGLE team: [BSD License 2.0](https://github.com/kakashidinho/metalangle/blob/master/LICENSE).
-- [OpenJDK 16](https://www.ios-repo-updates.com/repository/procursus/package/openjdk-16-jre) porter to iOS by @Diatrus: [GNU GPLv2 License](https://openjdk.java.net/legal/gplv2+ce.html).<br>
+- [OpenJDK 16](https://www.ios-repo-updates.com/repository/procursus/package/openjdk-16-jre) ported to iOS by @Diatrus: [GNU GPLv2 License](https://openjdk.java.net/legal/gplv2+ce.html).<br>
 - [LWJGL3](https://github.com/PojavLauncherTeam/lwjgl3): [BSD-3 License](https://github.com/LWJGL/lwjgl3/blob/master/LICENSE.md).
 - [LWJGLX](https://github.com/PojavLauncherTeam/lwjglx) (LWJGL2 API compatibility layer for LWJGL3): unknown license.<br>

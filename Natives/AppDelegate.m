@@ -1,5 +1,5 @@
 #import "AppDelegate.h"
-#import "LauncherViewController.h"
+#import "LoginViewController.h"
 #import "SceneDelegate.h"
 
 @implementation AppDelegate
@@ -8,7 +8,7 @@
     if (@available(iOS 13.0, *)) {
         
     } else {
-        LauncherViewController *vc = [[LauncherViewController alloc] init];
+        LoginViewController *vc = [[LoginViewController alloc] init];
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
         self.window = ([[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]]);
         self.window.rootViewController = nav;
@@ -32,6 +32,12 @@
     // Called when the user discards a scene session.
     // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
     // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    NSDictionary *data = [NSDictionary dictionaryWithObject:url forKey:@"url"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"MSALoginCallback" object:self userInfo:data];
+    return YES;
 }
 
 @end

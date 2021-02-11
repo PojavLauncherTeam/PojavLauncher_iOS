@@ -7,13 +7,12 @@ apply plugin: 'eclipse'
 
 repositories {
     jcenter()
-    maven {
-        url 'https://nexus.gluonhq.com/nexus/content/repositories/releases'
-    }
+    google()
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.json:json:20201115"
 }
 /*
 ext {
