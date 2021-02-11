@@ -48,6 +48,7 @@ UIButton* togglableVisibleButtons[100];
 UIView *touchView;
 UITextField *inputView;
 BOOL shouldTriggerClick = NO;
+BOOL shouldTriggerEnter = NO;
 
 // TODO: key modifiers impl
 
@@ -225,11 +226,14 @@ BOOL shouldTriggerClick = NO;
     // Zero the input field so user will no longer able to select text inside.
     inputView.alpha = 0.0f;
     inputView.text = @"  ";
+    shouldTriggerEnter = YES;
 }
 
 -(void)inputViewDidReturn {
-    Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_ENTER, 0, 1, 0);
-    Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_ENTER, 0, 0, 0);
+    if (shouldTriggerEnter == YES)
+        Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_ENTER, 0, 1, 0);
+        Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_ENTER, 0, 0, 0);
+    }
 }
 
 int currentVisibility = 1;
@@ -244,6 +248,7 @@ ADD_BUTTON_DEF(special_togglebtn) {
 
 ADD_BUTTON_DEF(special_keyboard) {
     if (held == 0) {
+        shouldTriggerEnter = NO;
         [inputView resignFirstResponder];
         inputView.alpha = 1.0f;
         inputView.text = @"";
