@@ -3,7 +3,6 @@ package net.kdt.pojavlaunch;
 import com.google.gson.JsonSyntaxException;
 import java.io.File;
 import java.io.IOException;
-import net.kdt.pojavlaunch.authenticator.mojang.RefreshListener;
 import net.kdt.pojavlaunch.authenticator.mojang.RefreshTokenTask;
 import net.kdt.pojavlaunch.value.MinecraftAccount;
 

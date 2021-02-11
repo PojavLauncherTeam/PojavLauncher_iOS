@@ -1,12 +1,10 @@
 package net.kdt.pojavlaunch.authenticator.mojang;
 
-import android.content.*;
-import android.os.*;
-import net.kdt.pojavlaunch.authenticator.mojang.yggdrasil.*;
-import java.io.*;
-import java.util.*;
-import net.kdt.pojavlaunch.*;
-import net.kdt.pojavlaunch.value.*;
+import java.io.File;
+import java.util.UUID;
+import net.kdt.pojavlaunch.Tools;
+import net.kdt.pojavlaunch.authenticator.mojang.yggdrasil.YggdrasilAuthenticator;
+import net.kdt.pojavlaunch.value.MinecraftAccount;
 
 public class InvalidateTokenTask {
     private YggdrasilAuthenticator authenticator = new YggdrasilAuthenticator();
