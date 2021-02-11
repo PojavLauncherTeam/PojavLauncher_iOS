@@ -2,7 +2,7 @@ package net.kdt.pojavlaunch.uikit;
 
 import net.kdt.pojavlaunch.PojavProfile;
 import net.kdt.pojavlaunch.Tools;
-import net.kdt.pojavlaunch.authenticator.microsoft.MicrosoftAuthTask
+import net.kdt.pojavlaunch.authenticator.microsoft.MicrosoftAuthTask;
 import net.kdt.pojavlaunch.authenticator.mojang.LoginTask;
 import net.kdt.pojavlaunch.value.MinecraftAccount;
 
@@ -33,7 +33,7 @@ public class AccountJNI {
                 
                 case TYPE_MICROSOFT:
                     CURRENT_ACCOUNT = new MicrosoftAuthTask().run("false", password);
-                    // break;
+                    break;
                 
                 case TYPE_MOJANG:
                     CURRENT_ACCOUNT = new LoginTask().run(username, password);
