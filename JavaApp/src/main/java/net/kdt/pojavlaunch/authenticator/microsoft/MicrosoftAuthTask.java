@@ -19,7 +19,7 @@ public class MicrosoftAuthTask {
 
     //private Gson gson = new Gson();
     
-    public Object run(String... args) throws Throwable {
+    public MinecraftAccount run(String... args) throws Throwable {
             /*
             publishProgress();
             String msaAccessToken = acquireAccessToken(args[0]);
