@@ -21,7 +21,10 @@ public class AccountJNI {
         try {
             switch (type) {
                 case TYPE_SELECTACC:
-                PojavProfile.updateTokens(username);
+                    CURRENT_ACCOUNT = MinecraftAccount.load(username);
+                    if (CURRENT_ACCOUNT.accessToken.length() > 5) {
+                        PojavProfile.updateTokens(username);
+                    }
                     CURRENT_ACCOUNT = MinecraftAccount.load(username);
                     break;
                 

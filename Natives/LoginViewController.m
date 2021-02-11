@@ -11,7 +11,7 @@
 #define TYPE_MOJANG 2
 #define TYPE_OFFLINE 3
     
-void loginAccount(LoginViewController *controller, int type, char* username_c, char* password_c) {
+void loginAccountInput(UINavigationController *controller, int type, char* username_c, char* password_c) {
     JNIEnv *env;
     (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &env, NULL);
 
@@ -30,7 +30,8 @@ void loginAccount(LoginViewController *controller, int type, char* username_c, c
     
     if (result == JNI_TRUE) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [controller enterLauncher];
+            LauncherViewController *vc = [[LauncherViewController alloc] init];
+            [controller pushViewController:vc animated:YES];
         });
     }
 }
@@ -144,7 +145,7 @@ void loginAccount(LoginViewController *controller, int type, char* username_c, c
             UITextField *passwordField = textFields[1];
             const char *password = [passwordField.text UTF8String];
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-                loginAccount(self, TYPE_MOJANG, username, password);
+                loginAccountInput(self.navigationController, TYPE_MOJANG, username, password);
             });
         } else {
             if (usernameField.text.length < 3 || usernameField.text.length > 16) {
@@ -152,7 +153,7 @@ void loginAccount(LoginViewController *controller, int type, char* username_c, c
                 [self presentViewController:controller animated:YES completion:nil];
             } else {
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-                    loginAccount(self, TYPE_OFFLINE, username, "");
+                    loginAccountInput(self.navigationController, TYPE_OFFLINE, username, "");
                 });
             }
         }
@@ -166,7 +167,7 @@ void loginAccount(LoginViewController *controller, int type, char* username_c, c
 }
 
 - (void)loginMicrosoft {
-    [self enterLauncher];
+    
 }
 
 - (void)loginOffline {
@@ -175,11 +176,6 @@ void loginAccount(LoginViewController *controller, int type, char* username_c, c
 
 - (void)loginAccount {
     LoginListViewController *vc = [[LoginListViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
-- (void)enterLauncher {
-    LauncherViewController *vc = [[LauncherViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -251,8 +247,8 @@ NSMutableArray *accountList;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSInteger rowNo = indexPath.row;
-    [self.navigationController popViewControllerAnimated:YES];
+    NSString *str = [accountList objectAtIndex:indexPath.row];
+    loginAccountInput(self.navigationController, TYPE_SELECTACC, [str UTF8String], "");
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {

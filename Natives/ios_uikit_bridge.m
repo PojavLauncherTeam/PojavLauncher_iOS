@@ -27,19 +27,35 @@ dispatch_async(dispatch_get_main_queue(), ^{
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@(title_c)
         message:@(message_c)
         preferredStyle:UIAlertControllerStyleAlert];
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.alignment = NSTextAlignmentLeft;
 
-    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+    NSMutableAttributedString *atrStr = [[NSMutableAttributedString alloc] initWithString:@(message_c) attributes:@{NSParagraphStyleAttributeName:style,NSFontAttributeName:[UIFont systemFontOfSize:13.0]}];
+
+    [alert setValue:atrStr forKey:@"attributedMessage"];
+
+    UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
         handler:^(UIAlertAction * action) {
+            (*env)->ReleaseStringUTFChars(env, message, message_c);
             if (exitIfOk == JNI_TRUE) {
                 exit(-1);
             }
         }];
-
-    [alert addAction:defaultAction];
+    [alert addAction:okAction];
+    
+    UIAlertAction* copyAction = [UIAlertAction actionWithTitle:@"Copy" style:UIAlertActionStyleDefault
+        handler:^(UIAlertAction * action) {
+            [[UIPasteboard generalPasteboard] setString:@(message_c)];
+            (*env)->ReleaseStringUTFChars(env, message, message_c);
+            if (exitIfOk == JNI_TRUE) {
+                exit(-1);
+            }
+        }];
+    [alert addAction:copyAction];
+    
     [viewController presentViewController:alert animated:YES completion:nil];
     
     (*env)->ReleaseStringUTFChars(env, title, title_c);
-    (*env)->ReleaseStringUTFChars(env, message, message_c);
 });
 }
 
