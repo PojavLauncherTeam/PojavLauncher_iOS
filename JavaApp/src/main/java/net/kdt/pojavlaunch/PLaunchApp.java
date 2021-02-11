@@ -71,7 +71,11 @@ public class PLaunchApp {
             }
 
             AccountJNI.CURRENT_ACCOUNT.selectedVersion = mcver;
-            AccountJNI.CURRENT_ACCOUNT.save();
+            try {
+                AccountJNI.CURRENT_ACCOUNT.save();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             UIKit.updateProgressSafe(0, "Selected Minecraft version: " + mcver);
 
             try {
