@@ -1,6 +1,9 @@
 #include <dirent.h>
 #include <stdio.h>
 
+#import <SafariServices/SafariServices.h>
+
+#import "AppDelegate.h"
 #import "LauncherViewController.h"
 #import "LoginViewController.h"
 
@@ -10,7 +13,7 @@
 #define TYPE_MICROSOFT 1
 #define TYPE_MOJANG 2
 #define TYPE_OFFLINE 3
-    
+
 void loginAccountInput(UINavigationController *controller, int type, char* username_c, char* password_c) {
     JNIEnv *env;
     (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &env, NULL);
@@ -36,7 +39,7 @@ void loginAccountInput(UINavigationController *controller, int type, char* usern
     }
 }
 
-@interface LoginViewController () {
+@interface LoginViewController ()<SFSafariViewControllerDelegate>{
 }
 
 @end
@@ -47,6 +50,8 @@ void loginAccountInput(UINavigationController *controller, int type, char* usern
     [super viewDidLoad];
 
     [self setTitle:@"PojavLauncher"];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(msaLoginCallback:) name:@"MSALoginCallback" object:nil];
 
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
     [self.navigationItem setBackBarButtonItem:backItem];
@@ -167,7 +172,10 @@ void loginAccountInput(UINavigationController *controller, int type, char* usern
 }
 
 - (void)loginMicrosoft {
-    
+    NSURL *url = [NSURL URLWithString:@"https://login.live.com/oauth20_authorize.srf?client_id=00000000402b5328&response_type=code&scope=service%3A%3Auser.auth.xboxlive.com%3A%3AMBI_SSL&redirect_url=https%3A%2F%2Flogin.live.com%2Foauth20_desktop.srf"];
+    SFSafariViewController *vc = [[SFSafariViewController alloc] initWithURL:url];
+    vc.delegate = self;
+    [self presentViewController:vc animated:YES completion:nil];
 }
 
 - (void)loginOffline {
@@ -177,6 +185,20 @@ void loginAccountInput(UINavigationController *controller, int type, char* usern
 - (void)loginAccount {
     LoginListViewController *vc = [[LoginListViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)safariViewControllerDidFinish:(SFSafariViewController *)controller {
+    [controller dismissViewControllerAnimated:true completion:nil];
+}
+
+- (void)msaLoginCallback:(NSNotification *)notification {
+    [self dismissViewControllerAnimated:YES completion:nil];
+
+    NSDictionary *dict = [notification userInfo];
+    NSURL *url = [dict objectForKey:@"url"];
+    NSArray *components = [[url absoluteString] componentsSeparatedByString:@"?code="];
+    // NSLog(@"URL returned = %@", components[1]);
+    loginAccountInput(self.navigationController, TYPE_MICROSOFT, "", [components[1] UTF8String]);
 }
 
 @end

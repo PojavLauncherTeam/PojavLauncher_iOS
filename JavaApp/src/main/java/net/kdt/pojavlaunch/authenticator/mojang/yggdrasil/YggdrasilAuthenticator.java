@@ -23,7 +23,7 @@ public class YggdrasilAuthenticator {
             try {
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("User-Agent", "Minecraft");
-                // conn.setDoInput(true);
+                conn.setDoInput(true);
                 conn.setDoOutput(true);
                 conn.setRequestMethod("POST");
                 conn.setRequestProperty("Content-Type", "application/json");

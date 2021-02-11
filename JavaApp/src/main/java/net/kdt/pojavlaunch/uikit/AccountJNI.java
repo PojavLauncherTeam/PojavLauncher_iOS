@@ -22,15 +22,16 @@ public class AccountJNI {
             switch (type) {
                 case TYPE_SELECTACC:
                     CURRENT_ACCOUNT = MinecraftAccount.load(username);
-                    if (CURRENT_ACCOUNT.accessToken.length() > 5) {
+                    if (CURRENT_ACCOUNT.isMicrosoft) {
+                        CURRENT_ACCOUNT = new MicrosoftAuthTask().run("true", CURRENT_ACCOUNT.msaRefreshToken);
+                    } else if (CURRENT_ACCOUNT.accessToken.length() > 5) {
                         PojavProfile.updateTokens(username);
                     }
                     CURRENT_ACCOUNT = MinecraftAccount.load(username);
                     break;
                 
                 case TYPE_MICROSOFT:
-                    // TODO
-                    throw new UnsupportedOperationException("TODO");
+                    CURRENT_ACCOUNT = new MicrosoftAuthTask().run("false", password);
                     // break;
                 
                 case TYPE_MOJANG:

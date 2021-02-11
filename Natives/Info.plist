@@ -64,6 +64,17 @@
 			</array>
 		</dict>
 	</dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>net.kdt.pojavlaunch</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>ms-xal-00000000402b5328</string>
+			</array>
+		</dict>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
