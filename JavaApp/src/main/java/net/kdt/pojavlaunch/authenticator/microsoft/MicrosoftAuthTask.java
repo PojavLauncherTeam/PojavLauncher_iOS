@@ -15,7 +15,7 @@ import java.io.*;
 import net.kdt.pojavlaunch.value.launcherprofiles.*;
 import net.kdt.pojavlaunch.value.*;
 
-public class MicrosoftAuthTask extends AsyncTask<String, Void, Object> {
+public class MicrosoftAuthTask {
 
     //private Gson gson = new Gson();
     

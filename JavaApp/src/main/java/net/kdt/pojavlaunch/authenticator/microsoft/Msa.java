@@ -48,7 +48,7 @@ public class Msa {
         task.publishProgressPublic();
 
         URL url = new URL(authTokenUrl);
-        Log.i("MicroAuth", "isRefresh=" + isRefresh + ", authCode= "+authcode);
+        // Log.i("MicroAuth", "isRefresh=" + isRefresh + ", authCode= "+authcode);
         Map<Object, Object> data = new HashMap<>();/*Map.of(
          "client_id", "00000000402b5328",
          "code", authcode,
@@ -79,7 +79,7 @@ public class Msa {
         if(conn.getResponseCode() >= 200 && conn.getResponseCode() < 300) {
             JSONObject jo = new JSONObject(Tools.read(conn.getInputStream()));
             msRefreshToken = jo.getString("refresh_token");
-            Log.i("MicroAuth","Acess Token = "+jo.getString("access_token"));
+            // Log.i("MicroAuth","Acess Token = "+jo.getString("access_token"));
             acquireXBLToken(jo.getString("access_token"));
         }else{
             throwResponseError(conn);
@@ -126,7 +126,7 @@ public class Msa {
         }
         if(conn.getResponseCode() >= 200 && conn.getResponseCode() < 300) {
             JSONObject jo = new JSONObject(Tools.read(conn.getInputStream()));
-            Log.i("MicroAuth","Xbl Token = "+jo.getString("Token"));
+            //Log.i("MicroAuth","Xbl Token = "+jo.getString("Token"));
             acquireXsts(jo.getString("Token"));
         }else{
             throwResponseError(conn);
@@ -171,7 +171,7 @@ public class Msa {
         if(conn.getResponseCode() >= 200 && conn.getResponseCode() < 300) {
             JSONObject jo = new JSONObject(Tools.read(conn.getInputStream()));
             String uhs = jo.getJSONObject("DisplayClaims").getJSONArray("xui").getJSONObject(0).getString("uhs");
-            Log.i("MicroAuth","Xbl Xsts = "+jo.getString("Token")+"; Uhs = " + uhs);
+            // Log.i("MicroAuth","Xbl Xsts = "+jo.getString("Token")+"; Uhs = " + uhs);
             acquireMinecraftToken(uhs,jo.getString("Token"));
         }else{
             throwResponseError(conn);
@@ -203,7 +203,7 @@ public class Msa {
 
         if(conn.getResponseCode() >= 200 && conn.getResponseCode() < 300) {
             JSONObject jo = new JSONObject(Tools.read(conn.getInputStream()));
-            Log.i("MicroAuth","MC token: "+jo.getString("access_token"));
+            // Log.i("MicroAuth","MC token: "+jo.getString("access_token"));
             mcToken = jo.getString("access_token");
             checkMcProfile(jo.getString("access_token"));
             checkMcStore(jo.getString("access_token"));
@@ -224,10 +224,10 @@ public class Msa {
         if(conn.getResponseCode() >= 200 && conn.getResponseCode() < 300) {
             JSONObject jo = new JSONObject(Tools.read(conn.getInputStream()));
             JSONArray ja = jo.getJSONArray("items");
-            Log.i("MicroAuth","Store Len = " + ja.length());
+            // Log.i("MicroAuth","Store Len = " + ja.length());
             for(int i = 0; i < ja.length(); i++) {
                 String prod = ja.getJSONObject(i).getString("name");
-                Log.i("MicroAuth","Product " + i +": " +prod);
+                // Log.i("MicroAuth","Product " + i +": " +prod);
             }
         }else{
             throwResponseError(conn);
@@ -258,7 +258,7 @@ public class Msa {
 
         if(conn.getResponseCode() >= 200 && conn.getResponseCode() < 300) {
             String s= Tools.read(conn.getInputStream());
-            Log.i("MicroAuth","profile:" + s);
+            // Log.i("MicroAuth","profile:" + s);
             JSONObject jsonObject = new JSONObject(s);
             String name = (String) jsonObject.get("name");
             String uuid = (String) jsonObject.get("id");
@@ -266,12 +266,12 @@ public class Msa {
                 "(\\p{XDigit}{8})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}+)", "$1-$2-$3-$4-$5"
             );
             doesOwnGame = true;
-            Log.i("MicroAuth","UserName = " + name);
-            Log.i("MicroAuth","Uuid Minecraft = " + uuidDashes);
+            // Log.i("MicroAuth","UserName = " + name);
+            // Log.i("MicroAuth","Uuid Minecraft = " + uuidDashes);
             mcName=name;
             mcUuid=uuidDashes;
         }else{
-            Log.i("MicroAuth","It seems that this Microsoft Account does not own the game.");
+            // Log.i("MicroAuth","It seems that this Microsoft Account does not own the game.");
             doesOwnGame = false;
             throwResponseError(conn);
         }
@@ -300,7 +300,7 @@ public class Msa {
 
     private static void throwResponseError(HttpURLConnection conn) throws IOException {
         String errStr = Tools.read(conn.getErrorStream());
-        Log.i("MicroAuth","Error code: " + conn.getResponseCode() + ": " + conn.getResponseMessage() + "\n" + errStr);
+        // Log.i("MicroAuth","Error code: " + conn.getResponseCode() + ": " + conn.getResponseMessage() + "\n" + errStr);
         throw new RuntimeException("MSA Error: " + conn.getResponseCode() + ": " + conn.getResponseMessage() + ", error stream:\n" + errStr);
     }
 }
