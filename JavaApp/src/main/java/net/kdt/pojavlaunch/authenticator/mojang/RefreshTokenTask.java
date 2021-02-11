@@ -14,12 +14,12 @@ public class RefreshTokenTask {
     public void run(String name) throws Throwable {
         this.profilePath = MinecraftAccount.load(name);
         int responseCode = 400;
-        responseCode = this.authenticator.validate(profilePath.accessToken).statusCode;
-        if (responseCode >= 200 && responseCode < 300) {
+        try {
+            responseCode = this.authenticator.validate(profilePath.accessToken).statusCode;
+        } catch(RuntimeException e) {}
+
+        if (responseCode == 403) {
             RefreshResponse response = this.authenticator.refresh(profilePath.accessToken, UUID.fromString(profilePath.clientToken));
-            // if (response == null) {
-            // throw new NullPointerException("Response is null?");
-            // }
             if (response == null) {
                 // Refresh when offline?
                 return;
@@ -31,8 +31,8 @@ public class RefreshTokenTask {
             profilePath.accessToken = response.accessToken;
             profilePath.username = response.selectedProfile.name;
             profilePath.profileId = response.selectedProfile.id;
-            profilePath.save();
         }
+        profilePath.save();
     }
 }
 
