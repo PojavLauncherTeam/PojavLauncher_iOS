@@ -230,7 +230,7 @@ BOOL shouldTriggerEnter = NO;
 }
 
 -(void)inputViewDidReturn {
-    if (shouldTriggerEnter == YES)
+    if (shouldTriggerEnter == YES) {
         Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_ENTER, 0, 1, 0);
         Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_ENTER, 0, 0, 0);
     }
