@@ -59,11 +59,13 @@ chmod 755 *.sh
 - [x] Did Minecraft recognize OpenGL?
 - [x] OpenAL: use @kcat's openal-soft
 - [x] Input pipe implementation
+- [x] Account authentication (partial).
 - [ ] Does it work? Partial.
 - Currently, only Minecraft 1.14+ fully works.
 - Forge won't work, but Fabric and OptiFine will.
 
 ## Known issues
+- Mojang authentication might not work, but copying logged in account json from Android will work.
 - Camera position will be jumped to random location on first time touch.
 - 1.12.2 and below only render a tiny panorama at bottom left corner.
 - Other versions will crash for various reasons: Narrator crash, etc...
@@ -81,7 +83,8 @@ chmod 755 *.sh
 - Open it and press Install.
 - If everything fine, it will ends up with `Setting up ...`.
 
-## Want a try or debug?
+## Directory locations
+- Account json directory: `/var/mobile/Documents/.pojavlauncher/accounts`.
 - Minecraft home directory: `/var/mobile/Documents/minecraft`.
 - Select a version: edit `/var/mobile/Documents/minecraft/config_ver.txt`, put to Minecraft version want to start.
 
