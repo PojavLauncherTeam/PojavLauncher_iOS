@@ -2,6 +2,7 @@ package net.kdt.pojavlaunch.uikit;
 
 import net.kdt.pojavlaunch.PojavProfile;
 import net.kdt.pojavlaunch.Tools;
+import net.kdt.pojavlaunch.authenticator.microsoft.MicrosoftAuthTask
 import net.kdt.pojavlaunch.authenticator.mojang.LoginTask;
 import net.kdt.pojavlaunch.value.MinecraftAccount;
 

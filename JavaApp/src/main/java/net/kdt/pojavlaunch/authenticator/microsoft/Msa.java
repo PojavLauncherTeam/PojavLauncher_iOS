@@ -45,7 +45,7 @@ public class Msa {
     }
 
     public void acquireAccessToken(boolean isRefresh, String authcode) throws IOException, JSONException {
-        task.publishProgressPublic();
+        // task.publishProgressPublic();
 
         URL url = new URL(authTokenUrl);
         // Log.i("MicroAuth", "isRefresh=" + isRefresh + ", authCode= "+authcode);
@@ -88,7 +88,7 @@ public class Msa {
     }
 
     private void acquireXBLToken(String accessToken) throws IOException, JSONException {
-        task.publishProgressPublic();
+        // task.publishProgressPublic();
 
         URL url = new URL(xblAuthUrl);
 
@@ -134,7 +134,7 @@ public class Msa {
     }
 
     private void acquireXsts(String xblToken) throws IOException, JSONException {
-        task.publishProgressPublic();
+        // task.publishProgressPublic();
 
         URL url = new URL(xstsAuthUrl);
         Map<Object, Object> data = new HashMap<>();
@@ -179,7 +179,7 @@ public class Msa {
     }
 
     private void acquireMinecraftToken(String xblUhs, String xblXsts) throws IOException, JSONException {
-        task.publishProgressPublic();
+        // task.publishProgressPublic();
 
         URL url = new URL(mcLoginUrl);
 
@@ -213,7 +213,7 @@ public class Msa {
         }
     }
     private void checkMcStore(String mcAccessToken) throws IOException, JSONException {
-        task.publishProgressPublic();
+        // task.publishProgressPublic();
 
         URL url = new URL(mcStoreUrl);
         HttpURLConnection conn = (HttpURLConnection)url.openConnection();
@@ -247,7 +247,7 @@ public class Msa {
     }
 
     private void checkMcProfile(String mcAccessToken) throws IOException, JSONException {
-        task.publishProgressPublic();
+        // task.publishProgressPublic();
 
         URL url = new URL(mcProfileUrl);
 
