@@ -32,7 +32,7 @@ UITextField* versionTextField;
 
     // Update color mode once
     if(@available(iOS 13.0, *)) {
-        [self traitCollectionDidChange:nil];
+        // [self traitCollectionDidChange:nil];
     } else {
         self.view.backgroundColor = [UIColor whiteColor];
     }
