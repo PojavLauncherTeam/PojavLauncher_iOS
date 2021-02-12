@@ -65,9 +65,8 @@ void loginAccountInput(UINavigationController *controller, int type, char* usern
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     [self.view addSubview:scrollView];
 
-    // Update color mode once
     if(@available(iOS 13.0, *)) {
-        // [self traitCollectionDidChange:nil];
+        [self traitCollectionDidChange:nil];
     } else {
         self.view.backgroundColor = [UIColor whiteColor];
     }
@@ -112,10 +111,12 @@ void loginAccountInput(UINavigationController *controller, int type, char* usern
 }
 
 -(void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection API_AVAILABLE(ios(13.0)) {
-    if (UITraitCollection.currentTraitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
-        self.view.backgroundColor = [UIColor blackColor];
-    } else {
-        self.view.backgroundColor = [UIColor whiteColor];
+    if(@available(iOS 13.0, *)) {
+        if (UITraitCollection.currentTraitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
+            self.view.backgroundColor = [UIColor blackColor];
+        } else {
+            self.view.backgroundColor = [UIColor whiteColor];
+        }
     }
 }
 

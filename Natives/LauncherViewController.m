@@ -32,7 +32,7 @@ UITextField* versionTextField;
 
     // Update color mode once
     if(@available(iOS 13.0, *)) {
-        // [self traitCollectionDidChange:nil];
+        [self traitCollectionDidChange:nil];
     } else {
         self.view.backgroundColor = [UIColor whiteColor];
     }
@@ -68,10 +68,12 @@ UITextField* versionTextField;
 }
 
 -(void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection API_AVAILABLE(ios(13.0)) {
-    if (UITraitCollection.currentTraitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
-        self.view.backgroundColor = [UIColor blackColor];
-    } else {
-        self.view.backgroundColor = [UIColor whiteColor];
+    if(@available(iOS 13.0, *)) {
+        if (UITraitCollection.currentTraitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
+            self.view.backgroundColor = [UIColor blackColor];
+        } else {
+            self.view.backgroundColor = [UIColor whiteColor];
+        }
     }
 }
 

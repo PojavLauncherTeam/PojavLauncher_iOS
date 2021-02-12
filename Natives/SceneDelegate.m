@@ -19,7 +19,6 @@
         self.window.frame = windowScene.coordinateSpace.bounds;
         self.window.rootViewController = nav;
         [self.window makeKeyAndVisible];
-        [vc traitCollectionDidChange:nil];
     } else {
         
     }
