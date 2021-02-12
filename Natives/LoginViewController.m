@@ -14,7 +14,7 @@
 #define TYPE_MOJANG 2
 #define TYPE_OFFLINE 3
 
-void loginAccountInput(UINavigationController *controller, int type, char* username_c, char* password_c) {
+void loginAccountInput(UINavigationController *controller, int type, const char* username_c, const char* password_c) {
     JNIEnv *env;
     (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &env, NULL);
 

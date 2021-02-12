@@ -51,7 +51,7 @@ BOOL shouldTriggerClick = NO;
 
 // TODO: key modifiers impl
 
-@interface SurfaceViewController () {
+@interface SurfaceViewController ()<UITextFieldDelegate> {
 }
 
 @property (strong, nonatomic) MGLContext *context;
@@ -89,7 +89,7 @@ BOOL shouldTriggerClick = NO;
     [self.view addSubview:touchView];
     
     inputView = [[UITextField alloc] initWithFrame:CGRectMake(5 * 3 + 80 * 2, 5, BTN_RECT)];
-
+    inputView.delegate = self;
     inputView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.0f];
     [inputView addTarget:self action:@selector(inputViewDidChange) forControlEvents:UIControlEventEditingChanged];
     [inputView addTarget:self action:@selector(inputViewDidClick) forControlEvents:UIControlEventTouchDown];
@@ -210,15 +210,9 @@ BOOL shouldTriggerClick = NO;
     } else {
         NSString *newText = [inputView.text substringFromIndex:2];
         int charLength = [newText length];
-        //char16_t *charText = [newText UTF16String];
         for (int i = 0; i < charLength; i++) {
-            unichar currChar = [newText characterAtIndex:i];
-            if (currChar == '\n') {
-                Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_ENTER, 0, 1, 0);
-                Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_ENTER, 0, 0, 0);
-            } else {
-                Java_org_lwjgl_glfw_CallbackBridge_nativeSendCharMods(NULL, NULL, (jchar) currChar /* charText[i] */, /* mods */ 0);
-            }
+            // Directly convert unichar to jchar which both are in UTF-16 encoding.
+            Java_org_lwjgl_glfw_CallbackBridge_nativeSendCharMods(NULL, NULL, (jchar) [newText characterAtIndex:i] /* charText[i] */, /* mods */ 0);
         }
     }
 
@@ -232,6 +226,12 @@ BOOL shouldTriggerClick = NO;
     inputView.text = @"  ";
 }
 
+-(BOOL)textFieldShouldReturn:(UITextField *)textField {
+    Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_ENTER, 0, 1, 0);
+    Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_ENTER, 0, 0, 0);
+    return YES;
+}
+
 int currentVisibility = 1;
 ADD_BUTTON_DEF(special_togglebtn) {
     if (held == 0) {
@@ -239,6 +239,8 @@ ADD_BUTTON_DEF(special_togglebtn) {
         for (int i = 0; i < togglableVisibleButtonIndex + 1; i++) {
             togglableVisibleButtons[i].hidden = currentVisibility;
         }
+        
+        inputView.hidden = currentVisibility;
     }
 }
 
@@ -276,13 +278,6 @@ ADD_BUTTON_DEF_KEY(left_shift, GLFW_KEY_LEFT_SHIFT)
 
 ADD_BUTTON_DEF_KEY(space, GLFW_KEY_SPACE)
 ADD_BUTTON_DEF_KEY(escape, GLFW_KEY_ESCAPE)
-
-/*
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-}
-*/
 
 - (void)dealloc
 {
@@ -369,5 +364,4 @@ int touchesMovedCount;
     [self sendTouchEvent: touches withEvent: ACTION_UP];
 }
 
-// #pragma mark - GLKView and GLKViewController delegate methods
 @end
