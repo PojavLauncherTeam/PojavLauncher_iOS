@@ -26,6 +26,9 @@ public class PLaunchApp {
             new File(Tools.DIR_ACCOUNT_NEW).mkdirs();
             if (!new File(mcDir, "config_ver.txt").exists()) {
                 Tools.write(mcDir.getAbsolutePath() + "/config_ver.txt", "1.16.5");
+                
+                Tools.write(mcDir.getAbsolutePath() + "/launcher_profiles.json",
+                  Tools.read(Tools.DIR_DATA + "/launcher_profiles.json"));
             }
         } catch (IOException e) {
             e.printStackTrace();
