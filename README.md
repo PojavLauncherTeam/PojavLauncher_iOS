@@ -95,6 +95,7 @@ chmod 755 *.sh
 Contributions are welcome! We welcome any type of contribution, not only code. Any code change should be submitted as a pull request. The description should explain what the code does and give steps to execute it.
 
 ## Credits & Third party components and their licenses
+- [Contributors of PojavLauncher Android](https://github.com/PojavLauncherTeam/PojavLauncher/graphs/contributors) and here.
 - Apache Commons.
 - jsr305
 - org.json
