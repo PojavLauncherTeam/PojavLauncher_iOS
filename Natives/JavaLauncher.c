@@ -44,6 +44,10 @@ int launchJVM(int argc, char *argv[]) {
     setenv("LIBGL_MIPMAP", "3", 1);
     setenv("LIBGL_NORMALIZE", "1", 1);
     
+    if (chmod("/usr/lib/jvm/java-16-openjdk/bin/java", S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH) == -1) {
+        NSLog(@"Warning: chmod java failed");
+    }
+
     chdir("/var/mobile/Documents/minecraft");
     
     char *java_libs_dir = "/Applications/PojavLauncher.app/libs";
