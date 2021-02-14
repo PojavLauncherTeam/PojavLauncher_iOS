@@ -45,7 +45,7 @@ int launchJVM(int argc, char *argv[]) {
     setenv("LIBGL_NORMALIZE", "1", 1);
     
     if (chmod("/usr/lib/jvm/java-16-openjdk/bin/java", S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH) == -1) {
-        NSLog(@"Warning: chmod java failed");
+        debug("Warning: chmod +x java failed");
     }
 
     chdir("/var/mobile/Documents/minecraft");
