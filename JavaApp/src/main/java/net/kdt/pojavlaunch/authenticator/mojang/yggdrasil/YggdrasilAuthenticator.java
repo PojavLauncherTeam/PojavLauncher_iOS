@@ -23,10 +23,13 @@ public class YggdrasilAuthenticator {
             try {
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("User-Agent", "Minecraft");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("charset", "utf-8");
+                conn.setRequestProperty("Content-Length", Integer.toString(requestJson.getBytes("UTF-8").length));
+                conn.setRequestMethod("POST");
+                conn.setUseCaches(false);
                 conn.setDoInput(true);
                 conn.setDoOutput(true);
-                conn.setRequestMethod("POST");
-                conn.setRequestProperty("Content-Type", "application/json");
                 conn.connect();
                 os = null;
                 os = conn.getOutputStream();
