@@ -93,12 +93,14 @@ public final class Tools
         javaArgList.addAll(Arrays.asList(launchArgs));
         
         // Debug
+/*
         BufferedWriter bw = new BufferedWriter(new FileWriter(new File(Tools.DIR_GAME_HOME, "currargs_generated.txt")));
         for (String s : javaArgList) {
             bw.write(s, 0, s.length());
             bw.write(" ", 0, 1);
         }
         bw.close();
+*/
 
         final List<URL> urlList = new ArrayList<>();
         for (String s : launchClassPath.split(":")) {
