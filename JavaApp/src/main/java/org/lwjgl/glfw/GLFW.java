@@ -516,12 +516,19 @@ public class GLFW
         mGLFWWindowMap = new ArrayMap<>();
         
         mGLFWVideoMode = new GLFWVidMode(ByteBuffer.allocateDirect(GLFWVidMode.SIZEOF));
+/*
         memPutInt(mGLFWVideoMode.address() + mGLFWVideoMode.WIDTH, mGLFWWindowWidth);
         memPutInt(mGLFWVideoMode.address() + mGLFWVideoMode.HEIGHT, mGLFWWindowHeight);
         memPutInt(mGLFWVideoMode.address() + mGLFWVideoMode.REDBITS, 8);
         memPutInt(mGLFWVideoMode.address() + mGLFWVideoMode.GREENBITS, 8);
         memPutInt(mGLFWVideoMode.address() + mGLFWVideoMode.BLUEBITS, 8);
         memPutInt(mGLFWVideoMode.address() + mGLFWVideoMode.REFRESHRATE, 60);
+*/
+
+        GLFWVidMode.WIDTH = mGLFWWindowWidth;
+        GLFWVidMode.HEIGHT = mGFLWWindowHeight;
+        GLFWVidMode.REDBITS = GFLWVidMode.GREENBITS = GLFWVidMode.BLUEBITS = 8;
+        GLFWVidMode.REFRESHRATE = 60;
         
         // A way to generate key code names
         Field[] thisFieldArr = GLFW.class.getFields();
