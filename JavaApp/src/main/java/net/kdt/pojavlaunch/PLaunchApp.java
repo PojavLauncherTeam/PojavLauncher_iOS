@@ -38,9 +38,6 @@ public class PLaunchApp {
             System.out.println("We are on java now! Starting UI...");
             UIKit.launchUI(args);
         } else {
-            System.err.println("UIKit could not be connected when run on command line! Please run from home screen instead. " +
-              "If you didn't see PojavLauncher on home screen, run this command:");
-            System.err.println("uicache -p /Applications/PojavLauncher.app");
             return;
         }
 
