@@ -526,8 +526,8 @@ public class GLFW
 */
 
         GLFWVidMode.WIDTH = mGLFWWindowWidth;
-        GLFWVidMode.HEIGHT = mGFLWWindowHeight;
-        GLFWVidMode.REDBITS = GFLWVidMode.GREENBITS = GLFWVidMode.BLUEBITS = 8;
+        GLFWVidMode.HEIGHT = mGLFWWindowHeight;
+        GLFWVidMode.REDBITS = GLFWVidMode.GREENBITS = GLFWVidMode.BLUEBITS = 8;
         GLFWVidMode.REFRESHRATE = 60;
         
         // A way to generate key code names
