@@ -635,7 +635,13 @@ public class GLFW
     public static GLFWWindowProperties internalGetWindow(long window) {
         GLFWWindowProperties win = mGLFWWindowMap.get(window);
         if (win == null) {
-            throw new IllegalArgumentException("No window pointer found: " + window);
+            System.err.println("GLFW: No window pointer found: " + window);
+            win = mGLFWWindowMap.get(mainContext);
+            // throw new IllegalArgumentException("No window pointer found: " + window);
+        }
+        if (win == null) {
+            System.err.println("GLFW: Stills no window pointer found: " + window);
+            win = mGLFWWindowMap.valueAt(0);
         }
         return win;
     }
