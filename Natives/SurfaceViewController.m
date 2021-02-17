@@ -121,7 +121,7 @@ BOOL shouldTriggerClick = NO;
 
     ADD_BUTTON_VISIBLE(@"Esc", escape, CGRectMake(width - 5 - 80, height - 5 - 30, BTN_RECT));
 
-    ADD_BUTTON_VISIBLE(@"Fullscreen", f11, CGRectMake(width - 5 - 80, 5, BTN_RECT));
+    // ADD_BUTTON_VISIBLE(@"Fullscreen", f11, CGRectMake(width - 5 - 80, 5, BTN_RECT));
     
     [self.view addSubview:inputView];
     [inputView becomeFirstResponder];
@@ -133,7 +133,7 @@ BOOL shouldTriggerClick = NO;
     MGLKView *view = glView = (MGLKView *) self.view;
     view.drawableDepthFormat = MGLDrawableDepthFormat24;
     view.enableSetNeedsDisplay = YES;
-    view.preferredFramesPerSecond = 1000;
+    [view setPreferredFramesPerSecond:1000];
 
     // Init GLES
     self.context = [[MGLContext alloc] initWithAPI:kMGLRenderingAPIOpenGLES3];
