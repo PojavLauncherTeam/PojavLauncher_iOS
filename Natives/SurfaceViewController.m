@@ -133,7 +133,7 @@ BOOL shouldTriggerClick = NO;
     MGLKView *view = glView = (MGLKView *) self.view;
     view.drawableDepthFormat = MGLDrawableDepthFormat24;
     view.enableSetNeedsDisplay = YES;
-    [view setPreferredFramesPerSecond:1000];
+    [self setPreferredFramesPerSecond:1000];
 
     // Init GLES
     self.context = [[MGLContext alloc] initWithAPI:kMGLRenderingAPIOpenGLES3];
