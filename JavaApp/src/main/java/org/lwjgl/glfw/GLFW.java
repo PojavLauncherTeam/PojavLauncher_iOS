@@ -765,7 +765,7 @@ public class GLFW
                 @Override public void invoke(long window, int width, int height) {};
             };
         }
-        return mGLFWFramebufferSizeCallback;
+        return mGLFWWindowSizeCallback;
     }
     static boolean isGLFWReady;
 	public static boolean glfwInit() {
