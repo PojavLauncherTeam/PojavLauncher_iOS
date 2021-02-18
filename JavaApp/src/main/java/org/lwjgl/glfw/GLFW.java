@@ -547,8 +547,8 @@ public class GLFW
         }
 
         // Fix Forge init crashes
-        mGLFWFramebufferSizeCallback = new GLFWFramebufferSizeCallback() -> (window, width, height) {};
-        mGLFWWindowSizeCallback = new GLFWWindowSizeCallback() -> (window, width, height) {};
+        mGLFWFramebufferSizeCallback = new GLFWFramebufferSizeCallback() {(window, width, height) -> {}};
+        mGLFWWindowSizeCallback = new GLFWWindowSizeCallback() {(window, width, height) -> {}};
     }
 
     private static native long nativeEglGetCurrentContext();
