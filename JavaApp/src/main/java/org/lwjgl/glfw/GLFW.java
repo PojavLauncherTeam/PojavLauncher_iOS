@@ -668,13 +668,13 @@ public class GLFW
     public static GLFWFramebufferSizeCallback glfwSetFramebufferSizeCallback(@NativeType("GLFWwindow *") long window, @Nullable @NativeType("GLFWframebuffersizefun") GLFWFramebufferSizeCallbackI cbfun) {
         mGLFWFramebufferSizeCallback = GLFWFramebufferSizeCallback.createSafe(nglfwSetFramebufferSizeCallback(window, memAddressSafe(cbfun)));
         if (mGLFWFramebufferSizeCallback != null) {
-            mGLFWFramebufferSizeCallback.invoke(window, mGLFWWindowWidth, mGLFWWindowHeight);
-        } else {
             try {
+            mGLFWFramebufferSizeCallback.invoke(window, mGLFWWindowWidth, mGLFWWindowHeight);
+            } catch (Throwable th) { th.printStackTrace(); }
+        } else {
             mGLFWFramebufferSizeCallback = new GLFWFramebufferSizeCallback() {
                 @Override public void invoke(long window, int width, int height) {};
             };
-            } catch (Throwable th) { th.printStackTrace(); }
         }
         return mGLFWFramebufferSizeCallback;
     }
@@ -761,13 +761,13 @@ public class GLFW
     public static GLFWWindowSizeCallback glfwSetWindowSizeCallback(@NativeType("GLFWwindow *") long window, @Nullable @NativeType("GLFWwindowsizefun") GLFWWindowSizeCallbackI cbfun) {
         mGLFWWindowSizeCallback = GLFWWindowSizeCallback.createSafe(nglfwSetWindowSizeCallback(window, memAddressSafe(cbfun)));
         if (mGLFWWindowSizeCallback != null) {
-            mGLFWWindowSizeCallback.invoke(window, mGLFWWindowWidth, mGLFWWindowHeight);
-        } else {
             try {
+            mGLFWWindowSizeCallback.invoke(window, mGLFWWindowWidth, mGLFWWindowHeight);
+            } catch (Throwable th) { th.printStackTrace(); }
+        } else {
             mGLFWWindowSizeCallback = new GLFWWindowSizeCallback() {
                 @Override public void invoke(long window, int width, int height) {};
             };
-            } catch (Throwable th) { th.printStackTrace(); }
         }
         return mGLFWWindowSizeCallback;
     }
