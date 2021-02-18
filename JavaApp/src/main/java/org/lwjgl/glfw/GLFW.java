@@ -546,20 +546,10 @@ public class GLFW
             // This will never happend since this is accessing itself
         }
 
-		/*
-		 mGLFWMonitorCallback = new GLFWMonitorCallback(){
-
-		 // Fake one!!!
-		 @Override
-		 public void free() {}
-
-		 @Override
-		 public void callback(long args) {
-		 // TODO: Implement this method
-		 }
-		 };
-		 */
-	}
+        // Fix Forge init crashes
+        mGLFWFramebufferSizeCallback = new GLFWFramebufferSizeCallback() -> (window, width, height) {};
+        mGLFWWindowSizeCallback = new GLFWWindowSizeCallback() -> (window, width, height) {};
+    }
 
     private static native long nativeEglGetCurrentContext();
 	private static native boolean nativeEglInit();
@@ -680,11 +670,12 @@ public class GLFW
     }
 
     public static GLFWFramebufferSizeCallback glfwSetFramebufferSizeCallback(@NativeType("GLFWwindow *") long window, @Nullable @NativeType("GLFWframebuffersizefun") GLFWFramebufferSizeCallbackI cbfun) {
+        GLFWFramebufferSizeCallback lastCallback = mGLFWFramebufferSizeCallback;
         mGLFWFramebufferSizeCallback = GLFWFramebufferSizeCallback.createSafe(nglfwSetFramebufferSizeCallback(window, memAddressSafe(cbfun)));
         if (mGLFWFramebufferSizeCallback != null) {
             mGLFWFramebufferSizeCallback.invoke(window, mGLFWWindowWidth, mGLFWWindowHeight);
         }
-        return mGLFWFramebufferSizeCallback;
+        return lastCallback;
     }
 
     public static GLFWJoystickCallback glfwSetJoystickCallback(/* @NativeType("GLFWwindow *") long window, */ @Nullable @NativeType("GLFWjoystickfun") GLFWJoystickCallbackI cbfun) {
@@ -767,11 +758,12 @@ public class GLFW
     }
 
     public static GLFWWindowSizeCallback glfwSetWindowSizeCallback(@NativeType("GLFWwindow *") long window, @Nullable @NativeType("GLFWwindowsizefun") GLFWWindowSizeCallbackI cbfun) {
+        GLFWWindowSizeCallback lastCallback = mGLFWWindowSizeCallback;
         mGLFWWindowSizeCallback = GLFWWindowSizeCallback.createSafe(nglfwSetWindowSizeCallback(window, memAddressSafe(cbfun)));
         if (mGLFWWindowSizeCallback != null) {
             mGLFWWindowSizeCallback.invoke(window, mGLFWWindowWidth, mGLFWWindowHeight);
         }
-        return mGLFWWindowSizeCallback;
+        return lastCallback;
     }
     static boolean isGLFWReady;
 	public static boolean glfwInit() {
