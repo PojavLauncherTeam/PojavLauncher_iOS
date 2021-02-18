@@ -102,17 +102,28 @@ public final class Tools
         bw.close();
 */
 
+/*
         final List<URL> urlList = new ArrayList<>();
         for (String s : launchClassPath.split(":")) {
             if (!s.isEmpty()) {
                 urlList.add(new File(s).toURI().toURL());
             }
         }
+*/
         
         new Thread(() -> { try {
             System.out.println("Args init finished. Now starting game");
         
-            URLClassLoader loader = new URLClassLoader(urlList.toArray(new URL[0]), ClassLoader.getSystemClassLoader());
+            // URLClassLoader loader = new URLClassLoader(urlList.toArray(new URL[0]), ClassLoader.getSystemClassLoader());
+            
+            PojavClassLoader loader = (PojavClassLoader) ClassLoader.getSystemClassLoader();
+            
+            for (String s : launchClassPath.split(":")) {
+                if (!s.isEmpty()) {
+                    loader.addURL(new File(s).toURI().toURL());
+                }
+            }
+            
             Class<?> clazz = loader.loadClass(versionInfo.mainClass);
             Method method = clazz.getMethod("main", String[].class);
             method.invoke(null, new Object[]{launchArgs});

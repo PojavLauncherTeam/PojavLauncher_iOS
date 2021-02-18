@@ -86,6 +86,7 @@ int launchJVM(int argc, char *argv[]) {
     if (!started) {
         margv[margc++] = "/usr/lib/jvm/java-16-openjdk/bin/java";
         margv[margc++] = "-XstartOnFirstThread";
+        margv[margc++] = "-Djava.system.class.loader=net.kdt.pojavlaunch.PojavClassLoader";
         margv[margc++] = "-Djava.library.path=/Applications/PojavLauncher.app/Frameworks";
         margv[margc++] = "-Duser.dir=/var/mobile/Documents/minecraft";
         margv[margc++] = "-Duser.home=/var/mobile/Documents";
