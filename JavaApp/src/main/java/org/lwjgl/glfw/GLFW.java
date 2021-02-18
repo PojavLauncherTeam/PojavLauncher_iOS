@@ -670,9 +670,11 @@ public class GLFW
         if (mGLFWFramebufferSizeCallback != null) {
             mGLFWFramebufferSizeCallback.invoke(window, mGLFWWindowWidth, mGLFWWindowHeight);
         } else {
+            try {
             mGLFWFramebufferSizeCallback = new GLFWFramebufferSizeCallback() {
                 @Override public void invoke(long window, int width, int height) {};
             };
+            } catch (Throwable th) { th.printStackTrace(); }
         }
         return mGLFWFramebufferSizeCallback;
     }
@@ -761,9 +763,11 @@ public class GLFW
         if (mGLFWWindowSizeCallback != null) {
             mGLFWWindowSizeCallback.invoke(window, mGLFWWindowWidth, mGLFWWindowHeight);
         } else {
+            try {
             mGLFWWindowSizeCallback = new GLFWWindowSizeCallback() {
                 @Override public void invoke(long window, int width, int height) {};
             };
+            } catch (Throwable th) { th.printStackTrace(); }
         }
         return mGLFWWindowSizeCallback;
     }
