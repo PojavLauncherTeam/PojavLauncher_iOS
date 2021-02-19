@@ -84,6 +84,7 @@ BOOL shouldTriggerClick = NO;
     [touchView addGestureRecognizer:tapGesture];
 
     UILongPressGestureRecognizer *longpressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(surfaceOnLongpress:)];
+    longpressGesture.minimumPressDuration = 0.4;
     [touchView addGestureRecognizer:longpressGesture];
 
     [self.view addSubview:touchView];
@@ -124,7 +125,6 @@ BOOL shouldTriggerClick = NO;
     // ADD_BUTTON_VISIBLE(@"Fullscreen", f11, CGRectMake(width - 5 - 80, 5, BTN_RECT));
     
     [self.view addSubview:inputView];
-    [inputView becomeFirstResponder];
 
     [self executebtn_special_togglebtn:0];
 
