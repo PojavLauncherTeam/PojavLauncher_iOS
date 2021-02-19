@@ -69,13 +69,18 @@ BOOL shouldTriggerClick = NO;
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];
 
+    UIEdgeInsets insets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height);
     
     savedWidth = roundf(width * screenScale);
     savedHeight = roundf(height * screenScale);
+
+    width = width - insets.top;
+    height = height - insets.bottom;
     
-    touchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+    touchView = [[UIView alloc] initWithFrame:CGRectMake(insets.top, 0, width, height)];
 
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(surfaceOnClick:)];
     tapGesture.numberOfTapsRequired = 1;
