@@ -14,7 +14,7 @@
     UIButton *button_##KEY = [UIButton buttonWithType:UIButtonTypeRoundedRect]; \
     button_##KEY.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth; \
     [button_##KEY setTitle:NAME forState:UIControlStateNormal]; \
-    button_##KEY.frame = CGRectOffset(RECT, notchOffset, 0);; \
+    button_##KEY.frame = CGRectOffset(RECT, notchOffset, 0); \
     [button_##KEY addTarget:self action:@selector(executebtn_##KEY##_down) forControlEvents:UIControlEventTouchDown]; \
     [button_##KEY addTarget:self action:@selector(executebtn_##KEY##_up) forControlEvents:UIControlEventTouchUpInside]; \
     button_##KEY.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.3f]; \
