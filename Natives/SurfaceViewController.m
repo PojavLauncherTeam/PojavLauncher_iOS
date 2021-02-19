@@ -14,7 +14,7 @@
     UIButton *button_##KEY = [UIButton buttonWithType:UIButtonTypeRoundedRect]; \
     button_##KEY.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth; \
     [button_##KEY setTitle:NAME forState:UIControlStateNormal]; \
-    button_##KEY.frame = RECT; \
+    button_##KEY.frame = CGRectOffset(RECT, notchOffset, 0);; \
     [button_##KEY addTarget:self action:@selector(executebtn_##KEY##_down) forControlEvents:UIControlEventTouchDown]; \
     [button_##KEY addTarget:self action:@selector(executebtn_##KEY##_up) forControlEvents:UIControlEventTouchUpInside]; \
     button_##KEY.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.3f]; \
@@ -48,6 +48,7 @@ UIButton* togglableVisibleButtons[100];
 UIView *touchView;
 UITextField *inputView;
 BOOL shouldTriggerClick = NO;
+int notchOffset;
 
 // TODO: key modifiers impl
 
@@ -79,8 +80,9 @@ BOOL shouldTriggerClick = NO;
 
     width = width - insets.top;
     height = height - insets.bottom;
+    notchOffset = insets.top;
     
-    touchView = [[UIView alloc] initWithFrame:CGRectMake(insets.top, 0, width, height)];
+    touchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
 
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(surfaceOnClick:)];
     tapGesture.numberOfTapsRequired = 1;
