@@ -78,9 +78,9 @@ int notchOffset;
     savedWidth = roundf(width * screenScale);
     savedHeight = roundf(height * screenScale);
 
-    width = width - insets.top;
+    width = width - insets.left - insets.right;
     height = height - insets.bottom;
-    notchOffset = insets.top;
+    notchOffset = insets.left;
     
     touchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
 
