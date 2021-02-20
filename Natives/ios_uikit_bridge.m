@@ -1,4 +1,3 @@
-#import <UIKit/UIKit.h>
 
 #import "AppDelegate.h"
 #import "SceneDelegate.h"
@@ -9,6 +8,28 @@
 #include "utils.h"
 
 jboolean skipDownloadAssets;
+
+void internal_showDialog(UIViewController *viewController, NSString* title, NSString* message) {
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:title
+        message:message
+        preferredStyle:UIAlertControllerStyleAlert];
+
+    UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+        handler:^(UIAlertAction * action) {}];
+    [alert addAction:okAction];
+
+    [viewController presentViewController:alert animated:YES completion:nil];
+}
+
+void showDialog(UIViewController *viewController, NSString* title, NSString* message) {
+    if ([NSThread isMainThread] == YES) {
+        internal_showDialog(viewController, title, message);
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            internal_showDialog(viewController, title, message);
+        });
+    }
+}
 
 JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_showError(JNIEnv* env_unused, jclass clazz, jstring title, jstring message, jboolean exitIfOk) {
 dispatch_async(dispatch_get_main_queue(), ^{

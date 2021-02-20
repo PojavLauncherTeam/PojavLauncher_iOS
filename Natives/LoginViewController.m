@@ -7,6 +7,7 @@
 #import "LauncherViewController.h"
 #import "LoginViewController.h"
 
+#include "ios_uikit_bridge.h"
 #include "utils.h"
 
 #define TYPE_SELECTACC 0
@@ -14,20 +15,19 @@
 #define TYPE_MOJANG 2
 #define TYPE_OFFLINE 3
 
-void loginAccountInput(UINavigationController *controller, int type, const char* username_c, const char* password_c) {
+void loginAccountInput(UINavigationController *controller, int type, const char* data_c) {
     JNIEnv *env;
     (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &env, NULL);
 
-    jstring username = (*env)->NewStringUTF(env, username_c);
-    jstring password = (*env)->NewStringUTF(env, password_c);
+    jstring data = (*env)->NewStringUTF(env, data_c);
 
     jclass clazz = (*env)->FindClass(env, "net/kdt/pojavlaunch/uikit/AccountJNI");
     assert(clazz);
     
-    jmethodID method = (*env)->GetStaticMethodID(env, clazz, "loginAccount", "(ILjava/lang/String;Ljava/lang/String;)Z");
+    jmethodID method = (*env)->GetStaticMethodID(env, clazz, "loginAccount", "(ILjava/lang/String;)Z");
     assert(method);
     
-    jboolean result = (*env)->CallStaticBooleanMethod(env, clazz, method, type, username, password);
+    jboolean result = (*env)->CallStaticBooleanMethod(env, clazz, method, type, data);
     
     (*runtimeJavaVMPtr)->DetachCurrentThread(runtimeJavaVMPtr);
     
@@ -148,18 +148,14 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 
         const char *username = [usernameField.text UTF8String];
         if (type == TYPE_MOJANG) {
-            UITextField *passwordField = textFields[1];
-            const char *password = [passwordField.text UTF8String];
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-                loginAccountInput(self.navigationController, TYPE_MOJANG, username, password);
-            });
+            [self loginMojangWithUsername:usernameField.text password:((UITextField *) textFields[1]).text];
         } else {
             if (usernameField.text.length < 3 || usernameField.text.length > 16) {
                 controller.message = @"Username must be at least 3 characters and maximum 16 characters";
                 [self presentViewController:controller animated:YES completion:nil];
             } else {
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-                    loginAccountInput(self.navigationController, TYPE_OFFLINE, username, "");
+                    loginAccountInput(self.navigationController, TYPE_OFFLINE, username);
                 });
             }
         }
@@ -199,7 +195,63 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     NSURL *url = [dict objectForKey:@"url"];
     NSArray *components = [[url absoluteString] componentsSeparatedByString:@"?code="];
     // NSLog(@"URL returned = %@", components[1]);
-    loginAccountInput(self.navigationController, TYPE_MICROSOFT, "", [components[1] UTF8String]);
+    loginAccountInput(self.navigationController, TYPE_MICROSOFT, [components[1] UTF8String]);
+}
+
+-(void)loginMojangWithUsername:(NSString*)input_username password:(NSString*)input_password {
+    NSString *input_uuid = [[NSUUID UUID] UUIDString];
+
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURL *url = [NSURL URLWithString:@"https://authserver.mojang.com/authenticate"];
+    NSMutableURLRequest *request = 
+      [[NSMutableURLRequest alloc] initWithURL:[NSURL
+      URLWithString:@"https://authserver.mojang.com/authenticate"]];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+
+    NSString *jsonString = [NSString stringWithFormat:@"{\"agent\": {\"name\": \"Minecraft\", \"version\": 1}, \"username\": \"%@\", \"password\": \"%@\", \"clientToken\": \"%@\"}", input_username, input_password, input_uuid];
+    // NSLog(jsonString);
+    [request setValue:[NSString stringWithFormat:@"%d",
+      [jsonString length]] forHTTPHeaderField:@"Content-length"];
+    [request setHTTPBody:[jsonString dataUsingEncoding:NSUTF8StringEncoding]];
+
+    NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
+        long statusCode = (long)[httpResponse statusCode];
+
+        NSString *dataStr = [NSString stringWithUTF8String:[data bytes]];
+
+        // NSLog(@"status=%ld, data=%@, response=%@, error=%@", statusCode, dataStr, httpResponse, error);
+        NSError *jsonError = nil;
+        NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+
+        if (jsonError != nil) {
+            NSLog(@"Error parsing JSON: %@", jsonError.localizedDescription);
+            showDialog(self, @"Error parsing JSON", jsonError.localizedDescription);
+        } else if (statusCode == 200) {
+            NSArray *selectedProfile = [jsonArray valueForKey:@"selectedProfile"];
+            if (selectedProfile == nil) {
+                // NSLog(@"DBG: can't login demo account!");
+                showDialog(self, @"Error", @"Can't login a demo account!");
+            } else {
+/*
+                NSString *out_accessToken = [jsonArray valueForKey:@"accessToken"];
+                NSString *out_clientToken = [jsonArray valueForKey:@"clientToken"];
+                NSString *out_profileID = [selectedProfile valueForKey:@"id"];
+                NSString *out_username = [selectedProfile valueForKey:@"name"];
+                NSLog(@"DBG: Login succeed: %@, %@, %@, %@", out_accessToken, out_clientToken, out_profileID, out_username);
+*/
+                
+                loginAccountInput(self.navigationController, TYPE_MOJANG, [dataStr UTF8String]);
+            }
+        } else {
+            NSString *err_title = [jsonArray valueForKey:@"error"];
+            NSString *err_msg = [jsonArray valueForKey:@"errorMessage"];
+            // NSLog(@"DBG Error: %@: %@", err_title, err_msg);
+            showDialog(self, err_title, err_msg);
+        }
+    }];
+    [postDataTask resume];
 }
 
 @end
@@ -271,7 +323,7 @@ NSMutableArray *accountList;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *str = [accountList objectAtIndex:indexPath.row];
-    loginAccountInput(self.navigationController, TYPE_SELECTACC, [str UTF8String], "");
+    loginAccountInput(self.navigationController, TYPE_SELECTACC, [str UTF8String]);
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
