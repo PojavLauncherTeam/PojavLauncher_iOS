@@ -517,19 +517,11 @@ public class GLFW
         
         mGLFWVideoMode = new GLFWVidMode(ByteBuffer.allocateDirect(GLFWVidMode.SIZEOF));
 /*
-        memPutInt(mGLFWVideoMode.address() + mGLFWVideoMode.WIDTH, mGLFWWindowWidth);
-        memPutInt(mGLFWVideoMode.address() + mGLFWVideoMode.HEIGHT, mGLFWWindowHeight);
-        memPutInt(mGLFWVideoMode.address() + mGLFWVideoMode.REDBITS, 8);
-        memPutInt(mGLFWVideoMode.address() + mGLFWVideoMode.GREENBITS, 8);
-        memPutInt(mGLFWVideoMode.address() + mGLFWVideoMode.BLUEBITS, 8);
-        memPutInt(mGLFWVideoMode.address() + mGLFWVideoMode.REFRESHRATE, 60);
+        memPutInt(mGLFWVideoMode.address() + (long) mGLFWVideoMode.REDBITS, 8);
+        memPutInt(mGLFWVideoMode.address() + (long) mGLFWVideoMode.GREENBITS, 8);
+        memPutInt(mGLFWVideoMode.address() + (long) mGLFWVideoMode.BLUEBITS, 8);
+        memPutInt(mGLFWVideoMode.address() + (long) mGLFWVideoMode.REFRESHRATE, 60);
 */
-
-        GLFWVidMode.WIDTH = mGLFWWindowWidth;
-        GLFWVidMode.HEIGHT = mGLFWWindowHeight;
-        GLFWVidMode.REDBITS = GLFWVidMode.GREENBITS = GLFWVidMode.BLUEBITS = 8;
-        GLFWVidMode.REFRESHRATE = 60;
-        
         // A way to generate key code names
         Field[] thisFieldArr = GLFW.class.getFields();
         try {
@@ -616,6 +608,13 @@ public class GLFW
 
 	public static SharedLibrary getLibrary() {
         return GLFW;
+    }
+    
+    public static void internalChangeMonitorSize(int width, int height) {
+        mGLFWWindowWidth = width;
+        mGLFWWindowHeight = height;
+        memPutInt(mGLFWVideoMode.address() + (long) mGLFWVideoMode.WIDTH, mGLFWWindowWidth);
+        memPutInt(mGLFWVideoMode.address() + (long) mGLFWVideoMode.HEIGHT, mGLFWWindowHeight);
     }
     
     public static GLFWWindowProperties internalGetWindow(long window) {
@@ -1111,8 +1110,7 @@ public class GLFW
                         break;
                     case CallbackBridge.EVENT_TYPE_FRAMEBUFFER_SIZE:
                     case CallbackBridge.EVENT_TYPE_WINDOW_SIZE:
-                        mGLFWWindowWidth = dataArr[1];
-                        mGLFWWindowHeight = dataArr[2];
+                        internalChangeMonitorSize(dataArr[1], dataArr[2]);
                         glfwSetWindowSize(ptr, mGLFWWindowWidth, mGLFWWindowHeight);
                         if (dataArr[0] == CallbackBridge.EVENT_TYPE_FRAMEBUFFER_SIZE && mGLFWFramebufferSizeCallback != null) {
                             mGLFWFramebufferSizeCallback.invoke(ptr, mGLFWWindowWidth, mGLFWWindowHeight);

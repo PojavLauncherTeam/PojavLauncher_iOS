@@ -72,16 +72,11 @@ public class Display {
     static {
         Sys.initialize(); // init using dummy sys method
 
-        GLFWVidMode.WIDTH = GLFW.mGLFWWindowWidth;
-        GLFWVidMode.HEIGHT = GLFW.mGLFWWindowHeight;
-
         long monitor = glfwGetPrimaryMonitor();
         GLFWVidMode vidmode = glfwGetVideoMode(monitor);
 
-        int monitorWidth = displayWidth = displayFramebufferWidth = GLFW.mGLFWWindowWidth;
-        // vidmode.width();
-        int monitorHeight = displayHeight = displayFramebufferHeight = GLFW.mGLFWWindowHeight;
-        // vidmode.height();
+        int monitorWidth = displayWidth = displayFramebufferWidth = vidmode.width();
+        int monitorHeight = displayHeight = displayFramebufferHeight = vidmode.height();
         int monitorBitPerPixel = vidmode.redBits() + vidmode.greenBits() + vidmode.blueBits();
         int monitorRefreshRate = vidmode.refreshRate();
 
