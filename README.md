@@ -63,7 +63,7 @@ chmod 755 *.sh
 - [x] Account authentication (partial).
 - [x] Does it work? Partial.
 - Currently, only Minecraft 1.6.1+ tested to fully works.
-- Forge and Fabric API won't work, but Fabric Loader and OptiFine will.
+- Forge (1.13+), Fabric and OptiFine works well.
 
 ## Known issues
 - Mojang authentication might not work, but copying logged in account json from Android will work.
