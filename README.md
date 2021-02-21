@@ -76,7 +76,7 @@ chmod 755 *.sh
 - Find and install `java-16-openjdk`.
 
 ### For other jailbreak bootstrap
-- Download [openjdk-16-jre.deb](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/releases/download/v16-openjdk/openjdk-16-jre_16.0.0_iphoneos-arm.deb).
+- Download [openjdk-16-jre.deb](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/releases/tag/v16-openjdk).
 - Install and open Filza File manager.
 - Go to where the .deb file downloaded.
 - Open it and press Install.
