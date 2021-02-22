@@ -95,6 +95,19 @@ int notchOffset;
 
     [self.view addSubview:touchView];
     
+    if (@available(iOS 13.4, *)) {
+        [touchView addInteraction:[[UIPointerInteraction alloc] initWithDelegate:self]];
+        
+        // TODO scroll
+        UIPanGestureRecognizer *mouseWheelGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(surfaceOnMouseScroll:)];
+        mouseWheelGesture.allowedScrollTypesMask = UIScrollTypeMaskDiscrete;
+        mouseWheelGesture.allowedTouchTypes = @[ @(UITouchTypeIndirectPointer) ];
+        mouseWheelGesture.cancelsTouchesInView = NO;
+        mouseWheelGesture.delaysTouchesBegan = NO;
+        mouseWheelGesture.delaysTouchesEnded = NO;
+        [touchView addGestureRecognizer:mouseWheelGesture];
+    }
+    
     inputView = [[UITextField alloc] initWithFrame:CGRectMake(5 * 3 + 80 * 2, 5, BTN_RECT)];
     inputView.delegate = self;
     inputView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.0f];
@@ -162,6 +175,106 @@ int notchOffset;
     [self setupGL];
 }
 
+#pragma mark - MetalANGLE stuff
+
+- (void)dealloc
+{
+    if ([MGLContext currentContext] == self.context) {
+        [MGLContext setCurrentContext:nil];
+    }
+}
+
+- (void)setupGL
+{
+    [MGLContext setCurrentContext:self.context];
+
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    CGFloat screenScale = [[UIScreen mainScreen] scale];
+
+    int width = (int) roundf(screenBounds.size.width * screenScale);
+    int height = (int) roundf(screenBounds.size.height * screenScale);
+    callback_SurfaceViewController_launchMinecraft(width, height);
+}
+
+BOOL isNotifRemoved;
+- (void)mglkView:(MGLKView *)view drawInRect:(CGRect)rect
+{
+    // glClearColor(0.6f, 0.6f, 0.6f, 1.0f);
+    // glClear(GL_COLOR_BUFFER_BIT);
+    // [self setNeedsDisplay]
+    // NSLog(@"swapbuffer");
+
+    // Remove notifications, so rendering will be manually controlled!
+    if (isNotifRemoved == NO) {
+        isNotifRemoved = YES;
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+        name:MGLKApplicationWillResignActiveNotification
+        object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+        name:MGLKApplicationDidBecomeActiveNotification
+        object:nil];
+    }
+        
+    [super pause];
+
+    // Java_org_lwjgl_glfw_CallbackBridge_nativeSendCursorPos(NULL, NULL, location.x * screenScale, location.y * screenScale);
+}
+
+#pragma mark - Input: send touch utilities
+
+- (void)sendTouchPoint:(CGPoint)location withEvent:(int)event
+{
+    CGFloat screenScale = [[UIScreen mainScreen] scale];
+    if (callback_SurfaceViewController_touchHotbar(location.x * screenScale, location.y * screenScale) == -1) {
+        callback_SurfaceViewController_onTouch(event, location.x * screenScale, location.y * screenScale);
+    }
+}
+
+- (void)sendTouchEvent:(NSSet *)touches withUIEvent:(UIEvent *)uievent withEvent:(int)event
+{
+    UITouch* touchEvent = [touches anyObject];
+    
+    BOOL isTouchTypeIndirect = NO;
+    if (@available(iOS 13.4, *)) {
+        if (touchEvent.type == UITouchTypeIndirectPointer) {
+            isTouchTypeIndirect = YES;
+        }
+    }
+
+    if ([touchEvent view] == touchView) {
+        CGPoint locationInView = [touchEvent locationInView:touchView];
+        [self sendTouchPoint:locationInView withEvent:event];
+    }
+
+    if (!isTouchTypeIndirect) {
+        switch (event) {
+            case ACTION_DOWN:
+                touchesMovedCount = 0;
+                shouldTriggerClick = YES;
+                break;
+
+            case ACTION_MOVE:
+                // TODO: better handling this
+                if (touchesMovedCount >= 1) {
+                    shouldTriggerClick = NO;
+                } else ++touchesMovedCount;
+                break;
+        }
+    } else {
+        // Mouse clicks are handled here
+        int held = event == ACTION_MOVE || event == ACTION_UP;
+        shouldTriggerClick = NO;
+        for (int i = 1; i <= 5; ++i) {
+            if ((uievent.buttonMask & (1 << ((i)-1))) != 0) {
+                // iOS button index = GLFW button index + 1;
+                Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, i - 1, held, 0);
+            }
+        }
+    }
+}
+
+#pragma mark - Input: on-surface gestures
+
 - (void)surfaceOnClick:(UITapGestureRecognizer *)sender {
     if (sender.state == UIGestureRecognizerStateRecognized &&
       shouldTriggerClick == YES) {
@@ -177,6 +290,29 @@ int notchOffset;
         } else {
             Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, hotbarItem, 0, 1, 0);
             Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, hotbarItem, 0, 0, 0);
+        }
+    }
+}
+
+- (void)surfaceOnHover:(UIHoverGestureRecognizer *)sender API_AVAILABLE(ios(13.0)) {
+    if (@available(iOS 13.0, *)) {
+        CGPoint point = [sender locationInView:touchView];
+        // NSLog(@"Mouse move!!");
+        // NSLog(@"Mouse pos = %d, %d", point.x, point.y);
+        switch (sender.state) {
+            case UIGestureRecognizerStateBegan:
+                [self sendTouchPoint:point withEvent:ACTION_DOWN];
+                break;
+            case UIGestureRecognizerStateChanged:
+                [self sendTouchPoint:point withEvent:ACTION_MOVE];
+                break;
+            case UIGestureRecognizerStateEnded:
+            case UIGestureRecognizerStateCancelled:
+                [self sendTouchPoint:point withEvent:ACTION_UP];
+                break;
+            default:
+                // point = CGPointMake(-1, -1);
+                break;
         }
     }
 }
@@ -239,6 +375,8 @@ int notchOffset;
     return YES;
 }
 
+#pragma mark - On-screen button functions
+
 int currentVisibility = 1;
 ADD_BUTTON_DEF(special_togglebtn) {
     if (held == 0) {
@@ -286,89 +424,34 @@ ADD_BUTTON_DEF_KEY(left_shift, GLFW_KEY_LEFT_SHIFT)
 ADD_BUTTON_DEF_KEY(space, GLFW_KEY_SPACE)
 ADD_BUTTON_DEF_KEY(escape, GLFW_KEY_ESCAPE)
 
-- (void)dealloc
-{
-    if ([MGLContext currentContext] == self.context) {
-        [MGLContext setCurrentContext:nil];
-    }
-}
-
-- (void)setupGL
-{
-    [MGLContext setCurrentContext:self.context];
-
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    CGFloat screenScale = [[UIScreen mainScreen] scale];
-
-    int width = (int) roundf(screenBounds.size.width * screenScale);
-    int height = (int) roundf(screenBounds.size.height * screenScale);
-    callback_SurfaceViewController_launchMinecraft(width, height);
-}
-
-BOOL isNotifRemoved;
-- (void)mglkView:(MGLKView *)view drawInRect:(CGRect)rect {
-    // glClearColor(0.6f, 0.6f, 0.6f, 1.0f);
-    // glClear(GL_COLOR_BUFFER_BIT);
-    // [self setNeedsDisplay]
-    // NSLog(@"swapbuffer");
-
-    // Remove notifications, so rendering will be manually controlled!
-    if (isNotifRemoved == NO) {
-        isNotifRemoved = YES;
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-        name:MGLKApplicationWillResignActiveNotification
-        object:nil];
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-        name:MGLKApplicationDidBecomeActiveNotification
-        object:nil];
-    }
-        
-    [super pause];
-}
-
-- (void)sendTouchEvent:(NSSet *)touches withEvent:(int)event
-{
-    UITouch* touchEvent = [touches anyObject];
-    if ([touchEvent view] == touchView) {
-        CGPoint locationInView = [touchEvent locationInView:touchView];
-        [self sendTouchPoint:locationInView withEvent:event];
-    }
-}
-
-- (void)sendTouchPoint:(CGPoint)location withEvent:(int)event{
-    CGFloat screenScale = [[UIScreen mainScreen] scale];
-    if (callback_SurfaceViewController_touchHotbar(location.x * screenScale, location.y * screenScale) == -1) {
-        callback_SurfaceViewController_onTouch(event, location.x * screenScale, location.y * screenScale);
-    }
-    
-    // Java_org_lwjgl_glfw_CallbackBridge_nativeSendCursorPos(NULL, NULL, location.x * screenScale, location.y * screenScale);
-}
+#pragma mark - Input: On-screen touch events
 
 int touchesMovedCount;
 // Equals to Android ACTION_DOWN
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesBegan: touches withEvent: event];
-    [self sendTouchEvent: touches withEvent: ACTION_DOWN];
-    touchesMovedCount = 0;
-    shouldTriggerClick = YES;
+    [self sendTouchEvent: touches withUIEvent: event withEvent: ACTION_DOWN];
 }
 
 // Equals to Android ACTION_MOVE
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesMoved: touches withEvent: event];
-    [self sendTouchEvent: touches withEvent: ACTION_MOVE];
-    if (touchesMovedCount >= 1) {
-        shouldTriggerClick = NO;
-    } else ++touchesMovedCount;
+    [self sendTouchEvent: touches withUIEvent: event withEvent: ACTION_MOVE];
 }
 
 // Equals to Android ACTION_UP
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesEnded: touches withEvent: event];
-    [self sendTouchEvent: touches withEvent: ACTION_UP];
+    [self sendTouchEvent: touches withUIEvent: event withEvent: ACTION_UP];
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesCancelled: touches withEvent: event];
+    [self sendTouchEvent: touches withUIEvent: event withEvent: ACTION_UP];
 }
 
 @end
