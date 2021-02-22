@@ -59,10 +59,6 @@ int launchJVM(int argc, char *argv[]) {
     setenv("LIBGL_NORMALIZE", "1", 1);
     
     chdir("/var/mobile/Documents/minecraft");
-    
-    if (chmod("/usr/lib/jvm/java-16-openjdk/bin/java", S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH) == -1) {
-        debug("Warning: chmod +x java failed");
-    }
 
     char classpath[10000];
     
