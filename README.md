@@ -4,6 +4,8 @@
 # PojavLauncher_iOS
 Minecraft: Java Edition launcher for iOS, based on [PojavLauncher Android](https://github.com/PojavLauncherTeam/PojavLauncher).
 
+This launcher is now available at Procursus repository, thanks to @Diatrus!
+
 ## Navigation
 - [Introduction](#introduction)
 - [Building](#building)
