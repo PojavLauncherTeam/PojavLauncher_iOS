@@ -181,6 +181,10 @@ int notchOffset;
     }
 }
 
+-(BOOL)prefersHomeIndicatorAutoHidden {
+    return YES;
+}
+
 -(void)surfaceOnLongpress:(UILongPressGestureRecognizer *)sender
 {
     CGFloat screenScale = [[UIScreen mainScreen] scale];
