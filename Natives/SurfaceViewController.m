@@ -95,10 +95,11 @@ int notchOffset;
 
     [self.view addSubview:touchView];
     
-    if (@available(iOS 13.4, *)) {
+    if (NSClassFromString(@"UIPointerInteraction") != nil) {
         [touchView addInteraction:[[UIPointerInteraction alloc] initWithDelegate:self]];
-        
-        // TODO scroll
+    }
+    
+    if (@available(iOS 13.4, *)) {
         UIPanGestureRecognizer *mouseWheelGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(surfaceOnMouseScroll:)];
         mouseWheelGesture.allowedScrollTypesMask = UIScrollTypeMaskDiscrete;
         mouseWheelGesture.allowedTouchTypes = @[ @(UITouchTypeIndirectPointer) ];
@@ -345,6 +346,55 @@ BOOL isNotifRemoved;
         }
     }
 }
+
+-(void)surfaceOnMouseScroll:(UIPanGestureRecognizer *)sender API_AVAILABLE(ios(13.4))
+{
+    if (sender.state == UIGestureRecognizerStateBegan ||
+        sender.state == UIGestureRecognizerStateChanged ||
+        sender.state == UIGestureRecognizerStateEnded) {
+        CGPoint velocity = [sender velocityInView:self];
+
+        if (velocity.x > 0.0f) {
+            velocity.x = -1.0;
+        } else if (velocity.x < 0.0f) {
+            velocity.x = 1.0f;
+        }
+        if (velocity.y > 0.0f) {
+            velocity.y = -1.0;
+        } else if (velocity.y < 0.0f) {
+            velocity.y = 1.0f;
+        }
+        if (velocity.x != 0.0f || velocity.y != 0.0f) {
+            Java_org_lwjgl_glfw_CallbackBridge_nativeSendScroll(NULL, NULL, (jdouble) velocity.x, (jdouble) velocity.y);
+        }
+    }
+}
+
+- (UIPointerRegion *)pointerInteraction:(UIPointerInteraction *)interaction regionForRequest:(UIPointerRegionRequest *)request defaultRegion:(UIPointerRegion *)defaultRegion API_AVAILABLE(ios(13.4)) API_AVAILABLE(ios(13.4)) API_AVAILABLE(ios(13.4)){
+    if (request != nil) {
+        CGPoint origin = touchView.bounds.origin;
+        CGPoint point = request.location;
+
+        point.x -= origin.x;
+        point.y -= origin.y;
+        
+        NSLog("UIPointerInteraction pos changed: x=%d, y=%d", point.x, point.y);
+
+        // TODO FIXME
+        callback_SurfaceViewController_onTouch(ACTION_DOWN, (int)point.x, (int)point.y);
+    }
+    return [UIPointerRegion regionWithRect:touchView.bounds identifier:nil];
+}
+
+- (UIPointerStyle *)pointerInteraction:(UIPointerInteraction *)interaction styleForRegion:(UIPointerRegion *)region  API_AVAILABLE(ios(13.4)){
+    if (isGrabbing == JNI_FALSE) {
+        return nil;
+    } else {
+        return [UIPointerStyle hiddenPointerStyle];
+    }
+}
+
+#pragma mark - Input view stuff
 
 -(void)inputViewDidChange {
     if ([inputView.text length] <= 1) {
