@@ -68,7 +68,6 @@ chmod 755 *.sh
 - Forge (1.13+), Fabric and OptiFine works well.
 
 ## Known issues
-- Mojang authentication might not work, but copying logged in account json from Android will work.
 - (Some versions) Camera position will be jumped to random location on first time touch.
 - It might crash sometimes, but try launch again until you get it works.
 
@@ -97,9 +96,9 @@ Contributions are welcome! We welcome any type of contribution, not only code. A
 
 ## Credits & Third party components and their licenses
 - [Contributors of PojavLauncher Android](https://github.com/PojavLauncherTeam/PojavLauncher/graphs/contributors) and here.
-- Apache Commons.
-- jsr305
-- org.json
+- [Apache Commons](https://commons.apache.org): [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt).
+- [jsr305](https://code.google.com/p/jsr-305): [3-Clause BSD License](http://opensource.org/licenses/BSD-3-Clause).
+- [org.json](https://github.com/stleary/JSON-java): [The JSON License](https://www.json.org/license.html).
 - [Boardwalk](https://github.com/zhuowei/Boardwalk) (JVM Launcher): Unknown License/[Apache License 2.0](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE) or GNU GPLv2.
 - [GL4ES](https://github.com/ptitSeb/gl4es) by @lunixbochs @ptitSeb: [MIT License](https://github.com/ptitSeb/gl4es/blob/master/LICENSE).<br>
 - [MetalANGLE](https://github.com/kakashidinho/metalangle) by @kakashidinho and ANGLE team: [BSD License 2.0](https://github.com/kakashidinho/metalangle/blob/master/LICENSE).
