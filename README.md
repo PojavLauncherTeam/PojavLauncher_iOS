@@ -23,7 +23,8 @@ This launcher is now available at Procursus repository, thanks to @Diatrus!
 ## Building
 Requirements:
 - Mac OS X (tested: 10.15)
-- XCode (tested: 11.7.0)
+- Xcode (tested: 11.7.0)
+- Minimum iOS SDK: 13.4.
 - JDK 8 installed
 - `gradle` to build Java part.
 - `cmake`, `wget`, `ldid`, `dpkg` and `fakeroot` to package.
