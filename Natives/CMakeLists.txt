@@ -19,5 +19,5 @@ target_link_libraries(pojavexec
     "-framework UIKit"
     "-framework MetalANGLE"
     "-framework CoreGraphics"
-    "-framework SafariServices"
+    "-framework AuthenticationServices"
 )
