@@ -74,8 +74,8 @@ chmod 755 *.sh
 
 ## Installing OpenJDK 16
 ### For Chimera/Odyssey bootstrap
-- Add Procursus repository (https://apt.procurs.us).
-- Find and install `java-16-openjdk`.
+- Add Procursus repository (https://apt.procurs.us) (usually Sileo package manager already come with Procursus repo).
+- Find and install `openjdk-jre`.
 
 ### For other jailbreak bootstrap
 - Download [openjdk-16-jre.deb](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/releases/tag/v16-openjdk).
