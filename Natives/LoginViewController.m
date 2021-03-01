@@ -1,7 +1,7 @@
 #include <dirent.h>
 #include <stdio.h>
 
-#import <SafariServices/SafariServices.h>
+#import <AuthenticationServices/AuthenticationServices.h>
 
 #import "AppDelegate.h"
 #import "LauncherViewController.h"
@@ -39,7 +39,8 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     }
 }
 
-@interface LoginViewController ()<SFSafariViewControllerDelegate>{
+#pragma mark - LoginViewController
+@interface LoginViewController () <ASWebAuthenticationPresentationContextProviding>{
 }
 
 @end
@@ -170,9 +171,44 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 
 - (void)loginMicrosoft {
     NSURL *url = [NSURL URLWithString:@"https://login.live.com/oauth20_authorize.srf?client_id=00000000402b5328&response_type=code&scope=service%3A%3Auser.auth.xboxlive.com%3A%3AMBI_SSL&redirect_url=https%3A%2F%2Flogin.live.com%2Foauth20_desktop.srf"];
-    SFSafariViewController *vc = [[SFSafariViewController alloc] initWithURL:url];
-    vc.delegate = self;
-    [self presentViewController:vc animated:YES completion:nil];
+
+    ASWebAuthenticationSession *authVC =
+        [[ASWebAuthenticationSession alloc] initWithURL:url
+        callbackURLScheme:@"ms-xal-00000000402b5328://"
+        completionHandler:^(NSURL * _Nullable callbackURL,
+        NSError * _Nullable error) {
+            if (callbackURL != nil) {
+                NSString *urlString = [callbackURL absoluteString];
+                NSLog(@"URL returned = %@", [callbackURL absoluteString]);
+
+                if ([urlString containsString:@"/auth/?code="] == YES) {
+                    NSArray *components = [urlString componentsSeparatedByString:@"/auth/?code="];
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+                        loginAccountInput(self.navigationController, TYPE_MICROSOFT, [components[1] UTF8String]);
+                    });
+                } else {
+                    NSArray *components = [urlString componentsSeparatedByString:@"/auth/?error="];
+                    if ([components[1] hasPrefix:@"access_denied"] == NO) {
+                        NSString *outError = [components[1]
+                            stringByReplacingOccurrencesOfString:@"&error_description=" withString:@": "];
+                        outError = [outError stringByRemovingPercentEncoding];
+                        showDialog(self, @"Error", outError);
+                    }
+                }
+            } else {
+                if (error.code != ASWebAuthenticationSessionErrorCodeCanceledLogin) {
+                    showDialog(self, @"Error", error.localizedDescription);
+                }
+            }
+        }];
+
+    if (@available(iOS 13.0, *)) {
+        authVC.presentationContextProvider = self;
+    }
+
+    if ([authVC start] == NO) {
+        showDialog(self, @"Error", @"Unable to open Safari");
+    }
 }
 
 - (void)loginOffline {
@@ -182,20 +218,6 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 - (void)loginAccount {
     LoginListViewController *vc = [[LoginListViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
-}
-
-- (void)safariViewControllerDidFinish:(SFSafariViewController *)controller {
-    [controller dismissViewControllerAnimated:true completion:nil];
-}
-
-- (void)msaLoginCallback:(NSNotification *)notification {
-    [self dismissViewControllerAnimated:YES completion:nil];
-
-    NSDictionary *dict = [notification userInfo];
-    NSURL *url = [dict objectForKey:@"url"];
-    NSArray *components = [[url absoluteString] componentsSeparatedByString:@"?code="];
-    // NSLog(@"URL returned = %@", components[1]);
-    loginAccountInput(self.navigationController, TYPE_MICROSOFT, [components[1] UTF8String]);
 }
 
 -(void)loginMojangWithUsername:(NSString*)input_username password:(NSString*)input_password {
@@ -254,8 +276,14 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     [postDataTask resume];
 }
 
+#pragma mark - ASWebAuthenticationPresentationContextProviding
+- (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session  API_AVAILABLE(ios(13.0)){
+    return UIApplication.sharedApplication.keyWindow;
+}
+
 @end
 
+#pragma mark - LoginListViewController
 @interface LoginListViewController () {
 }
 
