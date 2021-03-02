@@ -412,7 +412,7 @@ BOOL isNotifRemoved;
         point.x -= origin.x;
         point.y -= origin.y;
         
-        NSLog("UIPointerInteraction pos changed: x=%d, y=%d", point.x, point.y);
+        NSLog(@"UIPointerInteraction pos changed: x=%d, y=%d", point.x, point.y);
 
         // TODO FIXME
         callback_SurfaceViewController_onTouch(ACTION_DOWN, (int)point.x, (int)point.y);
