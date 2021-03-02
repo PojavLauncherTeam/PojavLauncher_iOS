@@ -88,7 +88,7 @@ int launchJVM(int argc, char *argv[]) {
         margv[margc++] = "-Djava.library.path=/Applications/PojavLauncher.app/Frameworks";
         margv[margc++] = "-Duser.dir=/var/mobile/Documents/minecraft";
         margv[margc++] = "-Duser.home=/var/mobile/Documents";
-        margv[margc++] = "-Dorg.lwjgl.opengl.libname=libGL.dylib";
+        margv[margc++] = "-Dorg.lwjgl.opengl.libname=libgl4es_114.dylib";
         margv[margc++] = "-Dorg.lwjgl.system.allocator=system";
         char jvmargs[10000];
         FILE* argsFile = fopen(args_path, "r");
