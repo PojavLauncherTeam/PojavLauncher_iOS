@@ -11,6 +11,7 @@
 
 #include "jni.h"
 #include "log.h"
+#include "utils.h"
 #include "JavaLauncher.h"
 
 // PojavLancher: fixme: are these wrong?
@@ -57,6 +58,7 @@ int launchJVM(int argc, char *argv[]) {
     // setenv("LIBGL_FB", "2", 1);
     setenv("LIBGL_MIPMAP", "3", 1);
     setenv("LIBGL_NORMALIZE", "1", 1);
+    setenv("LIBGL_DBGSHADERCONV", "1", 1);
     
     chdir("/var/mobile/Documents/minecraft");
 
@@ -113,6 +115,22 @@ int launchJVM(int argc, char *argv[]) {
         for (int i = 0; i < argc; i++) {
             margv[margc++] = argv[i];
         }
+    } else {
+        // Locate gl4es library name:
+        // Reverse the loop, since it is overridable.
+/*
+        char* opengl_prefix = "-Dorg.lwjgl.opengl.libname=";
+        for (int i = argc - 1; i >= 0; i--) {
+            if (strncmp(opengl_prefix, argv[i], strlen(opengl_prefix)) == 0) {
+                strtok(argv[i], "=");
+                setenv("POJAV_OPENGL_LIBNAME", strtok(NULL, "="), 1);
+                break;
+            }
+        }
+*/
+setenv("POJAV_OPENGL_LIBNAME", "libgl4es_114.dylib", 1);
+
+        debug("OpenGL library name: %s", getenv("POJAV_OPENGL_LIBNAME"));
     }
     
     // Load java
