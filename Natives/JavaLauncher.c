@@ -58,7 +58,7 @@ int launchJVM(int argc, char *argv[]) {
     // setenv("LIBGL_FB", "2", 1);
     setenv("LIBGL_MIPMAP", "3", 1);
     setenv("LIBGL_NORMALIZE", "1", 1);
-    setenv("LIBGL_DBGSHADERCONV", "1", 1);
+    // setenv("LIBGL_DBGSHADERCONV", "1", 1);
     
     chdir("/var/mobile/Documents/minecraft");
 
