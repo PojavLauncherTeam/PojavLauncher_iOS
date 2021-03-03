@@ -73,8 +73,14 @@ public class HelloWorld {
 
 			// Get the resolution of the primary monitor
 			GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-			
-			System.out.println("Actual width=" + vidmode.width() + ", height=" + vidmode.height());
+
+            System.out.println("MONITOR SPEC");
+			System.out.println("width=" + vidmode.width());
+            System.out.println("height=" + vidmode.height());
+            System.out.println("red=" + vidmode.redBits());
+            System.out.println("green=" + vidmode.greenBits());
+            System.out.println("blue=" + vidmode.blueBits());
+            System.out.println("refresh=" + vidmode.refreshRate());
 
 			// Center the window
 			glfwSetWindowPos(

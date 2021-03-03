@@ -39,17 +39,27 @@ typedef jint JLI_Launch_func(int argc, char ** argv, /* main argc, argc */
 );
 
 int launchJVM(int argc, char *argv[]) {
+    char *java_libs_dir = "/Applications/PojavLauncher.app/libs";
+    char *args_path = "/var/mobile/Documents/minecraft/overrideargs.txt";
+    char *log_path = "/var/mobile/Documents/minecraft/latestlog.txt";
+    
+    if (!started) {
+        debug("Staring logging STDIO as jrelog:V\n");
+        // Redirect stdio to latestlog.txt
+        FILE* logFile = fopen(log_path, "w");
+        int log_fd = fileno(logFile);
+        dup2(log_fd, 1);
+        dup2(log_fd, 2);
+        close(log_fd);
+    }
+
     debug("Beginning JVM launch\n");
     // setenv("LIBGL_FB", "2", 1);
     setenv("LIBGL_MIPMAP", "3", 1);
     setenv("LIBGL_NORMALIZE", "1", 1);
     
     chdir("/var/mobile/Documents/minecraft");
-    
-    char *java_libs_dir = "/Applications/PojavLauncher.app/libs";
-    
-    char *args_path = "/var/mobile/Documents/minecraft/overrideargs.txt";
-    char *log_path = "/var/mobile/Documents/minecraft/latestlog.txt";
+
     char classpath[10000];
     
     // "/Applications/PojavLauncher.app/libs/launcher.jar:/Applications/PojavLauncher.app/libs/ExagearApacheCommons.jar:/Applications/PojavLauncher.app/libs/gson-2.8.6.jar:/Applications/PojavLauncher.app/libs/jsr305.jar:/Applications/PojavLauncher.app/libs/lwjgl3-minecraft.jar";
@@ -68,20 +78,13 @@ int launchJVM(int argc, char *argv[]) {
     }
     debug("Classpath generated: %s", classpath);
     
-    debug("Staring logging STDIO as jrelog:V\n");
-    // Redirect stdio to latestlog.txt
-    FILE* logFile = fopen(log_path, "w");
-    int log_fd = fileno(logFile);
-    dup2(log_fd, 1);
-    dup2(log_fd, 2);
-    close(log_fd);
-    
     int margc = 0;
     char* margv[1000];
     // Check if JVM restarts
     if (!started) {
         margv[margc++] = "/usr/lib/jvm/java-16-openjdk/bin/java";
         margv[margc++] = "-XstartOnFirstThread";
+        margv[margc++] = "-Djava.system.class.loader=net.kdt.pojavlaunch.PojavClassLoader";
         margv[margc++] = "-Djava.library.path=/Applications/PojavLauncher.app/Frameworks";
         margv[margc++] = "-Duser.dir=/var/mobile/Documents/minecraft";
         margv[margc++] = "-Duser.home=/var/mobile/Documents";
@@ -91,7 +94,9 @@ int launchJVM(int argc, char *argv[]) {
         FILE* argsFile = fopen(args_path, "r");
         debug("Reading custom JVM args (overrideargs.txt), opened=%d\n", argsFile != NULL);
         if (argsFile != NULL) {
-            fscanf(argsFile, "%s", jvmargs);
+            if (!fgets(jvmargs, 10000, argsFile)) {
+                debug("Error: could not read overrideargs.txt");
+            }
             char *pch;
             pch = strtok(jvmargs, " ");
             while (pch != NULL) {

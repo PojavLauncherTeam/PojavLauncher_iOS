@@ -50,12 +50,12 @@ public class GLFWVidMode extends Struct {
 
     /** The struct member offsets. */
     public static final int
-    WIDTH,
-    HEIGHT,
-    REDBITS,
-    GREENBITS,
-    BLUEBITS,
-    REFRESHRATE;
+        WIDTH,
+        HEIGHT,
+        REDBITS,
+        GREENBITS,
+        BLUEBITS,
+        REFRESHRATE;
 
     static {
         Layout layout = __struct(
@@ -140,13 +140,13 @@ public class GLFWVidMode extends Struct {
     /** Unsafe version of {@link #height}. */
     public static int nheight(long struct) { return UNSAFE.getInt(null, struct + GLFWVidMode.HEIGHT); }
     /** Unsafe version of {@link #redBits}. */
-    public static int nredBits(long struct) { return 8; } // UNSAFE.getInt(null, struct + GLFWVidMode.REDBITS); }
+    public static int nredBits(long struct) { return UNSAFE.getInt(null, struct + GLFWVidMode.REDBITS); }
     /** Unsafe version of {@link #greenBits}. */
-    public static int ngreenBits(long struct) { return 8; } // UNSAFE.getInt(null, struct + GLFWVidMode.GREENBITS); }
+    public static int ngreenBits(long struct) { return UNSAFE.getInt(null, struct + GLFWVidMode.GREENBITS); }
     /** Unsafe version of {@link #blueBits}. */
-    public static int nblueBits(long struct) { return 8; } // UNSAFE.getInt(null, struct + GLFWVidMode.BLUEBITS); }
+    public static int nblueBits(long struct) { return UNSAFE.getInt(null, struct + GLFWVidMode.BLUEBITS); }
     /** Unsafe version of {@link #refreshRate}. */
-    public static int nrefreshRate(long struct) { return 60; } // UNSAFE.getInt(null, struct + GLFWVidMode.REFRESHRATE); }
+    public static int nrefreshRate(long struct) { return UNSAFE.getInt(null, struct + GLFWVidMode.REFRESHRATE); }
 
     // -----------------------------------
 

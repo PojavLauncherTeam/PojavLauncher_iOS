@@ -1,12 +1,13 @@
 #include <dirent.h>
 #include <stdio.h>
 
-#import <SafariServices/SafariServices.h>
+#import <AuthenticationServices/AuthenticationServices.h>
 
 #import "AppDelegate.h"
 #import "LauncherViewController.h"
 #import "LoginViewController.h"
 
+#include "ios_uikit_bridge.h"
 #include "utils.h"
 
 #define TYPE_SELECTACC 0
@@ -14,20 +15,19 @@
 #define TYPE_MOJANG 2
 #define TYPE_OFFLINE 3
 
-void loginAccountInput(UINavigationController *controller, int type, char* username_c, char* password_c) {
+void loginAccountInput(UINavigationController *controller, int type, const char* data_c) {
     JNIEnv *env;
     (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &env, NULL);
 
-    jstring username = (*env)->NewStringUTF(env, username_c);
-    jstring password = (*env)->NewStringUTF(env, password_c);
+    jstring data = (*env)->NewStringUTF(env, data_c);
 
     jclass clazz = (*env)->FindClass(env, "net/kdt/pojavlaunch/uikit/AccountJNI");
     assert(clazz);
     
-    jmethodID method = (*env)->GetStaticMethodID(env, clazz, "loginAccount", "(ILjava/lang/String;Ljava/lang/String;)Z");
+    jmethodID method = (*env)->GetStaticMethodID(env, clazz, "loginAccount", "(ILjava/lang/String;)Z");
     assert(method);
     
-    jboolean result = (*env)->CallStaticBooleanMethod(env, clazz, method, type, username, password);
+    jboolean result = (*env)->CallStaticBooleanMethod(env, clazz, method, type, data);
     
     (*runtimeJavaVMPtr)->DetachCurrentThread(runtimeJavaVMPtr);
     
@@ -39,7 +39,8 @@ void loginAccountInput(UINavigationController *controller, int type, char* usern
     }
 }
 
-@interface LoginViewController ()<SFSafariViewControllerDelegate>{
+#pragma mark - LoginViewController
+@interface LoginViewController () <ASWebAuthenticationPresentationContextProviding>{
 }
 
 @end
@@ -65,7 +66,6 @@ void loginAccountInput(UINavigationController *controller, int type, char* usern
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     [self.view addSubview:scrollView];
 
-    // Update color mode once
     if(@available(iOS 13.0, *)) {
         [self traitCollectionDidChange:nil];
     } else {
@@ -112,10 +112,12 @@ void loginAccountInput(UINavigationController *controller, int type, char* usern
 }
 
 -(void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection API_AVAILABLE(ios(13.0)) {
-    if (UITraitCollection.currentTraitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
-        self.view.backgroundColor = [UIColor blackColor];
-    } else {
-        self.view.backgroundColor = [UIColor whiteColor];
+    if(@available(iOS 13.0, *)) {
+        if (UITraitCollection.currentTraitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
+            self.view.backgroundColor = [UIColor blackColor];
+        } else {
+            self.view.backgroundColor = [UIColor whiteColor];
+        }
     }
 }
 
@@ -147,18 +149,14 @@ void loginAccountInput(UINavigationController *controller, int type, char* usern
 
         const char *username = [usernameField.text UTF8String];
         if (type == TYPE_MOJANG) {
-            UITextField *passwordField = textFields[1];
-            const char *password = [passwordField.text UTF8String];
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-                loginAccountInput(self.navigationController, TYPE_MOJANG, username, password);
-            });
+            [self loginMojangWithUsername:usernameField.text password:((UITextField *) textFields[1]).text];
         } else {
             if (usernameField.text.length < 3 || usernameField.text.length > 16) {
                 controller.message = @"Username must be at least 3 characters and maximum 16 characters";
                 [self presentViewController:controller animated:YES completion:nil];
             } else {
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-                    loginAccountInput(self.navigationController, TYPE_OFFLINE, username, "");
+                    loginAccountInput(self.navigationController, TYPE_OFFLINE, username);
                 });
             }
         }
@@ -173,9 +171,44 @@ void loginAccountInput(UINavigationController *controller, int type, char* usern
 
 - (void)loginMicrosoft {
     NSURL *url = [NSURL URLWithString:@"https://login.live.com/oauth20_authorize.srf?client_id=00000000402b5328&response_type=code&scope=service%3A%3Auser.auth.xboxlive.com%3A%3AMBI_SSL&redirect_url=https%3A%2F%2Flogin.live.com%2Foauth20_desktop.srf"];
-    SFSafariViewController *vc = [[SFSafariViewController alloc] initWithURL:url];
-    vc.delegate = self;
-    [self presentViewController:vc animated:YES completion:nil];
+
+    ASWebAuthenticationSession *authVC =
+        [[ASWebAuthenticationSession alloc] initWithURL:url
+        callbackURLScheme:@"ms-xal-00000000402b5328://"
+        completionHandler:^(NSURL * _Nullable callbackURL,
+        NSError * _Nullable error) {
+            if (callbackURL != nil) {
+                NSString *urlString = [callbackURL absoluteString];
+                NSLog(@"URL returned = %@", [callbackURL absoluteString]);
+
+                if ([urlString containsString:@"/auth/?code="] == YES) {
+                    NSArray *components = [urlString componentsSeparatedByString:@"/auth/?code="];
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+                        loginAccountInput(self.navigationController, TYPE_MICROSOFT, [components[1] UTF8String]);
+                    });
+                } else {
+                    NSArray *components = [urlString componentsSeparatedByString:@"/auth/?error="];
+                    if ([components[1] hasPrefix:@"access_denied"] == NO) {
+                        NSString *outError = [components[1]
+                            stringByReplacingOccurrencesOfString:@"&error_description=" withString:@": "];
+                        outError = [outError stringByRemovingPercentEncoding];
+                        showDialog(self, @"Error", outError);
+                    }
+                }
+            } else {
+                if (error.code != ASWebAuthenticationSessionErrorCodeCanceledLogin) {
+                    showDialog(self, @"Error", error.localizedDescription);
+                }
+            }
+        }];
+
+    if (@available(iOS 13.0, *)) {
+        authVC.presentationContextProvider = self;
+    }
+
+    if ([authVC start] == NO) {
+        showDialog(self, @"Error", @"Unable to open Safari");
+    }
 }
 
 - (void)loginOffline {
@@ -187,22 +220,70 @@ void loginAccountInput(UINavigationController *controller, int type, char* usern
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)safariViewControllerDidFinish:(SFSafariViewController *)controller {
-    [controller dismissViewControllerAnimated:true completion:nil];
+-(void)loginMojangWithUsername:(NSString*)input_username password:(NSString*)input_password {
+    NSString *input_uuid = [[NSUUID UUID] UUIDString];
+
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURL *url = [NSURL URLWithString:@"https://authserver.mojang.com/authenticate"];
+    NSMutableURLRequest *request = 
+      [[NSMutableURLRequest alloc] initWithURL:[NSURL
+      URLWithString:@"https://authserver.mojang.com/authenticate"]];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+
+    NSString *jsonString = [NSString stringWithFormat:@"{\"agent\": {\"name\": \"Minecraft\", \"version\": 1}, \"username\": \"%@\", \"password\": \"%@\", \"clientToken\": \"%@\"}", input_username, input_password, input_uuid];
+    // NSLog(jsonString);
+    [request setValue:[NSString stringWithFormat:@"%d",
+      [jsonString length]] forHTTPHeaderField:@"Content-length"];
+    [request setHTTPBody:[jsonString dataUsingEncoding:NSUTF8StringEncoding]];
+
+    NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
+        long statusCode = (long)[httpResponse statusCode];
+
+        NSString *dataStr = [NSString stringWithUTF8String:[data bytes]];
+
+        // NSLog(@"status=%ld, data=%@, response=%@, error=%@", statusCode, dataStr, httpResponse, error);
+        NSError *jsonError = nil;
+        NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+
+        if (jsonError != nil) {
+            NSLog(@"Error parsing JSON: %@", jsonError.localizedDescription);
+            showDialog(self, @"Error parsing JSON", jsonError.localizedDescription);
+        } else if (statusCode == 200) {
+            NSArray *selectedProfile = [jsonArray valueForKey:@"selectedProfile"];
+            if (selectedProfile == nil) {
+                // NSLog(@"DBG: can't login demo account!");
+                showDialog(self, @"Error", @"Can't login a demo account!");
+            } else {
+/*
+                NSString *out_accessToken = [jsonArray valueForKey:@"accessToken"];
+                NSString *out_clientToken = [jsonArray valueForKey:@"clientToken"];
+                NSString *out_profileID = [selectedProfile valueForKey:@"id"];
+                NSString *out_username = [selectedProfile valueForKey:@"name"];
+                NSLog(@"DBG: Login succeed: %@, %@, %@, %@", out_accessToken, out_clientToken, out_profileID, out_username);
+*/
+                
+                loginAccountInput(self.navigationController, TYPE_MOJANG, [dataStr UTF8String]);
+            }
+        } else {
+            NSString *err_title = [jsonArray valueForKey:@"error"];
+            NSString *err_msg = [jsonArray valueForKey:@"errorMessage"];
+            // NSLog(@"DBG Error: %@: %@", err_title, err_msg);
+            showDialog(self, err_title, err_msg);
+        }
+    }];
+    [postDataTask resume];
 }
 
-- (void)msaLoginCallback:(NSNotification *)notification {
-    [self dismissViewControllerAnimated:YES completion:nil];
-
-    NSDictionary *dict = [notification userInfo];
-    NSURL *url = [dict objectForKey:@"url"];
-    NSArray *components = [[url absoluteString] componentsSeparatedByString:@"?code="];
-    // NSLog(@"URL returned = %@", components[1]);
-    loginAccountInput(self.navigationController, TYPE_MICROSOFT, "", [components[1] UTF8String]);
+#pragma mark - ASWebAuthenticationPresentationContextProviding
+- (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session  API_AVAILABLE(ios(13.0)){
+    return UIApplication.sharedApplication.keyWindow;
 }
 
 @end
 
+#pragma mark - LoginListViewController
 @interface LoginListViewController () {
 }
 
@@ -270,7 +351,7 @@ NSMutableArray *accountList;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *str = [accountList objectAtIndex:indexPath.row];
-    loginAccountInput(self.navigationController, TYPE_SELECTACC, [str UTF8String], "");
+    loginAccountInput(self.navigationController, TYPE_SELECTACC, [str UTF8String]);
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {

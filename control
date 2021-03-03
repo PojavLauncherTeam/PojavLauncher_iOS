@@ -1,8 +1,9 @@
 Package: pojavlauncher
 Maintainer: DuyKhanhTran
 Architecture: iphoneos-arm
-Version: 1.0
+Version: 1.1
 Depends: openjdk-16-jre
 Section: Games
 Priority: optional
+Homepage: https://github.com/PojavLauncherTeam/PojavLauncher_iOS
 Description: Minecraft: Java Edition launcher for iOS, based on PojavLauncher Android.

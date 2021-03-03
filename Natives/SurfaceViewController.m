@@ -10,11 +10,14 @@
 #include "GLES2/gl2.h"
 #include "GLES2/gl2ext.h"
 
+// Debugging purposes
+// #define DEBUG_VISIBLE_TEXT_FIELD
+
 #define ADD_BUTTON(NAME, KEY, RECT) \
     UIButton *button_##KEY = [UIButton buttonWithType:UIButtonTypeRoundedRect]; \
     button_##KEY.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth; \
     [button_##KEY setTitle:NAME forState:UIControlStateNormal]; \
-    button_##KEY.frame = RECT; \
+    button_##KEY.frame = CGRectOffset(RECT, notchOffset, 0); \
     [button_##KEY addTarget:self action:@selector(executebtn_##KEY##_down) forControlEvents:UIControlEventTouchDown]; \
     [button_##KEY addTarget:self action:@selector(executebtn_##KEY##_up) forControlEvents:UIControlEventTouchUpInside]; \
     button_##KEY.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.3f]; \
@@ -42,17 +45,25 @@
 
 #define BTN_RECT 80.0, 30.0
 #define BTN_SQUARE 50.0, 50.0
+#define INPUT_SPACE_CHAR @"                    "
+#define INPUT_SPACE_LENGTH 20
 
 int togglableVisibleButtonIndex = -1;
 UIButton* togglableVisibleButtons[100];
+
 UIView *touchView;
+#ifdef DEBUG_VISIBLE_TEXT_FIELD
+UILabel *inputLengthView;
+#endif
 UITextField *inputView;
+int inputTextLength;
+
 BOOL shouldTriggerClick = NO;
-BOOL shouldTriggerEnter = NO;
+int notchOffset;
 
 // TODO: key modifiers impl
 
-@interface SurfaceViewController () {
+@interface SurfaceViewController ()<UITextFieldDelegate> {
 }
 
 @property (strong, nonatomic) MGLContext *context;
@@ -70,11 +81,16 @@ BOOL shouldTriggerEnter = NO;
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];
 
+    UIEdgeInsets insets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height);
     
     savedWidth = roundf(width * screenScale);
     savedHeight = roundf(height * screenScale);
+
+    width = width - insets.left - insets.right;
+    notchOffset = insets.left;
     
     touchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
 
@@ -85,15 +101,24 @@ BOOL shouldTriggerEnter = NO;
     [touchView addGestureRecognizer:tapGesture];
 
     UILongPressGestureRecognizer *longpressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(surfaceOnLongpress:)];
+    longpressGesture.minimumPressDuration = 0.4;
     [touchView addGestureRecognizer:longpressGesture];
 
     [self.view addSubview:touchView];
-    
+#ifndef DEBUG_VISIBLE_TEXT_FIELD
     inputView = [[UITextField alloc] initWithFrame:CGRectMake(5 * 3 + 80 * 2, 5, BTN_RECT)];
-
     inputView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.0f];
+#else
+    inputView = [[UITextField alloc] initWithFrame:CGRectMake(5 * 3 + 80 * 2, 5 * 2 + 30, 200, 30)];
+    inputView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.5f];
+
+    inputLengthView = [[UILabel alloc] initWithFrame:CGRectMake(5 * 2 + 80, 5 * 2 + 30, BTN_RECT)];
+    inputLengthView.text = @"length=?";
+    inputLengthView.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.6f];
+    [self.view addSubview:inputLengthView];
+#endif
+    inputView.delegate = self;
     [inputView addTarget:self action:@selector(inputViewDidChange) forControlEvents:UIControlEventEditingChanged];
-    [inputView addTarget:self action:@selector(inputViewDidReturn) forControlEvents:UIControlEventEditingDidEnd];
     [inputView addTarget:self action:@selector(inputViewDidClick) forControlEvents:UIControlEventTouchDown];
 
     // Custom button
@@ -126,7 +151,6 @@ BOOL shouldTriggerEnter = NO;
     // ADD_BUTTON_VISIBLE(@"Fullscreen", f11, CGRectMake(width - 5 - 80, 5, BTN_RECT));
     
     [self.view addSubview:inputView];
-    [inputView becomeFirstResponder];
 
     [self executebtn_special_togglebtn:0];
 
@@ -135,6 +159,7 @@ BOOL shouldTriggerEnter = NO;
     MGLKView *view = glView = (MGLKView *) self.view;
     view.drawableDepthFormat = MGLDrawableDepthFormat24;
     view.enableSetNeedsDisplay = YES;
+    // [self setPreferredFramesPerSecond:1000];
 
     // Init GLES
     self.context = [[MGLContext alloc] initWithAPI:kMGLRenderingAPIOpenGLES3];
@@ -165,6 +190,9 @@ BOOL shouldTriggerEnter = NO;
         int hotbarItem = callback_SurfaceViewController_touchHotbar(location.x * screenScale, location.y * screenScale);
         
         if (hotbarItem == -1) {
+            inputView.text = INPUT_SPACE_CHAR;
+            inputTextLength = 0;
+
             Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL,
                 isGrabbing == JNI_TRUE ? GLFW_MOUSE_BUTTON_RIGHT : GLFW_MOUSE_BUTTON_LEFT, 1, 0);
             Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL,
@@ -176,6 +204,10 @@ BOOL shouldTriggerEnter = NO;
     }
 }
 
+-(BOOL)prefersHomeIndicatorAutoHidden {
+    return YES;
+}
+
 -(void)surfaceOnLongpress:(UILongPressGestureRecognizer *)sender
 {
     CGFloat screenScale = [[UIScreen mainScreen] scale];
@@ -183,6 +215,9 @@ BOOL shouldTriggerEnter = NO;
     int hotbarItem = callback_SurfaceViewController_touchHotbar(location.x * screenScale, location.y * screenScale);
     if (sender.state == UIGestureRecognizerStateBegan) {
         if (hotbarItem == -1) {
+            inputView.text = INPUT_SPACE_CHAR;
+            inputTextLength = 0;
+
             Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, GLFW_MOUSE_BUTTON_LEFT, 1, 0);
         } else {
             Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_Q, 0, 1, 0);
@@ -197,6 +232,9 @@ BOOL shouldTriggerEnter = NO;
             || sender.state == UIGestureRecognizerStateEnded)
         {
             if (hotbarItem == -1) {
+            inputView.text = INPUT_SPACE_CHAR;
+            inputTextLength = 0;
+
                 Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, GLFW_MOUSE_BUTTON_LEFT, 0, 0);
             } else {
                 Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_Q, 0, 0, 0);
@@ -205,35 +243,92 @@ BOOL shouldTriggerEnter = NO;
     }
 }
 
+NSString* inputStringBefore;
 -(void)inputViewDidChange {
-    if ([inputView.text length] <= 1) {
+    if ([inputView.text length] < INPUT_SPACE_LENGTH) {
     Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_BACKSPACE, 0, 1, 0);
     Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_BACKSPACE, 0, 0, 0);
-    } else {
-        NSString *newText = [inputView.text substringFromIndex:2];
-        int charLength = [newText length];
-        //char16_t *charText = [newText UTF16String];
-        for (int i = 0; i < charLength; i++) {
-            Java_org_lwjgl_glfw_CallbackBridge_nativeSendCharMods(NULL, NULL, (jchar) [newText characterAtIndex:i] /* charText[i] */, /* mods */ 0);
+        inputView.text = [@" " stringByAppendingString:inputView.text];
+
+        if (inputTextLength > 0) {
+            --inputTextLength;
         }
+
+#ifdef DEBUG_VISIBLE_TEXT_FIELD
+            inputLengthView.text = [@"length=" stringByAppendingFormat:@"%i", 
+            inputTextLength];
+#endif
+    } else if ([inputView.text length] > INPUT_SPACE_LENGTH) {
+        NSString *newText = [inputView.text substringFromIndex:INPUT_SPACE_LENGTH];
+        int charLength = [newText length];
+        for (int i = 0; i < charLength; i++) {
+            // Directly convert unichar to jchar which both are in UTF-16 encoding.
+            Java_org_lwjgl_glfw_CallbackBridge_nativeSendCharMods(NULL, NULL, (jchar) [newText characterAtIndex:i] /* charText[i] */, /* mods */ 0);
+            inputView.text = [inputView.text substringFromIndex:1];
+            if (inputTextLength < INPUT_SPACE_LENGTH) {
+                ++inputTextLength;
+            }
+#ifdef DEBUG_VISIBLE_TEXT_FIELD
+            inputLengthView.text = [@"length=" stringByAppendingFormat:@"%i", 
+            inputTextLength];
+#endif
+        }
+        inputStringBefore = inputView.text;
+        // [inputView.text substringFromIndex:inputTextLength - 1];
+    } else {
+#ifdef DEBUG_VISIBLE_TEXT_FIELD
+        NSLog(@"Compare \"%@\" vs \"%@\"", inputView.text, inputStringBefore);
+#endif
+        for (int i = 0; i < INPUT_SPACE_LENGTH; i++) {
+            if ([inputView.text characterAtIndex:i] != [inputStringBefore characterAtIndex:i]) {
+                NSString *inputStringNow = [inputView.text substringFromIndex:i];
+/*
+                inputView.text = [inputView.text substringToIndex:i];
+                // self notify
+                [self inputViewDidChange];
+                
+                inputView.text = [inputView.text stringByAppendingString:inputStringNow];
+                // self notify
+                [self inputViewDidChange];
+*/
+                
+                for (int i2 = 0; i2 < [inputStringNow length]; i2++) {
+                    Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_BACKSPACE, 0, 1, 0);
+                    Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_BACKSPACE, 0, 0, 0);
+                }
+                
+                for (int i2 = 0; i2 < [inputStringNow length]; i2++) {
+                    Java_org_lwjgl_glfw_CallbackBridge_nativeSendCharMods(NULL, NULL, (jchar) [inputStringNow characterAtIndex:i2], /* mods */ 0);
+                }
+
+                break;
+            }
+        }
+
+#ifdef DEBUG_VISIBLE_TEXT_FIELD
+        inputLengthView.text = @"length =";
+#endif
+        inputStringBefore = inputView.text;
+        // [inputView.text substringFromIndex:inputTextLength - 1];
     }
 
     // Reset to default value
-    inputView.text = @"  ";
+    // inputView.text = INPUT_SPACE_CHAR;
 }
 
 -(void)inputViewDidClick {
     // Zero the input field so user will no longer able to select text inside.
+#ifndef DEBUG_VISIBLE_TEXT_FIELD
     inputView.alpha = 0.0f;
-    inputView.text = @"  ";
-    shouldTriggerEnter = YES;
+#endif
+    inputView.text = INPUT_SPACE_CHAR;
+    inputTextLength = 0;
 }
 
--(void)inputViewDidReturn {
-    if (shouldTriggerEnter == YES) {
-        Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_ENTER, 0, 1, 0);
-        Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_ENTER, 0, 0, 0);
-    }
+-(BOOL)textFieldShouldReturn:(UITextField *)textField {
+    Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_ENTER, 0, 1, 0);
+    Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_ENTER, 0, 0, 0);
+    return YES;
 }
 
 int currentVisibility = 1;
@@ -243,12 +338,15 @@ ADD_BUTTON_DEF(special_togglebtn) {
         for (int i = 0; i < togglableVisibleButtonIndex + 1; i++) {
             togglableVisibleButtons[i].hidden = currentVisibility;
         }
+
+#ifndef DEBUG_VISIBLE_TEXT_FIELD
+        inputView.hidden = currentVisibility;
+#endif
     }
 }
 
 ADD_BUTTON_DEF(special_keyboard) {
     if (held == 0) {
-        shouldTriggerEnter = NO;
         [inputView resignFirstResponder];
         inputView.alpha = 1.0f;
         inputView.text = @"";
@@ -265,7 +363,7 @@ ADD_BUTTON_DEF(special_mouse_sec) {
 
 ADD_BUTTON_DEF_KEY(f3, GLFW_KEY_F3)
 ADD_BUTTON_DEF_KEY(f5, GLFW_KEY_F5)
-// ADD_BUTTON_DEF_KEY(f11, GLFW_KEY_F11)
+ADD_BUTTON_DEF_KEY(f11, GLFW_KEY_F11)
 ADD_BUTTON_DEF_KEY(t, GLFW_KEY_T)
 ADD_BUTTON_DEF_KEY(c, GLFW_KEY_C)
 ADD_BUTTON_DEF_KEY(f, GLFW_KEY_F)
@@ -281,13 +379,6 @@ ADD_BUTTON_DEF_KEY(left_shift, GLFW_KEY_LEFT_SHIFT)
 
 ADD_BUTTON_DEF_KEY(space, GLFW_KEY_SPACE)
 ADD_BUTTON_DEF_KEY(escape, GLFW_KEY_ESCAPE)
-
-/*
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-}
-*/
 
 - (void)dealloc
 {
@@ -374,5 +465,4 @@ int touchesMovedCount;
     [self sendTouchEvent: touches withEvent: ACTION_UP];
 }
 
-// #pragma mark - GLKView and GLKViewController delegate methods
 @end

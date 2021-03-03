@@ -38,7 +38,9 @@ UITextField* versionTextField;
     }
 
     char configver[1024];
-    fscanf(configver_file, "%s", configver);
+    if (!fgets(configver, 1024, configver_file)) {
+        NSLog(@"Error: could not read config_ver.txt");
+    }
 
     UILabel *versionTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 4.0, 0.0, 30.0)];
     versionTextView.text = @"Minecraft version:";
@@ -68,10 +70,12 @@ UITextField* versionTextField;
 }
 
 -(void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection API_AVAILABLE(ios(13.0)) {
-    if (UITraitCollection.currentTraitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
-        self.view.backgroundColor = [UIColor blackColor];
-    } else {
-        self.view.backgroundColor = [UIColor whiteColor];
+    if(@available(iOS 13.0, *)) {
+        if (UITraitCollection.currentTraitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
+            self.view.backgroundColor = [UIColor blackColor];
+        } else {
+            self.view.backgroundColor = [UIColor whiteColor];
+        }
     }
 }
 

@@ -16,8 +16,7 @@ public class UIKit {
     }
 
     public static void callback_SurfaceViewController_launchMinecraft(int width, int height) {
-        GLFW.mGLFWWindowWidth = width;
-        GLFW.mGLFWWindowHeight = height;
+        GLFW.internalChangeMonitorSize(width, height);
         CallbackBridge.mouseX = width / 2;
         CallbackBridge.mouseY = height / 2;
         PLaunchApp.launchMinecraft();
