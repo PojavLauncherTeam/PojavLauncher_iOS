@@ -110,6 +110,14 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     [button_login_account addTarget:self action:@selector(loginAccount) forControlEvents:UIControlEventTouchUpInside];
     [scrollView addSubview:button_login_account];
 }
+/*
+-(BOOL)prefersHomeIndicatorAutoHidden {
+    return YES;
+}
+*/
+- (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
+    return UIRectEdgeTop;
+}
 
 -(void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection API_AVAILABLE(ios(13.0)) {
     if(@available(iOS 13.0, *)) {
