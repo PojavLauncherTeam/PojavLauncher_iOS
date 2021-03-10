@@ -130,32 +130,72 @@ int notchOffset;
 
     // Custom button
     // ADD_BUTTON(@"F1", f1, CGRectMake(5, 5, width, height));
+    
+    
+    // Temporary custom controls
+    BOOL cc_fallback = YES;
+    
+    FILE *cc_file = fopen("/var/mobile/Documents/.pojavlauncher/customcontrols/default.json", "r");
 
-    ADD_BUTTON(@"GUI", SPECIALBTN_TOGGLECTRL, CGRectMake(5, height - 5 - 50, BTN_SQUARE), NO);
-    ADD_BUTTON(@"Keyboard", SPECIALBTN_KEYBOARD, CGRectMake(5 * 3 + 80 * 2, 5, BTN_RECT), YES);
+    // 100kb (might not safe)
+    char cc_data[102400];
+    fseek(cc_file, 0L, SEEK_END);
+    long cc_size = ftell(cc_file);
+    rewind(cc_file);
 
-    ADD_BUTTON(@"Pri", SPECIALBTN_MOUSEPRI, CGRectMake(5, height - 5 * 3 - 50 * 3, BTN_SQUARE), YES);
-    ADD_BUTTON(@"Sec", SPECIALBTN_MOUSESEC, CGRectMake(5 * 3 + 50 * 2, height - 5 * 3 - 50 * 3, BTN_SQUARE), YES);
+    NSError *cc_error;
+    if (YES /* FIXME, temp skip */ || !cc_file || !fread(cc_data, cc_size, 1, cc_file)) {
+        NSLog(@"Error: could not read \"default.json\", fallbacking to default control.\n%s", strerror(errno));
+        fclose(cc_file);
+    } else {
+        fclose(cc_file);
+        NSLog(@"%s", cc_data);
+        NSDictionary *cc_dictionary = [NSJSONSerialization JSONObjectWithData:@(cc_data) options:kNilOptions error:&cc_error];
+        if (cc_error != nil) {
+            showDialog(self, @"Error parsing JSON", cc_error.localizedDescription);
+        } else {
+            NSArray *cc_controlDataList = (NSArray *) [cc_dictionary valueForKey:@"mControlDataList"];
+            for (int i = 0; i < (int) cc_controlDataList.count; i++) {
+                ControlButton *button = [ControlButton initWithProperties:(NSMutableDictionary *)cc_controlDataList[i]];
+                [button addTarget:self action:@selector(executebtn_down:) forControlEvents:UIControlEventTouchDown];
+                [button addTarget:self action:@selector(executebtn_up:) forControlEvents:UIControlEventTouchUpInside];
+                [button addTarget:self action:@selector(executebtn_up:) forControlEvents:UIControlEventTouchUpOutside];
+                [self.view addSubview:button];
+                if ([(NSNumber *) [button.properties valueForKey:@"keycode"] intValue] != SPECIALBTN_TOGGLECTRL) {
+                    togglableVisibleButtons[++togglableVisibleButtonIndex] = button;
+                }
+            }
+            cc_fallback = NO;
+        }
+    }
 
-    ADD_BUTTON(@"Debug", GLFW_KEY_F3, CGRectMake(5, 5, BTN_RECT), YES);
-    ADD_BUTTON(@"Chat", GLFW_KEY_T, CGRectMake(5 * 2 + 80, 5, BTN_RECT), YES);
-    ADD_BUTTON(@"Tab", GLFW_KEY_TAB, CGRectMake(5 * 4 + 80 * 3, 5, BTN_RECT), YES);
-    ADD_BUTTON(@"Opti-Zoom", GLFW_KEY_C, CGRectMake(5 * 5 + 80 * 4, 5, BTN_RECT), YES);
-    ADD_BUTTON(@"Offhand", GLFW_KEY_F, CGRectMake(5 * 6 + 80 * 5, 5, BTN_RECT), YES);
-    ADD_BUTTON(@"3rd", GLFW_KEY_F5, CGRectMake(5, 5 * 2 + 30.0, BTN_RECT), YES);
+    if (cc_fallback == YES) {
+        ADD_BUTTON(@"GUI", SPECIALBTN_TOGGLECTRL, CGRectMake(5, height - 5 - 50, BTN_SQUARE), NO);
+        ADD_BUTTON(@"Keyboard", SPECIALBTN_KEYBOARD, CGRectMake(5 * 3 + 80 * 2, 5, BTN_RECT), YES);
 
-    ADD_BUTTON(@"▲", GLFW_KEY_W, CGRectMake(5 * 2 + 50, height - 5 * 3 - 50 * 3, BTN_SQUARE), YES);
-    ADD_BUTTON(@"◀", GLFW_KEY_A, CGRectMake(5, height - 5 * 2 - 50 * 2, BTN_SQUARE), YES);
-    ADD_BUTTON(@"▼", GLFW_KEY_S, CGRectMake(5 * 2 + 50, height - 5 - 50, BTN_SQUARE), YES);
-    ADD_BUTTON(@"▶", GLFW_KEY_D, CGRectMake(5 * 3 + 50 * 2, height - 5 * 2 - 50 * 2, BTN_SQUARE), YES);
-    ADD_BUTTON(@"◇", GLFW_KEY_LEFT_SHIFT, CGRectMake(5 * 2 + 50, height - 5 * 2 - 50 * 2, BTN_SQUARE), YES);
-    ADD_BUTTON(@"Inv", GLFW_KEY_E, CGRectMake(5 * 3 + 50 * 2, height - 5 - 50, BTN_SQUARE), YES);
+        ADD_BUTTON(@"Pri", SPECIALBTN_MOUSEPRI, CGRectMake(5, height - 5 * 3 - 50 * 3, BTN_SQUARE), YES);
+        ADD_BUTTON(@"Sec", SPECIALBTN_MOUSESEC, CGRectMake(5 * 3 + 50 * 2, height - 5 * 3 - 50 * 3, BTN_SQUARE), YES);
 
-    ADD_BUTTON(@"⬛", GLFW_KEY_SPACE, CGRectMake(width - 5 * 2 - 50 * 2, height - 5 * 2 - 50 * 2, BTN_SQUARE), YES);
+        ADD_BUTTON(@"Debug", GLFW_KEY_F3, CGRectMake(5, 5, BTN_RECT), YES);
+        ADD_BUTTON(@"Chat", GLFW_KEY_T, CGRectMake(5 * 2 + 80, 5, BTN_RECT), YES);
+        ADD_BUTTON(@"Tab", GLFW_KEY_TAB, CGRectMake(5 * 4 + 80 * 3, 5, BTN_RECT), YES);
+        ADD_BUTTON(@"Opti-Zoom", GLFW_KEY_C, CGRectMake(5 * 5 + 80 * 4, 5, BTN_RECT), YES);
+        ADD_BUTTON(@"Offhand", GLFW_KEY_F, CGRectMake(5 * 6 + 80 * 5, 5, BTN_RECT), YES);
+        ADD_BUTTON(@"3rd", GLFW_KEY_F5, CGRectMake(5, 5 * 2 + 30.0, BTN_RECT), YES);
 
-    ADD_BUTTON(@"Esc", GLFW_KEY_ESCAPE, CGRectMake(width - 5 - 80, height - 5 - 30, BTN_RECT), YES);
+        ADD_BUTTON(@"▲", GLFW_KEY_W, CGRectMake(5 * 2 + 50, height - 5 * 3 - 50 * 3, BTN_SQUARE), YES);
+        ADD_BUTTON(@"◀", GLFW_KEY_A, CGRectMake(5, height - 5 * 2 - 50 * 2, BTN_SQUARE), YES);
+        ADD_BUTTON(@"▼", GLFW_KEY_S, CGRectMake(5 * 2 + 50, height - 5 - 50, BTN_SQUARE), YES);
+        ADD_BUTTON(@"▶", GLFW_KEY_D, CGRectMake(5 * 3 + 50 * 2, height - 5 * 2 - 50 * 2, BTN_SQUARE), YES);
+        ADD_BUTTON(@"◇", GLFW_KEY_LEFT_SHIFT, CGRectMake(5 * 2 + 50, height - 5 * 2 - 50 * 2, BTN_SQUARE), YES);
+        ADD_BUTTON(@"Inv", GLFW_KEY_E, CGRectMake(5 * 3 + 50 * 2, height - 5 - 50, BTN_SQUARE), YES);
 
-    // ADD_BUTTON(@"Fullscreen", f11, CGRectMake(width - 5 - 80, 5, BTN_RECT), YES);
+        ADD_BUTTON(@"⬛", GLFW_KEY_SPACE, CGRectMake(width - 5 * 2 - 50 * 2, height - 5 * 2 - 50 * 2, BTN_SQUARE), YES);
+
+        ADD_BUTTON(@"Esc", GLFW_KEY_ESCAPE, CGRectMake(width - 5 - 80, height - 5 - 30, BTN_RECT), YES);
+
+        // ADD_BUTTON(@"Fullscreen", f11, CGRectMake(width - 5 - 80, 5, BTN_RECT), YES);
+    }
     
     [self.view addSubview:inputView];
 
@@ -334,10 +374,6 @@ BOOL isNotifRemoved;
                 break;
         }
     }
-}
-
--(BOOL)prefersHomeIndicatorAutoHidden {
-    return YES;
 }
 
 -(void)surfaceOnLongpress:(UILongPressGestureRecognizer *)sender

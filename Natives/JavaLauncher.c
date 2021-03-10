@@ -58,8 +58,9 @@ int launchJVM(int argc, char *argv[]) {
     // setenv("LIBGL_FB", "2", 1);
     setenv("LIBGL_MIPMAP", "3", 1);
     setenv("LIBGL_NORMALIZE", "1", 1);
-    // setenv("LIBGL_DBGSHADERCONV", "1", 1);
+    setenv("LIBGL_DBGSHADERCONV", "1", 1);
     
+    mkdir("/var/mobile/Documents/.pojavlauncher/customcontrols", S_IRWXU | S_IRWXG | S_IRWXO);
     chdir("/var/mobile/Documents/minecraft");
 
     char classpath[10000];
