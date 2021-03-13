@@ -139,9 +139,12 @@ int notchOffset;
 
     // 100kb (might not safe)
     char cc_data[102400];
-    fseek(cc_file, 0L, SEEK_END);
-    long cc_size = ftell(cc_file);
-    rewind(cc_file);
+    long cc_size;
+    if (cc_file) {
+        fseek(cc_file, 0L, SEEK_END);
+        cc_size = ftell(cc_file);
+        rewind(cc_file);
+    }
 
     NSError *cc_error;
     if (YES /* FIXME, temp skip */ || !cc_file || !fread(cc_data, cc_size, 1, cc_file)) {
