@@ -2,7 +2,7 @@
 name: Feature request
 about: Got an idea for PojavLauncher?
 title: "[F-Req]"
-labels: 'enhancement'
+labels: enhancement
 assignees: ''
 
 ---
