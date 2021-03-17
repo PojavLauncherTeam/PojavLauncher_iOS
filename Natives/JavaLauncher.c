@@ -18,6 +18,10 @@
 #define FULL_VERSION "1.16.0-internal"
 #define DOT_VERSION "1.16"
 
+static const char *java_libs_dir = "/Applications/PojavLauncher.app/libs";
+static const char *args_path = "/var/mobile/Documents/.pojavlauncher/overrideargs.txt";
+static const char *log_path = "/var/mobile/Documents/minecraft/latestlog.txt";
+
 static const char* const_progname = "java";
 static const char* const_launcher = "openjdk";
 static const char** const_jargs = NULL;
@@ -39,13 +43,57 @@ typedef jint JLI_Launch_func(int argc, char ** argv, /* main argc, argc */
         jint ergo                               /* ergonomics class policy */
 );
 
+static int margc = 0;
+static char* margv[1000];
+
+void init_loadCustomEnv() {
+    FILE *envFile = fopen("/var/mobile/Documents/.pojavlauncher/custom_env.txt", "r");
+
+    debug("[Pre-init] Reading custom environment variables (custom_env.txt), opened=%d\n", envFile != NULL);
+
+    if (envFile) {
+        char *line = NULL;
+        size_t len = 0;
+        ssize_t read;
+        while ((read = getline(&line, &len, envFile)) != -1) {
+            if (read == 0 || line[0] == '#') return;
+            if (strchr(line, '=') != NULL) {
+                debug("[Pre-init] Added custom env: %s", line);
+                setenv(strtok(line, "="), strtok(NULL, "="), 1);
+            } else {
+                debug("[Pre-init] Warning: skipped empty value custom env: %s", line);
+            }
+        }
+        fclose(envFile);
+    }
+}
+
+void init_loadCustomJvmFlags() {
+    char jvmargs[10000];
+    FILE* argsFile = fopen(args_path, "r");
+    debug("[Pre-init] Reading custom JVM args (overrideargs.txt), opened=%d\n", argsFile != NULL);
+    if (argsFile) {
+        if (!fgets(jvmargs, 10000, argsFile)) {
+            debug("[Pre-init] Warning: could not read overrideargs.txt");
+            fclose(argsFile);
+            return;
+        }
+        char *pch;
+        pch = strtok(jvmargs, " ");
+        while (pch != NULL) {
+            margv[margc] = (char*)malloc((strlen(pch)+1) * sizeof(char));
+            strcpy(margv[margc], pch);
+            debug("[Pre-init] Added custom flag: %s", margv[margc]);
+            pch = strtok(NULL, " ");
+            ++margc;
+        }
+        fclose(argsFile);
+    }
+}
+
 int launchJVM(int argc, char *argv[]) {
-    char *java_libs_dir = "/Applications/PojavLauncher.app/libs";
-    char *args_path = "/var/mobile/Documents/minecraft/overrideargs.txt";
-    char *log_path = "/var/mobile/Documents/minecraft/latestlog.txt";
-    
     if (!started) {
-        debug("Staring logging STDIO as jrelog:V\n");
+        debug("[Pre-init] Staring logging STDIO as jrelog:V\n");
         // Redirect stdio to latestlog.txt
         FILE* logFile = fopen(log_path, "w");
         int log_fd = fileno(logFile);
@@ -54,11 +102,12 @@ int launchJVM(int argc, char *argv[]) {
         close(log_fd);
     }
 
-    debug("Beginning JVM launch\n");
+    debug("[Pre-init] Beginning JVM launch\n");
     // setenv("LIBGL_FB", "2", 1);
     setenv("LIBGL_MIPMAP", "3", 1);
     setenv("LIBGL_NORMALIZE", "1", 1);
-    setenv("LIBGL_DBGSHADERCONV", "1", 1);
+    
+    init_loadCustomEnv();
     
     mkdir("/var/mobile/Documents/.pojavlauncher/customcontrols", S_IRWXU | S_IRWXG | S_IRWXO);
     chdir("/var/mobile/Documents/minecraft");
@@ -79,10 +128,8 @@ int launchJVM(int argc, char *argv[]) {
         }
         closedir(d);
     }
-    debug("Classpath generated: %s", classpath);
-    
-    int margc = 0;
-    char* margv[1000];
+    debug("[Pre-init] Classpath generated: %s", classpath);
+
     // Check if JVM restarts
     if (!started) {
         margv[margc++] = "/usr/lib/jvm/java-16-openjdk/bin/java";
@@ -93,22 +140,9 @@ int launchJVM(int argc, char *argv[]) {
         margv[margc++] = "-Duser.home=/var/mobile/Documents";
         margv[margc++] = "-Dorg.lwjgl.opengl.libname=libgl4es_114.dylib";
         margv[margc++] = "-Dorg.lwjgl.system.allocator=system";
-        char jvmargs[10000];
-        FILE* argsFile = fopen(args_path, "r");
-        debug("Reading custom JVM args (overrideargs.txt), opened=%d\n", argsFile != NULL);
-        if (argsFile != NULL) {
-            if (!fgets(jvmargs, 10000, argsFile)) {
-                debug("Error: could not read overrideargs.txt");
-            }
-            char *pch;
-            pch = strtok(jvmargs, " ");
-            while (pch != NULL) {
-                debug("Added custom arg: %s\n", pch);
-                margv[margc++] = pch;
-                pch = strtok(NULL, " ");
-            }
-            fclose(argsFile);
-        }
+
+        init_loadCustomJvmFlags();
+
         margv[margc++] = "-cp";
         margv[margc++] = classpath;
         margv[margc++] = "net.kdt.pojavlaunch.PLaunchApp";
@@ -131,27 +165,27 @@ int launchJVM(int argc, char *argv[]) {
 */
 setenv("POJAV_OPENGL_LIBNAME", "libgl4es_114.dylib", 1);
 
-        debug("OpenGL library name: %s", getenv("POJAV_OPENGL_LIBNAME"));
+        debug("[Pre-init] OpenGL library name: %s", getenv("POJAV_OPENGL_LIBNAME"));
     }
     
     // Load java
     void* libjli = dlopen("/usr/lib/jvm/java-16-openjdk/lib/libjli.dylib", RTLD_LAZY | RTLD_GLOBAL);
 
     if (NULL == libjli) {
-        debug("JLI lib = NULL: %s\n", dlerror());
+        debug("[Init] JLI lib = NULL: %s", dlerror());
         return -1;
     }
-    debug("Found JLI lib\n");
+    debug("[Init] Found JLI lib");
 
     JLI_Launch_func *pJLI_Launch =
           (JLI_Launch_func *)dlsym(libjli, "JLI_Launch");
           
     if (NULL == pJLI_Launch) {
-        debug("JLI_Launch = NULL\n");
+        debug("[Init] JLI_Launch = NULL");
         return -2;
     }
 
-    debug("Calling JLI_Launch\n");
+    debug("[Init] Calling JLI_Launch");
     
     int targc = started ? argc : margc;
     char **targv = started ? argv : margv;
@@ -159,7 +193,11 @@ setenv("POJAV_OPENGL_LIBNAME", "libgl4es_114.dylib", 1);
     if (!started) {
         started = true;
     }
-
+/* debug:
+for (int i = 0; i < targc; i++) {
+debug("Arg=%s", targv[i]);
+}
+*/
     return pJLI_Launch(targc, targv,
                    0, NULL, // sizeof(const_jargs) / sizeof(char *), const_jargs,
                    0, NULL, // sizeof(const_appclasspath) / sizeof(char *), const_appclasspath,
