@@ -8,6 +8,13 @@
 /**
  * To compatible with Android, NSArray (ControlData)
  * will store the scaled values.
+ *
+ * TODO implement:
+ * - dynamicX
+ * - dynamicY
+ * - isDynamicBtn
+ * - scaledAt
+ * - (maybe more)
  */
 
 + (id)initWithProperties:(NSMutableDictionary *)propArray {

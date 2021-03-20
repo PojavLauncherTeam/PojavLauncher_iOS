@@ -147,13 +147,14 @@ int notchOffset;
     }
 
     NSError *cc_error;
-    if (YES /* FIXME, temp skip */ || !cc_file || !fread(cc_data, cc_size, 1, cc_file)) {
+    if (!cc_file || !fread(cc_data, cc_size, 1, cc_file)) {
         NSLog(@"Error: could not read \"default.json\", fallbacking to default control.\n%s", strerror(errno));
         fclose(cc_file);
     } else {
         fclose(cc_file);
         NSLog(@"%s", cc_data);
-        NSDictionary *cc_dictionary = [NSJSONSerialization JSONObjectWithData:@(cc_data) options:kNilOptions error:&cc_error];
+        NSData* cc_objc_data = [@(cc_data) dataUsingEncoding:NSUTF8StringEncoding];
+        NSDictionary *cc_dictionary = [NSJSONSerialization JSONObjectWithData:cc_objc_data options:kNilOptions error:&cc_error];
         if (cc_error != nil) {
             showDialog(self, @"Error parsing JSON", cc_error.localizedDescription);
         } else {
@@ -230,6 +231,14 @@ int notchOffset;
     [MGLContext setCurrentContext:self.context];
 
     [self setupGL];
+}
+
+- (BOOL)prefersHomeIndicatorAutoHidden {
+    return YES;
+}
+
+- (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
+    return UIRectEdgeAll;
 }
 
 #pragma mark - MetalANGLE stuff
