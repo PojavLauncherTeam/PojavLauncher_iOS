@@ -10,7 +10,6 @@
 #include <sys/time.h>
 
 #include "egl_bridge_ios.h"
-#include "uikit_winsys.h"
 
 #include "EGL/egl.h"
 #include "GL/osmesa.h"
