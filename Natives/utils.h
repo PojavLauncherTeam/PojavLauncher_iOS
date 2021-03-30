@@ -18,7 +18,7 @@
 #define EVENT_TYPE_WINDOW_POS 1008
 #define EVENT_TYPE_WINDOW_SIZE 1009
 
-void* GL4ES_HANDLE;
+void* main_buffer;
 
 JavaVM* runtimeJavaVMPtr;
 JNIEnv* runtimeJNIEnvPtr_ANDROID;

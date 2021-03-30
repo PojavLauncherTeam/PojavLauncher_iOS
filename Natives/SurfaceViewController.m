@@ -9,8 +9,7 @@
 
 #include "EGL/egl.h"
 
-#include "GLES2/gl2.h"
-#include "GLES2/gl2ext.h"
+#include "GL/gl.h"
 
 #define SPECIALBTN_KEYBOARD -1
 #define SPECIALBTN_TOGGLECTRL -2
@@ -55,16 +54,68 @@ int notchOffset;
 
 // TODO: key modifiers impl
 
+@implementation SurfaceView
+const void * _CGDataProviderGetBytePointerCallback(void *info)
+{
+	return main_buffer;
+}
+
+void _CGDataProviderReleaseBytePointerCallback(void *info,const void *pointer)
+{
+}
+   
+- (void)displayLayer:(CALayer *)theLayer
+{
+    CGDataProviderRef bitmapProvider = CGDataProviderCreateDirect(NULL, savedWidth * savedHeight * 4, &callbacks);
+    CGImageRef bitmap = CGImageCreate(savedWidth, savedHeight, 8, 32, 4 * savedWidth, colorSpace, kCGImageAlphaNoneSkipLast | kCGBitmapByteOrder16Little, bitmapProvider, NULL, FALSE, kCGRenderingIntentDefault);     
+
+    theLayer.contents = (__bridge id) bitmap;
+    CGImageRelease(bitmap);
+    CGDataProviderRelease(bitmapProvider);
+   //  CGColorSpaceRelease(colorSpace);
+}
+
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    layer = [self layer];
+    layer.opaque = YES;
+
+    colorSpace = CGColorSpaceCreateDeviceRGB();
+
+    callbacks.version = 0;
+    callbacks.getBytePointer = _CGDataProviderGetBytePointerCallback;
+    callbacks.releaseBytePointer = _CGDataProviderReleaseBytePointerCallback;
+    callbacks.getBytesAtPosition = NULL;
+    callbacks.releaseInfo = NULL;
+
+    return self;
+}
+@end
+
 @interface SurfaceViewController ()<UITextFieldDelegate> {
 }
 
-@property (strong, nonatomic) MGLContext *context;
+// @property (strong, nonatomic) MGLContext *context;
 
 - (void)setupGL;
 
 @end
 
 @implementation SurfaceViewController
+
+/*
+- (void)loadView
+{
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+
+    int width = (int) roundf(screenBounds.size.width);
+    int height = (int) roundf(screenBounds.size.height);
+
+    self.view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+    // self.view = [[MTKView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+}
+*/
 
 - (void)viewDidLoad
 {
@@ -77,7 +128,12 @@ int notchOffset;
 
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height);
-    
+
+    globalSurfaceView = [[SurfaceView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+    // globalSurfaceView = [[MTKView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+
+    [self.view addSubview:globalSurfaceView];
+
     savedWidth = roundf(width * screenScale);
     savedHeight = roundf(height * screenScale);
 
@@ -152,7 +208,6 @@ int notchOffset;
         fclose(cc_file);
     } else {
         fclose(cc_file);
-        NSLog(@"%s", cc_data);
         NSData* cc_objc_data = [@(cc_data) dataUsingEncoding:NSUTF8StringEncoding];
         NSDictionary *cc_dictionary = [NSJSONSerialization JSONObjectWithData:cc_objc_data options:kNilOptions error:&cc_error];
         if (cc_error != nil) {
@@ -186,6 +241,7 @@ int notchOffset;
         ADD_BUTTON(@"Opti-Zoom", GLFW_KEY_C, CGRectMake(5 * 5 + 80 * 4, 5, BTN_RECT), YES);
         ADD_BUTTON(@"Offhand", GLFW_KEY_F, CGRectMake(5 * 6 + 80 * 5, 5, BTN_RECT), YES);
         ADD_BUTTON(@"3rd", GLFW_KEY_F5, CGRectMake(5, 5 * 2 + 30.0, BTN_RECT), YES);
+        ADD_BUTTON(@"Screenshot", GLFW_KEY_F2, CGRectMake(5, 5 + 60, BTN_RECT), YES);
 
         ADD_BUTTON(@"▲", GLFW_KEY_W, CGRectMake(5 * 2 + 50, height - 5 * 3 - 50 * 3, BTN_SQUARE), YES);
         ADD_BUTTON(@"◀", GLFW_KEY_A, CGRectMake(5, height - 5 * 2 - 50 * 2, BTN_SQUARE), YES);
@@ -206,7 +262,7 @@ int notchOffset;
     [self executebtn_special_togglebtn:0];
 
     viewController = self;
-
+/*
     MGLKView *view = glView = (MGLKView *) self.view;
     view.drawableDepthFormat = MGLDrawableDepthFormat24;
     view.enableSetNeedsDisplay = YES;
@@ -229,7 +285,7 @@ int notchOffset;
 #endif
 
     [MGLContext setCurrentContext:self.context];
-
+*/
     [self setupGL];
 }
 
@@ -245,14 +301,16 @@ int notchOffset;
 
 - (void)dealloc
 {
+/*
     if ([MGLContext currentContext] == self.context) {
         [MGLContext setCurrentContext:nil];
     }
+*/
 }
 
 - (void)setupGL
 {
-    [MGLContext setCurrentContext:self.context];
+    // [MGLContext setCurrentContext:self.context];
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];
@@ -262,6 +320,7 @@ int notchOffset;
     callback_SurfaceViewController_launchMinecraft(width, height);
 }
 
+/*
 BOOL isNotifRemoved;
 - (void)mglkView:(MGLKView *)view drawInRect:(CGRect)rect
 {
@@ -285,6 +344,7 @@ BOOL isNotifRemoved;
 
     // Java_org_lwjgl_glfw_CallbackBridge_nativeSendCursorPos(NULL, NULL, location.x * screenScale, location.y * screenScale);
 }
+*/
 
 #pragma mark - Input: send touch utilities
 

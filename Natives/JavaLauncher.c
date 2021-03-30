@@ -106,6 +106,7 @@ int launchJVM(int argc, char *argv[]) {
     // setenv("LIBGL_FB", "2", 1);
     setenv("LIBGL_MIPMAP", "3", 1);
     setenv("LIBGL_NORMALIZE", "1", 1);
+    setenv("MESA_GL_VERSION_OVERRIDE", "4.6", 1);
     
     init_loadCustomEnv();
     
@@ -135,10 +136,10 @@ int launchJVM(int argc, char *argv[]) {
         margv[margc++] = "/usr/lib/jvm/java-16-openjdk/bin/java";
         margv[margc++] = "-XstartOnFirstThread";
         margv[margc++] = "-Djava.system.class.loader=net.kdt.pojavlaunch.PojavClassLoader";
-        margv[margc++] = "-Djava.library.path=/Applications/PojavLauncher.app/Frameworks";
+        margv[margc++] = "-Djava.library.path=/Applications/PojavLauncher.app/Frameworks:/Applications/PojavLauncher.app/mesa_lib/lib";
         margv[margc++] = "-Duser.dir=/var/mobile/Documents/minecraft";
         margv[margc++] = "-Duser.home=/var/mobile/Documents";
-        margv[margc++] = "-Dorg.lwjgl.opengl.libname=libgl4es_114.dylib";
+        margv[margc++] = "-Dorg.lwjgl.opengl.libname=libOSMesa.8.dylib";
         margv[margc++] = "-Dorg.lwjgl.system.allocator=system";
 
         init_loadCustomJvmFlags();

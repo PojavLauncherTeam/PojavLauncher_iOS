@@ -1,9 +1,20 @@
 #import <UIKit/UIKit.h>
-#import "MGLKit.h"
+#import <MetalKit/MetalKit.h>
 
-MGLKView *glView;
+@interface SurfaceView : UIView
+{
+    CALayer* layer;
+    CGColorSpaceRef colorSpace;
+    CGDataProviderDirectCallbacks callbacks;
+}
+@end
 
-@interface SurfaceViewController : MGLKViewController
+// MGLKView *glView;
+
+SurfaceView *globalSurfaceView;
+// MTKView *globalSurfaceView;
+
+@interface SurfaceViewController : UIViewController
 // MGLKViewController
 // UIViewController
 

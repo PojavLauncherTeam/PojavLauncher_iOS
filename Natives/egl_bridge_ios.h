@@ -2,14 +2,13 @@
 
 #ifndef USE_EGL
 
-#import "MGLKit.h"
+#import <UIKit/UIKit.h>
 #include "jni.h"
 
-MGLContext *glContext;
-MGLKViewController *viewController;
+// MGLContext *glContext;
+UIViewController *viewController;
 
-jboolean makeSharedContext();
-jboolean clearCurrentContext();
+void initSurface();
 void swapBuffers();
 
 #endif
