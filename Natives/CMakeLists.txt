@@ -2,7 +2,9 @@ cmake_minimum_required(VERSION 3.6)
 project(PojavLauncher)
 
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-set(CMAKE_C_FLAGS "-x objective-c -Iexternal_include -Wl,-rpath,/Applications/PojavLauncher.app/Frameworks -Lresources/Frameworks")
+set(CMAKE_C_FLAGS "-x objective-c -Iexternal_include -Wl,-rpath,/Applications/PojavLauncher.app/Frameworks")
+
+link_directories(${CMAKE_SOURCE_DIR}/resources/Frameworks)
 
 add_executable(PojavLauncher main.c log.m JavaLauncher.c)
 target_link_libraries(PojavLauncher
