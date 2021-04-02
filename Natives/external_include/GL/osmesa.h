@@ -109,7 +109,9 @@ extern "C" {
 
 struct st_framebuffer_iface;
 struct st_visual;
+struct pipe_context;
 struct pipe_resource;
+struct pipe_screen;
 struct pp_queue_t;
 
 struct st_manager

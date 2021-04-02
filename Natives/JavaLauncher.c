@@ -139,7 +139,7 @@ int launchJVM(int argc, char *argv[]) {
         margv[margc++] = "-Djava.library.path=/Applications/PojavLauncher.app/Frameworks:/Applications/PojavLauncher.app/mesa_lib/lib";
         margv[margc++] = "-Duser.dir=/var/mobile/Documents/minecraft";
         margv[margc++] = "-Duser.home=/var/mobile/Documents";
-        margv[margc++] = "-Dorg.lwjgl.opengl.libname=libOSMesa.8.dylib";
+        margv[margc++] = "-Dorg.lwjgl.opengl.libname=libOSMesaOverride.dylib";
         margv[margc++] = "-Dorg.lwjgl.system.allocator=system";
 
         init_loadCustomJvmFlags();

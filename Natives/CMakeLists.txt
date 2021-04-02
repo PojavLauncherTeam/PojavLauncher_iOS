@@ -22,3 +22,8 @@ target_link_libraries(pojavexec
     "-framework AuthenticationServices"
     "-lOSMesa.8"
 )
+
+add_library(OSMesaOverride SHARED gl_mesa3d_patch.c)
+target_link_libraries(OSMesaOverride
+    "-lOSMesa.8"
+)

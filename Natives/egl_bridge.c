@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <dlfcn.h>
 
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,6 +19,9 @@
 
 #include "log.h"
 
+struct zink_screen {
+    bool have_triangle_fans;
+};
 
 // gl4esSwapBuffers_func *gl4esSwapBuffers;
 
@@ -46,8 +50,6 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_saveGLContext(JNI
 void terminateEgl() {
     debug("EGLBridge: Terminating");
 }
-
-struct pipe_screen;
 
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglInit(JNIEnv* env, jclass clazz) {
     isInputReady = 1;
@@ -82,6 +84,10 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglMakeCurrent(JNIEnv*
         free(*winsys);
         *winsys = uikit_sw_create();
 */
+
+        // ((struct zink_screen*)((struct st_manager*)osmesa_context->stctx->st_context_private)->screen)->have_triangle_fans = true;
+
+        // debug("TRIFAN:%p", ((struct zink_screen*)((struct st_manager*)osmesa_context->stctx->st_context_private)->screen)->have_triangle_fans);
 
         main_buffer = calloc(4, (size_t) (savedWidth * savedHeight));
         GLboolean result = OSMesaMakeCurrent(osmesa_context, main_buffer, GL_UNSIGNED_BYTE, savedWidth, savedHeight);

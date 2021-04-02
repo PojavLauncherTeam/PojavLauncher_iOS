@@ -12,7 +12,7 @@ cmake --build . --config Release --target pojavexec PojavLauncher
 cd ../..
 
 # Compile storyboard
-mkdir -p Natives/build/Release-iphoneos/PojavLauncher.app/Base.lproj
+# mkdir -p Natives/build/Release-iphoneos/PojavLauncher.app/Base.lproj
 
 # Copy to target app
 mkdir -p Natives/build/Release-iphoneos/PojavLauncher.app/Frameworks
