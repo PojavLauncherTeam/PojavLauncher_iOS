@@ -16,5 +16,5 @@ cd ../..
 
 # Copy to target app
 mkdir -p Natives/build/Release-iphoneos/PojavLauncher.app/Frameworks
-cp Natives/build/Release-iphoneos/libpojavexec.dylib Natives/build/Release-iphoneos/PojavLauncher.app/Frameworks/
+cp Natives/build/Release-iphoneos/*.dylib Natives/build/Release-iphoneos/PojavLauncher.app/Frameworks/
 cp -R Natives/resources/* Natives/build/Release-iphoneos/PojavLauncher.app/
