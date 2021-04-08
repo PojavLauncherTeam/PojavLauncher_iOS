@@ -73,16 +73,13 @@ chmod 755 *.sh
 - It might crash sometimes, but try launch again until you get it works.
 
 ## Installing OpenJDK 16
-### For Chimera/Odyssey/Taurine jailbreak
-- Add Procursus repository (https://apt.procurs.us) (usually Sileo package manager already come with Procursus repo).
-- Find and install `openjdk-jre`.
+### For Chimera/Odyssey/Taurine jailbreak 
+- Add Procursus repository (https://apt.procurs.us) (usually the Sileo package manager already comes with Procursus repo).
+- Find and install `openjdk-16-jre`.
 
-### For other jailbreak bootstrap
-- Download [openjdk-16-jre.deb](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/releases/tag/v16-openjdk).
-- Install and open Filza File manager.
-- Go to where the .deb file downloaded.
-- Open it and press Install.
-- If everything fine, it will ends up with `Setting up ...`.
+### For other jailbreak bootstraps
+- Add Doregon's repository (https://doregon.github.io/cydia)
+- Find and install `openjdk-16-jre`.
 
 ## Directory locations
 - Account json directory: `/var/mobile/Documents/.pojavlauncher/accounts`.
