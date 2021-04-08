@@ -81,6 +81,15 @@ chmod 755 *.sh
 - Add Doregon's repository (https://doregon.github.io/cydia)
 - Find and install `openjdk-16-jre`.
 
+## Installing PojavLauncher
+### For Chimera/Odyssey/Taurine jailbreak 
+- Add Procursus repository (https://apt.procurs.us) (usually the Sileo package manager already comes with Procursus repo).
+- Find and install `pojavlauncher`.
+
+### For other jailbreak bootstraps
+- Add Doregon's repository (https://doregon.github.io/cydia)
+- Find and install `pojavlauncher` for the release version, or `pojavlauncher-dev` for the latest good commit.
+    
 ## Directory locations
 - Account json directory: `/var/mobile/Documents/.pojavlauncher/accounts`.
 - Minecraft home directory: `/var/mobile/Documents/minecraft`.
