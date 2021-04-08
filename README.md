@@ -73,7 +73,7 @@ chmod 755 *.sh
 - It might crash sometimes, but try launch again until you get it works.
 
 ## Installing OpenJDK 16
-### For Chimera/Odyssey bootstrap
+### For Chimera/Odyssey/Taurine jailbreak
 - Add Procursus repository (https://apt.procurs.us) (usually Sileo package manager already come with Procursus repo).
 - Find and install `openjdk-jre`.
 
