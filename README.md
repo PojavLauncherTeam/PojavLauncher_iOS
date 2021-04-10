@@ -66,7 +66,7 @@ chmod 755 *.sh
 - [x] Account authentication (partial).
 - [x] Does it work? Partial.
 - Currently, only Minecraft 1.6.1+ tested to fully works.
-- Forge (1.13+), Fabric and OptiFine works well.
+- Forge (1.16.?+), Fabric and OptiFine works well.
 
 ## Known issues
 - (Some versions) Camera position will be jumped to random location on first time touch.
