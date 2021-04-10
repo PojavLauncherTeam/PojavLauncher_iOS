@@ -4,7 +4,7 @@
 # PojavLauncher_iOS
 Minecraft: Java Edition launcher for iOS, based on [PojavLauncher Android](https://github.com/PojavLauncherTeam/PojavLauncher).
 
-This launcher is now available at Procursus repository, thanks to [@Diatrus](https://twitter.com/Diatrus)!
+This launcher is now available at the Procursus repository, thanks to [@Diatrus](https://twitter.com/Diatrus)!
 
 ## Navigation
 - [Introduction](#introduction)
@@ -17,7 +17,7 @@ This launcher is now available at Procursus repository, thanks to [@Diatrus](htt
 - [Credits & Third party components and their licenses](#credits--third-party-components-and-their-licenses)
 
 ## Introduction
-- This is an attempt to get Minecraft Java Edition running on jailbroken iOS.
+- This is an attempt to get Minecraft: Java Edition running on jailbroken iOS.
 - Minimum requirements: device running iOS 12 or newer.
 
 ## Building
@@ -49,8 +49,8 @@ chmod 755 *.sh
 ./build_package.sh
 ```
 
-## How can it work?
-- Use OpenJDK 16 from Procursus to get real Java environment.
+## How does it work?
+- Use OpenJDK 16 from Procursus to get a real Java environment.
 - Use MetalANGLE for OpenGL ES -> Metal translator.
 - Use GL4ES for OpenGL -> OpenGL ES translator.
 - Use our [LWJGL3 iOS port](https://github.com/PojavLauncherTeam/lwjgl3).
@@ -66,7 +66,7 @@ chmod 755 *.sh
 - [x] Account authentication (partial).
 - [x] Does it work? Partial.
 - Currently, only Minecraft 1.6.1+ is tested to fully work.
-- Forge (1.16.?+), Fabric and OptiFine works well.
+- Forge (1.16.?+), Fabric and OptiFine work well.
 
 ## Known issues
 - On some versions, the camera position will jump to a random location on first time touch.
