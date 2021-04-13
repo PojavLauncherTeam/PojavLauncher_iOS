@@ -4,7 +4,7 @@
 # PojavLauncher_iOS
 Minecraft: Java Edition launcher for iOS, based on [PojavLauncher Android](https://github.com/PojavLauncherTeam/PojavLauncher).
 
-This launcher is now available at Procursus repository, thanks to @Diatrus!
+This launcher is now available at the Procursus repository, thanks to [@Diatrus](https://twitter.com/Diatrus)!
 
 ## Navigation
 - [Introduction](#introduction)
@@ -17,7 +17,7 @@ This launcher is now available at Procursus repository, thanks to @Diatrus!
 - [Credits & Third party components and their licenses](#credits--third-party-components-and-their-licenses)
 
 ## Introduction
-- This is an attempt to get Minecraft Java run on a jailbroken iOS.
+- This is an attempt to get Minecraft: Java Edition running on jailbroken iOS.
 - Minimum requirements: device running iOS 12 or newer.
 
 ## Building
@@ -49,8 +49,8 @@ chmod 755 *.sh
 ./build_package.sh
 ```
 
-## How can it work?
-- Use OpenJDK 16 from Procursus to get real Java environment.
+## How does it work?
+- Use OpenJDK 16 from Procursus to get a real Java environment.
 - Use MetalANGLE for OpenGL ES -> Metal translator.
 - Use GL4ES for OpenGL -> OpenGL ES translator.
 - Use our [LWJGL3 iOS port](https://github.com/PojavLauncherTeam/lwjgl3).
@@ -65,29 +65,29 @@ chmod 755 *.sh
 - [x] Input pipe implementation
 - [x] Account authentication (partial).
 - [x] Does it work? Partial.
-- Currently, only Minecraft 1.6.1+ tested to fully works.
-- Forge (1.16.?+), Fabric and OptiFine works well.
+- Currently, only Minecraft 1.6.1+ is tested to fully work.
+- Forge (1.16.?+), Fabric and OptiFine work well.
 
 ## Known issues
-- (Some versions) Camera position will be jumped to random location on first time touch.
-- It might crash sometimes, but try launch again until you get it works.
+- On some versions, the camera position will jump to a random location on first time touch.
+- It might crash sometimes, but try to launch again until it works.
 
 ## Installing OpenJDK 16
 ### For Chimera/Odyssey/Taurine jailbreak
-- Add Procursus repository (https://apt.procurs.us) (usually Sileo package manager already come with Procursus repo).
+- Add Procursus repository (https://apt.procurs.us) (usually the Sileo package manager already comes with the Procursus repo).
 - Find and install `openjdk-jre`.
 
 ### For other jailbreak bootstrap
 - Download [openjdk-16-jre.deb](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/releases/tag/v16-openjdk).
 - Install and open Filza File manager.
-- Go to where the .deb file downloaded.
+- Go to where the .deb file was downloaded.
 - Open it and press Install.
-- If everything fine, it will ends up with `Setting up ...`.
+- If everything is fine, it will ends up with `Setting up ...`.
 
 ## Directory locations
 - Account json directory: `/var/mobile/Documents/.pojavlauncher/accounts`.
 - Minecraft home directory: `/var/mobile/Documents/minecraft`.
-- You can also customize JVM Arguments in `overrideargs.txt` on `minecraft` directory.
+- You can also customize JVM Arguments in `overrideargs.txt` in the `minecraft` directory.
 
 ## License
 - PojavLauncher is licensed under [GNU GPLv3](https://github.com/khanhduytran0/PojavLauncher_iOS/blob/master/LICENSE).
