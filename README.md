@@ -73,17 +73,42 @@ chmod 755 *.sh
 - It might crash sometimes, but try to launch again until it works.
 
 ## Installing OpenJDK 16
-### For Chimera/Odyssey/Taurine jailbreak
+### For Chimera/Odyssey/Taurine jailbreak 
 - Add Procursus repository (https://apt.procurs.us) (usually the Sileo package manager already comes with the Procursus repo).
-- Find and install `openjdk-jre`.
+- Find and install `openjdk-16-jre`.
 
-### For other jailbreak bootstrap
+### For other jailbreak bootstraps
+- Add Doregon's repository (https://doregon.github.io/cydia)
+- Find and install `openjdk-16-jre`.
+
+### Manual
 - Download [openjdk-16-jre.deb](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/releases/tag/v16-openjdk).
 - Install and open Filza File manager.
 - Go to where the .deb file was downloaded.
 - Open it and press Install.
 - If everything is fine, it will ends up with `Setting up ...`.
 
+## Installing PojavLauncher
+### For Chimera/Odyssey/Taurine jailbreak 
+- Add Procursus repository (https://apt.procurs.us) (usually the Sileo package manager already comes with Procursus repo).
+- Find and install `pojavlauncher`.
+
+### For other jailbreak bootstraps
+- Add Doregon's repository (https://doregon.github.io/cydia)
+- Find and install `pojavlauncher` for the release version, or `pojavlauncher-dev` for the latest good commit.
+
+### Manual
+- To get the release version, 
+    - Go to the Releases tab
+    - Find the release you want
+    - Download the .deb file
+    - Open the .deb in Filza or install via a terminal!
+
+- To get the latest commit,
+    - Download the latest build artifact from [here](https://nightly.link/PojavLauncherTeam/PojavLauncher_iOS/workflows/ios/main/PojavLauncher%20deb.zip)
+    - Unzip to reveal the .deb file
+    - Open the .deb in Filza or install via a terminal!
+     
 ## Directory locations
 - Account json directory: `/var/mobile/Documents/.pojavlauncher/accounts`.
 - Minecraft home directory: `/var/mobile/Documents/minecraft`.
