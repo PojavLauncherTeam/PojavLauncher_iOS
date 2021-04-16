@@ -2,6 +2,8 @@
 #import "egl_bridge_ios.h"
 #import "ios_uikit_bridge.h"
 
+#import "customcontrols/ControlButton.h"
+
 #include "glfw_keycodes.h"
 #include "utils.h"
 
@@ -10,37 +12,27 @@
 #include "GLES2/gl2.h"
 #include "GLES2/gl2ext.h"
 
+#define SPECIALBTN_KEYBOARD -1
+#define SPECIALBTN_TOGGLECTRL -2
+#define SPECIALBTN_MOUSEPRI -3
+#define SPECIALBTN_MOUSESEC -4
+#define SPECIALBTN_VIRTUALMOUSE -5
+#define SPECIALBTN_MOUSEMID -6
+#define SPECIALBTN_SCROLLUP -7
+#define SPECIALBTN_SCROLLDOWN -8
+
+
 // Debugging purposes
 // #define DEBUG_VISIBLE_TEXT_FIELD
 
-#define ADD_BUTTON(NAME, KEY, RECT) \
-    UIButton *button_##KEY = [UIButton buttonWithType:UIButtonTypeRoundedRect]; \
-    button_##KEY.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth; \
-    [button_##KEY setTitle:NAME forState:UIControlStateNormal]; \
-    button_##KEY.frame = CGRectOffset(RECT, notchOffset, 0); \
-    [button_##KEY addTarget:self action:@selector(executebtn_##KEY##_down) forControlEvents:UIControlEventTouchDown]; \
-    [button_##KEY addTarget:self action:@selector(executebtn_##KEY##_up) forControlEvents:UIControlEventTouchUpInside]; \
-    button_##KEY.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.3f]; \
-    button_##KEY.tintColor = [UIColor whiteColor]; \
-    [self.view addSubview:button_##KEY];
-
-#define ADD_BUTTON_VISIBLE(NAME, KEY, RECT) \
-    ADD_BUTTON(NAME, KEY, RECT); \
-    togglableVisibleButtons[++togglableVisibleButtonIndex] = button_##KEY;
-    
-    
-#define ADD_BUTTON_DEF(KEY) \
-    - (void)executebtn_##KEY##_down { \
-        [self executebtn_##KEY:1]; \
-    } \
-    - (void)executebtn_##KEY##_up { \
-        [self executebtn_##KEY:0]; \
-    } \
-    - (void)executebtn_##KEY:(int)held
-
-#define ADD_BUTTON_DEF_KEY(KEY, KEYCODE) \
-    ADD_BUTTON_DEF(KEY) { \
-        Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, KEYCODE, 0, held, 0); \
+#define ADD_BUTTON(NAME, KEY, RECT, VISIBLE) \
+    ControlButton *button_##KEY = [ControlButton initWithName:NAME keycode:KEY rect:CGRectOffset(RECT, notchOffset, 0) transparency:0.0f]; \
+    [button_##KEY addTarget:self action:@selector(executebtn_down:) forControlEvents:UIControlEventTouchDown]; \
+    [button_##KEY addTarget:self action:@selector(executebtn_up:) forControlEvents:UIControlEventTouchUpInside]; \
+    [button_##KEY addTarget:self action:@selector(executebtn_up:) forControlEvents:UIControlEventTouchUpOutside]; \
+    [self.view addSubview:button_##KEY]; \
+    if (VISIBLE == YES) { \
+        togglableVisibleButtons[++togglableVisibleButtonIndex] = button_##KEY; \
     }
 
 #define BTN_RECT 80.0, 30.0
@@ -49,7 +41,7 @@
 #define INPUT_SPACE_LENGTH 20
 
 int togglableVisibleButtonIndex = -1;
-UIButton* togglableVisibleButtons[100];
+ControlButton* togglableVisibleButtons[100];
 
 UIView *touchView;
 #ifdef DEBUG_VISIBLE_TEXT_FIELD
@@ -105,6 +97,21 @@ int notchOffset;
     [touchView addGestureRecognizer:longpressGesture];
 
     [self.view addSubview:touchView];
+    
+    if (NSClassFromString(@"UIPointerInteraction") != nil) {
+        [touchView addInteraction:[[UIPointerInteraction alloc] initWithDelegate:self]];
+    }
+    
+    if (@available(iOS 13.4, *)) {
+        UIPanGestureRecognizer *mouseWheelGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(surfaceOnMouseScroll:)];
+        mouseWheelGesture.allowedScrollTypesMask = UIScrollTypeMaskDiscrete;
+        mouseWheelGesture.allowedTouchTypes = @[ @(UITouchTypeIndirectPointer) ];
+        mouseWheelGesture.cancelsTouchesInView = NO;
+        mouseWheelGesture.delaysTouchesBegan = NO;
+        mouseWheelGesture.delaysTouchesEnded = NO;
+        [touchView addGestureRecognizer:mouseWheelGesture];
+    }
+    
 #ifndef DEBUG_VISIBLE_TEXT_FIELD
     inputView = [[UITextField alloc] initWithFrame:CGRectMake(5 * 3 + 80 * 2, 5, BTN_RECT)];
     inputView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.0f];
@@ -123,32 +130,76 @@ int notchOffset;
 
     // Custom button
     // ADD_BUTTON(@"F1", f1, CGRectMake(5, 5, width, height));
+    
+    
+    // Temporary custom controls
+    BOOL cc_fallback = YES;
+    
+    FILE *cc_file = fopen("/var/mobile/Documents/.pojavlauncher/customcontrols/default.json", "r");
 
-    ADD_BUTTON(@"GUI", special_togglebtn, CGRectMake(5, height - 5 - 50, BTN_SQUARE));
-    ADD_BUTTON_VISIBLE(@"Keyboard", special_keyboard, CGRectMake(5 * 3 + 80 * 2, 5, BTN_RECT));
+    // 100kb (might not safe)
+    char cc_data[102400];
+    long cc_size;
+    if (cc_file) {
+        fseek(cc_file, 0L, SEEK_END);
+        cc_size = ftell(cc_file);
+        rewind(cc_file);
+    }
 
-    ADD_BUTTON_VISIBLE(@"Pri", special_mouse_pri, CGRectMake(5, height - 5 * 3 - 50 * 3, BTN_SQUARE));
-    ADD_BUTTON_VISIBLE(@"Sec", special_mouse_sec, CGRectMake(5 * 3 + 50 * 2, height - 5 * 3 - 50 * 3, BTN_SQUARE));
+    NSError *cc_error;
+    if (!cc_file || !fread(cc_data, cc_size, 1, cc_file)) {
+        NSLog(@"Error: could not read \"default.json\", fallbacking to default control.\n%s", strerror(errno));
+        fclose(cc_file);
+    } else {
+        fclose(cc_file);
+        NSLog(@"%s", cc_data);
+        NSData* cc_objc_data = [@(cc_data) dataUsingEncoding:NSUTF8StringEncoding];
+        NSDictionary *cc_dictionary = [NSJSONSerialization JSONObjectWithData:cc_objc_data options:kNilOptions error:&cc_error];
+        if (cc_error != nil) {
+            showDialog(self, @"Error parsing JSON", cc_error.localizedDescription);
+        } else {
+            NSArray *cc_controlDataList = (NSArray *) [cc_dictionary valueForKey:@"mControlDataList"];
+            for (int i = 0; i < (int) cc_controlDataList.count; i++) {
+                ControlButton *button = [ControlButton initWithProperties:(NSMutableDictionary *)cc_controlDataList[i]];
+                [button addTarget:self action:@selector(executebtn_down:) forControlEvents:UIControlEventTouchDown];
+                [button addTarget:self action:@selector(executebtn_up:) forControlEvents:UIControlEventTouchUpInside];
+                [button addTarget:self action:@selector(executebtn_up:) forControlEvents:UIControlEventTouchUpOutside];
+                [self.view addSubview:button];
+                if ([(NSNumber *) [button.properties valueForKey:@"keycode"] intValue] != SPECIALBTN_TOGGLECTRL) {
+                    togglableVisibleButtons[++togglableVisibleButtonIndex] = button;
+                }
+            }
+            cc_fallback = NO;
+        }
+    }
 
-    ADD_BUTTON_VISIBLE(@"Debug", f3, CGRectMake(5, 5, BTN_RECT));
-    ADD_BUTTON_VISIBLE(@"Chat", t, CGRectMake(5 * 2 + 80, 5, BTN_RECT));
-    ADD_BUTTON_VISIBLE(@"Tab", tab, CGRectMake(5 * 4 + 80 * 3, 5, BTN_RECT));
-    ADD_BUTTON_VISIBLE(@"Opti-Zoom", c, CGRectMake(5 * 5 + 80 * 4, 5, BTN_RECT));
-    ADD_BUTTON_VISIBLE(@"Offhand", f, CGRectMake(5 * 6 + 80 * 5, 5, BTN_RECT));
-    ADD_BUTTON_VISIBLE(@"3rd", f5, CGRectMake(5, 5 * 2 + 30.0, BTN_RECT));
+    if (cc_fallback == YES) {
+        ADD_BUTTON(@"GUI", SPECIALBTN_TOGGLECTRL, CGRectMake(5, height - 5 - 50, BTN_SQUARE), NO);
+        ADD_BUTTON(@"Keyboard", SPECIALBTN_KEYBOARD, CGRectMake(5 * 3 + 80 * 2, 5, BTN_RECT), YES);
 
-    ADD_BUTTON_VISIBLE(@"▲", w, CGRectMake(5 * 2 + 50, height - 5 * 3 - 50 * 3, BTN_SQUARE));
-    ADD_BUTTON_VISIBLE(@"◀", a, CGRectMake(5, height - 5 * 2 - 50 * 2, BTN_SQUARE));
-    ADD_BUTTON_VISIBLE(@"▼", s, CGRectMake(5 * 2 + 50, height - 5 - 50, BTN_SQUARE));
-    ADD_BUTTON_VISIBLE(@"▶", d, CGRectMake(5 * 3 + 50 * 2, height - 5 * 2 - 50 * 2, BTN_SQUARE));
-    ADD_BUTTON_VISIBLE(@"◇", left_shift, CGRectMake(5 * 2 + 50, height - 5 * 2 - 50 * 2, BTN_SQUARE));
-    ADD_BUTTON_VISIBLE(@"Inv", e, CGRectMake(5 * 3 + 50 * 2, height - 5 - 50, BTN_SQUARE));
+        ADD_BUTTON(@"Pri", SPECIALBTN_MOUSEPRI, CGRectMake(5, height - 5 * 3 - 50 * 3, BTN_SQUARE), YES);
+        ADD_BUTTON(@"Sec", SPECIALBTN_MOUSESEC, CGRectMake(5 * 3 + 50 * 2, height - 5 * 3 - 50 * 3, BTN_SQUARE), YES);
 
-    ADD_BUTTON_VISIBLE(@"⬛", space, CGRectMake(width - 5 * 2 - 50 * 2, height - 5 * 2 - 50 * 2, BTN_SQUARE));
+        ADD_BUTTON(@"Debug", GLFW_KEY_F3, CGRectMake(5, 5, BTN_RECT), YES);
+        ADD_BUTTON(@"Chat", GLFW_KEY_T, CGRectMake(5 * 2 + 80, 5, BTN_RECT), YES);
+        ADD_BUTTON(@"Tab", GLFW_KEY_TAB, CGRectMake(5 * 4 + 80 * 3, 5, BTN_RECT), YES);
+        ADD_BUTTON(@"Opti-Zoom", GLFW_KEY_C, CGRectMake(5 * 5 + 80 * 4, 5, BTN_RECT), YES);
+        ADD_BUTTON(@"Offhand", GLFW_KEY_F, CGRectMake(5 * 6 + 80 * 5, 5, BTN_RECT), YES);
+        ADD_BUTTON(@"3rd", GLFW_KEY_F5, CGRectMake(5, 5 * 2 + 30.0, BTN_RECT), YES);
 
-    ADD_BUTTON_VISIBLE(@"Esc", escape, CGRectMake(width - 5 - 80, height - 5 - 30, BTN_RECT));
+        ADD_BUTTON(@"▲", GLFW_KEY_W, CGRectMake(5 * 2 + 50, height - 5 * 3 - 50 * 3, BTN_SQUARE), YES);
+        ADD_BUTTON(@"◀", GLFW_KEY_A, CGRectMake(5, height - 5 * 2 - 50 * 2, BTN_SQUARE), YES);
+        ADD_BUTTON(@"▼", GLFW_KEY_S, CGRectMake(5 * 2 + 50, height - 5 - 50, BTN_SQUARE), YES);
+        ADD_BUTTON(@"▶", GLFW_KEY_D, CGRectMake(5 * 3 + 50 * 2, height - 5 * 2 - 50 * 2, BTN_SQUARE), YES);
+        ADD_BUTTON(@"◇", GLFW_KEY_LEFT_SHIFT, CGRectMake(5 * 2 + 50, height - 5 * 2 - 50 * 2, BTN_SQUARE), YES);
+        ADD_BUTTON(@"Inv", GLFW_KEY_E, CGRectMake(5 * 3 + 50 * 2, height - 5 - 50, BTN_SQUARE), YES);
 
-    // ADD_BUTTON_VISIBLE(@"Fullscreen", f11, CGRectMake(width - 5 - 80, 5, BTN_RECT));
+        ADD_BUTTON(@"⬛", GLFW_KEY_SPACE, CGRectMake(width - 5 * 2 - 50 * 2, height - 5 * 2 - 50 * 2, BTN_SQUARE), YES);
+
+        ADD_BUTTON(@"Esc", GLFW_KEY_ESCAPE, CGRectMake(width - 5 - 80, height - 5 - 30, BTN_RECT), YES);
+
+        // ADD_BUTTON(@"Fullscreen", f11, CGRectMake(width - 5 - 80, 5, BTN_RECT), YES);
+    }
     
     [self.view addSubview:inputView];
 
@@ -182,6 +233,116 @@ int notchOffset;
     [self setupGL];
 }
 
+- (BOOL)prefersHomeIndicatorAutoHidden {
+    return YES;
+}
+
+- (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
+    return UIRectEdgeAll;
+}
+
+#pragma mark - MetalANGLE stuff
+
+- (void)dealloc
+{
+    if ([MGLContext currentContext] == self.context) {
+        [MGLContext setCurrentContext:nil];
+    }
+}
+
+- (void)setupGL
+{
+    [MGLContext setCurrentContext:self.context];
+
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    CGFloat screenScale = [[UIScreen mainScreen] scale];
+
+    int width = (int) roundf(screenBounds.size.width * screenScale);
+    int height = (int) roundf(screenBounds.size.height * screenScale);
+    callback_SurfaceViewController_launchMinecraft(width, height);
+}
+
+BOOL isNotifRemoved;
+- (void)mglkView:(MGLKView *)view drawInRect:(CGRect)rect
+{
+    // glClearColor(0.6f, 0.6f, 0.6f, 1.0f);
+    // glClear(GL_COLOR_BUFFER_BIT);
+    // [self setNeedsDisplay]
+    // NSLog(@"swapbuffer");
+
+    // Remove notifications, so rendering will be manually controlled!
+    if (isNotifRemoved == NO) {
+        isNotifRemoved = YES;
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+        name:MGLKApplicationWillResignActiveNotification
+        object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+        name:MGLKApplicationDidBecomeActiveNotification
+        object:nil];
+    }
+        
+    [super pause];
+
+    // Java_org_lwjgl_glfw_CallbackBridge_nativeSendCursorPos(NULL, NULL, location.x * screenScale, location.y * screenScale);
+}
+
+#pragma mark - Input: send touch utilities
+
+- (void)sendTouchPoint:(CGPoint)location withEvent:(int)event
+{
+    CGFloat screenScale = [[UIScreen mainScreen] scale];
+    if (callback_SurfaceViewController_touchHotbar(location.x * screenScale, location.y * screenScale) == -1) {
+        callback_SurfaceViewController_onTouch(event, location.x * screenScale, location.y * screenScale);
+    }
+}
+
+- (void)sendTouchEvent:(NSSet *)touches withUIEvent:(UIEvent *)uievent withEvent:(int)event
+{
+    UITouch* touchEvent = [touches anyObject];
+    
+    BOOL isTouchTypeIndirect = NO;
+    if (@available(iOS 13.4, *)) {
+        if (touchEvent.type == UITouchTypeIndirectPointer) {
+            isTouchTypeIndirect = YES;
+        }
+    }
+
+    if ([touchEvent view] == touchView) {
+        CGPoint locationInView = [touchEvent locationInView:touchView];
+        [self sendTouchPoint:locationInView withEvent:event];
+    }
+
+    if (!isTouchTypeIndirect) {
+        switch (event) {
+            case ACTION_DOWN:
+                touchesMovedCount = 0;
+                shouldTriggerClick = YES;
+                break;
+
+            case ACTION_MOVE:
+                // TODO: better handling this
+                if (touchesMovedCount >= 1) {
+                    shouldTriggerClick = NO;
+                } else ++touchesMovedCount;
+                break;
+        }
+    } else if (@available(iOS 13.4, *)) {
+        // Recheck @available for fix compile warnings
+
+        // Mouse clicks are handled here
+        int held = event == ACTION_MOVE || event == ACTION_UP;
+        shouldTriggerClick = NO;
+        for (int i = 1; i <= 5; ++i) {
+            if ((uievent.buttonMask & (1 << ((i)-1))) != 0) {
+                // iOS button index = GLFW button index + 1;
+                Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, i - 1, held, 0);
+            }
+        }
+    }
+}
+
+#pragma mark - Input: on-surface gestures
+
 - (void)surfaceOnClick:(UITapGestureRecognizer *)sender {
     if (sender.state == UIGestureRecognizerStateRecognized &&
       shouldTriggerClick == YES) {
@@ -204,8 +365,27 @@ int notchOffset;
     }
 }
 
--(BOOL)prefersHomeIndicatorAutoHidden {
-    return YES;
+- (void)surfaceOnHover:(UIHoverGestureRecognizer *)sender API_AVAILABLE(ios(13.0)) {
+    if (@available(iOS 13.0, *)) {
+        CGPoint point = [sender locationInView:touchView];
+        // NSLog(@"Mouse move!!");
+        // NSLog(@"Mouse pos = %d, %d", point.x, point.y);
+        switch (sender.state) {
+            case UIGestureRecognizerStateBegan:
+                [self sendTouchPoint:point withEvent:ACTION_DOWN];
+                break;
+            case UIGestureRecognizerStateChanged:
+                [self sendTouchPoint:point withEvent:ACTION_MOVE];
+                break;
+            case UIGestureRecognizerStateEnded:
+            case UIGestureRecognizerStateCancelled:
+                [self sendTouchPoint:point withEvent:ACTION_UP];
+                break;
+            default:
+                // point = CGPointMake(-1, -1);
+                break;
+        }
+    }
 }
 
 -(void)surfaceOnLongpress:(UILongPressGestureRecognizer *)sender
@@ -242,6 +422,55 @@ int notchOffset;
         }
     }
 }
+
+-(void)surfaceOnMouseScroll:(UIPanGestureRecognizer *)sender API_AVAILABLE(ios(13.4))
+{
+    if (sender.state == UIGestureRecognizerStateBegan ||
+        sender.state == UIGestureRecognizerStateChanged ||
+        sender.state == UIGestureRecognizerStateEnded) {
+        CGPoint velocity = [sender velocityInView:self];
+
+        if (velocity.x > 0.0f) {
+            velocity.x = -1.0;
+        } else if (velocity.x < 0.0f) {
+            velocity.x = 1.0f;
+        }
+        if (velocity.y > 0.0f) {
+            velocity.y = -1.0;
+        } else if (velocity.y < 0.0f) {
+            velocity.y = 1.0f;
+        }
+        if (velocity.x != 0.0f || velocity.y != 0.0f) {
+            Java_org_lwjgl_glfw_CallbackBridge_nativeSendScroll(NULL, NULL, (jdouble) velocity.x, (jdouble) velocity.y);
+        }
+    }
+}
+
+- (UIPointerRegion *)pointerInteraction:(UIPointerInteraction *)interaction regionForRequest:(UIPointerRegionRequest *)request defaultRegion:(UIPointerRegion *)defaultRegion API_AVAILABLE(ios(13.4)) API_AVAILABLE(ios(13.4)) API_AVAILABLE(ios(13.4)){
+    if (request != nil) {
+        CGPoint origin = touchView.bounds.origin;
+        CGPoint point = request.location;
+
+        point.x -= origin.x;
+        point.y -= origin.y;
+        
+        NSLog(@"UIPointerInteraction pos changed: x=%d, y=%d", point.x, point.y);
+
+        // TODO FIXME
+        callback_SurfaceViewController_onTouch(ACTION_DOWN, (int)point.x, (int)point.y);
+    }
+    return [UIPointerRegion regionWithRect:touchView.bounds identifier:nil];
+}
+
+- (UIPointerStyle *)pointerInteraction:(UIPointerInteraction *)interaction styleForRegion:(UIPointerRegion *)region  API_AVAILABLE(ios(13.4)){
+    if (isGrabbing == JNI_FALSE) {
+        return nil;
+    } else {
+        return [UIPointerStyle hiddenPointerStyle];
+    }
+}
+
+#pragma mark - Input view stuff
 
 NSString* inputStringBefore;
 -(void)inputViewDidChange {
@@ -331,8 +560,53 @@ NSString* inputStringBefore;
     return YES;
 }
 
+#pragma mark - On-screen button functions
+
 int currentVisibility = 1;
-ADD_BUTTON_DEF(special_togglebtn) {
+- (void) executebtn:(UIButton *)sender withAction:(int)action {
+    ControlButton *button = (ControlButton *)sender;
+    int held = action == ACTION_DOWN;
+    int keycode = [(NSNumber *) [button.properties valueForKey:@"keycode"] intValue];
+    if (keycode < 0) {
+        switch (keycode) {
+            case SPECIALBTN_KEYBOARD:
+                if (held == 0) {
+                    [inputView resignFirstResponder];
+                    inputView.alpha = 1.0f;
+                    inputView.text = @"";
+                }
+                break;
+
+            case SPECIALBTN_MOUSEPRI:
+                Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, GLFW_MOUSE_BUTTON_LEFT, held, 0);
+                break;
+
+            case SPECIALBTN_MOUSESEC:
+                Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, GLFW_MOUSE_BUTTON_RIGHT, held, 0);
+                break;
+
+            case SPECIALBTN_MOUSEMID:
+                Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, GLFW_MOUSE_BUTTON_MIDDLE, held, 0);
+                break;
+
+            case SPECIALBTN_TOGGLECTRL:
+                [self executebtn_special_togglebtn:held];
+                break;
+        }
+    } else {
+        Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, keycode, 0, held, 0);
+    }
+}
+
+- (void) executebtn_down:(UIButton *)sender {
+    [self executebtn:sender withAction:ACTION_DOWN];
+}
+
+- (void) executebtn_up:(UIButton *)sender {
+    [self executebtn:sender withAction:ACTION_UP];
+}
+
+- (void) executebtn_special_togglebtn:(int)held {
     if (held == 0) {
         currentVisibility = !currentVisibility;
         for (int i = 0; i < togglableVisibleButtonIndex + 1; i++) {
@@ -345,124 +619,34 @@ ADD_BUTTON_DEF(special_togglebtn) {
     }
 }
 
-ADD_BUTTON_DEF(special_keyboard) {
-    if (held == 0) {
-        [inputView resignFirstResponder];
-        inputView.alpha = 1.0f;
-        inputView.text = @"";
-    }
-}
-
-ADD_BUTTON_DEF(special_mouse_pri) {
-    Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, GLFW_MOUSE_BUTTON_LEFT, held, 0);
-}
-
-ADD_BUTTON_DEF(special_mouse_sec) {
-    Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, GLFW_MOUSE_BUTTON_RIGHT, held, 0);
-}
-
-ADD_BUTTON_DEF_KEY(f3, GLFW_KEY_F3)
-ADD_BUTTON_DEF_KEY(f5, GLFW_KEY_F5)
-ADD_BUTTON_DEF_KEY(f11, GLFW_KEY_F11)
-ADD_BUTTON_DEF_KEY(t, GLFW_KEY_T)
-ADD_BUTTON_DEF_KEY(c, GLFW_KEY_C)
-ADD_BUTTON_DEF_KEY(f, GLFW_KEY_F)
-ADD_BUTTON_DEF_KEY(tab, GLFW_KEY_TAB)
-
-ADD_BUTTON_DEF_KEY(w, GLFW_KEY_W)
-ADD_BUTTON_DEF_KEY(a, GLFW_KEY_A)
-ADD_BUTTON_DEF_KEY(s, GLFW_KEY_S)
-ADD_BUTTON_DEF_KEY(d, GLFW_KEY_D)
-ADD_BUTTON_DEF_KEY(e, GLFW_KEY_E)
-
-ADD_BUTTON_DEF_KEY(left_shift, GLFW_KEY_LEFT_SHIFT)
-
-ADD_BUTTON_DEF_KEY(space, GLFW_KEY_SPACE)
-ADD_BUTTON_DEF_KEY(escape, GLFW_KEY_ESCAPE)
-
-- (void)dealloc
-{
-    if ([MGLContext currentContext] == self.context) {
-        [MGLContext setCurrentContext:nil];
-    }
-}
-
-- (void)setupGL
-{
-    [MGLContext setCurrentContext:self.context];
-
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    CGFloat screenScale = [[UIScreen mainScreen] scale];
-
-    int width = (int) roundf(screenBounds.size.width * screenScale);
-    int height = (int) roundf(screenBounds.size.height * screenScale);
-    callback_SurfaceViewController_launchMinecraft(width, height);
-}
-
-BOOL isNotifRemoved;
-- (void)mglkView:(MGLKView *)view drawInRect:(CGRect)rect {
-    // glClearColor(0.6f, 0.6f, 0.6f, 1.0f);
-    // glClear(GL_COLOR_BUFFER_BIT);
-    // [self setNeedsDisplay]
-    // NSLog(@"swapbuffer");
-
-    // Remove notifications, so rendering will be manually controlled!
-    if (isNotifRemoved == NO) {
-        isNotifRemoved = YES;
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-        name:MGLKApplicationWillResignActiveNotification
-        object:nil];
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-        name:MGLKApplicationDidBecomeActiveNotification
-        object:nil];
-    }
-        
-    [super pause];
-}
-
-- (void)sendTouchEvent:(NSSet *)touches withEvent:(int)event
-{
-    UITouch* touchEvent = [touches anyObject];
-    if ([touchEvent view] == touchView) {
-        CGPoint locationInView = [touchEvent locationInView:touchView];
-        [self sendTouchPoint:locationInView withEvent:event];
-    }
-}
-
-- (void)sendTouchPoint:(CGPoint)location withEvent:(int)event{
-    CGFloat screenScale = [[UIScreen mainScreen] scale];
-    if (callback_SurfaceViewController_touchHotbar(location.x * screenScale, location.y * screenScale) == -1) {
-        callback_SurfaceViewController_onTouch(event, location.x * screenScale, location.y * screenScale);
-    }
-    
-    // Java_org_lwjgl_glfw_CallbackBridge_nativeSendCursorPos(NULL, NULL, location.x * screenScale, location.y * screenScale);
-}
+#pragma mark - Input: On-screen touch events
 
 int touchesMovedCount;
 // Equals to Android ACTION_DOWN
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesBegan: touches withEvent: event];
-    [self sendTouchEvent: touches withEvent: ACTION_DOWN];
-    touchesMovedCount = 0;
-    shouldTriggerClick = YES;
+    [self sendTouchEvent: touches withUIEvent: event withEvent: ACTION_DOWN];
 }
 
 // Equals to Android ACTION_MOVE
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesMoved: touches withEvent: event];
-    [self sendTouchEvent: touches withEvent: ACTION_MOVE];
-    if (touchesMovedCount >= 1) {
-        shouldTriggerClick = NO;
-    } else ++touchesMovedCount;
+    [self sendTouchEvent: touches withUIEvent: event withEvent: ACTION_MOVE];
 }
 
 // Equals to Android ACTION_UP
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesEnded: touches withEvent: event];
-    [self sendTouchEvent: touches withEvent: ACTION_UP];
+    [self sendTouchEvent: touches withUIEvent: event withEvent: ACTION_UP];
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesCancelled: touches withEvent: event];
+    [self sendTouchEvent: touches withUIEvent: event withEvent: ACTION_UP];
 }
 
 @end

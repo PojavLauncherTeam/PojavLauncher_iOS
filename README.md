@@ -112,7 +112,8 @@ chmod 755 *.sh
 ## Directory locations
 - Account json directory: `/var/mobile/Documents/.pojavlauncher/accounts`.
 - Minecraft home directory: `/var/mobile/Documents/minecraft`.
-- You can also customize JVM Arguments in `overrideargs.txt` in the `minecraft` directory.
+- You can also customize JVM Arguments in `overrideargs.txt` on `.pojavlauncher` directory
+and customize environment variables in `custom_env.txt` on `.pojavlauncher` directory.
 
 ## License
 - PojavLauncher is licensed under [GNU GPLv3](https://github.com/khanhduytran0/PojavLauncher_iOS/blob/master/LICENSE).
