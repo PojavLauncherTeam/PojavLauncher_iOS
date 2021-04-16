@@ -43,14 +43,14 @@ UITextField* versionTextField;
     }
 
     UILabel *versionTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 4.0, 0.0, 30.0)];
-    versionTextView.text = @"Minecraft version:";
+    versionTextView.text = @"Minecraft version: ";
     versionTextView.numberOfLines = 0;
     [versionTextView sizeToFit];
     [scrollView addSubview:versionTextView];
 
     versionTextField = [[UITextField alloc] initWithFrame:CGRectMake(versionTextView.bounds.size.width + 4.0, 4.0, width - versionTextView.bounds.size.width - 8.0, versionTextView.bounds.size.height)];
     [versionTextField addTarget:versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
-    versionTextField.placeholder = @"Minecraft version";
+    versionTextField.placeholder = @"Specify version...";
     versionTextField.text = [NSString stringWithUTF8String:configver];
     fclose(configver_file);
     [scrollView addSubview:versionTextField];
