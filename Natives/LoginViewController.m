@@ -111,7 +111,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     [scrollView addSubview:button_login_account];
 }
 
--(void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection API_AVAILABLE(ios(13.0)) {
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection API_AVAILABLE(ios(13.0)) {
     if(@available(iOS 13.0, *)) {
         if (UITraitCollection.currentTraitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
             self.view.backgroundColor = [UIColor blackColor];
@@ -220,7 +220,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     [self.navigationController pushViewController:vc animated:YES];
 }
 
--(void)loginMojangWithUsername:(NSString*)input_username password:(NSString*)input_password {
+- (void)loginMojangWithUsername:(NSString*)input_username password:(NSString*)input_password {
     NSString *input_uuid = [[NSUUID UUID] UUIDString];
 
     NSURLSession *session = [NSURLSession sharedSession];

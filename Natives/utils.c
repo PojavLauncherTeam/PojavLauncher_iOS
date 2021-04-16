@@ -8,8 +8,6 @@
 
 #include "utils.h"
 
-typedef int (*Main_Function_t)(int, char**);
-
 long shared_awt_surface;
 
 char** convert_to_char_array(JNIEnv *env, jobjectArray jstringArray) {
@@ -97,52 +95,3 @@ JNIEXPORT jint JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_chdir(JNIEnv *env
 	(*env)->ReleaseStringUTFChars(env, nameStr, name);
 	return retval;
 }
-
-JNIEXPORT jint JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_executeBinary(JNIEnv *env, jclass clazz, jobjectArray cmdArgs) {
-	jclass exception_cls = (*env)->FindClass(env, "java/lang/UnsatisfiedLinkError");
-	jstring execFile = (*env)->GetObjectArrayElement(env, cmdArgs, 0);
-	
-	char *exec_file_c = (char*) (*env)->GetStringUTFChars(env, execFile, 0);
-	void *exec_binary_handle = dlopen(exec_file_c, RTLD_LAZY);
-	
-	// (*env)->ReleaseStringUTFChars(env, ldLibraryPath, ld_library_path_c);
-	(*env)->ReleaseStringUTFChars(env, execFile, exec_file_c);
-	
-	char *exec_error_c = dlerror();
-	if (exec_error_c != NULL) {
-		LOGE("Error: %s", exec_error_c);
-		(*env)->ThrowNew(env, exception_cls, exec_error_c);
-		return -1;
-	}
-	
-	Main_Function_t Main_Function;
-	Main_Function = (Main_Function_t) dlsym(exec_binary_handle, "main");
-	
-	exec_error_c = dlerror();
-	if (exec_error_c != NULL) {
-		LOGE("Error: %s", exec_error_c);
-		(*env)->ThrowNew(env, exception_cls, exec_error_c);
-		return -1;
-	}
-	
-	int cmd_argv = (*env)->GetArrayLength(env, cmdArgs);
-	char **cmd_args_c = convert_to_char_array(env, cmdArgs);
-	int result = Main_Function(cmd_argv, cmd_args_c);
-	free_char_array(env, cmdArgs, cmd_args_c);
-	return result;
-}
-
-// METHOD 2
-/*
-JNIEXPORT jint JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_executeForkedBinary(JNIEnv *env, jclass clazz, jobjectArray cmdArgs) {
-	int x, status;
-	x = fork();
-	if (x > 0) {
-		wait(&status);
-	} else {
-		execvpe();
-	}
-	return status;
-}
-*/
-

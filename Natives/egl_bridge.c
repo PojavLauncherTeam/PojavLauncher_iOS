@@ -192,8 +192,8 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglMakeCurrent(JNIEnv*
         debug("First frame error: %p", eglGetError());
 #endif
         if (success == EGL_TRUE) {
-            GL4ES_HANDLE = dlopen("libGL.dylib", RTLD_GLOBAL);
-            debug("libGL = %p", GL4ES_HANDLE);
+            GL4ES_HANDLE = dlopen(getenv("POJAV_OPENGL_LIBNAME"), RTLD_GLOBAL);
+            debug("libGL=%p", GL4ES_HANDLE);
     
             gl4esInitialize_func *gl4esInitialize = (gl4esInitialize_func*) dlsym(GL4ES_HANDLE, "initialize_gl4es");
             // debug("initialize_gl4es = %p", gl4esInitialize);
