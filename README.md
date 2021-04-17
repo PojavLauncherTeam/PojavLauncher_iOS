@@ -17,7 +17,7 @@ This launcher is now available at the Procursus repository, thanks to [@Diatrus]
 - [Credits & Third party components and their licenses](#credits--third-party-components-and-their-licenses)
 
 ## Introduction
-- This is an attempt to get Minecraft: Java Edition running on jailbroken iOS.
+- This is a launcher to get Minecraft: Java Edition running on jailbroken iOS.
 - Minimum requirements: device running iOS 12 or newer.
 
 ## Building
