@@ -17,7 +17,7 @@ This launcher is now available at the Procursus repository, thanks to [@Diatrus]
 - [Credits & Third party components and their licenses](#credits--third-party-components-and-their-licenses)
 
 ## Introduction
-- This is an attempt to get Minecraft: Java Edition running on jailbroken iOS.
+- This is a launcher to get Minecraft: Java Edition running on jailbroken iOS.
 - Minimum requirements: device running iOS 12 or newer.
 
 ## Building
@@ -132,3 +132,4 @@ Contributions are welcome! We welcome any type of contribution, not only code. A
 - [OpenJDK 16](https://www.ios-repo-updates.com/repository/procursus/package/openjdk-16-jre) ported to iOS by @Diatrus: [GNU GPLv2 License](https://openjdk.java.net/legal/gplv2+ce.html).<br>
 - [LWJGL3](https://github.com/PojavLauncherTeam/lwjgl3): [BSD-3 License](https://github.com/LWJGL/lwjgl3/blob/master/LICENSE.md).
 - [LWJGLX](https://github.com/PojavLauncherTeam/lwjglx) (LWJGL2 API compatibility layer for LWJGL3): unknown license.<br>
+
