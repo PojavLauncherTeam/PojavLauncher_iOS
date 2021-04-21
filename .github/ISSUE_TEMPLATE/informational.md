@@ -13,6 +13,7 @@ To use this template:
 * Add something descriptive to the title (ex. [Info] iOS Memory Issues)
 * Follow all of the steps. If you do not provide an answer to each section in this template, the issue will be closed.
 
+// Delete this line and the above text before submitting.
 
 **Add some background.**
 What’s this documentation for? If it’s a solution doc, what’s causing the issue? Why is it important to document?
