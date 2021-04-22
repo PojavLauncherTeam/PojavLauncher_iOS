@@ -105,12 +105,11 @@ int launchJVM(int argc, char *argv[]) {
         close(log_fd);
     }
 
-    // iOS jetsam memory bypass, requires jetsamctl and sudo. Optional.
+    // iOS jetsam memory bypass, requires jetsamctl, awk, and sudo. Optional.
     if( access("/usr/bin/jetsamctl", F_OK ) == 0 ) {
         debug("[Pre-init] jetsamctl was found. Overriding memory limits.");
         pid_t pid;
         char *argv[] = {
-                "/usr/bin/sudo",
                 "/usr/bin/jetsamctl",
                 "-l",
                 "$(awk -v MEM=$(sysctl -a | grep memsize | cut -b 13-26) 'BEGIN { print  ( MEM / 1024 / 1024 ) }' | cut -b 1-4)",
