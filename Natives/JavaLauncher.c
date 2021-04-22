@@ -105,10 +105,7 @@ int launchJVM(int argc, char *argv[]) {
         close(log_fd);
     }
 
-    /* iOS jetsam memory bypass. This is going to launch with the JVM so it fires correctly.
-     * To prevent centering PojavLauncher around my repository, this is completely optional.
-     * When I release my revised version of jetsamctl, I'll update this section.
-     */
+    // iOS jetsam memory bypass, requires jetsamctl and sudo. Optional.
     if( access("/usr/bin/jetsamctl", F_OK ) == 0 ) {
         debug("[Pre-init] jetsamctl was found. Overriding memory limits.");
         pid_t pid;
@@ -124,7 +121,7 @@ int launchJVM(int argc, char *argv[]) {
         posix_spawn(&pid, argv[0], NULL, NULL, argv, environ);
         debug("[Pre-init] jetsamctl finished successfully.");
     } else {
-        debug("[Pre-Init] jetsamctl was not found. If you wish to prevent jetsam-related crashes, get jetsamctl 0.2 or later.");
+        debug("[Pre-Init] jetsamctl was not found. If you wish to prevent jetsam-related crashes, install jetsamctl 0.2 or later.");
     }
 
     debug("[Pre-init] Beginning JVM launch\n");
