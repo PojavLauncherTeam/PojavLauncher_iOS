@@ -19,7 +19,7 @@
 #define DOT_VERSION "1.16"
 
 static const char *java_libs_dir = "/Applications/PojavLauncher.app/libs";
-static const char *args_path = "/var/mobile/Documents/.pojavlauncher/override_rgs.txt";
+static const char *args_path = "/var/mobile/Documents/.pojavlauncher/override_args.txt";
 static const char *log_path = "/var/mobile/Documents/.pojavlauncher/latestlog.txt";
 
 static const char* const_progname = "java";
