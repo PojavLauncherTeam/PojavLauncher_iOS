@@ -129,12 +129,11 @@ int notchOffset;
 
     // Custom button
     // ADD_BUTTON(@"F1", f1, CGRectMake(5, 5, width, height));
-    
-    
-    // Temporary custom controls
+
+    // Temporary fallback controls
     BOOL cc_fallback = YES;
     
-    FILE *cc_file = fopen("/var/mobile/Documents/.pojavlauncher/customcontrols/default.json", "r");
+    FILE *cc_file = fopen("/var/mobile/Documents/.pojavlauncher/controlmap/default.json", "r");
 
     // 100kb (might not safe)
     char cc_data[102400];
@@ -146,12 +145,14 @@ int notchOffset;
     }
 
     NSError *cc_error;
-    if (!cc_file || !fread(cc_data, cc_size, 1, cc_file)) {
-        NSLog(@"Error: could not read \"default.json\", fallbacking to default control.\n%s", strerror(errno));
+    if (cc_size > 102400) {
+        NSLog(@"Error: control data is too big (over 100kb).");
+        fclose(cc_file);
+    } else if (!cc_file || !fread(cc_data, cc_size, 1, cc_file)) {
+        NSLog(@"Error: could not read \"default.json\", falling back to default control, error: %s", strerror(errno));
         fclose(cc_file);
     } else {
         fclose(cc_file);
-        NSLog(@"%s", cc_data);
         NSData* cc_objc_data = [@(cc_data) dataUsingEncoding:NSUTF8StringEncoding];
         NSDictionary *cc_dictionary = [NSJSONSerialization JSONObjectWithData:cc_objc_data options:kNilOptions error:&cc_error];
         if (cc_error != nil) {
@@ -233,7 +234,8 @@ int notchOffset;
     [self setupGL];
 }
 
-- (BOOL)prefersHomeIndicatorAutoHidden {
+- (BOOL)prefersHomeIndicatorAutoHidden
+{
     return YES;
 }
 
