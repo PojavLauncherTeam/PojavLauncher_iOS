@@ -110,10 +110,13 @@ int launchJVM(int argc, char *argv[]) {
         debug("[Pre-init] jetsamctl was found. Overriding memory limits.");
         pid_t pid;
         char *argv[] = {
+                "/usr/bin/sudo",
                 "/usr/bin/jetsamctl",
                 "-l",
                 "$(awk -v MEM=$(sysctl -a | grep memsize | cut -b 13-26) 'BEGIN { print  ( MEM / 1024 / 1024 ) }' | cut -b 1-4)",
                 "PojavLauncher",
+                ">"
+                "/var/mobile/Documents/.pojavlauncher/jetsamctl_debug.txt",
                 NULL
         };
 
