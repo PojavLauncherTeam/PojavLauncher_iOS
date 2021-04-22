@@ -109,7 +109,7 @@ int launchJVM(int argc, char *argv[]) {
     
     init_loadCustomEnv();
     
-    mkdir("/var/mobile/Documents/.pojavlauncher/customcontrols", S_IRWXU | S_IRWXG | S_IRWXO);
+    mkdir("/var/mobile/Documents/.pojavlauncher/controlmap", S_IRWXU | S_IRWXG | S_IRWXO);
     chdir("/var/mobile/Documents/minecraft");
 
     char classpath[10000];
