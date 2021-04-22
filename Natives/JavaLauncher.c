@@ -137,13 +137,6 @@ int launchJVM(int argc, char *argv[]) {
     
     mkdir("/var/mobile/Documents/.pojavlauncher/controlmap", S_IRWXU | S_IRWXG | S_IRWXO);
     chdir("/var/mobile/Documents/minecraft");
-    DIR* dir = opendir("/var/mobile/Documents/.pojavlauncher/customcontrols");
-    if (dir) {
-        debug("[Pre-Init] Found remnant of customcontrols, which was replace by controlmap.");
-        rmdir("/var/mobile/Documents/.pojavlauncher/customcontrols");
-        debug("Removed customcontrols. Use controlmap instead.");
-        closedir(dir);
-    }
 
     char classpath[10000];
     
