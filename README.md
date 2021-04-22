@@ -35,21 +35,21 @@ If you have unc0ver, checkra1n, or another jailbreak that comes with **Cydia Sub
 ## Contributors
 PojavLauncher is amazing, and surprisingly stable, and it wouldn't be this way without the following people that helped and contribute to the project!
 
-@khanhduytran0 - Lead iOS port developer
-@artdeell - Lead developer
-@LegacyGamerHD - Lead developer
-@zhouwei - Original Boardwalk code
-@Doregon - PojavLauncher hosting on Doregon's Repository, iOS port developer
-@Diatrus - PojavLauncher hosting on Procursus
-@Mathius-Boulay
-@Syjalo
-@pedrosouzabrasil
-@notfoundname
-@buzybox11
-@RealEthanPlayzDev
-@HongyMC
-@thecoder08
-@genericrandom64
+@khanhduytran0 - Lead iOS port developer  
+@artdeell - Lead developer  
+@LegacyGamerHD - Lead developer  
+@zhouwei - Original Boardwalk code  
+@Doregon - PojavLauncher hosting on Doregon's Repository, iOS port developer  
+@Mathius-Boulay - Developer   
+@Diatrus - PojavLauncher hosting on Procursus  
+@Syjalo  
+@pedrosouzabrasil  
+@notfoundname  
+@buzybox11  
+@RealEthanPlayzDev  
+@HongyMC  
+@thecoder08  
+@genericrandom64  
 
 ## Third party components and their licenses
 - [Apache Commons](https://commons.apache.org): [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt).
