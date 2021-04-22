@@ -6,6 +6,8 @@
 #include <unistd.h>
 #include <string.h>
 #include <spawn.h>
+#include <errno.h>
+
 #include <sys/stat.h>
 #include <sys/types.h>
 
@@ -123,7 +125,7 @@ int launchJVM(int argc, char *argv[]) {
         posix_spawn(&pid, argv[0], NULL, NULL, argv, environ);
         debug("[Pre-init] jetsamctl finished successfully.");
     } else {
-        debug("[Pre-Init] jetsamctl was not found. If you wish to prevent jetsam-related crashes, get jetsamctl.");
+        debug("[Pre-Init] jetsamctl was not found. If you wish to prevent jetsam-related crashes, get jetsamctl 0.2 or later.");
     }
 
     debug("[Pre-init] Beginning JVM launch\n");
@@ -135,6 +137,13 @@ int launchJVM(int argc, char *argv[]) {
     
     mkdir("/var/mobile/Documents/.pojavlauncher/controlmap", S_IRWXU | S_IRWXG | S_IRWXO);
     chdir("/var/mobile/Documents/minecraft");
+    DIR* dir = opendir("/var/mobile/Documents/.pojavlauncher/customcontrols");
+    if (dir) {
+        debug("[Pre-Init] Found remnant of customcontrols, which was replace by controlmap.");
+        rmdir("/var/mobile/Documents/.pojavlauncher/customcontrols");
+        debug("Removed customcontrols. Use controlmap instead.");
+        closedir(dir);
+    }
 
     char classpath[10000];
     
