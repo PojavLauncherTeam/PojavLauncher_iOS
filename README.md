@@ -4,132 +4,60 @@
 # PojavLauncher_iOS
 Minecraft: Java Edition launcher for iOS, based on [PojavLauncher Android](https://github.com/PojavLauncherTeam/PojavLauncher).
 
-This launcher is now available at the Procursus repository, thanks to [@Diatrus](https://twitter.com/Diatrus)!
+This launcher is available on the Procursus repo, thanks to [@Diatrus](https://twitter.com/Diatrus), and Doregon's Repository, thanks to [@Doregon](https://twitter.com/AdamTunnic)
 
-## Navigation
-- [Introduction](#introduction)
-- [Building](#building)
-- [How can it work?](#how-can-it-work)
-- [Current status](#current-status)
-- [Known issues](#known-issues)
-- [License](#license)
-- [Contributing](#contributing)
-- [Credits & Third party components and their licenses](#credits--third-party-components-and-their-licenses)
+## Getting started with PojavLauncher
 
-## Introduction
-- This is a launcher to get Minecraft: Java Edition running on jailbroken iOS.
-- Minimum requirements: device running iOS 12 or newer.
+The [PojavLauncher iOS Wiki](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/wiki) has extensive documentation on how to install, set up, and play! For those who wish to install quickly, here's the basics:
 
-## Building
-Requirements:
-- Mac OS X (tested: 10.15)
-- Xcode (tested: 11.7.0)
-- Minimum iOS SDK: 13.4.
-- JDK 8 installed
-- `gradle` to build Java part.
-- `cmake`, `wget`, `ldid`, `dpkg` and `fakeroot` to package.
-Run in this directory
-```
-# Only run if you haven't installed JDK 8
-brew install adoptopenjdk8
+### Procursus-bootstraps
+If you have Chimera, Taurine, Odyssey, or another jailbreak that comes with **libhooker**, this one's for you.
 
-# Install required packages
-brew install cmake wget ldid dpkg fakeroot gradle
+1. Search for `pojavlauncher` with your favorite package manager.
+2. Install `PojavLauncher iOS`.
 
-# Give exec perm
-chmod 755 *.sh
+### Bingner/Elucubratus bootstraps
+If you have unc0ver, checkra1n, or another jailbreak that comes with **Cydia Substrate** or **Substitute**, this one's for you. You can also use this if you have a libhooker jailbreak.
 
-# Build natives part
-./build_natives.sh
-
-# Build java part
-./build_javaapp.sh
-
-# Sign with entitlements and package
-./build_package.sh
-```
-
-## How does it work?
-- Use OpenJDK 16 from Procursus to get a real Java environment.
-- Use MetalANGLE for OpenGL ES -> Metal translator.
-- Use GL4ES for OpenGL -> OpenGL ES translator.
-- Use our [LWJGL3 iOS port](https://github.com/PojavLauncherTeam/lwjgl3).
-- Use same launch method as PojavLauncher Android.
-
-## Current status
-- [x] Java Runtime Environment: OpenJDK 16.
-- [x] LWJGL3 iOS port: works
-- [x] OpenGL: GL4ES
-- [x] Did Minecraft recognize OpenGL?
-- [x] OpenAL: use @kcat's openal-soft
-- [x] Input pipe implementation
-- [x] Account authentication (partial).
-- [x] Does it work? Partial.
-- Currently, only Minecraft 1.6.1+ is tested to fully work.
-- Forge (1.16.?+), Fabric and OptiFine work well.
+1. Add `https://doregon.github.io/cydia` to your sources list.
+2. Search for `pojavlauncher` with your favorite package manager.
+3. Install the package you wish to have, according to your preference:
+   * `pojavlauncher` is the stable build. This one gets updated with new releases or tags on this repository, or when Procursus updated their copy.
+   * `pojavlauncher-dev` is the latest commit on the `main` branch of this repository. It may have application breaking bugs, but also has more features.
+   * `pojavlauncher-zink` is the latest commit on the `backend_zink` branch of this repository. This is the preprepreprealpha of the Zink graphics libraries that are being ported to allow 1.17 to work. This is not recommended, but fun to test.
 
 ## Known issues
-- On some versions, the camera position will jump to a random location on first time touch.
-- It might crash sometimes, but try to launch again until it works.
 
-## Installing OpenJDK 16
-### For Chimera/Odyssey/Taurine jailbreak 
-- Add Procursus repository (https://apt.procurs.us) (usually the Sileo package manager already comes with the Procursus repo).
-- Find and install `openjdk-16-jre`.
+* When using certain versions, the camera may jump to a random position when you start to touch the screen.
+* Some Forge versions may fail with `java.lang.reflect.InvocationTargetException`.
+* Builds before commit [cc530e0](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/commit/cc530e045399bc38d276515e7038aad6996ed0b8) will be prone to JetsamEvents.
 
-### For other jailbreak bootstraps
-- Add Doregon's repository (https://doregon.github.io/cydia)
-- Find and install `openjdk-16-jre`.
+## Contributors
+PojavLauncher is amazing, and surprisingly stable, and it wouldn't be this way without the following people that helped and contribute to the project!
 
-### Manual
-- Download [openjdk-16-jre.deb](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/releases/tag/v16-openjdk).
-- Install and open Filza File manager.
-- Go to where the .deb file was downloaded.
-- Open it and press Install.
-- If everything is fine, it will ends up with `Setting up ...`.
+@khanhduytran0 - Lead iOS port developer
+@artdeell - Lead developer
+@LegacyGamerHD - Lead developer
+@zhouwei - Original Boardwalk code
+@Doregon - PojavLauncher hosting on Doregon's Repository, iOS port developer
+@Diatrus - PojavLauncher hosting on Procursus
+@Mathius-Boulay
+@Syjalo
+@pedrosouzabrasil
+@notfoundname
+@buzybox11
+@RealEthanPlayzDev
+@HongyMC
+@thecoder08
+@genericrandom64
 
-## Installing PojavLauncher
-### For Chimera/Odyssey/Taurine jailbreak 
-- Add Procursus repository (https://apt.procurs.us) (usually the Sileo package manager already comes with Procursus repo).
-- Find and install `pojavlauncher`.
-
-### For other jailbreak bootstraps
-- Add Doregon's repository (https://doregon.github.io/cydia)
-- Find and install `pojavlauncher` for the release version, or `pojavlauncher-dev` for the latest good commit.
-
-### Manual
-- To get the release version, 
-    - Go to the Releases tab
-    - Find the release you want
-    - Download the .deb file
-    - Open the .deb in Filza or install via a terminal!
-
-- To get the latest commit,
-    - Download the latest build artifact from [here](https://nightly.link/PojavLauncherTeam/PojavLauncher_iOS/workflows/ios/main/PojavLauncher%20deb.zip)
-    - Unzip to reveal the .deb file
-    - Open the .deb in Filza or install via a terminal!
-     
-## Directory locations
-- Account json directory: `/var/mobile/Documents/.pojavlauncher/accounts`.
-- Minecraft home directory: `/var/mobile/Documents/minecraft`.
-- You can also customize JVM Arguments in `overrideargs.txt` on `.pojavlauncher` directory
-and customize environment variables in `custom_env.txt` on `.pojavlauncher` directory.
-
-## License
-- PojavLauncher is licensed under [GNU GPLv3](https://github.com/khanhduytran0/PojavLauncher_iOS/blob/master/LICENSE).
-
-## Contributing
-Contributions are welcome! We welcome any type of contribution, not only code. Any code change should be submitted as a pull request. The description should explain what the code does and give steps to execute it.
-
-## Credits & Third party components and their licenses
-- [Contributors of PojavLauncher Android](https://github.com/PojavLauncherTeam/PojavLauncher/graphs/contributors) and here.
+## Third party components and their licenses
 - [Apache Commons](https://commons.apache.org): [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt).
 - [jsr305](https://code.google.com/p/jsr-305): [3-Clause BSD License](http://opensource.org/licenses/BSD-3-Clause).
 - [org.json](https://github.com/stleary/JSON-java): [The JSON License](https://www.json.org/license.html).
-- [Boardwalk](https://github.com/zhuowei/Boardwalk) (JVM Launcher): Unknown License/[Apache License 2.0](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE) or GNU GPLv2.
-- [GL4ES](https://github.com/ptitSeb/gl4es) by @lunixbochs @ptitSeb: [MIT License](https://github.com/ptitSeb/gl4es/blob/master/LICENSE).<br>
+- [Boardwalk](https://github.com/zhuowei/Boardwalk) (JVM Launcher): [Apache License 2.0](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE)
+- [GL4ES](https://github.com/ptitSeb/gl4es) by @lunixbochs @ptitSeb: [MIT License](https://github.com/ptitSeb/gl4es/blob/master/LICENSE).
 - [MetalANGLE](https://github.com/kakashidinho/metalangle) by @kakashidinho and ANGLE team: [BSD License 2.0](https://github.com/kakashidinho/metalangle/blob/master/LICENSE).
-- [OpenJDK 16](https://www.ios-repo-updates.com/repository/procursus/package/openjdk-16-jre) ported to iOS by @Diatrus: [GNU GPLv2 License](https://openjdk.java.net/legal/gplv2+ce.html).<br>
+- [OpenJDK 16](https://www.ios-repo-updates.com/repository/procursus/package/openjdk-16-jre) ported to iOS by @Diatrus: [GNU GPLv2 License](https://openjdk.java.net/legal/gplv2+ce.html).
 - [LWJGL3](https://github.com/PojavLauncherTeam/lwjgl3): [BSD-3 License](https://github.com/LWJGL/lwjgl3/blob/master/LICENSE.md).
-- [LWJGLX](https://github.com/PojavLauncherTeam/lwjglx) (LWJGL2 API compatibility layer for LWJGL3): unknown license.<br>
-
+- [LWJGLX](https://github.com/PojavLauncherTeam/lwjglx) (LWJGL2 API compatibility layer for LWJGL3): unknown license.
