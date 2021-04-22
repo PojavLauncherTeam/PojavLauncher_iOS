@@ -83,7 +83,7 @@ UITextField* versionTextField;
 {
     [(UIButton*) sender setEnabled:NO];
 
-    [versionTextField.text writeToFile:@"/var/mobile/Documents/.pojavlauncher/config_ver.txt" atomically:NO encoding:NSUTF8StringEncoding error:nil];
+    [versionTextField.text writeToFile:@"/var/mobile/Documents/minecraft/config_ver.txt" atomically:NO encoding:NSUTF8StringEncoding error:nil];
     callback_LauncherViewController_installMinecraft();
 }
 
