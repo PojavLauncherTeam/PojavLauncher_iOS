@@ -21,7 +21,6 @@
 #define SPECIALBTN_SCROLLUP -7
 #define SPECIALBTN_SCROLLDOWN -8
 
-
 // Debugging purposes
 // #define DEBUG_VISIBLE_TEXT_FIELD
 
@@ -186,6 +185,7 @@ int notchOffset;
         ADD_BUTTON(@"Opti-Zoom", GLFW_KEY_C, CGRectMake(5 * 5 + 80 * 4, 5, BTN_RECT), YES);
         ADD_BUTTON(@"Offhand", GLFW_KEY_F, CGRectMake(5 * 6 + 80 * 5, 5, BTN_RECT), YES);
         ADD_BUTTON(@"3rd", GLFW_KEY_F5, CGRectMake(5, 5 * 2 + 30.0, BTN_RECT), YES);
+        ADD_BUTTON(@"Screenshot", GLFW_KEY_F2, CGRectMake(5, 5 + 60, BTN_RECT), YES);
 
         ADD_BUTTON(@"▲", GLFW_KEY_W, CGRectMake(5 * 2 + 50, height - 5 * 3 - 50 * 3, BTN_SQUARE), YES);
         ADD_BUTTON(@"◀", GLFW_KEY_A, CGRectMake(5, height - 5 * 2 - 50 * 2, BTN_SQUARE), YES);

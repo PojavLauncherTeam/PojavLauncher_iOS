@@ -5,7 +5,7 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <string.h>
-
+#include <spawn.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 
@@ -19,8 +19,8 @@
 #define DOT_VERSION "1.16"
 
 static const char *java_libs_dir = "/Applications/PojavLauncher.app/libs";
-static const char *args_path = "/var/mobile/Documents/.pojavlauncher/overrideargs.txt";
-static const char *log_path = "/var/mobile/Documents/minecraft/latestlog.txt";
+static const char *args_path = "/var/mobile/Documents/.pojavlauncher/override_rgs.txt";
+static const char *log_path = "/var/mobile/Documents/.pojavlauncher/latestlog.txt";
 
 static const char* const_progname = "java";
 static const char* const_launcher = "openjdk";
@@ -29,6 +29,8 @@ static const char** const_appclasspath = NULL;
 static const jboolean const_javaw = JNI_FALSE;
 static const jboolean const_cpwildcard = JNI_TRUE;
 static const jint const_ergo_class = 0; // DEFAULT_POLICY
+
+extern char **environ;
 
 typedef jint JLI_Launch_func(int argc, char ** argv, /* main argc, argc */
         int jargc, const char** jargv,          /* java args */
@@ -100,6 +102,26 @@ int launchJVM(int argc, char *argv[]) {
         dup2(log_fd, 1);
         dup2(log_fd, 2);
         close(log_fd);
+    }
+    /* iOS jetsam memory bypass. This is going to launch with the JVM so it fires correctly.
+     * To prevent centering PojavLauncher around my repository, this is completely optional.
+     * When I release my revised version of jetsamctl, I'll update this section.
+     */
+    if( access("/usr/bin/jetsamctl", F_OK ) == 0 ) {
+        debug("[Pre-init] jetsamctl was found. Overriding memory limits.");
+        pid_t pid;
+        char *argv[] = {
+                "/usr/bin/jetsamctl",
+                "-l",
+                "$(awk -v MEM=$(sysctl -a | grep memsize | cut -b 13-26) 'BEGIN { print  ( MEM / 1024 / 1024 ) }' | cut -b 1-4)",
+                "PojavLauncher",
+                NULL
+        };
+
+        posix_spawn(&pid, argv[0], NULL, NULL, argv, environ);
+        debug("[Pre-init] jetsamctl finished successfully.");
+    } else {
+        debug("[Pre-Init] jetsamctl was not found. If you wish to prevent jetsam-related crashes, get jetsamctl.");
     }
 
     debug("[Pre-init] Beginning JVM launch\n");
