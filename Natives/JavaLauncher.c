@@ -21,7 +21,7 @@
 
 static const char *java_libs_dir = "/Applications/PojavLauncher.app/libs";
 static const char *args_path = "/var/mobile/Documents/.pojavlauncher/overrideargs.txt";
-static const char *log_path = "/var/mobile/Documents/minecraft/latestlog.txt";
+static const char *log_path = "/var/mobile/Documents/.pojavlauncher/latestlog.txt";
 
 extern char **environ;
 
