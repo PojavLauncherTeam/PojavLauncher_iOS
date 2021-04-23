@@ -105,26 +105,6 @@ int launchJVM(int argc, char *argv[]) {
         close(log_fd);
     }
 
-    // iOS jetsam memory bypass, requires jetsamctl, awk, and sudo. Optional.
-    if( access("/usr/bin/jetsamctl", F_OK ) == 0 ) {
-        debug("[Pre-init] jetsamctl was found. Overriding memory limits.");
-        pid_t pid;
-        char *argv[] = {
-                "/usr/bin/jetsamctl",
-                "-l",
-                "$(awk -v MEM=$(sysctl -a | grep memsize | cut -b 13-26) 'BEGIN { print  ( MEM / 1024 / 1024 ) }' | cut -b 1-4)",
-                "PojavLauncher",
-                ">"
-                "/var/mobile/Documents/.pojavlauncher/jetsamctl_debug.txt",
-                NULL
-        };
-
-        posix_spawn(&pid, argv[0], NULL, NULL, argv, environ);
-        debug("[Pre-init] jetsamctl finished successfully.");
-    } else {
-        debug("[Pre-Init] jetsamctl was not found. If you wish to prevent jetsam-related crashes, install jetsamctl 0.2 or later.");
-    }
-
     debug("[Pre-init] Beginning JVM launch\n");
     // setenv("LIBGL_FB", "2", 1);
     setenv("LIBGL_MIPMAP", "3", 1);
