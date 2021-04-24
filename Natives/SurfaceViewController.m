@@ -234,13 +234,13 @@ int notchOffset;
     [self setupGL];
 }
 
+- (UIRectEdge)preferredScreenEdgesDeferringSystemGestures
+{
+    return UIRectEdgeBottom;
+}
 - (BOOL)prefersHomeIndicatorAutoHidden
 {
-    return YES;
-}
-
-- (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
-    return UIRectEdgeAll;
+    return false;
 }
 
 #pragma mark - MetalANGLE stuff
