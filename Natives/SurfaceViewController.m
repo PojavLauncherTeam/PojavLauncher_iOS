@@ -237,7 +237,7 @@ int notchOffset;
 
 - (UIRectEdge)preferredScreenEdgesDeferringSystemGestures
 {
-    return UIRectEdgeBottom;
+    return UIRectEdge.all;
 }
 
 #pragma mark - MetalANGLE stuff
