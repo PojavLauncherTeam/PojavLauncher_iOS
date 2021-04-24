@@ -69,6 +69,7 @@ int notchOffset;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self setNeedsUpdateOfHomeIndicatorAutoHidden]; 
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];
