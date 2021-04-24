@@ -16,7 +16,12 @@ UITextField* versionTextField;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
+    if(@available(iOS 12.0, *)) {
+        [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
+        [self setNeedsUpdateOfHomeIndicatorAutoHidden];
+    }
+    
     [self setTitle:@"PojavLauncher"];
 
     FILE *configver_file = fopen("/var/mobile/Documents/minecraft/config_ver.txt", "rw");
@@ -67,6 +72,14 @@ UITextField* versionTextField;
     
     install_progress_text = [[UILabel alloc] initWithFrame:CGRectMake(120.0, height - 54.0, width - 124.0, 50.0)];
     [scrollView addSubview:install_progress_text];
+}
+
+- (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
+    return UIRectEdgeAll;
+}
+
+- (BOOL)prefersHomeIndicatorAutoHidden {
+    return NO;
 }
 
 -(void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection API_AVAILABLE(ios(13.0)) {

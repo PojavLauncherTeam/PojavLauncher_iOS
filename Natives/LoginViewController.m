@@ -49,7 +49,12 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
+    if(@available(iOS 12.0, *)) {
+        [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
+        [self setNeedsUpdateOfHomeIndicatorAutoHidden];
+    }
+    
     [self setTitle:@"PojavLauncher"];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(msaLoginCallback:) name:@"MSALoginCallback" object:nil];
@@ -109,6 +114,14 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     [button_login_account setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button_login_account addTarget:self action:@selector(loginAccount) forControlEvents:UIControlEventTouchUpInside];
     [scrollView addSubview:button_login_account];
+}
+
+- (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
+    return UIRectEdgeAll;
+}
+
+- (BOOL)prefersHomeIndicatorAutoHidden {
+    return NO;
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection API_AVAILABLE(ios(13.0)) {
