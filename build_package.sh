@@ -2,10 +2,10 @@
 
 set -e
 
-mkdir -p packages/pojavlauncher_iphoneos-arm/{DEBIAN,Applications,var/mobile/Documents/minecraft,var/mobile/Documents/.pojavlauncher}
+mkdir -p packages/pojavlauncher_iphoneos-arm/{Applications,var/mobile/Documents/minecraft,var/mobile/Documents/.pojavlauncher}
 sudo chown 501:501 packages/pojavlauncher_iphoneos-arm/var/mobile/Documents/*
 cp -R Natives/build/Release-iphoneos/PojavLauncher.app packages/pojavlauncher_iphoneos-arm/Applications
-cp control packages/pojavlauncher_iphoneos-arm/DEBIAN
+cp -R DEBIAN packages/pojavlauncher_iphoneos-arm/DEBIAN
 
 ldid -Sentitlements.xml packages/pojavlauncher_iphoneos-arm/Applications/PojavLauncher.app
 
