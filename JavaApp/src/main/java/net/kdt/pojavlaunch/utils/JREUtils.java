@@ -144,7 +144,7 @@ public class JREUtils
         ctx.appendlnToLog("Executing JVM: \"" + sbJavaArgs.toString() + "\"");
 */
 
-        redirectLogcat(Tools.DIR_GAME_HOME + "/latestlog.txt");
+        redirectLogcat(Tools.DIR_APP_DATA + "/latestlog.txt");
 
         setJavaEnvironment();
         initJavaRuntime();
