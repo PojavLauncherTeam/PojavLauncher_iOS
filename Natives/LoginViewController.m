@@ -174,7 +174,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 
     ASWebAuthenticationSession *authVC =
         [[ASWebAuthenticationSession alloc] initWithURL:url
-        callbackURLScheme:@"ms-xal-00000000402b5328://"
+        callbackURLScheme:@"ms-xal-00000000402b5328"
         completionHandler:^(NSURL * _Nullable callbackURL,
         NSError * _Nullable error) {
             if (callbackURL != nil) {
