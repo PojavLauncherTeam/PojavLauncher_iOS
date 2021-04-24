@@ -240,7 +240,7 @@ int notchOffset;
 
 - (UIRectEdge)preferredScreenEdgesDeferringSystemGestures
 {
-    return UIRectEdgeBottom;
+    return UIRectEdgeAll;
 }
 
 - (BOOL)prefersHomeIndicatorAutoHidden
