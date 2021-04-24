@@ -69,7 +69,8 @@ int notchOffset;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self setNeedsUpdateOfHomeIndicatorAutoHidden]; 
+    [self setNeedsUpdateOfHomeIndicatorAutoHidden];
+    [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];
@@ -237,7 +238,7 @@ int notchOffset;
 
 - (UIRectEdge)preferredScreenEdgesDeferringSystemGestures
 {
-    return UIRectEdge.all;
+    return UIRectEdgeAll;
 }
 
 #pragma mark - MetalANGLE stuff
