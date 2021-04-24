@@ -72,6 +72,7 @@ int notchOffset;
     
     if(@available(iOS 12.0, *)) {
         [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
+        [self setNeedsUpdateOfHomeIndicatorAutoHidden];
     }
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
