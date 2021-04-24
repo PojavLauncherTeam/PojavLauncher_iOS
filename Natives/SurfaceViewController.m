@@ -238,9 +238,13 @@ int notchOffset;
 
 - (UIRectEdge)preferredScreenEdgesDeferringSystemGestures
 {
-    return UIRectEdgeAll;
+    return UIRectEdgeBottom;
 }
 
+- (BOOL)prefersHomeIndicatorAutoHidden
+{
+    return YES;
+}
 #pragma mark - MetalANGLE stuff
 
 - (void)dealloc
