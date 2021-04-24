@@ -32,7 +32,7 @@ If you have unc0ver, checkra1n, or another jailbreak that comes with **Cydia Sub
 
 * When using certain versions, the camera may jump to a random position when you start to touch the screen.
 * Some Forge versions may fail with `java.lang.reflect.InvocationTargetException`.
-* Builds before commit [cc530e0](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/commit/cc530e045399bc38d276515e7038aad6996ed0b8) will be prone to JetsamEvents.
+* The game will be prone to JetsamEvents.
 
 ## Contributors
 PojavLauncher is amazing, and surprisingly stable, and it wouldn't be this way without the following people that helped and contribute to the project!
