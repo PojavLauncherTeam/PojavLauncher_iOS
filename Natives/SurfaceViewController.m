@@ -69,8 +69,10 @@ int notchOffset;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self setNeedsUpdateOfHomeIndicatorAutoHidden];
-    [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
+    
+    if(@available(iOS 12.0, *)) {
+        [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
+    }
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];
@@ -243,7 +245,7 @@ int notchOffset;
 
 - (BOOL)prefersHomeIndicatorAutoHidden
 {
-    return YES;
+    return NO;
 }
 #pragma mark - MetalANGLE stuff
 
