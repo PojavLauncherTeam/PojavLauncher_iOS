@@ -239,10 +239,6 @@ int notchOffset;
 {
     return UIRectEdgeBottom;
 }
-- (BOOL)prefersHomeIndicatorAutoHidden
-{
-    return false;
-}
 
 #pragma mark - MetalANGLE stuff
 
