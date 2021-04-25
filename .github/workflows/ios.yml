@@ -5,19 +5,28 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: macOS-latest
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '11.7.0'
+
+      - uses: actions/checkout@v2
+
+      - name: Setup Dependencies
+        run: brew install ldid dpkg fakeroot
+        
+      - name: Setup Clang build
+        run: bash scripts/actions_setup.sh
 
       - name: Native build
-        run: bash build_natives_clang.sh
+        run: bash scripts/build_natives_clang.sh
 
       - name: Java app Build
-        run: bash build_javaapp.sh
+        run: bash scripts/build_javaapp.sh
           
       - name: Sign and Package deb
-        run: bash build_package.sh
+        run: bash scripts/build_package.sh
           
       - name: Upload IPA
         uses: actions/upload-artifact@v2
