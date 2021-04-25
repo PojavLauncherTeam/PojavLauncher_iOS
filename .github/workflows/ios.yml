@@ -5,19 +5,13 @@ on:
 
 jobs:
   build:
-    runs-on: macOS-latest
+    runs-on: macos-10.15
     steps:
-      - uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: '11.7.0'
-
-      - uses: actions/checkout@v2
-
-      - name: Setup Dependencies
-        run: brew install ldid dpkg fakeroot
+      - name: Check out repository
+        uses: actions/checkout@v2
 
       - name: Native build
-        run: bash build_natives.sh
+        run: bash build_natives_clang.sh
 
       - name: Java app Build
         run: bash build_javaapp.sh
