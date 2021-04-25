@@ -50,10 +50,8 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    if(@available(iOS 12.0, *)) {
-        [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
-        [self setNeedsUpdateOfHomeIndicatorAutoHidden];
-    }
+    [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
+    [self setNeedsUpdateOfHomeIndicatorAutoHidden];
     
     [self setTitle:@"PojavLauncher"];
 

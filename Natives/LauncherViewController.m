@@ -17,10 +17,8 @@ UITextField* versionTextField;
 {
     [super viewDidLoad];
     
-    if(@available(iOS 12.0, *)) {
-        [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
-        [self setNeedsUpdateOfHomeIndicatorAutoHidden];
-    }
+    [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
+    [self setNeedsUpdateOfHomeIndicatorAutoHidden];
     
     [self setTitle:@"PojavLauncher"];
 

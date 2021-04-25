@@ -70,10 +70,8 @@ int notchOffset;
 {
     [super viewDidLoad];
     
-    if(@available(iOS 12.0, *)) {
-        [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
-        [self setNeedsUpdateOfHomeIndicatorAutoHidden];
-    }
+    [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
+    [self setNeedsUpdateOfHomeIndicatorAutoHidden];
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];
