@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-10.15
+    runs-on: self-hosted
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
