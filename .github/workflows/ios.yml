@@ -15,15 +15,18 @@ jobs:
 
       - name: Setup Dependencies
         run: brew install ldid dpkg fakeroot
+        
+      - name: Setup Clang build
+        run: bash scripts/actions_setup.sh
 
       - name: Native build
-        run: bash build_natives.sh
+        run: bash scripts/build_natives_clang.sh
 
       - name: Java app Build
-        run: bash build_javaapp.sh
+        run: bash scripts/build_javaapp.sh
           
       - name: Sign and Package deb
-        run: bash build_package.sh
+        run: bash scripts/build_package.sh
           
       - name: Upload IPA
         uses: actions/upload-artifact@v2
