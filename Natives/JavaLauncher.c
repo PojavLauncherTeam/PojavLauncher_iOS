@@ -94,26 +94,7 @@ void init_loadCustomJvmFlags() {
     }
 }
 
-void init_loadJetsamBypass() {
-    if( access("/usr/bin/jetsamctl", F_OK ) == 0 ) {
-        debug("[Pre-init] jetsamctl was found. Overriding memory limits.");
-        pid_t pid;
-        char *argv[] = {
-                "/usr/bin/jetsamctl",
-                "-l",
-                "$(awk -v MEM=$(sysctl -a | grep memsize | cut -b 13-26) 'BEGIN { print  ( MEM / 1024 / 1024 ) }' | cut -b 1-4)",
-                "PojavLauncher",
-                NULL
-        };
 
-        posix_spawn(&pid, argv[0], NULL, NULL, argv, environ);
-        debug("[Pre-init] jetsamctl finished successfully.");
-    } else {
-        debug("[Pre-Init] jetsamctl was not found. If you wish to prevent jetsam-related crashes, get jetsamctl.");
-    }
-
-
-}
 int launchJVM(int argc, char *argv[]) {
     if (!started) {
         debug("[Pre-init] Staring logging STDIO as jrelog:V\n");
