@@ -29,7 +29,7 @@ If you have unc0ver, checkra1n, or another jailbreak that comes with **Cydia Sub
    * `pojavlauncher-zink` is the latest commit on the `backend_zink` branch of this repository. This is the preprepreprealpha of the Zink graphics libraries that are being ported to allow 1.17 to work. This is not recommended, but fun to test.
 
 ## Known issues
-
+* Minecraft 1.12.2 and below are very buggy: you can't type text, random crashes, etc...
 * When using certain versions, the camera may jump to a random position when you start to touch the screen.
 * Some Forge versions may fail with `java.lang.reflect.InvocationTargetException`.
 * The game will be prone to JetsamEvents.
