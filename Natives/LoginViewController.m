@@ -40,7 +40,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 }
 
 #pragma mark - LoginViewController
-@interface LoginViewController () <ASWebAuthenticationPresentationContextProviding>{
+@interface AppDelegate () <ASWebAuthenticationPresentationContextProviding>{
 }
 
 @end
