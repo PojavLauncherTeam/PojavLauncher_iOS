@@ -1,7 +1,7 @@
 Package: pojavlauncher
 Maintainer: DuyKhanhTran
 Architecture: iphoneos-arm
-Version: 1.1
+Version: 1.2
 Depends: openjdk-16-jre, firmware (>= 12.0)
 Conflicts: pojavlauncher-dev, pojavlauncher-zink
 Section: Games
