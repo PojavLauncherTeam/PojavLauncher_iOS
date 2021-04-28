@@ -40,12 +40,13 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 }
 
 #pragma mark - LoginViewController
-@interface AppDelegate () <ASWebAuthenticationPresentationContextProviding>{
+@interface LoginViewController () <ASWebAuthenticationPresentationContextProviding>{
 }
-
+@property (nonatomic, strong) ASWebAuthenticationSession *authVC;
 @end
 
 @implementation LoginViewController
+@synthesize authVC;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -183,7 +184,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 - (void)loginMicrosoft {
     NSURL *url = [NSURL URLWithString:@"https://login.live.com/oauth20_authorize.srf?client_id=00000000402b5328&response_type=code&scope=service%3A%3Auser.auth.xboxlive.com%3A%3AMBI_SSL&redirect_url=https%3A%2F%2Flogin.live.com%2Foauth20_desktop.srf"];
 
-    ASWebAuthenticationSession *authVC =
+    authVC =
         [[ASWebAuthenticationSession alloc] initWithURL:url
         callbackURLScheme:@"ms-xal-00000000402b5328"
         completionHandler:^(NSURL * _Nullable callbackURL,
