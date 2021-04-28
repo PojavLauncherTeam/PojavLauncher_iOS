@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #import <AuthenticationServices/AuthenticationServices.h>
+#import <SafariServices/SafariServices.h>
 
 #import "AppDelegate.h"
 #import "LauncherViewController.h"
