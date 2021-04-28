@@ -40,7 +40,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 }
 
 #pragma mark - LoginViewController
-@interface LoginViewController () <ASWebAuthenticationPresentationContextProviding>{
+@interface LoginViewController () <ASWebAuthenticationPresentationContextProviding, SFSafariViewControllerDelegate>{
 }
 @property (nonatomic, strong) ASWebAuthenticationSession *authVC;
 @end
@@ -183,45 +183,51 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 
 - (void)loginMicrosoft {
     NSURL *url = [NSURL URLWithString:@"https://login.live.com/oauth20_authorize.srf?client_id=00000000402b5328&response_type=code&scope=service%3A%3Auser.auth.xboxlive.com%3A%3AMBI_SSL&redirect_url=https%3A%2F%2Flogin.live.com%2Foauth20_desktop.srf"];
+    if(@available(iOS 13.0, *) {
+       authVC =
+           [[ASWebAuthenticationSession alloc] initWithURL:url
+           callbackURLScheme:@"ms-xal-00000000402b5328"
+           completionHandler:^(NSURL * _Nullable callbackURL,
+           NSError * _Nullable error) {
+               if (callbackURL != nil) {
+                   NSString *urlString = [callbackURL absoluteString];
+                   NSLog(@"URL returned = %@", [callbackURL absoluteString]);
 
-    authVC =
-        [[ASWebAuthenticationSession alloc] initWithURL:url
-        callbackURLScheme:@"ms-xal-00000000402b5328"
-        completionHandler:^(NSURL * _Nullable callbackURL,
-        NSError * _Nullable error) {
-            if (callbackURL != nil) {
-                NSString *urlString = [callbackURL absoluteString];
-                NSLog(@"URL returned = %@", [callbackURL absoluteString]);
+                   if ([urlString containsString:@"/auth/?code="] == YES) {
+                       NSArray *components = [urlString componentsSeparatedByString:@"/auth/?code="];
+                       dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+                           loginAccountInput(self.navigationController, TYPE_MICROSOFT, [components[1] UTF8String]);
+                       });
+                   } else {
+                       NSArray *components = [urlString componentsSeparatedByString:@"/auth/?error="];
+                       if ([components[1] hasPrefix:@"access_denied"] == NO) {
+                           NSString *outError = [components[1]
+                               stringByReplacingOccurrencesOfString:@"&error_description=" withString:@": "];
+                           outError = [outError stringByRemovingPercentEncoding];
+                           showDialog(self, @"Error", outError);
+                       }
+                   }
+               } else {
+                   if (error.code != ASWebAuthenticationSessionErrorCodeCanceledLogin) {
+                       showDialog(self, @"Error", error.localizedDescription);
+                   }
+               }
+           }];
 
-                if ([urlString containsString:@"/auth/?code="] == YES) {
-                    NSArray *components = [urlString componentsSeparatedByString:@"/auth/?code="];
-                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-                        loginAccountInput(self.navigationController, TYPE_MICROSOFT, [components[1] UTF8String]);
-                    });
-                } else {
-                    NSArray *components = [urlString componentsSeparatedByString:@"/auth/?error="];
-                    if ([components[1] hasPrefix:@"access_denied"] == NO) {
-                        NSString *outError = [components[1]
-                            stringByReplacingOccurrencesOfString:@"&error_description=" withString:@": "];
-                        outError = [outError stringByRemovingPercentEncoding];
-                        showDialog(self, @"Error", outError);
-                    }
-                }
-            } else {
-                if (error.code != ASWebAuthenticationSessionErrorCodeCanceledLogin) {
-                    showDialog(self, @"Error", error.localizedDescription);
-                }
-            }
-        }];
+       if (@available(iOS 13.0, *)) {
+           authVC.presentationContextProvider = self;
+       }
 
-    if (@available(iOS 13.0, *)) {
-        authVC.presentationContextProvider = self;
-    }
-
-    if ([authVC start] == NO) {
-        showDialog(self, @"Error", @"Unable to open Safari");
+       if ([authVC start] == NO) {
+           showDialog(self, @"Error", @"Unable to open Safari");
+       }
+    } else {
+       SFSafariViewController *vc = [[SFSafariViewController alloc] initWithURL:url];
+       vc.delegate = self;
+       [self presentViewController:vc animated:YES completion:nil];
     }
 }
+
 
 - (void)loginOffline {
     [self loginUsername:TYPE_OFFLINE];
@@ -286,6 +292,27 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
         }
     }];
     [postDataTask resume];
+}
+
+- (void)safariViewControllerDidFinish:(SFSafariViewController *)controller {
+    if(@available(iOS 13.0, *) {
+        
+    } else {
+        [controller dismissViewControllerAnimated:true completion:nil];
+    }
+}
+
+- (void)msaLoginCallback:(NSNotification *)notification {
+    if(@available(iOS 13.0, *) {
+        
+    } else {
+        [self dismissViewControllerAnimated:YES completion:nil];
+        NSDictionary *dict = [notification userInfo];
+        NSURL *url = [dict objectForKey:@"url"];
+        NSArray *components = [[url absoluteString] componentsSeparatedByString:@"?code="];
+        // NSLog(@"URL returned = %@", components[1]);
+        loginAccountInput(self.navigationController, TYPE_MICROSOFT, "", [components[1] UTF8String]);
+    }
 }
 
 #pragma mark - ASWebAuthenticationPresentationContextProviding
