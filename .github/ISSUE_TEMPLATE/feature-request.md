@@ -22,7 +22,7 @@ Give us some details into the problem, and how this affects it.
 What do you want to see changed, added, or removed? Make sure to be specific.
 
 **Describe alternatives you've considered**
-Is there anythingg else you’ve thought of but crossed off? If so, tell us why.
+Is there anything else you’ve thought of but crossed off? If so, tell us why.
 
 **Additional context**
 Have a mock-up? Perhaps a template or set of files. Share them here!
