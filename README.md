@@ -49,7 +49,7 @@ PojavLauncher is amazing, and surprisingly stable, and it wouldn't be this way w
 @notfoundname  
 @buzybox11  
 @RealEthanPlayzDev  
-@HongyMC  
+@HongyiMC  
 @thecoder08  
 @genericrandom64  
 
