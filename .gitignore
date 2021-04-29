@@ -1,25 +1,8 @@
 /packages
 /Natives/libpojavexec.dylib
-/Natives/PojavLauncher 
+/Natives/PojavLauncher
+/Natives/build
+/JavaApp/build 
 robovm-logs/
 robovm-build/
-
-## Java
-
-*.class
-*.war
-*.ear
-hs_err_pid*
-
-## Gradle
-.gradle/
-/build
-**/build
-
-## Idea
-.idea/
-*.ipr
-*.iws
-*.iml
-
 .DS_STORE
