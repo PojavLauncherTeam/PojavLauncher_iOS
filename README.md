@@ -3,6 +3,9 @@
 [![Discord](https://img.shields.io/discord/724163890803638273.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/6RpEJda)
 [![Reddit](https://img.shields.io/badge/dynamic/json.svg?label=r/PojavLauncher%20member%20count&query=$.data.subscribers&url=https://www.reddit.com/r/PojavLauncher/about.json)](https://reddit.com/r/PojavLauncher)
 
+## Note
+- We don't own [@PojavLauncher](https://twitter.com/pojavlauncher) Twitter account, they are impersonating us, please report that account to Twitter team.
+
 ## Introduction
 PojavLauncher is a Minecraft: Java Edition launcher for Android and iOS based on [Boardwalk](https://github.com/zhuowei/Boardwalk). This launcher can launch most of available Minecraft versions (from 1.6.1 to 21w09a (1.17) snapshot, including Combat Test versions). Modding via Forge (1.16.x only) and Fabric are also supported. This repository contains source code for iOS/iPadOS platform. For Android platform, check out [PojavLauncher repository](https://github.com/PojavLauncherTeam/PojavLauncher).
 
