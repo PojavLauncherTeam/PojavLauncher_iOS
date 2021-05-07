@@ -1,3 +1,6 @@
 /packages
 /Natives/libpojavexec.dylib
 /Natives/PojavLauncher 
+/Natives/build
+/JavaApp/build
+.DS_Store

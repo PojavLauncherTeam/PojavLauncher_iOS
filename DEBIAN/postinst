@@ -1,0 +1,9 @@
+#! /bin/bash
+
+set -e
+
+chown -R mobile:mobile /var/mobile/Documents/{.pojavlauncher,minecraft}
+chmod -R 755 /var/mobile/Documents/{.pojavlauncher,minecraft}
+
+echo " "
+echo "PojavLauncher has been installed! Take a look at the wiki to learn more about PojavLauncher at https://bit.ly/2PgpexZ."
