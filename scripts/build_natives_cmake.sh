@@ -11,10 +11,6 @@ cmake .. -G Xcode -DCMAKE_TOOLCHAIN_FILE=ios.toolchain.cmake -DPLATFORM=OS64 -DE
 cmake --build . --config Release --target pojavexec PojavLauncher
 cd ../..
 
-# Compile storyboard
-mkdir -p Natives/build/Release-iphoneos/PojavLauncher.app/Base.lproj
-ibtool --compile Natives/build/Release-iphoneos/PojavLauncher.app/Base.lproj/MinecraftSurface.storyboardc Natives/en.lproj/MinecraftSurface.storyboard
-
 # Copy to target app
 mkdir -p Natives/build/Release-iphoneos/PojavLauncher.app/Frameworks
 cp Natives/build/Release-iphoneos/libpojavexec.dylib Natives/build/Release-iphoneos/PojavLauncher.app/Frameworks/
