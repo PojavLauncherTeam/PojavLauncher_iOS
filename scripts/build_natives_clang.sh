@@ -17,10 +17,6 @@ mkdir -p build
 mkdir -p build/Release-iphoneos
 mkdir -p build/Release-iphoneos/PojavLauncher.app
 mkdir -p build/Release-iphoneos/PojavLauncher.app/Frameworks
-mkdir -p build/Release-iphoneos/PojavLauncher.app/Base.lproj
-
-# Compile storyboard
-ibtool --compile build/Release-iphoneos/PojavLauncher.app/Base.lproj/MinecraftSurface.storyboardc en.lproj/MinecraftSurface.storyboard
 
 # Copy to target app
 cp -rv PojavLauncher build/Release-iphoneos/PojavLauncher.app/PojavLauncher
