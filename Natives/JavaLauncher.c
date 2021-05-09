@@ -5,6 +5,7 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <string.h>
+#include <spawn.h>
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -20,7 +21,9 @@
 
 static const char *java_libs_dir = "/Applications/PojavLauncher.app/libs";
 static const char *args_path = "/var/mobile/Documents/.pojavlauncher/overrideargs.txt";
-static const char *log_path = "/var/mobile/Documents/minecraft/latestlog.txt";
+static const char *log_path = "/var/mobile/Documents/.pojavlauncher/latestlog.txt";
+
+extern char **environ;
 
 static const char* const_progname = "java";
 static const char* const_launcher = "openjdk";
@@ -110,7 +113,7 @@ int launchJVM(int argc, char *argv[]) {
     
     init_loadCustomEnv();
     
-    mkdir("/var/mobile/Documents/.pojavlauncher/customcontrols", S_IRWXU | S_IRWXG | S_IRWXO);
+    mkdir("/var/mobile/Documents/.pojavlauncher/controlmap", S_IRWXU | S_IRWXG | S_IRWXO);
     chdir("/var/mobile/Documents/minecraft");
 
     char classpath[10000];
