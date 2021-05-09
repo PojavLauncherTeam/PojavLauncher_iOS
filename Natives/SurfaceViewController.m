@@ -121,6 +121,9 @@ void _CGDataProviderReleaseBytePointerCallback(void *info,const void *pointer)
 {
     [super viewDidLoad];
 
+    [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
+    [self setNeedsUpdateOfHomeIndicatorAutoHidden];
+
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];
 
@@ -186,12 +189,12 @@ void _CGDataProviderReleaseBytePointerCallback(void *info,const void *pointer)
 
     // Custom button
     // ADD_BUTTON(@"F1", f1, CGRectMake(5, 5, width, height));
-    
-    
-    // Temporary custom controls
+
+
+    // Temporary fallback controls
     BOOL cc_fallback = YES;
-    
-    FILE *cc_file = fopen("/var/mobile/Documents/.pojavlauncher/customcontrols/default.json", "r");
+
+    FILE *cc_file = fopen("/var/mobile/Documents/.pojavlauncher/controlmap/default.json", "r");
 
     // 100kb (might not safe)
     char cc_data[102400];
@@ -203,8 +206,11 @@ void _CGDataProviderReleaseBytePointerCallback(void *info,const void *pointer)
     }
 
     NSError *cc_error;
-    if (!cc_file || !fread(cc_data, cc_size, 1, cc_file)) {
-        NSLog(@"Error: could not read \"default.json\", fallbacking to default control.\n%s", strerror(errno));
+    if (cc_size > 102400) {
+        NSLog(@"Error: control data is too big (over 100kb).");
+        fclose(cc_file);
+    } else if (!cc_file || !fread(cc_data, cc_size, 1, cc_file)) {
+        NSLog(@"Error: could not read \"default.json\", falling back to default control, error: %s", strerror(errno));        fclose(cc_file);
         fclose(cc_file);
     } else {
         fclose(cc_file);
@@ -289,12 +295,12 @@ void _CGDataProviderReleaseBytePointerCallback(void *info,const void *pointer)
     [self setupGL];
 }
 
-- (BOOL)prefersHomeIndicatorAutoHidden {
-    return YES;
-}
-
 - (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
     return UIRectEdgeAll;
+}
+
+- (BOOL)prefersHomeIndicatorAutoHidden {
+    return NO;
 }
 
 #pragma mark - MetalANGLE stuff
