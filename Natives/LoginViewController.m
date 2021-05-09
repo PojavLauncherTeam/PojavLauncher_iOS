@@ -42,13 +42,17 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 #pragma mark - LoginViewController
 @interface LoginViewController () <ASWebAuthenticationPresentationContextProviding>{
 }
-
+@property (nonatomic, strong) ASWebAuthenticationSession *authVC;
 @end
 
 @implementation LoginViewController
+@synthesize authVC;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
+    [self setNeedsUpdateOfHomeIndicatorAutoHidden];
 
     [self setTitle:@"PojavLauncher"];
 
@@ -109,6 +113,14 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     [button_login_account setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button_login_account addTarget:self action:@selector(loginAccount) forControlEvents:UIControlEventTouchUpInside];
     [scrollView addSubview:button_login_account];
+}
+
+- (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
+    return UIRectEdgeAll;
+}
+
+- (BOOL)prefersHomeIndicatorAutoHidden {
+    return NO;
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection API_AVAILABLE(ios(13.0)) {
@@ -172,9 +184,9 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 - (void)loginMicrosoft {
     NSURL *url = [NSURL URLWithString:@"https://login.live.com/oauth20_authorize.srf?client_id=00000000402b5328&response_type=code&scope=service%3A%3Auser.auth.xboxlive.com%3A%3AMBI_SSL&redirect_url=https%3A%2F%2Flogin.live.com%2Foauth20_desktop.srf"];
 
-    ASWebAuthenticationSession *authVC =
+    authVC =
         [[ASWebAuthenticationSession alloc] initWithURL:url
-        callbackURLScheme:@"ms-xal-00000000402b5328://"
+        callbackURLScheme:@"ms-xal-00000000402b5328"
         completionHandler:^(NSURL * _Nullable callbackURL,
         NSError * _Nullable error) {
             if (callbackURL != nil) {
