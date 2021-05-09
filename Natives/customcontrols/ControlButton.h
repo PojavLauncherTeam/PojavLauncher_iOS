@@ -9,7 +9,6 @@
  */
 
 @interface ControlButton : UIButton {
-    NSMutableDictionary* properties;
 }
 
 @property (nonatomic, retain) NSMutableDictionary* properties;
