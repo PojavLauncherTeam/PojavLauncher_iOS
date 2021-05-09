@@ -17,6 +17,9 @@ UITextField* versionTextField;
 {
     [super viewDidLoad];
 
+    [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
+    [self setNeedsUpdateOfHomeIndicatorAutoHidden];
+
     [self setTitle:@"PojavLauncher"];
 
     FILE *configver_file = fopen("/var/mobile/Documents/minecraft/config_ver.txt", "rw");
@@ -43,7 +46,7 @@ UITextField* versionTextField;
     }
 
     UILabel *versionTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 4.0, 0.0, 30.0)];
-    versionTextView.text = @"Minecraft version:";
+    versionTextView.text = @"Minecraft version: ";
     versionTextView.numberOfLines = 0;
     [versionTextView sizeToFit];
     [scrollView addSubview:versionTextView];
@@ -69,6 +72,14 @@ UITextField* versionTextField;
     [scrollView addSubview:install_progress_text];
 }
 
+- (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
+    return UIRectEdgeAll;
+}
+
+- (BOOL)prefersHomeIndicatorAutoHidden {
+    return NO;
+}
+
 -(void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection API_AVAILABLE(ios(13.0)) {
     if(@available(iOS 13.0, *)) {
         if (UITraitCollection.currentTraitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
@@ -85,10 +96,6 @@ UITextField* versionTextField;
 
     [versionTextField.text writeToFile:@"/var/mobile/Documents/minecraft/config_ver.txt" atomically:NO encoding:NSUTF8StringEncoding error:nil];
     callback_LauncherViewController_installMinecraft();
-}
-
--(BOOL)prefersStatusBarHidden {
-    return YES;
 }
 
 @end
