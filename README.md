@@ -37,6 +37,10 @@ If you have unc0ver, checkra1n, or another jailbreak that comes with **Cydia Sub
 * Some Forge versions may fail with `java.lang.reflect.InvocationTargetException`.
 * The game will be prone to JetsamEvents.
 
+## Work in progress
+* Custom controls
+* OpenJDK 8 iOS port
+
 ## Contributors
 PojavLauncher is amazing, and surprisingly stable, and it wouldn't be this way without the following people that helped and contribute to the project!
 
