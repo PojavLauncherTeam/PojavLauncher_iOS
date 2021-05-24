@@ -212,11 +212,8 @@ public class CallbackBridge {
         inputReady = ready;
         return true;
     }
-    public static String nativeClipboard(int action, String copy) {
-        // TODO copy paste
-        return "";
-    }
     
+    public static native String nativeClipboard(int action, String copy);
     private static native void nativeSetGrabbing(boolean grab, int xset, int yset);
 }
 

@@ -123,7 +123,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     return NO;
 }
 
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection API_AVAILABLE(ios(13.0)) {
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
     if(@available(iOS 13.0, *)) {
         if (UITraitCollection.currentTraitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
             self.view.backgroundColor = [UIColor blackColor];
@@ -246,7 +246,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     NSString *jsonString = [NSString stringWithFormat:@"{\"agent\": {\"name\": \"Minecraft\", \"version\": 1}, \"username\": \"%@\", \"password\": \"%@\", \"clientToken\": \"%@\"}", input_username, input_password, input_uuid];
     // NSLog(jsonString);
     [request setValue:[NSString stringWithFormat:@"%d",
-      [jsonString length]] forHTTPHeaderField:@"Content-length"];
+      (int) [jsonString length]] forHTTPHeaderField:@"Content-length"];
     [request setHTTPBody:[jsonString dataUsingEncoding:NSUTF8StringEncoding]];
 
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -290,7 +290,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 
 #pragma mark - ASWebAuthenticationPresentationContextProviding
 - (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session  API_AVAILABLE(ios(13.0)){
-    return UIApplication.sharedApplication.keyWindow;
+    return UIApplication.sharedApplication.windows.firstObject;
 }
 
 @end

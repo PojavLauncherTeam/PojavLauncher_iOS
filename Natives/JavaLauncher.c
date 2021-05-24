@@ -16,8 +16,8 @@
 #include "JavaLauncher.h"
 
 // PojavLancher: fixme: are these wrong?
-#define FULL_VERSION "1.16.0-internal"
-#define DOT_VERSION "1.16"
+#define FULL_VERSION "1.8.0-internal"
+#define DOT_VERSION "1.8"
 
 static const char *java_libs_dir = "/Applications/PojavLauncher.app/libs";
 static const char *args_path = "/var/mobile/Documents/.pojavlauncher/overrideargs.txt";

@@ -40,6 +40,7 @@ jboolean attachThread(bool isAndroid, JNIEnv** secondJNIEnvPtr);
 char** convert_to_char_array(JNIEnv *env, jobjectArray jstringArray);
 jobjectArray convert_from_char_array(JNIEnv *env, char **charArray, int num_rows);
 void free_char_array(JNIEnv *env, jobjectArray jstringArray, const char **charArray);
+jstring convertStringJVM(JNIEnv* srcEnv, JNIEnv* dstEnv, jstring srcStr);
 
 void sendData(int type, int i1, int i2, int i3, int i4);
 

@@ -35,8 +35,6 @@
         togglableVisibleButtons[++togglableVisibleButtonIndex] = button_##KEY; \
     }
 
-#define BTN_RECT 80.0, 30.0
-#define BTN_SQUARE 50.0, 50.0
 #define INPUT_SPACE_CHAR @"                    "
 #define INPUT_SPACE_LENGTH 20
 
@@ -55,7 +53,7 @@ int notchOffset;
 
 // TODO: key modifiers impl
 
-@interface SurfaceViewController ()<UITextFieldDelegate> {
+@interface SurfaceViewController ()<UITextFieldDelegate, UIPointerInteractionDelegate> {
 }
 
 @property (strong, nonatomic) MGLContext *context;
@@ -76,7 +74,7 @@ int notchOffset;
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];
 
-    UIEdgeInsets insets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets insets = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets;
 
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height);
@@ -84,8 +82,9 @@ int notchOffset;
     savedWidth = roundf(width * screenScale);
     savedHeight = roundf(height * screenScale);
 
-    width = width - insets.left - insets.right;
-    notchOffset = insets.left;
+    // get both left and right for just in case orientation is changed
+    notchOffset = insets.left + insets.right;
+    width = width - notchOffset * 2;
     
     touchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
 
@@ -114,15 +113,19 @@ int notchOffset;
         mouseWheelGesture.delaysTouchesEnded = NO;
         [touchView addGestureRecognizer:mouseWheelGesture];
     }
-    
+
+    CGFloat rectBtnWidth = 80.0;
+    CGFloat rectBtnHeight = 30.0;
+    CGFloat squareBtnSize = 50.0;
+
 #ifndef DEBUG_VISIBLE_TEXT_FIELD
-    inputView = [[UITextField alloc] initWithFrame:CGRectMake(5 * 3 + 80 * 2, 5, BTN_RECT)];
+    inputView = [[UITextField alloc] initWithFrame:CGRectMake(5 * 3 + rectBtnWidth * 2, 5, rectBtnWidth, rectBtnHeight)];
     inputView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.0f];
 #else
-    inputView = [[UITextField alloc] initWithFrame:CGRectMake(5 * 3 + 80 * 2, 5 * 2 + 30, 200, 30)];
+    inputView = [[UITextField alloc] initWithFrame:CGRectMake(5 * 3 + rectBtnWidth * 2, 5 * 2 + rectBtnHeight, 200, rectBtnHeight)];
     inputView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.5f];
 
-    inputLengthView = [[UILabel alloc] initWithFrame:CGRectMake(5 * 2 + 80, 5 * 2 + 30, BTN_RECT)];
+    inputLengthView = [[UILabel alloc] initWithFrame:CGRectMake(5 * 2 + rectBtnWidth, 5 * 2 + rectBtnHeight, rectBtnWidth, rectBtnHeight)];
     inputLengthView.text = @"length=?";
     inputLengthView.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.6f];
     [self.view addSubview:inputLengthView];
@@ -178,31 +181,31 @@ int notchOffset;
     }
 
     if (cc_fallback == YES) {
-        ADD_BUTTON(@"GUI", SPECIALBTN_TOGGLECTRL, CGRectMake(5, height - 5 - 50, BTN_SQUARE), NO);
-        ADD_BUTTON(@"Keyboard", SPECIALBTN_KEYBOARD, CGRectMake(5 * 3 + 80 * 2, 5, BTN_RECT), YES);
+        ADD_BUTTON(@"GUI", SPECIALBTN_TOGGLECTRL, CGRectMake(5, height - 5 - 50, squareBtnSize, squareBtnSize), NO);
+        ADD_BUTTON(@"Keyboard", SPECIALBTN_KEYBOARD, CGRectMake(5 * 3 + rectBtnWidth * 2, 5, rectBtnWidth, rectBtnHeight), YES);
 
-        ADD_BUTTON(@"Pri", SPECIALBTN_MOUSEPRI, CGRectMake(5, height - 5 * 3 - 50 * 3, BTN_SQUARE), YES);
-        ADD_BUTTON(@"Sec", SPECIALBTN_MOUSESEC, CGRectMake(5 * 3 + 50 * 2, height - 5 * 3 - 50 * 3, BTN_SQUARE), YES);
+        ADD_BUTTON(@"Pri", SPECIALBTN_MOUSEPRI, CGRectMake(5, height - 5 * 3 - 50 * 3, squareBtnSize, squareBtnSize), YES);
+        ADD_BUTTON(@"Sec", SPECIALBTN_MOUSESEC, CGRectMake(5 * 3 + 50 * 2, height - 5 * 3 - 50 * 3, squareBtnSize, squareBtnSize), YES);
 
-        ADD_BUTTON(@"Debug", GLFW_KEY_F3, CGRectMake(5, 5, BTN_RECT), YES);
-        ADD_BUTTON(@"Chat", GLFW_KEY_T, CGRectMake(5 * 2 + 80, 5, BTN_RECT), YES);
-        ADD_BUTTON(@"Tab", GLFW_KEY_TAB, CGRectMake(5 * 4 + 80 * 3, 5, BTN_RECT), YES);
-        ADD_BUTTON(@"Opti-Zoom", GLFW_KEY_C, CGRectMake(5 * 5 + 80 * 4, 5, BTN_RECT), YES);
-        ADD_BUTTON(@"Offhand", GLFW_KEY_F, CGRectMake(5 * 6 + 80 * 5, 5, BTN_RECT), YES);
-        ADD_BUTTON(@"3rd", GLFW_KEY_F5, CGRectMake(5, 5 * 2 + 30.0, BTN_RECT), YES);
+        ADD_BUTTON(@"Debug", GLFW_KEY_F3, CGRectMake(5, 5, rectBtnWidth, rectBtnHeight), YES);
+        ADD_BUTTON(@"Chat", GLFW_KEY_T, CGRectMake(5 * 2 + rectBtnWidth, 5, rectBtnWidth, rectBtnHeight), YES);
+        ADD_BUTTON(@"Tab", GLFW_KEY_TAB, CGRectMake(5 * 4 + rectBtnWidth * 3, 5, rectBtnWidth, rectBtnHeight), YES);
+        ADD_BUTTON(@"Opti-Zoom", GLFW_KEY_C, CGRectMake(5 * 5 + rectBtnWidth * 4, 5, rectBtnWidth, rectBtnHeight), YES);
+        ADD_BUTTON(@"Offhand", GLFW_KEY_F, CGRectMake(5 * 6 + rectBtnWidth * 5, 5, rectBtnWidth, rectBtnHeight), YES);
+        ADD_BUTTON(@"3rd", GLFW_KEY_F5, CGRectMake(5, 5 * 2 + rectBtnHeight, rectBtnWidth, rectBtnHeight), YES);
 
-        ADD_BUTTON(@"▲", GLFW_KEY_W, CGRectMake(5 * 2 + 50, height - 5 * 3 - 50 * 3, BTN_SQUARE), YES);
-        ADD_BUTTON(@"◀", GLFW_KEY_A, CGRectMake(5, height - 5 * 2 - 50 * 2, BTN_SQUARE), YES);
-        ADD_BUTTON(@"▼", GLFW_KEY_S, CGRectMake(5 * 2 + 50, height - 5 - 50, BTN_SQUARE), YES);
-        ADD_BUTTON(@"▶", GLFW_KEY_D, CGRectMake(5 * 3 + 50 * 2, height - 5 * 2 - 50 * 2, BTN_SQUARE), YES);
-        ADD_BUTTON(@"◇", GLFW_KEY_LEFT_SHIFT, CGRectMake(5 * 2 + 50, height - 5 * 2 - 50 * 2, BTN_SQUARE), YES);
-        ADD_BUTTON(@"Inv", GLFW_KEY_E, CGRectMake(5 * 3 + 50 * 2, height - 5 - 50, BTN_SQUARE), YES);
+        ADD_BUTTON(@"▲", GLFW_KEY_W, CGRectMake(5 * 2 + 50, height - 5 * 3 - 50 * 3, squareBtnSize, squareBtnSize), YES);
+        ADD_BUTTON(@"◀", GLFW_KEY_A, CGRectMake(5, height - 5 * 2 - 50 * 2, squareBtnSize, squareBtnSize), YES);
+        ADD_BUTTON(@"▼", GLFW_KEY_S, CGRectMake(5 * 2 + 50, height - 5 - 50, squareBtnSize, squareBtnSize), YES);
+        ADD_BUTTON(@"▶", GLFW_KEY_D, CGRectMake(5 * 3 + 50 * 2, height - 5 * 2 - 50 * 2, squareBtnSize, squareBtnSize), YES);
+        ADD_BUTTON(@"◇", GLFW_KEY_LEFT_SHIFT, CGRectMake(5 * 2 + 50, height - 5 * 2 - 50 * 2, squareBtnSize, squareBtnSize), YES);
+        ADD_BUTTON(@"Inv", GLFW_KEY_E, CGRectMake(5 * 3 + 50 * 2, height - 5 - 50, squareBtnSize, squareBtnSize), YES);
 
-        ADD_BUTTON(@"⬛", GLFW_KEY_SPACE, CGRectMake(width - 5 * 2 - 50 * 2, height - 5 * 2 - 50 * 2, BTN_SQUARE), YES);
+        ADD_BUTTON(@"⬛", GLFW_KEY_SPACE, CGRectMake(width - 5 * 2 - 50 * 2, height - 5 * 2 - 50 * 2, squareBtnSize, squareBtnSize), YES);
 
-        ADD_BUTTON(@"Esc", GLFW_KEY_ESCAPE, CGRectMake(width - 5 - 80, height - 5 - 30, BTN_RECT), YES);
+        ADD_BUTTON(@"Esc", GLFW_KEY_ESCAPE, CGRectMake(width - 5 - rectBtnWidth, height - 5 - rectBtnHeight, rectBtnWidth, rectBtnHeight), YES);
 
-        // ADD_BUTTON(@"Fullscreen", f11, CGRectMake(width - 5 - 80, 5, BTN_RECT), YES);
+        // ADD_BUTTON(@"Fullscreen", f11, CGRectMake(width - 5 - rectBtnWidth, 5, rectBtnWidth, rectBtnHeight), YES);
     }
     
     [self.view addSubview:inputView];
@@ -432,7 +435,7 @@ BOOL isNotifRemoved;
     if (sender.state == UIGestureRecognizerStateBegan ||
         sender.state == UIGestureRecognizerStateChanged ||
         sender.state == UIGestureRecognizerStateEnded) {
-        CGPoint velocity = [sender velocityInView:self];
+        CGPoint velocity = [sender velocityInView:self.view];
 
         if (velocity.x > 0.0f) {
             velocity.x = -1.0;
@@ -458,7 +461,7 @@ BOOL isNotifRemoved;
         point.x -= origin.x;
         point.y -= origin.y;
         
-        NSLog(@"UIPointerInteraction pos changed: x=%d, y=%d", point.x, point.y);
+        NSLog(@"UIPointerInteraction pos changed: x=%d, y=%d", (int) point.x, (int) point.y);
 
         // TODO FIXME
         callback_SurfaceViewController_onTouch(ACTION_DOWN, (int)point.x, (int)point.y);

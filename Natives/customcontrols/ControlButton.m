@@ -49,7 +49,7 @@
 - (float)insertDynamicPos:(NSString*)string {
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = 2.0; // [[UIScreen mainScreen] scale];
-    UIEdgeInsets insets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets insets = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets;
 
     // width: offset the notch parts
     int screenWidth = (int) roundf((screenBounds.size.width - insets.left - insets.right) * screenScale);
@@ -80,7 +80,7 @@
     // net/kdt/pojavlaunch/customcontrols/ControlData.update()
 
     float screenScale = (float) 2.0; // [[UIScreen mainScreen] scale];
-    UIEdgeInsets insets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets insets = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets;
 
     NSString *propDynamicX = (NSString *) [self.properties valueForKey:@"dynamicX"];
     NSString *propDynamicY = (NSString *) [self.properties valueForKey:@"dynamicY"];

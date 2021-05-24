@@ -66,7 +66,7 @@ dispatch_async(dispatch_get_main_queue(), ^{
     
     UIAlertAction* copyAction = [UIAlertAction actionWithTitle:@"Copy" style:UIAlertActionStyleDefault
         handler:^(UIAlertAction * action) {
-            [[UIPasteboard generalPasteboard] setString:@(message_c)];
+            UIPasteboard.generalPasteboard.string = @(message_c);
             (*env)->ReleaseStringUTFChars(env, message, message_c);
             if (exitIfOk == JNI_TRUE) {
                 exit(-1);
@@ -78,6 +78,19 @@ dispatch_async(dispatch_get_main_queue(), ^{
     
     (*env)->ReleaseStringUTFChars(env, title, title_c);
 });
+}
+
+jstring UIKit_accessClipboard(JNIEnv* env, jstring copySrc) {
+    if (copySrc == NULL && UIPasteboard.generalPasteboard.hasStrings) {
+        // paste request
+        return (*env)->NewStringUTF(env, [UIPasteboard.generalPasteboard.string UTF8String]);
+    } else {
+        // copy request
+        const char* copySrcC = (*env)->GetStringUTFChars(env, copySrc, 0);
+        UIPasteboard.generalPasteboard.string = @(copySrcC);
+	    (*env)->ReleaseStringUTFChars(env, copySrc, copySrcC);
+        return NULL;
+    }
 }
 
 jboolean UIKit_updateProgress(float progress, const char* message) {
