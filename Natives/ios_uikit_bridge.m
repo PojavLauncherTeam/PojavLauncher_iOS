@@ -7,6 +7,10 @@
 #include "ios_uikit_bridge.h"
 #include "utils.h"
 
+#define CLIPBOARD_COPY 2000
+#define CLIPBOARD_PASTE 2001
+// Maybe CLIPBOARD_OPENURL then?
+
 jboolean skipDownloadAssets;
 
 void internal_showDialog(UIViewController *viewController, NSString* title, NSString* message) {
@@ -80,15 +84,23 @@ dispatch_async(dispatch_get_main_queue(), ^{
 });
 }
 
-jstring UIKit_accessClipboard(JNIEnv* env, jstring copySrc) {
-    if (copySrc == NULL && UIPasteboard.generalPasteboard.hasStrings) {
+jstring UIKit_accessClipboard(JNIEnv* env, jint action, jstring copySrc) {
+    if (action == CLIPBOARD_PASTE) {
         // paste request
-        return (*env)->NewStringUTF(env, [UIPasteboard.generalPasteboard.string UTF8String]);
-    } else {
+        if (UIPasteboard.generalPasteboard.hasStrings) {
+            return (*env)->NewStringUTF(env, [UIPasteboard.generalPasteboard.string UTF8String]);
+        } else {
+            return (*env)->NewStringUTF(env, "");
+        }
+    } else if (action == CLIPBOARD_COPY) {
         // copy request
         const char* copySrcC = (*env)->GetStringUTFChars(env, copySrc, 0);
         UIPasteboard.generalPasteboard.string = @(copySrcC);
 	    (*env)->ReleaseStringUTFChars(env, copySrc, copySrcC);
+        return NULL;
+    } else {
+        // unknown request
+        NSLog(@"Warning: unknown clipboard action: %x", action);
         return NULL;
     }
 }

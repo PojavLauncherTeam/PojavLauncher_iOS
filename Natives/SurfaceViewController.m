@@ -100,11 +100,9 @@ int notchOffset;
 
     [self.view addSubview:touchView];
     
-    if (NSClassFromString(@"UIPointerInteraction") != nil) {
-        [touchView addInteraction:[[UIPointerInteraction alloc] initWithDelegate:self]];
-    }
-    
     if (@available(iOS 13.4, *)) {
+        [touchView addInteraction:[[UIPointerInteraction alloc] initWithDelegate:self]];
+
         UIPanGestureRecognizer *mouseWheelGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(surfaceOnMouseScroll:)];
         mouseWheelGesture.allowedScrollTypesMask = UIScrollTypeMaskDiscrete;
         mouseWheelGesture.allowedTouchTypes = @[ @(UITouchTypeIndirectPointer) ];
@@ -496,7 +494,7 @@ NSString* inputStringBefore;
 #endif
     } else if ([inputView.text length] > INPUT_SPACE_LENGTH) {
         NSString *newText = [inputView.text substringFromIndex:INPUT_SPACE_LENGTH];
-        int charLength = [newText length];
+        int charLength = (int) [newText length];
         for (int i = 0; i < charLength; i++) {
             // Directly convert unichar to jchar which both are in UTF-16 encoding.
             Java_org_lwjgl_glfw_CallbackBridge_nativeSendCharMods(NULL, NULL, (jchar) [newText characterAtIndex:i] /* charText[i] */, /* mods */ 0);

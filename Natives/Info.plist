@@ -72,11 +72,6 @@
 	<string>12.0</string>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
-	<key>UIDeviceFamily</key>
-	<array>
-		<integer>1</integer>
-		<integer>2</integer>
-	</array>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UIRequiredDeviceCapabilities</key>
