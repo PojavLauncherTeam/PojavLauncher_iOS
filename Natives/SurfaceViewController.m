@@ -83,7 +83,7 @@ int notchOffset;
     savedHeight = roundf(height * screenScale);
 
     // get both left and right for just in case orientation is changed
-    notchOffset = insets.left + insets.right;
+    notchOffset = insets.left;
     width = width - notchOffset * 2;
     
     touchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
