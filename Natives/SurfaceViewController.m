@@ -82,12 +82,12 @@ int notchOffset;
     savedWidth = roundf(width * screenScale);
     savedHeight = roundf(height * screenScale);
 
+    touchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+
     // get both left and right for just in case orientation is changed
     notchOffset = insets.left;
     width = width - notchOffset * 2;
     
-    touchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
-
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(surfaceOnClick:)];
     tapGesture.numberOfTapsRequired = 1;
     tapGesture.numberOfTouchesRequired = 1;
@@ -258,13 +258,7 @@ int notchOffset;
 - (void)setupGL
 {
     [MGLContext setCurrentContext:self.context];
-
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    CGFloat screenScale = [[UIScreen mainScreen] scale];
-
-    int width = (int) roundf(screenBounds.size.width * screenScale);
-    int height = (int) roundf(screenBounds.size.height * screenScale);
-    callback_SurfaceViewController_launchMinecraft(width, height);
+    callback_SurfaceViewController_launchMinecraft(savedWidth, savedHeight);
 }
 
 BOOL isNotifRemoved;
