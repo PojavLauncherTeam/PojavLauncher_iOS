@@ -13,7 +13,7 @@ This launcher is available on the Procursus repo, thanks to [@Diatrus](https://t
 
 ## Getting started with PojavLauncher
 
-The [PojavLauncher iOS Wiki](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/wiki) has extensive documentation on how to install, set up, and play! For those who wish to install quickly, here's the basics (on iOS 12 or later):
+The [PojavLauncher Website](https://pojavlauncherteam.github.io) has extensive documentation on how to install, set up, and play! For those who wish to install quickly, here's the basics (on iOS 12 or later):
 
 ### Procursus-bootstraps
 If you have Chimera, Taurine, Odyssey, or another jailbreak that comes with **libhooker**, this one's for you.
