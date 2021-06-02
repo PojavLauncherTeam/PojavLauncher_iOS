@@ -116,7 +116,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 }
 
 - (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
-    return UIRectEdgeAll;
+    return UIRectEdgeBottom;
 }
 
 - (BOOL)prefersHomeIndicatorAutoHidden {
