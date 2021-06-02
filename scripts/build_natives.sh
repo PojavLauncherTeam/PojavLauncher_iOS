@@ -19,6 +19,3 @@ ibtool --compile Natives/build/Release-iphoneos/PojavLauncher.app/Base.lproj/Min
 mkdir -p Natives/build/Release-iphoneos/PojavLauncher.app/Frameworks
 cp Natives/build/Release-iphoneos/libpojavexec.dylib Natives/build/Release-iphoneos/PojavLauncher.app/Frameworks/
 cp -R Natives/resources/* Natives/build/Release-iphoneos/PojavLauncher.app/
-
-# If set, install to test device
-
