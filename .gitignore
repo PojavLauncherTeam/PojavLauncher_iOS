@@ -1,4 +1,5 @@
 /packages
+/JavaApp/local_out
 /Natives/libpojavexec.dylib
 /Natives/PojavLauncher
 /Natives/build
