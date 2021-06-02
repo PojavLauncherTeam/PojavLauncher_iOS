@@ -1,8 +1,7 @@
 /packages
+/JavaApp/build
+/JavaApp/local_out
 /Natives/libpojavexec.dylib
 /Natives/PojavLauncher
 /Natives/build
-/JavaApp/build 
-robovm-logs/
-robovm-build/
 .DS_STORE

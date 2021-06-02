@@ -52,7 +52,7 @@ UITextField* versionTextField;
     versionTextView.numberOfLines = 0;
     [versionTextView sizeToFit];
     [scrollView addSubview:versionTextView];
-
+    
     versionTextField = [[UITextField alloc] initWithFrame:CGRectMake(versionTextView.bounds.size.width + 4.0, 4.0, width - versionTextView.bounds.size.width - 8.0, versionTextView.bounds.size.height)];
     [versionTextField addTarget:versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     versionTextField.placeholder = @"Specify version...";
@@ -80,7 +80,7 @@ UITextField* versionTextField;
 }
 
 - (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
-    return UIRectEdgeAll;
+    return UIRectEdgeBottom;
 }
 
 - (BOOL)prefersHomeIndicatorAutoHidden {

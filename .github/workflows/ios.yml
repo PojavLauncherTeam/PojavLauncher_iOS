@@ -17,7 +17,7 @@ jobs:
         run: brew install ldid dpkg fakeroot
 
       - name: Native build
-        run: bash scripts/build_natives_cmake.sh
+        run: bash scripts/build_natives.sh
 
       - name: Java app Build
         run: bash scripts/build_javaapp.sh
