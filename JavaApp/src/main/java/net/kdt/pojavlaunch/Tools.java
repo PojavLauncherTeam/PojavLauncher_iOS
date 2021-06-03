@@ -137,61 +137,6 @@ public final class Tools
         
         // JREUtils.launchJavaVM(javaArgList);
     }
-    
-    public static void getJavaArgs(List<String> javaArgList) {
-        List<String> overrideableArgList = new ArrayList<String>();
-/*
-        overrideableArgList.add("-Djava.home=" + Tools.DIR_HOME_JRE);
-        overrideableArgList.add("-Djava.io.tmpdir=" + System.getProperty("java.io.tmpdir"));
-        
-        overrideableArgList.add("-Duser.home=" + Tools.DIR_GAME_HOME);
-        overrideableArgList.add("-Duser.language=" + System.getProperty("user.language"));
-        overrideableArgList.add("-Duser.timezone=GMT");
-
-        overrideableArgList.add("-Dos.name=Darwin");
-        overrideableArgList.add("-Dos.version=iOS-" + System.getProperty("os.version"));
-*/
-        overrideableArgList.add("-Dpojav.path.minecraft=" + Tools.DIR_GAME_NEW);
-        overrideableArgList.add("-Dpojav.path.private.account=" + Tools.DIR_ACCOUNT_NEW);
-        
-        // javaArgList.add("-Dorg.lwjgl.libname=liblwjgl3.so");
-        // javaArgList.add("-Dorg.lwjgl.system.jemalloc.libname=libjemalloc.so");
-       
-        overrideableArgList.add("-Dorg.lwjgl.opengl.libname=libgl4es_114.dylib");
-        // overrideableArgList.add("-Dorg.lwjgl.opengl.libname=libgl4es_115.so");
-        
-        // javaArgList.add("-Dorg.lwjgl.opengl.libname=libRegal.so");
-
-        // Enable LWJGL3 debug
-        // overrideableArgList.add("-Dorg.lwjgl.util.Debug=true");
-        // overrideableArgList.add("-Dorg.lwjgl.util.DebugFunctions=true");
-        // overrideableArgList.add("-Dorg.lwjgl.util.DebugLoader=true");
-
-        // GLFW Stub width height
-        overrideableArgList.add("-Dglfwstub.windowWidth=" + GLFW.mGLFWWindowWidth);
-        overrideableArgList.add("-Dglfwstub.windowHeight=" + GLFW.mGLFWWindowHeight);
-        overrideableArgList.add("-Dglfwstub.initEgl=false");
-
-        overrideableArgList.add("-Dnet.minecraft.clientmodname=" + Tools.APP_NAME);
-        
-        // Disable FML Early Loading Screen to get Forge 1.14+ works
-        overrideableArgList.add("-Dfml.earlyprogresswindow=false");
-        
-        // Override args
-        for (String argOverride : LauncherPreferences.PREF_CUSTOM_JAVA_ARGS.split(" ")) {
-            for (int i = 0; i < overrideableArgList.size(); i++) {
-                String arg = overrideableArgList.get(i);
-                if (arg.startsWith("-D") && argOverride.startsWith(arg.substring(0, arg.indexOf('=') + 1))) {
-                    overrideableArgList.set(i, argOverride);
-                    break;
-                } else if (i+1 == overrideableArgList.size()) {
-                    javaArgList.add(argOverride);
-                }
-            }
-        }
-
-        javaArgList.addAll(overrideableArgList);
-    }
 
     public static String[] getMinecraftArgs(MinecraftAccount profile, JMinecraftVersionList.Version versionInfo) {
         String username = profile.username;
@@ -241,6 +186,14 @@ public final class Tools
                 }
             }
         }
+        minecraftArgs.add("--width");
+        minecraftArgs.add(Integer.toString(GLFW.mGLFWWindowWidth));
+        minecraftArgs.add("--height");
+        minecraftArgs.add(Integer.toString(GLFW.mGLFWWindowHeight));
+        minecraftArgs.add("--fullscreenWidth");
+        minecraftArgs.add(Integer.toString(GLFW.mGLFWWindowWidth));
+        minecraftArgs.add("--fullscreenHeight");
+        minecraftArgs.add(Integer.toString(GLFW.mGLFWWindowHeight));
         
         String[] argsFromJson = JSONUtils.insertJSONValueList(
             splitAndFilterEmpty(

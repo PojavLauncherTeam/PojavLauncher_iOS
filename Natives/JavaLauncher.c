@@ -144,6 +144,7 @@ int launchJVM(int argc, char *argv[]) {
         margv[margc++] = "-Duser.home=/var/mobile/Documents";
         margv[margc++] = "-Dorg.lwjgl.opengl.libname=libgl4es_114.dylib";
         margv[margc++] = "-Dorg.lwjgl.system.allocator=system";
+        margv[margc++] = "-Dminecraft.launcher.brand=PojavLauncher";
 
         init_loadCustomJvmFlags();
 

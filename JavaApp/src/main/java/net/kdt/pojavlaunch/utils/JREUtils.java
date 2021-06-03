@@ -124,56 +124,6 @@ public class JREUtils
         
         // return ldLibraryPath;
     }
-    
-    public static int launchJavaVM(final List<String> args) throws Throwable {
-        JREUtils.relocateLibPath();
-        // ctx.appendlnToLog("LD_LIBRARY_PATH = " + JREUtils.LD_LIBRARY_PATH);
-
-        List<String> javaArgList = new ArrayList<String>();
-        javaArgList.add(Tools.DIR_HOME_JRE + "/bin/java");
-        Tools.getJavaArgs(javaArgList);
-
-        javaArgList.addAll(args);
-        
-        // For debugging only!
-/*
-        StringBuilder sbJavaArgs = new StringBuilder();
-        for (String s : javaArgList) {
-            sbJavaArgs.append(s + " ");
-        }
-        ctx.appendlnToLog("Executing JVM: \"" + sbJavaArgs.toString() + "\"");
-*/
-
-        redirectLogcat(Tools.DIR_APP_DATA + "/latestlog.txt");
-
-        setJavaEnvironment();
-        initJavaRuntime();
-        chdir(Tools.DIR_GAME_NEW);
-
-        final int exitCode = VMLauncher.launchJVM(true /* JLI_Launch */, javaArgList);
-        System.out.println("Java Exit code: " + exitCode);
-        if (exitCode != 0) {
-            Tools.showError(new Exception("Java exited with code " + exitCode));
-/*
-            ctx.runOnUiThread(new Runnable(){
-                    @Override
-                    public void run() {
-                        AlertDialog.Builder dialog = new AlertDialog.Builder(ctx);
-                        dialog.setMessage(ctx.getString(R.string.mcn_exit_title, exitCode));
-                        dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener(){
-
-                                @Override
-                                public void onClick(DialogInterface p1, int p2){
-                                    BaseMainActivity.fullyExit();
-                                }
-                            });
-                        dialog.show();
-                    }
-                });
-*/
-        }
-        return exitCode;
-    }
 
     public static native int chdir(String path);
     public static native boolean dlopen(String libPath);

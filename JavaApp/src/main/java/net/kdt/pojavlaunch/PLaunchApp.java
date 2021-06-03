@@ -30,6 +30,8 @@ public class PLaunchApp {
                 Tools.write(mcDir.getAbsolutePath() + "/launcher_profiles.json",
                   Tools.read(Tools.DIR_DATA + "/launcher_profiles.json"));
             }
+
+            LauncherPreferences.loadPreferences();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -40,8 +42,6 @@ public class PLaunchApp {
         } else {
             return;
         }
-
-        LauncherPreferences.loadPreferences();
     }
 
     // Called from SurfaceViewController
