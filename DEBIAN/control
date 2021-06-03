@@ -10,5 +10,5 @@ Section: Games
 Priority: optional
 Homepage: https://github.com/PojavLauncherTeam/PojavLauncher_iOS
 Description: Minecraft: Java Edition launcher for iOS, based on PojavLauncher Android.
-Depiction: https://doregon.github.io/json-webviews/?json=https://doregon.github.io/cydia/depictions/natives/pojavlauncher.json&name=PojavLauncher%20iOS&dev=PojavLauncherTeam&section=Games
+Depiction: https://doregon.github.io/json-webviews/?json=https://doregon.github.io/cydia/depictions/natives/pojavlauncher.json&name=PojavLauncher%20iOS&dev=PojavLauncherTeam&section=Games&icon=https://doregon.github.io/cydia/images/icons/pojavlauncher_icon.png
 SileoDepiction: https://doregon.github.io/cydia/depictions/natives/pojavlauncher.json
