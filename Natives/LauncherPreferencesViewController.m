@@ -56,6 +56,8 @@ UITextField* versionTextField;
     buttonSizeSlider.value = 50.0;
     [scrollView addSubview:buttonSizeSlider];
 */
+
+    scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, scrollView.frame.size.height + 200);
 }
 
 - (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
