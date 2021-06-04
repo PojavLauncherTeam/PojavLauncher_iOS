@@ -6,8 +6,6 @@ import java.nio.charset.*;
 
 import net.kdt.pojavlaunch.*;
 
-import org.apache.commons.io.*;
-
 public class DownloadUtils {
     public static final String USER_AGENT = Tools.APP_NAME;
     public static final Charset utf8 = Charset.forName("UTF-8");
@@ -30,7 +28,7 @@ public class DownloadUtils {
 					+ ": " + conn.getResponseMessage());
             }
             is = conn.getInputStream();
-			IOUtils.copy(is, os);
+			Tools.copy(is, os);
         } catch (IOException e) {
             throw new IOException("Unable to download from " + url.toString(), e);
         } finally {

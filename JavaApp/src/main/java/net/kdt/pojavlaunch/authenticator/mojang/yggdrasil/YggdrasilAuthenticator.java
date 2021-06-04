@@ -5,7 +5,6 @@ import java.net.*;
 import java.nio.charset.*;
 import java.util.*;
 import net.kdt.pojavlaunch.*;
-import org.apache.commons.io.*;
 
 public class YggdrasilAuthenticator {
     private static final String API_URL = "https://authserver.mojang.com/";
@@ -46,7 +45,7 @@ public class YggdrasilAuthenticator {
                 }
                 
                 if (is != null) {
-                    IOUtils.copy(is, bos);
+                    Tools.copy(is, bos);
                     try {
                         is.close();
                     } catch (Exception e) {

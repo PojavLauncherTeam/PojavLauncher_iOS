@@ -12,8 +12,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.InputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
@@ -589,6 +591,14 @@ public final class Tools
         return out;
     }
 
+    public static void copy(final InputStream input, final OutputStream output) throws IOException {
+        final byte[] buffer = new byte[8192];
+        int n = 0;
+        while ((n = input.read(buffer)) != -1) {
+            output.write(buffer, 0, n);
+        }
+    }
+
     public static File lastFileModified(String dir) {
         File fl = new File(dir);
 
@@ -609,7 +619,6 @@ public final class Tools
 
         return choice;
     }
-
 
     public static String read(InputStream is) throws IOException {
         String out = "";
