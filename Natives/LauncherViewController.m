@@ -1,5 +1,6 @@
 #import "LauncherViewController.h"
 #import "LauncherPreferencesViewController.h"
+#import "LauncherFAQViewController.h"
 
 #include "utils.h"
 
@@ -66,6 +67,12 @@ UITextField* versionTextField;
     [preferences_button addTarget:self action:@selector(enterPreferences) forControlEvents:UIControlEventTouchUpInside];
     [scrollView addSubview:preferences_button];
     
+    UIButton *quickfaq = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [quickfaq setTitle:@"FAQ" forState:UIControlStateNormal];
+    quickfaq.frame = CGRectMake(width - 110.0, height - 108.0, 100.0, 50.0);
+    [quickfaq addTarget:self action:@selector(showFAQ) forControlEvents:UIControlEventTouchUpInside];
+    [scrollView addSubview:quickfaq];
+
     install_progress_bar = [[UIProgressView alloc] initWithFrame:CGRectMake(4.0, height - 58.0, width - 8.0, 6.0)];
     [scrollView addSubview:install_progress_bar];
 
@@ -108,6 +115,12 @@ UITextField* versionTextField;
 - (void)enterPreferences
 {
     LauncherPreferencesViewController *vc = [[LauncherPreferencesViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)showFAQ
+{
+    LauncherFAQViewController *vc = [[LauncherFAQViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

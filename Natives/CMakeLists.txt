@@ -13,7 +13,7 @@ set_target_properties(PojavLauncher PROPERTIES
   MACOSX_FRAMEWORK_IDENTIFIER org.cmake.ExecutableTarget
   MACOSX_BUNDLE_INFO_PLIST "../Info.plist")
 
-add_library(pojavexec SHARED log.m AppDelegate.m SceneDelegate.m UILauncher.m LauncherViewController.m LauncherPreferencesViewController.m LoginViewController.m SurfaceViewController.m egl_bridge_ios.m ios_uikit_bridge.m customcontrols/ControlButton.m egl_bridge.c input_bridge_v3.c utils.c)
+add_library(pojavexec SHARED log.m AppDelegate.m SceneDelegate.m UILauncher.m LauncherViewController.m LauncherPreferencesViewController.m LauncherFAQViewController.m LoginViewController.m SurfaceViewController.m UpdateHistoryViewController.m egl_bridge_ios.m ios_uikit_bridge.m customcontrols/ControlButton.m egl_bridge.c input_bridge_v3.c utils.c)
 target_link_libraries(pojavexec
     "-Fresources/Frameworks"
     "-framework UIKit"

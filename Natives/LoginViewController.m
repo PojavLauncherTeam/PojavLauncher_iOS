@@ -6,6 +6,7 @@
 #import "AppDelegate.h"
 #import "LauncherViewController.h"
 #import "LoginViewController.h"
+#import "UpdateHistoryViewController.h"
 
 #include "ios_uikit_bridge.h"
 #include "utils.h"
@@ -113,6 +114,12 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     [button_login_account setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button_login_account addTarget:self action:@selector(loginAccount) forControlEvents:UIControlEventTouchUpInside];
     [scrollView addSubview:button_login_account];
+
+    UIButton *button_update_history = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [button_update_history setTitle:@"Update History" forState:UIControlStateNormal];
+    button_update_history.frame = CGRectMake((width / 2) - 100.0, height - 75.0, 200.0, 50.0);
+    [button_update_history addTarget:self action:@selector(updateHistory) forControlEvents:UIControlEventTouchUpInside];
+    [scrollView addSubview:button_update_history];
 }
 
 - (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
@@ -286,6 +293,12 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
         }
     }];
     [postDataTask resume];
+}
+
+- (void)updateHistory
+{
+    UpdateHistoryViewController *vc = [[UpdateHistoryViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - ASWebAuthenticationPresentationContextProviding
