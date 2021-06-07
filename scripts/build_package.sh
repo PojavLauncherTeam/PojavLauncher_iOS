@@ -16,10 +16,10 @@ then
       if [[ "$DEVICE_PORT" != "" ]];
       then
             scp -P $DEVICE_PORT packages/pojavlauncher_iphoneos-arm.deb root@$DEVICE_IP:/var/tmp/pojavlauncher_iphoneos-arm.deb
-            ssh root@$DEVICE_IP -p $DEVICE_PORT -t "dpkg -i /var/tmp/pojavlauncher_iphoneos-arm.deb; uicache -p /Applications/PojavLauncher.app"
+            ssh root@$DEVICE_IP -p $DEVICE_PORT -t "apt remove pojavlauncher; apt remove pojavlauncher-dev; dpkg -i /var/tmp/pojavlauncher_iphoneos-arm.deb; uicache -p /Applications/PojavLauncher.app"
       else
             scp packages/pojavlauncher_iphoneos-arm.deb root@$DEVICE_IP:/var/tmp/pojavlauncher_iphoneos-arm.deb
-            ssh root@$DEVICE_IP -t "dpkg -i /var/tmp/pojavlauncher_iphoneos-arm.deb; uicache -p /Applications/PojavLauncher.app"
+            ssh root@$DEVICE_IP -t "apt remove pojavlauncher; apt remove pojavlauncher-dev; dpkg -i /var/tmp/pojavlauncher_iphoneos-arm.deb; uicache -p /Applications/PojavLauncher.app"
        fi
 else
       echo "Device address not set, not installing."
