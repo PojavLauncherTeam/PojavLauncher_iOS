@@ -6,7 +6,7 @@
 #import "AppDelegate.h"
 #import "LauncherViewController.h"
 #import "LoginViewController.h"
-#import "UpdateHistoryViewController.h"
+#import "AboutLauncherViewController.h"
 
 #include "ios_uikit_bridge.h"
 #include "utils.h"
@@ -80,7 +80,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     CGFloat widthSplit = width / 4.0;
     
     UIButton *button_login_mojang = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [button_login_mojang setTitle:@"Mojang login" forState:UIControlStateNormal];
+    [button_login_mojang setTitle:@"Mojang" forState:UIControlStateNormal];
     button_login_mojang.frame = CGRectMake(widthSplit, (height - 50.0) / 2.0 - 4.0 - 50.0, (width - widthSplit * 2.0) / 2 - 2.0, 50.0);
     button_login_mojang.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
     button_login_mojang.layer.cornerRadius = 5;
@@ -89,7 +89,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     [scrollView addSubview:button_login_mojang];
     
     UIButton *button_login_microsoft = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [button_login_microsoft setTitle:@"Microsoft login" forState:UIControlStateNormal];
+    [button_login_microsoft setTitle:@"Microsoft" forState:UIControlStateNormal];
     button_login_microsoft.frame = CGRectMake(widthSplit + (width - widthSplit * 2.0) / 2.0 + 2.0, (height - 50.0) / 2.0 - 4.0 - 50.0, (width - widthSplit * 2.0) / 2 - 2.0, 50.0);
     button_login_microsoft.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
     button_login_microsoft.layer.cornerRadius = 5;
@@ -98,7 +98,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     [scrollView addSubview:button_login_microsoft];
     
     UIButton *button_login_offline = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [button_login_offline setTitle:@"Offline login" forState:UIControlStateNormal];
+    [button_login_offline setTitle:@"Offline" forState:UIControlStateNormal];
     button_login_offline.frame = CGRectMake(widthSplit, (height - 50.0) / 2.0, width - widthSplit * 2.0, 50.0);
     button_login_offline.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
     button_login_offline.layer.cornerRadius = 5;
@@ -107,7 +107,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     [scrollView addSubview:button_login_offline];
 
     UIButton *button_login_account = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [button_login_account setTitle:@"Select account" forState:UIControlStateNormal];
+    [button_login_account setTitle:@"Accounts" forState:UIControlStateNormal];
     button_login_account.frame = CGRectMake(widthSplit, (height - 50.0) / 2.0 + 4.0 + 50.0, width - widthSplit * 2.0, 50.0);
     button_login_account.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
     button_login_account.layer.cornerRadius = 5;
@@ -115,11 +115,14 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     [button_login_account addTarget:self action:@selector(loginAccount) forControlEvents:UIControlEventTouchUpInside];
     [scrollView addSubview:button_login_account];
 
-    UIButton *button_update_history = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [button_update_history setTitle:@"Update History" forState:UIControlStateNormal];
-    button_update_history.frame = CGRectMake((width / 2) - 100.0, height - 75.0, 200.0, 50.0);
-    [button_update_history addTarget:self action:@selector(updateHistory) forControlEvents:UIControlEventTouchUpInside];
-    [scrollView addSubview:button_update_history];
+    UIButton *button_about_launcher = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [button_about_launcher setTitle:@"About the Launcher" forState:UIControlStateNormal];
+    button_about_launcher.frame = CGRectMake((width / 2) - 100.0, height - 75.0, 200.0, 50.0);
+//     button_about_launcher.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
+//     button_about_launcher.layer.cornerRadius = 5;
+//     [button_about_launcher setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [button_about_launcher addTarget:self action:@selector(aboutLauncher) forControlEvents:UIControlEventTouchUpInside];
+    [scrollView addSubview:button_about_launcher];
 }
 
 - (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
@@ -295,9 +298,9 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     [postDataTask resume];
 }
 
-- (void)updateHistory
+- (void)aboutLauncher
 {
-    UpdateHistoryViewController *vc = [[UpdateHistoryViewController alloc] init];
+    AboutLauncherViewController *vc = [[AboutLauncherViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
