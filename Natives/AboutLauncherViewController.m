@@ -16,9 +16,6 @@
 {
     [super viewDidLoad];
     
-    [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
-    [self setNeedsUpdateOfHomeIndicatorAutoHidden];
-    
     [self setTitle:@"About PojavLauncher"];
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
@@ -133,14 +130,6 @@
 
     scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, scrollView.frame.size.height + 800);
 
-}
-
-- (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
-    return UIRectEdgeBottom;
-}
-
-- (BOOL)prefersHomeIndicatorAutoHidden {
-    return NO;
 }
 
 -(void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {

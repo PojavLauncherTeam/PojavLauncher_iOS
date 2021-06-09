@@ -18,7 +18,7 @@ UITextField* versionTextField;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
     [self setNeedsUpdateOfHomeIndicatorAutoHidden];
     
