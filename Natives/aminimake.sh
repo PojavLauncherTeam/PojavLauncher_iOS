@@ -18,6 +18,8 @@ clang -framework UIKit -framework MetalANGLE -framework CoreGraphics -framework 
   LauncherPreferencesViewController.m \
   LoginViewController.m \
   SurfaceViewController.m \
+  AboutLauncherViewController.m \
+  LauncherFAQViewController.m \
   egl_bridge_ios.m \
   ios_uikit_bridge.m \
   customcontrols/ControlButton.m \
