@@ -12,9 +12,9 @@ ifneq ($(filter x86_64-apple-darwin%,$(DETECT)),)
 	IOS := 0
 endif
 
-. PHONY: all clean native java extras package copy
+. PHONY: all clean native java extras package install
 
-all: clean native java extras package copy
+all: clean native java extras package install
 
 native:
 	@echo 'Starting build task - native application'
@@ -117,16 +117,35 @@ package:
 		ldid -Sentitlements.xml packages/pojavlauncher_iphoneos-arm/Applications/PojavLauncher.app; \
 		fakeroot dpkg-deb -b packages/pojavlauncher_iphoneos-arm; \
 	fi
+	@echo 'Finished build task - Packaging'
 
-copy:
-	@echo 'The copy task is not yet implemented.'
-
+install:
+	@echo 'Starting build task - Installation'
+	@echo 'Please note that this may not work properly. If it doesn'\''t work for you, you can manually extract the .deb in /var/tmp/pojavlauncher_iphoneos-arm.deb with dpkg or Filza.'
+	@if [ '$(IOS)' != '1' ]; then \
+		if [ '$(DEVICE_IP)' != '' ]; then \
+			if [ '$(DEVICE_PORT)' != '' ]; then \
+				scp -P $(DEVICE_PORT) packages/pojavlauncher_iphoneos-arm.deb root@$(DEVICE_IP):/var/tmp/pojavlauncher_iphoneos-arm.deb; \
+				ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t "apt remove pojavlauncher; apt remove pojavlauncher-dev; dpkg -i /var/tmp/pojavlauncher_iphoneos-arm.deb; uicache -p /Applications/PojavLauncher.app"; \
+			else \
+				scp packages/pojavlauncher_iphoneos-arm.deb root@$(DEVICE_IP):/var/tmp/pojavlauncher_iphoneos-arm.deb; \
+				ssh root@$(DEVICE_IP) -t "apt remove pojavlauncher; apt remove pojavlauncher-dev; dpkg -i /var/tmp/pojavlauncher_iphoneos-arm.deb; uicache -p /Applications/PojavLauncher.app"; \
+			fi; \
+		else \
+			echo 'You need to run '\''export DEVICE_IP=<your iOS device IP>'\'' to use make install.'; \
+			echo 'If you specified a different port for your device to listen for SSH connections, you need to run '\''export DEVICE_PORT=<your port>'\'' as well.'; \
+		fi; \
+	elif [ '$(IOS)' = '1' ]; then \
+		sudo mv packages/pojavlauncher_iphoneos-arm.deb /var/tmp/pojavlauncher_iphoneos-arm.deb; \
+		sudo dpkg -i /var/tmp/pojavlauncher_iphoneos-arm.deb; \
+	fi
 
 clean:
+	@echo 'Starting build task - Cleaning'
 	@rm -rf Natives/build
 	@rm -rf JavaApp/build
 	@rm -rf packages
-	@echo 'Build plate cleaned'
+	@echo 'Finished build task - Cleaning'
 
 help:
 	@echo 'Makefile to compile PojavLauncher                                                     '
