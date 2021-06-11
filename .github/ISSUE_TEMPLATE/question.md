@@ -6,7 +6,7 @@ labels: question
 assignees: ''
 
 ---
-<--
+<!--
 To use this template:
 * CHECK OTHER ISSUES and see if anyone else has asked the same question. We will close any duplicate requests.
 * Don't delete any of the words between asterisks.
@@ -15,4 +15,4 @@ To use this template:
 -->
 
 **Ask your question here!**
-<!-- Be descriptive in your question so that we can provide an equally descriptive answer. Make sure you've checked out the subreddit or the README before asking, as your question might already have an answer. --!>
+<!-- Be descriptive in your question so that we can provide an equally descriptive answer. Make sure you've checked out the subreddit or the README before asking, as your question might already have an answer. -->

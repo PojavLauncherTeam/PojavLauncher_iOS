@@ -16,19 +16,19 @@ To use this template:
 -->
 
 **First, let us know what you're using.**
-<!-- Tell us what iOS/iPadOS device and version you're using, and the PojavLauncher version. --!>
+<!-- Tell us what iOS/iPadOS device and version you're using, and the PojavLauncher version. -->
 
 **Next, describe the issue.**
-<!-- Make sure to be as descriptive as possible. --!>
+<!-- Make sure to be as descriptive as possible. -->
 
 **What's supposed to happen?**
-<!-- What were you expecting? --!>
+<!-- What were you expecting? -->
 
 **How does it happen?**
-<!-- Let's get a step by step on how to reproduce this issue. --!>
+<!-- Let's get a step by step on how to reproduce this issue. -->
 
 **Any files you want to send?**
-<!-- We could use a copy of latestlog.txt or a Cr4shed screenshot. --!>
+<!-- We could use a copy of latestlog.txt or a Cr4shed screenshot. -->
 
 **Please verify that you have done the following:**
 

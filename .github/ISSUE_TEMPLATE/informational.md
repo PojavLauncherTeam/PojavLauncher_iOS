@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-<--
+<!--
 To use this template:
 * CHECK OTHER ISSUES and see if anyone else has provided the same information. We will close any duplicates.
 * Feel free to delete any words between asterisks, but make your type ledgible and easy to read. 
@@ -16,10 +16,10 @@ To use this template:
 -->
 
 **Add some background.**
-<!-- What's this documentation for? If it's a solution doc, what's causing the issue? Why is it important to document? --!>
+<!-- What's this documentation for? If it's a solution doc, what's causing the issue? Why is it important to document? -->
 
 **The guts.** 
-<!-- Write the documentation here. Solutions, simple tricks, screenshots and other goodies belong in this section. --!>
+<!-- Write the documentation here. Solutions, simple tricks, screenshots and other goodies belong in this section. -->
 
 **Disclaimers.** 
-<!-- If you're posting a solution this risky, post a disclaimer saying it is! --!>
+<!-- If you're posting a solution this risky, post a disclaimer saying it is! -->
