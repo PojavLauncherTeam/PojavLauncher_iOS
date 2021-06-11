@@ -4,7 +4,7 @@ on:
   [push, workflow_dispatch]
 
 jobs:
-  build:
+  setup:
     runs-on: macOS-latest
     steps:
       - uses: maxim-lobanov/setup-xcode@v1
@@ -15,17 +15,32 @@ jobs:
 
       - name: Setup Dependencies
         run: brew install ldid dpkg fakeroot
-
-      - name: Native build
-        run: bash scripts/build_natives.sh
-
-      - name: Java app Build
-        run: bash scripts/build_javaapp.sh
-          
-      - name: Sign and Package deb
-        run: bash scripts/build_package.sh
-          
-      - name: Upload IPA
+  native:
+    needs: setup
+    runs-on: macOS-latest
+    steps:
+      - name: Build the native application
+        run: make native
+  javaapp:
+    needs: setup
+    runs-on: macOS-latest
+    steps:
+      - name: Build the Java application
+        run: make java
+  extras:
+    needs: setup
+    runs-on: macOS-latest
+    steps:
+      - name: Build the extra stuff
+        run: make extras
+  package:
+    needs: [native, javaapp, extras]
+    runs-on: macOS-latest
+    steps:
+      - name: Package everything up
+        run: make package
+        
+      - name: Upload build artifact
         uses: actions/upload-artifact@v2
         with:
           name: PojavLauncher deb
