@@ -7,10 +7,11 @@
 
 @interface AboutLauncherViewController () {
 }
-
+@property (nonatomic, strong) UIActivityViewController *activityViewController;
 @end
 
 @implementation AboutLauncherViewController
+@synthesize activityViewController;
 
 - (void)viewDidLoad
 {
@@ -71,6 +72,13 @@
     [logoNoteView sizeToFit];
     [self.view addSubview:logoNoteView];
 
+    UIButton *logSendButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [logSendButton setTitle:@"Send your logs" forState:UIControlStateNormal];
+    logSendButton.frame = CGRectMake(10, logoNoteView.frame.origin.y + logoNoteView.frame.size.height + 10, 100.0, 50.0);
+    logSendButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [logSendButton addTarget:self action:@selector(latestLogShare) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:logSendButton];
+
     UILabel *latestVerView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 4.0, width, 30.0)];
     latestVerView.text = @"1.3";
     latestVerView.lineBreakMode = NSLineBreakByWordWrapping;
@@ -130,6 +138,13 @@
 
     scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, scrollView.frame.size.height + 800);
 
+}
+
+-(void)latestLogShare
+{
+    activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[@"latestlog.txt", [NSURL URLWithString:@"file:///var/mobile/Documents/.pojavlauncher/latestlog.txt"]] applicationActivities:nil];
+
+    [self presentViewController:activityViewController animated:YES completion:nil];
 }
 
 -(void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
