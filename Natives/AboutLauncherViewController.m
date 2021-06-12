@@ -74,7 +74,7 @@
 
     UIButton *logSendButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [logSendButton setTitle:@"Send your logs" forState:UIControlStateNormal];
-    logSendButton.frame = CGRectMake(10, logoNoteView.frame.origin.y + logoNoteView.frame.size.height + 10, 100.0, 50.0);
+    logSendButton.frame = CGRectMake(20, logoNoteView.frame.origin.y + logoNoteView.frame.size.height + 5, 100.0, 50.0);
     logSendButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [logSendButton addTarget:self action:@selector(latestLogShare) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:logSendButton];
