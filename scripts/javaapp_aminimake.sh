@@ -5,6 +5,9 @@
 /bin/bash <<'EOF'
 
 set -e
+
+cd JavaApp
+
 shopt -s globstar
 
 mkdir -p local_out/classes
