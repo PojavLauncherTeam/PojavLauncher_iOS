@@ -5,6 +5,8 @@
 #!/bin/bash
 set -e
 
+cd Natives
+
 CFLAGS="-Wl,-rpath,/Applications/PojavLauncher.app/Frameworks -fobjc-arc -x objective-c -Fresources/Frameworks -Iresources/Frameworks/MetalANGLE.framework/Headers -isysroot /var/mobile/theos/sdks/iPhoneOS13.4.sdk"
 
 clang -framework UIKit $CFLAGS -o PojavLauncher main.c log.m JavaLauncher.c

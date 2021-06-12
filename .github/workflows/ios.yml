@@ -5,30 +5,36 @@ on:
 
 jobs:
   build:
+    name: The guts
     runs-on: macOS-latest
     steps:
-      - uses: maxim-lobanov/setup-xcode@v1
+      - name: Set up build environment
+        uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: '12.4.0'
-
-      - uses: actions/checkout@v2
-
-      - name: Setup Dependencies
+          
+      - name: Set up build environment pt. II
+        uses: actions/checkout@v2
+      
+      - name: Set up build environment pt. III
         run: brew install ldid dpkg fakeroot
+        
+      - name: Build the native application
+        run: make native
 
-      - name: Native build
-        run: bash scripts/build_natives.sh
+      - name: Build the Java application
+        run: make java
 
-      - name: Java app Build
-        run: bash scripts/build_javaapp.sh
-          
-      - name: Sign and Package deb
-        run: bash scripts/build_package.sh
-          
-      - name: Upload IPA
+      - name: Build the assets and Storyboards
+        run: make extras
+
+      - name: Build the Debian package
+        run: make package
+        
+      - name: Upload build artifact
         uses: actions/upload-artifact@v2
         with:
-          name: PojavLauncher deb
+          name: pojavlauncher_iphoneos-arm.deb
           path: packages/pojavlauncher_iphoneos-arm.deb
 
 
