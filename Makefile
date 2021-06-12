@@ -137,8 +137,11 @@ install:
 			echo 'If you specified a different port for your device to listen for SSH connections, you need to run '\''export DEVICE_PORT=<your port>'\'' as well.'; \
 		fi; \
 	elif [ '$(IOS)' = '1' ]; then \
+		sudo apt remove pojavlauncher -y; \
+		sudo apt remove pojavlauncher-dev -y; \
 		sudo mv packages/pojavlauncher_iphoneos-arm.deb /var/tmp/pojavlauncher_iphoneos-arm.deb; \
 		sudo dpkg -i /var/tmp/pojavlauncher_iphoneos-arm.deb; \
+		uicache -p /Applications/PojavLauncher.app; \
 	fi
 
 clean:
