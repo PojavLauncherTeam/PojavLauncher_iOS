@@ -72,9 +72,7 @@
     [logoNoteView sizeToFit];
     [self.view addSubview:logoNoteView];
 
-    UIButton *logSendButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [logSendButton setTitle:@"Send your logs" forState:UIControlStateNormal];
-    logSendButton.frame = CGRectMake(20, logoNoteView.frame.origin.y + logoNoteView.frame.size.height + 5, 100.0, 50.0);
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Send your logs" style:UIBarButtonItemStyleDone target:self action:@selector(latestLogShare)];
     logSendButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [logSendButton addTarget:self action:@selector(latestLogShare) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:logSendButton];
