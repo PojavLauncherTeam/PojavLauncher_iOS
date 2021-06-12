@@ -73,9 +73,6 @@
     [self.view addSubview:logoNoteView];
 
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Send your logs" style:UIBarButtonItemStyleDone target:self action:@selector(latestLogShare)];
-    logSendButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    [logSendButton addTarget:self action:@selector(latestLogShare) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:logSendButton];
 
     UILabel *latestVerView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 4.0, width, 30.0)];
     latestVerView.text = @"1.3";
