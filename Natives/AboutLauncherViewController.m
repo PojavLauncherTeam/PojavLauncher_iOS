@@ -43,20 +43,6 @@
                           encoding:NSUTF8StringEncoding];
     NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
 
-    UIImageView *logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LaunchScreen"]];
-    logoView.frame = CGRectMake(20, 0, (width / 2) / 4, rawHeight / 2);
-    [logoView setContentMode:UIViewContentModeScaleAspectFit];
-    [self.view addSubview:logoView];
-
-    UILabel *logoWaterView = [[UILabel alloc] initWithFrame:CGRectMake(logoView.frame.size.width + 30, 0, (width / 2) - (logoView.frame.size.width + 10), rawHeight / 2)];
-    logoWaterView.text = @"PojavLauncher";
-    logoWaterView.lineBreakMode = NSLineBreakByWordWrapping;
-    logoWaterView.adjustsFontSizeToFitWidth = YES;
-    logoWaterView.numberOfLines = 1;
-    logoWaterView.minimumScaleFactor = 20./logoWaterView.font.pointSize;
-    [self.view addSubview:logoWaterView];
-    [logoWaterView setFont:[UIFont boldSystemFontOfSize:(logoView.frame.size.width / 2.75)]];
-
     UILabel *logoVerView = [[UILabel alloc] initWithFrame:CGRectMake(20, height, (width / 2), 20)];
     logoVerView.text = [NSString stringWithFormat:@"version 1.3 (development) on %@ with iOS %@", deviceModel, currSysVer];
     logoVerView.lineBreakMode = NSLineBreakByWordWrapping;
@@ -65,12 +51,25 @@
     [self.view addSubview:logoVerView];
     [logoVerView setFont:[UIFont boldSystemFontOfSize:10]];
 
-    UILabel *logoNoteView = [[UILabel alloc] initWithFrame:CGRectMake(20, (logoWaterView.frame.size.height / 2) + 60, (width / 2) - 20, 20)];
-    logoNoteView.text = @"Created by PojavLauncherTeam in 2021.\n\nWe do not exist on TikTok. No one from the dev team makes TikTok videos.";
+    UILabel *logoNoteView = [[UILabel alloc] initWithFrame:CGRectMake(20.0, self.navigationController.navigationBar.frame.size.height + 5, (width / 2) - 20, 20)];
+    logoNoteView.text = @"Created by PojavLauncherTeam in 2021.\n\nWe do not exist on TikTok. No one from the dev team makes TikTok videos.\n\n";
     logoNoteView.lineBreakMode = NSLineBreakByWordWrapping;
     logoNoteView.numberOfLines = 0;
     [logoNoteView sizeToFit];
     [self.view addSubview:logoNoteView];
+
+    UILabel *discordText = [[UILabel alloc] initWithFrame:CGRectMake(20.0, logoNoteView.frame.size.height + 15, (width / 2), 30.0)];
+    discordText.text = @"Discord: ";
+    discordText.numberOfLines = 0;
+    [discordText sizeToFit];
+    [self.view addSubview:discordText];
+
+    UITextView *discordLink = [[UITextView alloc] initWithFrame:CGRectMake(discordText.frame.size.width + 13, logoNoteView.frame.size.height + 7, (width / 2), 30.0)];
+    discordLink.text = @"https://discord.gg/6RpEJda";
+    discordLink.editable = NO;
+    discordLink.dataDetectorTypes = UIDataDetectorTypeAll;
+    [self.view addSubview:discordLink];
+    [discordLink setFont:[UIFont systemFontOfSize:17]];
 
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Send your logs" style:UIBarButtonItemStyleDone target:self action:@selector(latestLogShare)];
 
