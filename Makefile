@@ -116,7 +116,7 @@ package:
 		cp -R Natives/build/Release-iphoneos/PojavLauncher.app packages/pojavlauncher_iphoneos-arm/Applications; \
 		cp -R DEBIAN packages/pojavlauncher_iphoneos-arm/DEBIAN; \
 		ldid -Sentitlements.xml packages/pojavlauncher_iphoneos-arm/Applications/PojavLauncher.app || exit 1; \
-		fakeroot dpkg-deb -b packages/pojavlauncher_iphoneos-arm || exit 1; \
+		fakeroot dpkg-deb -b packages/pojavlauncher_iphoneos-arm &> /dev/null || exit 1; \
 	fi
 	@echo 'Finished build task - Packaging'
 
@@ -139,7 +139,7 @@ install:
 	elif [ '$(IOS)' = '1' ]; then \
 		sudo apt remove pojavlauncher -y; \
 		sudo apt remove pojavlauncher-dev -y; \
-		sudo mv packages/pojavlauncher_iphoneos-arm.deb /var/tmp/pojavlauncher_iphoneos-arm.deb; \
+		sudo cp packages/pojavlauncher_iphoneos-arm.deb /var/tmp/pojavlauncher_iphoneos-arm.deb; \
 		sudo dpkg -i /var/tmp/pojavlauncher_iphoneos-arm.deb; \
 		uicache -p /Applications/PojavLauncher.app; \
 	fi

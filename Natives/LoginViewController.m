@@ -7,6 +7,7 @@
 #import "LauncherViewController.h"
 #import "LoginViewController.h"
 #import "AboutLauncherViewController.h"
+#import "LauncherFAQViewController.h"
 
 #include "ios_uikit_bridge.h"
 #include "utils.h"
@@ -75,6 +76,10 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     }
 
     CGFloat widthSplit = width / 4.0;
+
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"About" style:UIBarButtonItemStyleDone target:self action:@selector(aboutLauncher)];
+
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"FAQ" style:UIBarButtonItemStyleDone target:self action:@selector(showFAQ)];
     
     UIButton *button_login_mojang = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [button_login_mojang setTitle:@"Mojang login" forState:UIControlStateNormal];
@@ -111,15 +116,6 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     [button_login_account setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button_login_account addTarget:self action:@selector(loginAccount) forControlEvents:UIControlEventTouchUpInside];
     [scrollView addSubview:button_login_account];
-
-    UIButton *button_about_launcher = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [button_about_launcher setTitle:@"About the Launcher" forState:UIControlStateNormal];
-    button_about_launcher.frame = CGRectMake((width / 2) - 100.0, height - 75.0, 200.0, 50.0);
-//     button_about_launcher.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
-//     button_about_launcher.layer.cornerRadius = 5;
-//     [button_about_launcher setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [button_about_launcher addTarget:self action:@selector(aboutLauncher) forControlEvents:UIControlEventTouchUpInside];
-    [scrollView addSubview:button_about_launcher];
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
@@ -290,6 +286,12 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 - (void)aboutLauncher
 {
     AboutLauncherViewController *vc = [[AboutLauncherViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)showFAQ
+{
+    LauncherFAQViewController *vc = [[LauncherFAQViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
