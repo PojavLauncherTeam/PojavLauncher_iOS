@@ -18,7 +18,7 @@ all: clean native java extras package install
 
 native:
 	@echo 'Starting build task - native application'
-	@if [ '$(IOS)' != '1' ]; then \
+	@if [ '$(IOS)' = '0' ]; then \
 		cd Natives; \
 		mkdir -p build; \
 		cd build; \
@@ -56,7 +56,7 @@ native:
 
 java:
 	@echo 'Starting build task - java application'
-	@if [ '$(IOS)' != '1' ]; then \
+	@if [ '$(IOS)' = '0' ]; then \
 		cd JavaApp; \
 		chmod +x gradlew; \
 		./gradlew clean build || exit 1; \
@@ -73,7 +73,7 @@ java:
 
 extras:
 	@echo 'Starting build task - extraneous files'
-	@if [ '$(IOS)' != '1' ]; then \
+	@if [ '$(IOS)' = '0' ]; then \
 		mkdir -p Natives/build/Release-iphoneos/PojavLauncher.app/Base.lproj; \
 		xcrun actool Natives/Assets.xcassets --compile Natives/resources --platform iphoneos --minimum-deployment-target 12.0 --app-icon AppIcon --output-partial-info-plist /dev/null || exit 1; \
 		ibtool --compile Natives/build/Release-iphoneos/PojavLauncher.app/Base.lproj/MinecraftSurface.storyboardc Natives/en.lproj/MinecraftSurface.storyboard || exit 1; \
@@ -85,7 +85,7 @@ extras:
 
 package:
 	@echo 'Starting build task - package for external devices'
-	@if [ '$(IOS)' != '1' ]; then \
+	@if [ '$(IOS)' = '0' ]; then \
 		cp -R Natives/resources/* Natives/build/Release-iphoneos/PojavLauncher.app/ || exit 1; \
 		cp Natives/build/Release-iphoneos/libpojavexec.dylib Natives/build/Release-iphoneos/PojavLauncher.app/Frameworks/ || exit 1; \
 		mkdir Natives/build/Release-iphoneos/PojavLauncher.app/libs; \
@@ -123,7 +123,7 @@ package:
 install:
 	@echo 'Starting build task - installing to local device'
 	@echo 'Please note that this may not work properly. If it doesn'\''t work for you, you can manually extract the .deb in /var/tmp/pojavlauncher_iphoneos-arm.deb with dpkg or Filza.'
-	@if [ '$(IOS)' != '1' ]; then \
+	@if [ '$(IOS)' = '0' ]; then \
 		if [ '$(DEVICE_IP)' != '' ]; then \
 			if [ '$(DEVICE_PORT)' != '' ]; then \
 				scp -P $(DEVICE_PORT) packages/pojavlauncher_iphoneos-arm.deb root@$(DEVICE_IP):/var/tmp/pojavlauncher_iphoneos-arm.deb; \
@@ -146,7 +146,7 @@ install:
 
 deploy:
 	@echo 'Starting build task - deploy to local device'
-	@if [ '$(IOS)' != '1' ]; then \
+	@if [ '$(IOS)' = '0' ]; then \
 		if [ '$(DEVICE_IP)' != '' ]; then \
 			if [ '$(DEVICE_PORT)' != '' ]; then \
 				scp -P $(DEVICE_PORT) Natives/libpojavexec.dylib root@$(DEVICE_IP):/Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib || exit 1; \
