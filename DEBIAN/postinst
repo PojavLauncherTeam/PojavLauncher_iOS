@@ -1,8 +1,8 @@
-#! /bin/bash
+#!/bin/bash
 
 set -e
 
-chown -R mobile:mobile /var/mobile/Documents/{.pojavlauncher,minecraft}
+chown -R 1000:1000 /var/mobile/Documents/{.pojavlauncher,minecraft}
 chmod -R 755 /var/mobile/Documents/{.pojavlauncher,minecraft}
 
 echo " "
