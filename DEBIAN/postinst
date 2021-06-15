@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 
 set -e
 
-chown -R 1000:1000 /var/mobile/Documents/.pojavlauncher
-chown -R 1000:1000 /var/mobile/Documents/minecraft
+chown -R 501:501 /var/mobile/Documents/.pojavlauncher
+chown -R 501:501 /var/mobile/Documents/minecraft
 chmod -R 0755 /var/mobile/Documents/.pojavlauncher
 chmod -R 0755 /var/mobile/Documents/minecraft
 
