@@ -55,7 +55,7 @@ native:
 	@echo 'Finished build task - native application'
 
 java:
-	@echo 'Starting build task - Java application'
+	@echo 'Starting build task - java application'
 	@if [ '$(IOS)' != '1' ]; then \
 		cd JavaApp; \
 		chmod +x gradlew; \
@@ -69,10 +69,10 @@ java:
 		cd local_out/classes; \
 		/usr/lib/jvm/java-16-openjdk/bin/jar -c -f ../launcher.jar * || exit 1; \
 	fi
-	@echo 'Finished build task - JavaApp'
+	@echo 'Finished build task - java application'
 
 extras:
-	@echo 'Starting build task - Extras'
+	@echo 'Starting build task - extraneous files'
 	@if [ '$(IOS)' != '1' ]; then \
 		mkdir -p Natives/build/Release-iphoneos/PojavLauncher.app/Base.lproj; \
 		xcrun actool Natives/Assets.xcassets --compile Natives/resources --platform iphoneos --minimum-deployment-target 12.0 --app-icon AppIcon --output-partial-info-plist /dev/null || exit 1; \
@@ -81,10 +81,10 @@ extras:
 	elif [ '$(IOS)' = '1' ]; then \
 		echo 'Due to the required tools not being available, you cannot compile the extras for PojavLauncher with an iOS device.'; \
 	fi
-	@echo 'Finished build task - Extras'
+	@echo 'Finished build task - extraneous files'
 
 package:
-	@echo 'Starting build task - Packaging'
+	@echo 'Starting build task - package for external devices'
 	@if [ '$(IOS)' != '1' ]; then \
 		cp -R Natives/resources/* Natives/build/Release-iphoneos/PojavLauncher.app/ || exit 1; \
 		cp Natives/build/Release-iphoneos/libpojavexec.dylib Natives/build/Release-iphoneos/PojavLauncher.app/Frameworks/ || exit 1; \
@@ -118,10 +118,10 @@ package:
 		ldid -Sentitlements.xml packages/pojavlauncher_iphoneos-arm/Applications/PojavLauncher.app || exit 1; \
 		fakeroot dpkg-deb -b packages/pojavlauncher_iphoneos-arm &> /dev/null || exit 1; \
 	fi
-	@echo 'Finished build task - Packaging'
+	@echo 'Finished build task - package for external devices'
 
 install:
-	@echo 'Starting build task - Installation'
+	@echo 'Starting build task - installing to local device'
 	@echo 'Please note that this may not work properly. If it doesn'\''t work for you, you can manually extract the .deb in /var/tmp/pojavlauncher_iphoneos-arm.deb with dpkg or Filza.'
 	@if [ '$(IOS)' != '1' ]; then \
 		if [ '$(DEVICE_IP)' != '' ]; then \
@@ -144,12 +144,34 @@ install:
 		uicache -p /Applications/PojavLauncher.app; \
 	fi
 
+deploy:
+	@echo 'Starting build task - deploy to local device'
+	@if [ '$(IOS)' != '1' ]; then \
+		if [ '$(DEVICE_IP)' != '' ]; then \
+			if [ '$(DEVICE_PORT)' != '' ]; then \
+				scp -P $(DEVICE_PORT) Natives/libpojavexec.dylib root@$(DEVICE_IP):/Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib || exit 1; \
+				ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t "killall PojavLauncher"; \
+			else \
+				scp Natives/libpojavexec.dylib root@$(DEVICE_IP):/Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib || exit 1; \
+				ssh root@$(DEVICE_IP) -t "killall PojavLauncher"; \
+			fi; \
+		else \
+			echo 'You need to run '\''export DEVICE_IP=<your iOS device IP>'\'' to use make deploy.'; \
+			echo 'If you specified a different port for your device to listen for SSH connections, you need to run '\''export DEVICE_PORT=<your port>'\'' as well.'; \
+		fi; \
+	elif [ '$(IOS)' = '1' ]; then \
+		sudo cp Natives/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher; \
+		sudo cp Natives/libpojavexec.dylib /Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib; \
+		sudo killall PojavLauncher; \
+	fi
+	@echo 'Finished build task - deploy to local device'
+		
 clean:
-	@echo 'Starting build task - Cleaning'
+	@echo 'Starting build task - cleaning build workspace'
 	@rm -rf Natives/build
 	@rm -rf JavaApp/build
 	@rm -rf packages
-	@echo 'Finished build task - Cleaning'
+	@echo 'Finished build task - cleaned build workspace'
 
 help:
 	@echo 'Makefile to compile PojavLauncher                                                     '
@@ -160,6 +182,7 @@ help:
 	@echo '    make native                         Builds the native app                         '
 	@echo '    make java                           Builds the Java app                           '
 	@echo '    make package                        Builds deb of PojavLauncher                   '
-	@echo '    make copy                           Copy package to local iDevice                 '
+	@echo '    make install                        Copy package to local iDevice                 '
+	@echo '    make deploy                         Copy package to local iDevice                 '
 	@echo '    make clean                          Cleans build directories                      '
 
