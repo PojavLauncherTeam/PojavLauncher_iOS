@@ -3,7 +3,7 @@
 
 #include "utils.h"
 
-@interface LauncherViewController () {
+@interface LauncherViewController () <UIPickerViewDataSource, UIPickerViewDelegate> {
 }
 
 // - (void)method
@@ -12,6 +12,8 @@
 
 @implementation LauncherViewController
 
+NSMutableArray* versionList;
+UIPickerView* versionPickerView;
 UITextField* versionTextField;
 
 - (void)viewDidLoad
@@ -47,18 +49,32 @@ UITextField* versionTextField;
         NSLog(@"Error: could not read config_ver.txt");
     }
 
-    UILabel *versionTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 4.0, 0.0, 30.0)];
+
+    UILabel *versionTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 4.0, 0.0, 0.0)];
     versionTextView.text = @"Minecraft version: ";
     versionTextView.numberOfLines = 0;
     [versionTextView sizeToFit];
     [scrollView addSubview:versionTextView];
+
+    [self fetchVersionList];
+    versionPickerView = [[UIPickerView alloc] init];
+    versionPickerView.delegate = self;
+    versionPickerView.dataSource = self;
+    UIToolbar *versionPickToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
+    UIBarButtonItem *versionFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    UIBarButtonItem *versionDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(versionClosePicker)];
+    versionPickToolbar.items = @[versionFlexibleSpace, versionDoneButton];
     
     versionTextField = [[UITextField alloc] initWithFrame:CGRectMake(versionTextView.bounds.size.width + 4.0, 4.0, width - versionTextView.bounds.size.width - 8.0, versionTextView.bounds.size.height)];
     [versionTextField addTarget:versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     versionTextField.placeholder = @"Specify version...";
     versionTextField.text = [NSString stringWithUTF8String:configver];
+    versionTextField.inputAccessoryView = versionPickToolbar;
+    versionTextField.inputView = versionPickerView;
+
     fclose(configver_file);
     [scrollView addSubview:versionTextField];
+
 
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleDone target:self action:@selector(enterPreferences)];
    
@@ -75,6 +91,104 @@ UITextField* versionTextField;
     [scrollView addSubview:install_progress_text];
 }
 
+- (void)fetchVersionList
+{
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSMutableURLRequest *request = 
+      [[NSMutableURLRequest alloc] initWithURL:[NSURL
+      URLWithString:@"https://launchermeta.mojang.com/mc/game/version_manifest.json"]];
+    [request setHTTPMethod:@"GET"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+
+    NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
+        long statusCode = (long)[httpResponse statusCode];
+
+        NSString *dataStr = [NSString stringWithUTF8String:[data bytes]];
+        NSError *jsonError = nil;
+        NSDictionary *jsonArray = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+
+        if (jsonError != nil) {
+            NSLog(@"Warning: Error parsing version list JSON: %@", jsonError);
+        } else if (statusCode == 200) {
+            NSArray *remoteVersionList = [jsonArray valueForKey:@"versions"];
+            assert(remoteVersionList != nil);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSFileManager *fileManager = [NSFileManager defaultManager];
+                NSString *versionPath = @"/var/mobile/Documents/minecraft/versions/";
+                NSArray *localVersionList = [fileManager contentsOfDirectoryAtPath:versionPath error:Nil];
+
+                versionList = [[NSMutableArray alloc] init];
+                int i = 0;
+                for (NSDictionary *versionInfo in remoteVersionList) {
+                    NSString *versionId = [versionInfo valueForKey:@"id"];
+                    [versionList addObject:versionId];
+                    if ([versionTextField.text isEqualToString:versionId]) {
+                        [versionPickerView selectRow:i inComponent:0 animated:NO];
+                    }
+                    i++;
+                }
+
+                for (NSString *versionId in localVersionList) {
+                    NSString *localPath = [versionPath stringByAppendingString:versionId];
+                    BOOL isDir;
+                    [fileManager fileExistsAtPath:localPath isDirectory:&isDir];
+                    if (isDir && ! [versionList containsObject:versionId]) {
+                        [versionList addObject:versionId];
+
+                        if ([versionTextField.text isEqualToString:versionId]) {
+                            [versionPickerView selectRow:i inComponent:0 animated:NO];
+                        }
+                    }
+
+                    i++;
+                }
+                
+                [versionPickerView reloadAllComponents];
+            });
+        } else {
+            NSString *err_title = [jsonArray valueForKey:@"error"];
+            NSString *err_msg = [jsonArray valueForKey:@"errorMessage"];
+            NSLog(@"Warning: failed to fetch version list: %@: %@", err_title, err_msg);
+        }
+    }];
+    [postDataTask resume];
+}
+
+#pragma mark - Button click events
+- (void)enterPreferences {
+    LauncherPreferencesViewController *vc = [[LauncherPreferencesViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)launchMinecraft:(id)sender {
+    [(UIButton*) sender setEnabled:NO];
+    callback_LauncherViewController_installMinecraft();
+}
+
+#pragma mark - UIPickerView stuff
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    versionTextField.text = [versionList objectAtIndex:row];
+    [versionTextField.text writeToFile:@"/var/mobile/Documents/minecraft/config_ver.txt" atomically:NO encoding:NSUTF8StringEncoding error:nil];
+}
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)thePickerView {
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    return versionList.count;
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    return [versionList objectAtIndex:row];
+}
+
+- (void)versionClosePicker {
+    [versionTextField endEditing:YES];
+}
+
+#pragma mark - View controller UI mode
 - (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
     return UIRectEdgeBottom;
 }
@@ -83,7 +197,7 @@ UITextField* versionTextField;
     return NO;
 }
 
--(void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
     if(@available(iOS 13.0, *)) {
         if (UITraitCollection.currentTraitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
             self.view.backgroundColor = [UIColor blackColor];
@@ -91,20 +205,6 @@ UITextField* versionTextField;
             self.view.backgroundColor = [UIColor whiteColor];
         }
     }
-}
-
-- (void)launchMinecraft:(id)sender
-{
-    [(UIButton*) sender setEnabled:NO];
-
-    [versionTextField.text writeToFile:@"/var/mobile/Documents/minecraft/config_ver.txt" atomically:NO encoding:NSUTF8StringEncoding error:nil];
-    callback_LauncherViewController_installMinecraft();
-}
-
-- (void)enterPreferences
-{
-    LauncherPreferencesViewController *vc = [[LauncherPreferencesViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end
