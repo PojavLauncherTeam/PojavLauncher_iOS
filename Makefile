@@ -48,7 +48,7 @@ native:
 		  input_bridge_v3.c \
 		  utils.c \
 		  \
-		  -DGLES_TESTZ -DUSE_EGLZ  || exit 1; \
+		  -DGLES_TESTZ -DUSE_EGLZ || exit 1; \
 		ldid -S../entitlements.xml PojavLauncher || exit 1; \
 		ldid -S../entitlements.xml libpojavexec.dylib || exit 1; \
 	fi

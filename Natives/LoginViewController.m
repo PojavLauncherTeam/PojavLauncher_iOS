@@ -52,8 +52,6 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    [self setTitle:@"PojavLauncher"];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(msaLoginCallback:) name:@"MSALoginCallback" object:nil];
 
@@ -80,11 +78,11 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     CGFloat widthSplit2 = width / 2.0;
 
     UIImageView *logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LaunchScreen"]];
-    logoView.frame = CGRectMake(20, 0, (width / 2) / 4, rawHeight + 30);
+    logoView.frame = CGRectMake((width / 4) - 50, 0, (width / 2) / 4, rawHeight);
     [logoView setContentMode:UIViewContentModeScaleAspectFit];
     [self.view addSubview:logoView];
 
-    UILabel *logoWaterView = [[UILabel alloc] initWithFrame:CGRectMake(logoView.frame.size.width + 30, 0, width - ((width / 2) / 4), rawHeight + 30)];
+    UILabel *logoWaterView = [[UILabel alloc] initWithFrame:CGRectMake(logoView.frame.origin.x + logoView.frame.size.width + 30, 0, width - ((width / 2) / 4), rawHeight)];
     logoWaterView.text = @"PojavLauncher";
     logoWaterView.lineBreakMode = NSLineBreakByWordWrapping;
     logoWaterView.adjustsFontSizeToFitWidth = YES;
@@ -93,54 +91,34 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     [self.view addSubview:logoWaterView];
     [logoWaterView setFont:[UIFont boldSystemFontOfSize:(logoView.frame.size.width / 2.0)]];
 
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"About" style:UIBarButtonItemStyleDone target:self action:@selector(aboutLauncher)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"About" style:UIBarButtonItemStyleDone target:self action:@selector(aboutLauncher)];
 
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"FAQ" style:UIBarButtonItemStyleDone target:self action:@selector(showFAQ)];
+    UIButton *button_faq = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [button_faq setTitle:@"FAQ" forState:UIControlStateNormal];
+    button_faq.frame = CGRectMake(widthSplit2 - (((width - widthSplit * 2.0) / 2) / 2), (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
+    button_faq.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
+    button_faq.layer.cornerRadius = 5;
+    [button_faq setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [button_faq addTarget:self action:@selector(showFAQ) forControlEvents:UIControlEventTouchUpInside];
+    [scrollView addSubview:button_faq];
 
-    UIButton *button_login_offline = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [button_login_offline setTitle:@"Local" forState:UIControlStateNormal];
-    button_login_offline.frame = CGRectMake(((widthSplit2 + (width - widthSplit * 2.0) / 2.0) - (widthSplit / 2.0) + 40.0), (height - 50.0) / 2.0, (width - widthSplit * 1.75) / 2, 40.0);
-    button_login_offline.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
-    button_login_offline.layer.cornerRadius = 5;
-    [button_login_offline setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [button_login_offline addTarget:self action:@selector(loginOffline) forControlEvents:UIControlEventTouchUpInside];
-    [scrollView addSubview:button_login_offline];
+    UIButton *button_login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [button_login setTitle:@"Sign In" forState:UIControlStateNormal];
+    button_login.frame = CGRectMake(button_faq.frame.origin.x - button_faq.frame.size.width - 20, (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
+    button_login.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
+    button_login.layer.cornerRadius = 5;
+    [button_login setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [button_login addTarget:self action:@selector(accountType) forControlEvents:UIControlEventTouchUpInside];
+    [scrollView addSubview:button_login];
 
-    UIButton *button_login_microsoft = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [button_login_microsoft setTitle:@"Microsoft" forState:UIControlStateNormal];
-    button_login_microsoft.frame = CGRectMake(((widthSplit2 + (width - widthSplit * 2.0) / 2.0) - (widthSplit / 2.0) + 40.0), button_login_offline.frame.origin.y - 40.0 - 4.0, (width - widthSplit * 1.75) / 2, 40.0);
-    button_login_microsoft.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
-    button_login_microsoft.layer.cornerRadius = 5;
-    [button_login_microsoft setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [button_login_microsoft addTarget:self action:@selector(loginMicrosoft) forControlEvents:UIControlEventTouchUpInside];
-    [scrollView addSubview:button_login_microsoft];
-
-    UIButton *button_login_mojang = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [button_login_mojang setTitle:@"Mojang" forState:UIControlStateNormal];
-    button_login_mojang.frame = CGRectMake(((widthSplit2 + (width - widthSplit * 2.0) / 2.0) - (widthSplit / 2.0) + 40.0), button_login_microsoft.frame.origin.y - 40.0 - 4.0, (width - widthSplit * 1.75) / 2, 40.0);
-    button_login_mojang.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
-    button_login_mojang.layer.cornerRadius = 5;
-    [button_login_mojang setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [button_login_mojang addTarget:self action:@selector(loginMojang) forControlEvents:UIControlEventTouchUpInside];
-    [scrollView addSubview:button_login_mojang];
-
-    UIButton *button_login_demo = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [button_login_demo setTitle:@"Demo" forState:UIControlStateNormal];
-    button_login_demo.frame = CGRectMake(((widthSplit2 + (width - widthSplit * 2.0) / 2.0) - (widthSplit / 2.0) + 40.0), button_login_offline.frame.origin.y + 40.0 + 4.0, (width - widthSplit * 1.75) / 2, 40.0);
-    button_login_demo.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
-    button_login_demo.layer.cornerRadius = 5;
-    [button_login_demo setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [button_login_demo addTarget:self action:@selector(loginDemo) forControlEvents:UIControlEventTouchUpInside];
-    [scrollView addSubview:button_login_demo];
-  
-    UIButton *button_login_account = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [button_login_account setTitle:@"Accounts" forState:UIControlStateNormal];
-    button_login_account.frame = CGRectMake(((widthSplit2 + (width - widthSplit * 2.0) / 2.0) - (widthSplit / 2.0) + 40.0), button_login_demo.frame.origin.y + 40.0 + 4.0, (width - widthSplit * 1.75) / 2, 40.0);
-    button_login_account.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
-    button_login_account.layer.cornerRadius = 5;
-    [button_login_account setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [button_login_account addTarget:self action:@selector(loginAccount) forControlEvents:UIControlEventTouchUpInside];
-    [scrollView addSubview:button_login_account];
+    UIButton *button_accounts = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [button_accounts setTitle:@"Accounts" forState:UIControlStateNormal];
+    button_accounts.frame = CGRectMake(button_faq.frame.origin.x + button_faq.frame.size.width + 20, (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
+    button_accounts.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
+    button_accounts.layer.cornerRadius = 5;
+    [button_accounts setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [button_accounts addTarget:self action:@selector(loginAccount) forControlEvents:UIControlEventTouchUpInside];
+    [scrollView addSubview:button_accounts];
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
@@ -151,6 +129,21 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
             self.view.backgroundColor = [UIColor whiteColor];
         }
     }
+}
+
+- (void)accountType {
+   UIAlertController *fullAlert = [UIAlertController alertControllerWithTitle:@"Let's get you signed in." message:@"What account do you use to log into Minecraft?"preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *mojang = [UIAlertAction actionWithTitle:@"Mojang account" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginUsername:TYPE_MOJANG];}];
+    UIAlertAction *microsoft = [UIAlertAction actionWithTitle:@"Microsoft account" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginMicrosoft];}];
+    UIAlertAction *offline = [UIAlertAction actionWithTitle:@"Offline account"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginOffline];}];
+    UIAlertAction *demo = [UIAlertAction actionWithTitle:@"Demo account" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginDemo];}];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+    [self presentViewController:fullAlert animated:YES completion:nil];
+    [fullAlert addAction:microsoft];
+    [fullAlert addAction:mojang];
+    [fullAlert addAction:demo];
+    [fullAlert addAction:offline];
+    [fullAlert addAction:cancel];
 }
 
 - (void)loginUsername:(int)type {
@@ -244,15 +237,17 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 }
 
 - (void)loginOffline {
-    UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:@"Important note about this option" message:@"To prevent legal issues involving PojavLauncher and Mojang, we are beginning a transition from offline mode to \"local mode\". Please see our Discord for more information."preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:@"Offline mode is going places." message:@"To keep making PojavLauncher possible without the threat of any possible legal issues with Mojang, we're changing the way offline mode works. See our Discord for more information."preferredStyle:UIAlertControllerStyleActionSheet];
     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginUsername:TYPE_OFFLINE];}];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self accountType];}];
     [self presentViewController:offlineAlert animated:YES completion:nil];
     [offlineAlert addAction:ok];
+    [offlineAlert addAction:cancel];
 }
 
 - (void)loginDemo {
-    UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:@"This option is currently unavailable" message:@"It will be fully implemented in a future update." preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+    UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:@"This option is currently unavailable." message:@"It will be fully implemented in a future update." preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self accountType];}];
     [self presentViewController:offlineAlert animated:YES completion:nil];
     [offlineAlert addAction:ok];
 }
