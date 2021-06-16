@@ -419,7 +419,7 @@ NSMutableArray *accountList;
     [self dismissViewControllerAnimated:YES completion:nil];
 
     NSString *str = [accountList objectAtIndex:indexPath.row];
-    loginAccountInput(self.presentingViewController, TYPE_SELECTACC, [str UTF8String]);
+    loginAccountInput((UINavigationController *)self.presentingViewController, TYPE_SELECTACC, [str UTF8String]);
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
