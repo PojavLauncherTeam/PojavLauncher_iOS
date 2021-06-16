@@ -64,7 +64,7 @@
     [discordText sizeToFit];
     [self.view addSubview:discordText];
 
-    UITextView *discordLink = [[UITextView alloc] initWithFrame:CGRectMake(discordText.frame.size.width + 13, logoNoteView.frame.size.height + 7, (width / 2) - (discordText.frame.size.width + 13), 30.0)];
+    UITextView *discordLink = [[UITextView alloc] initWithFrame:CGRectMake(discordText.frame.size.width + 15, logoNoteView.frame.size.height + 7, (width / 2) - (discordText.frame.size.width + 15), 30.0)];
     discordLink.text = @"https://discord.gg/6RpEJda";
     discordLink.editable = NO;
     discordLink.dataDetectorTypes = UIDataDetectorTypeAll;

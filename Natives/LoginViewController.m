@@ -42,7 +42,8 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 }
 
 #pragma mark - LoginViewController
-@interface LoginViewController () <ASWebAuthenticationPresentationContextProviding, UIPopoverPresentationControllerDelegate>{
+@interface LoginViewController () <ASWebAuthenticationPresentationContextProviding>{
+// @interface LoginViewController () <ASWebAuthenticationPresentationContextProviding, UIPopoverPresentationControllerDelegate> {
 }
 @property (nonatomic, strong) ASWebAuthenticationSession *authVC;
 @end
@@ -117,7 +118,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     button_accounts.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
     button_accounts.layer.cornerRadius = 5;
     [button_accounts setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [button_accounts addTarget:self action:@selector(loginAccount:) forControlEvents:UIControlEventTouchUpInside];
+    [button_accounts addTarget:self action:@selector(loginAccount) forControlEvents:UIControlEventTouchUpInside]; // loginAccount: was the selector
     [scrollView addSubview:button_accounts];
 }
 
@@ -251,17 +252,20 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     [self presentViewController:offlineAlert animated:YES completion:nil];
     [offlineAlert addAction:ok];
 }
-
-- (void)loginAccount:(id)sender {
+// - (void)loginAccount:(id)sender
+- (void)loginAccount {
     LoginListViewController *vc = [[LoginListViewController alloc] init];
-    vc.modalPresentationStyle = UIModalPresentationPopover;
-    [self presentViewController:vc animated:YES completion:nil];
-    vc.preferredContentSize = CGSizeMake(320, 300);
-    UIPopoverPresentationController *popoverController = [vc popoverPresentationController];
-    popoverController.sourceView = (UIButton *)sender;
-    popoverController.sourceRect = ((UIButton *)sender).bounds; // CGRectMake(self.view.frame.size.width, self.view.frame.size.width, 1, 1);
-    popoverController.permittedArrowDirections = UIPopoverArrowDirectionAny;
-    popoverController.delegate = self;
+    [self.navigationController pushViewController:vc animated:YES];
+/*    vc.modalPresentationStyle = UIModalPresentationPopover;
+ *    [self presentViewController:vc animated:YES completion:nil];
+ *    vc.preferredContentSize = CGSizeMake(320, 300);
+ *    UIPopoverPresentationController *popoverController = [vc popoverPresentationController];
+ *    popoverController.sourceView = (UIButton *)sender;
+ *    popoverController.sourceRect = ((UIButton *)sender).bounds; 
+ *    CGRectMake(self.view.frame.size.width, self.view.frame.size.width, 1, 1);
+ * popoverController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+ *    popoverController.delegate = self;
+ */
 }
 
 - (void)loginMojangWithUsername:(NSString*)input_username password:(NSString*)input_password {
@@ -332,10 +336,11 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-#pragma mark - UIPopoverPresentationControllerDelegate
-- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller traitCollection:(UITraitCollection *)traitCollection {
-    return UIModalPresentationNone;
-}
+/* #pragma mark - UIPopoverPresentationControllerDelegate
+ * - (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller traitCollection:(UITraitCollection *)traitCollection {
+ *    return UIModalPresentationNone;
+ * }
+ */
 
 #pragma mark - ASWebAuthenticationPresentationContextProviding
 - (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session  API_AVAILABLE(ios(13.0)){
