@@ -42,7 +42,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 }
 
 #pragma mark - LoginViewController
-@interface LoginViewController () <ASWebAuthenticationPresentationContextProviding>{
+@interface LoginViewController () <ASWebAuthenticationPresentationContextProviding, UIPopoverPresentationControllerDelegate>{
 }
 @property (nonatomic, strong) ASWebAuthenticationSession *authVC;
 @end
@@ -117,7 +117,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     button_accounts.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
     button_accounts.layer.cornerRadius = 5;
     [button_accounts setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [button_accounts addTarget:self action:@selector(loginAccount) forControlEvents:UIControlEventTouchUpInside];
+    [button_accounts addTarget:self action:@selector(loginAccount:) forControlEvents:UIControlEventTouchUpInside];
     [scrollView addSubview:button_accounts];
 }
 
@@ -252,9 +252,16 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     [offlineAlert addAction:ok];
 }
 
-- (void)loginAccount {
+- (void)loginAccount:(id)sender {
     LoginListViewController *vc = [[LoginListViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    vc.modalPresentationStyle = UIModalPresentationPopover;
+    [self presentViewController:vc animated:YES completion:nil];
+    vc.preferredContentSize = CGSizeMake(320, 300);
+    UIPopoverPresentationController *popoverController = [vc popoverPresentationController];
+    popoverController.sourceView = (UIButton *)sender;
+    popoverController.sourceRect = ((UIButton *)sender).bounds; // CGRectMake(self.view.frame.size.width, self.view.frame.size.width, 1, 1);
+    popoverController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    popoverController.delegate = self;
 }
 
 - (void)loginMojangWithUsername:(NSString*)input_username password:(NSString*)input_password {
@@ -323,6 +330,11 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 {
     LauncherFAQViewController *vc = [[LauncherFAQViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark - UIPopoverPresentationControllerDelegate
+- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller traitCollection:(UITraitCollection *)traitCollection {
+    return UIModalPresentationNone;
 }
 
 #pragma mark - ASWebAuthenticationPresentationContextProviding
@@ -411,7 +423,7 @@ NSMutableArray *accountList;
         remove(accPath);
         [accountList removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }    
+    }
 }
 
 @end
