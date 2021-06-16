@@ -11,8 +11,8 @@ public class UIKit {
     
     private static int guiScale;
     
-    public static void callback_LauncherViewController_installMinecraft() {
-        PLaunchApp.installMinecraft();
+    public static void callback_LauncherViewController_installMinecraft(String versionPath) {
+        PLaunchApp.installMinecraft(versionPath);
     }
 
     public static void callback_SurfaceViewController_launchMinecraft(int width, int height) {

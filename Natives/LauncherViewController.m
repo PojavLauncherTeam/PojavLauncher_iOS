@@ -12,7 +12,7 @@
 
 @implementation LauncherViewController
 
-NSMutableArray* versionList;
+NSArray* versionList;
 UIPickerView* versionPickerView;
 UITextField* versionTextField;
 
@@ -93,6 +93,27 @@ UITextField* versionTextField;
     [scrollView addSubview:install_progress_text];
 }
 
+- (void)fetchLocalVersionList:(NSMutableArray *)finalVersionList withPreviousIndex:(int)index
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *versionPath = @"/var/mobile/Documents/minecraft/versions/";
+    NSArray *localVersionList = [fileManager contentsOfDirectoryAtPath:versionPath error:Nil];
+    for (NSString *versionId in localVersionList) {
+        NSString *localPath = [versionPath stringByAppendingString:versionId];
+        BOOL isDir;
+        [fileManager fileExistsAtPath:localPath isDirectory:&isDir];
+        if (isDir && ! [versionList containsObject:versionId]) {
+            [finalVersionList addObject:versionId];
+
+            if ([versionTextField.text isEqualToString:versionId]) {
+                [versionPickerView selectRow:index inComponent:0 animated:NO];
+            }
+        }
+
+        index++;
+    }
+}
+
 - (void)fetchVersionList
 {
     NSURLSession *session = [NSURLSession sharedSession];
@@ -116,35 +137,19 @@ UITextField* versionTextField;
             NSArray *remoteVersionList = [jsonArray valueForKey:@"versions"];
             assert(remoteVersionList != nil);
             dispatch_async(dispatch_get_main_queue(), ^{
-                NSFileManager *fileManager = [NSFileManager defaultManager];
-                NSString *versionPath = @"/var/mobile/Documents/minecraft/versions/";
-                NSArray *localVersionList = [fileManager contentsOfDirectoryAtPath:versionPath error:Nil];
-
-                versionList = [[NSMutableArray alloc] init];
+                NSMutableArray *finalVersionList = [[NSMutableArray alloc] init];
                 int i = 0;
                 for (NSDictionary *versionInfo in remoteVersionList) {
                     NSString *versionId = [versionInfo valueForKey:@"id"];
-                    [versionList addObject:versionId];
+                    [finalVersionList addObject:versionInfo];
                     if ([versionTextField.text isEqualToString:versionId]) {
                         [versionPickerView selectRow:i inComponent:0 animated:NO];
                     }
                     i++;
                 }
-
-                for (NSString *versionId in localVersionList) {
-                    NSString *localPath = [versionPath stringByAppendingString:versionId];
-                    BOOL isDir;
-                    [fileManager fileExistsAtPath:localPath isDirectory:&isDir];
-                    if (isDir && ! [versionList containsObject:versionId]) {
-                        [versionList addObject:versionId];
-
-                        if ([versionTextField.text isEqualToString:versionId]) {
-                            [versionPickerView selectRow:i inComponent:0 animated:NO];
-                        }
-                    }
-
-                    i++;
-                }
+                [self fetchLocalVersionList:finalVersionList withPreviousIndex:i];
+                
+                versionList = [finalVersionList copy];
                 
                 [versionPickerView reloadAllComponents];
             });
@@ -153,6 +158,14 @@ UITextField* versionTextField;
             NSString *err_msg = [jsonArray valueForKey:@"errorMessage"];
             NSLog(@"Warning: failed to fetch version list: %@: %@", err_title, err_msg);
         }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (versionList == nil) { // no internet connection
+                NSMutableArray *finalVersionList = [[NSMutableArray alloc] init];
+                [self fetchLocalVersionList:finalVersionList withPreviousIndex:0];
+                versionList = [finalVersionList copy];
+                [versionPickerView reloadAllComponents];
+            }
+        });
     }];
     [postDataTask resume];
 }
@@ -165,12 +178,21 @@ UITextField* versionTextField;
 
 - (void)launchMinecraft:(id)sender {
     [(UIButton*) sender setEnabled:NO];
-    callback_LauncherViewController_installMinecraft();
+    
+    NSObject *object = [versionList objectAtIndex:[versionPickerView selectedRowInComponent:0]];
+    NSString *result;
+    if ([object isKindOfClass:[NSString class]]) {
+        result = (NSString*) object;
+    } else {
+        result = [object valueForKey:@"url"];
+    }
+
+    callback_LauncherViewController_installMinecraft([result UTF8String]);
 }
 
 #pragma mark - UIPickerView stuff
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    versionTextField.text = [versionList objectAtIndex:row];
+    versionTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
     [versionTextField.text writeToFile:@"/var/mobile/Documents/minecraft/config_ver.txt" atomically:NO encoding:NSUTF8StringEncoding error:nil];
 }
 
@@ -183,7 +205,12 @@ UITextField* versionTextField;
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    return [versionList objectAtIndex:row];
+    NSObject *object = [versionList objectAtIndex:row];
+    if ([object isKindOfClass:[NSString class]]) {
+        return (NSString*) object;
+    } else {
+        return [object valueForKey:@"id"];
+    }
 }
 
 - (void)versionClosePicker {

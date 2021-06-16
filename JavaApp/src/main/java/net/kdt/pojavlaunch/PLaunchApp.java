@@ -14,7 +14,6 @@ import net.kdt.pojavlaunch.value.*;
 public class PLaunchApp {
     private static float currProgress, maxProgress;
 
-    public static JMinecraftVersionList mVersionList;
     public static volatile JMinecraftVersionList.Version mVersion;
     public static boolean mIsAssetsProcessing = false;
 
@@ -57,7 +56,7 @@ public class PLaunchApp {
         }
     }
 
-    public static void installMinecraft() {
+    public static void installMinecraft(final String versionPath) {
         new Thread(() -> {
 
             currProgress = 0;
@@ -95,19 +94,9 @@ public class PLaunchApp {
 
                 JAssets assets = null;
 
-                UIKit.updateProgressSafe(0, "Downloading version list");
-                try {
-                    mVersionList = Tools.GLOBAL_GSON.fromJson(DownloadUtils.downloadString("https://launchermeta.mojang.com/mc/game/version_manifest.json"), JMinecraftVersionList.class);
-                } catch (IOException e) {
-                    UIKit.updateProgressSafe(0, "Error: " + e.getMessage());
-                    e.printStackTrace();
-                }
-
-                verInfo = findVersion(mcver);
-                if (verInfo.url != null && !new File(verJsonDir).exists() && mVersionList != null) {
-                    // mVersionList != null is for checking if user have network connection
+                if (versionPath.startsWith("http") && !new File(verJsonDir).exists()) {
                     UIKit.updateProgressSafe(0, "Downloading " + mcver + ".json");
-                    Tools.downloadFile(verInfo.url, verJsonDir);
+                    Tools.downloadFile(versionPath, verJsonDir);
                 }
 
                 mVersion = verInfo = Tools.getVersionInfo(mcver);
@@ -186,7 +175,7 @@ public class PLaunchApp {
     public static void downloadAssets(final JAssets assets, String assetsVersion, final File outputDir) throws IOException {
         ArrayBlockingQueue<Runnable> workQueue = new ArrayBlockingQueue<>(100);
         RejectedExecutionHandler handler = new ThreadPoolExecutor.CallerRunsPolicy();
-        final ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(5, 40, 500, TimeUnit.SECONDS, workQueue, handler);
+        final ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(10, 50, 100, TimeUnit.SECONDS, workQueue, handler);
 
         File hasDownloadedFile = new File(outputDir, "downloaded/" + assetsVersion + ".downloaded");
         if (!hasDownloadedFile.exists()) {
@@ -214,6 +203,8 @@ public class PLaunchApp {
                 
                 });
             }
+            threadPoolExecutor.shutdown();
+            while (!threadPoolExecutor.isTerminated()) { }
             hasDownloadedFile.getParentFile().mkdirs();
             hasDownloadedFile.createNewFile();
             System.out.println("Assets end time: " + System.currentTimeMillis());
@@ -245,18 +236,5 @@ public class PLaunchApp {
         if (!outFile.exists()) {
             DownloadUtils.downloadFile(MINECRAFT_RES + assetPath, outFile);
         }
-    }
-
-    private static JMinecraftVersionList.Version findVersion(String version) {
-        if (mVersionList != null) {
-            for (JMinecraftVersionList.Version valueVer: mVersionList.versions) {
-                if (valueVer.id.equals(version)) {
-                    return valueVer;
-                }
-            }
-        }
-
-        // Custom version, inherits from base.
-        return Tools.getVersionInfo(version);
     }
 }

@@ -154,7 +154,7 @@ void closeGLFWWindow() {
     exit(-1);
 }
 
-void callback_LauncherViewController_installMinecraft() {
+void callback_LauncherViewController_installMinecraft(char* versionPath) {
     // Because UI init after JVM init, this should not be null
     assert(runtimeJNIEnvPtr_JRE != NULL);
     
@@ -162,12 +162,15 @@ void callback_LauncherViewController_installMinecraft() {
         uikitBridgeClass = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "net/kdt/pojavlaunch/uikit/UIKit");
         assert(uikitBridgeClass != NULL);
     }
-    
-    jmethodID method = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, uikitBridgeClass, "callback_LauncherViewController_installMinecraft", "()V");
+
+    jstring versionPathStr = (*runtimeJNIEnvPtr_JRE)->NewStringUTF(runtimeJNIEnvPtr_JRE, versionPath);
+
+    jmethodID method = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, uikitBridgeClass, "callback_LauncherViewController_installMinecraft", "(Ljava/lang/String;)V");
     assert(method != NULL);
     (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
         runtimeJNIEnvPtr_JRE,
-        uikitBridgeClass, method
+        uikitBridgeClass, method,
+        versionPathStr  
     );
 }
 

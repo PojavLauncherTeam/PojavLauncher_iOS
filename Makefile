@@ -160,6 +160,7 @@ deploy:
 			echo 'If you specified a different port for your device to listen for SSH connections, you need to run '\''export DEVICE_PORT=<your port>'\'' as well.'; \
 		fi; \
 	elif [ '$(IOS)' = '1' ]; then \
+	    sudo cp JavaApp/local_out/launcher.jar /Applications/PojavLauncher.app/libs/launcher.jar; \
 		sudo cp Natives/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher; \
 		sudo cp Natives/libpojavexec.dylib /Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib; \
 		sudo killall PojavLauncher; \
