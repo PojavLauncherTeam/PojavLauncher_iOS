@@ -65,10 +65,12 @@ UITextField* versionTextField;
     UIBarButtonItem *versionDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(versionClosePicker)];
     versionPickToolbar.items = @[versionFlexibleSpace, versionDoneButton];
     
-    versionTextField = [[UITextField alloc] initWithFrame:CGRectMake(versionTextView.bounds.size.width + 4.0, 4.0, width - versionTextView.bounds.size.width - 8.0, versionTextView.bounds.size.height)];
+    versionTextField = [[UITextField alloc] initWithFrame:CGRectMake(versionTextView.bounds.size.width + 4.0, 4.0, width - versionTextView.bounds.size.width - 8.0, height - 58.0)];
     [versionTextField addTarget:versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     versionTextField.placeholder = @"Specify version...";
     versionTextField.text = [NSString stringWithUTF8String:configver];
+    versionTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
+    versionTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     versionTextField.inputAccessoryView = versionPickToolbar;
     versionTextField.inputView = versionPickerView;
 
