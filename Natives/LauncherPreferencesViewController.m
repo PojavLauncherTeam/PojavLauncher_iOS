@@ -1,4 +1,5 @@
 #import "LauncherPreferencesViewController.h"
+#import "UpdateHistoryViewController.h"
 
 #include "utils.h"
 
@@ -39,6 +40,8 @@ UITextField* versionTextField;
         self.view.backgroundColor = [UIColor whiteColor];
     }
 
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Update History" style:UIBarButtonItemStyleDone target:self action:@selector(updateHistory)];
+
 // not yet finished, empty view controller for now
 /*
     UILabel *btnsizeTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 4.0, 0.0, 30.0)];
@@ -58,6 +61,11 @@ UITextField* versionTextField;
 */
 
     scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, scrollView.frame.size.height + 200);
+}
+
+- (void)updateHistory {
+    UpdateHistoryViewController *vc = [[UpdateHistoryViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {

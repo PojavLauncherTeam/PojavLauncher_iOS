@@ -41,6 +41,7 @@ native:
 		  SurfaceViewController.m \
 		  AboutLauncherViewController.m \
 		  LauncherFAQViewController.m \
+		  UpdateHistoryViewController.m \
 		  egl_bridge_ios.m \
 		  ios_uikit_bridge.m \
 		  customcontrols/ControlButton.m \
