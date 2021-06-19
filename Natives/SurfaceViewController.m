@@ -83,6 +83,7 @@ int notchOffset;
     savedHeight = roundf(height * screenScale);
 
     touchView = [[UIView alloc] initWithFrame:self.view.frame];
+    touchView. backgroundColor = [UIColor colorWithRed:0 green:0.5 blue:0 alpha:0.5];
 
     notchOffset = insets.left;
     width = width - notchOffset * 2;
