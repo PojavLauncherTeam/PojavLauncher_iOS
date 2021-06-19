@@ -257,14 +257,15 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     [offlineAlert addAction:ok];
 }
 
-- (void)loginAccount:(id)sender {
+- (void)loginAccount:(UIButton*)sender {
     LoginListViewController *vc = [[LoginListViewController alloc] init];
     vc.modalPresentationStyle = UIModalPresentationPopover;
     vc.preferredContentSize = CGSizeMake(350, 250);
     
     UIPopoverPresentationController *popoverController = [vc popoverPresentationController];
-    popoverController.sourceView = (UIButton *)sender;
-    popoverController.sourceRect = ((UIButton *)sender).bounds;popoverController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    popoverController.sourceView = sender;
+    popoverController.sourceRect = sender.bounds;
+    popoverController.permittedArrowDirections = UIPopoverArrowDirectionAny;
     popoverController.delegate = self;
     [self presentViewController:vc animated:YES completion:nil];
 }

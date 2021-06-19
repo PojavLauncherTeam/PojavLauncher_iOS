@@ -15,6 +15,7 @@
 NSArray* versionList;
 UIPickerView* versionPickerView;
 UITextField* versionTextField;
+int versionSelectedAt = 0;
 
 - (void)viewDidLoad
 {
@@ -49,12 +50,18 @@ UITextField* versionTextField;
         NSLog(@"Error: could not read config_ver.txt");
     }
 
-
     UILabel *versionTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 4.0, 0.0, 0.0)];
     versionTextView.text = @"Minecraft version: ";
     versionTextView.numberOfLines = 0;
     [versionTextView sizeToFit];
     [scrollView addSubview:versionTextView];
+
+    versionTextField = [[UITextField alloc] initWithFrame:CGRectMake(versionTextView.bounds.size.width + 4.0, 4.0, width - versionTextView.bounds.size.width - 8.0, height - 58.0)];
+    [versionTextField addTarget:versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
+    versionTextField.placeholder = @"Specify version...";
+    versionTextField.text = [NSString stringWithUTF8String:configver];
+    versionTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
+    versionTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 
     [self fetchVersionList];
     versionPickerView = [[UIPickerView alloc] init];
@@ -64,19 +71,12 @@ UITextField* versionTextField;
     UIBarButtonItem *versionFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     UIBarButtonItem *versionDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(versionClosePicker)];
     versionPickToolbar.items = @[versionFlexibleSpace, versionDoneButton];
-    
-    versionTextField = [[UITextField alloc] initWithFrame:CGRectMake(versionTextView.bounds.size.width + 4.0, 4.0, width - versionTextView.bounds.size.width - 8.0, height - 58.0)];
-    [versionTextField addTarget:versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
-    versionTextField.placeholder = @"Specify version...";
-    versionTextField.text = [NSString stringWithUTF8String:configver];
-    versionTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
-    versionTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+
     versionTextField.inputAccessoryView = versionPickToolbar;
     versionTextField.inputView = versionPickerView;
 
     fclose(configver_file);
     [scrollView addSubview:versionTextField];
-
 
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleDone target:self action:@selector(enterPreferences)];
    
@@ -102,15 +102,26 @@ UITextField* versionTextField;
         NSString *localPath = [versionPath stringByAppendingString:versionId];
         BOOL isDir;
         [fileManager fileExistsAtPath:localPath isDirectory:&isDir];
-        if (isDir && ! [versionList containsObject:versionId]) {
-            [finalVersionList addObject:versionId];
+        if (isDir) {
+            BOOL shouldAdd = YES;
+            for (NSObject *object in finalVersionList) {
+                if (![object isKindOfClass:[NSDictionary class]]) continue;
+                
+                NSDictionary *versionInfo = (NSDictionary *)object;
 
-            if ([versionTextField.text isEqualToString:versionId]) {
-                [versionPickerView selectRow:index inComponent:0 animated:NO];
+                NSString *prevVersionId = [versionInfo valueForKey:@"id"];
+                if ([versionId isEqualToString:prevVersionId]) {
+                    shouldAdd = NO;
+                }
+            }
+            if (shouldAdd && ![finalVersionList containsObject:versionId]) {
+                [finalVersionList addObject:versionId];
+                if ([versionTextField.text isEqualToString:versionId]) {
+                    versionSelectedAt = index;
+                }
+                index++;
             }
         }
-
-        index++;
     }
 }
 
@@ -120,10 +131,11 @@ UITextField* versionTextField;
     NSMutableURLRequest *request = 
       [[NSMutableURLRequest alloc] initWithURL:[NSURL
       URLWithString:@"https://launchermeta.mojang.com/mc/game/version_manifest.json"]];
+    [request setCachePolicy:NSURLRequestReloadRevalidatingCacheData];
     [request setHTTPMethod:@"GET"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
 
-    NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+    NSURLSessionDataTask *getDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
         long statusCode = (long)[httpResponse statusCode];
 
@@ -143,7 +155,7 @@ UITextField* versionTextField;
                     NSString *versionId = [versionInfo valueForKey:@"id"];
                     [finalVersionList addObject:versionInfo];
                     if ([versionTextField.text isEqualToString:versionId]) {
-                        [versionPickerView selectRow:i inComponent:0 animated:NO];
+                        versionSelectedAt = i;
                     }
                     i++;
                 }
@@ -152,6 +164,7 @@ UITextField* versionTextField;
                 versionList = [finalVersionList copy];
                 
                 [versionPickerView reloadAllComponents];
+                [versionPickerView selectRow:versionSelectedAt inComponent:0 animated:NO];
             });
         } else {
             NSString *err_title = [jsonArray valueForKey:@"error"];
@@ -164,10 +177,11 @@ UITextField* versionTextField;
                 [self fetchLocalVersionList:finalVersionList withPreviousIndex:0];
                 versionList = [finalVersionList copy];
                 [versionPickerView reloadAllComponents];
+                [versionPickerView selectRow:versionSelectedAt inComponent:0 animated:NO];
             }
         });
     }];
-    [postDataTask resume];
+    [getDataTask resume];
 }
 
 #pragma mark - Button click events

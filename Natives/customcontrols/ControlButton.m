@@ -69,7 +69,7 @@
     INSERT_VALUE("screen_height", ([NSString stringWithFormat:@"%d", screenHeight]));
     INSERT_VALUE("margin", ([NSString stringWithFormat:@"%f", 2.0 * screenScale])); // FIXME is this correct?
 
-    NSLog(@"Final math: %@", string);
+    // NSLog(@"Final math: %@", string);
 
     // Calculate, because the dynamic position contains some math equations
     NSExpression *expression = [NSExpression expressionWithFormat:string];
