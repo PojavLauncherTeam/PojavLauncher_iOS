@@ -58,14 +58,8 @@
     [logoNoteView sizeToFit];
     [self.view addSubview:logoNoteView];
 
-    UILabel *discordText = [[UILabel alloc] initWithFrame:CGRectMake(20.0, logoNoteView.frame.size.height + 15, (width / 2), 30.0)];
-    discordText.text = @"Discord: ";
-    discordText.numberOfLines = 0;
-    [discordText sizeToFit];
-    [self.view addSubview:discordText];
-
-    UITextView *discordLink = [[UITextView alloc] initWithFrame:CGRectMake(discordText.frame.size.width + 15, logoNoteView.frame.size.height + 7, (width / 2) - (discordText.frame.size.width + 15), 30.0)];
-    discordLink.text = @"https://discord.gg/6RpEJda";
+    UITextView *discordLink = [[UITextView alloc] initWithFrame:CGRectMake(15, logoNoteView.frame.size.height + 9, (width / 2) - 20, height - (logoNoteView.frame.size.height + 9))];
+    discordLink.text = @"Discord: https://discord.gg/pojavlauncher\nGitHub: https://bit.ly/2TIXhAA\nSubreddit: https://bit.ly/3wFsu6n";
     discordLink.editable = NO;
     discordLink.dataDetectorTypes = UIDataDetectorTypeAll;
     [self.view addSubview:discordLink];

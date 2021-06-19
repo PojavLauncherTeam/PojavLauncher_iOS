@@ -65,7 +65,7 @@ java:
 		cd JavaApp; \
 		shopt -s globstar; \
 		mkdir -p local_out/classes; \
-		/usr/lib/jvm/java-16-openjdk/bin/javac -cp "libs/*" -d local_out/classes src/main/java/**/*.java || exit 1; \
+		/usr/lib/jvm/java-16-openjdk/bin/javac -cp "libs/*" -d local_out/classes src/main/java/**/*.java &> /dev/null || exit 1; \
 		cd local_out/classes; \
 		/usr/lib/jvm/java-16-openjdk/bin/jar -c -f ../launcher.jar * || exit 1; \
 	fi
