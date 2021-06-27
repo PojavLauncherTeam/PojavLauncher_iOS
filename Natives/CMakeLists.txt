@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.6)
 project(PojavLauncher)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcommon -fobjc-arc -ObjC -Iresources/Frameworks/MetalANGLE.framework/Headers")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcommon -fobjc-arc -ObjC -I${CMAKE_CURRENT_LIST_DIR}/resources/Frameworks/MetalANGLE.framework/Headers")
 
 add_executable(PojavLauncher main.c log.m JavaLauncher.c)
 target_link_libraries(PojavLauncher
