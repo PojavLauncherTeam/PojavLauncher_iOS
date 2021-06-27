@@ -19,4 +19,5 @@ target_link_libraries(pojavexec
     "-framework MetalANGLE"
     "-framework CoreGraphics"
     "-framework AuthenticationServices"
+    "-Wl,-undefined -Wl,dynamic_lookup"
 )
