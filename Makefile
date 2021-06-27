@@ -4,7 +4,7 @@ SHELL := /bin/bash
 DETECT := $(shell clang -v 2>&1 | grep Target | cut -b 9-60)
 ifneq ($(filter arm64-apple-ios%,$(DETECT)),)
 	IOS     := 1
-	SDKPATH := /usr/share/iPhoneOS.sdk
+	SDKPATH := /usr/share/SDKs/iPhoneOS.sdk
 endif
 ifneq ($(filter arm64-apple-darwin%,$(DETECT)),)
 	IOS     := 0
