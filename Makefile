@@ -3,13 +3,16 @@ SHELL := /bin/bash
 
 DETECT := $(shell clang -v 2>&1 | grep Target | cut -b 9-60)
 ifneq ($(filter arm64-apple-ios%,$(DETECT)),)
-	IOS := 1
+	IOS     := 1
+	SDKPATH := /usr/share/iPhoneOS.sdk
 endif
 ifneq ($(filter arm64-apple-darwin%,$(DETECT)),)
-	IOS := 0
+	IOS     := 0
+	SDKPATH := $(shell xcrun --sdk iphoneos --show-sdk-path)
 endif
 ifneq ($(filter x86_64-apple-darwin%,$(DETECT)),)
-	IOS := 0
+	IOS     := 0
+	SDKPATH := $(shell xcrun --sdk iphoneos --show-sdk-path)
 endif
 
 . PHONY: all clean native java extras package install
@@ -18,41 +21,15 @@ all: clean native java extras package install
 
 native:
 	@echo 'Starting build task - native application'
-	@if [ '$(IOS)' = '0' ]; then \
-		cd Natives; \
-		mkdir -p build; \
-		cd build; \
-		wget https://github.com/leetal/ios-cmake/raw/master/ios.toolchain.cmake &> /dev/null; \
-		cmake .. -G Xcode -DCMAKE_TOOLCHAIN_FILE=ios.toolchain.cmake -DDEPLOYMENT_TARGET="12.0" -DENABLE_ARC=TRUE -DENABLE_VISIBILITY=FALSE -DPLATFORM=OS64 -DENABLE_BITCODE=FALSE -DENABLE_STRICT_TRY_COMPILE=FALSE -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED="NO" -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY=""; \
-		cmake --build . --config Release --target pojavexec PojavLauncher  || exit 1; \
-		cd ../..; \
-	elif [ '$(IOS)' = '1' ]; then \
-		cd Natives; \
-		clang -framework UIKit -Wl,-rpath,/Applications/PojavLauncher.app/Frameworks -fobjc-arc -x objective-c -Fresources/Frameworks -Iresources/Frameworks/MetalANGLE.framework/Headers -isysroot /usr/share/SDKs/iPhoneOS.sdk -o PojavLauncher main.c log.m JavaLauncher.c; \
-		clang -framework UIKit -framework MetalANGLE -framework CoreGraphics -framework AuthenticationServices \
-		  -dynamiclib -Wl,-rpath,/Applications/PojavLauncher.app/Frameworks -fobjc-arc -x objective-c -Fresources/Frameworks -Iresources/Frameworks/MetalANGLE.framework/Headers -isysroot /usr/share/SDKs/iPhoneOS.sdk -o libpojavexec.dylib \
-		  log.m \
-		  AppDelegate.m \
-		  SceneDelegate.m \
-		  UILauncher.m \
-		  LauncherViewController.m \
-		  LauncherPreferencesViewController.m \
-		  LoginViewController.m \
-		  SurfaceViewController.m \
-		  AboutLauncherViewController.m \
-		  LauncherFAQViewController.m \
-		  UpdateHistoryViewController.m \
-		  egl_bridge_ios.m \
-		  ios_uikit_bridge.m \
-		  customcontrols/ControlButton.m \
-		  egl_bridge.c \
-		  input_bridge_v3.c \
-		  utils.c \
-		  \
-		  -DGLES_TESTZ -DUSE_EGLZ || exit 1; \
-		ldid -S../entitlements.xml PojavLauncher || exit 1; \
-		ldid -S../entitlements.xml libpojavexec.dylib || exit 1; \
-	fi
+	mkdir -p Natives/build
+	cd Natives/build && cmake . \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_CROSSCOMPILING=true \
+		-DCMAKE_SYSTEM_NAME=Darwin \
+		-DCMAKE_SYSTEM_PROCESSOR=aarch64 \
+		-DCMAKE_C_FLAGS="-arch arm64 -isysroot $(SDKPATH)" \
+		..
+	cmake --build . --config Release --target pojavexec PojavLauncher || exit 1
 	@echo 'Finished build task - native application'
 
 java:
