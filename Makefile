@@ -29,7 +29,7 @@ native:
 		-DCMAKE_SYSTEM_PROCESSOR=aarch64 \
 		-DCMAKE_C_FLAGS="-arch arm64 -isysroot $(SDKPATH)" \
 		..
-	cmake --build . --config Release --target pojavexec PojavLauncher || exit 1
+	cd Natives/build && cmake --build . --config Release --target pojavexec PojavLauncher || exit 1
 	@echo 'Finished build task - native application'
 
 java:
