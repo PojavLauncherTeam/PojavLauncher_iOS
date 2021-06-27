@@ -14,7 +14,7 @@ set_target_properties(PojavLauncher PROPERTIES
 
 add_library(pojavexec SHARED log.m AppDelegate.m SceneDelegate.m UILauncher.m LauncherViewController.m LauncherPreferencesViewController.m LauncherFAQViewController.m LoginViewController.m SurfaceViewController.m UpdateHistoryViewController.m AboutLauncherViewController.m egl_bridge_ios.m ios_uikit_bridge.m customcontrols/ControlButton.m egl_bridge.c input_bridge_v3.c utils.c)
 target_link_libraries(pojavexec
-    "-Fresources/Frameworks"
+    "-F${CMAKE_CURRENT_LIST_DIR}/resources/Frameworks"
     "-framework UIKit"
     "-framework MetalANGLE"
     "-framework CoreGraphics"
