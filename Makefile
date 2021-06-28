@@ -6,16 +6,16 @@ ifneq ($(filter arm64-apple-ios%,$(DETECT)),)
 	IOS     := 1
 	SDKPATH := /usr/share/SDKs/iPhoneOS.sdk
 endif
-ifneq ($(filter arm64-apple-darwin%,$(DETECT)),)
+ifneq ($(filter aarch64-apple-darwin%,$(DETECT)),)
 	IOS     := 0
 	SDKPATH := $(shell xcrun --sdk iphoneos --show-sdk-path)
+	JAVAFILES := $(shell cd JavaApp; find src -type f -name "*.java" -print)
 endif
 ifneq ($(filter x86_64-apple-darwin%,$(DETECT)),)
 	IOS     := 0
 	SDKPATH := $(shell xcrun --sdk iphoneos --show-sdk-path)
+	JAVAFILES := $(shell cd JavaApp; find src -type f -name "*.java" -print)
 endif
-
-. PHONY: all clean native java extras package install
 
 all: clean native java extras package install
 
@@ -38,9 +38,10 @@ java:
 	@echo 'Starting build task - java application'
 	@if [ '$(IOS)' = '0' ]; then \
 		cd JavaApp; \
-		chmod +x gradlew; \
-		./gradlew clean build || exit 1; \
-		cd ..; \
+		mkdir -p local_out/classes; \
+		javac -cp "libs/*" -d local_out/classes $(JAVAFILES); \
+		cd local_out/classes; \
+		jar -cf ../launcher.jar *; \
 	elif [ '$(IOS)' = '1' ]; then \
 		cd JavaApp; \
 		shopt -s globstar; \
@@ -69,7 +70,7 @@ package:
 		cp -R Natives/resources/* Natives/build/PojavLauncher.app/ || exit 1; \
 		cp Natives/build/libpojavexec.dylib Natives/build/PojavLauncher.app/Frameworks/ || exit 1; \
 		mkdir Natives/build/PojavLauncher.app/libs; \
-		cp JavaApp/build/libs/PojavLauncher.jar Natives/build/PojavLauncher.app/libs/launcher.jar || exit 1; \
+		cp JavaApp/local_out/launcher.jar Natives/build/PojavLauncher.app/libs/launcher.jar || exit 1; \
 		cp -R JavaApp/libs/* Natives/build/PojavLauncher.app/libs/ || exit 1; \
 		mkdir -p packages/pojavlauncher_iphoneos-arm/{Applications,var/mobile/Documents/minecraft,var/mobile/Documents/.pojavlauncher}; \
 		sudo chown 501:501 packages/pojavlauncher_iphoneos-arm/var/mobile/Documents/* || exit 1; \
@@ -78,16 +79,12 @@ package:
 		ldid -Sentitlements.xml packages/pojavlauncher_iphoneos-arm/Applications/PojavLauncher.app || exit 1; \
 		fakeroot dpkg-deb -b packages/pojavlauncher_iphoneos-arm || exit 1; \
 	elif [ '$(IOS)' = '1' ]; then \
-		mkdir -p Natives/build; \
-		mkdir -p Natives/build/Release-iphoneos; \
-		mkdir -p Natives/build/PojavLauncher.app; \
 		mkdir -p Natives/build/PojavLauncher.app/Frameworks; \
 		mkdir -p Natives/build/PojavLauncher.app/Base.lproj; \
 		cp -R Natives/en.lproj/*.storyboardc Natives/build/PojavLauncher.app/Base.lproj/ || exit 1; \
-		cp -R Natives/PojavLauncher Natives/build/PojavLauncher.app/PojavLauncher || exit 1; \
 		cp -R Natives/Info.plist Natives/build/PojavLauncher.app/Info.plist || exit 1;\
 		cp -R Natives/PkgInfo Natives/build/PojavLauncher.app/PkgInfo || exit 1; \
-		cp -R Natives/libpojavexec.dylib Natives/build/PojavLauncher.app/Frameworks/libpojavexec.dylib || exit 1; \
+		cp -R Natives/build/libpojavexec.dylib Natives/build/PojavLauncher.app/Frameworks/libpojavexec.dylib || exit 1; \
 		cp -R Natives/resources/* Natives/build/PojavLauncher.app/ || exit 1; \
 		cp -R JavaApp/libs Natives/build/PojavLauncher.app/libs || exit 1; \
 		cp JavaApp/local_out/launcher.jar Natives/build/PojavLauncher.app/libs/ || exit 1; \
@@ -129,10 +126,15 @@ deploy:
 	@if [ '$(IOS)' = '0' ]; then \
 		if [ '$(DEVICE_IP)' != '' ]; then \
 			if [ '$(DEVICE_PORT)' != '' ]; then \
-				scp -P $(DEVICE_PORT) Natives/libpojavexec.dylib root@$(DEVICE_IP):/Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib || exit 1; \
+				scp -P $(DEVICE_PORT) Natives/build/libpojavexec.dylib root@$(DEVICE_IP):/Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib || exit 1; \
+				scp -P $(DEVICE_PORT) Natives/build/PojavLauncher.app/PojavLauncher root@$(DEVICE_IP):/Applications/PojavLauncher.app/PojavLauncher || exit 1; \
+				scp -P $(DEVICE_PORT) JavaApp/local_out/launcher.jar root@$(DEVICE_IP):/Applications/PojavLauncher.app/libs/launcher.jar || exit 1; \
 				ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t "killall PojavLauncher"; \
 			else \
-				scp Natives/libpojavexec.dylib root@$(DEVICE_IP):/Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib || exit 1; \
+				scp Natives/build/libpojavexec.dylib root@$(DEVICE_IP):/Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib || exit 1; \
+				scp Natives/build/PojavLauncher.app/PojavLauncher root@$(DEVICE_IP):/Applications/PojavLauncher.app/PojavLauncher || exit 1; \
+				scp JavaApp/local_out/launcher.jar root@$(DEVICE_IP):/Applications/PojavLauncher.app/libs/launcher.jar || exit 1; \
+				ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t "killall PojavLauncher"; \
 				ssh root@$(DEVICE_IP) -t "killall PojavLauncher"; \
 			fi; \
 		else \
@@ -140,9 +142,9 @@ deploy:
 			echo 'If you specified a different port for your device to listen for SSH connections, you need to run '\''export DEVICE_PORT=<your port>'\'' as well.'; \
 		fi; \
 	elif [ '$(IOS)' = '1' ]; then \
-	    sudo cp JavaApp/local_out/launcher.jar /Applications/PojavLauncher.app/libs/launcher.jar; \
-		sudo cp Natives/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher; \
-		sudo cp Natives/libpojavexec.dylib /Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib; \
+		sudo cp JavaApp/local_out/launcher.jar /Applications/PojavLauncher.app/libs/launcher.jar; \
+		sudo cp Natives/build/PojavLauncher.app/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher; \
+		sudo cp Natives/build/libpojavexec.dylib /Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib; \
 		sudo killall PojavLauncher; \
 	fi
 	@echo 'Finished build task - deploy to local device'
@@ -167,3 +169,4 @@ help:
 	@echo '    make deploy                         Copy package to local iDevice                 '
 	@echo '    make clean                          Cleans build directories                      '
 
+. PHONY: all clean native java extras package install deploy
