@@ -3,17 +3,17 @@ SHELL := /bin/bash
 
 DETECT := $(shell clang -v 2>&1 | grep Target | cut -b 9-60)
 ifneq ($(filter arm64-apple-ios%,$(DETECT)),)
-	IOS     := 1
-	SDKPATH := /usr/share/SDKs/iPhoneOS.sdk
+	IOS       := 1
+	SDKPATH.  := /usr/share/SDKs/iPhoneOS.sdk
 endif
 ifneq ($(filter aarch64-apple-darwin%,$(DETECT)),)
-	IOS     := 0
-	SDKPATH := $(shell xcrun --sdk iphoneos --show-sdk-path)
+	IOS       := 0
+	SDKPATH   := $(shell xcrun --sdk iphoneos --show-sdk-path)
 	JAVAFILES := $(shell cd JavaApp; find src -type f -name "*.java" -print)
 endif
 ifneq ($(filter x86_64-apple-darwin%,$(DETECT)),)
-	IOS     := 0
-	SDKPATH := $(shell xcrun --sdk iphoneos --show-sdk-path)
+	IOS       := 0
+	SDKPATH   := $(shell xcrun --sdk iphoneos --show-sdk-path)
 	JAVAFILES := $(shell cd JavaApp; find src -type f -name "*.java" -print)
 endif
 
