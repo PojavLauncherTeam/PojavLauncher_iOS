@@ -125,7 +125,7 @@ deploy:
 	@echo 'Starting build task - deploy to local device'
 	@if [ '$(IOS)' = '0' ]; then \
 		if [ '$(DEVICE_IP)' != '' ]; then \
-			ldid -Sentitlements.xml Natives/build/PojavLauncher.app/PojavLauncher
+			ldid -Sentitlements.xml Natives/build/PojavLauncher.app/PojavLauncher; \
 			if [ '$(DEVICE_PORT)' != '' ]; then \
 				scp -P $(DEVICE_PORT) Natives/build/libpojavexec.dylib root@$(DEVICE_IP):/Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib || exit 1; \
 				scp -P $(DEVICE_PORT) Natives/build/PojavLauncher.app/PojavLauncher root@$(DEVICE_IP):/Applications/PojavLauncher.app/PojavLauncher || exit 1; \
