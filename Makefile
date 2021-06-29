@@ -21,8 +21,8 @@ all: clean native java extras package install
 
 native:
 	@echo 'Starting build task - native application'
-	mkdir -p Natives/build
-	cd Natives/build && cmake . \
+	@mkdir -p Natives/build
+	@cd Natives/build && cmake . \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_SYSTEM_NAME=Darwin \
@@ -31,7 +31,7 @@ native:
 		-DCMAKE_OSX_ARCHITECTURES=arm64 \
 		-DCMAKE_C_FLAGS="-arch arm64 -miphoneos-version-min=12.0" \
 		..
-	cd Natives/build && cmake --build . --config Release --target pojavexec PojavLauncher || exit 1
+	@cd Natives/build && cmake --build . --config Release --target pojavexec PojavLauncher || exit 1
 	@echo 'Finished build task - native application'
 
 java:
