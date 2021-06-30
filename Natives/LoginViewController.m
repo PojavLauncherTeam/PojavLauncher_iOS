@@ -12,8 +12,6 @@
 #include "ios_uikit_bridge.h"
 #include "utils.h"
 
-#import <sys/utsname.h>
-
 #define TYPE_SELECTACC 0
 #define TYPE_MICROSOFT 1
 #define TYPE_MOJANG 2
@@ -81,12 +79,6 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
         self.view.backgroundColor = [UIColor whiteColor];
     }
 
-    struct utsname systemInfo;
-    uname(&systemInfo);
-    NSString* deviceModel = [NSString stringWithCString:systemInfo.machine
-                          encoding:NSUTF8StringEncoding];
-    NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
-    
     CGFloat widthSplit = width / 4.0;
     CGFloat widthSplit2 = width / 2.0;
 
@@ -132,14 +124,6 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     [button_accounts setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button_accounts addTarget:self action:@selector(loginAccount:) forControlEvents:UIControlEventTouchUpInside];
     [scrollView addSubview:button_accounts];
-    
-    UILabel *logoVerView = [[UILabel alloc] initWithFrame:CGRectMake(20, button_faq.frame.origin.y - 25, width - 40, 15)];
-    logoVerView.text = [NSString stringWithFormat:@"version 1.3 (development) on %@ with iOS %@", deviceModel, currSysVer];
-    logoVerView.lineBreakMode = NSLineBreakByWordWrapping;
-    logoVerView.textAlignment = NSTextAlignmentCenter;
-    logoVerView.numberOfLines = 0;
-    [scrollView addSubview:logoVerView];
-    [logoVerView setFont:[UIFont boldSystemFontOfSize:10]];
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
