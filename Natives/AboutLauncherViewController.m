@@ -43,22 +43,22 @@
                           encoding:NSUTF8StringEncoding];
     NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
 
-    UILabel *logoVerView = [[UILabel alloc] initWithFrame:CGRectMake(20, scrollView.frame.size.height - 5, width, 20)];
+    UILabel *logoVerView = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, width, 30)];
     logoVerView.text = [NSString stringWithFormat:@"version 1.3 (development) on %@ with iOS %@", deviceModel, currSysVer];
     logoVerView.lineBreakMode = NSLineBreakByWordWrapping;
-    logoVerView.numberOfLines = 1;
-    [logoVerView sizeToFit];
+    //logoVerView.textAlignment = NSTextAlignmentCenter;
+    logoVerView.numberOfLines = 0;
     [scrollView addSubview:logoVerView];
-    [logoVerView setFont:[UIFont boldSystemFontOfSize:10]];
+    [logoVerView setFont:[UIFont boldSystemFontOfSize:20]];
 
-    UILabel *logoNoteView = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 10.0, width - 40, 700)];
+    UILabel *logoNoteView = [[UILabel alloc] initWithFrame:CGRectMake(20.0, logoVerView.frame.size.height + 9.0, width - 40, 700)];
     logoNoteView.text = @"Created by PojavLauncherTeam in 2021. We do not exist on TikTok. No one from the dev team makes TikTok videos.\n\nDuyKhanhTran - lead iOS port developer\nDoregon - UI/UX design\nSpecial thanks to Hayden Seay, for porting OpenJDK 16, making this possible, and hosting on Procursus.";
     logoNoteView.lineBreakMode = NSLineBreakByWordWrapping;
     logoNoteView.numberOfLines = 0;
     [logoNoteView sizeToFit];
     [scrollView addSubview:logoNoteView];
 
-    UITextView *linkTextView = [[UITextView alloc] initWithFrame:CGRectMake(15, logoNoteView.frame.size.height + 9, width - 40, 84)];
+    UITextView *linkTextView = [[UITextView alloc] initWithFrame:CGRectMake(15, logoVerView.frame.size.height + logoNoteView.frame.size.height + 9, width - 40, 84)];
     linkTextView.text = @"Discord: https://discord.gg/pojavlauncher\nSubreddit: https://reddit.com/r/PojavLauncher\nWiki: https://pojavlauncherteam.github.io";
     linkTextView.editable = NO;
     linkTextView.dataDetectorTypes = UIDataDetectorTypeAll;
