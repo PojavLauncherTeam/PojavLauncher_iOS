@@ -52,18 +52,25 @@
     [logoVerView setFont:[UIFont boldSystemFontOfSize:10]];
 
     UILabel *logoNoteView = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 10.0, width - 40, 700)];
-    logoNoteView.text = @"Created by PojavLauncherTeam in 2021. We do not exist on TikTok. No one from the dev team makes TikTok videos.\n\nDuyKhanhTran - lead iOS port developer\nDoregon - UI/UX design\n\nSpecial thanks to Hayden Seay, for porting OpenJDK 16, making this possible, and hosting on Procursus.";
+    logoNoteView.text = @"Created by PojavLauncherTeam in 2021. We do not exist on TikTok. No one from the dev team makes TikTok videos.\n\nDuyKhanhTran - lead iOS port developer\nDoregon - UI/UX design\nSpecial thanks to Hayden Seay, for porting OpenJDK 16, making this possible, and hosting on Procursus.";
     logoNoteView.lineBreakMode = NSLineBreakByWordWrapping;
     logoNoteView.numberOfLines = 0;
     [logoNoteView sizeToFit];
     [scrollView addSubview:logoNoteView];
 
-    UITextView *links = [[UITextView alloc] initWithFrame:CGRectMake(15, logoNoteView.frame.size.height + 9, width - 40, height - (logoNoteView.frame.size.height + 9))];
-    links.text = @"Discord: https://discord.gg/pojavlauncher\nGitHub: https://bit.ly/2TIXhAA\nSubreddit: https://reddit.com/r/PojavLauncher\nWiki: https://pojavlauncherteam.github.io";
-    links.editable = NO;
-    links.dataDetectorTypes = UIDataDetectorTypeAll;
-    [scrollView addSubview:links];
-    [links setFont:[UIFont systemFontOfSize:17]];
+    UITextView *linkTextView = [[UITextView alloc] initWithFrame:CGRectMake(15, logoNoteView.frame.size.height + 9, width - 40, 84)];
+    linkTextView.text = @"Discord: https://discord.gg/pojavlauncher\nSubreddit: https://reddit.com/r/PojavLauncher\nWiki: https://pojavlauncherteam.github.io";
+    linkTextView.editable = NO;
+    linkTextView.dataDetectorTypes = UIDataDetectorTypeAll;
+    [scrollView addSubview:linkTextView];
+    [linkTextView setFont:[UIFont systemFontOfSize:17]];
+    
+    UILabel *safetyNoteView = [[UILabel alloc] initWithFrame:CGRectMake(20.0, linkTextView.frame.origin.y + linkTextView.frame.size.height - 2, width - 40, 700)];
+    safetyNoteView.text = @"Stay safe when jailbroken. Make sure to install PojavLauncher from the official repositories to prevent the risk of malware.";
+    safetyNoteView.lineBreakMode = NSLineBreakByWordWrapping;
+    safetyNoteView.numberOfLines = 0;
+    [safetyNoteView sizeToFit];
+    [scrollView addSubview:safetyNoteView];
 
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Send your logs" style:UIBarButtonItemStyleDone target:self action:@selector(latestLogShare)];
 

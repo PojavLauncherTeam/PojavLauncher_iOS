@@ -127,16 +127,17 @@ deploy:
 		if [ '$(DEVICE_IP)' != '' ]; then \
 			ldid -Sentitlements.xml Natives/build/PojavLauncher.app/PojavLauncher; \
 			if [ '$(DEVICE_PORT)' != '' ]; then \
-				scp -P $(DEVICE_PORT) Natives/build/libpojavexec.dylib root@$(DEVICE_IP):/Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib || exit 1; \
-				scp -P $(DEVICE_PORT) Natives/build/PojavLauncher.app/PojavLauncher root@$(DEVICE_IP):/Applications/PojavLauncher.app/PojavLauncher || exit 1; \
-				scp -P $(DEVICE_PORT) JavaApp/local_out/launcher.jar root@$(DEVICE_IP):/Applications/PojavLauncher.app/libs/launcher.jar || exit 1; \
-				ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t "killall PojavLauncher"; \
+				scp -P $(DEVICE_PORT) -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" Natives/build/libpojavexec.dylib \
+					Natives/build/PojavLauncher.app/PojavLauncher \
+					JavaApp/local_out/launcher.jar \
+					root@$(DEVICE_IP):/var/tmp; \
+				ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t "mv /var/tmp/libpojavexec.dylib /Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib && mv /var/tmp/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher && mv /var/tmp/launcher.jar /Applications/PojavLauncher.app/libs/launcher.jar && killall PojavLauncher"; \
 			else \
-				scp Natives/build/libpojavexec.dylib root@$(DEVICE_IP):/Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib || exit 1; \
-				scp Natives/build/PojavLauncher.app/PojavLauncher root@$(DEVICE_IP):/Applications/PojavLauncher.app/PojavLauncher || exit 1; \
-				scp JavaApp/local_out/launcher.jar root@$(DEVICE_IP):/Applications/PojavLauncher.app/libs/launcher.jar || exit 1; \
-				ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t "killall PojavLauncher"; \
-				ssh root@$(DEVICE_IP) -t "killall PojavLauncher"; \
+				scp -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" Natives/build/libpojavexec.dylib \
+					Natives/build/PojavLauncher.app/PojavLauncher \
+					JavaApp/local_out/launcher.jar \
+					root@$(DEVICE_IP):/var/tmp; \
+				ssh root@$(DEVICE_IP) -t "mv /var/tmp/libpojavexec.dylib /Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib && mv /var/tmp/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher && mv /var/tmp/launcher.jar /Applications/PojavLauncher.app/libs/launcher.jar && killall PojavLauncher"; \
 			fi; \
 		else \
 			echo 'You need to run '\''export DEVICE_IP=<your iOS device IP>'\'' to use make deploy.'; \
