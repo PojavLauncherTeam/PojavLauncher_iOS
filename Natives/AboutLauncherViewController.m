@@ -2,8 +2,6 @@
 
 #include "utils.h"
 
-#import <sys/utsname.h>
-
 
 @interface AboutLauncherViewController () {
 }
@@ -37,20 +35,6 @@
         self.view.backgroundColor = [UIColor whiteColor];
     }
 
-    struct utsname systemInfo;
-    uname(&systemInfo);
-    NSString* deviceModel = [NSString stringWithCString:systemInfo.machine
-                          encoding:NSUTF8StringEncoding];
-    NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
-
-    UILabel *logoVerView = [[UILabel alloc] initWithFrame:CGRectMake(20, scrollView.frame.size.height - 5, width, 20)];
-    logoVerView.text = [NSString stringWithFormat:@"version 1.3 (development) on %@ with iOS %@", deviceModel, currSysVer];
-    logoVerView.lineBreakMode = NSLineBreakByWordWrapping;
-    logoVerView.numberOfLines = 1;
-    [logoVerView sizeToFit];
-    [scrollView addSubview:logoVerView];
-    [logoVerView setFont:[UIFont boldSystemFontOfSize:10]];
-
     UILabel *logoNoteView = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 10.0, width - 40, 700)];
     logoNoteView.text = @"Created by PojavLauncherTeam in 2021. We do not exist on TikTok. No one from the dev team makes TikTok videos.\n\nDuyKhanhTran - lead iOS port developer\nDoregon - UI/UX design\nSpecial thanks to Hayden Seay, for porting OpenJDK 16, making this possible, and hosting on Procursus.";
     logoNoteView.lineBreakMode = NSLineBreakByWordWrapping;
@@ -71,7 +55,7 @@
     safetyNoteView.numberOfLines = 0;
     [safetyNoteView sizeToFit];
     [scrollView addSubview:safetyNoteView];
-
+    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Send your logs" style:UIBarButtonItemStyleDone target:self action:@selector(latestLogShare)];
 
     scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, scrollView.frame.size.height + 20);
