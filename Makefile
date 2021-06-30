@@ -17,7 +17,7 @@ ifneq ($(filter x86_64-apple-darwin%,$(DETECT)),)
 	JAVAFILES := $(shell cd JavaApp; find src -type f -name "*.java" -print)
 endif
 
-all: clean native java extras package install
+all: clean native java extras package
 
 native:
 	@echo 'Starting build task - native application'
