@@ -268,7 +268,7 @@ BOOL isNotifRemoved;
     // [self setNeedsDisplay]
     // NSLog(@"swapbuffer");
 
-    // Remove notifications, so rendering will be manually controlled!
+    // Hack: Remove notifications, so rendering will be manually controlled!
     if (isNotifRemoved == NO) {
         isNotifRemoved = YES;
         [[NSNotificationCenter defaultCenter] removeObserver:self
@@ -325,7 +325,7 @@ BOOL isNotifRemoved;
                 break;
         }
     } else if (@available(iOS 13.4, *)) {
-        // Recheck @available for fix compile warnings
+        // Recheck @available for suppressing compile warnings
 
         // Mouse clicks are handled here
         int held = event == ACTION_MOVE || event == ACTION_UP;
@@ -439,7 +439,7 @@ BOOL isNotifRemoved;
             velocity.y = 1.0f;
         }
         if (velocity.x != 0.0f || velocity.y != 0.0f) {
-            Java_org_lwjgl_glfw_CallbackBridge_nativeSendScroll(NULL, NULL, (jdouble) velocity.x, (jdouble) velocity.y);
+            Java_org_lwjgl_glfw_CallbackBridge_nativeSendScroll(NULL, NULL, (jdouble) velocity.x * 4.0, (jdouble) velocity.y * 4.0);
         }
     }
 }

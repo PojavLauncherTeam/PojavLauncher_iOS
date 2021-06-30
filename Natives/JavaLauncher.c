@@ -48,6 +48,8 @@ typedef jint JLI_Launch_func(int argc, char ** argv, /* main argc, argc */
 
 static int margc = 0;
 static char* margv[1000];
+static int pfd[2];
+static pthread_t logger;
 
 void init_loadCustomEnv() {
     FILE *envFile = fopen("/var/mobile/Documents/.pojavlauncher/custom_env.txt", "r");
