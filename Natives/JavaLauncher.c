@@ -119,7 +119,7 @@ int launchJVM(int argc, char *argv[]) {
     if (!javaHome) {
         javaHome = "/usr/lib/jvm/java-16-openjdk";
         setenv("JAVA_HOME", javaHome, 1);
-        debug("[Pre-init] JAVA_HOME environment variable not set. Defaulting to %@\n", javaHome);
+        debug("[Pre-init] JAVA_HOME environment variable not set. Defaulting to %s\n", javaHome);
     }
 
     mkdir("/var/mobile/Documents/.pojavlauncher/controlmap", S_IRWXU | S_IRWXG | S_IRWXO);
