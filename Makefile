@@ -128,7 +128,7 @@ package:
 		cp JavaApp/local_out/launcher.jar Natives/build/PojavLauncher.app/libs/launcher.jar || exit 1; \
 		cp -R JavaApp/libs/* Natives/build/PojavLauncher.app/libs/ || exit 1; \
 		mkdir -p packages/pojavlauncher_iphoneos-arm/{Applications,var/mobile/Documents/minecraft,var/mobile/Documents/.pojavlauncher}; \
-		fakeroot chown 501:501 packages/pojavlauncher_iphoneos-arm/var/mobile/Documents/* || exit 1; \
+		sudo chown 501:501 packages/pojavlauncher_iphoneos-arm/var/mobile/Documents/* || exit 1; \
 		cp -R Natives/build/PojavLauncher.app packages/pojavlauncher_iphoneos-arm/Applications; \
 		cp -R DEBIAN packages/pojavlauncher_iphoneos-arm/DEBIAN; \
 		ldid -Sentitlements.xml packages/pojavlauncher_iphoneos-arm/Applications/PojavLauncher.app || exit 1; \
@@ -144,7 +144,7 @@ package:
 		cp -R JavaApp/libs Natives/build/PojavLauncher.app/libs || exit 1; \
 		cp JavaApp/local_out/launcher.jar Natives/build/PojavLauncher.app/libs/ || exit 1; \
 		mkdir -p packages/pojavlauncher_iphoneos-arm/{Applications,var/mobile/Documents/minecraft,var/mobile/Documents/.pojavlauncher}; \
-		fakeroot chown 501:501 packages/pojavlauncher_iphoneos-arm/var/mobile/Documents/* || exit 1; \
+		sudo chown 501:501 packages/pojavlauncher_iphoneos-arm/var/mobile/Documents/* || exit 1; \
 		cp -R Natives/build/PojavLauncher.app packages/pojavlauncher_iphoneos-arm/Applications; \
 		cp -R DEBIAN packages/pojavlauncher_iphoneos-arm/DEBIAN; \
 		ldid -Sentitlements.xml packages/pojavlauncher_iphoneos-arm/Applications/PojavLauncher.app || exit 1; \
