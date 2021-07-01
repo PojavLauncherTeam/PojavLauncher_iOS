@@ -171,11 +171,10 @@ public class PLaunchApp {
         }).start();
     }
 
-    private static int downloadedSs = 0;
+    private static int downloaded = 0;
     public static void downloadAssets(final JAssets assets, String assetsVersion, final File outputDir) throws IOException {
-        ArrayBlockingQueue<Runnable> workQueue = new ArrayBlockingQueue<>(100);
-        RejectedExecutionHandler handler = new ThreadPoolExecutor.CallerRunsPolicy();
-        final ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(10, 50, 100, TimeUnit.SECONDS, workQueue, handler);
+        LinkedBlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<>();
+        final ThreadPoolExecutor executor = new ThreadPoolExecutor(50, 50, 500, TimeUnit.MILLISECONDS, workQueue);
 
         File hasDownloadedFile = new File(outputDir, "downloaded/" + assetsVersion + ".downloaded");
         if (!hasDownloadedFile.exists()) {
@@ -183,30 +182,30 @@ public class PLaunchApp {
             Map<String, JAssetInfo> assetsObjects = assets.objects;
             File objectsDir = new File(outputDir, "objects");
             for (JAssetInfo asset : assetsObjects.values()) {
-                threadPoolExecutor.execute(() -> {
-                mIsAssetsProcessing = !UIKit.updateProgressSafe(currProgress / maxProgress, "Downloading " + assetsObjects.keySet().toArray(new String[0])[downloadedSs]);
-                
-                if (!mIsAssetsProcessing) {
-                    threadPoolExecutor.shutdownNow();
-                    return;
-                }
+                executor.execute(() -> {
+                mIsAssetsProcessing = !UIKit.updateProgressSafe(currProgress / maxProgress, "Downloading " + assetsObjects.keySet().toArray(new String[0])[downloaded]);
 
                 try {
                     if(!assets.map_to_resources) downloadAsset(asset, objectsDir);
-                    else downloadAssetMapped(asset,(assetsObjects.keySet().toArray(new String[0])[downloadedSs]),outputDir);
+                    else downloadAssetMapped(asset,(assetsObjects.keySet().toArray(new String[0])[downloaded]),outputDir);
                 } catch (IOException e) {
                     e.printStackTrace();
                     mIsAssetsProcessing = false;
                 }
                 currProgress++;
-                downloadedSs++;
+                downloaded++;
                 
                 });
             }
-            threadPoolExecutor.shutdown();
-            while (!threadPoolExecutor.isTerminated()) { }
-            hasDownloadedFile.getParentFile().mkdirs();
-            hasDownloadedFile.createNewFile();
+            executor.shutdown();
+            try {
+                while ((!executor.awaitTermination(250, TimeUnit.MILLISECONDS)) && (!localInterrupt.get()) && mIsAssetsProcessing) {}
+                executor.shutdownNow();
+                while (!executor.awaitTermination(250, TimeUnit.MILLISECONDS)) {}
+                System.out.println("Fully shut down!");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             System.out.println("Assets end time: " + System.currentTimeMillis());
         }
     }
