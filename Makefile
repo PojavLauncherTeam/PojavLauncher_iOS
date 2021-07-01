@@ -53,12 +53,12 @@ ifneq ($(filter 1,$(IOS)),)
     endif
 else ifneq ($(filter 0,$(IOS)),)
     ifeq ($(filter 1,$(shell cmake --version 2>&1 /dev/null && echo 1)),)
-            $(error You need to install cmake. It can be found on Homebrew or Procursus)
+            $(error You need to install cmake)
     endif
     ifeq ($(filter 1.8.0,$(shell javac -version &> javaver.txt && cat javaver.txt | cut -b 7-11 && rm -rf javaver.txt)),)
         $(warning You are not using JDK 8 to compile.)
         ifeq ($(filter 1,$(shell javac -version &> /dev/null && echo 1)),)
-            $(error You need to install a JDK. It can be found on Homebrew or the internet)
+            $(error You need to install a JDK)
         else
             JDK := /usr/bin
         endif
@@ -66,17 +66,17 @@ else ifneq ($(filter 0,$(IOS)),)
         JDK := /usr/bin
     endif
     ifeq ($(filter 1,$(shell ldid &> /dev/null && echo 1)),)
-            $(error You need to install ldid. It can be found on Homebrew or Procursus)
+            $(error You need to install ldid)
     endif
     ifeq ($(filter 1,$(shell fakeroot -v 2>&1 /dev/null && echo 1)),)
         	ifneq ($(filter x86_64,$(shell uname -p)),)
                 $(error You need to install fakeroot. It can only be found on Procursus for Apple Silicon)
             else
-                $(error You need to install fakeroot. It can be found on Homebrew or Procursus)
+                $(error You need to install fakeroot)
         endif
     endif
     ifeq ($(filter 1,$(shell dpkg-deb --version 2>&1 /dev/null && echo 1)),)
-        $(error You need to install the dpkg developer tools. They can be found on Homebrew or Procursus)
+        $(error You need to install the dpkg developer tools)
     endif
 endif
 
