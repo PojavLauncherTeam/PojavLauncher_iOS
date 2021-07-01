@@ -183,7 +183,7 @@ public class PLaunchApp {
             File objectsDir = new File(outputDir, "objects");
             for (JAssetInfo asset : assetsObjects.values()) {
                 executor.execute(() -> {
-                mIsAssetsProcessing = !UIKit.updateProgressSafe(currProgress / maxProgress, "Downloading " + assetsObjects.keySet().toArray(new String[0])[downloaded]);
+                mIsAssetsProcessing &= !UIKit.updateProgressSafe(currProgress / maxProgress, "Downloading " + assetsObjects.keySet().toArray(new String[0])[downloaded]);
 
                 try {
                     if(!assets.map_to_resources) downloadAsset(asset, objectsDir);
@@ -199,7 +199,7 @@ public class PLaunchApp {
             }
             executor.shutdown();
             try {
-                while ((!executor.awaitTermination(250, TimeUnit.MILLISECONDS)) && (!localInterrupt.get()) && mIsAssetsProcessing) {}
+                while ((!executor.awaitTermination(250, TimeUnit.MILLISECONDS)) && mIsAssetsProcessing) {}
                 executor.shutdownNow();
                 while (!executor.awaitTermination(250, TimeUnit.MILLISECONDS)) {}
                 System.out.println("Fully shut down!");
