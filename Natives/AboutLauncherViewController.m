@@ -1,4 +1,5 @@
 #import "AboutLauncherViewController.h"
+#import "UpdateHistoryViewController.h"
 
 #include "utils.h"
 
@@ -46,19 +47,25 @@
     UILabel *logoVerView = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, width, 30)];
     logoVerView.text = [NSString stringWithFormat:@"version 1.3 (development) on %@ with iOS %@", deviceModel, currSysVer];
     logoVerView.lineBreakMode = NSLineBreakByWordWrapping;
-    //logoVerView.textAlignment = NSTextAlignmentCenter;
     logoVerView.numberOfLines = 0;
     [scrollView addSubview:logoVerView];
     [logoVerView setFont:[UIFont boldSystemFontOfSize:20]];
 
-    UILabel *logoNoteView = [[UILabel alloc] initWithFrame:CGRectMake(20.0, logoVerView.frame.size.height + 9.0, width - 40, 700)];
+    UIButton *updateHistoryButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [updateHistoryButton setTitle:@"See the recent changelog." forState:UIControlStateNormal];
+    updateHistoryButton.frame = CGRectMake(20, logoVerView.frame.origin.y + logoVerView.frame.size.height + 5, width - 40, 25.0);
+    updateHistoryButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [updateHistoryButton addTarget:self action:@selector(updateHistory) forControlEvents:UIControlEventTouchUpInside];
+    [scrollView addSubview:updateHistoryButton];
+
+    UILabel *logoNoteView = [[UILabel alloc] initWithFrame:CGRectMake(20.0, updateHistoryButton.frame.origin.y + updateHistoryButton.frame.size.height + 9.0, width - 40, 700)];
     logoNoteView.text = @"Created by PojavLauncherTeam in 2021. We do not exist on TikTok. No one from the dev team makes TikTok videos.\n\nDuyKhanhTran - lead iOS port developer\nDoregon - UI/UX design\nSpecial thanks to Hayden Seay, for porting OpenJDK 16, making this possible, and hosting on Procursus.";
     logoNoteView.lineBreakMode = NSLineBreakByWordWrapping;
     logoNoteView.numberOfLines = 0;
     [logoNoteView sizeToFit];
     [scrollView addSubview:logoNoteView];
 
-    UITextView *linkTextView = [[UITextView alloc] initWithFrame:CGRectMake(15, logoVerView.frame.size.height + logoNoteView.frame.size.height + 9, width - 40, 84)];
+    UITextView *linkTextView = [[UITextView alloc] initWithFrame:CGRectMake(15, logoNoteView.frame.origin.y + logoNoteView.frame.size.height + 9, width - 40, 84)];
     linkTextView.text = @"Discord: https://discord.gg/pojavlauncher\nSubreddit: https://reddit.com/r/PojavLauncher\nWiki: https://pojavlauncherteam.github.io";
     linkTextView.editable = NO;
     linkTextView.dataDetectorTypes = UIDataDetectorTypeAll;
@@ -81,8 +88,12 @@
 -(void)latestLogShare
 {
     activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[@"latestlog.txt", [NSURL URLWithString:@"file:///var/mobile/Documents/.pojavlauncher/latestlog.txt"]] applicationActivities:nil];
-
     [self presentViewController:activityViewController animated:YES completion:nil];
+}
+
+- (void)updateHistory {
+    UpdateHistoryViewController *vc = [[UpdateHistoryViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 -(void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
