@@ -178,7 +178,6 @@ install:
 
 deploy:
 	@echo 'Starting build task - deploy to local device'
-	@ldid -Sentitlements.xml packages/pojavlauncher_iphoneos-arm/Applications/PojavLauncher.app \
 	@if [ '$(IOS)' = '0' ]; then \
 		if [ '$(DEVICE_IP)' != '' ]; then \
 			ldid -Sentitlements.xml Natives/build/PojavLauncher.app/PojavLauncher; \
