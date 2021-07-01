@@ -86,7 +86,7 @@ void init_loadCustomJvmFlags() {
         char *pch;
         pch = strtok(jvmargs, " ");
         while (pch != NULL) {
-            margv[margc] = (char*)malloc((strlen(pch)+1) * sizeof(char));
+            margv[margc] = (char*)calloc(1, (strlen(pch)+1) * sizeof(char));
             strcpy(margv[margc], pch);
             debug("[Pre-init] Added custom flag: %s", margv[margc]);
             pch = strtok(NULL, " ");
@@ -112,9 +112,16 @@ int launchJVM(int argc, char *argv[]) {
     // setenv("LIBGL_FB", "2", 1);
     setenv("LIBGL_MIPMAP", "3", 1);
     setenv("LIBGL_NORMALIZE", "1", 1);
-    
+
     init_loadCustomEnv();
-    
+
+    char *javaHome = getenv("JAVA_HOME");
+    if (!javaHome) {
+        javaHome = "/usr/lib/jvm/java-16-openjdk";
+        setenv("JAVA_HOME", javaHome, 1);
+        debug("[Pre-init] JAVA_HOME environment variable not set. Defaulting to %@\n", javaHome);
+    }
+
     mkdir("/var/mobile/Documents/.pojavlauncher/controlmap", S_IRWXU | S_IRWXG | S_IRWXO);
     chdir("/var/mobile/Documents/minecraft");
 
@@ -138,7 +145,9 @@ int launchJVM(int argc, char *argv[]) {
 
     // Check if JVM restarts
     if (!started) {
-        margv[margc++] = "/usr/lib/jvm/java-16-openjdk/bin/java";
+        char *javaPath = calloc(1, 4096);
+        snprintf(javaPath, 4096, "%s/bin/java", javaHome);
+        margv[margc++] = javaPath;
         margv[margc++] = "-XstartOnFirstThread";
         margv[margc++] = "-Djava.system.class.loader=net.kdt.pojavlaunch.PojavClassLoader";
         margv[margc++] = "-Djava.library.path=/Applications/PojavLauncher.app/Frameworks";
@@ -159,6 +168,7 @@ int launchJVM(int argc, char *argv[]) {
     } else {
         // Locate gl4es library name:
         // Reverse the loop, since it is overridable.
+        // FIXME: broken!
 /*
         char* opengl_prefix = "-Dorg.lwjgl.opengl.libname=";
         for (int i = argc - 1; i >= 0; i--) {
@@ -169,17 +179,24 @@ int launchJVM(int argc, char *argv[]) {
             }
         }
 */
-setenv("POJAV_OPENGL_LIBNAME", "libgl4es_114.dylib", 1);
+        setenv("POJAV_OPENGL_LIBNAME", "libgl4es_114.dylib", 1);
 
         debug("[Pre-init] OpenGL library name: %s", getenv("POJAV_OPENGL_LIBNAME"));
     }
-    
-    // Load java
-    void* libjli = dlopen("/usr/lib/jvm/java-16-openjdk/lib/libjli.dylib", RTLD_LAZY | RTLD_GLOBAL);
 
-    if (NULL == libjli) {
-        debug("[Init] JLI lib = NULL: %s", dlerror());
-        return -1;
+    // Load java
+    char libjlipath8[4096]; // java 8
+    char libjlipath16[4096]; // java 16+ (?)
+    sprintf(libjlipath8, "%s/lib/jli/libjli.dylib", javaHome);
+    sprintf(libjlipath16, "%s/lib/libjli.dylib", javaHome);
+    void* libjli = dlopen(libjlipath8, RTLD_LAZY | RTLD_GLOBAL);
+
+    if (!libjli) {
+        libjli = dlopen(libjlipath16, RTLD_LAZY | RTLD_GLOBAL);
+        if (!libjli) {
+            debug("[Init] JLI lib = NULL: %s", dlerror());
+            return -1;
+        }
     }
     debug("[Init] Found JLI lib");
 

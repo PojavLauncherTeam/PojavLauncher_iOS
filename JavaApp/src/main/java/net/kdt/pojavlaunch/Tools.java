@@ -63,7 +63,7 @@ public final class Tools
     public static final String DIR_ACCOUNT_NEW = DIR_APP_DATA + "/accounts";
     
     // New since 3.0.0
-    public static String DIR_HOME_JRE = "/usr/lib/jvm/java-16-openjdk";
+    public static String DIR_HOME_JRE = System.getProperty("java.home");
     public static String DIRNAME_HOME_JRE = "lib";
 
     // New since 2.4.2
