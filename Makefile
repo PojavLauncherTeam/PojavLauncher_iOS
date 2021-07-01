@@ -1,21 +1,85 @@
 SHELL := /bin/bash
 .SHELLFLAGS = -ec
 
-DETECT := $(shell clang -v 2>&1 | grep Target | cut -b 9-60)
+DETECT  := $(shell clang -v 2>&1 | grep Target | cut -b 9-60)
+
+# The below are going to be used for the AboutLauncherViewController.m file's version.
+# Formatting will be similar to one of the below:
+# version 1.3 (dev - fdc492b) on iPhone9,1 running 14.6
+# version 1.3 on iPhone9,1 running 14.6
+VERSION := $(shell cat DEBIAN/control | grep Version | cut -b 9-60)
+COMMIT  := $(shell git log --oneline | sed '2,10000000d' | cut -b 1-7)
+
+# Distinguish iOS from macOS
 ifneq ($(filter arm64-apple-ios%,$(DETECT)),)
-	IOS       := 1
-	SDKPATH   := /usr/share/SDKs/iPhoneOS.sdk
+IOS         := 1
+SDKPATH     := /usr/share/SDKs/iPhoneOS.sdk
 endif
 ifneq ($(filter aarch64-apple-darwin%,$(DETECT)),)
-	IOS       := 0
-	SDKPATH   := $(shell xcrun --sdk iphoneos --show-sdk-path)
-	JAVAFILES := $(shell cd JavaApp; find src -type f -name "*.java" -print)
+IOS         := 0
+SDKPATH     := $(shell xcrun --sdk iphoneos --show-sdk-path)
 endif
 ifneq ($(filter x86_64-apple-darwin%,$(DETECT)),)
-	IOS       := 0
-	SDKPATH   := $(shell xcrun --sdk iphoneos --show-sdk-path)
-	JAVAFILES := $(shell cd JavaApp; find src -type f -name "*.java" -print)
+IOS         := 0
+SDKPATH     := $(shell xcrun --sdk iphoneos --show-sdk-path)
 endif
+
+JAVAFILES   := $(shell cd JavaApp; find src -type f -name "*.java" -print)
+
+# Make sure everything is already available for use. Warn the user if they require
+# something.
+ifneq ($(filter 1,$(IOS)),)
+    ifeq ($(filter 1,$(shell cmake --version 2>&1 /dev/null && echo 1)),)
+        $(error You need to install cmake)
+    endif
+    ifeq ($(filter 1,$(shell /usr/lib/jvm/java-8-openjdk/bin/javac -version &> /dev/null && echo 1)),)
+        $(warning You are not using JDK 8 to compile.)
+        ifeq ($(filter 1,$(shell /usr/lib/jvm/java-16-openjdk/bin/javac -version &> /dev/null && echo 1)),)
+            $(error You need to install openjdk-8-jdk or openjdk-16-jdk)
+        else
+            JDK := /usr/lib/jvm/java-16-openjdk/bin
+        endif
+    else
+        JDK := /usr/lib/jvm/java-8-openjdk/bin
+    endif
+    ifeq ($(filter 1,$(shell ldid &> /dev/null && echo 1)),)
+        $(error You need to install ldid)
+    endif
+    ifeq ($(filter 1,$(shell fakeroot -v 2>&1 /dev/null && echo 1)),)
+        $(error You need to install fakeroot)
+    endif
+    ifeq ($(filter 1,$(shell dpkg-deb --version 2>&1 /dev/null && echo 1)),)
+        $(error You need to install dpkg-dev)
+    endif
+else ifneq ($(filter 0,$(IOS)),)
+    ifeq ($(filter 1,$(shell cmake --version 2>&1 /dev/null && echo 1)),)
+            $(error You need to install cmake. It can be found on Homebrew or Procursus)
+    endif
+    ifeq ($(filter 1.8.0,$(shell javac -version &> javaver.txt && cat javaver.txt | cut -b 7-11 && rm -rf javaver.txt)),)
+        $(warning You are not using JDK 8 to compile.)
+        ifeq ($(filter 1,$(shell javac -version &> /dev/null && echo 1)),)
+            $(error You need to install a JDK. It can be found on Homebrew or the internet)
+        else
+            JDK := /usr/bin
+        endif
+    else
+        JDK := /usr/bin
+    endif
+    ifeq ($(filter 1,$(shell ldid &> /dev/null && echo 1)),)
+            $(error You need to install ldid. It can be found on Homebrew or Procursus)
+    endif
+    ifeq ($(filter 1,$(shell fakeroot -v 2>&1 /dev/null && echo 1)),)
+        	ifneq ($(filter x86_64,$(shell uname -p)),)
+                $(error You need to install fakeroot. It can only be found on Procursus for Apple Silicon)
+            else
+                $(error You need to install fakeroot. It can be found on Homebrew or Procursus)
+        endif
+    endif
+    ifeq ($(filter 1,$(shell dpkg-deb --version 2>&1 /dev/null && echo 1)),)
+        $(error You need to install the dpkg developer tools. They can be found on Homebrew or Procursus)
+    endif
+endif
+
 
 all: clean native java extras package
 
@@ -31,25 +95,16 @@ native:
 		-DCMAKE_OSX_ARCHITECTURES=arm64 \
 		-DCMAKE_C_FLAGS="-arch arm64 -miphoneos-version-min=12.0" \
 		..
-	@cd Natives/build && cmake --build . --config Release --target pojavexec PojavLauncher || exit 1
+	@cd Natives/build && cmake --build . --config Release --target pojavexec PojavLauncher
 	@echo 'Finished build task - native application'
 
 java:
 	@echo 'Starting build task - java application'
-	@if [ '$(IOS)' = '0' ]; then \
-		cd JavaApp; \
-		mkdir -p local_out/classes; \
-		javac -cp "libs/*" -d local_out/classes $(JAVAFILES); \
-		cd local_out/classes; \
-		jar -cf ../launcher.jar *; \
-	elif [ '$(IOS)' = '1' ]; then \
-		cd JavaApp; \
-		shopt -s globstar; \
-		mkdir -p local_out/classes; \
-		/usr/lib/jvm/java-16-openjdk/bin/javac -cp "libs/*" -d local_out/classes src/main/java/**/*.java &> /dev/null || exit 1; \
-		cd local_out/classes; \
-		/usr/lib/jvm/java-16-openjdk/bin/jar -c -f ../launcher.jar * || exit 1; \
-	fi
+	@cd JavaApp; \
+	mkdir -p local_out/classes; \
+	$(JDK)/javac -cp "libs/*" -d local_out/classes $(JAVAFILES) || exit 1; \
+	cd local_out/classes; \
+	$(JDK)/jar -cf ../launcher.jar * || exit 1; \
 	@echo 'Finished build task - java application'
 
 extras:
