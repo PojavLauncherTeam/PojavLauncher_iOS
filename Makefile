@@ -105,7 +105,7 @@ java:
 	$(JDK)/javac -cp "libs/*" -d local_out/classes $(JAVAFILES) || exit 1; \
 	cd local_out/classes; \
 	$(JDK)/jar -cf ../launcher.jar * || exit 1; \
-	@echo 'Finished build task - java application'
+	echo 'Finished build task - java application'
 
 extras:
 	@echo 'Starting build task - extraneous files'
