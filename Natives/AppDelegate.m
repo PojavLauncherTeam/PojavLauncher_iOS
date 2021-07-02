@@ -3,6 +3,7 @@
 #import "SceneDelegate.h"
 
 // FIXME: local build complains that "__isOSVersionAtLeast" is undefined!
+/*
 int __isOSVersionAtLeast(int major, int minor, int patch) {
     NSOperatingSystemVersion version;
     version.majorVersion = major;
@@ -10,6 +11,7 @@ int __isOSVersionAtLeast(int major, int minor, int patch) {
     version.patchVersion = patch;
     return [[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:version];
 }
+*/
 
 @implementation AppDelegate
 
