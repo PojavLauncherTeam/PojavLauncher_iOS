@@ -101,6 +101,10 @@ int launchJVM(int argc, char *argv[]) {
     if (!started) {
         debug("[Pre-init] Staring logging STDIO as jrelog:V\n");
         // Redirect stdio to latestlog.txt
+        int ret;
+        char oldname[] = "/var/mobile/Documents/.pojavlauncher/latestlog.txt";
+        char newname[] = "/var/mobile/Documents/.pojavlauncher/latestlog.old.txt";
+        ret = rename(oldname, newname);
         FILE* logFile = fopen(log_path, "w");
         int log_fd = fileno(logFile);
         dup2(log_fd, 1);
