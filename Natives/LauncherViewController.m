@@ -140,9 +140,8 @@ int versionSelectedAt = 0;
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
         long statusCode = (long)[httpResponse statusCode];
 
-        NSString *dataStr = [NSString stringWithUTF8String:[data bytes]];
         NSError *jsonError = nil;
-        NSDictionary *jsonArray = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+        NSDictionary *jsonArray = (data == nil) ? nil : [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
 
         if (jsonError != nil) {
             NSLog(@"Warning: Error parsing version list JSON: %@", jsonError);
@@ -170,7 +169,7 @@ int versionSelectedAt = 0;
         } else {
             NSString *err_title = [jsonArray valueForKey:@"error"];
             NSString *err_msg = [jsonArray valueForKey:@"errorMessage"];
-            NSLog(@"Warning: failed to fetch version list: %@: %@", err_title, err_msg);
+            NSLog(@"Warning: Error %ld fetching version list: %@: %@", statusCode, err_title, err_msg);
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             if (versionList == nil) { // no internet connection
