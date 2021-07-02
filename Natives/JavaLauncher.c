@@ -1,11 +1,14 @@
+#include <assert.h>
 #include <dirent.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include <dlfcn.h>
+#include <errno.h>
+#include <libgen.h>
 #include <pthread.h>
-#include <unistd.h>
-#include <string.h>
 #include <spawn.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -19,9 +22,10 @@
 #define FULL_VERSION "1.8.0-internal"
 #define DOT_VERSION "1.8"
 
-static const char *java_libs_dir = "/Applications/PojavLauncher.app/libs";
-static const char *args_path = "/var/mobile/Documents/.pojavlauncher/overrideargs.txt";
-static const char *log_path = "/var/mobile/Documents/.pojavlauncher/latestlog.txt";
+static char java_libs_path[2048];
+static char args_path[2048];
+static char env_path[2048];
+static char log_path[2048];
 
 extern char **environ;
 
@@ -52,7 +56,7 @@ static int pfd[2];
 static pthread_t logger;
 
 void init_loadCustomEnv() {
-    FILE *envFile = fopen("/var/mobile/Documents/.pojavlauncher/custom_env.txt", "r");
+    FILE *envFile = fopen(env_path, "r");
 
     debug("[Pre-init] Reading custom environment variables (custom_env.txt), opened=%d\n", envFile != NULL);
 
@@ -99,13 +103,34 @@ void init_loadCustomJvmFlags() {
 
 int launchJVM(int argc, char *argv[]) {
     if (!started) {
+        setenv("BUNDLE_PATH", dirname(argv[0]), 1);
+
+        // Are we running on a jailbroken environment?
+        if (strncmp(argv[0], "/Applications", 13) == 0) {
+            setenv("HOME", "/var/mobile", 1);
+        }
+    }
+
+    char* homeDir = getenv("HOME");
+    sprintf((char*) args_path, "%s/Documents/.pojavlauncher/overrideargs.txt", homeDir);
+    sprintf((char*) env_path, "%s/Documents/.pojavlauncher/custom_env.txt", homeDir);
+    sprintf((char*) log_path, "%s/Documents/.pojavlauncher/latestlog.txt", homeDir);
+    sprintf((char*) java_libs_path, "%s/libs", getenv("BUNDLE_PATH"));
+    
+    mkdir(dirname(log_path), 755);
+
+    if (!started) {
         debug("[Pre-init] Staring logging STDIO as jrelog:V\n");
         // Redirect stdio to latestlog.txt
         int ret;
-        char oldname[] = "/var/mobile/Documents/.pojavlauncher/latestlog.txt";
-        char newname[] = "/var/mobile/Documents/.pojavlauncher/latestlog.old.txt";
-        ret = rename(oldname, newname);
+        char newname[2048];
+        sprintf(newname, "%s/Documents/.pojavlauncher/latestlog.old.txt", homeDir);
+        ret = rename(log_path, newname);
         FILE* logFile = fopen(log_path, "w");
+        if (!logFile) {
+            debug("[Pre-init] Error: failed to open %s: %s", log_path, strerror(errno));
+            assert(0 && "Failed to open latestlog.txt. Check oslog for more details.");
+        }
         int log_fd = fileno(logFile);
         dup2(log_fd, 1);
         dup2(log_fd, 2);
@@ -126,8 +151,10 @@ int launchJVM(int argc, char *argv[]) {
         debug("[Pre-init] JAVA_HOME environment variable not set. Defaulting to %s\n", javaHome);
     }
 
-    mkdir("/var/mobile/Documents/.pojavlauncher/controlmap", S_IRWXU | S_IRWXG | S_IRWXO);
-    chdir("/var/mobile/Documents/minecraft");
+    char controlPath[2048];
+    sprintf(controlPath, "%s/Documents/.pojavlauncher/controlmap", homeDir);
+    mkdir(controlPath, S_IRWXU | S_IRWXG | S_IRWXO);
+    setenv("POJAV_PATH_CONTROL", controlPath, 1);
 
     char classpath[10000];
     
@@ -136,12 +163,12 @@ int launchJVM(int argc, char *argv[]) {
     // Generate classpath
     DIR *d;
     struct dirent *dir;
-    d = opendir(java_libs_dir);
+    d = opendir(java_libs_path);
     int cplen = 0;
     if (d) {
         // cplen += sprintf(classpath + cplen, "-Xbootclasspath/a:");
         while ((dir = readdir(d)) != NULL) {
-            cplen += sprintf(classpath + cplen, "%s/%s:", java_libs_dir, dir->d_name);
+            cplen += sprintf(classpath + cplen, "%s/%s:", java_libs_path, dir->d_name);
         }
         closedir(d);
     }
@@ -149,14 +176,23 @@ int launchJVM(int argc, char *argv[]) {
 
     // Check if JVM restarts
     if (!started) {
-        char *javaPath = calloc(1, 4096);
-        snprintf(javaPath, 4096, "%s/bin/java", javaHome);
+        char *frameworkPath = calloc(1, 2048);
+        char *javaPath = calloc(1, 2048);
+        char *userDir = calloc(1, 2048);
+        char *userHome = calloc(1, 2048);
+        snprintf(frameworkPath, 2048, "-Djava.library.path=%s/Frameworks", getenv("BUNDLE_PATH"));
+        snprintf(javaPath, 2048, "%s/bin/java", javaHome);
+        snprintf(userDir, 2048, "-Duser.dir=%s/Documents/minecraft", homeDir);
+        snprintf(userHome, 2048, "-Duser.home=%s/Documents", homeDir);
+        
+        chdir(userDir);
+        
         margv[margc++] = javaPath;
         margv[margc++] = "-XstartOnFirstThread";
         margv[margc++] = "-Djava.system.class.loader=net.kdt.pojavlaunch.PojavClassLoader";
-        margv[margc++] = "-Djava.library.path=/Applications/PojavLauncher.app/Frameworks";
-        margv[margc++] = "-Duser.dir=/var/mobile/Documents/minecraft";
-        margv[margc++] = "-Duser.home=/var/mobile/Documents";
+        margv[margc++] = frameworkPath;
+        margv[margc++] = userDir;
+        margv[margc++] = userHome;
         margv[margc++] = "-Dorg.lwjgl.opengl.libname=libgl4es_114.dylib";
         margv[margc++] = "-Dorg.lwjgl.system.allocator=system";
 
@@ -189,8 +225,8 @@ int launchJVM(int argc, char *argv[]) {
     }
 
     // Load java
-    char libjlipath8[4096]; // java 8
-    char libjlipath16[4096]; // java 16+ (?)
+    char libjlipath8[2048]; // java 8
+    char libjlipath16[2048]; // java 16+ (?)
     sprintf(libjlipath8, "%s/lib/jli/libjli.dylib", javaHome);
     sprintf(libjlipath16, "%s/lib/libjli.dylib", javaHome);
     void* libjli = dlopen(libjlipath8, RTLD_LAZY | RTLD_GLOBAL);

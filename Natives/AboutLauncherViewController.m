@@ -87,7 +87,9 @@
 
 -(void)latestLogShare
 {
-    activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[@"latestlog.txt", [NSURL URLWithString:@"file:///var/mobile/Documents/.pojavlauncher/latestlog.old.txt"]] applicationActivities:nil];
+    NSString *latestlogPath = [NSString stringWithFormat:@"file://%s/Documents/.pojavlauncher/latestlog.old.txt", getenv("HOME")];
+    activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[@"latestlog.txt", [NSURL URLWithString:latestlogPath]] applicationActivities:nil];
+
     [self presentViewController:activityViewController animated:YES completion:nil];
 }
 

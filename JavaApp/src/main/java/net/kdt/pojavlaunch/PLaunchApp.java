@@ -20,11 +20,11 @@ public class PLaunchApp {
     public static void main(String[] args) throws Throwable {
         // User might remove the minecraft folder, this can cause crashes, safety re-create it
         try {
-            File mcDir = new File("/var/mobile/Documents/minecraft");
+            File mcDir = new File(Tools.DIR_GAME_NEW);
             mcDir.mkdirs();
             new File(Tools.DIR_ACCOUNT_NEW).mkdirs();
-            if (!new File(mcDir, "config_ver.txt").exists()) {
-                Tools.write(mcDir.getAbsolutePath() + "/config_ver.txt", "1.16.5");
+            if (!new File(Tools.DIR_APP_DATA, "config_ver.txt").exists()) {
+                Tools.write(Tools.DIR_APP_DATA + "/config_ver.txt", "1.16.5");
                 
                 Tools.write(mcDir.getAbsolutePath() + "/launcher_profiles.json",
                   Tools.read(Tools.DIR_DATA + "/launcher_profiles.json"));
@@ -35,12 +35,8 @@ public class PLaunchApp {
             e.printStackTrace();
         }
 
-        if (args[0].startsWith("/Applications/")) {
-            System.out.println("We are on java now! Starting UI...");
-            UIKit.launchUI(args);
-        } else {
-            return;
-        }
+        System.out.println("We are on java now! Starting UI...");
+        UIKit.launchUI(args);
     }
 
     // Called from SurfaceViewController
@@ -66,7 +62,7 @@ public class PLaunchApp {
             String mcver = "1.16.5";
 
             try {
-                mcver = Tools.read(Tools.DIR_GAME_NEW + "/config_ver.txt");
+                mcver = Tools.read(Tools.DIR_APP_DATA + "/config_ver.txt");
             } catch (IOException e) {
                 UIKit.updateProgressSafe(0, "config_ver.txt not found, defaulting to Minecraft 1.16.5");
             }

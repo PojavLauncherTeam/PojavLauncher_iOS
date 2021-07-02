@@ -137,7 +137,9 @@ int notchOffset;
     // Temporary fallback controls
     BOOL cc_fallback = YES;
     
-    FILE *cc_file = fopen("/var/mobile/Documents/.pojavlauncher/controlmap/default.json", "r");
+    char controlFilePath[2048];
+    sprintf(controlFilePath, "%s/default.json", getenv("POJAV_PATH_CONTROL"));
+    FILE *cc_file = fopen(controlFilePath, "r");
 
     // 100kb (might not safe)
     char cc_data[102400];

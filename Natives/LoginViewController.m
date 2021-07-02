@@ -374,7 +374,9 @@ NSMutableArray *accountList;
     // List accounts
     DIR *d;
     struct dirent *dir;
-    d = opendir("/var/mobile/Documents/.pojavlauncher/accounts");
+    char accPath[2048];
+    sprintf(accPath, "%s/Documents/.pojavlauncher/accounts", getenv("HOME"));
+    d = opendir(accPath);
     if (d) {
         int i = 0;
         while ((dir = readdir(d)) != NULL) {
@@ -426,8 +428,8 @@ NSMutableArray *accountList;
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSString *str = [accountList objectAtIndex:indexPath.row];
-        char accPath[1024];
-        sprintf(accPath, "/var/mobile/Documents/.pojavlauncher/accounts/%s.json", [str UTF8String]);
+        char accPath[2048];
+        sprintf(accPath, "%s/Documents/.pojavlauncher/accounts/%s.json", getenv("HOME"), [str UTF8String]);
         remove(accPath);
         [accountList removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

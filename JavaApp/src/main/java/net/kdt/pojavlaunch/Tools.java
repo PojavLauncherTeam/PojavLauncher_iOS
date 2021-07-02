@@ -53,10 +53,10 @@ public final class Tools
     public static final Gson GLOBAL_GSON = new GsonBuilder().setPrettyPrinting().create();
     
     public static final String URL_HOME = "https://pojavlauncherteam.github.io/PojavLauncher";
-    public static String DIR_DATA = "/Applications/PojavLauncher.app";
+    public static String DIR_DATA = System.getenv("BUNDLE_PATH");
     public static String CURRENT_ARCHITECTURE;
 
-    public static final String DIR_GAME_HOME = "/var/mobile/Documents";
+    public static final String DIR_GAME_HOME = System.getenv("HOME") + "/Documents";
     public static final String DIR_GAME_NEW = DIR_GAME_HOME + "/minecraft";
     
     public static final String DIR_APP_DATA = DIR_GAME_HOME + "/.pojavlauncher";

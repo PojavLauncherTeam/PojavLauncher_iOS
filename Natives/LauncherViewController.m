@@ -12,6 +12,8 @@
 
 @implementation LauncherViewController
 
+NSString* configver_path;
+
 NSArray* versionList;
 UIPickerView* versionPickerView;
 UITextField* versionTextField;
@@ -25,8 +27,6 @@ int versionSelectedAt = 0;
     [self setNeedsUpdateOfHomeIndicatorAutoHidden];
     
     [self setTitle:@"PojavLauncher"];
-
-    FILE *configver_file = fopen("/var/mobile/Documents/minecraft/config_ver.txt", "rw");
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];
@@ -45,9 +45,11 @@ int versionSelectedAt = 0;
         self.view.backgroundColor = [UIColor whiteColor];
     }
 
-    char configver[1024];
-    if (!fgets(configver, 1024, configver_file)) {
-        NSLog(@"Error: could not read config_ver.txt");
+    NSError *error;
+    configver_path = [NSString stringWithFormat:@"%s/Documents/.pojavlauncher/config_ver.txt", getenv("HOME")];
+    NSString *configver = [NSString stringWithContentsOfFile:configver_path encoding:NSUTF8StringEncoding error:&error];
+    if (error) {
+        NSLog(@"Error: could not read config_ver.txt: %@", error.localizedDescription);
     }
 
     UILabel *versionTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 4.0, 0.0, 0.0)];
@@ -59,7 +61,7 @@ int versionSelectedAt = 0;
     versionTextField = [[UITextField alloc] initWithFrame:CGRectMake(versionTextView.bounds.size.width + 4.0, 4.0, width - versionTextView.bounds.size.width - 8.0, height - 58.0)];
     [versionTextField addTarget:versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     versionTextField.placeholder = @"Specify version...";
-    versionTextField.text = [NSString stringWithUTF8String:configver];
+    versionTextField.text = configver;
     versionTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
     versionTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 
@@ -75,7 +77,6 @@ int versionSelectedAt = 0;
     versionTextField.inputAccessoryView = versionPickToolbar;
     versionTextField.inputView = versionPickerView;
 
-    fclose(configver_file);
     [scrollView addSubview:versionTextField];
 
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleDone target:self action:@selector(enterPreferences)];
@@ -96,7 +97,7 @@ int versionSelectedAt = 0;
 - (void)fetchLocalVersionList:(NSMutableArray *)finalVersionList withPreviousIndex:(int)index
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *versionPath = @"/var/mobile/Documents/minecraft/versions/";
+    NSString *versionPath = [NSString stringWithFormat:@"%s/Documents/minecraft/versions", getenv("HOME")];
     NSArray *localVersionList = [fileManager contentsOfDirectoryAtPath:versionPath error:Nil];
     for (NSString *versionId in localVersionList) {
         NSString *localPath = [versionPath stringByAppendingString:versionId];
@@ -207,7 +208,7 @@ int versionSelectedAt = 0;
 #pragma mark - UIPickerView stuff
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     versionTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
-    [versionTextField.text writeToFile:@"/var/mobile/Documents/minecraft/config_ver.txt" atomically:NO encoding:NSUTF8StringEncoding error:nil];
+    [versionTextField.text writeToFile:configver_path atomically:NO encoding:NSUTF8StringEncoding error:nil];
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)thePickerView {
