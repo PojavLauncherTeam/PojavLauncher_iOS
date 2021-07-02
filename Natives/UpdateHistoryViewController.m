@@ -202,7 +202,13 @@
     [backTwoVerIssuesCont sizeToFit];
     [scrollView addSubview:backTwoVerIssuesCont];
 
-    scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, scrollView.frame.size.height + 900);
+    UILabel *backMoreVerView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, backTwoVerIssuesCont.frame.origin.y + backTwoVerIssuesCont.frame.size.height, scrollView.frame.size.width - 4, 30.00)];
+    backMoreVerView.text = @"See the GitHub for even earlier releases";
+    backMoreVerView.numberOfLines = 0;
+    [scrollView addSubview:backMoreVerView];
+    [backMoreVerView setFont:[UIFont boldSystemFontOfSize:20]];
+
+    scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, backMoreVerView.frame.origin.y + backMoreVerView.frame.size.height);
 
 }
 
