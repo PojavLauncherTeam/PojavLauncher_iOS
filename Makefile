@@ -1,7 +1,8 @@
 SHELL := /bin/bash
 .SHELLFLAGS = -ec
 
-DETECT  := $(shell ibtool -v | grep com.apple.ibtool.errors && echo 1)
+
+DETECT  := $(shell clang -v 2>&1 | grep Target | cut -b 9-60)
 
 # The below are going to be used for the AboutLauncherViewController.m file's version.
 # Formatting will be similar to one of the below:
@@ -11,10 +12,15 @@ VERSION := $(shell cat DEBIAN/control | grep Version | cut -b 9-60)
 COMMIT  := $(shell git log --oneline | sed '2,10000000d' | cut -b 1-7)
 
 # Distinguish iOS from macOS
-ifneq ($(filter 1,$(DETECT)),)
+ifneq ($(filter arm64-apple-ios%,$(DETECT)),)
 IOS         := 1
 SDKPATH     := /usr/share/SDKs/iPhoneOS.sdk
-else ifneq ($(filter 0,$(DETECT)),)
+endif
+ifneq ($(filter aarch64-apple-darwin%,$(DETECT)),)
+IOS         := 0
+SDKPATH     := $(shell xcrun --sdk iphoneos --show-sdk-path)
+endif
+ifneq ($(filter x86_64-apple-darwin%,$(DETECT)),)
 IOS         := 0
 SDKPATH     := $(shell xcrun --sdk iphoneos --show-sdk-path)
 endif
