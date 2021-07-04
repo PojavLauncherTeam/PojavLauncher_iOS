@@ -81,8 +81,6 @@ public class PLaunchApp {
 
             new File(Tools.DIR_HOME_VERSION + "/" + mcver).mkdirs();
 
-            JMinecraftVersionList.Version verInfo = null;
-
             try {
                 final String downVName = "/" + mcver + "/" + mcver;
                 String minecraftMainJar = Tools.DIR_HOME_VERSION + downVName + ".jar";
@@ -90,26 +88,37 @@ public class PLaunchApp {
 
                 JAssets assets = null;
 
-                if (versionPath.startsWith("http") && !new File(verJsonDir).exists()) {
+                if (AccountJNI.CURRENT_ACCOUNT.accessToken.equals("0")) {
+                    if (!new File(verJsonDir).exists()) {
+                        // Local account: disallow install new version
+                        UIKit.showError("Error", "Minecraft can't be legally installed when logged in with a local account. Please switch to paid account to continue.", false);
+                        return;
+                    } else {
+                        // Local account: jump to launch Minecraft, not download anything
+                        mVersion = Tools.getVersionInfo(mcver);
+                        UIKit.launchMinecraftSurface(mVersion.arguments != null);
+                        return;
+                    }
+                } else if (versionPath.startsWith("http") && !new File(verJsonDir).exists()) {
                     UIKit.updateProgressSafe(0, "Downloading " + mcver + ".json");
                     Tools.downloadFile(versionPath, verJsonDir);
                 }
 
-                mVersion = verInfo = Tools.getVersionInfo(mcver);
+                mVersion = Tools.getVersionInfo(mcver);
                 try {
                     UIKit.updateProgressSafe(0, "Downloading " + mcver + ".json assets info");
-                    assets = downloadIndex(verInfo.assets, new File(Tools.ASSETS_PATH, "indexes/" + verInfo.assets + ".json"));
+                    assets = downloadIndex(mVersion.assets, new File(Tools.ASSETS_PATH, "indexes/" + mVersion.assets + ".json"));
                 } catch (IOException e) {
                     UIKit.updateProgressSafe(0, "Error: " + e.getMessage());
                     e.printStackTrace();
                 }
 
-                maxProgress = verInfo.libraries.length + 1 + (assets == null ? 0 : assets.objects.size());
+                maxProgress = mVersion.libraries.length + 1 + (assets == null ? 0 : assets.objects.size());
 
                 File outLib;
                 String libPathURL;
 
-                for (final DependentLibrary libItem : verInfo.libraries) {
+                for (final DependentLibrary libItem : mVersion.libraries) {
                     if (
                         libItem.name.startsWith("net.java.jinput") ||
                         libItem.name.startsWith("org.lwjgl")
@@ -147,12 +156,12 @@ public class PLaunchApp {
                 UIKit.updateProgressSafe(currProgress / maxProgress, "Downloading " + mcver + ".jar");
                 File minecraftMainFile = new File(minecraftMainJar);
                 if (!minecraftMainFile.exists() || minecraftMainFile.length() == 0l) {
-                    Tools.downloadFile(verInfo.downloads.values().toArray(new MinecraftClientInfo[0])[0].url, minecraftMainJar);
+                    Tools.downloadFile(mVersion.downloads.values().toArray(new MinecraftClientInfo[0])[0].url, minecraftMainJar);
                 }
 
                 if (assets != null) {
                     mIsAssetsProcessing = true;
-                    downloadAssets(assets, verInfo.assets, assets.map_to_resources ? new File(Tools.OBSOLETE_RESOURCES_PATH) : new File(Tools.ASSETS_PATH));
+                    downloadAssets(assets, mVersion.assets, assets.map_to_resources ? new File(Tools.OBSOLETE_RESOURCES_PATH) : new File(Tools.ASSETS_PATH));
                 }
 
                 // TODO download assets
@@ -170,7 +179,7 @@ public class PLaunchApp {
     private static int downloaded = 0;
     public static void downloadAssets(final JAssets assets, String assetsVersion, final File outputDir) throws IOException {
         LinkedBlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<>();
-        final ThreadPoolExecutor executor = new ThreadPoolExecutor(50, 50, 500, TimeUnit.MILLISECONDS, workQueue);
+        final ThreadPoolExecutor executor = new ThreadPoolExecutor(10, 10, 500, TimeUnit.MILLISECONDS, workQueue);
 
         File hasDownloadedFile = new File(outputDir, "downloaded/" + assetsVersion + ".downloaded");
         if (!hasDownloadedFile.exists()) {
