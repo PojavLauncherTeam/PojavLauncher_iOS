@@ -197,14 +197,6 @@ int launchJVM(int argc, char *argv[]) {
         margv[margc++] = "-Dorg.lwjgl.system.allocator=system";
 
         init_loadCustomJvmFlags();
-
-        margv[margc++] = "-cp";
-        margv[margc++] = classpath;
-        margv[margc++] = "net.kdt.pojavlaunch.PLaunchApp";
-        
-        for (int i = 0; i < argc; i++) {
-            margv[margc++] = argv[i];
-        }
     } else {
         // Locate gl4es library name:
         // Reverse the loop, since it is overridable.
@@ -229,16 +221,51 @@ int launchJVM(int argc, char *argv[]) {
     char libjlipath16[2048]; // java 16+ (?)
     sprintf(libjlipath8, "%s/lib/jli/libjli.dylib", javaHome);
     sprintf(libjlipath16, "%s/lib/libjli.dylib", javaHome);
-    void* libjli = dlopen(libjlipath8, RTLD_LAZY | RTLD_GLOBAL);
+    void* libjli = dlopen(libjlipath16, RTLD_LAZY | RTLD_GLOBAL);
 
     if (!libjli) {
-        libjli = dlopen(libjlipath16, RTLD_LAZY | RTLD_GLOBAL);
+        debug("[Init] Can't load %s, trying %s", libjlipath16, libjlipath8);
+        libjli = dlopen(libjlipath8, RTLD_LAZY | RTLD_GLOBAL);
         if (!libjli) {
             debug("[Init] JLI lib = NULL: %s", dlerror());
             return -1;
         }
+
+        if (!started) {
+            // Setup Caciocavallo
+            margv[margc++] = "-Djava.awt.headless=false";
+            margv[margc++] = "-Dcacio.font.fontmanager=sun.awt.X11FontManager";
+            margv[margc++] = "-Dcacio.font.fontscaler=sun.font.FreetypeFontScaler";
+            margv[margc++] = "-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel";
+            margv[margc++] = "-Dawt.toolkit=net.java.openjdk.cacio.ctc.CTCToolkit";
+            margv[margc++] = "-Djava.awt.graphicsenv=net.java.openjdk.cacio.ctc.CTCGraphicsEnvironment";
+
+            // Generate Caciocavallo bootclasspath
+            char cacio_libs_path[2048];
+            char cacio_classpath[8192];
+            sprintf((char*) cacio_libs_path, "%s/libs_caciocavallo", getenv("BUNDLE_PATH"));
+            cplen = sprintf(cacio_classpath, "-Xbootclasspath/p");
+            d = opendir(cacio_libs_path);
+            if (d) {
+                while ((dir = readdir(d)) != NULL) {
+                    cplen += sprintf(cacio_classpath + cplen, ":%s/%s", cacio_libs_path, dir->d_name);
+                }
+                closedir(d);
+            }
+            margv[margc++] = cacio_classpath;
+        }
     }
     debug("[Init] Found JLI lib");
+    
+    if (!started) {
+        margv[margc++] = "-cp";
+        margv[margc++] = classpath;
+        margv[margc++] = "net.kdt.pojavlaunch.PLaunchApp";
+        
+        for (int i = 0; i < argc; i++) {
+            margv[margc++] = argv[i];
+        }
+    }
 
     JLI_Launch_func *pJLI_Launch =
           (JLI_Launch_func *)dlsym(libjli, "JLI_Launch");
@@ -249,7 +276,13 @@ int launchJVM(int argc, char *argv[]) {
     }
 
     debug("[Init] Calling JLI_Launch");
-    
+
+/*
+    for (int i = 0; i < margc; i++) {
+        debug("arg[%d] = %s", i, margv[i]);
+    }
+*/
+
     int targc = started ? argc : margc;
     char **targv = started ? argv : margv;
     

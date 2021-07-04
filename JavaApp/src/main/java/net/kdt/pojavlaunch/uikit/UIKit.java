@@ -16,6 +16,8 @@ public class UIKit {
     }
 
     public static void callback_SurfaceViewController_launchMinecraft(int width, int height) {
+        System.setProperty("cacio.managed.screensize", width + "x" + height);
+
         GLFW.internalChangeMonitorSize(width, height);
         CallbackBridge.mouseX = width / 2;
         CallbackBridge.mouseY = height / 2;

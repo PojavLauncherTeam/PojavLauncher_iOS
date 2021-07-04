@@ -125,9 +125,10 @@ package:
 	@if [ '$(IOS)' = '0' ]; then \
 		cp -R Natives/resources/* Natives/build/PojavLauncher.app/ || exit 1; \
 		cp Natives/build/libpojavexec.dylib Natives/build/PojavLauncher.app/Frameworks/ || exit 1; \
-		mkdir Natives/build/PojavLauncher.app/libs; \
+		mkdir Natives/build/PojavLauncher.app/{libs,libs_caciocavallo}; \
 		cp JavaApp/local_out/launcher.jar Natives/build/PojavLauncher.app/libs/launcher.jar || exit 1; \
 		cp -R JavaApp/libs/* Natives/build/PojavLauncher.app/libs/ || exit 1; \
+		cp -R JavaApp/libs_caciocavallo/* Natives/build/PojavLauncher.app/libs_caciocavallo/ || exit 1; \
 		mkdir -p packages/pojavlauncher_iphoneos-arm/{Applications,var/mobile/Documents/minecraft,var/mobile/Documents/.pojavlauncher}; \
 		sudo chown 501:501 packages/pojavlauncher_iphoneos-arm/var/mobile/Documents/* || exit 1; \
 		cp -R Natives/build/PojavLauncher.app packages/pojavlauncher_iphoneos-arm/Applications; \
@@ -143,6 +144,7 @@ package:
 		cp -R Natives/build/libpojavexec.dylib Natives/build/PojavLauncher.app/Frameworks/libpojavexec.dylib || exit 1; \
 		cp -R Natives/resources/* Natives/build/PojavLauncher.app/ || exit 1; \
 		cp -R JavaApp/libs Natives/build/PojavLauncher.app/libs || exit 1; \
+		cp -R JavaApp/libs_caciocavallo Natives/build/PojavLauncher.app/libs_caciocavallo || exit 1; \
 		cp JavaApp/local_out/launcher.jar Natives/build/PojavLauncher.app/libs/ || exit 1; \
 		mkdir -p packages/pojavlauncher_iphoneos-arm/{Applications,var/mobile/Documents/minecraft,var/mobile/Documents/.pojavlauncher}; \
 		sudo chown 501:501 packages/pojavlauncher_iphoneos-arm/var/mobile/Documents/* || exit 1; \
