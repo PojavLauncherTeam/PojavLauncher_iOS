@@ -65,7 +65,10 @@ void init_loadCustomEnv() {
         size_t len = 0;
         ssize_t read;
         while ((read = getline(&line, &len, envFile)) != -1) {
-            if (read == 0 || line[0] == '#') return;
+            if (line[0] == '#' || line[0] == '\n') continue;
+            if (line[read-1] == '\n') {
+                line[read-1] = '\0';
+            }
             if (strchr(line, '=') != NULL) {
                 debug("[Pre-init] Added custom env: %s", line);
                 setenv(strtok(line, "="), strtok(NULL, "="), 1);
