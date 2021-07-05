@@ -233,7 +233,7 @@ int launchJVM(int argc, char *argv[]) {
 
         if (!started) {
             // Setup Caciocavallo
-            margv[margc++] = "-Djava.awt.headless=false";
+            margv[margc++] = "-Djava.awt.headless=true";
             margv[margc++] = "-Dcacio.font.fontmanager=sun.awt.X11FontManager";
             margv[margc++] = "-Dcacio.font.fontscaler=sun.font.FreetypeFontScaler";
             margv[margc++] = "-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel";
