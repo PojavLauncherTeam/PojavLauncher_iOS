@@ -2,16 +2,21 @@
 #import "LoginViewController.h"
 #import "SceneDelegate.h"
 
-// FIXME: local build complains that "__isOSVersionAtLeast" is undefined!
-/*
-int __isOSVersionAtLeast(int major, int minor, int patch) {
-    NSOperatingSystemVersion version;
-    version.majorVersion = major;
-    version.minorVersion = minor;
-    version.patchVersion = patch;
-    return [[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:version];
-}
-*/
+#ifdef __APPLE__
+    #include "TargetConditionals.h"
+    #ifdef TARGET_OS_OSX
+
+    #endif
+    #ifdef TARGET_OS_IOS
+        int __isOSVersionAtLeast(int major, int minor, int patch) {
+            NSOperatingSystemVersion version;
+            version.majorVersion = major;
+            version.minorVersion = minor;
+            version.patchVersion = patch;
+            return [[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:version];
+        }
+    #endif
+#endif
 
 @implementation AppDelegate
 
