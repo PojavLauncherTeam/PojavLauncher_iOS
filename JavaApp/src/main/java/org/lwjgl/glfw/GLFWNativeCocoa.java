@@ -81,7 +81,7 @@ public class GLFWNativeCocoa {
         return invokePP(window, __functionAddress);
 */
 
-        // return NULL instead to skip calling to NSWindow stuff, accroding to decompiling MC source code
+        // return NULL instead to skip calling to NSWindow stuff, accroding to decompiling Blaze3D source code
         return 0l;
     }
 
