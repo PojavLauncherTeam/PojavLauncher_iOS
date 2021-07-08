@@ -491,8 +491,22 @@ NSString* inputStringBefore;
         NSString *newText = [inputView.text substringFromIndex:INPUT_SPACE_LENGTH];
         int charLength = (int) [newText length];
         for (int i = 0; i < charLength; i++) {
-            // Directly convert unichar to jchar since both are in UTF-16 encoding.
-            Java_org_lwjgl_glfw_CallbackBridge_nativeSendCharMods(NULL, NULL, (jchar) [newText characterAtIndex:i] /* charText[i] */, /* mods */ 0);
+            // LWJGL2: convert to UTF-8
+            // LWJGL3: Directly convert unichar to jchar since both are in UTF-16 encoding.
+
+/*
+            jchar theChar = (jchar) 
+        (isUseStackQueueCall ?
+                [newText UTF8String][i] : [newText characterAtIndex:i]);
+*/
+
+            jchar theChar = (jchar) [newText characterAtIndex:i];
+            if (isUseStackQueueCall) {
+                Java_org_lwjgl_glfw_CallbackBridge_nativeSendCharMods(NULL, NULL, theChar, /* mods */ 0);
+            } else {
+                Java_org_lwjgl_glfw_CallbackBridge_nativeSendChar(NULL, NULL, theChar);
+            }
+
             inputView.text = [inputView.text substringFromIndex:1];
             if (inputTextLength < INPUT_SPACE_LENGTH) {
                 ++inputTextLength;
