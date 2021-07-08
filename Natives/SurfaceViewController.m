@@ -1,5 +1,5 @@
 #import "SurfaceViewController.h"
-#import "egl_bridge_ios.h"
+#import "egl_bridge.h"
 #import "ios_uikit_bridge.h"
 
 #import "customcontrols/ControlButton.h"

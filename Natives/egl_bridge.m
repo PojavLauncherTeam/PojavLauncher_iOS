@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <sys/types.h>
 
-#include "egl_bridge_ios.h"
+#include "egl_bridge.h"
 
 #include "EGL/egl.h"
 #include "GLES2/gl2.h"
@@ -174,7 +174,8 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglMakeCurrent(JNIEnv*
             (EGLContext *) window
         );
 #else
-        success = makeSharedContext();
+        [MGLContext setCurrentContext:nil];
+        success = [MGLContext setCurrentContext:glContext] == YES;
 #endif 
 
         if (success == EGL_FALSE) {
@@ -182,7 +183,7 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglMakeCurrent(JNIEnv*
         }
 
         debug("EGLBridge: Trigger an initial swapBuffers");
-        swapBuffers();
+        [viewController resume];
 
         // Test
 #ifdef GLES_TEST
@@ -260,7 +261,6 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglSwapBuffers(JNIEnv 
         return JNI_FALSE;
     }
 
-    // swapBuffers();
     jboolean result = (jboolean) eglSwapBuffers(potatoBridge.eglDisplay, eglGetCurrentSurface(EGL_DRAW));
 
     if (!result) {
