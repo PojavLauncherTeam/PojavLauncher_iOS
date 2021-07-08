@@ -65,7 +65,7 @@ void terminateEgl() {
 #ifdef USE_EGL
     eglMakeCurrent(potatoBridge.eglDisplay, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
 #else
-    clearCurrentContext();
+    [MGLContext setCurrentContext:nil];
 #endif
 
 /*
@@ -217,7 +217,7 @@ JNIEXPORT void JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglDetachOnCurrentThread(J
 #ifdef USE_EGL
     eglMakeCurrent(potatoBridge.eglDisplay, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
 #else
-    clearCurrentContext();
+    [MGLContext setCurrentContext:nil];
 #endif
 }
 

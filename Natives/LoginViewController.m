@@ -113,7 +113,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     button_login.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
     button_login.layer.cornerRadius = 5;
     [button_login setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [button_login addTarget:self action:@selector(accountType) forControlEvents:UIControlEventTouchUpInside];
+    [button_login addTarget:self action:@selector(accountType:) forControlEvents:UIControlEventTouchUpInside];
     [scrollView addSubview:button_login];
 
     UIButton *button_accounts = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -136,13 +136,14 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     }
 }
 
-- (void)accountType {
+- (void)accountType:(UIButton *)sender {
    UIAlertController *fullAlert = [UIAlertController alertControllerWithTitle:@"Let's get you signed in." message:@"What account do you use to log into Minecraft?"preferredStyle:UIAlertControllerStyleActionSheet];
     UIAlertAction *mojang = [UIAlertAction actionWithTitle:@"Mojang account" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginUsername:TYPE_MOJANG];}];
     UIAlertAction *microsoft = [UIAlertAction actionWithTitle:@"Microsoft account" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginMicrosoft];}];
-    UIAlertAction *offline = [UIAlertAction actionWithTitle:@"Local account"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginOffline];}];
-    UIAlertAction *demo = [UIAlertAction actionWithTitle:@"Demo account" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginDemo];}];
+    UIAlertAction *offline = [UIAlertAction actionWithTitle:@"Local account"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginOffline:sender];}];
+    UIAlertAction *demo = [UIAlertAction actionWithTitle:@"Demo account" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginDemo:sender];}];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+    [self setPopoverProperties:fullAlert.popoverPresentationController sender:sender];
     [self presentViewController:fullAlert animated:YES completion:nil];
     [fullAlert addAction:microsoft];
     [fullAlert addAction:mojang];
@@ -241,30 +242,31 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     }
 }
 
-- (void)loginOffline {
+- (void)loginOffline:(UIButton *)sender {
     UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:@"Offline mode is now Local mode." message:@"You can continue to play installed versions, but you can no longer download Minecraft without a paid account. No support will be provided for issues with local accounts, or other means of acquiring Minecraft. See our website for more information."preferredStyle:UIAlertControllerStyleActionSheet];
+    [self setPopoverProperties:offlineAlert.popoverPresentationController sender:sender];
     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginUsername:TYPE_OFFLINE];}];
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self accountType];}];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self accountType:sender];}];
     [self presentViewController:offlineAlert animated:YES completion:nil];
     [offlineAlert addAction:ok];
     [offlineAlert addAction:cancel];
 }
 
-- (void)loginDemo {
+- (void)loginDemo:(UIButton *)sender {
     UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:@"This option is currently unavailable." message:@"It will be fully implemented in a future update." preferredStyle:UIAlertControllerStyleActionSheet];
-    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self accountType];}];
+    [self setPopoverProperties:offlineAlert.popoverPresentationController sender:sender];
+    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self accountType:sender];}];
     [self presentViewController:offlineAlert animated:YES completion:nil];
     [offlineAlert addAction:ok];
 }
 
-- (void)loginAccount:(UIButton*)sender {
+- (void)loginAccount:(UIButton *)sender {
     LoginListViewController *vc = [[LoginListViewController alloc] init];
     vc.modalPresentationStyle = UIModalPresentationPopover;
     vc.preferredContentSize = CGSizeMake(350, 250);
     
     UIPopoverPresentationController *popoverController = [vc popoverPresentationController];
-    popoverController.sourceView = sender;
-    popoverController.sourceRect = sender.bounds;
+    [self setPopoverProperties:popoverController sender:sender];
     popoverController.permittedArrowDirections = UIPopoverArrowDirectionAny;
     popoverController.delegate = self;
     [self presentViewController:vc animated:YES completion:nil];
@@ -336,6 +338,13 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 {
     LauncherFAQViewController *vc = [[LauncherFAQViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)setPopoverProperties:(UIPopoverPresentationController *)controller sender:(UIButton *)sender {
+    if (controller != nil) {
+        controller.sourceView = sender;
+        controller.sourceRect = sender.bounds;
+    }
 }
 
 #pragma mark - UIPopoverPresentationControllerDelegate
