@@ -7,7 +7,7 @@
 - The official Twitter for PojavLauncher is [@PLaunchTeam](https://twitter.com/PLaunchTeam). Any others (most notably @PojavLauncher) are fake, please report them to Twitter's moderation team.
 
 ## Introduction
-PojavLauncher is a Minecraft: Java Edition launcher for Android and iOS based on [Boardwalk](https://github.com/zhuowei/Boardwalk). This launcher can launch most of available Minecraft versions (from 1.6.1 to 21w08b (1.17) snapshot, including Combat Test versions). Modding via Forge (1.16.x only) and Fabric are also supported. This repository contains source code for iOS/iPadOS platform. For Android platform, check out [PojavLauncher repository](https://github.com/PojavLauncherTeam/PojavLauncher).
+PojavLauncher is a Minecraft: Java Edition launcher for Android and iOS based on [Boardwalk](https://github.com/zhuowei/Boardwalk). This launcher can launch most of available Minecraft versions (from 1.6.1 to 21w08b (1.17) snapshot, including Combat Test versions). 1.17 support is available with our current workaround described [here](https://pojavlauncherteam.github.io/updates/117). Modding via Forge (1.16.x only) and Fabric are also supported. Older versions of Forge and Fabric can be used with OpenJDK 8. This repository contains source code for iOS/iPadOS platform. For Android platform, check out [PojavLauncher repository](https://github.com/PojavLauncherTeam/PojavLauncher).
 
 This launcher is available on the Procursus repo, thanks to [@Diatrus](https://twitter.com/Diatrus), and Doregon's Repository, thanks to [@Doregon](https://twitter.com/AdamTunnic)
 
@@ -70,3 +70,6 @@ PojavLauncher is amazing, and surprisingly stable, and it wouldn't be this way w
 - [OpenJDK 16](https://www.ios-repo-updates.com/repository/procursus/package/openjdk-16-jre) ported to iOS by @Diatrus: [GNU GPLv2 License](https://openjdk.java.net/legal/gplv2+ce.html).
 - [LWJGL3](https://github.com/PojavLauncherTeam/lwjgl3): [BSD-3 License](https://github.com/LWJGL/lwjgl3/blob/master/LICENSE.md).
 - [LWJGLX](https://github.com/PojavLauncherTeam/lwjglx) (LWJGL2 API compatibility layer for LWJGL3): unknown license.
+
+
+<!-- Ava was here -->
