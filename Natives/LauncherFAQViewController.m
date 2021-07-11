@@ -13,9 +13,6 @@
 {
     [super viewDidLoad];
     
-    [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
-    [self setNeedsUpdateOfHomeIndicatorAutoHidden];
-    
     [self setTitle:@"Launcher FAQ"];
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
@@ -36,43 +33,48 @@
         self.view.backgroundColor = [UIColor whiteColor];
     }
 
-    UILabel *boldSnapView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 4.0, width - 4, 15.0)];
-    boldSnapView.text = @"Version incompatibility";
+    UILabel *boldJDKView = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 4.0, width - 40, 30.0)];
+    boldJDKView.text = @"Modded versions before 1.16";
+    boldJDKView.lineBreakMode = NSLineBreakByWordWrapping;
+    boldJDKView.numberOfLines = 0;
+    [scrollView addSubview:boldJDKView];
+    [boldJDKView setFont:[UIFont boldSystemFontOfSize:20]];
+
+    UILabel *JDKView = [[UILabel alloc] initWithFrame:CGRectMake(20.0, boldJDKView.frame.origin.y + boldJDKView.frame.size.height, width - 40, 30.0)];
+    JDKView.text = @"In order to use these versions, you need to install openjdk-8-jre from Doregon's Repo and write the following in /var/mobile/Documents/.pojavlauncher/custom_env.txt:\n\n"
+                    "JAVA_HOME=/usr/lib/jvm/java-8-openjdk";
+    JDKView.lineBreakMode = NSLineBreakByWordWrapping;
+    JDKView.numberOfLines = 0;
+    [JDKView sizeToFit];
+    [scrollView addSubview:JDKView];
+
+    UILabel *boldSnapView = [[UILabel alloc] initWithFrame:CGRectMake(20.0, JDKView.frame.origin.y + JDKView.frame.size.height, width - 40, 30.0)];
+    boldSnapView.text = @"Vanilla versions after 21w08b";
     boldSnapView.lineBreakMode = NSLineBreakByWordWrapping;
     boldSnapView.numberOfLines = 0;
-    [boldSnapView sizeToFit];
     [scrollView addSubview:boldSnapView];
-    [boldSnapView setFont:[UIFont boldSystemFontOfSize:15]];
+    [boldSnapView setFont:[UIFont boldSystemFontOfSize:20]];
 
-    UILabel *snapView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, boldSnapView.frame.origin.y + 20.0, width - 4, 30.0)];
-    snapView.text = @"Versions of vanilla Minecraft below 1.6 and higher than 21w10a, and modded Minecraft below 1.16 do not yet work with PojavLauncher iOS. There are currently no solutions to fix this issue, but solutions are in the works.";
+    UILabel *snapView = [[UILabel alloc] initWithFrame:CGRectMake(20.0, boldSnapView.frame.origin.y + boldSnapView.frame.size.height, width - 40, 30.0)];
+    snapView.text = @"In order to use these versions, you need to follow the instructions on our website (Updates > Preliminary support for 1.17)";
     snapView.lineBreakMode = NSLineBreakByWordWrapping;
     snapView.numberOfLines = 0;
     [snapView sizeToFit];
     [scrollView addSubview:snapView];
 
-    UILabel *boldJetsamView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, snapView.frame.origin.y + 70, width - 4, 15.0)];
+    UILabel *boldJetsamView = [[UILabel alloc] initWithFrame:CGRectMake(20.0, snapView.frame.origin.y + snapView.frame.size.height, width - 40, 30.0)];
     boldJetsamView.text = @"Jetsam crashes";
     boldJetsamView.lineBreakMode = NSLineBreakByWordWrapping;
     boldJetsamView.numberOfLines = 0;
-    [boldJetsamView sizeToFit];
     [scrollView addSubview:boldJetsamView];
-    [boldJetsamView setFont:[UIFont boldSystemFontOfSize:15]];
+    [boldJetsamView setFont:[UIFont boldSystemFontOfSize:20]];
 
-    UILabel *jetsamView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, boldJetsamView.frame.origin.y + 20.0, width - 4, 30.0)];
-    jetsamView.text = @"Even though PojavLauncher only allocates 1/4 of the system's total memory, jetsam can still kill the game. A solution is described on the PojavLauncher website.";
+    UILabel *jetsamView = [[UILabel alloc] initWithFrame:CGRectMake(20.0, boldJetsamView.frame.origin.y + boldJetsamView.frame.size.height, width - 40, 30.0)];
+    jetsamView.text = @"Even though PojavLauncher only allocates 1/4 of the system's total memory, jetsam can still kill the game. A solution is described on the PojavLauncher website (iOS > Wiki > Going further > overb0arding)";
     jetsamView.lineBreakMode = NSLineBreakByWordWrapping;
     jetsamView.numberOfLines = 0;
     [jetsamView sizeToFit];
     [scrollView addSubview:jetsamView];
-}
-
-- (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
-    return UIRectEdgeBottom;
-}
-
-- (BOOL)prefersHomeIndicatorAutoHidden {
-    return NO;
 }
 
 -(void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
