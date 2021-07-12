@@ -291,9 +291,8 @@ BOOL isNotifRemoved;
 - (void)sendTouchPoint:(CGPoint)location withEvent:(int)event
 {
     CGFloat screenScale = [[UIScreen mainScreen] scale];
-    if (callback_SurfaceViewController_touchHotbar(location.x * screenScale, location.y * screenScale) == -1) {
-        callback_SurfaceViewController_onTouch(event, location.x * screenScale, location.y * screenScale);
-    }
+    callback_SurfaceViewController_touchHotbar(location.x * screenScale, location.y * screenScale);
+    callback_SurfaceViewController_onTouch(event, location.x * screenScale, location.y * screenScale);
 }
 
 - (void)sendTouchEvent:(NSSet *)touches withUIEvent:(UIEvent *)uievent withEvent:(int)event

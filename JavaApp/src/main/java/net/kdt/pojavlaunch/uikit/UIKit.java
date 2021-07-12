@@ -61,8 +61,8 @@ public class UIKit {
         int scale = Math.max(Math.min(GLFW.mGLFWWindowWidth / 320, GLFW.mGLFWWindowHeight / 240), 1);
         if(scale < guiScale || guiScale == 0){
             guiScale = scale;
-            updateMCGuiScale(guiScale);
         }
+        updateMCGuiScale(guiScale);
     }
     
     public static boolean updateProgressSafe(final float progress, final String message) {

@@ -149,7 +149,12 @@ int launchJVM(int argc, char *argv[]) {
 
     char *javaHome = getenv("JAVA_HOME");
     if (!javaHome) {
-        javaHome = "/usr/lib/jvm/java-16-openjdk";
+        if (strncmp(argv[0], "/Applications", 13) == 0) {
+            javaHome = "/usr/lib/jvm/java-16-openjdk";
+        } else {
+            javaHome = calloc(1, 2048);
+            sprintf(javaHome, "%s/jre8", getenv("BUNDLE_PATH"));
+        }
         setenv("JAVA_HOME", javaHome, 1);
         debug("[Pre-init] JAVA_HOME environment variable not set. Defaulting to %s\n", javaHome);
     }
