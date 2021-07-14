@@ -159,6 +159,13 @@ int launchJVM(int argc, char *argv[]) {
         debug("[Pre-init] JAVA_HOME environment variable not set. Defaulting to %s\n", javaHome);
     }
 
+    char *gl4esHome = getenv("GL4ES_HOME");
+    if (!gl4esHome) {
+        gl4esHome = "libgl4es_114.dylib";
+        setenv("GL4ES_HOME", gl4esHome, 1);
+        debug("[Pre-init] GL4ES_HOME environment variable not set. Defaulting to %s\n", gl4esHome);
+    }
+
     char controlPath[2048];
     sprintf(controlPath, "%s/Documents/.pojavlauncher/controlmap", homeDir);
     mkdir(controlPath, S_IRWXU | S_IRWXG | S_IRWXO);
@@ -186,12 +193,14 @@ int launchJVM(int argc, char *argv[]) {
     if (!started) {
         char *frameworkPath = calloc(1, 2048);
         char *javaPath = calloc(1, 2048);
+        char *gl4esPath = calloc(1, 2048);
         char *userDir = calloc(1, 2048);
         char *userHome = calloc(1, 2048);
         snprintf(frameworkPath, 2048, "-Djava.library.path=%s/Frameworks", getenv("BUNDLE_PATH"));
         snprintf(javaPath, 2048, "%s/bin/java", javaHome);
         snprintf(userDir, 2048, "-Duser.dir=%s/Documents/minecraft", homeDir);
         snprintf(userHome, 2048, "-Duser.home=%s/Documents", homeDir);
+        snprintf(gl4esPath, 2048, "-Dorg.lwjgl.opengl.libname=%s", gl4esHome);
         
         chdir(userDir);
         
@@ -201,27 +210,13 @@ int launchJVM(int argc, char *argv[]) {
         margv[margc++] = frameworkPath;
         margv[margc++] = userDir;
         margv[margc++] = userHome;
-        margv[margc++] = "-Dorg.lwjgl.opengl.libname=libgl4es_114.dylib";
+        margv[margc++] = gl4esPath;
         margv[margc++] = "-Dorg.lwjgl.system.allocator=system";
 
         init_loadCustomJvmFlags();
     } else {
-        // Locate gl4es library name:
-        // Reverse the loop, since it is overridable.
-        // FIXME: broken!
-/*
-        char* opengl_prefix = "-Dorg.lwjgl.opengl.libname=";
-        for (int i = argc - 1; i >= 0; i--) {
-            if (strncmp(opengl_prefix, argv[i], strlen(opengl_prefix)) == 0) {
-                strtok(argv[i], "=");
-                setenv("POJAV_OPENGL_LIBNAME", strtok(NULL, "="), 1);
-                break;
-            }
-        }
-*/
-        setenv("POJAV_OPENGL_LIBNAME", "libgl4es_114.dylib", 1);
-
-        debug("[Pre-init] OpenGL library name: %s", getenv("POJAV_OPENGL_LIBNAME"));
+        setenv("GL4ES_HOME", gl4esHome, 1);
+        debug("[Pre-init] OpenGL library name: %s", getenv("GL4ES_HOME"));
     }
 
     // Load java
