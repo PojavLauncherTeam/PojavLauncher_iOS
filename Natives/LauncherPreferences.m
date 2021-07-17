@@ -19,7 +19,7 @@ void loadPreferences() {
         prefDict[@"time_longPressTrigger"] = @(400);
         prefDict[@"default_ctrl"] = @"default.json";
         prefDict[@"java_args"] = @"";
-        prefDict[@"custom_envVars"] = @""; // TODO
+        // prefDict[@"custom_envVars"] = @""; // TODO
         [prefDict writeToFile:prefPath atomically:YES];
     } else {
         prefDict = [NSMutableDictionary dictionaryWithContentsOfFile:prefPath];
