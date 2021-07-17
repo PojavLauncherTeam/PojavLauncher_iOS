@@ -59,7 +59,7 @@ public class PLaunchApp {
             try {
                 String plistContent = Tools.read(Tools.DIR_APP_DATA + "/launcher_preferences.plist");
                 plistContent = plistContent.substring(plistContent.indexOf("<key>selected_version</key>") + 26);
-                plistContent = plistContent.replace("<string>", "")
+                mcver = plistContent.replace("<string>", "")
                     .substring(0, plistContent.indexOf("</string>")).trim();
             } catch (IOException e) {
                 e.printStackTrace();
