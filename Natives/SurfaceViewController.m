@@ -1,3 +1,4 @@
+#import "LauncherPreferences.h"
 #import "SurfaceViewController.h"
 #import "egl_bridge.h"
 #import "ios_uikit_bridge.h"
@@ -94,7 +95,7 @@ int notchOffset;
     [touchView addGestureRecognizer:tapGesture];
 
     UILongPressGestureRecognizer *longpressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(surfaceOnLongpress:)];
-    longpressGesture.minimumPressDuration = 0.4;
+    longpressGesture.minimumPressDuration = ((NSNumber *)getPreference(@"time_longPressTrigger")).floatValue / 1000;
     [touchView addGestureRecognizer:longpressGesture];
 
     [self.view addSubview:touchView];
@@ -111,9 +112,10 @@ int notchOffset;
         [touchView addGestureRecognizer:mouseWheelGesture];
     }
 
-    CGFloat rectBtnWidth = 80.0;
-    CGFloat rectBtnHeight = 30.0;
-    CGFloat squareBtnSize = 50.0;
+    CGFloat buttonScale = ((NSNumber *) getPreference(@"button_scale")).floatValue / 100.0;
+    CGFloat rectBtnWidth = 80.0 * buttonScale;
+    CGFloat rectBtnHeight = 30.0 * buttonScale;
+    CGFloat squareBtnSize = 50.0 * buttonScale;
 
 #ifndef DEBUG_VISIBLE_TEXT_FIELD
     inputView = [[UITextField alloc] initWithFrame:CGRectMake(5 * 3 + rectBtnWidth * 2, 5, rectBtnWidth, rectBtnHeight)];
@@ -136,30 +138,16 @@ int notchOffset;
 
     // Temporary fallback controls
     BOOL cc_fallback = YES;
-    
-    char controlFilePath[2048];
-    sprintf(controlFilePath, "%s/default.json", getenv("POJAV_PATH_CONTROL"));
-    FILE *cc_file = fopen(controlFilePath, "r");
 
-    // 100kb (might not safe)
-    char cc_data[102400];
-    long cc_size;
-    if (cc_file) {
-        fseek(cc_file, 0L, SEEK_END);
-        cc_size = ftell(cc_file);
-        rewind(cc_file);
-    }
+    NSString *controlFilePath = [NSString stringWithFormat:@"%s/%@", getenv("POJAV_PATH_CONTROL"), (NSString *)getPreference(@"default_ctrl")];
 
     NSError *cc_error;
-    if (cc_size > 102400) {
-        NSLog(@"Error: control data is too big (over 100kb).");
-        fclose(cc_file);
-    } else if (!cc_file || !fread(cc_data, cc_size, 1, cc_file)) {
-        NSLog(@"Error: could not read \"default.json\", falling back to default control, error: %s", strerror(errno));
-        fclose(cc_file);
+    NSString *cc_data = [NSString stringWithContentsOfFile:controlFilePath encoding:NSUTF8StringEncoding error:&cc_error];
+
+    if (cc_error != nil) {
+        NSLog(@"Error: could not read \"%@\", falling back to default control, error: %@", controlFilePath, cc_error.localizedDescription);
     } else {
-        fclose(cc_file);
-        NSData* cc_objc_data = [@(cc_data) dataUsingEncoding:NSUTF8StringEncoding];
+        NSData* cc_objc_data = [cc_data dataUsingEncoding:NSUTF8StringEncoding];
         NSDictionary *cc_dictionary = [NSJSONSerialization JSONObjectWithData:cc_objc_data options:kNilOptions error:&cc_error];
         if (cc_error != nil) {
             showDialog(self, @"Error parsing JSON", cc_error.localizedDescription);
@@ -180,11 +168,11 @@ int notchOffset;
     }
 
     if (cc_fallback == YES) {
-        ADD_BUTTON(@"GUI", SPECIALBTN_TOGGLECTRL, CGRectMake(5, height - 5 - 50, squareBtnSize, squareBtnSize), NO);
+        ADD_BUTTON(@"GUI", SPECIALBTN_TOGGLECTRL, CGRectMake(5, height - 5 - squareBtnSize, squareBtnSize, squareBtnSize), NO);
         ADD_BUTTON(@"Keyboard", SPECIALBTN_KEYBOARD, CGRectMake(5 * 3 + rectBtnWidth * 2, 5, rectBtnWidth, rectBtnHeight), YES);
 
-        ADD_BUTTON(@"Pri", SPECIALBTN_MOUSEPRI, CGRectMake(5, height - 5 * 3 - 50 * 3, squareBtnSize, squareBtnSize), YES);
-        ADD_BUTTON(@"Sec", SPECIALBTN_MOUSESEC, CGRectMake(5 * 3 + 50 * 2, height - 5 * 3 - 50 * 3, squareBtnSize, squareBtnSize), YES);
+        ADD_BUTTON(@"Pri", SPECIALBTN_MOUSEPRI, CGRectMake(5, height - 5 * 3 - squareBtnSize * 3, squareBtnSize, squareBtnSize), YES);
+        ADD_BUTTON(@"Sec", SPECIALBTN_MOUSESEC, CGRectMake(5 * 3 + squareBtnSize * 2, height - 5 * 3 - squareBtnSize * 3, squareBtnSize, squareBtnSize), YES);
 
         ADD_BUTTON(@"Debug", GLFW_KEY_F3, CGRectMake(5, 5, rectBtnWidth, rectBtnHeight), YES);
         ADD_BUTTON(@"Chat", GLFW_KEY_T, CGRectMake(5 * 2 + rectBtnWidth, 5, rectBtnWidth, rectBtnHeight), YES);
@@ -193,14 +181,14 @@ int notchOffset;
         ADD_BUTTON(@"Offhand", GLFW_KEY_F, CGRectMake(5 * 6 + rectBtnWidth * 5, 5, rectBtnWidth, rectBtnHeight), YES);
         ADD_BUTTON(@"3rd", GLFW_KEY_F5, CGRectMake(5, 5 * 2 + rectBtnHeight, rectBtnWidth, rectBtnHeight), YES);
 
-        ADD_BUTTON(@"▲", GLFW_KEY_W, CGRectMake(5 * 2 + 50, height - 5 * 3 - 50 * 3, squareBtnSize, squareBtnSize), YES);
-        ADD_BUTTON(@"◀", GLFW_KEY_A, CGRectMake(5, height - 5 * 2 - 50 * 2, squareBtnSize, squareBtnSize), YES);
-        ADD_BUTTON(@"▼", GLFW_KEY_S, CGRectMake(5 * 2 + 50, height - 5 - 50, squareBtnSize, squareBtnSize), YES);
-        ADD_BUTTON(@"▶", GLFW_KEY_D, CGRectMake(5 * 3 + 50 * 2, height - 5 * 2 - 50 * 2, squareBtnSize, squareBtnSize), YES);
-        ADD_BUTTON(@"◇", GLFW_KEY_LEFT_SHIFT, CGRectMake(5 * 2 + 50, height - 5 * 2 - 50 * 2, squareBtnSize, squareBtnSize), YES);
-        ADD_BUTTON(@"Inv", GLFW_KEY_E, CGRectMake(5 * 3 + 50 * 2, height - 5 - 50, squareBtnSize, squareBtnSize), YES);
+        ADD_BUTTON(@"▲", GLFW_KEY_W, CGRectMake(5 * 2 + squareBtnSize, height - 5 * 3 - squareBtnSize * 3, squareBtnSize, squareBtnSize), YES);
+        ADD_BUTTON(@"◀", GLFW_KEY_A, CGRectMake(5, height - 5 * 2 - squareBtnSize * 2, squareBtnSize, squareBtnSize), YES);
+        ADD_BUTTON(@"▼", GLFW_KEY_S, CGRectMake(5 * 2 + squareBtnSize, height - 5 - squareBtnSize, squareBtnSize, squareBtnSize), YES);
+        ADD_BUTTON(@"▶", GLFW_KEY_D, CGRectMake(5 * 3 + squareBtnSize * 2, height - 5 * 2 - squareBtnSize * 2, squareBtnSize, squareBtnSize), YES);
+        ADD_BUTTON(@"◇", GLFW_KEY_LEFT_SHIFT, CGRectMake(5 * 2 + squareBtnSize, height - 5 * 2 - squareBtnSize * 2, squareBtnSize, squareBtnSize), YES);
+        ADD_BUTTON(@"Inv", GLFW_KEY_E, CGRectMake(5 * 3 + squareBtnSize * 2, height - 5 - squareBtnSize, squareBtnSize, squareBtnSize), YES);
 
-        ADD_BUTTON(@"⬛", GLFW_KEY_SPACE, CGRectMake(width - 5 * 2 - 50 * 2, height - 5 * 2 - 50 * 2, squareBtnSize, squareBtnSize), YES);
+        ADD_BUTTON(@"⬛", GLFW_KEY_SPACE, CGRectMake(width - 5 * 2 - squareBtnSize * 2, height - 5 * 2 - squareBtnSize * 2, squareBtnSize, squareBtnSize), YES);
 
         ADD_BUTTON(@"Esc", GLFW_KEY_ESCAPE, CGRectMake(width - 5 - rectBtnWidth, height - 5 - rectBtnHeight, rectBtnWidth, rectBtnHeight), YES);
 

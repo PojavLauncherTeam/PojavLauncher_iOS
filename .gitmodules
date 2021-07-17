@@ -1,0 +1,3 @@
+[submodule "Natives/external/DBNumberedSlider"]
+	path = Natives/external/DBNumberedSlider
+	url = https://github.com/immago/DBNumberedSlider

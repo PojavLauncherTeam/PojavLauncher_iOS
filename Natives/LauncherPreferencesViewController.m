@@ -1,3 +1,5 @@
+#import "DBNumberedSlider.h"
+#import "LauncherPreferences.h"
 #import "LauncherPreferencesViewController.h"
 
 #include "utils.h"
@@ -39,27 +41,40 @@ UITextField* versionTextField;
         self.view.backgroundColor = [UIColor whiteColor];
     }
 
-// not yet finished, empty view controller for now
-/*
-    UILabel *btnsizeTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 4.0, 0.0, 30.0)];
-    btnsizeTextView.text = @"Button size: ";
+    UILabel *btnsizeTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 8.0, 0.0, 30.0)];
+    btnsizeTextView.text = @"Button scale: ";
     btnsizeTextView.numberOfLines = 0;
+    btnsizeTextView.textAlignment = NSTextAlignmentCenter;
     [btnsizeTextView sizeToFit];
+    CGRect tempRect = btnsizeTextView.frame;
+    tempRect.size.height = 30.0;
+    btnsizeTextView.frame = tempRect;
+    
     [scrollView addSubview:btnsizeTextView];
     
-    UISlider *buttonSizeSlider = [[UISlider alloc] initWithFrame:CGRectMake(8.0 + btnsizeTextView.frame.x, 4.0, 200.0, 30.0)];
-    // [buttonSizeSlider addTarget:self action:@selector(sliderAction:) forControlEvents:UIControlEventValueChanged];
+    DBNumberedSlider *buttonSizeSlider = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(8.0 + btnsizeTextView.frame.size.width, 8.0, self.view.frame.size.width - 8.0 + btnsizeTextView.frame.origin.x, btnsizeTextView.frame.size.height)];
+    buttonSizeSlider.tag = 1;
+    [buttonSizeSlider addTarget:self action:@selector(sliderMoved:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
     [buttonSizeSlider setBackgroundColor:[UIColor clearColor]];
     buttonSizeSlider.minimumValue = 50.0;
     buttonSizeSlider.maximumValue = 200.0;
     buttonSizeSlider.continuous = YES;
-    buttonSizeSlider.value = 50.0;
+    buttonSizeSlider.value = ((NSNumber *) getPreference(@"button_scale")).floatValue;
     [scrollView addSubview:buttonSizeSlider];
-*/
 
     scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, scrollView.frame.size.height + 200);
 }
 
+- (void)sliderMoved:(DBNumberedSlider *)sender {
+    switch (sender.tag) {
+        case 1:
+            setPreference(@"button_scale", @(sender.value));
+            break;
+        default:
+            NSLog(@"what does slider %ld for? implement me!", sender.tag);
+            break;
+    }
+}
 
 - (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
     return UIRectEdgeBottom;

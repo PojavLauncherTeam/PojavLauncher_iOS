@@ -134,7 +134,7 @@ void UIKit_launchMinecraftSurfaceVC() {
         if (@available(iOS 13.0, *)) {
             rootController = UIApplication.sharedApplication.windows.lastObject.rootViewController;
         } else {
-            rootController =(UIViewController*) [[(AppDelegate*) [[UIApplication sharedApplication]delegate] window] rootViewController];
+            rootController = (UIViewController*) [[(AppDelegate*) [[UIApplication sharedApplication]delegate] window] rootViewController];
         }
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MinecraftSurface" bundle:nil];

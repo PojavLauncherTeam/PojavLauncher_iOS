@@ -9,14 +9,16 @@
  * TODO:
  * - Implements glfwSetCursorPos() to handle grab camera pos correctly.
  */
- 
-#include "jni.h"
+
+#import <UIKit/UIKit.h>
+#import "AppDelegate.h"
+
 #include <assert.h>
 #include <stdlib.h>
 
+#include "jni.h"
 #include "glfw_keycodes.h"
 #include "ios_uikit_bridge.h"
-
 #include "log.h"
 #include "utils.h"
 
@@ -264,7 +266,10 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_runOnUIThread(JNIEnv
 JNIEXPORT jint JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_launchUI(JNIEnv* env, jclass clazz, jobjectArray args) {
 	int argc = (*env)->GetArrayLength(env, args);
     char **argv = convert_to_char_array(env, args);
-    return launchUI(argc, argv);
+
+    @autoreleasepool {
+        return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
+    }
 }
 
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeAttachThreadToOther(JNIEnv* env, jclass clazz, jboolean isAndroid, jboolean isUseStackQueueBool) {

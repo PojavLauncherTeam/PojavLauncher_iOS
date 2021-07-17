@@ -6,7 +6,6 @@ import java.util.concurrent.*;
 
 import org.lwjgl.glfw.CallbackBridge;
 
-import net.kdt.pojavlaunch.prefs.*;
 import net.kdt.pojavlaunch.uikit.*;
 import net.kdt.pojavlaunch.utils.*;
 import net.kdt.pojavlaunch.value.*;
@@ -23,14 +22,10 @@ public class PLaunchApp {
             File mcDir = new File(Tools.DIR_GAME_NEW);
             mcDir.mkdirs();
             new File(Tools.DIR_ACCOUNT_NEW).mkdirs();
-            if (!new File(Tools.DIR_APP_DATA, "config_ver.txt").exists()) {
-                Tools.write(Tools.DIR_APP_DATA + "/config_ver.txt", "1.16.5");
-                
+            if (!new File(mcDir.getAbsolutePath() + "/launcher_profiles.json").exists()) {
                 Tools.write(mcDir.getAbsolutePath() + "/launcher_profiles.json",
                   Tools.read(Tools.DIR_DATA + "/launcher_profiles.json"));
             }
-
-            LauncherPreferences.loadPreferences();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -62,9 +57,13 @@ public class PLaunchApp {
             String mcver = "1.16.5";
 
             try {
-                mcver = Tools.read(Tools.DIR_APP_DATA + "/config_ver.txt");
+                String plistContent = Tools.read(Tools.DIR_APP_DATA + "/launcher_preferences.plist");
+                plistContent = plistContent.substring(plistContent.indexOf("<key>selected_version</key>") + 26);
+                plistContent = plistContent.replace("<string>", "")
+                    .substring(0, plistContent.indexOf("</string>")).trim();
             } catch (IOException e) {
-                UIKit.updateProgressSafe(0, "config_ver.txt not found, defaulting to Minecraft 1.16.5");
+                e.printStackTrace();
+                UIKit.updateProgressSafe(0, "Could not parse plist, defaulting to Minecraft 1.16.5");
             }
 
             AccountJNI.CURRENT_ACCOUNT.selectedVersion = mcver;

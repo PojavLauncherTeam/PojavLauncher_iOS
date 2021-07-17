@@ -18,6 +18,8 @@
 #include "utils.h"
 #include "JavaLauncher.h"
 
+#import "LauncherPreferences.h"
+
 // PojavLancher: fixme: are these wrong?
 #define FULL_VERSION "1.8.0-internal"
 #define DOT_VERSION "1.8"
@@ -81,43 +83,55 @@ void init_loadCustomEnv() {
 }
 
 void init_loadCustomJvmFlags() {
-    char jvmargs[10000];
-    FILE* argsFile = fopen(args_path, "r");
-    debug("[Pre-init] Reading custom JVM args (overrideargs.txt), opened=%d\n", argsFile != NULL);
-    if (argsFile) {
-        if (!fgets(jvmargs, 10000, argsFile)) {
-            debug("[Pre-init] Warning: could not read overrideargs.txt");
-            fclose(argsFile);
-            return;
-        }
-        char *pch;
-        pch = strtok(jvmargs, " ");
-        while (pch != NULL) {
-            margv[margc] = (char*)calloc(1, (strlen(pch)+1) * sizeof(char));
-            strcpy(margv[margc], pch);
-            debug("[Pre-init] Added custom flag: %s", margv[margc]);
-            pch = strtok(NULL, " ");
-            ++margc;
-        }
-        fclose(argsFile);
+    NSString *jvmargs = getPreference(@"java_args");
+    for (NSString *jvmarg in [jvmargs componentsSeparatedByString:@" -"]) {
+        if ([jvmarg length] == 0) continue;
+        margv[margc] = (char *) [jvmarg UTF8String];
+        NSLog(@"[Pre-init] Added custom JVM flag: %@", jvmarg);
+        ++margc;
+    }
+}
+
+void init_migrateToPlist(char* prefKey, char* filename) {
+    // NSString *readmeStr = @"#README - this file has been merged into launcher_preferences.plist";
+    NSError *error;
+    NSString *str, *path_str;
+
+    // overrideargs.txt
+    path_str = [NSString stringWithFormat:@"%s/%s", getenv("POJAV_HOME"), filename];
+    str = [NSString stringWithContentsOfFile:path_str encoding:NSUTF8StringEncoding error:&error];
+    if (error == nil && ![str hasPrefix:@"#README"]) {
+        setPreference(@(prefKey), str);
+        [@"#README - this file has been merged into launcher_preferences.plist" writeToFile:path_str atomically:YES encoding:NSUTF8StringEncoding error:nil];
     }
 }
 
 
 int launchJVM(int argc, char *argv[]) {
+    char *homeDir;
     if (!started) {
         setenv("BUNDLE_PATH", dirname(argv[0]), 1);
 
         // Are we running on a jailbroken environment?
         if (strncmp(argv[0], "/Applications", 13) == 0) {
             setenv("HOME", "/var/mobile", 1);
+            homeDir = "/var/mobile/Documents/.pojavlauncher";
+        } else {
+            char pojavHome[2048];
+            sprintf(pojavHome, "%s/Documents", getenv("HOME"));
+            homeDir = (char *) pojavHome;
         }
+        setenv("POJAV_HOME", homeDir, 1);
+    } else {
+        homeDir = getenv("POJAV_HOME");
     }
 
-    char* homeDir = getenv("HOME");
-    sprintf((char*) args_path, "%s/Documents/.pojavlauncher/overrideargs.txt", homeDir);
-    sprintf((char*) env_path, "%s/Documents/.pojavlauncher/custom_env.txt", homeDir);
-    sprintf((char*) log_path, "%s/Documents/.pojavlauncher/latestlog.txt", homeDir);
+    loadPreferences();
+    init_migrateToPlist("selected_version", "config_ver.txt");
+    init_migrateToPlist("java_args", "overrideargs.txt");
+
+    sprintf((char*) env_path, "%s/custom_env.txt", homeDir);
+    sprintf((char*) log_path, "%s/latestlog.txt", homeDir);
     sprintf((char*) java_libs_path, "%s/libs", getenv("BUNDLE_PATH"));
     
     mkdir(dirname(log_path), 755);
@@ -127,7 +141,7 @@ int launchJVM(int argc, char *argv[]) {
         // Redirect stdio to latestlog.txt
         int ret;
         char newname[2048];
-        sprintf(newname, "%s/Documents/.pojavlauncher/latestlog.old.txt", homeDir);
+        sprintf(newname, "%s/latestlog.old.txt", homeDir);
         ret = rename(log_path, newname);
         FILE* logFile = fopen(log_path, "w");
         if (!logFile) {
@@ -143,6 +157,8 @@ int launchJVM(int argc, char *argv[]) {
     debug("[Pre-init] Beginning JVM launch\n");
     // setenv("LIBGL_FB", "2", 1);
     setenv("LIBGL_MIPMAP", "3", 1);
+
+    // Fix white color on banner and sheep, since GL4ES 1.1.5
     setenv("LIBGL_NORMALIZE", "1", 1);
 
     init_loadCustomEnv();
@@ -160,7 +176,7 @@ int launchJVM(int argc, char *argv[]) {
     }
 
     char controlPath[2048];
-    sprintf(controlPath, "%s/Documents/.pojavlauncher/controlmap", homeDir);
+    sprintf(controlPath, "%s/controlmap", homeDir);
     mkdir(controlPath, S_IRWXU | S_IRWXG | S_IRWXO);
     setenv("POJAV_PATH_CONTROL", controlPath, 1);
 
@@ -190,8 +206,8 @@ int launchJVM(int argc, char *argv[]) {
         char *userHome = calloc(1, 2048);
         snprintf(frameworkPath, 2048, "-Djava.library.path=%s/Frameworks", getenv("BUNDLE_PATH"));
         snprintf(javaPath, 2048, "%s/bin/java", javaHome);
-        snprintf(userDir, 2048, "-Duser.dir=%s/Documents/minecraft", homeDir);
-        snprintf(userHome, 2048, "-Duser.home=%s/Documents", homeDir);
+        snprintf(userDir, 2048, "-Duser.dir=%s/Documents/minecraft", getenv("HOME"));
+        snprintf(userHome, 2048, "-Duser.home=%s/Documents", getenv("HOME"));
         
         chdir(userDir);
         
@@ -285,11 +301,9 @@ int launchJVM(int argc, char *argv[]) {
 
     debug("[Init] Calling JLI_Launch");
 
-/*
     for (int i = 0; i < margc; i++) {
         debug("arg[%d] = %s", i, margv[i]);
     }
-*/
 
     int targc = started ? argc : margc;
     char **targv = started ? argv : margv;

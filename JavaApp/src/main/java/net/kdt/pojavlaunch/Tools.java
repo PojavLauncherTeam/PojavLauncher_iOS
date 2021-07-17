@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
-import net.kdt.pojavlaunch.prefs.LauncherPreferences;
 import net.kdt.pojavlaunch.uikit.UIKit;
 import net.kdt.pojavlaunch.utils.DownloadUtils;
 import net.kdt.pojavlaunch.utils.JSONUtils;
@@ -59,7 +58,7 @@ public final class Tools
     public static final String DIR_GAME_HOME = System.getenv("HOME") + "/Documents";
     public static final String DIR_GAME_NEW = DIR_GAME_HOME + "/minecraft";
     
-    public static final String DIR_APP_DATA = DIR_GAME_HOME + "/.pojavlauncher";
+    public static final String DIR_APP_DATA = System.getenv("POJAV_HOME");
     public static final String DIR_ACCOUNT_NEW = DIR_APP_DATA + "/accounts";
     
     // New since 3.0.0
@@ -295,89 +294,7 @@ public final class Tools
 
         return libStr.toString();
     }
-/*
-    public static DisplayMetrics getDisplayMetrics(Activity ctx) {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        ctx.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        return displayMetrics;
-    }
 
-    public static void setFullscreen(Activity act) {
-        final View decorView = act.getWindow().getDecorView();
-        decorView.setOnSystemUiVisibilityChangeListener (new View.OnSystemUiVisibilityChangeListener() {
-                @Override
-                public void onSystemUiVisibilityChange(int visibility) {
-                    if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
-                        decorView.setSystemUiVisibility(
-                            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-                    }
-                }
-            });
-    }
-
-    public static DisplayMetrics currentDisplayMetrics;
-    public static void updateWindowSize(Activity ctx) {
-        currentDisplayMetrics = getDisplayMetrics(ctx);
-        CallbackBridge.windowWidth = currentDisplayMetrics.widthPixels;
-        CallbackBridge.windowHeight = currentDisplayMetrics.heightPixels;
-        
-        if (CallbackBridge.windowWidth < CallbackBridge.windowHeight) {
-            CallbackBridge.windowWidth = currentDisplayMetrics.heightPixels;
-            CallbackBridge.windowHeight = currentDisplayMetrics.widthPixels;
-        }
-    }
-
-    public static float dpToPx(float dp) {
-        // 921600 = 1280 * 720, default scale
-        // TODO better way to scaling
-        float scaledDp = dp; // / DisplayMetrics.DENSITY_XHIGH * currentDisplayMetrics.densityDpi;
-        return (scaledDp * currentDisplayMetrics.density);
-    }
-
-    public static void copyAssetFile(Context ctx, String fileName, String output, boolean overwrite) throws IOException {
-        copyAssetFile(ctx, fileName, output, new File(fileName).getName(), overwrite);
-    }
-
-    public static void copyAssetFile(Context ctx, String fileName, String output, String outputName, boolean overwrite) throws IOException
-    {
-        File file = new File(output);
-        if(!file.exists()) {
-            file.mkdirs();
-        }
-        File file2 = new File(output, outputName);
-        if(!file2.exists() || overwrite){
-            write(file2.getAbsolutePath(), loadFromAssetToByte(ctx, fileName));
-        }
-    }
-
-    public static void extractAssetFolder(Activity ctx, String path, String output) throws Exception {
-        extractAssetFolder(ctx, path, output, false);
-    }
-
-    public static void extractAssetFolder(Activity ctx, String path, String output, boolean overwrite) throws Exception {
-        AssetManager assetManager = ctx.getAssets();
-        String assets[] = null;
-        try {
-            assets = assetManager.list(path);
-            if (assets.length == 0) {
-                Tools.copyAssetFile(ctx, path, output, overwrite);
-            } else {
-                File dir = new File(output, path);
-                if (!dir.exists())
-                    dir.mkdirs();
-                for (String sub : assets) {
-                    extractAssetFolder(ctx, path + "/" + sub, output, overwrite);
-                }
-            }
-        } catch (Exception e) {
-            showError(ctx, e);
-        }
-    }
-*/
     public static void showError(Throwable e) {
         showError(e, false);
     }

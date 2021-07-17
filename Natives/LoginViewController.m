@@ -384,7 +384,7 @@ NSMutableArray *accountList;
     DIR *d;
     struct dirent *dir;
     char accPath[2048];
-    sprintf(accPath, "%s/Documents/.pojavlauncher/accounts", getenv("HOME"));
+    sprintf(accPath, "%s/accounts", getenv("POJAV_HOME"));
     d = opendir(accPath);
     if (d) {
         int i = 0;
@@ -438,7 +438,7 @@ NSMutableArray *accountList;
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSString *str = [accountList objectAtIndex:indexPath.row];
         char accPath[2048];
-        sprintf(accPath, "%s/Documents/.pojavlauncher/accounts/%s.json", getenv("HOME"), [str UTF8String]);
+        sprintf(accPath, "%s/accounts/%s.json", getenv("POJAV_HOME"), [str UTF8String]);
         remove(accPath);
         [accountList removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

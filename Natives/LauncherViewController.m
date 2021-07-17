@@ -1,5 +1,7 @@
-#import "LauncherViewController.h"
+#import "CustomControlsViewController.h"
+#import "LauncherPreferences.h"
 #import "LauncherPreferencesViewController.h"
+#import "LauncherViewController.h"
 
 #include "utils.h"
 
@@ -11,8 +13,6 @@
 @end
 
 @implementation LauncherViewController
-
-NSString* configver_path;
 
 NSArray* versionList;
 UIPickerView* versionPickerView;
@@ -45,13 +45,6 @@ int versionSelectedAt = 0;
         self.view.backgroundColor = [UIColor whiteColor];
     }
 
-    NSError *error;
-    configver_path = [NSString stringWithFormat:@"%s/Documents/.pojavlauncher/config_ver.txt", getenv("HOME")];
-    NSString *configver = [NSString stringWithContentsOfFile:configver_path encoding:NSUTF8StringEncoding error:&error];
-    if (error) {
-        NSLog(@"Error: could not read config_ver.txt: %@", error.localizedDescription);
-    }
-
     UILabel *versionTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 4.0, 0.0, 0.0)];
     versionTextView.text = @"Minecraft version: ";
     versionTextView.numberOfLines = 0;
@@ -61,7 +54,7 @@ int versionSelectedAt = 0;
     versionTextField = [[UITextField alloc] initWithFrame:CGRectMake(versionTextView.bounds.size.width + 4.0, 4.0, width - versionTextView.bounds.size.width - 8.0, height - 58.0)];
     [versionTextField addTarget:versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     versionTextField.placeholder = @"Specify version...";
-    versionTextField.text = configver;
+    versionTextField.text = (NSString *) getPreference(@"selected_version");
     versionTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
     versionTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 
@@ -79,7 +72,10 @@ int versionSelectedAt = 0;
 
     [scrollView addSubview:versionTextField];
 
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleDone target:self action:@selector(enterPreferences)];
+    self.navigationItem.rightBarButtonItems = @[
+        [[UIBarButtonItem alloc] initWithTitle:@"Custom controls" style:UIBarButtonItemStyleDone target:self action:@selector(enterCustomControls)],
+        [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleDone target:self action:@selector(enterPreferences)]
+    ];
    
     install_progress_bar = [[UIProgressView alloc] initWithFrame:CGRectMake(4.0, height - 58.0, width - 8.0, 6.0)];
     [scrollView addSubview:install_progress_bar];
@@ -185,6 +181,11 @@ int versionSelectedAt = 0;
 }
 
 #pragma mark - Button click events
+- (void)enterCustomControls {
+    CustomControlsViewController *vc = [[CustomControlsViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 - (void)enterPreferences {
     LauncherPreferencesViewController *vc = [[LauncherPreferencesViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
@@ -207,7 +208,7 @@ int versionSelectedAt = 0;
 #pragma mark - UIPickerView stuff
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     versionTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
-    [versionTextField.text writeToFile:configver_path atomically:NO encoding:NSUTF8StringEncoding error:nil];
+    setPreference(@"selected_version", versionTextField.text);
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)thePickerView {
