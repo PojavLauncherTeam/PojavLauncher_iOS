@@ -57,7 +57,7 @@ UITextField* versionTextField;
     [buttonSizeSlider addTarget:self action:@selector(sliderMoved:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
     [buttonSizeSlider setBackgroundColor:[UIColor clearColor]];
     buttonSizeSlider.minimumValue = 50.0;
-    buttonSizeSlider.maximumValue = 200.0;
+    buttonSizeSlider.maximumValue = 500.0;
     buttonSizeSlider.continuous = YES;
     buttonSizeSlider.value = ((NSNumber *) getPreference(@"button_scale")).floatValue;
     [scrollView addSubview:buttonSizeSlider];
