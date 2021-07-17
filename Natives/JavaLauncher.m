@@ -295,11 +295,11 @@ int launchJVM(int argc, char *argv[]) {
     }
 
     debug("[Init] Calling JLI_Launch");
-
+/*
     for (int i = 0; i < margc; i++) {
         debug("arg[%d] = %s", i, margv[i]);
     }
-
+*/
     int targc = started ? argc : margc;
     char **targv = started ? argv : margv;
     
