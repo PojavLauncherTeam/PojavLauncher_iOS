@@ -58,9 +58,10 @@ public class PLaunchApp {
 
             try {
                 String plistContent = Tools.read(Tools.DIR_APP_DATA + "/launcher_preferences.plist");
-                plistContent = plistContent.substring(plistContent.indexOf("<key>selected_version</key>") + 27)
-                    .replace("<string>", "")
-                mcver = plistContent.substring(0, plistContent.indexOf("</string>")).trim();
+                plistContent = plistContent.substring(plistContent.indexOf("<key>selected_version</key>") + 27);
+                mcver = plistContent.substring(
+                    plistContent.indexOf("<string>") + 8,
+                    plistContent.indexOf("</string>"));
             } catch (IOException e) {
                 e.printStackTrace();
                 UIKit.updateProgressSafe(0, "Could not parse plist, defaulting to Minecraft 1.16.5");
