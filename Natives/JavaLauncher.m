@@ -181,11 +181,11 @@ int launchJVM(int argc, char *argv[]) {
         debug("[Pre-init] JAVA_HOME environment variable not set. Defaulting to %s\n", javaHome);
     }
 
-    char *gl4esHome = getenv("GL4ES_HOME");
-    if (!gl4esHome) {
-        gl4esHome = "libgl4es_114.dylib";
-        setenv("GL4ES_HOME", gl4esHome, 1);
-        debug("[Pre-init] GL4ES_HOME environment variable not set. Defaulting to %s\n", gl4esHome);
+    char *gl4esLibname = getenv("GL4ES_LIBNAME");
+    if (!gl4esLibname) {
+        gl4esLibname = "libgl4es_114.dylib";
+        setenv("GL4ES_LIBNAME", gl4esLibname, 1);
+        debug("[Pre-init] GL4ES_LIBNAME environment variable not set. Defaulting to %s\n", gl4esLibname);
     }
 
     char controlPath[2048];
@@ -237,8 +237,8 @@ int launchJVM(int argc, char *argv[]) {
 
         init_loadCustomJvmFlags();
     } else {
-        setenv("GL4ES_HOME", gl4esHome, 1);
-        debug("[Pre-init] OpenGL library name: %s", getenv("GL4ES_HOME"));
+        setenv("GL4ES_LIBNAME", gl4esLibname, 1);
+        debug("[Pre-init] OpenGL library name: %s", getenv("GL4ES_LIBNAME"));
     }
 
     // Load java
