@@ -222,7 +222,7 @@ int launchJVM(int argc, char *argv[]) {
         snprintf(javaPath, 2048, "%s/bin/java", javaHome);
         snprintf(userDir, 2048, "-Duser.dir=%s/Documents/minecraft", getenv("HOME"));
         snprintf(userHome, 2048, "-Duser.home=%s/Documents", getenv("HOME"));
-        snprintf(gl4esPath, 2048, "-Dorg.lwjgl.opengl.libname=%s", gl4esHome);
+        snprintf(gl4esPath, 2048, "-Dorg.lwjgl.opengl.libname=%s", gl4esLibname);
         
         chdir(userDir);
         
