@@ -52,7 +52,7 @@ UITextField* versionTextField;
     
     [scrollView addSubview:btnsizeTextView];
     
-    DBNumberedSlider *buttonSizeSlider = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(8.0 + btnsizeTextView.frame.size.width, 8.0, self.view.frame.size.width - 8.0 + btnsizeTextView.frame.origin.x, btnsizeTextView.frame.size.height)];
+    DBNumberedSlider *buttonSizeSlider = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(8.0 + btnsizeTextView.frame.size.width, 8.0, self.view.frame.size.width - btnsizeTextView.frame.size.width - 12.0, btnsizeTextView.frame.size.height)];
     buttonSizeSlider.tag = 1;
     [buttonSizeSlider addTarget:self action:@selector(sliderMoved:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
     [buttonSizeSlider setBackgroundColor:[UIColor clearColor]];
