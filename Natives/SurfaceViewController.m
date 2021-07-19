@@ -13,15 +13,6 @@
 #include "GLES2/gl2.h"
 #include "GLES2/gl2ext.h"
 
-#define SPECIALBTN_KEYBOARD -1
-#define SPECIALBTN_TOGGLECTRL -2
-#define SPECIALBTN_MOUSEPRI -3
-#define SPECIALBTN_MOUSESEC -4
-#define SPECIALBTN_VIRTUALMOUSE -5
-#define SPECIALBTN_MOUSEMID -6
-#define SPECIALBTN_SCROLLUP -7
-#define SPECIALBTN_SCROLLDOWN -8
-
 
 // Debugging purposes
 // #define DEBUG_VISIBLE_TEXT_FIELD
@@ -29,8 +20,7 @@
 #define ADD_BUTTON(NAME, KEY, RECT, VISIBLE) \
     ControlButton *button_##KEY = [ControlButton initWithName:NAME keycode:KEY rect:CGRectOffset(RECT, notchOffset, 0) transparency:0.0f]; \
     [button_##KEY addTarget:self action:@selector(executebtn_down:) forControlEvents:UIControlEventTouchDown]; \
-    [button_##KEY addTarget:self action:@selector(executebtn_up:) forControlEvents:UIControlEventTouchUpInside]; \
-    [button_##KEY addTarget:self action:@selector(executebtn_up:) forControlEvents:UIControlEventTouchUpOutside]; \
+    [button_##KEY addTarget:self action:@selector(executebtn_up:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside]; \
     [self.view addSubview:button_##KEY]; \
     if (VISIBLE == YES) { \
         togglableVisibleButtons[++togglableVisibleButtonIndex] = button_##KEY; \

@@ -1,9 +1,14 @@
 #import "ControlButton.h"
+#import "../LauncherPreferences.h"
 
 #define INSERT_VALUE(KEY, VALUE) \
   string = [string stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"${%@}", @(KEY)] withString:VALUE];
   
 #define NUM2F(x) [(NSNumber *)x floatValue]
+
+float getScreenScale() {
+    return (float) (((NSNumber *) getPreference(@"button_scale")).floatValue / 50.0); //[[UIScreen mainScreen] scale];
+}
 
 @implementation ControlButton
 @synthesize properties;
@@ -32,7 +37,7 @@
 }
 
 + (id)initWithName:(NSString *)name keycode:(int)keycode rect:(CGRect)rect transparency:(float)transparency {
-    float screenScale = (float) 2.0; //[[UIScreen mainScreen] scale];
+    float screenScale = getScreenScale();
 
     NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
     [properties setObject:name forKey:@"name"];
@@ -48,7 +53,7 @@
 
 - (float)insertDynamicPos:(NSString*)string {
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    CGFloat screenScale = 2.0; // [[UIScreen mainScreen] scale];
+    float screenScale = getScreenScale();
     UIEdgeInsets insets = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets;
 
     // width: offset the notch parts
@@ -79,7 +84,7 @@
 - (void)update {
     // net/kdt/pojavlaunch/customcontrols/ControlData.update()
 
-    float screenScale = (float) 2.0; // [[UIScreen mainScreen] scale];
+    float screenScale = getScreenScale();
     UIEdgeInsets insets = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets;
 
     NSString *propDynamicX = (NSString *) [self.properties valueForKey:@"dynamicX"];
