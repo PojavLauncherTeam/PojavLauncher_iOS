@@ -172,7 +172,12 @@ int launchJVM(int argc, char *argv[]) {
     char *javaHome = getenv("JAVA_HOME");
     if (!javaHome) {
         if (strncmp(argv[0], "/Applications", 13) == 0) {
-            javaHome = "/usr/lib/jvm/java-16-openjdk";
+            if (0 != access("/usr/lib/jvm/java-16-openjdk/", F_OK)) {
+                debug("[Pre-init] Java 16 wasn't found on your device.");
+                javaHome = "/usr/lib/jvm/java-8-openjdk";
+            } else {
+                javaHome = "/usr/lib/jvm/java-16-openjdk";
+            }
         } else {
             javaHome = calloc(1, 2048);
             sprintf(javaHome, "%s/jre8", getenv("BUNDLE_PATH"));
