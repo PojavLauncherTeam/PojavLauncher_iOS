@@ -95,6 +95,7 @@ all: clean version native java extras package
 
 version:
 	@echo 'Starting build task - version change'
+	@export PATH='/usr/local/opt/gnu-sed/libexec/gnubin:$PATH'
 	@if [ '$(RELEASE)' != '1' ]; then \
 		$(SED) -i "s/version$(VERSION) \(.*\) on/version$(VERSION) \(dev - $(COMMIT)\) on/" Natives/AboutLauncherViewController.m || exit 1; \
 	elif [ '$(RELEASE)' = '1' ]; then \

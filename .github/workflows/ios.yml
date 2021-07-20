@@ -23,7 +23,7 @@ jobs:
         run: brew install ldid dpkg fakeroot gsed
         
       - name: Build the native application
-        run: make native
+        run: make version native
 
       - name: Build the Java application
         run: make java
