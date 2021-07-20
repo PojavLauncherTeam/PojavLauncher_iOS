@@ -91,16 +91,20 @@ else ifneq ($(filter 0,$(IOS)),)
 endif
 
 
-all: clean native java extras package
+all: clean version native java extras package
 
-native:
-	@echo 'Starting build task - native application'
-	@mkdir -p Natives/build
+version:
+	@echo 'Starting build task - version change'
 	@if [ '$(RELEASE)' != '1' ]; then \
 		$(SED) -i "s/version$(VERSION) \(.*\) on/version$(VERSION) \(dev - $(COMMIT)\) on/" Natives/AboutLauncherViewController.m || exit 1; \
 	elif [ '$(RELEASE)' = '1' ]; then \
 	  	$(SED) -i "s/version$(VERSION) \(.*\) on/version$(VERSION) \(release\) on/" Natives/AboutLauncherViewController.m || exit 1; \
 	fi
+	@echo 'Finished build task - version change'
+
+native:
+	@echo 'Starting build task - native application'
+	@mkdir -p Natives/build
 	@cd Natives/build && cmake . \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_CROSSCOMPILING=true \
@@ -237,6 +241,7 @@ help:
 	@echo 'Usage:                                                                                '
 	@echo '    make                                Makes everything under all                    '
 	@echo '    make all                            Builds natives, javaapp, extras, and package  '
+	@echo '    make version                        Changes the About view's information          '
 	@echo '    make native                         Builds the native app                         '
 	@echo '    make java                           Builds the Java app                           '
 	@echo '    make package                        Builds deb of PojavLauncher                   '
@@ -244,4 +249,4 @@ help:
 	@echo '    make deploy                         Copy package to local iDevice                 '
 	@echo '    make clean                          Cleans build directories                      '
 
-. PHONY: all clean native java extras package install deploy
+. PHONY: all clean version native java extras package install deploy
