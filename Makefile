@@ -15,14 +15,17 @@ COMMIT  := $(shell git log --oneline | sed '2,10000000d' | cut -b 1-7)
 ifneq ($(filter arm64-apple-ios%,$(DETECT)),)
 IOS         := 1
 SDKPATH     := /usr/share/SDKs/iPhoneOS.sdk
+SED			:= sed
 endif
 ifneq ($(filter aarch64-apple-darwin%,$(DETECT)),)
 IOS         := 0
 SDKPATH     := $(shell xcrun --sdk iphoneos --show-sdk-path)
+SED			:= gsed
 endif
 ifneq ($(filter x86_64-apple-darwin%,$(DETECT)),)
 IOS         := 0
 SDKPATH     := $(shell xcrun --sdk iphoneos --show-sdk-path)
+SED			:= gsed
 endif
 
 JAVAFILES   := $(shell cd JavaApp; find src -type f -name "*.java" -print)
@@ -30,6 +33,9 @@ JAVAFILES   := $(shell cd JavaApp; find src -type f -name "*.java" -print)
 # Make sure everything is already available for use. Warn the user if they require
 # something.
 ifneq ($(filter 1,$(IOS)),)
+	ifeq ($(filter 1,$(shell sed --version 2>&1 /dev/null && echo 1)),)
+		$(error You need to install sed)
+	endif
     ifeq ($(filter 1,$(shell cmake --version 2>&1 /dev/null && echo 1)),)
         $(error You need to install cmake)
     endif
@@ -53,6 +59,9 @@ ifneq ($(filter 1,$(IOS)),)
         $(error You need to install dpkg-dev)
     endif
 else ifneq ($(filter 0,$(IOS)),)
+	ifeq ($(filter 1,$(shell gsed --version 2>&1 /dev/null && echo 1)),)
+		$(error You need to install gsed)
+	endif
     ifeq ($(filter 1,$(shell cmake --version 2>&1 /dev/null && echo 1)),)
             $(error You need to install cmake)
     endif
@@ -87,6 +96,11 @@ all: clean native java extras package
 native:
 	@echo 'Starting build task - native application'
 	@mkdir -p Natives/build
+	@if [ '$(RELEASE)' != '1' ]; then \
+		$(SED) -i "s/version$(VERSION) \(.*\) on/version$(VERSION) \(dev - $(COMMIT)\) on/" Natives/AboutLauncherViewController.m || exit 1; \
+	elif [ '$(RELEASE)' = '1' ]; then \
+	  	$(SED) -i "s/version$(VERSION) \(.*\) on/version$(VERSION) \(release\) on/" Natives/AboutLauncherViewController.m || exit 1; \
+	fi
 	@cd Natives/build && cmake . \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_CROSSCOMPILING=true \

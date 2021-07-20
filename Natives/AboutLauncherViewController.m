@@ -44,7 +44,7 @@
     NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
 
     UILabel *logoVerView = [[UILabel alloc] initWithFrame:CGRectMake(4, 0, width - 8, 30)];
-    logoVerView.text = [NSString stringWithFormat:@"version 1.3 (development) on %@ with iOS %@", deviceModel, currSysVer];
+    logoVerView.text = [NSString stringWithFormat:@"version 1.3 (dev - 12980fa) on %@ with iOS %@", deviceModel, currSysVer];
     logoVerView.lineBreakMode = NSLineBreakByWordWrapping;
     logoVerView.numberOfLines = 0;
     [scrollView addSubview:logoVerView];
