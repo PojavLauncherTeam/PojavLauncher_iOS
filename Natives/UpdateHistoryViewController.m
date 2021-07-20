@@ -57,10 +57,12 @@
     latestVerChangesCont.text = @"- The Login view has been simplified to three easy buttons\n"
                                  "- New FAQ page to show quick answers to questions\n"
                                  "- New About view to show quick details, links, and update history\n"
+                                 "- Ability to send logs from within the launcher\n"
                                  "- The Select Account screen is now a pop-up window\n"
                                  "- New picker view to switch versions without typing them manually\n"
                                  "- Support to show your locally installed clients\n"
-                                 "- New environment variable for JAVA_HOME, for switching between JDK 8 and JDK 16";
+                                 "- New settings page to manage preferences\n"
+                                 "- OpenJDK 8 support, to allow older versions of modded Minecraft\n";
     latestVerChangesCont.numberOfLines = 0;
     [latestVerChangesCont sizeToFit];
     [scrollView addSubview:latestVerChangesCont];
@@ -72,7 +74,9 @@
     [latestVerFixes setFont:[UIFont boldSystemFontOfSize:17]];
 
     UILabel *latestVerFixesCont = [[UILabel alloc] initWithFrame:CGRectMake(4.0, latestVerFixes.frame.origin.y + latestVerFixes.frame.size.height, scrollView.frame.size.width - 4, 30.00)];
-    latestVerFixesCont.text = @"This section isn't complete.";
+    latestVerFixesCont.text = @"- WIP fix for typing on 1.12.2 and older\n"
+                               "- The hotbar now works across GUI scales\n"
+                               "- (With JDK 8) Forge 1.8.9 - 1.12.2 now work";
     latestVerFixesCont.numberOfLines = 0;
     [latestVerFixesCont sizeToFit];
     [scrollView addSubview:latestVerFixesCont];
@@ -84,7 +88,8 @@
     [latestVerIssues setFont:[UIFont boldSystemFontOfSize:17]];
 
     UILabel *latestVerIssuesCont = [[UILabel alloc] initWithFrame:CGRectMake(4.0, latestVerIssues.frame.origin.y + latestVerIssues.frame.size.height, scrollView.frame.size.width - 4, 30.00)];
-    latestVerIssuesCont.text = @"This section isn't complete.";
+    latestVerIssuesCont.text = @"- Crash if login to Microsoft fails\n"
+                               "- Control buttons notch offset seems doubled\n";
     latestVerIssuesCont.numberOfLines = 0;
     [latestVerIssuesCont sizeToFit];
     [scrollView addSubview:latestVerIssuesCont];
