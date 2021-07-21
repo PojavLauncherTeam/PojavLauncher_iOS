@@ -1,5 +1,5 @@
 name: Informational
-description: 'Quick docs, when they're needed.'
+description: 'Quick docs, when they\'re needed.'
 title: "[Info] <Short description>"
 labels: [documentation]
 body:
