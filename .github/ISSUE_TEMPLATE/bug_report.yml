@@ -1,0 +1,68 @@
+name: Bug report
+description: 'Create a report to help us spaush bugs.'
+title: "[Bug] <Short description>"
+labels: [bug]
+body:
+- type: textarea
+  id: version
+  attributes:
+    label: Describe the bug
+    description: >-
+      A clear and concise description of what the bug is.
+    placeholder: 'Example: Login results in a crash'
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: The log file and images/videos
+    description: |
+      The log file called `latestlog.txt` is located under `/var/mobile/Documents/.pojavlauncher`. You will need to enable Hidden Files and Folders in Filza to see the .pojavlauncher directory. |
+      You can also upload here screenshots or videos of the buggy behavior, if possible.
+      
+      Tip: You can attach files by clicking this area to highlight it and then dragging files in or select them on 🖼 option at the toolbar.
+  validations:
+    required: false
+
+- type: textarea
+  attributes:
+    label: Steps To Reproduce
+    description: Steps to reproduce the behavior.
+    placeholder: |
+      1. Start PojavLauncher
+      ... *(your set of actions to reproduce the bug)*
+    render: markdown
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: Expected Behavior
+    description: A concise description of what you expected to happen.
+    placeholder: 'Example: I expect the game to log me in.'
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: Platform
+    description: |
+      Examples:
+        - **Device model**: iPhone 7
+        - **iOS version**: 14.7
+        - **PojavLauncher version**: [Latest Release || version 1.3 ]
+    value: |
+        - Device model: 
+        - iOS version: 
+        - PojavLauncher version: 
+    render: markdown
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: Anything else?
+    description: |
+      Add any other context about the problem here.
+  validations:
+    required: false
