@@ -32,6 +32,7 @@ body:
 - type: textarea
   attributes:
     label: Disclaimers
-    description: If you're posting a solution this risky, post a disclaimer saying it is!
+    description: |
+      If you're posting a solution this risky, post a disclaimer saying it is!
   validations:
     required: false
