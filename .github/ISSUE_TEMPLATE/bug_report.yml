@@ -1,5 +1,5 @@
 name: Bug report
-description: 'Create a report to help us spaush bugs.'
+description: 'Create a report to help us sqaush bugs.'
 title: "[Bug] <Short description>"
 labels: [bug]
 body:
