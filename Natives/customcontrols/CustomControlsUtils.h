@@ -2,5 +2,5 @@
 
 UIColor* convertARGB2UIColor(int argb);
 int convertUIColor2ARGB(UIColor* color);
-void convertV1ToV2(NSMutableDictionary* input);
+void convertV1ToV2(NSMutableDictionary* dict);
 void generateAndSaveDefaultControl();
