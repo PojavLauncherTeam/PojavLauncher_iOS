@@ -1,5 +1,5 @@
 name: Informational
-description: 'Quick docs, when they're needed.'
+description: 'Quick docs, when they are needed.'
 title: "[Info] <Short description>"
 labels: [documentation]
 body:
@@ -17,7 +17,7 @@ body:
   attributes:
     label: Add some background
     description: |
-      What's this documentation for? If it's a solution doc, what's causing the issue? Why is it important to document?
+      What is this documentation for? If it is a solution doc, what is causing the issue? Why is it important to document?
   validations:
     required: true
 
@@ -32,6 +32,7 @@ body:
 - type: textarea
   attributes:
     label: Disclaimers
-    description: If you're posting a solution this risky, post a disclaimer saying it is!
+    description: |
+      If you are posting a solution this risky, post a disclaimer saying it is!
   validations:
     required: false
