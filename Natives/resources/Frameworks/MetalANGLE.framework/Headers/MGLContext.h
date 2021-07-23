@@ -6,6 +6,8 @@
 
 #import "MGLLayer.h"
 
+#include "EGL/egl.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 typedef enum MGLRenderingAPI : int
@@ -27,9 +29,11 @@ typedef enum MGLRenderingAPI : int
 // contexts.
 - (id)initWithAPI:(MGLRenderingAPI)api sharegroup:(MGLSharegroup *_Nullable)sharegroup;
 
-- (MGLRenderingAPI)API;
+@property(nonatomic, readonly) MGLRenderingAPI API;
 
 @property(readonly) MGLSharegroup *sharegroup;
+
+@property(nonatomic, readonly) EGLDisplay eglDisplay;
 
 // Present the content of layer on screen as soon as possible.
 - (BOOL)present:(MGLLayer *)layer;

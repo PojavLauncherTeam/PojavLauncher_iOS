@@ -3612,6 +3612,11 @@ GL_APICALL void GL_APIENTRY glEndTilingQCOM (GLbitfield preserveMask);
 #define GL_SHADER_BINARY_VIV              0x8FC4
 #endif /* GL_VIV_shader_binary */
 
+#ifndef GL_MGL_timeline_semaphore
+#define GL_MGL_timeline_semaphore 1
+#define GL_TIMELINE_SEMAPHORE_VALUE_MGL 0x9595
+#endif
+
 /* ANGLE GLES2 extensions */
 #include "gl2ext_angle.h"
 

@@ -18,6 +18,7 @@
 #include "utils.h"
 #include "JavaLauncher.h"
 
+#import "customcontrols/CustomControlsUtils.h"
 #import "LauncherPreferences.h"
 
 // PojavLancher: fixme: are these wrong?
@@ -197,6 +198,7 @@ int launchJVM(int argc, char *argv[]) {
     sprintf(controlPath, "%s/controlmap", homeDir);
     mkdir(controlPath, S_IRWXU | S_IRWXG | S_IRWXO);
     setenv("POJAV_PATH_CONTROL", controlPath, 1);
+    generateAndSaveDefaultControl();
 
     char classpath[10000];
     
@@ -263,7 +265,7 @@ int launchJVM(int argc, char *argv[]) {
 
         if (!started) {
             // Setup Caciocavallo
-            margv[margc++] = "-Djava.awt.headless=true";
+            margv[margc++] = "-Djava.awt.headless=true"; // TODO: register natives to make this false
             margv[margc++] = "-Dcacio.font.fontmanager=sun.awt.X11FontManager";
             margv[margc++] = "-Dcacio.font.fontscaler=sun.font.FreetypeFontScaler";
             margv[margc++] = "-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel";

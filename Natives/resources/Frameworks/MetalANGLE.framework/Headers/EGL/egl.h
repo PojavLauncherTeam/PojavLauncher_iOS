@@ -57,8 +57,8 @@ extern "C" {
 #define EGL_VERSION_1_0 1
 typedef unsigned int EGLBoolean;
 typedef void *EGLDisplay;
-#include <EGL/eglplatform.h>
-#include <KHR/khrplatform.h>
+#include "eglplatform.h"
+#include "../KHR/khrplatform.h"
 typedef void *EGLConfig;
 typedef void *EGLSurface;
 typedef void *EGLContext;

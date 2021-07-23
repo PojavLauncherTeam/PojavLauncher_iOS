@@ -1,17 +1,17 @@
 #import <UIKit/UIKit.h>
 
 /**
- * Custom controls have same format as Android.
+ * Custom controls have similar format as Android.
  *
  * Android       - iOS:
  * ControlButton - same
- * ControlData   - NSArray with JSON components
+ * ControlData   - NSDictionary
  */
 
 @interface ControlButton : UIButton {
 }
 
-@property (nonatomic, retain) NSMutableDictionary* properties;
+@property (nonatomic, strong) NSMutableDictionary* properties;
 
 + (id)initWithProperties:(NSMutableDictionary *)propArray;
 + (id)initWithName:(NSString *)name keycode:(int)keycode rect:(CGRect)rect transparency:(float)transparency;

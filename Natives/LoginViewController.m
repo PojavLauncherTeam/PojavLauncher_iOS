@@ -363,21 +363,21 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 @interface LoginListViewController () {
 }
 
+@property(nonatomic, strong) NSMutableArray *accountList;
+
 @end
 
 @implementation LoginListViewController
-
-NSMutableArray *accountList;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 
     [self setTitle:@"Select account"];
 
-    if (accountList == nil) {
-        accountList = [NSMutableArray array];
+    if (self.accountList == nil) {
+        self.accountList = [NSMutableArray array];
     } else {
-        [accountList removeAllObjects];
+        [self.accountList removeAllObjects];
     }
     
     // List accounts
@@ -395,7 +395,7 @@ NSMutableArray *accountList;
                 continue;
             } else if ([@(dir->d_name) hasSuffix:@".json"]) {
                 NSString *trimmedName= [@(dir->d_name) substringToIndex:((int)[@(dir->d_name) length] - 5)];
-                [accountList addObject:trimmedName];
+                [self.accountList addObject:trimmedName];
             }
         }
         closedir(d);
@@ -411,7 +411,7 @@ NSMutableArray *accountList;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [accountList count];
+    return [self.accountList count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -423,24 +423,24 @@ NSMutableArray *accountList;
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
     }
  
-    cell.textLabel.text = [accountList objectAtIndex:indexPath.row];
+    cell.textLabel.text = [self.accountList objectAtIndex:indexPath.row];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self dismissViewControllerAnimated:YES completion:nil];
 
-    NSString *str = [accountList objectAtIndex:indexPath.row];
+    NSString *str = [self.accountList objectAtIndex:indexPath.row];
     loginAccountInput((UINavigationController *)self.presentingViewController, TYPE_SELECTACC, [str UTF8String]);
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSString *str = [accountList objectAtIndex:indexPath.row];
+        NSString *str = [self.accountList objectAtIndex:indexPath.row];
         char accPath[2048];
         sprintf(accPath, "%s/accounts/%s.json", getenv("POJAV_HOME"), [str UTF8String]);
         remove(accPath);
-        [accountList removeObjectAtIndex:indexPath.row];
+        [self.accountList removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
 }

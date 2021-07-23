@@ -6,16 +6,22 @@
 #include "glfw_keycodes.h"
 #include "utils.h"
 
+// CGRectOffset(RECT, notchOffset, 0)
 #define ADD_BUTTON(NAME, KEY, RECT, VISIBLE) \
-    ControlButton *button_##KEY = [ControlButton initWithName:NAME keycode:KEY rect:CGRectOffset(RECT, notchOffset, 0) transparency:0.0f]; \
+    ControlButton *button_##KEY = [ControlButton initWithName:NAME keycode:KEY rect:CGRectMake(RECT.origin.x * buttonScale, RECT.origin.y * buttonScale, RECT.size.width * buttonScale, RECT.size.height * buttonScale) transparency:0.0f]; \
     [button_##KEY addGestureRecognizer:[[UITapGestureRecognizer alloc] \
         initWithTarget:self action:@selector(showControlPopover:)]]; \
     [self.view addSubview:button_##KEY];
+
+#define APPLY_SCALE(KEY) \
+  KEY = @([(NSNumber *)KEY floatValue] * savedScale / currentScale);
 
 int notchOffset;
 
 @interface CustomControlsViewController () <UIPopoverPresentationControllerDelegate>{
 }
+
+@property (nonatomic, strong) NSMutableDictionary* cc_dictionary;
 
 // - (void)method
 
@@ -39,24 +45,16 @@ int notchOffset;
     }
     
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    CGFloat screenScale = [[UIScreen mainScreen] scale];
     UIEdgeInsets insets = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets;
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height);
     notchOffset = insets.left;
     width = width - notchOffset * 2;
     CGFloat buttonScale = ((NSNumber *) getPreference(@"button_scale")).floatValue / 100.0;
-    CGFloat rectBtnWidth = 80.0 * buttonScale;
-    CGFloat rectBtnHeight = 30.0 * buttonScale;
-    CGFloat squareBtnSize = 50.0 * buttonScale;
-    
+
     UILongPressGestureRecognizer *longpressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(showControlPopover:)];
     longpressGesture.minimumPressDuration = 0.5;
     [self.view addGestureRecognizer:longpressGesture];
-
-
-    // Temporary fallback controls
-    BOOL cc_fallback = YES;
 
     NSString *controlFilePath = [NSString stringWithFormat:@"%s/%@", getenv("POJAV_PATH_CONTROL"), (NSString *)getPreference(@"default_ctrl")];
 
@@ -64,55 +62,40 @@ int notchOffset;
     NSString *cc_data = [NSString stringWithContentsOfFile:controlFilePath encoding:NSUTF8StringEncoding error:&cc_error];
 
     if (cc_error != nil) {
-        NSLog(@"Error: could not read \"%@\", falling back to default control, error: %@", controlFilePath, cc_error.localizedDescription);
+        NSLog(@"Error: could not read %@: %@", controlFilePath, cc_error.localizedDescription);
+        showDialog(self, @"Error", [NSString stringWithFormat:@"Could not read %@: %@", controlFilePath, cc_error.localizedDescription]);
     } else {
         NSData* cc_objc_data = [cc_data dataUsingEncoding:NSUTF8StringEncoding];
-        NSDictionary *cc_dictionary = [NSJSONSerialization JSONObjectWithData:cc_objc_data options:kNilOptions error:&cc_error];
+        self.cc_dictionary = [NSJSONSerialization JSONObjectWithData:cc_objc_data options:NSJSONReadingMutableContainers error:&cc_error];
         if (cc_error != nil) {
             showDialog(self, @"Error parsing JSON", cc_error.localizedDescription);
         } else {
-            NSArray *cc_controlDataList = (NSArray *) [cc_dictionary valueForKey:@"mControlDataList"];
+            NSMutableArray *cc_controlDataList = self.cc_dictionary[@"mControlDataList"];
+            CGFloat currentScale = ((NSNumber *)self.cc_dictionary[@"scaledAt"]).floatValue;
+            CGFloat savedScale = ((NSNumber *)getPreference(@"button_scale")).floatValue;
+            int cc_version = ((NSNumber *)self.cc_dictionary[@"version"]).intValue;
             for (int i = 0; i < (int) cc_controlDataList.count; i++) {
-                ControlButton *button = [ControlButton initWithProperties:(NSMutableDictionary *)cc_controlDataList[i]];
+                NSMutableDictionary *cc_buttonDict = cc_controlDataList[i];
+                if (cc_version < 2) {
+                    showDialog(self, @"Notice", @"Custom controls v1 to v2 was not implemented!");
+                    return;
+                    //convertV1ToV2(cc_buttonDict);
+                }
+                APPLY_SCALE(cc_buttonDict[@"width"]);
+                APPLY_SCALE(cc_buttonDict[@"height"]);
+                APPLY_SCALE(cc_buttonDict[@"strokeWidth"]);
+
+                ControlButton *button = [ControlButton initWithProperties:cc_buttonDict];
                 [button addGestureRecognizer:[[UITapGestureRecognizer alloc]
                     initWithTarget:self action:@selector(showControlPopover:)]];
                 [self.view addSubview:button];
             }
-            cc_fallback = NO;
+            self.cc_dictionary[@"scaledAt"] = @(savedScale);
         }
     }
-
-    if (cc_fallback == YES) {
-        ADD_BUTTON(@"GUI", SPECIALBTN_TOGGLECTRL, CGRectMake(5, height - 5 - squareBtnSize, squareBtnSize, squareBtnSize), NO);
-        ADD_BUTTON(@"Keyboard", SPECIALBTN_KEYBOARD, CGRectMake(5 * 3 + rectBtnWidth * 2, 5, rectBtnWidth, rectBtnHeight), YES);
-
-        ADD_BUTTON(@"Pri", SPECIALBTN_MOUSEPRI, CGRectMake(5, height - 5 * 3 - squareBtnSize * 3, squareBtnSize, squareBtnSize), YES);
-        ADD_BUTTON(@"Sec", SPECIALBTN_MOUSESEC, CGRectMake(5 * 3 + squareBtnSize * 2, height - 5 * 3 - squareBtnSize * 3, squareBtnSize, squareBtnSize), YES);
-
-        ADD_BUTTON(@"Debug", GLFW_KEY_F3, CGRectMake(5, 5, rectBtnWidth, rectBtnHeight), YES);
-        ADD_BUTTON(@"Chat", GLFW_KEY_T, CGRectMake(5 * 2 + rectBtnWidth, 5, rectBtnWidth, rectBtnHeight), YES);
-        ADD_BUTTON(@"Tab", GLFW_KEY_TAB, CGRectMake(5 * 4 + rectBtnWidth * 3, 5, rectBtnWidth, rectBtnHeight), YES);
-        ADD_BUTTON(@"Opti-Zoom", GLFW_KEY_C, CGRectMake(5 * 5 + rectBtnWidth * 4, 5, rectBtnWidth, rectBtnHeight), YES);
-        ADD_BUTTON(@"Offhand", GLFW_KEY_F, CGRectMake(5 * 6 + rectBtnWidth * 5, 5, rectBtnWidth, rectBtnHeight), YES);
-        ADD_BUTTON(@"3rd", GLFW_KEY_F5, CGRectMake(5, 5 * 2 + rectBtnHeight, rectBtnWidth, rectBtnHeight), YES);
-
-        ADD_BUTTON(@"▲", GLFW_KEY_W, CGRectMake(5 * 2 + squareBtnSize, height - 5 * 3 - squareBtnSize * 3, squareBtnSize, squareBtnSize), YES);
-        ADD_BUTTON(@"◀", GLFW_KEY_A, CGRectMake(5, height - 5 * 2 - squareBtnSize * 2, squareBtnSize, squareBtnSize), YES);
-        ADD_BUTTON(@"▼", GLFW_KEY_S, CGRectMake(5 * 2 + squareBtnSize, height - 5 - squareBtnSize, squareBtnSize, squareBtnSize), YES);
-        ADD_BUTTON(@"▶", GLFW_KEY_D, CGRectMake(5 * 3 + squareBtnSize * 2, height - 5 * 2 - squareBtnSize * 2, squareBtnSize, squareBtnSize), YES);
-        ADD_BUTTON(@"◇", GLFW_KEY_LEFT_SHIFT, CGRectMake(5 * 2 + squareBtnSize, height - 5 * 2 - squareBtnSize * 2, squareBtnSize, squareBtnSize), YES);
-        ADD_BUTTON(@"Inv", GLFW_KEY_E, CGRectMake(5 * 3 + squareBtnSize * 2, height - 5 - squareBtnSize, squareBtnSize, squareBtnSize), YES);
-
-        ADD_BUTTON(@"⬛", GLFW_KEY_SPACE, CGRectMake(width - 5 * 2 - squareBtnSize * 2, height - 5 * 2 - squareBtnSize * 2, squareBtnSize, squareBtnSize), YES);
-
-        ADD_BUTTON(@"Esc", GLFW_KEY_ESCAPE, CGRectMake(width - 5 - rectBtnWidth, height - 5 - rectBtnHeight, rectBtnWidth, rectBtnHeight), YES);
-
-        // ADD_BUTTON(@"Fullscreen", f11, CGRectMake(width - 5 - rectBtnWidth, 5, rectBtnWidth, rectBtnHeight), YES);
-    }
-}
+} 
 
 - (void)showControlPopover:(UIGestureRecognizer *)sender {
-    NSLog(@"Got Gesture = %@", sender);
     switch (sender.state) {
         case UIGestureRecognizerStateBegan:
             if (![sender isKindOfClass:[UILongPressGestureRecognizer class]]) {
@@ -181,7 +164,19 @@ int notchOffset;
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [button setTitle:@"This is not yet finished. Click here to exit" forState:UIControlStateNormal];
+    button.frame = self.view.frame;
+    [button addTarget:self action:@selector(tempExit) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:button];
+}
+
+- (void)tempExit {
+    [self dismissViewControllerAnimated:YES completion:nil];
+    [((UINavigationController *)self.presentingViewController) setNavigationBarHidden:NO animated:YES];
+    [((UINavigationController *)self.presentingViewController) popViewControllerAnimated:YES];
+        // [((UINavigationController *)self.presentingViewController).topViewController dismissViewControllerAnimated:YES completion:nil];
+    // NSLog(@"ok=%@", ((UINavigationController *)self.presentingViewController).topViewController);
 }
 
 @end

@@ -18,13 +18,16 @@
 // #define DEBUG_VISIBLE_TEXT_FIELD
 
 #define ADD_BUTTON(NAME, KEY, RECT, VISIBLE) \
-    ControlButton *button_##KEY = [ControlButton initWithName:NAME keycode:KEY rect:CGRectOffset(RECT, notchOffset, 0) transparency:0.0f]; \
+    ControlButton *button_##KEY = [ControlButton initWithName:NAME keycode:KEY rect:CGRectMake(RECT.origin.x * buttonScale, RECT.origin.y * buttonScale, RECT.size.width * buttonScale, RECT.size.height * buttonScale) transparency:0.0f]; \
     [button_##KEY addTarget:self action:@selector(executebtn_down:) forControlEvents:UIControlEventTouchDown]; \
     [button_##KEY addTarget:self action:@selector(executebtn_up:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside]; \
     [self.view addSubview:button_##KEY]; \
     if (VISIBLE == YES) { \
         togglableVisibleButtons[++togglableVisibleButtonIndex] = button_##KEY; \
     }
+
+#define APPLY_SCALE(KEY) \
+  KEY = @([(NSNumber *)KEY floatValue] * savedScale / currentScale);
 
 #define INPUT_SPACE_CHAR @"                    "
 #define INPUT_SPACE_LENGTH 20
@@ -47,7 +50,8 @@ int notchOffset;
 @interface SurfaceViewController ()<UITextFieldDelegate, UIPointerInteractionDelegate> {
 }
 
-@property (strong, nonatomic) MGLContext *context;
+@property (nonatomic, strong) MGLContext *context;
+@property (nonatomic, strong) NSMutableDictionary* cc_dictionary;
 
 - (void)setupGL;
 
@@ -77,6 +81,7 @@ int notchOffset;
 
     notchOffset = insets.left;
     width = width - notchOffset * 2;
+    CGFloat buttonScale = ((NSNumber *) getPreference(@"button_scale")).floatValue / 100.0;
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(surfaceOnClick:)];
     tapGesture.numberOfTapsRequired = 1;
@@ -102,16 +107,11 @@ int notchOffset;
         [touchView addGestureRecognizer:mouseWheelGesture];
     }
 
-    CGFloat buttonScale = ((NSNumber *) getPreference(@"button_scale")).floatValue / 100.0;
-    CGFloat rectBtnWidth = 80.0 * buttonScale;
-    CGFloat rectBtnHeight = 30.0 * buttonScale;
-    CGFloat squareBtnSize = 50.0 * buttonScale;
-
 #ifndef DEBUG_VISIBLE_TEXT_FIELD
-    inputView = [[UITextField alloc] initWithFrame:CGRectMake(5 * 3 + rectBtnWidth * 2, 5, rectBtnWidth, rectBtnHeight)];
+    inputView = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
     inputView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.0f];
 #else
-    inputView = [[UITextField alloc] initWithFrame:CGRectMake(5 * 3 + rectBtnWidth * 2, 5 * 2 + rectBtnHeight, 200, rectBtnHeight)];
+    inputView = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
     inputView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.5f];
 
     inputLengthView = [[UILabel alloc] initWithFrame:CGRectMake(5 * 2 + rectBtnWidth, 5 * 2 + rectBtnHeight, rectBtnWidth, rectBtnHeight)];
@@ -126,65 +126,52 @@ int notchOffset;
     // Custom button
     // ADD_BUTTON(@"F1", f1, CGRectMake(5, 5, width, height));
 
-    // Temporary fallback controls
-    BOOL cc_fallback = YES;
-
     NSString *controlFilePath = [NSString stringWithFormat:@"%s/%@", getenv("POJAV_PATH_CONTROL"), (NSString *)getPreference(@"default_ctrl")];
 
     NSError *cc_error;
     NSString *cc_data = [NSString stringWithContentsOfFile:controlFilePath encoding:NSUTF8StringEncoding error:&cc_error];
 
     if (cc_error != nil) {
-        NSLog(@"Error: could not read \"%@\", falling back to default control, error: %@", controlFilePath, cc_error.localizedDescription);
+        NSLog(@"Error: could not read %@: %@", controlFilePath, cc_error.localizedDescription);
+        showDialog(self, @"Error", [NSString stringWithFormat:@"Could not read %@: %@", controlFilePath, cc_error.localizedDescription]);
     } else {
         NSData* cc_objc_data = [cc_data dataUsingEncoding:NSUTF8StringEncoding];
-        NSDictionary *cc_dictionary = [NSJSONSerialization JSONObjectWithData:cc_objc_data options:kNilOptions error:&cc_error];
+        self.cc_dictionary = [NSJSONSerialization JSONObjectWithData:cc_objc_data options:NSJSONReadingMutableContainers error:&cc_error];
         if (cc_error != nil) {
             showDialog(self, @"Error parsing JSON", cc_error.localizedDescription);
         } else {
-            NSArray *cc_controlDataList = (NSArray *) [cc_dictionary valueForKey:@"mControlDataList"];
+            NSMutableArray *cc_controlDataList = self.cc_dictionary[@"mControlDataList"];
+            CGFloat currentScale = ((NSNumber *)self.cc_dictionary[@"scaledAt"]).floatValue;
+            CGFloat savedScale = ((NSNumber *)getPreference(@"button_scale")).floatValue;
+            int cc_version = ((NSNumber *)self.cc_dictionary[@"version"]).intValue;
             for (int i = 0; i < (int) cc_controlDataList.count; i++) {
-                ControlButton *button = [ControlButton initWithProperties:(NSMutableDictionary *)cc_controlDataList[i]];
+                NSMutableDictionary *cc_buttonDict = cc_controlDataList[i];
+                if (cc_version < 2) {
+                    showDialog(self, @"Notice", @"Custom controls v1 to v2 was not implemented!");
+                    return;
+                    //convertV1ToV2(cc_buttonDict);
+                }
+                APPLY_SCALE(cc_buttonDict[@"width"]);
+                APPLY_SCALE(cc_buttonDict[@"height"]);
+                APPLY_SCALE(cc_buttonDict[@"strokeWidth"]);
+
+                ControlButton *button = [ControlButton initWithProperties:cc_buttonDict];
                 [button addTarget:self action:@selector(executebtn_down:) forControlEvents:UIControlEventTouchDown];
-                [button addTarget:self action:@selector(executebtn_up:) forControlEvents:UIControlEventTouchUpInside];
-                [button addTarget:self action:@selector(executebtn_up:) forControlEvents:UIControlEventTouchUpOutside];
+                [button addTarget:self action:@selector(executebtn_up:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
                 [self.view addSubview:button];
-                if ([(NSNumber *) [button.properties valueForKey:@"keycode"] intValue] != SPECIALBTN_TOGGLECTRL) {
+
+                int firstKeycode = ((NSNumber *)cc_buttonDict[@"keycodes"][0]).intValue;
+                if (firstKeycode == SPECIALBTN_KEYBOARD) {
+                    inputView.frame = button.frame;
+                }
+                if (firstKeycode != SPECIALBTN_TOGGLECTRL) {
                     togglableVisibleButtons[++togglableVisibleButtonIndex] = button;
                 }
             }
-            cc_fallback = NO;
+            self.cc_dictionary[@"scaledAt"] = @(savedScale);
         }
     }
 
-    if (cc_fallback == YES) {
-        ADD_BUTTON(@"GUI", SPECIALBTN_TOGGLECTRL, CGRectMake(5, height - 5 - squareBtnSize, squareBtnSize, squareBtnSize), NO);
-        ADD_BUTTON(@"Keyboard", SPECIALBTN_KEYBOARD, CGRectMake(5 * 3 + rectBtnWidth * 2, 5, rectBtnWidth, rectBtnHeight), YES);
-
-        ADD_BUTTON(@"Pri", SPECIALBTN_MOUSEPRI, CGRectMake(5, height - 5 * 3 - squareBtnSize * 3, squareBtnSize, squareBtnSize), YES);
-        ADD_BUTTON(@"Sec", SPECIALBTN_MOUSESEC, CGRectMake(5 * 3 + squareBtnSize * 2, height - 5 * 3 - squareBtnSize * 3, squareBtnSize, squareBtnSize), YES);
-
-        ADD_BUTTON(@"Debug", GLFW_KEY_F3, CGRectMake(5, 5, rectBtnWidth, rectBtnHeight), YES);
-        ADD_BUTTON(@"Chat", GLFW_KEY_T, CGRectMake(5 * 2 + rectBtnWidth, 5, rectBtnWidth, rectBtnHeight), YES);
-        ADD_BUTTON(@"Tab", GLFW_KEY_TAB, CGRectMake(5 * 4 + rectBtnWidth * 3, 5, rectBtnWidth, rectBtnHeight), YES);
-        ADD_BUTTON(@"Opti-Zoom", GLFW_KEY_C, CGRectMake(5 * 5 + rectBtnWidth * 4, 5, rectBtnWidth, rectBtnHeight), YES);
-        ADD_BUTTON(@"Offhand", GLFW_KEY_F, CGRectMake(5 * 6 + rectBtnWidth * 5, 5, rectBtnWidth, rectBtnHeight), YES);
-        ADD_BUTTON(@"3rd", GLFW_KEY_F5, CGRectMake(5, 5 * 2 + rectBtnHeight, rectBtnWidth, rectBtnHeight), YES);
-
-        ADD_BUTTON(@"▲", GLFW_KEY_W, CGRectMake(5 * 2 + squareBtnSize, height - 5 * 3 - squareBtnSize * 3, squareBtnSize, squareBtnSize), YES);
-        ADD_BUTTON(@"◀", GLFW_KEY_A, CGRectMake(5, height - 5 * 2 - squareBtnSize * 2, squareBtnSize, squareBtnSize), YES);
-        ADD_BUTTON(@"▼", GLFW_KEY_S, CGRectMake(5 * 2 + squareBtnSize, height - 5 - squareBtnSize, squareBtnSize, squareBtnSize), YES);
-        ADD_BUTTON(@"▶", GLFW_KEY_D, CGRectMake(5 * 3 + squareBtnSize * 2, height - 5 * 2 - squareBtnSize * 2, squareBtnSize, squareBtnSize), YES);
-        ADD_BUTTON(@"◇", GLFW_KEY_LEFT_SHIFT, CGRectMake(5 * 2 + squareBtnSize, height - 5 * 2 - squareBtnSize * 2, squareBtnSize, squareBtnSize), YES);
-        ADD_BUTTON(@"Inv", GLFW_KEY_E, CGRectMake(5 * 3 + squareBtnSize * 2, height - 5 - squareBtnSize, squareBtnSize, squareBtnSize), YES);
-
-        ADD_BUTTON(@"⬛", GLFW_KEY_SPACE, CGRectMake(width - 5 * 2 - squareBtnSize * 2, height - 5 * 2 - squareBtnSize * 2, squareBtnSize, squareBtnSize), YES);
-
-        ADD_BUTTON(@"Esc", GLFW_KEY_ESCAPE, CGRectMake(width - 5 - rectBtnWidth, height - 5 - rectBtnHeight, rectBtnWidth, rectBtnHeight), YES);
-
-        // ADD_BUTTON(@"Fullscreen", f11, CGRectMake(width - 5 - rectBtnWidth, 5, rectBtnWidth, rectBtnHeight), YES);
-    }
-    
     [self.view addSubview:inputView];
 
     [self executebtn_special_togglebtn:0];
@@ -557,7 +544,8 @@ int currentVisibility = 1;
 - (void) executebtn:(UIButton *)sender withAction:(int)action {
     ControlButton *button = (ControlButton *)sender;
     int held = action == ACTION_DOWN;
-    int keycode = [(NSNumber *) [button.properties valueForKey:@"keycode"] intValue];
+    // TODO v2: mulitple keys support
+    int keycode = ((NSNumber *)button.properties[@"keycodes"][0]).intValue;
     if (keycode < 0) {
         switch (keycode) {
             case SPECIALBTN_KEYBOARD:

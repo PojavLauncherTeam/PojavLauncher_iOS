@@ -42,7 +42,7 @@ UITextField* versionTextField;
     }
 
     UILabel *btnsizeTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 8.0, 0.0, 30.0)];
-    btnsizeTextView.text = @"Button scale: ";
+    btnsizeTextView.text = @"Button scale (%)";
     btnsizeTextView.numberOfLines = 0;
     btnsizeTextView.textAlignment = NSTextAlignmentCenter;
     [btnsizeTextView sizeToFit];
