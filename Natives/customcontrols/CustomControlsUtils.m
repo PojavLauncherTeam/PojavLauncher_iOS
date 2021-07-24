@@ -2,8 +2,8 @@
 #include "../glfw_keycodes.h"
 #include "../utils.h"
 
-#define BTN_RECT 80, 30
-#define BTN_SQUARE 50, 50
+#define BTN_RECT 80.0, 30.0
+#define BTN_SQUARE 50.0, 50.0
 
 NSMutableDictionary* createButton(NSString* name, int* keycodes, NSString* dynamicX, NSString* dynamicY, CGFloat width, CGFloat height) {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
@@ -18,6 +18,7 @@ NSMutableDictionary* createButton(NSString* name, int* keycodes, NSString* dynam
     dict[@"height"] = @(height);
     dict[@"opacity"] = @(100);
     dict[@"cornerRadius"] = @(0);
+    dict[@"bgColor"] = @(convertUIColor2ARGB([UIColor colorWithRed:0 green:0 blue:0 alpha:0.3]));
     return dict;
 }
 
@@ -30,8 +31,15 @@ UIColor* convertARGB2UIColor(int argb) {
 }
 
 int convertUIColor2ARGB(UIColor* color) {
-    // TODO
-    return 0;
+    const CGFloat *rgba = CGColorGetComponents(color.CGColor);
+    int a = (int) (rgba[3] * 255);
+    int r = (int) (rgba[0] * 255);
+    int g = (int) (rgba[1] * 255);
+    int b = (int) (rgba[2] * 255);
+    return (a << 24)|
+           (r << 16)|
+           (g << 8) |
+           (b << 0);
 }
 
 void convertV1ToV2(NSMutableDictionary* dict) {
