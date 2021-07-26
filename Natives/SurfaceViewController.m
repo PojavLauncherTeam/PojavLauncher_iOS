@@ -47,7 +47,7 @@ int notchOffset;
 
 // TODO: key modifiers impl
 
-@interface SurfaceViewController ()<UITextFieldDelegate, UIPointerInteractionDelegate> {
+@interface SurfaceViewController ()<UITextFieldDelegate, UIPointerInteractionDelegate, UIGestureRecognizerDelegate> {
 }
 
 @property (nonatomic, strong) MGLContext *context;
@@ -83,15 +83,27 @@ int notchOffset;
     width = width - notchOffset * 2;
     CGFloat buttonScale = ((NSNumber *) getPreference(@"button_scale")).floatValue / 100.0;
     
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(surfaceOnClick:)];
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]
+        initWithTarget:self action:@selector(surfaceOnClick:)];
+    tapGesture.delegate = self;
     tapGesture.numberOfTapsRequired = 1;
     tapGesture.numberOfTouchesRequired = 1;
     tapGesture.cancelsTouchesInView = NO;
     [touchView addGestureRecognizer:tapGesture];
 
-    UILongPressGestureRecognizer *longpressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(surfaceOnLongpress:)];
+    UILongPressGestureRecognizer *longpressGesture = [[UILongPressGestureRecognizer alloc]
+        initWithTarget:self action:@selector(surfaceOnLongpress:)];
+    longpressGesture.delegate = self;
     longpressGesture.minimumPressDuration = ((NSNumber *)getPreference(@"time_longPressTrigger")).floatValue / 1000;
     [touchView addGestureRecognizer:longpressGesture];
+    
+    UIPanGestureRecognizer *scrollPanGesture = [[UIPanGestureRecognizer alloc]
+        initWithTarget:self action:@selector(surfaceOnTouchesScroll:)];
+    scrollPanGesture.delegate = self;
+    scrollPanGesture.allowedTouchTypes = @[@(UITouchTypeDirect)];
+    scrollPanGesture.minimumNumberOfTouches = 2;
+    scrollPanGesture.maximumNumberOfTouches = 2;
+    [touchView addGestureRecognizer:scrollPanGesture];
 
     [self.view addSubview:touchView];
     
@@ -99,8 +111,9 @@ int notchOffset;
         [touchView addInteraction:[[UIPointerInteraction alloc] initWithDelegate:self]];
 
         UIPanGestureRecognizer *mouseWheelGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(surfaceOnMouseScroll:)];
+        mouseWheelGesture.delegate = self;
         mouseWheelGesture.allowedScrollTypesMask = UIScrollTypeMaskDiscrete;
-        mouseWheelGesture.allowedTouchTypes = @[ @(UITouchTypeIndirectPointer) ];
+        mouseWheelGesture.allowedTouchTypes = @[@(UITouchTypeIndirectPointer)];
         mouseWheelGesture.cancelsTouchesInView = NO;
         mouseWheelGesture.delaysTouchesBegan = NO;
         mouseWheelGesture.delaysTouchesEnded = NO;
@@ -376,8 +389,8 @@ BOOL isNotifRemoved;
             || sender.state == UIGestureRecognizerStateEnded)
         {
             if (hotbarItem == -1) {
-            inputView.text = INPUT_SPACE_CHAR;
-            inputTextLength = 0;
+                inputView.text = INPUT_SPACE_CHAR;
+                inputTextLength = 0;
 
                 Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, GLFW_MOUSE_BUTTON_LEFT, 0, 0);
             } else {
@@ -406,6 +419,18 @@ BOOL isNotifRemoved;
         }
         if (velocity.x != 0.0f || velocity.y != 0.0f) {
             Java_org_lwjgl_glfw_CallbackBridge_nativeSendScroll(NULL, NULL, (jdouble) velocity.x * 4.0, (jdouble) velocity.y * 4.0);
+        }
+    }
+}
+
+- (void)surfaceOnTouchesScroll:(UIPanGestureRecognizer *)sender {
+    if (sender.state == UIGestureRecognizerStateBegan ||
+        sender.state == UIGestureRecognizerStateChanged ||
+        sender.state == UIGestureRecognizerStateEnded) {
+        CGPoint velocity = [sender velocityInView:self.view];
+        if (velocity.x != 0.0f || velocity.y != 0.0f) {
+            // invert x and y
+            Java_org_lwjgl_glfw_CallbackBridge_nativeSendScroll(NULL, NULL, (jdouble) (velocity.x/10.0), (jdouble) (velocity.y/10.0));
         }
     }
 }
