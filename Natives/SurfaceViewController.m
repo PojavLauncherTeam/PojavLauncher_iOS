@@ -429,7 +429,6 @@ BOOL isNotifRemoved;
         sender.state == UIGestureRecognizerStateEnded) {
         CGPoint velocity = [sender velocityInView:self.view];
         if (velocity.x != 0.0f || velocity.y != 0.0f) {
-            // invert x and y
             Java_org_lwjgl_glfw_CallbackBridge_nativeSendScroll(NULL, NULL, (jdouble) (velocity.x/10.0), (jdouble) (velocity.y/10.0));
         }
     }
