@@ -91,7 +91,7 @@ else ifneq ($(filter 0,$(IOS)),)
 endif
 
 
-all: clean version native java extras package
+all: clean native java extras package
 
 version:
 	@echo 'Starting build task - version change'

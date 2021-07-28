@@ -52,6 +52,9 @@ int notchOffset;
     width = width - notchOffset * 2;
     CGFloat buttonScale = ((NSNumber *) getPreference(@"button_scale")).floatValue / 100.0;
 
+    UIPanGestureRecognizer *panRecognizer;
+    panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(wasDragged:)];
+
     UILongPressGestureRecognizer *longpressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(showControlPopover:)];
     longpressGesture.minimumPressDuration = 0.5;
     [self.view addGestureRecognizer:longpressGesture];
@@ -134,6 +137,14 @@ int notchOffset;
 
 - (BOOL)prefersHomeIndicatorAutoHidden {
     return NO;
+}
+
+- (void)wasDragged:(UIPanGestureRecognizer *)recognizer {
+    UIButton *button = (UIButton *)recognizer.view;
+    CGPoint translation = [recognizer translationInView:button];
+
+    button.center = CGPointMake(button.center.x + translation.x, button.center.y + translation.y);
+    [recognizer setTranslation:CGPointZero inView:button];
 }
 
 -(void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
