@@ -17,6 +17,12 @@ public class PLaunchApp {
     public static boolean mIsAssetsProcessing = false;
 
     public static void main(String[] args) throws Throwable {
+        try {
+            sun.font.FontUtilities.isLinux = true;
+        } catch (Throwable th) {
+            // Not on JRE8, ignore exception
+        }
+
         // User might remove the minecraft folder, this can cause crashes, safety re-create it
         try {
             File mcDir = new File(Tools.DIR_GAME_NEW);

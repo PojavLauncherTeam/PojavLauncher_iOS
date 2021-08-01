@@ -50,8 +50,8 @@ int notchOffset;
 @interface SurfaceViewController ()<UITextFieldDelegate, UIPointerInteractionDelegate, UIGestureRecognizerDelegate> {
 }
 
-@property (nonatomic, strong) MGLContext *context;
-@property (nonatomic, strong) NSMutableDictionary* cc_dictionary;
+@property(nonatomic, strong) MGLContext *context;
+@property(nonatomic, strong) NSMutableDictionary* cc_dictionary;
 
 - (void)setupGL;
 

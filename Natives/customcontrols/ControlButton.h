@@ -11,7 +11,7 @@
 @interface ControlButton : UIButton {
 }
 
-@property (nonatomic, strong) NSMutableDictionary* properties;
+@property(nonatomic, strong) NSMutableDictionary* properties;
 
 + (id)initWithProperties:(NSMutableDictionary *)propArray;
 + (id)initWithName:(NSString *)name keycode:(int)keycode rect:(CGRect)rect transparency:(float)transparency;

@@ -1,4 +1,3 @@
-#import "customcontrols/ControlButton.h"
 #import "CustomControlsViewController.h"
 #import "LauncherPreferences.h"
 #import "ios_uikit_bridge.h"
@@ -11,17 +10,18 @@
     ControlButton *button_##KEY = [ControlButton initWithName:NAME keycode:KEY rect:CGRectMake(RECT.origin.x * buttonScale, RECT.origin.y * buttonScale, RECT.size.width * buttonScale, RECT.size.height * buttonScale) transparency:0.0f]; \
     [button_##KEY addGestureRecognizer:[[UITapGestureRecognizer alloc] \
         initWithTarget:self action:@selector(showControlPopover:)]]; \
-    [self.view addSubview:button_##KEY];
+    [self.offsetView addSubview:button_##KEY];
 
 #define APPLY_SCALE(KEY) \
   KEY = @([(NSNumber *)KEY floatValue] * savedScale / currentScale);
 
-int notchOffset;
+int width;
 
 @interface CustomControlsViewController () <UIPopoverPresentationControllerDelegate>{
 }
 
-@property (nonatomic, strong) NSMutableDictionary* cc_dictionary;
+@property(nonatomic, strong) NSMutableDictionary* cc_dictionary;
+@property(nonatomic) UIView* offsetView;
 
 // - (void)method
 
@@ -46,15 +46,21 @@ int notchOffset;
     
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     UIEdgeInsets insets = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets;
-    int width = (int) roundf(screenBounds.size.width);
+
+    self.offsetView = [[UIView alloc] initWithFrame:CGRectMake(
+        insets.left, 0,
+        self.view.frame.size.width - insets.left - insets.right,
+        self.view.frame.size.height
+    )];
+    [self.view addSubview:self.offsetView];
+
     int height = (int) roundf(screenBounds.size.height);
-    notchOffset = insets.left;
-    width = width - notchOffset * 2;
+    width = width - insets.left - insets.right;
     CGFloat buttonScale = ((NSNumber *) getPreference(@"button_scale")).floatValue / 100.0;
 
     UILongPressGestureRecognizer *longpressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(showControlPopover:)];
     longpressGesture.minimumPressDuration = 0.5;
-    [self.view addGestureRecognizer:longpressGesture];
+    [self.offsetView addGestureRecognizer:longpressGesture];
 
     NSString *controlFilePath = [NSString stringWithFormat:@"%s/%@", getenv("POJAV_PATH_CONTROL"), (NSString *)getPreference(@"default_ctrl")];
 
@@ -88,7 +94,7 @@ int notchOffset;
                 ControlButton *button = [ControlButton initWithProperties:cc_buttonDict];
                 [button addGestureRecognizer:[[UITapGestureRecognizer alloc]
                     initWithTarget:self action:@selector(showControlPopover:)]];
-                [self.view addSubview:button];
+                [self.offsetView addSubview:button];
             }
             self.cc_dictionary[@"scaledAt"] = @(savedScale);
         }
@@ -121,6 +127,7 @@ int notchOffset;
         CGPoint point = [sender locationInView:sender.view];
         popoverController.sourceRect = CGRectMake(point.x, point.y, 1.0, 1.0);
     } else {
+        vc.targetButton = (ControlButton *)sender.view;
         popoverController.sourceRect = sender.view.bounds;
     }
     popoverController.permittedArrowDirections = UIPopoverArrowDirectionAny;
@@ -157,6 +164,8 @@ int notchOffset;
 @interface CCMenuViewController () {
 }
 
+@property(nonatomic) UIScrollView* scrollView;
+
 @end
 
 @implementation CCMenuViewController
@@ -164,19 +173,62 @@ int notchOffset;
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [button setTitle:@"This is not yet finished. Click here to exit" forState:UIControlStateNormal];
-    button.frame = self.view.frame;
-    [button addTarget:self action:@selector(tempExit) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:button];
+    self.view.frame = CGRectMake(0, 0, self.preferredContentSize.width, self.preferredContentSize.height);
+    
+    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(20.0, 0.0, self.preferredContentSize.width - 40.0, self.preferredContentSize.height - 40.0)];
+    [self.view addSubview:self.scrollView];
+
+    if (self.shouldDisplayButtonEditor) {
+        [self displayButtonEditor];
+    } else {
+        [self displayControlMenu];
+    }
 }
 
-- (void)tempExit {
+- (void)displayButtonEditor {
+    CGFloat width = self.view.frame.size.width;
+    CGFloat height = self.view.frame.size.height;
+
+    UILabel *labelName = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 0.0)];
+    labelName.text = @"Name";
+    labelName.numberOfLines = 0;
+    [labelName sizeToFit];
+    [self.scrollView addSubview:labelName];
+    UITextField *editName = [[UITextField alloc] initWithFrame:CGRectMake(labelName.frame.size.width + 4.0, 0.0, width - labelName.frame.size.width - 4.0, labelName.frame.size.height)];
+    [editName addTarget:editName action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
+    editName.placeholder = @"Name";
+    editName.text = self.targetButton.properties[@"name"];
+    //editName.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
+    //editName.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [self.scrollView addSubview:editName];
+
+    UILabel *labelSize = [[UILabel alloc] initWithFrame:CGRectMake(0.0, labelName.frame.size.height + 4.0, 0.0, 0.0)];
+    labelSize.text = @"Size";
+    labelSize.numberOfLines = 0;
+    [labelSize sizeToFit];
+    [self.scrollView addSubview:labelSize];
+    UITextField *editSizeWidth = [[UITextField alloc] initWithFrame:CGRectMake(labelSize.frame.size.width + 4.0, labelSize.frame.origin.y, width - labelSize.frame.size.width - 4.0, labelSize.frame.size.height)];
+    [editSizeWidth addTarget:editSizeWidth action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
+    editSizeWidth.placeholder = @"width";
+    editSizeWidth.text = ((NSNumber *)self.targetButton.properties[@"width"]).stringValue;
+    editSizeWidth.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
+    editSizeWidth.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [self.scrollView addSubview:editSizeWidth];
+}
+
+- (void)displayControlMenu {
+    UIButton *buttonExit = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    buttonExit.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    [buttonExit setTitle:@"Exit" forState:UIControlStateNormal];
+    buttonExit.frame = CGRectMake(0.0, 0.0, self.scrollView.frame.size.width, 50.0);
+    [buttonExit addTarget:self action:@selector(actionExit) forControlEvents:UIControlEventTouchUpInside];
+    [self.scrollView addSubview:buttonExit];
+}
+
+- (void)actionExit {
     [self dismissViewControllerAnimated:YES completion:nil];
     [((UINavigationController *)self.presentingViewController) setNavigationBarHidden:NO animated:YES];
     [((UINavigationController *)self.presentingViewController) popViewControllerAnimated:YES];
-        // [((UINavigationController *)self.presentingViewController).topViewController dismissViewControllerAnimated:YES completion:nil];
-    // NSLog(@"ok=%@", ((UINavigationController *)self.presentingViewController).topViewController);
 }
 
 @end

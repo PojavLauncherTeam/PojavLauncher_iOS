@@ -91,17 +91,7 @@ else ifneq ($(filter 0,$(IOS)),)
 endif
 
 
-all: clean version native java extras package
-
-version:
-	@echo 'Starting build task - version change'
-	@export PATH='/usr/local/opt/gnu-sed/libexec/gnubin:$PATH'
-	@if [ '$(RELEASE)' != '1' ]; then \
-		$(SED) -i "s/version$(VERSION) \(.*\) on/version$(VERSION) \(dev - $(COMMIT)\) on/" Natives/AboutLauncherViewController.m || exit 1; \
-	elif [ '$(RELEASE)' = '1' ]; then \
-	  	$(SED) -i "s/version$(VERSION) \(.*\) on/version$(VERSION) \(release\) on/" Natives/AboutLauncherViewController.m || exit 1; \
-	fi
-	@echo 'Finished build task - version change'
+all: clean native java extras package
 
 native:
 	@echo 'Starting build task - native application'
@@ -114,8 +104,10 @@ native:
 		-DCMAKE_OSX_SYSROOT="$(SDKPATH)" \
 		-DCMAKE_OSX_ARCHITECTURES=arm64 \
 		-DCMAKE_C_FLAGS="-arch arm64 -miphoneos-version-min=12.0" \
+		-DCONFIG_COMMIT="$(COMMIT)" \
 		..
-	@cd Natives/build && cmake --build . --config Release --target pojavexec PojavLauncher
+	@cd Natives/build && cmake --build . --config Release --target awt_headless awt_xawt pojavexec PojavLauncher
+	@rm Natives/build/libawt_headless.dylib || exit 1
 	@echo 'Finished build task - native application'
 
 java:
@@ -143,7 +135,7 @@ package:
 	@echo 'Starting build task - package for external devices'
 	@if [ '$(IOS)' = '0' ]; then \
 		cp -R Natives/resources/* Natives/build/PojavLauncher.app/ || exit 1; \
-		cp Natives/build/libpojavexec.dylib Natives/build/PojavLauncher.app/Frameworks/ || exit 1; \
+		cp Natives/build/*.dylib Natives/build/PojavLauncher.app/Frameworks/ || exit 1; \
 		mkdir Natives/build/PojavLauncher.app/{libs,libs_caciocavallo}; \
 		cp JavaApp/local_out/launcher.jar Natives/build/PojavLauncher.app/libs/launcher.jar || exit 1; \
 		cp -R JavaApp/libs/* Natives/build/PojavLauncher.app/libs/ || exit 1; \
@@ -155,12 +147,11 @@ package:
 		ldid -Sentitlements.xml packages/pojavlauncher_iphoneos-arm/Applications/PojavLauncher.app || exit 1; \
 		fakeroot dpkg-deb -b packages/pojavlauncher_iphoneos-arm || exit 1; \
 	elif [ '$(IOS)' = '1' ]; then \
-		mkdir -p Natives/build/PojavLauncher.app/Frameworks; \
-		mkdir -p Natives/build/PojavLauncher.app/Base.lproj; \
+		mkdir -p Natives/build/PojavLauncher.app/{Frameworks,Base.lproj}; \
 		cp -R Natives/en.lproj/*.storyboardc Natives/build/PojavLauncher.app/Base.lproj/ || exit 1; \
 		cp -R Natives/Info.plist Natives/build/PojavLauncher.app/Info.plist || exit 1;\
 		cp -R Natives/PkgInfo Natives/build/PojavLauncher.app/PkgInfo || exit 1; \
-		cp -R Natives/build/libpojavexec.dylib Natives/build/PojavLauncher.app/Frameworks/libpojavexec.dylib || exit 1; \
+		cp -R Natives/build/*.dylib Natives/build/PojavLauncher.app/Frameworks/ || exit 1; \
 		cp -R Natives/resources/* Natives/build/PojavLauncher.app/ || exit 1; \
 		cp -R JavaApp/libs Natives/build/PojavLauncher.app/libs || exit 1; \
 		cp -R JavaApp/libs_caciocavallo Natives/build/PojavLauncher.app/libs_caciocavallo || exit 1; \
@@ -205,16 +196,18 @@ deploy:
 			ldid -Sentitlements.xml Natives/build/PojavLauncher.app/PojavLauncher; \
 			if [ '$(DEVICE_PORT)' != '' ]; then \
 				scp -P $(DEVICE_PORT) -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" Natives/build/libpojavexec.dylib \
+				    Natives/build/libawt_xawt.dylib \
 					Natives/build/PojavLauncher.app/PojavLauncher \
 					JavaApp/local_out/launcher.jar \
 					root@$(DEVICE_IP):/var/tmp; \
-				ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t "mv /var/tmp/libpojavexec.dylib /Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib && mv /var/tmp/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher && mv /var/tmp/launcher.jar /Applications/PojavLauncher.app/libs/launcher.jar && killall PojavLauncher"; \
+				ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t "mv /var/tmp/libawt_xawt.dylib /Applications/PojavLauncher.app/Frameworks/libawt_xawt.dylib && mv /var/tmp/libpojavexec.dylib /Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib && mv /var/tmp/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher && mv /var/tmp/launcher.jar /Applications/PojavLauncher.app/libs/launcher.jar && killall PojavLauncher"; \
 			else \
 				scp -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" Natives/build/libpojavexec.dylib \
+				    Natives/build/libawt_xawt.dylib \
 					Natives/build/PojavLauncher.app/PojavLauncher \
 					JavaApp/local_out/launcher.jar \
 					root@$(DEVICE_IP):/var/tmp; \
-				ssh root@$(DEVICE_IP) -t "mv /var/tmp/libpojavexec.dylib /Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib && mv /var/tmp/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher && mv /var/tmp/launcher.jar /Applications/PojavLauncher.app/libs/launcher.jar && killall PojavLauncher"; \
+				ssh root@$(DEVICE_IP) -t "mv /var/tmp/libawt_xawt.dylib /Applications/PojavLauncher.app/Frameworks/libawt_xawt.dylib && mv /var/tmp/libpojavexec.dylib /Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib && mv /var/tmp/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher && mv /var/tmp/launcher.jar /Applications/PojavLauncher.app/libs/launcher.jar && killall PojavLauncher"; \
 			fi; \
 		else \
 			echo 'You need to run '\''export DEVICE_IP=<your iOS device IP>'\'' to use make deploy.'; \
@@ -224,7 +217,7 @@ deploy:
 		sudo ldid -Sentitlements.xml Natives/build/PojavLauncher.app/PojavLauncher; \
 		sudo cp JavaApp/local_out/launcher.jar /Applications/PojavLauncher.app/libs/launcher.jar; \
 		sudo cp Natives/build/PojavLauncher.app/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher; \
-		sudo cp Natives/build/libpojavexec.dylib /Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib; \
+		sudo cp Natives/build/*.dylib /Applications/PojavLauncher.app/Frameworks/; \
 		sudo killall PojavLauncher; \
 	fi
 	@echo 'Finished build task - deploy to local device'
@@ -242,7 +235,6 @@ help:
 	@echo 'Usage:                                                                                '
 	@echo '    make                                Makes everything under all                    '
 	@echo '    make all                            Builds natives, javaapp, extras, and package  '
-	@echo '    make version                        Changes the About view's information          '
 	@echo '    make native                         Builds the native app                         '
 	@echo '    make java                           Builds the Java app                           '
 	@echo '    make package                        Builds deb of PojavLauncher                   '
@@ -250,4 +242,4 @@ help:
 	@echo '    make deploy                         Copy package to local iDevice                 '
 	@echo '    make clean                          Cleans build directories                      '
 
-. PHONY: all clean version native java extras package install deploy
+. PHONY: all clean native java extras package install deploy

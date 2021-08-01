@@ -39,7 +39,7 @@
     properties[@"width"] = @(rect.size.width);
     properties[@"height"] = @(rect.size.height);
     properties[@"keycode"] = @(keycode);
-    properties[@"transparency"] = @(transparency);
+    properties[@"opacity"] = @(100 - transparency);
     properties[@"cornerRadius"] = @(0);
     
     return [ControlButton initWithProperties:properties];
@@ -120,7 +120,7 @@
 
     // Update other properties
     self.frame = CGRectMake(propX + insets.left, propY, propW, propH);
-    self.alpha = 1.0f - NUM2F([properties valueForKey:@"transparency"]) / 100.0f;
+    self.alpha = NUM2F([properties valueForKey:@"opacity"]) / 100.0f;
     // self.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.3f];
     self.backgroundColor = convertARGB2UIColor(propBackgroundColor);
 
