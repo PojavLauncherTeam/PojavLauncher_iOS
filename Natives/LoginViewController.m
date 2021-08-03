@@ -19,7 +19,28 @@
 
 void loginAccountInput(UINavigationController *controller, int type, const char* data_c) {
     JNIEnv *env;
-    (*runtimeJavaVMPtr)->GetEnv(runtimeJavaVMPtr, &env, JNI_VERSION_1_6);
+    #include <dirent.h>
+#include <stdio.h>
+
+#import <AuthenticationServices/AuthenticationServices.h>
+
+#import "AppDelegate.h"
+#import "LauncherViewController.h"
+#import "LoginViewController.h"
+#import "AboutLauncherViewController.h"
+#import "LauncherFAQViewController.h"
+
+#include "ios_uikit_bridge.h"
+#include "utils.h"
+
+#define TYPE_SELECTACC 0
+#define TYPE_MICROSOFT 1
+#define TYPE_MOJANG 2
+#define TYPE_OFFLINE 3
+
+void loginAccountInput(UINavigationController *controller, int type, const char* data_c) {
+    JNIEnv *env;
+    (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &env, NULL);
 
     jstring data = (*env)->NewStringUTF(env, data_c);
 
