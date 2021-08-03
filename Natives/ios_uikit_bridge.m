@@ -149,8 +149,7 @@ void UIKit_launchJarFile(const char* filepath) {
 void UIKit_launchMinecraftSurfaceVC() {
     dispatch_async(dispatch_get_main_queue(), ^{
         UIViewController *rootController = UIApplication.sharedApplication.windows.lastObject.rootViewController;
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MinecraftSurface" bundle:nil];
-        SurfaceViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"MinecraftSurfaceVC"];
+        SurfaceViewController *vc = [[SurfaceViewController alloc] init];
         vc.modalPresentationStyle = UIModalPresentationFullScreen;
         [rootController presentViewController:vc animated:YES completion:nil];
         // rootController.childForScreenEdgesDeferringSystemGestures = vc;

@@ -77,6 +77,9 @@ int notchOffset;
     savedWidth = roundf(width * screenScale);
     savedHeight = roundf(height * screenScale);
 
+    MGLKView *surfaceView = [[MGLKView alloc] initWithFrame:self.view.frame];
+    self.view = surfaceView;
+
     touchView = [[UIView alloc] initWithFrame:self.view.frame];
 
     notchOffset = insets.left;
@@ -191,9 +194,8 @@ int notchOffset;
 
     viewController = self;
 
-    MGLKView *view = glView = (MGLKView *) self.view;
-    view.drawableDepthFormat = MGLDrawableDepthFormat24;
-    view.enableSetNeedsDisplay = YES;
+    surfaceView.drawableDepthFormat = MGLDrawableDepthFormat24;
+    surfaceView.enableSetNeedsDisplay = YES;
     // [self setPreferredFramesPerSecond:1000];
 
     // Init GLES
@@ -207,7 +209,7 @@ int notchOffset;
         NSLog(@"Failed to create ES context");
     }
     
-    view.context = self.context;
+    surfaceView.context = self.context;
 #ifndef USE_EGL
     glContext = self.context;
 #endif
