@@ -12,6 +12,7 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -rpath @executable_path/Fr
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -rpath /usr/lib/jvm/java-8-openjdk/lib")
 
 add_definitions(-DCONFIG_COMMIT="${CONFIG_COMMIT}")
+add_definitions(-DCONFIG_RELEASE=${CONFIG_RELEASE})
 
 # EXT: stub library, delete after compile awt_xawt
 add_library(awt_headless SHARED
