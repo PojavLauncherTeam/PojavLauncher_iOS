@@ -19,7 +19,7 @@
 
 void loginAccountInput(UINavigationController *controller, int type, const char* data_c) {
     JNIEnv *env;
-    (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &env, NULL);
+    (*runtimeJavaVMPtr)->GetEnv(runtimeJavaVMPtr, &env, JNI_VERSION_1_6);
 
     jstring data = (*env)->NewStringUTF(env, data_c);
 

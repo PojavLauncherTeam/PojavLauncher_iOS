@@ -5,7 +5,7 @@
 
 #import <sys/utsname.h>
 
-#ifndef NDEBUG
+#ifdef NDEBUG
 # define CONFIG_TYPE "release"
 #else
 # define CONFIG_TYPE "debug"

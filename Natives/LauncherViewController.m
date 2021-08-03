@@ -1,11 +1,12 @@
 #import "CustomControlsViewController.h"
+#import "JavaGUIViewController.h"
 #import "LauncherPreferences.h"
 #import "LauncherPreferencesViewController.h"
 #import "LauncherViewController.h"
 
 #include "utils.h"
 
-@interface LauncherViewController () <UIPickerViewDataSource, UIPickerViewDelegate> {
+@interface LauncherViewController () <UIDocumentPickerDelegate, UIPickerViewDataSource, UIPickerViewDelegate> {
 }
 
 // - (void)method
@@ -72,11 +73,23 @@ int versionSelectedAt = 0;
 
     [scrollView addSubview:versionTextField];
 
-    self.navigationItem.rightBarButtonItems = @[
-        [[UIBarButtonItem alloc] initWithTitle:@"Custom controls" style:UIBarButtonItemStyleDone target:self action:@selector(enterCustomControls)],
-        [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleDone target:self action:@selector(enterPreferences)]
-    ];
-   
+    self.navigationItem.rightBarButtonItem =
+        [[UIBarButtonItem alloc] initWithTitle:@"Options" style:UIBarButtonItemStyleDone target:self action:@selector(displayOptions:)];
+    if (@available(iOS 14.0, *)) {
+        // use UIMenu
+        UIAction *option1 = [UIAction actionWithTitle:@"Launch a mod installer" image:nil identifier:nil
+            handler:^(__kindof UIAction * _Nonnull action) {[self enterModInstaller];}];
+        UIAction *option2 = [UIAction actionWithTitle:@"Custom controls" image:nil identifier:nil
+            handler:^(__kindof UIAction * _Nonnull action) {[self enterCustomControls];}];
+        UIAction *option3 = [UIAction actionWithTitle:@"Settings" image:nil identifier:nil
+            handler:^(__kindof UIAction * _Nonnull action) {[self enterPreferences];}];
+        UIMenu *menu = [UIMenu menuWithTitle:@"Options" image:nil identifier:nil
+            options:UIMenuOptionsDisplayInline children:@[option1, option2, option3]];
+        self.navigationItem.rightBarButtonItem.action = nil;
+        self.navigationItem.rightBarButtonItem.primaryAction = nil;
+        self.navigationItem.rightBarButtonItem.menu = menu;
+    }
+
     install_progress_bar = [[UIProgressView alloc] initWithFrame:CGRectMake(4.0, height - 58.0, width - 8.0, 6.0)];
     [scrollView addSubview:install_progress_bar];
 
@@ -181,9 +194,46 @@ int versionSelectedAt = 0;
 }
 
 #pragma mark - Button click events
+- (void)displayOptions:(UIBarButtonItem*)sender {
+    if (@available(iOS 14.0, *)) {
+        // use UIMenu
+    } else {
+        // use UIAlertController
+        UIAlertController *fullAlert = [UIAlertController alertControllerWithTitle:@"Options" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertAction *option1 = [UIAlertAction actionWithTitle:@"Launch a mod installer" style:UIAlertActionStyleDefault
+            handler:^(UIAlertAction * _Nonnull action) {[self enterModInstaller];}];
+        UIAlertAction *option2 = [UIAlertAction actionWithTitle:@"Custom controls" style:UIAlertActionStyleDefault
+            handler:^(UIAlertAction * _Nonnull action) {[self enterCustomControls];}];
+        UIAlertAction *option3 = [UIAlertAction actionWithTitle:@"Settings"  style:UIAlertActionStyleDefault
+            handler:^(UIAlertAction * _Nonnull action) {[self enterPreferences];}];
+        fullAlert.popoverPresentationController.barButtonItem = sender;
+        [self presentViewController:fullAlert animated:YES completion:nil];
+        [fullAlert addAction:option1];
+        [fullAlert addAction:option2];
+        [fullAlert addAction:option3];
+    }
+}
+
 - (void)enterCustomControls {
     CustomControlsViewController *vc = [[CustomControlsViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)enterModInstaller {
+    UIDocumentPickerViewController *documentPicker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:@[@"com.sun.java-archive"]
+        inMode:UIDocumentPickerModeImport];
+    documentPicker.delegate = self;
+    documentPicker.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:documentPicker animated:YES completion:nil];
+}
+
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url {
+    if (controller.documentPickerMode == UIDocumentPickerModeImport) {
+        JavaGUIViewController *vc = [[JavaGUIViewController alloc] init];
+        vc.filepath = url.path;
+        NSLog(@"ModInstaller: launching %@", vc.filepath);
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 - (void)enterPreferences {
@@ -191,13 +241,13 @@ int versionSelectedAt = 0;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)launchMinecraft:(id)sender {
-    [(UIButton*) sender setEnabled:NO];
+- (void)launchMinecraft:(UIButton *)sender {
+    [sender setEnabled:NO];
     
     NSObject *object = [versionList objectAtIndex:[versionPickerView selectedRowInComponent:0]];
     NSString *result;
     if ([object isKindOfClass:[NSString class]]) {
-        result = (NSString*) object;
+        result = (NSString *)object;
     } else {
         result = [object valueForKey:@"url"];
     }

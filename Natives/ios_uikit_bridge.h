@@ -5,5 +5,6 @@
 void showDialog(UIViewController *viewController, NSString* title, NSString* message);
 jstring UIKit_accessClipboard(JNIEnv* env, jint action, jstring copySrc);
 jboolean UIKit_updateProgress(float progress, const char* message);
+void UIKit_launchJarFile(const char* filepath);
 void UIKit_launchMinecraftSurfaceVC();
 void UIKit_setButtonSkippable();

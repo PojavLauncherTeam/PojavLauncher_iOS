@@ -117,19 +117,19 @@ public final class Tools
         
             // URLClassLoader loader = new URLClassLoader(urlList.toArray(new URL[0]), ClassLoader.getSystemClassLoader());
             
-            PojavClassLoader loader = (PojavClassLoader) ClassLoader.getSystemClassLoader();
-            
-            for (String s : launchClassPath.split(":")) {
-                if (!s.isEmpty()) {
-                    loader.addURL(new File(s).toURI().toURL());
+                PojavClassLoader loader = (PojavClassLoader) ClassLoader.getSystemClassLoader();
+                
+                for (String s : launchClassPath.split(":")) {
+                    if (!s.isEmpty()) {
+                        loader.addURL(new File(s).toURI().toURL());
+                    }
                 }
-            }
             
             Class<?> clazz = loader.loadClass(versionInfo.mainClass);
             Method method = clazz.getMethod("main", String[].class);
             method.invoke(null, new Object[]{launchArgs});
-        
-            System.out.println("It went past main(). Should not reach here!");
+
+            // throw new RuntimeException("Game exited. Check latestlog.txt for more details.");
         } catch (Throwable th) {
             showError(th);
         }

@@ -107,14 +107,14 @@ native:
 		-DCONFIG_COMMIT="$(COMMIT)" \
 		..
 	@cd Natives/build && cmake --build . --config Release --target awt_headless awt_xawt pojavexec PojavLauncher
-	@rm Natives/build/libawt_headless.dylib || exit 1
+	@rm Natives/build/libawt_headless.dylib
 	@echo 'Finished build task - native application'
 
 java:
 	@echo 'Starting build task - java application'
 	@cd JavaApp; \
 	mkdir -p local_out/classes; \
-	$(JDK)/javac -cp "libs/*" -d local_out/classes $(JAVAFILES) || exit 1; \
+	$(JDK)/javac -cp "libs/*:libs_caciocavallo/*" -d local_out/classes $(JAVAFILES) || exit 1; \
 	cd local_out/classes; \
 	$(JDK)/jar -cf ../launcher.jar * || exit 1; \
 	echo 'Finished build task - java application'
@@ -135,7 +135,8 @@ package:
 	@echo 'Starting build task - package for external devices'
 	@if [ '$(IOS)' = '0' ]; then \
 		cp -R Natives/resources/* Natives/build/PojavLauncher.app/ || exit 1; \
-		cp Natives/build/*.dylib Natives/build/PojavLauncher.app/Frameworks/ || exit 1; \
+		cp Natives/build/libawt_xawt.dylib Natives/build/PojavLauncher.app/Frameworks/ || exit 1; \
+		cp Natives/build/libpojavexec.dylib Natives/build/PojavLauncher.app/Frameworks/ || exit 1; \
 		mkdir Natives/build/PojavLauncher.app/{libs,libs_caciocavallo}; \
 		cp JavaApp/local_out/launcher.jar Natives/build/PojavLauncher.app/libs/launcher.jar || exit 1; \
 		cp -R JavaApp/libs/* Natives/build/PojavLauncher.app/libs/ || exit 1; \
@@ -151,7 +152,8 @@ package:
 		cp -R Natives/en.lproj/*.storyboardc Natives/build/PojavLauncher.app/Base.lproj/ || exit 1; \
 		cp -R Natives/Info.plist Natives/build/PojavLauncher.app/Info.plist || exit 1;\
 		cp -R Natives/PkgInfo Natives/build/PojavLauncher.app/PkgInfo || exit 1; \
-		cp -R Natives/build/*.dylib Natives/build/PojavLauncher.app/Frameworks/ || exit 1; \
+		cp Natives/build/libawt_xawt.dylib Natives/build/PojavLauncher.app/Frameworks/ || exit 1; \
+		cp Natives/build/libpojavexec.dylib Natives/build/PojavLauncher.app/Frameworks/ || exit 1; \
 		cp -R Natives/resources/* Natives/build/PojavLauncher.app/ || exit 1; \
 		cp -R JavaApp/libs Natives/build/PojavLauncher.app/libs || exit 1; \
 		cp -R JavaApp/libs_caciocavallo Natives/build/PojavLauncher.app/libs_caciocavallo || exit 1; \
@@ -217,7 +219,8 @@ deploy:
 		sudo ldid -Sentitlements.xml Natives/build/PojavLauncher.app/PojavLauncher; \
 		sudo cp JavaApp/local_out/launcher.jar /Applications/PojavLauncher.app/libs/launcher.jar; \
 		sudo cp Natives/build/PojavLauncher.app/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher; \
-		sudo cp Natives/build/*.dylib /Applications/PojavLauncher.app/Frameworks/; \
+		sudo cp Natives/build/libawt_xawt.dylib /Applications/PojavLauncher.app/Frameworks/; \
+		sudo cp Natives/build/libpojavexec.dylib /Applications/PojavLauncher.app/Frameworks/; \
 		sudo killall PojavLauncher; \
 	fi
 	@echo 'Finished build task - deploy to local device'

@@ -32,6 +32,7 @@ add_library(pojavexec SHARED
   AboutLauncherViewController.m
   AppDelegate.m
   CustomControlsViewController.m
+  JavaGUIViewController.m
   LauncherFAQViewController.m
   LauncherPreferences.m
   LauncherPreferencesViewController.m

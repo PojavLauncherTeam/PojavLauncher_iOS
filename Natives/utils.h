@@ -7,6 +7,10 @@
 #define ACTION_UP 1
 #define ACTION_MOVE 2
 
+#define BUTTON1_DOWN_MASK 1 << 10 // left btn
+#define BUTTON2_DOWN_MASK 1 << 11 // mid btn
+#define BUTTON3_DOWN_MASK 1 << 12 // right btn
+
 #define EVENT_TYPE_CHAR 1000
 #define EVENT_TYPE_CHAR_MODS 1001
 #define EVENT_TYPE_CURSOR_ENTER 1002
@@ -33,7 +37,6 @@ JavaVM* runtimeJavaVMPtr;
 JNIEnv* runtimeJNIEnvPtr_ANDROID;
 JNIEnv* runtimeJNIEnvPtr_JRE;
 
-JavaVM* dalvikJavaVMPtr;
 JNIEnv* dalvikJNIEnvPtr_ANDROID;
 JNIEnv* dalvikJNIEnvPtr_JRE;
 
