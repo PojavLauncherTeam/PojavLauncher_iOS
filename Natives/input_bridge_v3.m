@@ -56,14 +56,6 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved) {
 
 // Should be?
 void JNI_OnUnload(JavaVM* vm, void* reserved) {
-/*
-    if (dalvikJavaVMPtr == vm) {
-    } else {
-    }
-    
-    DetachCurrentThread(vm);
-*/
-
     runtimeJNIEnvPtr_JRE = NULL;
 }
 
@@ -87,24 +79,6 @@ ADD_CALLBACK_WWIN(WindowSize);
 ADD_CALLBACK_WWIN(WindowPos);
 
 #undef ADD_CALLBACK_WWIN
-
-jboolean attachThread(bool isAndroid, JNIEnv** secondJNIEnvPtr) {
-#ifdef DEBUG
-    debug("Debug: Attaching %s thread to %s, javavm.isNull=%d\n", isAndroid ? "Android" : "JRE", isAndroid ? "JRE" : "Android", (isAndroid ? runtimeJavaVMPtr : dalvikJavaVMPtr) == NULL);
-#endif
-
-    if (*secondJNIEnvPtr != NULL || (!isUseStackQueueCall)) return JNI_TRUE;
-
-    if (isAndroid && runtimeJavaVMPtr) {
-        (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, secondJNIEnvPtr, NULL);
-        return JNI_TRUE;
-    } else if (!isAndroid && dalvikJavaVMPtr) {
-        (*dalvikJavaVMPtr)->AttachCurrentThread(dalvikJavaVMPtr, secondJNIEnvPtr, NULL);
-        return JNI_TRUE;
-    }
-    
-    return JNI_FALSE;
-}
 
 void getJavaInputBridge(jclass* clazz, jmethodID* method) {
 #ifdef DEBUG
@@ -270,29 +244,6 @@ JNIEXPORT jint JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_launchUI(JNIEnv* env
     @autoreleasepool {
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
     }
-}
-
-JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeAttachThreadToOther(JNIEnv* env, jclass clazz, jboolean isAndroid, jboolean isUseStackQueueBool) {
-#ifdef DEBUG
-    LOGD("Debug: JNI attaching thread, isUseStackQueue=%d\n", isUseStackQueue);
-#endif
-
-    jboolean result;
-
-    isUseStackQueueCall = (int) isUseStackQueueBool;
-    if (isAndroid) {
-        result = attachThread(true, &runtimeJNIEnvPtr_ANDROID);
-    } else {
-        result = attachThread(false, &dalvikJNIEnvPtr_JRE);
-        // getJavaInputBridge(&inputBridgeClass_JRE, &inputBridgeMethod_JRE);
-    }
-    
-    if (isUseStackQueueCall && isAndroid && result) {
-        isPrepareGrabPos = true;
-    }
-        getJavaInputBridge(&inputBridgeClass_ANDROID, &inputBridgeMethod_ANDROID);
-    
-    return result;
 }
 
 JNIEXPORT jstring JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeClipboard(JNIEnv* env, jclass clazz, jint action, jstring copySrc) {

@@ -168,6 +168,13 @@ void generateAndSaveDefaultControl() {
         @"${bottom} - ${margin}",
         BTN_RECT
     )];
+    // Additional button for old versions that don't enter fullscreen automatically
+    [dict[@"mControlDataList"] addObject:createButton(@"Fullscreen",
+        (int[]){GLFW_KEY_F11,0,0,0},
+        @"${right} - ${margin}",
+        @"${bottom} - ${margin} * 2 - ${height}",
+        BTN_RECT
+    )];
     NSOutputStream *os = [[NSOutputStream alloc] initToFileAtPath:
         [@(getenv("POJAV_PATH_CONTROL")) stringByAppendingString:@"/default.json"] append:NO];
     [os open];

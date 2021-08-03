@@ -13,6 +13,12 @@
 
 jboolean skipDownloadAssets;
 
+jclass class_CTCScreen;
+jmethodID method_GetRGB;
+
+jclass class_CTCAndroidInput;
+jmethodID method_ReceiveInput;
+
 void internal_showDialog(UIViewController *viewController, NSString* title, NSString* message) {
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:title
         message:message
@@ -45,12 +51,7 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_showError(JNIEnv* en
  
 dispatch_async(dispatch_get_main_queue(), ^{
 
-    UIViewController *viewController = nil;
-    if (@available(iOS 13.0, *)) {
-        viewController = UIApplication.sharedApplication.windows.lastObject.rootViewController;
-    } else {
-        viewController = [[(AppDelegate*) [[UIApplication sharedApplication]delegate] window] rootViewController];
-    }
+    UIViewController *viewController = UIApplication.sharedApplication.windows.lastObject.rootViewController;
     
     UIAlertController* alert = [UIAlertController
         alertControllerWithTitle:title_o message:message_o
@@ -128,15 +129,26 @@ void UIKit_setButtonSkippable() {
     skipDownloadAssets = JNI_FALSE;
 }
 
+void UIKit_launchJarFile(const char* filepath) {
+    jclass uikitBridgeClass = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "net/kdt/pojavlaunch/uikit/UIKit");
+    assert(uikitBridgeClass != NULL);
+
+    jstring filepathStr = (*runtimeJNIEnvPtr_JRE)->NewStringUTF(runtimeJNIEnvPtr_JRE, filepath);
+    jmethodID method = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, uikitBridgeClass, "callback_JavaGUIViewController_launchJarFile", "(Ljava/lang/String;II)V");
+    assert(method != NULL);
+
+    (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
+        runtimeJNIEnvPtr_JRE,
+        uikitBridgeClass, method,
+        filepathStr,
+        savedWidth, savedHeight
+    );
+    (*runtimeJNIEnvPtr_JRE)->DeleteLocalRef(runtimeJNIEnvPtr_JRE, filepathStr);
+}
+
 void UIKit_launchMinecraftSurfaceVC() {
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIViewController *rootController = nil;
-        if (@available(iOS 13.0, *)) {
-            rootController = UIApplication.sharedApplication.windows.lastObject.rootViewController;
-        } else {
-            rootController = (UIViewController*) [[(AppDelegate*) [[UIApplication sharedApplication]delegate] window] rootViewController];
-        }
-        
+        UIViewController *rootController = UIApplication.sharedApplication.windows.lastObject.rootViewController;
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MinecraftSurface" bundle:nil];
         SurfaceViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"MinecraftSurfaceVC"];
         vc.modalPresentationStyle = UIModalPresentationFullScreen;

@@ -1,7 +1,11 @@
 package net.kdt.pojavlaunch.uikit;
 
+import java.io.*;
+import java.lang.reflect.*;
+import java.util.jar.*;
+import net.java.openjdk.cacio.ctc.CTCScreen;
 import net.kdt.pojavlaunch.utils.MCOptionUtils;
-import net.kdt.pojavlaunch.PLaunchApp;
+import net.kdt.pojavlaunch.*;
 import org.lwjgl.glfw.*;
 
 public class UIKit {
@@ -10,6 +14,59 @@ public class UIKit {
     public static final int ACTION_MOVE = 2;
     
     private static int guiScale;
+
+    public static void callback_JavaGUIViewController_launchJarFile(final String filepath, int width, int height) {
+        System.setProperty("cacio.managed.screensize", width + "x" + height);
+
+        // Thread for refreshing the AWT buffer
+        new Thread(() -> {
+            try {
+                long lastTime = System.currentTimeMillis();
+                while (true) {
+                    int[] pixelsArray = null;
+                    try{
+                        pixelsArray = CTCScreen.getCurrentScreenRGB();
+                    } catch (NullPointerException e) {
+                        Thread.sleep(500);
+                    }
+                    if (pixelsArray != null) {
+                        //System.out.println(java.util.Arrays.toString(pixelsArray));
+                        refreshAWTBuffer(pixelsArray);
+                    }
+                    long currentTime = System.currentTimeMillis();
+                    if (currentTime - lastTime < 16) {
+                        Thread.sleep(16 - (currentTime - lastTime));
+                    }
+                    lastTime = currentTime;
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }, "AWTFBRefreshThread").start();
+
+        // Thread for launching the JAR file
+        new Thread(() -> {
+            String mainClassName = null;
+            try {
+                JarFile jarfile = new JarFile(filepath);
+                String mainClass = jarfile.getManifest().getMainAttributes().getValue("Main-Class");
+                jarfile.close();
+                if (mainClass == null) {
+                    throw new IllegalArgumentException("no main manifest attribute, in \"" + filepath + "\"");
+                }
+
+                PojavClassLoader loader = (PojavClassLoader) ClassLoader.getSystemClassLoader();
+                loader.addURL(new File(filepath).toURI().toURL());
+                Class<?> clazz = loader.loadClass(mainClass);
+                Method method = clazz.getMethod("main", String[].class);
+                method.invoke(null, new Object[]{new String[]{}});
+
+                // throw new RuntimeException("Application exited");
+            } catch (Throwable th) {
+                Tools.showError(th, true);
+            }
+        }, "ModInstallerThread").start();
+    }
     
     public static void callback_LauncherViewController_installMinecraft(String versionPath) {
         PLaunchApp.installMinecraft(versionPath);
@@ -73,7 +130,9 @@ public class UIKit {
     static {
         System.loadLibrary("pojavexec");
     }
-    
+
+    public static native void refreshAWTBuffer(int[] array);
+
     public static native int launchUI(String[] uiArgs);
     // public static native void runOnUIThread(UIKitCallback callback);
     
