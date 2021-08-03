@@ -162,6 +162,12 @@ int launchJVM(int argc, char *argv[]) {
     }
 
     debug("[Pre-init] Beginning JVM launch\n");
+    
+    char javaAwtPath[4096];
+    // accidentally patched a bit wrong, the value should be a path containing libawt_xawt.dylib, but here is libawt.dylib path (no need to exist)
+    sprintf(javaAwtPath, "%s/Frameworks/libawt.dylib", getenv("BUNDLE_PATH"));
+    setenv("JAVA_AWT_PATH", javaAwtPath, 1);
+
     // setenv("LIBGL_FB", "2", 1);
     setenv("LIBGL_MIPMAP", "3", 1);
 
@@ -241,8 +247,6 @@ int launchJVM(int argc, char *argv[]) {
         margv[margc++] = userHome;
         margv[margc++] = gl4esPath;
         margv[margc++] = "-Dorg.lwjgl.system.allocator=system";
-
-        init_loadCustomJvmFlags();
     } else {
         setenv("GL4ES_LIBNAME", gl4esLibname, 1);
         debug("[Pre-init] OpenGL library name: %s", getenv("GL4ES_LIBNAME"));
@@ -265,7 +269,7 @@ int launchJVM(int argc, char *argv[]) {
 
         if (!started) {
             // Setup Caciocavallo
-            margv[margc++] = "-Djava.awt.headless=true"; // TODO: register natives to make this false
+            margv[margc++] = "-Djava.awt.headless=false";
             margv[margc++] = "-Dcacio.font.fontmanager=sun.awt.X11FontManager";
             margv[margc++] = "-Dcacio.font.fontscaler=sun.font.FreetypeFontScaler";
             margv[margc++] = "-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel";
@@ -286,6 +290,9 @@ int launchJVM(int argc, char *argv[]) {
             }
             margv[margc++] = cacio_classpath;
         }
+    }
+    if (!started) {
+        init_loadCustomJvmFlags();
     }
     debug("[Init] Found JLI lib");
     
