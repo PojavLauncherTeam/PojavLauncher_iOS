@@ -62,7 +62,8 @@
                                  "- New picker view to switch versions without typing them manually\n"
                                  "- Support to show your locally installed clients\n"
                                  "- New settings page to manage preferences\n"
-                                 "- OpenJDK 8 support, to allow older versions of modded Minecraft\n";
+                                 "- OpenJDK 8 support, to allow older versions of modded Minecraft\n"
+                                 "- New mod installer, built into the launcher";
     latestVerChangesCont.numberOfLines = 0;
     [latestVerChangesCont sizeToFit];
     [scrollView addSubview:latestVerChangesCont];
@@ -75,8 +76,10 @@
 
     UILabel *latestVerFixesCont = [[UILabel alloc] initWithFrame:CGRectMake(4.0, latestVerFixes.frame.origin.y + latestVerFixes.frame.size.height, scrollView.frame.size.width - 4, 30.00)];
     latestVerFixesCont.text = @"- WIP fix for typing on 1.12.2 and older\n"
-                               "- The hotbar now works across GUI scales\n"
-                               "- (With JDK 8) Forge 1.8.9 - 1.12.2 now work";
+                              "- The hotbar now works across GUI scales\n"
+                              "- (With JDK 8) Forge 1.8.9 - 1.12.2 now work\n"
+                              "- (With JDK 8) Vanilla 1.5.2 and under now work\n"
+                              "- Buttons now scale correctly according to screen size\n";
     latestVerFixesCont.numberOfLines = 0;
     [latestVerFixesCont sizeToFit];
     [scrollView addSubview:latestVerFixesCont];
@@ -89,7 +92,8 @@
 
     UILabel *latestVerIssuesCont = [[UILabel alloc] initWithFrame:CGRectMake(4.0, latestVerIssues.frame.origin.y + latestVerIssues.frame.size.height, scrollView.frame.size.width - 4, 30.00)];
     latestVerIssuesCont.text = @"- Crash if login to Microsoft fails\n"
-                               "- Control buttons notch offset seems doubled\n";
+                               "- Control buttons notch offset seems doubled\n"
+                               "- Custom controls settings page does not currently work\n"
     latestVerIssuesCont.numberOfLines = 0;
     [latestVerIssuesCont sizeToFit];
     [scrollView addSubview:latestVerIssuesCont];
