@@ -137,7 +137,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 }
 
 - (void)accountType:(UIButton *)sender {
-   UIAlertController *fullAlert = [UIAlertController alertControllerWithTitle:@"Let's get you signed in." message:@"What account do you use to log into Minecraft?"preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertController *fullAlert = [UIAlertController alertControllerWithTitle:@"Let's get you signed in." message:@"What account do you use to log into Minecraft?"preferredStyle:UIAlertControllerStyleActionSheet];
     UIAlertAction *mojang = [UIAlertAction actionWithTitle:@"Mojang account" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginUsername:TYPE_MOJANG];}];
     UIAlertAction *microsoft = [UIAlertAction actionWithTitle:@"Microsoft account" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginMicrosoft];}];
     UIAlertAction *offline = [UIAlertAction actionWithTitle:@"Local account"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginOffline:sender];}];

@@ -81,7 +81,7 @@ int versionSelectedAt = 0;
             handler:^(__kindof UIAction * _Nonnull action) {[self enterModInstaller];}];
         UIAction *option2 = [UIAction actionWithTitle:@"Custom controls" image:nil identifier:nil
             handler:^(__kindof UIAction * _Nonnull action) {[self enterCustomControls];}];
-        UIAction *option3 = [UIAction actionWithTitle:@"Settings" image:nil identifier:nil
+        UIAction *option3 = [UIAction actionWithTitle:@"Preferences" image:nil identifier:nil
             handler:^(__kindof UIAction * _Nonnull action) {[self enterPreferences];}];
         UIMenu *menu = [UIMenu menuWithTitle:@"Options" image:nil identifier:nil
             options:UIMenuOptionsDisplayInline children:@[option1, option2, option3]];
@@ -204,7 +204,7 @@ int versionSelectedAt = 0;
             handler:^(UIAlertAction * _Nonnull action) {[self enterModInstaller];}];
         UIAlertAction *option2 = [UIAlertAction actionWithTitle:@"Custom controls" style:UIAlertActionStyleDefault
             handler:^(UIAlertAction * _Nonnull action) {[self enterCustomControls];}];
-        UIAlertAction *option3 = [UIAlertAction actionWithTitle:@"Settings"  style:UIAlertActionStyleDefault
+        UIAlertAction *option3 = [UIAlertAction actionWithTitle:@"Preferences"  style:UIAlertActionStyleDefault
             handler:^(UIAlertAction * _Nonnull action) {[self enterPreferences];}];
         fullAlert.popoverPresentationController.barButtonItem = sender;
         [self presentViewController:fullAlert animated:YES completion:nil];

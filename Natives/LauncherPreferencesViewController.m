@@ -13,16 +13,14 @@
 
 @implementation LauncherPreferencesViewController
 
+UITextField* jargsTextField;
 UITextField* versionTextField;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
-    [self setNeedsUpdateOfHomeIndicatorAutoHidden];
-    
-    [self setTitle:@"Launcher preferences"];
+    [self setTitle:@"Preferences"];
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];
@@ -62,8 +60,36 @@ UITextField* versionTextField;
     buttonSizeSlider.value = ((NSNumber *) getPreference(@"button_scale")).floatValue;
     [scrollView addSubview:buttonSizeSlider];
 
+    UILabel *jargsTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 54.0, 0.0, 0.0)];
+    jargsTextView.text = @"Java arguments  ";
+    jargsTextView.numberOfLines = 0;
+    [jargsTextView sizeToFit];
+    [scrollView addSubview:jargsTextView];
+
+    jargsTextField = [[UITextField alloc] initWithFrame:CGRectMake(jargsTextView.bounds.size.width + 4.0, 54.0, width - jargsTextView.bounds.size.width - 8.0, height - 58.0)];
+    [jargsTextField addTarget:versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
+    jargsTextField.tag = 100;
+    jargsTextField.delegate = self;
+    jargsTextField.placeholder = @"Specify arguments...";
+    jargsTextField.text = (NSString *) getPreference(@"java_args");
+    jargsTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
+    jargsTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [scrollView addSubview:jargsTextField];
+
     scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, scrollView.frame.size.height + 200);
 }
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if (textField.tag == 100) {
+        setPreference(@"java_args", jargsTextField.text);
+        UIAlertController *fullAlert = [UIAlertController alertControllerWithTitle:@"Restart the launcher" message:@"Changing Java arguments requires a restart of the launcher to take effect."preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+        [self presentViewController:fullAlert animated:YES completion:nil];
+        [fullAlert addAction:ok];
+    }
+}
+
 
 - (void)sliderMoved:(DBNumberedSlider *)sender {
     switch (sender.tag) {
@@ -74,14 +100,6 @@ UITextField* versionTextField;
             NSLog(@"what does slider %ld for? implement me!", sender.tag);
             break;
     }
-}
-
-- (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
-    return UIRectEdgeBottom;
-}
-
-- (BOOL)prefersHomeIndicatorAutoHidden {
-    return NO;
 }
 
 -(void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
