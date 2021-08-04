@@ -10,6 +10,14 @@ DETECT  := $(shell clang -v 2>&1 | grep Target | cut -b 9-60)
 # version 1.3 on iPhone9,1 running 14.6
 VERSION := $(shell cat DEBIAN/control | grep Version | cut -b 9-60)
 COMMIT  := $(shell git log --oneline | sed '2,10000000d' | cut -b 1-7)
+ifndef RELEASE
+RELEASE := 0
+endif
+ifeq ($(filter 1,$(RELEASE)),)
+CMAKE_BUILD_TYPE := RelWithDebInfo
+else
+CMAKE_BUILD_TYPE := Debug
+endif
 
 # Distinguish iOS from macOS
 ifneq ($(filter arm64-apple-ios%,$(DETECT)),)
@@ -97,7 +105,7 @@ native:
 	@echo 'Starting build task - native application'
 	@mkdir -p Natives/build
 	@cd Natives/build && cmake . \
-		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_BUILD_TYPE=$(CMAKE_BUILD_TYPE) \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_SYSTEM_PROCESSOR=aarch64 \
@@ -105,8 +113,9 @@ native:
 		-DCMAKE_OSX_ARCHITECTURES=arm64 \
 		-DCMAKE_C_FLAGS="-arch arm64 -miphoneos-version-min=12.0" \
 		-DCONFIG_COMMIT="$(COMMIT)" \
+		-DCONFIG_RELEASE=$(RELEASE) \
 		..
-	@cd Natives/build && cmake --build . --config Release --target awt_headless awt_xawt pojavexec PojavLauncher
+	@cd Natives/build && cmake --build . --config $(CMAKE_BUILD_TYPE) --target awt_headless awt_xawt pojavexec PojavLauncher
 	@rm Natives/build/libawt_headless.dylib
 	@echo 'Finished build task - native application'
 
@@ -124,7 +133,6 @@ extras:
 	@if [ '$(IOS)' = '0' ]; then \
 		mkdir -p Natives/build/PojavLauncher.app/Base.lproj; \
 		xcrun actool Natives/Assets.xcassets --compile Natives/resources --platform iphoneos --minimum-deployment-target 12.0 --app-icon AppIcon --output-partial-info-plist /dev/null || exit 1; \
-		ibtool --compile Natives/build/PojavLauncher.app/Base.lproj/MinecraftSurface.storyboardc Natives/en.lproj/MinecraftSurface.storyboard || exit 1; \
 		ibtool --compile Natives/build/PojavLauncher.app/Base.lproj/LaunchScreen.storyboardc Natives/en.lproj/LaunchScreen.storyboard || exit 1; \
 	elif [ '$(IOS)' = '1' ]; then \
 		echo 'Due to the required tools not being available, you cannot compile the extras for PojavLauncher with an iOS device.'; \
