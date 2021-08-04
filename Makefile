@@ -13,7 +13,7 @@ COMMIT  := $(shell git log --oneline | sed '2,10000000d' | cut -b 1-7)
 ifndef RELEASE
 RELEASE := 0
 endif
-ifeq ($(filter 1,$(RELEASE)),)
+ifeq (1,$(RELEASE))
 CMAKE_BUILD_TYPE := RelWithDebInfo
 else
 CMAKE_BUILD_TYPE := Debug
