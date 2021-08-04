@@ -93,7 +93,7 @@
     UILabel *latestVerIssuesCont = [[UILabel alloc] initWithFrame:CGRectMake(4.0, latestVerIssues.frame.origin.y + latestVerIssues.frame.size.height, scrollView.frame.size.width - 4, 30.00)];
     latestVerIssuesCont.text = @"- Crash if login to Microsoft fails\n"
                                "- Control buttons notch offset seems doubled\n"
-                               "- Custom controls settings page does not currently work\n"
+                               "- Custom controls settings page does not currently work\n";
     latestVerIssuesCont.numberOfLines = 0;
     [latestVerIssuesCont sizeToFit];
     [scrollView addSubview:latestVerIssuesCont];
