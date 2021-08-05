@@ -58,8 +58,8 @@ static char* margv[1000];
 static int pfd[2];
 static pthread_t logger;
 
-char *javaHome;
-char *gl4esLibname;
+const char *javaHome;
+const char *gl4esLibname;
 NSString *javaHome_pre;
 NSString *gl4esLibname_pre;
 
@@ -169,7 +169,7 @@ int launchJVM(int argc, char *argv[]) {
             }
         } else {
             javaHome = calloc(1, 2048);
-            sprintf(javaHome, "%s/jre8", getenv("BUNDLE_PATH"));
+            sprintf((char *)javaHome, "%s/jre8", getenv("BUNDLE_PATH"));
         }
         setenv("JAVA_HOME", javaHome, 1);
         debug("[Pre-init] JAVA_HOME environment variable not set. Defaulting to %s\n", javaHome);

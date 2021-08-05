@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 
-@interface LauncherPreferencesViewController : UIViewController
+@interface LauncherPreferencesViewController : UIViewController <UITextFieldDelegate>
 
 @end
 
