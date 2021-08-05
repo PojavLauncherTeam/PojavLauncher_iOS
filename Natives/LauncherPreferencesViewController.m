@@ -110,15 +110,6 @@ UITextField* versionTextField;
     jhomeTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [scrollView addSubview:jhomeTextField];
 
-    if (getPreference(@"opt_warn") == @"true") {
-
-    } else {
-        UIAlertController *fullAlert = [UIAlertController alertControllerWithTitle:@"Requirement for modifying settings" message:@"Changing Java arguments requires a restart of the launcher to take effect."preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
-        [self presentViewController:fullAlert animated:YES completion:nil];
-        [fullAlert addAction:ok];
-        setPreference(@"opt_warn", @"true");
-    }
     scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, scrollView.frame.size.height + 200);
 }
 

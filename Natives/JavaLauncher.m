@@ -63,31 +63,6 @@ char *gl4esLibname;
 NSString *javaHome_pre;
 NSString *gl4esLibname_pre;
 
-void init_loadCustomEnv() {
-    FILE *envFile = fopen(env_path, "r");
-
-    debug("[Pre-init] Reading custom environment variables (custom_env.txt), opened=%d\n", envFile != NULL);
-
-    if (envFile) {
-        char *line = NULL;
-        size_t len = 0;
-        ssize_t read;
-        while ((read = getline(&line, &len, envFile)) != -1) {
-            if (line[0] == '#' || line[0] == '\n') continue;
-            if (line[read-1] == '\n') {
-                line[read-1] = '\0';
-            }
-            if (strchr(line, '=') != NULL) {
-                debug("[Pre-init] Added custom env: %s", line);
-                setenv(strtok(line, "="), strtok(NULL, "="), 1);
-            } else {
-                debug("[Pre-init] Warning: skipped empty value custom env: %s", line);
-            }
-        }
-        fclose(envFile);
-    }
-}
-
 void init_loadCustomJvmFlags() {
     NSString *jvmargs = getPreference(@"java_args");
     BOOL isFirstArg = YES;
@@ -179,19 +154,17 @@ int launchJVM(int argc, char *argv[]) {
     // Fix white color on banner and sheep, since GL4ES 1.1.5
     setenv("LIBGL_NORMALIZE", "1", 1);
 
-    //init_loadCustomEnv();
-
     javaHome_pre = getPreference(@"java_home");
     if (!javaHome_pre) {
     if (strncmp(argv[0], "/Applications", 13) == 0) {
             if (0 != access("/usr/lib/jvm/java-8-openjdk/", F_OK)) {
                 debug("[Pre-init] Java 8 wasn't found on your device.");
                 javaHome_pre = @"/usr/lib/jvm/java-16-openjdk";
-                javaHome = [javaHome_pre UTF8String];
+                javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
                 setPreference(@"java_home", javaHome_pre);
             } else {
                 javaHome_pre = @"/usr/lib/jvm/java-8-openjdk";
-                javaHome = [javaHome_pre UTF8String];
+                javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
                 setPreference(@"java_home", javaHome_pre);
             }
         } else {
@@ -200,6 +173,8 @@ int launchJVM(int argc, char *argv[]) {
         }
         setenv("JAVA_HOME", javaHome, 1);
         debug("[Pre-init] JAVA_HOME environment variable not set. Defaulting to %s\n", javaHome);
+    } else {
+        javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
     }
 
     gl4esLibname_pre = getPreference(@"gl4es_libname");
