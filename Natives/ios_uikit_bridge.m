@@ -147,6 +147,21 @@ void UIKit_launchJarFile(const char* filepath) {
 }
 
 void UIKit_launchMinecraftSurfaceVC() {
+#if 1 // debug
+    NSLog(@"DBG: are we on main thread = %d", [NSThread isMainThread]);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSLog(@"DBG: INSIDE main queue: are we on main thread = %d", [NSThread isMainThread]);
+        UIViewController *rootController = UIApplication.sharedApplication.windows.lastObject.rootViewController;
+        NSLog(@"DBG: Got rootController = %p", rootController);
+        SurfaceViewController *vc = [[SurfaceViewController alloc] init];
+        NSLog(@"DBG: Got Surface VC = %p", vc);
+        vc.modalPresentationStyle = UIModalPresentationFullScreen;
+        NSLog(@"DBG: set present style");
+        [rootController presentViewController:vc animated:YES completion:nil];
+        NSLog(@"DBG: presented vc");
+        // rootController.childForScreenEdgesDeferringSystemGestures = vc;
+    });
+#else
     dispatch_async(dispatch_get_main_queue(), ^{
         UIViewController *rootController = UIApplication.sharedApplication.windows.lastObject.rootViewController;
         SurfaceViewController *vc = [[SurfaceViewController alloc] init];
@@ -154,4 +169,5 @@ void UIKit_launchMinecraftSurfaceVC() {
         [rootController presentViewController:vc animated:YES completion:nil];
         // rootController.childForScreenEdgesDeferringSystemGestures = vc;
     });
+#endif
 }
