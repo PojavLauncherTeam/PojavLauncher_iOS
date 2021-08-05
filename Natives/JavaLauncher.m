@@ -58,6 +58,11 @@ static char* margv[1000];
 static int pfd[2];
 static pthread_t logger;
 
+char *javaHome;
+char *gl4esLibname;
+NSString *javaHome_pre;
+NSString *gl4esLibname_pre;
+
 void init_loadCustomEnv() {
     FILE *envFile = fopen(env_path, "r");
 
@@ -174,16 +179,20 @@ int launchJVM(int argc, char *argv[]) {
     // Fix white color on banner and sheep, since GL4ES 1.1.5
     setenv("LIBGL_NORMALIZE", "1", 1);
 
-    init_loadCustomEnv();
+    //init_loadCustomEnv();
 
-    char *javaHome = getenv("JAVA_HOME");
-    if (!javaHome) {
-        if (strncmp(argv[0], "/Applications", 13) == 0) {
-            if (0 != access("/usr/lib/jvm/java-16-openjdk/", F_OK)) {
-                debug("[Pre-init] Java 16 wasn't found on your device.");
-                javaHome = "/usr/lib/jvm/java-8-openjdk";
+    javaHome_pre = getPreference(@"java_home");
+    if (!javaHome_pre) {
+    if (strncmp(argv[0], "/Applications", 13) == 0) {
+            if (0 != access("/usr/lib/jvm/java-8-openjdk/", F_OK)) {
+                debug("[Pre-init] Java 8 wasn't found on your device.");
+                javaHome_pre = @"/usr/lib/jvm/java-16-openjdk";
+                javaHome = [javaHome_pre UTF8String];
+                setPreference(@"java_home", javaHome_pre);
             } else {
-                javaHome = "/usr/lib/jvm/java-16-openjdk";
+                javaHome_pre = @"/usr/lib/jvm/java-8-openjdk";
+                javaHome = [javaHome_pre UTF8String];
+                setPreference(@"java_home", javaHome_pre);
             }
         } else {
             javaHome = calloc(1, 2048);
@@ -193,11 +202,15 @@ int launchJVM(int argc, char *argv[]) {
         debug("[Pre-init] JAVA_HOME environment variable not set. Defaulting to %s\n", javaHome);
     }
 
-    char *gl4esLibname = getenv("GL4ES_LIBNAME");
-    if (!gl4esLibname) {
-        gl4esLibname = "libgl4es_114.dylib";
+    gl4esLibname_pre = getPreference(@"gl4es_libname");
+    if (!gl4esLibname_pre) {
+        gl4esLibname_pre = @"libgl4es_114.dylib";
+        setPreference(@"gl4es_libname", gl4esLibname_pre);
+        gl4esLibname = [gl4esLibname_pre UTF8String];
         setenv("GL4ES_LIBNAME", gl4esLibname, 1);
-        debug("[Pre-init] GL4ES_LIBNAME environment variable not set. Defaulting to %s\n", gl4esLibname);
+        debug("[Pre-init] GL4ES_LIBNAME environment variable was not set. Defaulting to %s\n", gl4esLibname);
+    } else {
+        gl4esLibname = [gl4esLibname_pre UTF8String];
     }
 
     char controlPath[2048];

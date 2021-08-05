@@ -13,7 +13,9 @@
 
 @implementation LauncherPreferencesViewController
 
+UITextField* gl4esTextField;
 UITextField* jargsTextField;
+UITextField* jhomeTextField;
 UITextField* versionTextField;
 
 - (void)viewDidLoad
@@ -66,7 +68,7 @@ UITextField* versionTextField;
     [jargsTextView sizeToFit];
     [scrollView addSubview:jargsTextView];
 
-    jargsTextField = [[UITextField alloc] initWithFrame:CGRectMake(jargsTextView.bounds.size.width + 4.0, 54.0, width - jargsTextView.bounds.size.width - 8.0, height - 58.0)];
+    jargsTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x, 54.0, width - jargsTextView.bounds.size.width - 8.0, height - 58.0)];
     [jargsTextField addTarget:versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     jargsTextField.tag = 100;
     jargsTextField.delegate = self;
@@ -76,6 +78,47 @@ UITextField* versionTextField;
     jargsTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [scrollView addSubview:jargsTextField];
 
+    UILabel *gl4esTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 94.0, 0.0, 0.0)];
+    gl4esTextView.text = @"GL4ES dylib";
+    gl4esTextView.numberOfLines = 0;
+    [gl4esTextView sizeToFit];
+    [scrollView addSubview:gl4esTextView];
+
+    gl4esTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x, 94.0, width - jargsTextView.bounds.size.width - 8.0, height - 58.0)];
+    [gl4esTextField addTarget:versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
+    gl4esTextField.tag = 101;
+    gl4esTextField.delegate = self;
+    gl4esTextField.placeholder = @"Override version...";
+    gl4esTextField.text = (NSString *) getPreference(@"gl4es_libname");
+    gl4esTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
+    gl4esTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [scrollView addSubview:gl4esTextField];
+
+    UILabel *jhomeTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 134.0, 0.0, 0.0)];
+    jhomeTextView.text = @"Java home";
+    jhomeTextView.numberOfLines = 0;
+    [jhomeTextView sizeToFit];
+    [scrollView addSubview:jhomeTextView];
+
+    jhomeTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x, 134.0, width - jargsTextView.bounds.size.width - 8.0, height - 58.0)];
+    [jhomeTextField addTarget:versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
+    jhomeTextField.tag = 102;
+    jhomeTextField.delegate = self;
+    jhomeTextField.placeholder = @"Override Java path...";
+    jhomeTextField.text = (NSString *) getPreference(@"java_home");
+    jhomeTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
+    jhomeTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [scrollView addSubview:jhomeTextField];
+
+    if (getPreference(@"opt_warn") == @"true") {
+
+    } else {
+        UIAlertController *fullAlert = [UIAlertController alertControllerWithTitle:@"Requirement for modifying settings" message:@"Changing Java arguments requires a restart of the launcher to take effect."preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+        [self presentViewController:fullAlert animated:YES completion:nil];
+        [fullAlert addAction:ok];
+        setPreference(@"opt_warn", @"true");
+    }
     scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, scrollView.frame.size.height + 200);
 }
 
@@ -83,10 +126,10 @@ UITextField* versionTextField;
 {
     if (textField.tag == 100) {
         setPreference(@"java_args", jargsTextField.text);
-        UIAlertController *fullAlert = [UIAlertController alertControllerWithTitle:@"Restart the launcher" message:@"Changing Java arguments requires a restart of the launcher to take effect."preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
-        [self presentViewController:fullAlert animated:YES completion:nil];
-        [fullAlert addAction:ok];
+    } else if (textField.tag == 101) {
+        setPreference(@"gl4es_libname", gl4esTextField.text);
+    } else if (textField.tag == 102) {
+        setPreference(@"java_home", jhomeTextField.text);
     }
 }
 

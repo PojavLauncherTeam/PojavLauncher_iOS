@@ -19,6 +19,8 @@ void loadPreferences() {
         prefDict[@"time_longPressTrigger"] = @(400);
         prefDict[@"default_ctrl"] = @"default.json";
         prefDict[@"java_args"] = @"";
+        prefDict[@"java_home"] = @"";
+        prefDict[@"gl4es_libname"] = @"";
         // prefDict[@"custom_envVars"] = @""; // TODO
         [prefDict writeToFile:prefPath atomically:YES];
     } else {
