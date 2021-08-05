@@ -199,16 +199,13 @@ int notchOffset;
     // [self setPreferredFramesPerSecond:1000];
 
     // Init GLES
-    self.context = [[MGLContext alloc] initWithAPI:kMGLRenderingAPIOpenGLES3];
-
-    if (!self.context) {
-        self.context = [[MGLContext alloc] initWithAPI:kMGLRenderingAPIOpenGLES2];
-    }
+    sharegroup = [[MGLSharegroup alloc] init];
+    self.context = [[MGLContext alloc] initWithAPI:kMGLRenderingAPIOpenGLES3 sharegroup:sharegroup];
 
     if (!self.context) {
         NSLog(@"Failed to create ES context");
     }
-    
+
     surfaceView.context = self.context;
 #ifndef USE_EGL
     glContext = self.context;

@@ -73,6 +73,10 @@ public class UIKit {
     }
 
     public static void callback_SurfaceViewController_launchMinecraft(int width, int height) {
+        MCOptionUtils.load();
+        MCOptionUtils.set("overrideWidth", Integer.toString(width));
+        MCOptionUtils.set("overrideHeight", Integer.toString(height));
+        MCOptionUtils.save();
         System.setProperty("cacio.managed.screensize", width + "x" + height);
 
         GLFW.internalChangeMonitorSize(width, height);
