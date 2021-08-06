@@ -155,7 +155,7 @@ int launchJVM(int argc, char *argv[]) {
     setenv("LIBGL_NORMALIZE", "1", 1);
 
     javaHome_pre = getPreference(@"java_home");
-    if (!javaHome_pre) {
+    if ([javaHome_pre length] == 0) {
         if (strncmp(argv[0], "/Applications", 13) == 0) {
             if (0 != access("/usr/lib/jvm/java-8-openjdk/", F_OK)) {
                 debug("[Pre-init] Java 8 wasn't found on your device. Install Java 8 for more compatibility and the mod installer.");
@@ -179,7 +179,7 @@ int launchJVM(int argc, char *argv[]) {
     }
 
     gl4esLibname_pre = getPreference(@"gl4es_libname");
-    if (!gl4esLibname_pre) {
+    if ([gl4esLibname_pre length] == 0) {
         gl4esLibname_pre = @"libgl4es_114.dylib";
         setPreference(@"gl4es_libname", gl4esLibname_pre);
         gl4esLibname = [gl4esLibname_pre cStringUsingEncoding:NSUTF8StringEncoding];
