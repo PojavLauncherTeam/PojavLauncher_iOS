@@ -174,8 +174,21 @@ int launchJVM(int argc, char *argv[]) {
         setenv("JAVA_HOME", javaHome, 1);
         debug("[Pre-init] JAVA_HOME environment variable was not set. Defaulting to %s for future use.\n", javaHome);
     } else {
-        javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
-        debug("[Pre-Init] Restored preference: JAVA_HOME is set to %s\n", javaHome);
+        if (0 == [[NSFileManager defaultManager] fileExistsAtPath:javaHome_pre]) {
+            debug("[Pre-Init] Failed to locate %s. Restoring default value for JAVA_HOME.", javaHome);
+            if (0 != access("/usr/lib/jvm/java-8-openjdk/", F_OK)) {
+                debug("[Pre-init] Java 8 wasn't found on your device. Install Java 8 for more compatibility and the mod installer.");
+                javaHome_pre = @"/usr/lib/jvm/java-16-openjdk";
+                javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
+                setPreference(@"java_home", javaHome_pre);
+            } else {
+                javaHome_pre = @"/usr/lib/jvm/java-8-openjdk";
+                javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
+                setPreference(@"java_home", javaHome_pre);
+            }
+        } else {
+            debug("[Pre-Init] Restored preference: JAVA_HOME is set to %s\n", javaHome);
+        }
     }
 
     gl4esLibname_pre = getPreference(@"gl4es_libname");
