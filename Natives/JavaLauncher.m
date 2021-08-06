@@ -187,6 +187,7 @@ int launchJVM(int argc, char *argv[]) {
                 setPreference(@"java_home", javaHome_pre);
             }
         } else {
+            javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
             debug("[Pre-Init] Restored preference: JAVA_HOME is set to %s\n", javaHome);
         }
     }
