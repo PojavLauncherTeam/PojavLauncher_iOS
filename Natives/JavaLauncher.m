@@ -156,9 +156,9 @@ int launchJVM(int argc, char *argv[]) {
 
     javaHome_pre = getPreference(@"java_home");
     if (!javaHome_pre) {
-    if (strncmp(argv[0], "/Applications", 13) == 0) {
+        if (strncmp(argv[0], "/Applications", 13) == 0) {
             if (0 != access("/usr/lib/jvm/java-8-openjdk/", F_OK)) {
-                debug("[Pre-init] Java 8 wasn't found on your device.");
+                debug("[Pre-init] Java 8 wasn't found on your device. Install Java 8 for more compatibility and the mod installer.");
                 javaHome_pre = @"/usr/lib/jvm/java-16-openjdk";
                 javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
                 setPreference(@"java_home", javaHome_pre);
@@ -172,20 +172,22 @@ int launchJVM(int argc, char *argv[]) {
             sprintf((char *)javaHome, "%s/jre8", getenv("BUNDLE_PATH"));
         }
         setenv("JAVA_HOME", javaHome, 1);
-        debug("[Pre-init] JAVA_HOME environment variable not set. Defaulting to %s\n", javaHome);
+        debug("[Pre-init] JAVA_HOME environment variable was not set. Defaulting to %s for future use.\n", javaHome);
     } else {
         javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
+        debug("[Pre-Init] Restored preference: JAVA_HOME is set to %s\n", javaHome);
     }
 
     gl4esLibname_pre = getPreference(@"gl4es_libname");
     if (!gl4esLibname_pre) {
         gl4esLibname_pre = @"libgl4es_114.dylib";
         setPreference(@"gl4es_libname", gl4esLibname_pre);
-        gl4esLibname = [gl4esLibname_pre UTF8String];
+        gl4esLibname = [gl4esLibname_pre cStringUsingEncoding:NSUTF8StringEncoding];
         setenv("GL4ES_LIBNAME", gl4esLibname, 1);
-        debug("[Pre-init] GL4ES_LIBNAME environment variable was not set. Defaulting to %s\n", gl4esLibname);
+        debug("[Pre-init] GL4ES_LIBNAME environment variable was not set. Defaulting to %s for future use.\n", gl4esLibname);
     } else {
-        gl4esLibname = [gl4esLibname_pre UTF8String];
+        gl4esLibname = [gl4esLibname_pre cStringUsingEncoding:NSUTF8StringEncoding];
+        debug("[Pre-Init] Restored preference: GL4ES_LIBNAME is set to %s\n", gl4esLibname);
     }
 
     char controlPath[2048];
@@ -237,7 +239,7 @@ int launchJVM(int argc, char *argv[]) {
         margv[margc++] = "-Dorg.lwjgl.system.allocator=system";
     } else {
         setenv("GL4ES_LIBNAME", gl4esLibname, 1);
-        debug("[Pre-init] OpenGL library name: %s", getenv("GL4ES_LIBNAME"));
+        debug("[Pre-init] GL4ES_LIBNAME has been set to %s", getenv("GL4ES_LIBNAME"));
     }
 
     // Load java
