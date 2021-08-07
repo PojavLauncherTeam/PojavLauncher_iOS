@@ -211,6 +211,7 @@ int launchJVM(int argc, char *argv[]) {
     setenv("LIBGL_NORMALIZE", "1", 1);
 
     javaHome_pre = getPreference(@"java_home");
+    javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
     if ([javaHome_pre length] == 0) {
         if (strncmp(argv[0], "/Applications", 13) == 0) {
             if (0 != access("/usr/lib/jvm/java-8-openjdk/", F_OK)) {
@@ -243,12 +244,12 @@ int launchJVM(int argc, char *argv[]) {
                 setPreference(@"java_home", javaHome_pre);
             }
         } else {
-            javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
             debug("[Pre-Init] Restored preference: JAVA_HOME is set to %s\n", javaHome);
         }
     }
 
     gl4esLibname_pre = getPreference(@"gl4es_libname");
+    gl4esLibname = [gl4esLibname_pre cStringUsingEncoding:NSUTF8StringEncoding];
     if ([gl4esLibname_pre length] == 0) {
         gl4esLibname_pre = @"libgl4es_114.dylib";
         setPreference(@"gl4es_libname", gl4esLibname_pre);
@@ -256,8 +257,15 @@ int launchJVM(int argc, char *argv[]) {
         setenv("GL4ES_LIBNAME", gl4esLibname, 1);
         debug("[Pre-init] GL4ES_LIBNAME environment variable was not set. Defaulting to %s for future use.\n", gl4esLibname);
     } else {
-        gl4esLibname = [gl4esLibname_pre cStringUsingEncoding:NSUTF8StringEncoding];
-        debug("[Pre-Init] Restored preference: GL4ES_LIBNAME is set to %s\n", gl4esLibname);
+        if(![gl4esLibname_pre isEqualToString:@"libgl4es_114.dylib"] && ![gl4esLibname_pre isEqualToString:@"libgl4es_115.dylib"]) {
+            debug("[Pre-Init] Failed to locate %s. Restoring default value for GL4ES_LIBNAME.", gl4esLibname);
+            gl4esLibname_pre = @"libgl4es_114.dylib";
+            setPreference(@"gl4es_libname", gl4esLibname_pre);
+            gl4esLibname = [gl4esLibname_pre cStringUsingEncoding:NSUTF8StringEncoding];
+            setenv("GL4ES_LIBNAME", gl4esLibname, 1);
+        } else {
+            debug("[Pre-Init] Restored preference: GL4ES_LIBNAME is set to %s\n", gl4esLibname);
+        }
     }
 
     char controlPath[2048];
