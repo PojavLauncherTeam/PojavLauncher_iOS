@@ -93,6 +93,60 @@ void init_migrateToPlist(char* prefKey, char* filename) {
     }
 }
 
+void init_checkPlist() {
+
+    if (!getPreference(@"button_scale")) {
+        setPreference(@"button_scale", @(100));
+    }
+
+    if (!getPreference(@"selected_version")) {
+        setPreference(@"selected_version", @"1.7.10");
+    }
+
+    if (!getPreference(@"vertype_release")) {
+        setPreference(@"vertype_release", @YES);
+    }
+
+    if (!getPreference(@"vertype_snapshot")) {
+        setPreference(@"vertype_snapshot", @NO);
+    }
+
+    if (!getPreference(@"vertype_oldalpha")) {
+        setPreference(@"vertype_oldalpha", @NO);
+    }
+
+    if (!getPreference(@"vertype_oldbeta")) {
+        setPreference(@"vertype_oldbeta", @NO);
+    }
+
+    if (!getPreference(@"time_longPressTrigger")) {
+        setPreference(@"time_longPressTrigger", @(400));
+    }
+
+    if (!getPreference(@"default_ctrl")) {
+        setPreference(@"default_ctrl", @"default.json");
+    }
+
+    if (!getPreference(@"java_args")) {
+        setPreference(@"java_args", @"");
+    }
+
+    if (!getPreference(@"java_home")) {
+        setPreference(@"java_home", @"");
+    }
+
+    if (!getPreference(@"gl4es_libname")) {
+        setPreference(@"gl4es_libname", @"");
+    }
+
+    if (!getPreference(@"option_warn")) {
+        setPreference(@"option_warn", @YES);
+    }
+
+    if (!getPreference(@"local_warn")) {
+        setPreference(@"local_warn", @YES);
+    }
+}
 
 int launchJVM(int argc, char *argv[]) {
     char *homeDir;
@@ -112,6 +166,8 @@ int launchJVM(int argc, char *argv[]) {
     } else {
         homeDir = getenv("POJAV_HOME");
     }
+
+    init_checkPlist();
 
     loadPreferences();
     init_migrateToPlist("selected_version", "config_ver.txt");
