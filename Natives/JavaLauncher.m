@@ -59,9 +59,9 @@ static int pfd[2];
 static pthread_t logger;
 
 const char *javaHome;
-const char *gl4esLibname;
+const char *renderer;
 NSString *javaHome_pre;
-NSString *gl4esLibname_pre;
+NSString *renderer_pre;
 
 void init_loadCustomJvmFlags() {
     NSString *jvmargs = getPreference(@"java_args");
@@ -135,8 +135,8 @@ void init_checkPlist() {
         setPreference(@"java_home", @"");
     }
 
-    if (!getPreference(@"gl4es_libname")) {
-        setPreference(@"gl4es_libname", @"");
+    if (!getPreference(@"renderer")) {
+        setPreference(@"renderer", @"");
     }
 
     if (!getPreference(@"option_warn")) {
@@ -248,23 +248,23 @@ int launchJVM(int argc, char *argv[]) {
         }
     }
 
-    gl4esLibname_pre = getPreference(@"gl4es_libname");
-    gl4esLibname = [gl4esLibname_pre cStringUsingEncoding:NSUTF8StringEncoding];
-    if ([gl4esLibname_pre length] == 0) {
-        gl4esLibname_pre = @"libgl4es_114.dylib";
-        setPreference(@"gl4es_libname", gl4esLibname_pre);
-        gl4esLibname = [gl4esLibname_pre cStringUsingEncoding:NSUTF8StringEncoding];
-        setenv("GL4ES_LIBNAME", gl4esLibname, 1);
-        debug("[Pre-init] GL4ES_LIBNAME environment variable was not set. Defaulting to %s for future use.\n", gl4esLibname);
+    renderer_pre = getPreference(@"renderer");
+    renderer = [renderer_pre cStringUsingEncoding:NSUTF8StringEncoding];
+    if ([renderer_pre length] == 0) {
+        renderer_pre = @"libgl4es_114.dylib";
+        setPreference(@"renderer", renderer_pre);
+        renderer = [renderer_pre cStringUsingEncoding:NSUTF8StringEncoding];
+        setenv("RENDERER", renderer, 1);
+        debug("[Pre-init] RENDERER environment variable was not set. Defaulting to %s for future use.\n", renderer);
     } else {
-        if(![gl4esLibname_pre isEqualToString:@"libgl4es_114.dylib"] && ![gl4esLibname_pre isEqualToString:@"libgl4es_115.dylib"]) {
-            debug("[Pre-Init] Failed to locate %s. Restoring default value for GL4ES_LIBNAME.", gl4esLibname);
-            gl4esLibname_pre = @"libgl4es_114.dylib";
-            setPreference(@"gl4es_libname", gl4esLibname_pre);
-            gl4esLibname = [gl4esLibname_pre cStringUsingEncoding:NSUTF8StringEncoding];
-            setenv("GL4ES_LIBNAME", gl4esLibname, 1);
+        if(![renderer_pre isEqualToString:@"libgl4es_114.dylib"] && ![renderer_pre isEqualToString:@"libgl4es_115.dylib"]) {
+            debug("[Pre-Init] Failed to locate %s. Restoring default value for RENDERER.", renderer);
+            renderer_pre = @"libgl4es_114.dylib";
+            setPreference(@"renderer", renderer_pre);
+            renderer = [renderer_pre cStringUsingEncoding:NSUTF8StringEncoding];
+            setenv("RENDERER", renderer, 1);
         } else {
-            debug("[Pre-Init] Restored preference: GL4ES_LIBNAME is set to %s\n", gl4esLibname);
+            debug("[Pre-Init] Restored preference: RENDERER is set to %s\n", renderer);
         }
     }
 
@@ -296,14 +296,14 @@ int launchJVM(int argc, char *argv[]) {
     if (!started) {
         char *frameworkPath = calloc(1, 2048);
         char *javaPath = calloc(1, 2048);
-        char *gl4esPath = calloc(1, 2048);
+        char *rendererPath = calloc(1, 2048);
         char *userDir = calloc(1, 2048);
         char *userHome = calloc(1, 2048);
         snprintf(frameworkPath, 2048, "-Djava.library.path=%s/Frameworks", getenv("BUNDLE_PATH"));
         snprintf(javaPath, 2048, "%s/bin/java", javaHome);
         snprintf(userDir, 2048, "-Duser.dir=%s/Documents/minecraft", getenv("HOME"));
         snprintf(userHome, 2048, "-Duser.home=%s/Documents", getenv("HOME"));
-        snprintf(gl4esPath, 2048, "-Dorg.lwjgl.opengl.libname=%s", gl4esLibname);
+        snprintf(rendererPath, 2048, "-Dorg.lwjgl.opengl.libname=%s", renderer);
         
         chdir(userDir);
         
@@ -313,11 +313,11 @@ int launchJVM(int argc, char *argv[]) {
         margv[margc++] = frameworkPath;
         margv[margc++] = userDir;
         margv[margc++] = userHome;
-        margv[margc++] = gl4esPath;
+        margv[margc++] = rendererPath;
         margv[margc++] = "-Dorg.lwjgl.system.allocator=system";
     } else {
-        setenv("GL4ES_LIBNAME", gl4esLibname, 1);
-        debug("[Pre-init] GL4ES_LIBNAME has been set to %s", getenv("GL4ES_LIBNAME"));
+        setenv("RENDERER", renderer, 1);
+        debug("[Pre-init] GL4ES_LIBNAME has been set to %s", getenv("RENDERER"));
     }
 
     // Load java

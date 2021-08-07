@@ -20,7 +20,7 @@ void loadPreferences() {
         prefDict[@"default_ctrl"] = @"default.json";
         prefDict[@"java_args"] = @"";
         prefDict[@"java_home"] = @"";
-        prefDict[@"gl4es_libname"] = @"";
+        prefDict[@"renderer"] = @"";
         prefDict[@"option_warn"] = @YES;
         prefDict[@"local_warn"] = @YES;
         [prefDict writeToFile:prefPath atomically:YES];

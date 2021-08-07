@@ -6,7 +6,7 @@
 
 #define BTNSCALE 0
 #define JARGS 1
-#define GL4ES 2
+#define REND 2
 #define JHOME 3
 
 @interface LauncherPreferencesViewController () {
@@ -18,7 +18,7 @@
 
 @implementation LauncherPreferencesViewController
 
-UITextField* gl4esTextField;
+UITextField* rendTextField;
 UITextField* jargsTextField;
 UITextField* jhomeTextField;
 UITextField* versionTextField;
@@ -82,21 +82,21 @@ UITextField* versionTextField;
     jargsTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [scrollView addSubview:jargsTextField];
 
-    UILabel *gl4esTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 94.0, 0.0, 0.0)];
-    gl4esTextView.text = @"GL4ES dylib";
-    gl4esTextView.numberOfLines = 0;
-    [gl4esTextView sizeToFit];
-    [scrollView addSubview:gl4esTextView];
+    UILabel *rendTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 94.0, 0.0, 0.0)];
+    rendTextView.text = @"Renderer";
+    rendTextView.numberOfLines = 0;
+    [rendTextView sizeToFit];
+    [scrollView addSubview:rendTextView];
 
-    gl4esTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, 94.0, width - jargsTextView.bounds.size.width - 8.0, 30)];
-    [gl4esTextField addTarget:versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
-    gl4esTextField.tag = 101;
-    gl4esTextField.delegate = self;
-    gl4esTextField.placeholder = @"Override version...";
-    gl4esTextField.text = (NSString *) getPreference(@"gl4es_libname");
-    gl4esTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
-    gl4esTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    [scrollView addSubview:gl4esTextField];
+    rendTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, 94.0, width - jargsTextView.bounds.size.width - 8.0, 30)];
+    [rendTextField addTarget:versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
+    rendTextField.tag = 101;
+    rendTextField.delegate = self;
+    rendTextField.placeholder = @"Override renderer...";
+    rendTextField.text = (NSString *) getPreference(@"renderer");
+    rendTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
+    rendTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [scrollView addSubview:rendTextField];
 
     UILabel *jhomeTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 134.0, 0.0, 0.0)];
     jhomeTextView.text = @"Java home";
@@ -129,8 +129,8 @@ UITextField* versionTextField;
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:BTNSCALE];}];
         UIAction *option2 = [UIAction actionWithTitle:@"Java arguments" image:nil identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:JARGS];}];
-        UIAction *option3 = [UIAction actionWithTitle:@"GL4ES dylib" image:nil identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:GL4ES];}];
+        UIAction *option3 = [UIAction actionWithTitle:@"Renderer" image:nil identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:REND];}];
         UIAction *option4 = [UIAction actionWithTitle:@"Java home" image:nil identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:JHOME];}];
         UIMenu *menu = [UIMenu menuWithTitle:@"Help menu" image:nil identifier:nil
@@ -148,7 +148,7 @@ UITextField* versionTextField;
     if (textField.tag == 100) {
         setPreference(@"java_args", jargsTextField.text);
     } else if (textField.tag == 101) {
-        setPreference(@"gl4es_libname", gl4esTextField.text);
+        setPreference(@"renderer", rendTextField.text);
     } else if (textField.tag == 102) {
         setPreference(@"java_home", jhomeTextField.text);
         if (![jhomeTextField.text containsString:@"java-8-openjdk"]) {
@@ -167,13 +167,13 @@ UITextField* versionTextField;
         UIAlertController *helpAlert = [UIAlertController alertControllerWithTitle:@"Needing help with these preferences?" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         UIAlertAction *btnscale = [UIAlertAction actionWithTitle:@"Button scale" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:BTNSCALE];}];
         UIAlertAction *jargs = [UIAlertAction actionWithTitle:@"Java arguments" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:JARGS];}];
-        UIAlertAction *gl4eslib = [UIAlertAction actionWithTitle:@"GL4ES dylib"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:GL4ES];}];
+        UIAlertAction *renderer = [UIAlertAction actionWithTitle:@"rend dylib"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:REND];}];
         UIAlertAction *jhome = [UIAlertAction actionWithTitle:@"Java home" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:JHOME];}];
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
         [self presentViewController:helpAlert animated:YES completion:nil];
         [helpAlert addAction:btnscale];
         [helpAlert addAction:jargs];
-        [helpAlert addAction:gl4eslib];
+        [helpAlert addAction:renderer];
         [helpAlert addAction:jhome];
         [helpAlert addAction:cancel];
     }
@@ -188,9 +188,9 @@ UITextField* versionTextField;
     } else if(setting == JARGS) {
         title = @"Java arguments";
         message = @"This option allows you to edit arguments that can be passed to Minecraft. Not all arguments work with PojavLauncher, so be aware. This option also requires a restart of the launcher to take effect.";
-    } else if(setting == GL4ES) {
-        title = @"GL4ES dylib";
-        message = @"This option allows you to change the gl4es version in use. Typing 'libgl4es_115.dylib' may fix sheep and banner colors on 1.16 and allow 1.17 to be played, but will also not work with older versions. This option also requires a restart of the launcher to take effect.";
+    } else if(setting == REND) {
+        title = @"Renderer";
+        message = @"This option allows you to change the renderer in use. Typing 'libgl4es_115.dylib' may fix sheep and banner colors on 1.16 and allow 1.17 to be played, but will also not work with older versions. This option also requires a restart of the launcher to take effect.";
     } else if(setting == JHOME) {
         title = @"Java home";
         message = @"This option allows you to change the Java executable directory. Typing '/usr/lib/jvm/java-16-openjdk' may allow you to play 1.17, however older versions and most versions of modded Minecraft, as well as the mod installer, will not work. This option also requires a restart of the launcher to take effect.";
