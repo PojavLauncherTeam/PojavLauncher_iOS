@@ -8,6 +8,7 @@
 #import "LoginViewController.h"
 #import "AboutLauncherViewController.h"
 #import "LauncherFAQViewController.h"
+#import "LauncherPreferences.h"
 
 #include "ios_uikit_bridge.h"
 #include "utils.h"
@@ -243,13 +244,18 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 }
 
 - (void)loginOffline:(UIButton *)sender {
-    UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:@"Offline mode is now Local mode." message:@"You can continue to play installed versions, but you can no longer download Minecraft without a paid account. No support will be provided for issues with local accounts, or other means of acquiring Minecraft. See our website for more information."preferredStyle:UIAlertControllerStyleActionSheet];
-    [self setPopoverProperties:offlineAlert.popoverPresentationController sender:sender];
-    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginUsername:TYPE_OFFLINE];}];
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self accountType:sender];}];
-    [self presentViewController:offlineAlert animated:YES completion:nil];
-    [offlineAlert addAction:ok];
-    [offlineAlert addAction:cancel];
+    if ([getPreference(@"local_warn") boolValue] == YES) {
+        UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:@"Offline mode is now Local mode." message:@"You can continue to play installed versions, but you can no longer download Minecraft without a paid account. No support will be provided for issues with local accounts, or other means of acquiring Minecraft. See our website for more information."preferredStyle:UIAlertControllerStyleActionSheet];
+        [self setPopoverProperties:offlineAlert.popoverPresentationController sender:sender];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginUsername:TYPE_OFFLINE];}];
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self accountType:sender];}];
+        [self presentViewController:offlineAlert animated:YES completion:nil];
+        [offlineAlert addAction:ok];
+        [offlineAlert addAction:cancel];
+        setPreference(@"local_warn", @NO);
+    } else {
+        [self loginUsername:(TYPE_OFFLINE)];
+    }
 }
 
 - (void)loginDemo:(UIButton *)sender {

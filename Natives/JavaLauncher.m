@@ -58,30 +58,10 @@ static char* margv[1000];
 static int pfd[2];
 static pthread_t logger;
 
-void init_loadCustomEnv() {
-    FILE *envFile = fopen(env_path, "r");
-
-    debug("[Pre-init] Reading custom environment variables (custom_env.txt), opened=%d\n", envFile != NULL);
-
-    if (envFile) {
-        char *line = NULL;
-        size_t len = 0;
-        ssize_t read;
-        while ((read = getline(&line, &len, envFile)) != -1) {
-            if (line[0] == '#' || line[0] == '\n') continue;
-            if (line[read-1] == '\n') {
-                line[read-1] = '\0';
-            }
-            if (strchr(line, '=') != NULL) {
-                debug("[Pre-init] Added custom env: %s", line);
-                setenv(strtok(line, "="), strtok(NULL, "="), 1);
-            } else {
-                debug("[Pre-init] Warning: skipped empty value custom env: %s", line);
-            }
-        }
-        fclose(envFile);
-    }
-}
+const char *javaHome;
+const char *renderer;
+NSString *javaHome_pre;
+NSString *renderer_pre;
 
 void init_loadCustomJvmFlags() {
     NSString *jvmargs = getPreference(@"java_args");
@@ -113,6 +93,60 @@ void init_migrateToPlist(char* prefKey, char* filename) {
     }
 }
 
+void init_checkPlist() {
+
+    if (!getPreference(@"button_scale")) {
+        setPreference(@"button_scale", @(100));
+    }
+
+    if (!getPreference(@"selected_version")) {
+        setPreference(@"selected_version", @"1.7.10");
+    }
+
+    if (!getPreference(@"vertype_release")) {
+        setPreference(@"vertype_release", @YES);
+    }
+
+    if (!getPreference(@"vertype_snapshot")) {
+        setPreference(@"vertype_snapshot", @NO);
+    }
+
+    if (!getPreference(@"vertype_oldalpha")) {
+        setPreference(@"vertype_oldalpha", @NO);
+    }
+
+    if (!getPreference(@"vertype_oldbeta")) {
+        setPreference(@"vertype_oldbeta", @NO);
+    }
+
+    if (!getPreference(@"time_longPressTrigger")) {
+        setPreference(@"time_longPressTrigger", @(400));
+    }
+
+    if (!getPreference(@"default_ctrl")) {
+        setPreference(@"default_ctrl", @"default.json");
+    }
+
+    if (!getPreference(@"java_args")) {
+        setPreference(@"java_args", @"");
+    }
+
+    if (!getPreference(@"java_home")) {
+        setPreference(@"java_home", @"");
+    }
+
+    if (!getPreference(@"renderer")) {
+        setPreference(@"renderer", @"");
+    }
+
+    if (!getPreference(@"option_warn")) {
+        setPreference(@"option_warn", @YES);
+    }
+
+    if (!getPreference(@"local_warn")) {
+        setPreference(@"local_warn", @YES);
+    }
+}
 
 int launchJVM(int argc, char *argv[]) {
     char *homeDir;
@@ -132,6 +166,8 @@ int launchJVM(int argc, char *argv[]) {
     } else {
         homeDir = getenv("POJAV_HOME");
     }
+
+    init_checkPlist();
 
     loadPreferences();
     init_migrateToPlist("selected_version", "config_ver.txt");
@@ -174,30 +210,62 @@ int launchJVM(int argc, char *argv[]) {
     // Fix white color on banner and sheep, since GL4ES 1.1.5
     setenv("LIBGL_NORMALIZE", "1", 1);
 
-    init_loadCustomEnv();
-
-    char *javaHome = getenv("JAVA_HOME");
-    if (!javaHome) {
+    javaHome_pre = getPreference(@"java_home");
+    javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
+    if ([javaHome_pre length] == 0) {
         if (strncmp(argv[0], "/Applications", 13) == 0) {
-            if (0 != access("/usr/lib/jvm/java-16-openjdk/", F_OK)) {
-                debug("[Pre-init] Java 16 wasn't found on your device.");
-                javaHome = "/usr/lib/jvm/java-8-openjdk";
+            if (0 != access("/usr/lib/jvm/java-8-openjdk/", F_OK)) {
+                debug("[Pre-init] Java 8 wasn't found on your device. Install Java 8 for more compatibility and the mod installer.");
+                javaHome_pre = @"/usr/lib/jvm/java-16-openjdk";
+                javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
+                setPreference(@"java_home", javaHome_pre);
             } else {
-                javaHome = "/usr/lib/jvm/java-16-openjdk";
+                javaHome_pre = @"/usr/lib/jvm/java-8-openjdk";
+                javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
+                setPreference(@"java_home", javaHome_pre);
             }
         } else {
             javaHome = calloc(1, 2048);
-            sprintf(javaHome, "%s/jre8", getenv("BUNDLE_PATH"));
+            sprintf((char *)javaHome, "%s/jre8", getenv("BUNDLE_PATH"));
         }
         setenv("JAVA_HOME", javaHome, 1);
-        debug("[Pre-init] JAVA_HOME environment variable not set. Defaulting to %s\n", javaHome);
+        debug("[Pre-init] JAVA_HOME environment variable was not set. Defaulting to %s for future use.\n", javaHome);
+    } else {
+        if (0 == [[NSFileManager defaultManager] fileExistsAtPath:javaHome_pre]) {
+            debug("[Pre-Init] Failed to locate %s. Restoring default value for JAVA_HOME.", javaHome);
+            if (0 != access("/usr/lib/jvm/java-8-openjdk/", F_OK)) {
+                debug("[Pre-init] Java 8 wasn't found on your device. Install Java 8 for more compatibility and the mod installer.");
+                javaHome_pre = @"/usr/lib/jvm/java-16-openjdk";
+                javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
+                setPreference(@"java_home", javaHome_pre);
+            } else {
+                javaHome_pre = @"/usr/lib/jvm/java-8-openjdk";
+                javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
+                setPreference(@"java_home", javaHome_pre);
+            }
+        } else {
+            debug("[Pre-Init] Restored preference: JAVA_HOME is set to %s\n", javaHome);
+        }
     }
 
-    char *gl4esLibname = getenv("GL4ES_LIBNAME");
-    if (!gl4esLibname) {
-        gl4esLibname = "libgl4es_114.dylib";
-        setenv("GL4ES_LIBNAME", gl4esLibname, 1);
-        debug("[Pre-init] GL4ES_LIBNAME environment variable not set. Defaulting to %s\n", gl4esLibname);
+    renderer_pre = getPreference(@"renderer");
+    renderer = [renderer_pre cStringUsingEncoding:NSUTF8StringEncoding];
+    if ([renderer_pre length] == 0) {
+        renderer_pre = @"libgl4es_114.dylib";
+        setPreference(@"renderer", renderer_pre);
+        renderer = [renderer_pre cStringUsingEncoding:NSUTF8StringEncoding];
+        setenv("RENDERER", renderer, 1);
+        debug("[Pre-init] RENDERER environment variable was not set. Defaulting to %s for future use.\n", renderer);
+    } else {
+        if(![renderer_pre isEqualToString:@"libgl4es_114.dylib"] && ![renderer_pre isEqualToString:@"libgl4es_115.dylib"]) {
+            debug("[Pre-Init] Failed to locate %s. Restoring default value for RENDERER.", renderer);
+            renderer_pre = @"libgl4es_114.dylib";
+            setPreference(@"renderer", renderer_pre);
+            renderer = [renderer_pre cStringUsingEncoding:NSUTF8StringEncoding];
+            setenv("RENDERER", renderer, 1);
+        } else {
+            debug("[Pre-Init] Restored preference: RENDERER is set to %s\n", renderer);
+        }
     }
 
     char controlPath[2048];
@@ -228,14 +296,14 @@ int launchJVM(int argc, char *argv[]) {
     if (!started) {
         char *frameworkPath = calloc(1, 2048);
         char *javaPath = calloc(1, 2048);
-        char *gl4esPath = calloc(1, 2048);
+        char *rendererPath = calloc(1, 2048);
         char *userDir = calloc(1, 2048);
         char *userHome = calloc(1, 2048);
         snprintf(frameworkPath, 2048, "-Djava.library.path=%s/Frameworks", getenv("BUNDLE_PATH"));
         snprintf(javaPath, 2048, "%s/bin/java", javaHome);
         snprintf(userDir, 2048, "-Duser.dir=%s/Documents/minecraft", getenv("HOME"));
         snprintf(userHome, 2048, "-Duser.home=%s/Documents", getenv("HOME"));
-        snprintf(gl4esPath, 2048, "-Dorg.lwjgl.opengl.libname=%s", gl4esLibname);
+        snprintf(rendererPath, 2048, "-Dorg.lwjgl.opengl.libname=%s", renderer);
         
         chdir(userDir);
         
@@ -245,11 +313,11 @@ int launchJVM(int argc, char *argv[]) {
         margv[margc++] = frameworkPath;
         margv[margc++] = userDir;
         margv[margc++] = userHome;
-        margv[margc++] = gl4esPath;
+        margv[margc++] = rendererPath;
         margv[margc++] = "-Dorg.lwjgl.system.allocator=system";
     } else {
-        setenv("GL4ES_LIBNAME", gl4esLibname, 1);
-        debug("[Pre-init] OpenGL library name: %s", getenv("GL4ES_LIBNAME"));
+        setenv("RENDERER", renderer, 1);
+        debug("[Pre-init] GL4ES_LIBNAME has been set to %s", getenv("RENDERER"));
     }
 
     // Load java
