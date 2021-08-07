@@ -144,6 +144,7 @@ package:
 	@if [ '$(IOS)' = '0' ]; then \
 		cp -R Natives/resources/* Natives/build/PojavLauncher.app/ || exit 1; \
 		cp Natives/build/libawt_xawt.dylib Natives/build/PojavLauncher.app/Frameworks/ || exit 1; \
+		( cd Natives/build/PojavLauncher.app/Frameworks; ln -sf libawt_xawt.dylib libawt_headless.dylib ) || exit 1; \
 		cp Natives/build/libpojavexec.dylib Natives/build/PojavLauncher.app/Frameworks/ || exit 1; \
 		mkdir Natives/build/PojavLauncher.app/{libs,libs_caciocavallo}; \
 		cp JavaApp/local_out/launcher.jar Natives/build/PojavLauncher.app/libs/launcher.jar || exit 1; \
@@ -161,6 +162,7 @@ package:
 		cp -R Natives/Info.plist Natives/build/PojavLauncher.app/Info.plist || exit 1;\
 		cp -R Natives/PkgInfo Natives/build/PojavLauncher.app/PkgInfo || exit 1; \
 		cp Natives/build/libawt_xawt.dylib Natives/build/PojavLauncher.app/Frameworks/ || exit 1; \
+		( cd Natives/build/PojavLauncher.app/Frameworks; ln -sf libawt_xawt.dylib libawt_headless.dylib ) || exit 1; \
 		cp Natives/build/libpojavexec.dylib Natives/build/PojavLauncher.app/Frameworks/ || exit 1; \
 		cp -R Natives/resources/* Natives/build/PojavLauncher.app/ || exit 1; \
 		cp -R JavaApp/libs Natives/build/PojavLauncher.app/libs || exit 1; \
@@ -210,14 +212,14 @@ deploy:
 					Natives/build/PojavLauncher.app/PojavLauncher \
 					JavaApp/local_out/launcher.jar \
 					root@$(DEVICE_IP):/var/tmp; \
-				ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t "mv /var/tmp/libawt_xawt.dylib /Applications/PojavLauncher.app/Frameworks/libawt_xawt.dylib && mv /var/tmp/libpojavexec.dylib /Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib && mv /var/tmp/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher && mv /var/tmp/launcher.jar /Applications/PojavLauncher.app/libs/launcher.jar && killall PojavLauncher"; \
+				ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t "mv /var/tmp/libawt_xawt.dylib /Applications/PojavLauncher.app/Frameworks/libawt_xawt.dylib && mv /var/tmp/libpojavexec.dylib /Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib && mv /var/tmp/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher && mv /var/tmp/launcher.jar /Applications/PojavLauncher.app/libs/launcher.jar && cd /Application/PojavLauncher.app/Frameworks && ln -sf libawt_xawt.dylib libawt_headless.dylib && killall PojavLauncher"; \
 			else \
 				scp -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" Natives/build/libpojavexec.dylib \
 				    Natives/build/libawt_xawt.dylib \
 					Natives/build/PojavLauncher.app/PojavLauncher \
 					JavaApp/local_out/launcher.jar \
 					root@$(DEVICE_IP):/var/tmp; \
-				ssh root@$(DEVICE_IP) -t "mv /var/tmp/libawt_xawt.dylib /Applications/PojavLauncher.app/Frameworks/libawt_xawt.dylib && mv /var/tmp/libpojavexec.dylib /Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib && mv /var/tmp/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher && mv /var/tmp/launcher.jar /Applications/PojavLauncher.app/libs/launcher.jar && killall PojavLauncher"; \
+				ssh root@$(DEVICE_IP) -t "mv /var/tmp/libawt_xawt.dylib /Applications/PojavLauncher.app/Frameworks/libawt_xawt.dylib && mv /var/tmp/libpojavexec.dylib /Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib && mv /var/tmp/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher && mv /var/tmp/launcher.jar /Applications/PojavLauncher.app/libs/launcher.jar && cd /Application/PojavLauncher.app/Frameworks && ln -sf libawt_xawt.dylib libawt_headless.dylib && killall PojavLauncher"; \
 			fi; \
 		else \
 			echo 'You need to run '\''export DEVICE_IP=<your iOS device IP>'\'' to use make deploy.'; \
@@ -229,6 +231,8 @@ deploy:
 		sudo cp Natives/build/PojavLauncher.app/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher; \
 		sudo cp Natives/build/libawt_xawt.dylib /Applications/PojavLauncher.app/Frameworks/; \
 		sudo cp Natives/build/libpojavexec.dylib /Applications/PojavLauncher.app/Frameworks/; \
+		cd /Applications/PojavLauncher.app/Frameworks; \
+		sudo ln -sf libawt_xawt.dylib libawt_headless.dylib; \
 		sudo killall PojavLauncher; \
 	fi
 	@echo 'Finished build task - deploy to local device'
