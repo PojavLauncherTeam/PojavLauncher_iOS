@@ -4,6 +4,11 @@
 
 #include "utils.h"
 
+#define BTNSCALE 0
+#define JARGS 1
+#define GL4ES 2
+#define JHOME 3
+
 @interface LauncherPreferencesViewController () {
 }
 
@@ -49,7 +54,6 @@ UITextField* versionTextField;
     CGRect tempRect = btnsizeTextView.frame;
     tempRect.size.height = 30.0;
     btnsizeTextView.frame = tempRect;
-    
     [scrollView addSubview:btnsizeTextView];
     
     DBNumberedSlider *buttonSizeSlider = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(8.0 + btnsizeTextView.frame.size.width, 8.0, self.view.frame.size.width - btnsizeTextView.frame.size.width - 12.0, btnsizeTextView.frame.size.height)];
@@ -68,7 +72,7 @@ UITextField* versionTextField;
     [jargsTextView sizeToFit];
     [scrollView addSubview:jargsTextView];
 
-    jargsTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x, 54.0, width - jargsTextView.bounds.size.width - 8.0, 30)];
+    jargsTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, 54.0, width - jargsTextView.bounds.size.width - 8.0, 30)];
     [jargsTextField addTarget:versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     jargsTextField.tag = 100;
     jargsTextField.delegate = self;
@@ -84,7 +88,7 @@ UITextField* versionTextField;
     [gl4esTextView sizeToFit];
     [scrollView addSubview:gl4esTextView];
 
-    gl4esTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x, 94.0, width - jargsTextView.bounds.size.width - 8.0, 30)];
+    gl4esTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, 94.0, width - jargsTextView.bounds.size.width - 8.0, 30)];
     [gl4esTextField addTarget:versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     gl4esTextField.tag = 101;
     gl4esTextField.delegate = self;
@@ -100,7 +104,7 @@ UITextField* versionTextField;
     [jhomeTextView sizeToFit];
     [scrollView addSubview:jhomeTextView];
 
-    jhomeTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x, 134.0, width - jargsTextView.bounds.size.width - 8.0, 30)];
+    jhomeTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, 134.0, width - jargsTextView.bounds.size.width - 8.0, 30)];
     [jhomeTextField addTarget:versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     jhomeTextField.tag = 102;
     jhomeTextField.delegate = self;
@@ -116,6 +120,24 @@ UITextField* versionTextField;
         [self presentViewController:preferenceWarn animated:YES completion:nil];
         [preferenceWarn addAction:ok];
         setPreference(@"option_warn", @NO);
+    }
+
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"?" style:UIBarButtonItemStyleDone target:self action:@selector(helpMenu)];
+    if (@available(iOS 14.0, *)) {
+        // use UIMenu
+        UIAction *option1 = [UIAction actionWithTitle:@"Button scale" image:nil identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:BTNSCALE];}];
+        UIAction *option2 = [UIAction actionWithTitle:@"Java arguments" image:nil identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:JARGS];}];
+        UIAction *option3 = [UIAction actionWithTitle:@"GL4ES dylib" image:nil identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:GL4ES];}];
+        UIAction *option4 = [UIAction actionWithTitle:@"Java home" image:nil identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:JHOME];}];
+        UIMenu *menu = [UIMenu menuWithTitle:@"Help menu" image:nil identifier:nil
+                        options:UIMenuOptionsDisplayInline children:@[option1, option2, option3, option4]];
+        self.navigationItem.rightBarButtonItem.action = nil;
+        self.navigationItem.rightBarButtonItem.primaryAction = nil;
+        self.navigationItem.rightBarButtonItem.menu = menu;
     }
 
     scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, scrollView.frame.size.height + 200);
@@ -138,6 +160,46 @@ UITextField* versionTextField;
     }
 }
 
+- (void)helpMenu {
+    if (@available(iOS 14.0, *)) {
+        // UIMenu
+    } else {
+        UIAlertController *helpAlert = [UIAlertController alertControllerWithTitle:@"Needing help with these preferences?" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertAction *btnscale = [UIAlertAction actionWithTitle:@"Button scale" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:BTNSCALE];}];
+        UIAlertAction *jargs = [UIAlertAction actionWithTitle:@"Java arguments" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:JARGS];}];
+        UIAlertAction *gl4eslib = [UIAlertAction actionWithTitle:@"GL4ES dylib"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:GL4ES];}];
+        UIAlertAction *jhome = [UIAlertAction actionWithTitle:@"Java home" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:JHOME];}];
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+        [self presentViewController:helpAlert animated:YES completion:nil];
+        [helpAlert addAction:btnscale];
+        [helpAlert addAction:jargs];
+        [helpAlert addAction:gl4eslib];
+        [helpAlert addAction:jhome];
+        [helpAlert addAction:cancel];
+    }
+}
+
+- (void)helpAlertOpt:(int)setting {
+    NSString *title;
+    NSString *message;
+    if(setting == BTNSCALE) {
+        title = @"Button scale";
+        message = @"This option allows you to tweak the button scale of the on-screen controls. The numbered slider extends from 50 to 500.";
+    } else if(setting == JARGS) {
+        title = @"Java arguments";
+        message = @"This option allows you to edit arguments that can be passed to Minecraft. Not all arguments work with PojavLauncher, so be aware. This option also requires a restart of the launcher to take effect.";
+    } else if(setting == GL4ES) {
+        title = @"GL4ES dylib";
+        message = @"This option allows you to change the gl4es version in use. Typing 'libgl4es_115.dylib' may fix sheep and banner colors on 1.16 and allow 1.17 to be played, but will also not work with older versions. This option also requires a restart of the launcher to take effect.";
+    } else if(setting == JHOME) {
+        title = @"Java home";
+        message = @"This option allows you to change the Java executable directory. Typing '/usr/lib/jvm/java-16-openjdk' may allow you to play 1.17, however older versions and most versions of modded Minecraft, as well as the mod installer, will not work. This option also requires a restart of the launcher to take effect.";
+    }
+    UIAlertController *helpAlertOpt = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+    [helpAlertOpt addAction:ok];
+    [self presentViewController:helpAlertOpt animated:YES completion:nil];
+}
 
 - (void)sliderMoved:(DBNumberedSlider *)sender {
     switch (sender.tag) {
