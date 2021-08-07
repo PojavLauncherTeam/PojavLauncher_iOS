@@ -4,6 +4,7 @@
 #import "ios_uikit_bridge.h"
 
 #import "customcontrols/ControlButton.h"
+#import "customcontrols/CustomControlsUtils.h"
 
 #include "glfw_keycodes.h"
 #include "utils.h"
@@ -156,17 +157,13 @@ int notchOffset;
         if (cc_error != nil) {
             showDialog(self, @"Error parsing JSON", cc_error.localizedDescription);
         } else {
+            convertV1ToV2(self.cc_dictionary);
             NSMutableArray *cc_controlDataList = self.cc_dictionary[@"mControlDataList"];
             CGFloat currentScale = ((NSNumber *)self.cc_dictionary[@"scaledAt"]).floatValue;
             CGFloat savedScale = ((NSNumber *)getPreference(@"button_scale")).floatValue;
             int cc_version = ((NSNumber *)self.cc_dictionary[@"version"]).intValue;
             for (int i = 0; i < (int) cc_controlDataList.count; i++) {
                 NSMutableDictionary *cc_buttonDict = cc_controlDataList[i];
-                if (cc_version < 2) {
-                    showDialog(self, @"Notice", @"Custom controls v1 to v2 was not implemented!");
-                    return;
-                    //convertV1ToV2(cc_buttonDict);
-                }
                 APPLY_SCALE(cc_buttonDict[@"width"]);
                 APPLY_SCALE(cc_buttonDict[@"height"]);
                 APPLY_SCALE(cc_buttonDict[@"strokeWidth"]);
@@ -176,12 +173,14 @@ int notchOffset;
                 [button addTarget:self action:@selector(executebtn_up:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
                 [self.view addSubview:button];
 
-                int firstKeycode = ((NSNumber *)cc_buttonDict[@"keycodes"][0]).intValue;
-                if (firstKeycode == SPECIALBTN_KEYBOARD) {
-                    inputView.frame = button.frame;
-                }
-                if (firstKeycode != SPECIALBTN_TOGGLECTRL) {
-                    togglableVisibleButtons[++togglableVisibleButtonIndex] = button;
+                for (int i = 0; i < 4; i++) {
+                    int keycodeInt = ((NSNumber *)cc_buttonDict[@"keycodes"][i]).intValue;
+                    if (keycodeInt == SPECIALBTN_KEYBOARD) {
+                        inputView.frame = button.frame;
+                    }
+                    if (keycodeInt != SPECIALBTN_TOGGLECTRL) {
+                        togglableVisibleButtons[++togglableVisibleButtonIndex] = button;
+                    }
                 }
             }
             self.cc_dictionary[@"scaledAt"] = @(savedScale);
@@ -478,8 +477,7 @@ NSString* inputStringBefore;
         NSString *newText = [inputView.text substringFromIndex:INPUT_SPACE_LENGTH];
         int charLength = (int) [newText length];
         for (int i = 0; i < charLength; i++) {
-            // LWJGL2: convert to UTF-8
-            // LWJGL3: Directly convert unichar to jchar since both are in UTF-16 encoding.
+            // Directly convert unichar to jchar since both are in UTF-16 encoding.
 
 /*
             jchar theChar = (jchar) 
@@ -568,45 +566,51 @@ int currentVisibility = 1;
     ControlButton *button = (ControlButton *)sender;
     int held = action == ACTION_DOWN;
     // TODO v2: mulitple keys support
-    int keycode = ((NSNumber *)button.properties[@"keycodes"][0]).intValue;
-    if (keycode < 0) {
-        switch (keycode) {
-            case SPECIALBTN_KEYBOARD:
-                if (held == 0) {
-                    [inputView resignFirstResponder];
-                    inputView.alpha = 1.0f;
-                    inputView.text = @"";
-                }
-                break;
+    for (int i = 0; i < 4; i++) {
+        int keycode = ((NSNumber *)cc_buttonDict[@"keycodes"][i]).intValue;
+        if (keycode < 0) {
+            switch (keycode) {
+                case SPECIALBTN_KEYBOARD:
+                    if (held == 0) {
+                        [inputView resignFirstResponder];
+                        inputView.alpha = 1.0f;
+                        inputView.text = @"";
+                    }
+                    break;
 
-            case SPECIALBTN_MOUSEPRI:
-                Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, GLFW_MOUSE_BUTTON_LEFT, held, 0);
-                break;
+                case SPECIALBTN_MOUSEPRI:
+                    Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, GLFW_MOUSE_BUTTON_LEFT, held, 0);
+                    break;
 
-            case SPECIALBTN_MOUSESEC:
-                Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, GLFW_MOUSE_BUTTON_RIGHT, held, 0);
-                break;
+                case SPECIALBTN_MOUSESEC:
+                    Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, GLFW_MOUSE_BUTTON_RIGHT, held, 0);
+                    break;
 
-            case SPECIALBTN_MOUSEMID:
-                Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, GLFW_MOUSE_BUTTON_MIDDLE, held, 0);
-                break;
+                case SPECIALBTN_MOUSEMID:
+                    Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, GLFW_MOUSE_BUTTON_MIDDLE, held, 0);
+                    break;
 
-            case SPECIALBTN_TOGGLECTRL:
-                [self executebtn_special_togglebtn:held];
-                break;
+                case SPECIALBTN_TOGGLECTRL:
+                    [self executebtn_special_togglebtn:held];
+                    break;
 
-            case SPECIALBTN_VIRTUALMOUSE:
-            case SPECIALBTN_SCROLLUP:
-            case SPECIALBTN_SCROLLDOWN:
-                NSLog(@"Warning: button %@ sent unimplemented special keycode: %d", button.titleLabel.text, keycode);
-                break;
+                case SPECIALBTN_VIRTUALMOUSE:
+                case SPECIALBTN_SCROLLUP:
+                case SPECIALBTN_SCROLLDOWN:
+                    NSLog(@"Warning: button %@ sent unimplemented special keycode: %d", button.titleLabel.text, keycode);
+                    break;
 
-            default:
-                NSLog(@"Warning: button %@ sent unknown special keycode: %d", button.titleLabel.text, keycode);
-                break;
+                default:
+                    NSLog(@"Warning: button %@ sent unknown special keycode: %d", button.titleLabel.text, keycode);
+                    break;
+            }
+        } else {
+            // there's no key id 0, but we accidentally used -1 as a special key id, so we had to do that
+            // if (keycode == 0) { keycode = -1; }
+            // at the moment, send unknown keycode does nothing, may even cause performance issue, so ignore it
+            if (keycode == 0) continue;
+            Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, keycode, 0, held, 0);
         }
-    } else {
-        Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, keycode, 0, held, 0);
     }
 }
 

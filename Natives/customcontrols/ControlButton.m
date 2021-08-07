@@ -126,10 +126,10 @@
 
     self.layer.borderColor = [convertARGB2UIColor(propStrokeColor) CGColor];
     if (propCornerRadius > 0) {
-        self.layer.cornerRadius = self.frame.size.width / 200 * propCornerRadius;
+        self.layer.cornerRadius = MIN(self.frame.size.width, self.frame.size.height) / 200.0 * propCornerRadius;
     }
     if (propStrokeWidth > 0) {
-        self.layer.borderWidth = self.frame.size.width / propStrokeWidth;
+        self.layer.borderWidth = MAX(self.frame.size.width, self.frame.size.height) / 200.0 * propStrokeWidth;
     }
     self.clipsToBounds = YES;
 }

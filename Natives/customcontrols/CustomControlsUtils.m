@@ -18,7 +18,7 @@ NSMutableDictionary* createButton(NSString* name, int* keycodes, NSString* dynam
     dict[@"height"] = @(height);
     dict[@"opacity"] = @(100);
     dict[@"cornerRadius"] = @(0);
-    dict[@"bgColor"] = @(convertUIColor2ARGB([UIColor colorWithRed:0 green:0 blue:0 alpha:0.3]));
+    dict[@"bgColor"] = @(0x4d000000);
     return dict;
 }
 
@@ -43,7 +43,58 @@ int convertUIColor2ARGB(UIColor* color) {
 }
 
 void convertV1ToV2(NSMutableDictionary* dict) {
-    dict[@"opacity"] = @(100 - ((NSNumber *)dict[@"transparency"]).intValue);
+    if (((NSNumber *)dict[@"version"]).intValue >= 2) {
+        return;
+    }
+    dict[@"scaledAt"] = @(100);
+    dict[@"version"] = @(2);
+    for (NSMutableDictionary *btnDict in (NSMutableArray *)dict[@"mControlDataList"]) {
+        NSMutableArray *keycodes = [NSMutableArray arrayWithCapacity:4];
+        CGFloat scale = ((NSNumber *)dict[@"scaledAt"]).floatValue;
+
+        // default values
+        btnDict[@"bgColor"] = @(0x4d000000);
+        btnDict[@"strokeWidth"] = @(0);
+
+        // opacity -> reverse transparency
+        btnDict[@"opacity"] = @(100 - ((NSNumber *)btnDict[@"transparency"]).intValue);
+        [btnDict removeObjectForKey:@"transparency"];
+
+        // pixel of width, height -> dp
+        btnDict[@"width"] = @(((NSNumber *)btnDict[@"width"]).floatValue / scale * 50.0);
+        btnDict[@"height"] = @(((NSNumber *)btnDict[@"height"]).floatValue / scale * 50.0);
+
+        // isRound -> cornerRadius 35%
+        if (((NSNumber *)btnDict[@"isRound"]).boolValue == YES) {
+            btnDict[@"cornerRadius"] = @(35.0f);
+        }
+        [btnDict removeObjectForKey:@"isRound"];
+
+        // keycode -> keycodes[0]
+        [keycodes addObject:btnDict[@"keycode"]];
+        [btnDict removeObjectForKey:@"keycode"];
+
+        // alt -> keycodes[i++]
+        if (((NSNumber *)dict[@"holdAlt"]).boolValue == YES) {
+            [keycodes addObject:@(GLFW_KEY_LEFT_ALT)];
+        }
+        [btnDict removeObjectForKey:@"holdAlt"];
+
+        // ctrl -> keycodes[i++]
+        if (((NSNumber *)dict[@"holdCtrl"]).boolValue == YES) {
+            [keycodes addObject:@(GLFW_KEY_LEFT_CONTROL)];
+        }
+        [btnDict removeObjectForKey:@"holdCtrl"];
+
+        // shift -> keycodes[i++]
+        if (((NSNumber *)dict[@"holdShift"]).boolValue == YES) {
+            [keycodes addObject:@(GLFW_KEY_LEFT_SHIFT)];
+        }
+        [btnDict removeObjectForKey:@"holdShift"];
+
+        // set final keycode array
+        btnDict[@"keycodes"] = keycodes;
+    }
 }
 
 void generateAndSaveDefaultControl() {
