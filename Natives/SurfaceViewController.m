@@ -567,7 +567,7 @@ int currentVisibility = 1;
     int held = action == ACTION_DOWN;
     // TODO v2: mulitple keys support
     for (int i = 0; i < 4; i++) {
-        int keycode = ((NSNumber *)((NSArray *)button.properties[@"keycodes"])[i]).intValue;
+        int keycode = ((NSNumber *)button.properties[@"keycodes"][i]).intValue;
         if (keycode < 0) {
             switch (keycode) {
                 case SPECIALBTN_KEYBOARD:
