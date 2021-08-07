@@ -110,6 +110,14 @@ UITextField* versionTextField;
     jhomeTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [scrollView addSubview:jhomeTextField];
 
+    if ([getPreference(@"option_warn") boolValue] == YES) {
+        UIAlertController *fullAlert = [UIAlertController alertControllerWithTitle:@"Restart required" message:@"Some options in this menu will require that you restart the launcher for them to take effect."preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+        [self presentViewController:fullAlert animated:YES completion:nil];
+        [fullAlert addAction:cancel];
+        setPreference(@"option_warn", @NO);
+    }
+
     scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, scrollView.frame.size.height + 200);
 }
 

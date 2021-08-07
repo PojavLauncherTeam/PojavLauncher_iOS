@@ -21,7 +21,8 @@ void loadPreferences() {
         prefDict[@"java_args"] = @"";
         prefDict[@"java_home"] = @"";
         prefDict[@"gl4es_libname"] = @"";
-        // prefDict[@"custom_envVars"] = @""; // TODO
+        prefDict[@"option_warn"] = @YES;
+        prefDict[@"local_warn"] = @YES;
         [prefDict writeToFile:prefPath atomically:YES];
     } else {
         prefDict = [NSMutableDictionary dictionaryWithContentsOfFile:prefPath];
