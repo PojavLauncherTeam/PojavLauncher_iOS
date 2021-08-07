@@ -111,10 +111,10 @@ UITextField* versionTextField;
     [scrollView addSubview:jhomeTextField];
 
     if ([getPreference(@"option_warn") boolValue] == YES) {
-        UIAlertController *fullAlert = [UIAlertController alertControllerWithTitle:@"Restart required" message:@"Some options in this menu will require that you restart the launcher for them to take effect."preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
-        [self presentViewController:fullAlert animated:YES completion:nil];
-        [fullAlert addAction:cancel];
+        UIAlertController *preferenceWarn = [UIAlertController alertControllerWithTitle:@"Restart required" message:@"Some options in this menu will require that you restart the launcher for them to take effect."preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+        [self presentViewController:preferenceWarn animated:YES completion:nil];
+        [preferenceWarn addAction:ok];
         setPreference(@"option_warn", @NO);
     }
 
@@ -129,6 +129,12 @@ UITextField* versionTextField;
         setPreference(@"gl4es_libname", gl4esTextField.text);
     } else if (textField.tag == 102) {
         setPreference(@"java_home", jhomeTextField.text);
+        if (![jhomeTextField.text containsString:@"java-8-openjdk"]) {
+            UIAlertController *javaAlert = [UIAlertController alertControllerWithTitle:@"Java version is not Java 8" message:@"Minecraft versions below 1.6, modded below 1.16.4, and the mod installer will not work unless you have Java 8 installed on your device."preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+            [self presentViewController:javaAlert animated:YES completion:nil];
+            [javaAlert addAction:ok];
+        }
     }
 }
 
