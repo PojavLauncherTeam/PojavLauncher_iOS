@@ -68,7 +68,7 @@ UITextField* versionTextField;
     [jargsTextView sizeToFit];
     [scrollView addSubview:jargsTextView];
 
-    jargsTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x, 54.0, width - jargsTextView.bounds.size.width - 8.0, height - 58.0)];
+    jargsTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x, 54.0, width - jargsTextView.bounds.size.width - 8.0, 30)];
     [jargsTextField addTarget:versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     jargsTextField.tag = 100;
     jargsTextField.delegate = self;
@@ -84,7 +84,7 @@ UITextField* versionTextField;
     [gl4esTextView sizeToFit];
     [scrollView addSubview:gl4esTextView];
 
-    gl4esTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x, 94.0, width - jargsTextView.bounds.size.width - 8.0, height - 58.0)];
+    gl4esTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x, 94.0, width - jargsTextView.bounds.size.width - 8.0, 30)];
     [gl4esTextField addTarget:versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     gl4esTextField.tag = 101;
     gl4esTextField.delegate = self;
@@ -100,7 +100,7 @@ UITextField* versionTextField;
     [jhomeTextView sizeToFit];
     [scrollView addSubview:jhomeTextView];
 
-    jhomeTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x, 134.0, width - jargsTextView.bounds.size.width - 8.0, height - 58.0)];
+    jhomeTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x, 134.0, width - jargsTextView.bounds.size.width - 8.0, 30)];
     [jhomeTextField addTarget:versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     jhomeTextField.tag = 102;
     jhomeTextField.delegate = self;
