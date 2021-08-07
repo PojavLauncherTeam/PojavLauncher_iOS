@@ -1,5 +1,6 @@
 #pragma once
 
+#import "MGLKit.h"
 #include <stdbool.h>
 #include "jni.h"
 
@@ -30,6 +31,8 @@
 #define SPECIALBTN_MOUSEMID -6
 #define SPECIALBTN_SCROLLUP -7
 #define SPECIALBTN_SCROLLDOWN -8
+
+MGLSharegroup* sharegroup;
 
 void* GL4ES_HANDLE;
 

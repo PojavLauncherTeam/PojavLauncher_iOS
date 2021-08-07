@@ -61,7 +61,7 @@ public class Display {
     private static boolean window_created;
 
     /** The Drawable instance that tracks the current Display context */
-    private static DrawableLWJGL drawable;
+    private static volatile DrawableLWJGL drawable = null;
     
     private static Canvas parent;
 
@@ -206,30 +206,13 @@ public class Display {
         // System.out.println("TODO: Implement Display.create(PixelFormat,
         // Drawable)"); // TODO
         create(pixel_format);
-        
-        final DrawableGL drawable = new DrawableGL() {
-            public void destroy() {
-                synchronized ( GlobalLock.lock ) {
-                    if ( !isCreated() )
-                        return;
-
-                    releaseDrawable();
-                    super.destroy();
-                    destroyWindow();
-                    // x = y = -1;
-                    // cached_icons = null;
-                    reset();
-                }
-            }
-        };
-        Display.drawable = drawable;
 
         try {
             drawable.setPixelFormat(pixel_format, null);
             try {
                 createWindow();
                 try {
-                    drawable.context = new ContextGL(drawable.peer_info, null /* attribs */, shared_drawable != null ? ((DrawableGL)shared_drawable).getContext() : null);
+                    ((DrawableGL) drawable).context = new ContextGL(((DrawableGL) drawable).peer_info, null /* attribs */, shared_drawable != null ? ((DrawableGL)shared_drawable).getContext() : null);
                     try {
                         makeCurrentAndSetSwapInterval();
                         initContext();
@@ -311,8 +294,8 @@ public class Display {
         Window.charCallback = new GLFWCharCallback() {
             @Override
             public void invoke(long window, int codepoint) {
-                GLFWInputImplementation.singleton.putKeyboardEvent(KeyCodes.toLwjglKey(32),(byte)1,(int)codepoint,Sys.getNanoTime(),false);
-                GLFWInputImplementation.singleton.putKeyboardEvent(KeyCodes.toLwjglKey(32),(byte)0,(int)codepoint,Sys.getNanoTime(),false);
+                GLFWInputImplementation.singleton.putKeyboardEvent(0,(byte)1,(int)codepoint,Sys.getNanoTime(),false);
+                //GLFWInputImplementation.singleton.putKeyboardEvent(0,(byte)0,(int)codepoint,Sys.getNanoTime(),false);
             }
         };
 
@@ -413,7 +396,25 @@ public class Display {
             displayY = (monitorHeight - mode.getHeight()) / 2;
         }
 
-        glfwMakeContextCurrent(Window.handle);
+        //glfwMakeContextCurrent(Window.handle);
+        final DrawableGL drawable = new DrawableGL() {
+            public void destroy() {
+                synchronized ( GlobalLock.lock ) {
+                    if ( !isCreated() )
+                        return;
+
+                    releaseDrawable();
+                    super.destroy();
+                    destroyWindow();
+                    // x = y = -1;
+                    // cached_icons = null;
+                    reset();
+                }
+            }
+        };
+        drawable.context = new ContextGL(Window.handle);
+        drawable.context.makeCurrent();
+        Display.drawable = drawable;
         context = org.lwjgl.opengl.GLContext.createFromCurrent();
 
         glfwSwapInterval(0);
@@ -732,6 +733,7 @@ public class Display {
             }
         };
 
+
         displayCreated = true;
 
     }
@@ -917,6 +919,8 @@ public class Display {
     public static void setTitle(String title) {
         windowTitle = title;
     }
+
+    public static String getTitle() { return windowTitle; }	
 
     public static boolean isCloseRequested() {
         return glfwWindowShouldClose(Window.handle) == true;
