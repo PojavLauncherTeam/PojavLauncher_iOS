@@ -60,7 +60,6 @@
                                  "- Ability to send logs from within the launcher\n"
                                  "- The Select Account screen is now a pop-up window\n"
                                  "- New picker view to switch versions without typing them manually\n"
-                                 "- Support to show your locally installed clients\n"
                                  "- New settings page to manage preferences\n"
                                  "- OpenJDK 8 support, to allow older versions of modded Minecraft\n"
                                  "- New mod installer, built into the launcher";
