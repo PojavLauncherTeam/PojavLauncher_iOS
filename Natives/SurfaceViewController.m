@@ -173,14 +173,18 @@ int notchOffset;
                 [button addTarget:self action:@selector(executebtn_up:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
                 [self.view addSubview:button];
 
+                BOOL isToggleCtrlBtn = NO;
                 for (int i = 0; i < 4; i++) {
                     int keycodeInt = ((NSNumber *)cc_buttonDict[@"keycodes"][i]).intValue;
                     if (keycodeInt == SPECIALBTN_KEYBOARD) {
                         inputView.frame = button.frame;
                     }
-                    if (keycodeInt != SPECIALBTN_TOGGLECTRL) {
-                        togglableVisibleButtons[++togglableVisibleButtonIndex] = button;
+                    if (keycodeInt == SPECIALBTN_TOGGLECTRL) {
+                        isToggleCtrlBtn = YES;
                     }
+                }
+                if (!isToggleCtrlBtn) {
+                    togglableVisibleButtons[++togglableVisibleButtonIndex] = button;
                 }
             }
             self.cc_dictionary[@"scaledAt"] = @(savedScale);
