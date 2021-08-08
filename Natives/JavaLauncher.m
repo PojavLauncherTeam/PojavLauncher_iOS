@@ -210,6 +210,9 @@ int launchJVM(int argc, char *argv[]) {
     // Fix white color on banner and sheep, since GL4ES 1.1.5
     setenv("LIBGL_NORMALIZE", "1", 1);
 
+    // Disable overloaded functions hack for Minecraft 1.17+
+    setenv("LIBGL_NOINTOVLHACK", "1", 1);
+
     javaHome_pre = getPreference(@"java_home");
     javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
     if ([javaHome_pre length] == 0) {
