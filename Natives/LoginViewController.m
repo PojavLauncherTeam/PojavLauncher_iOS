@@ -138,6 +138,20 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     button_login.layer.cornerRadius = 5;
     [button_login setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button_login addTarget:self action:@selector(accountType:) forControlEvents:UIControlEventTouchUpInside];
+    if(@available (iOS 14.0, *)) {
+        UIAction *option1 = [UIAction actionWithTitle:@"Microsoft account" image:nil identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self loginMicrosoft];}];
+        UIAction *option2 = [UIAction actionWithTitle:@"Mojang account" image:nil identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self loginUsername:TYPE_MOJANG];}];
+        UIAction *option3 = [UIAction actionWithTitle:@"Demo account" image:nil identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self loginDemo:button_login];}];
+        UIAction *option4 = [UIAction actionWithTitle:@"Local account" image:nil identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self loginOffline:button_login];}];
+        UIMenu *menu = [UIMenu menuWithTitle:@"" image:nil identifier:nil
+                        options:UIMenuOptionsDisplayInline children:@[option4, option3, option2, option1]];
+        button_login.menu = menu;
+        button_login.showsMenuAsPrimaryAction = YES;
+    }
     if(@available (iOS 13.0, *)) {
         button_login.imageView.image = [[UIImage systemImageNamed:@"person.crop.circle.fill.badge.plus"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         [button_login setTintColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]];
@@ -171,19 +185,23 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 }
 
 - (void)accountType:(UIButton *)sender {
-    UIAlertController *fullAlert = [UIAlertController alertControllerWithTitle:@"Let's get you signed in." message:@"What account do you use to log into Minecraft?"preferredStyle:UIAlertControllerStyleActionSheet];
-    UIAlertAction *mojang = [UIAlertAction actionWithTitle:@"Mojang account" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginUsername:TYPE_MOJANG];}];
-    UIAlertAction *microsoft = [UIAlertAction actionWithTitle:@"Microsoft account" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginMicrosoft];}];
-    UIAlertAction *offline = [UIAlertAction actionWithTitle:@"Local account"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginOffline:sender];}];
-    UIAlertAction *demo = [UIAlertAction actionWithTitle:@"Demo account" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginDemo:sender];}];
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
-    [self setPopoverProperties:fullAlert.popoverPresentationController sender:sender];
-    [self presentViewController:fullAlert animated:YES completion:nil];
-    [fullAlert addAction:microsoft];
-    [fullAlert addAction:mojang];
-    [fullAlert addAction:demo];
-    [fullAlert addAction:offline];
-    [fullAlert addAction:cancel];
+    if(@available (iOS 14.0, *)) {
+        // UIMenu
+    } else {
+        UIAlertController *fullAlert = [UIAlertController alertControllerWithTitle:@"Let's get you signed in." message:@"What account do you use to log into Minecraft?"preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertAction *mojang = [UIAlertAction actionWithTitle:@"Mojang account" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginUsername:TYPE_MOJANG];}];
+        UIAlertAction *microsoft = [UIAlertAction actionWithTitle:@"Microsoft account" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginMicrosoft];}];
+        UIAlertAction *offline = [UIAlertAction actionWithTitle:@"Local account"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginOffline:sender];}];
+        UIAlertAction *demo = [UIAlertAction actionWithTitle:@"Demo account" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginDemo:sender];}];
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+        [self setPopoverProperties:fullAlert.popoverPresentationController sender:sender];
+        [self presentViewController:fullAlert animated:YES completion:nil];
+        [fullAlert addAction:microsoft];
+        [fullAlert addAction:mojang];
+        [fullAlert addAction:demo];
+        [fullAlert addAction:offline];
+        [fullAlert addAction:cancel];
+    }
 }
 
 - (void)loginUsername:(int)type {
