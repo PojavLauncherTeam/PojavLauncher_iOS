@@ -121,22 +121,24 @@ UITextField* jhomeTextField;
         setPreference(@"option_warn", @NO);
     }
 
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"?" style:UIBarButtonItemStyleDone target:self action:@selector(helpMenu)];
     if (@available(iOS 14.0, *)) {
         // use UIMenu
-        UIAction *option1 = [UIAction actionWithTitle:@"Button scale" image:nil identifier:nil
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage systemImageNamed:@"questionmark.circle.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStyleDone target:self action:@selector(helpMenu)];
+        UIAction *option1 = [UIAction actionWithTitle:@"Button scale" image:[[UIImage systemImageNamed:@"aspectratio.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:BTNSCALE];}];
-        UIAction *option2 = [UIAction actionWithTitle:@"Java arguments" image:nil identifier:nil
+        UIAction *option2 = [UIAction actionWithTitle:@"Java arguments" image:[[UIImage systemImageNamed:@"character.cursor.ibeam"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:JARGS];}];
-        UIAction *option3 = [UIAction actionWithTitle:@"Renderer" image:nil identifier:nil
+        UIAction *option3 = [UIAction actionWithTitle:@"Renderer" image:[[UIImage systemImageNamed:@"cpu.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:REND];}];
-        UIAction *option4 = [UIAction actionWithTitle:@"Java home" image:nil identifier:nil
+        UIAction *option4 = [UIAction actionWithTitle:@"Java home" image:[[UIImage systemImageNamed:@"folder.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:JHOME];}];
-        UIMenu *menu = [UIMenu menuWithTitle:@"Help menu" image:nil identifier:nil
+        UIMenu *menu = [UIMenu menuWithTitle:@"" image:nil identifier:nil
                         options:UIMenuOptionsDisplayInline children:@[option1, option2, option3, option4]];
         self.navigationItem.rightBarButtonItem.action = nil;
         self.navigationItem.rightBarButtonItem.primaryAction = nil;
         self.navigationItem.rightBarButtonItem.menu = menu;
+    } else {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Help" style:UIBarButtonItemStyleDone target:self action:@selector(helpMenu)];
     }
 
     scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, scrollView.frame.size.height + 200);

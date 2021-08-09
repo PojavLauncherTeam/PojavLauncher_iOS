@@ -73,21 +73,23 @@ int versionSelectedAt = 0;
 
     [scrollView addSubview:versionTextField];
 
-    self.navigationItem.rightBarButtonItem =
-        [[UIBarButtonItem alloc] initWithTitle:@"Options" style:UIBarButtonItemStyleDone target:self action:@selector(displayOptions:)];
+
     if (@available(iOS 14.0, *)) {
         // use UIMenu
-        UIAction *option1 = [UIAction actionWithTitle:@"Launch a mod installer" image:nil identifier:nil
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage systemImageNamed:@"ellipsis.circle.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStyleDone target:self action:@selector(displayOptions:)];
+        UIAction *option1 = [UIAction actionWithTitle:@"Launch a mod installer" image:[[UIImage systemImageNamed:@"internaldrive.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
             handler:^(__kindof UIAction * _Nonnull action) {[self enterModInstaller];}];
-        UIAction *option2 = [UIAction actionWithTitle:@"Custom controls" image:nil identifier:nil
+        UIAction *option2 = [UIAction actionWithTitle:@"Custom controls" image:[[UIImage systemImageNamed:@"dpad.right.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
             handler:^(__kindof UIAction * _Nonnull action) {[self enterCustomControls];}];
-        UIAction *option3 = [UIAction actionWithTitle:@"Preferences" image:nil identifier:nil
+        UIAction *option3 = [UIAction actionWithTitle:@"Preferences" image:[[UIImage systemImageNamed:@"wrench.and.screwdriver.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
             handler:^(__kindof UIAction * _Nonnull action) {[self enterPreferences];}];
-        UIMenu *menu = [UIMenu menuWithTitle:@"Options" image:nil identifier:nil
+        UIMenu *menu = [UIMenu menuWithTitle:@"" image:nil identifier:nil
             options:UIMenuOptionsDisplayInline children:@[option1, option2, option3]];
         self.navigationItem.rightBarButtonItem.action = nil;
         self.navigationItem.rightBarButtonItem.primaryAction = nil;
         self.navigationItem.rightBarButtonItem.menu = menu;
+    } else {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Options" style:UIBarButtonItemStyleDone target:self action:@selector(displayOptions:)];
     }
 
     install_progress_bar = [[UIProgressView alloc] initWithFrame:CGRectMake(4.0, height - 58.0, width - 8.0, 6.0)];

@@ -72,7 +72,7 @@
         updateHistoryButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         [updateHistoryButton addTarget:self action:@selector(updateHistory) forControlEvents:UIControlEventTouchUpInside];
         [scrollView addSubview:updateHistoryButton];
-        logoNoteViewOriginY = logoVerView.frame.origin.y + logoVerView.frame.size.height + updateHistoryButton.frame.origin.y + updateHistoryButton.frame.size.height + 9;
+        logoNoteViewOriginY = logoVerView.frame.origin.y + logoVerView.frame.size.height + updateHistoryButton.frame.size.height + 9;
     }
 
     UILabel *logoNoteView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, logoNoteViewOriginY, width - 8, 700)];

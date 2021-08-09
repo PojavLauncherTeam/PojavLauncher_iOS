@@ -101,20 +101,22 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     [logoWaterView setFont:[UIFont boldSystemFontOfSize:(logoView.frame.size.width / 2.0)]];
 
 
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"About" style:UIBarButtonItemStyleDone target:self action:@selector(aboutLauncher)];
+
     if(@available (iOS 14.0, *)) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"More" style:UIBarButtonItemStyleDone target:self action:@selector(aboutLauncher)];
-        UIAction *option1 = [UIAction actionWithTitle:@"About PojavLauncher" image:nil identifier:nil
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage systemImageNamed:@"info.circle.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStyleDone target:self action:@selector(aboutLauncher)];
+        UIAction *option1 = [UIAction actionWithTitle:@"About PojavLauncher" image:[[UIImage systemImageNamed:@"eyes"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self aboutLauncher];}];
-        UIAction *option2 = [UIAction actionWithTitle:@"Send your logs" image:nil identifier:nil
+        UIAction *option2 = [UIAction actionWithTitle:@"Send your logs" image:[[UIImage systemImageNamed:@"square.and.arrow.up.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self latestLogShare];}];
-        UIAction *option3 = [UIAction actionWithTitle:@"Recent updates" image:nil identifier:nil
+        UIAction *option3 = [UIAction actionWithTitle:@"Recent updates" image:[[UIImage systemImageNamed:@"arrow.triangle.2.circlepath.circle.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self updateHistory];}];
         UIMenu *menu = [UIMenu menuWithTitle:@"" image:nil identifier:nil
                         options:UIMenuOptionsDisplayInline children:@[option1, option2, option3]];
         self.navigationItem.rightBarButtonItem.action = nil;
         self.navigationItem.rightBarButtonItem.primaryAction = nil;
         self.navigationItem.rightBarButtonItem.menu = menu;
+    } else {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"About" style:UIBarButtonItemStyleDone target:self action:@selector(aboutLauncher)];
     }
 
     UIButton *button_faq = [UIButton buttonWithType:UIButtonTypeRoundedRect];
