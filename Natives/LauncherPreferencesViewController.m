@@ -21,7 +21,6 @@
 UITextField* rendTextField;
 UITextField* jargsTextField;
 UITextField* jhomeTextField;
-UITextField* versionTextField;
 
 - (void)viewDidLoad
 {
@@ -73,7 +72,7 @@ UITextField* versionTextField;
     [scrollView addSubview:jargsTextView];
 
     jargsTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, 54.0, width - jargsTextView.bounds.size.width - 8.0, 30)];
-    [jargsTextField addTarget:versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [jargsTextField addTarget:self action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     jargsTextField.tag = 100;
     jargsTextField.delegate = self;
     jargsTextField.placeholder = @"Specify arguments...";
@@ -89,7 +88,7 @@ UITextField* versionTextField;
     [scrollView addSubview:rendTextView];
 
     rendTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, 94.0, width - jargsTextView.bounds.size.width - 8.0, 30)];
-    [rendTextField addTarget:versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [rendTextField addTarget:self action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     rendTextField.tag = 101;
     rendTextField.delegate = self;
     rendTextField.placeholder = @"Override renderer...";
@@ -105,7 +104,7 @@ UITextField* versionTextField;
     [scrollView addSubview:jhomeTextView];
 
     jhomeTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, 134.0, width - jargsTextView.bounds.size.width - 8.0, 30)];
-    [jhomeTextField addTarget:versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [jhomeTextField addTarget:self action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     jhomeTextField.tag = 102;
     jhomeTextField.delegate = self;
     jhomeTextField.placeholder = @"Override Java path...";

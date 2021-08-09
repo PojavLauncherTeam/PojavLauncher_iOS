@@ -212,14 +212,14 @@ deploy:
 					Natives/build/PojavLauncher.app/PojavLauncher \
 					JavaApp/local_out/launcher.jar \
 					root@$(DEVICE_IP):/var/tmp; \
-				ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t "mv /var/tmp/libawt_xawt.dylib /Applications/PojavLauncher.app/Frameworks/libawt_xawt.dylib && mv /var/tmp/libpojavexec.dylib /Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib && mv /var/tmp/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher && mv /var/tmp/launcher.jar /Applications/PojavLauncher.app/libs/launcher.jar && cd /Application/PojavLauncher.app/Frameworks && ln -sf libawt_xawt.dylib libawt_headless.dylib && killall PojavLauncher"; \
+				ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t "mv /var/tmp/libawt_xawt.dylib /Applications/PojavLauncher.app/Frameworks/libawt_xawt.dylib && mv /var/tmp/libpojavexec.dylib /Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib && mv /var/tmp/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher && mv /var/tmp/launcher.jar /Applications/PojavLauncher.app/libs/launcher.jar && cd /Applications/PojavLauncher.app/Frameworks && ln -sf libawt_xawt.dylib libawt_headless.dylib && killall PojavLauncher"; \
 			else \
 				scp -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" Natives/build/libpojavexec.dylib \
 				    Natives/build/libawt_xawt.dylib \
 					Natives/build/PojavLauncher.app/PojavLauncher \
 					JavaApp/local_out/launcher.jar \
 					root@$(DEVICE_IP):/var/tmp; \
-				ssh root@$(DEVICE_IP) -t "mv /var/tmp/libawt_xawt.dylib /Applications/PojavLauncher.app/Frameworks/libawt_xawt.dylib && mv /var/tmp/libpojavexec.dylib /Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib && mv /var/tmp/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher && mv /var/tmp/launcher.jar /Applications/PojavLauncher.app/libs/launcher.jar && cd /Application/PojavLauncher.app/Frameworks && ln -sf libawt_xawt.dylib libawt_headless.dylib && killall PojavLauncher"; \
+				ssh root@$(DEVICE_IP) -t "mv /var/tmp/libawt_xawt.dylib /Applications/PojavLauncher.app/Frameworks/libawt_xawt.dylib && mv /var/tmp/libpojavexec.dylib /Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib && mv /var/tmp/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher && mv /var/tmp/launcher.jar /Applications/PojavLauncher.app/libs/launcher.jar && cd /Applications/PojavLauncher.app/Frameworks && ln -sf libawt_xawt.dylib libawt_headless.dylib && killall PojavLauncher"; \
 			fi; \
 		else \
 			echo 'You need to run '\''export DEVICE_IP=<your iOS device IP>'\'' to use make deploy.'; \

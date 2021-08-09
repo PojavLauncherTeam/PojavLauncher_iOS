@@ -60,14 +60,22 @@
     [scrollView addSubview:logoVerView];
     [logoVerView setFont:[UIFont boldSystemFontOfSize:20]];
 
-    UIButton *updateHistoryButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [updateHistoryButton setTitle:@"See the recent changelog." forState:UIControlStateNormal];
-    updateHistoryButton.frame = CGRectMake(4, logoVerView.frame.origin.y + logoVerView.frame.size.height + 5, width - 8, 25.0);
-    updateHistoryButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    [updateHistoryButton addTarget:self action:@selector(updateHistory) forControlEvents:UIControlEventTouchUpInside];
-    [scrollView addSubview:updateHistoryButton];
+    CGFloat logoNoteViewOriginY;
+    if(@available (iOS 14.0, *)) {
+        // UIMenu on the main screen
+        logoNoteViewOriginY = logoVerView.frame.origin.y + logoVerView.frame.size.height + 5;
+    } else {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Send your logs" style:UIBarButtonItemStyleDone target:self action:@selector(latestLogShare)];
+        UIButton *updateHistoryButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [updateHistoryButton setTitle:@"See the recent changelog." forState:UIControlStateNormal];
+        updateHistoryButton.frame = CGRectMake(4, logoVerView.frame.origin.y + logoVerView.frame.size.height + 5, width - 8, 25.0);
+        updateHistoryButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        [updateHistoryButton addTarget:self action:@selector(updateHistory) forControlEvents:UIControlEventTouchUpInside];
+        [scrollView addSubview:updateHistoryButton];
+        logoNoteViewOriginY = logoVerView.frame.origin.y + logoVerView.frame.size.height + updateHistoryButton.frame.origin.y + updateHistoryButton.frame.size.height + 9;
+    }
 
-    UILabel *logoNoteView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, updateHistoryButton.frame.origin.y + updateHistoryButton.frame.size.height + 9.0, width - 8, 700)];
+    UILabel *logoNoteView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, logoNoteViewOriginY, width - 8, 700)];
     logoNoteView.text = @"Created by PojavLauncherTeam in 2021. We do not exist on TikTok. No one from the dev team makes TikTok videos.\n\nDuyKhanhTran - lead iOS port developer\nDoregon - iOS port developer\nSpecial thanks to Hayden Seay, for porting OpenJDK 16, making this possible, and hosting on Procursus.";
     logoNoteView.lineBreakMode = NSLineBreakByWordWrapping;
     logoNoteView.numberOfLines = 0;
@@ -87,8 +95,6 @@
     safetyNoteView.numberOfLines = 0;
     [safetyNoteView sizeToFit];
     [scrollView addSubview:safetyNoteView];
-
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Send your logs" style:UIBarButtonItemStyleDone target:self action:@selector(latestLogShare)];
 
     scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, safetyNoteView.frame.origin.y + safetyNoteView.frame.size.height + 0);
 

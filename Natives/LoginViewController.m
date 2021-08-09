@@ -9,6 +9,7 @@
 #import "AboutLauncherViewController.h"
 #import "LauncherFAQViewController.h"
 #import "LauncherPreferences.h"
+#import "UpdateHistoryViewController.h"
 
 #include "ios_uikit_bridge.h"
 #include "utils.h"
@@ -51,10 +52,12 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 @interface LoginViewController () <ASWebAuthenticationPresentationContextProviding, UIPopoverPresentationControllerDelegate>{
 }
 @property (nonatomic, strong) ASWebAuthenticationSession *authVC;
+@property (nonatomic, strong) UIActivityViewController *activityViewController;
 @end
 
 @implementation LoginViewController
 @synthesize authVC;
+@synthesize activityViewController;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -97,33 +100,63 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     [self.view addSubview:logoWaterView];
     [logoWaterView setFont:[UIFont boldSystemFontOfSize:(logoView.frame.size.width / 2.0)]];
 
+
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"About" style:UIBarButtonItemStyleDone target:self action:@selector(aboutLauncher)];
+    if(@available (iOS 14.0, *)) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"More" style:UIBarButtonItemStyleDone target:self action:@selector(aboutLauncher)];
+        UIAction *option1 = [UIAction actionWithTitle:@"About PojavLauncher" image:nil identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self aboutLauncher];}];
+        UIAction *option2 = [UIAction actionWithTitle:@"Send your logs" image:nil identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self latestLogShare];}];
+        UIAction *option3 = [UIAction actionWithTitle:@"Recent updates" image:nil identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self updateHistory];}];
+        UIMenu *menu = [UIMenu menuWithTitle:@"" image:nil identifier:nil
+                        options:UIMenuOptionsDisplayInline children:@[option1, option2, option3]];
+        self.navigationItem.rightBarButtonItem.action = nil;
+        self.navigationItem.rightBarButtonItem.primaryAction = nil;
+        self.navigationItem.rightBarButtonItem.menu = menu;
+    }
 
     UIButton *button_faq = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [button_faq setTitle:@"FAQ" forState:UIControlStateNormal];
+    [button_faq setTitle:@"  FAQ" forState:UIControlStateNormal];
     button_faq.frame = CGRectMake(widthSplit2 - (((width - widthSplit * 2.0) / 2) / 2), (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
     button_faq.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
     button_faq.layer.cornerRadius = 5;
     [button_faq setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button_faq addTarget:self action:@selector(showFAQ) forControlEvents:UIControlEventTouchUpInside];
+    if(@available (iOS 13.0, *)) {
+        button_faq.imageView.image = [[UIImage systemImageNamed:@"doc.text.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        [button_faq setTintColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]];
+        [button_faq setImage:button_faq.imageView.image forState:UIControlStateNormal];
+    }
     [scrollView addSubview:button_faq];
 
     UIButton *button_login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [button_login setTitle:@"Sign In" forState:UIControlStateNormal];
+    [button_login setTitle:@"  Sign In" forState:UIControlStateNormal];
     button_login.frame = CGRectMake(button_faq.frame.origin.x - button_faq.frame.size.width - 20, (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
     button_login.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
     button_login.layer.cornerRadius = 5;
     [button_login setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button_login addTarget:self action:@selector(accountType:) forControlEvents:UIControlEventTouchUpInside];
+    if(@available (iOS 13.0, *)) {
+        button_login.imageView.image = [[UIImage systemImageNamed:@"person.crop.circle.fill.badge.plus"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        [button_login setTintColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]];
+        [button_login setImage:button_login.imageView.image forState:UIControlStateNormal];
+    }
     [scrollView addSubview:button_login];
 
     UIButton *button_accounts = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [button_accounts setTitle:@"Accounts" forState:UIControlStateNormal];
+    [button_accounts setTitle:@"  Accounts" forState:UIControlStateNormal];
     button_accounts.frame = CGRectMake(button_faq.frame.origin.x + button_faq.frame.size.width + 20, (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
     button_accounts.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
     button_accounts.layer.cornerRadius = 5;
     [button_accounts setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button_accounts addTarget:self action:@selector(loginAccount:) forControlEvents:UIControlEventTouchUpInside];
+    if(@available (iOS 13.0, *)) {
+        button_accounts.imageView.image = [[UIImage systemImageNamed:@"person.crop.circle.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        [button_accounts setTintColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]];
+        [button_accounts setImage:button_accounts.imageView.image forState:UIControlStateNormal];
+    }
     [scrollView addSubview:button_accounts];
 }
 
@@ -336,13 +369,26 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 
 - (void)aboutLauncher
 {
-    AboutLauncherViewController *vc = [[AboutLauncherViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+        AboutLauncherViewController *vc = [[AboutLauncherViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)showFAQ
 {
     LauncherFAQViewController *vc = [[LauncherFAQViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+-(void)latestLogShare
+{
+    NSString *latestlogPath = [NSString stringWithFormat:@"file://%s/Documents/.pojavlauncher/latestlog.old.txt", getenv("HOME")];
+    activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[@"latestlog.txt", [NSURL URLWithString:latestlogPath]] applicationActivities:nil];
+
+    [self presentViewController:activityViewController animated:YES completion:nil];
+}
+
+- (void)updateHistory {
+    UpdateHistoryViewController *vc = [[UpdateHistoryViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
