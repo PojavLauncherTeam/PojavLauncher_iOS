@@ -15,6 +15,19 @@ public class UIKit {
     
     private static int guiScale;
 
+    private static void patch_FlatLAF_setLinux() {
+        String osName = System.getProperty("os.name");
+        System.setProperty("os.name", "Linux");
+        try {
+            Class<?> clazz = ClassLoader.getSystemClassLoader().loadClass("com.formdev.flatlaf.util.SystemInfo");
+            // trigger static init
+            clazz.getField("isMacOS").get(null);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        System.setProperty("os.name", osName);
+    }
+
     public static void callback_JavaGUIViewController_launchJarFile(final String filepath, int width, int height) {
         System.setProperty("cacio.managed.screensize", width + "x" + height);
 
@@ -57,6 +70,10 @@ public class UIKit {
 
                 PojavClassLoader loader = (PojavClassLoader) ClassLoader.getSystemClassLoader();
                 loader.addURL(new File(filepath).toURI().toURL());
+
+                // LabyMod Installer uses FlatLAF which has some macOS-specific codes, so we make it thinks it's running on Linux.
+                patch_FlatLAF_setLinux();
+
                 Class<?> clazz = loader.loadClass(mainClass);
                 Method method = clazz.getMethod("main", String[].class);
                 method.invoke(null, new Object[]{new String[]{}});
