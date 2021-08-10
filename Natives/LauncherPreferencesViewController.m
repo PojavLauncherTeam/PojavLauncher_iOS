@@ -30,7 +30,7 @@
 
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height) - self.navigationController.navigationBar.frame.size.height;
-    CGFloat currY = 14.0;
+    CGFloat currY = 8.0;
 
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
     [self.view addSubview:scrollView];
@@ -43,7 +43,7 @@
         self.view.backgroundColor = [UIColor whiteColor];
     }
 
-    UILabel *btnsizeTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 8.0, 0.0, 30.0)];
+    UILabel *btnsizeTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, currY, 0.0, 30.0)];
     btnsizeTextView.text = @"Button scale (%)";
     btnsizeTextView.numberOfLines = 0;
     btnsizeTextView.textAlignment = NSTextAlignmentCenter;
@@ -53,7 +53,7 @@
     btnsizeTextView.frame = tempRect;
     [scrollView addSubview:btnsizeTextView];
     
-    DBNumberedSlider *buttonSizeSlider = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(8.0 + btnsizeTextView.frame.size.width, 8.0, self.view.frame.size.width - btnsizeTextView.frame.size.width - 12.0, btnsizeTextView.frame.size.height)];
+    DBNumberedSlider *buttonSizeSlider = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(8.0 + btnsizeTextView.frame.size.width, currY, self.view.frame.size.width - btnsizeTextView.frame.size.width - 12.0, btnsizeTextView.frame.size.height)];
     buttonSizeSlider.tag = 98;
     [buttonSizeSlider addTarget:self action:@selector(sliderMoved:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
     [buttonSizeSlider setBackgroundColor:[UIColor clearColor]];
