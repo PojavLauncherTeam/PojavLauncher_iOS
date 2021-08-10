@@ -221,6 +221,12 @@ int width;
     labelSize.numberOfLines = 0;
     [labelSize sizeToFit];
     [self.scrollView addSubview:labelSize];
+    // width / 2.0 + (labelSize.frame.size.width + 4.0) / 2.0
+    UILabel *labelSizeX = [[UILabel alloc] initWithFrame:CGRectMake(labelSize.frame.size.width + 4.0 + (width - labelSize.frame.size.width) / 2, labelName.frame.size.height + 4.0, 0.0, 0.0)];
+    labelSizeX.text = @"x";
+    labelSizeX.numberOfLines = 0;
+    [labelSizeX sizeToFit];
+    [self.scrollView addSubview:labelSizeX];
     UITextField *editSizeWidth = [[UITextField alloc] initWithFrame:CGRectMake(labelSize.frame.size.width + 4.0, labelSize.frame.origin.y, width - labelSize.frame.size.width - 4.0, labelSize.frame.size.height)];
     [editSizeWidth addTarget:editSizeWidth action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     editSizeWidth.placeholder = @"width";

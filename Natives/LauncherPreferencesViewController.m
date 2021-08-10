@@ -5,9 +5,10 @@
 #include "utils.h"
 
 #define BTNSCALE 0
-#define JARGS 1
-#define REND 2
-#define JHOME 3
+#define RESOLUTION 1
+#define JARGS 2
+#define REND 3
+#define JHOME 4
 
 @interface LauncherPreferencesViewController () {
 }
@@ -143,14 +144,16 @@
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage systemImageNamed:@"questionmark.circle.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStyleDone target:self action:@selector(helpMenu)];
         UIAction *option1 = [UIAction actionWithTitle:@"Button scale" image:[[UIImage systemImageNamed:@"aspectratio.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:BTNSCALE];}];
-        UIAction *option2 = [UIAction actionWithTitle:@"Java arguments" image:[[UIImage systemImageNamed:@"character.cursor.ibeam"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+        UIAction *option2 = [UIAction actionWithTitle:@"Resolution" image:[[UIImage systemImageNamed:@"viewfinder"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:RESOLUTION];}];
+        UIAction *option3 = [UIAction actionWithTitle:@"Java arguments" image:[[UIImage systemImageNamed:@"character.cursor.ibeam"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:JARGS];}];
-        UIAction *option3 = [UIAction actionWithTitle:@"Renderer" image:[[UIImage systemImageNamed:@"cpu"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+        UIAction *option4 = [UIAction actionWithTitle:@"Renderer" image:[[UIImage systemImageNamed:@"cpu"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:REND];}];
-        UIAction *option4 = [UIAction actionWithTitle:@"Java home" image:[[UIImage systemImageNamed:@"folder.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+        UIAction *option5 = [UIAction actionWithTitle:@"Java home" image:[[UIImage systemImageNamed:@"folder.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:JHOME];}];
         UIMenu *menu = [UIMenu menuWithTitle:@"" image:nil identifier:nil
-                        options:UIMenuOptionsDisplayInline children:@[option1, option2, option3, option4]];
+                        options:UIMenuOptionsDisplayInline children:@[option1, option2, option3, option4, option5]];
         self.navigationItem.rightBarButtonItem.action = nil;
         self.navigationItem.rightBarButtonItem.primaryAction = nil;
         self.navigationItem.rightBarButtonItem.menu = menu;
@@ -183,6 +186,7 @@
     } else {
         UIAlertController *helpAlert = [UIAlertController alertControllerWithTitle:@"Needing help with these preferences?" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         UIAlertAction *btnscale = [UIAlertAction actionWithTitle:@"Button scale" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:BTNSCALE];}];
+        UIAlertAction *resolution = [UIAlertAction actionWithTitle:@"Resolution" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:RESOLUTION];}];
         UIAlertAction *jargs = [UIAlertAction actionWithTitle:@"Java arguments" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:JARGS];}];
         UIAlertAction *renderer = [UIAlertAction actionWithTitle:@"Renderer"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:REND];}];
         UIAlertAction *jhome = [UIAlertAction actionWithTitle:@"Java home" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:JHOME];}];
@@ -190,6 +194,7 @@
         [self setPopoverProperties:helpAlert.popoverPresentationController sender:(UIButton *)self.navigationItem.rightBarButtonItem];
         [self presentViewController:helpAlert animated:YES completion:nil];
         [helpAlert addAction:btnscale];
+        [helpAlert addAction:resolution];
         [helpAlert addAction:jargs];
         [helpAlert addAction:renderer];
         [helpAlert addAction:jhome];
@@ -203,6 +208,9 @@
     if(setting == BTNSCALE) {
         title = @"Button scale";
         message = @"This option allows you to tweak the button scale of the on-screen controls. The numbered slider extends from 50 to 500.";
+    } else if(setting == RESOLUTION) {
+        title = @"Resolution";
+        message = @"This option allows you to downscale the resolution of the game. Reducing resolution reduces GPU workload for better performance. The minimum resolution scale is 25%.";
     } else if(setting == JARGS) {
         title = @"Java arguments";
         message = @"This option allows you to edit arguments that can be passed to Minecraft. Not all arguments work with PojavLauncher, so be aware. This option also requires a restart of the launcher to take effect.";
