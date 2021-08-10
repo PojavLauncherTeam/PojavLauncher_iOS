@@ -73,7 +73,7 @@
     resolutionTextView.frame = tempRect;
     [scrollView addSubview:resolutionTextView];
     
-    DBNumberedSlider *resolutionSlider = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(8.0 + resolutionTextView.frame.size.width, currY, self.view.frame.size.width - resolutionTextView.frame.size.width - 12.0, resolutionTextView.frame.size.height)];
+    DBNumberedSlider *resolutionSlider = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(8.0 + btnsizeTextView.frame.size.width, currY, self.view.frame.size.width - btnsizeTextView.frame.size.width - 12.0, resolutionTextView.frame.size.height)];
     resolutionSlider.tag = 99;
     [resolutionSlider addTarget:self action:@selector(sliderMoved:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
     [resolutionSlider setBackgroundColor:[UIColor clearColor]];
@@ -83,7 +83,7 @@
     resolutionSlider.value = ((NSNumber *) getPreference(@"resolution")).intValue;
     [scrollView addSubview:resolutionSlider];
 
-    UILabel *jargsTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, currY+=40.0, 0.0, 0.0)];
+    UILabel *jargsTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, currY+=45.0, 0.0, 0.0)];
     jargsTextView.text = @"Java arguments  ";
     jargsTextView.numberOfLines = 0;
     [jargsTextView sizeToFit];
