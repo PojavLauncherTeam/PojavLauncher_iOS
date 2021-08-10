@@ -170,6 +170,7 @@ UITextField* jhomeTextField;
         UIAlertAction *renderer = [UIAlertAction actionWithTitle:@"Renderer"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:REND];}];
         UIAlertAction *jhome = [UIAlertAction actionWithTitle:@"Java home" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:JHOME];}];
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+        [self setPopoverProperties:helpAlert.popoverPresentationController sender:(UIButton *)self.navigationItem.rightBarButtonItem];
         [self presentViewController:helpAlert animated:YES completion:nil];
         [helpAlert addAction:btnscale];
         [helpAlert addAction:jargs];
@@ -197,6 +198,7 @@ UITextField* jhomeTextField;
     }
     UIAlertController *helpAlertOpt = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+    [self setPopoverProperties:helpAlertOpt.popoverPresentationController sender:(UIButton *)self.navigationItem.rightBarButtonItem];
     [helpAlertOpt addAction:ok];
     [self presentViewController:helpAlertOpt animated:YES completion:nil];
 }
@@ -209,6 +211,13 @@ UITextField* jhomeTextField;
         default:
             NSLog(@"what does slider %ld for? implement me!", sender.tag);
             break;
+    }
+}
+
+- (void)setPopoverProperties:(UIPopoverPresentationController *)controller sender:(UIButton *)sender {
+    if (controller != nil) {
+        controller.sourceView = sender;
+        controller.sourceRect = sender.bounds;
     }
 }
 
