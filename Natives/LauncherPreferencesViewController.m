@@ -78,7 +78,7 @@
     [resolutionSlider addTarget:self action:@selector(sliderMoved:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
     [resolutionSlider setBackgroundColor:[UIColor clearColor]];
     resolutionSlider.minimumValue = 25;
-    resolutionSlider.maximumValue = 100;
+    resolutionSlider.maximumValue = 150;
     resolutionSlider.continuous = YES;
     resolutionSlider.value = ((NSNumber *) getPreference(@"resolution")).intValue;
     [scrollView addSubview:resolutionSlider];
