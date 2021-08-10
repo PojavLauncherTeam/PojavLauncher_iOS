@@ -18,10 +18,6 @@
 
 @implementation LauncherPreferencesViewController
 
-UITextField* rendTextField;
-UITextField* jargsTextField;
-UITextField* jhomeTextField;
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -33,6 +29,7 @@ UITextField* jhomeTextField;
 
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height) - self.navigationController.navigationBar.frame.size.height;
+    CGFloat currY = 14.0;
 
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
     [self.view addSubview:scrollView];
@@ -56,7 +53,7 @@ UITextField* jhomeTextField;
     [scrollView addSubview:btnsizeTextView];
     
     DBNumberedSlider *buttonSizeSlider = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(8.0 + btnsizeTextView.frame.size.width, 8.0, self.view.frame.size.width - btnsizeTextView.frame.size.width - 12.0, btnsizeTextView.frame.size.height)];
-    buttonSizeSlider.tag = 1;
+    buttonSizeSlider.tag = 98;
     [buttonSizeSlider addTarget:self action:@selector(sliderMoved:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
     [buttonSizeSlider setBackgroundColor:[UIColor clearColor]];
     buttonSizeSlider.minimumValue = 50.0;
@@ -65,14 +62,34 @@ UITextField* jhomeTextField;
     buttonSizeSlider.value = ((NSNumber *) getPreference(@"button_scale")).floatValue;
     [scrollView addSubview:buttonSizeSlider];
 
-    UILabel *jargsTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 54.0, 0.0, 0.0)];
+    UILabel *resolutionTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, currY+=40.0, 0.0, 30.0)];
+    resolutionTextView.text = @"Resolution (%)";
+    resolutionTextView.numberOfLines = 0;
+    resolutionTextView.textAlignment = NSTextAlignmentCenter;
+    [resolutionTextView sizeToFit];
+    tempRect = resolutionTextView.frame;
+    tempRect.size.height = 30.0;
+    resolutionTextView.frame = tempRect;
+    [scrollView addSubview:resolutionTextView];
+    
+    DBNumberedSlider *resolutionSlider = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(8.0 + resolutionTextView.frame.size.width, currY, self.view.frame.size.width - resolutionTextView.frame.size.width - 12.0, resolutionTextView.frame.size.height)];
+    resolutionSlider.tag = 99;
+    [resolutionSlider addTarget:self action:@selector(sliderMoved:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
+    [resolutionSlider setBackgroundColor:[UIColor clearColor]];
+    resolutionSlider.minimumValue = 25;
+    resolutionSlider.maximumValue = 100;
+    resolutionSlider.continuous = YES;
+    resolutionSlider.value = ((NSNumber *) getPreference(@"resolution")).intValue;
+    [scrollView addSubview:resolutionSlider];
+
+    UILabel *jargsTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, currY+=40.0, 0.0, 0.0)];
     jargsTextView.text = @"Java arguments  ";
     jargsTextView.numberOfLines = 0;
     [jargsTextView sizeToFit];
     [scrollView addSubview:jargsTextView];
 
-    jargsTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, 54.0, width - jargsTextView.bounds.size.width - 8.0, 30)];
-    [jargsTextField addTarget:self action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
+    UITextField *jargsTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 8.0, 30)];
+    [jargsTextField addTarget:jargsTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     jargsTextField.tag = 100;
     jargsTextField.delegate = self;
     jargsTextField.placeholder = @"Specify arguments...";
@@ -81,14 +98,14 @@ UITextField* jhomeTextField;
     jargsTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [scrollView addSubview:jargsTextField];
 
-    UILabel *rendTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 94.0, 0.0, 0.0)];
+    UILabel *rendTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, currY+=40.0, 0.0, 0.0)];
     rendTextView.text = @"Renderer";
     rendTextView.numberOfLines = 0;
     [rendTextView sizeToFit];
     [scrollView addSubview:rendTextView];
 
-    rendTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, 94.0, width - jargsTextView.bounds.size.width - 8.0, 30)];
-    [rendTextField addTarget:self action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
+    UITextField *rendTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 8.0, 30)];
+    [rendTextField addTarget:rendTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     rendTextField.tag = 101;
     rendTextField.delegate = self;
     rendTextField.placeholder = @"Override renderer...";
@@ -97,14 +114,14 @@ UITextField* jhomeTextField;
     rendTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [scrollView addSubview:rendTextField];
 
-    UILabel *jhomeTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 134.0, 0.0, 0.0)];
+    UILabel *jhomeTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, currY+=40.0, 0.0, 0.0)];
     jhomeTextView.text = @"Java home";
     jhomeTextView.numberOfLines = 0;
     [jhomeTextView sizeToFit];
     [scrollView addSubview:jhomeTextView];
 
-    jhomeTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, 134.0, width - jargsTextView.bounds.size.width - 8.0, 30)];
-    [jhomeTextField addTarget:self action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
+    UITextField *jhomeTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 8.0, 30)];
+    [jhomeTextField addTarget:jhomeTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     jhomeTextField.tag = 102;
     jhomeTextField.delegate = self;
     jhomeTextField.placeholder = @"Override Java path...";
@@ -151,7 +168,7 @@ UITextField* jhomeTextField;
         setPreference(@"renderer", textField.text);
     } else if (textField.tag == 102) {
         setPreference(@"java_home", textField.text);
-        if (![jhomeTextField.text containsString:@"java-8-openjdk"]) {
+        if (![textField.text containsString:@"java-8-openjdk"]) {
             UIAlertController *javaAlert = [UIAlertController alertControllerWithTitle:@"Java version is not Java 8" message:@"Minecraft versions below 1.6, modded below 1.16.4, and the mod installer will not work unless you have Java 8 installed on your device."preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
             [self presentViewController:javaAlert animated:YES completion:nil];
@@ -205,8 +222,11 @@ UITextField* jhomeTextField;
 
 - (void)sliderMoved:(DBNumberedSlider *)sender {
     switch (sender.tag) {
-        case 1:
-            setPreference(@"button_scale", @(sender.value));
+        case 98:
+            setPreference(@"button_scale", @((int)sender.value));
+            break;
+        case 99:
+            setPreference(@"resolution", @((int)sender.value));
             break;
         default:
             NSLog(@"what does slider %ld for? implement me!", sender.tag);
