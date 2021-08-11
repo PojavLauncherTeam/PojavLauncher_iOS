@@ -10,7 +10,7 @@
 #define REND 3
 #define JHOME 4
 
-@interface LauncherPreferencesViewController () {
+@interface LauncherPreferencesViewController () <UIPopoverPresentationControllerDelegate> {
 }
 
 // - (void)method
@@ -257,6 +257,11 @@
             self.view.backgroundColor = [UIColor whiteColor];
         }
     }
+}
+
+#pragma mark - UIPopoverPresentationControllerDelegate
+- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller traitCollection:(UITraitCollection *)traitCollection {
+    return UIModalPresentationNone;
 }
 
 @end

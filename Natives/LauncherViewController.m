@@ -6,7 +6,7 @@
 
 #include "utils.h"
 
-@interface LauncherViewController () <UIDocumentPickerDelegate, UIPickerViewDataSource, UIPickerViewDelegate> {
+@interface LauncherViewController () <UIDocumentPickerDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDelegate> {
 }
 
 // - (void)method
@@ -78,7 +78,7 @@ int versionSelectedAt = 0;
         // use UIMenu
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage systemImageNamed:@"ellipsis.circle.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStyleDone target:self action:@selector(displayOptions:)];
         UIAction *option1 = [UIAction actionWithTitle:@"Launch a mod installer" image:[[UIImage systemImageNamed:@"internaldrive.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-            handler:^(__kindof UIAction * _Nonnull action) {[self enterModInstaller];}];
+            handler:^(__kindof UIAction * _Nonnull action) {[self enterModInstaller:self.navigationItem.rightBarButtonItem];}];
         UIAction *option2 = [UIAction actionWithTitle:@"Custom controls" image:[[UIImage systemImageNamed:@"dpad.right.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
             handler:^(__kindof UIAction * _Nonnull action) {[self enterCustomControls];}];
         UIAction *option3 = [UIAction actionWithTitle:@"Preferences" image:[[UIImage systemImageNamed:@"wrench.and.screwdriver.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
@@ -203,7 +203,7 @@ int versionSelectedAt = 0;
         // use UIAlertController
         UIAlertController *fullAlert = [UIAlertController alertControllerWithTitle:@"Options" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
         UIAlertAction *option1 = [UIAlertAction actionWithTitle:@"Launch a mod installer" style:UIAlertActionStyleDefault
-            handler:^(UIAlertAction * _Nonnull action) {[self enterModInstaller];}];
+            handler:^(UIAlertAction * _Nonnull action) {[self enterModInstaller:self.navigationItem.rightBarButtonItem];}];
         UIAlertAction *option2 = [UIAlertAction actionWithTitle:@"Custom controls" style:UIAlertActionStyleDefault
             handler:^(UIAlertAction * _Nonnull action) {[self enterCustomControls];}];
         UIAlertAction *option3 = [UIAlertAction actionWithTitle:@"Preferences"  style:UIAlertActionStyleDefault
@@ -221,12 +221,21 @@ int versionSelectedAt = 0;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)enterModInstaller {
-    UIDocumentPickerViewController *documentPicker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:@[@"com.sun.java-archive"]
-        inMode:UIDocumentPickerModeImport];
-    documentPicker.delegate = self;
-    documentPicker.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self presentViewController:documentPicker animated:YES completion:nil];
+- (void)enterModInstaller:(UIBarButtonItem*)sender {
+    NSString *javaVer = getPreference(@"java_home");
+    if(![javaVer containsString:(@"java-8-openjdk")] && ![javaVer containsString:(@"jre8")]) {
+        UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:@"Cannot use the mod installer" message:@"In order to use the mod installer, you need to install Java 8 and specify it in the Preferences menu." preferredStyle:UIAlertControllerStyleActionSheet];
+        [self setPopoverProperties:offlineAlert.popoverPresentationController sender:(UIButton *)sender];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+        [self presentViewController:offlineAlert animated:YES completion:nil];
+        [offlineAlert addAction:ok];
+    } else {
+        UIDocumentPickerViewController *documentPicker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:@[@"com.sun.java-archive"]
+                                                          inMode:UIDocumentPickerModeImport];
+        documentPicker.delegate = self;
+        documentPicker.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self presentViewController:documentPicker animated:YES completion:nil];
+    }
 }
 
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url {
@@ -255,6 +264,18 @@ int versionSelectedAt = 0;
     }
 
     callback_LauncherViewController_installMinecraft([result UTF8String]);
+}
+
+- (void)setPopoverProperties:(UIPopoverPresentationController *)controller sender:(UIButton *)sender {
+    if (controller != nil) {
+        controller.sourceView = sender;
+        controller.sourceRect = sender.bounds;
+    }
+}
+
+#pragma mark - UIPopoverPresentationControllerDelegate
+- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller traitCollection:(UITraitCollection *)traitCollection {
+    return UIModalPresentationNone;
 }
 
 #pragma mark - UIPickerView stuff
