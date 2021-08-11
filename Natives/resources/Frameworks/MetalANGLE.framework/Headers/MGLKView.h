@@ -10,6 +10,7 @@
 #import "MGLContext.h"
 
 @class MGLKView;
+@class MGLKViewController;
 
 @protocol MGLKViewDelegate <NSObject>
 
@@ -45,6 +46,9 @@
 // OpenGL id of the underlying default framebuffer object.
 // Might not necessary be zero.
 @property(readonly) uint32_t defaultOpenGLFrameBufferID;
+
+// private property
+@property(nonatomic, weak) MGLKViewController *controller;
 
 #if TARGET_OS_IOS || TARGET_OS_TV
 // Enable setNeedsDisplay method.

@@ -1,4 +1,5 @@
 #import "JavaGUIViewController.h"
+#import "LauncherPreferences.h"
 #import "ios_uikit_bridge.h"
 #include "utils.h"
 
@@ -76,9 +77,10 @@ void _CGDataProviderReleaseBytePointerCallback(void *info,const void *pointer) {
 
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height);
+    float resolution = ((NSNumber *)getPreference(@"resolution")).floatValue / 100.0;
 
-    savedWidth = roundf(width * screenScale);
-    savedHeight = roundf(height * screenScale);
+    savedWidth = roundf(width * screenScale * resolution);
+    savedHeight = roundf(height * screenScale * resolution);
 
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
     scrollView.delegate = self;

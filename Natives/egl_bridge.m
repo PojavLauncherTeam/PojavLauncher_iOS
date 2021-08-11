@@ -110,7 +110,7 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglMakeCurrent(JNIEnv*
     }
 
     debug("EGLBridge: Trigger an initial swapBuffers");
-    [viewController resume];
+    [viewController.view.subviews[0] display];
 
     // Test
 #ifdef GLES_TEST
@@ -147,7 +147,7 @@ JNIEXPORT jlong JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglCreateContext(JNIEnv *
         localContext = [[MGLContext alloc] initWithAPI:kMGLRenderingAPIOpenGLES3 sharegroup:sharegroup];
         debug("EGLBridge: Created CTX pointer=%p, shareCTX=%p, thread=%d", localContext, (void *)contextSrc, (int)tid);
     } else {
-        localContext = viewController.glView.context;
+        localContext = ((MGLKView *)viewController.view.subviews[0]).context;
     }
     [[NSThread currentThread] threadDictionary][@"gl_context"] = localContext;
     debug("EGLBridge: Created CTX pointer=%p, shareCTX=%p, thread=%d", localContext, (void *)contextSrc, (int)tid);

@@ -10,6 +10,7 @@ void loadPreferences() {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if (![fileManager fileExistsAtPath:prefPath]) {
         prefDict = [[NSMutableDictionary alloc] init];
+        prefDict[@"resolution"] = @(100);
         prefDict[@"button_scale"] = @(100);
         prefDict[@"selected_version"] = @"1.7.10";
         prefDict[@"vertype_release"] = @YES;

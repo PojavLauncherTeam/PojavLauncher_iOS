@@ -36,7 +36,6 @@
 int togglableVisibleButtonIndex = -1;
 ControlButton* togglableVisibleButtons[100];
 
-UIView *touchView;
 #ifdef DEBUG_VISIBLE_TEXT_FIELD
 UILabel *inputLengthView;
 #endif
@@ -46,11 +45,14 @@ int inputTextLength;
 BOOL shouldTriggerClick = NO;
 int notchOffset;
 
+float resolutionScale;
+
 // TODO: key modifiers impl
 
 @interface SurfaceViewController ()<UITextFieldDelegate, UIPointerInteractionDelegate, UIGestureRecognizerDelegate> {
 }
 
+@property(nonatomic, strong) MGLKView* surfaceView;
 @property(nonatomic, strong) MGLContext *context;
 @property(nonatomic, strong) NSMutableDictionary* cc_dictionary;
 
@@ -72,16 +74,20 @@ int notchOffset;
 
     UIEdgeInsets insets = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets;
 
+    resolutionScale = ((NSNumber *)getPreference(@"resolution")).floatValue / 100.0;
+
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height);
-    
+
     savedWidth = roundf(width * screenScale);
     savedHeight = roundf(height * screenScale);
 
-    MGLKView *surfaceView = [[MGLKView alloc] initWithFrame:self.view.frame];
-    self.view = surfaceView;
-
-    touchView = [[UIView alloc] initWithFrame:self.view.frame];
+    self.surfaceView = [[MGLKView alloc] initWithFrame:CGRectMake((width - width * resolutionScale) / 2, (height - height * resolutionScale) / 2, width * resolutionScale, height * resolutionScale)];
+    [self.view addSubview:self.surfaceView];
+    self.surfaceView.enableSetNeedsDisplay = NO;
+    self.surfaceView.delegate = self;
+    self.surfaceView.controller = self;
+    self.surfaceView.transform = CGAffineTransformMakeScale(1.0 / resolutionScale, 1.0 / resolutionScale);
 
     notchOffset = insets.left;
     width = width - notchOffset * 2;
@@ -93,13 +99,13 @@ int notchOffset;
     tapGesture.numberOfTapsRequired = 1;
     tapGesture.numberOfTouchesRequired = 1;
     tapGesture.cancelsTouchesInView = NO;
-    [touchView addGestureRecognizer:tapGesture];
+    [self.surfaceView addGestureRecognizer:tapGesture];
 
     UILongPressGestureRecognizer *longpressGesture = [[UILongPressGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnLongpress:)];
     longpressGesture.delegate = self;
     longpressGesture.minimumPressDuration = ((NSNumber *)getPreference(@"time_longPressTrigger")).floatValue / 1000;
-    [touchView addGestureRecognizer:longpressGesture];
+    [self.surfaceView addGestureRecognizer:longpressGesture];
     
     UIPanGestureRecognizer *scrollPanGesture = [[UIPanGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnTouchesScroll:)];
@@ -107,12 +113,10 @@ int notchOffset;
     scrollPanGesture.allowedTouchTypes = @[@(UITouchTypeDirect)];
     scrollPanGesture.minimumNumberOfTouches = 2;
     scrollPanGesture.maximumNumberOfTouches = 2;
-    [touchView addGestureRecognizer:scrollPanGesture];
+    [self.surfaceView addGestureRecognizer:scrollPanGesture];
 
-    [self.view addSubview:touchView];
-    
     if (@available(iOS 13.4, *)) {
-        [touchView addInteraction:[[UIPointerInteraction alloc] initWithDelegate:self]];
+        [self.surfaceView addInteraction:[[UIPointerInteraction alloc] initWithDelegate:self]];
 
         UIPanGestureRecognizer *mouseWheelGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(surfaceOnMouseScroll:)];
         mouseWheelGesture.delegate = self;
@@ -121,7 +125,7 @@ int notchOffset;
         mouseWheelGesture.cancelsTouchesInView = NO;
         mouseWheelGesture.delaysTouchesBegan = NO;
         mouseWheelGesture.delaysTouchesEnded = NO;
-        [touchView addGestureRecognizer:mouseWheelGesture];
+        [self.surfaceView addGestureRecognizer:mouseWheelGesture];
     }
 
 #ifndef DEBUG_VISIBLE_TEXT_FIELD
@@ -197,8 +201,8 @@ int notchOffset;
 
     viewController = self;
 
-    surfaceView.drawableDepthFormat = MGLDrawableDepthFormat24;
-    surfaceView.enableSetNeedsDisplay = YES;
+    self.surfaceView.drawableDepthFormat = MGLDrawableDepthFormat24;
+    self.surfaceView.enableSetNeedsDisplay = YES;
     // [self setPreferredFramesPerSecond:1000];
 
     // Init GLES
@@ -209,10 +213,7 @@ int notchOffset;
         NSLog(@"Failed to create ES context");
     }
 
-    surfaceView.context = self.context;
-#ifndef USE_EGL
-    glContext = self.context;
-#endif
+    self.surfaceView.context = self.context;
 
     [MGLContext setCurrentContext:self.context];
 
@@ -239,9 +240,11 @@ int notchOffset;
 - (void)setupGL
 {
     [MGLContext setCurrentContext:self.context];
-    callback_SurfaceViewController_launchMinecraft(savedWidth, savedHeight);
+    [self.surfaceView display];
+    callback_SurfaceViewController_launchMinecraft(savedWidth * resolutionScale, savedHeight * resolutionScale);
 }
 
+/*
 BOOL isNotifRemoved;
 - (void)mglkView:(MGLKView *)view drawInRect:(CGRect)rect
 {
@@ -265,6 +268,7 @@ BOOL isNotifRemoved;
 
     // Java_org_lwjgl_glfw_CallbackBridge_nativeSendCursorPos(NULL, NULL, location.x * screenScale, location.y * screenScale);
 }
+*/
 
 #pragma mark - Input: send touch utilities
 
@@ -286,8 +290,8 @@ BOOL isNotifRemoved;
         }
     }
 
-    if ([touchEvent view] == touchView) {
-        CGPoint locationInView = [touchEvent locationInView:touchView];
+    if (touchEvent.view == self.surfaceView) {
+        CGPoint locationInView = [touchEvent locationInView:self.surfaceView];
         [self sendTouchPoint:locationInView withEvent:event];
     }
 
@@ -346,7 +350,7 @@ BOOL isNotifRemoved;
 
 - (void)surfaceOnHover:(UIHoverGestureRecognizer *)sender API_AVAILABLE(ios(13.0)) {
     if (@available(iOS 13.0, *)) {
-        CGPoint point = [sender locationInView:touchView];
+        CGPoint point = [sender locationInView:self.surfaceView];
         // NSLog(@"Mouse move!!");
         // NSLog(@"Mouse pos = %d, %d", point.x, point.y);
         switch (sender.state) {
@@ -438,7 +442,7 @@ BOOL isNotifRemoved;
 
 - (UIPointerRegion *)pointerInteraction:(UIPointerInteraction *)interaction regionForRequest:(UIPointerRegionRequest *)request defaultRegion:(UIPointerRegion *)defaultRegion API_AVAILABLE(ios(13.4)) API_AVAILABLE(ios(13.4)) API_AVAILABLE(ios(13.4)){
     if (request != nil) {
-        CGPoint origin = touchView.bounds.origin;
+        CGPoint origin = self.surfaceView.bounds.origin;
         CGPoint point = request.location;
 
         point.x -= origin.x;
@@ -449,7 +453,7 @@ BOOL isNotifRemoved;
         // TODO FIXME
         callback_SurfaceViewController_onTouch(ACTION_DOWN, (int)point.x, (int)point.y);
     }
-    return [UIPointerRegion regionWithRect:touchView.bounds identifier:nil];
+    return [UIPointerRegion regionWithRect:self.surfaceView.bounds identifier:nil];
 }
 
 - (UIPointerStyle *)pointerInteraction:(UIPointerInteraction *)interaction styleForRegion:(UIPointerRegion *)region  API_AVAILABLE(ios(13.4)){

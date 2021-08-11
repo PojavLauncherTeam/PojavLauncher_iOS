@@ -123,6 +123,10 @@ void init_migrateToPlist(char* prefKey, char* filename) {
 
 void init_checkPlist() {
 
+    if (!getPreference(@"resolution")) {
+        setPreference(@"resolution", @(100));
+    }
+
     if (!getPreference(@"button_scale")) {
         setPreference(@"button_scale", @(100));
     }
