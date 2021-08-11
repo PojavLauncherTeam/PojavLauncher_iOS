@@ -63,6 +63,34 @@ const char *renderer;
 NSString *javaHome_pre;
 NSString *renderer_pre;
 
+NSString *javaHome_pre;
+NSString *gl4esLibname_pre;
+
+void init_loadCustomEnv() {
+    FILE *envFile = fopen(env_path, "r");
+
+    debug("[Pre-init] Reading custom environment variables (custom_env.txt), opened=%d\n", envFile != NULL);
+
+    if (envFile) {
+        char *line = NULL;
+        size_t len = 0;
+        ssize_t read;
+        while ((read = getline(&line, &len, envFile)) != -1) {
+            if (line[0] == '#' || line[0] == '\n') continue;
+            if (line[read-1] == '\n') {
+                line[read-1] = '\0';
+            }
+            if (strchr(line, '=') != NULL) {
+                debug("[Pre-init] Added custom env: %s", line);
+                setenv(strtok(line, "="), strtok(NULL, "="), 1);
+            } else {
+                debug("[Pre-init] Warning: skipped empty value custom env: %s", line);
+            }
+        }
+        fclose(envFile);
+    }
+}
+
 void init_loadCustomJvmFlags() {
     NSString *jvmargs = getPreference(@"java_args");
     BOOL isFirstArg = YES;
@@ -168,6 +196,8 @@ int launchJVM(int argc, char *argv[]) {
     }
 
     init_checkPlist();
+
+    init_loadCustomEnv();
 
     loadPreferences();
     init_migrateToPlist("selected_version", "config_ver.txt");
