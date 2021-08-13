@@ -65,6 +65,7 @@ float resolutionScale;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    viewController = self;
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
     [self setNeedsUpdateOfHomeIndicatorAutoHidden];
@@ -85,9 +86,14 @@ float resolutionScale;
     self.surfaceView = [[MGLKView alloc] initWithFrame:CGRectMake((width - width * resolutionScale) / 2, (height - height * resolutionScale) / 2, width * resolutionScale, height * resolutionScale)];
     [self.view addSubview:self.surfaceView];
     self.surfaceView.enableSetNeedsDisplay = NO;
-    self.surfaceView.delegate = self;
-    self.surfaceView.controller = self;
     self.surfaceView.transform = CGAffineTransformMakeScale(1.0 / resolutionScale, 1.0 / resolutionScale);
+
+    // Enable support for desktop GLSL
+    if ([getPreference(@"disable_gl4es_shaderconv") boolValue]) {
+        setenv("LIBGL_NOSHADERCONV", "1", 1);
+        eglBindAPI(EGL_OPENGL_API);
+        NSLog(@"eglBindAPI(EGL_OPENGL_API) error=%x", eglGetError());
+    }
 
     notchOffset = insets.left;
     width = width - notchOffset * 2;
@@ -198,8 +204,6 @@ float resolutionScale;
     [self.view addSubview:inputView];
 
     [self executebtn_special_togglebtn:0];
-
-    viewController = self;
 
     self.surfaceView.drawableDepthFormat = MGLDrawableDepthFormat24;
     self.surfaceView.enableSetNeedsDisplay = YES;

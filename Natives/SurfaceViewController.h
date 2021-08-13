@@ -1,9 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "MGLKit.h"
 
-MGLKView *glView;
-
-@interface SurfaceViewController : MGLKViewController
+@interface SurfaceViewController : UIViewController
 // MGLKViewController
 // UIViewController
 

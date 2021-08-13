@@ -10,24 +10,28 @@ void loadPreferences() {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if (![fileManager fileExistsAtPath:prefPath]) {
         prefDict = [[NSMutableDictionary alloc] init];
-        prefDict[@"resolution"] = @(100);
-        prefDict[@"button_scale"] = @(100);
-        prefDict[@"selected_version"] = @"1.7.10";
-        prefDict[@"vertype_release"] = @YES;
-        prefDict[@"vertype_snapshot"] = @NO;
-        prefDict[@"vertype_oldalpha"] = @NO;
-        prefDict[@"vertype_oldbeta"] = @NO;
-        prefDict[@"time_longPressTrigger"] = @(400);
-        prefDict[@"default_ctrl"] = @"default.json";
-        prefDict[@"java_args"] = @"";
-        prefDict[@"java_home"] = @"";
-        prefDict[@"renderer"] = @"";
-        prefDict[@"option_warn"] = @YES;
-        prefDict[@"local_warn"] = @YES;
-        [prefDict writeToFile:prefPath atomically:YES];
     } else {
         prefDict = [NSMutableDictionary dictionaryWithContentsOfFile:prefPath];
     }
+
+    // set default value
+    setDefaultValueForPref(@"resolution", @(100));
+    setDefaultValueForPref(@"button_scale", @(100));
+    setDefaultValueForPref(@"selected_version", @"1.7.10");
+    setDefaultValueForPref(@"vertype_release", @YES);
+    setDefaultValueForPref(@"vertype_snapshot", @NO);
+    setDefaultValueForPref(@"vertype_oldalpha", @NO);
+    setDefaultValueForPref(@"vertype_oldbeta", @NO);
+    setDefaultValueForPref(@"time_longPressTrigger", @(400));
+    setDefaultValueForPref(@"default_ctrl", @"default.json");
+    setDefaultValueForPref(@"java_args", @"");
+    setDefaultValueForPref(@"java_home", @"");
+    setDefaultValueForPref(@"renderer", @"libgl4es_114.dylib");
+    setDefaultValueForPref(@"option_warn", @YES);
+    setDefaultValueForPref(@"local_warn", @YES);
+    setDefaultValueForPref(@"disable_gl4es_shaderconv", @NO);
+
+    [prefDict writeToFile:prefPath atomically:YES];
 }
 
 id getPreference(NSString* key) {
@@ -36,6 +40,13 @@ id getPreference(NSString* key) {
         NSLog(@"LauncherPreferences: %@ is NULL", key);
     }
     return object;
+}
+
+void setDefaultValueForPref(NSString* key, id value) {
+    if (!prefDict[key]) {
+        prefDict[key] = value;
+        NSLog(@"[Pre-init] Set default value for key %@", value);
+    }
 }
 
 void setPreference(NSString* key, id value) {

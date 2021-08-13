@@ -115,6 +115,8 @@ void sendData(int type, int i1, int i2, int i3, int i4) {
 }
 
 void closeGLFWWindow() {
+    NSLog(@"Closing GLFW window");
+
     /*
     jclass glfwClazz = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "org/lwjgl/glfw/GLFW");
     assert(glfwClazz != NULL);
@@ -160,14 +162,17 @@ void callback_SurfaceViewController_launchMinecraft(int width, int height) {
         uikitBridgeClass = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "net/kdt/pojavlaunch/uikit/UIKit");
         assert(uikitBridgeClass != NULL);
     }
-    
-    jmethodID method = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, uikitBridgeClass, "callback_SurfaceViewController_launchMinecraft", "(II)V");
+
+    jstring rendererLibStr = (*runtimeJNIEnvPtr_JRE)->NewStringUTF(runtimeJNIEnvPtr_JRE, getenv("RENDERER"));
+
+    jmethodID method = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, uikitBridgeClass, "callback_SurfaceViewController_launchMinecraft", "(IILjava/lang/String;)V");
     assert(method != NULL);
     
     (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
         runtimeJNIEnvPtr_JRE,
         uikitBridgeClass, method,
-        width, height
+        width, height,
+        rendererLibStr
     );
 }
 

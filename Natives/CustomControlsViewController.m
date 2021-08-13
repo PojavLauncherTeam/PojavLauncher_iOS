@@ -34,6 +34,7 @@ int width;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    viewController = self;
 
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];

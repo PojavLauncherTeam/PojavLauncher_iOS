@@ -67,6 +67,7 @@ void _CGDataProviderReleaseBytePointerCallback(void *info,const void *pointer) {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    viewController = self;
     
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];

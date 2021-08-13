@@ -21,6 +21,7 @@ public class JMinecraftVersionList {
 		public Map<String, MinecraftClientInfo> downloads;
         public String id;
 		public String inheritsFrom;
+		public JavaVersionInfo javaVersion;
 		public DependentLibrary[] libraries;
 		public String mainClass;
 		public String minecraftArguments;
@@ -31,7 +32,10 @@ public class JMinecraftVersionList {
         public String type;
 		public String url;
     }
-
+	public static class JavaVersionInfo {
+        public String component;
+        public int majorVersion;
+    }
 	// Since 1.13
 	public static class Arguments {
 		public Object[] game;

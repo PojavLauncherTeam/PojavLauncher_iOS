@@ -48,11 +48,9 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_showError(JNIEnv* en
     NSString *message_o = @(message_c);
     (*env)->ReleaseStringUTFChars(env, title, title_c);
     (*env)->ReleaseStringUTFChars(env, message, message_c);
- 
+
 dispatch_async(dispatch_get_main_queue(), ^{
 
-    UIViewController *viewController = UIApplication.sharedApplication.windows.lastObject.rootViewController;
-    
     UIAlertController* alert = [UIAlertController
         alertControllerWithTitle:title_o message:message_o
         preferredStyle:UIAlertControllerStyleAlert];

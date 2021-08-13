@@ -9,6 +9,7 @@
 #define JARGS 2
 #define REND 3
 #define JHOME 4
+#define NOSHADERCONV 5
 
 @interface LauncherPreferencesViewController () <UIPopoverPresentationControllerDelegate> {
 }
@@ -22,6 +23,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    viewController = self;
     
     [self setTitle:@"Preferences"];
 
@@ -60,7 +62,7 @@
     buttonSizeSlider.minimumValue = 50.0;
     buttonSizeSlider.maximumValue = 500.0;
     buttonSizeSlider.continuous = YES;
-    buttonSizeSlider.value = ((NSNumber *) getPreference(@"button_scale")).floatValue;
+    buttonSizeSlider.value = [getPreference(@"button_scale") floatValue];
     [scrollView addSubview:buttonSizeSlider];
 
     UILabel *resolutionTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, currY+=40.0, 0.0, 30.0)];
@@ -80,7 +82,7 @@
     resolutionSlider.minimumValue = 25;
     resolutionSlider.maximumValue = 150;
     resolutionSlider.continuous = YES;
-    resolutionSlider.value = ((NSNumber *) getPreference(@"resolution")).intValue;
+    resolutionSlider.value = [getPreference(@"resolution") intValue];
     [scrollView addSubview:resolutionSlider];
 
     UILabel *jargsTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, currY+=45.0, 0.0, 0.0)];
@@ -139,6 +141,18 @@
         setPreference(@"option_warn", @NO);
     }
 
+    UILabel *noshaderconvTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, currY+=40.0, 0.0, 0.0)];
+    noshaderconvTextView.text = @"Disable gl4es 1.1.5 shaderconv";
+    noshaderconvTextView.numberOfLines = 0;
+    [noshaderconvTextView sizeToFit];
+    [scrollView addSubview:noshaderconvTextView];
+
+    UISwitch *noshaderconvSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 58.0, currY, 50.0, 30)];
+    noshaderconvSwitch.tag = 103;
+    [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:NO];
+    [noshaderconvSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    [scrollView addSubview:noshaderconvSwitch];
+
     if (@available(iOS 14.0, *)) {
         // use UIMenu
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage systemImageNamed:@"questionmark.circle.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStyleDone target:self action:@selector(helpMenu)];
@@ -152,8 +166,10 @@
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:REND];}];
         UIAction *option5 = [UIAction actionWithTitle:@"Java home" image:[[UIImage systemImageNamed:@"folder.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:JHOME];}];
+        UIAction *option6 = [UIAction actionWithTitle:@"Disable shaderconv" image:nil identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:NOSHADERCONV];}];
         UIMenu *menu = [UIMenu menuWithTitle:@"" image:nil identifier:nil
-                        options:UIMenuOptionsDisplayInline children:@[option1, option2, option3, option4, option5]];
+                        options:UIMenuOptionsDisplayInline children:@[option1, option2, option3, option4, option5, option6]];
         self.navigationItem.rightBarButtonItem.action = nil;
         self.navigationItem.rightBarButtonItem.primaryAction = nil;
         self.navigationItem.rightBarButtonItem.menu = menu;
@@ -169,6 +185,7 @@
         setPreference(@"java_args", textField.text);
     } else if (textField.tag == 101) {
         setPreference(@"renderer", textField.text);
+        setenv("RENDERER", textField.text.UTF8String, 1);
     } else if (textField.tag == 102) {
         setPreference(@"java_home", textField.text);
         if (![textField.text containsString:@"java-8-openjdk"]) {
@@ -190,6 +207,7 @@
         UIAlertAction *jargs = [UIAlertAction actionWithTitle:@"Java arguments" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:JARGS];}];
         UIAlertAction *renderer = [UIAlertAction actionWithTitle:@"Renderer"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:REND];}];
         UIAlertAction *jhome = [UIAlertAction actionWithTitle:@"Java home" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:JHOME];}];
+        UIAlertAction *noshaderconv = [UIAlertAction actionWithTitle:@"Disable shaderconv" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:NOSHADERCONV];}];
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
         [self setPopoverProperties:helpAlert.popoverPresentationController sender:(UIButton *)self.navigationItem.rightBarButtonItem];
         [self presentViewController:helpAlert animated:YES completion:nil];
@@ -198,6 +216,7 @@
         [helpAlert addAction:jargs];
         [helpAlert addAction:renderer];
         [helpAlert addAction:jhome];
+        [helpAlert addAction:noshaderconv];
         [helpAlert addAction:cancel];
     }
 }
@@ -216,10 +235,13 @@
         message = @"This option allows you to edit arguments that can be passed to Minecraft. Not all arguments work with PojavLauncher, so be aware. This option also requires a restart of the launcher to take effect.";
     } else if(setting == REND) {
         title = @"Renderer";
-        message = @"This option allows you to change the renderer in use. Typing 'libgl4es_115.dylib' may fix sheep and banner colors on 1.16 and allow 1.17 to be played, but will also not work with older versions. This option also requires a restart of the launcher to take effect.";
+        message = @"This option allows you to change the renderer in use. Typing 'libgl4es_115.dylib' may fix sheep and banner colors on 1.16 and allow 1.17 to be played, but will also not work with older versions.";
     } else if(setting == JHOME) {
         title = @"Java home";
         message = @"This option allows you to change the Java executable directory. Typing '/usr/lib/jvm/java-16-openjdk' may allow you to play 1.17, however older versions and most versions of modded Minecraft, as well as the mod installer, will not work. This option also requires a restart of the launcher to take effect.";
+    } else if(setting == NOSHADERCONV) {
+        title = @"Disable shaderconv";
+        message = @"This option allows you to disable the shader converter inside gl4es 1.1.5 in order to let ANGLE processes them directly. This option is experimental and should only be enabled when playing Minecraft 1.17 or above.";
     }
     UIAlertController *helpAlertOpt = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
@@ -238,6 +260,17 @@
             break;
         default:
             NSLog(@"what does slider %ld for? implement me!", sender.tag);
+            break;
+    }
+}
+
+- (void)switchChanged:(UISwitch *)sender {
+    switch (sender.tag) {
+        case 103:
+            setPreference(@"disable_gl4es_shaderconv", @(sender.isOn));
+            break;
+        default:
+            NSLog(@"what does switch %ld for? implement me!", sender.tag);
             break;
     }
 }

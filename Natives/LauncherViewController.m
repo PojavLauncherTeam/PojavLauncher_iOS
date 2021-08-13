@@ -23,6 +23,7 @@ int versionSelectedAt = 0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    viewController = self;
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
     [self setNeedsUpdateOfHomeIndicatorAutoHidden];

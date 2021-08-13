@@ -89,12 +89,14 @@ public class UIKit {
         PLaunchApp.installMinecraft(versionPath);
     }
 
-    public static void callback_SurfaceViewController_launchMinecraft(int width, int height) {
+    public static void callback_SurfaceViewController_launchMinecraft(int width, int height, String rendererLibName) {
         MCOptionUtils.load();
         MCOptionUtils.set("overrideWidth", Integer.toString(width));
         MCOptionUtils.set("overrideHeight", Integer.toString(height));
         MCOptionUtils.save();
+
         System.setProperty("cacio.managed.screensize", width + "x" + height);
+        System.setProperty("org.lwjgl.opengl.libname", rendererLibName);
 
         GLFW.internalChangeMonitorSize(width, height);
         CallbackBridge.mouseX = width / 2;

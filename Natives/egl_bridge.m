@@ -121,7 +121,7 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglMakeCurrent(JNIEnv*
 #endif
     if (success == EGL_TRUE && GL4ES_HANDLE == NULL) {
         GL4ES_HANDLE = dlopen(getenv("RENDERER"), RTLD_GLOBAL);
-        debug("libGL=%p", GL4ES_HANDLE);
+        debug("%s=%p, error=%s", getenv("RENDERER"), GL4ES_HANDLE, dlerror());
 
         gl4esInitialize_func *gl4esInitialize = (gl4esInitialize_func*) dlsym(GL4ES_HANDLE, "initialize_gl4es");
         // debug("initialize_gl4es = %p", gl4esInitialize);
@@ -162,20 +162,12 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglTerminate(JNIEnv* e
 
 bool stopMakeCurrent;
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglSwapBuffers(JNIEnv *env, jclass clazz) {
-    if (stopMakeCurrent) {
-        return JNI_FALSE;
-    }
-
     jboolean result = (jboolean) eglSwapBuffers(potatoBridge.eglDisplay, eglGetCurrentSurface(EGL_DRAW));
 
     if (!result) {
         mach_port_t tid = pthread_mach_thread_np(pthread_self());
         EGLint error = eglGetError();
         debug("eglSwapBuffers error=%x, thread=%d isMainThread=%d", error, (int)tid, mainThreadID == tid);
-        if (error == EGL_BAD_SURFACE) {
-            stopMakeCurrent = true;
-            closeGLFWWindow();
-        }
     }
 
     return result;

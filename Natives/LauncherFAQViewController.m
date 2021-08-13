@@ -12,6 +12,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    viewController = self;
     
     [self setTitle:@"Launcher FAQ"];
 

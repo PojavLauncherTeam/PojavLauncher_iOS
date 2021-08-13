@@ -27,6 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    viewController = self;
     
     [self setTitle:@"About PojavLauncher"];
 

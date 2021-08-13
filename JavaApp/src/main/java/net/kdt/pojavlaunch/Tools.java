@@ -79,6 +79,18 @@ public final class Tools
     public static final String LIBNAME_OPTIFINE = "optifine:OptiFine";
 
     public static void launchMinecraft(MinecraftAccount profile, final JMinecraftVersionList.Version versionInfo) throws Throwable {
+        String javaVersion = System.getProperty("java.version");
+        if (javaVersion.startsWith("1.")) {
+            javaVersion = javaVersion.substring(2);
+        }
+        int dotIndex = javaVersion.indexOf('.');
+        if (dotIndex != -1) {
+            javaVersion = javaVersion.substring(0, dotIndex);
+        }
+        if (versionInfo.javaVersion != null && versionInfo.javaVersion.majorVersion > Integer.parseInt(javaVersion)) {
+            throw new UnsupportedOperationException("Minecraft " + versionInfo.id + " requires Java " + versionInfo.javaVersion.majorVersion + " in order to run. Please switch to Java " + versionInfo.javaVersion.majorVersion + " in launcher settings.");
+        }
+
         String[] launchArgs = getMinecraftArgs(profile, versionInfo);
 
         // ctx.appendlnToLog("Minecraft Args: " + Arrays.toString(launchArgs));

@@ -2,10 +2,9 @@
 
 #ifndef USE_EGL
 
-#import "MGLKit.h"
+#import "SurfaceViewController.h"
 #include "jni.h"
 
 MGLContext *glContext;
-MGLKViewController *viewController;
 
 #endif

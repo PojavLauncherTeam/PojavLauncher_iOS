@@ -121,65 +121,6 @@ void init_migrateToPlist(char* prefKey, char* filename) {
     }
 }
 
-void init_checkPlist() {
-
-    if (!getPreference(@"resolution")) {
-        setPreference(@"resolution", @(100));
-    }
-
-    if (!getPreference(@"button_scale")) {
-        setPreference(@"button_scale", @(100));
-    }
-
-    if (!getPreference(@"selected_version")) {
-        setPreference(@"selected_version", @"1.7.10");
-    }
-
-    if (!getPreference(@"vertype_release")) {
-        setPreference(@"vertype_release", @YES);
-    }
-
-    if (!getPreference(@"vertype_snapshot")) {
-        setPreference(@"vertype_snapshot", @NO);
-    }
-
-    if (!getPreference(@"vertype_oldalpha")) {
-        setPreference(@"vertype_oldalpha", @NO);
-    }
-
-    if (!getPreference(@"vertype_oldbeta")) {
-        setPreference(@"vertype_oldbeta", @NO);
-    }
-
-    if (!getPreference(@"time_longPressTrigger")) {
-        setPreference(@"time_longPressTrigger", @(400));
-    }
-
-    if (!getPreference(@"default_ctrl")) {
-        setPreference(@"default_ctrl", @"default.json");
-    }
-
-    if (!getPreference(@"java_args")) {
-        setPreference(@"java_args", @"");
-    }
-
-    if (!getPreference(@"java_home")) {
-        setPreference(@"java_home", @"");
-    }
-
-    if (!getPreference(@"renderer")) {
-        setPreference(@"renderer", @"");
-    }
-
-    if (!getPreference(@"option_warn")) {
-        setPreference(@"option_warn", @YES);
-    }
-
-    if (!getPreference(@"local_warn")) {
-        setPreference(@"local_warn", @YES);
-    }
-}
-
 int launchJVM(int argc, char *argv[]) {
     char *homeDir;
     if (!started) {
@@ -198,8 +139,6 @@ int launchJVM(int argc, char *argv[]) {
     } else {
         homeDir = getenv("POJAV_HOME");
     }
-
-    init_checkPlist();
 
     init_loadCustomEnv();
 
@@ -340,21 +279,19 @@ int launchJVM(int argc, char *argv[]) {
         snprintf(javaPath, 2048, "%s/bin/java", javaHome);
         snprintf(userDir, 2048, "-Duser.dir=%s/Documents/minecraft", getenv("HOME"));
         snprintf(userHome, 2048, "-Duser.home=%s/Documents", getenv("HOME"));
-        snprintf(rendererPath, 2048, "-Dorg.lwjgl.opengl.libname=%s", renderer);
-        
+
         chdir(userDir);
-        
+
         margv[margc++] = javaPath;
         margv[margc++] = "-XstartOnFirstThread";
         margv[margc++] = "-Djava.system.class.loader=net.kdt.pojavlaunch.PojavClassLoader";
         margv[margc++] = frameworkPath;
         margv[margc++] = userDir;
         margv[margc++] = userHome;
-        margv[margc++] = rendererPath;
         margv[margc++] = "-Dorg.lwjgl.system.allocator=system";
     } else {
         setenv("RENDERER", renderer, 1);
-        debug("[Pre-init] GL4ES_LIBNAME has been set to %s", getenv("RENDERER"));
+        debug("[Pre-init] RENDERER has been set to %s", getenv("RENDERER"));
     }
 
     // Load java

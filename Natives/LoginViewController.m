@@ -61,6 +61,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    viewController = self;
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(msaLoginCallback:) name:@"MSALoginCallback" object:nil];
 

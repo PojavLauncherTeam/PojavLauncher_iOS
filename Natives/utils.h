@@ -32,6 +32,8 @@
 #define SPECIALBTN_SCROLLUP -7
 #define SPECIALBTN_SCROLLDOWN -8
 
+UIViewController *viewController;
+
 MGLSharegroup* sharegroup;
 
 void* GL4ES_HANDLE;
