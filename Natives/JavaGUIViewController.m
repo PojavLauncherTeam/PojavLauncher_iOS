@@ -123,10 +123,11 @@ void _CGDataProviderReleaseBytePointerCallback(void *info,const void *pointer) {
     }
 
     if (sender.state == UIGestureRecognizerStateRecognized) {
+        float resolution = ((NSNumber *)getPreference(@"resolution")).floatValue / 100.0;
         CGFloat screenScale = [[UIScreen mainScreen] scale];
         CGPoint location = [sender locationInView:sender.view];
-        CGFloat x = location.x * screenScale;
-        CGFloat y = location.y * screenScale;
+        CGFloat x = location.x * screenScale * resolution;
+        CGFloat y = location.y * screenScale * resolution;
         (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
             runtimeJNIEnvPtr_JRE,
             class_CTCAndroidInput,
