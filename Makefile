@@ -150,7 +150,8 @@ package:
 		cp JavaApp/local_out/launcher.jar Natives/build/PojavLauncher.app/libs/launcher.jar || exit 1; \
 		cp -R JavaApp/libs/* Natives/build/PojavLauncher.app/libs/ || exit 1; \
 		cp -R JavaApp/libs_caciocavallo/* Natives/build/PojavLauncher.app/libs_caciocavallo/ || exit 1; \
-		mkdir -p packages/pojavlauncher_iphoneos-arm/{Applications,var/mobile/Documents/minecraft,var/mobile/Documents/.pojavlauncher}; \
+		mkdir -p packages/pojavlauncher_iphoneos-arm/{Applications,var/mobile/Documents/{minecraft,.pojavlauncher,Library/{Application\ Support,Caches}}} || exit 1; \
+		( cd packages/pojavlauncher_iphoneos-arm/var/mobile/Documents && ln -sf ../../minecraft "Library/Application Support/minecraft" ) || exit 1; \
 		sudo chown 501:501 packages/pojavlauncher_iphoneos-arm/var/mobile/Documents/* || exit 1; \
 		cp -R Natives/build/PojavLauncher.app packages/pojavlauncher_iphoneos-arm/Applications; \
 		cp -R DEBIAN packages/pojavlauncher_iphoneos-arm/DEBIAN; \
@@ -168,7 +169,8 @@ package:
 		cp -R JavaApp/libs Natives/build/PojavLauncher.app/libs || exit 1; \
 		cp -R JavaApp/libs_caciocavallo Natives/build/PojavLauncher.app/libs_caciocavallo || exit 1; \
 		cp JavaApp/local_out/launcher.jar Natives/build/PojavLauncher.app/libs/ || exit 1; \
-		mkdir -p packages/pojavlauncher_iphoneos-arm/{Applications,var/mobile/Documents/minecraft,var/mobile/Documents/.pojavlauncher}; \
+		mkdir -p packages/pojavlauncher_iphoneos-arm/{Applications,var/mobile/Documents/{minecraft,.pojavlauncher,Library/{Application\ Support,Caches}}} || exit 1; \
+		( cd packages/pojavlauncher_iphoneos-arm/var/mobile/Documents && ln -sf ../../minecraft "Library/Application Support/minecraft" ) || exit 1; \
 		sudo chown 501:501 packages/pojavlauncher_iphoneos-arm/var/mobile/Documents/* || exit 1; \
 		cp -R Natives/build/PojavLauncher.app packages/pojavlauncher_iphoneos-arm/Applications; \
 		cp -R DEBIAN packages/pojavlauncher_iphoneos-arm/DEBIAN; \

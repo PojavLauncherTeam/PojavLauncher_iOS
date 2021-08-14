@@ -265,7 +265,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
         NSError * _Nullable error) {
             if (callbackURL != nil) {
                 NSString *urlString = [callbackURL absoluteString];
-                NSLog(@"URL returned = %@", [callbackURL absoluteString]);
+                // NSLog(@"URL returned = %@", [callbackURL absoluteString]);
 
                 if ([urlString containsString:@"/auth/?code="] == YES) {
                     NSArray *components = [urlString componentsSeparatedByString:@"/auth/?code="];

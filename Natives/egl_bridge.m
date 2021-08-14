@@ -125,10 +125,11 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglMakeCurrent(JNIEnv*
 
         gl4esInitialize_func *gl4esInitialize = (gl4esInitialize_func*) dlsym(GL4ES_HANDLE, "initialize_gl4es");
         // debug("initialize_gl4es = %p", gl4esInitialize);
-    
-        // gl4esSwapBuffers = (gl4esSwapBuffers_func*) dlsym(GL4ES_HANDLE, "gl4es_SwapBuffers_currentContext");
-    
-        gl4esInitialize();
+        if (gl4esInitialize) {
+            gl4esInitialize();
+        } else {
+            debug("%s", dlerror());
+        }
         debug("Renderer init success");
     }
 
