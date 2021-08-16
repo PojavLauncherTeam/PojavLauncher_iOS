@@ -222,8 +222,8 @@ void generateAndSaveDefaultControl() {
     // Additional button for old versions that don't enter fullscreen automatically
     [dict[@"mControlDataList"] addObject:createButton(@"Fullscreen",
         (int[]){GLFW_KEY_F11,0,0,0},
-        @"${right} - ${margin}",
-        @"${bottom} - ${margin} * 2 - ${height}",
+        @"${right} - ${margin} * 2 - ${width}",
+        @"${bottom} - ${margin}",
         BTN_RECT
     )];
     NSOutputStream *os = [[NSOutputStream alloc] initToFileAtPath:
