@@ -3,6 +3,7 @@ project(PojavLauncher)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcommon -fobjc-arc -ObjC -I'${CMAKE_CURRENT_LIST_DIR}/resources/Frameworks/MetalANGLE.framework/Headers' -I'${CMAKE_CURRENT_LIST_DIR}/external/DBNumberedSlider/Classes'"
 )
+set(CMAKE_C_FLAGS_DEBUG "-funwind-tables -g")
 
 # For cacio support library
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -rpath /usr/lib/jvm/java-8-openjdk/lib")
