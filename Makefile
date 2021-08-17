@@ -14,7 +14,7 @@ ifndef RELEASE
 RELEASE := 0
 endif
 ifeq (1,$(RELEASE))
-CMAKE_BUILD_TYPE := RelWithDebInfo
+CMAKE_BUILD_TYPE := Release
 else
 CMAKE_BUILD_TYPE := Debug
 endif

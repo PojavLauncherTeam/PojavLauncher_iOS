@@ -79,7 +79,7 @@ public class Msa {
         if(conn.getResponseCode() >= 200 && conn.getResponseCode() < 300) {
             JSONObject jo = new JSONObject(Tools.read(conn.getInputStream()));
             msRefreshToken = jo.getString("refresh_token");
-            // Log.i("MicroAuth","Acess Token = "+jo.getString("access_token"));
+            // System.out.println("MicroAuth: Acess Token = "+jo.getString("access_token"));
             acquireXBLToken(jo.getString("access_token"));
         }else{
             throwResponseError(conn);

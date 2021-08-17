@@ -75,7 +75,13 @@ public final class GL {
     @Nullable
     private static GLXCapabilities capabilitiesGLX;
 
+	private static final boolean isUsingRegal;
+
     static {
+		isUsingRegal = System.getProperty("org.lwjgl.opengl.libname").contains("libRegal.dylib");
+        // if (isUsingRegal)
+            
+		
         Library.loadSystem(System::load, System::loadLibrary, GL.class, "org.lwjgl.opengl", Platform.mapLibraryNameBundled("lwjgl_opengl"));
 
         MAX_VERSION = apiParseVersion(Configuration.OPENGL_MAXVERSION);
@@ -85,6 +91,8 @@ public final class GL {
         }
     }
     
+    private static native void nativeRegalMakeCurrent();
+
     private GL() {}
 
     /** Ensures that the lwjgl_opengl shared library has been loaded. */
@@ -174,7 +182,7 @@ public final class GL {
                         private final long glXGetProcAddress;
 
                         {
-                            long GetProcAddress = library.getFunctionAddress("glXGetProcAddress");
+                            long GetProcAddress = library.getFunctionAddress(isUsingRegal ? "glGetProcAddressREGAL" : "glXGetProcAddress");
                             if (GetProcAddress == NULL) {
                                 GetProcAddress = library.getFunctionAddress("glXGetProcAddressARB");
                             }
@@ -190,7 +198,7 @@ public final class GL {
                     break;
                 case MACOSX:
                     functionProvider = new SharedLibraryGL(OPENGL) {
-                        private final long gl4es_GetProcAddress = library.getFunctionAddress("gl4es_GetProcAddress");
+                        private final long gl4es_GetProcAddress = library.getFunctionAddress(isUsingRegal ? "glGetProcAddressREGAL" : "gl4es_GetProcAddress");
                         
                         @Override
                         long getExtensionAddress(long name) {
@@ -334,7 +342,8 @@ public final class GL {
     public static GLCapabilities createCapabilities() {
         return createCapabilities(false);
     }
-
+    private static native long getGraphicsBufferAddr();
+    private static native int[] getNativeWidthHeight();
     /**
      * Creates a new {@link GLCapabilities} instance for the OpenGL context that is current in the current thread.
      *
@@ -349,9 +358,6 @@ public final class GL {
      */
     @SuppressWarnings("AssignmentToMethodParameter")
     public static GLCapabilities createCapabilities(boolean forwardCompatible) {
-        // This fixed framebuffer issue on 1.13+ 64-bit by another making current
-        // GLFW.nativeEglMakeCurrent(1);
-        
         // System.setProperty("glfwstub.internal.glthreadid", Long.toString(Thread.currentThread().getId()));
         
         FunctionProvider functionProvider = GL.functionProvider;
@@ -362,6 +368,18 @@ public final class GL {
         GLCapabilities caps = null;
 
         try {
+            if (System.getenv("RENDERER").startsWith("libgl4es") || isUsingRegal) {
+                // This fixed framebuffer issue on 1.13+ 64-bit by another making current
+                GLFW.nativeEglMakeCurrent(GLFW.mainContext);
+                if (isUsingRegal) {
+                    nativeRegalMakeCurrent();
+                    GLFW.nativeEglMakeCurrent(GLFW.mainContext);
+                }
+            } else if (System.getenv("RENDERER").contains("zink")) {
+                int[] dims = getNativeWidthHeight();
+                callJPI(GLFW.glfwGetCurrentContext(),getGraphicsBufferAddr(),GL_UNSIGNED_BYTE,dims[0],dims[1],functionProvider.getFunctionAddress("OSMesaMakeCurrent"));
+            }
+
             // We don't have a current ContextCapabilities when this method is called
             // so we have to use the native bindings directly.
             long GetError    = functionProvider.getFunctionAddress("glGetError");

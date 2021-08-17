@@ -33,8 +33,8 @@ struct PotatoBridge potatoBridge;
 
 typedef void gl4esInitialize_func();
 // typedef void gl4esSwapBuffers_func();
-
 // gl4esSwapBuffers_func *gl4esSwapBuffers;
+typedef jint RegalMakeCurrent_func(EGLContext context);
 
 // Called from JNI_OnLoad of liblwjgl_opengl
 void pojav_openGLOnLoad() {
@@ -159,6 +159,14 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglTerminate(JNIEnv* e
     isInputReady = 0;
     terminateEgl();
     return JNI_TRUE;
+}
+
+JNIEXPORT void JNICALL Java_org_lwjgl_opengl_GL_nativeRegalMakeCurrent(JNIEnv *env, jclass clazz) {
+    debug("Regal: making current");
+    
+    RegalMakeCurrent_func *RegalMakeCurrent = (RegalMakeCurrent_func *) dlsym(RTLD_DEFAULT, "RegalMakeCurrent");
+    assert(RegalMakeCurrent);
+    RegalMakeCurrent(potatoBridge.eglContext);
 }
 
 bool stopMakeCurrent;

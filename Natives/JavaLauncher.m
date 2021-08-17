@@ -143,6 +143,7 @@ int launchJVM(int argc, char *argv[]) {
     init_loadCustomEnv();
 
     loadPreferences();
+
     init_migrateToPlist("selected_version", "config_ver.txt");
     init_migrateToPlist("java_args", "overrideargs.txt");
 
@@ -186,6 +187,14 @@ int launchJVM(int argc, char *argv[]) {
     // Disable overloaded functions hack for Minecraft 1.17+
     setenv("LIBGL_NOINTOVLHACK", "1", 1);
 
+    // Regal environment variables
+    setenv("REGAL_GL_VENDOR", "MetalANGLE", 1);
+    setenv("REGAL_GL_RENDERER", "Regal", 1);
+    setenv("REGAL_GL_VERSION", "4.5", 1);
+    setenv("REGAL_LOG_APP", "1", 1);
+    setenv("REGAL_LOG_DRIVER", "1", 1);
+    setenv("REGAL_LOG_INTERNAL", "1", 1);
+
     javaHome_pre = getPreference(@"java_home");
     javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
     if ([javaHome_pre length] == 0) {
@@ -202,7 +211,7 @@ int launchJVM(int argc, char *argv[]) {
             }
         } else {
             javaHome = calloc(1, 2048);
-            sprintf((char *)javaHome, "%s/jre8", getenv("BUNDLE_PATH"));
+            sprintf((char *)javaHome, "%s/jre", homeDir);
         }
         setenv("JAVA_HOME", javaHome, 1);
         debug("[Pre-init] JAVA_HOME environment variable was not set. Defaulting to %s for future use.\n", javaHome);
@@ -224,6 +233,57 @@ int launchJVM(int argc, char *argv[]) {
         }
     }
 
+    // Symlink frameworks -> dylibs on jailed environment
+    if (!started && strncmp(argv[0], "/Applications", 13)) {
+        char src[2048], dst[2048];
+        mkdir(javaHome, 755);
+
+        // Symlink the skeleton part of JRE
+        sprintf((char *)src, "%s/jre/lib", getenv("BUNDLE_PATH"));
+        sprintf((char *)dst, "%s/lib", javaHome);
+        mkdir(dst, 755);
+        DIR *d;
+        struct dirent *dir;
+        d = opendir(src);
+        assert(d);
+        int i = 0;
+        while ((dir = readdir(d)) != NULL) {
+            // Skip "." and ".."
+            if (i < 2) {
+                i++;
+                continue;
+            } else {
+                sprintf((char *)src, "%s/jre/lib/%s", getenv("BUNDLE_PATH"), dir->d_name);
+                sprintf((char *)dst, "%s/lib/%s", javaHome, dir->d_name);
+                symlink(src, dst);
+            }
+        }
+        closedir(d);
+
+        // Symlink dylibs
+        sprintf((char *)src, "%s/Frameworks", getenv("BUNDLE_PATH"));
+        d = opendir(src);
+        assert(d);
+        i = 0;
+        while ((dir = readdir(d)) != NULL) {
+            // Skip "." and ".."
+            if (i < 2) {
+                i++;
+                continue;
+            } else if (!strncmp(dir->d_name, "lib", 3)) {
+                assert(strlen(dir->d_name) > 12);
+                char *dylibName = strdup(dir->d_name);
+                dylibName[strlen(dylibName) - 11] = '\0';
+                sprintf((char *)src, "%s/Frameworks/%s/%s", getenv("BUNDLE_PATH"), dir->d_name, dylibName);
+                sprintf((char *)dst, "%s/lib/%s", javaHome, dylibName);
+                symlink(src, dst);
+                dylibName[strlen(dylibName) - 11] = '.';
+                free(dylibName);
+            }
+        }
+        closedir(d);
+    }
+
     renderer_pre = getPreference(@"renderer");
     renderer = [renderer_pre cStringUsingEncoding:NSUTF8StringEncoding];
     if ([renderer_pre length] == 0) {
@@ -233,7 +293,7 @@ int launchJVM(int argc, char *argv[]) {
         setenv("RENDERER", renderer, 1);
         debug("[Pre-init] RENDERER environment variable was not set. Defaulting to %s for future use.\n", renderer);
     } else {
-        if(![renderer_pre isEqualToString:@"libgl4es_114.dylib"] && ![renderer_pre isEqualToString:@"libgl4es_115.dylib"]) {
+        if(![renderer_pre isEqualToString:@"libgl4es_114.dylib"] && ![renderer_pre isEqualToString:@"libgl4es_115.dylib"] && ![renderer_pre isEqualToString:@"libRegal.dylib"]) {
             debug("[Pre-Init] Failed to locate %s. Restoring default value for RENDERER.", renderer);
             renderer_pre = @"libgl4es_114.dylib";
             setPreference(@"renderer", renderer_pre);

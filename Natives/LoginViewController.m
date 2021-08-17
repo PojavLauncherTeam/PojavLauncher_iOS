@@ -454,6 +454,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     }
     
     // List accounts
+    // TODO: convert to objc
     DIR *d;
     struct dirent *dir;
     char accPath[2048];
