@@ -104,12 +104,12 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 
 
     if(@available (iOS 14.0, *)) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage systemImageNamed:@"info.circle.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStyleDone target:self action:@selector(aboutLauncher)];
-        UIAction *option1 = [UIAction actionWithTitle:@"About PojavLauncher" image:[[UIImage systemImageNamed:@"eyes"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage systemImageNamed:@"info.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStyleDone target:self action:@selector(aboutLauncher)];
+        UIAction *option1 = [UIAction actionWithTitle:@"About PojavLauncher" image:[[UIImage systemImageNamed:@"eyes.inverse"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self aboutLauncher];}];
-        UIAction *option2 = [UIAction actionWithTitle:@"Send your logs" image:[[UIImage systemImageNamed:@"square.and.arrow.up.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+        UIAction *option2 = [UIAction actionWithTitle:@"Send your logs" image:[[UIImage systemImageNamed:@"square.and.arrow.up"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self latestLogShare];}];
-        UIAction *option3 = [UIAction actionWithTitle:@"Recent updates" image:[[UIImage systemImageNamed:@"arrow.triangle.2.circlepath.circle.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+        UIAction *option3 = [UIAction actionWithTitle:@"Recent updates" image:[[UIImage systemImageNamed:@"arrow.triangle.2.circlepath.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self updateHistory];}];
         UIMenu *menu = [UIMenu menuWithTitle:@"" image:nil identifier:nil
                         options:UIMenuOptionsDisplayInline children:@[option1, option2, option3]];
@@ -128,7 +128,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     [button_faq setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button_faq addTarget:self action:@selector(showFAQ) forControlEvents:UIControlEventTouchUpInside];
     if(@available (iOS 13.0, *)) {
-        button_faq.imageView.image = [[UIImage systemImageNamed:@"doc.text.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        button_faq.imageView.image = [[UIImage systemImageNamed:@"doc.text"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         [button_faq setTintColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]];
         [button_faq setImage:button_faq.imageView.image forState:UIControlStateNormal];
     }
@@ -156,7 +156,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
         button_login.showsMenuAsPrimaryAction = YES;
     }
     if(@available (iOS 13.0, *)) {
-        button_login.imageView.image = [[UIImage systemImageNamed:@"person.crop.circle.fill.badge.plus"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        button_login.imageView.image = [[UIImage systemImageNamed:@"person.crop.circle.badge.plus"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         [button_login setTintColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]];
         [button_login setImage:button_login.imageView.image forState:UIControlStateNormal];
     }
@@ -170,7 +170,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     [button_accounts setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button_accounts addTarget:self action:@selector(loginAccount:) forControlEvents:UIControlEventTouchUpInside];
     if(@available (iOS 13.0, *)) {
-        button_accounts.imageView.image = [[UIImage systemImageNamed:@"person.crop.circle.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        button_accounts.imageView.image = [[UIImage systemImageNamed:@"person.crop.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         [button_accounts setTintColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]];
         [button_accounts setImage:button_accounts.imageView.image forState:UIControlStateNormal];
     }
