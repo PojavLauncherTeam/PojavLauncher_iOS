@@ -166,7 +166,7 @@
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:REND];}];
         UIAction *option5 = [UIAction actionWithTitle:@"Java home" image:[[UIImage systemImageNamed:@"folder.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:JHOME];}];
-        UIAction *option6 = [UIAction actionWithTitle:@"Disable shaderconv" image:nil identifier:nil
+        UIAction *option6 = [UIAction actionWithTitle:@"Disable shaderconv" image:[[UIImage systemImageNamed:@"circle.lefthalf.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:NOSHADERCONV];}];
         UIMenu *menu = [UIMenu menuWithTitle:@"" image:nil identifier:nil
                         options:UIMenuOptionsDisplayInline children:@[option1, option2, option3, option4, option5, option6]];
