@@ -90,8 +90,6 @@ public final class GL {
             create();
         }
     }
-    
-    private static native void nativeRegalMakeCurrent();
 
     private GL() {}
 
@@ -372,8 +370,7 @@ public final class GL {
                 // This fixed framebuffer issue on 1.13+ 64-bit by another making current
                 GLFW.nativeEglMakeCurrent(GLFW.mainContext);
                 if (isUsingRegal) {
-                    nativeRegalMakeCurrent();
-                    GLFW.nativeEglMakeCurrent(GLFW.mainContext);
+                    callPV(callJ(functionProvider.getFunctionAddress("eglGetCurrentContext"), functionProvider.getFunctionAddress("RegalMakeCurrent"));
                 }
             } else if (System.getenv("RENDERER").contains("zink")) {
                 int[] dims = getNativeWidthHeight();
