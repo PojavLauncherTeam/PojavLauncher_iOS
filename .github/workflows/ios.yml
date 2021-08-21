@@ -47,4 +47,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: libpojavexec.dylib.dSYM
-          path: libpojavexec.dylib.dSYM
+          path: Natives/build/libpojavexec.dylib.dSYM
