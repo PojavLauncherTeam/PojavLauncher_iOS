@@ -12,6 +12,7 @@
 
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <sys/utsname.h>
 
 #include "jni.h"
 #include "log.h"
@@ -24,6 +25,16 @@
 // PojavLancher: fixme: are these wrong?
 #define FULL_VERSION "1.8.0-internal"
 #define DOT_VERSION "1.8"
+
+#if CONFIG_RELEASE == 1
+# define CONFIG_TYPE "release"
+#else
+# define CONFIG_TYPE "debug"
+#endif
+
+#ifndef CONFIG_COMMIT
+# define CONFIG_COMMIT unspecified
+#endif
 
 static char java_libs_path[2048];
 static char args_path[2048];
@@ -121,6 +132,48 @@ void init_migrateToPlist(char* prefKey, char* filename) {
     }
 }
 
+void init_logDeviceAndVer (char *argument) {
+    struct utsname systemInfo;
+    uname(&systemInfo);
+    // Hardware + software
+    const char *deviceHardware = systemInfo.machine;
+    const char *deviceSoftware = [[[UIDevice currentDevice] systemVersion] cStringUsingEncoding:NSUTF8StringEncoding];
+
+    // Jailbreak
+    const char *deviceJailbreak;
+    if (strncmp(argument, "/Applications", 13) == 0) {
+        if ([[NSFileManager defaultManager] fileExistsAtPath:@"/taurine"]) {
+            deviceJailbreak = "Taurine";
+        } else if ([[NSFileManager defaultManager] fileExistsAtPath:@"/odyssey"]) {
+            deviceJailbreak = "Odyssey";
+        } else if ([[NSFileManager defaultManager] fileExistsAtPath:@"/chimera"]) {
+            deviceJailbreak = "Chimera";
+        } else {
+            if ([[NSFileManager defaultManager] fileExistsAtPath:@"/private/etc/apt/undecimus"]) {
+                deviceJailbreak = "unc0ver";
+            } else if ([[NSFileManager defaultManager] fileExistsAtPath:@"/var/checkra1n.dmg"]) {
+                if ([[NSFileManager defaultManager] fileExistsAtPath:@"/.installed_odyssey"]) {
+                    deviceJailbreak = "odysseyra1n";
+                } else {
+                    deviceJailbreak = "checkra1n";
+                }
+            }
+        }
+        debug("[Pre-Init] Running on %s with iOS %s, jailbroken with %s", deviceHardware, deviceSoftware, deviceJailbreak);
+    } else {
+        debug("[Pre-Init] Running on %s with iOS %s", deviceHardware, deviceSoftware);
+    }
+
+    // PojavLauncher version
+    debug("[Pre-Init] PojavLauncher version: %s - %s", CONFIG_TYPE, CONFIG_COMMIT);
+
+    setenv("POJAV_DETECTEDHW", deviceHardware, 1);
+    setenv("POJAV_DETECTEDSW", deviceSoftware, 1);
+    if (strncmp(argument, "/Applications", 13) == 0) {
+        setenv("POJAV_DETECTEDJB", deviceJailbreak, 1);
+    }
+}
+
 int launchJVM(int argc, char *argv[]) {
     char *homeDir;
     if (!started) {
@@ -171,6 +224,7 @@ int launchJVM(int argc, char *argv[]) {
         close(log_fd);
     }
 
+    init_logDeviceAndVer(argv[0]);
     debug("[Pre-init] Beginning JVM launch\n");
     
     char javaAwtPath[4096];

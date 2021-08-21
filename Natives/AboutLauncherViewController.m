@@ -51,7 +51,7 @@
 
     struct utsname systemInfo;
     uname(&systemInfo);
-    NSString* deviceModel = [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
+    NSString *deviceModel = [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
     NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
 
     UILabel *logoVerView = [[UILabel alloc] initWithFrame:CGRectMake(4, 0, width - 8, 30)];
