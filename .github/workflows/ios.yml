@@ -33,11 +33,18 @@ jobs:
 
       - name: Build the Debian package
         run: make package
-        
+
+      - name: Generate dSYM for libpojavexec
+        run: dsymutil --arch arm64 Natives/build/libpojavexec.dylib
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
         with:
           name: pojavlauncher_iphoneos-arm.deb
           path: packages/pojavlauncher_iphoneos-arm.deb
 
-
+      - name: Upload libpojavexec.dylib.dSYM
+        uses: actions/upload-artifact@v2
+        with:
+          name: libpojavexec.dylib.dSYM
+          path: libpojavexec.dylib.dSYM
