@@ -25,7 +25,7 @@ void loadPreferences() {
     setDefaultValueForPref(@"time_longPressTrigger", @(400));
     setDefaultValueForPref(@"default_ctrl", @"default.json");
     setDefaultValueForPref(@"java_args", @"");
-    setDefaultValueForPref(@"allocated_memory", [NSNumber numberWithFloat:roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) / 4)]);
+    setDefaultValueForPref(@"allocated_memory", [NSNumber numberWithFloat:roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.30)]);
     setDefaultValueForPref(@"java_home", @"");
     setDefaultValueForPref(@"renderer", @"libgl4es_114.dylib");
     setDefaultValueForPref(@"option_warn", @YES);

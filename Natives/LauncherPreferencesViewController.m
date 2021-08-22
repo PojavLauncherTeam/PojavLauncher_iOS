@@ -25,6 +25,7 @@
 UITextField *rendTextField;
 NSMutableArray* rendererList;
 UIPickerView* rendPickerView;
+UISwitch *noshaderconvSwitch;
 
 - (void)viewDidLoad
 {
@@ -191,7 +192,7 @@ UIPickerView* rendPickerView;
     [noshaderconvTextView sizeToFit];
     [scrollView addSubview:noshaderconvTextView];
 
-    UISwitch *noshaderconvSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 58.0, currY, 50.0, 30)];
+    noshaderconvSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 58.0, currY, 50.0, 30)];
     noshaderconvSwitch.tag = 104;
     [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:NO];
     [noshaderconvSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
@@ -226,8 +227,10 @@ UIPickerView* rendPickerView;
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:JHOME];}];
         UIAction *option7 = [UIAction actionWithTitle:@"Disable shaderconv" image:[[UIImage systemImageNamed:@"circle.lefthalf.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:NOSHADERCONV];}];
+        UIAction *option8 = [UIAction actionWithTitle:@"Reset warnings" image:[[UIImage systemImageNamed:@"exclamationmark.triangle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:RESETWARN];}];
         UIMenu *menu = [UIMenu menuWithTitle:@"" image:nil identifier:nil
-                        options:UIMenuOptionsDisplayInline children:@[option1, option2, option3, option4, option5, option6, option7]];
+                        options:UIMenuOptionsDisplayInline children:@[option1, option2, option3, option4, option5, option6, option7, option8]];
         self.navigationItem.rightBarButtonItem.action = nil;
         self.navigationItem.rightBarButtonItem.primaryAction = nil;
         self.navigationItem.rightBarButtonItem.menu = menu;
@@ -244,6 +247,13 @@ UIPickerView* rendPickerView;
     } else if (textField.tag == 102) {
         setPreference(@"renderer", textField.text);
         setenv("RENDERER", textField.text.UTF8String, 1);
+        if (![textField.text containsString:@"115"] && [getPreference(@"disable_gl4es_shaderconv") boolValue] == YES) {
+            setPreference(@"disable_gl4es_shaderconv", @NO);
+            [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:YES];
+        } else if (![textField.text containsString:@"114"] && [getPreference(@"disable_gl4es_shaderconv") boolValue] == NO){
+            setPreference(@"disable_gl4es_shaderconv", @YES);
+            [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:YES];
+        }
     } else if (textField.tag == 103) {
         setPreference(@"java_home", textField.text);
         if (![textField.text containsString:@"java-8-openjdk"] && [getPreference(@"java_warn") boolValue] == YES) {
@@ -349,7 +359,17 @@ UIPickerView* rendPickerView;
 - (void)switchChanged:(UISwitch *)sender {
     switch (sender.tag) {
         case 104:
-            setPreference(@"disable_gl4es_shaderconv", @(sender.isOn));
+            if (![rendTextField.text containsString:@"115"] && sender.isOn) {
+                setPreference(@"disable_gl4es_shaderconv", @NO);
+                UIAlertController *resetWarn = [UIAlertController alertControllerWithTitle:@"Unavailable with the current renderer." message:@"This switch requires GL4ES 1.1.5 to function." preferredStyle:UIAlertControllerStyleActionSheet];
+                [self setPopoverProperties:resetWarn.popoverPresentationController sender:(UIButton *)sender];
+                UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+                [self presentViewController:resetWarn animated:YES completion:nil];
+                [resetWarn addAction:ok];
+                [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:YES];
+            } else {
+                setPreference(@"disable_gl4es_shaderconv", @(sender.isOn));
+            }
             break;
         case 105:
             setPreference(@"mem_warn", @YES);
