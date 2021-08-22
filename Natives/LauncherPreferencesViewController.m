@@ -11,8 +11,9 @@
 #define REND 4
 #define JHOME 5
 #define NOSHADERCONV 6
+#define RESETWARN 7
 
-@interface LauncherPreferencesViewController () <UIPopoverPresentationControllerDelegate> {
+@interface LauncherPreferencesViewController () <UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDelegate> {
 }
 
 // - (void)method
@@ -20,6 +21,10 @@
 @end
 
 @implementation LauncherPreferencesViewController
+
+UITextField *rendTextField;
+NSMutableArray* rendererList;
+UIPickerView* rendPickerView;
 
 - (void)viewDidLoad
 {
@@ -129,7 +134,7 @@
     [rendTextView sizeToFit];
     [scrollView addSubview:rendTextView];
 
-    UITextField *rendTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 8.0, 30)];
+    rendTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 8.0, 30)];
     [rendTextField addTarget:rendTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     rendTextField.tag = 102;
     rendTextField.delegate = self;
@@ -138,6 +143,23 @@
     rendTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
     rendTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [scrollView addSubview:rendTextField];
+
+    rendererList = [[NSMutableArray alloc] init];
+    NSString *gl4es114 = @"libgl4es_114.dylib";
+    NSString *gl4es115 = @"libgl4es_115.dylib";
+    [rendererList addObject:gl4es114];
+    [rendererList addObject:gl4es115];
+
+    rendPickerView = [[UIPickerView alloc] init];
+    rendPickerView.delegate = self;
+    rendPickerView.dataSource = self;
+    UIToolbar *rendPickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
+    UIBarButtonItem *rendFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    UIBarButtonItem *rendDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(rendClosePicker)];
+    rendPickerToolbar.items = @[rendFlexibleSpace, rendDoneButton];
+
+    rendTextField.inputAccessoryView = rendPickerToolbar;
+    rendTextField.inputView = rendPickerView;
 
     UILabel *jhomeTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, currY+=40.0, 0.0, 0.0)];
     jhomeTextView.text = @"Java home";
@@ -174,6 +196,18 @@
     [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:NO];
     [noshaderconvSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [scrollView addSubview:noshaderconvSwitch];
+
+    UILabel *resetWarnTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, currY+=40.0, 0.0, 0.0)];
+    resetWarnTextView.text = @"Reset launcher warnings";
+    resetWarnTextView.numberOfLines = 0;
+    [resetWarnTextView sizeToFit];
+    [scrollView addSubview:resetWarnTextView];
+
+    UISwitch *resetWarnSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 58.0, currY, 50.0, 30)];
+    resetWarnSwitch.tag = 105;
+    [resetWarnSwitch setOn:NO animated:NO];
+    [resetWarnSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    [scrollView addSubview:resetWarnSwitch];
 
     if (@available(iOS 14.0, *)) {
         // use UIMenu
@@ -212,11 +246,12 @@
         setenv("RENDERER", textField.text.UTF8String, 1);
     } else if (textField.tag == 103) {
         setPreference(@"java_home", textField.text);
-        if (![textField.text containsString:@"java-8-openjdk"]) {
+        if (![textField.text containsString:@"java-8-openjdk"] && [getPreference(@"java_warn") boolValue] == YES) {
             UIAlertController *javaAlert = [UIAlertController alertControllerWithTitle:@"Java version is not Java 8" message:@"Minecraft versions below 1.6, modded below 1.16.4, and the mod installer will not work unless you have Java 8 installed on your device."preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
             [self presentViewController:javaAlert animated:YES completion:nil];
             [javaAlert addAction:ok];
+            setPreference(@"java_warn", @NO);
         }
     }
 }
@@ -233,6 +268,7 @@
         UIAlertAction *renderer = [UIAlertAction actionWithTitle:@"Renderer"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:REND];}];
         UIAlertAction *jhome = [UIAlertAction actionWithTitle:@"Java home" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:JHOME];}];
         UIAlertAction *noshaderconv = [UIAlertAction actionWithTitle:@"Disable shaderconv" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:NOSHADERCONV];}];
+        UIAlertAction *resetwarn = [UIAlertAction actionWithTitle:@"Reset warnings" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:RESETWARN];}];
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
         [self setPopoverProperties:helpAlert.popoverPresentationController sender:(UIButton *)self.navigationItem.rightBarButtonItem];
         [self presentViewController:helpAlert animated:YES completion:nil];
@@ -243,6 +279,7 @@
         [helpAlert addAction:renderer];
         [helpAlert addAction:jhome];
         [helpAlert addAction:noshaderconv];
+        [helpAlert addAction:resetwarn];
         [helpAlert addAction:cancel];
     }
 }
@@ -264,13 +301,16 @@
         message = @"This option allows you to edit arguments that can be passed to Minecraft. Not all arguments work with PojavLauncher, so be aware. This option also requires a restart of the launcher to take effect.";
     } else if(setting == REND) {
         title = @"Renderer";
-        message = @"This option allows you to change the renderer in use. Typing 'libgl4es_115.dylib' may fix sheep and banner colors on 1.16 and allow 1.17 to be played, but will also not work with older versions.";
+        message = @"This option allows you to change the renderer in use. Choosing 'libgl4es_115.dylib' may fix sheep and banner colors on 1.16 and allow 1.17 to be played, but will also not work with older versions.";
     } else if(setting == JHOME) {
         title = @"Java home";
-        message = @"This option allows you to change the Java executable directory. Typing '/usr/lib/jvm/java-16-openjdk' may allow you to play 1.17, however older versions and most versions of modded Minecraft, as well as the mod installer, will not work. This option also requires a restart of the launcher to take effect.";
+        message = @"This option allows you to change the Java executable directory. Choosing '/usr/lib/jvm/java-16-openjdk' may allow you to play 1.17, however older versions and most versions of modded Minecraft, as well as the mod installer, will not work. This option also requires a restart of the launcher to take effect.";
     } else if(setting == NOSHADERCONV) {
         title = @"Disable shaderconv";
         message = @"This option allows you to disable the shader converter inside gl4es 1.1.5 in order to let ANGLE processes them directly. This option is experimental and should only be enabled when playing Minecraft 1.17 or above.";
+    } else if(setting == RESETWARN) {
+        title = @"Reset warnings";
+        message = @"This option re-enables all warnings to be shown again.";
     }
     UIAlertController *helpAlertOpt = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
@@ -311,6 +351,19 @@
         case 104:
             setPreference(@"disable_gl4es_shaderconv", @(sender.isOn));
             break;
+        case 105:
+            setPreference(@"mem_warn", @YES);
+            setPreference(@"option_warn", @YES);
+            setPreference(@"local_warn", @YES);
+            setPreference(@"java_warn", @YES);
+            if(1 == 1) {
+                UIAlertController *resetWarn = [UIAlertController alertControllerWithTitle:@"Warnings reset." message:@"Restart to show warnings again." preferredStyle:UIAlertControllerStyleActionSheet];
+                [self setPopoverProperties:resetWarn.popoverPresentationController sender:(UIButton *)sender];
+                UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+                [self presentViewController:resetWarn animated:YES completion:nil];
+                [resetWarn addAction:ok];
+            }
+            break;
         default:
             NSLog(@"what does switch %ld for? implement me!", sender.tag);
             break;
@@ -337,6 +390,29 @@
 #pragma mark - UIPopoverPresentationControllerDelegate
 - (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller traitCollection:(UITraitCollection *)traitCollection {
     return UIModalPresentationNone;
+}
+
+#pragma mark - UIPickerView (renderer)
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    rendTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
+    setPreference(@"renderer", rendTextField.text);
+}
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)thePickerView {
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    return rendererList.count;
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    NSObject *object = [rendererList objectAtIndex:row];
+    return (NSString*) object;
+}
+
+- (void)rendClosePicker {
+    [rendTextField endEditing:YES];
 }
 
 @end
