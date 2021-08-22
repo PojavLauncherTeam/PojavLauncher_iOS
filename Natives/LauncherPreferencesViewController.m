@@ -85,6 +85,27 @@
     resolutionSlider.value = [getPreference(@"resolution") intValue];
     [scrollView addSubview:resolutionSlider];
 
+    UILabel *memTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, currY+=40.0, 0.0, 30.0)];
+    memTextView.text = @"Allocated RAM";
+    memTextView.numberOfLines = 0;
+    memTextView.textAlignment = NSTextAlignmentCenter;
+    [memTextView sizeToFit];
+    tempRect = memTextView.frame;
+    tempRect.size.height = 30.0;
+    memTextView.frame = tempRect;
+    [scrollView addSubview:memTextView];
+
+    DBNumberedSlider *memSlider = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(8.0 + btnsizeTextView.frame.size.width, currY, self.view.frame.size.width - btnsizeTextView.frame.size.width - 12.0, resolutionTextView.frame.size.height)];
+    memSlider.tag = 100;
+    [memSlider addTarget:self action:@selector(sliderMoved:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
+    [memSlider setBackgroundColor:[UIColor clearColor]];
+    memSlider.minimumValue = roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.25);
+    memSlider.maximumValue = roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.85);
+    memSlider.fontSize = 10;
+    memSlider.continuous = YES;
+    memSlider.value = [getPreference(@"allocated_memory") intValue];
+    [scrollView addSubview:memSlider];
+
     UILabel *jargsTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, currY+=45.0, 0.0, 0.0)];
     jargsTextView.text = @"Java arguments  ";
     jargsTextView.numberOfLines = 0;
@@ -93,7 +114,7 @@
 
     UITextField *jargsTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 8.0, 30)];
     [jargsTextField addTarget:jargsTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
-    jargsTextField.tag = 100;
+    jargsTextField.tag = 101;
     jargsTextField.delegate = self;
     jargsTextField.placeholder = @"Specify arguments...";
     jargsTextField.text = (NSString *) getPreference(@"java_args");
@@ -109,7 +130,7 @@
 
     UITextField *rendTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 8.0, 30)];
     [rendTextField addTarget:rendTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
-    rendTextField.tag = 101;
+    rendTextField.tag = 102;
     rendTextField.delegate = self;
     rendTextField.placeholder = @"Override renderer...";
     rendTextField.text = (NSString *) getPreference(@"renderer");
@@ -125,7 +146,7 @@
 
     UITextField *jhomeTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 8.0, 30)];
     [jhomeTextField addTarget:jhomeTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
-    jhomeTextField.tag = 102;
+    jhomeTextField.tag = 103;
     jhomeTextField.delegate = self;
     jhomeTextField.placeholder = @"Override Java path...";
     jhomeTextField.text = (NSString *) getPreference(@"java_home");
@@ -148,7 +169,7 @@
     [scrollView addSubview:noshaderconvTextView];
 
     UISwitch *noshaderconvSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 58.0, currY, 50.0, 30)];
-    noshaderconvSwitch.tag = 103;
+    noshaderconvSwitch.tag = 104;
     [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:NO];
     [noshaderconvSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [scrollView addSubview:noshaderconvSwitch];
@@ -181,12 +202,12 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    if (textField.tag == 100) {
+    if (textField.tag == 101) {
         setPreference(@"java_args", textField.text);
-    } else if (textField.tag == 101) {
+    } else if (textField.tag == 102) {
         setPreference(@"renderer", textField.text);
         setenv("RENDERER", textField.text.UTF8String, 1);
-    } else if (textField.tag == 102) {
+    } else if (textField.tag == 103) {
         setPreference(@"java_home", textField.text);
         if (![textField.text containsString:@"java-8-openjdk"]) {
             UIAlertController *javaAlert = [UIAlertController alertControllerWithTitle:@"Java version is not Java 8" message:@"Minecraft versions below 1.6, modded below 1.16.4, and the mod installer will not work unless you have Java 8 installed on your device."preferredStyle:UIAlertControllerStyleAlert];
@@ -251,12 +272,25 @@
 }
 
 - (void)sliderMoved:(DBNumberedSlider *)sender {
+    float memVal;
     switch (sender.tag) {
         case 98:
             setPreference(@"button_scale", @((int)sender.value));
             break;
         case 99:
             setPreference(@"resolution", @((int)sender.value));
+            break;
+        case 100:
+            memVal = roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.40);
+            if(sender.value >= memVal && [getPreference(@"mem_warn") boolValue] == YES) {
+                UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:@"High memory value selected." message:@"Due to limitations in the operating system itself, you will need to use a tool like overb0ard to prevent jetsam crashes." preferredStyle:UIAlertControllerStyleActionSheet];
+                [self setPopoverProperties:offlineAlert.popoverPresentationController sender:(UIButton *)sender];
+                UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+                [self presentViewController:offlineAlert animated:YES completion:nil];
+                [offlineAlert addAction:ok];
+                setPreference(@"mem_warn", @NO);
+            }
+            setPreference(@"allocated_memory", @((int)sender.value));
             break;
         default:
             NSLog(@"what does slider %ld for? implement me!", sender.tag);
@@ -266,7 +300,7 @@
 
 - (void)switchChanged:(UISwitch *)sender {
     switch (sender.tag) {
-        case 103:
+        case 104:
             setPreference(@"disable_gl4es_shaderconv", @(sender.isOn));
             break;
         default:
