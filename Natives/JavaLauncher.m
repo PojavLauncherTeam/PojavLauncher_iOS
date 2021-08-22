@@ -71,11 +71,10 @@ static pthread_t logger;
 
 const char *javaHome;
 const char *renderer;
+const char *allocmem;
 NSString *javaHome_pre;
 NSString *renderer_pre;
-
-NSString *javaHome_pre;
-NSString *gl4esLibname_pre;
+NSString *allocmem_pre;
 
 void init_loadCustomEnv() {
     FILE *envFile = fopen(env_path, "r");
@@ -358,6 +357,8 @@ int launchJVM(int argc, char *argv[]) {
         }
     }
 
+    allocmem_pre = [getPreference(@"allocated_memory") stringValue];
+    allocmem = [allocmem_pre cStringUsingEncoding:NSUTF8StringEncoding];
     char controlPath[2048];
     sprintf(controlPath, "%s/controlmap", homeDir);
     mkdir(controlPath, S_IRWXU | S_IRWXG | S_IRWXO);
@@ -365,9 +366,9 @@ int launchJVM(int argc, char *argv[]) {
     generateAndSaveDefaultControl();
 
     char classpath[10000];
-    
+
     // "/Applications/PojavLauncher.app/libs/launcher.jar:/Applications/PojavLauncher.app/libs/ExagearApacheCommons.jar:/Applications/PojavLauncher.app/libs/gson-2.8.6.jar:/Applications/PojavLauncher.app/libs/jsr305.jar:/Applications/PojavLauncher.app/libs/lwjgl3-minecraft.jar";
-    
+
     // Generate classpath
     DIR *d;
     struct dirent *dir;
@@ -386,19 +387,24 @@ int launchJVM(int argc, char *argv[]) {
     if (!started) {
         char *frameworkPath = calloc(1, 2048);
         char *javaPath = calloc(1, 2048);
-        char *rendererPath = calloc(1, 2048);
         char *userDir = calloc(1, 2048);
         char *userHome = calloc(1, 2048);
+        char *memMin = calloc(1, 2048);
+        char *memMax = calloc(1, 2048);
         snprintf(frameworkPath, 2048, "-Djava.library.path=%s/Frameworks", getenv("BUNDLE_PATH"));
         snprintf(javaPath, 2048, "%s/bin/java", javaHome);
         snprintf(userDir, 2048, "-Duser.dir=%s/Documents/minecraft", getenv("HOME"));
         snprintf(userHome, 2048, "-Duser.home=%s/Documents", getenv("HOME"));
+        snprintf(memMin, 2048, "-Xms%sM", allocmem);
+        snprintf(memMax, 2048, "-Xmx%sM", allocmem);
 
         chdir(userDir);
 
         margv[margc++] = javaPath;
         margv[margc++] = "-XstartOnFirstThread";
         margv[margc++] = "-Djava.system.class.loader=net.kdt.pojavlaunch.PojavClassLoader";
+        margv[margc++] = memMin;
+        margv[margc++] = memMax;
         margv[margc++] = frameworkPath;
         margv[margc++] = userDir;
         margv[margc++] = userHome;
