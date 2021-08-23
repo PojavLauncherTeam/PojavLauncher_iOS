@@ -85,8 +85,10 @@ float resolutionScale;
 
     CGRect surfaceRect = CGRectMake((width - width * resolutionScale) / 2, (height - height * resolutionScale) / 2, width * resolutionScale, height * resolutionScale);
     NSLog(@"Debug: surfaceRect=%@", NSStringFromCGRect(surfaceRect));
-    self.surfaceView = [[MGLKView alloc] initWithFrame:surfaceRect];
+    self.surfaceView = [[MGLKView alloc] init];
     NSLog(@"Debug: surfaceView=%@", self.surfaceView);
+    self.surfaceView.frame = surfaceRect;
+    NSLog(@"Debug: set frame");
     [self.view addSubview:self.surfaceView];
     self.surfaceView.enableSetNeedsDisplay = NO;
     self.surfaceView.transform = CGAffineTransformMakeScale(1.0 / resolutionScale, 1.0 / resolutionScale);
