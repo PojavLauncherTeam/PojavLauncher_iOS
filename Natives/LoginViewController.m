@@ -27,14 +27,14 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 
     jclass clazz = (*env)->FindClass(env, "net/kdt/pojavlaunch/uikit/AccountJNI");
     assert(clazz);
-    
+
     jmethodID method = (*env)->GetStaticMethodID(env, clazz, "loginAccount", "(ILjava/lang/String;)Z");
     assert(method);
-    
+
     jboolean result = (*env)->CallStaticBooleanMethod(env, clazz, method, type, data);
-    
+
     (*runtimeJavaVMPtr)->DetachCurrentThread(runtimeJavaVMPtr);
-    
+
     if (result == JNI_TRUE) {
         if ([NSThread isMainThread]) {
             LauncherViewController *vc = [[LauncherViewController alloc] init];
@@ -354,6 +354,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
         long statusCode = (long)[httpResponse statusCode];
 
         NSString *dataStr = [NSString stringWithUTF8String:[data bytes]];
+        
 
         // NSLog(@"status=%ld, data=%@, response=%@, error=%@", statusCode, dataStr, httpResponse, error);
         NSError *jsonError = nil;

@@ -109,6 +109,11 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglMakeCurrent(JNIEnv*
         debug("Error: eglMakeCurrent() failed: %x", eglGetError());
     }
 
+    RegalMakeCurrent_func *RegalMakeCurrent = (RegalMakeCurrent_func *) dlsym(RTLD_DEFAULT, "RegalMakeCurrent");
+    if (RegalMakeCurrent) {
+        RegalMakeCurrent(potatoBridge.eglContext);
+    }
+
     debug("EGLBridge: Trigger an initial swapBuffers");
     [viewController.view.subviews[0] display];
 
@@ -159,6 +164,14 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglTerminate(JNIEnv* e
     isInputReady = 0;
     terminateEgl();
     return JNI_TRUE;
+}
+
+JNIEXPORT void JNICALL Java_org_lwjgl_opengl_GL_nativeRegalMakeCurrent(JNIEnv *env, jclass clazz) {
+    debug("Regal: making current");
+    
+    RegalMakeCurrent_func *RegalMakeCurrent = (RegalMakeCurrent_func *) dlsym(RTLD_DEFAULT, "RegalMakeCurrent");
+    assert(RegalMakeCurrent);
+    RegalMakeCurrent(potatoBridge.eglContext);
 }
 
 bool stopMakeCurrent;

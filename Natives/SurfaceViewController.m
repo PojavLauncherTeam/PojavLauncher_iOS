@@ -161,7 +161,7 @@ float resolutionScale;
     NSError *cc_error;
     NSString *cc_data = [NSString stringWithContentsOfFile:controlFilePath encoding:NSUTF8StringEncoding error:&cc_error];
 
-    if (cc_error != nil) {
+    if (cc_error) {
         NSLog(@"Error: could not read %@: %@", controlFilePath, cc_error.localizedDescription);
         showDialog(self, @"Error", [NSString stringWithFormat:@"Could not read %@: %@", controlFilePath, cc_error.localizedDescription]);
     } else {
@@ -175,8 +175,7 @@ float resolutionScale;
             CGFloat currentScale = ((NSNumber *)self.cc_dictionary[@"scaledAt"]).floatValue;
             CGFloat savedScale = ((NSNumber *)getPreference(@"button_scale")).floatValue;
             int cc_version = ((NSNumber *)self.cc_dictionary[@"version"]).intValue;
-            for (int i = 0; i < (int) cc_controlDataList.count; i++) {
-                NSMutableDictionary *cc_buttonDict = cc_controlDataList[i];
+            for (NSMutableDictionary *cc_buttonDict in cc_controlDataList) {
                 APPLY_SCALE(cc_buttonDict[@"width"]);
                 APPLY_SCALE(cc_buttonDict[@"height"]);
                 APPLY_SCALE(cc_buttonDict[@"strokeWidth"]);

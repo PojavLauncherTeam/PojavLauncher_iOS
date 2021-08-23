@@ -91,6 +91,8 @@ public final class GL {
         }
     }
 
+    private static native void nativeRegalMakeCurrent();
+
     private GL() {}
 
     /** Ensures that the lwjgl_opengl shared library has been loaded. */
@@ -370,7 +372,7 @@ public final class GL {
                 // This fixed framebuffer issue on 1.13+ 64-bit by another making current
                 GLFW.nativeEglMakeCurrent(GLFW.mainContext);
                 if (isUsingRegal) {
-                    callPV(callJ(functionProvider.getFunctionAddress("eglGetCurrentContext"), functionProvider.getFunctionAddress("RegalMakeCurrent"));
+                    nativeRegalMakeCurrent();
                 }
             } else if (System.getenv("RENDERER").contains("zink")) {
                 int[] dims = getNativeWidthHeight();

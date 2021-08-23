@@ -67,7 +67,9 @@ typedef jint JLI_Launch_func(int argc, char ** argv, /* main argc, argc */
 static int margc = 0;
 static char* margv[1000];
 static int pfd[2];
+static int log_fd;
 static pthread_t logger;
+static BOOL filteredSessionID;
 
 const char *javaHome;
 const char *renderer;
@@ -75,6 +77,27 @@ const char *allocmem;
 NSString *javaHome_pre;
 NSString *renderer_pre;
 NSString *allocmem_pre;
+
+static void *logger_thread() {
+    ssize_t rsize;
+    char buf[2048];
+    while((rsize = read(pfd[0], buf, sizeof(buf)-1)) > 0) {
+        // Filter out Session ID here
+        int index;
+        if (!filteredSessionID) {
+            char *sessionStr = strstr(buf, "(Session ID is ");
+            if (sessionStr) {
+                char *censorStr = "(Session ID is <censored>)\n\0";
+                strcpy(sessionStr, censorStr);
+                rsize = strlen(buf);
+                filteredSessionID = true;
+            }
+        }
+        write(log_fd, buf, rsize);
+    }
+    close(log_fd);
+    return NULL;
+}
 
 void init_loadCustomEnv() {
     FILE *envFile = fopen(env_path, "r");
@@ -217,17 +240,29 @@ int launchJVM(int argc, char *argv[]) {
             debug("[Pre-init] Error: failed to open %s: %s", log_path, strerror(errno));
             assert(0 && "Failed to open latestlog.txt. Check oslog for more details.");
         }
-        int log_fd = fileno(logFile);
-        dup2(log_fd, 1);
-        dup2(log_fd, 2);
-        close(log_fd);
+        log_fd = fileno(logFile);
+        setvbuf(stdout, 0, _IOLBF, 0); // make stdout line-buffered
+        setvbuf(stderr, 0, _IONBF, 0); // make stderr unbuffered
+
+        /* create the pipe and redirect stdout and stderr */
+        pipe(pfd);
+        dup2(pfd[1], 1);
+        dup2(pfd[1], 2);
+
+        /* spawn the logging thread */
+        if(pthread_create(&logger, 0, logger_thread, 0) == -1) {
+            char *fail_str = "Failed to start logging!";
+            write(log_fd, fail_str, strlen(fail_str));
+            close(log_fd);
+        }
+        pthread_detach(logger);
     }
 
     init_logDeviceAndVer(argv[0]);
     debug("[Pre-init] Beginning JVM launch\n");
     
     char javaAwtPath[4096];
-    // accidentally patched a bit wrong, the value should be a path containing libawt_xawt.dylib, but here is libawt.dylib path (no need to exist)
+    // I accidentally patched a bit wrong, the value should be a path containing libawt_xawt.dylib, but here is libawt.dylib path (no need to exist)
     sprintf(javaAwtPath, "%s/Frameworks/libawt.dylib", getenv("BUNDLE_PATH"));
     setenv("JAVA_AWT_PATH", javaAwtPath, 1);
 
