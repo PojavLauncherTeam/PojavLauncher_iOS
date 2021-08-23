@@ -90,7 +90,7 @@ public final class GL {
             create();
         }
     }
-    
+
     private static native void nativeRegalMakeCurrent();
 
     private GL() {}
@@ -373,7 +373,6 @@ public final class GL {
                 GLFW.nativeEglMakeCurrent(GLFW.mainContext);
                 if (isUsingRegal) {
                     nativeRegalMakeCurrent();
-                    GLFW.nativeEglMakeCurrent(GLFW.mainContext);
                 }
             } else if (System.getenv("RENDERER").contains("zink")) {
                 int[] dims = getNativeWidthHeight();

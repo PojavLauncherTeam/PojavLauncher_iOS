@@ -8,6 +8,7 @@ public class GLFWWindowProperties {
     public int x, y;
     public CharSequence title;
     public boolean shouldClose, isInitialSizeCalled, isCursorEntered;
+    public long monitor;
     public Map<Integer, Integer> inputModes = new HashMap<>();
     public Map<Integer, Integer> windowAttribs = new HashMap<>();
     

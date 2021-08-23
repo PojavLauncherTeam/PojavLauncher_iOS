@@ -687,9 +687,11 @@ public class GLFW
 
         mGLFWFramebufferSizeCallback = GLFWFramebufferSizeCallback.createSafe(nglfwSetFramebufferSizeCallback(window, memAddressSafe(cbfun)));
 
+        /*
         try {
             mGLFWFramebufferSizeCallback.invoke(window, mGLFWWindowWidth, mGLFWWindowHeight);
         } catch (Throwable th) {}
+        */
 
         return lastCallback;
     }
@@ -823,7 +825,6 @@ public class GLFW
 
 	@NativeType("GLFWwindow *")
 	public static long glfwGetCurrentContext() {
-		// Stub prevent NULL check
 		return nativeEglGetCurrentContext();
 	}
 
@@ -913,14 +914,17 @@ public class GLFW
 
     @NativeType("GLFWmonitor *")
     public static long glfwGetWindowMonitor(@NativeType("GLFWwindow *") long window) {
-        return mGLFWWindowMonitor;
+        return internalGetWindow(window).monitor;
     }
 	
 	public static void glfwSetWindowMonitor(@NativeType("GLFWwindow *") long window, @NativeType("GLFWmonitor *") long monitor, int xpos, int ypos, int width, int height, int refreshRate) {
-		// weird calculation to fake pointer
-        mGLFWWindowMonitor = window * monitor;
+		GLFWWindowProperties properties = internalGetWindow(window);
+		properties.monitor = monitor;
+		properties.x = xpos;
+		properties.y = ypos;
+		internalChangeMonitorSize(width, height);
     }
-    
+
     public static int glfwGetWindowAttrib(@NativeType("GLFWwindow *") long window, int attrib) {
         return internalGetWindow(window).windowAttribs.get(attrib);
     }
@@ -1012,22 +1016,22 @@ public class GLFW
 	// GLFW Window functions
     public static long glfwCreateWindow(int width, int height, CharSequence title, long monitor, long share) {
         EventLoop.OffScreen.check();
-			// Create an ACTUAL EGL context
-			long ptr = nativeEglCreateContext(share);
-            //nativeEglMakeCurrent(ptr);
-			GLFWWindowProperties win = new GLFWWindowProperties();
+		// Create an ACTUAL EGL context
+		long ptr = nativeEglCreateContext(share);
+        //nativeEglMakeCurrent(ptr);
+		GLFWWindowProperties win = new GLFWWindowProperties();
 
-			// win.width = width;
-			// win.height = height;
-			
-			win.width = mGLFWWindowWidth;
-			win.height = mGLFWWindowHeight;
+		win.width = width;
+		win.height = height;
 
-			win.title = title;
+		// win.width = mGLFWWindowWidth;
+		// win.height = mGLFWWindowHeight;
+		
+		win.title = title;
 
-			mGLFWWindowMap.put(ptr, win);
-			mainContext = ptr;
-			return ptr;
+		mGLFWWindowMap.put(ptr, win);
+		mainContext = ptr;
+		return ptr;
         //Return our context
 
 	}

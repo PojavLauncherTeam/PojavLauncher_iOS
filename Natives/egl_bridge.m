@@ -109,6 +109,11 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglMakeCurrent(JNIEnv*
         debug("Error: eglMakeCurrent() failed: %x", eglGetError());
     }
 
+    RegalMakeCurrent_func *RegalMakeCurrent = (RegalMakeCurrent_func *) dlsym(RTLD_DEFAULT, "RegalMakeCurrent");
+    if (RegalMakeCurrent) {
+        RegalMakeCurrent(potatoBridge.eglContext);
+    }
+
     debug("EGLBridge: Trigger an initial swapBuffers");
     [viewController.view.subviews[0] display];
 

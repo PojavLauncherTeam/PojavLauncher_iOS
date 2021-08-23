@@ -18,7 +18,7 @@ public class AccountJNI {
     // Call back about account credentials for login
     public static boolean loginAccount(int type,
         String data // One of:
-        // Offline username
+        // Local username
         // Mojang json response
         // Microsoft token
     ) {
