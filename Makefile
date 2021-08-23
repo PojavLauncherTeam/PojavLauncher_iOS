@@ -48,12 +48,7 @@ ifneq ($(filter 1,$(IOS)),)
         $(error You need to install cmake)
     endif
     ifeq ($(filter 1,$(shell /usr/lib/jvm/java-8-openjdk/bin/javac -version &> /dev/null && echo 1)),)
-        $(warning You are not using JDK 8 to compile.)
-        ifeq ($(filter 1,$(shell /usr/lib/jvm/java-16-openjdk/bin/javac -version &> /dev/null && echo 1)),)
-            $(error You need to install openjdk-8-jdk or openjdk-16-jdk)
-        else
-            JDK := /usr/lib/jvm/java-16-openjdk/bin
-        endif
+        $(error You need to install openjdk-8-jdk)
     else
         JDK := /usr/lib/jvm/java-8-openjdk/bin
     endif
@@ -74,12 +69,7 @@ else ifneq ($(filter 0,$(IOS)),)
             $(error You need to install cmake)
     endif
     ifeq ($(filter 1.8.0,$(shell javac -version &> javaver.txt && cat javaver.txt | cut -b 7-11 && rm -rf javaver.txt)),)
-        $(warning You are not using JDK 8 to compile.)
-        ifeq ($(filter 1,$(shell javac -version &> /dev/null && echo 1)),)
-            $(error You need to install a JDK)
-        else
-            JDK := /usr/bin
-        endif
+    $(error You need to install JDK 8)
     else
         JDK := /usr/bin
     endif
@@ -123,7 +113,7 @@ java:
 	@echo 'Starting build task - java application'
 	@cd JavaApp; \
 	mkdir -p local_out/classes; \
-	$(JDK)/javac -cp "libs/*:libs_caciocavallo/*" -d local_out/classes $(JAVAFILES) || exit 1; \
+	$(JDK)/javac -cp "libs/*:libs_caciocavallo/*" -d local_out/classes $(JAVAFILES) -XDignore.symbol.file || exit 1; \
 	cd local_out/classes; \
 	$(JDK)/jar -cf ../launcher.jar * || exit 1; \
 	echo 'Finished build task - java application'
