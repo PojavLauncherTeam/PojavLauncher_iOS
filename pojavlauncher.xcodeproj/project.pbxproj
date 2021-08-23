@@ -45,7 +45,7 @@
 			buildConfigurationList = BB72A36826D30F6900B4BF64 /* Build configuration list for PBXLegacyTarget "pojavlauncher" */;
 			buildPhases = (
 			);
-			buildToolPath = /opt/procursus/bin/gmake;
+			buildToolPath = /usr/bin/make;
 			dependencies = (
 			);
 			name = pojavlauncher;
