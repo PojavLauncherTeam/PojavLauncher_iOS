@@ -83,9 +83,12 @@ public final class Tools
         if (javaVersion.startsWith("1.")) {
             javaVersion = javaVersion.substring(2);
         }
-        int dotIndex = javaVersion.indexOf('.');
-        if (dotIndex != -1) {
-            javaVersion = javaVersion.substring(0, dotIndex);
+        int splitIndex = javaVersion.indexOf('.');
+        if (splitIndex == -1) {
+            splitIndex = javaVersion.indexOf('-');
+        }
+        if (splitIndex != -1) {
+            javaVersion = javaVersion.substring(0, splitIndex);
         }
         if (versionInfo.javaVersion != null && versionInfo.javaVersion.majorVersion > Integer.parseInt(javaVersion)) {
             throw new UnsupportedOperationException("Minecraft " + versionInfo.id + " requires Java " + versionInfo.javaVersion.majorVersion + " in order to run. Please switch to Java " + versionInfo.javaVersion.majorVersion + " in launcher settings.");
