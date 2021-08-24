@@ -199,15 +199,15 @@ const int hotbarKeys[9] = {
     GLFW_KEY_4, GLFW_KEY_5, GLFW_KEY_6,
     GLFW_KEY_7, GLFW_KEY_8, GLFW_KEY_9
 };
-int guiScale = 1, scaleFactor = 1;
+int guiScale = 1;
 int mcscale(int input) {
-    return (int)((guiScale * input)/scaleFactor);
+    return (int)((guiScale * input)/resolutionScale);
 }
 int callback_SurfaceViewController_touchHotbar(int x, int y) {
     if (isGrabbing == JNI_FALSE) {
         return -1;
     }
-    
+
     int barHeight = mcscale(20);
     int barWidth = mcscale(180);
     int barX = (savedWidth / 2) - (barWidth / 2);
@@ -222,15 +222,10 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_updateMCGuiScale(JNI
     guiScale = scale;
 }
 
-JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_setButtonSkippable(JNIEnv* env, jclass clazz) {
-    UIKit_setButtonSkippable();
-}
-
-JNIEXPORT jboolean JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_updateProgress(JNIEnv* env, jclass clazz, jfloat progress, jstring message) {
+JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_updateProgress(JNIEnv* env, jclass clazz, jfloat progress, jstring message) {
 	const char *message_c = (*env)->GetStringUTFChars(env, message, 0);
-	jboolean skipDownloadAssets = UIKit_updateProgress(progress, message_c);
+	UIKit_updateProgress(progress, message_c);
 	(*env)->ReleaseStringUTFChars(env, message, message_c);
-	return skipDownloadAssets;
 }
 
 JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_launchMinecraftSurface(JNIEnv* env, jclass clazz, jboolean isUseStackQueueBool) {

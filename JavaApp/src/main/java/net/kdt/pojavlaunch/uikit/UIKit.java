@@ -145,9 +145,9 @@ public class UIKit {
         updateMCGuiScale(guiScale);
     }
     
-    public static boolean updateProgressSafe(final float progress, final String message) {
+    public static void updateProgressSafe(final float progress, final String message) {
         System.out.println(message);
-        return updateProgress(progress, ((int) (progress * 100)) + "% - " + message);
+        updateProgress(progress, ((int) (progress * 100)) + "% - " + message);
     }
 
     static {
@@ -164,7 +164,7 @@ public class UIKit {
     private static native void updateMCGuiScale(int scale);
     
     // Update progress
-    public static native boolean updateProgress(float progress, String message);
+    public static native void updateProgress(float progress, String message);
     
     // Start SurfaceViewController
     public static native void launchMinecraftSurface(boolean isUseStackQueueBool);

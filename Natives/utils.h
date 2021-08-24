@@ -32,8 +32,11 @@
 #define SPECIALBTN_SCROLLUP -7
 #define SPECIALBTN_SCROLLDOWN -8
 
+static float resolutionScale = 1.0;
+
 UIViewController *viewController;
 
+MGLContext *firstContext;
 MGLSharegroup* sharegroup;
 
 void* GL4ES_HANDLE;

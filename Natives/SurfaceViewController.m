@@ -45,15 +45,22 @@ int inputTextLength;
 BOOL shouldTriggerClick = NO;
 int notchOffset;
 
-float resolutionScale;
-
 // TODO: key modifiers impl
+
+@implementation GameSurfaceView
+- (id)initWithFrame:(CGRect)frame {
+    return self = [super initWithFrame:frame];
+}
+
++ (Class)layerClass {
+    return MGLLayer.class;
+}
+@end
 
 @interface SurfaceViewController ()<UITextFieldDelegate, UIPointerInteractionDelegate, UIGestureRecognizerDelegate> {
 }
 
-@property(nonatomic, strong) MGLKView* surfaceView;
-@property(nonatomic, strong) MGLContext *context;
+@property(nonatomic, strong) UIView* surfaceView;
 @property(nonatomic, strong) NSMutableDictionary* cc_dictionary;
 
 - (void)setupGL;
@@ -83,15 +90,11 @@ float resolutionScale;
     savedWidth = roundf(width * screenScale);
     savedHeight = roundf(height * screenScale);
 
-    CGRect surfaceRect = CGRectMake((width - width * resolutionScale) / 2, (height - height * resolutionScale) / 2, width * resolutionScale, height * resolutionScale);
-    NSLog(@"Debug: surfaceRect=%@", NSStringFromCGRect(surfaceRect));
-    self.surfaceView = [[MGLKView alloc] init];
+    NSLog(@"Debug: Creating surfaceView");
+    self.surfaceView = [[GameSurfaceView alloc] initWithFrame:self.view.frame];
     NSLog(@"Debug: surfaceView=%@", self.surfaceView);
-    self.surfaceView.frame = surfaceRect;
-    NSLog(@"Debug: set frame");
+    self.surfaceView.layer.contentsScale = screenScale * resolutionScale;
     [self.view addSubview:self.surfaceView];
-    self.surfaceView.enableSetNeedsDisplay = NO;
-    self.surfaceView.transform = CGAffineTransformMakeScale(1.0 / resolutionScale, 1.0 / resolutionScale);
 
     // Enable support for desktop GLSL
     if ([getPreference(@"disable_gl4es_shaderconv") boolValue]) {
@@ -209,21 +212,17 @@ float resolutionScale;
 
     [self executebtn_special_togglebtn:0];
 
-    self.surfaceView.drawableDepthFormat = MGLDrawableDepthFormat24;
-    self.surfaceView.enableSetNeedsDisplay = YES;
+    ((MGLLayer *)self.surfaceView.layer).drawableDepthFormat = MGLDrawableDepthFormat24;
     // [self setPreferredFramesPerSecond:1000];
 
     // Init GLES
     sharegroup = [[MGLSharegroup alloc] init];
-    self.context = [[MGLContext alloc] initWithAPI:kMGLRenderingAPIOpenGLES3 sharegroup:sharegroup];
-
-    if (!self.context) {
+    firstContext = [[MGLContext alloc] initWithAPI:kMGLRenderingAPIOpenGLES3 sharegroup:sharegroup];
+    if (!firstContext) {
         NSLog(@"Failed to create ES context");
     }
 
-    self.surfaceView.context = self.context;
-
-    [MGLContext setCurrentContext:self.context];
+    [MGLContext setCurrentContext:firstContext forLayer:(MGLLayer *)self.surfaceView.layer];
 
     [self setupGL];
 }
@@ -240,43 +239,13 @@ float resolutionScale;
 
 - (void)dealloc
 {
-    if ([MGLContext currentContext] == self.context) {
-        [MGLContext setCurrentContext:nil];
-    }
+    [MGLContext setCurrentContext:nil];
 }
 
 - (void)setupGL
 {
-    [MGLContext setCurrentContext:self.context];
-    [self.surfaceView display];
     callback_SurfaceViewController_launchMinecraft(savedWidth * resolutionScale, savedHeight * resolutionScale);
 }
-
-/*
-BOOL isNotifRemoved;
-- (void)mglkView:(MGLKView *)view drawInRect:(CGRect)rect
-{
-    // glClearColor(0.6f, 0.6f, 0.6f, 1.0f);
-    // glClear(GL_COLOR_BUFFER_BIT);
-    // [self setNeedsDisplay]
-    // NSLog(@"swapbuffer");
-
-    // Hack: Remove notifications, so rendering will be manually controlled!
-    if (isNotifRemoved == NO) {
-        isNotifRemoved = YES;
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-        name:MGLKApplicationWillResignActiveNotification
-        object:nil];
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-        name:MGLKApplicationDidBecomeActiveNotification
-        object:nil];
-    }
-        
-    [super pause];
-
-    // Java_org_lwjgl_glfw_CallbackBridge_nativeSendCursorPos(NULL, NULL, location.x * screenScale, location.y * screenScale);
-}
-*/
 
 #pragma mark - Input: send touch utilities
 
@@ -284,6 +253,9 @@ BOOL isNotifRemoved;
 {
     CGFloat screenScale = [[UIScreen mainScreen] scale];
     callback_SurfaceViewController_touchHotbar(location.x * screenScale, location.y * screenScale);
+    if (!isGrabbing) {
+        screenScale *= resolutionScale;
+    }
     callback_SurfaceViewController_onTouch(event, location.x * screenScale, location.y * screenScale);
 }
 
@@ -383,7 +355,7 @@ BOOL isNotifRemoved;
 {
     CGFloat screenScale = [[UIScreen mainScreen] scale];
     CGPoint location = [sender locationInView:[sender.view superview]];
-    int hotbarItem = callback_SurfaceViewController_touchHotbar(location.x * screenScale, location.y * screenScale);
+    int hotbarItem = callback_SurfaceViewController_touchHotbar(location.x * screenScale * resolutionScale, location.y * screenScale * resolutionScale);
     if (sender.state == UIGestureRecognizerStateBegan) {
         if (hotbarItem == -1) {
             inputView.text = INPUT_SPACE_CHAR;

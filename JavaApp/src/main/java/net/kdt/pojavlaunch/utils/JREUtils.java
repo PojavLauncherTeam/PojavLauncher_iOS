@@ -2,8 +2,6 @@ package net.kdt.pojavlaunch.utils;
 
 import android.util.*;
 
-import com.oracle.dalvik.*;
-
 import java.io.*;
 import java.util.*;
 

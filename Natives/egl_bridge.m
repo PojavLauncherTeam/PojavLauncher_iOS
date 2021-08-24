@@ -102,7 +102,7 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglMakeCurrent(JNIEnv*
         if ((jlong)localContext != window) {
             debug("EGLBridge ERROR: Context mismatch! local=%p, input=%p", localContext, (void *)window);
         }
-        success = [MGLContext setCurrentContext:localContext] == YES;
+        success = [MGLContext setCurrentContext:localContext forLayer:(MGLLayer *)viewController.view.subviews[0].layer] == YES;
     }
 
     if (success == EGL_FALSE) {
@@ -113,9 +113,6 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglMakeCurrent(JNIEnv*
     if (RegalMakeCurrent) {
         RegalMakeCurrent(potatoBridge.eglContext);
     }
-
-    debug("EGLBridge: Trigger an initial swapBuffers");
-    [viewController.view.subviews[0] display];
 
     // Test
 #ifdef GLES_TEST
@@ -153,10 +150,10 @@ JNIEXPORT jlong JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglCreateContext(JNIEnv *
         localContext = [[MGLContext alloc] initWithAPI:kMGLRenderingAPIOpenGLES3 sharegroup:sharegroup];
         debug("EGLBridge: Created CTX pointer=%p, shareCTX=%p, thread=%d", localContext, (void *)contextSrc, (int)tid);
     } else {
-        localContext = ((MGLKView *)viewController.view.subviews[0]).context;
+        localContext = firstContext;
+    debug("EGLBridge: Using CTX pointer=%p, shareCTX=%p, thread=%d", localContext, (void *)contextSrc, (int)tid);
     }
     [[NSThread currentThread] threadDictionary][@"gl_context"] = localContext;
-    debug("EGLBridge: Created CTX pointer=%p, shareCTX=%p, thread=%d", localContext, (void *)contextSrc, (int)tid);
     return (jlong)localContext;
 }
 

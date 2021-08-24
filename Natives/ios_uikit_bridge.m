@@ -11,8 +11,6 @@
 #define CLIPBOARD_PASTE 2001
 // Maybe CLIPBOARD_OPENURL then?
 
-jboolean skipDownloadAssets;
-
 jclass class_CTCScreen;
 jmethodID method_GetRGB;
 
@@ -103,28 +101,12 @@ jstring UIKit_accessClipboard(JNIEnv* env, jint action, jstring copySrc) {
     }
 }
 
-jboolean UIKit_updateProgress(float progress, const char* message) {
+void UIKit_updateProgress(float progress, const char* message) {
     dispatch_async(dispatch_get_main_queue(), ^{
         install_progress_bar.progress = progress;
         install_progress_text.text = [[NSString alloc] initWithUTF8String:message];
         // @(message);
     });
-    return skipDownloadAssets;
-}
-
-void UIKit_skipDownloadAssets() {
-    [install_button setEnabled:NO];
-    skipDownloadAssets = JNI_TRUE;
-}
-
-void UIKit_setButtonSkippable() {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [install_button setEnabled:YES];
-        [install_button setTitle:@"Skip" forState:UIControlStateNormal];
-        [install_button addTarget:install_button action:@selector(UIKit_skipDownloadAssets) forControlEvents:UIControlEventTouchUpInside];
-    });
-
-    skipDownloadAssets = JNI_FALSE;
 }
 
 void UIKit_launchJarFile(const char* filepath) {

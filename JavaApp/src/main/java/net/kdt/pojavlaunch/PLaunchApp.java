@@ -126,6 +126,8 @@ public class PLaunchApp {
 
                 for (final DependentLibrary libItem : mVersion.libraries) {
                     if (
+                        // Support for text2speech is not planned, so skip it for now.
+                        libItem.name.startsWith("com.mojang.text2speech") ||
                         libItem.name.startsWith("net.java.jinput") ||
                         libItem.name.startsWith("org.lwjgl")
                         ) { // Black list
@@ -159,9 +161,9 @@ public class PLaunchApp {
                 }
 
                 currProgress++;
-                UIKit.updateProgressSafe(currProgress / maxProgress, "Downloading " + mcver + ".jar");
                 File minecraftMainFile = new File(minecraftMainJar);
                 if (!minecraftMainFile.exists() || minecraftMainFile.length() == 0l) {
+                    UIKit.updateProgressSafe(currProgress / maxProgress, "Downloading " + mcver + ".jar");
                     Tools.downloadFile(mVersion.downloads.values().toArray(new MinecraftClientInfo[0])[0].url, minecraftMainJar);
                 }
 
@@ -194,11 +196,10 @@ public class PLaunchApp {
             File objectsDir = new File(outputDir, "objects");
             for (JAssetInfo asset : assetsObjects.values()) {
                 executor.execute(() -> {
-                mIsAssetsProcessing &= !UIKit.updateProgressSafe(currProgress / maxProgress, "Downloading " + assetsObjects.keySet().toArray(new String[0])[downloaded]);
-
                 try {
-                    if(!assets.map_to_resources) downloadAsset(asset, objectsDir);
-                    else downloadAssetMapped(asset,(assetsObjects.keySet().toArray(new String[0])[downloaded]),outputDir);
+                    String assetName = assetsObjects.keySet().toArray(new String[0])[downloaded];
+                    if(!assets.map_to_resources) downloadAsset(assetName, asset, objectsDir);
+                    else downloadAssetMapped(assetName, asset, outputDir);
                 } catch (IOException e) {
                     e.printStackTrace();
                     mIsAssetsProcessing = false;
@@ -233,17 +234,19 @@ public class PLaunchApp {
         return Tools.GLOBAL_GSON.fromJson(Tools.read(output.getAbsolutePath()), JAssets.class);
     }
 
-    public static void downloadAsset(JAssetInfo asset, File objectsDir) throws IOException {
+    public static void downloadAsset(String assetName, JAssetInfo asset, File objectsDir) throws IOException {
         String assetPath = asset.hash.substring(0, 2) + "/" + asset.hash;
         File outFile = new File(objectsDir, assetPath);
         if (!outFile.exists()) {
+            UIKit.updateProgressSafe(currProgress / maxProgress, "Downloading " + assetName);
             DownloadUtils.downloadFile(MINECRAFT_RES + assetPath, outFile);
         }
     }
-    public static void downloadAssetMapped(JAssetInfo asset, String assetName, File resDir) throws IOException {
+    public static void downloadAssetMapped(String assetName, JAssetInfo asset, File resDir) throws IOException {
         String assetPath = asset.hash.substring(0, 2) + "/" + asset.hash;
         File outFile = new File(resDir,"/"+assetName);
         if (!outFile.exists()) {
+            UIKit.updateProgressSafe(currProgress / maxProgress, "Downloading " + assetName);
             DownloadUtils.downloadFile(MINECRAFT_RES + assetPath, outFile);
         }
     }
