@@ -74,9 +74,11 @@ static BOOL filteredSessionID;
 const char *javaHome;
 const char *renderer;
 const char *allocmem;
+const char *multidir;
 NSString *javaHome_pre;
 NSString *renderer_pre;
 NSString *allocmem_pre;
+NSString *multidir_pre;
 
 static void *logger_thread() {
     ssize_t rsize;
@@ -231,10 +233,9 @@ int launchJVM(int argc, char *argv[]) {
     if (!started) {
         debug("[Pre-init] Staring logging STDIO as jrelog:V\n");
         // Redirect stdio to latestlog.txt
-        int ret;
         char newname[2048];
         sprintf(newname, "%s/latestlog.old.txt", homeDir);
-        ret = rename(log_path, newname);
+        rename(log_path, newname);
         FILE* logFile = fopen(log_path, "w");
         if (!logFile) {
             debug("[Pre-init] Error: failed to open %s: %s", log_path, strerror(errno));
@@ -394,6 +395,7 @@ int launchJVM(int argc, char *argv[]) {
 
     allocmem_pre = [getPreference(@"allocated_memory") stringValue];
     allocmem = [allocmem_pre cStringUsingEncoding:NSUTF8StringEncoding];
+    
     char controlPath[2048];
     sprintf(controlPath, "%s/controlmap", homeDir);
     mkdir(controlPath, S_IRWXU | S_IRWXG | S_IRWXO);
@@ -417,7 +419,38 @@ int launchJVM(int argc, char *argv[]) {
         closedir(d);
     }
     debug("[Pre-init] Classpath generated: %s", classpath);
-
+    
+    multidir_pre = getPreference(@"game_directory");
+    multidir = [multidir_pre cStringUsingEncoding:NSUTF8StringEncoding];
+    if ([multidir_pre length] == 0) {
+        multidir_pre = @"default";
+        multidir = [multidir_pre cStringUsingEncoding:NSUTF8StringEncoding];
+        setPreference(@"game_directory", multidir_pre);
+        debug("[Pre-init] MULTI_DIR environment variable was not set. Defaulting to %s for future use.\n", renderer);
+    } else {
+        multidir = [multidir_pre cStringUsingEncoding:NSUTF8StringEncoding];
+        debug("[Pre-init] Restored preference: MULTI_DIR is set to %s\n", multidir);
+    }
+    char *multidir_char = calloc(1, 2048);
+    char *librarySym = calloc(1, 2048);
+    snprintf(multidir_char, 2048, "%s/instances/%s", getenv("POJAV_HOME"), multidir);
+    snprintf(librarySym, 2048, "%s/Library/Application Support/minecraft", getenv("POJAV_HOME"));
+    remove(librarySym);
+    symlink(multidir_char, librarySym);
+    setenv("POJAV_GAME_DIR", multidir_char, 1);
+    
+    char *oldGameDir = calloc(1, 2048);
+    snprintf(oldGameDir, 2048, "%s/Documents/minecraft", getenv("HOME"));
+    if (0 == access(oldGameDir, F_OK)) {
+        rename(oldGameDir, multidir_char);
+        debug("[Pre-Init] Migrated old minecraft folder to new location.");
+    }
+    
+    char *oldLibraryDir = calloc(1, 2048);
+    snprintf(oldLibraryDir, 2048, "%s/Documents/Library", getenv("HOME"));
+    if (0 == access(oldLibraryDir, F_OK)) {
+        remove(oldLibraryDir);
+    }
     // Check if JVM restarts
     if (!started) {
         char *frameworkPath = calloc(1, 2048);
@@ -428,8 +461,8 @@ int launchJVM(int argc, char *argv[]) {
         char *memMax = calloc(1, 2048);
         snprintf(frameworkPath, 2048, "-Djava.library.path=%s/Frameworks", getenv("BUNDLE_PATH"));
         snprintf(javaPath, 2048, "%s/bin/java", javaHome);
-        snprintf(userDir, 2048, "-Duser.dir=%s/Documents/minecraft", getenv("HOME"));
-        snprintf(userHome, 2048, "-Duser.home=%s/Documents", getenv("HOME"));
+        snprintf(userDir, 2048, "-Duser.dir=%s", getenv("POJAV_GAME_DIR"));
+        snprintf(userHome, 2048, "-Duser.home=%s", getenv("POJAV_HOME"));
         snprintf(memMin, 2048, "-Xms%sM", allocmem);
         snprintf(memMax, 2048, "-Xmx%sM", allocmem);
 

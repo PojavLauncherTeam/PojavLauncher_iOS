@@ -140,12 +140,12 @@ package:
 		cp JavaApp/local_out/launcher.jar Natives/build/PojavLauncher.app/libs/launcher.jar || exit 1; \
 		cp -R JavaApp/libs/* Natives/build/PojavLauncher.app/libs/ || exit 1; \
 		cp -R JavaApp/libs_caciocavallo/* Natives/build/PojavLauncher.app/libs_caciocavallo/ || exit 1; \
-		mkdir -p packages/pojavlauncher_iphoneos-arm/{Applications,var/mobile/Documents/{minecraft,.pojavlauncher,Library/{Application\ Support,Caches}}} || exit 1; \
-		( cd packages/pojavlauncher_iphoneos-arm/var/mobile/Documents && ln -sf ../../minecraft "Library/Application Support/minecraft" ) || exit 1; \
+		mkdir -p packages/pojavlauncher_iphoneos-arm/{Applications,var/mobile/Documents/.pojavlauncher/{instances/default,Library/{Application\ Support,Caches}}} || exit 1; \
+		( cd packages/pojavlauncher_iphoneos-arm/var/mobile/Documents/.pojavlauncher && ln -sf ../../instances/default Library/Application\ Support/minecraft ) || exit 1; \
 		if [ '$(NOSTDIN)' = '1' ]; then \
-			echo '$(SUDOPASS)' | sudo -S chown 501:501 packages/pojavlauncher_iphoneos-arm/var/mobile/Documents/* || exit 1; \
+			echo '$(SUDOPASS)' | sudo -S chown -R 501:501 packages/pojavlauncher_iphoneos-arm/var/mobile/Documents/.pojavlauncher || exit 1; \
 		else \
-			sudo chown 501:501 packages/pojavlauncher_iphoneos-arm/var/mobile/Documents/* || exit 1; \
+			sudo chown -R 501:501 packages/pojavlauncher_iphoneos-arm/var/mobile/Documents/.pojavlauncher || exit 1; \
 		fi; \
 		cp -R Natives/build/PojavLauncher.app packages/pojavlauncher_iphoneos-arm/Applications; \
 		cp -R DEBIAN packages/pojavlauncher_iphoneos-arm/DEBIAN; \
@@ -163,12 +163,12 @@ package:
 		cp -R JavaApp/libs Natives/build/PojavLauncher.app/libs || exit 1; \
 		cp -R JavaApp/libs_caciocavallo Natives/build/PojavLauncher.app/libs_caciocavallo || exit 1; \
 		cp JavaApp/local_out/launcher.jar Natives/build/PojavLauncher.app/libs/ || exit 1; \
-		mkdir -p packages/pojavlauncher_iphoneos-arm/{Applications,var/mobile/Documents/{minecraft,.pojavlauncher,Library/{Application\ Support,Caches}}} || exit 1; \
-		( cd packages/pojavlauncher_iphoneos-arm/var/mobile/Documents && ln -sf ../../minecraft "Library/Application Support/minecraft" ) || exit 1; \
+		mkdir -p packages/pojavlauncher_iphoneos-arm/{Applications,var/mobile/Documents/.pojavlauncher/{instances/default,Library/{Application\ Support,Caches}}} || exit 1; \
+		( cd packages/pojavlauncher_iphoneos-arm/var/mobile/Documents/.pojavlauncher && ln -sf ../../instances/default Library/Application\ Support/minecraft ) || exit 1; \
 		if [ '$(NOSTDIN)' = '1' ]; then \
-			echo '$(SUDOPASS)' | sudo -S chown 501:501 packages/pojavlauncher_iphoneos-arm/var/mobile/Documents/* || exit 1; \
+			echo '$(SUDOPASS)' | sudo -S chown -R 501:501 packages/pojavlauncher_iphoneos-arm/var/mobile/Documents/.pojavlauncher || exit 1; \
 		else \
-			sudo chown 501:501 packages/pojavlauncher_iphoneos-arm/var/mobile/Documents/* || exit 1; \
+			sudo chown -R 501:501 packages/pojavlauncher_iphoneos-arm/var/mobile/Documents/.pojavlauncher || exit 1; \
 		fi; \
 		cp -R Natives/build/PojavLauncher.app packages/pojavlauncher_iphoneos-arm/Applications; \
 		cp -R DEBIAN packages/pojavlauncher_iphoneos-arm/DEBIAN; \
@@ -239,9 +239,15 @@ deploy:
 		
 clean:
 	@echo 'Starting build task - cleaning build workspace'
-	@rm -rf Natives/build
-	@rm -rf JavaApp/build
-	@rm -rf packages
+	@if [ '$(NOSTDIN)' = '1' ]; then \
+		echo '$(SUDOPASS)' | sudo -S rm -rf Natives/build; \
+		echo '$(SUDOPASS)' | sudo -S rm -rf JavaApp/build; \
+		echo '$(SUDOPASS)' | sudo -S rm -rf packages; \
+	else \
+		sudo rm -rf Natives/build; \
+		sudo rm -rf JavaApp/build; \
+		sudo rm -rf packages; \
+	fi
 	@echo 'Finished build task - cleaned build workspace'
 
 help:

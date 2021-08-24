@@ -55,8 +55,8 @@ public final class Tools
     public static String DIR_DATA = System.getenv("BUNDLE_PATH");
     public static String CURRENT_ARCHITECTURE;
 
-    public static final String DIR_GAME_HOME = System.getenv("HOME") + "/Documents";
-    public static final String DIR_GAME_NEW = DIR_GAME_HOME + "/minecraft";
+    public static final String DIR_GAME_HOME = System.getenv("POJAV_HOME");
+    public static final String DIR_GAME_NEW = System.getenv("POJAV_GAME_DIR");
     
     public static final String DIR_APP_DATA = System.getenv("POJAV_HOME");
     public static final String DIR_ACCOUNT_NEW = DIR_APP_DATA + "/accounts";
@@ -431,7 +431,7 @@ public final class Tools
                             String libAddedName = libAdded.name.substring(0, libAdded.name.lastIndexOf(":"));
                             
                             if (libAddedName.equals(libName)) {
-                                System.out.println("Library " + libName + ": Replaced version " + 
+                                System.out.println("Library " + libName + ": Replaced version " +
                                     libAdded.name.substring(libAddedName.length() + 1) + " with " +
                                     lib.name.substring(libName.length() + 1));
                                 libList.set(i, lib);
@@ -531,7 +531,7 @@ public final class Tools
     public static File lastFileModified(String dir) {
         File fl = new File(dir);
 
-        File[] files = fl.listFiles(new FileFilter() {          
+        File[] files = fl.listFiles(new FileFilter() {
                 public boolean accept(File file) {
                     return file.isFile();
                 }

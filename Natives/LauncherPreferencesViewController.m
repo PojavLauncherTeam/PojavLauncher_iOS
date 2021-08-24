@@ -10,8 +10,9 @@
 #define JARGS 3
 #define REND 4
 #define JHOME 5
-#define NOSHADERCONV 6
-#define RESETWARN 7
+#define GDIRECTORY 6
+#define NOSHADERCONV 7
+#define RESETWARN 8
 
 @interface LauncherPreferencesViewController () <UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDelegate> {
 }
@@ -185,6 +186,30 @@ UISwitch *noshaderconvSwitch;
         [preferenceWarn addAction:ok];
         setPreference(@"option_warn", @NO);
     }
+    
+    UILabel *gdirTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, currY+=40.0, 0.0, 0.0)];
+    gdirTextView.text = @"Game directory";
+    gdirTextView.numberOfLines = 0;
+    [gdirTextView sizeToFit];
+    [scrollView addSubview:gdirTextView];
+
+    UITextField *gdirTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 8.0, 30)];
+    [gdirTextField addTarget:jhomeTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
+    gdirTextField.tag = 104;
+    gdirTextField.delegate = self;
+    gdirTextField.placeholder = @"Custom game directory...";
+    gdirTextField.text = (NSString *) getPreference(@"game_directory");
+    gdirTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
+    gdirTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [scrollView addSubview:gdirTextField];
+
+    if ([getPreference(@"option_warn") boolValue] == YES) {
+        UIAlertController *preferenceWarn = [UIAlertController alertControllerWithTitle:@"Restart required" message:@"Some options in this menu will require that you restart the launcher for them to take effect."preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+        [self presentViewController:preferenceWarn animated:YES completion:nil];
+        [preferenceWarn addAction:ok];
+        setPreference(@"option_warn", @NO);
+    }
 
     UILabel *noshaderconvTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, currY+=40.0, 0.0, 0.0)];
     noshaderconvTextView.text = @"Disable gl4es 1.1.5 shaderconv";
@@ -193,7 +218,7 @@ UISwitch *noshaderconvSwitch;
     [scrollView addSubview:noshaderconvTextView];
 
     noshaderconvSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 58.0, currY, 50.0, 30)];
-    noshaderconvSwitch.tag = 104;
+    noshaderconvSwitch.tag = 105;
     [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:NO];
     [noshaderconvSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [scrollView addSubview:noshaderconvSwitch];
@@ -205,7 +230,7 @@ UISwitch *noshaderconvSwitch;
     [scrollView addSubview:resetWarnTextView];
 
     UISwitch *resetWarnSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 58.0, currY, 50.0, 30)];
-    resetWarnSwitch.tag = 105;
+    resetWarnSwitch.tag = 106;
     [resetWarnSwitch setOn:NO animated:NO];
     [resetWarnSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [scrollView addSubview:resetWarnSwitch];
@@ -223,14 +248,16 @@ UISwitch *noshaderconvSwitch;
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:JARGS];}];
         UIAction *option5 = [UIAction actionWithTitle:@"Renderer" image:[[UIImage systemImageNamed:@"cpu"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:REND];}];
-        UIAction *option6 = [UIAction actionWithTitle:@"Java home" image:[[UIImage systemImageNamed:@"folder"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+        UIAction *option6 = [UIAction actionWithTitle:@"Java home" image:[[UIImage systemImageNamed:@"cube"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:JHOME];}];
-        UIAction *option7 = [UIAction actionWithTitle:@"Disable shaderconv" image:[[UIImage systemImageNamed:@"circle.lefthalf.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+        UIAction *option7 = [UIAction actionWithTitle:@"Game directory" image:[[UIImage systemImageNamed:@"folder"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:GDIRECTORY];}];
+        UIAction *option8 = [UIAction actionWithTitle:@"Disable shaderconv" image:[[UIImage systemImageNamed:@"circle.lefthalf.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:NOSHADERCONV];}];
-        UIAction *option8 = [UIAction actionWithTitle:@"Reset warnings" image:[[UIImage systemImageNamed:@"exclamationmark.triangle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+        UIAction *option9 = [UIAction actionWithTitle:@"Reset warnings" image:[[UIImage systemImageNamed:@"exclamationmark.triangle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:RESETWARN];}];
         UIMenu *menu = [UIMenu menuWithTitle:@"" image:nil identifier:nil
-                        options:UIMenuOptionsDisplayInline children:@[option1, option2, option3, option4, option5, option6, option7, option8]];
+                        options:UIMenuOptionsDisplayInline children:@[option1, option2, option3, option4, option5, option6, option7, option8, option9]];
         self.navigationItem.rightBarButtonItem.action = nil;
         self.navigationItem.rightBarButtonItem.primaryAction = nil;
         self.navigationItem.rightBarButtonItem.menu = menu;
@@ -263,6 +290,8 @@ UISwitch *noshaderconvSwitch;
             [javaAlert addAction:ok];
             setPreference(@"java_warn", @NO);
         }
+    } else if (textField.tag == 104) {
+        setPreference(@"game_directory", textField.text);
     }
 }
 
@@ -277,6 +306,7 @@ UISwitch *noshaderconvSwitch;
         UIAlertAction *jargs = [UIAlertAction actionWithTitle:@"Java arguments" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:JARGS];}];
         UIAlertAction *renderer = [UIAlertAction actionWithTitle:@"Renderer"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:REND];}];
         UIAlertAction *jhome = [UIAlertAction actionWithTitle:@"Java home" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:JHOME];}];
+        UIAlertAction *gdirectory = [UIAlertAction actionWithTitle:@"Game directory"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:GDIRECTORY];}];
         UIAlertAction *noshaderconv = [UIAlertAction actionWithTitle:@"Disable shaderconv" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:NOSHADERCONV];}];
         UIAlertAction *resetwarn = [UIAlertAction actionWithTitle:@"Reset warnings" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:RESETWARN];}];
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
@@ -288,6 +318,7 @@ UISwitch *noshaderconvSwitch;
         [helpAlert addAction:jargs];
         [helpAlert addAction:renderer];
         [helpAlert addAction:jhome];
+        [helpAlert addAction:gdirectory];
         [helpAlert addAction:noshaderconv];
         [helpAlert addAction:resetwarn];
         [helpAlert addAction:cancel];
@@ -315,6 +346,9 @@ UISwitch *noshaderconvSwitch;
     } else if(setting == JHOME) {
         title = @"Java home";
         message = @"This option allows you to change the Java executable directory. Choosing '/usr/lib/jvm/java-16-openjdk' may allow you to play 1.17, however older versions and most versions of modded Minecraft, as well as the mod installer, will not work. This option also requires a restart of the launcher to take effect.";
+    } else if(setting == GDIRECTORY) {
+        title = @"Game directory";
+        message = @"This option allows you to change where your Minecraft settings and saves are stored in a MultiMC like fashion. Useful for when you want to have multiple mod loaders instaldo not want to delete/move mods around to switch. This option also requires a restart of the launcher to take effect.";
     } else if(setting == NOSHADERCONV) {
         title = @"Disable shaderconv";
         message = @"This option allows you to disable the shader converter inside gl4es 1.1.5 in order to let ANGLE processes them directly. This option is experimental and should only be enabled when playing Minecraft 1.17 or above.";
@@ -358,7 +392,7 @@ UISwitch *noshaderconvSwitch;
 
 - (void)switchChanged:(UISwitch *)sender {
     switch (sender.tag) {
-        case 104:
+        case 105:
             if (![rendTextField.text containsString:@"115"] && sender.isOn) {
                 setPreference(@"disable_gl4es_shaderconv", @NO);
                 UIAlertController *resetWarn = [UIAlertController alertControllerWithTitle:@"Unavailable with the current renderer." message:@"This switch requires GL4ES 1.1.5 to function." preferredStyle:UIAlertControllerStyleActionSheet];
@@ -371,7 +405,7 @@ UISwitch *noshaderconvSwitch;
                 setPreference(@"disable_gl4es_shaderconv", @(sender.isOn));
             }
             break;
-        case 105:
+        case 106:
             setPreference(@"mem_warn", @YES);
             setPreference(@"option_warn", @YES);
             setPreference(@"local_warn", @YES);

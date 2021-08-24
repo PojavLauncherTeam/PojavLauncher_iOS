@@ -3,9 +3,8 @@
 set -e
 
 chown -R 501:501 /var/mobile/Documents/.pojavlauncher
-chown -R 501:501 /var/mobile/Documents/minecraft
 chmod -R 0755 /var/mobile/Documents/.pojavlauncher
-chmod -R 0755 /var/mobile/Documents/minecraft
 
 echo " "
 echo "PojavLauncher has been installed! Take a look at the wiki to learn more about PojavLauncher at https://bit.ly/2PgpexZ."
+

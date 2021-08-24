@@ -24,6 +24,7 @@ void loadPreferences() {
     setDefaultValueForPref(@"vertype_oldbeta", @NO);
     setDefaultValueForPref(@"time_longPressTrigger", @(400));
     setDefaultValueForPref(@"default_ctrl", @"default.json");
+    setDefaultValueForPref(@"game_directory", @"default");
     setDefaultValueForPref(@"java_args", @"");
     setDefaultValueForPref(@"allocated_memory", [NSNumber numberWithFloat:roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.30)]);
     setDefaultValueForPref(@"java_home", @"");
