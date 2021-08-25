@@ -7,3 +7,4 @@
 /Natives/build
 /Natives/resources/*.png
 .DS_STORE
+/pojavlauncher.xcodeproj
