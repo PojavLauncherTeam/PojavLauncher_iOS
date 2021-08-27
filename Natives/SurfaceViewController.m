@@ -18,23 +18,11 @@
 // Debugging purposes
 // #define DEBUG_VISIBLE_TEXT_FIELD
 
-#define ADD_BUTTON(NAME, KEY, RECT, VISIBLE) \
-    ControlButton *button_##KEY = [ControlButton initWithName:NAME keycode:KEY rect:CGRectMake(RECT.origin.x * buttonScale, RECT.origin.y * buttonScale, RECT.size.width * buttonScale, RECT.size.height * buttonScale) transparency:0.0f]; \
-    [button_##KEY addTarget:self action:@selector(executebtn_down:) forControlEvents:UIControlEventTouchDown]; \
-    [button_##KEY addTarget:self action:@selector(executebtn_up:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside]; \
-    [self.view addSubview:button_##KEY]; \
-    if (VISIBLE == YES) { \
-        togglableVisibleButtons[++togglableVisibleButtonIndex] = button_##KEY; \
-    }
-
 #define APPLY_SCALE(KEY) \
   KEY = @([(NSNumber *)KEY floatValue] * savedScale / currentScale);
 
 #define INPUT_SPACE_CHAR @"                    "
 #define INPUT_SPACE_LENGTH 20
-
-int togglableVisibleButtonIndex = -1;
-ControlButton* togglableVisibleButtons[100];
 
 #ifdef DEBUG_VISIBLE_TEXT_FIELD
 UILabel *inputLengthView;
@@ -62,6 +50,9 @@ int notchOffset;
 
 @property(nonatomic, strong) UIView* surfaceView;
 @property(nonatomic, strong) NSMutableDictionary* cc_dictionary;
+@property(nonatomic, strong) NSMutableArray* swipeableButtons;
+@property(nonatomic, strong) NSMutableArray* togglableVisibleButtons;
+@property ControlButton* swipingButton;
 
 - (void)setupGL;
 
@@ -166,6 +157,8 @@ int notchOffset;
     NSError *cc_error;
     NSString *cc_data = [NSString stringWithContentsOfFile:controlFilePath encoding:NSUTF8StringEncoding error:&cc_error];
 
+    self.swipeableButtons = [[NSMutableArray alloc] init];
+    self.togglableVisibleButtons = [[NSMutableArray alloc] init];
     if (cc_error) {
         NSLog(@"Error: could not read %@: %@", controlFilePath, cc_error.localizedDescription);
         showDialog(self, @"Error", [NSString stringWithFormat:@"Could not read %@: %@", controlFilePath, cc_error.localizedDescription]);
@@ -177,10 +170,11 @@ int notchOffset;
         } else {
             convertV1ToV2(self.cc_dictionary);
             NSMutableArray *cc_controlDataList = self.cc_dictionary[@"mControlDataList"];
-            CGFloat currentScale = ((NSNumber *)self.cc_dictionary[@"scaledAt"]).floatValue;
-            CGFloat savedScale = ((NSNumber *)getPreference(@"button_scale")).floatValue;
-            int cc_version = ((NSNumber *)self.cc_dictionary[@"version"]).intValue;
+            CGFloat currentScale = [self.cc_dictionary[@"scaledAt"] floatValue];
+            CGFloat savedScale = [getPreference(@"button_scale") floatValue];
+            int cc_version = [self.cc_dictionary[@"version"] intValue];
             for (NSMutableDictionary *cc_buttonDict in cc_controlDataList) {
+                BOOL isSwipeable = [cc_buttonDict[@"isSwipeable"] boolValue];
                 APPLY_SCALE(cc_buttonDict[@"width"]);
                 APPLY_SCALE(cc_buttonDict[@"height"]);
                 APPLY_SCALE(cc_buttonDict[@"strokeWidth"]);
@@ -200,8 +194,14 @@ int notchOffset;
                         isToggleCtrlBtn = YES;
                     }
                 }
+                if (isSwipeable) {
+                    UIPanGestureRecognizer *panRecognizerButton = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(executebtn_swipe:)];
+                    panRecognizerButton.delegate = self;
+                    [button addGestureRecognizer:panRecognizerButton];
+                    [self.swipeableButtons addObject:button];
+                }
                 if (!isToggleCtrlBtn) {
-                    togglableVisibleButtons[++togglableVisibleButtonIndex] = button;
+                    [self.togglableVisibleButtons addObject:button];
                 }
             }
             self.cc_dictionary[@"scaledAt"] = @(savedScale);
@@ -262,7 +262,8 @@ int notchOffset;
 - (void)sendTouchEvent:(NSSet *)touches withUIEvent:(UIEvent *)uievent withEvent:(int)event
 {
     UITouch* touchEvent = [touches anyObject];
-    
+    CGPoint locationInView = [touchEvent locationInView:self.view];
+
     BOOL isTouchTypeIndirect = NO;
     if (@available(iOS 13.4, *)) {
         if (touchEvent.type == UITouchTypeIndirectPointer) {
@@ -271,34 +272,33 @@ int notchOffset;
     }
 
     if (touchEvent.view == self.surfaceView) {
-        CGPoint locationInView = [touchEvent locationInView:self.surfaceView];
         [self sendTouchPoint:locationInView withEvent:event];
-    }
 
-    if (!isTouchTypeIndirect) {
-        switch (event) {
-            case ACTION_DOWN:
-                touchesMovedCount = 0;
-                shouldTriggerClick = YES;
-                break;
+        if (!isTouchTypeIndirect) {
+            switch (event) {
+                case ACTION_DOWN:
+                    touchesMovedCount = 0;
+                    shouldTriggerClick = YES;
+                    break;
 
-            case ACTION_MOVE:
-                // TODO: better handling this
-                if (touchesMovedCount >= 1) {
-                    shouldTriggerClick = NO;
-                } else ++touchesMovedCount;
-                break;
-        }
-    } else if (@available(iOS 13.4, *)) {
-        // Recheck @available for suppressing compile warnings
+                case ACTION_MOVE:
+                    // TODO: better handling this
+                    if (touchesMovedCount >= 1) {
+                        shouldTriggerClick = NO;
+                    } else ++touchesMovedCount;
+                    break;
+            }
+        } else if (@available(iOS 13.4, *)) {
+            // Recheck @available for suppressing compile warnings
 
-        // Mouse clicks are handled here
-        int held = event == ACTION_MOVE || event == ACTION_UP;
-        shouldTriggerClick = NO;
-        for (int i = 1; i <= 5; ++i) {
-            if ((uievent.buttonMask & (1 << ((i)-1))) != 0) {
-                // iOS button index = GLFW button index + 1;
-                Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, i - 1, held, 0);
+            // Mouse clicks are handled here
+            int held = event == ACTION_MOVE || event == ACTION_UP;
+            shouldTriggerClick = NO;
+            for (int i = 1; i <= 5; ++i) {
+                if ((uievent.buttonMask & (1 << ((i)-1))) != 0) {
+                    // iOS button index = GLFW button index + 1;
+                    Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, i - 1, held, 0);
+                }
             }
         }
     }
@@ -550,7 +550,7 @@ NSString* inputStringBefore;
 #pragma mark - On-screen button functions
 
 int currentVisibility = 1;
-- (void) executebtn:(UIButton *)sender withAction:(int)action {
+- (void)executebtn:(UIButton *)sender withAction:(int)action {
     ControlButton *button = (ControlButton *)sender;
     int held = action == ACTION_DOWN;
     // TODO v2: mulitple keys support
@@ -602,19 +602,46 @@ int currentVisibility = 1;
     }
 }
 
-- (void) executebtn_down:(UIButton *)sender {
+- (void)executebtn_down:(ControlButton *)sender
+{
     [self executebtn:sender withAction:ACTION_DOWN];
+    if ([self.swipeableButtons containsObject:sender]) {
+        self.swipingButton = sender;
+    }
 }
 
-- (void) executebtn_up:(UIButton *)sender {
-    [self executebtn:sender withAction:ACTION_UP];
+- (void)executebtn_swipe:(UIPanGestureRecognizer *)sender
+{
+    CGPoint location = [sender locationInView:self.view];
+    if (sender.state == UIGestureRecognizerStateCancelled || sender.state == UIGestureRecognizerStateEnded) {
+        [self executebtn_up:nil];
+        return;
+    }
+    for (ControlButton *button in self.swipeableButtons) {
+        if (CGRectContainsPoint(button.frame, location) && (ControlButton *)self.swipingButton != button) {
+            [self executebtn:self.swipingButton withAction:ACTION_UP];
+            self.swipingButton = (ControlButton *)button;
+            [self executebtn:self.swipingButton withAction:ACTION_DOWN];
+            break;
+        }
+    }
 }
 
-- (void) executebtn_special_togglebtn:(int)held {
+- (void)executebtn_up:(ControlButton *)sender
+{
+    if (self.swipingButton) {
+        [self executebtn:self.swipingButton withAction:ACTION_UP];
+        self.swipingButton = nil;
+    } else {
+        [self executebtn:sender withAction:ACTION_UP];
+    }
+}
+
+- (void)executebtn_special_togglebtn:(int)held {
     if (held == 0) {
         currentVisibility = !currentVisibility;
-        for (int i = 0; i < togglableVisibleButtonIndex + 1; i++) {
-            togglableVisibleButtons[i].hidden = currentVisibility;
+        for (ControlButton *button in self.togglableVisibleButtons) {
+            button.hidden = currentVisibility;
         }
 
 #ifndef DEBUG_VISIBLE_TEXT_FIELD
@@ -629,28 +656,28 @@ int touchesMovedCount;
 // Equals to Android ACTION_DOWN
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [super touchesBegan: touches withEvent: event];
-    [self sendTouchEvent: touches withUIEvent: event withEvent: ACTION_DOWN];
+    [super touchesBegan:touches withEvent:event];
+    [self sendTouchEvent:touches withUIEvent:event withEvent:ACTION_DOWN];
 }
 
 // Equals to Android ACTION_MOVE
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [super touchesMoved: touches withEvent: event];
-    [self sendTouchEvent: touches withUIEvent: event withEvent: ACTION_MOVE];
+    [super touchesMoved:touches withEvent:event];
+    [self sendTouchEvent:touches withUIEvent:event withEvent:ACTION_MOVE];
 }
 
 // Equals to Android ACTION_UP
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [super touchesEnded: touches withEvent: event];
-    [self sendTouchEvent: touches withUIEvent: event withEvent: ACTION_UP];
+    [super touchesEnded:touches withEvent:event];
+    [self sendTouchEvent:touches withUIEvent:event withEvent:ACTION_UP];
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [super touchesCancelled: touches withEvent: event];
-    [self sendTouchEvent: touches withUIEvent: event withEvent: ACTION_UP];
+    [super touchesCancelled:touches withEvent:event];
+    [self sendTouchEvent:touches withUIEvent:event withEvent:ACTION_UP];
 }
 
 @end

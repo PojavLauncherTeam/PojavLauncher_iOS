@@ -328,9 +328,14 @@ int launchJVM(int argc, char *argv[]) {
         mkdir(javaHome, 755);
 
         // Symlink the skeleton part of JRE
+        sprintf((char *)src, "%s/jre/man", getenv("BUNDLE_PATH"));
+        sprintf((char *)dst, "%s/man", javaHome);
+        symlink(src, dst);
+
         sprintf((char *)src, "%s/jre/lib", getenv("BUNDLE_PATH"));
         sprintf((char *)dst, "%s/lib", javaHome);
         mkdir(dst, 755);
+
         DIR *d;
         struct dirent *dir;
         d = opendir(src);
@@ -341,6 +346,32 @@ int launchJVM(int argc, char *argv[]) {
             if (i < 2) {
                 i++;
                 continue;
+            } else if (!strncmp(dir->d_name, "jli", 3)) {
+                sprintf((char *)dst, "%s/lib/jli", javaHome);
+                mkdir(dst, 755);
+                
+                // libjli.dylib
+                sprintf((char *)src, "%s/Frameworks/libjli.dylib.framework/libjli.dylib", getenv("BUNDLE_PATH"));
+                sprintf((char *)dst, "%s/lib/jli/libjli.dylib", javaHome);
+                symlink(src, dst);
+            } else if (!strncmp(dir->d_name, "server", 6)) {
+                sprintf((char *)dst, "%s/lib/server", javaHome);
+                mkdir(dst, 755);
+
+                // libjsig.dylib
+                sprintf((char *)src, "%s/Frameworks/libjsig.dylib.framework/libjsig.dylib", getenv("BUNDLE_PATH"));
+                sprintf((char *)dst, "%s/lib/server/libjsig.dylib", javaHome);
+                symlink(src, dst);
+
+                // libjvm.dylib
+                sprintf((char *)src, "%s/Frameworks/libjvm.dylib.framework/libjvm.dylib", getenv("BUNDLE_PATH"));
+                sprintf((char *)dst, "%s/lib/server/libjvm.dylib", javaHome);
+                symlink(src, dst);
+
+                // Xusage.txt
+                sprintf((char *)src, "%s/jre/lib/server/Xusage.txt", getenv("BUNDLE_PATH"));
+                sprintf((char *)dst, "%s/lib/server/Xusage.txt", javaHome);
+                symlink(src, dst);
             } else {
                 sprintf((char *)src, "%s/jre/lib/%s", getenv("BUNDLE_PATH"), dir->d_name);
                 sprintf((char *)dst, "%s/lib/%s", javaHome, dir->d_name);
@@ -362,9 +393,13 @@ int launchJVM(int argc, char *argv[]) {
             } else if (!strncmp(dir->d_name, "lib", 3)) {
                 assert(strlen(dir->d_name) > 12);
                 char *dylibName = strdup(dir->d_name);
-                dylibName[strlen(dylibName) - 11] = '\0';
+                dylibName[strlen(dylibName) - 10] = '\0';
                 sprintf((char *)src, "%s/Frameworks/%s/%s", getenv("BUNDLE_PATH"), dir->d_name, dylibName);
-                sprintf((char *)dst, "%s/lib/%s", javaHome, dylibName);
+                if (!strncmp(dir->d_name, "libjvm.dylib", 12)) {
+                    sprintf((char *)dst, "%s/lib/server/%s", javaHome, dylibName);
+                } else {
+                    sprintf((char *)dst, "%s/lib/%s", javaHome, dylibName);
+                }
                 symlink(src, dst);
                 dylibName[strlen(dylibName) - 11] = '.';
                 free(dylibName);

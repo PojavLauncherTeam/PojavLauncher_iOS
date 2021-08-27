@@ -147,10 +147,12 @@ UISwitch *noshaderconvSwitch;
     [scrollView addSubview:rendTextField];
 
     rendererList = [[NSMutableArray alloc] init];
-    NSString *gl4es114 = @"libgl4es_114.dylib";
-    NSString *gl4es115 = @"libgl4es_115.dylib";
-    [rendererList addObject:gl4es114];
-    [rendererList addObject:gl4es115];
+    NSString *lib_gl4es114 = @"libgl4es_114.dylib";
+    NSString *lib_gl4es115 = @"libgl4es_115.dylib";
+    //NSString *lib_vgpu = @"libvgpu.dylib";
+    [rendererList addObject:lib_gl4es114];
+    [rendererList addObject:lib_gl4es115];
+    //[rendererList addObject:lib_vgpu];
 
     rendPickerView = [[UIPickerView alloc] init];
     rendPickerView.delegate = self;
