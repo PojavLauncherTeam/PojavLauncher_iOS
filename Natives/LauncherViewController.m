@@ -109,7 +109,7 @@ int versionSelectedAt = 0;
 - (void)fetchLocalVersionList:(NSMutableArray *)finalVersionList withPreviousIndex:(int)index
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *versionPath = [NSString stringWithFormat:@"%s/Documents/minecraft/versions/", getenv("HOME")];
+    NSString *versionPath = [NSString stringWithFormat:@"%s/versions/", getenv("POJAV_GAME_DIR")];
     NSArray *localVersionList = [fileManager contentsOfDirectoryAtPath:versionPath error:Nil];
     for (NSString *versionId in localVersionList) {
         NSString *localPath = [versionPath stringByAppendingString:versionId];
