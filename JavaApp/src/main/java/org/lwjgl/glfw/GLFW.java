@@ -1056,10 +1056,14 @@ public class GLFW
     }
     
     public static void glfwSetWindowSize(long window, int width, int height) {
-        internalGetWindow(window).width = width;
-        internalGetWindow(window).height = height;
-        
-        System.out.println("GLFW: Set size for window " + window + ", width=" + width + ", height=" + height);
+    	try {
+        	internalGetWindow(window).width = width;
+        	internalGetWindow(window).height = height;
+        	System.out.println("GLFW: Set size for window " + window + ", width=" + width + ", height=" + height);
+        } catch (Throwable th) {
+        	System.err.println("Unable to set window size for window " + window);
+        	th.printStackTrace();
+        }
     }
     
 	public static void glfwShowWindow(long window) {
