@@ -119,7 +119,6 @@
     self.frame = CGRectMake(propX + insets.left, propY, propW, propH);
     self.alpha = [[properties valueForKey:@"opacity"] floatValue];
     self.backgroundColor = convertARGB2UIColor(propBackgroundColor);
-    NSLog(@"DBG set bg color %@", self.backgroundColor);
 
     self.layer.borderColor = [convertARGB2UIColor(propStrokeColor) CGColor];
     if (propCornerRadius > 0) {

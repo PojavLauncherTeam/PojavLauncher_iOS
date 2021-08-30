@@ -96,7 +96,6 @@ int width;
                 [button addGestureRecognizer:[[UITapGestureRecognizer alloc]
                     initWithTarget:self action:@selector(showControlPopover:)]];
                 [self.offsetView addSubview:button];
-                NSLog(@"DBG: Added btn %@", button);
             }
             self.cc_dictionary[@"scaledAt"] = @(savedScale);
         }
