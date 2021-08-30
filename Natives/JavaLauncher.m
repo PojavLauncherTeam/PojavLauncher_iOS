@@ -500,6 +500,7 @@ int launchJVM(int argc, char *argv[]) {
         snprintf(userHome, 2048, "-Duser.home=%s", getenv("POJAV_HOME"));
         snprintf(memMin, 2048, "-Xms%sM", allocmem);
         snprintf(memMax, 2048, "-Xmx%sM", allocmem);
+        NSLog(@"[Pre-init] Java executable path: %s", javaPath);
 
         chdir(userDir);
 

@@ -109,7 +109,7 @@ int notchOffset;
     UILongPressGestureRecognizer *longpressGesture = [[UILongPressGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnLongpress:)];
     longpressGesture.delegate = self;
-    longpressGesture.minimumPressDuration = ((NSNumber *)getPreference(@"time_longPressTrigger")).floatValue / 1000;
+    longpressGesture.minimumPressDuration = [getPreference(@"time_longPressTrigger") floatValue] / 1000;
     [self.surfaceView addGestureRecognizer:longpressGesture];
     
     UIPanGestureRecognizer *scrollPanGesture = [[UIPanGestureRecognizer alloc]
@@ -167,8 +167,7 @@ int notchOffset;
         self.cc_dictionary = [NSJSONSerialization JSONObjectWithData:cc_objc_data options:NSJSONReadingMutableContainers error:&cc_error];
         if (cc_error != nil) {
             showDialog(self, @"Error parsing JSON", cc_error.localizedDescription);
-        } else {
-            convertV1ToV2(self.cc_dictionary);
+        } else if (convertLayoutIfNecessary(self.cc_dictionary)) {
             NSMutableArray *cc_controlDataList = self.cc_dictionary[@"mControlDataList"];
             CGFloat currentScale = [self.cc_dictionary[@"scaledAt"] floatValue];
             CGFloat savedScale = [getPreference(@"button_scale") floatValue];

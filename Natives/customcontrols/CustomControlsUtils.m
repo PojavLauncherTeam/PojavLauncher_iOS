@@ -1,4 +1,5 @@
 #import "CustomControlsUtils.h"
+#import "../ios_uikit_bridge.h"
 #include "../glfw_keycodes.h"
 #include "../utils.h"
 
@@ -16,7 +17,7 @@ NSMutableDictionary* createButton(NSString* name, int* keycodes, NSString* dynam
     dict[@"dynamicY"] = dynamicY;
     dict[@"width"] = @(width);
     dict[@"height"] = @(height);
-    dict[@"opacity"] = @(100);
+    dict[@"opacity"] = @(1);
     dict[@"cornerRadius"] = @(0);
     dict[@"bgColor"] = @(0x4d000000);
     return dict;
@@ -42,22 +43,46 @@ int convertUIColor2ARGB(UIColor* color) {
            (b << 0);
 }
 
-void convertV1ToV2(NSMutableDictionary* dict) {
-    if (((NSNumber *)dict[@"version"]).intValue >= 2) {
-        return;
+void convertV2Layout(NSMutableDictionary* dict) {
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    CGFloat screenScale = [[UIScreen mainScreen] scale];
+    UIEdgeInsets insets = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets;
+
+    // width: offset the notch parts
+    CGFloat screenWidth = (screenBounds.size.width - insets.left - insets.right) * screenScale;
+
+    for (NSMutableDictionary *button in (NSMutableArray *)dict[@"mControlDataList"]) {
+        if (![button[@"isDynamicBtn"] boolValue]) {
+            button[@"dynamicX"] = [NSString stringWithFormat:@"%f * ${screen_width}", [button[@"x"] floatValue] / screenWidth];
+            button[@"dynamicY"] = [NSString stringWithFormat:@"%f * ${screen_height}", [button[@"y"] floatValue] / screenBounds.size.height];
+            [button removeObjectForKey:@"x"];
+            [button removeObjectForKey:@"y"];
+        }
     }
-    dict[@"scaledAt"] = @(100);
-    dict[@"version"] = @(2);
+    for (NSMutableDictionary *button in (NSMutableArray *)dict[@"mDrawerDataList"]) {
+        NSMutableDictionary *buttonProp = button[@"properties"];
+        if (![buttonProp[@"isDynamicBtn"] boolValue]) {
+            buttonProp[@"dynamicX"] = [NSString stringWithFormat:@"%f * ${screen_width}", [buttonProp[@"x"] floatValue] / screenWidth];
+            buttonProp[@"dynamicY"] = [NSString stringWithFormat:@"%f * ${screen_height}", [buttonProp[@"y"] floatValue] / screenBounds.size.height];
+            [buttonProp removeObjectForKey:@"x"];
+            [buttonProp removeObjectForKey:@"y"];
+        }
+    }
+
+    dict[@"version"] = @(3);
+}
+
+void convertV1Layout(NSMutableDictionary* dict) {
     for (NSMutableDictionary *btnDict in (NSMutableArray *)dict[@"mControlDataList"]) {
         NSMutableArray *keycodes = [NSMutableArray arrayWithCapacity:4];
-        CGFloat scale = ((NSNumber *)dict[@"scaledAt"]).floatValue;
+        CGFloat scale = [dict[@"scaledAt"] floatValue];
 
         // default values
         btnDict[@"bgColor"] = @(0x4d000000);
         btnDict[@"strokeWidth"] = @(0);
 
         // opacity -> reverse transparency
-        btnDict[@"opacity"] = @(100 - ((NSNumber *)btnDict[@"transparency"]).intValue);
+        btnDict[@"opacity"] = @((100.0 - [btnDict[@"transparency"] intValue]) / 100.0);
         [btnDict removeObjectForKey:@"transparency"];
 
         // pixel of width, height -> dp
@@ -65,7 +90,7 @@ void convertV1ToV2(NSMutableDictionary* dict) {
         btnDict[@"height"] = @(((NSNumber *)btnDict[@"height"]).floatValue / scale * 50.0);
 
         // isRound -> cornerRadius 35%
-        if (((NSNumber *)btnDict[@"isRound"]).boolValue == YES) {
+        if ([btnDict[@"isRound"] boolValue] == YES) {
             btnDict[@"cornerRadius"] = @(35.0f);
         }
         [btnDict removeObjectForKey:@"isRound"];
@@ -75,19 +100,19 @@ void convertV1ToV2(NSMutableDictionary* dict) {
         [btnDict removeObjectForKey:@"keycode"];
 
         // alt -> keycodes[i++]
-        if (((NSNumber *)dict[@"holdAlt"]).boolValue == YES) {
+        if ([dict[@"holdAlt"] boolValue] == YES) {
             [keycodes addObject:@(GLFW_KEY_LEFT_ALT)];
         }
         [btnDict removeObjectForKey:@"holdAlt"];
 
         // ctrl -> keycodes[i++]
-        if (((NSNumber *)dict[@"holdCtrl"]).boolValue == YES) {
+        if ([dict[@"holdCtrl"] boolValue] == YES) {
             [keycodes addObject:@(GLFW_KEY_LEFT_CONTROL)];
         }
         [btnDict removeObjectForKey:@"holdCtrl"];
 
         // shift -> keycodes[i++]
-        if (((NSNumber *)dict[@"holdShift"]).boolValue == YES) {
+        if ([dict[@"holdShift"] boolValue] == YES) {
             [keycodes addObject:@(GLFW_KEY_LEFT_SHIFT)];
         }
         [btnDict removeObjectForKey:@"holdShift"];
@@ -95,12 +120,36 @@ void convertV1ToV2(NSMutableDictionary* dict) {
         // set final keycode array
         btnDict[@"keycodes"] = keycodes;
     }
+
+    dict[@"scaledAt"] = @(100);
+    dict[@"version"] = @(2);
+
+    convertV2Layout(dict);
+}
+
+BOOL convertLayoutIfNecessary(NSMutableDictionary* dict) {
+    int version = [dict[@"version"] intValue];
+    switch (version) {
+        case 0:
+        case 1:
+            convertV1Layout(dict);
+            break;
+        case 2:
+            convertV2Layout(dict);
+            break;
+        case 3:
+            break;
+        default:
+            showDialog(viewController, @"Error parsing JSON", [NSString stringWithFormat:@"Incompatible control version code %d. This control version was not implemented in this launcher build.", version]);
+            return NO;
+    }
+    return YES;
 }
 
 void generateAndSaveDefaultControl() {
-    // Generate a V2 control
+    // Generate a V2.3 control
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    dict[@"version"] = @(2);
+    dict[@"version"] = @(3);
     dict[@"scaledAt"] = @(100);
     dict[@"mControlDataList"] = [[NSMutableArray alloc] init];
     [dict[@"mControlDataList"] addObject:createButton(@"Keyboard",

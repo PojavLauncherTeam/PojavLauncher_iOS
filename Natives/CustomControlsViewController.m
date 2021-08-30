@@ -81,19 +81,13 @@ int width;
         self.cc_dictionary = [NSJSONSerialization JSONObjectWithData:cc_objc_data options:NSJSONReadingMutableContainers error:&cc_error];
         if (cc_error != nil) {
             showDialog(self, @"Error parsing JSON", cc_error.localizedDescription);
-        } else {
-            convertV1ToV2(self.cc_dictionary);
+        } else if (convertLayoutIfNecessary(self.cc_dictionary)) {
             NSMutableArray *cc_controlDataList = self.cc_dictionary[@"mControlDataList"];
             CGFloat currentScale = ((NSNumber *)self.cc_dictionary[@"scaledAt"]).floatValue;
             CGFloat savedScale = ((NSNumber *)getPreference(@"button_scale")).floatValue;
             int cc_version = ((NSNumber *)self.cc_dictionary[@"version"]).intValue;
             for (int i = 0; i < (int) cc_controlDataList.count; i++) {
                 NSMutableDictionary *cc_buttonDict = cc_controlDataList[i];
-                if (cc_version < 2) {
-                    showDialog(self, @"Notice", @"Custom controls v1 to v2 was not implemented!");
-                    return;
-                    //convertV1ToV2(cc_buttonDict);
-                }
                 APPLY_SCALE(cc_buttonDict[@"width"]);
                 APPLY_SCALE(cc_buttonDict[@"height"]);
                 APPLY_SCALE(cc_buttonDict[@"strokeWidth"]);
@@ -102,6 +96,7 @@ int width;
                 [button addGestureRecognizer:[[UITapGestureRecognizer alloc]
                     initWithTarget:self action:@selector(showControlPopover:)]];
                 [self.offsetView addSubview:button];
+                NSLog(@"DBG: Added btn %@", button);
             }
             self.cc_dictionary[@"scaledAt"] = @(savedScale);
         }
@@ -188,9 +183,19 @@ int width;
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    // dirty hack to avoid displaying contents in the arrow
+/*
+    switch (popoverPresentationController.arrowDirection) {
+        case UIPopoverArrowDirectionUp:
+            
+        case UIPopoverArrowDirectionDown:
+        case UIPopoverArrowDirectionLeft:
+        case UIPopoverArrowDirectionRight:
+    }
+*/
     self.view.frame = CGRectMake(0, 0, self.preferredContentSize.width, self.preferredContentSize.height);
-    
-    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(20.0, 0.0, self.preferredContentSize.width - 40.0, self.preferredContentSize.height - 40.0)];
+
+    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.preferredContentSize.width, self.preferredContentSize.height)];
     [self.view addSubview:self.scrollView];
 
     if (self.shouldDisplayButtonEditor) {
@@ -213,8 +218,6 @@ int width;
     [editName addTarget:editName action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     editName.placeholder = @"Name";
     editName.text = self.targetButton.properties[@"name"];
-    //editName.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
-    //editName.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [self.scrollView addSubview:editName];
 
     UILabel *labelSize = [[UILabel alloc] initWithFrame:CGRectMake(0.0, labelName.frame.size.height + 4.0, 0.0, 0.0)];
@@ -223,18 +226,24 @@ int width;
     [labelSize sizeToFit];
     [self.scrollView addSubview:labelSize];
     // width / 2.0 + (labelSize.frame.size.width + 4.0) / 2.0
-    UILabel *labelSizeX = [[UILabel alloc] initWithFrame:CGRectMake(labelSize.frame.size.width + 4.0 + (width - labelSize.frame.size.width) / 2, labelName.frame.size.height + 4.0, 0.0, 0.0)];
+    CGFloat editSizeWidthValue = (width - labelSize.frame.size.width) / 2 - labelSize.frame.size.height / 2;
+    UILabel *labelSizeX = [[UILabel alloc] initWithFrame:CGRectMake(labelSize.frame.size.width + editSizeWidthValue, labelName.frame.size.height + 4.0, labelSize.frame.size.height, labelSize.frame.size.height)];
     labelSizeX.text = @"x";
-    labelSizeX.numberOfLines = 0;
-    [labelSizeX sizeToFit];
     [self.scrollView addSubview:labelSizeX];
-    UITextField *editSizeWidth = [[UITextField alloc] initWithFrame:CGRectMake(labelSize.frame.size.width + 4.0, labelSize.frame.origin.y, width - labelSize.frame.size.width - 4.0, labelSize.frame.size.height)];
+    UITextField *editSizeWidth = [[UITextField alloc] initWithFrame:CGRectMake(labelSize.frame.size.width, labelSize.frame.origin.y, editSizeWidthValue, labelSize.frame.size.height)];
     [editSizeWidth addTarget:editSizeWidth action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
+    editSizeWidth.keyboardType = UIKeyboardTypeDecimalPad;
     editSizeWidth.placeholder = @"width";
-    editSizeWidth.text = ((NSNumber *)self.targetButton.properties[@"width"]).stringValue;
-    editSizeWidth.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
-    editSizeWidth.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    editSizeWidth.text = [self.targetButton.properties[@"width"] stringValue];
+    editSizeWidth.textAlignment = NSTextAlignmentCenter;
     [self.scrollView addSubview:editSizeWidth];
+    UITextField *editSizeHeight = [[UITextField alloc] initWithFrame:CGRectMake(labelSizeX.frame.origin.x + labelSizeX.frame.size.width, labelSize.frame.origin.y, editSizeWidthValue, labelSize.frame.size.height)];
+    [editSizeHeight addTarget:editSizeHeight action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
+    editSizeHeight.keyboardType = UIKeyboardTypeDecimalPad;
+    editSizeHeight.placeholder = @"height";
+    editSizeHeight.text = [self.targetButton.properties[@"height"] stringValue];
+    editSizeHeight.textAlignment = NSTextAlignmentCenter;
+    [self.scrollView addSubview:editSizeHeight];
 }
 
 - (void)displayControlMenu {
