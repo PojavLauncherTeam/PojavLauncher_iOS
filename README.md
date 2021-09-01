@@ -24,12 +24,11 @@ If you have Chimera, Taurine, Odyssey, or another jailbreak that comes with **li
 ### Bingner/Elucubratus bootstraps
 If you have unc0ver, checkra1n, or another jailbreak that comes with **Cydia Substrate** or **Substitute**, this one's for you. You can also use this if you have a libhooker jailbreak.
 
-1. Add `https://doregon.github.io/cydia` to your sources list.
+1. Add `https://apt.doregon.gq` to your sources list.
 2. Search for `pojavlauncher` with your favorite package manager.
 3. Install the package you wish to have, according to your preference:
    * `pojavlauncher` is the stable build. This one gets updated with new releases or tags on this repository, or when Procursus updated their copy.
    * `pojavlauncher-dev` is the latest commit on the `main` branch of this repository. It may have application breaking bugs, but also has more features.
-   * `pojavlauncher-zink` is the latest commit on the `backend_zink` branch of this repository. This is the preprepreprealpha of the Zink graphics libraries that are being ported to allow 1.17 to work. This is not recommended, but fun to test.
 
 ## Known issues
 * Minecraft 1.12.2 and below are very buggy: you can't type text, random crashes, etc...
