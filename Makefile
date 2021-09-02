@@ -129,7 +129,7 @@ extras:
 	fi
 	@echo 'Finished build task - extraneous files'
 
-package:
+package: native java extras
 	@echo 'Starting build task - package for external devices'
 	@if [ '$(IOS)' = '0' ]; then \
 		cp -R Natives/resources/* Natives/build/PojavLauncher.app/ || exit 1; \
@@ -177,7 +177,7 @@ package:
 	fi
 	@echo 'Finished build task - package for external devices'
 
-install:
+install: native java
 	@echo 'Starting build task - installing to local device'
 	@echo 'Please note that this may not work properly. If it doesn'\''t work for you, you can manually extract the .deb in /var/tmp/pojavlauncher_iphoneos-arm.deb with dpkg or Filza.'
 	@if [ '$(IOS)' = '0' ]; then \
@@ -201,7 +201,7 @@ install:
 		uicache -p /Applications/PojavLauncher.app; \
 	fi
 
-deploy:
+deploy: native java
 	@echo 'Starting build task - deploy to local device'
 	@if [ '$(IOS)' = '0' ]; then \
 		if [ '$(DEVICE_IP)' != '' ]; then \

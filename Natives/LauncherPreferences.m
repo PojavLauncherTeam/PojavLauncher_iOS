@@ -33,6 +33,7 @@ void loadPreferences() {
     setDefaultValueForPref(@"local_warn", @YES);
     setDefaultValueForPref(@"mem_warn", @YES);
     setDefaultValueForPref(@"java_warn", @YES);
+    setDefaultValueForPref(@"jb_warn", @YES);
     setDefaultValueForPref(@"disable_gl4es_shaderconv", @NO);
 
     [prefDict writeToFile:prefPath atomically:YES];

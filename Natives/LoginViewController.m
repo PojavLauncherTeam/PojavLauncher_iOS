@@ -83,6 +83,17 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     } else {
         self.view.backgroundColor = [UIColor whiteColor];
     }
+    
+    if(getenv("POJAV_DETECTEDJB")) {
+        if(![[NSFileManager defaultManager] fileExistsAtPath:@"/.procursus_strapped"] && [getPreference(@"jb_warn") boolValue] == YES) {
+            NSString *jbMessage = [NSString stringWithFormat:@"Your current jailbreak (%s) does not have the Procursus bootstrap, which means that certain issues may occur that cannot be fixed. Please switch to a completely supported jailbreak, if possible.", getenv("POJAV_DETECTEDJB")];
+            UIAlertController *jbAlert = [UIAlertController alertControllerWithTitle:@"Jailbreak not completely supported." message:jbMessage preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+            [self presentViewController:jbAlert animated:YES completion:nil];
+            [jbAlert addAction:ok];
+            setPreference(@"jb_warn", @NO);
+        }
+    }
 
     CGFloat widthSplit = width / 4.0;
     CGFloat widthSplit2 = width / 2.0;

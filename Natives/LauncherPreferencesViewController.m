@@ -27,6 +27,8 @@ UITextField *rendTextField;
 NSMutableArray* rendererList;
 UIPickerView* rendPickerView;
 UISwitch *noshaderconvSwitch;
+UIBlurEffect *blur;
+UIVisualEffectView *blurView;
 
 - (void)viewDidLoad
 {
@@ -46,6 +48,9 @@ UISwitch *noshaderconvSwitch;
     [self.view addSubview:scrollView];
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
+    blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular];
+    blurView = [[UIVisualEffectView alloc] initWithEffect:blur];
+    
     // Update color mode once
     if(@available(iOS 13.0, *)) {
         [self traitCollectionDidChange:nil];
@@ -239,7 +244,9 @@ UISwitch *noshaderconvSwitch;
 
     if (@available(iOS 14.0, *)) {
         // use UIMenu
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage systemImageNamed:@"questionmark.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStyleDone target:self action:@selector(helpMenu)];
+        UIBarButtonItem *help = [[UIBarButtonItem alloc] initWithImage:[[UIImage systemImageNamed:@"questionmark.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStyleDone target:self action:@selector(helpMenu)];
+        UIBarButtonItem *close = [[UIBarButtonItem alloc] initWithImage:[[UIImage systemImageNamed:@"xmark.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStyleDone target:self action:@selector(exitAppAlert)];
+        self.navigationItem.rightBarButtonItems = @[help, close];
         UIAction *option1 = [UIAction actionWithTitle:@"Button scale" image:[[UIImage systemImageNamed:@"aspectratio"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:BTNSCALE];}];
         UIAction *option2 = [UIAction actionWithTitle:@"Resolution" image:[[UIImage systemImageNamed:@"viewfinder"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
@@ -264,7 +271,9 @@ UISwitch *noshaderconvSwitch;
         self.navigationItem.rightBarButtonItem.primaryAction = nil;
         self.navigationItem.rightBarButtonItem.menu = menu;
     } else {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Help" style:UIBarButtonItemStyleDone target:self action:@selector(helpMenu)];
+        UIBarButtonItem *help = [[UIBarButtonItem alloc] initWithTitle:@"Help" style:UIBarButtonItemStyleDone target:self action:@selector(helpMenu)];
+        UIBarButtonItem *close = [[UIBarButtonItem alloc] initWithTitle:@"Close App" style:UIBarButtonItemStyleDone target:self action:@selector(exitApp)];
+        self.navigationItem.rightBarButtonItems = @[help, close];
     }
 
     scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, scrollView.frame.size.height + 200);
@@ -295,6 +304,28 @@ UISwitch *noshaderconvSwitch;
     } else if (textField.tag == 104) {
         setPreference(@"game_directory", textField.text);
     }
+}
+
+- (void)exitAppAlert {
+    UIAlertController *closeAlert = [UIAlertController alertControllerWithTitle:@"Close PojavLauncher?" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *close = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self exitApp];}];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:nil];
+    [closeAlert addAction:cancel];
+    [closeAlert addAction:close];
+    [self presentViewController:closeAlert animated:YES completion:nil];
+
+}
+
+- (void)exitApp {
+    [blurView setFrame:[[self view] bounds]];
+    [blurView setAlpha:0];
+    [self.view addSubview:blurView];
+
+    [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        [blurView setAlpha:1];
+    } completion:^(BOOL finished) {
+        exit(0);
+    }];
 }
 
 - (void)helpMenu {
@@ -412,6 +443,7 @@ UISwitch *noshaderconvSwitch;
             setPreference(@"option_warn", @YES);
             setPreference(@"local_warn", @YES);
             setPreference(@"java_warn", @YES);
+            setPreference(@"jb_warn", @YES);
             if(1 == 1) {
                 UIAlertController *resetWarn = [UIAlertController alertControllerWithTitle:@"Warnings reset." message:@"Restart to show warnings again." preferredStyle:UIAlertControllerStyleActionSheet];
                 [self setPopoverProperties:resetWarn.popoverPresentationController sender:(UIButton *)sender];

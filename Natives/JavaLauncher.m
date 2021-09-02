@@ -171,21 +171,25 @@ void init_logDeviceAndVer (char *argument) {
         } else if ([[NSFileManager defaultManager] fileExistsAtPath:@"/odyssey"]) {
             deviceJailbreak = "Odyssey";
         } else if ([[NSFileManager defaultManager] fileExistsAtPath:@"/chimera"]) {
-            deviceJailbreak = "Chimera";
+            if ([[NSFileManager defaultManager] fileExistsAtPath:@"/.procursus_strapped"]) {
+                deviceJailbreak = "Chimera";
+            } else {
+                deviceJailbreak = "Chimera <1.4";
+            }
         } else {
             if ([[NSFileManager defaultManager] fileExistsAtPath:@"/private/etc/apt/undecimus"]) {
                 deviceJailbreak = "unc0ver";
-            } else if ([[NSFileManager defaultManager] fileExistsAtPath:@"/var/checkra1n.dmg"]) {
-                if ([[NSFileManager defaultManager] fileExistsAtPath:@"/.installed_odyssey"]) {
+            } else if ([[NSFileManager defaultManager] fileExistsAtPath:@"/binpack/lib/dyld"]) {
+                if ([[NSFileManager defaultManager] fileExistsAtPath:@"/.procursus_strapped"]) {
                     deviceJailbreak = "odysseyra1n";
                 } else {
                     deviceJailbreak = "checkra1n";
                 }
             }
         }
-        debug("[Pre-Init] Running on %s with iOS %s, jailbroken with %s", deviceHardware, deviceSoftware, deviceJailbreak);
+        debug("[Pre-Init] %s with iOS %s (%s)", deviceHardware, deviceSoftware, deviceJailbreak);
     } else {
-        debug("[Pre-Init] Running on %s with iOS %s", deviceHardware, deviceSoftware);
+        debug("[Pre-Init] %s with iOS %s", deviceHardware, deviceSoftware);
     }
 
     // PojavLauncher version
