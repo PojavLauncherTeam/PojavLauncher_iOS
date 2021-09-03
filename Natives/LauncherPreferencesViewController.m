@@ -229,6 +229,11 @@ UIVisualEffectView *blurView;
     [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:NO];
     [noshaderconvSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [scrollView addSubview:noshaderconvSwitch];
+    if (![getPreference(@"renderer") containsString:@"115"]) {
+            [noshaderconvSwitch setEnabled:NO];
+        } else if (![getPreference(@"renderer") containsString:@"114"]) {
+            [noshaderconvSwitch setEnabled:YES];
+    }
 
     UILabel *resetWarnTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, currY+=40.0, 0.0, 0.0)];
     resetWarnTextView.text = @"Reset launcher warnings";
@@ -288,9 +293,11 @@ UIVisualEffectView *blurView;
         if (![textField.text containsString:@"115"] && [getPreference(@"disable_gl4es_shaderconv") boolValue] == YES) {
             setPreference(@"disable_gl4es_shaderconv", @NO);
             [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:YES];
+            [noshaderconvSwitch setEnabled:NO];
         } else if (![textField.text containsString:@"114"] && [getPreference(@"disable_gl4es_shaderconv") boolValue] == NO){
             setPreference(@"disable_gl4es_shaderconv", @YES);
             [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:YES];
+            [noshaderconvSwitch setEnabled:YES];
         }
     } else if (textField.tag == 103) {
         setPreference(@"java_home", textField.text);
@@ -381,7 +388,7 @@ UIVisualEffectView *blurView;
         message = @"This option allows you to change the Java executable directory. Choosing '/usr/lib/jvm/java-16-openjdk' may allow you to play 1.17, however older versions and most versions of modded Minecraft, as well as the mod installer, will not work. This option also requires a restart of the launcher to take effect.";
     } else if(setting == GDIRECTORY) {
         title = @"Game directory";
-        message = @"This option allows you to change where your Minecraft settings and saves are stored in a MultiMC like fashion. Useful for when you want to have multiple mod loaders instaldo not want to delete/move mods around to switch. This option also requires a restart of the launcher to take effect.";
+        message = @"This option allows you to change where your Minecraft settings and saves are stored in a MultiMC like fashion. Useful for when you want to have multiple mod loaders installed but do not want to delete/move mods around to switch. This option also requires a restart of the launcher to take effect.";
     } else if(setting == NOSHADERCONV) {
         title = @"Disable shaderconv";
         message = @"This option allows you to disable the shader converter inside gl4es 1.1.5 in order to let ANGLE processes them directly. This option is experimental and should only be enabled when playing Minecraft 1.17 or above.";
@@ -426,17 +433,7 @@ UIVisualEffectView *blurView;
 - (void)switchChanged:(UISwitch *)sender {
     switch (sender.tag) {
         case 105:
-            if (![rendTextField.text containsString:@"115"] && sender.isOn) {
-                setPreference(@"disable_gl4es_shaderconv", @NO);
-                UIAlertController *resetWarn = [UIAlertController alertControllerWithTitle:@"Unavailable with the current renderer." message:@"This switch requires GL4ES 1.1.5 to function." preferredStyle:UIAlertControllerStyleActionSheet];
-                [self setPopoverProperties:resetWarn.popoverPresentationController sender:(UIButton *)sender];
-                UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
-                [self presentViewController:resetWarn animated:YES completion:nil];
-                [resetWarn addAction:ok];
-                [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:YES];
-            } else {
-                setPreference(@"disable_gl4es_shaderconv", @(sender.isOn));
-            }
+            setPreference(@"disable_gl4es_shaderconv", @(sender.isOn));
             break;
         case 106:
             setPreference(@"mem_warn", @YES);
