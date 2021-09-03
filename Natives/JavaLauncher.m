@@ -421,15 +421,7 @@ int launchJVM(int argc, char *argv[]) {
         setenv("RENDERER", renderer, 1);
         debug("[Pre-init] RENDERER environment variable was not set. Defaulting to %s for future use.\n", renderer);
     } else {
-        if(![renderer_pre isEqualToString:@"libgl4es_114.dylib"] && ![renderer_pre isEqualToString:@"libgl4es_115.dylib"] && ![renderer_pre isEqualToString:@"libRegal.dylib"]) {
-            debug("[Pre-Init] Failed to locate %s. Restoring default value for RENDERER.", renderer);
-            renderer_pre = @"libgl4es_114.dylib";
-            setPreference(@"renderer", renderer_pre);
-            renderer = [renderer_pre cStringUsingEncoding:NSUTF8StringEncoding];
-            setenv("RENDERER", renderer, 1);
-        } else {
-            debug("[Pre-Init] Restored preference: RENDERER is set to %s\n", renderer);
-        }
+        debug("[Pre-Init] Restored preference: RENDERER is set to %s\n", renderer);
     }
 
     allocmem_pre = [getPreference(@"allocated_memory") stringValue];
