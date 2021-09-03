@@ -23,12 +23,18 @@
 
 @implementation LauncherPreferencesViewController
 
+UITextField *jargsTextField;
 UITextField *rendTextField;
+UITextField *jhomeTextField;
+UITextField *gdirTextField;
+UITextField *activeField;
 NSMutableArray* rendererList;
 UIPickerView* rendPickerView;
 UISwitch *noshaderconvSwitch;
 UIBlurEffect *blur;
 UIVisualEffectView *blurView;
+UIScrollView *scrollView;
+
 
 - (void)viewDidLoad
 {
@@ -43,11 +49,17 @@ UIVisualEffectView *blurView;
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height) - self.navigationController.navigationBar.frame.size.height;
     CGFloat currY = 8.0;
-
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
+    CGFloat currX = (width - 62.0) / 4.28;
+    
+    scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
     [self.view addSubview:scrollView];
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width + 20, scrollView.frame.size.height + 200)];
+    scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, tableView.frame.size.height - 165);
+    [scrollView addSubview:tableView];
+    
+    [self registerForKeyboardNotifications];
+    
     blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular];
     blurView = [[UIVisualEffectView alloc] initWithEffect:blur];
     
@@ -58,7 +70,7 @@ UIVisualEffectView *blurView;
         self.view.backgroundColor = [UIColor whiteColor];
     }
 
-    UILabel *btnsizeTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, currY, 0.0, 30.0)];
+    UILabel *btnsizeTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY, 0.0, 30.0)];
     btnsizeTextView.text = @"Button scale (%)";
     btnsizeTextView.numberOfLines = 0;
     btnsizeTextView.textAlignment = NSTextAlignmentCenter;
@@ -66,9 +78,9 @@ UIVisualEffectView *blurView;
     CGRect tempRect = btnsizeTextView.frame;
     tempRect.size.height = 30.0;
     btnsizeTextView.frame = tempRect;
-    [scrollView addSubview:btnsizeTextView];
+    [tableView addSubview:btnsizeTextView];
     
-    DBNumberedSlider *buttonSizeSlider = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(8.0 + btnsizeTextView.frame.size.width, currY, self.view.frame.size.width - btnsizeTextView.frame.size.width - 12.0, btnsizeTextView.frame.size.height)];
+    DBNumberedSlider *buttonSizeSlider = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(20.0 + btnsizeTextView.frame.size.width, currY, self.view.frame.size.width - btnsizeTextView.frame.size.width - 28.0, btnsizeTextView.frame.size.height)];
     buttonSizeSlider.tag = 98;
     [buttonSizeSlider addTarget:self action:@selector(sliderMoved:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
     [buttonSizeSlider setBackgroundColor:[UIColor clearColor]];
@@ -76,9 +88,9 @@ UIVisualEffectView *blurView;
     buttonSizeSlider.maximumValue = 500.0;
     buttonSizeSlider.continuous = YES;
     buttonSizeSlider.value = [getPreference(@"button_scale") floatValue];
-    [scrollView addSubview:buttonSizeSlider];
+    [tableView addSubview:buttonSizeSlider];
 
-    UILabel *resolutionTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, currY+=40.0, 0.0, 30.0)];
+    UILabel *resolutionTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=43.0, 0.0, 30.0)];
     resolutionTextView.text = @"Resolution (%)";
     resolutionTextView.numberOfLines = 0;
     resolutionTextView.textAlignment = NSTextAlignmentCenter;
@@ -86,9 +98,9 @@ UIVisualEffectView *blurView;
     tempRect = resolutionTextView.frame;
     tempRect.size.height = 30.0;
     resolutionTextView.frame = tempRect;
-    [scrollView addSubview:resolutionTextView];
+    [tableView addSubview:resolutionTextView];
     
-    DBNumberedSlider *resolutionSlider = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(8.0 + btnsizeTextView.frame.size.width, currY, self.view.frame.size.width - btnsizeTextView.frame.size.width - 12.0, resolutionTextView.frame.size.height)];
+    DBNumberedSlider *resolutionSlider = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(20.0 + btnsizeTextView.frame.size.width, currY, self.view.frame.size.width - btnsizeTextView.frame.size.width - 28.0, resolutionTextView.frame.size.height)];
     resolutionSlider.tag = 99;
     [resolutionSlider addTarget:self action:@selector(sliderMoved:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
     [resolutionSlider setBackgroundColor:[UIColor clearColor]];
@@ -96,9 +108,9 @@ UIVisualEffectView *blurView;
     resolutionSlider.maximumValue = 150;
     resolutionSlider.continuous = YES;
     resolutionSlider.value = [getPreference(@"resolution") intValue];
-    [scrollView addSubview:resolutionSlider];
+    [tableView addSubview:resolutionSlider];
 
-    UILabel *memTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, currY+=40.0, 0.0, 30.0)];
+    UILabel *memTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=45.0, 0.0, 30.0)];
     memTextView.text = @"Allocated RAM";
     memTextView.numberOfLines = 0;
     memTextView.textAlignment = NSTextAlignmentCenter;
@@ -106,9 +118,9 @@ UIVisualEffectView *blurView;
     tempRect = memTextView.frame;
     tempRect.size.height = 30.0;
     memTextView.frame = tempRect;
-    [scrollView addSubview:memTextView];
+    [tableView addSubview:memTextView];
 
-    DBNumberedSlider *memSlider = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(8.0 + btnsizeTextView.frame.size.width, currY, self.view.frame.size.width - btnsizeTextView.frame.size.width - 12.0, resolutionTextView.frame.size.height)];
+    DBNumberedSlider *memSlider = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(20.0 + btnsizeTextView.frame.size.width, currY, self.view.frame.size.width - btnsizeTextView.frame.size.width - 28.0, resolutionTextView.frame.size.height)];
     memSlider.tag = 100;
     [memSlider addTarget:self action:@selector(sliderMoved:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
     [memSlider setBackgroundColor:[UIColor clearColor]];
@@ -117,15 +129,15 @@ UIVisualEffectView *blurView;
     memSlider.fontSize = 10;
     memSlider.continuous = YES;
     memSlider.value = [getPreference(@"allocated_memory") intValue];
-    [scrollView addSubview:memSlider];
+    [tableView addSubview:memSlider];
 
-    UILabel *jargsTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, currY+=45.0, 0.0, 0.0)];
+    UILabel *jargsTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=47.0, 0.0, 0.0)];
     jargsTextView.text = @"Java arguments  ";
     jargsTextView.numberOfLines = 0;
     [jargsTextView sizeToFit];
-    [scrollView addSubview:jargsTextView];
+    [tableView addSubview:jargsTextView];
 
-    UITextField *jargsTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 8.0, 30)];
+    jargsTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 8.0, 30)];
     [jargsTextField addTarget:jargsTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     jargsTextField.tag = 101;
     jargsTextField.delegate = self;
@@ -133,13 +145,21 @@ UIVisualEffectView *blurView;
     jargsTextField.text = (NSString *) getPreference(@"java_args");
     jargsTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
     jargsTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    [scrollView addSubview:jargsTextField];
+    [tableView addSubview:jargsTextField];
+    
+    UIToolbar *jargsPickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
+    UIBarButtonItem *jargsFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    UIBarButtonItem *jargsDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeKeyboard:)];
+    jargsDoneButton.tag = 150;
+    jargsPickerToolbar.items = @[jargsFlexibleSpace, jargsDoneButton];
 
-    UILabel *rendTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, currY+=40.0, 0.0, 0.0)];
+    jargsTextField.inputAccessoryView = jargsPickerToolbar;
+
+    UILabel *rendTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
     rendTextView.text = @"Renderer";
     rendTextView.numberOfLines = 0;
     [rendTextView sizeToFit];
-    [scrollView addSubview:rendTextView];
+    [tableView addSubview:rendTextView];
 
     rendTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 8.0, 30)];
     [rendTextField addTarget:rendTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
@@ -149,7 +169,7 @@ UIVisualEffectView *blurView;
     rendTextField.text = (NSString *) getPreference(@"renderer");
     rendTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
     rendTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    [scrollView addSubview:rendTextField];
+    [tableView addSubview:rendTextField];
 
     rendererList = [[NSMutableArray alloc] init];
     NSString *lib_gl4es114 = @"libgl4es_114.dylib";
@@ -164,19 +184,20 @@ UIVisualEffectView *blurView;
     rendPickerView.dataSource = self;
     UIToolbar *rendPickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
     UIBarButtonItem *rendFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
-    UIBarButtonItem *rendDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(rendClosePicker)];
+    UIBarButtonItem *rendDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeKeyboard:)];
+    rendDoneButton.tag = 151;
     rendPickerToolbar.items = @[rendFlexibleSpace, rendDoneButton];
 
     rendTextField.inputAccessoryView = rendPickerToolbar;
     rendTextField.inputView = rendPickerView;
 
-    UILabel *jhomeTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, currY+=40.0, 0.0, 0.0)];
+    UILabel *jhomeTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
     jhomeTextView.text = @"Java home";
     jhomeTextView.numberOfLines = 0;
     [jhomeTextView sizeToFit];
-    [scrollView addSubview:jhomeTextView];
+    [tableView addSubview:jhomeTextView];
 
-    UITextField *jhomeTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 8.0, 30)];
+    jhomeTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 8.0, 30)];
     [jhomeTextField addTarget:jhomeTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     jhomeTextField.tag = 103;
     jhomeTextField.delegate = self;
@@ -184,7 +205,15 @@ UIVisualEffectView *blurView;
     jhomeTextField.text = (NSString *) getPreference(@"java_home");
     jhomeTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
     jhomeTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    [scrollView addSubview:jhomeTextField];
+    [tableView addSubview:jhomeTextField];
+    
+    UIToolbar *jhomePickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
+    UIBarButtonItem *jhomeFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    UIBarButtonItem *jhomeDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeKeyboard:)];
+    jhomeDoneButton.tag = 152;
+    jhomePickerToolbar.items = @[jhomeFlexibleSpace, jhomeDoneButton];
+
+    jhomeTextField.inputAccessoryView = jhomePickerToolbar;
 
     if ([getPreference(@"option_warn") boolValue] == YES) {
         UIAlertController *preferenceWarn = [UIAlertController alertControllerWithTitle:@"Restart required" message:@"Some options in this menu will require that you restart the launcher for them to take effect."preferredStyle:UIAlertControllerStyleAlert];
@@ -194,13 +223,13 @@ UIVisualEffectView *blurView;
         setPreference(@"option_warn", @NO);
     }
     
-    UILabel *gdirTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, currY+=40.0, 0.0, 0.0)];
+    UILabel *gdirTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
     gdirTextView.text = @"Game directory";
     gdirTextView.numberOfLines = 0;
     [gdirTextView sizeToFit];
-    [scrollView addSubview:gdirTextView];
+    [tableView addSubview:gdirTextView];
 
-    UITextField *gdirTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 8.0, 30)];
+    gdirTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 8.0, 30)];
     [gdirTextField addTarget:jhomeTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     gdirTextField.tag = 104;
     gdirTextField.delegate = self;
@@ -208,8 +237,16 @@ UIVisualEffectView *blurView;
     gdirTextField.text = (NSString *) getPreference(@"game_directory");
     gdirTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
     gdirTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    [scrollView addSubview:gdirTextField];
+    [tableView addSubview:gdirTextField];
 
+    UIToolbar *gdirPickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
+    UIBarButtonItem *gdirFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    UIBarButtonItem *gdirDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeKeyboard:)];
+    gdirDoneButton.tag = 153;
+    gdirPickerToolbar.items = @[gdirFlexibleSpace, gdirDoneButton];
+
+    gdirTextField.inputAccessoryView = gdirPickerToolbar;
+    
     if ([getPreference(@"option_warn") boolValue] == YES) {
         UIAlertController *preferenceWarn = [UIAlertController alertControllerWithTitle:@"Restart required" message:@"Some options in this menu will require that you restart the launcher for them to take effect."preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
@@ -218,34 +255,82 @@ UIVisualEffectView *blurView;
         setPreference(@"option_warn", @NO);
     }
 
-    UILabel *noshaderconvTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, currY+=40.0, 0.0, 0.0)];
+    UILabel *noshaderconvTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
     noshaderconvTextView.text = @"Disable gl4es 1.1.5 shaderconv";
     noshaderconvTextView.numberOfLines = 0;
     [noshaderconvTextView sizeToFit];
-    [scrollView addSubview:noshaderconvTextView];
+    [tableView addSubview:noshaderconvTextView];
 
-    noshaderconvSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 58.0, currY, 50.0, 30)];
+    noshaderconvSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
     noshaderconvSwitch.tag = 105;
     [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:NO];
     [noshaderconvSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
-    [scrollView addSubview:noshaderconvSwitch];
+    [tableView addSubview:noshaderconvSwitch];
     if (![getPreference(@"renderer") containsString:@"115"]) {
             [noshaderconvSwitch setEnabled:NO];
         } else if (![getPreference(@"renderer") containsString:@"114"]) {
             [noshaderconvSwitch setEnabled:YES];
     }
 
-    UILabel *resetWarnTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, currY+=40.0, 0.0, 0.0)];
+    UILabel *resetWarnTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
     resetWarnTextView.text = @"Reset launcher warnings";
     resetWarnTextView.numberOfLines = 0;
     [resetWarnTextView sizeToFit];
-    [scrollView addSubview:resetWarnTextView];
+    [tableView addSubview:resetWarnTextView];
 
-    UISwitch *resetWarnSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 58.0, currY, 50.0, 30)];
+    UISwitch *resetWarnSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
     resetWarnSwitch.tag = 106;
     [resetWarnSwitch setOn:NO animated:NO];
     [resetWarnSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
-    [scrollView addSubview:resetWarnSwitch];
+    [tableView addSubview:resetWarnSwitch];
+    
+    UILabel *releaseTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
+    releaseTextView.text = @"Releases";
+    releaseTextView.numberOfLines = 0;
+    [releaseTextView sizeToFit];
+    [tableView addSubview:releaseTextView];
+
+    UISwitch *releaseSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(currX, currY - 5.0, 50.0, 30)];
+    releaseSwitch.tag = 107;
+    [releaseSwitch setOn:[getPreference(@"vertype_release") boolValue] animated:NO];
+    [releaseSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    [tableView addSubview:releaseSwitch];
+    
+    UILabel *snapshotTextView = [[UILabel alloc] initWithFrame:CGRectMake(releaseSwitch.frame.origin.x + releaseSwitch.frame.size.width + 8.0, currY, 0.0, 0.0)];
+    snapshotTextView.text = @"Snapshot";
+    snapshotTextView.numberOfLines = 0;
+    [snapshotTextView sizeToFit];
+    [tableView addSubview:snapshotTextView];
+
+    UISwitch *snapshotSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(currX+=(width / 4.28), currY - 5.0, 50.0, 30)];
+    snapshotSwitch.tag = 108;
+    [snapshotSwitch setOn:[getPreference(@"vertype_snapshot") boolValue] animated:NO];
+    [snapshotSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    [tableView addSubview:snapshotSwitch];
+
+    UILabel *oldbetaTextView = [[UILabel alloc] initWithFrame:CGRectMake(snapshotSwitch.frame.origin.x + snapshotSwitch.frame.size.width + 8.0, currY, 0.0, 0.0)];
+    oldbetaTextView.text = @"Old beta";
+    oldbetaTextView.numberOfLines = 0;
+    [oldbetaTextView sizeToFit];
+    [tableView addSubview:oldbetaTextView];
+
+    UISwitch *oldbetaSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(currX+=(width / 4.28), currY - 5.0, 50.0, 30)];
+    oldbetaSwitch.tag = 109;
+    [oldbetaSwitch setOn:[getPreference(@"vertype_oldbeta") boolValue] animated:NO];
+    [oldbetaSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    [tableView addSubview:oldbetaSwitch];
+    
+    UILabel *oldalphaTextView = [[UILabel alloc] initWithFrame:CGRectMake(oldbetaSwitch.frame.origin.x + oldbetaSwitch.frame.size.width + 8.0, currY, 0.0, 0.0)];
+    oldalphaTextView.text = @"Old alpha";
+    oldalphaTextView.numberOfLines = 0;
+    [oldalphaTextView sizeToFit];
+    [tableView addSubview:oldalphaTextView];
+
+    UISwitch *oldalphaSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(currX+=(width / 4.28 + 1), currY - 5.0, 50.0, 30)];
+    oldalphaSwitch.tag = 110;
+    [oldalphaSwitch setOn:[getPreference(@"vertype_oldalpha") boolValue] animated:NO];
+    [oldalphaSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    [tableView addSubview:oldalphaSwitch];
 
     if (@available(iOS 14.0, *)) {
         // use UIMenu
@@ -280,11 +365,49 @@ UIVisualEffectView *blurView;
         UIBarButtonItem *close = [[UIBarButtonItem alloc] initWithTitle:@"Close App" style:UIBarButtonItemStyleDone target:self action:@selector(exitApp)];
         self.navigationItem.rightBarButtonItems = @[help, close];
     }
+}
 
-    scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, scrollView.frame.size.height + 200);
+- (void)registerForKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+            selector:@selector(keyboardWasShown:)
+            name:UIKeyboardDidShowNotification object:nil];
+ 
+    [[NSNotificationCenter defaultCenter] addObserver:self
+             selector:@selector(keyboardWillBeHidden:)
+             name:UIKeyboardWillHideNotification object:nil];
+ 
+}
+ 
+- (void)keyboardWasShown:(NSNotification*)aNotification
+{
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+ 
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    scrollView.contentInset = contentInsets;
+    scrollView.scrollIndicatorInsets = contentInsets;
+    CGRect aRect = self.view.frame;
+    aRect.size.height -= kbSize.height;
+    if (!CGRectContainsPoint(aRect, activeField.frame.origin) ) {
+        [scrollView scrollRectToVisible:activeField.frame animated:YES];
+    }
+}
+
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification
+{
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    scrollView.contentInset = contentInsets;
+    scrollView.scrollIndicatorInsets = contentInsets;
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    activeField = textField;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
+    activeField = nil;
     if (textField.tag == 101) {
         setPreference(@"java_args", textField.text);
     } else if (textField.tag == 102) {
@@ -449,6 +572,18 @@ UIVisualEffectView *blurView;
                 [resetWarn addAction:ok];
             }
             break;
+        case 107:
+            setPreference(@"vertype_release", @(sender.isOn));
+            break;
+        case 108:
+            setPreference(@"vertype_snapshot", @(sender.isOn));
+            break;
+        case 109:
+            setPreference(@"vertype_oldbeta", @(sender.isOn));
+            break;
+        case 110:
+            setPreference(@"vertype_oldalpha", @(sender.isOn));
+            break;
         default:
             NSLog(@"what does switch %ld for? implement me!", sender.tag);
             break;
@@ -496,8 +631,16 @@ UIVisualEffectView *blurView;
     return (NSString*) object;
 }
 
-- (void)rendClosePicker {
-    [rendTextField endEditing:YES];
+- (void)closeKeyboard:(UIBarButtonItem *)doneButton {
+    if (doneButton.tag == 150) {
+        [jargsTextField endEditing:YES];
+    } else if (doneButton.tag == 151) {
+        [rendTextField endEditing:YES];
+    } else if (doneButton.tag == 152) {
+        [jhomeTextField endEditing:YES];
+    } else if (doneButton.tag == 153) {
+        [gdirTextField endEditing:YES];
+    } 
 }
 
 @end

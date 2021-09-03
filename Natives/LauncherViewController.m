@@ -74,7 +74,6 @@ int versionSelectedAt = 0;
 
     [scrollView addSubview:versionTextField];
 
-
     if (@available(iOS 14.0, *)) {
         // use UIMenu
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage systemImageNamed:@"ellipsis.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStyleDone target:self action:@selector(displayOptions:)];
@@ -165,7 +164,16 @@ int versionSelectedAt = 0;
                 int i = 0;
                 for (NSDictionary *versionInfo in remoteVersionList) {
                     NSString *versionId = [versionInfo valueForKey:@"id"];
-                    [finalVersionList addObject:versionInfo];
+                    NSString *versionType = [versionInfo valueForKey:@"type"];
+                    if ([versionType containsString:@"release"] && [getPreference(@"vertype_release") boolValue] == YES) {
+                        [finalVersionList addObject:versionInfo];
+                    } else if ([versionType containsString:@"snapshot"] && [getPreference(@"vertype_snapshot") boolValue] == YES) {
+                        [finalVersionList addObject:versionInfo];
+                    } else if ([versionType containsString:@"old_beta"] && [getPreference(@"vertype_oldbeta") boolValue] == YES) {
+                        [finalVersionList addObject:versionInfo];
+                    } else if ([versionType containsString:@"old_alpha"] && [getPreference(@"vertype_oldalpha") boolValue] == YES) {
+                        [finalVersionList addObject:versionInfo];
+                    } else
                     if ([versionTextField.text isEqualToString:versionId]) {
                         versionSelectedAt = i;
                     }
