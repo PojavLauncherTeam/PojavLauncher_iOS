@@ -1,10 +1,13 @@
 #import "CustomControlsUtils.h"
+#import "../LauncherPreferences.h"
 #import "../ios_uikit_bridge.h"
 #include "../glfw_keycodes.h"
 #include "../utils.h"
 
 #define BTN_RECT 80.0, 30.0
 #define BTN_SQUARE 50.0, 50.0
+#define APPLY_SCALE(KEY) \
+  KEY = @([(NSNumber *)KEY floatValue] * savedScale / currentScale);
 
 NSMutableDictionary* createButton(NSString* name, int* keycodes, NSString* dynamicX, NSString* dynamicY, CGFloat width, CGFloat height) {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
@@ -86,8 +89,8 @@ void convertV1Layout(NSMutableDictionary* dict) {
         [btnDict removeObjectForKey:@"transparency"];
 
         // pixel of width, height -> dp
-        btnDict[@"width"] = @(((NSNumber *)btnDict[@"width"]).floatValue / scale * 50.0);
-        btnDict[@"height"] = @(((NSNumber *)btnDict[@"height"]).floatValue / scale * 50.0);
+        btnDict[@"width"] = @([btnDict[@"width"] floatValue] / scale * 50.0);
+        btnDict[@"height"] = @([btnDict[@"height"] floatValue] / scale * 50.0);
 
         // isRound -> cornerRadius 35%
         if ([btnDict[@"isRound"] boolValue] == YES) {
@@ -289,4 +292,23 @@ void generateAndSaveDefaultControl() {
         WIDTHHEIGHT
     )];
 */
+}
+
+void loadControlObject(UIView* targetView, NSMutableDictionary* controlDictionary, void(^walkToButton)(ControlButton* button)) {
+    if (convertLayoutIfNecessary(controlDictionary)) {
+        NSMutableArray *controlDataList = controlDictionary[@"mControlDataList"];
+        CGFloat currentScale = [controlDictionary[@"scaledAt"] floatValue];
+        CGFloat savedScale = [getPreference(@"button_scale") floatValue];
+        for (int i = 0; i < (int) controlDataList.count; i++) {
+            NSMutableDictionary *buttonDict = controlDataList[i];
+            APPLY_SCALE(buttonDict[@"width"]);
+            APPLY_SCALE(buttonDict[@"height"]);
+            APPLY_SCALE(buttonDict[@"strokeWidth"]);
+
+            ControlButton *button = [ControlButton initWithProperties:buttonDict];
+            walkToButton(button);
+            [targetView addSubview:button];
+        }
+        controlDictionary[@"scaledAt"] = @(savedScale);
+    }
 }

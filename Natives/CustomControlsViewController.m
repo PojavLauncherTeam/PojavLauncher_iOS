@@ -14,9 +14,6 @@
         initWithTarget:self action:@selector(showControlPopover:)]]; \
     [self.offsetView addSubview:button_##KEY];
 
-#define APPLY_SCALE(KEY) \
-  KEY = @([(NSNumber *)KEY floatValue] * savedScale / currentScale);
-
 int width;
 
 @interface CustomControlsViewController () <UIPopoverPresentationControllerDelegate>{
@@ -59,7 +56,7 @@ int width;
 
     int height = (int) roundf(screenBounds.size.height);
     width = width - insets.left - insets.right;
-    CGFloat buttonScale = ((NSNumber *) getPreference(@"button_scale")).floatValue / 100.0;
+    CGFloat buttonScale = [getPreference(@"button_scale") floatValue] / 100.0;
 
     UIPanGestureRecognizer *panRecognizer;
     panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(wasDragged:)];
@@ -73,31 +70,19 @@ int width;
     NSError *cc_error;
     NSString *cc_data = [NSString stringWithContentsOfFile:controlFilePath encoding:NSUTF8StringEncoding error:&cc_error];
 
-    if (cc_error != nil) {
+    if (cc_error) {
         NSLog(@"Error: could not read %@: %@", controlFilePath, cc_error.localizedDescription);
         showDialog(self, @"Error", [NSString stringWithFormat:@"Could not read %@: %@", controlFilePath, cc_error.localizedDescription]);
     } else {
         NSData* cc_objc_data = [cc_data dataUsingEncoding:NSUTF8StringEncoding];
         self.cc_dictionary = [NSJSONSerialization JSONObjectWithData:cc_objc_data options:NSJSONReadingMutableContainers error:&cc_error];
-        if (cc_error != nil) {
+        if (cc_error) {
             showDialog(self, @"Error parsing JSON", cc_error.localizedDescription);
-        } else if (convertLayoutIfNecessary(self.cc_dictionary)) {
-            NSMutableArray *cc_controlDataList = self.cc_dictionary[@"mControlDataList"];
-            CGFloat currentScale = ((NSNumber *)self.cc_dictionary[@"scaledAt"]).floatValue;
-            CGFloat savedScale = ((NSNumber *)getPreference(@"button_scale")).floatValue;
-            int cc_version = ((NSNumber *)self.cc_dictionary[@"version"]).intValue;
-            for (int i = 0; i < (int) cc_controlDataList.count; i++) {
-                NSMutableDictionary *cc_buttonDict = cc_controlDataList[i];
-                APPLY_SCALE(cc_buttonDict[@"width"]);
-                APPLY_SCALE(cc_buttonDict[@"height"]);
-                APPLY_SCALE(cc_buttonDict[@"strokeWidth"]);
-
-                ControlButton *button = [ControlButton initWithProperties:cc_buttonDict];
+        } else {
+            loadControlObject(self.offsetView, self.cc_dictionary, ^void(ControlButton* button) {
                 [button addGestureRecognizer:[[UITapGestureRecognizer alloc]
                     initWithTarget:self action:@selector(showControlPopover:)]];
-                [self.offsetView addSubview:button];
-            }
-            self.cc_dictionary[@"scaledAt"] = @(savedScale);
+            });
         }
     }
 } 

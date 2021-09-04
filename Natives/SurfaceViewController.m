@@ -14,12 +14,8 @@
 #include "GLES2/gl2.h"
 #include "GLES2/gl2ext.h"
 
-
-// Debugging purposes
+// Debugging only
 // #define DEBUG_VISIBLE_TEXT_FIELD
-
-#define APPLY_SCALE(KEY) \
-  KEY = @([(NSNumber *)KEY floatValue] * savedScale / currentScale);
 
 #define INPUT_SPACE_CHAR @"                    "
 #define INPUT_SPACE_LENGTH 20
@@ -96,7 +92,7 @@ int notchOffset;
 
     notchOffset = insets.left;
     width = width - notchOffset * 2;
-    CGFloat buttonScale = ((NSNumber *) getPreference(@"button_scale")).floatValue / 100.0;
+    CGFloat buttonScale = [getPreference(@"button_scale") floatValue] / 100.0;
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnClick:)];
@@ -167,25 +163,15 @@ int notchOffset;
         self.cc_dictionary = [NSJSONSerialization JSONObjectWithData:cc_objc_data options:NSJSONReadingMutableContainers error:&cc_error];
         if (cc_error != nil) {
             showDialog(self, @"Error parsing JSON", cc_error.localizedDescription);
-        } else if (convertLayoutIfNecessary(self.cc_dictionary)) {
-            NSMutableArray *cc_controlDataList = self.cc_dictionary[@"mControlDataList"];
+        } else {
             CGFloat currentScale = [self.cc_dictionary[@"scaledAt"] floatValue];
             CGFloat savedScale = [getPreference(@"button_scale") floatValue];
-            int cc_version = [self.cc_dictionary[@"version"] intValue];
-            for (NSMutableDictionary *cc_buttonDict in cc_controlDataList) {
-                BOOL isSwipeable = [cc_buttonDict[@"isSwipeable"] boolValue];
-                APPLY_SCALE(cc_buttonDict[@"width"]);
-                APPLY_SCALE(cc_buttonDict[@"height"]);
-                APPLY_SCALE(cc_buttonDict[@"strokeWidth"]);
-
-                ControlButton *button = [ControlButton initWithProperties:cc_buttonDict];
-                [button addTarget:self action:@selector(executebtn_down:) forControlEvents:UIControlEventTouchDown];
-                [button addTarget:self action:@selector(executebtn_up:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
-                [self.view addSubview:button];
+            loadControlObject(self.view, self.cc_dictionary, ^void(ControlButton* button) {
+                BOOL isSwipeable = [button.properties[@"isSwipeable"] boolValue];
 
                 BOOL isToggleCtrlBtn = NO;
                 for (int i = 0; i < 4; i++) {
-                    int keycodeInt = ((NSNumber *)cc_buttonDict[@"keycodes"][i]).intValue;
+                    int keycodeInt = [button.properties[@"keycodes"][i] intValue];
                     if (keycodeInt == SPECIALBTN_KEYBOARD) {
                         inputView.frame = button.frame;
                     }
@@ -193,6 +179,10 @@ int notchOffset;
                         isToggleCtrlBtn = YES;
                     }
                 }
+
+                [button addTarget:self action:@selector(executebtn_down:) forControlEvents:UIControlEventTouchDown];
+                [button addTarget:self action:@selector(executebtn_up:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
+
                 if (isSwipeable) {
                     UIPanGestureRecognizer *panRecognizerButton = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(executebtn_swipe:)];
                     panRecognizerButton.delegate = self;
@@ -202,7 +192,8 @@ int notchOffset;
                 if (!isToggleCtrlBtn) {
                     [self.togglableVisibleButtons addObject:button];
                 }
-            }
+            });
+
             self.cc_dictionary[@"scaledAt"] = @(savedScale);
         }
     }
