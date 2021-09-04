@@ -60,6 +60,8 @@ int notchOffset;
 {
     [super viewDidLoad];
     viewController = self;
+    isControlModifiable = NO;
+
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
     [self setNeedsUpdateOfHomeIndicatorAutoHidden];
@@ -213,6 +215,8 @@ int notchOffset;
     }
 
     [MGLContext setCurrentContext:firstContext forLayer:(MGLLayer *)self.surfaceView.layer];
+
+    NSLog(@"DBG GL extensions: %s", glGetString(GL_EXTENSIONS));
 
     [self setupGL];
 }

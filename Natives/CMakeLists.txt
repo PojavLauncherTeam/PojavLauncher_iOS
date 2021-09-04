@@ -44,6 +44,8 @@ add_library(pojavexec SHARED
   SurfaceViewController.m
   UpdateHistoryViewController.m
   customcontrols/ControlButton.m
+  customcontrols/ControlDrawer.m
+  customcontrols/ControlSubButton.m
   customcontrols/CustomControlsUtils.m
   egl_bridge.m
   external/DBNumberedSlider/Classes/DBNumberedSlider.m

@@ -1,3 +1,5 @@
+#import "ControlDrawer.h"
+#import "ControlSubButton.h"
 #import "CustomControlsUtils.h"
 #import "../LauncherPreferences.h"
 #import "../ios_uikit_bridge.h"
@@ -6,8 +8,6 @@
 
 #define BTN_RECT 80.0, 30.0
 #define BTN_SQUARE 50.0, 50.0
-#define APPLY_SCALE(KEY) \
-  KEY = @([(NSNumber *)KEY floatValue] * savedScale / currentScale);
 
 NSMutableDictionary* createButton(NSString* name, int* keycodes, NSString* dynamicX, NSString* dynamicY, CGFloat width, CGFloat height) {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
@@ -122,6 +122,8 @@ void convertV1Layout(NSMutableDictionary* dict) {
 
         // set final keycode array
         btnDict[@"keycodes"] = keycodes;
+
+        btnDict[@"mDrawerDataList"] = [[NSMutableArray alloc] init];
     }
 
     dict[@"scaledAt"] = @(100);
@@ -295,20 +297,34 @@ void generateAndSaveDefaultControl() {
 }
 
 void loadControlObject(UIView* targetView, NSMutableDictionary* controlDictionary, void(^walkToButton)(ControlButton* button)) {
+    current_control_object = controlDictionary;
     if (convertLayoutIfNecessary(controlDictionary)) {
         NSMutableArray *controlDataList = controlDictionary[@"mControlDataList"];
-        CGFloat currentScale = [controlDictionary[@"scaledAt"] floatValue];
-        CGFloat savedScale = [getPreference(@"button_scale") floatValue];
-        for (int i = 0; i < (int) controlDataList.count; i++) {
-            NSMutableDictionary *buttonDict = controlDataList[i];
-            APPLY_SCALE(buttonDict[@"width"]);
-            APPLY_SCALE(buttonDict[@"height"]);
-            APPLY_SCALE(buttonDict[@"strokeWidth"]);
-
-            ControlButton *button = [ControlButton initWithProperties:buttonDict];
+        setPreference(@"internal_current_button_scale", controlDictionary[@"scaledAt"]);
+        for (NSMutableDictionary *buttonDict in controlDataList) {
+            //APPLY_SCALE(buttonDict[@"strokeWidth"]);
+            ControlButton *button = [ControlButton buttonWithProperties:buttonDict];
             walkToButton(button);
             [targetView addSubview:button];
+            //NSLog(@"DBG Added button=%@", button);
         }
-        controlDictionary[@"scaledAt"] = @(savedScale);
+
+        NSMutableArray *drawerDataList = controlDictionary[@"mDrawerDataList"];
+        for (NSMutableDictionary *drawerData in drawerDataList) {
+            ControlDrawer *drawer = [ControlDrawer buttonWithProperties:drawerData];
+            if (isControlModifiable) drawer.areButtonsVisible = YES;
+            drawer.hidden = NO;
+            [targetView addSubview:drawer];
+            //NSLog(@"DBG Added drawer=%@", drawer);
+
+            for (NSMutableDictionary *subButton in drawerData[@"buttonProperties"]) {
+                ControlSubButton *subView = [ControlSubButton buttonWithProperties:subButton];
+			    [drawer addButton:subView];
+			    [targetView addSubview:subView];
+			    //NSLog(@"DBG Added subbtn=%@", subView);
+		    }
+        }
+
+        controlDictionary[@"scaledAt"] = @([getPreference(@"button_scale") floatValue]);
     }
 }

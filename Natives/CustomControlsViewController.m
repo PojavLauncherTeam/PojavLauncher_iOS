@@ -7,13 +7,6 @@
 #include "glfw_keycodes.h"
 #include "utils.h"
 
-// CGRectOffset(RECT, notchOffset, 0)
-#define ADD_BUTTON(NAME, KEY, RECT, VISIBLE) \
-    ControlButton *button_##KEY = [ControlButton initWithName:NAME keycode:KEY rect:CGRectMake(RECT.origin.x * buttonScale, RECT.origin.y * buttonScale, RECT.size.width * buttonScale, RECT.size.height * buttonScale) transparency:0.0f]; \
-    [button_##KEY addGestureRecognizer:[[UITapGestureRecognizer alloc] \
-        initWithTarget:self action:@selector(showControlPopover:)]]; \
-    [self.offsetView addSubview:button_##KEY];
-
 int width;
 
 @interface CustomControlsViewController () <UIPopoverPresentationControllerDelegate>{
@@ -32,6 +25,7 @@ int width;
 {
     [super viewDidLoad];
     viewController = self;
+    isControlModifiable = YES;
 
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
@@ -43,7 +37,7 @@ int width;
     } else {
         self.view.backgroundColor = [UIColor whiteColor];
     }
-    
+
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     UIEdgeInsets insets = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets;
 
