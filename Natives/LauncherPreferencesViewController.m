@@ -49,13 +49,11 @@ UIScrollView *scrollView;
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height) - self.navigationController.navigationBar.frame.size.height;
     CGFloat currY = 8.0;
-    CGFloat currX = (width - 62.0) / 4.28;
     
     scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
     [self.view addSubview:scrollView];
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width + 20, scrollView.frame.size.height + 200)];
-    scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, tableView.frame.size.height - 165);
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width + 20, 0)];
     [scrollView addSubview:tableView];
     
     [self registerForKeyboardNotifications];
@@ -137,7 +135,7 @@ UIScrollView *scrollView;
     [jargsTextView sizeToFit];
     [tableView addSubview:jargsTextView];
 
-    jargsTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 8.0, 30)];
+    jargsTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 28.0, 30)];
     [jargsTextField addTarget:jargsTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     jargsTextField.tag = 101;
     jargsTextField.delegate = self;
@@ -161,7 +159,7 @@ UIScrollView *scrollView;
     [rendTextView sizeToFit];
     [tableView addSubview:rendTextView];
 
-    rendTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 8.0, 30)];
+    rendTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 28.0, 30)];
     [rendTextField addTarget:rendTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     rendTextField.tag = 102;
     rendTextField.delegate = self;
@@ -197,7 +195,7 @@ UIScrollView *scrollView;
     [jhomeTextView sizeToFit];
     [tableView addSubview:jhomeTextView];
 
-    jhomeTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 8.0, 30)];
+    jhomeTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 28.0, 30)];
     [jhomeTextField addTarget:jhomeTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     jhomeTextField.tag = 103;
     jhomeTextField.delegate = self;
@@ -229,7 +227,7 @@ UIScrollView *scrollView;
     [gdirTextView sizeToFit];
     [tableView addSubview:gdirTextView];
 
-    gdirTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 8.0, 30)];
+    gdirTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 28.0, 30)];
     [gdirTextField addTarget:jhomeTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     gdirTextField.tag = 104;
     gdirTextField.delegate = self;
@@ -288,9 +286,10 @@ UIScrollView *scrollView;
     releaseTextView.text = @"Releases";
     releaseTextView.numberOfLines = 0;
     [releaseTextView sizeToFit];
+        [releaseTextView setFont:[UIFont systemFontOfSize:13]];
     [tableView addSubview:releaseTextView];
 
-    UISwitch *releaseSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(currX, currY - 5.0, 50.0, 30)];
+    UISwitch *releaseSwitch = [[UISwitch alloc] initWithFrame:CGRectMake((width * .25) - 62.0, currY - 5.0, 50.0, 30)];
     releaseSwitch.tag = 107;
     [releaseSwitch setOn:[getPreference(@"vertype_release") boolValue] animated:NO];
     [releaseSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
@@ -300,9 +299,10 @@ UIScrollView *scrollView;
     snapshotTextView.text = @"Snapshot";
     snapshotTextView.numberOfLines = 0;
     [snapshotTextView sizeToFit];
+        [snapshotTextView setFont:[UIFont systemFontOfSize:13]];
     [tableView addSubview:snapshotTextView];
 
-    UISwitch *snapshotSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(currX+=(width / 4.28), currY - 5.0, 50.0, 30)];
+    UISwitch *snapshotSwitch = [[UISwitch alloc] initWithFrame:CGRectMake((width * .50) - 62.0, currY - 5.0, 50.0, 30)];
     snapshotSwitch.tag = 108;
     [snapshotSwitch setOn:[getPreference(@"vertype_snapshot") boolValue] animated:NO];
     [snapshotSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
@@ -312,9 +312,10 @@ UIScrollView *scrollView;
     oldbetaTextView.text = @"Old beta";
     oldbetaTextView.numberOfLines = 0;
     [oldbetaTextView sizeToFit];
+        [oldbetaTextView setFont:[UIFont systemFontOfSize:13]];
     [tableView addSubview:oldbetaTextView];
 
-    UISwitch *oldbetaSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(currX+=(width / 4.28), currY - 5.0, 50.0, 30)];
+    UISwitch *oldbetaSwitch = [[UISwitch alloc] initWithFrame:CGRectMake((width * .75) - 62.0, currY - 5.0, 50.0, 30)];
     oldbetaSwitch.tag = 109;
     [oldbetaSwitch setOn:[getPreference(@"vertype_oldbeta") boolValue] animated:NO];
     [oldbetaSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
@@ -324,14 +325,20 @@ UIScrollView *scrollView;
     oldalphaTextView.text = @"Old alpha";
     oldalphaTextView.numberOfLines = 0;
     [oldalphaTextView sizeToFit];
+        [oldalphaTextView setFont:[UIFont systemFontOfSize:13]];
     [tableView addSubview:oldalphaTextView];
 
-    UISwitch *oldalphaSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(currX+=(width / 4.28 + 1), currY - 5.0, 50.0, 30)];
+    UISwitch *oldalphaSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
     oldalphaSwitch.tag = 110;
     [oldalphaSwitch setOn:[getPreference(@"vertype_oldalpha") boolValue] animated:NO];
     [oldalphaSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:oldalphaSwitch];
-
+    
+    CGRect frame = tableView.frame;
+    frame.size.height = currY+=44;
+    tableView.frame = frame;
+    scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, tableView.frame.size.height);
+    
     if (@available(iOS 14.0, *)) {
         // use UIMenu
         UIBarButtonItem *help = [[UIBarButtonItem alloc] initWithImage:[[UIImage systemImageNamed:@"questionmark.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStyleDone target:self action:@selector(helpMenu)];
