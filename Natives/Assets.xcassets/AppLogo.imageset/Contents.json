@@ -1,15 +1,17 @@
 {
   "images" : [
     {
+      "filename" : "AppLogo_63x515.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "AppLogo_63x515@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "LaunchScreen1024x1024.png",
+      "filename" : "AppLogo_63x515@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

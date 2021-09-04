@@ -98,19 +98,10 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     CGFloat widthSplit = width / 4.0;
     CGFloat widthSplit2 = width / 2.0;
 
-    UIImageView *logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LaunchScreen"]];
-    logoView.frame = CGRectMake((width / 4) - 50, 0, (width / 2) / 4, rawHeight);
+    UIImageView *logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"AppLogo"]];
+    logoView.frame = CGRectMake(0, (rawHeight / 2) - 35, width, 70);
     [logoView setContentMode:UIViewContentModeScaleAspectFit];
     [self.view addSubview:logoView];
-
-    UILabel *logoWaterView = [[UILabel alloc] initWithFrame:CGRectMake(logoView.frame.origin.x + logoView.frame.size.width + 30, 0, width - ((width / 2) / 4), rawHeight)];
-    logoWaterView.text = @"PojavLauncher";
-    logoWaterView.lineBreakMode = NSLineBreakByWordWrapping;
-    logoWaterView.adjustsFontSizeToFitWidth = YES;
-    logoWaterView.numberOfLines = 1;
-    logoWaterView.minimumScaleFactor = 20./logoWaterView.font.pointSize;
-    [self.view addSubview:logoWaterView];
-    [logoWaterView setFont:[UIFont boldSystemFontOfSize:(logoView.frame.size.width / 2.0)]];
 
 
 
