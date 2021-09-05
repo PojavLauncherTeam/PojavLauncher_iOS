@@ -172,9 +172,11 @@ UIScrollView *scrollView;
     rendererList = [[NSMutableArray alloc] init];
     NSString *lib_gl4es114 = @"libgl4es_114.dylib";
     NSString *lib_gl4es115 = @"libgl4es_115.dylib";
+    NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
     //NSString *lib_vgpu = @"libvgpu.dylib";
     [rendererList addObject:lib_gl4es114];
     [rendererList addObject:lib_gl4es115];
+    [rendererList addObject:lib_tinygl4angle];
     //[rendererList addObject:lib_vgpu];
 
     rendPickerView = [[UIPickerView alloc] init];

@@ -88,9 +88,9 @@ int notchOffset;
     [self.view addSubview:self.surfaceView];
 
     // Enable support for desktop GLSL
+    eglBindAPI(EGL_OPENGL_API);
     if ([getPreference(@"disable_gl4es_shaderconv") boolValue]) {
         setenv("LIBGL_NOSHADERCONV", "1", 1);
-        eglBindAPI(EGL_OPENGL_API);
         NSLog(@"eglBindAPI(EGL_OPENGL_API) error=%x", eglGetError());
     }
 
