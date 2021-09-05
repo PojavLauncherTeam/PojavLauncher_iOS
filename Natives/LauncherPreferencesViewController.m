@@ -173,11 +173,11 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
     rendTextField.tag = 102;
     rendTextField.delegate = self;
     rendTextField.placeholder = @"Override renderer...";
-    if (![getPreference(@"renderer") isEqualToString:lib_gl4es114]) {
+    if ([getPreference(@"renderer") isEqualToString:lib_gl4es114]) {
         rendTextField.text = gl4es114;
-    } else if (![getPreference(@"renderer") isEqualToString:lib_gl4es115]) {
+    } else if ([getPreference(@"renderer") isEqualToString:lib_gl4es115]) {
         rendTextField.text = gl4es115;
-    } else if (![getPreference(@"renderer") isEqualToString:lib_tinygl4angle]) {
+    } else if ([getPreference(@"renderer") isEqualToString:lib_tinygl4angle]) {
         rendTextField.text = tinygl4angle;
     } /* else if (![getPreference(@"renderer") isEqualToString:lib_vgpu) {
        rendTextField.text = vgpu;
