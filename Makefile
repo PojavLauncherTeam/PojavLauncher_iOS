@@ -10,6 +10,7 @@ DETECT  := $(shell clang -v 2>&1 | grep Target | cut -b 9-60)
 # version 1.3 on iPhone9,1 running 14.6
 VERSION := $(shell cat DEBIAN/control | grep Version | cut -b 9-60)
 COMMIT  := $(shell git log --oneline | sed '2,10000000d' | cut -b 1-7)
+
 ifndef RELEASE
 RELEASE := 0
 endif

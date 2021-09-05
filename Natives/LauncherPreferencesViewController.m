@@ -13,6 +13,8 @@
 #define GDIRECTORY 6
 #define NOSHADERCONV 7
 #define RESETWARN 8
+#define TYPESEL 9
+#define DEBUGLOG 10
 
 @interface LauncherPreferencesViewController () <UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDelegate> {
 }
@@ -34,7 +36,14 @@ UISwitch *noshaderconvSwitch;
 UIBlurEffect *blur;
 UIVisualEffectView *blurView;
 UIScrollView *scrollView;
-
+NSString *gl4es114 = @"GL4ES 1.1.4";
+NSString *gl4es115 = @"GL4ES 1.1.5 (1.16+)";
+NSString *tinygl4angle = @"tinygl4angle (1.17+)";
+//NSString *vgpu = @"vgpu";
+NSString *lib_gl4es114 = @"libgl4es_114.dylib";
+NSString *lib_gl4es115 = @"libgl4es_115.dylib";
+NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
+//NSString *lib_vgpu = @"libvgpu.dylib";
 
 - (void)viewDidLoad
 {
@@ -164,20 +173,25 @@ UIScrollView *scrollView;
     rendTextField.tag = 102;
     rendTextField.delegate = self;
     rendTextField.placeholder = @"Override renderer...";
-    rendTextField.text = (NSString *) getPreference(@"renderer");
+    if (![getPreference(@"renderer") isEqualToString:lib_gl4es114]) {
+        rendTextField.text = gl4es114;
+    } else if (![getPreference(@"renderer") isEqualToString:lib_gl4es115]) {
+        rendTextField.text = gl4es115;
+    } else if (![getPreference(@"renderer") isEqualToString:lib_tinygl4angle]) {
+        rendTextField.text = tinygl4angle;
+    } /* else if (![getPreference(@"renderer") isEqualToString:lib_vgpu) {
+       rendTextField.text = vgpu;
+    }*/
+    
     rendTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
     rendTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [tableView addSubview:rendTextField];
 
     rendererList = [[NSMutableArray alloc] init];
-    NSString *lib_gl4es114 = @"libgl4es_114.dylib";
-    NSString *lib_gl4es115 = @"libgl4es_115.dylib";
-    NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
-    //NSString *lib_vgpu = @"libvgpu.dylib";
-    [rendererList addObject:lib_gl4es114];
-    [rendererList addObject:lib_gl4es115];
-    [rendererList addObject:lib_tinygl4angle];
-    //[rendererList addObject:lib_vgpu];
+    [rendererList addObject:gl4es114];
+    [rendererList addObject:gl4es115];
+    [rendererList addObject:tinygl4angle];
+    //[rendererList addObject:vgpu];
 
     rendPickerView = [[UIPickerView alloc] init];
     rendPickerView.delegate = self;
@@ -266,10 +280,10 @@ UIScrollView *scrollView;
     [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:NO];
     [noshaderconvSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:noshaderconvSwitch];
-    if (![getPreference(@"renderer") containsString:@"115"]) {
-            [noshaderconvSwitch setEnabled:NO];
-        } else if (![getPreference(@"renderer") containsString:@"114"]) {
+    if ([getPreference(@"renderer") isEqualToString:gl4es115]) {
             [noshaderconvSwitch setEnabled:YES];
+        } else {
+            [noshaderconvSwitch setEnabled:NO];
     }
 
     UILabel *resetWarnTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
@@ -336,6 +350,18 @@ UIScrollView *scrollView;
     [oldalphaSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:oldalphaSwitch];
     
+    UILabel *debugLogTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
+    debugLogTextView.text = @"Enable debug logging";
+    debugLogTextView.numberOfLines = 0;
+    [debugLogTextView sizeToFit];
+    [tableView addSubview:debugLogTextView];
+
+    UISwitch *debugLogSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
+    debugLogSwitch.tag = 111;
+    [debugLogSwitch setOn:[getPreference(@"debug_logging") boolValue] animated:NO];
+    [debugLogSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    [tableView addSubview:debugLogSwitch];
+    
     CGRect frame = tableView.frame;
     frame.size.height = currY+=44;
     tableView.frame = frame;
@@ -364,8 +390,12 @@ UIScrollView *scrollView;
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:NOSHADERCONV];}];
         UIAction *option9 = [UIAction actionWithTitle:@"Reset warnings" image:[[UIImage systemImageNamed:@"exclamationmark.triangle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:RESETWARN];}];
+        UIAction *option10 = [UIAction actionWithTitle:@"Type switches" image:[[UIImage systemImageNamed:@"list.bullet"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:TYPESEL];}];
+        UIAction *option11 = [UIAction actionWithTitle:@"Debug logging" image:[[UIImage systemImageNamed:@"doc.badge.gearshape"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:DEBUGLOG];}];
         UIMenu *menu = [UIMenu menuWithTitle:@"" image:nil identifier:nil
-                        options:UIMenuOptionsDisplayInline children:@[option1, option2, option3, option4, option5, option6, option7, option8, option9]];
+                        options:UIMenuOptionsDisplayInline children:@[option1, option2, option3, option4, option5, option6, option7, option8, option9, option10, option11]];
         self.navigationItem.rightBarButtonItem.action = nil;
         self.navigationItem.rightBarButtonItem.primaryAction = nil;
         self.navigationItem.rightBarButtonItem.menu = menu;
@@ -420,13 +450,24 @@ UIScrollView *scrollView;
     if (textField.tag == 101) {
         setPreference(@"java_args", textField.text);
     } else if (textField.tag == 102) {
-        setPreference(@"renderer", textField.text);
-        setenv("RENDERER", textField.text.UTF8String, 1);
-        if (![textField.text containsString:@"115"] && [getPreference(@"disable_gl4es_shaderconv") boolValue] == YES) {
+        if (![textField.text isEqualToString:gl4es114]) {
+            setPreference(@"renderer", lib_gl4es114);
+            setenv("RENDERER", [lib_gl4es114 cStringUsingEncoding:NSUTF8StringEncoding], 1);
+        } else if (![textField.text isEqualToString:gl4es115]) {
+            setPreference(@"renderer", lib_gl4es115);
+            setenv("RENDERER", [lib_gl4es115 cStringUsingEncoding:NSUTF8StringEncoding], 1);
+        } else if (![textField.text isEqualToString:tinygl4angle]) {
+            setPreference(@"renderer", lib_tinygl4angle);
+            setenv("RENDERER", [lib_tinygl4angle cStringUsingEncoding:NSUTF8StringEncoding], 1);
+        } /* else if (![textField.text isEqualToString:vgpu]) {
+            setPreference(@"renderer", lib_vgpu);
+            setenv("RENDERER", [lib_vgpu cStringUsingEncoding:NSUTF8StringEncoding]]), 1);
+        } */
+        if (![textField.text containsString:@"1.1.5"] && [getPreference(@"disable_gl4es_shaderconv") boolValue] == YES) {
             setPreference(@"disable_gl4es_shaderconv", @NO);
             [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:YES];
             [noshaderconvSwitch setEnabled:NO];
-        } else if (![textField.text containsString:@"114"] && [getPreference(@"disable_gl4es_shaderconv") boolValue] == NO){
+        } else if (![textField.text containsString:@"1.1.4"] && [getPreference(@"disable_gl4es_shaderconv") boolValue] == NO){
             setPreference(@"disable_gl4es_shaderconv", @YES);
             [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:YES];
             [noshaderconvSwitch setEnabled:YES];
@@ -481,6 +522,8 @@ UIScrollView *scrollView;
         UIAlertAction *gdirectory = [UIAlertAction actionWithTitle:@"Game directory"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:GDIRECTORY];}];
         UIAlertAction *noshaderconv = [UIAlertAction actionWithTitle:@"Disable shaderconv" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:NOSHADERCONV];}];
         UIAlertAction *resetwarn = [UIAlertAction actionWithTitle:@"Reset warnings" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:RESETWARN];}];
+        UIAlertAction *typesel = [UIAlertAction actionWithTitle:@"Type switches" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:TYPESEL];}];
+        UIAlertAction *debuglog = [UIAlertAction actionWithTitle:@"Debug logging" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:DEBUGLOG];}];
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
         [self setPopoverProperties:helpAlert.popoverPresentationController sender:(UIButton *)self.navigationItem.rightBarButtonItem];
         [self presentViewController:helpAlert animated:YES completion:nil];
@@ -493,6 +536,8 @@ UIScrollView *scrollView;
         [helpAlert addAction:gdirectory];
         [helpAlert addAction:noshaderconv];
         [helpAlert addAction:resetwarn];
+        [helpAlert addAction:typesel];
+        [helpAlert addAction:debuglog];
         [helpAlert addAction:cancel];
     }
 }
@@ -527,6 +572,12 @@ UIScrollView *scrollView;
     } else if(setting == RESETWARN) {
         title = @"Reset warnings";
         message = @"This option re-enables all warnings to be shown again.";
+    } else if(setting == TYPESEL) {
+        title = @"Type switches";
+        message = @"These switches allow to to change where or not releases, snapshots, old betas, and old alphas will show up in the version selection menu. This option also requires a restart of the launcher to take effect.";
+    } else if(setting == DEBUGLOG) {
+        title = @"Enable debug logging";
+        message = @"This option logs internal settings and actions to latestlog.txt. This helps the developers find issues easier, but Minecraft may run slower as the logs will be written to more often.";
     }
     UIAlertController *helpAlertOpt = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
@@ -592,6 +643,9 @@ UIScrollView *scrollView;
             break;
         case 110:
             setPreference(@"vertype_oldalpha", @(sender.isOn));
+            break;
+        case 111:
+            setPreference(@"debug_logging", @(sender.isOn));
             break;
         default:
             NSLog(@"what does switch %ld for? implement me!", sender.tag);
