@@ -179,7 +179,7 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
         rendTextField.text = gl4es115;
     } else if ([getPreference(@"renderer") isEqualToString:lib_tinygl4angle]) {
         rendTextField.text = tinygl4angle;
-    } /* else if (![getPreference(@"renderer") isEqualToString:lib_vgpu) {
+    } /* else if ([getPreference(@"renderer") isEqualToString:lib_vgpu) {
        rendTextField.text = vgpu;
     }*/
     
@@ -463,11 +463,12 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
             setPreference(@"renderer", lib_vgpu);
             setenv("RENDERER", [lib_vgpu cStringUsingEncoding:NSUTF8StringEncoding]]), 1);
         } */
-        if (![textField.text containsString:@"1.1.5"] && [getPreference(@"disable_gl4es_shaderconv") boolValue] == YES) {
+        
+        if (![textField.text isEqualToString:gl4es115] && [getPreference(@"disable_gl4es_shaderconv") boolValue] == YES) {
             setPreference(@"disable_gl4es_shaderconv", @NO);
             [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:YES];
             [noshaderconvSwitch setEnabled:NO];
-        } else if (![textField.text containsString:@"1.1.4"] && [getPreference(@"disable_gl4es_shaderconv") boolValue] == NO){
+        } else if (![textField.text isEqualToString:gl4es114] && [getPreference(@"disable_gl4es_shaderconv") boolValue] == NO){
             setPreference(@"disable_gl4es_shaderconv", @YES);
             [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:YES];
             [noshaderconvSwitch setEnabled:YES];
