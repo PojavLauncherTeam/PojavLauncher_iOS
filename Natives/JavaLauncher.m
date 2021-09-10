@@ -10,6 +10,7 @@
 #include <string.h>
 #include <unistd.h>
 
+#include <sys/mman.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/utsname.h>
@@ -18,6 +19,7 @@
 #include "log.h"
 #include "utils.h"
 #include "JavaLauncher.h"
+#include "external/fishhook/fishhook.h"
 
 #import "customcontrols/CustomControlsUtils.h"
 #import "LauncherPreferences.h"
@@ -64,6 +66,13 @@ typedef jint JLI_Launch_func(int argc, char ** argv, /* main argc, argc */
         jint ergo                               /* ergonomics class policy */
 );
 
+int main(int argc, char * argv[]);
+
+static int (*orig_dladdr)(const void* addr, Dl_info* info);
+static void* (*orig_mmap)(void *addr, size_t len, int prot, int flags, int fd, off_t offset);
+static char* (*orig_realpath)(const char *restrict path, char *restrict resolved_path);
+static void (*orig_sys_icache_invalidate)(void *start, size_t len);
+
 static int margc = 0;
 static char* margv[1000];
 static int pfd[2];
@@ -79,6 +88,44 @@ NSString *javaHome_pre;
 NSString *renderer_pre;
 NSString *allocmem_pre;
 NSString *multidir_pre;
+
+int hooked_dladdr(const void* addr, Dl_info* info) {
+    int retVal = orig_dladdr(addr, info);
+    if (addr == main) {
+        NSLog(@"hooked dladdr");
+        info->dli_fname = getenv("JAVA_EXT_EXECNAME");
+        NSLog(@"name = %s", info->dli_fname);
+    }
+    return retVal;
+}
+
+void *hooked_mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset) {
+    NSLog(@"mmap(%p, %ld, %d, %d, %d, %lld)", addr, len, prot, flags, fd, offset);
+
+    if (flags & MAP_JIT) {
+        NSLog(@"'-> Found JIT mmap");
+        //flags &= ~MAP_JIT;
+    }
+
+    // raise(SIGINT);
+    return orig_mmap(addr, len, prot, flags, fd, offset);
+}
+
+char *hooked_realpath(const char *restrict path, char *restrict resolved_path) {
+    NSLog(@"hooked realpath %s", path);
+    if (!strncmp(javaHome, path, strlen(javaHome))) {
+        strcpy(resolved_path, path);
+        return resolved_path;
+    } else {
+        return orig_realpath(path, resolved_path);
+    }
+}
+
+void hooked_sys_icache_invalidate(void *start, size_t len) {
+    // mprotect(start, 16384, PROT_EXEC | PROT_READ);
+    // NSLog(@"mprotect errno %d", errno);
+    orig_sys_icache_invalidate(start, len);
+}
 
 static void *logger_thread() {
     ssize_t rsize;
@@ -99,6 +146,21 @@ static void *logger_thread() {
     }
     close(log_fd);
     return NULL;
+}
+
+void init_hookFunctions() {
+    // if (!started && strncmp(argv[0], "/Applications", 13)) 
+    {
+        // Jailed only: hook some functions for symlinked JRE home dir
+        int retval = rebind_symbols((struct rebinding[4]){
+            //{"dlopen", hooked_dlopen, (void *)&orig_dlopen},
+            {"dladdr", hooked_dladdr, (void *)&orig_dladdr},
+            {"mmap", hooked_mmap, (void *)&orig_mmap},
+            {"realpath", hooked_realpath, (void *)&orig_realpath},
+            {"sys_icache_invalidate", hooked_sys_icache_invalidate, (void *)&orig_sys_icache_invalidate}
+        }, 4);
+        NSLog(@"hook retval = %d", retval);
+    }
 }
 
 void init_loadCustomEnv() {
@@ -215,6 +277,8 @@ int launchJVM(int argc, char *argv[]) {
             char pojavHome[2048];
             sprintf(pojavHome, "%s/Documents", getenv("HOME"));
             homeDir = (char *) pojavHome;
+
+            init_hookFunctions();
         }
         setenv("POJAV_HOME", homeDir, 1);
     } else {
@@ -326,9 +390,10 @@ int launchJVM(int argc, char *argv[]) {
         }
     }
 
-    // Symlink frameworks -> dylibs on jailed environment
     if (!started && strncmp(argv[0], "/Applications", 13)) {
         char src[2048], dst[2048];
+
+        // Symlink frameworks -> dylibs on jailed environment
         mkdir(javaHome, 755);
 
         // Symlink the skeleton part of JRE
@@ -394,8 +459,7 @@ int launchJVM(int argc, char *argv[]) {
             if (i < 2) {
                 i++;
                 continue;
-            } else if (!strncmp(dir->d_name, "lib", 3)) {
-                assert(strlen(dir->d_name) > 12);
+            } else if (!strncmp(dir->d_name, "lib", 3) && strlen(dir->d_name) > 12) {
                 char *dylibName = strdup(dir->d_name);
                 dylibName[strlen(dylibName) - 10] = '\0';
                 sprintf((char *)src, "%s/Frameworks/%s/%s", getenv("BUNDLE_PATH"), dir->d_name, dylibName);
@@ -497,6 +561,7 @@ int launchJVM(int argc, char *argv[]) {
         snprintf(memMin, 2048, "-Xms%sM", allocmem);
         snprintf(memMax, 2048, "-Xmx%sM", allocmem);
         NSLog(@"[Pre-init] Java executable path: %s", javaPath);
+        setenv("JAVA_EXT_EXECNAME", javaPath, 1);
 
         chdir(userDir);
 
@@ -557,7 +622,7 @@ int launchJVM(int argc, char *argv[]) {
         init_loadCustomJvmFlags();
     }
     debug("[Init] Found JLI lib");
-    
+
     if (!started) {
         margv[margc++] = "-cp";
         margv[margc++] = classpath;

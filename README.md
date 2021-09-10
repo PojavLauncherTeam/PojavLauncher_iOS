@@ -70,6 +70,7 @@ PojavLauncher is amazing, and surprisingly stable, and it wouldn't be this way w
 - [LWJGL3](https://github.com/PojavLauncherTeam/lwjgl3): [BSD-3 License](https://github.com/LWJGL/lwjgl3/blob/master/LICENSE.md).
 - [LWJGLX](https://github.com/PojavLauncherTeam/lwjglx) (LWJGL2 API compatibility layer for LWJGL3): unknown license.
 - [DBNumberedSlider](https://github.com/immago/DBNumberedSlider): [Apache 2.0 License](https://github.com/immago/DBNumberedSlider/blob/master/LICENSE)
+- [fishhook](https://github.com/facebook/fishhook) (jailed environment usage only): [BSD-3 License](https://github.com/facebook/fishhook/blob/main/LICENSE).
 
 
 <!-- Ava was here -->
