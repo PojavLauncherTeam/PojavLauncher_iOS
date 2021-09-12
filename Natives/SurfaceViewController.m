@@ -586,11 +586,10 @@ int currentVisibility = 1;
                     NSLog(@"Warning: button %@ sent unknown special keycode: %d", button.titleLabel.text, keycode);
                     break;
             }
-        } else {
+        } else if (keycode > 0) {
             // there's no key id 0, but we accidentally used -1 as a special key id, so we had to do that
             // if (keycode == 0) { keycode = -1; }
             // at the moment, send unknown keycode does nothing, may even cause performance issue, so ignore it
-            if (keycode == 0) continue;
             Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, keycode, 0, held, 0);
         }
     }

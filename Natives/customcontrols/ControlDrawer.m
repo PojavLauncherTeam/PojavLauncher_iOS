@@ -11,9 +11,10 @@
 @implementation ControlDrawer
 @synthesize properties;
 
-+ (id)buttonWithProperties:(NSMutableDictionary *)propArray {
-    ControlDrawer *instance = [self buttonWithProperties:propArray[@"properties"] willUpdate:NO];
++ (id)buttonWithProperties:(NSMutableDictionary *)drawerData {
+    ControlDrawer *instance = [self buttonWithProperties:drawerData[@"properties"] willUpdate:NO];
     instance.buttons = [[NSMutableArray alloc] init];
+    instance.drawerData = drawerData;
     [instance update];
 
     return instance;
@@ -54,7 +55,10 @@
         } else if ([orientation isEqualToString:@"DOWN"]) {
             button.properties[@"dynamicY"] = [self generateDynamicY:self.frame.origin.y + ([self.properties[@"height"] floatValue] + 2.0) * (i+1)];
             button.properties[@"dynamicX"] = [self generateDynamicX:self.frame.origin.x];
+        } else {
+            NSLog(@"DEBUG: %s: Unsupported button orientation %@", __FILE__, orientation);
         }
+        NSLog(@"DEBUG: %s: button dynamic pos \"%@\", \"%@\"", __FILE__, button.properties[@"dynamicX"], button.properties[@"dynamicY"]);
         [button update];
     }
 }

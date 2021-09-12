@@ -163,15 +163,13 @@
     self.backgroundColor = convertARGB2UIColor(propBackgroundColor);
 
     self.layer.borderColor = [convertARGB2UIColor(propStrokeColor) CGColor];
-    if (propCornerRadius > 0) {
-        self.layer.cornerRadius = MIN(self.frame.size.width, self.frame.size.height) / 200.0 * propCornerRadius;
-    }
-    if (propStrokeWidth > 0) {
-        self.layer.borderWidth = MAX(self.frame.size.width, self.frame.size.height) / 200.0 * propStrokeWidth;
-    }
+    self.layer.cornerRadius = MIN(self.frame.size.width, self.frame.size.height) / 200.0 * propCornerRadius;
+    self.layer.borderWidth = MAX(self.frame.size.width, self.frame.size.height) / 200.0 * propStrokeWidth;
     self.clipsToBounds = YES;
 
     [self setTitle:properties[@"name"] forState:UIControlStateNormal];
+
+    NSLog(@"DEBUG: Button %@ frame %@", properties[@"name"], NSStringFromCGRect(self.frame));
 }
 
 // NOTE: Unlike Android's impl, this method uses dp instead of px (no call to dpToPx), "view.center" instead of "view.pos + view.size/2"

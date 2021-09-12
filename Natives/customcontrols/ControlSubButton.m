@@ -29,6 +29,7 @@
 - (void)setParentDrawer:(ControlDrawer *)drawer {
     _parentDrawer = drawer;
     [self preProcessProperties];
+    NSLog(@"DEBUG: SubButton properties %@", self.properties);
 }
 
 @end
