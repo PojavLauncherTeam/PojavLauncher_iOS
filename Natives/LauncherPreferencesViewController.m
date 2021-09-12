@@ -465,16 +465,16 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
     if (textField.tag == 101) {
         setPreference(@"java_args", textField.text);
     } else if (textField.tag == 102) {
-        if (![textField.text isEqualToString:gl4es114]) {
+        if ([textField.text isEqualToString:gl4es114]) {
             setPreference(@"renderer", lib_gl4es114);
             setenv("RENDERER", [lib_gl4es114 cStringUsingEncoding:NSUTF8StringEncoding], 1);
-        } else if (![textField.text isEqualToString:gl4es115]) {
+        } else if ([textField.text isEqualToString:gl4es115]) {
             setPreference(@"renderer", lib_gl4es115);
             setenv("RENDERER", [lib_gl4es115 cStringUsingEncoding:NSUTF8StringEncoding], 1);
-        } else if (![textField.text isEqualToString:tinygl4angle]) {
+        } else if ([textField.text isEqualToString:tinygl4angle]) {
             setPreference(@"renderer", lib_tinygl4angle);
             setenv("RENDERER", [lib_tinygl4angle cStringUsingEncoding:NSUTF8StringEncoding], 1);
-        } /* else if (![textField.text isEqualToString:vgpu]) {
+        } /* else if ([textField.text isEqualToString:vgpu]) {
             setPreference(@"renderer", lib_vgpu);
             setenv("RENDERER", [lib_vgpu cStringUsingEncoding:NSUTF8StringEncoding]]), 1);
         } */
@@ -812,12 +812,13 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
 
 #pragma mark - UIPickerView
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    if(pickerView.tag == 112) {
-        rendTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
-        setPreference(@"renderer", rendTextField.text);
-    } else if(pickerView.tag == 113) {
+    if(pickerView.tag == 113) {
         gdirTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
         setPreference(@"game_directory", gdirTextField.text);
+    } else if(pickerView.tag == 112) {
+        NSLog(@"1");
+        rendTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
+        setPreference(@"renderer", rendTextField.text);
     }
 }
 
