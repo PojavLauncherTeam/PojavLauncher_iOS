@@ -753,12 +753,12 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
             setPreference(@"local_warn", @YES);
             setPreference(@"java_warn", @YES);
             setPreference(@"jb_warn", @YES);
-            if(1 == 1) {
-                UIAlertController *resetWarn = [UIAlertController alertControllerWithTitle:@"Warnings reset." message:@"Restart to show warnings again." preferredStyle:UIAlertControllerStyleActionSheet];
-                [self setPopoverProperties:resetWarn.popoverPresentationController sender:(UIButton *)sender];
-                UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
-                [self presentViewController:resetWarn animated:YES completion:nil];
-                [resetWarn addAction:ok];
+            {
+            UIAlertController *resetWarn = [UIAlertController alertControllerWithTitle:@"Warnings reset." message:@"Restart to show warnings again." preferredStyle:UIAlertControllerStyleActionSheet];
+            [self setPopoverProperties:resetWarn.popoverPresentationController sender:(UIButton *)sender];
+            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+            [self presentViewController:resetWarn animated:YES completion:nil];
+            [resetWarn addAction:ok];
             }
             break;
         case 107:
