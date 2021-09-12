@@ -521,7 +521,7 @@ int launchJVM(int argc, char *argv[]) {
         multidir_pre = @"default";
         multidir = [multidir_pre cStringUsingEncoding:NSUTF8StringEncoding];
         setPreference(@"game_directory", multidir_pre);
-        debug("[Pre-init] MULTI_DIR environment variable was not set. Defaulting to %s for future use.\n", renderer);
+        debug("[Pre-init] MULTI_DIR environment variable was not set. Defaulting to %s for future use.\n", multidir);
     } else {
         multidir = [multidir_pre cStringUsingEncoding:NSUTF8StringEncoding];
         debug("[Pre-init] Restored preference: MULTI_DIR is set to %s\n", multidir);

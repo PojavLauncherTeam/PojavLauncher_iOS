@@ -15,6 +15,8 @@
 #define RESETWARN 8
 #define TYPESEL 9
 #define DEBUGLOG 10
+#define MKGDIR 11
+#define RMGDIR 12
 
 @interface LauncherPreferencesViewController () <UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDelegate> {
 }
@@ -31,7 +33,9 @@ UITextField *jhomeTextField;
 UITextField *gdirTextField;
 UITextField *activeField;
 NSMutableArray* rendererList;
+NSMutableArray* gdirList;
 UIPickerView* rendPickerView;
+UIPickerView* gdirPickerView;
 UISwitch *noshaderconvSwitch;
 UIBlurEffect *blur;
 UIVisualEffectView *blurView;
@@ -193,9 +197,12 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
     [rendererList addObject:tinygl4angle];
     //[rendererList addObject:vgpu];
 
+    [self instanceDirCont];
+    
     rendPickerView = [[UIPickerView alloc] init];
     rendPickerView.delegate = self;
     rendPickerView.dataSource = self;
+    rendPickerView.tag = 112;
     UIToolbar *rendPickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
     UIBarButtonItem *rendFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     UIBarButtonItem *rendDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeKeyboard:)];
@@ -253,13 +260,20 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
     gdirTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [tableView addSubview:gdirTextField];
 
+    gdirPickerView = [[UIPickerView alloc] init];
+    gdirPickerView.delegate = self;
+    gdirPickerView.dataSource = self;
+    gdirPickerView.tag = 113;
     UIToolbar *gdirPickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
     UIBarButtonItem *gdirFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     UIBarButtonItem *gdirDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeKeyboard:)];
+    UIBarButtonItem *gdirCreateButton = [[UIBarButtonItem alloc] initWithTitle:@"Create new" style:UIBarButtonItemStyleDone target:self action:@selector(createDir:)];
+    UIBarButtonItem *gdirDeleteButton = [[UIBarButtonItem alloc] initWithTitle:@"Delete" style:UIBarButtonItemStyleDone target:self action:@selector(removeDir:)];
     gdirDoneButton.tag = 153;
-    gdirPickerToolbar.items = @[gdirFlexibleSpace, gdirDoneButton];
+    gdirPickerToolbar.items = @[gdirCreateButton, gdirDeleteButton, gdirFlexibleSpace, gdirDoneButton];
 
     gdirTextField.inputAccessoryView = gdirPickerToolbar;
+    gdirTextField.inputView = gdirPickerView;
     
     if ([getPreference(@"option_warn") boolValue] == YES) {
         UIAlertController *preferenceWarn = [UIAlertController alertControllerWithTitle:@"Restart required" message:@"Some options in this menu will require that you restart the launcher for them to take effect."preferredStyle:UIAlertControllerStyleAlert];
@@ -285,7 +299,7 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
         } else {
             [noshaderconvSwitch setEnabled:NO];
     }
-
+    
     UILabel *resetWarnTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
     resetWarnTextView.text = @"Reset launcher warnings";
     resetWarnTextView.numberOfLines = 0;
@@ -509,6 +523,120 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
     }];
 }
 
+-(void)instanceDirCont {
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSArray* files = [fm contentsOfDirectoryAtPath:[NSString stringWithFormat:@"%s/instances", getenv("POJAV_HOME")] error:nil];
+    gdirList = [NSMutableArray arrayWithCapacity:10];
+    for(NSString *file in files) {
+        NSString *path = [[NSString stringWithFormat:@"%s/instances", getenv("POJAV_HOME")] stringByAppendingPathComponent:file];
+        BOOL isDir = NO;
+        [fm fileExistsAtPath:path isDirectory:(&isDir)];
+        if(isDir) {
+            [gdirList addObject:file];
+        }
+    }
+}
+
+- (void)createDir:(UIBarButtonItem *)sender {
+    int type = MKGDIR;
+    UIAlertController *manageDirAC = [UIAlertController alertControllerWithTitle:@"Create a new game directory" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    [manageDirAC addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"Name of new directory";
+        textField.secureTextEntry = NO;
+    }];
+    UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSString *directory = [NSString stringWithFormat:@"%s/instances/%@", getenv("POJAV_HOME"), [[manageDirAC textFields][0] text]];
+        BOOL isDir = NO;
+        BOOL isFailed = NO;
+        if(![[NSFileManager defaultManager] fileExistsAtPath:directory isDirectory:&isDir]) {
+            if([[NSFileManager defaultManager] createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:NULL]) {
+                isFailed = NO;
+                [self instanceDirCont];
+                gdirTextField.text = [[manageDirAC textFields][0] text];
+                [gdirTextField endEditing:YES];
+                [self manageDirResult:(UIButton *)sender success:isFailed directory:[[manageDirAC textFields][0] text] type:type];
+                
+            } else {
+                isFailed = YES;
+                [self manageDirResult:(UIButton *)sender success:isFailed directory:[[manageDirAC textFields][0] text] type:type];
+            }
+        } else {
+            isFailed = YES;
+            [self manageDirResult:(UIButton *)sender success:isFailed directory:[[manageDirAC textFields][0] text] type:type];
+        }
+    }];
+    [manageDirAC addAction:confirm];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+    [manageDirAC addAction:cancel];
+    [self presentViewController:manageDirAC animated:YES completion:nil];
+}
+- (void)removeDir:(UIBarButtonItem *)sender {
+    int type = RMGDIR;
+    if(![gdirTextField.text isEqualToString:@"default"]) {
+    UIAlertController *manageDirAC = [UIAlertController alertControllerWithTitle:@"Are you sure you want to delete this?" message:[NSString stringWithFormat:@"The instance %@ will be deleted forever and cannot be restored.", gdirTextField.text] preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSString *directory = [NSString stringWithFormat:@"%s/instances/%@", getenv("POJAV_HOME"), gdirTextField.text];
+        NSLog(@"%@", directory);
+        BOOL isDir = NO;
+        BOOL isFailed = NO;
+        
+            if([[NSFileManager defaultManager] fileExistsAtPath:directory isDirectory:&isDir]) {
+                if([[NSFileManager defaultManager] removeItemAtPath:directory error:NULL]) {
+                    isFailed = NO;
+                    [self instanceDirCont];
+                    gdirTextField.text = @"default";
+                    [gdirTextField endEditing:YES];
+                    [self manageDirResult:(UIButton *)sender success:isFailed directory:gdirTextField.text type:type];
+                } else {
+                    isFailed = YES;
+                    [self manageDirResult:(UIButton *)sender success:isFailed directory:gdirTextField.text type:type];
+                }
+            } else {
+                isFailed = YES;
+                [self manageDirResult:(UIButton *)sender success:isFailed directory:gdirTextField.text type:type];
+            }
+    }];
+    [manageDirAC addAction:confirm];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+    [manageDirAC addAction:cancel];
+    [self presentViewController:manageDirAC animated:YES completion:nil];
+    } else if([gdirTextField.text isEqualToString:@"default"]){
+        UIAlertController *gdirAlert = [UIAlertController alertControllerWithTitle:@"You cannot delete the default game directory." message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
+        [self setPopoverProperties:gdirAlert.popoverPresentationController sender:(UIButton *)sender];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+        [gdirAlert addAction:ok];
+        [self presentViewController:gdirAlert animated:YES completion:nil];
+    }
+}
+
+- (void)manageDirResult:(UIButton *)sender success:(BOOL)boolean directory:(NSString *)dirName type:(int)type {
+    NSString *title;
+    NSString *message;
+    if(type == MKGDIR) {
+        if(boolean == YES) {
+            title = @"An error occurred.";
+            message = [NSString stringWithFormat:@"Ensure that a file with the name %@ does not exist, and that the instances directory is writeable.", dirName];
+        } else if(boolean == NO) {
+            title = @"Successfully changed directory.";
+            message = @"";
+        }
+    } else if (type == RMGDIR) {
+        if(boolean == YES) {
+            title = @"An error occurred.";
+            message = @"Ensure that the instances directory is writeable.";
+        } else if(boolean == NO) {
+            title = @"Successfully removed directory.";
+            message = @"";
+        }
+    }
+    
+    UIAlertController *gdirAlert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
+    [self setPopoverProperties:gdirAlert.popoverPresentationController sender:sender];
+    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+    [gdirAlert addAction:ok];
+    [self presentViewController:gdirAlert animated:YES completion:nil];
+}
+
 - (void)helpMenu {
     if (@available(iOS 14.0, *)) {
         // UIMenu
@@ -676,10 +804,15 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
     return UIModalPresentationNone;
 }
 
-#pragma mark - UIPickerView (renderer)
+#pragma mark - UIPickerView
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    rendTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
-    setPreference(@"renderer", rendTextField.text);
+    if(pickerView.tag == 112) {
+        rendTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
+        setPreference(@"renderer", rendTextField.text);
+    } else if(pickerView.tag == 113) {
+        gdirTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
+        setPreference(@"game_directory", gdirTextField.text);
+    }
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)thePickerView {
@@ -687,11 +820,22 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    return rendererList.count;
+    if(pickerView.tag == 112) {
+        return rendererList.count;
+    } else if(pickerView.tag == 113) {
+        return gdirList.count;
+    } else {
+        return 0;
+    }
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    NSObject *object = [rendererList objectAtIndex:row];
+    NSObject *object;
+    if(pickerView.tag == 112) {
+        object = [rendererList objectAtIndex:row];
+    } else if(pickerView.tag == 113) {
+        object = [gdirList objectAtIndex:row];
+    }
     return (NSString*) object;
 }
 
