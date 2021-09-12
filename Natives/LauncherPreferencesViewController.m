@@ -1,6 +1,7 @@
 #import "DBNumberedSlider.h"
 #import "LauncherPreferences.h"
 #import "LauncherPreferencesViewController.h"
+#import "LauncherViewController.h"
 
 #include "utils.h"
 
@@ -703,7 +704,7 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
         message = @"This option re-enables all warnings to be shown again.";
     } else if(setting == TYPESEL) {
         title = @"Type switches";
-        message = @"These switches allow to to change where or not releases, snapshots, old betas, and old alphas will show up in the version selection menu. This option also requires a restart of the launcher to take effect.";
+        message = @"These switches allow to to change where or not releases, snapshots, old betas, and old alphas will show up in the version selection menu.";
     } else if(setting == DEBUGLOG) {
         title = @"Enable debug logging";
         message = @"This option logs internal settings and actions to latestlog.txt. This helps the developers find issues easier, but Minecraft may run slower as the logs will be written to more often.";
@@ -763,18 +764,23 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
             break;
         case 107:
             setPreference(@"vertype_release", @(sender.isOn));
+            [LauncherViewController fetchVersionList];
             break;
         case 108:
             setPreference(@"vertype_snapshot", @(sender.isOn));
+            [LauncherViewController fetchVersionList];
             break;
         case 109:
             setPreference(@"vertype_oldbeta", @(sender.isOn));
+            [LauncherViewController fetchVersionList];
             break;
         case 110:
             setPreference(@"vertype_oldalpha", @(sender.isOn));
+            [LauncherViewController fetchVersionList];
             break;
         case 111:
             setPreference(@"debug_logging", @(sender.isOn));
+            [LauncherViewController fetchVersionList];
             break;
         default:
             NSLog(@"what does switch %ld for? implement me!", sender.tag);

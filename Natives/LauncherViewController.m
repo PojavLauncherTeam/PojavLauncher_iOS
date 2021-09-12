@@ -60,7 +60,7 @@ int versionSelectedAt = 0;
     versionTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
     versionTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 
-    [self fetchVersionList];
+    [LauncherViewController fetchVersionList];
     versionPickerView = [[UIPickerView alloc] init];
     versionPickerView.delegate = self;
     versionPickerView.dataSource = self;
@@ -105,7 +105,7 @@ int versionSelectedAt = 0;
     [scrollView addSubview:install_progress_text];
 }
 
-- (void)fetchLocalVersionList:(NSMutableArray *)finalVersionList withPreviousIndex:(int)index
++ (void)fetchLocalVersionList:(NSMutableArray *)finalVersionList withPreviousIndex:(int)index
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *versionPath = [NSString stringWithFormat:@"%s/versions/", getenv("POJAV_GAME_DIR")];
@@ -137,7 +137,7 @@ int versionSelectedAt = 0;
     }
 }
 
-- (void)fetchVersionList
++ (void)fetchVersionList
 {
     NSURLSession *session = [NSURLSession sharedSession];
     NSMutableURLRequest *request = 
