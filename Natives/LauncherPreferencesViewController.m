@@ -35,8 +35,10 @@ UITextField *gdirTextField;
 UITextField *activeField;
 NSMutableArray* rendererList;
 NSMutableArray* gdirList;
+NSMutableArray* jhomeList;
 UIPickerView* rendPickerView;
 UIPickerView* gdirPickerView;
+UIPickerView* jhomePickerView;
 UISwitch *noshaderconvSwitch;
 UIBlurEffect *blur;
 UIVisualEffectView *blurView;
@@ -44,6 +46,14 @@ UIScrollView *scrollView;
 NSString *gl4es114 = @"GL4ES 1.1.4";
 NSString *gl4es115 = @"GL4ES 1.1.5 (1.16+)";
 NSString *tinygl4angle = @"tinygl4angle (1.17+)";
+NSString *java8jben = @"Java 8";
+NSString *java16jben = @"Java 16";
+NSString *java17jben = @"Java 17";
+NSString *java8 = @"Java 8 (sandbox)";
+NSString *libsjava8jben = @"/usr/lib/jvm/java-8-openjdk";
+NSString *libsjava16jben = @"/usr/lib/jvm/java-16-openjdk";
+NSString *libsjava17jben = @"/usr/lib/jvm/java-17-openjdk";
+NSString *libsjava8;
 //NSString *vgpu = @"vgpu";
 NSString *lib_gl4es114 = @"libgl4es_114.dylib";
 NSString *lib_gl4es115 = @"libgl4es_115.dylib";
@@ -214,7 +224,7 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
     rendTextField.inputView = rendPickerView;
 
     UILabel *jhomeTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
-    jhomeTextView.text = @"Java home";
+    jhomeTextView.text = @"Java version";
     jhomeTextView.numberOfLines = 0;
     [jhomeTextView sizeToFit];
     [tableView addSubview:jhomeTextView];
@@ -224,11 +234,42 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
     jhomeTextField.tag = 103;
     jhomeTextField.delegate = self;
     jhomeTextField.placeholder = @"Override Java path...";
-    jhomeTextField.text = (NSString *) getPreference(@"java_home");
+    
+    libsjava8 = [NSString stringWithFormat:@"%s/jre8", getenv("POJAV_HOME")];
+    if(getenv("POJAV_DETECTEDJB")) {
+        if ([getPreference(@"java_home") isEqualToString:libsjava8jben]) {
+            jhomeTextField.text = java8jben;
+        } else if ([getPreference(@"java_home") isEqualToString:libsjava16jben]) {
+            jhomeTextField.text = java16jben;
+        } else if ([getPreference(@"java_home") isEqualToString:libsjava17jben]) {
+            jhomeTextField.text = java17jben;
+        }
+    } else {
+        jhomeTextField.text = java8;
+    }
+    
     jhomeTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
     jhomeTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [tableView addSubview:jhomeTextField];
     
+    jhomeList = [[NSMutableArray alloc] init];
+    if (!(0 == [[NSFileManager defaultManager] fileExistsAtPath:libsjava8jben])) {
+        [jhomeList addObject:java8jben];
+    }
+    if (!(0 == [[NSFileManager defaultManager] fileExistsAtPath:libsjava16jben])) {
+        [jhomeList addObject:java16jben];
+    }
+    if (!(0 == [[NSFileManager defaultManager] fileExistsAtPath:libsjava17jben])) {
+        [jhomeList addObject:java17jben];
+    }
+    if (!(0 == [[NSFileManager defaultManager] fileExistsAtPath:libsjava8])) {
+        [jhomeList addObject:java8];
+    }
+    
+    jhomePickerView = [[UIPickerView alloc] init];
+    jhomePickerView.delegate = self;
+    jhomePickerView.dataSource = self;
+    jhomePickerView.tag = 113;
     UIToolbar *jhomePickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
     UIBarButtonItem *jhomeFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     UIBarButtonItem *jhomeDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeKeyboard:)];
@@ -236,6 +277,7 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
     jhomePickerToolbar.items = @[jhomeFlexibleSpace, jhomeDoneButton];
 
     jhomeTextField.inputAccessoryView = jhomePickerToolbar;
+    jhomeTextField.inputView = jhomePickerView;
 
     if ([getPreference(@"option_warn") boolValue] == YES) {
         UIAlertController *preferenceWarn = [UIAlertController alertControllerWithTitle:@"Restart required" message:@"Some options in this menu will require that you restart the launcher for them to take effect."preferredStyle:UIAlertControllerStyleAlert];
@@ -264,7 +306,7 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
     gdirPickerView = [[UIPickerView alloc] init];
     gdirPickerView.delegate = self;
     gdirPickerView.dataSource = self;
-    gdirPickerView.tag = 113;
+    gdirPickerView.tag = 114;
     UIToolbar *gdirPickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
     UIBarButtonItem *gdirFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     UIBarButtonItem *gdirDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeKeyboard:)];
@@ -397,7 +439,7 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:JARGS];}];
         UIAction *option5 = [UIAction actionWithTitle:@"Renderer" image:[[UIImage systemImageNamed:@"cpu"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:REND];}];
-        UIAction *option6 = [UIAction actionWithTitle:@"Java home" image:[[UIImage systemImageNamed:@"cube"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+        UIAction *option6 = [UIAction actionWithTitle:@"Java version" image:[[UIImage systemImageNamed:@"cube"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:JHOME];}];
         UIAction *option7 = [UIAction actionWithTitle:@"Game directory" image:[[UIImage systemImageNamed:@"folder"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:GDIRECTORY];}];
@@ -489,8 +531,20 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
             [noshaderconvSwitch setEnabled:YES];
         }
     } else if (textField.tag == 103) {
-        setPreference(@"java_home", textField.text);
-        if (![textField.text containsString:@"java-8-openjdk"] && [getPreference(@"java_warn") boolValue] == YES) {
+        if ([textField.text isEqualToString:java8jben]) {
+            setPreference(@"java_home", libsjava8jben);
+            setenv("JAVA_HOME", [libsjava8jben cStringUsingEncoding:NSUTF8StringEncoding], 1);
+        } else if ([textField.text isEqualToString:java8jben]) {
+            setPreference(@"java_home", libsjava16jben);
+            setenv("JAVA_HOME", [libsjava16jben cStringUsingEncoding:NSUTF8StringEncoding], 1);
+        } else if ([textField.text isEqualToString:java17jben]) {
+            setPreference(@"java_home", libsjava17jben);
+            setenv("JAVA_HOME", [libsjava17jben cStringUsingEncoding:NSUTF8StringEncoding], 1);
+        } else if ([textField.text isEqualToString:java8]) {
+           setPreference(@"java_home", libsjava8);
+           setenv("JAVA_HOME", [libsjava8 cStringUsingEncoding:NSUTF8StringEncoding], 1);
+        }
+        if (![textField.text containsString:java8jben] && ![textField.text containsString:java8] && [getPreference(@"java_warn") boolValue] == YES) {
             UIAlertController *javaAlert = [UIAlertController alertControllerWithTitle:@"Java version is not Java 8" message:@"Minecraft versions below 1.6, modded below 1.16.4, and the mod installer will not work unless you have Java 8 installed on your device."preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
             [self presentViewController:javaAlert animated:YES completion:nil];
@@ -648,7 +702,7 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
         UIAlertAction *allocmem = [UIAlertAction actionWithTitle:@"Allocated RAM" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:ALLOCMEM];}];
         UIAlertAction *jargs = [UIAlertAction actionWithTitle:@"Java arguments" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:JARGS];}];
         UIAlertAction *renderer = [UIAlertAction actionWithTitle:@"Renderer"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:REND];}];
-        UIAlertAction *jhome = [UIAlertAction actionWithTitle:@"Java home" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:JHOME];}];
+        UIAlertAction *jhome = [UIAlertAction actionWithTitle:@"Java version" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:JHOME];}];
         UIAlertAction *gdirectory = [UIAlertAction actionWithTitle:@"Game directory"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:GDIRECTORY];}];
         UIAlertAction *noshaderconv = [UIAlertAction actionWithTitle:@"Disable shaderconv" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:NOSHADERCONV];}];
         UIAlertAction *resetwarn = [UIAlertAction actionWithTitle:@"Reset warnings" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:RESETWARN];}];
@@ -689,16 +743,16 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
         message = @"This option allows you to edit arguments that can be passed to Minecraft. Not all arguments work with PojavLauncher, so be aware. This option also requires a restart of the launcher to take effect.";
     } else if(setting == REND) {
         title = @"Renderer";
-        message = @"This option allows you to change the renderer in use. Choosing 'libgl4es_115.dylib' may fix sheep and banner colors on 1.16 and allow 1.17 to be played, but will also not work with older versions.";
+        message = @"This option allows you to change the renderer in use. Choosing GL4ES 1.1.5 or tinygl4angle may fix sheep and banner colors on 1.16 and allow 1.17 to be played, but will also not work with older versions.";
     } else if(setting == JHOME) {
-        title = @"Java home";
-        message = @"This option allows you to change the Java executable directory. Choosing '/usr/lib/jvm/java-16-openjdk' may allow you to play 1.17, however older versions and most versions of modded Minecraft, as well as the mod installer, will not work. This option also requires a restart of the launcher to take effect.";
+        title = @"Java version";
+        message = @"This option allows you to change the Java executable directory. Choosing Java 16 or Java 17 may allow you to play 1.17, however older versions and most versions of modded Minecraft, as well as the mod installer, will not work. This option also requires a restart of the launcher to take effect.";
     } else if(setting == GDIRECTORY) {
         title = @"Game directory";
         message = @"This option allows you to change where your Minecraft settings and saves are stored in a MultiMC like fashion. Useful for when you want to have multiple mod loaders installed but do not want to delete/move mods around to switch. This option also requires a restart of the launcher to take effect.";
     } else if(setting == NOSHADERCONV) {
         title = @"Disable shaderconv";
-        message = @"This option allows you to disable the shader converter inside gl4es 1.1.5 in order to let ANGLE processes them directly. This option is experimental and should only be enabled when playing Minecraft 1.17 or above.";
+        message = @"This option allows you to disable the shader converter inside gl4es 1.1.5 in order to let ANGLE processes them directly. This option is experimental and should only be enabled when playing Minecraft 1.17 or above. Alternatively you can use tinygl4angle for 1.17.";
     } else if(setting == RESETWARN) {
         title = @"Reset warnings";
         message = @"This option re-enables all warnings to be shown again.";
@@ -812,13 +866,15 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
 
 #pragma mark - UIPickerView
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    if(pickerView.tag == 113) {
-        gdirTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
-        setPreference(@"game_directory", gdirTextField.text);
-    } else if(pickerView.tag == 112) {
-        NSLog(@"1");
+    if(pickerView.tag == 112) {
         rendTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
         setPreference(@"renderer", rendTextField.text);
+    } else if(pickerView.tag == 113) {
+        jhomeTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
+        setPreference(@"java_home", jhomeTextField.text);
+    } else if(pickerView.tag == 114) {
+        gdirTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
+        setPreference(@"game_directory", gdirTextField.text);
     }
 }
 
@@ -830,6 +886,8 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
     if(pickerView.tag == 112) {
         return rendererList.count;
     } else if(pickerView.tag == 113) {
+        return jhomeList.count;
+    } else if(pickerView.tag == 114) {
         return gdirList.count;
     } else {
         return 0;
@@ -841,6 +899,8 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
     if(pickerView.tag == 112) {
         object = [rendererList objectAtIndex:row];
     } else if(pickerView.tag == 113) {
+        object = [jhomeList objectAtIndex:row];
+    } else if(pickerView.tag == 114) {
         object = [gdirList objectAtIndex:row];
     }
     return (NSString*) object;
