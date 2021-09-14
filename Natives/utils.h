@@ -36,10 +36,7 @@ static float resolutionScale = 1.0;
 
 UIViewController *viewController;
 
-MGLContext *firstContext;
-MGLSharegroup* sharegroup;
-
-void* GL4ES_HANDLE;
+void* gbuffer; // OSMesa framebuffer
 
 JavaVM* runtimeJavaVMPtr;
 JNIEnv* runtimeJNIEnvPtr_ANDROID;
@@ -55,6 +52,8 @@ bool isInputReady, isCursorEntered, isPrepareGrabPos, isUseStackQueueCall;
 jboolean isGrabbing;
 
 int savedWidth, savedHeight;
+
+void _CGDataProviderReleaseBytePointerCallback(void *info,const void *pointer);
 
 jboolean attachThread(bool isAndroid, JNIEnv** secondJNIEnvPtr);
 char** convert_to_char_array(JNIEnv *env, jobjectArray jstringArray);

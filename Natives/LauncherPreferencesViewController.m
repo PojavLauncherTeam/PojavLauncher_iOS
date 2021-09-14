@@ -43,9 +43,10 @@ UISwitch *noshaderconvSwitch;
 UIBlurEffect *blur;
 UIVisualEffectView *blurView;
 UIScrollView *scrollView;
-NSString *gl4es114 = @"GL4ES 1.1.4";
-NSString *gl4es115 = @"GL4ES 1.1.5 (1.16+)";
-NSString *tinygl4angle = @"tinygl4angle (1.17+)";
+NSString *gl4es114 = @"GL4ES 1.1.4 - exports OpenGL 2.1";
+NSString *gl4es115 = @"GL4ES 1.1.5 (1.16+) - exports OpenGL 2.1";
+NSString *tinygl4angle = @"tinygl4angle (1.17+) - exports OpenGL 3.2 (Core Profile, limited)";
+NSString *zink = @"Zink (Mesa 21.2.1) - exports OpenGL 4.6";
 NSString *java8jben = @"Java 8";
 NSString *java16jben = @"Java 16";
 NSString *java17jben = @"Java 17";
@@ -54,11 +55,10 @@ NSString *libsjava8jben = @"/usr/lib/jvm/java-8-openjdk";
 NSString *libsjava16jben = @"/usr/lib/jvm/java-16-openjdk";
 NSString *libsjava17jben = @"/usr/lib/jvm/java-17-openjdk";
 NSString *libsjava8;
-//NSString *vgpu = @"vgpu";
 NSString *lib_gl4es114 = @"libgl4es_114.dylib";
 NSString *lib_gl4es115 = @"libgl4es_115.dylib";
 NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
-//NSString *lib_vgpu = @"libvgpu.dylib";
+NSString *lib_zink = @"libOSMesa.8.dylib";
 
 - (void)viewDidLoad
 {
@@ -194,9 +194,9 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
         rendTextField.text = gl4es115;
     } else if ([getPreference(@"renderer") isEqualToString:lib_tinygl4angle]) {
         rendTextField.text = tinygl4angle;
-    } /* else if ([getPreference(@"renderer") isEqualToString:lib_vgpu) {
-       rendTextField.text = vgpu;
-    }*/
+    } else if ([getPreference(@"renderer") isEqualToString:lib_zink]) {
+        rendTextField.text = zink;
+    }
     
     rendTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
     rendTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
@@ -206,7 +206,7 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
     [rendererList addObject:gl4es114];
     [rendererList addObject:gl4es115];
     [rendererList addObject:tinygl4angle];
-    //[rendererList addObject:vgpu];
+    //[rendererList addObject:zink]; //TODO
 
     [self instanceDirCont];
     
@@ -509,17 +509,14 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
     } else if (textField.tag == 102) {
         if ([textField.text isEqualToString:gl4es114]) {
             setPreference(@"renderer", lib_gl4es114);
-            setenv("RENDERER", [lib_gl4es114 cStringUsingEncoding:NSUTF8StringEncoding], 1);
         } else if ([textField.text isEqualToString:gl4es115]) {
             setPreference(@"renderer", lib_gl4es115);
-            setenv("RENDERER", [lib_gl4es115 cStringUsingEncoding:NSUTF8StringEncoding], 1);
         } else if ([textField.text isEqualToString:tinygl4angle]) {
             setPreference(@"renderer", lib_tinygl4angle);
-            setenv("RENDERER", [lib_tinygl4angle cStringUsingEncoding:NSUTF8StringEncoding], 1);
-        } /* else if ([textField.text isEqualToString:vgpu]) {
-            setPreference(@"renderer", lib_vgpu);
-            setenv("RENDERER", [lib_vgpu cStringUsingEncoding:NSUTF8StringEncoding]]), 1);
-        } */
+        } else if ([textField.text isEqualToString:zink]) {
+            setPreference(@"renderer", lib_zink);
+        }
+        setenv("RENDERER", [getPreference(@"renderer") UTF8String], 1);
         
         if (![textField.text isEqualToString:gl4es115] && [getPreference(@"disable_gl4es_shaderconv") boolValue] == YES) {
             setPreference(@"disable_gl4es_shaderconv", @NO);
@@ -868,7 +865,6 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     if(pickerView.tag == 112) {
         rendTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
-        setPreference(@"renderer", rendTextField.text);
     } else if(pickerView.tag == 113) {
         jhomeTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
         setPreference(@"java_home", jhomeTextField.text);

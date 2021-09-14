@@ -381,7 +381,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
                 NSString *out_username = [selectedProfile valueForKey:@"name"];
                 NSLog(@"DBG: Login succeed: %@, %@, %@, %@", out_accessToken, out_clientToken, out_profileID, out_username);
 */
-                assert(dataStr != nil);
+                NSAssert(dataStr != nil, @"account data should not be null");
                 loginAccountInput(self.navigationController, TYPE_MOJANG, [dataStr UTF8String]);
             }
         } else {

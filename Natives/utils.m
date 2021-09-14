@@ -8,7 +8,8 @@
 
 #include "utils.h"
 
-long shared_awt_surface;
+void _CGDataProviderReleaseBytePointerCallback(void *info,const void *pointer) {
+}
 
 char** convert_to_char_array(JNIEnv *env, jobjectArray jstringArray) {
 	int num_rows = (*env)->GetArrayLength(env, jstringArray);
@@ -55,14 +56,6 @@ jstring convertStringJVM(JNIEnv* srcEnv, JNIEnv* dstEnv, jstring srcStr) {
     jstring dstStr = (*dstEnv)->NewStringUTF(dstEnv, srcStrC);
 	(*srcEnv)->ReleaseStringUTFChars(srcEnv, srcStr, srcStrC);
     return dstStr;
-}
-
-JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_setupBridgeSurfaceAWT(JNIEnv *env, jclass clazz, jlong surface) {
-	shared_awt_surface = surface;
-}
-
-JNIEXPORT jlong JNICALL Java_android_view_Surface_nativeGetBridgeSurfaceAWT(JNIEnv *env, jclass clazz) {
-	return (jlong) shared_awt_surface;
 }
 
 JNIEXPORT jint JNICALL Java_android_os_OpenJDKNativeRegister_nativeRegisterNatives(JNIEnv *env, jclass clazz, jstring registerSymbol) {

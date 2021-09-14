@@ -271,6 +271,7 @@ int versionSelectedAt = 0;
     } else {
         result = [object valueForKey:@"url"];
     }
+    NSAssert(result != nil, @"version should not be null");
 
     callback_LauncherViewController_installMinecraft([result UTF8String]);
 }

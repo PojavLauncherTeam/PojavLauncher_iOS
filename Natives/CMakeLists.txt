@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.6)
 project(PojavLauncher)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcommon -fobjc-arc -ObjC -I'${CMAKE_CURRENT_LIST_DIR}/resources/Frameworks/MetalANGLE.framework/Headers' -I'${CMAKE_CURRENT_LIST_DIR}/external/DBNumberedSlider/Classes' -I'${CMAKE_CURRENT_LIST_DIR}/external/fishhook'"
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcommon -fobjc-arc -ObjC -I'${CMAKE_CURRENT_LIST_DIR}/resources/Frameworks/MetalANGLE.framework/Headers' -I'${CMAKE_CURRENT_LIST_DIR}/external/DBNumberedSlider/Classes' -I'${CMAKE_CURRENT_LIST_DIR}/external/fishhook' -I'${CMAKE_CURRENT_LIST_DIR}/external_include'"
 )
 set(CMAKE_C_FLAGS_DEBUG "-funwind-tables -g")
 
@@ -54,10 +54,11 @@ add_library(pojavexec SHARED
 )
 target_link_libraries(pojavexec
   "-F'${CMAKE_CURRENT_LIST_DIR}/resources/Frameworks'"
-  "-framework UIKit"
-  "-framework MetalANGLE"
-  "-framework CoreGraphics"
   "-framework AuthenticationServices"
+  "-framework CoreGraphics"
+  "-framework MetalANGLE"
+  "-framework QuartzCore"
+  "-framework UIKit"
 )
 
 add_executable(PojavLauncher

@@ -370,7 +370,6 @@ int launchJVM(int argc, char *argv[]) {
             javaHome = calloc(1, 2048);
             sprintf((char *)javaHome, "%s/jre", homeDir);
         }
-        setenv("JAVA_HOME", javaHome, 1);
         debug("[Pre-init] JAVA_HOME environment variable was not set. Defaulting to %s for future use.\n", javaHome);
     } else {
         if (0 == [[NSFileManager defaultManager] fileExistsAtPath:javaHome_pre]) {
@@ -389,6 +388,7 @@ int launchJVM(int argc, char *argv[]) {
             debug("[Pre-Init] Restored preference: JAVA_HOME is set to %s\n", javaHome);
         }
     }
+    setenv("JAVA_HOME", javaHome, 1);
 
     if (!started && strncmp(argv[0], "/Applications", 13)) {
         char src[2048], dst[2048];
@@ -491,10 +491,11 @@ int launchJVM(int argc, char *argv[]) {
     allocmem_pre = [getPreference(@"allocated_memory") stringValue];
     allocmem = [allocmem_pre cStringUsingEncoding:NSUTF8StringEncoding];
     
-    char controlPath[2048];
+    char *controlPath = calloc(1, 2048);
     sprintf(controlPath, "%s/controlmap", homeDir);
     mkdir(controlPath, S_IRWXU | S_IRWXG | S_IRWXO);
     setenv("POJAV_PATH_CONTROL", controlPath, 1);
+    free(controlPath);
     generateAndSaveDefaultControl();
 
     char classpath[10000];
@@ -532,7 +533,7 @@ int launchJVM(int argc, char *argv[]) {
     snprintf(librarySym, 2048, "%s/Library/Application Support/minecraft", getenv("POJAV_HOME"));
     remove(librarySym);
     symlink(multidir_char, librarySym);
-    setenv("POJAV_GAME_DIR", multidir_char, 1);
+    setenv("POJAV_GAME_DIR", librarySym, 1);
     
     char *oldGameDir = calloc(1, 2048);
     snprintf(oldGameDir, 2048, "%s/Documents/minecraft", getenv("HOME"));
@@ -563,7 +564,7 @@ int launchJVM(int argc, char *argv[]) {
         NSLog(@"[Pre-init] Java executable path: %s", javaPath);
         setenv("JAVA_EXT_EXECNAME", javaPath, 1);
 
-        chdir(userDir);
+        chdir(librarySym);
 
         margv[margc++] = javaPath;
         margv[margc++] = "-XstartOnFirstThread";
@@ -640,6 +641,12 @@ int launchJVM(int argc, char *argv[]) {
         debug("[Init] JLI_Launch = NULL");
         return -2;
     }
+
+    // Free unused char arrays
+    free(librarySym);
+    free(multidir_char);
+    free(oldGameDir);
+    free(oldLibraryDir);
 
     debug("[Init] Calling JLI_Launch");
 /*

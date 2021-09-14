@@ -19,11 +19,8 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_refreshAWTBuffer(JNI
 }
 
 @implementation SurfaceView
-const void * _CGDataProviderGetBytePointerCallback(void *info) {
+const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
 	return (const void *)rgbArray;
-}
-
-void _CGDataProviderReleaseBytePointerCallback(void *info,const void *pointer) {
 }
    
 - (void)displayLayer:(CALayer *)theLayer
@@ -46,7 +43,7 @@ void _CGDataProviderReleaseBytePointerCallback(void *info,const void *pointer) {
     colorSpace = CGColorSpaceCreateDeviceRGB();
 
     callbacks.version = 0;
-    callbacks.getBytePointer = _CGDataProviderGetBytePointerCallback;
+    callbacks.getBytePointer = _CGDataProviderGetBytePointerCallbackAWT;
     callbacks.releaseBytePointer = _CGDataProviderReleaseBytePointerCallback;
     callbacks.getBytesAtPosition = NULL;
     callbacks.releaseInfo = NULL;
