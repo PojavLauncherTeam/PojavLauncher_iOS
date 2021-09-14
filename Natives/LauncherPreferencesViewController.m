@@ -253,16 +253,16 @@ NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
     [tableView addSubview:jhomeTextField];
     
     jhomeList = [[NSMutableArray alloc] init];
-    if (!(0 == [[NSFileManager defaultManager] fileExistsAtPath:libsjava8jben])) {
+    if (0 == [[NSFileManager defaultManager] fileExistsAtPath:libsjava8jben])) {
         [jhomeList addObject:java8jben];
     }
-    if (!(0 == [[NSFileManager defaultManager] fileExistsAtPath:libsjava16jben])) {
+    if (0 == [[NSFileManager defaultManager] fileExistsAtPath:libsjava16jben])) {
         [jhomeList addObject:java16jben];
     }
-    if (!(0 == [[NSFileManager defaultManager] fileExistsAtPath:libsjava17jben])) {
+    if (0 == [[NSFileManager defaultManager] fileExistsAtPath:libsjava17jben])) {
         [jhomeList addObject:java17jben];
     }
-    if (!(0 == [[NSFileManager defaultManager] fileExistsAtPath:libsjava8])) {
+    if (0 == [[NSFileManager defaultManager] fileExistsAtPath:libsjava8])) {
         [jhomeList addObject:java8];
     }
     
