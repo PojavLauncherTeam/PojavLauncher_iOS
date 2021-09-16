@@ -531,15 +531,15 @@ NSString *lib_zink = @"libOSMesa.8.dylib";
         if ([textField.text isEqualToString:java8jben]) {
             setPreference(@"java_home", libsjava8jben);
             setenv("JAVA_HOME", [libsjava8jben cStringUsingEncoding:NSUTF8StringEncoding], 1);
-        } else if ([textField.text isEqualToString:java8jben]) {
+        } else if ([textField.text isEqualToString:java16jben]) {
             setPreference(@"java_home", libsjava16jben);
             setenv("JAVA_HOME", [libsjava16jben cStringUsingEncoding:NSUTF8StringEncoding], 1);
         } else if ([textField.text isEqualToString:java17jben]) {
             setPreference(@"java_home", libsjava17jben);
             setenv("JAVA_HOME", [libsjava17jben cStringUsingEncoding:NSUTF8StringEncoding], 1);
         } else if ([textField.text isEqualToString:java8]) {
-           setPreference(@"java_home", libsjava8);
-           setenv("JAVA_HOME", [libsjava8 cStringUsingEncoding:NSUTF8StringEncoding], 1);
+            setPreference(@"java_home", libsjava8);
+            setenv("JAVA_HOME", [libsjava8 cStringUsingEncoding:NSUTF8StringEncoding], 1);
         }
         if (![textField.text containsString:java8jben] && ![textField.text containsString:java8] && [getPreference(@"java_warn") boolValue] == YES) {
             UIAlertController *javaAlert = [UIAlertController alertControllerWithTitle:@"Java version is not Java 8" message:@"Minecraft versions below 1.6, modded below 1.16.4, and the mod installer will not work unless you have Java 8 installed on your device."preferredStyle:UIAlertControllerStyleAlert];
