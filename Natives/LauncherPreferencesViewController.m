@@ -867,7 +867,6 @@ NSString *lib_zink = @"libOSMesa.8.dylib";
         rendTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
     } else if(pickerView.tag == 113) {
         jhomeTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
-        setPreference(@"java_home", jhomeTextField.text);
     } else if(pickerView.tag == 114) {
         gdirTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
         setPreference(@"game_directory", gdirTextField.text);
