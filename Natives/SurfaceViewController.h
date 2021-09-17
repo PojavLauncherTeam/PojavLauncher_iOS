@@ -4,14 +4,16 @@
 
 @interface GameSurfaceView : UIView
 {
-CALayer* layer;
-CGColorSpaceRef colorSpace;
-CGDataProviderDirectCallbacks callbacks;
+    CALayer* layer;
+    CGColorSpaceRef colorSpace;
+    CGDataProviderDirectCallbacks callbacks;
 }
+
+- (void)displayLayer;
 @end
 
 @interface SurfaceViewController : UIViewController
 
-@property(nonatomic, strong) UIView* surfaceView;
+@property(nonatomic, strong) GameSurfaceView* surfaceView;
 
 @end

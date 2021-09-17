@@ -46,7 +46,7 @@ UIScrollView *scrollView;
 NSString *gl4es114 = @"GL4ES 1.1.4 - exports OpenGL 2.1";
 NSString *gl4es115 = @"GL4ES 1.1.5 (1.16+) - exports OpenGL 2.1";
 NSString *tinygl4angle = @"tinygl4angle (1.17+) - exports OpenGL 3.2 (Core Profile, limited)";
-NSString *zink = @"Zink (Mesa 21.2.1) - exports OpenGL 4.6";
+NSString *zink = @"Zink (Mesa 21.0) - exports OpenGL 4.1";
 NSString *java8jben = @"Java 8";
 NSString *java16jben = @"Java 16";
 NSString *java17jben = @"Java 17";

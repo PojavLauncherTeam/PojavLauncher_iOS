@@ -106,7 +106,7 @@ native:
 		-DCONFIG_COMMIT="$(COMMIT)" \
 		-DCONFIG_RELEASE=$(RELEASE) \
 		..
-	@cd Natives/build && cmake --build . --config $(CMAKE_BUILD_TYPE) --target awt_headless awt_xawt pojavexec PojavLauncher
+	@cd Natives/build && cmake --build . --config $(CMAKE_BUILD_TYPE) --target awt_headless awt_xawt PojavCore PojavLauncher
 	@rm Natives/build/libawt_headless.dylib
 	@echo 'Finished build task - native application'
 
@@ -136,7 +136,7 @@ package: native java extras
 		cp -R Natives/resources/* Natives/build/PojavLauncher.app/ || exit 1; \
 		cp Natives/build/libawt_xawt.dylib Natives/build/PojavLauncher.app/Frameworks/ || exit 1; \
 		( cd Natives/build/PojavLauncher.app/Frameworks; ln -sf libawt_xawt.dylib libawt_headless.dylib ) || exit 1; \
-		cp Natives/build/libpojavexec.dylib Natives/build/PojavLauncher.app/Frameworks/ || exit 1; \
+		cp -R Natives/build/PojavCore.framework Natives/build/PojavLauncher.app/Frameworks/ || exit 1; \
 		mkdir Natives/build/PojavLauncher.app/{libs,libs_caciocavallo}; \
 		cp JavaApp/local_out/launcher.jar Natives/build/PojavLauncher.app/libs/launcher.jar || exit 1; \
 		cp -R JavaApp/libs/* Natives/build/PojavLauncher.app/libs/ || exit 1; \
@@ -159,7 +159,7 @@ package: native java extras
 		cp -R Natives/PkgInfo Natives/build/PojavLauncher.app/PkgInfo || exit 1; \
 		cp Natives/build/libawt_xawt.dylib Natives/build/PojavLauncher.app/Frameworks/ || exit 1; \
 		( cd Natives/build/PojavLauncher.app/Frameworks; ln -sf libawt_xawt.dylib libawt_headless.dylib ) || exit 1; \
-		cp Natives/build/libpojavexec.dylib Natives/build/PojavLauncher.app/Frameworks/ || exit 1; \
+		cp -R Natives/build/PojavCore.framework Natives/build/PojavLauncher.app/Frameworks/ || exit 1; \
 		cp -R Natives/resources/* Natives/build/PojavLauncher.app/ || exit 1; \
 		cp -R JavaApp/libs Natives/build/PojavLauncher.app/libs || exit 1; \
 		cp -R JavaApp/libs_caciocavallo Natives/build/PojavLauncher.app/libs_caciocavallo || exit 1; \
@@ -208,19 +208,19 @@ deploy: native java
 		if [ '$(DEVICE_IP)' != '' ]; then \
 			ldid -Sentitlements.xml Natives/build/PojavLauncher.app/PojavLauncher; \
 			if [ '$(DEVICE_PORT)' != '' ]; then \
-				scp -P $(DEVICE_PORT) -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" Natives/build/libpojavexec.dylib \
+				scp -r -P $(DEVICE_PORT) -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" Natives/build/PojavCore.framework \
 				    Natives/build/libawt_xawt.dylib \
 					Natives/build/PojavLauncher.app/PojavLauncher \
 					JavaApp/local_out/launcher.jar \
-					root@$(DEVICE_IP):/var/tmp; \
-				ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t "mv /var/tmp/libawt_xawt.dylib /Applications/PojavLauncher.app/Frameworks/libawt_xawt.dylib && mv /var/tmp/libpojavexec.dylib /Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib && mv /var/tmp/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher && mv /var/tmp/launcher.jar /Applications/PojavLauncher.app/libs/launcher.jar && cd /Applications/PojavLauncher.app/Frameworks && ln -sf libawt_xawt.dylib libawt_headless.dylib && killall PojavLauncher && chown -R 501:501 /Applications/PojavLauncher.app/*"; \
+					root@$(DEVICE_IP):/var/tmp/; \
+				ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t "mv /var/tmp/libawt_xawt.dylib /Applications/PojavLauncher.app/Frameworks/libawt_xawt.dylib && rm -rf /Applications/PojavLauncher.app/Frameworks/PojavCore.framework && mv /var/tmp/PojavCore.framework /Applications/PojavLauncher.app/Frameworks/PojavCore.framework && mv /var/tmp/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher && mv /var/tmp/launcher.jar /Applications/PojavLauncher.app/libs/launcher.jar && cd /Applications/PojavLauncher.app/Frameworks && ln -sf libawt_xawt.dylib libawt_headless.dylib && killall PojavLauncher && chown -R 501:501 /Applications/PojavLauncher.app/*"; \
 			else \
-				scp -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" Natives/build/libpojavexec.dylib \
+				scp -r -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" Natives/build/PojavCore.framework \
 				    Natives/build/libawt_xawt.dylib \
 					Natives/build/PojavLauncher.app/PojavLauncher \
 					JavaApp/local_out/launcher.jar \
-					root@$(DEVICE_IP):/var/tmp; \
-				ssh root@$(DEVICE_IP) -t "mv /var/tmp/libawt_xawt.dylib /Applications/PojavLauncher.app/Frameworks/libawt_xawt.dylib && mv /var/tmp/libpojavexec.dylib /Applications/PojavLauncher.app/Frameworks/libpojavexec.dylib && mv /var/tmp/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher && mv /var/tmp/launcher.jar /Applications/PojavLauncher.app/libs/launcher.jar && cd /Applications/PojavLauncher.app/Frameworks && ln -sf libawt_xawt.dylib libawt_headless.dylib && killall PojavLauncher && chown -R 501:501 /Applications/PojavLauncher.app/*"; \
+					root@$(DEVICE_IP):/var/tmp/; \
+				ssh root@$(DEVICE_IP) -t "mv /var/tmp/libawt_xawt.dylib /Applications/PojavLauncher.app/Frameworks/libawt_xawt.dylib && rm -rf /Applications/PojavLauncher.app/Frameworks/PojavCore.framework && mv /var/tmp/PojavCore.framework /Applications/PojavLauncher.app/Frameworks/PojavCore.framework && mv /var/tmp/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher && mv /var/tmp/launcher.jar /Applications/PojavLauncher.app/libs/launcher.jar && cd /Applications/PojavLauncher.app/Frameworks && ln -sf libawt_xawt.dylib libawt_headless.dylib && killall PojavLauncher && chown -R 501:501 /Applications/PojavLauncher.app/*"; \
 			fi; \
 		else \
 			echo 'You need to run '\''export DEVICE_IP=<your iOS device IP>'\'' to use make deploy.'; \
@@ -231,7 +231,7 @@ deploy: native java
 		sudo cp JavaApp/local_out/launcher.jar /Applications/PojavLauncher.app/libs/launcher.jar; \
 		sudo cp Natives/build/PojavLauncher.app/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher; \
 		sudo cp Natives/build/libawt_xawt.dylib /Applications/PojavLauncher.app/Frameworks/; \
-		sudo cp Natives/build/libpojavexec.dylib /Applications/PojavLauncher.app/Frameworks/; \
+		sudo cp -R Natives/build/PojavCore.framework /Applications/PojavLauncher.app/Frameworks/; \
 		cd /Applications/PojavLauncher.app/Frameworks; \
 		sudo ln -sf libawt_xawt.dylib libawt_headless.dylib; \
 		sudo chown -R 501:501 /Applications/PojavLauncher.app/*; \

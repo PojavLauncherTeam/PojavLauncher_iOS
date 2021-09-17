@@ -303,6 +303,9 @@ void flipFrame() {
         
         case RENDERER_VK_ZINK: {
             glFinish_p();
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [((SurfaceViewController *)viewController).surfaceView displayLayer];
+            });
         } break;
     }
 }
@@ -394,6 +397,7 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglMakeCurrent(JNIEnv*
             OSMesaPixelStore_p(OSMESA_Y_UP,0);
             NSLog(@"OSMDroid: vendor: %s",glGetString_p(GL_VENDOR));
             NSLog(@"OSMDroid: renderer: %s",glGetString_p(GL_RENDERER));
+            NSLog(@"OSMDroid: extensions: %s",glGetString_p(GL_EXTENSIONS));
             glClear_p(GL_COLOR_BUFFER_BIT);
             glClearColor_p(0.4f, 0.4f, 0.4f, 1.0f);
             flipFrame();

@@ -344,13 +344,8 @@ int launchJVM(int argc, char *argv[]) {
     // Disable overloaded functions hack for Minecraft 1.17+
     setenv("LIBGL_NOINTOVLHACK", "1", 1);
 
-    // Regal environment variables
-    setenv("REGAL_GL_VENDOR", "MetalANGLE", 1);
-    setenv("REGAL_GL_RENDERER", "Regal", 1);
-    setenv("REGAL_GL_VERSION", "4.5", 1);
-    setenv("REGAL_LOG_APP", "1", 1);
-    setenv("REGAL_LOG_DRIVER", "1", 1);
-    setenv("REGAL_LOG_INTERNAL", "1", 1);
+    // Override OpenGL version to 4.1 for Zink
+    setenv("MESA_GL_VERSION_OVERRIDE", "4.1", 1);
 
     javaHome_pre = getPreference(@"java_home");
     javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
@@ -555,7 +550,7 @@ int launchJVM(int argc, char *argv[]) {
         char *userHome = calloc(1, 2048);
         char *memMin = calloc(1, 2048);
         char *memMax = calloc(1, 2048);
-        snprintf(frameworkPath, 2048, "-Djava.library.path=%s/Frameworks", getenv("BUNDLE_PATH"));
+        snprintf(frameworkPath, 2048, "-Djava.library.path=%s/Frameworks:%s/Frameworks/libOSMesa.8.dylib.framework", getenv("BUNDLE_PATH"), getenv("BUNDLE_PATH"));
         snprintf(javaPath, 2048, "%s/bin/java", javaHome);
         snprintf(userDir, 2048, "-Duser.dir=%s", getenv("POJAV_GAME_DIR"));
         snprintf(userHome, 2048, "-Duser.home=%s", getenv("POJAV_HOME"));

@@ -18,6 +18,6 @@ public class JREUtils
     public static native void saveGLContext();
 
     static {
-        System.loadLibrary("pojavexec");
+        System.load(System.getenv("BUNDLE_PATH") + "/Frameworks/PojavCore.framework/PojavCore");
     }
 }

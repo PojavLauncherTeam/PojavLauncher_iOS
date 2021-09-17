@@ -40,12 +40,11 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 	return gbuffer;
 }
 
-- (void)displayLayer:(CALayer *)theLayer
-{
+- (void)displayLayer {
     CGDataProviderRef bitmapProvider = CGDataProviderCreateDirect(NULL, savedWidth * savedHeight * 4, &callbacks);
     CGImageRef bitmap = CGImageCreate(savedWidth, savedHeight, 8, 32, 4 * savedWidth, colorSpace, kCGImageAlphaNoneSkipLast | kCGBitmapByteOrder16Little, bitmapProvider, NULL, FALSE, kCGRenderingIntentDefault);     
 
-    theLayer.contents = (__bridge id) bitmap;
+    self.layer.contents = (__bridge id) bitmap;
     CGImageRelease(bitmap);
     CGDataProviderRelease(bitmapProvider);
    //  CGColorSpaceRelease(colorSpace);
@@ -55,8 +54,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     self = [super initWithFrame:frame];
 
     if ([@(getenv("RENDERER")) hasPrefix:@"libOSMesa"]) {
-        layer = [self layer];
-        layer.opaque = YES;
+        self.layer.opaque = YES;
 
         colorSpace = CGColorSpaceCreateDeviceRGB();
 
@@ -121,10 +119,8 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     [self.view addSubview:self.surfaceView];
 
     // Enable support for desktop GLSL
-    eglBindAPI(EGL_OPENGL_API);
     if ([getPreference(@"disable_gl4es_shaderconv") boolValue]) {
         setenv("LIBGL_NOSHADERCONV", "1", 1);
-        NSLog(@"eglBindAPI(EGL_OPENGL_API) error=%x", eglGetError());
     }
 
     notchOffset = insets.left;
@@ -257,15 +253,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     return NO;
 }
 
-#pragma mark - MetalANGLE stuff
-
-- (void)dealloc
-{
-    [MGLContext setCurrentContext:nil];
-}
-
-- (void)setupGL
-{
+- (void)setupGL {
     callback_SurfaceViewController_launchMinecraft(savedWidth * resolutionScale, savedHeight * resolutionScale);
 }
 

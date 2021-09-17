@@ -28,9 +28,9 @@ target_link_libraries(awt_xawt
 
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -rpath @executable_path/Frameworks -rpath @loader_path/Frameworks")
 
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -rpath @executable_path/Frameworks -rpath @loader_path/Frameworks -rpath @loader_path/Frameworks/libpojavexec.dylib.framework")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -rpath @executable_path/Frameworks -rpath @loader_path/Frameworks")
 
-add_library(pojavexec SHARED
+add_library(PojavCore SHARED
   AboutLauncherViewController.m
   AppDelegate.m
   CustomControlsViewController.m
@@ -52,11 +52,14 @@ add_library(pojavexec SHARED
   log.m
   utils.m
 )
-target_link_libraries(pojavexec
+set_target_properties(PojavCore PROPERTIES
+    FRAMEWORK TRUE
+    FRAMEWORK_VERSION CXX
+)
+target_link_libraries(PojavCore
   "-F'${CMAKE_CURRENT_LIST_DIR}/resources/Frameworks'"
   "-framework AuthenticationServices"
   "-framework CoreGraphics"
-  "-framework MetalANGLE"
   "-framework QuartzCore"
   "-framework UIKit"
 )
@@ -68,8 +71,9 @@ add_executable(PojavLauncher
   external/fishhook/fishhook.c
 )
 target_link_libraries(PojavLauncher
-  "-L'${CMAKE_CURRENT_LIST_DIR}/build'"
-  "-framework UIKit -lpojavexec"
+  "-F'${CMAKE_CURRENT_LIST_DIR}/build'"
+  "-framework PojavCore"
+  "-framework UIKit"
 )
 set_target_properties(PojavLauncher PROPERTIES
   MACOSX_BUNDLE TRUE

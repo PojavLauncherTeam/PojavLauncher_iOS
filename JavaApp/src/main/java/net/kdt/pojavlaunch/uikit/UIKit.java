@@ -151,7 +151,7 @@ public class UIKit {
     }
 
     static {
-        System.loadLibrary("pojavexec");
+        System.load(System.getenv("BUNDLE_PATH") + "/Frameworks/PojavCore.framework/PojavCore");
     }
 
     public static native void refreshAWTBuffer(int[] array);

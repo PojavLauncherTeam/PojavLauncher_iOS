@@ -14,7 +14,7 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_refreshAWTBuffer(JNI
     memcpy(rgbArray, tmpArray, savedWidth * savedHeight * 4);
     (*env)->ReleaseIntArrayElements(env, jreRgbArray, tmpArray, JNI_ABORT);
     dispatch_async(dispatch_get_main_queue(), ^{
-        [surfaceView displayLayer:surfaceView.layer];
+        [surfaceView displayLayer];
     });
 }
 
@@ -23,12 +23,11 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
 	return (const void *)rgbArray;
 }
    
-- (void)displayLayer:(CALayer *)theLayer
-{
+- (void)displayLayer {
     CGDataProviderRef bitmapProvider = CGDataProviderCreateDirect(NULL, savedWidth * savedHeight * 4, &callbacks);
     CGImageRef bitmap = CGImageCreate(savedWidth, savedHeight, 8, 32, 4 * savedWidth, colorSpace, kCGImageAlphaFirst | kCGBitmapByteOrder32Little, bitmapProvider, NULL, FALSE, kCGRenderingIntentDefault);     
 
-    theLayer.contents = (__bridge id) bitmap;
+    self.layer.contents = (__bridge id) bitmap;
     CGImageRelease(bitmap);
     CGDataProviderRelease(bitmapProvider);
    //  CGColorSpaceRelease(colorSpace);
@@ -37,8 +36,7 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    layer = [self layer];
-    layer.opaque = YES;
+    self.layer.opaque = YES;
 
     colorSpace = CGColorSpaceCreateDeviceRGB();
 
