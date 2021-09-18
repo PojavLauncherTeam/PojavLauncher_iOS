@@ -2,7 +2,6 @@
 /JavaApp/.gradle
 /JavaApp/build
 /JavaApp/local_out
-/Natives/libpojavexec.dylib
 /Natives/PojavLauncher
 /Natives/build
 /Natives/resources/*.png

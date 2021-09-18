@@ -58,7 +58,7 @@ NSString *libsjava8;
 NSString *lib_gl4es114 = @"libgl4es_114.dylib";
 NSString *lib_gl4es115 = @"libgl4es_115.dylib";
 NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
-NSString *lib_zink = @"libOSMesa.8.dylib";
+NSString *lib_zink = @"libOSMesaOverride.dylib";
 
 - (void)viewDidLoad
 {
@@ -206,7 +206,7 @@ NSString *lib_zink = @"libOSMesa.8.dylib";
     [rendererList addObject:gl4es114];
     [rendererList addObject:gl4es115];
     [rendererList addObject:tinygl4angle];
-    //[rendererList addObject:zink]; //TODO
+    [rendererList addObject:zink];
 
     [self instanceDirCont];
     

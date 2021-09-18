@@ -63,7 +63,7 @@ jobs:
       - name: Build the Debian package
         run: gmake -j$(sysctl -n hw.ncpu) package
 
-      - name: Generate dSYM for libpojavexec
+      - name: Generate dSYM for PojavCore
         run: dsymutil --arch arm64 Natives/build/PojavCore.framework/PojavCore
 
       - name: Upload build artifact

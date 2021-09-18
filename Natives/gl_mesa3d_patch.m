@@ -18,8 +18,8 @@ GLAPI void GLAPIENTRY glDrawArrays(GLenum mode, GLint first, GLsizei count) {
         
         // this is wrong but idk how to deal with it yet...
         // minecraft stills works with this for unknown reason
-        glDrawArrays_real(GL_TRIANGLE_STRIP, first, count);
+        glDrawArrays_p(GL_TRIANGLE_STRIP, first, count);
     } else {
-        glDrawArrays_real(mode, first, count);
+        glDrawArrays_p(mode, first, count);
     }
 }

@@ -139,7 +139,7 @@ void loadSymbols() {
     char fileName[2048];
     switch (config_renderer) {
         case RENDERER_VK_ZINK:
-            sprintf((char *)fileName, "%s/Frameworks/libOSMesa.8.dylib.framework/libOSMesa.8.dylib", getenv("BUNDLE_PATH"));
+            sprintf((char *)fileName, "%s/Frameworks/libOSMesaOverride.dylib.framework/libOSMesaOverride.dylib", getenv("BUNDLE_PATH"));
             break;
         case RENDERER_MTL_ANGLE:
             sprintf((char *)fileName, "%s/Frameworks/MetalANGLE.framework/MetalANGLE", getenv("BUNDLE_PATH"));

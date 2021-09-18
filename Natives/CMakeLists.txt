@@ -26,9 +26,18 @@ target_link_libraries(awt_xawt
   "-lawt_headless"
 )
 
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -rpath @executable_path/Frameworks -rpath @loader_path/Frameworks")
+set(CMAKE_FRAMEWORK_PATH "${CMAKE_CURRENT_LIST_DIR}/resources/Frameworks")
 
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -rpath @executable_path/Frameworks -rpath @loader_path/Frameworks")
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -rpath @executable_path/Frameworks -rpath @loader_path/Frameworks")
+
+find_library(OSMESA_LIB libOSMesa.8.dylib)
+
+add_library(libOSMesaOverride.dylib SHARED gl_mesa3d_patch.m)
+set_target_properties(libOSMesaOverride.dylib PROPERTIES
+    FRAMEWORK TRUE
+)
+target_link_libraries(libOSMesaOverride.dylib ${OSMESA_LIB})
 
 add_library(PojavCore SHARED
   AboutLauncherViewController.m
@@ -54,10 +63,8 @@ add_library(PojavCore SHARED
 )
 set_target_properties(PojavCore PROPERTIES
     FRAMEWORK TRUE
-    FRAMEWORK_VERSION CXX
 )
 target_link_libraries(PojavCore
-  "-F'${CMAKE_CURRENT_LIST_DIR}/resources/Frameworks'"
   "-framework AuthenticationServices"
   "-framework CoreGraphics"
   "-framework QuartzCore"

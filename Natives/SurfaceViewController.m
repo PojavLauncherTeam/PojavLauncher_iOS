@@ -53,7 +53,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
 
-    if ([@(getenv("RENDERER")) hasPrefix:@"libOSMesa"]) {
+    if ([@(getenv("RENDERER")) hasPrefix:@"libOSMesaOverride"]) {
         self.layer.opaque = YES;
 
         colorSpace = CGColorSpaceCreateDeviceRGB();

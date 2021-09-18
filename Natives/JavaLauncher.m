@@ -550,7 +550,7 @@ int launchJVM(int argc, char *argv[]) {
         char *userHome = calloc(1, 2048);
         char *memMin = calloc(1, 2048);
         char *memMax = calloc(1, 2048);
-        snprintf(frameworkPath, 2048, "-Djava.library.path=%s/Frameworks:%s/Frameworks/libOSMesa.8.dylib.framework", getenv("BUNDLE_PATH"), getenv("BUNDLE_PATH"));
+        snprintf(frameworkPath, 2048, "-Djava.library.path=%s/Frameworks:%s/Frameworks/libOSMesaOverride.dylib.framework", getenv("BUNDLE_PATH"), getenv("BUNDLE_PATH"));
         snprintf(javaPath, 2048, "%s/bin/java", javaHome);
         snprintf(userDir, 2048, "-Duser.dir=%s", getenv("POJAV_GAME_DIR"));
         snprintf(userHome, 2048, "-Duser.home=%s", getenv("POJAV_HOME"));
