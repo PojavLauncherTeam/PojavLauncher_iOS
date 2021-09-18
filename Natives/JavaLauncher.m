@@ -84,6 +84,9 @@ const char *javaHome;
 const char *renderer;
 const char *allocmem;
 const char *multidir;
+
+char *homeDir;
+
 NSString *javaHome_pre;
 NSString *renderer_pre;
 NSString *allocmem_pre;
@@ -264,8 +267,25 @@ void init_logDeviceAndVer (char *argument) {
     }
 }
 
+void environmentFailsafes(char *argv[]) {
+    if (strncmp(argv[0], "/Applications", 13) == 0) {
+        if (0 != access("/usr/lib/jvm/java-8-openjdk/", F_OK)) {
+            debug("[Pre-init] Java 8 wasn't found on your device. Install Java 8 for more compatibility and the mod installer.");
+            javaHome_pre = @"/usr/lib/jvm/java-16-openjdk";
+            javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
+            setPreference(@"java_home", javaHome_pre);
+        } else {
+            javaHome_pre = @"/usr/lib/jvm/java-8-openjdk";
+            javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
+            setPreference(@"java_home", javaHome_pre);
+        }
+    } else {
+        javaHome = calloc(1, 2048);
+        sprintf((char *)javaHome, "%s/jre", homeDir);
+    }
+}
+
 int launchJVM(int argc, char *argv[]) {
-    char *homeDir;
     if (!started) {
         setenv("BUNDLE_PATH", dirname(argv[0]), 1);
 
@@ -350,35 +370,12 @@ int launchJVM(int argc, char *argv[]) {
     javaHome_pre = getPreference(@"java_home");
     javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
     if ([javaHome_pre length] == 0) {
-        if (strncmp(argv[0], "/Applications", 13) == 0) {
-            if (0 != access("/usr/lib/jvm/java-8-openjdk/", F_OK)) {
-                debug("[Pre-init] Java 8 wasn't found on your device. Install Java 8 for more compatibility and the mod installer.");
-                javaHome_pre = @"/usr/lib/jvm/java-16-openjdk";
-                javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
-                setPreference(@"java_home", javaHome_pre);
-            } else {
-                javaHome_pre = @"/usr/lib/jvm/java-8-openjdk";
-                javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
-                setPreference(@"java_home", javaHome_pre);
-            }
-        } else {
-            javaHome = calloc(1, 2048);
-            sprintf((char *)javaHome, "%s/jre", homeDir);
-        }
+        environmentFailsafes(argv);
         debug("[Pre-init] JAVA_HOME environment variable was not set. Defaulting to %s for future use.\n", javaHome);
     } else {
         if (0 == [[NSFileManager defaultManager] fileExistsAtPath:javaHome_pre]) {
             debug("[Pre-Init] Failed to locate %s. Restoring default value for JAVA_HOME.", javaHome);
-            if (0 != access("/usr/lib/jvm/java-8-openjdk/", F_OK)) {
-                debug("[Pre-init] Java 8 wasn't found on your device. Install Java 8 for more compatibility and the mod installer.");
-                javaHome_pre = @"/usr/lib/jvm/java-16-openjdk";
-                javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
-                setPreference(@"java_home", javaHome_pre);
-            } else {
-                javaHome_pre = @"/usr/lib/jvm/java-8-openjdk";
-                javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
-                setPreference(@"java_home", javaHome_pre);
-            }
+            environmentFailsafes(argv);
         } else {
             debug("[Pre-Init] Restored preference: JAVA_HOME is set to %s\n", javaHome);
         }
@@ -527,6 +524,9 @@ int launchJVM(int argc, char *argv[]) {
     snprintf(multidir_char, 2048, "%s/instances/%s", getenv("POJAV_HOME"), multidir);
     snprintf(librarySym, 2048, "%s/Library/Application Support/minecraft", getenv("POJAV_HOME"));
     remove(librarySym);
+    if (0 != access(multidir_char, F_OK)) {
+        mkdir(multidir_char, 755);
+    }
     symlink(multidir_char, librarySym);
     setenv("POJAV_GAME_DIR", librarySym, 1);
     
