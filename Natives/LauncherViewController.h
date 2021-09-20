@@ -6,4 +6,7 @@ UIButton* install_button;
 
 @interface LauncherViewController : UIViewController
 
++ (void)fetchVersionList;
++ (void)fetchLocalVersionList:(NSMutableArray *)finalVersionList withPreviousIndex:(int)index;
+
 @end

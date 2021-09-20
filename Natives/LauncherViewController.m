@@ -60,7 +60,7 @@ int versionSelectedAt = 0;
     versionTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
     versionTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 
-    [self fetchVersionList];
+    [LauncherViewController fetchVersionList];
     versionPickerView = [[UIPickerView alloc] init];
     versionPickerView.delegate = self;
     versionPickerView.dataSource = self;
@@ -105,7 +105,7 @@ int versionSelectedAt = 0;
     [scrollView addSubview:install_progress_text];
 }
 
-- (void)fetchLocalVersionList:(NSMutableArray *)finalVersionList withPreviousIndex:(int)index
++ (void)fetchLocalVersionList:(NSMutableArray *)finalVersionList withPreviousIndex:(int)index
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *versionPath = [NSString stringWithFormat:@"%s/versions/", getenv("POJAV_GAME_DIR")];
@@ -137,7 +137,7 @@ int versionSelectedAt = 0;
     }
 }
 
-- (void)fetchVersionList
++ (void)fetchVersionList
 {
     NSURLSession *session = [NSURLSession sharedSession];
     NSMutableURLRequest *request = 
@@ -165,19 +165,18 @@ int versionSelectedAt = 0;
                 for (NSDictionary *versionInfo in remoteVersionList) {
                     NSString *versionId = [versionInfo valueForKey:@"id"];
                     NSString *versionType = [versionInfo valueForKey:@"type"];
-                    if ([versionType containsString:@"release"] && [getPreference(@"vertype_release") boolValue] == YES) {
+                    if (([versionType containsString:@"release"] && [getPreference(@"vertype_release") boolValue]) ||
+                        ([versionType containsString:@"snapshot"] && [getPreference(@"vertype_snapshot") boolValue]) ||
+                        ([versionType containsString:@"old_beta"] && [getPreference(@"vertype_oldbeta") boolValue]) ||
+                        ([versionType containsString:@"old_alpha"] && [getPreference(@"vertype_oldalpha") boolValue]) ||
+                        [versionType containsString:@"modified"]) {
                         [finalVersionList addObject:versionInfo];
-                    } else if ([versionType containsString:@"snapshot"] && [getPreference(@"vertype_snapshot") boolValue] == YES) {
-                        [finalVersionList addObject:versionInfo];
-                    } else if ([versionType containsString:@"old_beta"] && [getPreference(@"vertype_oldbeta") boolValue] == YES) {
-                        [finalVersionList addObject:versionInfo];
-                    } else if ([versionType containsString:@"old_alpha"] && [getPreference(@"vertype_oldalpha") boolValue] == YES) {
-                        [finalVersionList addObject:versionInfo];
-                    } else
-                    if ([versionTextField.text isEqualToString:versionId]) {
-                        versionSelectedAt = i;
+                        
+                        if ([versionTextField.text isEqualToString:versionId]) {
+                            versionSelectedAt = i;
+                        }
+                        i++;
                     }
-                    i++;
                 }
                 [self fetchLocalVersionList:finalVersionList withPreviousIndex:i];
                 
@@ -271,6 +270,7 @@ int versionSelectedAt = 0;
     } else {
         result = [object valueForKey:@"url"];
     }
+    NSAssert(result != nil, @"version should not be null");
 
     callback_LauncherViewController_installMinecraft([result UTF8String]);
 }

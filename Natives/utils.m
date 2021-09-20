@@ -13,6 +13,8 @@ CGFloat MathUtils_dist(CGFloat x1, CGFloat y1, CGFloat x2, CGFloat y2) {
     const CGFloat y = (y2 - y1);
     return (CGFloat) hypot(x, y);
  }
+void _CGDataProviderReleaseBytePointerCallback(void *info,const void *pointer) {
+}
 
 char** convert_to_char_array(JNIEnv *env, jobjectArray jstringArray) {
 	int num_rows = (*env)->GetArrayLength(env, jstringArray);

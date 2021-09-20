@@ -1,6 +1,7 @@
 #import "DBNumberedSlider.h"
 #import "LauncherPreferences.h"
 #import "LauncherPreferencesViewController.h"
+#import "LauncherViewController.h"
 
 #include "utils.h"
 
@@ -13,6 +14,10 @@
 #define GDIRECTORY 6
 #define NOSHADERCONV 7
 #define RESETWARN 8
+#define TYPESEL 9
+#define DEBUGLOG 10
+#define MKGDIR 11
+#define RMGDIR 12
 
 @interface LauncherPreferencesViewController () <UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDelegate> {
 }
@@ -29,12 +34,31 @@ UITextField *jhomeTextField;
 UITextField *gdirTextField;
 UITextField *activeField;
 NSMutableArray* rendererList;
+NSMutableArray* gdirList;
+NSMutableArray* jhomeList;
 UIPickerView* rendPickerView;
+UIPickerView* gdirPickerView;
+UIPickerView* jhomePickerView;
 UISwitch *noshaderconvSwitch;
 UIBlurEffect *blur;
 UIVisualEffectView *blurView;
 UIScrollView *scrollView;
-
+NSString *gl4es114 = @"GL4ES 1.1.4 - exports OpenGL 2.1";
+NSString *gl4es115 = @"GL4ES 1.1.5 (1.16+) - exports OpenGL 2.1";
+NSString *tinygl4angle = @"tinygl4angle (1.17+) - exports OpenGL 3.2 (Core Profile, limited)";
+NSString *zink = @"Zink (Mesa 21.0) - exports OpenGL 4.1";
+NSString *java8jben = @"Java 8";
+NSString *java16jben = @"Java 16";
+NSString *java17jben = @"Java 17";
+NSString *java8 = @"Java 8 (sandbox)";
+NSString *libsjava8jben = @"/usr/lib/jvm/java-8-openjdk";
+NSString *libsjava16jben = @"/usr/lib/jvm/java-16-openjdk";
+NSString *libsjava17jben = @"/usr/lib/jvm/java-17-openjdk";
+NSString *libsjava8;
+NSString *lib_gl4es114 = @"libgl4es_114.dylib";
+NSString *lib_gl4es115 = @"libgl4es_115.dylib";
+NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
+NSString *lib_zink = @"libOSMesaOverride.dylib";
 
 - (void)viewDidLoad
 {
@@ -164,22 +188,32 @@ UIScrollView *scrollView;
     rendTextField.tag = 102;
     rendTextField.delegate = self;
     rendTextField.placeholder = @"Override renderer...";
-    rendTextField.text = (NSString *) getPreference(@"renderer");
+    if ([getPreference(@"renderer") isEqualToString:lib_gl4es114]) {
+        rendTextField.text = gl4es114;
+    } else if ([getPreference(@"renderer") isEqualToString:lib_gl4es115]) {
+        rendTextField.text = gl4es115;
+    } else if ([getPreference(@"renderer") isEqualToString:lib_tinygl4angle]) {
+        rendTextField.text = tinygl4angle;
+    } else if ([getPreference(@"renderer") isEqualToString:lib_zink]) {
+        rendTextField.text = zink;
+    }
+    
     rendTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
     rendTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [tableView addSubview:rendTextField];
 
     rendererList = [[NSMutableArray alloc] init];
-    NSString *lib_gl4es114 = @"libgl4es_114.dylib";
-    NSString *lib_gl4es115 = @"libgl4es_115.dylib";
-    //NSString *lib_vgpu = @"libvgpu.dylib";
-    [rendererList addObject:lib_gl4es114];
-    [rendererList addObject:lib_gl4es115];
-    //[rendererList addObject:lib_vgpu];
+    [rendererList addObject:gl4es114];
+    [rendererList addObject:gl4es115];
+    [rendererList addObject:tinygl4angle];
+    [rendererList addObject:zink];
 
+    [self instanceDirCont];
+    
     rendPickerView = [[UIPickerView alloc] init];
     rendPickerView.delegate = self;
     rendPickerView.dataSource = self;
+    rendPickerView.tag = 112;
     UIToolbar *rendPickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
     UIBarButtonItem *rendFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     UIBarButtonItem *rendDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeKeyboard:)];
@@ -190,7 +224,7 @@ UIScrollView *scrollView;
     rendTextField.inputView = rendPickerView;
 
     UILabel *jhomeTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
-    jhomeTextView.text = @"Java home";
+    jhomeTextView.text = @"Java version";
     jhomeTextView.numberOfLines = 0;
     [jhomeTextView sizeToFit];
     [tableView addSubview:jhomeTextView];
@@ -200,11 +234,42 @@ UIScrollView *scrollView;
     jhomeTextField.tag = 103;
     jhomeTextField.delegate = self;
     jhomeTextField.placeholder = @"Override Java path...";
-    jhomeTextField.text = (NSString *) getPreference(@"java_home");
+    
+    libsjava8 = [NSString stringWithFormat:@"%s/jre8", getenv("POJAV_HOME")];
+    if(getenv("POJAV_DETECTEDJB")) {
+        if ([getPreference(@"java_home") isEqualToString:libsjava8jben]) {
+            jhomeTextField.text = java8jben;
+        } else if ([getPreference(@"java_home") isEqualToString:libsjava16jben]) {
+            jhomeTextField.text = java16jben;
+        } else if ([getPreference(@"java_home") isEqualToString:libsjava17jben]) {
+            jhomeTextField.text = java17jben;
+        }
+    } else {
+        jhomeTextField.text = java8;
+    }
+    
     jhomeTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
     jhomeTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [tableView addSubview:jhomeTextField];
     
+    jhomeList = [[NSMutableArray alloc] init];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:libsjava8jben]) {
+        [jhomeList addObject:java8jben];
+    }
+    if ([[NSFileManager defaultManager] fileExistsAtPath:libsjava16jben]) {
+        [jhomeList addObject:java16jben];
+    }
+    if ([[NSFileManager defaultManager] fileExistsAtPath:libsjava17jben]) {
+        [jhomeList addObject:java17jben];
+    }
+    if ([[NSFileManager defaultManager] fileExistsAtPath:libsjava8]) {
+        [jhomeList addObject:java8];
+    }
+    
+    jhomePickerView = [[UIPickerView alloc] init];
+    jhomePickerView.delegate = self;
+    jhomePickerView.dataSource = self;
+    jhomePickerView.tag = 113;
     UIToolbar *jhomePickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
     UIBarButtonItem *jhomeFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     UIBarButtonItem *jhomeDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeKeyboard:)];
@@ -212,6 +277,7 @@ UIScrollView *scrollView;
     jhomePickerToolbar.items = @[jhomeFlexibleSpace, jhomeDoneButton];
 
     jhomeTextField.inputAccessoryView = jhomePickerToolbar;
+    jhomeTextField.inputView = jhomePickerView;
 
     if ([getPreference(@"option_warn") boolValue] == YES) {
         UIAlertController *preferenceWarn = [UIAlertController alertControllerWithTitle:@"Restart required" message:@"Some options in this menu will require that you restart the launcher for them to take effect."preferredStyle:UIAlertControllerStyleAlert];
@@ -237,13 +303,20 @@ UIScrollView *scrollView;
     gdirTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [tableView addSubview:gdirTextField];
 
+    gdirPickerView = [[UIPickerView alloc] init];
+    gdirPickerView.delegate = self;
+    gdirPickerView.dataSource = self;
+    gdirPickerView.tag = 114;
     UIToolbar *gdirPickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
     UIBarButtonItem *gdirFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     UIBarButtonItem *gdirDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeKeyboard:)];
+    UIBarButtonItem *gdirCreateButton = [[UIBarButtonItem alloc] initWithTitle:@"Create new" style:UIBarButtonItemStyleDone target:self action:@selector(createDir:)];
+    UIBarButtonItem *gdirDeleteButton = [[UIBarButtonItem alloc] initWithTitle:@"Delete" style:UIBarButtonItemStyleDone target:self action:@selector(removeDir:)];
     gdirDoneButton.tag = 153;
-    gdirPickerToolbar.items = @[gdirFlexibleSpace, gdirDoneButton];
+    gdirPickerToolbar.items = @[gdirCreateButton, gdirDeleteButton, gdirFlexibleSpace, gdirDoneButton];
 
     gdirTextField.inputAccessoryView = gdirPickerToolbar;
+    gdirTextField.inputView = gdirPickerView;
     
     if ([getPreference(@"option_warn") boolValue] == YES) {
         UIAlertController *preferenceWarn = [UIAlertController alertControllerWithTitle:@"Restart required" message:@"Some options in this menu will require that you restart the launcher for them to take effect."preferredStyle:UIAlertControllerStyleAlert];
@@ -264,12 +337,12 @@ UIScrollView *scrollView;
     [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:NO];
     [noshaderconvSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:noshaderconvSwitch];
-    if (![getPreference(@"renderer") containsString:@"115"]) {
-            [noshaderconvSwitch setEnabled:NO];
-        } else if (![getPreference(@"renderer") containsString:@"114"]) {
+    if ([getPreference(@"renderer") isEqualToString:gl4es115]) {
             [noshaderconvSwitch setEnabled:YES];
+        } else {
+            [noshaderconvSwitch setEnabled:NO];
     }
-
+    
     UILabel *resetWarnTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
     resetWarnTextView.text = @"Reset launcher warnings";
     resetWarnTextView.numberOfLines = 0;
@@ -334,6 +407,18 @@ UIScrollView *scrollView;
     [oldalphaSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:oldalphaSwitch];
     
+    UILabel *debugLogTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
+    debugLogTextView.text = @"Enable debug logging";
+    debugLogTextView.numberOfLines = 0;
+    [debugLogTextView sizeToFit];
+    [tableView addSubview:debugLogTextView];
+
+    UISwitch *debugLogSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
+    debugLogSwitch.tag = 111;
+    [debugLogSwitch setOn:[getPreference(@"debug_logging") boolValue] animated:NO];
+    [debugLogSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    [tableView addSubview:debugLogSwitch];
+    
     CGRect frame = tableView.frame;
     frame.size.height = currY+=44;
     tableView.frame = frame;
@@ -354,7 +439,7 @@ UIScrollView *scrollView;
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:JARGS];}];
         UIAction *option5 = [UIAction actionWithTitle:@"Renderer" image:[[UIImage systemImageNamed:@"cpu"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:REND];}];
-        UIAction *option6 = [UIAction actionWithTitle:@"Java home" image:[[UIImage systemImageNamed:@"cube"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+        UIAction *option6 = [UIAction actionWithTitle:@"Java version" image:[[UIImage systemImageNamed:@"cube"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:JHOME];}];
         UIAction *option7 = [UIAction actionWithTitle:@"Game directory" image:[[UIImage systemImageNamed:@"folder"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:GDIRECTORY];}];
@@ -362,8 +447,12 @@ UIScrollView *scrollView;
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:NOSHADERCONV];}];
         UIAction *option9 = [UIAction actionWithTitle:@"Reset warnings" image:[[UIImage systemImageNamed:@"exclamationmark.triangle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:RESETWARN];}];
+        UIAction *option10 = [UIAction actionWithTitle:@"Type switches" image:[[UIImage systemImageNamed:@"list.bullet"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:TYPESEL];}];
+        UIAction *option11 = [UIAction actionWithTitle:@"Debug logging" image:[[UIImage systemImageNamed:@"doc.badge.gearshape"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:DEBUGLOG];}];
         UIMenu *menu = [UIMenu menuWithTitle:@"" image:nil identifier:nil
-                        options:UIMenuOptionsDisplayInline children:@[option1, option2, option3, option4, option5, option6, option7, option8, option9]];
+                        options:UIMenuOptionsDisplayInline children:@[option1, option2, option3, option4, option5, option6, option7, option8, option9, option10, option11]];
         self.navigationItem.rightBarButtonItem.action = nil;
         self.navigationItem.rightBarButtonItem.primaryAction = nil;
         self.navigationItem.rightBarButtonItem.menu = menu;
@@ -418,20 +507,41 @@ UIScrollView *scrollView;
     if (textField.tag == 101) {
         setPreference(@"java_args", textField.text);
     } else if (textField.tag == 102) {
-        setPreference(@"renderer", textField.text);
-        setenv("RENDERER", textField.text.UTF8String, 1);
-        if (![textField.text containsString:@"115"] && [getPreference(@"disable_gl4es_shaderconv") boolValue] == YES) {
+        if ([textField.text isEqualToString:gl4es114]) {
+            setPreference(@"renderer", lib_gl4es114);
+        } else if ([textField.text isEqualToString:gl4es115]) {
+            setPreference(@"renderer", lib_gl4es115);
+        } else if ([textField.text isEqualToString:tinygl4angle]) {
+            setPreference(@"renderer", lib_tinygl4angle);
+        } else if ([textField.text isEqualToString:zink]) {
+            setPreference(@"renderer", lib_zink);
+        }
+        setenv("RENDERER", [getPreference(@"renderer") UTF8String], 1);
+        
+        if (![textField.text isEqualToString:gl4es115] && [getPreference(@"disable_gl4es_shaderconv") boolValue] == YES) {
             setPreference(@"disable_gl4es_shaderconv", @NO);
             [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:YES];
             [noshaderconvSwitch setEnabled:NO];
-        } else if (![textField.text containsString:@"114"] && [getPreference(@"disable_gl4es_shaderconv") boolValue] == NO){
+        } else if (![textField.text isEqualToString:gl4es114] && [getPreference(@"disable_gl4es_shaderconv") boolValue] == NO){
             setPreference(@"disable_gl4es_shaderconv", @YES);
             [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:YES];
             [noshaderconvSwitch setEnabled:YES];
         }
     } else if (textField.tag == 103) {
-        setPreference(@"java_home", textField.text);
-        if (![textField.text containsString:@"java-8-openjdk"] && [getPreference(@"java_warn") boolValue] == YES) {
+        if ([textField.text isEqualToString:java8jben]) {
+            setPreference(@"java_home", libsjava8jben);
+            setenv("JAVA_HOME", [libsjava8jben cStringUsingEncoding:NSUTF8StringEncoding], 1);
+        } else if ([textField.text isEqualToString:java16jben]) {
+            setPreference(@"java_home", libsjava16jben);
+            setenv("JAVA_HOME", [libsjava16jben cStringUsingEncoding:NSUTF8StringEncoding], 1);
+        } else if ([textField.text isEqualToString:java17jben]) {
+            setPreference(@"java_home", libsjava17jben);
+            setenv("JAVA_HOME", [libsjava17jben cStringUsingEncoding:NSUTF8StringEncoding], 1);
+        } else if ([textField.text isEqualToString:java8]) {
+            setPreference(@"java_home", libsjava8);
+            setenv("JAVA_HOME", [libsjava8 cStringUsingEncoding:NSUTF8StringEncoding], 1);
+        }
+        if (![textField.text containsString:java8jben] && ![textField.text containsString:java8] && [getPreference(@"java_warn") boolValue] == YES) {
             UIAlertController *javaAlert = [UIAlertController alertControllerWithTitle:@"Java version is not Java 8" message:@"Minecraft versions below 1.6, modded below 1.16.4, and the mod installer will not work unless you have Java 8 installed on your device."preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
             [self presentViewController:javaAlert animated:YES completion:nil];
@@ -465,6 +575,120 @@ UIScrollView *scrollView;
     }];
 }
 
+-(void)instanceDirCont {
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSArray* files = [fm contentsOfDirectoryAtPath:[NSString stringWithFormat:@"%s/instances", getenv("POJAV_HOME")] error:nil];
+    gdirList = [NSMutableArray arrayWithCapacity:10];
+    for(NSString *file in files) {
+        NSString *path = [[NSString stringWithFormat:@"%s/instances", getenv("POJAV_HOME")] stringByAppendingPathComponent:file];
+        BOOL isDir = NO;
+        [fm fileExistsAtPath:path isDirectory:(&isDir)];
+        if(isDir) {
+            [gdirList addObject:file];
+        }
+    }
+}
+
+- (void)createDir:(UIBarButtonItem *)sender {
+    int type = MKGDIR;
+    UIAlertController *manageDirAC = [UIAlertController alertControllerWithTitle:@"Create a new game directory" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    [manageDirAC addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"Name of new directory";
+        textField.secureTextEntry = NO;
+    }];
+    UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSString *directory = [NSString stringWithFormat:@"%s/instances/%@", getenv("POJAV_HOME"), [[manageDirAC textFields][0] text]];
+        BOOL isDir = NO;
+        BOOL isFailed = NO;
+        if(![[NSFileManager defaultManager] fileExistsAtPath:directory isDirectory:&isDir]) {
+            if([[NSFileManager defaultManager] createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:NULL]) {
+                isFailed = NO;
+                [self instanceDirCont];
+                gdirTextField.text = [[manageDirAC textFields][0] text];
+                [gdirTextField endEditing:YES];
+                [self manageDirResult:(UIButton *)sender success:isFailed directory:[[manageDirAC textFields][0] text] type:type];
+                
+            } else {
+                isFailed = YES;
+                [self manageDirResult:(UIButton *)sender success:isFailed directory:[[manageDirAC textFields][0] text] type:type];
+            }
+        } else {
+            isFailed = YES;
+            [self manageDirResult:(UIButton *)sender success:isFailed directory:[[manageDirAC textFields][0] text] type:type];
+        }
+    }];
+    [manageDirAC addAction:confirm];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+    [manageDirAC addAction:cancel];
+    [self presentViewController:manageDirAC animated:YES completion:nil];
+}
+- (void)removeDir:(UIBarButtonItem *)sender {
+    int type = RMGDIR;
+    if(![gdirTextField.text isEqualToString:@"default"]) {
+    UIAlertController *manageDirAC = [UIAlertController alertControllerWithTitle:@"Are you sure you want to delete this?" message:[NSString stringWithFormat:@"The instance %@ will be deleted forever and cannot be restored.", gdirTextField.text] preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSString *directory = [NSString stringWithFormat:@"%s/instances/%@", getenv("POJAV_HOME"), gdirTextField.text];
+        NSLog(@"%@", directory);
+        BOOL isDir = NO;
+        BOOL isFailed = NO;
+        
+            if([[NSFileManager defaultManager] fileExistsAtPath:directory isDirectory:&isDir]) {
+                if([[NSFileManager defaultManager] removeItemAtPath:directory error:NULL]) {
+                    isFailed = NO;
+                    [self instanceDirCont];
+                    gdirTextField.text = @"default";
+                    [gdirTextField endEditing:YES];
+                    [self manageDirResult:(UIButton *)sender success:isFailed directory:gdirTextField.text type:type];
+                } else {
+                    isFailed = YES;
+                    [self manageDirResult:(UIButton *)sender success:isFailed directory:gdirTextField.text type:type];
+                }
+            } else {
+                isFailed = YES;
+                [self manageDirResult:(UIButton *)sender success:isFailed directory:gdirTextField.text type:type];
+            }
+    }];
+    [manageDirAC addAction:confirm];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+    [manageDirAC addAction:cancel];
+    [self presentViewController:manageDirAC animated:YES completion:nil];
+    } else if([gdirTextField.text isEqualToString:@"default"]){
+        UIAlertController *gdirAlert = [UIAlertController alertControllerWithTitle:@"You cannot delete the default game directory." message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
+        [self setPopoverProperties:gdirAlert.popoverPresentationController sender:(UIButton *)sender];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+        [gdirAlert addAction:ok];
+        [self presentViewController:gdirAlert animated:YES completion:nil];
+    }
+}
+
+- (void)manageDirResult:(UIButton *)sender success:(BOOL)boolean directory:(NSString *)dirName type:(int)type {
+    NSString *title;
+    NSString *message;
+    if(type == MKGDIR) {
+        if(boolean == YES) {
+            title = @"An error occurred.";
+            message = [NSString stringWithFormat:@"Ensure that a file with the name %@ does not exist, and that the instances directory is writeable.", dirName];
+        } else if(boolean == NO) {
+            title = @"Successfully changed directory.";
+            message = @"";
+        }
+    } else if (type == RMGDIR) {
+        if(boolean == YES) {
+            title = @"An error occurred.";
+            message = @"Ensure that the instances directory is writeable.";
+        } else if(boolean == NO) {
+            title = @"Successfully removed directory.";
+            message = @"";
+        }
+    }
+    
+    UIAlertController *gdirAlert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
+    [self setPopoverProperties:gdirAlert.popoverPresentationController sender:sender];
+    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+    [gdirAlert addAction:ok];
+    [self presentViewController:gdirAlert animated:YES completion:nil];
+}
+
 - (void)helpMenu {
     if (@available(iOS 14.0, *)) {
         // UIMenu
@@ -475,10 +699,12 @@ UIScrollView *scrollView;
         UIAlertAction *allocmem = [UIAlertAction actionWithTitle:@"Allocated RAM" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:ALLOCMEM];}];
         UIAlertAction *jargs = [UIAlertAction actionWithTitle:@"Java arguments" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:JARGS];}];
         UIAlertAction *renderer = [UIAlertAction actionWithTitle:@"Renderer"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:REND];}];
-        UIAlertAction *jhome = [UIAlertAction actionWithTitle:@"Java home" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:JHOME];}];
+        UIAlertAction *jhome = [UIAlertAction actionWithTitle:@"Java version" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:JHOME];}];
         UIAlertAction *gdirectory = [UIAlertAction actionWithTitle:@"Game directory"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:GDIRECTORY];}];
         UIAlertAction *noshaderconv = [UIAlertAction actionWithTitle:@"Disable shaderconv" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:NOSHADERCONV];}];
         UIAlertAction *resetwarn = [UIAlertAction actionWithTitle:@"Reset warnings" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:RESETWARN];}];
+        UIAlertAction *typesel = [UIAlertAction actionWithTitle:@"Type switches" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:TYPESEL];}];
+        UIAlertAction *debuglog = [UIAlertAction actionWithTitle:@"Debug logging" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:DEBUGLOG];}];
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
         [self setPopoverProperties:helpAlert.popoverPresentationController sender:(UIButton *)self.navigationItem.rightBarButtonItem];
         [self presentViewController:helpAlert animated:YES completion:nil];
@@ -491,6 +717,8 @@ UIScrollView *scrollView;
         [helpAlert addAction:gdirectory];
         [helpAlert addAction:noshaderconv];
         [helpAlert addAction:resetwarn];
+        [helpAlert addAction:typesel];
+        [helpAlert addAction:debuglog];
         [helpAlert addAction:cancel];
     }
 }
@@ -512,19 +740,25 @@ UIScrollView *scrollView;
         message = @"This option allows you to edit arguments that can be passed to Minecraft. Not all arguments work with PojavLauncher, so be aware. This option also requires a restart of the launcher to take effect.";
     } else if(setting == REND) {
         title = @"Renderer";
-        message = @"This option allows you to change the renderer in use. Choosing 'libgl4es_115.dylib' may fix sheep and banner colors on 1.16 and allow 1.17 to be played, but will also not work with older versions.";
+        message = @"This option allows you to change the renderer in use. Choosing GL4ES 1.1.5 or tinygl4angle may fix sheep and banner colors on 1.16 and allow 1.17 to be played, but will also not work with older versions.";
     } else if(setting == JHOME) {
-        title = @"Java home";
-        message = @"This option allows you to change the Java executable directory. Choosing '/usr/lib/jvm/java-16-openjdk' may allow you to play 1.17, however older versions and most versions of modded Minecraft, as well as the mod installer, will not work. This option also requires a restart of the launcher to take effect.";
+        title = @"Java version";
+        message = @"This option allows you to change the Java executable directory. Choosing Java 16 or Java 17 may allow you to play 1.17, however older versions and most versions of modded Minecraft, as well as the mod installer, will not work. This option also requires a restart of the launcher to take effect.";
     } else if(setting == GDIRECTORY) {
         title = @"Game directory";
         message = @"This option allows you to change where your Minecraft settings and saves are stored in a MultiMC like fashion. Useful for when you want to have multiple mod loaders installed but do not want to delete/move mods around to switch. This option also requires a restart of the launcher to take effect.";
     } else if(setting == NOSHADERCONV) {
         title = @"Disable shaderconv";
-        message = @"This option allows you to disable the shader converter inside gl4es 1.1.5 in order to let ANGLE processes them directly. This option is experimental and should only be enabled when playing Minecraft 1.17 or above.";
+        message = @"This option allows you to disable the shader converter inside gl4es 1.1.5 in order to let ANGLE processes them directly. This option is experimental and should only be enabled when playing Minecraft 1.17 or above. Alternatively you can use tinygl4angle for 1.17.";
     } else if(setting == RESETWARN) {
         title = @"Reset warnings";
         message = @"This option re-enables all warnings to be shown again.";
+    } else if(setting == TYPESEL) {
+        title = @"Type switches";
+        message = @"These switches allow to to change where or not releases, snapshots, old betas, and old alphas will show up in the version selection menu.";
+    } else if(setting == DEBUGLOG) {
+        title = @"Enable debug logging";
+        message = @"This option logs internal settings and actions to latestlog.txt. This helps the developers find issues easier, but Minecraft may run slower as the logs will be written to more often.";
     }
     UIAlertController *helpAlertOpt = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
@@ -571,25 +805,33 @@ UIScrollView *scrollView;
             setPreference(@"local_warn", @YES);
             setPreference(@"java_warn", @YES);
             setPreference(@"jb_warn", @YES);
-            if(1 == 1) {
-                UIAlertController *resetWarn = [UIAlertController alertControllerWithTitle:@"Warnings reset." message:@"Restart to show warnings again." preferredStyle:UIAlertControllerStyleActionSheet];
-                [self setPopoverProperties:resetWarn.popoverPresentationController sender:(UIButton *)sender];
-                UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
-                [self presentViewController:resetWarn animated:YES completion:nil];
-                [resetWarn addAction:ok];
+            {
+            UIAlertController *resetWarn = [UIAlertController alertControllerWithTitle:@"Warnings reset." message:@"Restart to show warnings again." preferredStyle:UIAlertControllerStyleActionSheet];
+            [self setPopoverProperties:resetWarn.popoverPresentationController sender:(UIButton *)sender];
+            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+            [self presentViewController:resetWarn animated:YES completion:nil];
+            [resetWarn addAction:ok];
             }
             break;
         case 107:
             setPreference(@"vertype_release", @(sender.isOn));
+            [LauncherViewController fetchVersionList];
             break;
         case 108:
             setPreference(@"vertype_snapshot", @(sender.isOn));
+            [LauncherViewController fetchVersionList];
             break;
         case 109:
             setPreference(@"vertype_oldbeta", @(sender.isOn));
+            [LauncherViewController fetchVersionList];
             break;
         case 110:
             setPreference(@"vertype_oldalpha", @(sender.isOn));
+            [LauncherViewController fetchVersionList];
+            break;
+        case 111:
+            setPreference(@"debug_logging", @(sender.isOn));
+            [LauncherViewController fetchVersionList];
             break;
         default:
             NSLog(@"what does switch %ld for? implement me!", sender.tag);
@@ -619,10 +861,16 @@ UIScrollView *scrollView;
     return UIModalPresentationNone;
 }
 
-#pragma mark - UIPickerView (renderer)
+#pragma mark - UIPickerView
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    rendTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
-    setPreference(@"renderer", rendTextField.text);
+    if(pickerView.tag == 112) {
+        rendTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
+    } else if(pickerView.tag == 113) {
+        jhomeTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
+    } else if(pickerView.tag == 114) {
+        gdirTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
+        setPreference(@"game_directory", gdirTextField.text);
+    }
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)thePickerView {
@@ -630,11 +878,26 @@ UIScrollView *scrollView;
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    return rendererList.count;
+    if(pickerView.tag == 112) {
+        return rendererList.count;
+    } else if(pickerView.tag == 113) {
+        return jhomeList.count;
+    } else if(pickerView.tag == 114) {
+        return gdirList.count;
+    } else {
+        return 0;
+    }
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    NSObject *object = [rendererList objectAtIndex:row];
+    NSObject *object;
+    if(pickerView.tag == 112) {
+        object = [rendererList objectAtIndex:row];
+    } else if(pickerView.tag == 113) {
+        object = [jhomeList objectAtIndex:row];
+    } else if(pickerView.tag == 114) {
+        object = [gdirList objectAtIndex:row];
+    }
     return (NSString*) object;
 }
 

@@ -32,19 +32,50 @@ int notchOffset;
 // TODO: key modifiers impl
 
 @implementation GameSurfaceView
+const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
+	return gbuffer;
+}
+
+- (void)displayLayer {
+    CGDataProviderRef bitmapProvider = CGDataProviderCreateDirect(NULL, savedWidth * savedHeight * 4, &callbacks);
+    CGImageRef bitmap = CGImageCreate(savedWidth, savedHeight, 8, 32, 4 * savedWidth, colorSpace, kCGImageAlphaNoneSkipLast | kCGBitmapByteOrder16Little, bitmapProvider, NULL, FALSE, kCGRenderingIntentDefault);     
+
+    self.layer.contents = (__bridge id) bitmap;
+    CGImageRelease(bitmap);
+    CGDataProviderRelease(bitmapProvider);
+   //  CGColorSpaceRelease(colorSpace);
+}
+
 - (id)initWithFrame:(CGRect)frame {
-    return self = [super initWithFrame:frame];
+    self = [super initWithFrame:frame];
+
+    if ([@(getenv("RENDERER")) hasPrefix:@"libOSMesaOverride"]) {
+        self.layer.opaque = YES;
+
+        colorSpace = CGColorSpaceCreateDeviceRGB();
+
+        callbacks.version = 0;
+        callbacks.getBytePointer = _CGDataProviderGetBytePointerCallbackOSMESA;
+        callbacks.releaseBytePointer = _CGDataProviderReleaseBytePointerCallback;
+        callbacks.getBytesAtPosition = NULL;
+        callbacks.releaseInfo = NULL;
+    }
+
+    return self;
 }
 
 + (Class)layerClass {
-    return MGLLayer.class;
+    if ([@(getenv("RENDERER")) hasPrefix:@"libOSMesa"]) {
+        return CALayer.class;
+    } else {
+        return CAMetalLayer.class;
+    }
 }
 @end
 
 @interface SurfaceViewController ()<UITextFieldDelegate, UIPointerInteractionDelegate, UIGestureRecognizerDelegate> {
 }
 
-@property(nonatomic, strong) UIView* surfaceView;
 @property(nonatomic, strong) NSMutableDictionary* cc_dictionary;
 @property(nonatomic, strong) NSMutableArray* swipeableButtons;
 @property(nonatomic, strong) NSMutableArray* togglableVisibleButtons;
@@ -88,8 +119,6 @@ int notchOffset;
     // Enable support for desktop GLSL
     if ([getPreference(@"disable_gl4es_shaderconv") boolValue]) {
         setenv("LIBGL_NOSHADERCONV", "1", 1);
-        eglBindAPI(EGL_OPENGL_API);
-        NSLog(@"eglBindAPI(EGL_OPENGL_API) error=%x", eglGetError());
     }
 
     notchOffset = insets.left;
@@ -204,19 +233,7 @@ int notchOffset;
 
     [self executebtn_special_togglebtn:0];
 
-    ((MGLLayer *)self.surfaceView.layer).drawableDepthFormat = MGLDrawableDepthFormat24;
     // [self setPreferredFramesPerSecond:1000];
-
-    // Init GLES
-    sharegroup = [[MGLSharegroup alloc] init];
-    firstContext = [[MGLContext alloc] initWithAPI:kMGLRenderingAPIOpenGLES3 sharegroup:sharegroup];
-    if (!firstContext) {
-        NSLog(@"Failed to create ES context");
-    }
-
-    [MGLContext setCurrentContext:firstContext forLayer:(MGLLayer *)self.surfaceView.layer];
-
-    NSLog(@"DBG GL extensions: %s", glGetString(GL_EXTENSIONS));
 
     [self setupGL];
 }
@@ -229,15 +246,7 @@ int notchOffset;
     return NO;
 }
 
-#pragma mark - MetalANGLE stuff
-
-- (void)dealloc
-{
-    [MGLContext setCurrentContext:nil];
-}
-
-- (void)setupGL
-{
+- (void)setupGL {
     callback_SurfaceViewController_launchMinecraft(savedWidth * resolutionScale, savedHeight * resolutionScale);
 }
 

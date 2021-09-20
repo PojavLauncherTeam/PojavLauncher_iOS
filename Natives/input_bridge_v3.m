@@ -45,7 +45,7 @@ jmethodID uikitBridgeTouchMethod;
 
 // JNI_OnLoad
 jint JNI_OnLoad(JavaVM* vm, void* reserved) {
-    debug("libpojavexec loaded from vm=%p\n", vm);
+    debug("[Init] PojavCore loaded from vm=%p\n", vm);
     runtimeJavaVMPtr = vm;
     (*vm)->GetEnv(vm, (void**) &runtimeJNIEnvPtr_JRE, JNI_VERSION_1_4);
     

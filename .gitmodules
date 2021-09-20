@@ -1,3 +1,6 @@
 [submodule "Natives/external/DBNumberedSlider"]
 	path = Natives/external/DBNumberedSlider
 	url = https://github.com/immago/DBNumberedSlider
+[submodule "Natives/external/fishhook"]
+	path = Natives/external/fishhook
+	url = https://github.com/facebook/fishhook

@@ -3,6 +3,12 @@
 NSMutableDictionary *prefDict;
 NSString* prefPath;
 
+#if CONFIG_RELEASE == 1
+# define CONFIG_TYPE @NO
+#else
+# define CONFIG_TYPE @YES
+#endif
+
 void loadPreferences() {
     prefPath = [@(getenv("POJAV_HOME"))
       stringByAppendingPathComponent:@"launcher_preferences.plist"];
@@ -27,6 +33,7 @@ void loadPreferences() {
     setDefaultValueForPref(@"game_directory", @"default");
     setDefaultValueForPref(@"java_args", @"");
     setDefaultValueForPref(@"allocated_memory", [NSNumber numberWithFloat:roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.30)]);
+    setDefaultValueForPref(@"debug_logging", CONFIG_TYPE);
     setDefaultValueForPref(@"java_home", @"");
     setDefaultValueForPref(@"renderer", @"libgl4es_114.dylib");
     setDefaultValueForPref(@"option_warn", @YES);

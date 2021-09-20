@@ -97,7 +97,7 @@ public class PLaunchApp {
                 if (AccountJNI.CURRENT_ACCOUNT.accessToken.equals("0")) {
                     if (!new File(verJsonDir).exists()) {
                         // Local account: disallow install new version
-                        UIKit.showError("Error", "Minecraft can't be legally installed when logged in with a local account. Please switch to paid account to continue.", false);
+                        UIKit.showError("Error", "Minecraft can't be legally installed when logged in with a local account. Please switch to Mojang/Microsoft account to continue.", false);
                         return;
                     } else {
                         // Local account: jump to launch Minecraft, not download anything

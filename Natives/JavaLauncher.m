@@ -10,6 +10,7 @@
 #include <string.h>
 #include <unistd.h>
 
+#include <sys/mman.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/utsname.h>
@@ -18,6 +19,7 @@
 #include "log.h"
 #include "utils.h"
 #include "JavaLauncher.h"
+#include "external/fishhook/fishhook.h"
 
 #import "customcontrols/CustomControlsUtils.h"
 #import "LauncherPreferences.h"
@@ -64,6 +66,13 @@ typedef jint JLI_Launch_func(int argc, char ** argv, /* main argc, argc */
         jint ergo                               /* ergonomics class policy */
 );
 
+int main(int argc, char * argv[]);
+
+static int (*orig_dladdr)(const void* addr, Dl_info* info);
+static void* (*orig_mmap)(void *addr, size_t len, int prot, int flags, int fd, off_t offset);
+static char* (*orig_realpath)(const char *restrict path, char *restrict resolved_path);
+static void (*orig_sys_icache_invalidate)(void *start, size_t len);
+
 static int margc = 0;
 static char* margv[1000];
 static int pfd[2];
@@ -75,10 +84,51 @@ const char *javaHome;
 const char *renderer;
 const char *allocmem;
 const char *multidir;
+
+char *homeDir;
+
 NSString *javaHome_pre;
 NSString *renderer_pre;
 NSString *allocmem_pre;
 NSString *multidir_pre;
+
+int hooked_dladdr(const void* addr, Dl_info* info) {
+    int retVal = orig_dladdr(addr, info);
+    if (addr == main) {
+        NSLog(@"hooked dladdr");
+        info->dli_fname = getenv("JAVA_EXT_EXECNAME");
+        NSLog(@"name = %s", info->dli_fname);
+    }
+    return retVal;
+}
+
+void *hooked_mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset) {
+    NSLog(@"mmap(%p, %ld, %d, %d, %d, %lld)", addr, len, prot, flags, fd, offset);
+
+    if (flags & MAP_JIT) {
+        NSLog(@"'-> Found JIT mmap");
+        //flags &= ~MAP_JIT;
+    }
+
+    // raise(SIGINT);
+    return orig_mmap(addr, len, prot, flags, fd, offset);
+}
+
+char *hooked_realpath(const char *restrict path, char *restrict resolved_path) {
+    NSLog(@"hooked realpath %s", path);
+    if (!strncmp(javaHome, path, strlen(javaHome))) {
+        strcpy(resolved_path, path);
+        return resolved_path;
+    } else {
+        return orig_realpath(path, resolved_path);
+    }
+}
+
+void hooked_sys_icache_invalidate(void *start, size_t len) {
+    // mprotect(start, 16384, PROT_EXEC | PROT_READ);
+    // NSLog(@"mprotect errno %d", errno);
+    orig_sys_icache_invalidate(start, len);
+}
 
 static void *logger_thread() {
     ssize_t rsize;
@@ -99,6 +149,21 @@ static void *logger_thread() {
     }
     close(log_fd);
     return NULL;
+}
+
+void init_hookFunctions() {
+    // if (!started && strncmp(argv[0], "/Applications", 13)) 
+    {
+        // Jailed only: hook some functions for symlinked JRE home dir
+        int retval = rebind_symbols((struct rebinding[4]){
+            //{"dlopen", hooked_dlopen, (void *)&orig_dlopen},
+            {"dladdr", hooked_dladdr, (void *)&orig_dladdr},
+            {"mmap", hooked_mmap, (void *)&orig_mmap},
+            {"realpath", hooked_realpath, (void *)&orig_realpath},
+            {"sys_icache_invalidate", hooked_sys_icache_invalidate, (void *)&orig_sys_icache_invalidate}
+        }, 4);
+        NSLog(@"hook retval = %d", retval);
+    }
 }
 
 void init_loadCustomEnv() {
@@ -202,8 +267,25 @@ void init_logDeviceAndVer (char *argument) {
     }
 }
 
+void environmentFailsafes(char *argv[]) {
+    if (strncmp(argv[0], "/Applications", 13) == 0) {
+        if (0 != access("/usr/lib/jvm/java-8-openjdk/", F_OK)) {
+            debug("[Pre-init] Java 8 wasn't found on your device. Install Java 8 for more compatibility and the mod installer.");
+            javaHome_pre = @"/usr/lib/jvm/java-16-openjdk";
+            javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
+            setPreference(@"java_home", javaHome_pre);
+        } else {
+            javaHome_pre = @"/usr/lib/jvm/java-8-openjdk";
+            javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
+            setPreference(@"java_home", javaHome_pre);
+        }
+    } else {
+        javaHome = calloc(1, 2048);
+        sprintf((char *)javaHome, "%s/jre", homeDir);
+    }
+}
+
 int launchJVM(int argc, char *argv[]) {
-    char *homeDir;
     if (!started) {
         setenv("BUNDLE_PATH", dirname(argv[0]), 1);
 
@@ -215,6 +297,8 @@ int launchJVM(int argc, char *argv[]) {
             char pojavHome[2048];
             sprintf(pojavHome, "%s/Documents", getenv("HOME"));
             homeDir = (char *) pojavHome;
+
+            init_hookFunctions();
         }
         setenv("POJAV_HOME", homeDir, 1);
     } else {
@@ -280,55 +364,28 @@ int launchJVM(int argc, char *argv[]) {
     // Disable overloaded functions hack for Minecraft 1.17+
     setenv("LIBGL_NOINTOVLHACK", "1", 1);
 
-    // Regal environment variables
-    setenv("REGAL_GL_VENDOR", "MetalANGLE", 1);
-    setenv("REGAL_GL_RENDERER", "Regal", 1);
-    setenv("REGAL_GL_VERSION", "4.5", 1);
-    setenv("REGAL_LOG_APP", "1", 1);
-    setenv("REGAL_LOG_DRIVER", "1", 1);
-    setenv("REGAL_LOG_INTERNAL", "1", 1);
+    // Override OpenGL version to 4.1 for Zink
+    setenv("MESA_GL_VERSION_OVERRIDE", "4.1", 1);
 
     javaHome_pre = getPreference(@"java_home");
     javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
     if ([javaHome_pre length] == 0) {
-        if (strncmp(argv[0], "/Applications", 13) == 0) {
-            if (0 != access("/usr/lib/jvm/java-8-openjdk/", F_OK)) {
-                debug("[Pre-init] Java 8 wasn't found on your device. Install Java 8 for more compatibility and the mod installer.");
-                javaHome_pre = @"/usr/lib/jvm/java-16-openjdk";
-                javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
-                setPreference(@"java_home", javaHome_pre);
-            } else {
-                javaHome_pre = @"/usr/lib/jvm/java-8-openjdk";
-                javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
-                setPreference(@"java_home", javaHome_pre);
-            }
-        } else {
-            javaHome = calloc(1, 2048);
-            sprintf((char *)javaHome, "%s/jre", homeDir);
-        }
-        setenv("JAVA_HOME", javaHome, 1);
+        environmentFailsafes(argv);
         debug("[Pre-init] JAVA_HOME environment variable was not set. Defaulting to %s for future use.\n", javaHome);
     } else {
         if (0 == [[NSFileManager defaultManager] fileExistsAtPath:javaHome_pre]) {
             debug("[Pre-Init] Failed to locate %s. Restoring default value for JAVA_HOME.", javaHome);
-            if (0 != access("/usr/lib/jvm/java-8-openjdk/", F_OK)) {
-                debug("[Pre-init] Java 8 wasn't found on your device. Install Java 8 for more compatibility and the mod installer.");
-                javaHome_pre = @"/usr/lib/jvm/java-16-openjdk";
-                javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
-                setPreference(@"java_home", javaHome_pre);
-            } else {
-                javaHome_pre = @"/usr/lib/jvm/java-8-openjdk";
-                javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
-                setPreference(@"java_home", javaHome_pre);
-            }
+            environmentFailsafes(argv);
         } else {
             debug("[Pre-Init] Restored preference: JAVA_HOME is set to %s\n", javaHome);
         }
     }
+    setenv("JAVA_HOME", javaHome, 1);
 
-    // Symlink frameworks -> dylibs on jailed environment
     if (!started && strncmp(argv[0], "/Applications", 13)) {
         char src[2048], dst[2048];
+
+        // Symlink frameworks -> dylibs on jailed environment
         mkdir(javaHome, 755);
 
         // Symlink the skeleton part of JRE
@@ -394,8 +451,7 @@ int launchJVM(int argc, char *argv[]) {
             if (i < 2) {
                 i++;
                 continue;
-            } else if (!strncmp(dir->d_name, "lib", 3)) {
-                assert(strlen(dir->d_name) > 12);
+            } else if (!strncmp(dir->d_name, "lib", 3) && strlen(dir->d_name) > 12) {
                 char *dylibName = strdup(dir->d_name);
                 dylibName[strlen(dylibName) - 10] = '\0';
                 sprintf((char *)src, "%s/Frameworks/%s/%s", getenv("BUNDLE_PATH"), dir->d_name, dylibName);
@@ -427,10 +483,11 @@ int launchJVM(int argc, char *argv[]) {
     allocmem_pre = [getPreference(@"allocated_memory") stringValue];
     allocmem = [allocmem_pre cStringUsingEncoding:NSUTF8StringEncoding];
     
-    char controlPath[2048];
+    char *controlPath = calloc(1, 2048);
     sprintf(controlPath, "%s/controlmap", homeDir);
     mkdir(controlPath, S_IRWXU | S_IRWXG | S_IRWXO);
     setenv("POJAV_PATH_CONTROL", controlPath, 1);
+    free(controlPath);
     generateAndSaveDefaultControl();
 
     char classpath[10000];
@@ -457,7 +514,7 @@ int launchJVM(int argc, char *argv[]) {
         multidir_pre = @"default";
         multidir = [multidir_pre cStringUsingEncoding:NSUTF8StringEncoding];
         setPreference(@"game_directory", multidir_pre);
-        debug("[Pre-init] MULTI_DIR environment variable was not set. Defaulting to %s for future use.\n", renderer);
+        debug("[Pre-init] MULTI_DIR environment variable was not set. Defaulting to %s for future use.\n", multidir);
     } else {
         multidir = [multidir_pre cStringUsingEncoding:NSUTF8StringEncoding];
         debug("[Pre-init] Restored preference: MULTI_DIR is set to %s\n", multidir);
@@ -467,8 +524,11 @@ int launchJVM(int argc, char *argv[]) {
     snprintf(multidir_char, 2048, "%s/instances/%s", getenv("POJAV_HOME"), multidir);
     snprintf(librarySym, 2048, "%s/Library/Application Support/minecraft", getenv("POJAV_HOME"));
     remove(librarySym);
+    if (0 != access(multidir_char, F_OK)) {
+        mkdir(multidir_char, 755);
+    }
     symlink(multidir_char, librarySym);
-    setenv("POJAV_GAME_DIR", multidir_char, 1);
+    setenv("POJAV_GAME_DIR", librarySym, 1);
     
     char *oldGameDir = calloc(1, 2048);
     snprintf(oldGameDir, 2048, "%s/Documents/minecraft", getenv("HOME"));
@@ -490,15 +550,16 @@ int launchJVM(int argc, char *argv[]) {
         char *userHome = calloc(1, 2048);
         char *memMin = calloc(1, 2048);
         char *memMax = calloc(1, 2048);
-        snprintf(frameworkPath, 2048, "-Djava.library.path=%s/Frameworks", getenv("BUNDLE_PATH"));
+        snprintf(frameworkPath, 2048, "-Djava.library.path=%s/Frameworks:%s/Frameworks/libOSMesaOverride.dylib.framework", getenv("BUNDLE_PATH"), getenv("BUNDLE_PATH"));
         snprintf(javaPath, 2048, "%s/bin/java", javaHome);
         snprintf(userDir, 2048, "-Duser.dir=%s", getenv("POJAV_GAME_DIR"));
         snprintf(userHome, 2048, "-Duser.home=%s", getenv("POJAV_HOME"));
         snprintf(memMin, 2048, "-Xms%sM", allocmem);
         snprintf(memMax, 2048, "-Xmx%sM", allocmem);
         NSLog(@"[Pre-init] Java executable path: %s", javaPath);
+        setenv("JAVA_EXT_EXECNAME", javaPath, 1);
 
-        chdir(userDir);
+        chdir(librarySym);
 
         margv[margc++] = javaPath;
         margv[margc++] = "-XstartOnFirstThread";
@@ -557,7 +618,7 @@ int launchJVM(int argc, char *argv[]) {
         init_loadCustomJvmFlags();
     }
     debug("[Init] Found JLI lib");
-    
+
     if (!started) {
         margv[margc++] = "-cp";
         margv[margc++] = classpath;
@@ -575,6 +636,12 @@ int launchJVM(int argc, char *argv[]) {
         debug("[Init] JLI_Launch = NULL");
         return -2;
     }
+
+    // Free unused char arrays
+    free(librarySym);
+    free(multidir_char);
+    free(oldGameDir);
+    free(oldLibraryDir);
 
     debug("[Init] Calling JLI_Launch");
 /*

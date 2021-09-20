@@ -84,7 +84,7 @@
     [scrollView addSubview:logoNoteView];
 
     UITextView *linkTextView = [[UITextView alloc] initWithFrame:CGRectMake(-1, logoNoteView.frame.origin.y + logoNoteView.frame.size.height + 9, width - 8, 84)];
-    linkTextView.text = @"Discord: https://discord.gg/pojavlauncher\nSubreddit: https://reddit.com/r/PojavLauncher\nWiki: https://pojav.ml";
+    linkTextView.text = @"Discord: https://discord.gg/x5pxnANzbX\nSubreddit: https://reddit.com/r/PojavLauncher\nWiki: https://pojav.ml";
     linkTextView.editable = NO;
     linkTextView.dataDetectorTypes = UIDataDetectorTypeAll;
     [scrollView addSubview:linkTextView];

@@ -20,10 +20,13 @@
 #define TYPE_OFFLINE 3
 
 void loginAccountInput(UINavigationController *controller, int type, const char* data_c) {
+    assert(data_c);
+
     JNIEnv *env;
     (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &env, NULL);
 
     jstring data = (*env)->NewStringUTF(env, data_c);
+    assert(data);
 
     jclass clazz = (*env)->FindClass(env, "net/kdt/pojavlaunch/uikit/AccountJNI");
     assert(clazz);
@@ -378,7 +381,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
                 NSString *out_username = [selectedProfile valueForKey:@"name"];
                 NSLog(@"DBG: Login succeed: %@, %@, %@, %@", out_accessToken, out_clientToken, out_profileID, out_username);
 */
-                
+                NSAssert(dataStr != nil, @"account data should not be null");
                 loginAccountInput(self.navigationController, TYPE_MOJANG, [dataStr UTF8String]);
             }
         } else {

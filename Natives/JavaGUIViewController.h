@@ -1,10 +1,11 @@
 #import <UIKit/UIKit.h>
 
 @interface SurfaceView : UIView {
-    CALayer* layer;
     CGColorSpaceRef colorSpace;
     CGDataProviderDirectCallbacks callbacks;
 }
+
+- (void)displayLayer;
 @end
 
 @interface JavaGUIViewController : UIViewController

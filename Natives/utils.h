@@ -37,10 +37,7 @@ BOOL isControlModifiable;
 
 UIViewController *viewController;
 
-MGLContext *firstContext;
-MGLSharegroup* sharegroup;
-
-void* GL4ES_HANDLE;
+void* gbuffer; // OSMesa framebuffer
 
 JavaVM* runtimeJavaVMPtr;
 JNIEnv* runtimeJNIEnvPtr_ANDROID;
@@ -60,6 +57,7 @@ int savedWidth, savedHeight;
 CGFloat MathUtils_dist(CGFloat x1, CGFloat y1, CGFloat x2, CGFloat y2);
 CGFloat dpToPx(CGFloat dp);
 CGFloat pxToDp(CGFloat px);
+void _CGDataProviderReleaseBytePointerCallback(void *info,const void *pointer);
 
 jboolean attachThread(bool isAndroid, JNIEnv** secondJNIEnvPtr);
 char** convert_to_char_array(JNIEnv *env, jobjectArray jstringArray);
