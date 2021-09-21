@@ -6,7 +6,7 @@ on:
 jobs:
   build:
     name: The guts
-    runs-on: macOS-latest
+    runs-on: macOS-11
     steps:
       - name: Set up cache
         uses: actions/cache@v2
@@ -19,7 +19,7 @@ jobs:
       - name: Set up build environment
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '12.4.0'
+          xcode-version: '12.5.1.0'
       
       - name: Set up build environment pt. II
         uses: actions/checkout@v2
