@@ -269,16 +269,20 @@ void init_logDeviceAndVer (char *argument) {
 
 void environmentFailsafes(char *argv[]) {
     if (strncmp(argv[0], "/Applications", 13) == 0) {
-        if (0 != access("/usr/lib/jvm/java-8-openjdk/", F_OK)) {
+        if (0 == access("/usr/lib/jvm/java-8-openjdk/", F_OK)) {
+            javaHome_pre = @"/usr/lib/jvm/java-8-openjdk";
+        } else if (0 == access("/usr/lib/jvm/java-16-openjdk/", F_OK)) {
             debug("[Pre-init] Java 8 wasn't found on your device. Install Java 8 for more compatibility and the mod installer.");
             javaHome_pre = @"/usr/lib/jvm/java-16-openjdk";
-            javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
-            setPreference(@"java_home", javaHome_pre);
+        } else if (0 == access("/usr/lib/jvm/java-17-openjdk/", F_OK)) {
+            debug("[Pre-init] Java 8 wasn't found on your device. Install Java 8 for more compatibility and the mod installer.");
+            javaHome_pre = @"/usr/lib/jvm/java-17-openjdk";
         } else {
-            javaHome_pre = @"/usr/lib/jvm/java-8-openjdk";
-            javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
-            setPreference(@"java_home", javaHome_pre);
+            debug("[Pre-init] FATAL ERROR: Java wasn't found on your device, PojavLauncher cannot continue, aborting.");
+            abort();
         }
+        javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
+        setPreference(@"java_home", javaHome_pre);
     } else {
         javaHome = calloc(1, 2048);
         sprintf((char *)javaHome, "%s/jre", homeDir);
