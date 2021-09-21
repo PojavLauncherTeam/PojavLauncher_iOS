@@ -51,15 +51,6 @@ jobs:
           sudo /opt/procursus/bin/apt-get -V dist-upgrade -y
           sudo /opt/procursus/bin/apt-get -V dist-upgrade -y
 
-      - name: Build the native application
-        run: gmake -j$(sysctl -n hw.ncpu) native
-
-      - name: Build the Java application
-        run: gmake -j$(sysctl -n hw.ncpu) java
-
-      - name: Build the assets and Storyboards
-        run: gmake -j$(sysctl -n hw.ncpu) extras
-
       - name: Build the Debian package
         run: gmake -j$(sysctl -n hw.ncpu) package
 
