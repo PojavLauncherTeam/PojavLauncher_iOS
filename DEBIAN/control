@@ -3,7 +3,7 @@ Name: PojavLauncher iOS
 Maintainer: PojavLauncherTeam <https://discord.gg/6RpEJda>
 Author: DuyKhanhTran
 Architecture: iphoneos-arm
-Version: 1.3
+Version: 2.0
 Depends: openjdk-8-jre | openjdk-16-jre | openjdk-8-jdk | openjdk-16-jdk, firmware (>= 12.0)
 Conflicts: pojavlauncher-dev, pojavlauncher-zink
 Section: Games

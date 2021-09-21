@@ -483,7 +483,7 @@ int launchJVM(int argc, char *argv[]) {
     } else {
         debug("[Pre-Init] Restored preference: RENDERER is set to %s\n", renderer);
     }
-
+    
     allocmem_pre = [getPreference(@"allocated_memory") stringValue];
     allocmem = [allocmem_pre cStringUsingEncoding:NSUTF8StringEncoding];
     
