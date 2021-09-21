@@ -19,7 +19,7 @@ jobs:
       - name: Set up build environment
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '12.5.1.0'
+          xcode-version: '12.5.1'
       
       - name: Set up build environment pt. II
         uses: actions/checkout@v2
