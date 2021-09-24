@@ -1,7 +1,7 @@
 IPABuilder
 
 Package PojavLauncher into an IPA file.
-scripts will be here until integarted into Makefile
+scripts will be here until integrated into Makefile
 
 ## how to build?
 set these env vars:
