@@ -55,7 +55,7 @@ jobs:
         run: gmake -j$(sysctl -n hw.ncpu) package
 
       - name: Generate dSYM for PojavCore
-        run: dsymutil --arch arm64 packages/pojavlauncher_iphoneos-arm/Applications/PojavLauncher.app/PojavCore.framework/PojavCore
+        run: dsymutil --arch arm64 packages/pojavlauncher_iphoneos-arm/Applications/PojavLauncher.app/Frameworks/PojavCore.framework/PojavCore
 
       - name: Generate dSYM for PojavLauncher
         run: dsymutil --arch arm64 packages/pojavlauncher_iphoneos-arm/Applications/PojavLauncher.app/PojavLauncher
