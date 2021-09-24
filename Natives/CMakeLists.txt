@@ -36,6 +36,7 @@ find_library(OSMESA_LIB libOSMesa.8.dylib)
 add_library(libOSMesaOverride.dylib SHARED gl_mesa3d_patch.m)
 set_target_properties(libOSMesaOverride.dylib PROPERTIES
     FRAMEWORK TRUE
+    MACOSX_FRAMEWORK_IDENTIFIER dylib.mesa3d.libOSMesaOverride
 )
 target_link_libraries(libOSMesaOverride.dylib ${OSMESA_LIB})
 
@@ -63,6 +64,7 @@ add_library(PojavCore SHARED
 )
 set_target_properties(PojavCore PROPERTIES
     FRAMEWORK TRUE
+    MACOSX_FRAMEWORK_IDENTIFIER net.kdt.pojavlauncher.PojavCore
 )
 target_link_libraries(PojavCore
   "-framework AuthenticationServices"
