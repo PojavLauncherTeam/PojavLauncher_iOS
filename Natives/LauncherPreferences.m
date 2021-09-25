@@ -9,6 +9,26 @@ NSString* prefPath;
 # define CONFIG_TYPE @YES
 #endif
 
+id getPreference(NSString* key) {
+    NSObject *object = prefDict[key];
+    if (object == [NSNull null] || object == nil) {
+        NSLog(@"LauncherPreferences: %@ is NULL", key);
+    }
+    return object;
+}
+
+void setDefaultValueForPref(NSString* key, id value) {
+    if (!prefDict[key]) {
+        prefDict[key] = value;
+        NSLog(@"[Pre-init] Set default value for key %@", value);
+    }
+}
+
+void setPreference(NSString* key, id value) {
+    prefDict[key] = value;
+    [prefDict writeToFile:prefPath atomically:YES];
+}
+
 void loadPreferences() {
     prefPath = [@(getenv("POJAV_HOME"))
       stringByAppendingPathComponent:@"launcher_preferences.plist"];
@@ -43,25 +63,5 @@ void loadPreferences() {
     setDefaultValueForPref(@"jb_warn", @YES);
     setDefaultValueForPref(@"disable_gl4es_shaderconv", @NO);
 
-    [prefDict writeToFile:prefPath atomically:YES];
-}
-
-id getPreference(NSString* key) {
-    NSObject *object = prefDict[key];
-    if (object == [NSNull null] || object == nil) {
-        NSLog(@"LauncherPreferences: %@ is NULL", key);
-    }
-    return object;
-}
-
-void setDefaultValueForPref(NSString* key, id value) {
-    if (!prefDict[key]) {
-        prefDict[key] = value;
-        NSLog(@"[Pre-init] Set default value for key %@", value);
-    }
-}
-
-void setPreference(NSString* key, id value) {
-    prefDict[key] = value;
     [prefDict writeToFile:prefPath atomically:YES];
 }

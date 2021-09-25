@@ -69,7 +69,7 @@ typedef jint JLI_Launch_func(int argc, char ** argv, /* main argc, argc */
 int main(int argc, char * argv[]);
 
 static int (*orig_dladdr)(const void* addr, Dl_info* info);
-//static void* (*orig_dlopen)(const char* path, int mode);
+static void* (*orig_dlopen)(const char* path, int mode);
 //static void* (*orig_mmap)(void *addr, size_t len, int prot, int flags, int fd, off_t offset);
 static char* (*orig_realpath)(const char *restrict path, char *restrict resolved_path);
 //static void (*orig_sys_icache_invalidate)(void *start, size_t len);
@@ -101,7 +101,7 @@ int hooked_dladdr(const void* addr, Dl_info* info) {
         info->dli_fname = getenv("JAVA_EXT_EXECNAME");
     } else if (retVal != 0) {
         //NSLog(@"hooked dladdr");
-        char *libname = basename(info->dli_fname);
+        char *libname = basename((char *)info->dli_fname);
         char src[2048], dst[2048];
         sprintf((char *)src, "%s/Frameworks", getenv("BUNDLE_PATH"));
         if (0 == strncmp(info->dli_fname, src, strlen(src))) {
@@ -117,7 +117,6 @@ int hooked_dladdr(const void* addr, Dl_info* info) {
     return retVal;
 }
 
-/*
 void* hooked_dlopen(const char* path, int mode) {
     void *handle = orig_dlopen(path, mode);
     if (handle) {
@@ -129,7 +128,7 @@ void* hooked_dlopen(const char* path, int mode) {
     //NSLog(@"path=%s, src=%s, length=%lu, compare=%d", path, src, strlen(src), strncmp(path, src, strlen(src)));
     if (!strncmp(path, src, strlen(src))) {
         //NSLog(@"hooked dlopen %s", path);
-        char *libname = basename(path);
+        char *libname = basename((char *)path);
         sprintf((char *)dst, "%s/%s.framework/%s", src, libname, libname);
         handle = orig_dlopen(dst, mode);
         if (handle) {
@@ -140,6 +139,7 @@ void* hooked_dlopen(const char* path, int mode) {
     return handle;
 }
 
+/*
 void *hooked_mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset) {
     NSLog(@"mmap(%p, %ld, %d, %d, %d, %lld)", addr, len, prot, flags, fd, offset);
 
@@ -195,14 +195,14 @@ static void *logger_thread() {
 void init_hookFunctions() {
     // if (!started && strncmp(argv[0], "/Applications", 13)) 
     // Jailed only: hook some functions for symlinked JRE home dir
-    int retval = rebind_symbols((struct rebinding[2]){
+    int retval = rebind_symbols((struct rebinding[3]){
         {"dladdr", hooked_dladdr, (void *)&orig_dladdr},
-        //{"dlopen", hooked_dlopen, (void *)&orig_dlopen},
+        {"dlopen", hooked_dlopen, (void *)&orig_dlopen},
         //{"realpath", hooked_realpath, (void *)&orig_realpath},
         {"realpath$DARWIN_EXTSN", hooked_realpath, (void *)&orig_realpath}
         //{"mmap", hooked_mmap, (void *)&orig_mmap},
         //{"sys_icache_invalidate", hooked_sys_icache_invalidate, (void *)&orig_sys_icache_invalidate}
-    }, 2);
+    }, 3);
     NSLog(@"hook retval = %d", retval);
 }
 
