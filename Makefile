@@ -315,6 +315,9 @@ dsym: deb
 	@echo 'Building PojavLauncher $(VERSION) - DSYM - End'
 	@cd $(OUTPUTDIR) && dsymutil --arch arm64 $(OUTPUTDIR)/PojavLauncher.app/Frameworks/PojavCore.framework/PojavCore
 	@cd $(OUTPUTDIR) && dsymutil --arch arm64 $(OUTPUTDIR)/PojavLauncher.app/PojavLauncher
+	@cp $(OUTPUTDIR)/PojavLauncher.app/PojavLauncher.dSYM $(OUTPUTDIR)
+	@cp $(OUTPUTDIR)/PojavLauncher.app/Frameworks/PojavCore.framework/PojavCore $(OUTPUTDIR)
+
 clean:
 	@echo 'Building PojavLauncher $(VERSION) - CLEAN - Start'
 	@if [ '$(NOSTDIN)' = '1' ]; then \
