@@ -316,7 +316,7 @@ dsym: deb
 	@cd $(OUTPUTDIR) && dsymutil --arch arm64 $(OUTPUTDIR)/PojavLauncher.app/Frameworks/PojavCore.framework/PojavCore
 	@cd $(OUTPUTDIR) && dsymutil --arch arm64 $(OUTPUTDIR)/PojavLauncher.app/PojavLauncher
 	@cp -r $(OUTPUTDIR)/PojavLauncher.app/PojavLauncher.dSYM $(OUTPUTDIR)
-	@cp -r $(OUTPUTDIR)/PojavLauncher.app/Frameworks/PojavCore.framework/PojavCore $(OUTPUTDIR)
+	@cp -r $(OUTPUTDIR)/PojavLauncher.app/Frameworks/PojavCore.framework/PojavCore.dSYM $(OUTPUTDIR)
 
 clean:
 	@echo 'Building PojavLauncher $(VERSION) - CLEAN - Start'
