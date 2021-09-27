@@ -124,16 +124,17 @@ public class PLaunchApp {
                 File outLib;
                 String libPathURL;
 
+                Tools.preProcessLibraries(mVersion.libraries);
                 for (final DependentLibrary libItem : mVersion.libraries) {
-                    if (
-                        // Support for text2speech is not planned, so skip it for now.
-                        libItem.name.startsWith("com.mojang.text2speech") ||
-                        libItem.name.startsWith("net.java.jinput") ||
-                        libItem.name.startsWith("org.lwjgl")
-                        ) { // Black list
+                    if (libItem._skip) {
                         currProgress++;
-                        UIKit.updateProgressSafe(currProgress / maxProgress, "Ignored " + libItem.name);
+                        UIKit.updateProgressSafe(currProgress / maxProgress, "Skipped " + libItem.name);
                         // Thread.sleep(100);
+                        
+                        String[] libInfo = libItem.name.split(":");
+                        String libArtifact = Tools.artifactToPath(libInfo[0], libInfo[1], libInfo[2]);
+                        outLib = new File(Tools.DIR_HOME_LIBRARY + "/" + libArtifact);
+                        outLib.delete();
                     } else {
                         String[] libInfo = libItem.name.split(":");
                         String libArtifact = Tools.artifactToPath(libInfo[0], libInfo[1], libInfo[2]);

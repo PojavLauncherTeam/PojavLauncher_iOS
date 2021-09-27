@@ -550,12 +550,14 @@ int launchJVM(int argc, char *argv[]) {
     if (!started) {
         char *frameworkPath = calloc(1, 2048);
         char *javaPath = calloc(1, 2048);
+        char *jnaLibPath = calloc(1, 2048);
         char *userDir = calloc(1, 2048);
         char *userHome = calloc(1, 2048);
         char *memMin = calloc(1, 2048);
         char *memMax = calloc(1, 2048);
         snprintf(frameworkPath, 2048, "-Djava.library.path=%s/Frameworks:%s/Frameworks/libOSMesaOverride.dylib.framework", getenv("BUNDLE_PATH"), getenv("BUNDLE_PATH"));
         snprintf(javaPath, 2048, "%s/bin/java", javaHome);
+        snprintf(jnaLibPath, 2048, "-Djna.boot.library.path=%s/Frameworks/libjnidispatch.dylib.framework", getenv("BUNDLE_PATH"));
         snprintf(userDir, 2048, "-Duser.dir=%s", getenv("POJAV_GAME_DIR"));
         snprintf(userHome, 2048, "-Duser.home=%s", getenv("POJAV_HOME"));
         snprintf(memMin, 2048, "-Xms%sM", allocmem);
@@ -571,6 +573,7 @@ int launchJVM(int argc, char *argv[]) {
         margv[margc++] = memMin;
         margv[margc++] = memMax;
         margv[margc++] = frameworkPath;
+        margv[margc++] = jnaLibPath;
         margv[margc++] = userDir;
         margv[margc++] = userHome;
         margv[margc++] = "-Dorg.lwjgl.system.allocator=system";
