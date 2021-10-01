@@ -567,12 +567,9 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
     [blurView setFrame:[[self view] bounds]];
     [blurView setAlpha:0];
     [self.view addSubview:blurView];
-
-    [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        [blurView setAlpha:1];
-    } completion:^(BOOL finished) {
-        exit(0);
-    }];
+    
+    [[UIApplication sharedApplication] performSelector:@selector(suspend)];
+    exit(0);
 }
 
 -(void)instanceDirCont {
