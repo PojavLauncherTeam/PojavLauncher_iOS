@@ -1,4 +1,4 @@
-name: iOS build
+name: Development build
 
 on:
   [push, workflow_dispatch]
@@ -6,7 +6,7 @@ on:
 jobs:
   build:
     name: The guts
-    runs-on: macOS-latest
+    runs-on: macOS-11
     steps:
       - name: Set up cache
         uses: actions/cache@v2
@@ -19,7 +19,7 @@ jobs:
       - name: Set up build environment
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '12.4.0'
+          xcode-version: '12.5.1'
       
       - name: Set up build environment pt. II
         uses: actions/checkout@v2
@@ -51,20 +51,11 @@ jobs:
           sudo /opt/procursus/bin/apt-get -V dist-upgrade -y
           sudo /opt/procursus/bin/apt-get -V dist-upgrade -y
 
-      - name: Build the native application
-        run: gmake -j$(sysctl -n hw.ncpu) native
-
-      - name: Build the Java application
-        run: gmake -j$(sysctl -n hw.ncpu) java
-
-      - name: Build the assets and Storyboards
-        run: gmake -j$(sysctl -n hw.ncpu) extras
-
       - name: Build the Debian package
         run: gmake -j$(sysctl -n hw.ncpu) package
 
-      - name: Generate dSYM for PojavCore
-        run: dsymutil --arch arm64 Natives/build/PojavCore.framework/PojavCore
+      - name: Generate dSYM for PojavLauncher
+        run: dsymutil --arch arm64 Natives/build/PojavLauncher.app/PojavLauncher
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
@@ -72,11 +63,11 @@ jobs:
           name: pojavlauncher_iphoneos-arm.deb
           path: packages/pojavlauncher_iphoneos-arm.deb
 
-      - name: Upload PojavCore.dSYM
+      - name: Upload PojavLauncher.dSYM
         uses: actions/upload-artifact@v2
         with:
-          name: PojavCore.dSYM
-          path: Natives/build/PojavCore.framework/PojavCore.dSYM
+          name: PojavLauncher.dSYM
+          path: Natives/build/PojavLauncher.app/PojavLauncher.dSYM
 
       - name: Copy Procursus to Cache Location
         run: |

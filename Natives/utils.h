@@ -43,8 +43,8 @@ JavaVM* runtimeJavaVMPtr;
 JNIEnv* runtimeJNIEnvPtr_ANDROID;
 JNIEnv* runtimeJNIEnvPtr_JRE;
 
-JNIEnv* dalvikJNIEnvPtr_ANDROID;
-JNIEnv* dalvikJNIEnvPtr_JRE;
+//JNIEnv* dalvikJNIEnvPtr_ANDROID;
+//JNIEnv* dalvikJNIEnvPtr_JRE;
 
 long showingWindow;
 
@@ -62,7 +62,7 @@ void _CGDataProviderReleaseBytePointerCallback(void *info,const void *pointer);
 jboolean attachThread(bool isAndroid, JNIEnv** secondJNIEnvPtr);
 char** convert_to_char_array(JNIEnv *env, jobjectArray jstringArray);
 jobjectArray convert_from_char_array(JNIEnv *env, char **charArray, int num_rows);
-void free_char_array(JNIEnv *env, jobjectArray jstringArray, const char **charArray);
+void free_char_array(JNIEnv *env, jobjectArray jstringArray, char **charArray);
 jstring convertStringJVM(JNIEnv* srcEnv, JNIEnv* dstEnv, jstring srcStr);
 
 void sendData(int type, int i1, int i2, int i3, int i4);

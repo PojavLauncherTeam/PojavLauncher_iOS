@@ -47,16 +47,16 @@ public final class Tools
 {
     public static final boolean ENABLE_DEV_FEATURES = true; // BuildConfig.DEBUG;
 
-    public static String APP_NAME = "null";
+    public static String APP_NAME = "PojavLauncher";
     
     public static final Gson GLOBAL_GSON = new GsonBuilder().setPrettyPrinting().create();
     
     public static final String URL_HOME = "https://pojavlauncherteam.github.io/PojavLauncher";
-    public static String DIR_DATA = System.getenv("BUNDLE_PATH");
+    public static String DIR_BUNDLE = System.getenv("BUNDLE_PATH"); // path to "PojavLauncher.app"
     public static String CURRENT_ARCHITECTURE;
 
     public static final String DIR_GAME_HOME = System.getenv("POJAV_HOME");
-    public static final String DIR_GAME_NEW = System.getenv("POJAV_GAME_DIR");
+    public static final String DIR_GAME_NEW = System.getenv("POJAV_GAME_DIR"); // path to "Library/Application Support/minecraft"
     
     public static final String DIR_APP_DATA = System.getenv("POJAV_HOME");
     public static final String DIR_ACCOUNT_NEW = DIR_APP_DATA + "/accounts";
@@ -394,10 +394,36 @@ public final class Tools
         act.startActivity(browserIntent);
     }
 */
+
+    public static void preProcessLibraries(DependentLibrary[] libraries) {
+        // Ignore some libraries since they are unsupported (jinput, text2speech) or unused (LWJGL)
+        // Support for text2speech is not planned, so skip it for now.
+        for (int i = 0; i < libraries.length; i++) {
+            DependentLibrary libItem = libraries[i];
+            if (libItem.name.startsWith("com.mojang.text2speech") ||
+                libItem.name.startsWith("net.java.jinput") ||
+                libItem.name.startsWith("net.java.dev.jna:platform:") ||
+                libItem.name.startsWith("org.lwjgl") ||
+                libItem.name.startsWith("tv.twitch")) {
+                    libItem._skip = true;
+            } else if (libItem.name.startsWith("net.java.dev.jna:jna:")) {
+                // Special handling for LabyMod 1.8.9 and Forge 1.12.2(?)
+                // we have libjnidispatch 5.8.0 in Frameworks directory
+                System.out.println("Library " + libItem.name + " has been changed to version 5.8.0");
+                libItem.name = "net.java.dev.jna:jna:5.8.0";
+                libItem.downloads.artifact.path = "net/java/dev/jna/jna/5.8.0/jna-5.8.0.jar";
+                libItem.downloads.artifact.url = "https://libraries.minecraft.net/net/java/dev/jna/jna/5.8.0/jna-5.8.0.jar";
+            }
+        }
+    }
+
     public static String[] generateLibClasspath(JMinecraftVersionList.Version info) {
         List<String> libDir = new ArrayList<String>();
 
-        for (DependentLibrary libItem: info.libraries) {
+        preProcessLibraries(info.libraries);
+        for (DependentLibrary libItem : info.libraries) {
+            if (libItem._skip) continue;
+            
             String[] libInfos = libItem.name.split(":");
             libDir.add(Tools.DIR_HOME_LIBRARY + "/" + Tools.artifactToPath(libInfos[0], libInfos[1], libInfos[2]));
         }

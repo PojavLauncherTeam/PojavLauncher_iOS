@@ -501,7 +501,7 @@ public class GLFW
     public static long mainContext = 0;
 	static {
 		try {
-            System.load(System.getenv("BUNDLE_PATH") + "/Frameworks/PojavCore.framework/PojavCore");
+            System.load(System.getenv("BUNDLE_PATH") + "/PojavLauncher");
         } catch (UnsatisfiedLinkError e) {
             e.printStackTrace();
         }

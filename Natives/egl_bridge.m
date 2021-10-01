@@ -97,10 +97,6 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_setenv(JNIEnv *en
     (*env)->ReleaseStringUTFChars(env, value, value_c);
 }
 
-JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_saveGLContext(JNIEnv* env, jclass clazz) {
-    // @deprecated, remove later
-}
-
 void terminateEgl() {
     debug("EGLBridge: Terminating");
 

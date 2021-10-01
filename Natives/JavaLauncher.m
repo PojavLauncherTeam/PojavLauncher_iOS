@@ -269,16 +269,20 @@ void init_logDeviceAndVer (char *argument) {
 
 void environmentFailsafes(char *argv[]) {
     if (strncmp(argv[0], "/Applications", 13) == 0) {
-        if (0 != access("/usr/lib/jvm/java-8-openjdk/", F_OK)) {
+        if (0 == access("/usr/lib/jvm/java-8-openjdk/", F_OK)) {
+            javaHome_pre = @"/usr/lib/jvm/java-8-openjdk";
+        } else if (0 == access("/usr/lib/jvm/java-16-openjdk/", F_OK)) {
             debug("[Pre-init] Java 8 wasn't found on your device. Install Java 8 for more compatibility and the mod installer.");
             javaHome_pre = @"/usr/lib/jvm/java-16-openjdk";
-            javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
-            setPreference(@"java_home", javaHome_pre);
+        } else if (0 == access("/usr/lib/jvm/java-17-openjdk/", F_OK)) {
+            debug("[Pre-init] Java 8 wasn't found on your device. Install Java 8 for more compatibility and the mod installer.");
+            javaHome_pre = @"/usr/lib/jvm/java-17-openjdk";
         } else {
-            javaHome_pre = @"/usr/lib/jvm/java-8-openjdk";
-            javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
-            setPreference(@"java_home", javaHome_pre);
+            debug("[Pre-init] FATAL ERROR: Java wasn't found on your device, PojavLauncher cannot continue, aborting.");
+            abort();
         }
+        javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
+        setPreference(@"java_home", javaHome_pre);
     } else {
         javaHome = calloc(1, 2048);
         sprintf((char *)javaHome, "%s/jre", homeDir);
@@ -287,6 +291,7 @@ void environmentFailsafes(char *argv[]) {
 
 int launchJVM(int argc, char *argv[]) {
     if (!started) {
+        setenv("EXEC_PATH", argv[0], 1);
         setenv("BUNDLE_PATH", dirname(argv[0]), 1);
 
         // Are we running on a jailbroken environment?
@@ -479,7 +484,7 @@ int launchJVM(int argc, char *argv[]) {
     } else {
         debug("[Pre-Init] Restored preference: RENDERER is set to %s\n", renderer);
     }
-
+    
     allocmem_pre = [getPreference(@"allocated_memory") stringValue];
     allocmem = [allocmem_pre cStringUsingEncoding:NSUTF8StringEncoding];
     
@@ -546,12 +551,14 @@ int launchJVM(int argc, char *argv[]) {
     if (!started) {
         char *frameworkPath = calloc(1, 2048);
         char *javaPath = calloc(1, 2048);
+        char *jnaLibPath = calloc(1, 2048);
         char *userDir = calloc(1, 2048);
         char *userHome = calloc(1, 2048);
         char *memMin = calloc(1, 2048);
         char *memMax = calloc(1, 2048);
         snprintf(frameworkPath, 2048, "-Djava.library.path=%s/Frameworks:%s/Frameworks/libOSMesaOverride.dylib.framework", getenv("BUNDLE_PATH"), getenv("BUNDLE_PATH"));
         snprintf(javaPath, 2048, "%s/bin/java", javaHome);
+        snprintf(jnaLibPath, 2048, "-Djna.boot.library.path=%s/Frameworks/libjnidispatch.dylib.framework", getenv("BUNDLE_PATH"));
         snprintf(userDir, 2048, "-Duser.dir=%s", getenv("POJAV_GAME_DIR"));
         snprintf(userHome, 2048, "-Duser.home=%s", getenv("POJAV_HOME"));
         snprintf(memMin, 2048, "-Xms%sM", allocmem);
@@ -567,6 +574,7 @@ int launchJVM(int argc, char *argv[]) {
         margv[margc++] = memMin;
         margv[margc++] = memMax;
         margv[margc++] = frameworkPath;
+        margv[margc++] = jnaLibPath;
         margv[margc++] = userDir;
         margv[margc++] = userHome;
         margv[margc++] = "-Dorg.lwjgl.system.allocator=system";
@@ -623,10 +631,6 @@ int launchJVM(int argc, char *argv[]) {
         margv[margc++] = "-cp";
         margv[margc++] = classpath;
         margv[margc++] = "net.kdt.pojavlaunch.PLaunchApp";
-        
-        for (int i = 0; i < argc; i++) {
-            margv[margc++] = argv[i];
-        }
     }
 
     JLI_Launch_func *pJLI_Launch =

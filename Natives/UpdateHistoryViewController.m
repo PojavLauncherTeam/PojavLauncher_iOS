@@ -42,7 +42,7 @@
     [latestVerNote setFont:[UIFont boldSystemFontOfSize:25]];
 
     UILabel *latestVerView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, latestVerNote.frame.origin.y + latestVerNote.frame.size.height, scrollView.frame.size.width - 4, 30.0)];
-    latestVerView.text = @"1.3 (development)";
+    latestVerView.text = @"2.0 (development)";
     latestVerView.lineBreakMode = NSLineBreakByWordWrapping;
     latestVerView.numberOfLines = 0;
     [scrollView addSubview:latestVerView];
