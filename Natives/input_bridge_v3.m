@@ -45,7 +45,6 @@ jmethodID uikitBridgeTouchMethod;
 
 // JNI_OnLoad
 jint JNI_OnLoad(JavaVM* vm, void* reserved) {
-    debug("[Init] PojavCore loaded from vm=%p\n", vm);
     runtimeJavaVMPtr = vm;
     (*vm)->GetEnv(vm, (void**) &runtimeJNIEnvPtr_JRE, JNI_VERSION_1_4);
     
@@ -237,12 +236,9 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_runOnUIThread(JNIEnv
     UIKit_runOnUIThread(callback);
 }
 */
-JNIEXPORT jint JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_launchUI(JNIEnv* env, jclass clazz, jobjectArray args) {
-	int argc = (*env)->GetArrayLength(env, args);
-    char **argv = convert_to_char_array(env, args);
-
+JNIEXPORT jint JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_launchUI(JNIEnv* env, jclass clazz) {
     @autoreleasepool {
-        return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
+        return UIApplicationMain(1, (char *[]){ getenv("EXEC_PATH") }, nil, NSStringFromClass([AppDelegate class]));
     }
 }
 

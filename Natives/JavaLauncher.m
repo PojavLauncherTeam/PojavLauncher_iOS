@@ -291,6 +291,7 @@ void environmentFailsafes(char *argv[]) {
 
 int launchJVM(int argc, char *argv[]) {
     if (!started) {
+        setenv("EXEC_PATH", argv[0], 1);
         setenv("BUNDLE_PATH", dirname(argv[0]), 1);
 
         // Are we running on a jailbroken environment?
@@ -630,10 +631,6 @@ int launchJVM(int argc, char *argv[]) {
         margv[margc++] = "-cp";
         margv[margc++] = classpath;
         margv[margc++] = "net.kdt.pojavlaunch.PLaunchApp";
-        
-        for (int i = 0; i < argc; i++) {
-            margv[margc++] = argv[i];
-        }
     }
 
     JLI_Launch_func *pJLI_Launch =

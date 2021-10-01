@@ -54,8 +54,8 @@ jobs:
       - name: Build the Debian package
         run: gmake -j$(sysctl -n hw.ncpu) package
 
-      - name: Generate dSYM for PojavCore
-        run: dsymutil --arch arm64 Natives/build/PojavCore.framework/PojavCore
+      - name: Generate dSYM for PojavLauncher
+        run: dsymutil --arch arm64 Natives/build/PojavLauncher.app/PojavLauncher
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
@@ -63,11 +63,11 @@ jobs:
           name: pojavlauncher_iphoneos-arm.deb
           path: packages/pojavlauncher_iphoneos-arm.deb
 
-      - name: Upload PojavCore.dSYM
+      - name: Upload PojavLauncher.dSYM
         uses: actions/upload-artifact@v2
         with:
-          name: PojavCore.dSYM
-          path: Natives/build/PojavCore.framework/PojavCore.dSYM
+          name: PojavLauncher.dSYM
+          path: Natives/build/PojavLauncher.app/PojavLauncher.dSYM
 
       - name: Copy Procursus to Cache Location
         run: |

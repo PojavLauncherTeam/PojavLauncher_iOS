@@ -151,12 +151,12 @@ public class UIKit {
     }
 
     static {
-        System.load(System.getenv("BUNDLE_PATH") + "/Frameworks/PojavCore.framework/PojavCore");
+        System.load(System.getenv("BUNDLE_PATH") + "/PojavLauncher");
     }
 
     public static native void refreshAWTBuffer(int[] array);
 
-    public static native int launchUI(String[] uiArgs);
+    public static native int launchUI();
     // public static native void runOnUIThread(UIKitCallback callback);
     
     public static native void showError(String title, String message, boolean exitIfOk);

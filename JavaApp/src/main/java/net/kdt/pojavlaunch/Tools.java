@@ -47,16 +47,16 @@ public final class Tools
 {
     public static final boolean ENABLE_DEV_FEATURES = true; // BuildConfig.DEBUG;
 
-    public static String APP_NAME = "null";
+    public static String APP_NAME = "PojavLauncher";
     
     public static final Gson GLOBAL_GSON = new GsonBuilder().setPrettyPrinting().create();
     
     public static final String URL_HOME = "https://pojavlauncherteam.github.io/PojavLauncher";
-    public static String DIR_DATA = System.getenv("BUNDLE_PATH");
+    public static String DIR_BUNDLE = System.getenv("BUNDLE_PATH"); // path to "PojavLauncher.app"
     public static String CURRENT_ARCHITECTURE;
 
     public static final String DIR_GAME_HOME = System.getenv("POJAV_HOME");
-    public static final String DIR_GAME_NEW = System.getenv("POJAV_GAME_DIR");
+    public static final String DIR_GAME_NEW = System.getenv("POJAV_GAME_DIR"); // path to "Library/Application Support/minecraft"
     
     public static final String DIR_APP_DATA = System.getenv("POJAV_HOME");
     public static final String DIR_ACCOUNT_NEW = DIR_APP_DATA + "/accounts";

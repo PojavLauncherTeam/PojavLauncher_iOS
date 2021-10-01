@@ -53,7 +53,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
 
-    if ([@(getenv("RENDERER")) hasPrefix:@"libOSMesaOverride"]) {
+    if ([getPreference(@"renderer") hasPrefix:@"libOSMesaOverride"]) {
         self.layer.opaque = YES;
 
         colorSpace = CGColorSpaceCreateDeviceRGB();
@@ -69,7 +69,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 }
 
 + (Class)layerClass {
-    if ([@(getenv("RENDERER")) hasPrefix:@"libOSMesa"]) {
+    if ([getPreference(@"renderer") hasPrefix:@"libOSMesa"]) {
         return CALayer.class;
     } else {
         return CAMetalLayer.class;

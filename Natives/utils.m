@@ -37,7 +37,7 @@ jobjectArray convert_from_char_array(JNIEnv *env, char **charArray, int num_rows
 	return resultArr;
 }
 
-void free_char_array(JNIEnv *env, jobjectArray jstringArray, const char **charArray) {
+void free_char_array(JNIEnv *env, jobjectArray jstringArray, char **charArray) {
 	int num_rows = (*env)->GetArrayLength(env, jstringArray);
 	jstring row;
 	
@@ -45,6 +45,8 @@ void free_char_array(JNIEnv *env, jobjectArray jstringArray, const char **charAr
 		row = (jstring) (*env)->GetObjectArrayElement(env, jstringArray, i);
 		(*env)->ReleaseStringUTFChars(env, row, charArray[i]);
 	}
+	
+	free(charArray);
 }
 
 jstring convertStringJVM(JNIEnv* srcEnv, JNIEnv* dstEnv, jstring srcStr) {

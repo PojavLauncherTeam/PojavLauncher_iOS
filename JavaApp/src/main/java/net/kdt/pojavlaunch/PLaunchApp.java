@@ -30,21 +30,18 @@ public class PLaunchApp {
             new File(Tools.DIR_ACCOUNT_NEW).mkdirs();
             if (!new File(mcDir.getAbsolutePath() + "/launcher_profiles.json").exists()) {
                 Tools.write(mcDir.getAbsolutePath() + "/launcher_profiles.json",
-                  Tools.read(Tools.DIR_DATA + "/launcher_profiles.json"));
+                  Tools.read(Tools.DIR_BUNDLE + "/launcher_profiles.json"));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         System.out.println("We are on java now! Starting UI...");
-        UIKit.launchUI(args);
+        UIKit.launchUI();
     }
 
     // Called from SurfaceViewController
     public static void launchMinecraft() {
-        System.out.println("Saving GLES context");
-        JREUtils.saveGLContext();
-
         System.out.println("Launching Minecraft " + mVersion.id);
         try {
             Tools.launchMinecraft(AccountJNI.CURRENT_ACCOUNT, mVersion);
