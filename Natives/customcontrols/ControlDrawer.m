@@ -40,9 +40,13 @@
 
 // NOTE: Unlike Android's impl, this method uses dp instead of px (no call to dpToPx)
 - (void)alignButtons {
+    NSString *orientation = (NSString *)self.drawerData[@"orientation"];
+    if ([orientation isEqualToString:@"FREE"]) {
+        return;
+    }
+
     for (int i = 0; i < self.buttons.count; i++) {
         ControlButton *button = self.buttons[i];
-        NSString *orientation = (NSString *)self.drawerData[@"orientation"];
         if ([orientation isEqualToString:@"RIGHT"]) {
             button.properties[@"dynamicX"] = [self generateDynamicX:self.frame.origin.x + ([self.properties[@"width"] floatValue] + 2.0) * (i+1)];
             button.properties[@"dynamicY"] = [self generateDynamicY:self.frame.origin.y];
