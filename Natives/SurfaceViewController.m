@@ -420,6 +420,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 }
 
 - (void)surfaceOnTouchesScroll:(UIPanGestureRecognizer *)sender {
+    if (isGrabbing) return;
     if (sender.state == UIGestureRecognizerStateBegan ||
         sender.state == UIGestureRecognizerStateChanged ||
         sender.state == UIGestureRecognizerStateEnded) {
