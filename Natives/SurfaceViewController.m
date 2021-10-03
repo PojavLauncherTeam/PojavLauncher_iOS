@@ -33,6 +33,9 @@ int inputTextLength;
 BOOL shouldTriggerClick = NO;
 int notchOffset;
 
+int currentHotbarSlot = -1;
+BOOL slideableHotbar;
+
 // TODO: key modifiers impl
 
 @implementation GameSurfaceView
@@ -105,6 +108,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     UIEdgeInsets insets = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets;
 
     resolutionScale = ((NSNumber *)getPreference(@"resolution")).floatValue / 100.0;
+    slideableHotbar = [getPreference(@"slideable_hotbar") boolValue];
 
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height);
@@ -262,7 +266,6 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 - (void)sendTouchPoint:(CGPoint)location withEvent:(int)event
 {
     CGFloat screenScale = [[UIScreen mainScreen] scale];
-    callback_SurfaceViewController_touchHotbar(location.x * screenScale, location.y * screenScale);
     if (!isGrabbing) {
         screenScale *= resolutionScale;
     }
@@ -282,6 +285,28 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     }
 
     if (touchEvent.view == self.surfaceView) {
+        if (slideableHotbar && !isTouchTypeIndirect) {
+            CGFloat screenScale = [[UIScreen mainScreen] scale];
+            int slot = callback_SurfaceViewController_touchHotbar(locationInView.x * screenScale, locationInView.y * screenScale);
+            
+            if (slot != -1 && currentHotbarSlot != slot && (event == ACTION_DOWN || currentHotbarSlot != -1)) {
+                currentHotbarSlot = slot;
+                Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, slot, 0, 1, 0);
+                Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, slot, 0, 0, 0);
+                return;
+            } /* else if ((event == ACTION_MOVE || event == ACTION_UP) && slot == -1 && currentHotbarSlot != -1) {
+                return;
+            } */
+            
+            if (event == ACTION_DOWN && slot == -1) {
+                currentHotbarSlot = -1;
+            }
+            
+            if (currentHotbarSlot != -1) {
+                return;
+            }
+        }
+        
         [self sendTouchPoint:locationInView withEvent:event];
 
         if (!isTouchTypeIndirect) {
@@ -321,9 +346,9 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
       shouldTriggerClick == YES) {
         CGFloat screenScale = [[UIScreen mainScreen] scale];
         CGPoint location = [sender locationInView:[sender.view superview]];
-        int hotbarItem = callback_SurfaceViewController_touchHotbar(location.x * screenScale, location.y * screenScale);
+        currentHotbarSlot = callback_SurfaceViewController_touchHotbar(location.x * screenScale, location.y * screenScale);
         
-        if (hotbarItem == -1) {
+        if (currentHotbarSlot == -1) {
             inputView.text = INPUT_SPACE_CHAR;
             inputTextLength = 0;
 
@@ -332,8 +357,8 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
             Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL,
                 isGrabbing == JNI_TRUE ? GLFW_MOUSE_BUTTON_RIGHT : GLFW_MOUSE_BUTTON_LEFT, 0, 0);
         } else {
-            Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, hotbarItem, 0, 1, 0);
-            Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, hotbarItem, 0, 0, 0);
+            Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, currentHotbarSlot, 0, 1, 0);
+            Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, currentHotbarSlot, 0, 0, 0);
         }
     }
 }
@@ -365,9 +390,11 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 {
     CGFloat screenScale = [[UIScreen mainScreen] scale];
     CGPoint location = [sender locationInView:[sender.view superview]];
-    int hotbarItem = callback_SurfaceViewController_touchHotbar(location.x * screenScale * resolutionScale, location.y * screenScale * resolutionScale);
+    if (!slideableHotbar) {
+        currentHotbarSlot = callback_SurfaceViewController_touchHotbar(location.x * screenScale * resolutionScale, location.y * screenScale * resolutionScale);
+    }
     if (sender.state == UIGestureRecognizerStateBegan) {
-        if (hotbarItem == -1) {
+        if (currentHotbarSlot == -1) {
             inputView.text = INPUT_SPACE_CHAR;
             inputTextLength = 0;
 
@@ -376,7 +403,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
             Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_Q, 0, 1, 0);
         }
     } else if (sender.state == UIGestureRecognizerStateChanged) {
-        if (hotbarItem == -1) {
+        if (currentHotbarSlot == -1) {
             [self sendTouchPoint:location withEvent:ACTION_MOVE];
         }
     } else {
@@ -384,7 +411,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
             || sender.state == UIGestureRecognizerStateFailed
             || sender.state == UIGestureRecognizerStateEnded)
         {
-            if (hotbarItem == -1) {
+            if (currentHotbarSlot == -1) {
                 inputView.text = INPUT_SPACE_CHAR;
                 inputTextLength = 0;
 

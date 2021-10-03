@@ -45,6 +45,7 @@ void loadPreferences() {
     setDefaultValueForPref(@"java_warn", @YES);
     setDefaultValueForPref(@"jb_warn", @YES);
     setDefaultValueForPref(@"disable_gl4es_shaderconv", @NO);
+    setDefaultValueForPref(@"slideable_hotbar", @NO);
 
     [prefDict writeToFile:prefPath atomically:YES];
 }
