@@ -161,19 +161,9 @@ int width;
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    // dirty hack to avoid displaying contents in the arrow
-/*
-    switch (popoverPresentationController.arrowDirection) {
-        case UIPopoverArrowDirectionUp:
-            
-        case UIPopoverArrowDirectionDown:
-        case UIPopoverArrowDirectionLeft:
-        case UIPopoverArrowDirectionRight:
-    }
-*/
     self.view.frame = CGRectMake(0, 0, self.preferredContentSize.width, self.preferredContentSize.height);
 
-    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.preferredContentSize.width, self.preferredContentSize.height)];
+    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(5.0, 5.0, self.preferredContentSize.width - 10.0, self.preferredContentSize.height - 10.0)];
     [self.view addSubview:self.scrollView];
 
     if (self.shouldDisplayButtonEditor) {
@@ -183,9 +173,14 @@ int width;
     }
 }
 
+- (void)viewSafeAreaInsetsDidChange {
+    [super viewSafeAreaInsetsDidChange];
+    self.scrollView.contentInset = self.view.safeAreaInsets;
+}
+
 - (void)displayButtonEditor {
-    CGFloat width = self.view.frame.size.width;
-    CGFloat height = self.view.frame.size.height;
+    CGFloat width = self.view.frame.size.width - 10.0;
+    CGFloat height = self.view.frame.size.height - 10.0;
 
     UILabel *labelName = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 0.0)];
     labelName.text = @"Name";
