@@ -290,13 +290,26 @@ void environmentFailsafes(char *argv[]) {
 }
 
 int launchJVM(int argc, char *argv[]) {
+    if (0 != [[NSFileManager defaultManager] fileExistsAtPath:@"/var/mobile/Documents/.pojavlauncher"]) {
+        NSString *newDir = @"/usr/share/pojavlauncher";
+        NSString *oldDir = @"/var/mobile/Documents/.pojavlauncher";
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSArray *files = [fm contentsOfDirectoryAtPath:oldDir error:nil];
+        for (NSString *file in files) {
+            [fm moveItemAtPath:[oldDir stringByAppendingPathComponent:file] toPath:[newDir stringByAppendingPathComponent:file] error:nil];
+        }
+        [fm removeItemAtPath:oldDir error:nil];
+        [fm createSymbolicLinkAtURL:oldDir withDestinationURL:newDir error:nil];
+    }
+    
     if (!started) {
         setenv("BUNDLE_PATH", dirname(argv[0]), 1);
 
         // Are we running on a jailbroken environment?
         if (strncmp(argv[0], "/Applications", 13) == 0) {
-            setenv("HOME", "/var/mobile", 1);
-            homeDir = "/var/mobile/Documents/.pojavlauncher";
+            setenv("HOME", "/usr/share", 1);
+            setenv("OLD_POJAV_HOME", "/var/mobile/Documents/.pojavlauncher", 1);
+            homeDir = "/usr/share/pojavlauncher";
         } else {
             char pojavHome[2048];
             sprintf(pojavHome, "%s/Documents", getenv("HOME"));
@@ -535,14 +548,14 @@ int launchJVM(int argc, char *argv[]) {
     setenv("POJAV_GAME_DIR", librarySym, 1);
     
     char *oldGameDir = calloc(1, 2048);
-    snprintf(oldGameDir, 2048, "%s/Documents/minecraft", getenv("HOME"));
+    snprintf(oldGameDir, 2048, "%s/../Documents/minecraft", getenv("OLD_POJAV_HOME"));
     if (0 == access(oldGameDir, F_OK)) {
         rename(oldGameDir, multidir_char);
         debug("[Pre-Init] Migrated old minecraft folder to new location.");
     }
     
     char *oldLibraryDir = calloc(1, 2048);
-    snprintf(oldLibraryDir, 2048, "%s/Documents/Library", getenv("HOME"));
+    snprintf(oldLibraryDir, 2048, "%s/../Documents/Library", getenv("OLD_POJAV_HOME"));
     if (0 == access(oldLibraryDir, F_OK)) {
         remove(oldLibraryDir);
     }

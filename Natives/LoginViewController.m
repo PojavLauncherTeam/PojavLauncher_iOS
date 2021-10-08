@@ -408,7 +408,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 
 -(void)latestLogShare
 {
-    NSString *latestlogPath = [NSString stringWithFormat:@"file://%s/Documents/.pojavlauncher/latestlog.old.txt", getenv("HOME")];
+    NSString *latestlogPath = [NSString stringWithFormat:@"file://%s/latestlog.old.txt", getenv("HOME")];
     activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[@"latestlog.txt", [NSURL URLWithString:latestlogPath]] applicationActivities:nil];
 
     [self presentViewController:activityViewController animated:YES completion:nil];
