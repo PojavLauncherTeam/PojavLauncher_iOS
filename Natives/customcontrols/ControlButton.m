@@ -20,6 +20,10 @@
     ControlButton *instance = [self buttonWithType:UIButtonTypeRoundedRect];
     instance.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     instance.tintColor = [UIColor whiteColor];
+    instance.titleLabel.adjustsFontSizeToFitWidth = YES;
+    instance.titleLabel.lineBreakMode = NSLineBreakByCharWrapping;
+    instance.titleLabel.numberOfLines = 0;
+    instance.titleLabel.textAlignment = NSTextAlignmentCenter;
     instance.properties = propArray;
     if (update) {
         [instance update];
