@@ -290,7 +290,7 @@ void environmentFailsafes(char *argv[]) {
 }
 
 int launchJVM(int argc, char *argv[]) {
-    if (0 != [[NSFileManager defaultManager] fileExistsAtPath:@"/var/mobile/Documents/.pojavlauncher"]) {
+    if (0 != [[NSFileManager defaultManager] fileExistsAtPath:@"/var/mobile/Documents/.pojavlauncher"] && 0 == [[NSFileManager defaultManager] fileExistsAtPath:@"/var/mobile/Documents/.pojavlauncher/migration_complete"]) {
         NSString *newDir = @"/usr/share/pojavlauncher";
         NSString *oldDir = @"/var/mobile/Documents/.pojavlauncher";
         NSFileManager *fm = [NSFileManager defaultManager];
@@ -299,7 +299,10 @@ int launchJVM(int argc, char *argv[]) {
             [fm moveItemAtPath:[oldDir stringByAppendingPathComponent:file] toPath:[newDir stringByAppendingPathComponent:file] error:nil];
         }
         [fm removeItemAtPath:oldDir error:nil];
-        [fm createSymbolicLinkAtURL:oldDir withDestinationURL:newDir error:nil];
+        symlink([newDir cStringUsingEncoding:NSUTF8StringEncoding], [oldDir cStringUsingEncoding:NSUTF8StringEncoding]);
+        FILE* file_ptr = fopen("/var/mobile/Documents/.pojavlauncher/migration_complete", "w");
+        fprintf(file_ptr, "#README - The PojavLauncher data directory is now /usr/share/pojavlauncher. All of your existing data has been moved to the new location.");
+        fclose(file_ptr);
     }
     
     if (!started) {
@@ -547,17 +550,13 @@ int launchJVM(int argc, char *argv[]) {
     symlink(multidir_char, librarySym);
     setenv("POJAV_GAME_DIR", librarySym, 1);
     
-    char *oldGameDir = calloc(1, 2048);
-    snprintf(oldGameDir, 2048, "%s/../minecraft", getenv("OLD_POJAV_HOME"));
-    if (0 == access(oldGameDir, F_OK)) {
-        rename(oldGameDir, multidir_char);
+    if (0 == access("/var/mobile/Documents/minecraft", F_OK)) {
+        rename("/var/mobile/Documents/minecraft", multidir_char);
         debug("[Pre-Init] Migrated old minecraft folder to new location.");
     }
     
-    char *oldLibraryDir = calloc(1, 2048);
-    snprintf(oldLibraryDir, 2048, "%s/../Library", getenv("OLD_POJAV_HOME"));
-    if (0 == access(oldLibraryDir, F_OK)) {
-        remove(oldLibraryDir);
+    if (0 == access("/var/mobile/Documents/Library", F_OK)) {
+        remove("/var/mobile/Documents/Library");
     }
     // Check if JVM restarts
     if (!started) {
