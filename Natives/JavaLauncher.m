@@ -656,8 +656,6 @@ int launchJVM(int argc, char *argv[]) {
     // Free unused char arrays
     free(librarySym);
     free(multidir_char);
-    free(oldGameDir);
-    free(oldLibraryDir);
 
     debug("[Init] Calling JLI_Launch");
 /*
