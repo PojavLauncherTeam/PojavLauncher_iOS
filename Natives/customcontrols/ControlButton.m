@@ -7,7 +7,6 @@
   string = [string stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"${%@}", @(KEY)] withString:VALUE];
 
 @implementation ControlButton
-@synthesize properties;
 
 /**
  * TODO implement:
@@ -115,8 +114,8 @@
     // width: offset the notch parts
     CGFloat physicalWidth = screenBounds.size.width - insets.left - insets.right;
 
-    if (x + ([properties[@"width"] floatValue] / 2.0) > physicalWidth / 2.0) {
-        return [NSString stringWithFormat:@"%f  * ${screen_width} - ${width}", (x + [properties[@"width"] floatValue]) / physicalWidth];
+    if (x + ([self.properties[@"width"] floatValue] / 2.0) > physicalWidth / 2.0) {
+        return [NSString stringWithFormat:@"%f  * ${screen_width} - ${width}", (x + [self.properties[@"width"] floatValue]) / physicalWidth];
     } else{
         return [NSString stringWithFormat:@"%f  * ${screen_width}", x / physicalWidth];
     }
@@ -129,8 +128,8 @@
 
     CGFloat physicalHeight = screenBounds.size.height;
 
-    if (y + ([properties[@"height"] floatValue] / 2.0) > physicalHeight / 2.0) {
-        return [NSString stringWithFormat:@"%f  * ${screen_height} - ${height}", (y + [properties[@"height"] floatValue]) / physicalHeight];
+    if (y + ([self.properties[@"height"] floatValue] / 2.0) > physicalHeight / 2.0) {
+        return [NSString stringWithFormat:@"%f  * ${screen_height} - ${height}", (y + [self.properties[@"height"] floatValue]) / physicalHeight];
     } else {
         return [NSString stringWithFormat:@"%f  * ${screen_height}", y / physicalHeight];
     }
@@ -158,8 +157,7 @@
 
     // Update other properties
     self.frame = CGRectMake(propX + insets.left, propY, propW, propH);
-    self.alpha = [[properties valueForKey:@"opacity"] floatValue];
-    //NSLog(@"DBG alpha = %f", self.alpha);
+    self.alpha = [self.properties[@"opacity"] floatValue];
     self.backgroundColor = convertARGB2UIColor(propBackgroundColor);
 
     self.layer.borderColor = [convertARGB2UIColor(propStrokeColor) CGColor];
@@ -167,9 +165,7 @@
     self.layer.borderWidth = MAX(self.frame.size.width, self.frame.size.height) / 200.0 * propStrokeWidth;
     self.clipsToBounds = YES;
 
-    [self setTitle:properties[@"name"] forState:UIControlStateNormal];
-
-    NSLog(@"DEBUG: Button %@ frame %@", properties[@"name"], NSStringFromCGRect(self.frame));
+    [self setTitle:self.properties[@"name"] forState:UIControlStateNormal];
 }
 
 // NOTE: Unlike Android's impl, this method uses dp instead of px (no call to dpToPx), "view.center" instead of "view.pos + view.size/2"

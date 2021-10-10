@@ -311,17 +311,17 @@ void loadControlObject(UIView* targetView, NSMutableDictionary* controlDictionar
 
         NSMutableArray *drawerDataList = controlDictionary[@"mDrawerDataList"];
         for (NSMutableDictionary *drawerData in drawerDataList) {
-            ControlDrawer *drawer = [ControlDrawer buttonWithProperties:drawerData];
+            ControlDrawer *drawer = [ControlDrawer buttonWithData:drawerData];
             if (isControlModifiable) drawer.areButtonsVisible = YES;
-            drawer.hidden = NO;
+            walkToButton(drawer);
             [targetView addSubview:drawer];
             //NSLog(@"DBG Added drawer=%@", drawer);
 
             for (NSMutableDictionary *subButton in drawerData[@"buttonProperties"]) {
                 ControlSubButton *subView = [ControlSubButton buttonWithProperties:subButton];
 			    [drawer addButton:subView];
+			    walkToButton(subView);
 			    [targetView addSubview:subView];
-			    //NSLog(@"DBG Added subbtn=%@", subView);
 		    }
         }
 

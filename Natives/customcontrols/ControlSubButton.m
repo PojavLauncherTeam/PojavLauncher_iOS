@@ -6,16 +6,6 @@
   string = [string stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"${%@}", @(KEY)] withString:VALUE];
 
 @implementation ControlSubButton
-@synthesize properties;
-
-/*
-- (id)initWithProperties:(NSMutableDictionary *)propArray {
-    if (self = [self initWithProperties:propArray willUpdate:NO]) {
-        [self update];
-    }
-    return self;
-}
-*/
 
 // filterProperties
 - (void)preProcessProperties {
@@ -29,7 +19,7 @@
 - (void)setParentDrawer:(ControlDrawer *)drawer {
     _parentDrawer = drawer;
     [self preProcessProperties];
-    NSLog(@"DEBUG: SubButton properties %@", self.properties);
+    //NSLog(@"DEBUG: SubButton properties %@", self.properties);
 }
 
 @end

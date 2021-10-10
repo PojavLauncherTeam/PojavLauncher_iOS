@@ -1,5 +1,6 @@
 package net.kdt.pojavlaunch.uikit;
 
+import java.net.UnknownHostException;
 import net.kdt.pojavlaunch.PojavProfile;
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.authenticator.microsoft.MicrosoftAuthTask;
@@ -26,12 +27,17 @@ public class AccountJNI {
             switch (type) {
                 case TYPE_SELECTACC:
                     CURRENT_ACCOUNT = MinecraftAccount.load(data);
-                    if (CURRENT_ACCOUNT.isMicrosoft) {
-                        CURRENT_ACCOUNT = new MicrosoftAuthTask().run("true", CURRENT_ACCOUNT.msaRefreshToken);
-                    } else if (CURRENT_ACCOUNT.accessToken.length() > 5) {
-                        PojavProfile.updateTokens(data);
+                    try {
+                        if (CURRENT_ACCOUNT.isMicrosoft) {
+                            CURRENT_ACCOUNT = new MicrosoftAuthTask().run("true", CURRENT_ACCOUNT.msaRefreshToken);
+                        } else if (CURRENT_ACCOUNT.accessToken.length() > 5) {
+                            PojavProfile.updateTokens(data);
+                        }
+                        CURRENT_ACCOUNT = MinecraftAccount.load(data);
+                    } catch (UnknownHostException e) {
+                        e.printStackTrace();
+                        // ignore, since it's likely that the user is offline
                     }
-                    CURRENT_ACCOUNT = MinecraftAccount.load(data);
                     break;
                 
                 case TYPE_MICROSOFT:

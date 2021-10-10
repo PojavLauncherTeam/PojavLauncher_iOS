@@ -9,10 +9,10 @@
 #define RIGHT 3
 
 @implementation ControlDrawer
-@synthesize properties;
 
-+ (id)buttonWithProperties:(NSMutableDictionary *)drawerData {
++ (id)buttonWithData:(NSMutableDictionary *)drawerData {
     ControlDrawer *instance = [self buttonWithProperties:drawerData[@"properties"] willUpdate:NO];
+    instance.areButtonsVisible = YES;
     instance.buttons = [[NSMutableArray alloc] init];
     instance.drawerData = drawerData;
     [instance update];
@@ -31,11 +31,15 @@
     [self syncButtons];
 }
 
-- (void)switchButtonVisibility {
-    self.areButtonsVisible = !self.areButtonsVisible;
+- (void)restoreButtonVisibility {
     for (ControlButton *button in self.buttons) {
         button.hidden = !self.areButtonsVisible;
     }
+}
+
+- (void)switchButtonVisibility {
+    self.areButtonsVisible = !self.areButtonsVisible;
+    [self restoreButtonVisibility];
 }
 
 // NOTE: Unlike Android's impl, this method uses dp instead of px (no call to dpToPx)
@@ -62,15 +66,14 @@
         } else {
             NSLog(@"DEBUG: %s: Unsupported button orientation %@", __FILE__, orientation);
         }
-        NSLog(@"DEBUG: %s: button dynamic pos \"%@\", \"%@\"", __FILE__, button.properties[@"dynamicX"], button.properties[@"dynamicY"]);
         [button update];
     }
 }
 
 - (void)resizeButtons {
     for (ControlButton *button in self.buttons) {
-        button.properties[@"width"] = properties[@"width"];
-        button.properties[@"height"] = properties[@"height"];
+        button.properties[@"width"] = self.properties[@"width"];
+        button.properties[@"height"] = self.properties[@"height"];
         [button update];
     }
 }

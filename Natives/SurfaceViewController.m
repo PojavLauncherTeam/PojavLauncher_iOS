@@ -4,6 +4,8 @@
 #import "ios_uikit_bridge.h"
 
 #import "customcontrols/ControlButton.h"
+#import "customcontrols/ControlDrawer.h"
+#import "customcontrols/ControlSubButton.h"
 #import "customcontrols/CustomControlsUtils.h"
 
 #include "glfw_keycodes.h"
@@ -671,7 +673,14 @@ int currentVisibility = 1;
     if (held == 0) {
         currentVisibility = !currentVisibility;
         for (ControlButton *button in self.togglableVisibleButtons) {
-            button.hidden = currentVisibility;
+            if (!currentVisibility && ![button isKindOfClass:[ControlSubButton class]]) {
+                button.hidden = currentVisibility;
+                if ([button isKindOfClass:[ControlDrawer class]]) {
+                    [(ControlDrawer *)button restoreButtonVisibility];
+                }
+            } else if (currentVisibility) {
+                button.hidden = currentVisibility;
+            }
         }
 
 #ifndef DEBUG_VISIBLE_TEXT_FIELD

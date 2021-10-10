@@ -11,7 +11,9 @@
 @property(nonatomic, strong) NSMutableArray* buttons;
 @property(nonatomic, assign) BOOL areButtonsVisible;
 
++ (id)buttonWithData:(NSMutableDictionary *)drawerData;
 - (void)addButtonProp:(NSMutableDictionary *)properties;
 - (void)addButton:(ControlSubButton *)button;
+- (void)restoreButtonVisibility;
 
 @end
