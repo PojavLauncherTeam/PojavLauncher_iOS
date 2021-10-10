@@ -52,16 +52,24 @@ jobs:
           sudo /opt/procursus/bin/apt-get -V dist-upgrade -y
 
       - name: Build the Debian package
-        run: gmake -j$(sysctl -n hw.ncpu) package
+        run: gmake -j$(sysctl -n hw.ncpu) dsym
+
 
       - name: Generate dSYM for PojavLauncher
         run: dsymutil --arch arm64 Natives/build/PojavLauncher.app/PojavLauncher
 
       - name: Upload build artifact
+      - name: Upload regular artifact
         uses: actions/upload-artifact@v2
         with:
-          name: pojavlauncher_iphoneos-arm.deb
-          path: packages/pojavlauncher_iphoneos-arm.deb
+          name: net.kdt.pojavlauncher.development_iphoneos-arm.deb
+          path: artifacts/net.kdt.pojavlauncher.*_iphoneos-arm.deb
+          
+      - name: Upload rootless artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: net.kdt.pojavlauncher.development-rootless_iphoneos-arm.deb
+          path: artifacts/net.kdt.pojavlauncher.*_iphoneos-arm64.deb
 
       - name: Upload PojavLauncher.dSYM
         uses: actions/upload-artifact@v2
