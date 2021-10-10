@@ -54,11 +54,9 @@ jobs:
       - name: Build the Debian package
         run: gmake -j$(sysctl -n hw.ncpu) dsym
 
-
       - name: Generate dSYM for PojavLauncher
         run: dsymutil --arch arm64 Natives/build/PojavLauncher.app/PojavLauncher
 
-      - name: Upload build artifact
       - name: Upload regular artifact
         uses: actions/upload-artifact@v2
         with:
