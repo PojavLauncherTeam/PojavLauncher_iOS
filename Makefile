@@ -249,7 +249,6 @@ deb: native java extras
 	@cp $(WORKINGDIR)/libawt_xawt.dylib $(WORKINGDIR)/PojavLauncher.app/Frameworks/ || exit 1
 	@( cd $(WORKINGDIR)/PojavLauncher.app/Frameworks; ln -sf libawt_xawt.dylib libawt_headless.dylib ) || exit 1
 	@cp -R $(WORKINGDIR)/libOSMesaOverride.dylib.framework $(WORKINGDIR)/PojavLauncher.app/Frameworks/ || exit 1
-	@cp -R $(WORKINGDIR)/PojavCore.framework $(WORKINGDIR)/PojavLauncher.app/Frameworks/ || exit 1
 	@cp $(SOURCEDIR)/JavaApp/local_out/launcher.jar $(WORKINGDIR)/PojavLauncher.app/libs/launcher.jar || exit 1
 	@cp -R $(SOURCEDIR)/JavaApp/libs/* $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
 	@cp -R $(SOURCEDIR)/JavaApp/libs_caciocavallo/* $(WORKINGDIR)/PojavLauncher.app/libs_caciocavallo/ || exit 1
