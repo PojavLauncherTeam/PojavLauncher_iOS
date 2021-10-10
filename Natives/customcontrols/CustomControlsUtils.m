@@ -72,7 +72,7 @@ void convertV2Layout(NSMutableDictionary* dict) {
         }
     }
 
-    dict[@"version"] = @(3);
+    dict[@"version"] = @(4);
 }
 
 void convertV1Layout(NSMutableDictionary* dict) {
@@ -143,6 +143,7 @@ BOOL convertLayoutIfNecessary(NSMutableDictionary* dict) {
             convertV2Layout(dict);
             break;
         case 3:
+        case 4:
             break;
         default:
             showDialog(viewController, @"Error parsing JSON", [NSString stringWithFormat:@"Incompatible control version code %d. This control version was not implemented in this launcher build.", version]);
@@ -152,9 +153,9 @@ BOOL convertLayoutIfNecessary(NSMutableDictionary* dict) {
 }
 
 void generateAndSaveDefaultControl() {
-    // Generate a V2.3 control
+    // Generate a v2.4 control
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    dict[@"version"] = @(3);
+    dict[@"version"] = @(4);
     dict[@"scaledAt"] = @(100);
     dict[@"mControlDataList"] = [[NSMutableArray alloc] init];
     [dict[@"mControlDataList"] addObject:createButton(@"Keyboard",

@@ -12,7 +12,6 @@
 
 + (id)buttonWithData:(NSMutableDictionary *)drawerData {
     ControlDrawer *instance = [self buttonWithProperties:drawerData[@"properties"] willUpdate:NO];
-    instance.areButtonsVisible = YES;
     instance.buttons = [[NSMutableArray alloc] init];
     instance.drawerData = drawerData;
     [instance update];
