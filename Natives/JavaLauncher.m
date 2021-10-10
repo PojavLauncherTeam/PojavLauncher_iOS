@@ -548,14 +548,14 @@ int launchJVM(int argc, char *argv[]) {
     setenv("POJAV_GAME_DIR", librarySym, 1);
     
     char *oldGameDir = calloc(1, 2048);
-    snprintf(oldGameDir, 2048, "%s/../Documents/minecraft", getenv("OLD_POJAV_HOME"));
+    snprintf(oldGameDir, 2048, "%s/../minecraft", getenv("OLD_POJAV_HOME"));
     if (0 == access(oldGameDir, F_OK)) {
         rename(oldGameDir, multidir_char);
         debug("[Pre-Init] Migrated old minecraft folder to new location.");
     }
     
     char *oldLibraryDir = calloc(1, 2048);
-    snprintf(oldLibraryDir, 2048, "%s/../Documents/Library", getenv("OLD_POJAV_HOME"));
+    snprintf(oldLibraryDir, 2048, "%s/../Library", getenv("OLD_POJAV_HOME"));
     if (0 == access(oldLibraryDir, F_OK)) {
         remove(oldLibraryDir);
     }
