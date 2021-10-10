@@ -211,10 +211,9 @@ native:
 		-DCONFIG_COMMIT="$(COMMIT)" \
 		-DCONFIG_RELEASE=$(RELEASE) \
 		..
-	@cd $(WORKINGDIR) && cmake --build . --config $(CMAKE_BUILD_TYPE) --target awt_headless awt_xawt libOSMesaOverride.dylib PojavCore PojavLauncher
+	@cd $(WORKINGDIR) && cmake --build . --config $(CMAKE_BUILD_TYPE) --target awt_headless awt_xawt libOSMesaOverride.dylib PojavLauncher
 	@rm $(WORKINGDIR)/libawt_headless.dylib
 	@echo 'Building PojavLauncher $(VERSION) - NATIVES - End'
-
 
 java:
 	@echo 'Building PojavLauncher $(VERSION) - JAVA - Start'
@@ -312,12 +311,11 @@ deploy: deb
 	@echo 'Building PojavLauncher $(VERSION) - DEB - End'
 
 dsym: deb
-	@echo 'Building PojavLauncher $(VERSION) - DSYM - End'
-	@cd $(OUTPUTDIR) && dsymutil --arch arm64 $(OUTPUTDIR)/PojavLauncher.app/Frameworks/PojavCore.framework/PojavCore
+	@echo 'Building PojavLauncher $(VERSION) - DSYM - Start'
 	@cd $(OUTPUTDIR) && dsymutil --arch arm64 $(OUTPUTDIR)/PojavLauncher.app/PojavLauncher
 	@cp -r $(OUTPUTDIR)/PojavLauncher.app/PojavLauncher.dSYM $(OUTPUTDIR)
-	@cp -r $(OUTPUTDIR)/PojavLauncher.app/Frameworks/PojavCore.framework/PojavCore.dSYM $(OUTPUTDIR)
-
+  @echo 'Building PojavLauncher $(VERSION) - DSYM - Start'
+  
 clean:
 	@echo 'Building PojavLauncher $(VERSION) - CLEAN - Start'
 	@if [ '$(NOSTDIN)' = '1' ]; then \

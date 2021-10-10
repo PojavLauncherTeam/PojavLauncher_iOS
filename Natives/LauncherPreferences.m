@@ -10,6 +10,7 @@ NSString* prefPath;
 #endif
 
 void loadPreferences() {
+    assert(getenv("POJAV_HOME"));
     prefPath = [@(getenv("POJAV_HOME"))
       stringByAppendingPathComponent:@"launcher_preferences.plist"];
     
@@ -19,6 +20,8 @@ void loadPreferences() {
     } else {
         prefDict = [NSMutableDictionary dictionaryWithContentsOfFile:prefPath];
     }
+
+    assert(prefDict);
 
     // set default value
     setDefaultValueForPref(@"resolution", @(100));
@@ -42,6 +45,7 @@ void loadPreferences() {
     setDefaultValueForPref(@"java_warn", @YES);
     setDefaultValueForPref(@"jb_warn", @YES);
     setDefaultValueForPref(@"disable_gl4es_shaderconv", @NO);
+    setDefaultValueForPref(@"slideable_hotbar", @NO);
 
     [prefDict writeToFile:prefPath atomically:YES];
 }

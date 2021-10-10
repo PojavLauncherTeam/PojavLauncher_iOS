@@ -39,7 +39,12 @@ set_target_properties(libOSMesaOverride.dylib PROPERTIES
 )
 target_link_libraries(libOSMesaOverride.dylib ${OSMESA_LIB})
 
-add_library(PojavCore SHARED
+add_executable(PojavLauncher
+  main.m
+  log.m
+  JavaLauncher.m
+  external/fishhook/fishhook.c
+
   AboutLauncherViewController.m
   AppDelegate.m
   CustomControlsViewController.m
@@ -61,25 +66,11 @@ add_library(PojavCore SHARED
   log.m
   utils.m
 )
-set_target_properties(PojavCore PROPERTIES
-    FRAMEWORK TRUE
-)
-target_link_libraries(PojavCore
+target_link_libraries(PojavLauncher
+  "-F'${CMAKE_CURRENT_LIST_DIR}/build'"
   "-framework AuthenticationServices"
   "-framework CoreGraphics"
   "-framework QuartzCore"
-  "-framework UIKit"
-)
-
-add_executable(PojavLauncher
-  main.m
-  log.m
-  JavaLauncher.m
-  external/fishhook/fishhook.c
-)
-target_link_libraries(PojavLauncher
-  "-F'${CMAKE_CURRENT_LIST_DIR}/build'"
-  "-framework PojavCore"
   "-framework UIKit"
 )
 set_target_properties(PojavLauncher PROPERTIES

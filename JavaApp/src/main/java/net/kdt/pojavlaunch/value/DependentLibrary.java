@@ -1,6 +1,8 @@
 package net.kdt.pojavlaunch.value;
 
 public class DependentLibrary {
+    public boolean _skip; // internal
+    
     public String name;
 	public LibraryDownloads downloads;
     public String url;

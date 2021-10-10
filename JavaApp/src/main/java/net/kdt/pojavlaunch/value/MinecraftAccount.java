@@ -43,15 +43,16 @@ public class MinecraftAccount
         }
         return acc;
     }
-    
+/*
     public static void clearTempAccount() {
-        File tempAccFile = new File(Tools.DIR_DATA, "cache/tempacc.json");
+        File tempAccFile = new File(Tools.DIR_BUNDLE, "cache/tempacc.json");
         tempAccFile.delete();
     }
-    
+
     public static void saveTempAccount(MinecraftAccount acc) throws IOException {
         File tempAccFile = new File(Tools.DIR_DATA, "cache/tempacc.json");
         tempAccFile.delete();
         acc.save(tempAccFile.getAbsolutePath());
     }
+*/
 }

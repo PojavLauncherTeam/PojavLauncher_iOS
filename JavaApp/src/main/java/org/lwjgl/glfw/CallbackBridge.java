@@ -35,7 +35,7 @@ public class CallbackBridge {
     // TODO send grab state event to Android
     
     static {
-        System.load(System.getenv("BUNDLE_PATH") + "/Frameworks/PojavCore.framework/PojavCore");
+        System.load(System.getenv("BUNDLE_PATH") + "/PojavLauncher");
     
         INPUT_DEBUG_ENABLED = Boolean.parseBoolean(System.getProperty("glfwstub.debugInput", "false"));
     }
