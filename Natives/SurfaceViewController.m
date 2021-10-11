@@ -615,9 +615,18 @@ int currentVisibility = 1;
                     [self executebtn_special_togglebtn:held];
                     break;
 
-                case SPECIALBTN_VIRTUALMOUSE:
-                case SPECIALBTN_SCROLLUP:
                 case SPECIALBTN_SCROLLDOWN:
+                    if (!held) {
+                        Java_org_lwjgl_glfw_CallbackBridge_nativeSendScroll(NULL, NULL, 0.0, 1.0);
+                    }
+                    break;
+
+                case SPECIALBTN_SCROLLUP:
+                    if (!held) {
+                        Java_org_lwjgl_glfw_CallbackBridge_nativeSendScroll(NULL, NULL, 0.0, -1.0);
+                    }
+
+                case SPECIALBTN_VIRTUALMOUSE:
                     NSLog(@"Warning: button %@ sent unimplemented special keycode: %d", button.titleLabel.text, keycode);
                     break;
 
