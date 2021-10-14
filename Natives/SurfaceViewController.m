@@ -166,6 +166,13 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
         [self.surfaceView addGestureRecognizer:mouseWheelGesture];
     }
 
+    // Virtual mouse
+    virtualMouseFrame = CGRectMake(screenBounds.size.width / 2, screenBounds.size.height / 2, 18, 27);
+    self.mousePointerView = [[UIImageView alloc] initWithFrame:virtualMouseFrame];
+    self.mousePointerView.hidden = YES;
+    self.mousePointerView.image = [UIImage imageNamed:@"mouse_pointer.png"];
+    [self.view addSubview:self.mousePointerView];
+
 #ifndef DEBUG_VISIBLE_TEXT_FIELD
     inputView = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
     inputView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.0f];
@@ -263,6 +270,27 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     CGFloat screenScale = [[UIScreen mainScreen] scale];
     if (!isGrabbing) {
         screenScale *= resolutionScale;
+        if (virtualMouseEnabled) {
+            if (event == ACTION_MOVE) {
+                virtualMouseFrame.origin.x += location.x - lastVirtualMousePoint.x;
+                virtualMouseFrame.origin.y += location.y - lastVirtualMousePoint.y;
+                if (virtualMouseFrame.origin.x < 0) {
+                    virtualMouseFrame.origin.x = 0;
+                } else if (virtualMouseFrame.origin.x > self.view.frame.size.width) {
+                    virtualMouseFrame.origin.x = self.view.frame.size.width;
+                }
+                if (virtualMouseFrame.origin.y < 0) {
+                    virtualMouseFrame.origin.y = 0;
+                } else if (virtualMouseFrame.origin.y > self.view.frame.size.height) {
+                    virtualMouseFrame.origin.y = self.view.frame.size.height;
+                }
+            }
+            lastVirtualMousePoint = location;
+            self.mousePointerView.frame = virtualMouseFrame;
+            callback_SurfaceViewController_onTouch(event, virtualMouseFrame.origin.x * screenScale, virtualMouseFrame.origin.y * screenScale);
+            return;
+        }
+        lastVirtualMousePoint = location;
     }
     callback_SurfaceViewController_onTouch(event, location.x * screenScale, location.y * screenScale);
 }
@@ -627,7 +655,10 @@ int currentVisibility = 1;
                     }
 
                 case SPECIALBTN_VIRTUALMOUSE:
-                    NSLog(@"Warning: button %@ sent unimplemented special keycode: %d", button.titleLabel.text, keycode);
+                    if (!isGrabbing && !held) {
+                        virtualMouseEnabled = !virtualMouseEnabled;
+                        self.mousePointerView.hidden = !virtualMouseEnabled;
+                    }
                     break;
 
                 default:

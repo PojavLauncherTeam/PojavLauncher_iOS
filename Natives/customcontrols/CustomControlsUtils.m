@@ -182,14 +182,12 @@ void generateAndSaveDefaultControl() {
         @"${screen_height} - ${margin} * 3 - ${height} * 3",
         BTN_SQUARE
     )];
-/* // TODO: virtual mouse
     [dict[@"mControlDataList"] addObject:createButton(@"Mouse",
         (int[]){SPECIALBTN_VIRTUALMOUSE,0,0,0},
-        @"${right}",
+        @"${right} - ${margin}",
         @"${margin}",
         BTN_RECT
     )];
-*/
     [dict[@"mControlDataList"] addObject:createButton(@"Debug",
         (int[]){GLFW_KEY_F3,0,0,0},
         @"${margin}",

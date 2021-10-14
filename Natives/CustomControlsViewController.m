@@ -220,18 +220,33 @@ int width;
 }
 
 - (void)displayControlMenu {
-    UIButton *buttonExit = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    buttonExit.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    [buttonExit setTitle:@"Exit" forState:UIControlStateNormal];
-    buttonExit.frame = CGRectMake(0.0, 0.0, self.scrollView.frame.size.width, 50.0);
-    [buttonExit addTarget:self action:@selector(actionExit) forControlEvents:UIControlEventTouchUpInside];
-    [self.scrollView addSubview:buttonExit];
+    // TODO: UIMenu for iOS 13+?
+    CGFloat currY = -50.0;
+    
+//~~macro~~:fr:
+#define CC_OPTION(OPT, NAME) \
+    UIButton *button##OPT = [UIButton buttonWithType:UIButtonTypeRoundedRect]; \
+    button##OPT.autoresizingMask = UIViewAutoresizingFlexibleWidth; \
+    [button##OPT setTitle:NAME forState:UIControlStateNormal]; \
+    button##OPT.frame = CGRectMake(0.0, currY+=50.0, self.scrollView.frame.size.width, 50.0); \
+    [button##OPT addTarget:self action:@selector(action##OPT) forControlEvents:UIControlEventTouchUpInside]; \
+    [self.scrollView addSubview:button##OPT]; \
+    
+    CC_OPTION(Exit, @"Exit")
+    //CC_OPTION(Load, @"Load")
+    //CC_OPTION(Save, @"Save")
+    //CC_OPTION(SetDef, @"Set default control file")
 }
 
 - (void)actionExit {
     [self dismissViewControllerAnimated:YES completion:nil];
     [((UINavigationController *)self.presentingViewController) setNavigationBarHidden:NO animated:YES];
     [((UINavigationController *)self.presentingViewController) popViewControllerAnimated:YES];
+}
+
+- (void)actionSetDef {
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
 }
 
 @end

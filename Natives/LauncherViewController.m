@@ -233,7 +233,10 @@ int versionSelectedAt = 0;
     NSString *javaVer = getPreference(@"java_home");
     if(![javaVer containsString:(@"java-8-openjdk")] && ![javaVer containsString:(@"jre8")]) {
         UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:@"Cannot use the mod installer" message:@"In order to use the mod installer, you need to install Java 8 and specify it in the Preferences menu." preferredStyle:UIAlertControllerStyleActionSheet];
-        [self setPopoverProperties:offlineAlert.popoverPresentationController sender:(UIButton *)sender];
+        if (offlineAlert.popoverPresentationController != nil) {
+            offlineAlert.popoverPresentationController.sourceView = self.view;
+            offlineAlert.popoverPresentationController.sourceRect = CGRectMake(self.view.frame.size.width-10.0, 0, 10, 10);
+        }
         UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
         [self presentViewController:offlineAlert animated:YES completion:nil];
         [offlineAlert addAction:ok];
@@ -273,13 +276,6 @@ int versionSelectedAt = 0;
     NSAssert(result != nil, @"version should not be null");
 
     callback_LauncherViewController_installMinecraft([result UTF8String]);
-}
-
-- (void)setPopoverProperties:(UIPopoverPresentationController *)controller sender:(UIButton *)sender {
-    if (controller != nil) {
-        controller.sourceView = sender;
-        controller.sourceRect = sender.bounds;
-    }
 }
 
 #pragma mark - UIPopoverPresentationControllerDelegate

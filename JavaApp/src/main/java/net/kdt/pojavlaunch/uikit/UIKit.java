@@ -112,23 +112,20 @@ public class UIKit {
                     CallbackBridge.mouseX = x;
                     CallbackBridge.mouseY = y;
                 }
-                CallbackBridge.mouseLastX = x;
-                CallbackBridge.mouseLastY = y;
                 break;
                 
             case ACTION_MOVE:
                 if (GLFW.mGLFWIsGrabbing) {
                     CallbackBridge.mouseX += x - CallbackBridge.mouseLastX;
                     CallbackBridge.mouseY += y - CallbackBridge.mouseLastY;
-                    
-                    CallbackBridge.mouseLastX = x;
-                    CallbackBridge.mouseLastY = y;
                 } else {
                     CallbackBridge.mouseX = x;
                     CallbackBridge.mouseY = y;
                 }
                 break;
         }
+        CallbackBridge.mouseLastX = x;
+        CallbackBridge.mouseLastY = y;
         
         CallbackBridge.sendCursorPos(CallbackBridge.mouseX, CallbackBridge.mouseY);
     }
