@@ -1,4 +1,7 @@
+#import "ControlDrawer.h"
+#import "ControlSubButton.h"
 #import "CustomControlsUtils.h"
+#import "../LauncherPreferences.h"
 #import "../ios_uikit_bridge.h"
 #include "../glfw_keycodes.h"
 #include "../utils.h"
@@ -69,7 +72,7 @@ void convertV2Layout(NSMutableDictionary* dict) {
         }
     }
 
-    dict[@"version"] = @(3);
+    dict[@"version"] = @(4);
 }
 
 void convertV1Layout(NSMutableDictionary* dict) {
@@ -86,8 +89,8 @@ void convertV1Layout(NSMutableDictionary* dict) {
         [btnDict removeObjectForKey:@"transparency"];
 
         // pixel of width, height -> dp
-        btnDict[@"width"] = @(((NSNumber *)btnDict[@"width"]).floatValue / scale * 50.0);
-        btnDict[@"height"] = @(((NSNumber *)btnDict[@"height"]).floatValue / scale * 50.0);
+        btnDict[@"width"] = @([btnDict[@"width"] floatValue] / scale * 50.0);
+        btnDict[@"height"] = @([btnDict[@"height"] floatValue] / scale * 50.0);
 
         // isRound -> cornerRadius 35%
         if ([btnDict[@"isRound"] boolValue] == YES) {
@@ -119,6 +122,8 @@ void convertV1Layout(NSMutableDictionary* dict) {
 
         // set final keycode array
         btnDict[@"keycodes"] = keycodes;
+
+        btnDict[@"mDrawerDataList"] = [[NSMutableArray alloc] init];
     }
 
     dict[@"scaledAt"] = @(100);
@@ -138,6 +143,7 @@ BOOL convertLayoutIfNecessary(NSMutableDictionary* dict) {
             convertV2Layout(dict);
             break;
         case 3:
+        case 4:
             break;
         default:
             showDialog(viewController, @"Error parsing JSON", [NSString stringWithFormat:@"Incompatible control version code %d. This control version was not implemented in this launcher build.", version]);
@@ -147,9 +153,9 @@ BOOL convertLayoutIfNecessary(NSMutableDictionary* dict) {
 }
 
 void generateAndSaveDefaultControl() {
-    // Generate a V2.3 control
+    // Generate a v2.4 control
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    dict[@"version"] = @(3);
+    dict[@"version"] = @(4);
     dict[@"scaledAt"] = @(100);
     dict[@"mControlDataList"] = [[NSMutableArray alloc] init];
     [dict[@"mControlDataList"] addObject:createButton(@"Keyboard",
@@ -176,14 +182,12 @@ void generateAndSaveDefaultControl() {
         @"${screen_height} - ${margin} * 3 - ${height} * 3",
         BTN_SQUARE
     )];
-/* // TODO: virtual mouse
     [dict[@"mControlDataList"] addObject:createButton(@"Mouse",
         (int[]){SPECIALBTN_VIRTUALMOUSE,0,0,0},
-        @"${right}",
+        @"${right} - ${margin}",
         @"${margin}",
         BTN_RECT
     )];
-*/
     [dict[@"mControlDataList"] addObject:createButton(@"Debug",
         (int[]){GLFW_KEY_F3,0,0,0},
         @"${margin}",
@@ -289,4 +293,37 @@ void generateAndSaveDefaultControl() {
         WIDTHHEIGHT
     )];
 */
+}
+
+void loadControlObject(UIView* targetView, NSMutableDictionary* controlDictionary, void(^walkToButton)(ControlButton* button)) {
+    current_control_object = controlDictionary;
+    if (convertLayoutIfNecessary(controlDictionary)) {
+        NSMutableArray *controlDataList = controlDictionary[@"mControlDataList"];
+        setPreference(@"internal_current_button_scale", controlDictionary[@"scaledAt"]);
+        for (NSMutableDictionary *buttonDict in controlDataList) {
+            //APPLY_SCALE(buttonDict[@"strokeWidth"]);
+            ControlButton *button = [ControlButton buttonWithProperties:buttonDict];
+            walkToButton(button);
+            [targetView addSubview:button];
+            //NSLog(@"DBG Added button=%@", button);
+        }
+
+        NSMutableArray *drawerDataList = controlDictionary[@"mDrawerDataList"];
+        for (NSMutableDictionary *drawerData in drawerDataList) {
+            ControlDrawer *drawer = [ControlDrawer buttonWithData:drawerData];
+            if (isControlModifiable) drawer.areButtonsVisible = YES;
+            walkToButton(drawer);
+            [targetView addSubview:drawer];
+            //NSLog(@"DBG Added drawer=%@", drawer);
+
+            for (NSMutableDictionary *subButton in drawerData[@"buttonProperties"]) {
+                ControlSubButton *subView = [ControlSubButton buttonWithProperties:subButton];
+			    [drawer addButton:subView];
+			    walkToButton(subView);
+			    [targetView addSubview:subView];
+		    }
+        }
+
+        controlDictionary[@"scaledAt"] = @([getPreference(@"button_scale") floatValue]);
+    }
 }

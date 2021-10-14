@@ -4,7 +4,7 @@
 /JavaApp/local_out
 /Natives/PojavLauncher
 /Natives/build
-/Natives/resources/*.png
 .DS_STORE
 /pojavlauncher.xcodeproj
 /Natives/resources/Frameworks/libvgpu.dylib
+

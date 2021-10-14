@@ -73,7 +73,7 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
 
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height);
-    float resolution = ((NSNumber *)getPreference(@"resolution")).floatValue / 100.0;
+    float resolution = [getPreference(@"resolution") floatValue] / 100.0;
 
     savedWidth = roundf(width * screenScale * resolution);
     savedHeight = roundf(height * screenScale * resolution);

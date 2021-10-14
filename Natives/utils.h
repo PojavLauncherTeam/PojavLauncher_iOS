@@ -33,6 +33,7 @@
 #define SPECIALBTN_SCROLLDOWN -8
 
 static float resolutionScale = 1.0;
+BOOL isControlModifiable;
 
 UIViewController *viewController;
 
@@ -53,6 +54,11 @@ jboolean isGrabbing;
 
 int savedWidth, savedHeight;
 
+BOOL virtualMouseEnabled;
+
+CGFloat MathUtils_dist(CGFloat x1, CGFloat y1, CGFloat x2, CGFloat y2);
+CGFloat dpToPx(CGFloat dp);
+CGFloat pxToDp(CGFloat px);
 void _CGDataProviderReleaseBytePointerCallback(void *info,const void *pointer);
 
 jboolean attachThread(bool isAndroid, JNIEnv** secondJNIEnvPtr);
