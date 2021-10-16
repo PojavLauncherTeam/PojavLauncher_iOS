@@ -130,7 +130,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     notchOffset = insets.left;
     width = width - notchOffset * 2;
     CGFloat buttonScale = [getPreference(@"button_scale") floatValue] / 100.0;
-    
+
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnClick:)];
     tapGesture.delegate = self;
@@ -138,6 +138,14 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     tapGesture.numberOfTouchesRequired = 1;
     tapGesture.cancelsTouchesInView = NO;
     [self.surfaceView addGestureRecognizer:tapGesture];
+
+    UITapGestureRecognizer *doubleTapGesture = [[UITapGestureRecognizer alloc]
+        initWithTarget:self action:@selector(surfaceOnDoubleClick:)];
+    doubleTapGesture.delegate = self;
+    doubleTapGesture.numberOfTapsRequired = 2;
+    doubleTapGesture.numberOfTouchesRequired = 1;
+    doubleTapGesture.cancelsTouchesInView = NO;
+    [self.surfaceView addGestureRecognizer:doubleTapGesture];
 
     UILongPressGestureRecognizer *longpressGesture = [[UILongPressGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnLongpress:)];
@@ -171,6 +179,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     self.mousePointerView = [[UIImageView alloc] initWithFrame:virtualMouseFrame];
     self.mousePointerView.hidden = YES;
     self.mousePointerView.image = [UIImage imageNamed:@"mouse_pointer.png"];
+    self.mousePointerView.userInteractionEnabled = NO;
     [self.view addSubview:self.mousePointerView];
 
 #ifndef DEBUG_VISIBLE_TEXT_FIELD
@@ -295,6 +304,10 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     callback_SurfaceViewController_onTouch(event, location.x * screenScale, location.y * screenScale);
 }
 
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return YES;
+}
+
 - (void)sendTouchEvent:(NSSet *)touches withUIEvent:(UIEvent *)uievent withEvent:(int)event
 {
     UITouch* touchEvent = [touches anyObject];
@@ -382,6 +395,18 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
         } else {
             Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, currentHotbarSlot, 0, 1, 0);
             Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, currentHotbarSlot, 0, 0, 0);
+        }
+    }
+}
+
+- (void)surfaceOnDoubleClick:(UITapGestureRecognizer *)sender {
+    if (sender.state == UIGestureRecognizerStateRecognized && isGrabbing) {
+        CGFloat screenScale = [[UIScreen mainScreen] scale];
+        CGPoint location = [sender locationInView:[sender.view superview]];
+        int hotbarSlot = callback_SurfaceViewController_touchHotbar(location.x * screenScale * resolutionScale, location.y * screenScale * resolutionScale);
+        if (hotbarSlot != -1 && currentHotbarSlot == hotbarSlot) {
+            Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_F, 0, 1, 0);
+            Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_F, 0, 0, 0);
         }
     }
 }
