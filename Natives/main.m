@@ -6,6 +6,7 @@
 #include "JavaLauncher.h"
 
 int main(int argc, char * argv[]) {
+/*
     if (getppid() != 1) {
         // Not running from launchd, so UI won't work.
         printf("ERROR: ppid was %d\n", getppid());
@@ -14,6 +15,7 @@ int main(int argc, char * argv[]) {
 
         return -1;
     }
+*/
 
     launchJVM(argc, argv);
 
