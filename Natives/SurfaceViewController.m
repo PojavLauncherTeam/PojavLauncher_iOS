@@ -120,6 +120,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     self.surfaceView = [[GameSurfaceView alloc] initWithFrame:self.view.frame];
     NSLog(@"Debug: surfaceView=%@", self.surfaceView);
     self.surfaceView.layer.contentsScale = screenScale * resolutionScale;
+    self.surfaceView.layer.magnificationFilter = self.surfaceView.layer.minificationFilter = kCAFilterNearest;
     [self.view addSubview:self.surfaceView];
 
     // Enable support for desktop GLSL
