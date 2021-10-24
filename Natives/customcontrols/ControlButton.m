@@ -153,7 +153,7 @@
     float propCornerRadius = [self.properties[@"cornerRadius"] floatValue];
     float propStrokeWidth = [self.properties[@"strokeWidth"] floatValue];
     int propBackgroundColor = [self.properties[@"bgColor"] intValue];
-    int propStrokeColor = ((NSNumber *)self.properties[@"strokeColor"]).intValue;
+    int propStrokeColor = [self.properties[@"strokeColor"] intValue];
 
     // Calculate dynamic position
     CGFloat propX = [self calculateDynamicPos:propDynamicX];
@@ -162,6 +162,12 @@
     // Update other properties
     self.frame = CGRectMake(propX + insets.left, propY, propW, propH);
     self.alpha = [self.properties[@"opacity"] floatValue];
+    if (self.alpha < 0.01) {
+        self.alpha = 0.01;
+    }
+    if (isControlModifiable && self.alpha == 0.01) {
+        self.alpha = 0.1;
+    }
     self.backgroundColor = convertARGB2UIColor(propBackgroundColor);
 
     self.layer.borderColor = [convertARGB2UIColor(propStrokeColor) CGColor];

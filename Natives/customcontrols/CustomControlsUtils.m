@@ -40,10 +40,15 @@ int convertUIColor2ARGB(UIColor* color) {
     int r = (int) (rgba[0] * 255);
     int g = (int) (rgba[1] * 255);
     int b = (int) (rgba[2] * 255);
-    return (a << 24)|
-           (r << 16)|
-           (g << 8) |
-           (b << 0);
+    return (a << 24) | (r << 16) | (g << 8) | (b << 0);
+}
+
+int convertUIColor2RGB(UIColor* color) {
+    const CGFloat *rgb = CGColorGetComponents(color.CGColor);
+    int r = (int) (rgb[0] * 255);
+    int g = (int) (rgb[1] * 255);
+    int b = (int) (rgb[2] * 255);
+    return (0xFF << 24) | (r << 16) | (g << 8) | (b << 0);
 }
 
 void convertV2Layout(NSMutableDictionary* dict) {

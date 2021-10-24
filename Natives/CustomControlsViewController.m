@@ -1,4 +1,5 @@
 #import "CustomControlsViewController.h"
+#import "DBNumberedSlider.h"
 #import "LauncherPreferences.h"
 #import "ios_uikit_bridge.h"
 
@@ -185,9 +186,14 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     return UIModalPresentationNone;
 }
 
-- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
+- (BOOL)popoverPresentationControllerShouldDismissPopover:(UIPopoverPresentationController *)popoverPresentationController
 {
      return NO;
+}
+
+- (BOOL)presentationControllerShouldDismiss:(UIPresentationController *)presentationController API_AVAILABLE(ios(13.0))
+{
+    return NO;
 }
 
 #pragma mark - Keycode table init
@@ -279,21 +285,41 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 
 @end
 
+#define TAG_SLIDER_STROKEWIDTH 10
+#define TAG_SLIDER_CORNERRADIUS 11
+#define TAG_SLIDER_OPACITY 12
+
 #pragma mark - CCMenuViewController
+
+CGFloat currentY;
+
 @interface CCMenuViewController () <UIPickerViewDataSource, UIPickerViewDelegate> {
 }
 
 @property(nonatomic) UIScrollView* scrollView;
-@property(nonatomic) UITextField *editName, *editSizeWidth, *editSizeHeight;
+@property(nonatomic) UITextField *editName, *editSizeWidth, *editSizeHeight, *editDynamicX, *editDynamicY;
 @property(nonatomic) UITextView* editMapping;
 @property(nonatomic) UIPickerView* pickerMapping;
+@property(nonatomic) UISwitch *switchToggleable, *switchMousePass, *switchSwipeable;
+@property(nonatomic) UIColorWell API_AVAILABLE(ios(14.0)) *colorWellBackground, *colorWellStroke;
+@property(nonatomic) DBNumberedSlider *sliderStrokeWidth, *sliderCornerRadius, *sliderOpacity;
 
 @end
 
 @implementation CCMenuViewController
 
+- (UILabel*)addLabel:(NSString *)name {
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0.0, currentY, 0.0, 0.0)];
+    label.text = name;
+    label.numberOfLines = 0;
+    [label sizeToFit];
+    [self.scrollView addSubview:label];
+    return label;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    currentY = 6.0;
 
     self.view.frame = CGRectMake(0, 0, self.preferredContentSize.width, self.preferredContentSize.height);
 
@@ -305,7 +331,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     popoverToolbar.items = @[popoverCancelButton, btnFlexibleSpace, popoverDoneButton];
     [self.view addSubview:popoverToolbar];
 
-    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(5.0, popoverToolbar.frame.size.height + 5.0, self.preferredContentSize.width - 10.0, self.preferredContentSize.height - popoverToolbar.frame.size.height - 10.0)];
+    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(5.0, popoverToolbar.frame.size.height, self.preferredContentSize.width - 10.0, self.preferredContentSize.height - popoverToolbar.frame.size.height)];
     [self.view addSubview:self.scrollView];
 
     UIToolbar *editPickToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
@@ -314,28 +340,19 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 
     CGFloat width = self.view.frame.size.width - 10.0;
     CGFloat height = self.view.frame.size.height - 10.0;
-    CGFloat currentY = 0; //popoverToolbar.frame.origin.y + popoverToolbar.frame.size.height;
 
 
     // Property: Name
-    UILabel *labelName = [[UILabel alloc] initWithFrame:CGRectMake(0.0, currentY, 0.0, 0.0)];
-    labelName.text = @"Name";
-    labelName.numberOfLines = 0;
-    [labelName sizeToFit];
-    [self.scrollView addSubview:labelName];
-    self.editName = [[UITextField alloc] initWithFrame:CGRectMake(labelName.frame.size.width + 4.0, currentY, width - labelName.frame.size.width - 4.0, labelName.frame.size.height)];
+    UILabel *labelName = [self addLabel:@"Name"];
+    self.editName = [[UITextField alloc] initWithFrame:CGRectMake(labelName.frame.size.width + 5.0, currentY, width - labelName.frame.size.width - 5.0, labelName.frame.size.height)];
     [self.editName addTarget:self.editName action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     self.editName.placeholder = @"Name";
     self.editName.text = self.targetButton.properties[@"name"];
     [self.scrollView addSubview:self.editName];
 
     // Property: Size
-    currentY += labelName.frame.size.height + 4.0;
-    UILabel *labelSize = [[UILabel alloc] initWithFrame:CGRectMake(0.0, currentY, 0.0, 0.0)];
-    labelSize.text = @"Size";
-    labelSize.numberOfLines = 0;
-    [labelSize sizeToFit];
-    [self.scrollView addSubview:labelSize];
+    currentY += labelName.frame.size.height + 12.0;
+    UILabel *labelSize = [self addLabel:@"Size"];
     // width / 2.0 + (labelSize.frame.size.width + 4.0) / 2.0
     CGFloat editSizeWidthValue = (width - labelSize.frame.size.width) / 2 - labelSize.frame.size.height / 2;
     UILabel *labelSizeX = [[UILabel alloc] initWithFrame:CGRectMake(labelSize.frame.size.width + editSizeWidthValue, labelSize.frame.origin.y, labelSize.frame.size.height, labelSize.frame.size.height)];
@@ -358,18 +375,14 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 
 
     // Property: Mapping
-    currentY += labelName.frame.size.height + 4.0;
-    UILabel *labelMapping = [[UILabel alloc] initWithFrame:CGRectMake(0.0, currentY, 0.0, 0.0)];
-    labelMapping.text = @"Mapping";
-    labelMapping.numberOfLines = 0;
-    [labelMapping sizeToFit];
-    [self.scrollView addSubview:labelMapping];
+    currentY += labelName.frame.size.height + 12.0;
+    UILabel *labelMapping = [self addLabel:@"Mapping"];
 
     self.editMapping = [[UITextView alloc] initWithFrame:CGRectMake(0,0,1,1)];
     self.editMapping.text = @"\n\n\n";
     [self.editMapping sizeToFit];
     self.editMapping.scrollEnabled = NO;
-    self.editMapping.frame = CGRectMake(labelMapping.frame.size.width + 4.0, labelMapping.frame.origin.y, width - labelMapping.frame.size.width - 4.0, self.editMapping.frame.size.height);
+    self.editMapping.frame = CGRectMake(labelMapping.frame.size.width + 5.0, labelMapping.frame.origin.y, width - labelMapping.frame.size.width - 5.0, self.editMapping.frame.size.height);
 
     self.pickerMapping = [[UIPickerView alloc] init];
     self.pickerMapping.delegate = self;
@@ -386,48 +399,118 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 
 
     // Property: Toggleable
-    
+    currentY += self.editMapping.frame.size.height + 10.0; 
+    UILabel *labelToggleable = [self addLabel:@"Toggleable"];
+    self.switchToggleable = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currentY - 5.0, 50.0, 30)];
+    [self.switchToggleable setOn:[self.targetButton.properties[@"isToggle"] boolValue] animated:NO];
+    [self.scrollView addSubview:self.switchToggleable];
 
 
     // Property: Mouse pass
-    
+    currentY += labelName.frame.size.height + 12.0;
+    UILabel *labelMousePass = [self addLabel:@"Mouse pass"];
+    self.switchMousePass = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currentY - 5.0, 50.0, 30)];
+    [self.switchMousePass setOn:[self.targetButton.properties[@"passThruEnabled"] boolValue]];
+    [self.scrollView addSubview:self.switchMousePass];
 
 
     // Property: Swipeable
-    
+    currentY += labelName.frame.size.height + 12.0;
+    UILabel *labelSwipeable = [self addLabel:@"Swipeable"];
+    self.switchSwipeable = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currentY - 5.0, 50.0, 30)];
+    [self.switchSwipeable setOn:[self.targetButton.properties[@"isSwipeable"] boolValue]];
+    [self.scrollView addSubview:self.switchSwipeable];
 
 
     // Property: Background color
-    
+    currentY += labelName.frame.size.height + 12.0;
+    UILabel *labelBGColor = [self addLabel:@"Background color"];
+    if(@available(iOS 14.0, *)) {
+        self.colorWellBackground = [[UIColorWell alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
+        self.colorWellBackground.selectedColor = self.targetButton.backgroundColor;
+        [self.scrollView addSubview:self.colorWellBackground];
+    } else {
+        // TODO: color picker for iOS < 14.0
+    }
 
 
     // Property: Stroke width
-    
+    currentY += labelName.frame.size.height + 12.0;
+    UILabel *labelStrokeWidth = [self addLabel:@"Stroke width (%)"];
+    self.sliderStrokeWidth = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(labelStrokeWidth.frame.size.width + 5.0, currentY - 5.0, width - labelStrokeWidth.frame.size.width - 5.0, 30.0)];
+    self.sliderStrokeWidth.continuous = YES;
+    self.sliderStrokeWidth.maximumValue = 100;
+    self.sliderStrokeWidth.tag = TAG_SLIDER_STROKEWIDTH;
+    self.sliderStrokeWidth.value = [self.targetButton.properties[@"strokeWidth"] intValue];
+    [self.sliderStrokeWidth addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
+    [self.scrollView addSubview:self.sliderStrokeWidth];
+
+
+    // Property: Stroke color
+    currentY += labelName.frame.size.height + 12.0;
+    UILabel *labelStrokeColor = [self addLabel:@"Stroke color"];
+    if(@available(iOS 14.0, *)) {
+        self.colorWellStroke = [[UIColorWell alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
+        self.colorWellStroke.supportsAlpha = NO;
+        self.colorWellStroke.selectedColor = [[UIColor alloc] initWithCGColor:self.targetButton.layer.borderColor];
+        [self.scrollView addSubview:self.colorWellStroke];
+        [self sliderValueChanged:self.sliderStrokeWidth];
+    } else {
+        // TODO: color picker for iOS < 14.0
+    }
 
 
     // Property: Corner radius
-    
+    currentY += labelName.frame.size.height + 12.0;
+    UILabel *labelCornerRadius = [self addLabel:@"Corner radius (%)"];
+    self.sliderCornerRadius = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(labelCornerRadius.frame.size.width + 5.0, currentY - 5.0, width - labelCornerRadius.frame.size.width - 5.0, 30.0)];
+    self.sliderCornerRadius.continuous = NO;
+    self.sliderCornerRadius.maximumValue = 100;
+    self.sliderCornerRadius.tag = TAG_SLIDER_CORNERRADIUS;
+    self.sliderCornerRadius.value = [self.targetButton.properties[@"cornerRadius"] intValue];
+    [self.sliderCornerRadius addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
+    [self.scrollView addSubview:self.sliderCornerRadius];
 
 
     // Property: Button Opacity
-    
+    currentY += labelName.frame.size.height + 12.0;
+    UILabel *labelOpacity = [self addLabel:@"Button opacity"];
+    self.sliderOpacity = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(labelOpacity.frame.size.width + 5.0, currentY - 5.0, width - labelOpacity.frame.size.width - 5.0, 30.0)];
+    self.sliderOpacity.continuous = NO;
+    self.sliderOpacity.minimumValue = 1;
+    self.sliderOpacity.maximumValue = 100;
+    self.sliderOpacity.tag = TAG_SLIDER_OPACITY;
+    self.sliderOpacity.value = [self.targetButton.properties[@"opacity"] floatValue] * 100.0;
+    [self.sliderOpacity addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
+    [self.scrollView addSubview:self.sliderOpacity];
 
 
     // Property: Dynamic X-axis
-    
+    currentY += labelName.frame.size.height + 12.0;
+    UILabel *labelDynamicX = [self addLabel:@"Dynamic X-axis"];
+    self.editDynamicX = [[UITextField alloc] initWithFrame:CGRectMake(labelDynamicX.frame.size.width + 5.0, currentY, width - labelDynamicX.frame.size.width - 5.0, labelDynamicX.frame.size.height)];
+    [self.editDynamicX addTarget:self.editDynamicX action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
+    self.editDynamicX.text = self.targetButton.properties[@"dynamicX"];
+    [self.scrollView addSubview:self.editDynamicX];
 
 
     // Property: Dynamic Y-axis
-    
+    currentY += labelName.frame.size.height + 12.0;
+    UILabel *labelDynamicY = [self addLabel:@"Dynamic Y-axis"];
+    self.editDynamicY = [[UITextField alloc] initWithFrame:CGRectMake(labelDynamicY.frame.size.width + 5.0, currentY, width - labelDynamicY.frame.size.width - 5.0, labelDynamicY.frame.size.height)];
+    [self.editDynamicY addTarget:self.editDynamicY action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
+    self.editDynamicY.text = self.targetButton.properties[@"dynamicY"];
+    [self.scrollView addSubview:self.editDynamicY];
 
 
-    // Property: Button Opacity
-    
+    currentY += labelName.frame.size.height + 12.0;
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.contentSize.width, currentY + 100.0);
 }
 
 - (void)viewSafeAreaInsetsDidChange {
     [super viewSafeAreaInsetsDidChange];
     self.scrollView.contentInset = self.view.safeAreaInsets;
+    self.scrollView.frame = CGRectMake(self.scrollView.frame.origin.x, self.scrollView.frame.origin.y + self.view.safeAreaInsets.top, self.scrollView.frame.size.width + self.view.safeAreaInsets.left, self.scrollView.frame.size.height + self.view.safeAreaInsets.bottom);
     self.view.subviews[0].frame = CGRectOffset(self.view.subviews[0].frame, self.view.safeAreaInsets.left, self.view.safeAreaInsets.top);
 }
 
@@ -445,14 +528,36 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     for (int i = 0; i < 4; i++) {
         self.targetButton.properties[@"keycodes"][i] = keyValueMap[[self.pickerMapping selectedRowInComponent:i]];
     }
-    
-    
+    self.targetButton.properties[@"isToggle"] = @(self.switchToggleable.isOn);
+    self.targetButton.properties[@"passThruEnabled"] = @(self.switchMousePass.isOn);
+    self.targetButton.properties[@"isSwipeable"] = @(self.switchSwipeable.isOn);
+    if(@available(iOS 14.0, *)) {
+        self.targetButton.properties[@"bgColor"] = @(convertUIColor2ARGB(self.colorWellBackground.selectedColor));
+        self.targetButton.properties[@"strokeColor"] = @(convertUIColor2RGB(self.colorWellStroke.selectedColor));
+    }
+    self.targetButton.properties[@"strokeWidth"] = @((NSInteger) self.sliderStrokeWidth.value);
+    self.targetButton.properties[@"cornerRadius"] = @((NSInteger) self.sliderCornerRadius.value);
+    self.targetButton.properties[@"opacity"] = @(self.sliderOpacity.value / 100.0);
+    self.targetButton.properties[@"dynamicX"] = self.editDynamicX.text;
+    self.targetButton.properties[@"dynamicY"] = self.editDynamicY.text;
+
     [self.targetButton update];
 }
 
 - (void)actionSetDef {
     [self dismissViewControllerAnimated:YES completion:nil];
     
+}
+
+- (void)sliderValueChanged:(DBNumberedSlider *)sender {
+    [sender setValue:(NSInteger)sender.value animated:NO];
+    if (sender.tag == TAG_SLIDER_STROKEWIDTH) {
+        if(@available(iOS 14.0, *)) {
+            self.colorWellStroke.enabled = sender.value != 0;
+        } else {
+            // TODO
+        }
+    }
 }
 
 #pragma mark - UIPickerView stuff
