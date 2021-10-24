@@ -1,5 +1,6 @@
 #import "CustomControlsViewController.h"
 #import "DBNumberedSlider.h"
+#import "FileListViewController.h"
 #import "LauncherPreferences.h"
 #import "ios_uikit_bridge.h"
 
@@ -8,6 +9,7 @@
 #include "glfw_keycodes.h"
 #include "utils.h"
 
+BOOL shouldDismissPopover = YES;
 int width;
 NSMutableArray *keyCodeMap, *keyValueMap;
 
@@ -16,8 +18,11 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 @implementation ControlLayout
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-    if (action == @selector(actionExit:)) {
-          return YES;
+    if (action == @selector(actionMenuExit:) ||
+        action == @selector(actionMenuSave:) ||
+        action == @selector(actionMenuLoad:) ||
+        action == @selector(actionMenuSetDef:)) {
+            return YES;
     }
     return NO;
 }
@@ -32,6 +37,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 
 @property(nonatomic, strong) NSMutableDictionary* cc_dictionary;
 @property(nonatomic) UIView* offsetView;
+@property(nonatomic) NSString* currentFileName;
 
 // - (void)method
 
@@ -76,8 +82,16 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     UILongPressGestureRecognizer *longpressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(showControlPopover:)];
     longpressGesture.minimumPressDuration = 0.5;
     [self.offsetView addGestureRecognizer:longpressGesture];
+    self.currentFileName = [getPreference(@"default_ctrl") stringByDeletingPathExtension];
+    [self loadControlFile:[NSString stringWithFormat:@"%s/%@", getenv("POJAV_PATH_CONTROL"), getPreference(@"default_ctrl")]];
+}
 
-    NSString *controlFilePath = [NSString stringWithFormat:@"%s/%@", getenv("POJAV_PATH_CONTROL"), (NSString *)getPreference(@"default_ctrl")];
+- (void)loadControlFile:(NSString *)controlFilePath {
+    for (UIView *view in self.offsetView.subviews) {
+        if ([view isKindOfClass:[ControlButton class]]) {
+            [view removeFromSuperview];
+        }
+    }
 
     NSError *cc_error;
     NSString *cc_data = [NSString stringWithContentsOfFile:controlFilePath encoding:NSUTF8StringEncoding error:&cc_error];
@@ -119,9 +133,11 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 
     if (![sender.view isKindOfClass:[ControlButton class]]) {
         UIMenuItem *actionExit = [[UIMenuItem alloc] initWithTitle:@"Exit" action:@selector(actionMenuExit)];
-        //UIMenuItem *actionSave = [[UIMenuItem alloc] initWithTitle:@"Save" action:@selector(actionSave:)];
+        UIMenuItem *actionSave = [[UIMenuItem alloc] initWithTitle:@"Save" action:@selector(actionMenuSave)];
+        UIMenuItem *actionLoad = [[UIMenuItem alloc] initWithTitle:@"Load" action:@selector(actionMenuLoad)];
+        UIMenuItem *actionSetDef = [[UIMenuItem alloc] initWithTitle:@"Select as default" action:@selector(actionMenuSetDef)];
         UIMenuController *menuController = [UIMenuController sharedMenuController];
-        [menuController setMenuItems:@[actionExit]];
+        [menuController setMenuItems:@[actionExit, actionSave, actionLoad, actionSetDef]];
         CGPoint point = [sender locationInView:sender.view];
         [sender.view becomeFirstResponder];
         if(@available(iOS 13.0, *)) {
@@ -133,6 +149,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
         return;
     }
 
+    shouldDismissPopover = NO;
     CCMenuViewController *vc = [[CCMenuViewController alloc] init];
     vc.modalPresentationStyle = UIModalPresentationPopover;
     vc.preferredContentSize = CGSizeMake(350, 250);
@@ -153,6 +170,73 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 - (void)actionMenuExit {
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)actionMenuSave {
+      UIAlertController *controller = [UIAlertController alertControllerWithTitle: @"Save"
+        message:[NSString stringWithFormat:@"File will be saved to %s directory.", getenv("POJAV_PATH_CONTROL")]
+        preferredStyle:UIAlertControllerStyleAlert];
+    [controller addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.placeholder = @"Name";
+        textField.text = self.currentFileName;
+        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        textField.borderStyle = UITextBorderStyleRoundedRect;
+    }];
+    [controller addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        NSArray *textFields = controller.textFields;
+        UITextField *field = textFields[0];
+        if ([field.text isEqualToString:@"default"]) {
+            controller.message = @"Control name should not be \"default\" as it will be overriden.";
+            [self presentViewController:controller animated:YES completion:nil];
+        } else {
+            NSError *error;
+            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self.cc_dictionary options:NSJSONWritingPrettyPrinted error:&error];
+            if (jsonData == nil) {
+                showDialog(self, @"Error", error.localizedDescription);
+                return;
+            }
+            NSString *jsonStr = [NSString stringWithUTF8String:jsonData.bytes];
+            BOOL success = [jsonStr writeToFile:[NSString stringWithFormat:@"%s/%@.json", getenv("POJAV_PATH_CONTROL"), field.text] atomically:YES encoding:NSUTF8StringEncoding error:&error];
+            if (!success) {
+                showDialog(self, @"Error", error.localizedDescription);
+                return;
+            }
+
+            self.currentFileName = field.text;
+        }
+    }]];
+    [controller addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:controller animated:YES completion:nil];
+}
+
+- (void)actionOpenFilePicker:(void (^)(NSString *name))handler {
+    FileListViewController *vc = [[FileListViewController alloc] init];
+    vc.listPath = [NSString stringWithFormat:@"%s/controlmap", getenv("POJAV_HOME")];
+    vc.whenItemSelected = handler;
+    vc.modalPresentationStyle = UIModalPresentationPopover;
+    vc.preferredContentSize = CGSizeMake(350, 250);
+    
+    UIPopoverPresentationController *popoverController = [vc popoverPresentationController];
+    popoverController.sourceView = self.view;
+    popoverController.sourceRect = [UIMenuController sharedMenuController].menuFrame;
+    popoverController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    popoverController.delegate = self;
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
+- (void)actionMenuLoad {
+    [self actionOpenFilePicker:^void(NSString* name) {
+        self.currentFileName = name;
+        [self loadControlFile:[NSString stringWithFormat:@"%s/%@.json", getenv("POJAV_PATH_CONTROL"), name]];
+    }];
+}
+
+- (void)actionMenuSetDef {
+    [self actionOpenFilePicker:^void(NSString* name) {
+        self.currentFileName = name;
+        [self loadControlFile:[NSString stringWithFormat:@"%s/%@.json", getenv("POJAV_PATH_CONTROL"), name]];
+        setPreference(@"default_ctrl", [NSString stringWithFormat:@"%@.json", name]);
+    }];
 }
 
 - (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
@@ -188,12 +272,12 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 
 - (BOOL)popoverPresentationControllerShouldDismissPopover:(UIPopoverPresentationController *)popoverPresentationController
 {
-     return NO;
+     return shouldDismissPopover;
 }
 
 - (BOOL)presentationControllerShouldDismiss:(UIPresentationController *)presentationController API_AVAILABLE(ios(13.0))
 {
-    return NO;
+    return shouldDismissPopover;
 }
 
 #pragma mark - Keycode table init
@@ -516,10 +600,12 @@ CGFloat currentY;
 
 #pragma mark - Control editor
 - (void)actionEditCancel {
+    shouldDismissPopover = YES;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)actionEditFinish {
+    shouldDismissPopover = YES;
     [self dismissViewControllerAnimated:YES completion:nil];
 
     self.targetButton.properties[@"name"] = self.editName.text;
@@ -542,11 +628,6 @@ CGFloat currentY;
     self.targetButton.properties[@"dynamicY"] = self.editDynamicY.text;
 
     [self.targetButton update];
-}
-
-- (void)actionSetDef {
-    [self dismissViewControllerAnimated:YES completion:nil];
-    
 }
 
 - (void)sliderValueChanged:(DBNumberedSlider *)sender {
