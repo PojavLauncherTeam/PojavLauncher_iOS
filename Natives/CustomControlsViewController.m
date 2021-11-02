@@ -4,6 +4,7 @@
 #import "LauncherPreferences.h"
 #import "ios_uikit_bridge.h"
 
+#import "customcontrols/ControlDrawer.h"
 #import "customcontrols/CustomControlsUtils.h"
 
 #include "glfw_keycodes.h"
@@ -13,6 +14,10 @@ BOOL shouldDismissPopover = YES;
 int width;
 NSMutableArray *keyCodeMap, *keyValueMap;
 
+CGFloat clamp(CGFloat x, CGFloat lower, CGFloat upper) {
+    return fmin(upper, fmax(x, lower));
+}
+
 @interface ControlLayout ()
 @end
 @implementation ControlLayout
@@ -21,7 +26,12 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     if (action == @selector(actionMenuExit:) ||
         action == @selector(actionMenuSave:) ||
         action == @selector(actionMenuLoad:) ||
-        action == @selector(actionMenuSetDef:)) {
+        action == @selector(actionMenuSetDef:) ||
+        action == @selector(actionMenuAddButton:) ||
+        action == @selector(actionMenuAddDrawer:) ||
+        action == @selector(actionMenuBtnCopy:) ||
+        action == @selector(actionMenuBtnDelete:) ||
+        action == @selector(actionMenuBtnEdit:)) {
             return YES;
     }
     return NO;
@@ -38,6 +48,8 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 @property(nonatomic, strong) NSMutableDictionary* cc_dictionary;
 @property(nonatomic) UIView* offsetView;
 @property(nonatomic) NSString* currentFileName;
+@property(nonatomic) CGRect selectedPoint;
+@property(nonatomic) UIGestureRecognizer* currentGesture;
 
 // - (void)method
 
@@ -76,9 +88,6 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     width = width - insets.left - insets.right;
     CGFloat buttonScale = [getPreference(@"button_scale") floatValue] / 100.0;
 
-    UIPanGestureRecognizer *panRecognizer;
-    panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(wasDragged:)];
-
     UILongPressGestureRecognizer *longpressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(showControlPopover:)];
     longpressGesture.minimumPressDuration = 0.5;
     [self.offsetView addGestureRecognizer:longpressGesture];
@@ -108,6 +117,8 @@ NSMutableArray *keyCodeMap, *keyValueMap;
             loadControlObject(self.offsetView, self.cc_dictionary, ^void(ControlButton* button) {
                 [button addGestureRecognizer:[[UITapGestureRecognizer alloc]
                     initWithTarget:self action:@selector(showControlPopover:)]];
+                [button addGestureRecognizer:[[UIPanGestureRecognizer alloc]
+                    initWithTarget:self action:@selector(onTouch:)]];
             });
         }
     }
@@ -116,6 +127,8 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 } 
 
 - (void)showControlPopover:(UIGestureRecognizer *)sender {
+    self.currentGesture = sender;
+
     switch (sender.state) {
         case UIGestureRecognizerStateBegan:
             if (![sender isKindOfClass:[UILongPressGestureRecognizer class]]) {
@@ -131,40 +144,38 @@ NSMutableArray *keyCodeMap, *keyValueMap;
             return;
     }
 
+    UIMenuController *menuController = [UIMenuController sharedMenuController];
+
     if (![sender.view isKindOfClass:[ControlButton class]]) {
         UIMenuItem *actionExit = [[UIMenuItem alloc] initWithTitle:@"Exit" action:@selector(actionMenuExit)];
         UIMenuItem *actionSave = [[UIMenuItem alloc] initWithTitle:@"Save" action:@selector(actionMenuSave)];
         UIMenuItem *actionLoad = [[UIMenuItem alloc] initWithTitle:@"Load" action:@selector(actionMenuLoad)];
         UIMenuItem *actionSetDef = [[UIMenuItem alloc] initWithTitle:@"Select as default" action:@selector(actionMenuSetDef)];
-        UIMenuController *menuController = [UIMenuController sharedMenuController];
-        [menuController setMenuItems:@[actionExit, actionSave, actionLoad, actionSetDef]];
+        UIMenuItem *actionAddButton = [[UIMenuItem alloc] initWithTitle:@"Add button" action:@selector(actionMenuAddButton)];
+        UIMenuItem *actionAddDrawer = [[UIMenuItem alloc] initWithTitle:@"Add drawer" action:@selector(actionMenuAddDrawer)];
+        [menuController setMenuItems:@[actionExit, actionSave, actionLoad, actionSetDef, actionAddButton, /* actionAddDrawer */]];
+
         CGPoint point = [sender locationInView:sender.view];
-        [sender.view becomeFirstResponder];
-        if(@available(iOS 13.0, *)) {
-            [menuController showMenuFromView:sender.view rect:CGRectMake(point.x, point.y, 1.0, 1.0)];
-        } else {
-            [menuController setTargetRect:CGRectMake(point.x, point.y, 1.0, 1.0) inView:sender.view];
-            [menuController setMenuVisible:YES animated:YES];
-        }
-        return;
+        self.selectedPoint = CGRectMake(point.x, point.y, 1.0, 1.0);
+    } else {
+        UIMenuItem *actionEdit = [[UIMenuItem alloc] initWithTitle:@"Edit" action:@selector(actionMenuBtnEdit)];
+        UIMenuItem *actionCopy = [[UIMenuItem alloc] initWithTitle:@"Copy" action:@selector(actionMenuBtnCopy)];
+        UIMenuItem *actionDelete = [[UIMenuItem alloc] initWithTitle:@"Delete" action:@selector(actionMenuBtnDelete)];
+        [menuController setMenuItems:@[actionEdit, /* actionCopy, */ actionDelete]];
+        self.selectedPoint = sender.view.bounds;
     }
 
-    shouldDismissPopover = NO;
-    CCMenuViewController *vc = [[CCMenuViewController alloc] init];
-    vc.modalPresentationStyle = UIModalPresentationPopover;
-    vc.preferredContentSize = CGSizeMake(350, 250);
-    UIPopoverPresentationController *popoverController = [vc popoverPresentationController];
-    popoverController.sourceView = sender.view;
-    if ([sender isKindOfClass:[UILongPressGestureRecognizer class]]) {
-        CGPoint point = [sender locationInView:sender.view];
-        popoverController.sourceRect = CGRectMake(point.x, point.y, 1.0, 1.0);
-    } else {
-        vc.targetButton = (ControlButton *)sender.view;
-        popoverController.sourceRect = sender.view.bounds;
+    if (sender.view != self.offsetView) {
+        [self.offsetView becomeFirstResponder];
     }
-    popoverController.permittedArrowDirections = UIPopoverArrowDirectionAny;
-    popoverController.delegate = self;
-    [self presentViewController:vc animated:YES completion:nil];
+    [sender.view becomeFirstResponder];
+
+    if(@available(iOS 13.0, *)) {
+        [menuController showMenuFromView:sender.view rect:self.selectedPoint];
+    } else {
+        [menuController setTargetRect:self.selectedPoint inView:sender.view];
+        [menuController setMenuVisible:YES animated:YES];
+    }
 }
 
 - (void)actionMenuExit {
@@ -192,13 +203,13 @@ NSMutableArray *keyCodeMap, *keyValueMap;
             NSError *error;
             NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self.cc_dictionary options:NSJSONWritingPrettyPrinted error:&error];
             if (jsonData == nil) {
-                showDialog(self, @"Error", error.localizedDescription);
+                showDialog(self, @"Error while converting to JSON", error.localizedDescription);
                 return;
             }
             NSString *jsonStr = [NSString stringWithUTF8String:jsonData.bytes];
             BOOL success = [jsonStr writeToFile:[NSString stringWithFormat:@"%s/%@.json", getenv("POJAV_PATH_CONTROL"), field.text] atomically:YES encoding:NSUTF8StringEncoding error:&error];
             if (!success) {
-                showDialog(self, @"Error", error.localizedDescription);
+                showDialog(self, @"Error while saving file", error.localizedDescription);
                 return;
             }
 
@@ -218,7 +229,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     
     UIPopoverPresentationController *popoverController = [vc popoverPresentationController];
     popoverController.sourceView = self.view;
-    popoverController.sourceRect = [UIMenuController sharedMenuController].menuFrame;
+    popoverController.sourceRect = self.selectedPoint;
     popoverController.permittedArrowDirections = UIPopoverArrowDirectionAny;
     popoverController.delegate = self;
     [self presentViewController:vc animated:YES completion:nil];
@@ -239,6 +250,89 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     }];
 }
 
+- (void)actionMenuAddButton {
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    dict[@"name"] = @"New";
+    dict[@"keycodes"] = [[NSMutableArray alloc] init];
+    for (int i = 0; i < 4; i++) {
+        dict[@"keycodes"][i] = @(0);
+    }
+    dict[@"dynamicX"] = @"0";
+    dict[@"dynamicY"] = @"0";
+    dict[@"width"] = @(50.0);
+    dict[@"height"] = @(50.0);
+    dict[@"opacity"] = @(1);
+    dict[@"cornerRadius"] = @(0);
+    dict[@"bgColor"] = @(0x4d000000);
+    ControlButton *button = [ControlButton buttonWithProperties:dict];
+    [button snapAndAlignX:self.selectedPoint.origin.x-25.0 Y:self.selectedPoint.origin.y-25.0];
+    [button addGestureRecognizer:[[UITapGestureRecognizer alloc]
+        initWithTarget:self action:@selector(showControlPopover:)]];
+    [button addGestureRecognizer:[[UIPanGestureRecognizer alloc]
+        initWithTarget:self action:@selector(onTouch:)]];
+    [self.offsetView addSubview:button];
+    [self.cc_dictionary[@"mControlDataList"] addObject:button.properties];
+}
+
+- (void)actionMenuAddDrawer {
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    dict[@"name"] = @"New";
+    dict[@"dynamicX"] = @"0";
+    dict[@"dynamicY"] = @"0";
+    dict[@"width"] = @(50.0);
+    dict[@"height"] = @(50.0);
+    dict[@"opacity"] = @(1);
+    dict[@"cornerRadius"] = @(0);
+    dict[@"bgColor"] = @(0x4d000000);
+}
+
+- (void)actionMenuBtnCopy {
+    // copy
+}
+
+- (void)actionMenuBtnDelete {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:((ControlButton *)self.currentGesture.view).currentTitle message:@"Are you sure to delete this button?"preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        ControlButton *button = (ControlButton *)self.currentGesture.view;
+        if ([button isKindOfClass:[ControlSubButton class]]) {
+            [((ControlSubButton *)button).parentDrawer.drawerData[@"buttonProperties"] removeObject:button.properties];
+            [((ControlSubButton *)button).parentDrawer syncButtons];
+        } else if ([button isKindOfClass:[ControlDrawer class]]) {
+            for (ControlSubButton *subButton in ((ControlDrawer *)button).buttons) {
+                [subButton removeFromSuperview];
+            }
+            [self.cc_dictionary[@"mDrawerDataList"] removeObject:((ControlDrawer *)button).drawerData];
+        } else {
+            [self.cc_dictionary[@"mControlDataList"] removeObject:button.properties];
+        }
+        [button removeFromSuperview];
+        
+    }];
+    [alert addAction:cancel];
+    [alert addAction:ok];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)actionMenuBtnEdit {
+    shouldDismissPopover = NO;
+    CCMenuViewController *vc = [[CCMenuViewController alloc] init];
+    vc.modalPresentationStyle = UIModalPresentationPopover;
+    vc.preferredContentSize = CGSizeMake(350, 250);
+    UIPopoverPresentationController *popoverController = [vc popoverPresentationController];
+    popoverController.sourceView = self.currentGesture.view;
+    if ([self.currentGesture isKindOfClass:[UILongPressGestureRecognizer class]]) {
+        CGPoint point = [self.currentGesture locationInView:self.currentGesture.view];
+        popoverController.sourceRect = self.selectedPoint;
+    } else {
+        vc.targetButton = (ControlButton *)self.currentGesture.view;
+        popoverController.sourceRect = self.currentGesture.view.bounds;
+    }
+    popoverController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    popoverController.delegate = self;
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
 - (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
     return UIRectEdgeBottom;
 }
@@ -247,12 +341,16 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     return NO;
 }
 
-- (void)wasDragged:(UIPanGestureRecognizer *)recognizer {
-    UIButton *button = (UIButton *)recognizer.view;
-    CGPoint translation = [recognizer translationInView:button];
-
-    button.center = CGPointMake(button.center.x + translation.x, button.center.y + translation.y);
-    [recognizer setTranslation:CGPointZero inView:button];
+- (void)onTouch:(UIPanGestureRecognizer *)sender {
+    ControlButton *button = (ControlButton *)sender.view;
+    if (![button isKindOfClass:[ControlSubButton class]] &&
+      ![button.properties[@"isDynamicBtn"] boolValue] &&
+      sender.state == UIGestureRecognizerStateChanged) {
+        CGPoint translation = [sender translationInView:button];
+        //button.center = CGPointMake(button.center.x + translation.x, button.center.y + translation.y);
+        [button snapAndAlignX:clamp(button.frame.origin.x+translation.x, 0, self.offsetView.frame.size.width - button.frame.size.width) Y:clamp(button.frame.origin.y+translation.y, 0, self.offsetView.frame.size.height - button.frame.size.height)];
+        [sender setTranslation:CGPointZero inView:button];
+    }
 }
 
 -(void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
@@ -372,6 +470,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 #define TAG_SLIDER_STROKEWIDTH 10
 #define TAG_SLIDER_CORNERRADIUS 11
 #define TAG_SLIDER_OPACITY 12
+#define TAG_SWITCH_DYNAMICPOS 13
 
 #pragma mark - CCMenuViewController
 
@@ -384,7 +483,7 @@ CGFloat currentY;
 @property(nonatomic) UITextField *editName, *editSizeWidth, *editSizeHeight, *editDynamicX, *editDynamicY;
 @property(nonatomic) UITextView* editMapping;
 @property(nonatomic) UIPickerView* pickerMapping;
-@property(nonatomic) UISwitch *switchToggleable, *switchMousePass, *switchSwipeable;
+@property(nonatomic) UISwitch *switchToggleable, *switchMousePass, *switchSwipeable, *switchDynamicPos;
 @property(nonatomic) UIColorWell API_AVAILABLE(ios(14.0)) *colorWellBackground, *colorWellStroke;
 @property(nonatomic) DBNumberedSlider *sliderStrokeWidth, *sliderCornerRadius, *sliderOpacity;
 
@@ -459,31 +558,35 @@ CGFloat currentY;
 
 
     // Property: Mapping
-    currentY += labelName.frame.size.height + 12.0;
-    UILabel *labelMapping = [self addLabel:@"Mapping"];
+    if (![self.targetButton isKindOfClass:[ControlDrawer class]]) {
+        currentY += labelName.frame.size.height + 12.0;
+        UILabel *labelMapping = [self addLabel:@"Mapping"];
 
-    self.editMapping = [[UITextView alloc] initWithFrame:CGRectMake(0,0,1,1)];
-    self.editMapping.text = @"\n\n\n";
-    [self.editMapping sizeToFit];
-    self.editMapping.scrollEnabled = NO;
-    self.editMapping.frame = CGRectMake(labelMapping.frame.size.width + 5.0, labelMapping.frame.origin.y, width - labelMapping.frame.size.width - 5.0, self.editMapping.frame.size.height);
+        self.editMapping = [[UITextView alloc] initWithFrame:CGRectMake(0,0,1,1)];
+        self.editMapping.text = @"\n\n\n";
+        [self.editMapping sizeToFit];
+        self.editMapping.scrollEnabled = NO;
+        self.editMapping.frame = CGRectMake(labelMapping.frame.size.width + 5.0, labelMapping.frame.origin.y, width - labelMapping.frame.size.width - 5.0, self.editMapping.frame.size.height);
 
-    self.pickerMapping = [[UIPickerView alloc] init];
-    self.pickerMapping.delegate = self;
-    self.pickerMapping.dataSource = self;
-    [self.pickerMapping reloadAllComponents];
-    for (int i = 0; i < 4; i++) {
-      [self.pickerMapping selectRow:[keyValueMap indexOfObject:self.targetButton.properties[@"keycodes"][i]] inComponent:i animated:NO];
+        self.pickerMapping = [[UIPickerView alloc] init];
+        self.pickerMapping.delegate = self;
+        self.pickerMapping.dataSource = self;
+        [self.pickerMapping reloadAllComponents];
+        for (int i = 0; i < 4; i++) {
+          [self.pickerMapping selectRow:[keyValueMap indexOfObject:self.targetButton.properties[@"keycodes"][i]] inComponent:i animated:NO];
+        }
+        [self pickerView:self.pickerMapping didSelectRow:0 inComponent:0];
+
+        self.editMapping.inputAccessoryView = editPickToolbar;
+        self.editMapping.inputView = self.pickerMapping;
+        [self.scrollView addSubview:self.editMapping];
+        currentY += self.editMapping.frame.size.height + 12.0;
+    } else {
+        currentY += labelName.frame.size.height + 12.0;
     }
-    [self pickerView:self.pickerMapping didSelectRow:0 inComponent:0];
-
-    self.editMapping.inputAccessoryView = editPickToolbar;
-    self.editMapping.inputView = self.pickerMapping;
-    [self.scrollView addSubview:self.editMapping];
 
 
     // Property: Toggleable
-    currentY += self.editMapping.frame.size.height + 10.0; 
     UILabel *labelToggleable = [self addLabel:@"Toggleable"];
     self.switchToggleable = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currentY - 5.0, 50.0, 30)];
     [self.switchToggleable setOn:[self.targetButton.properties[@"isToggle"] boolValue] animated:NO];
@@ -569,6 +672,16 @@ CGFloat currentY;
     [self.scrollView addSubview:self.sliderOpacity];
 
 
+    // Property: Dynamic position
+    currentY += labelName.frame.size.height + 12.0; 
+    UILabel *labelDynamicPos = [self addLabel:@"Dynamic position"];
+    self.switchDynamicPos = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currentY - 5.0, 50.0, 30)];
+    self.switchDynamicPos.tag = TAG_SWITCH_DYNAMICPOS;
+    [self.switchDynamicPos setOn:[self.targetButton.properties[@"isDynamicBtn"] boolValue] animated:NO];
+    [self.switchDynamicPos addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
+    [self.scrollView addSubview:self.switchDynamicPos];
+
+
     // Property: Dynamic X-axis
     currentY += labelName.frame.size.height + 12.0;
     UILabel *labelDynamicX = [self addLabel:@"Dynamic X-axis"];
@@ -585,6 +698,7 @@ CGFloat currentY;
     [self.editDynamicY addTarget:self.editDynamicY action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     self.editDynamicY.text = self.targetButton.properties[@"dynamicY"];
     [self.scrollView addSubview:self.editDynamicY];
+    self.editDynamicX.enabled = self.editDynamicY.enabled = self.switchDynamicPos.isOn;
 
 
     currentY += labelName.frame.size.height + 12.0;
@@ -624,6 +738,7 @@ CGFloat currentY;
     self.targetButton.properties[@"strokeWidth"] = @((NSInteger) self.sliderStrokeWidth.value);
     self.targetButton.properties[@"cornerRadius"] = @((NSInteger) self.sliderCornerRadius.value);
     self.targetButton.properties[@"opacity"] = @(self.sliderOpacity.value / 100.0);
+    self.targetButton.properties[@"isDynamicBtn"] = @(self.switchDynamicPos.isOn);
     self.targetButton.properties[@"dynamicX"] = self.editDynamicX.text;
     self.targetButton.properties[@"dynamicY"] = self.editDynamicY.text;
 
@@ -638,6 +753,12 @@ CGFloat currentY;
         } else {
             // TODO
         }
+    }
+}
+
+- (void)switchValueChanged:(UISwitch *)sender {
+    if (sender.tag == TAG_SWITCH_DYNAMICPOS) {
+        self.editDynamicX.enabled = self.editDynamicY.enabled = self.switchDynamicPos.isOn;
     }
 }
 

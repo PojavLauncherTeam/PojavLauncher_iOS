@@ -106,7 +106,12 @@
 }
 
 - (BOOL)canSnap:(ControlButton *)button {
-    return [super canSnap:button] && [self containsChild:button];
+    return [super canSnap:button] && ![self containsChild:button];
+}
+
+- (void)snapAndAlignX:(CGFloat)x Y:(CGFloat)y {
+    [super snapAndAlignX:x Y:y];
+    [self alignButtons];
 }
 
 @end

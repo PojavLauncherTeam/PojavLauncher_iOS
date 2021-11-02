@@ -19,6 +19,7 @@
 - (BOOL)canSnap:(ControlButton *)button;
 - (NSString *)generateDynamicX:(CGFloat)x;
 - (NSString *)generateDynamicY:(CGFloat)y;
+- (void)snapAndAlignX:(CGFloat)x Y:(CGFloat)y;
 - (void)preProcessProperties;
 - (void)update;
 

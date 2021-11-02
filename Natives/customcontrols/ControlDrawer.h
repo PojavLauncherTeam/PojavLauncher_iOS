@@ -15,5 +15,6 @@
 - (void)addButtonProp:(NSMutableDictionary *)properties;
 - (void)addButton:(ControlSubButton *)button;
 - (void)restoreButtonVisibility;
+- (void)syncButtons;
 
 @end
