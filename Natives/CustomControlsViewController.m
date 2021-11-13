@@ -296,6 +296,7 @@ CGFloat clamp(CGFloat x, CGFloat lower, CGFloat upper) {
     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         ControlButton *button = (ControlButton *)self.currentGesture.view;
         if ([button isKindOfClass:[ControlSubButton class]]) {
+            [((ControlSubButton *)button).parentDrawer.buttons removeObject:button];
             [((ControlSubButton *)button).parentDrawer.drawerData[@"buttonProperties"] removeObject:button.properties];
             [((ControlSubButton *)button).parentDrawer syncButtons];
         } else if ([button isKindOfClass:[ControlDrawer class]]) {
@@ -343,13 +344,23 @@ CGFloat clamp(CGFloat x, CGFloat lower, CGFloat upper) {
 
 - (void)onTouch:(UIPanGestureRecognizer *)sender {
     ControlButton *button = (ControlButton *)sender.view;
-    if (![button isKindOfClass:[ControlSubButton class]] &&
-      ![button.properties[@"isDynamicBtn"] boolValue] &&
-      sender.state == UIGestureRecognizerStateChanged) {
-        CGPoint translation = [sender translationInView:button];
-        //button.center = CGPointMake(button.center.x + translation.x, button.center.y + translation.y);
-        [button snapAndAlignX:clamp(button.frame.origin.x+translation.x, 0, self.offsetView.frame.size.width - button.frame.size.width) Y:clamp(button.frame.origin.y+translation.y, 0, self.offsetView.frame.size.height - button.frame.size.height)];
-        [sender setTranslation:CGPointZero inView:button];
+    if (![button.properties[@"isDynamicBtn"] boolValue]) {
+        if ([button isKindOfClass:[ControlSubButton class]] &&
+          ![((ControlSubButton *)button).parentDrawer.drawerData[@"orientation"] isEqualToString:@"FREE"]) return;
+
+        if (sender.state == UIGestureRecognizerStateBegan) {
+            UIMenuController *menuController = [UIMenuController sharedMenuController];
+            if(@available(iOS 13.0, *)) {
+                [menuController hideMenu];
+            } else {
+                [menuController setMenuVisible:NO animated:YES];
+            }
+        } else if (sender.state == UIGestureRecognizerStateChanged) {
+            CGPoint translation = [sender translationInView:button];
+            //button.center = CGPointMake(button.center.x + translation.x, button.center.y + translation.y);
+            [button snapAndAlignX:clamp(button.frame.origin.x+translation.x, 0, self.offsetView.frame.size.width - button.frame.size.width) Y:clamp(button.frame.origin.y+translation.y, 0, self.offsetView.frame.size.height - button.frame.size.height)];
+            [sender setTranslation:CGPointZero inView:button];
+        }
     }
 }
 
@@ -479,10 +490,13 @@ CGFloat currentY;
 @interface CCMenuViewController () <UIPickerViewDataSource, UIPickerViewDelegate> {
 }
 
+@property(nonatomic) NSArray* arrOrientation;
+
 @property(nonatomic) UIScrollView* scrollView;
 @property(nonatomic) UITextField *editName, *editSizeWidth, *editSizeHeight, *editDynamicX, *editDynamicY;
 @property(nonatomic) UITextView* editMapping;
 @property(nonatomic) UIPickerView* pickerMapping;
+@property(nonatomic) UISegmentedControl* ctrlOrientation;
 @property(nonatomic) UISwitch *switchToggleable, *switchMousePass, *switchSwipeable, *switchDynamicPos;
 @property(nonatomic) UIColorWell API_AVAILABLE(ios(14.0)) *colorWellBackground, *colorWellStroke;
 @property(nonatomic) DBNumberedSlider *sliderStrokeWidth, *sliderCornerRadius, *sliderOpacity;
@@ -557,9 +571,9 @@ CGFloat currentY;
     [self.scrollView addSubview:self.editSizeHeight];
 
 
-    // Property: Mapping
+    currentY += labelName.frame.size.height + 12.0;
     if (![self.targetButton isKindOfClass:[ControlDrawer class]]) {
-        currentY += labelName.frame.size.height + 12.0;
+        // Property: Mapping
         UILabel *labelMapping = [self addLabel:@"Mapping"];
 
         self.editMapping = [[UITextView alloc] initWithFrame:CGRectMake(0,0,1,1)];
@@ -582,6 +596,14 @@ CGFloat currentY;
         [self.scrollView addSubview:self.editMapping];
         currentY += self.editMapping.frame.size.height + 12.0;
     } else {
+        // Property: Orientation
+        self.arrOrientation = [NSArray arrayWithObjects:@"DOWN", @"LEFT", @"UP", @"RIGHT", @"FREE", nil];
+        UILabel *labelOrientation = [self addLabel:@"Orientation"];
+        self.ctrlOrientation = [[UISegmentedControl alloc] initWithItems:self.arrOrientation];
+        self.ctrlOrientation.frame = CGRectMake(labelOrientation.frame.size.width + 5.0, currentY - 5.0, width - labelOrientation.frame.size.width - 5.0, 30.0);
+        self.ctrlOrientation.selectedSegmentIndex = [self.arrOrientation indexOfObject:
+            ((ControlDrawer *)self.targetButton).drawerData[@"orientation"]];
+        [self.scrollView addSubview:self.ctrlOrientation];
         currentY += labelName.frame.size.height + 12.0;
     }
 
@@ -672,33 +694,36 @@ CGFloat currentY;
     [self.scrollView addSubview:self.sliderOpacity];
 
 
-    // Property: Dynamic position
-    currentY += labelName.frame.size.height + 12.0; 
-    UILabel *labelDynamicPos = [self addLabel:@"Dynamic position"];
-    self.switchDynamicPos = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currentY - 5.0, 50.0, 30)];
-    self.switchDynamicPos.tag = TAG_SWITCH_DYNAMICPOS;
-    [self.switchDynamicPos setOn:[self.targetButton.properties[@"isDynamicBtn"] boolValue] animated:NO];
-    [self.switchDynamicPos addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
-    [self.scrollView addSubview:self.switchDynamicPos];
+    if (![self.targetButton isKindOfClass:[ControlSubButton class]] ||
+      [((ControlSubButton *)self.targetButton).parentDrawer.drawerData[@"orientation"] isEqualToString:@"FREE"]) {
+        // Property: Dynamic position
+        currentY += labelName.frame.size.height + 12.0; 
+        UILabel *labelDynamicPos = [self addLabel:@"Dynamic position"];
+        self.switchDynamicPos = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currentY - 5.0, 50.0, 30)];
+        self.switchDynamicPos.tag = TAG_SWITCH_DYNAMICPOS;
+        [self.switchDynamicPos setOn:[self.targetButton.properties[@"isDynamicBtn"] boolValue] animated:NO];
+        [self.switchDynamicPos addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
+        [self.scrollView addSubview:self.switchDynamicPos];
 
 
-    // Property: Dynamic X-axis
-    currentY += labelName.frame.size.height + 12.0;
-    UILabel *labelDynamicX = [self addLabel:@"Dynamic X-axis"];
-    self.editDynamicX = [[UITextField alloc] initWithFrame:CGRectMake(labelDynamicX.frame.size.width + 5.0, currentY, width - labelDynamicX.frame.size.width - 5.0, labelDynamicX.frame.size.height)];
-    [self.editDynamicX addTarget:self.editDynamicX action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
-    self.editDynamicX.text = self.targetButton.properties[@"dynamicX"];
-    [self.scrollView addSubview:self.editDynamicX];
+        // Property: Dynamic X-axis
+        currentY += labelName.frame.size.height + 12.0;
+        UILabel *labelDynamicX = [self addLabel:@"Dynamic X-axis"];
+        self.editDynamicX = [[UITextField alloc] initWithFrame:CGRectMake(labelDynamicX.frame.size.width + 5.0, currentY, width - labelDynamicX.frame.size.width - 5.0, labelDynamicX.frame.size.height)];
+        [self.editDynamicX addTarget:self.editDynamicX action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
+        self.editDynamicX.text = self.targetButton.properties[@"dynamicX"];
+        [self.scrollView addSubview:self.editDynamicX];
 
 
-    // Property: Dynamic Y-axis
-    currentY += labelName.frame.size.height + 12.0;
-    UILabel *labelDynamicY = [self addLabel:@"Dynamic Y-axis"];
-    self.editDynamicY = [[UITextField alloc] initWithFrame:CGRectMake(labelDynamicY.frame.size.width + 5.0, currentY, width - labelDynamicY.frame.size.width - 5.0, labelDynamicY.frame.size.height)];
-    [self.editDynamicY addTarget:self.editDynamicY action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
-    self.editDynamicY.text = self.targetButton.properties[@"dynamicY"];
-    [self.scrollView addSubview:self.editDynamicY];
-    self.editDynamicX.enabled = self.editDynamicY.enabled = self.switchDynamicPos.isOn;
+        // Property: Dynamic Y-axis
+        currentY += labelName.frame.size.height + 12.0;
+        UILabel *labelDynamicY = [self addLabel:@"Dynamic Y-axis"];
+        self.editDynamicY = [[UITextField alloc] initWithFrame:CGRectMake(labelDynamicY.frame.size.width + 5.0, currentY, width - labelDynamicY.frame.size.width - 5.0, labelDynamicY.frame.size.height)];
+        [self.editDynamicY addTarget:self.editDynamicY action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
+        self.editDynamicY.text = self.targetButton.properties[@"dynamicY"];
+        [self.scrollView addSubview:self.editDynamicY];
+        self.editDynamicX.enabled = self.editDynamicY.enabled = self.switchDynamicPos.isOn;
+    }
 
 
     currentY += labelName.frame.size.height + 12.0;
@@ -725,8 +750,14 @@ CGFloat currentY;
     self.targetButton.properties[@"name"] = self.editName.text;
     self.targetButton.properties[@"width"]  = @([self.editSizeWidth.text floatValue]);
     self.targetButton.properties[@"height"] = @([self.editSizeHeight.text floatValue]);
-    for (int i = 0; i < 4; i++) {
-        self.targetButton.properties[@"keycodes"][i] = keyValueMap[[self.pickerMapping selectedRowInComponent:i]];
+    if (![self.targetButton isKindOfClass:[ControlDrawer class]]) {
+        for (int i = 0; i < 4; i++) {
+            self.targetButton.properties[@"keycodes"][i] = keyValueMap[[self.pickerMapping selectedRowInComponent:i]];
+        }
+    } else {
+        ((ControlDrawer *)self.targetButton).drawerData[@"orientation"] =
+            self.arrOrientation[self.ctrlOrientation.selectedSegmentIndex];
+        [(ControlDrawer *)self.targetButton syncButtons];
     }
     self.targetButton.properties[@"isToggle"] = @(self.switchToggleable.isOn);
     self.targetButton.properties[@"passThruEnabled"] = @(self.switchMousePass.isOn);
