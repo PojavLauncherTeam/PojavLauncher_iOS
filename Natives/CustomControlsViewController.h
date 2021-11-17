@@ -6,6 +6,8 @@
 
 @interface CustomControlsViewController : UIViewController
 
+@property(nonatomic) UIGestureRecognizer* currentGesture;
+
 - (void)initKeyCodeMap;
 
 @end

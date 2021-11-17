@@ -29,11 +29,12 @@ CGFloat clamp(CGFloat x, CGFloat lower, CGFloat upper) {
         action == @selector(actionMenuSetDef:) ||
         action == @selector(actionMenuAddButton:) ||
         action == @selector(actionMenuAddDrawer:) ||
+        action == @selector(actionMenuAddSubButton:) ||
         action == @selector(actionMenuBtnCopy:) ||
         action == @selector(actionMenuBtnDelete:) ||
         action == @selector(actionMenuBtnEdit:)) {
             return YES;
-    }
+    } 
     return NO;
 }
 
@@ -49,7 +50,6 @@ CGFloat clamp(CGFloat x, CGFloat lower, CGFloat upper) {
 @property(nonatomic) UIView* offsetView;
 @property(nonatomic) NSString* currentFileName;
 @property(nonatomic) CGRect selectedPoint;
-@property(nonatomic) UIGestureRecognizer* currentGesture;
 
 // - (void)method
 
@@ -153,15 +153,20 @@ CGFloat clamp(CGFloat x, CGFloat lower, CGFloat upper) {
         UIMenuItem *actionSetDef = [[UIMenuItem alloc] initWithTitle:@"Select as default" action:@selector(actionMenuSetDef)];
         UIMenuItem *actionAddButton = [[UIMenuItem alloc] initWithTitle:@"Add button" action:@selector(actionMenuAddButton)];
         UIMenuItem *actionAddDrawer = [[UIMenuItem alloc] initWithTitle:@"Add drawer" action:@selector(actionMenuAddDrawer)];
-        [menuController setMenuItems:@[actionExit, actionSave, actionLoad, actionSetDef, actionAddButton, /* actionAddDrawer */]];
+        [menuController setMenuItems:@[actionExit, actionSave, actionLoad, actionSetDef, actionAddButton, actionAddDrawer]];
 
         CGPoint point = [sender locationInView:sender.view];
         self.selectedPoint = CGRectMake(point.x, point.y, 1.0, 1.0);
     } else {
         UIMenuItem *actionEdit = [[UIMenuItem alloc] initWithTitle:@"Edit" action:@selector(actionMenuBtnEdit)];
         UIMenuItem *actionCopy = [[UIMenuItem alloc] initWithTitle:@"Copy" action:@selector(actionMenuBtnCopy)];
-        UIMenuItem *actionDelete = [[UIMenuItem alloc] initWithTitle:@"Delete" action:@selector(actionMenuBtnDelete)];
-        [menuController setMenuItems:@[actionEdit, /* actionCopy, */ actionDelete]];
+        UIMenuItem *actionDelete = [[UIMenuItem alloc] initWithTitle:@"Remove" action:@selector(actionMenuBtnDelete)];
+        if ([sender.view isKindOfClass:[ControlDrawer class]]) {
+            UIMenuItem *actionAddSubButton = [[UIMenuItem alloc] initWithTitle:@"Add sub-button" action:@selector(actionMenuAddSubButton)];
+            [menuController setMenuItems:@[actionEdit, /* actionCopy, */ actionDelete, actionAddSubButton]];
+        } else {
+            [menuController setMenuItems:@[actionEdit, /* actionCopy, */ actionDelete]];
+        }
         self.selectedPoint = sender.view.bounds;
     }
 
@@ -250,10 +255,10 @@ CGFloat clamp(CGFloat x, CGFloat lower, CGFloat upper) {
     }];
 }
 
-- (void)actionMenuAddButton {
+- (void)actionMenuAddButtonWithDrawer:(ControlDrawer *)drawer {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     dict[@"name"] = @"New";
-    dict[@"keycodes"] = [[NSMutableArray alloc] init];
+    dict[@"keycodes"] = [[NSMutableArray alloc] initWithCapacity:4];
     for (int i = 0; i < 4; i++) {
         dict[@"keycodes"][i] = @(0);
     }
@@ -264,26 +269,54 @@ CGFloat clamp(CGFloat x, CGFloat lower, CGFloat upper) {
     dict[@"opacity"] = @(1);
     dict[@"cornerRadius"] = @(0);
     dict[@"bgColor"] = @(0x4d000000);
-    ControlButton *button = [ControlButton buttonWithProperties:dict];
+    ControlButton *button;
+    if (drawer == nil) {
+        button = [ControlButton buttonWithProperties:dict];
+        [button snapAndAlignX:self.selectedPoint.origin.x-25.0 Y:self.selectedPoint.origin.y-25.0];
+        [self.cc_dictionary[@"mControlDataList"] addObject:button.properties];
+    } else {
+        button = [drawer addButtonProp:dict];
+        [button snapAndAlignX:self.selectedPoint.origin.x-25.0 Y:self.selectedPoint.origin.y-25.0];
+        [drawer syncButtons];
+    }
+    [button addGestureRecognizer:[[UITapGestureRecognizer alloc]
+        initWithTarget:self action:@selector(showControlPopover:)]];
+    [button addGestureRecognizer:[[UIPanGestureRecognizer alloc]
+        initWithTarget:self action:@selector(onTouch:)]];
+    [self.offsetView addSubview:button];
+}
+
+- (void)actionMenuAddButton {
+    [self actionMenuAddButtonWithDrawer:nil];
+}
+
+- (void)actionMenuAddDrawer {
+    NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
+    properties[@"name"] = @"New";
+    properties[@"dynamicX"] = @"0";
+    properties[@"dynamicY"] = @"0";
+    properties[@"width"] = @(50.0);
+    properties[@"height"] = @(50.0);
+    properties[@"opacity"] = @(1);
+    properties[@"cornerRadius"] = @(0);
+    properties[@"bgColor"] = @(0x4d000000);
+    NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
+    data[@"orientation"] = @"FREE";
+    data[@"properties"] = properties;
+    data[@"buttonProperties"] = [[NSMutableArray alloc] init];
+    ControlDrawer *button = [ControlDrawer buttonWithData:data];
     [button snapAndAlignX:self.selectedPoint.origin.x-25.0 Y:self.selectedPoint.origin.y-25.0];
     [button addGestureRecognizer:[[UITapGestureRecognizer alloc]
         initWithTarget:self action:@selector(showControlPopover:)]];
     [button addGestureRecognizer:[[UIPanGestureRecognizer alloc]
         initWithTarget:self action:@selector(onTouch:)]];
     [self.offsetView addSubview:button];
-    [self.cc_dictionary[@"mControlDataList"] addObject:button.properties];
+    [self.cc_dictionary[@"mDrawerDataList"] addObject:button.drawerData];
 }
 
-- (void)actionMenuAddDrawer {
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    dict[@"name"] = @"New";
-    dict[@"dynamicX"] = @"0";
-    dict[@"dynamicY"] = @"0";
-    dict[@"width"] = @(50.0);
-    dict[@"height"] = @(50.0);
-    dict[@"opacity"] = @(1);
-    dict[@"cornerRadius"] = @(0);
-    dict[@"bgColor"] = @(0x4d000000);
+- (void)actionMenuAddSubButton {
+    self.selectedPoint = CGRectMake(self.currentGesture.view.frame.origin.x + 25.0, self.currentGesture.view.frame.origin.y + 25.0, 1.0, 1.0);
+    [self actionMenuAddButtonWithDrawer:(ControlDrawer *)self.currentGesture.view];
 }
 
 - (void)actionMenuBtnCopy {
@@ -291,7 +324,7 @@ CGFloat clamp(CGFloat x, CGFloat lower, CGFloat upper) {
 }
 
 - (void)actionMenuBtnDelete {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:((ControlButton *)self.currentGesture.view).currentTitle message:@"Are you sure to delete this button?"preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:((ControlButton *)self.currentGesture.view).currentTitle message:@"Are you sure to remove this button?"preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         ControlButton *button = (ControlButton *)self.currentGesture.view;
@@ -547,28 +580,30 @@ CGFloat currentY;
     self.editName.text = self.targetButton.properties[@"name"];
     [self.scrollView addSubview:self.editName];
 
-    // Property: Size
-    currentY += labelName.frame.size.height + 12.0;
-    UILabel *labelSize = [self addLabel:@"Size"];
-    // width / 2.0 + (labelSize.frame.size.width + 4.0) / 2.0
-    CGFloat editSizeWidthValue = (width - labelSize.frame.size.width) / 2 - labelSize.frame.size.height / 2;
-    UILabel *labelSizeX = [[UILabel alloc] initWithFrame:CGRectMake(labelSize.frame.size.width + editSizeWidthValue, labelSize.frame.origin.y, labelSize.frame.size.height, labelSize.frame.size.height)];
-    labelSizeX.text = @"x";
-    [self.scrollView addSubview:labelSizeX];
-    self.editSizeWidth = [[UITextField alloc] initWithFrame:CGRectMake(labelSize.frame.size.width, labelSize.frame.origin.y, editSizeWidthValue, labelSize.frame.size.height)];
-    self.editSizeWidth.keyboardType = UIKeyboardTypeDecimalPad;
-    self.editSizeWidth.placeholder = @"width";
-    self.editSizeWidth.text = [self.targetButton.properties[@"width"] stringValue];
-    self.editSizeWidth.textAlignment = NSTextAlignmentCenter;
-    self.editSizeWidth.inputAccessoryView = editPickToolbar;
-    [self.scrollView addSubview:self.editSizeWidth];
-    self.editSizeHeight = [[UITextField alloc] initWithFrame:CGRectMake(labelSizeX.frame.origin.x + labelSizeX.frame.size.width, labelSize.frame.origin.y, editSizeWidthValue, labelSize.frame.size.height)];
-    self.editSizeHeight.keyboardType = UIKeyboardTypeDecimalPad;
-    self.editSizeHeight.placeholder = @"height";
-    self.editSizeHeight.text = [self.targetButton.properties[@"height"] stringValue];
-    self.editSizeHeight.textAlignment = NSTextAlignmentCenter;
-    self.editSizeHeight.inputAccessoryView = editPickToolbar;
-    [self.scrollView addSubview:self.editSizeHeight];
+    if (![self.targetButton isKindOfClass:[ControlSubButton class]]) {
+        // Property: Size
+        currentY += labelName.frame.size.height + 12.0;
+        UILabel *labelSize = [self addLabel:@"Size"];
+        // width / 2.0 + (labelSize.frame.size.width + 4.0) / 2.0
+        CGFloat editSizeWidthValue = (width - labelSize.frame.size.width) / 2 - labelSize.frame.size.height / 2;
+        UILabel *labelSizeX = [[UILabel alloc] initWithFrame:CGRectMake(labelSize.frame.size.width + editSizeWidthValue, labelSize.frame.origin.y, labelSize.frame.size.height, labelSize.frame.size.height)];
+        labelSizeX.text = @"x";
+        [self.scrollView addSubview:labelSizeX];
+        self.editSizeWidth = [[UITextField alloc] initWithFrame:CGRectMake(labelSize.frame.size.width, labelSize.frame.origin.y, editSizeWidthValue, labelSize.frame.size.height)];
+        self.editSizeWidth.keyboardType = UIKeyboardTypeDecimalPad;
+        self.editSizeWidth.placeholder = @"width";
+        self.editSizeWidth.text = [self.targetButton.properties[@"width"] stringValue];
+        self.editSizeWidth.textAlignment = NSTextAlignmentCenter;
+        self.editSizeWidth.inputAccessoryView = editPickToolbar;
+        [self.scrollView addSubview:self.editSizeWidth];
+        self.editSizeHeight = [[UITextField alloc] initWithFrame:CGRectMake(labelSizeX.frame.origin.x + labelSizeX.frame.size.width, labelSize.frame.origin.y, editSizeWidthValue, labelSize.frame.size.height)];
+        self.editSizeHeight.keyboardType = UIKeyboardTypeDecimalPad;
+        self.editSizeHeight.placeholder = @"height";
+        self.editSizeHeight.text = [self.targetButton.properties[@"height"] stringValue];
+        self.editSizeHeight.textAlignment = NSTextAlignmentCenter;
+        self.editSizeHeight.inputAccessoryView = editPickToolbar;
+        [self.scrollView addSubview:self.editSizeHeight];
+    }
 
 
     currentY += labelName.frame.size.height + 12.0;
@@ -587,7 +622,7 @@ CGFloat currentY;
         self.pickerMapping.dataSource = self;
         [self.pickerMapping reloadAllComponents];
         for (int i = 0; i < 4; i++) {
-          [self.pickerMapping selectRow:[keyValueMap indexOfObject:self.targetButton.properties[@"keycodes"][i]] inComponent:i animated:NO];
+            [self.pickerMapping selectRow:[keyValueMap indexOfObject:self.targetButton.properties[@"keycodes"][i]] inComponent:i animated:NO];
         }
         [self pickerView:self.pickerMapping didSelectRow:0 inComponent:0];
 

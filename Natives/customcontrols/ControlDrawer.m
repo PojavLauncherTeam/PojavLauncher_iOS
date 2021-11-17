@@ -19,15 +19,16 @@
     return instance;
 }
 
-- (void)addButtonProp:(NSMutableDictionary *)properties {
-    [self addButton:[ControlSubButton buttonWithProperties:self.properties]];
+- (ControlSubButton *)addButtonProp:(NSMutableDictionary *)prop {
+    [self.drawerData[@"buttonProperties"] addObject:prop];
+    return [self addButton:[ControlSubButton buttonWithProperties:prop]];
 }
 
-- (void)addButton:(ControlSubButton *)button {
+- (ControlSubButton *)addButton:(ControlSubButton *)button {
     [self.buttons addObject:button];
     button.parentDrawer = self;
     button.hidden = !isControlModifiable;
-    [self syncButtons];
+    return button;
 }
 
 - (void)restoreButtonVisibility {

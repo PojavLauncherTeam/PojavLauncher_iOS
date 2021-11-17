@@ -12,7 +12,7 @@
 NSMutableDictionary* createButton(NSString* name, int* keycodes, NSString* dynamicX, NSString* dynamicY, CGFloat width, CGFloat height) {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     dict[@"name"] = name;
-    dict[@"keycodes"] = [[NSMutableArray alloc] init];
+    dict[@"keycodes"] = [[NSMutableArray alloc] initWithCapacity:4];
     for (int i = 0; i < 4; i++) {
         [dict[@"keycodes"] addObject:@(keycodes[i])];
     }
@@ -164,6 +164,7 @@ void generateAndSaveDefaultControl() {
     dict[@"version"] = @(4);
     dict[@"scaledAt"] = @(100);
     dict[@"mControlDataList"] = [[NSMutableArray alloc] init];
+    dict[@"mDrawerDataList"] = [[NSMutableArray alloc] init];
     [dict[@"mControlDataList"] addObject:createButton(@"Keyboard",
         (int[]){SPECIALBTN_KEYBOARD,0,0,0},
         @"${margin} * 3 + ${width} * 2",
@@ -328,6 +329,7 @@ void loadControlObject(UIView* targetView, NSMutableDictionary* controlDictionar
 			    walkToButton(subView);
 			    [targetView addSubview:subView];
 		    }
+            [drawer syncButtons];
         }
 
         controlDictionary[@"scaledAt"] = @([getPreference(@"button_scale") floatValue]);
