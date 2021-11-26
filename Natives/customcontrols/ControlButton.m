@@ -3,6 +3,8 @@
 #import "../LauncherPreferences.h"
 #import "../utils.h"
 
+#define MIN_DISTANCE 8.0
+
 #define INSERT_VALUE(KEY, VALUE) \
   string = [string stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"${%@}", @(KEY)] withString:VALUE];
 
@@ -153,7 +155,7 @@
     float propCornerRadius = [self.properties[@"cornerRadius"] floatValue];
     float propStrokeWidth = [self.properties[@"strokeWidth"] floatValue];
     int propBackgroundColor = [self.properties[@"bgColor"] intValue];
-    int propStrokeColor = ((NSNumber *)self.properties[@"strokeColor"]).intValue;
+    int propStrokeColor = [self.properties[@"strokeColor"] intValue];
 
     // Calculate dynamic position
     CGFloat propX = [self calculateDynamicPos:propDynamicX];
@@ -162,6 +164,12 @@
     // Update other properties
     self.frame = CGRectMake(propX + insets.left, propY, propW, propH);
     self.alpha = [self.properties[@"opacity"] floatValue];
+    if (self.alpha < 0.02) {
+        self.alpha = 0.02;
+    }
+    if (isControlModifiable && self.alpha < 0.1) {
+        self.alpha = 0.1;
+    }
     self.backgroundColor = convertARGB2UIColor(propBackgroundColor);
 
     self.layer.borderColor = [convertARGB2UIColor(propStrokeColor) CGColor];
@@ -177,7 +185,124 @@
     return button != self &&
       MathUtils_dist(button.center.x, button.center.y, self.center.x, self.center.y)
         <= MAX(button.frame.size.width/2.0 + self.frame.size.width/2.0,
-               button.frame.size.height/2.0 + self.frame.size.height/2.0) + 8.0;
-  }
+               button.frame.size.height/2.0 + self.frame.size.height/2.0) + MIN_DISTANCE;
+}
+
+/**
+ * Try to snap, then align to neighboring buttons, given the provided coordinates.
+ * The new position is automatically applied to the View,
+ * regardless of if the View snapped or not.
+ *
+ * The new position is always dynamic, thus replacing previous dynamic positions
+ *
+ * @param x Coordinate on the x axis
+ * @param y Coordinate on the y axis
+ */
+- (void)snapAndAlignX:(CGFloat)x Y:(CGFloat)y {
+    NSString *dynamicX = [self generateDynamicX:x];
+    NSString *dynamicY = [self generateDynamicY:y];
+
+    CGRect frame = self.frame;
+    frame.origin.x = x;
+    frame.origin.y = y;
+    self.frame = frame;
+
+    for (ControlButton *button in self.superview.subviews) {
+        //Step 1: Filter unwanted buttons
+        if (![self canSnap:button]) continue;
+        
+        //Step 2: Get Coordinates
+        CGFloat button_top = button.frame.origin.y;
+        CGFloat button_bottom = button_top + button.frame.size.height;
+        CGFloat button_left = button.frame.origin.x;
+        CGFloat button_right = button_left + button.frame.size.width;
+
+        CGFloat top = y;
+        CGFloat bottom = y + frame.size.height;
+        CGFloat left = x;
+        CGFloat right = x + frame.size.width;
+
+        //Step 3: For each axis, we try to snap to the nearest
+        if(fabs(top - button_bottom) < MIN_DISTANCE){ // Bottom snap
+            // dynamicY = applySize(button.properties[@"dynamicY"], button) + applySize(" + ${height}", button) + " + ${margin}" ;
+            dynamicY = [NSString stringWithFormat:@"%@%@%@",
+                [self applySize:button.properties[@"dynamicY"] button:button],
+                [self applySize:@" + ${height}" button:button],
+                @" + ${margin}"
+            ];
+        } else if(fabs(button_top - bottom) < MIN_DISTANCE){ //Top snap
+            // dynamicY = applySize(button.properties[@"dynamicY"], button) + " - ${height} - ${margin}";
+            dynamicY = [NSString stringWithFormat:@"%@%@",
+                [self applySize:button.properties[@"dynamicY"] button:button],
+                @" - ${height} - ${margin}"
+            ];
+        }
+        if(![dynamicY isEqualToString:[self generateDynamicY:y]]){ //If we snapped
+            if(fabs(button_left - left) < MIN_DISTANCE){ //Left align snap
+                dynamicX = [self applySize:button.properties[@"dynamicX"] button:button];
+            } else if(fabs(button_right - right) < MIN_DISTANCE){ //Right align snap
+                // dynamicX = applySize(button.getProperties().dynamicX, button) + applySize(" + ${width}", button) + " - ${width}";
+                dynamicX = [NSString stringWithFormat:@"%@%@%@",
+                    [self applySize:button.properties[@"dynamicX"] button:button],
+                    [self applySize:@" + ${width}" button:button],
+                    @" - ${width}"
+                ];
+            }
+        }
+
+        if(fabs(button_left - right) < MIN_DISTANCE){ //Left snap
+            // dynamicX = applySize(button.getProperties().dynamicX, button) + " - ${width} - ${margin}";
+            dynamicX = [NSString stringWithFormat:@"%@%@",
+                [self applySize:button.properties[@"dynamicX"] button:button],
+                @" - ${width} - ${margin}"
+            ];
+        } else if(fabs(left - button_right) < MIN_DISTANCE){ //Right snap
+            // dynamicX = applySize(button.getProperties().dynamicX, button) + applySize(" + ${width}", button) + " + ${margin}";
+            dynamicX = [NSString stringWithFormat:@"%@%@%@",
+                [self applySize:button.properties[@"dynamicX"] button:button],
+                [self applySize:@" + ${width}" button:button],
+                @" + ${margin}"
+            ];
+        }
+        if(![dynamicX isEqualToString:[self generateDynamicX:x]]){ //If we snapped
+            if(fabs(button_top - top) < MIN_DISTANCE){ //Top align snap
+                // dynamicY = applySize(button.getProperties().dynamicY, button);
+                dynamicY = [self applySize:button.properties[@"dynamicY"] button:button];
+            } else if(fabs(button_bottom - bottom) < MIN_DISTANCE){ //Bottom align snap
+                // dynamicY = applySize(button.getProperties().dynamicY, button) + applySize(" + ${height}", button) + " - ${height}";
+                dynamicY = [NSString stringWithFormat:@"%@%@%@",
+                    [self applySize:button.properties[@"dynamicY"] button:button],
+                    [self applySize:@" + ${height}" button:button],
+                    @" - ${height}"
+                ];
+            }
+        }
+    }
+
+    self.properties[@"dynamicX"] = dynamicX;
+    self.properties[@"dynamicY"] = dynamicY;
+    frame.origin.x = [self calculateDynamicPos:dynamicX];
+    frame.origin.y = [self calculateDynamicPos:dynamicY];
+    self.frame = frame;
+}
+
+/**
+ * Do a pre-conversion of an equation using values from a button,
+ * so the variables can be used for another button
+ *
+ * Internal use only.
+ * @param equation The dynamic position as a String
+ * @param button The button to get the values from.
+ * @return The pre-processed equation as a String.
+ */
+- (NSString *)applySize:(NSString *)equation button:(ControlButton *)button {
+    NSString *str = [equation stringByReplacingOccurrencesOfString:@"${right}" withString:@"(${screen_width} - ${width})"];
+    str = [str stringByReplacingOccurrencesOfString:@"${bottom}" withString:@"(${screen_height} - ${height})"];
+    // "(px(" + Tools.pxToDp(button.getProperties().getHeight()) + ") /" + PREF_BUTTONSIZE + " * ${preferred_scale})"
+    str = [str stringByReplacingOccurrencesOfString:@"${height}" withString:[NSString stringWithFormat:@"(px(%f) / %f * ${preferred_scale})", button.frame.size.height, [getPreference(@"button_scale") floatValue]]];
+    // "(px(" + Tools.pxToDp(button.getProperties().getWidth()) + ") / " + PREF_BUTTONSIZE + " * ${preferred_scale})"
+    str = [str stringByReplacingOccurrencesOfString:@"${width}" withString:[NSString stringWithFormat:@"(px(%f) / %f * ${preferred_scale})", button.frame.size.width, [getPreference(@"button_scale") floatValue]]];
+    return str;
+}
 
 @end

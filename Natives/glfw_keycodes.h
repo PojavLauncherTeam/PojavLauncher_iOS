@@ -73,7 +73,7 @@
  */
 
 /* The unknown key */
-#define GLFW_KEY_UNKNOWN            -1
+#define GLFW_KEY_UNKNOWN            0 // -1
 
 /* Printable keys */
 #define GLFW_KEY_SPACE              32
@@ -134,10 +134,10 @@
 #define GLFW_KEY_BACKSPACE          259
 #define GLFW_KEY_INSERT             260
 #define GLFW_KEY_DELETE             261
-#define GLFW_KEY_RIGHT              262
-#define GLFW_KEY_LEFT               263
-#define GLFW_KEY_DOWN               264
-#define GLFW_KEY_UP                 265
+#define GLFW_KEY_DPAD_RIGHT              262
+#define GLFW_KEY_DPAD_LEFT               263
+#define GLFW_KEY_DPAD_DOWN               264
+#define GLFW_KEY_DPAD_UP                 265
 #define GLFW_KEY_PAGE_UP            266
 #define GLFW_KEY_PAGE_DOWN          267
 #define GLFW_KEY_HOME               268
@@ -172,23 +172,23 @@
 #define GLFW_KEY_F23                312
 #define GLFW_KEY_F24                313
 #define GLFW_KEY_F25                314
-#define GLFW_KEY_KP_0               320
-#define GLFW_KEY_KP_1               321
-#define GLFW_KEY_KP_2               322
-#define GLFW_KEY_KP_3               323
-#define GLFW_KEY_KP_4               324
-#define GLFW_KEY_KP_5               325
-#define GLFW_KEY_KP_6               326
-#define GLFW_KEY_KP_7               327
-#define GLFW_KEY_KP_8               328
-#define GLFW_KEY_KP_9               329
-#define GLFW_KEY_KP_DECIMAL         330
-#define GLFW_KEY_KP_DIVIDE          331
-#define GLFW_KEY_KP_MULTIPLY        332
-#define GLFW_KEY_KP_SUBTRACT        333
-#define GLFW_KEY_KP_ADD             334
-#define GLFW_KEY_KP_ENTER           335
-#define GLFW_KEY_KP_EQUAL           336
+#define GLFW_KEY_NUMPAD_0               320
+#define GLFW_KEY_NUMPAD_1               321
+#define GLFW_KEY_NUMPAD_2               322
+#define GLFW_KEY_NUMPAD_3               323
+#define GLFW_KEY_NUMPAD_4               324
+#define GLFW_KEY_NUMPAD_5               325
+#define GLFW_KEY_NUMPAD_6               326
+#define GLFW_KEY_NUMPAD_7               327
+#define GLFW_KEY_NUMPAD_8               328
+#define GLFW_KEY_NUMPAD_9               329
+#define GLFW_KEY_NUMPAD_DECIMAL         330
+#define GLFW_KEY_NUMPAD_DIVIDE          331
+#define GLFW_KEY_NUMPAD_MULTIPLY        332
+#define GLFW_KEY_NUMPAD_SUBTRACT        333
+#define GLFW_KEY_NUMPAD_ADD             334
+#define GLFW_KEY_NUMPAD_ENTER           335
+#define GLFW_KEY_NUMPAD_EQUAL           336
 #define GLFW_KEY_LEFT_SHIFT         340
 #define GLFW_KEY_LEFT_CONTROL       341
 #define GLFW_KEY_LEFT_ALT           342

@@ -48,6 +48,7 @@ add_executable(PojavLauncher
   AboutLauncherViewController.m
   AppDelegate.m
   CustomControlsViewController.m
+  FileListViewController.m
   JavaGUIViewController.m
   LauncherFAQViewController.m
   LauncherPreferences.m

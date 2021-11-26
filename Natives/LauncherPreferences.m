@@ -44,6 +44,7 @@ void loadPreferences() {
     setDefaultValueForPref(@"mem_warn", @YES);
     setDefaultValueForPref(@"java_warn", @YES);
     setDefaultValueForPref(@"jb_warn", @YES);
+    setDefaultValueForPref(@"customctrl_warn", @YES);
     setDefaultValueForPref(@"disable_gl4es_shaderconv", @NO);
     setDefaultValueForPref(@"slideable_hotbar", @NO);
 

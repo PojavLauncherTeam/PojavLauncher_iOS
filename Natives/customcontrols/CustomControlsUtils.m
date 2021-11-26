@@ -12,7 +12,7 @@
 NSMutableDictionary* createButton(NSString* name, int* keycodes, NSString* dynamicX, NSString* dynamicY, CGFloat width, CGFloat height) {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     dict[@"name"] = name;
-    dict[@"keycodes"] = [[NSMutableArray alloc] init];
+    dict[@"keycodes"] = [[NSMutableArray alloc] initWithCapacity:4];
     for (int i = 0; i < 4; i++) {
         [dict[@"keycodes"] addObject:@(keycodes[i])];
     }
@@ -23,6 +23,7 @@ NSMutableDictionary* createButton(NSString* name, int* keycodes, NSString* dynam
     dict[@"opacity"] = @(1);
     dict[@"cornerRadius"] = @(0);
     dict[@"bgColor"] = @(0x4d000000);
+    dict[@"isDynamicBtn"] = @(YES);
     return dict;
 }
 
@@ -40,10 +41,15 @@ int convertUIColor2ARGB(UIColor* color) {
     int r = (int) (rgba[0] * 255);
     int g = (int) (rgba[1] * 255);
     int b = (int) (rgba[2] * 255);
-    return (a << 24)|
-           (r << 16)|
-           (g << 8) |
-           (b << 0);
+    return (a << 24) | (r << 16) | (g << 8) | (b << 0);
+}
+
+int convertUIColor2RGB(UIColor* color) {
+    const CGFloat *rgb = CGColorGetComponents(color.CGColor);
+    int r = (int) (rgb[0] * 255);
+    int g = (int) (rgb[1] * 255);
+    int b = (int) (rgb[2] * 255);
+    return (0xFF << 24) | (r << 16) | (g << 8) | (b << 0);
 }
 
 void convertV2Layout(NSMutableDictionary* dict) {
@@ -158,6 +164,7 @@ void generateAndSaveDefaultControl() {
     dict[@"version"] = @(4);
     dict[@"scaledAt"] = @(100);
     dict[@"mControlDataList"] = [[NSMutableArray alloc] init];
+    dict[@"mDrawerDataList"] = [[NSMutableArray alloc] init];
     [dict[@"mControlDataList"] addObject:createButton(@"Keyboard",
         (int[]){SPECIALBTN_KEYBOARD,0,0,0},
         @"${margin} * 3 + ${width} * 2",
@@ -322,6 +329,7 @@ void loadControlObject(UIView* targetView, NSMutableDictionary* controlDictionar
 			    walkToButton(subView);
 			    [targetView addSubview:subView];
 		    }
+            [drawer syncButtons];
         }
 
         controlDictionary[@"scaledAt"] = @([getPreference(@"button_scale") floatValue]);

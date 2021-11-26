@@ -19,15 +19,16 @@
     return instance;
 }
 
-- (void)addButtonProp:(NSMutableDictionary *)properties {
-    [self addButton:[ControlSubButton buttonWithProperties:self.properties]];
+- (ControlSubButton *)addButtonProp:(NSMutableDictionary *)prop {
+    [self.drawerData[@"buttonProperties"] addObject:prop];
+    return [self addButton:[ControlSubButton buttonWithProperties:prop]];
 }
 
-- (void)addButton:(ControlSubButton *)button {
+- (ControlSubButton *)addButton:(ControlSubButton *)button {
     [self.buttons addObject:button];
     button.parentDrawer = self;
     button.hidden = !isControlModifiable;
-    [self syncButtons];
+    return button;
 }
 
 - (void)restoreButtonVisibility {
@@ -106,7 +107,12 @@
 }
 
 - (BOOL)canSnap:(ControlButton *)button {
-    return [super canSnap:button] && [self containsChild:button];
+    return [super canSnap:button] && ![self containsChild:button];
+}
+
+- (void)snapAndAlignX:(CGFloat)x Y:(CGFloat)y {
+    [super snapAndAlignX:x Y:y];
+    [self alignButtons];
 }
 
 @end

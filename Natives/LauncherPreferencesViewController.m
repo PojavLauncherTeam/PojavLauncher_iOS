@@ -19,6 +19,7 @@
 #define MKGDIR 11
 #define RMGDIR 12
 #define SLIDEHOTBAR 13
+#define SAFEAREA 14
 
 #define TAG_BTNSCALE 98
 #define TAG_RESOLUTION 99
@@ -47,6 +48,8 @@
 
 #define TAG_DEBUGLOG 111
 #define TAG_SLIDEHOTBAR 112
+
+#define TAG_SAFEAREA 113
 
 @interface LauncherPreferencesViewController () <UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDelegate> {
 }
@@ -493,6 +496,8 @@ int tempIndex;
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:NOSHADERCONV];}],
             [UIAction actionWithTitle:@"Slideable hotbar" image:[[UIImage systemImageNamed:@"slider.horizontal.below.rectangle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:SLIDEHOTBAR];}],
+            [UIAction actionWithTitle:@"Safe area" image:[[UIImage systemImageNamed:@"crop"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:SAFEAREA];}],
             [UIAction actionWithTitle:@"Reset warnings" image:[[UIImage systemImageNamed:@"exclamationmark.triangle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:RESETWARN];}],
             [UIAction actionWithTitle:@"Type switches" image:[[UIImage systemImageNamed:@"list.bullet"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
@@ -764,6 +769,7 @@ int tempIndex;
         UIAlertAction *gdirectory = [UIAlertAction actionWithTitle:@"Game directory"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:GDIRECTORY];}];
         UIAlertAction *noshaderconv = [UIAlertAction actionWithTitle:@"Disable shaderconv" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:NOSHADERCONV];}];
         UIAlertAction *slidehotbar = [UIAlertAction actionWithTitle:@"Slideable hotbar" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:SLIDEHOTBAR];}];
+        UIAlertAction *safearea = [UIAlertAction actionWithTitle:@"Safe area" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:SAFEAREA];}];
         UIAlertAction *resetwarn = [UIAlertAction actionWithTitle:@"Reset warnings" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:RESETWARN];}];
         UIAlertAction *typesel = [UIAlertAction actionWithTitle:@"Type switches" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:TYPESEL];}];
         UIAlertAction *debuglog = [UIAlertAction actionWithTitle:@"Debug logging" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:DEBUGLOG];}];
@@ -779,6 +785,7 @@ int tempIndex;
         [helpAlert addAction:gdirectory];
         [helpAlert addAction:noshaderconv];
         [helpAlert addAction:slidehotbar];
+        [helpAlert addAction:safearea];
         [helpAlert addAction:resetwarn];
         [helpAlert addAction:typesel];
         [helpAlert addAction:debuglog];
@@ -816,6 +823,9 @@ int tempIndex;
     } else if(setting == SLIDEHOTBAR) {
         title = @"Slideable hotbar";
         message = @"This option allows you to use a finger to slide between hotbar slots.";
+    } else if(setting == SAFEAREA) {
+        title = @"Safe area";
+        message = @"This option moves the game surface area into a safe area instead of fullscreen. This option is only available for iPhones with notch.";
     } else if(setting == RESETWARN) {
         title = @"Reset warnings";
         message = @"This option re-enables all warnings to be shown again.";
@@ -871,6 +881,7 @@ int tempIndex;
             setPreference(@"local_warn", @YES);
             setPreference(@"java_warn", @YES);
             setPreference(@"jb_warn", @YES);
+            setPreference(@"customctrl_warn", @YES);
             {
             UIAlertController *resetWarn = [UIAlertController alertControllerWithTitle:@"Warnings reset." message:@"Restart to show warnings again." preferredStyle:UIAlertControllerStyleActionSheet];
             [self setPopoverProperties:resetWarn.popoverPresentationController sender:(UIButton *)sender];

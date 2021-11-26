@@ -7,6 +7,7 @@
 #import "LauncherViewController.h"
 #import "LoginViewController.h"
 #import "AboutLauncherViewController.h"
+#import "FileListViewController.h"
 #import "LauncherFAQViewController.h"
 #import "LauncherPreferences.h"
 #import "UpdateHistoryViewController.h"
@@ -18,38 +19,6 @@
 #define TYPE_MICROSOFT 1
 #define TYPE_MOJANG 2
 #define TYPE_OFFLINE 3
-
-void loginAccountInput(UINavigationController *controller, int type, const char* data_c) {
-    assert(data_c);
-
-    JNIEnv *env;
-    (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &env, NULL);
-
-    jstring data = (*env)->NewStringUTF(env, data_c);
-    assert(data);
-
-    jclass clazz = (*env)->FindClass(env, "net/kdt/pojavlaunch/uikit/AccountJNI");
-    assert(clazz);
-
-    jmethodID method = (*env)->GetStaticMethodID(env, clazz, "loginAccount", "(ILjava/lang/String;)Z");
-    assert(method);
-
-    jboolean result = (*env)->CallStaticBooleanMethod(env, clazz, method, type, data);
-
-    (*runtimeJavaVMPtr)->DetachCurrentThread(runtimeJavaVMPtr);
-
-    if (result == JNI_TRUE) {
-        if ([NSThread isMainThread]) {
-            LauncherViewController *vc = [[LauncherViewController alloc] init];
-            [controller pushViewController:vc animated:YES];
-        } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                LauncherViewController *vc = [[LauncherViewController alloc] init];
-                [controller pushViewController:vc animated:YES];
-            });
-        }
-    }
-}
 
 #pragma mark - LoginViewController
 @interface LoginViewController () <ASWebAuthenticationPresentationContextProviding, UIPopoverPresentationControllerDelegate>{
@@ -212,6 +181,38 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
     }
 }
 
+- (void)loginAccountInput:(int)type data:(NSString *)data {
+    JNIEnv *env;
+    (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &env, NULL);
+
+    jstring jdata = (*env)->NewStringUTF(env, data.UTF8String);
+    assert(jdata);
+
+    jclass clazz = (*env)->FindClass(env, "net/kdt/pojavlaunch/uikit/AccountJNI");
+    assert(clazz);
+
+    jmethodID method = (*env)->GetStaticMethodID(env, clazz, "loginAccount", "(ILjava/lang/String;)Z");
+    assert(method);
+
+    jboolean result = (*env)->CallStaticBooleanMethod(env, clazz, method, type, jdata);
+
+    if (![NSThread isMainThread]) {
+        (*runtimeJavaVMPtr)->DetachCurrentThread(runtimeJavaVMPtr);
+    }
+
+    if (result == JNI_TRUE) {
+        if ([NSThread isMainThread]) {
+            LauncherViewController *vc = [[LauncherViewController alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                LauncherViewController *vc = [[LauncherViewController alloc] init];
+                [self.navigationController pushViewController:vc animated:YES];
+            });
+        }
+    }
+}
+
 - (void)loginUsername:(int)type {
     UIAlertController *controller = [UIAlertController alertControllerWithTitle: @"Login"
         message: @(type == TYPE_MOJANG ?
@@ -238,7 +239,6 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
         NSArray *textFields = controller.textFields;
         UITextField *usernameField = textFields[0];
 
-        const char *username = [usernameField.text UTF8String];
         if (type == TYPE_MOJANG) {
             [self loginMojangWithUsername:usernameField.text password:((UITextField *) textFields[1]).text];
         } else {
@@ -246,9 +246,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
                 controller.message = @"Username must be at least 3 characters and maximum 16 characters";
                 [self presentViewController:controller animated:YES completion:nil];
             } else {
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-                    loginAccountInput(self.navigationController, TYPE_OFFLINE, username);
-                });
+                [self loginAccountInput:TYPE_OFFLINE data:usernameField.text];
             }
         }
     }]];
@@ -275,7 +273,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
                 if ([urlString containsString:@"/auth/?code="] == YES) {
                     NSArray *components = [urlString componentsSeparatedByString:@"/auth/?code="];
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-                        loginAccountInput(self.navigationController, TYPE_MICROSOFT, [components[1] UTF8String]);
+                        [self loginAccountInput:TYPE_MICROSOFT data:components[1]];
                     });
                 } else {
                     NSArray *components = [urlString componentsSeparatedByString:@"/auth/?error="];
@@ -326,7 +324,11 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 }
 
 - (void)loginAccount:(UIButton *)sender {
-    LoginListViewController *vc = [[LoginListViewController alloc] init];
+    FileListViewController *vc = [[FileListViewController alloc] init];
+    vc.listPath = [NSString stringWithFormat:@"%s/accounts", getenv("POJAV_HOME")];
+    vc.whenItemSelected = ^void(NSString* name) {
+        [self loginAccountInput:TYPE_SELECTACC data:name];
+    };
     vc.modalPresentationStyle = UIModalPresentationPopover;
     vc.preferredContentSize = CGSizeMake(350, 250);
     
@@ -381,7 +383,7 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
                 NSLog(@"DBG: Login succeed: %@, %@, %@, %@", out_accessToken, out_clientToken, out_profileID, out_username);
 */
                 NSAssert(dataStr != nil, @"account data should not be null");
-                loginAccountInput(self.navigationController, TYPE_MOJANG, [dataStr UTF8String]);
+                [self loginAccountInput:TYPE_MOJANG data:dataStr];
             }
         } else {
             NSString *err_title = [jsonArray valueForKey:@"error"];
@@ -433,84 +435,6 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 #pragma mark - ASWebAuthenticationPresentationContextProviding
 - (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session  API_AVAILABLE(ios(13.0)){
     return UIApplication.sharedApplication.windows.firstObject;
-}
-
-@end
-
-#pragma mark - LoginListViewController
-@interface LoginListViewController () {
-}
-
-@property(nonatomic, strong) NSMutableArray *accountList;
-
-@end
-
-@implementation LoginListViewController
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-
-    if (self.accountList == nil) {
-        self.accountList = [NSMutableArray array];
-    } else {
-        [self.accountList removeAllObjects];
-    }
-
-    // List accounts
-    NSFileManager *fm = [NSFileManager defaultManager];
-    NSString *dir = [NSString stringWithFormat:@"%s/accounts", getenv("POJAV_HOME")];
-    NSArray *files = [fm contentsOfDirectoryAtPath:dir error:nil];
-    for(NSString *file in files) {
-        NSString *path = [dir stringByAppendingPathComponent:file];
-        BOOL isDir = NO;
-        [fm fileExistsAtPath:path isDirectory:(&isDir)];
-        if(!isDir && [file hasSuffix:@".json"]) {
-            [self.accountList addObject:[file stringByDeletingPathExtension]];
-        }
-    }
-
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-
-    int width = (int) roundf(screenBounds.size.width);
-    int height = (int) roundf(screenBounds.size.height) - self.navigationController.navigationBar.frame.size.height;
-
-    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return [self.accountList count];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSString *simpleTableIdentifier = @"cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
- 
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
-    }
- 
-    cell.textLabel.text = [self.accountList objectAtIndex:indexPath.row];
-    return cell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self dismissViewControllerAnimated:YES completion:nil];
-
-    NSString *str = [self.accountList objectAtIndex:indexPath.row];
-    loginAccountInput((UINavigationController *)self.presentingViewController, TYPE_SELECTACC, [str UTF8String]);
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSString *str = [self.accountList objectAtIndex:indexPath.row];
-        char accPath[2048];
-        sprintf(accPath, "%s/accounts/%s.json", getenv("POJAV_HOME"), [str UTF8String]);
-        remove(accPath);
-        [self.accountList removeObjectAtIndex:indexPath.row];
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }
 }
 
 @end
