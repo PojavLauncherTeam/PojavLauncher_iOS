@@ -60,13 +60,13 @@ jobs:
       - name: Upload regular artifact
         uses: actions/upload-artifact@v2
         with:
-          name: net.kdt.pojavlauncher.development_iphoneos-arm.deb
+          name: net.kdt.pojavlauncher.release_iphoneos-arm.deb
           path: artifacts/net.kdt.pojavlauncher.*_iphoneos-arm.deb
           
       - name: Upload rootless artifact
         uses: actions/upload-artifact@v2
         with:
-          name: net.kdt.pojavlauncher.development-rootless_iphoneos-arm.deb
+          name: net.kdt.pojavlauncher.release-rootless_iphoneos-arm.deb
           path: artifacts/net.kdt.pojavlauncher.*_iphoneos-arm64.deb
 
       - name: Upload PojavLauncher.dSYM
