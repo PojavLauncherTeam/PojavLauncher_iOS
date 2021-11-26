@@ -42,7 +42,7 @@
     [boldJDKView setFont:[UIFont boldSystemFontOfSize:20]];
 
     UILabel *JDKView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, boldJDKView.frame.origin.y + boldJDKView.frame.size.height, width - 40, 30.0)];
-    JDKView.text = @"In order to use these versions, you need to install openjdk-8-jre from Doregon's Repo and change Java home in Preferences to '/usr/lib/jvm/java-8-openjdk.'";
+    JDKView.text = @"In order to use these versions, you need to install openjdk-8-jre from Doregon's Repo and change Java home in Preferences to 'Java 8'.";
     JDKView.lineBreakMode = NSLineBreakByWordWrapping;
     JDKView.numberOfLines = 0;
     [JDKView sizeToFit];
@@ -56,7 +56,7 @@
     [boldSnapView setFont:[UIFont boldSystemFontOfSize:20]];
 
     UILabel *snapView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, boldSnapView.frame.origin.y + boldSnapView.frame.size.height, width - 40, 30.0)];
-    snapView.text = @"In order to use these versions, you need to follow the instructions on our website (Recent updates > Preliminary support for 1.17)";
+    snapView.text = @"In order to use these versions, you need to install openjdk-16-jre and change the Renderer in Preferences to tinygl4angle.";
     snapView.lineBreakMode = NSLineBreakByWordWrapping;
     snapView.numberOfLines = 0;
     [snapView sizeToFit];
