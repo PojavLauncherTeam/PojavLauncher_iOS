@@ -69,7 +69,7 @@ PACKAGING  =  \
 	mkdir -p $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)_$(VERSION)_iphoneos-arm; \
 	cd $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)_$(VERSION)_iphoneos-arm; \
 	mkdir -p {DEBIAN,Applications,usr/share/pojavlauncher/{instances/default,Library/{Application\ Support,Caches}}}; \
-	cd var/mobile/Documents/.pojavlauncher; \
+	cd usr/share/pojavlauncher; \
 	ln -sf ../../instances/default Library/Application\ Support/minecraft; \
 	cd $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)_$(VERSION)_iphoneos-arm; \
 	if [ '$(NOSTDIN)' = '1' ]; then \
