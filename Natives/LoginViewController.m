@@ -450,34 +450,23 @@ void loginAccountInput(UINavigationController *controller, int type, const char*
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    [self setTitle:@"Select account"];
-
     if (self.accountList == nil) {
         self.accountList = [NSMutableArray array];
     } else {
         [self.accountList removeAllObjects];
     }
-    
+
     // List accounts
-    // TODO: convert to objc
-    DIR *d;
-    struct dirent *dir;
-    char accPath[2048];
-    sprintf(accPath, "%s/accounts", getenv("POJAV_HOME"));
-    d = opendir(accPath);
-    if (d) {
-        int i = 0;
-        while ((dir = readdir(d)) != NULL) {
-            // Skip "." and ".."
-            if (i < 2) {
-                i++;
-                continue;
-            } else if ([@(dir->d_name) hasSuffix:@".json"]) {
-                NSString *trimmedName= [@(dir->d_name) substringToIndex:((int)[@(dir->d_name) length] - 5)];
-                [self.accountList addObject:trimmedName];
-            }
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSString *dir = [NSString stringWithFormat:@"%s/accounts", getenv("POJAV_HOME")];
+    NSArray *files = [fm contentsOfDirectoryAtPath:dir error:nil];
+    for(NSString *file in files) {
+        NSString *path = [dir stringByAppendingPathComponent:file];
+        BOOL isDir = NO;
+        [fm fileExistsAtPath:path isDirectory:(&isDir)];
+        if(!isDir && [file hasSuffix:@".json"]) {
+            [self.accountList addObject:[file stringByDeletingPathExtension]];
         }
-        closedir(d);
     }
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];

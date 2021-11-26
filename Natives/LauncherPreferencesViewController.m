@@ -89,6 +89,8 @@ NSString *lib_gl4es115 = @"libgl4es_115.dylib";
 NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
 NSString *lib_zink = @"libOSMesaOverride.dylib";
 
+int tempIndex;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -212,12 +214,16 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
     rendTextField.placeholder = @"Override renderer...";
     if ([getPreference(@"renderer") isEqualToString:lib_gl4es114]) {
         rendTextField.text = gl4es114;
+        tempIndex = 0;
     } else if ([getPreference(@"renderer") isEqualToString:lib_gl4es115]) {
         rendTextField.text = gl4es115;
+        tempIndex = 1;
     } else if ([getPreference(@"renderer") isEqualToString:lib_tinygl4angle]) {
         rendTextField.text = tinygl4angle;
+        tempIndex = 2;
     } else if ([getPreference(@"renderer") isEqualToString:lib_zink]) {
         rendTextField.text = zink;
+        tempIndex = 3;
     }
     
     rendTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
@@ -229,13 +235,13 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
     [rendererList addObject:gl4es115];
     [rendererList addObject:tinygl4angle];
     [rendererList addObject:zink];
-
-    [self instanceDirCont];
     
     rendPickerView = [[UIPickerView alloc] init];
     rendPickerView.delegate = self;
     rendPickerView.dataSource = self;
     rendPickerView.tag = TAG_PICKER_REND;
+    [rendPickerView reloadAllComponents];
+    [rendPickerView selectRow:tempIndex inComponent:0 animated:NO];
     UIToolbar *rendPickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
     UIBarButtonItem *rendFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     UIBarButtonItem *rendDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeKeyboard:)];
@@ -292,6 +298,13 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
     jhomePickerView.delegate = self;
     jhomePickerView.dataSource = self;
     jhomePickerView.tag = TAG_PICKER_JHOME;
+    [jhomePickerView reloadAllComponents];
+    for (int i = 0; i < jhomeList.count; i++) {
+        if ([jhomeList[i] isEqualToString:jhomeTextField.text]) {
+            [jhomePickerView selectRow:i inComponent:0 animated:NO];
+            break;
+        }
+    }
     UIToolbar *jhomePickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
     UIBarButtonItem *jhomeFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     UIBarButtonItem *jhomeDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeKeyboard:)];
@@ -329,6 +342,7 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
     gdirPickerView.delegate = self;
     gdirPickerView.dataSource = self;
     gdirPickerView.tag = TAG_PICKER_GDIR;
+    [self instanceDirCont];
     UIToolbar *gdirPickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
     UIBarButtonItem *gdirFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     UIBarButtonItem *gdirDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeKeyboard:)];
@@ -611,15 +625,29 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
 -(void)instanceDirCont {
     NSFileManager *fm = [NSFileManager defaultManager];
     NSArray* files = [fm contentsOfDirectoryAtPath:[NSString stringWithFormat:@"%s/instances", getenv("POJAV_HOME")] error:nil];
-    gdirList = [NSMutableArray arrayWithCapacity:10];
+    if (gdirList == nil) {
+        gdirList = [NSMutableArray arrayWithCapacity:10];
+    } else {
+        [gdirList removeAllObjects];
+    }
+    BOOL updateTempIndex = YES;
+    tempIndex = 0;
     for(NSString *file in files) {
         NSString *path = [[NSString stringWithFormat:@"%s/instances", getenv("POJAV_HOME")] stringByAppendingPathComponent:file];
         BOOL isDir = NO;
         [fm fileExistsAtPath:path isDirectory:(&isDir)];
         if(isDir) {
             [gdirList addObject:file];
+            if ([file isEqualToString:gdirTextField.text]) {
+                updateTempIndex = NO;
+            }
+            if (updateTempIndex) {
+                ++tempIndex;
+            }
         }
     }
+    [gdirPickerView reloadAllComponents];
+    [gdirPickerView selectRow:tempIndex inComponent:0 animated:NO];
 }
 
 - (void)createDir:(UIBarButtonItem *)sender {

@@ -4,6 +4,8 @@
 #import "ios_uikit_bridge.h"
 
 #import "customcontrols/ControlButton.h"
+#import "customcontrols/ControlDrawer.h"
+#import "customcontrols/ControlSubButton.h"
 #import "customcontrols/CustomControlsUtils.h"
 
 #include "glfw_keycodes.h"
@@ -14,12 +16,8 @@
 #include "GLES2/gl2.h"
 #include "GLES2/gl2ext.h"
 
-
-// Debugging purposes
+// Debugging only
 // #define DEBUG_VISIBLE_TEXT_FIELD
-
-#define APPLY_SCALE(KEY) \
-  KEY = @([(NSNumber *)KEY floatValue] * savedScale / currentScale);
 
 #define INPUT_SPACE_CHAR @"                    "
 #define INPUT_SPACE_LENGTH 20
@@ -98,6 +96,8 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 {
     [super viewDidLoad];
     viewController = self;
+    isControlModifiable = NO;
+
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
     [self setNeedsUpdateOfHomeIndicatorAutoHidden];
@@ -129,7 +129,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 
     notchOffset = insets.left;
     width = width - notchOffset * 2;
-    CGFloat buttonScale = ((NSNumber *) getPreference(@"button_scale")).floatValue / 100.0;
+    CGFloat buttonScale = [getPreference(@"button_scale") floatValue] / 100.0;
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnClick:)];
@@ -166,6 +166,13 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
         [self.surfaceView addGestureRecognizer:mouseWheelGesture];
     }
 
+    // Virtual mouse
+    virtualMouseFrame = CGRectMake(screenBounds.size.width / 2, screenBounds.size.height / 2, 18, 27);
+    self.mousePointerView = [[UIImageView alloc] initWithFrame:virtualMouseFrame];
+    self.mousePointerView.hidden = YES;
+    self.mousePointerView.image = [UIImage imageNamed:@"mouse_pointer.png"];
+    [self.view addSubview:self.mousePointerView];
+
 #ifndef DEBUG_VISIBLE_TEXT_FIELD
     inputView = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
     inputView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.0f];
@@ -200,25 +207,15 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
         self.cc_dictionary = [NSJSONSerialization JSONObjectWithData:cc_objc_data options:NSJSONReadingMutableContainers error:&cc_error];
         if (cc_error != nil) {
             showDialog(self, @"Error parsing JSON", cc_error.localizedDescription);
-        } else if (convertLayoutIfNecessary(self.cc_dictionary)) {
-            NSMutableArray *cc_controlDataList = self.cc_dictionary[@"mControlDataList"];
+        } else {
             CGFloat currentScale = [self.cc_dictionary[@"scaledAt"] floatValue];
             CGFloat savedScale = [getPreference(@"button_scale") floatValue];
-            int cc_version = [self.cc_dictionary[@"version"] intValue];
-            for (NSMutableDictionary *cc_buttonDict in cc_controlDataList) {
-                BOOL isSwipeable = [cc_buttonDict[@"isSwipeable"] boolValue];
-                APPLY_SCALE(cc_buttonDict[@"width"]);
-                APPLY_SCALE(cc_buttonDict[@"height"]);
-                APPLY_SCALE(cc_buttonDict[@"strokeWidth"]);
-
-                ControlButton *button = [ControlButton initWithProperties:cc_buttonDict];
-                [button addTarget:self action:@selector(executebtn_down:) forControlEvents:UIControlEventTouchDown];
-                [button addTarget:self action:@selector(executebtn_up:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
-                [self.view addSubview:button];
+            loadControlObject(self.view, self.cc_dictionary, ^void(ControlButton* button) {
+                BOOL isSwipeable = [button.properties[@"isSwipeable"] boolValue];
 
                 BOOL isToggleCtrlBtn = NO;
                 for (int i = 0; i < 4; i++) {
-                    int keycodeInt = ((NSNumber *)cc_buttonDict[@"keycodes"][i]).intValue;
+                    int keycodeInt = [button.properties[@"keycodes"][i] intValue];
                     if (keycodeInt == SPECIALBTN_KEYBOARD) {
                         inputView.frame = button.frame;
                     }
@@ -226,6 +223,10 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
                         isToggleCtrlBtn = YES;
                     }
                 }
+
+                [button addTarget:self action:@selector(executebtn_down:) forControlEvents:UIControlEventTouchDown];
+                [button addTarget:self action:@selector(executebtn_up:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
+
                 if (isSwipeable) {
                     UIPanGestureRecognizer *panRecognizerButton = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(executebtn_swipe:)];
                     panRecognizerButton.delegate = self;
@@ -235,7 +236,8 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
                 if (!isToggleCtrlBtn) {
                     [self.togglableVisibleButtons addObject:button];
                 }
-            }
+            });
+
             self.cc_dictionary[@"scaledAt"] = @(savedScale);
         }
     }
@@ -268,6 +270,27 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     CGFloat screenScale = [[UIScreen mainScreen] scale];
     if (!isGrabbing) {
         screenScale *= resolutionScale;
+        if (virtualMouseEnabled) {
+            if (event == ACTION_MOVE) {
+                virtualMouseFrame.origin.x += location.x - lastVirtualMousePoint.x;
+                virtualMouseFrame.origin.y += location.y - lastVirtualMousePoint.y;
+                if (virtualMouseFrame.origin.x < 0) {
+                    virtualMouseFrame.origin.x = 0;
+                } else if (virtualMouseFrame.origin.x > self.view.frame.size.width) {
+                    virtualMouseFrame.origin.x = self.view.frame.size.width;
+                }
+                if (virtualMouseFrame.origin.y < 0) {
+                    virtualMouseFrame.origin.y = 0;
+                } else if (virtualMouseFrame.origin.y > self.view.frame.size.height) {
+                    virtualMouseFrame.origin.y = self.view.frame.size.height;
+                }
+            }
+            lastVirtualMousePoint = location;
+            self.mousePointerView.frame = virtualMouseFrame;
+            callback_SurfaceViewController_onTouch(event, virtualMouseFrame.origin.x * screenScale, virtualMouseFrame.origin.y * screenScale);
+            return;
+        }
+        lastVirtualMousePoint = location;
     }
     callback_SurfaceViewController_onTouch(event, location.x * screenScale, location.y * screenScale);
 }
@@ -620,21 +643,32 @@ int currentVisibility = 1;
                     [self executebtn_special_togglebtn:held];
                     break;
 
-                case SPECIALBTN_VIRTUALMOUSE:
-                case SPECIALBTN_SCROLLUP:
                 case SPECIALBTN_SCROLLDOWN:
-                    NSLog(@"Warning: button %@ sent unimplemented special keycode: %d", button.titleLabel.text, keycode);
+                    if (!held) {
+                        Java_org_lwjgl_glfw_CallbackBridge_nativeSendScroll(NULL, NULL, 0.0, 1.0);
+                    }
+                    break;
+
+                case SPECIALBTN_SCROLLUP:
+                    if (!held) {
+                        Java_org_lwjgl_glfw_CallbackBridge_nativeSendScroll(NULL, NULL, 0.0, -1.0);
+                    }
+
+                case SPECIALBTN_VIRTUALMOUSE:
+                    if (!isGrabbing && !held) {
+                        virtualMouseEnabled = !virtualMouseEnabled;
+                        self.mousePointerView.hidden = !virtualMouseEnabled;
+                    }
                     break;
 
                 default:
                     NSLog(@"Warning: button %@ sent unknown special keycode: %d", button.titleLabel.text, keycode);
                     break;
             }
-        } else {
+        } else if (keycode > 0) {
             // there's no key id 0, but we accidentally used -1 as a special key id, so we had to do that
             // if (keycode == 0) { keycode = -1; }
             // at the moment, send unknown keycode does nothing, may even cause performance issue, so ignore it
-            if (keycode == 0) continue;
             Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, keycode, 0, held, 0);
         }
     }
@@ -679,7 +713,14 @@ int currentVisibility = 1;
     if (held == 0) {
         currentVisibility = !currentVisibility;
         for (ControlButton *button in self.togglableVisibleButtons) {
-            button.hidden = currentVisibility;
+            if (!currentVisibility && ![button isKindOfClass:[ControlSubButton class]]) {
+                button.hidden = currentVisibility;
+                if ([button isKindOfClass:[ControlDrawer class]]) {
+                    [(ControlDrawer *)button restoreButtonVisibility];
+                }
+            } else if (currentVisibility) {
+                button.hidden = currentVisibility;
+            }
         }
 
 #ifndef DEBUG_VISIBLE_TEXT_FIELD

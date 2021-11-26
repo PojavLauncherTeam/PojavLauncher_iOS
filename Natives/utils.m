@@ -8,6 +8,11 @@
 
 #include "utils.h"
 
+CGFloat MathUtils_dist(CGFloat x1, CGFloat y1, CGFloat x2, CGFloat y2) {
+    const CGFloat x = (x2 - x1);
+    const CGFloat y = (y2 - y1);
+    return (CGFloat) hypot(x, y);
+ }
 void _CGDataProviderReleaseBytePointerCallback(void *info,const void *pointer) {
 }
 
@@ -49,6 +54,16 @@ void free_char_array(JNIEnv *env, jobjectArray jstringArray, char **charArray) {
 	free(charArray);
 }
 
+CGFloat dpToPx(CGFloat dp) {
+	CGFloat screenScale = [[UIScreen mainScreen] scale];
+	return dp * screenScale;
+}
+
+CGFloat pxToDp(CGFloat px) {
+	CGFloat screenScale = [[UIScreen mainScreen] scale];
+	return px / screenScale;
+}
+
 jstring convertStringJVM(JNIEnv* srcEnv, JNIEnv* dstEnv, jstring srcStr) {
     if (srcStr == NULL) {
         return NULL;
@@ -58,21 +73,6 @@ jstring convertStringJVM(JNIEnv* srcEnv, JNIEnv* dstEnv, jstring srcStr) {
     jstring dstStr = (*dstEnv)->NewStringUTF(dstEnv, srcStrC);
 	(*srcEnv)->ReleaseStringUTFChars(srcEnv, srcStr, srcStrC);
     return dstStr;
-}
-
-JNIEXPORT jint JNICALL Java_android_os_OpenJDKNativeRegister_nativeRegisterNatives(JNIEnv *env, jclass clazz, jstring registerSymbol) {
-	const char *register_symbol_c = (*env)->GetStringUTFChars(env, registerSymbol, 0);
-	void *symbol = dlsym(RTLD_DEFAULT, register_symbol_c);
-	if (symbol == NULL) {
-		printf("dlsym %s failed: %s\n", register_symbol_c, dlerror());
-		return -1;
-	}
-	
-	int (*registerNativesForClass)(JNIEnv*) = symbol;
-	int result = registerNativesForClass(env);
-	(*env)->ReleaseStringUTFChars(env, registerSymbol, register_symbol_c);
-	
-	return (jint) result;
 }
 
 JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_setLdLibraryPath(JNIEnv *env, jclass clazz, jstring ldLibraryPath) {

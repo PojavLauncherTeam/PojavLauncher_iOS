@@ -7,16 +7,6 @@
 #include "glfw_keycodes.h"
 #include "utils.h"
 
-// CGRectOffset(RECT, notchOffset, 0)
-#define ADD_BUTTON(NAME, KEY, RECT, VISIBLE) \
-    ControlButton *button_##KEY = [ControlButton initWithName:NAME keycode:KEY rect:CGRectMake(RECT.origin.x * buttonScale, RECT.origin.y * buttonScale, RECT.size.width * buttonScale, RECT.size.height * buttonScale) transparency:0.0f]; \
-    [button_##KEY addGestureRecognizer:[[UITapGestureRecognizer alloc] \
-        initWithTarget:self action:@selector(showControlPopover:)]]; \
-    [self.offsetView addSubview:button_##KEY];
-
-#define APPLY_SCALE(KEY) \
-  KEY = @([(NSNumber *)KEY floatValue] * savedScale / currentScale);
-
 int width;
 
 @interface CustomControlsViewController () <UIPopoverPresentationControllerDelegate>{
@@ -35,6 +25,7 @@ int width;
 {
     [super viewDidLoad];
     viewController = self;
+    isControlModifiable = YES;
 
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
@@ -46,7 +37,7 @@ int width;
     } else {
         self.view.backgroundColor = [UIColor whiteColor];
     }
-    
+
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     UIEdgeInsets insets = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets;
 
@@ -59,7 +50,7 @@ int width;
 
     int height = (int) roundf(screenBounds.size.height);
     width = width - insets.left - insets.right;
-    CGFloat buttonScale = ((NSNumber *) getPreference(@"button_scale")).floatValue / 100.0;
+    CGFloat buttonScale = [getPreference(@"button_scale") floatValue] / 100.0;
 
     UIPanGestureRecognizer *panRecognizer;
     panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(wasDragged:)];
@@ -73,31 +64,19 @@ int width;
     NSError *cc_error;
     NSString *cc_data = [NSString stringWithContentsOfFile:controlFilePath encoding:NSUTF8StringEncoding error:&cc_error];
 
-    if (cc_error != nil) {
+    if (cc_error) {
         NSLog(@"Error: could not read %@: %@", controlFilePath, cc_error.localizedDescription);
         showDialog(self, @"Error", [NSString stringWithFormat:@"Could not read %@: %@", controlFilePath, cc_error.localizedDescription]);
     } else {
         NSData* cc_objc_data = [cc_data dataUsingEncoding:NSUTF8StringEncoding];
         self.cc_dictionary = [NSJSONSerialization JSONObjectWithData:cc_objc_data options:NSJSONReadingMutableContainers error:&cc_error];
-        if (cc_error != nil) {
+        if (cc_error) {
             showDialog(self, @"Error parsing JSON", cc_error.localizedDescription);
-        } else if (convertLayoutIfNecessary(self.cc_dictionary)) {
-            NSMutableArray *cc_controlDataList = self.cc_dictionary[@"mControlDataList"];
-            CGFloat currentScale = ((NSNumber *)self.cc_dictionary[@"scaledAt"]).floatValue;
-            CGFloat savedScale = ((NSNumber *)getPreference(@"button_scale")).floatValue;
-            int cc_version = ((NSNumber *)self.cc_dictionary[@"version"]).intValue;
-            for (int i = 0; i < (int) cc_controlDataList.count; i++) {
-                NSMutableDictionary *cc_buttonDict = cc_controlDataList[i];
-                APPLY_SCALE(cc_buttonDict[@"width"]);
-                APPLY_SCALE(cc_buttonDict[@"height"]);
-                APPLY_SCALE(cc_buttonDict[@"strokeWidth"]);
-
-                ControlButton *button = [ControlButton initWithProperties:cc_buttonDict];
+        } else {
+            loadControlObject(self.offsetView, self.cc_dictionary, ^void(ControlButton* button) {
                 [button addGestureRecognizer:[[UITapGestureRecognizer alloc]
                     initWithTarget:self action:@selector(showControlPopover:)]];
-                [self.offsetView addSubview:button];
-            }
-            self.cc_dictionary[@"scaledAt"] = @(savedScale);
+            });
         }
     }
 } 
@@ -182,19 +161,9 @@ int width;
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    // dirty hack to avoid displaying contents in the arrow
-/*
-    switch (popoverPresentationController.arrowDirection) {
-        case UIPopoverArrowDirectionUp:
-            
-        case UIPopoverArrowDirectionDown:
-        case UIPopoverArrowDirectionLeft:
-        case UIPopoverArrowDirectionRight:
-    }
-*/
     self.view.frame = CGRectMake(0, 0, self.preferredContentSize.width, self.preferredContentSize.height);
 
-    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.preferredContentSize.width, self.preferredContentSize.height)];
+    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(5.0, 5.0, self.preferredContentSize.width - 10.0, self.preferredContentSize.height - 10.0)];
     [self.view addSubview:self.scrollView];
 
     if (self.shouldDisplayButtonEditor) {
@@ -204,9 +173,14 @@ int width;
     }
 }
 
+- (void)viewSafeAreaInsetsDidChange {
+    [super viewSafeAreaInsetsDidChange];
+    self.scrollView.contentInset = self.view.safeAreaInsets;
+}
+
 - (void)displayButtonEditor {
-    CGFloat width = self.view.frame.size.width;
-    CGFloat height = self.view.frame.size.height;
+    CGFloat width = self.view.frame.size.width - 10.0;
+    CGFloat height = self.view.frame.size.height - 10.0;
 
     UILabel *labelName = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 0.0)];
     labelName.text = @"Name";
@@ -246,18 +220,33 @@ int width;
 }
 
 - (void)displayControlMenu {
-    UIButton *buttonExit = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    buttonExit.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    [buttonExit setTitle:@"Exit" forState:UIControlStateNormal];
-    buttonExit.frame = CGRectMake(0.0, 0.0, self.scrollView.frame.size.width, 50.0);
-    [buttonExit addTarget:self action:@selector(actionExit) forControlEvents:UIControlEventTouchUpInside];
-    [self.scrollView addSubview:buttonExit];
+    // TODO: UIMenu for iOS 13+?
+    CGFloat currY = -50.0;
+    
+//~~macro~~:fr:
+#define CC_OPTION(OPT, NAME) \
+    UIButton *button##OPT = [UIButton buttonWithType:UIButtonTypeRoundedRect]; \
+    button##OPT.autoresizingMask = UIViewAutoresizingFlexibleWidth; \
+    [button##OPT setTitle:NAME forState:UIControlStateNormal]; \
+    button##OPT.frame = CGRectMake(0.0, currY+=50.0, self.scrollView.frame.size.width, 50.0); \
+    [button##OPT addTarget:self action:@selector(action##OPT) forControlEvents:UIControlEventTouchUpInside]; \
+    [self.scrollView addSubview:button##OPT]; \
+    
+    CC_OPTION(Exit, @"Exit")
+    //CC_OPTION(Load, @"Load")
+    //CC_OPTION(Save, @"Save")
+    //CC_OPTION(SetDef, @"Set default control file")
 }
 
 - (void)actionExit {
     [self dismissViewControllerAnimated:YES completion:nil];
     [((UINavigationController *)self.presentingViewController) setNavigationBarHidden:NO animated:YES];
     [((UINavigationController *)self.presentingViewController) popViewControllerAnimated:YES];
+}
+
+- (void)actionSetDef {
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
 }
 
 @end

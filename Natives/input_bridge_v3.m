@@ -12,6 +12,7 @@
 
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
+#import "SurfaceViewController.h"
 
 #include <assert.h>
 #include <stdlib.h>
@@ -261,7 +262,20 @@ JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetGrabbing(JNIE
         grabCursorX = xset; // savedWidth / 2;
         grabCursorY = yset; // savedHeight / 2;
         isPrepareGrabPos = true;
+
+        CGRect screenBounds = [[UIScreen mainScreen] bounds];
+        virtualMouseFrame.origin.x = screenBounds.size.width / 2;
+        virtualMouseFrame.origin.y = screenBounds.size.height / 2;
     }
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (isGrabbing == JNI_TRUE) {
+            CGFloat screenScale = [[UIScreen mainScreen] scale] * resolutionScale;
+            callback_SurfaceViewController_onTouch(ACTION_DOWN, lastVirtualMousePoint.x * screenScale, lastVirtualMousePoint.y * screenScale);
+            ((SurfaceViewController *)viewController).mousePointerView.frame = virtualMouseFrame;
+        }
+        ((SurfaceViewController *)viewController).mousePointerView.hidden = isGrabbing || !virtualMouseEnabled;
+    });
 }
 
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeIsGrabbing(JNIEnv* env, jclass clazz) {
