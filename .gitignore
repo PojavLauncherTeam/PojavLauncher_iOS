@@ -1,10 +1,12 @@
 /packages
+/artifacts
 /JavaApp/.gradle
 /JavaApp/build
 /JavaApp/local_out
 /Natives/PojavLauncher
 /Natives/build
-.DS_STORE
+/Natives/resources/*.png
+.DS_Store
 /pojavlauncher.xcodeproj
 /Natives/resources/Frameworks/libvgpu.dylib
 
