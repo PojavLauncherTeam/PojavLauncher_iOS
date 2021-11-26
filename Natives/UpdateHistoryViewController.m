@@ -2,6 +2,11 @@
 
 #include "utils.h"
 
+#if CONFIG_RELEASE == 1
+# define CONFIG_TYPE "release"
+#else
+# define CONFIG_TYPE "debug"
+#endif
 
 @interface UpdateHistoryViewController () {
 }
@@ -42,7 +47,7 @@
     [latestVerNote setFont:[UIFont boldSystemFontOfSize:25]];
 
     UILabel *latestVerView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, latestVerNote.frame.origin.y + latestVerNote.frame.size.height, scrollView.frame.size.width - 4, 30.0)];
-    latestVerView.text = @"2.0 (development)";
+    latestVerView.text = [NSString stringWithFormat:@"2.0 (%s)", CONFIG_TYPE];
     latestVerView.lineBreakMode = NSLineBreakByWordWrapping;
     latestVerView.numberOfLines = 0;
     [scrollView addSubview:latestVerView];
