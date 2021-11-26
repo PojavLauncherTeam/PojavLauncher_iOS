@@ -264,7 +264,7 @@ deb: native java extras
 	@echo 'Building PojavLauncher $(VERSION) - DEB - Start'
 
 		
-ipa: #native java extras
+#ipa: native java extras
 #	echo 'Building PojavLauncher $(VERSION) - IPA - Start'
 #	cd $(OUTPUTDIR); \
 	$(call DIRCHECK,$(OUTPUTDIR)/Payload); \
@@ -381,7 +381,7 @@ help:
 	@echo '    make native                         Builds the native app'
 	@echo '    make java                           Builds the Java app'
 	@echo '    make deb                            Builds deb of PojavLauncher'
-	@echo '    make ipa                            Builds ipa of PojavLauncher'
+#	@echo '    make ipa                            Builds ipa of PojavLauncher'
 	@echo '    make install                        Copy package to local iDevice'
 	@echo '    make deploy                         Copy package to local iDevice'
 	@echo '    make clean                          Cleans build directories'
