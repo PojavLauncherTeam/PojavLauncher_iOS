@@ -68,7 +68,7 @@ DEPCHECK    = $(shell type $(1) >/dev/null 2>&1 && echo 1)
 PACKAGING  =  \
 	mkdir -p $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)_$(VERSION)_iphoneos-arm; \
 	cd $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)_$(VERSION)_iphoneos-arm; \
-	mkdir -p {DEBIAN,Applications,var/mobile/Documents/.pojavlauncher/{instances/default,Library/{Application\ Support,Caches}}}; \
+	mkdir -p {DEBIAN,Applications,usr/share/pojavlauncher/{instances/default,Library/{Application\ Support,Caches}}}; \
 	cd var/mobile/Documents/.pojavlauncher; \
 	ln -sf ../../instances/default Library/Application\ Support/minecraft; \
 	cd $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)_$(VERSION)_iphoneos-arm; \
