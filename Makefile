@@ -73,9 +73,9 @@ PACKAGING  =  \
 	ln -sf ../../instances/default Library/Application\ Support/minecraft; \
 	cd $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)_$(VERSION)_iphoneos-arm; \
 	if [ '$(NOSTDIN)' = '1' ]; then \
-		echo '$(SUDOPASS)' | sudo -S chown -R 501:501 var/mobile/Documents/.pojavlauncher; \
+		echo '$(SUDOPASS)' | sudo -S chown -R 501:501 usr/share/pojavlauncher; \
 	else \
-		sudo chown -R 501:501 var/mobile/Documents/.pojavlauncher; \
+		sudo chown -R 501:501 usr/share/pojavlauncher; \
 	fi; \
 	cp -r $(OUTPUTDIR)/PojavLauncher.app Applications/PojavLauncher.app; \
 	cp $(SOURCEDIR)/DEBIAN/control.$(1) DEBIAN/control; \
