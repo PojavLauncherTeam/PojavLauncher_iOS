@@ -6,6 +6,7 @@ if [ -d '/private/preboot/procursus' ]; then
     export PREFIX=/private/preboot/procursus
 fi
 
+mkdir $PREFIX/usr/share/pojavlauncher
 chown -R 501:501 $PREFIX/usr/share/pojavlauncher
 chmod -R 0755 $PREFIX/usr/share/pojavlauncher
 
