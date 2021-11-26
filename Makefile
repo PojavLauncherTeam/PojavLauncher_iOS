@@ -52,12 +52,14 @@ endif
 
 # IPABuilder depending variables
 ifeq ($(IOS),1)
-POJAV_BUNDLE_DIR ?= /Application/PojavLauncher.app
-POJAV_JRE_DIR    ?= /usr/lib/jvm/java-8-openjdk
+POJAV_BUNDLE_DIR    ?= /Applications/PojavLauncher.app
+POJAV_JRE_DIR       ?= /usr/lib/jvm/java-8-openjdk
 else
-POJAV_BUNDLE_DIR ?= $(OUTPUTDIR)/PojavLauncher.app
-POJAV_JRE_DIR    ?= $(SOURCEDIR)/depends/jre
+POJAV_BUNDLE_DIR    ?= $(OUTPUTDIR)/PojavLauncher.app
+POJAV_JRE_DIR       ?= $(SOURCEDIR)/depends/jre
 endif
+POJAV_BUNDLE_DYLIBS ?= $(shell cd "$(POJAV_BUNDLE_DIR)/Frameworks" && echo *.dylib)
+POJAV_JRE_DYLIBS    ?= $(shell cd "$(POJAV_JRE_DIR)" && find . -name "*.dylib")
 
 # Function to use later for checking dependencies
 DEPCHECK    = $(shell type $(1) >/dev/null 2>&1 && echo 1)
@@ -101,7 +103,7 @@ PACKAGING  =  \
 
 # Function to check directories
 DIRCHECK   = \
-	@if [ ! -d '$(1)' ]; then \
+	if [ ! -d '$(1)' ]; then \
 		mkdir $(1); \
 	else \
 		sudo rm -rf $(1)/*; \
@@ -262,15 +264,57 @@ deb: native java extras
 	@echo 'Building PojavLauncher $(VERSION) - DEB - Start'
 
 		
-ipa: native java extras
-#	@echo 'Building PojavLauncher $(VERSION) - IPA - Start'
-#	@if [ '$(POJAV_BUNDLE_DIR)' = '' || '$(POJAV_BUILD_DIR)' = '' ]; then \
-#		echo 'You need to export POJAV_BUILD_DIR to the directory containing PojavLauncher.app, and POJAV_JRE_DIR to the directory containing the Java runtime.'; \
-#	else \
-#		cd packages;
-#		rm -rf Payload PojavLauncher.ipa;
-#		mkdir -p Payload;
-#		cp -r $(POJAV_BUNDLE_DIR)
+ipa: #native java extras
+#	echo 'Building PojavLauncher $(VERSION) - IPA - Start'
+#	cd $(OUTPUTDIR); \
+	$(call DIRCHECK,$(OUTPUTDIR)/Payload); \
+	cp -R $(POJAV_BUNDLE_DIR) $(OUTPUTDIR)/Payload; \
+	rm -rf $(OUTPUTDIR)/Payload/PojavLauncher.app/Frameworks/*.dylib; \
+	rm -rf $(OUTPUTDIR)/Payload/PojavLauncher.app/jre; \
+	cp -R $(POJAV_JRE_DIR) $(OUTPUTDIR)/Payload/PojavLauncher.app/jre; \
+	rm $(OUTPUTDIR)/Payload/PojavLauncher.app/jre/jre $(OUTPUTDIR)/Payload/PojavLauncher.app/jre/lib/src.zip $(OUTPUTDIR)/Payload/PojavLauncher.app/jre/lib/tools.jar; \
+	cd $(OUTPUTDIR)/Payload/PojavLauncher.app/jre; \
+	rm -f lib/libjsig.dylib; \
+	cd $(OUTPUTDIR); \
+	$(call DIRCHECK,$(OUTPUTDIR)/IPABuilder); \
+	mkdir -p $(OUTPUTDIR)/IPABuilder/{OpenJDK/{Frameworks,jre/lib/jli,jre/lib/server},PojavCore/Frameworks}; \
+	cd $(OUTPUTDIR)/IPABuilder/OpenJDK/Frameworks; \
+	for dylib in $(POJAV_JRE_DYLIBS); do \
+	  dylib_name=$$(basename $$dylib); \
+	  mkdir -p $${dylib_name}.framework; \
+	  cd $${dylib_name}.framework; \
+	  cp $(SOURCEDIR)/depends/Info.plist Info.plist; \
+	  defaults write "$$PWD/Info.plist" CFBundleExecutable $$dylib_name; \
+	  defaults write "$$PWD/Info.plist" CFBundleIdentifier "net.kdt.pojavlauncher.openjdk8_$$dylib_name"; \
+	  defaults write "$$PWD/Info.plist" CFBundleName $$dylib_name; \
+	  mv $(OUTPUTDIR)/Payload/PojavLauncher.app/jre/$$dylib $$dylib_name; \
+	  RPATH_LIST+="-add_rpath @loader_path/../${dylib_name}.framework "; \
+	  cd ..; \
+	  echo "- (JRE) Finished $$dylib_name"; \
+	done; \
+	for dylib in $(POJAV_JRE_DYLIBS); do \
+	  dylib_name=$$(basename $$dylib); \
+	  install_name_tool $$RPATH_LIST $${dylib_name}.framework/$${dylib_name}; \
+	done; \
+	mv $(OUTPUTDIR)/OpenJDK/Frameworks/* $(OUTPUTDIR)/Payload/PojavLauncher.app/Frameworks; \
+	cd $(OUTPUTDIR)/IPABuilder/PojavCore/Frameworks; \
+	for dylib in $(POJAV_BUNDLE_DIR); do \
+	  dylib_name=$$(basename $$dylib); \
+	  mkdir -p $${dylib_name}.framework; \
+	  cd $${dylib_name}.framework; \
+	  cp $(SOURCEDIR)/depends/Info.plist Info.plist; \
+	  defaults write "$$PWD/Info.plist" CFBundleExecutable $$dylib_name; \
+	  defaults write "$$PWD/Info.plist" CFBundleIdentifier "net.kdt.pojavlauncher.$dylib_name"; \
+	  defaults write "$$PWD/Info.plist" CFBundleName $$dylib_name; \
+	  cp $$POJAV_BUNDLE_DIR/Frameworks/$$dylib_name $$dylib_name; \
+	  cd ..; \
+	  echo "- (PojavCore) Finished $$dylib_name"; \
+	done; \
+	rm -r $(OUTPUTDIR)/IPABuilder/PojavCore/Frameworks/libawt_headless.dylib.framework; \
+	mv $(OUTPUTDIR)/IPABuilder/PojavCore/Frameworks/* Payload/PojavLauncher.app/Frameworks; \
+	ldid -Sentitlements.xml Payload/PojavLauncher.app; \
+	rm -f *.ipa; \
+	zip --symlinks -r net.kdt.pojavlauncher-$(VERSION).ipa Payload*
 #	@echo 'Building PojavLauncher $(VERSION) - IPA - End'
 
 install: deb
