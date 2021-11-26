@@ -225,21 +225,36 @@ int versionSelectedAt = 0;
 }
 
 - (void)enterCustomControls {
-    CustomControlsViewController *vc = [[CustomControlsViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    if (![getPreference(@"customctrl_warn") boolValue]) {
+        CustomControlsViewController *vc = [[CustomControlsViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+        return;
+    }
+    setPreference(@"customctrl_warn", @(NO));
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Warning" message:@"This option is unfinished, some might be incomplete or missing." preferredStyle:UIAlertControllerStyleActionSheet];
+    if (alert.popoverPresentationController != nil) {
+        alert.popoverPresentationController.sourceView = self.view;
+        alert.popoverPresentationController.sourceRect = CGRectMake(self.view.frame.size.width-10.0, 0, 10, 10);
+    }
+    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        CustomControlsViewController *vc = [[CustomControlsViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }];
+    [self presentViewController:alert animated:YES completion:nil];
+    [alert addAction:ok];
 }
 
 - (void)enterModInstaller:(UIBarButtonItem*)sender {
     NSString *javaVer = getPreference(@"java_home");
     if(![javaVer containsString:(@"java-8-openjdk")] && ![javaVer containsString:(@"jre8")]) {
-        UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:@"Cannot use the mod installer" message:@"In order to use the mod installer, you need to install Java 8 and specify it in the Preferences menu." preferredStyle:UIAlertControllerStyleActionSheet];
-        if (offlineAlert.popoverPresentationController != nil) {
-            offlineAlert.popoverPresentationController.sourceView = self.view;
-            offlineAlert.popoverPresentationController.sourceRect = CGRectMake(self.view.frame.size.width-10.0, 0, 10, 10);
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Cannot use the mod installer" message:@"In order to use the mod installer, you need to install Java 8 and specify it in the Preferences menu." preferredStyle:UIAlertControllerStyleActionSheet];
+        if (alert.popoverPresentationController != nil) {
+            alert.popoverPresentationController.sourceView = self.view;
+            alert.popoverPresentationController.sourceRect = CGRectMake(self.view.frame.size.width-10.0, 0, 10, 10);
         }
         UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
-        [self presentViewController:offlineAlert animated:YES completion:nil];
-        [offlineAlert addAction:ok];
+        [self presentViewController:alert animated:YES completion:nil];
+        [alert addAction:ok];
     } else {
         UIDocumentPickerViewController *documentPicker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:@[@"com.sun.java-archive"]
                                                           inMode:UIDocumentPickerModeImport];

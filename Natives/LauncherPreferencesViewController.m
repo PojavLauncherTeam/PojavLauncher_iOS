@@ -881,6 +881,7 @@ int tempIndex;
             setPreference(@"local_warn", @YES);
             setPreference(@"java_warn", @YES);
             setPreference(@"jb_warn", @YES);
+            setPreference(@"customctrl_warn", @YES);
             {
             UIAlertController *resetWarn = [UIAlertController alertControllerWithTitle:@"Warnings reset." message:@"Restart to show warnings again." preferredStyle:UIAlertControllerStyleActionSheet];
             [self setPopoverProperties:resetWarn.popoverPresentationController sender:(UIButton *)sender];

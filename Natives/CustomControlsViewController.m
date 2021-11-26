@@ -34,7 +34,7 @@ CGFloat clamp(CGFloat x, CGFloat lower, CGFloat upper) {
         action == @selector(actionMenuBtnDelete:) ||
         action == @selector(actionMenuBtnEdit:)) {
             return YES;
-    } 
+    }
     return NO;
 }
 
@@ -674,6 +674,7 @@ CGFloat currentY;
         self.colorWellBackground.selectedColor = self.targetButton.backgroundColor;
         [self.scrollView addSubview:self.colorWellBackground];
     } else {
+        
         // TODO: color picker for iOS < 14.0
     }
 
