@@ -112,30 +112,40 @@ DIRCHECK   = \
 # Function to copy + install
 INSTALL    = \
 	echo 'Please note that this may not work properly. If it doesn'\''t work for you, you can manually extract the .deb in /var/tmp/net.kdt.pojavlauncher.$(1)_$(VERSION)_$(2).deb with dpkg or Filza.'; \
-	scp -P $(DEVICE_PORT) $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)_$(VERSION)_$(2).deb root@$(DEVICE_IP):/var/tmp/net.kdt.pojavlauncher.$(1)_$(VERSION)_$(2).deb; \
-	ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t "dpkg -i /var/tmp/net.kdt.pojavlauncher.$(1)_$(VERSION)_$(2).deb; uicache -p $(3)/Applications/PojavLauncher.app"
+	if [ '$(4)' = '0' ]; then \
+		scp -P $(DEVICE_PORT) $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)_$(VERSION)_$(2).deb root@$(DEVICE_IP):/var/tmp/net.kdt.pojavlauncher.$(1)_$(VERSION)_$(2).deb; \
+		ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t "dpkg -i /var/tmp/net.kdt.pojavlauncher.$(1)_$(VERSION)_$(2).deb; uicache -p $(3)/Applications/PojavLauncher.app"
+	else \
+		sudo dpkg -i $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)_$(VERSION)_$(2).deb; uicache -p $(3)/Applications/PojavLauncher.app; \
+	fi
 
 # Function to copy + deploy
 DEPLOY     = \
 	ldid -S$(SOURCEDIR)/entitlements.xml $(WORKINGDIR)/PojavLauncher.app/PojavLauncher; \
-	scp -r -P $(DEVICE_PORT) -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" \
-		$(WORKINGDIR)/libOSMesaOverride.dylib.framework \
-		$(WORKINGDIR)/PojavCore.framework \
-		$(WORKINGDIR)/libawt_xawt.dylib \
-		$(WORKINGDIR)/PojavLauncher.app/PojavLauncher \
-		$(SOURCEDIR)/JavaApp/local_out/launcher.jar \
-		root@$(DEVICE_IP):/var/tmp/; \
-	ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t " \
-		mv /var/tmp/libawt_xawt.dylib $(1)/Applications/PojavLauncher.app/Frameworks/libawt_xawt.dylib && \
-		rm -rf $(1)/Applications/PojavLauncher.app/Frameworks/libOSMesaOverride.dylib.framework && \
-		mv /var/tmp/libOSMesaOverride.dylib.framework $(1)/Applications/PojavLauncher.app/Frameworks/libOSMesaOverride.dylib.framework && \
-		rm -rf $(1)/Applications/PojavLauncher.app/Frameworks/PojavCore.framework && \
-		mv /var/tmp/PojavCore.framework $(1)/Applications/PojavLauncher.app/Frameworks/PojavCore.framework && \
-		mv /var/tmp/PojavLauncher $(1)/Applications/PojavLauncher.app/PojavLauncher && \
-		mv /var/tmp/launcher.jar $(1)/Applications/PojavLauncher.app/libs/launcher.jar && \
-		cd $(1)/Applications/PojavLauncher.app/Frameworks && \
-		ln -sf libawt_xawt.dylib libawt_headless.dylib && killall PojavLauncher && \
-		chown -R 501:501 $(1)/Applications/PojavLauncher.app/*"
+	if [ '$(2)' = '0' ]; then \
+		scp -r -P $(DEVICE_PORT) -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" \
+			$(WORKINGDIR)/libOSMesaOverride.dylib.framework \
+			$(WORKINGDIR)/libawt_xawt.dylib \
+			$(WORKINGDIR)/PojavLauncher.app/PojavLauncher \
+			$(SOURCEDIR)/JavaApp/local_out/launcher.jar \
+			root@$(DEVICE_IP):/var/tmp/; \
+		ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t " \
+			mv /var/tmp/libawt_xawt.dylib $(1)/Applications/PojavLauncher.app/Frameworks/libawt_xawt.dylib && \
+			mv /var/tmp/libOSMesaOverride.dylib.framework $(1)/Applications/PojavLauncher.app/Frameworks/libOSMesaOverride.dylib.framework && \
+			mv /var/tmp/PojavLauncher $(1)/Applications/PojavLauncher.app/PojavLauncher && \
+			mv /var/tmp/launcher.jar $(1)/Applications/PojavLauncher.app/libs/launcher.jar && \
+			cd $(1)/Applications/PojavLauncher.app/Frameworks && \
+			ln -sf libawt_xawt.dylib libawt_headless.dylib && \
+			chown -R 501:501 $(1)/Applications/PojavLauncher.app/*"; \
+	else \
+		sudo mv $(WORKINGDIR)/libawt_xawt.dylib $(1)/Applications/PojavLauncher.app/Frameworks/libawt_xawt.dylib; \
+		sudo mv $(WORKINGDIR)/libOSMesaOverride.dylib.framework $(1)/Applications/PojavLauncher.app/Frameworks/libOSMesaOverride.dylib.framework; \
+		sudo mv $(WORKINGDIR)/PojavLauncher $(1)/Applications/PojavLauncher.app/PojavLauncher; \
+		sudo mv $(WORKINGDIR)/launcher.jar $(1)/Applications/PojavLauncher.app/libs/launcher.jar; \
+		cd $(1)/Applications/PojavLauncher.app/Frameworks; \
+		sudo ln -sf libawt_xawt.dylib libawt_headless.dylib; \
+		sudo chown -R 501:501 $(1)/Applications/PojavLauncher.app/*; \
+	fi
 
 # Make sure everything is already available for use. Error if they require something
 ifeq ($(call HAS_COMMAND,cmake --version),1)
@@ -340,18 +350,18 @@ install: deb
 	@echo 'Building PojavLauncher $(VERSION) - INSTALL - End'
 
 deploy: deb
-	@echo 'Building PojavLauncher $(VERSION) - DEPLOY - End'
+	@echo 'Building PojavLauncher $(VERSION) - DEPLOY - Start'
 	@if [ '$(DEVICE_IP)' != '' ]; then \
 		if [ '$(ROOTLESS)' = '1' ]; then \
-			$(call DEPLOY,$(IOS15PREF)); \
+			$(call DEPLOY,$(IOS15PREF),$(IOS)); \
 		else \
-			$(call DEPLOY); \
+			$(call DEPLOY,'/',$(IOS)); \
 		fi; \
 	else \
 		echo 'You need to run '\''export DEVICE_IP=<your iOS device IP>'\'' to use make deploy.'; \
 		echo 'If you specified a different port for your device to listen for SSH connections, you need to run '\''export DEVICE_PORT=<your port>'\'' as well.'; \
 	fi;
-	@echo 'Building PojavLauncher $(VERSION) - DEB - End'
+	@echo 'Building PojavLauncher $(VERSION) - DEPLOY - End'
 
 dsym: deb
 	@echo 'Building PojavLauncher $(VERSION) - DSYM - Start'
