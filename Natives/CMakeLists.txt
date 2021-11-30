@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.6)
 project(PojavLauncher)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcommon -fobjc-arc -ObjC -I'${CMAKE_CURRENT_LIST_DIR}/resources/Frameworks/MetalANGLE.framework/Headers' -I'${CMAKE_CURRENT_LIST_DIR}/external/DBNumberedSlider/Classes' -I'${CMAKE_CURRENT_LIST_DIR}/external/fishhook' -I'${CMAKE_CURRENT_LIST_DIR}/external_include'"
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcommon -fobjc-arc -ObjC -I'${CMAKE_CURRENT_LIST_DIR}/resources/Frameworks/MetalANGLE.framework/Headers' -I'${CMAKE_CURRENT_LIST_DIR}/external/DBNumberedSlider/Classes' -I'${CMAKE_CURRENT_LIST_DIR}/external/fishhook' -I'${CMAKE_CURRENT_LIST_DIR}/external/zink'"
 )
 set(CMAKE_C_FLAGS_DEBUG "-funwind-tables -g")
 

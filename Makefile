@@ -114,7 +114,7 @@ INSTALL    = \
 	echo 'Please note that this may not work properly. If it doesn'\''t work for you, you can manually extract the .deb in /var/tmp/net.kdt.pojavlauncher.$(1)_$(VERSION)_$(2).deb with dpkg or Filza.'; \
 	if [ '$(4)' = '0' ]; then \
 		scp -P $(DEVICE_PORT) $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)_$(VERSION)_$(2).deb root@$(DEVICE_IP):/var/tmp/net.kdt.pojavlauncher.$(1)_$(VERSION)_$(2).deb; \
-		ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t "dpkg -i /var/tmp/net.kdt.pojavlauncher.$(1)_$(VERSION)_$(2).deb; uicache -p $(3)/Applications/PojavLauncher.app"
+		ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t "dpkg -i /var/tmp/net.kdt.pojavlauncher.$(1)_$(VERSION)_$(2).deb; uicache -p $(3)/Applications/PojavLauncher.app"; \
 	else \
 		sudo dpkg -i $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)_$(VERSION)_$(2).deb; uicache -p $(3)/Applications/PojavLauncher.app; \
 	fi
