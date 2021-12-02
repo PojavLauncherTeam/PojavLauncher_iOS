@@ -105,16 +105,22 @@ int versionSelectedAt = 0;
     [scrollView addSubview:install_progress_text];
 }
 
++ (BOOL)isVersionInstalled:(NSString *)versionId
+{
+    NSString *localPath = [NSString stringWithFormat:@"%s/versions/%@", getenv("POJAV_GAME_DIR"), versionId];
+    BOOL isDirectory;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    [fileManager fileExistsAtPath:localPath isDirectory:&isDirectory];
+    return isDirectory;
+}
+
 + (void)fetchLocalVersionList:(NSMutableArray *)finalVersionList withPreviousIndex:(int)index
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *versionPath = [NSString stringWithFormat:@"%s/versions/", getenv("POJAV_GAME_DIR")];
     NSArray *localVersionList = [fileManager contentsOfDirectoryAtPath:versionPath error:Nil];
     for (NSString *versionId in localVersionList) {
-        NSString *localPath = [versionPath stringByAppendingString:versionId];
-        BOOL isDir;
-        [fileManager fileExistsAtPath:localPath isDirectory:&isDir];
-        if (isDir) {
+        if ([self isVersionInstalled:versionId]) {
             BOOL shouldAdd = YES;
             for (NSObject *object in finalVersionList) {
                 if (![object isKindOfClass:[NSDictionary class]]) continue;
@@ -169,7 +175,8 @@ int versionSelectedAt = 0;
                         ([versionType containsString:@"snapshot"] && [getPreference(@"vertype_snapshot") boolValue]) ||
                         ([versionType containsString:@"old_beta"] && [getPreference(@"vertype_oldbeta") boolValue]) ||
                         ([versionType containsString:@"old_alpha"] && [getPreference(@"vertype_oldalpha") boolValue]) ||
-                        [versionType containsString:@"modified"]) {
+                        [versionType containsString:@"modified"] ||
+                        [self isVersionInstalled:versionId]) {
                         [finalVersionList addObject:versionInfo];
                         
                         if ([versionTextField.text isEqualToString:versionId]) {
