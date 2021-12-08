@@ -47,7 +47,11 @@ void loadPreferences() {
     setDefaultValueForPref(@"customctrl_warn", @YES);
     setDefaultValueForPref(@"disable_gl4es_shaderconv", @NO);
     setDefaultValueForPref(@"slideable_hotbar", @NO);
-
+    if (0 != [fileManager fileExistsAtPath:@"/var/mobile/Documents/.pojavlauncher"]) {
+        setDefaultValueForPref(@"disable_home_symlink", @NO);
+    } else {
+        setDefaultValueForPref(@"disable_home_symlink", @YES);
+    }
     [prefDict writeToFile:prefPath atomically:YES];
 }
 

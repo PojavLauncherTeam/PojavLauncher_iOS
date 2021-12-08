@@ -20,6 +20,7 @@
 #define RMGDIR 12
 #define SLIDEHOTBAR 13
 #define SAFEAREA 14
+#define HOMESYM 15
 
 #define TAG_BTNSCALE 98
 #define TAG_RESOLUTION 99
@@ -50,6 +51,8 @@
 #define TAG_SLIDEHOTBAR 112
 
 #define TAG_SAFEAREA 113
+
+#define TAG_HOMESYM 114
 
 @interface LauncherPreferencesViewController () <UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDelegate> {
 }
@@ -466,6 +469,18 @@ int tempIndex;
     [debugLogSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:debugLogSwitch];
     
+    UILabel *homesymTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
+    homesymTextView.text = @"Disable home symlink";
+    homesymTextView.numberOfLines = 0;
+    [homesymTextView sizeToFit];
+    [tableView addSubview:homesymTextView];
+
+    UISwitch *homesymSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
+    homesymSwitch.tag = TAG_HOMESYM;
+    [homesymSwitch setOn:[getPreference(@"disable_home_symlink") boolValue] animated:NO];
+    [homesymSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    [tableView addSubview:homesymSwitch];
+    
     CGRect frame = tableView.frame;
     frame.size.height = currY+=44;
     tableView.frame = frame;
@@ -504,6 +519,8 @@ int tempIndex;
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:TYPESEL];}],
             [UIAction actionWithTitle:@"Debug logging" image:[[UIImage systemImageNamed:@"doc.badge.gearshape"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:DEBUGLOG];}],
+            [UIAction actionWithTitle:@"Home symlink" image:[[UIImage systemImageNamed:@"link"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:HOMESYM];}],
         ]];
         self.navigationItem.rightBarButtonItem.action = nil;
         self.navigationItem.rightBarButtonItem.primaryAction = nil;
@@ -773,6 +790,7 @@ int tempIndex;
         UIAlertAction *resetwarn = [UIAlertAction actionWithTitle:@"Reset warnings" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:RESETWARN];}];
         UIAlertAction *typesel = [UIAlertAction actionWithTitle:@"Type switches" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:TYPESEL];}];
         UIAlertAction *debuglog = [UIAlertAction actionWithTitle:@"Debug logging" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:DEBUGLOG];}];
+        UIAlertAction *homesym = [UIAlertAction actionWithTitle:@"Home symlink" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:HOMESYM];}];
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
         [self setPopoverProperties:helpAlert.popoverPresentationController sender:(UIButton *)self.navigationItem.rightBarButtonItem];
         [self presentViewController:helpAlert animated:YES completion:nil];
@@ -789,6 +807,7 @@ int tempIndex;
         [helpAlert addAction:resetwarn];
         [helpAlert addAction:typesel];
         [helpAlert addAction:debuglog];
+        [helpAlert addAction:homesym];
         [helpAlert addAction:cancel];
     }
 }
@@ -835,6 +854,9 @@ int tempIndex;
     } else if(setting == DEBUGLOG) {
         title = @"Enable debug logging";
         message = @"This option logs internal settings and actions to latestlog.txt. This helps the developers find issues easier, but Minecraft may run slower as the logs will be written to more often.";
+    } else if(setting == HOMESYM) {
+        title = @"Disable home symlink";
+        message = @"This option disables the home symlink to /var/mobile/Documents/.pojavlauncher from the new game directory.";
     }
     UIAlertController *helpAlertOpt = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
@@ -912,6 +934,26 @@ int tempIndex;
         case TAG_DEBUGLOG:
             setPreference(@"debug_logging", @(sender.isOn));
             [LauncherViewController fetchVersionList];
+            break;
+        case TAG_HOMESYM:
+            setPreference(@"disable_home_symlink", @(sender.isOn));
+            if([getPreference(@"disable_home_symlink") boolValue] == YES){
+                UIAlertController *homesymWarn = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:@"This will remove the link at /var/mobile/Documents/.pojavlauncher. The new directory is /usr/share/pojavlauncher." preferredStyle:UIAlertControllerStyleActionSheet];
+                [self setPopoverProperties:homesymWarn.popoverPresentationController sender:(UIButton *)sender];
+                UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Continue" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[[NSFileManager defaultManager] removeItemAtPath:@"/var/mobile/Documents/.pojavlauncher" error:nil];}];
+                UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+                [self presentViewController:homesymWarn animated:YES completion:nil];
+                [homesymWarn addAction:cancel];
+                [homesymWarn addAction:ok];
+            } else {
+                UIAlertController *homesymWarn = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:@"This will create a link to /usr/share/pojavlauncher in /var/mobile/Documents/.pojavlauncher." preferredStyle:UIAlertControllerStyleActionSheet];
+                [self setPopoverProperties:homesymWarn.popoverPresentationController sender:(UIButton *)sender];
+                UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Continue" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {symlink("/usr/share/pojavlauncher", "/var/mobile/Documents/.pojavlauncher");}];
+                UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+                [self presentViewController:homesymWarn animated:YES completion:nil];
+                [homesymWarn addAction:cancel];
+                [homesymWarn addAction:ok];
+            }
             break;
         default:
             NSLog(@"what does switch %ld for? implement me!", sender.tag);
