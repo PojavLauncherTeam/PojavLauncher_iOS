@@ -292,6 +292,9 @@ void environmentFailsafes(char *argv[]) {
 int launchJVM(int argc, char *argv[]) {
     if (0 != [[NSFileManager defaultManager] fileExistsAtPath:@"/var/mobile/Documents/.pojavlauncher"] && 0 == [[NSFileManager defaultManager] fileExistsAtPath:@"/var/mobile/Documents/.pojavlauncher/migration_complete"]) {
         NSString *newDir = @"/usr/share/pojavlauncher";
+        if([[[UIDevice currentDevice] systemVersion] containsString:@"15."]) {
+            newDir = @"/private/preboot/procursus/usr/share/pojavlauncher";
+        }
         NSString *oldDir = @"/var/mobile/Documents/.pojavlauncher";
         NSFileManager *fm = [NSFileManager defaultManager];
         NSArray *files = [fm contentsOfDirectoryAtPath:oldDir error:nil];
@@ -301,7 +304,7 @@ int launchJVM(int argc, char *argv[]) {
         [fm removeItemAtPath:oldDir error:nil];
         symlink([newDir cStringUsingEncoding:NSUTF8StringEncoding], [oldDir cStringUsingEncoding:NSUTF8StringEncoding]);
         FILE* file_ptr = fopen("/var/mobile/Documents/.pojavlauncher/migration_complete", "w");
-        fprintf(file_ptr, "#README - The PojavLauncher data directory is now /usr/share/pojavlauncher. All of your existing data has been moved to the new location.");
+        fprintf(file_ptr, "#README - The PojavLauncher data directory is now %s. All of your existing data has been moved to the new location.", [newDir cStringUsingEncoding:NSUTF8StringEncoding]);
         fclose(file_ptr);
     }
     
