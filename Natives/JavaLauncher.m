@@ -593,6 +593,7 @@ int launchJVM(int argc, char *argv[]) {
         margv[margc++] = userDir;
         margv[margc++] = userHome;
         margv[margc++] = "-Dorg.lwjgl.system.allocator=system";
+        margv[margc++] = "-Dlog4j2.formatMsgNoLookups=true";
     } else {
         setenv("RENDERER", renderer, 1);
         debug("[Pre-init] RENDERER has been set to %s", getenv("RENDERER"));
