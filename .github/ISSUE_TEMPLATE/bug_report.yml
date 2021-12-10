@@ -17,7 +17,7 @@ body:
   attributes:
     label: The log file and images/videos
     description: |
-      The log file called `latestlog.txt` is located under `/var/mobile/Documents/.pojavlauncher`. You will need to enable Hidden Files and Folders in Filza to see the .pojavlauncher directory. |
+      The log file called `latestlog.txt` is located under `/usr/share/pojavlauncher`. |
       You can also upload here screenshots or videos of the buggy behavior, if possible.
       
       Tip: You can attach files by clicking this area to highlight it and then dragging files in or select them on 🖼 option at the toolbar.
