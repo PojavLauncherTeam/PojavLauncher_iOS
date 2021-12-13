@@ -1105,7 +1105,7 @@ public class GLFW
         
         // Indirect event
         while (CallbackBridge.PENDING_EVENT_LIST.size() > 0) {
-            Integer[] dataArr = CallbackBridge.PENDING_EVENT_LIST.remove(0);
+            Object[] dataArr = CallbackBridge.PENDING_EVENT_LIST.remove(0);
             
             if (dataArr == null) { // It should not be null, but still should be catched
                 // System.out.println("GLFW: popped callback is null, skipping");
@@ -1113,53 +1113,53 @@ public class GLFW
             }
             
             for (Long ptr : mGLFWWindowMap.keySet()) {
-                switch (dataArr[0]) {
+                switch ((int)dataArr[0]) {
                     case CallbackBridge.EVENT_TYPE_CHAR:
                         if (mGLFWCharCallback != null) {
-                            mGLFWCharCallback.invoke(ptr, dataArr[1]);
+                            mGLFWCharCallback.invoke(ptr, (int)dataArr[1]);
                         }
                         break;
                     case CallbackBridge.EVENT_TYPE_CHAR_MODS:
                         if (mGLFWCharModsCallback != null) {
-                            mGLFWCharModsCallback.invoke(ptr, dataArr[1], dataArr[2]);
+                            mGLFWCharModsCallback.invoke(ptr, (int)dataArr[1], (int)dataArr[2]);
                         }
                         break;
                     case CallbackBridge.EVENT_TYPE_CURSOR_ENTER:
                         if (mGLFWCursorEnterCallback != null) {
-                            mGLFWCursorEnterCallback.invoke(ptr, dataArr[1] == 1);
+                            mGLFWCursorEnterCallback.invoke(ptr, (int)dataArr[1] == 1);
                         }
                         break;
                     case CallbackBridge.EVENT_TYPE_KEY:
                         if (mGLFWKeyCallback != null) {
-                        	keyDownBuffer[Math.max(0, dataArr[1]-31)]=(byte)(int)dataArr[3];
-                            mGLFWKeyCallback.invoke(ptr, dataArr[1], dataArr[2], dataArr[3], dataArr[4]);
+                        	keyDownBuffer[Math.max(0, (int)dataArr[1]-31)]=(byte)(int)dataArr[3];
+                            mGLFWKeyCallback.invoke(ptr, (int)dataArr[1], (int)dataArr[2], (int)dataArr[3], (int)dataArr[4]);
                         }
                         break;
                     case CallbackBridge.EVENT_TYPE_MOUSE_BUTTON:
                         if (mGLFWMouseButtonCallback != null) {
-                            mGLFWMouseButtonCallback.invoke(ptr, dataArr[1], dataArr[2], dataArr[3]);
+                            mGLFWMouseButtonCallback.invoke(ptr, (int)dataArr[1], (int)dataArr[2], (int)dataArr[3]);
                         }
                         break;
                     case CallbackBridge.EVENT_TYPE_SCROLL:
                         if (mGLFWScrollCallback != null) {
-                            mGLFWScrollCallback.invoke(ptr, dataArr[1], dataArr[2]);
+                            mGLFWScrollCallback.invoke(ptr, (int)dataArr[1], (int)dataArr[2]);
                         }
                         break;
                     case CallbackBridge.EVENT_TYPE_WINDOW_POS:
-                        glfwSetWindowPos(ptr, dataArr[1], dataArr[2]);
+                        glfwSetWindowPos(ptr, (int)dataArr[1], (int)dataArr[2]);
                         break;
                     case CallbackBridge.EVENT_TYPE_FRAMEBUFFER_SIZE:
                     case CallbackBridge.EVENT_TYPE_WINDOW_SIZE:
-                        internalChangeMonitorSize(dataArr[1], dataArr[2]);
+                        internalChangeMonitorSize((int)dataArr[1], (int)dataArr[2]);
                         glfwSetWindowSize(ptr, mGLFWWindowWidth, mGLFWWindowHeight);
-                        if (dataArr[0] == CallbackBridge.EVENT_TYPE_FRAMEBUFFER_SIZE && mGLFWFramebufferSizeCallback != null) {
+                        if ((int)dataArr[0] == CallbackBridge.EVENT_TYPE_FRAMEBUFFER_SIZE && mGLFWFramebufferSizeCallback != null) {
                             mGLFWFramebufferSizeCallback.invoke(ptr, mGLFWWindowWidth, mGLFWWindowHeight);
-                        } else if (dataArr[0] == CallbackBridge.EVENT_TYPE_WINDOW_SIZE && mGLFWWindowSizeCallback != null) {
+                        } else if ((int)dataArr[0] == CallbackBridge.EVENT_TYPE_WINDOW_SIZE && mGLFWWindowSizeCallback != null) {
                             mGLFWWindowSizeCallback.invoke(ptr, mGLFWWindowWidth, mGLFWWindowHeight);
                         }
                         break;
                     default:
-                        System.err.println("GLFWEvent: unknown callback type " + dataArr[0]);
+                        System.err.println("GLFWEvent: unknown callback type " + (int)dataArr[0]);
                         break;
                 }
             }
@@ -1171,7 +1171,7 @@ public class GLFW
             for (Long ptr : mGLFWWindowMap.keySet()) {
                 mGLFWCursorPosCallback.invoke(ptr, mGLFWCursorX, mGLFWCursorY);
             }
-            // System.out.println("CursorPos updated to x=" + mGLFWCursorX + ",y=" + mGLFWCursorY);
+            //System.out.println("CursorPos updated to x=" + mGLFWCursorX + ",y=" + mGLFWCursorY);
         }
     }
 

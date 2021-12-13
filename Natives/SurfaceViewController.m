@@ -18,6 +18,7 @@
 
 // Debugging only
 // #define DEBUG_VISIBLE_TEXT_FIELD
+// #define DEBUG_VISIBLE_TOUCH
 
 #define INPUT_SPACE_CHAR @"                    "
 #define INPUT_SPACE_LENGTH 20
@@ -85,6 +86,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 @property(nonatomic, strong) NSMutableArray* swipeableButtons;
 @property(nonatomic, strong) NSMutableArray* togglableVisibleButtons;
 @property ControlButton* swipingButton;
+@property UITouch *primaryTouch, *hotbarTouch;
 
 - (void)setupGL;
 
@@ -116,9 +118,8 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     savedWidth = roundf(width * screenScale);
     savedHeight = roundf(height * screenScale);
 
-    NSLog(@"Debug: Creating surfaceView");
     self.surfaceView = [[GameSurfaceView alloc] initWithFrame:self.view.frame];
-    NSLog(@"Debug: surfaceView=%@", self.surfaceView);
+    self.surfaceView.multipleTouchEnabled = YES;
     self.surfaceView.layer.contentsScale = screenScale * resolutionScale;
     self.surfaceView.layer.magnificationFilter = self.surfaceView.layer.minificationFilter = kCAFilterNearest;
     [self.view addSubview:self.surfaceView];
@@ -150,17 +151,17 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 
     UILongPressGestureRecognizer *longpressGesture = [[UILongPressGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnLongpress:)];
+    longpressGesture.cancelsTouchesInView = NO;
     longpressGesture.delegate = self;
     longpressGesture.minimumPressDuration = [getPreference(@"time_longPressTrigger") floatValue] / 1000;
     [self.surfaceView addGestureRecognizer:longpressGesture];
     
-    UIPanGestureRecognizer *scrollPanGesture = [[UIPanGestureRecognizer alloc]
+    self.scrollPanGesture = [[UIPanGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnTouchesScroll:)];
-    scrollPanGesture.delegate = self;
-    scrollPanGesture.allowedTouchTypes = @[@(UITouchTypeDirect)];
-    scrollPanGesture.minimumNumberOfTouches = 2;
-    scrollPanGesture.maximumNumberOfTouches = 2;
-    [self.surfaceView addGestureRecognizer:scrollPanGesture];
+    self.scrollPanGesture.delegate = self;
+    self.scrollPanGesture.allowedTouchTypes = @[@(UITouchTypeDirect)];
+    self.scrollPanGesture.minimumNumberOfTouches = 2;
+    self.scrollPanGesture.maximumNumberOfTouches = 2;
 
     if (@available(iOS 13.4, *)) {
         [self.surfaceView addInteraction:[[UIPointerInteraction alloc] initWithDelegate:self]];
@@ -190,7 +191,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     inputView = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
     inputView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.5f];
 
-    inputLengthView = [[UILabel alloc] initWithFrame:CGRectMake(5 * 2 + rectBtnWidth, 5 * 2 + rectBtnHeight, rectBtnWidth, rectBtnHeight)];
+    inputLengthView = [[UILabel alloc] initWithFrame:CGRectMake(5 * 2 + 80.0, 5 * 2 + 30.0, 80.0, 30.0)];
     inputLengthView.text = @"length=?";
     inputLengthView.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.6f];
     [self.view addSubview:inputLengthView];
@@ -199,8 +200,6 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     [inputView addTarget:self action:@selector(inputViewDidChange) forControlEvents:UIControlEventEditingChanged];
     [inputView addTarget:self action:@selector(inputViewDidClick) forControlEvents:UIControlEventTouchDown];
 
-    // Custom button
-    // ADD_BUTTON(@"F1", f1, CGRectMake(5, 5, width, height));
 
     NSString *controlFilePath = [NSString stringWithFormat:@"%s/%@", getenv("POJAV_PATH_CONTROL"), (NSString *)getPreference(@"default_ctrl")];
 
@@ -275,6 +274,12 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 
 #pragma mark - Input: send touch utilities
 
+
+- (BOOL)isTouchInactive:(UITouch *)touch {
+    return touch == nil || touch.phase == UITouchPhaseEnded || touch.phase == UITouchPhaseCancelled;
+}
+
+
 - (void)sendTouchPoint:(CGPoint)location withEvent:(int)event
 {
     CGFloat screenScale = [[UIScreen mainScreen] scale];
@@ -309,9 +314,8 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     return YES;
 }
 
-- (void)sendTouchEvent:(NSSet *)touches withUIEvent:(UIEvent *)uievent withEvent:(int)event
+- (void)sendTouchEvent:(UITouch *)touchEvent withUIEvent:(UIEvent *)uievent withEvent:(int)event
 {
-    UITouch* touchEvent = [touches anyObject];
     CGPoint locationInView = [touchEvent locationInView:self.view];
 
     BOOL isTouchTypeIndirect = NO;
@@ -322,7 +326,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     }
 
     if (touchEvent.view == self.surfaceView) {
-        if (slideableHotbar && !isTouchTypeIndirect) {
+        if (touchEvent == self.hotbarTouch && slideableHotbar && !isTouchTypeIndirect && ![self isTouchInactive:self.hotbarTouch]) {
             CGFloat screenScale = [[UIScreen mainScreen] scale];
             int slot = callback_SurfaceViewController_touchHotbar(locationInView.x * screenScale, locationInView.y * screenScale);
             
@@ -338,13 +342,18 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
             if (event == ACTION_DOWN && slot == -1) {
                 currentHotbarSlot = -1;
             }
-            
+            /*
             if (currentHotbarSlot != -1) {
                 return;
             }
+            */
+            return;
         }
-        
-        [self sendTouchPoint:locationInView withEvent:event];
+
+        if (touchEvent == self.primaryTouch) {
+            if ([self isTouchInactive:self.primaryTouch]) return; // FIXME: should be?
+            [self sendTouchPoint:locationInView withEvent:event];
+        }
 
         if (!isTouchTypeIndirect) {
             switch (event) {
@@ -452,9 +461,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
             Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_Q, 0, 1, 0);
         }
     } else if (sender.state == UIGestureRecognizerStateChanged) {
-        if (currentHotbarSlot == -1) {
-            [self sendTouchPoint:location withEvent:ACTION_MOVE];
-        }
+        // Nothing to do here, already handled in touchesMoved
     } else {
         if (sender.state == UIGestureRecognizerStateCancelled
             || sender.state == UIGestureRecognizerStateFailed
@@ -507,6 +514,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     }
 }
 
+// FIXME: incomplete
 - (UIPointerRegion *)pointerInteraction:(UIPointerInteraction *)interaction regionForRequest:(UIPointerRegionRequest *)request defaultRegion:(UIPointerRegion *)defaultRegion API_AVAILABLE(ios(13.4)) API_AVAILABLE(ios(13.4)) API_AVAILABLE(ios(13.4)){
     if (request != nil) {
         CGPoint origin = self.surfaceView.bounds.origin;
@@ -517,7 +525,6 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
         
         NSLog(@"UIPointerInteraction pos changed: x=%d, y=%d", (int) point.x, (int) point.y);
 
-        // TODO FIXME
         callback_SurfaceViewController_onTouch(ACTION_DOWN, (int)point.x, (int)point.y);
     }
     return [UIPointerRegion regionWithRect:self.surfaceView.bounds identifier:nil];
@@ -553,12 +560,6 @@ NSString* inputStringBefore;
         int charLength = (int) [newText length];
         for (int i = 0; i < charLength; i++) {
             // Directly convert unichar to jchar since both are in UTF-16 encoding.
-
-/*
-            jchar theChar = (jchar) 
-        (isUseStackQueueCall ?
-                [newText UTF8String][i] : [newText characterAtIndex:i]);
-*/
 
             jchar theChar = (jchar) [newText characterAtIndex:i];
             if (isUseStackQueueCall) {
@@ -640,7 +641,6 @@ int currentVisibility = 1;
 - (void)executebtn:(UIButton *)sender withAction:(int)action {
     ControlButton *button = (ControlButton *)sender;
     int held = action == ACTION_DOWN;
-    // TODO v2: mulitple keys support
     for (int i = 0; i < 4; i++) {
         int keycode = ((NSNumber *)button.properties[@"keycodes"][i]).intValue;
         if (keycode < 0) {
@@ -762,27 +762,57 @@ int touchesMovedCount;
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesBegan:touches withEvent:event];
-    [self sendTouchEvent:touches withUIEvent:event withEvent:ACTION_DOWN];
+    int i = 0;
+    for (UITouch *touch in touches) {
+        CGPoint locationInView = [touch locationInView:self.view];
+        CGFloat screenScale = [[UIScreen mainScreen] scale];
+        int slot = callback_SurfaceViewController_touchHotbar(locationInView.x * screenScale, locationInView.y * screenScale);
+        if ([self isTouchInactive:self.hotbarTouch] && slot != -1) {
+            self.hotbarTouch = touch;
+        }
+        if ([self isTouchInactive:self.primaryTouch] && slot == -1) {
+            self.primaryTouch = touch;
+        }
+        [self sendTouchEvent:touch withUIEvent:event withEvent:ACTION_DOWN];
+        break;
+    }
 }
 
 // Equals to Android ACTION_MOVE
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesMoved:touches withEvent:event];
-    [self sendTouchEvent:touches withUIEvent:event withEvent:ACTION_MOVE];
+
+    for (UITouch *touch in touches) {
+        if (self.hotbarTouch != touch && [self isTouchInactive:self.primaryTouch]) {
+            // Replace the inactive touch with the current active touch
+            self.primaryTouch = touch;
+            [self sendTouchEvent:touch withUIEvent:event withEvent:ACTION_DOWN];
+        }
+        [self sendTouchEvent:touch withUIEvent:event withEvent:ACTION_MOVE];
+    }
+}
+
+// For ACTION_UP and ACTION_CANCEL
+- (void)touchesEndedGlobal:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    for (UITouch *touch in touches) {
+        [self sendTouchEvent:touch withUIEvent:event withEvent:ACTION_UP];
+    }
 }
 
 // Equals to Android ACTION_UP
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesEnded:touches withEvent:event];
-    [self sendTouchEvent:touches withUIEvent:event withEvent:ACTION_UP];
+    [self touchesEndedGlobal:touches withEvent:event];
 }
 
+// Equals to Android ACTION_CANCEL
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesCancelled:touches withEvent:event];
-    [self sendTouchEvent:touches withUIEvent:event withEvent:ACTION_UP];
+    [self touchesEndedGlobal:touches withEvent:event];
 }
 
 @end

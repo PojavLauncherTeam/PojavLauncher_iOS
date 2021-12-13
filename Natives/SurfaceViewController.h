@@ -19,5 +19,6 @@ CGPoint lastVirtualMousePoint;
 
 @property(nonatomic, strong) GameSurfaceView* surfaceView;
 @property UIImageView* mousePointerView;
+@property UIPanGestureRecognizer* scrollPanGesture;
 
 @end

@@ -104,7 +104,7 @@ public class UIKit {
         PLaunchApp.launchMinecraft();
     }
     
-    public static void callback_SurfaceViewController_onTouch(int event, int x, int y) {
+    public static void callback_SurfaceViewController_onTouch(int event, float x, float y) {
         switch (event) {
             case ACTION_DOWN:
             case ACTION_UP:

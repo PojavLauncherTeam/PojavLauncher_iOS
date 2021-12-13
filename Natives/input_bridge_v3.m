@@ -36,7 +36,7 @@ typedef void GLFW_invoke_Scroll_func(void* window, double xoffset, double yoffse
 typedef void GLFW_invoke_WindowSize_func(void* window, int width, int height);
 typedef void GLFW_invoke_WindowPos_func(void* window, int x, int y);
 
-int grabCursorX, grabCursorY, lastCursorX, lastCursorY;
+CGFloat grabCursorX, grabCursorY, lastCursorX, lastCursorY;
 
 jclass inputBridgeClass_ANDROID, inputBridgeClass_JRE;
 jmethodID inputBridgeMethod_ANDROID, inputBridgeMethod_JRE;
@@ -87,12 +87,12 @@ void getJavaInputBridge(jclass* clazz, jmethodID* method) {
     if (*method == NULL && runtimeJNIEnvPtr_ANDROID != NULL) {
         *clazz = (*runtimeJNIEnvPtr_ANDROID)->FindClass(runtimeJNIEnvPtr_ANDROID, "org/lwjgl/glfw/CallbackBridge");
         assert(*clazz != NULL);
-        *method = (*runtimeJNIEnvPtr_ANDROID)->GetStaticMethodID(runtimeJNIEnvPtr_ANDROID, *clazz, "receiveCallback", "(IIIII)V");
+        *method = (*runtimeJNIEnvPtr_ANDROID)->GetStaticMethodID(runtimeJNIEnvPtr_ANDROID, *clazz, "receiveCallback", "(IFFII)V");
         assert(*method != NULL);
     }
 }
 
-void sendData(int type, int i1, int i2, int i3, int i4) {
+void sendData(int type, CGFloat i1, CGFloat i2, int i3, int i4) {
     if (runtimeJNIEnvPtr_ANDROID == NULL) {
         (*runtimeJavaVMPtr)->GetEnv(runtimeJavaVMPtr, (void**) &runtimeJNIEnvPtr_ANDROID, JNI_VERSION_1_4);
         getJavaInputBridge(&inputBridgeClass_ANDROID, &inputBridgeMethod_ANDROID);
@@ -105,12 +105,13 @@ void sendData(int type, int i1, int i2, int i3, int i4) {
         debug("BUG: Input is ready but thread is not attached yet.");
         return;
     }
+    // FIXME: should we send double instead of float?
     (*runtimeJNIEnvPtr_ANDROID)->CallStaticVoidMethod(
         runtimeJNIEnvPtr_ANDROID,
         inputBridgeClass_ANDROID,
         inputBridgeMethod_ANDROID,
         type,
-        i1, i2, i3, i4
+        (jfloat)i1, (jfloat)i2, i3, i4
     );
 }
 
@@ -176,21 +177,21 @@ void callback_SurfaceViewController_launchMinecraft(int width, int height) {
     );
 }
 
-void callback_SurfaceViewController_onTouch(int event, int x, int y) {
+void callback_SurfaceViewController_onTouch(int event, CGFloat x, CGFloat y) {
     if (!uikitBridgeClass) {
         uikitBridgeClass = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "net/kdt/pojavlaunch/uikit/UIKit");
         assert(uikitBridgeClass != NULL);
     }
     
     if (!uikitBridgeTouchMethod) {
-        uikitBridgeTouchMethod = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, uikitBridgeClass, "callback_SurfaceViewController_onTouch", "(III)V");
+        uikitBridgeTouchMethod = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, uikitBridgeClass, "callback_SurfaceViewController_onTouch", "(IFF)V");
         assert(uikitBridgeTouchMethod != NULL);
     }
     
     (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
         runtimeJNIEnvPtr_JRE,
         uikitBridgeClass, uikitBridgeTouchMethod,
-        event, x, y
+        event, (jfloat)x, (jfloat)y
     );
 }
 
@@ -199,11 +200,11 @@ const int hotbarKeys[9] = {
     GLFW_KEY_4, GLFW_KEY_5, GLFW_KEY_6,
     GLFW_KEY_7, GLFW_KEY_8, GLFW_KEY_9
 };
-int guiScale = 1;
-int mcscale(int input) {
+int guiScale = 1.0;
+int mcscale(CGFloat input) {
     return (int)((guiScale * input)/resolutionScale);
 }
-int callback_SurfaceViewController_touchHotbar(int x, int y) {
+int callback_SurfaceViewController_touchHotbar(CGFloat x, CGFloat y) {
     if (isGrabbing == JNI_FALSE) {
         return -1;
     }
@@ -215,7 +216,7 @@ int callback_SurfaceViewController_touchHotbar(int x, int y) {
     if (x < barX || x >= barX + barWidth || y < barY || y >= barY + barHeight) {
         return -1;
     }
-    return hotbarKeys[((x - barX) / mcscale(180 / 9)) % 9];
+    return hotbarKeys[(int) MathUtils_map(x, barX, barX + barWidth, 0, 9)];
 }
 
 JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_updateMCGuiScale(JNIEnv* env, jclass clazz, jint scale) {
@@ -256,7 +257,7 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetInputRead
     return isUseStackQueueCall;
 }
 
-JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetGrabbing(JNIEnv* env, jclass clazz, jboolean grabbing, jint xset, jint yset) {
+JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetGrabbing(JNIEnv* env, jclass clazz, jboolean grabbing, jfloat xset, jfloat yset) {
     isGrabbing = grabbing;
     if (isGrabbing == JNI_TRUE) {
         grabCursorX = xset; // savedWidth / 2;
@@ -269,10 +270,14 @@ JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetGrabbing(JNIE
     }
 
     dispatch_async(dispatch_get_main_queue(), ^{
+        UIView *surfaceView = ((SurfaceViewController *)viewController).surfaceView;
         if (isGrabbing == JNI_TRUE) {
             CGFloat screenScale = [[UIScreen mainScreen] scale] * resolutionScale;
             callback_SurfaceViewController_onTouch(ACTION_DOWN, lastVirtualMousePoint.x * screenScale, lastVirtualMousePoint.y * screenScale);
             ((SurfaceViewController *)viewController).mousePointerView.frame = virtualMouseFrame;
+            [surfaceView removeGestureRecognizer:((SurfaceViewController *)viewController).scrollPanGesture];
+        } else {
+            [surfaceView addGestureRecognizer:((SurfaceViewController *)viewController).scrollPanGesture];
         }
         ((SurfaceViewController *)viewController).mousePointerView.hidden = isGrabbing || !virtualMouseEnabled;
     });
@@ -313,7 +318,7 @@ JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendCursorEnter(
     }
 }
 */
-JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendCursorPos(JNIEnv* env, jclass clazz, jint x, jint y) {
+JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendCursorPos(JNIEnv* env, jclass clazz, jfloat x, jfloat y) {
     if (GLFW_invoke_CursorPos && isInputReady) {
         if (!isCursorEntered) {
             if (GLFW_invoke_CursorEnter) {
