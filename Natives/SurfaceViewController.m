@@ -351,7 +351,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
         }
 
         if (touchEvent == self.primaryTouch) {
-            if ([self isTouchInactive:self.primaryTouch]) return; // FIXME: should be?
+            if ([self isTouchInactive:self.primaryTouch]) return; // FIXME: should be? ACTION_UP will never be sent
             [self sendTouchPoint:locationInView withEvent:event];
         }
 

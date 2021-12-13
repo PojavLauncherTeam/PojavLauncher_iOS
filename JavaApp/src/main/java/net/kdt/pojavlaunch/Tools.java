@@ -101,7 +101,7 @@ public final class Tools
         final String launchClassPath = generateLaunchClassPath(profile.selectedVersion);
 
         List<String> javaArgList = new ArrayList<String>();
-        
+        //javaArgList.add(versionInfo.logging.client.argument.replace("${path}", DIR_GAME_NEW.getAbsolutePath() + "/" + mVersion.logging.client.file.id));
         javaArgList.add("-cp");
         javaArgList.add(launchClassPath);
 

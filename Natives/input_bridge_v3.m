@@ -200,7 +200,7 @@ const int hotbarKeys[9] = {
     GLFW_KEY_4, GLFW_KEY_5, GLFW_KEY_6,
     GLFW_KEY_7, GLFW_KEY_8, GLFW_KEY_9
 };
-int guiScale = 1.0;
+int guiScale = 1;
 int mcscale(CGFloat input) {
     return (int)((guiScale * input)/resolutionScale);
 }

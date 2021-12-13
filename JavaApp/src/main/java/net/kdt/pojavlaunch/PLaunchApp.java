@@ -116,6 +116,13 @@ public class PLaunchApp {
                     e.printStackTrace();
                 }
 
+                if (mVersion.logging != null) {
+                    UIKit.updateProgressSafe(0, "Downloading " + mVersion.logging.client.file.id);
+                    String configPath = Tools.DIR_GAME_NEW + "/" + mVersion.logging.client.file.id;
+                    Tools.downloadFile(mVersion.logging.client.file.url, configPath);
+                    System.setProperty("log4j.configurationFile", configPath);
+                }
+
                 maxProgress = mVersion.libraries.length + 1 + (assets == null ? 0 : assets.objects.size());
 
                 File outLib;
