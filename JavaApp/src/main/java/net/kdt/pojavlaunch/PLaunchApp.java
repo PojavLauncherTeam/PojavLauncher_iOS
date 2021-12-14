@@ -44,6 +44,13 @@ public class PLaunchApp {
     public static void launchMinecraft() {
         System.out.println("Launching Minecraft " + mVersion.id);
         try {
+            String configPath;
+            if (mVersion.logging.client.file.id.equals("client-1.12.xml")) {
+                configPath = Tools.DIR_BUNDLE + "/log4j-rce-patch-1.12.xml";
+            } else {
+                configPath = Tools.DIR_GAME_NEW + "/" + mVersion.logging.client.file.id;
+            }
+            System.setProperty("log4j.configurationFile", configPath);
             Tools.launchMinecraft(AccountJNI.CURRENT_ACCOUNT, mVersion);
         } catch (Throwable th) {
             Tools.showError(th);
@@ -116,11 +123,10 @@ public class PLaunchApp {
                     e.printStackTrace();
                 }
 
-                if (mVersion.logging != null) {
+                if (mVersion.logging != null && !mVersion.logging.client.file.id.equals("client-1.12.xml")) {
                     UIKit.updateProgressSafe(0, "Downloading " + mVersion.logging.client.file.id);
                     String configPath = Tools.DIR_GAME_NEW + "/" + mVersion.logging.client.file.id;
                     Tools.downloadFile(mVersion.logging.client.file.url, configPath);
-                    System.setProperty("log4j.configurationFile", configPath);
                 }
 
                 maxProgress = mVersion.libraries.length + 1 + (assets == null ? 0 : assets.objects.size());
