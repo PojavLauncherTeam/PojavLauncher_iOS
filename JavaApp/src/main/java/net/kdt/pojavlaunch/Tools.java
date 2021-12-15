@@ -107,6 +107,23 @@ public final class Tools
 
         javaArgList.add(versionInfo.mainClass);
         javaArgList.addAll(Arrays.asList(launchArgs));
+        if(profile.username.equals("demo_user")) {
+            File demoHome = new File(DIR_GAME_HOME + "/demo");
+            if(demoHome.exists()) {
+                for (File demoStuff : demoHome.listFiles()) { demoStuff.delete(); }
+            } else {
+                demoHome.mkdirs();
+            }
+            javaArgList.add("-Duser.home=" + DIR_GAME_HOME + "/demo");
+            File demoDir = new File(DIR_GAME_NEW + "/demo");
+            if(demoDir.exists()) {
+                for (File demoStuff : demoDir.listFiles()) { demoStuff.delete(); }
+            } else {
+                demoDir.mkdirs();
+            }
+            javaArgList.add("-Duser.dir=" + DIR_GAME_NEW + "/demo");
+            javaArgList.add("--demo");
+        }
         
         // Debug
 /*

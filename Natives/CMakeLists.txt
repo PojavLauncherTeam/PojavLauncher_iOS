@@ -75,6 +75,8 @@ target_link_libraries(PojavLauncher
   "-framework CoreGraphics"
   "-framework QuartzCore"
   "-framework UIKit"
+  "-framework SafariServices"
+  "-framework WebKit"
 )
 set_target_properties(PojavLauncher PROPERTIES
   MACOSX_BUNDLE TRUE

@@ -58,7 +58,7 @@
     
     if(getenv("POJAV_DETECTEDJB")) {
         if(![[NSFileManager defaultManager] fileExistsAtPath:@"/.procursus_strapped"] && [getPreference(@"jb_warn") boolValue] == YES) {
-            NSString *jbMessage = [NSString stringWithFormat:@"Your current jailbreak (%s) does not have the Procursus bootstrap, which means that certain issues may occur that cannot be fixed. Please switch to a completely supported jailbreak, if possible.", getenv("POJAV_DETECTEDJB")];
+            NSString *jbMessage = [NSString stringWithFormat:@"Your current jailbreak (%s) does not have the Procursus bootstrap, which means that certain issues may occur that cannot be fixed. Please switch to a completely supported jailbreak, if possible. See the FAQ page for more information.", getenv("POJAV_DETECTEDJB")];
             UIAlertController *jbAlert = [UIAlertController alertControllerWithTitle:@"Jailbreak not completely supported." message:jbMessage preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
             [self presentViewController:jbAlert animated:YES completion:nil];
@@ -302,7 +302,7 @@
 
 - (void)loginOffline:(UIButton *)sender {
     if ([getPreference(@"local_warn") boolValue] == YES) {
-        UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:@"Offline mode is now Local mode." message:@"You can continue to play installed versions, but you can no longer download Minecraft without a paid account. No support will be provided for issues with local accounts, or other means of acquiring Minecraft. See our website for more information."preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:@"Offline mode is now Local mode." message:@"You can continue to play installed versions, but you can no longer download Minecraft without a paid account. No support will be provided for issues with local accounts, or other means of acquiring Minecraft. See the FAQ for more information."preferredStyle:UIAlertControllerStyleActionSheet];
         [self setPopoverProperties:offlineAlert.popoverPresentationController sender:sender];
         UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginUsername:TYPE_OFFLINE];}];
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self accountType:sender];}];
@@ -316,11 +316,18 @@
 }
 
 - (void)loginDemo:(UIButton *)sender {
-    UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:@"This option is currently unavailable." message:@"It will be fully implemented in a future update." preferredStyle:UIAlertControllerStyleActionSheet];
-    [self setPopoverProperties:offlineAlert.popoverPresentationController sender:sender];
-    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self accountType:sender];}];
-    [self presentViewController:offlineAlert animated:YES completion:nil];
-    [offlineAlert addAction:ok];
+    if ([getPreference(@"demo_warn") boolValue] == YES) {
+        UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:@"This option is in beta." message:@"As a replacement to offline and local mode, demo mode will allow you to sign into a Microsoft account that does not own the game and play the Java Edition trial, introduced in 1.3.1 and newer versions. Older versions contain the full game, as the official launcher does not place these restrictions. See our website to learn more about this transition from offline mode."preferredStyle:UIAlertControllerStyleActionSheet];
+        [self setPopoverProperties:offlineAlert.popoverPresentationController sender:sender];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginMicrosoft];}];
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self accountType:sender];}];
+        [self presentViewController:offlineAlert animated:YES completion:nil];
+        [offlineAlert addAction:ok];
+        [offlineAlert addAction:cancel];
+        setPreference(@"demo_warn", @NO);
+    } else {
+        [self loginMicrosoft];
+    }
 }
 
 - (void)loginAccount:(UIButton *)sender {

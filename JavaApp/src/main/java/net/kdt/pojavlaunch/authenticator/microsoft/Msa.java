@@ -38,6 +38,7 @@ public class Msa {
     public String mcToken;
     public String mcUuid;
     public boolean doesOwnGame;
+    public boolean doesDemo;
 
     public Msa(MicrosoftAuthTask task, boolean isRefresh, String authCode) throws IOException, JSONException {
         this.task = task;
@@ -270,10 +271,16 @@ public class Msa {
             // Log.i("MicroAuth","Uuid Minecraft = " + uuidDashes);
             mcName=name;
             mcUuid=uuidDashes;
-        }else{
+        } else if(conn.getResponseCode() == 404) {
+            // Demo mode stuff
+            doesOwnGame = false;
+            doesDemo = true;
+        } else {
             // Log.i("MicroAuth","It seems that this Microsoft Account does not own the game.");
             doesOwnGame = false;
+            doesDemo = false;
             throwResponseError(conn);
+            
         }
     }
 
