@@ -191,16 +191,19 @@
     jclass clazz = (*env)->FindClass(env, "net/kdt/pojavlaunch/uikit/AccountJNI");
     assert(clazz);
 
-    jmethodID method = (*env)->GetStaticMethodID(env, clazz, "loginAccount", "(ILjava/lang/String;)Z");
+    jmethodID method = (*env)->GetStaticMethodID(env, clazz, "loginAccount", "(ILjava/lang/String;)Ljava/lang/String;");
     assert(method);
 
-    jboolean result = (*env)->CallStaticBooleanMethod(env, clazz, method, type, jdata);
+    jstring result = (*env)->CallStaticObjectMethod(env, clazz, method, type, jdata);
 
     if (![NSThread isMainThread]) {
         (*runtimeJavaVMPtr)->DetachCurrentThread(runtimeJavaVMPtr);
     }
 
-    if (result == JNI_TRUE) {
+    if (result != NULL) {
+        const char *username = (*env)->GetStringUTFChars(env, result, 0);
+        setenv("POJAV_INTERNAL_SELECTED_ACCOUNT", username, 1);
+        (*env)->ReleaseStringUTFChars(env, result, username);
         if ([NSThread isMainThread]) {
             LauncherViewController *vc = [[LauncherViewController alloc] init];
             [self.navigationController pushViewController:vc animated:YES];

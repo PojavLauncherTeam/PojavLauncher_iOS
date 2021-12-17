@@ -1,6 +1,6 @@
-
 #import "SceneDelegate.h"
 #import "LoginViewController.h"
+#import "ios_uikit_bridge.h"
 
 @interface SceneDelegate ()
 
@@ -12,12 +12,10 @@
 - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions  API_AVAILABLE(ios(13.0)) API_AVAILABLE(ios(13.0)) API_AVAILABLE(ios(13.0)){
     
     if (@available(iOS 13.0, *)) {
-        LoginViewController *vc = [[LoginViewController alloc] init];
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
         UIWindowScene *windowScene = (UIWindowScene *)scene;
         self.window = [[UIWindow alloc] initWithWindowScene:windowScene];
         self.window.frame = windowScene.coordinateSpace.bounds;
-        self.window.rootViewController = nav;
+        launchInitialViewController(self.window);
         [self.window makeKeyAndVisible];
     } else {
         

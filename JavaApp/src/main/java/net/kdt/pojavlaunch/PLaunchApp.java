@@ -40,10 +40,27 @@ public class PLaunchApp {
         UIKit.launchUI();
     }
 
+    public static String getSelectedVersion() {
+        try {
+            String plistContent = Tools.read(Tools.DIR_APP_DATA + "/launcher_preferences.plist");
+            plistContent = plistContent.substring(plistContent.indexOf("<key>selected_version</key>") + 27);
+            return plistContent.substring(
+                    plistContent.indexOf("<string>") + 8,
+                plistContent.indexOf("</string>"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     // Called from SurfaceViewController
     public static void launchMinecraft() {
-        System.out.println("Launching Minecraft " + mVersion.id);
         try {
+            if (AccountJNI.CURRENT_ACCOUNT == null) {
+                AccountJNI.CURRENT_ACCOUNT = MinecraftAccount.load(System.getProperty("pojav.selectedAccount"));
+                mVersion = Tools.getVersionInfo(getSelectedVersion());
+            }
+            System.out.println("Launching Minecraft " + mVersion.id);
             String configPath;
             if (mVersion.logging.client.file.id.equals("client-1.12.xml")) {
                 configPath = Tools.DIR_BUNDLE + "/log4j-rce-patch-1.12.xml";
@@ -64,18 +81,7 @@ public class PLaunchApp {
             maxProgress = 0;
 
             UIKit.updateProgressSafe(0, "Finding a version");
-            String mcver = "1.16.5";
-
-            try {
-                String plistContent = Tools.read(Tools.DIR_APP_DATA + "/launcher_preferences.plist");
-                plistContent = plistContent.substring(plistContent.indexOf("<key>selected_version</key>") + 27);
-                mcver = plistContent.substring(
-                    plistContent.indexOf("<string>") + 8,
-                    plistContent.indexOf("</string>"));
-            } catch (IOException e) {
-                e.printStackTrace();
-                UIKit.updateProgressSafe(0, "Could not parse plist, defaulting to Minecraft 1.16.5");
-            }
+            String mcver = getSelectedVersion();
 
             AccountJNI.CURRENT_ACCOUNT.selectedVersion = mcver;
             try {

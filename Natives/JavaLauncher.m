@@ -594,6 +594,10 @@ int launchJVM(int argc, char *argv[]) {
         margv[margc++] = userHome;
         margv[margc++] = "-Dorg.lwjgl.system.allocator=system";
         margv[margc++] = "-Dlog4j2.formatMsgNoLookups=true";
+        NSString *selectedAccount = getPreference(@"internal_selected_account");
+        if (selectedAccount != nil) {
+            margv[margc++] = (char *) [NSString stringWithFormat:@"-Dpojav.selectedAccount=%@", selectedAccount].UTF8String;
+        }
     } else {
         setenv("RENDERER", renderer, 1);
         debug("[Pre-init] RENDERER has been set to %s", getenv("RENDERER"));

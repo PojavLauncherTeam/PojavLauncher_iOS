@@ -100,6 +100,8 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     viewController = self;
     isControlModifiable = NO;
 
+    setPreference(@"internal_selected_account", nil);
+
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
     [self setNeedsUpdateOfHomeIndicatorAutoHidden];
