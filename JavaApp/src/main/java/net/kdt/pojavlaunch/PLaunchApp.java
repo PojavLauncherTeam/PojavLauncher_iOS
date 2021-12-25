@@ -62,12 +62,14 @@ public class PLaunchApp {
             }
             System.out.println("Launching Minecraft " + mVersion.id);
             String configPath;
-            if (mVersion.logging.client.file.id.equals("client-1.12.xml")) {
-                configPath = Tools.DIR_BUNDLE + "/log4j-rce-patch-1.12.xml";
-            } else {
-                configPath = Tools.DIR_GAME_NEW + "/" + mVersion.logging.client.file.id;
+            if (mVersion.logging != null) {
+                if (mVersion.logging.client.file.id.equals("client-1.12.xml")) {
+                    configPath = Tools.DIR_BUNDLE + "/log4j-rce-patch-1.12.xml";
+                } else {
+                    configPath = Tools.DIR_GAME_NEW + "/" + mVersion.logging.client.file.id;
+                }
+                System.setProperty("log4j.configurationFile", configPath);
             }
-            System.setProperty("log4j.configurationFile", configPath);
             Tools.launchMinecraft(AccountJNI.CURRENT_ACCOUNT, mVersion);
         } catch (Throwable th) {
             Tools.showError(th);

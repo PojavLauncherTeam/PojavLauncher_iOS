@@ -187,8 +187,10 @@ public final class Tools
         varArgMap.put("auth_access_token", profile.accessToken);
         varArgMap.put("auth_player_name", username);
         varArgMap.put("auth_uuid", profile.profileId);
+        // varArgMap.put("auth_xuid", profile.profileId); // TODO!!!
         varArgMap.put("assets_root", Tools.ASSETS_PATH);
         varArgMap.put("assets_index_name", versionInfo.assets);
+        varArgMap.put("clientid", profile.clientToken);
         varArgMap.put("game_assets", Tools.ASSETS_PATH);
         varArgMap.put("game_directory", gameDir.getAbsolutePath());
         varArgMap.put("user_properties", "{}");
@@ -476,7 +478,7 @@ public final class Tools
                             DependentLibrary libAdded = libList.get(i);
                             String libAddedName = libAdded.name.substring(0, libAdded.name.lastIndexOf(":"));
                             
-                            if (libAddedName.equals(libName)) {
+                            if (!libAdded.name.equals(lib.name) && libAddedName.equals(libName)) {
                                 System.out.println("Library " + libName + ": Replaced version " +
                                     libAdded.name.substring(libAddedName.length() + 1) + " with " +
                                     lib.name.substring(libName.length() + 1));
