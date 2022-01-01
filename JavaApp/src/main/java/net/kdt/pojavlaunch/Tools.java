@@ -541,10 +541,10 @@ public final class Tools
         for (String key : keyArr) {
             Object value = null;
             try {
-                Field fieldA = fromVer.getClass().getDeclaredField(key);
+                Field fieldA = fromVer.getClass().getField(key);
                 value = fieldA.get(fromVer);
                 if (((value instanceof String) && !((String) value).isEmpty()) || value != null) {
-                    Field fieldB = targetVer.getClass().getDeclaredField(key);
+                    Field fieldB = targetVer.getClass().getField(key);
                     fieldB.set(targetVer, value);
                 }
             } catch (Throwable th) {
