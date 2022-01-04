@@ -194,17 +194,17 @@ void init_loadCustomEnv() {
 void init_loadCustomJvmFlags() {
     NSString *jvmargs = getPreference(@"java_args");
     BOOL isFirstArg = YES;
-    for (NSString *jvmarg in [jvmargs componentsSeparatedByString:@" "]) {
+    for (NSString *jvmarg in [jvmargs componentsSeparatedByString:@" -"]) {
         if ([jvmarg length] == 0) continue;
-        margv[margc] = (char *) [jvmarg UTF8String];
-/*
+        //margv[margc] = (char *) [jvmarg UTF8String];
+
         if (isFirstArg) {
             isFirstArg = NO;
             margv[margc] = (char *) [jvmarg UTF8String];
         } else {
             margv[margc] = (char *) [[@"-" stringByAppendingString:jvmarg] UTF8String];
         }
-*/
+
         NSLog(@"[Pre-init] Added custom JVM flag: %s", margv[margc]);
         ++margc;
     }
