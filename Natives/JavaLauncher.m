@@ -194,14 +194,17 @@ void init_loadCustomEnv() {
 void init_loadCustomJvmFlags() {
     NSString *jvmargs = getPreference(@"java_args");
     BOOL isFirstArg = YES;
-    for (NSString *jvmarg in [jvmargs componentsSeparatedByString:@" -"]) {
+    for (NSString *jvmarg in [jvmargs componentsSeparatedByString:@" "]) {
         if ([jvmarg length] == 0) continue;
+        margv[margc] = (char *) [jvmarg UTF8String];
+/*
         if (isFirstArg) {
             isFirstArg = NO;
             margv[margc] = (char *) [jvmarg UTF8String];
         } else {
             margv[margc] = (char *) [[@"-" stringByAppendingString:jvmarg] UTF8String];
         }
+*/
         NSLog(@"[Pre-init] Added custom JVM flag: %s", margv[margc]);
         ++margc;
     }
@@ -284,8 +287,7 @@ void environmentFailsafes(char *argv[]) {
         javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
         setPreference(@"java_home", javaHome_pre);
     } else {
-        javaHome = calloc(1, 2048);
-        sprintf((char *)javaHome, "%s/jre", homeDir);
+        asprintf((char **)&javaHome, "%s/jre", homeDir);
     }
 }
 
@@ -507,8 +509,8 @@ int launchJVM(int argc, char *argv[]) {
     allocmem_pre = [getPreference(@"allocated_memory") stringValue];
     allocmem = [allocmem_pre cStringUsingEncoding:NSUTF8StringEncoding];
     
-    char *controlPath = calloc(1, 2048);
-    sprintf(controlPath, "%s/controlmap", homeDir);
+    char *controlPath;
+    asprintf(&controlPath, "%s/controlmap", homeDir);
     mkdir(controlPath, S_IRWXU | S_IRWXG | S_IRWXO);
     setenv("POJAV_PATH_CONTROL", controlPath, 1);
     free(controlPath);
@@ -543,10 +545,9 @@ int launchJVM(int argc, char *argv[]) {
         multidir = [multidir_pre cStringUsingEncoding:NSUTF8StringEncoding];
         debug("[Pre-init] Restored preference: MULTI_DIR is set to %s\n", multidir);
     }
-    char *multidir_char = calloc(1, 2048);
-    char *librarySym = calloc(1, 2048);
-    snprintf(multidir_char, 2048, "%s/instances/%s", getenv("POJAV_HOME"), multidir);
-    snprintf(librarySym, 2048, "%s/Library/Application Support/minecraft", getenv("POJAV_HOME"));
+    char *multidir_char, *librarySym;
+    asprintf(&multidir_char, "%s/instances/%s", getenv("POJAV_HOME"), multidir);
+    asprintf(&librarySym, "%s/Library/Application Support/minecraft", getenv("POJAV_HOME"));
     remove(librarySym);
     if (0 != access(multidir_char, F_OK)) {
         mkdir(multidir_char, 755);
@@ -564,20 +565,14 @@ int launchJVM(int argc, char *argv[]) {
     }
     // Check if JVM restarts
     if (!started) {
-        char *frameworkPath = calloc(1, 2048);
-        char *javaPath = calloc(1, 2048);
-        char *jnaLibPath = calloc(1, 2048);
-        char *userDir = calloc(1, 2048);
-        char *userHome = calloc(1, 2048);
-        char *memMin = calloc(1, 2048);
-        char *memMax = calloc(1, 2048);
-        snprintf(frameworkPath, 2048, "-Djava.library.path=%s/Frameworks:%s/Frameworks/libOSMesaOverride.dylib.framework", getenv("BUNDLE_PATH"), getenv("BUNDLE_PATH"));
-        snprintf(javaPath, 2048, "%s/bin/java", javaHome);
-        snprintf(jnaLibPath, 2048, "-Djna.boot.library.path=%s/Frameworks/libjnidispatch.dylib.framework", getenv("BUNDLE_PATH"));
-        snprintf(userDir, 2048, "-Duser.dir=%s", getenv("POJAV_GAME_DIR"));
-        snprintf(userHome, 2048, "-Duser.home=%s", getenv("POJAV_HOME"));
-        snprintf(memMin, 2048, "-Xms%sM", allocmem);
-        snprintf(memMax, 2048, "-Xmx%sM", allocmem);
+        char *frameworkPath, *javaPath, *jnaLibPath, *userDir, *userHome, *memMin, *memMax;
+        asprintf(&frameworkPath, "-Djava.library.path=%s/Frameworks:%s/Frameworks/libOSMesaOverride.dylib.framework", getenv("BUNDLE_PATH"), getenv("BUNDLE_PATH"));
+        asprintf(&javaPath, "%s/bin/java", javaHome);
+        asprintf(&jnaLibPath, "-Djna.boot.library.path=%s/Frameworks/libjnidispatch.dylib.framework", getenv("BUNDLE_PATH"));
+        asprintf(&userDir, "-Duser.dir=%s", getenv("POJAV_GAME_DIR"));
+        asprintf(&userHome, "-Duser.home=%s", getenv("POJAV_HOME"));
+        asprintf(&memMin, "-Xms%sM", allocmem);
+        asprintf(&memMax, "-Xmx%sM", allocmem);
         NSLog(@"[Pre-init] Java executable path: %s", javaPath);
         setenv("JAVA_EXT_EXECNAME", javaPath, 1);
 

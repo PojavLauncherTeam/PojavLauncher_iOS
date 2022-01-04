@@ -156,10 +156,9 @@ void UIKit_launchMinecraftSurfaceVC() {
             usleep(1000);
             exit(0);
         } else {
-            UIViewController *rootController = UIApplication.sharedApplication.windows.lastObject.rootViewController;
             SurfaceViewController *vc = [[SurfaceViewController alloc] init];
             vc.modalPresentationStyle = UIModalPresentationFullScreen;
-            [rootController presentViewController:vc animated:YES completion:nil];
+            [viewController.navigationController pushViewController:vc animated:YES];
         }
     });
 }

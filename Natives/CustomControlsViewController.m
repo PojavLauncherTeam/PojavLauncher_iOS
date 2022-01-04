@@ -14,10 +14,6 @@ BOOL shouldDismissPopover = YES;
 int width;
 NSMutableArray *keyCodeMap, *keyValueMap;
 
-CGFloat clamp(CGFloat x, CGFloat lower, CGFloat upper) {
-    return fmin(upper, fmax(x, lower));
-}
-
 @interface ControlLayout ()
 @end
 @implementation ControlLayout

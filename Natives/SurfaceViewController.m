@@ -1,3 +1,5 @@
+#import <GameController/GameController.h>
+
 #import "LauncherPreferences.h"
 #import "SurfaceViewController.h"
 #import "egl_bridge.h"
@@ -7,6 +9,8 @@
 #import "customcontrols/ControlDrawer.h"
 #import "customcontrols/ControlSubButton.h"
 #import "customcontrols/CustomControlsUtils.h"
+
+#import "KeyboardInput.h"
 
 #include "glfw_keycodes.h"
 #include "utils.h"
@@ -77,6 +81,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
         return CAMetalLayer.class;
     }
 }
+
 @end
 
 @interface SurfaceViewController ()<UITextFieldDelegate, UIPointerInteractionDelegate, UIGestureRecognizerDelegate> {
@@ -87,8 +92,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 @property(nonatomic, strong) NSMutableArray* togglableVisibleButtons;
 @property ControlButton* swipingButton;
 @property UITouch *primaryTouch, *hotbarTouch;
-
-- (void)setupGL;
+@property id mouseConnectCallback, mouseDisconnectCallback;
 
 @end
 
@@ -105,6 +109,8 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
     [self setNeedsUpdateOfHomeIndicatorAutoHidden];
+    [self.navigationItem setHidesBackButton:YES animated:YES];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];
@@ -134,9 +140,10 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     notchOffset = insets.left;
     width = width - notchOffset * 2;
     CGFloat buttonScale = [getPreference(@"button_scale") floatValue] / 100.0;
-    
+
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnClick:)];
+    tapGesture.allowedTouchTypes = @[@(UITouchTypeDirect)];
     tapGesture.delegate = self;
     tapGesture.numberOfTapsRequired = 1;
     tapGesture.numberOfTouchesRequired = 1;
@@ -145,14 +152,22 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 
     UITapGestureRecognizer *doubleTapGesture = [[UITapGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnDoubleClick:)];
+    doubleTapGesture.allowedTouchTypes = @[@(UITouchTypeDirect)];
     doubleTapGesture.delegate = self;
     doubleTapGesture.numberOfTapsRequired = 2;
     doubleTapGesture.numberOfTouchesRequired = 1;
     doubleTapGesture.cancelsTouchesInView = NO;
     [self.surfaceView addGestureRecognizer:doubleTapGesture];
 
+    if (@available(iOS 13.0, *)) {
+        UIHoverGestureRecognizer *hoverGesture = [[UIHoverGestureRecognizer alloc]
+            initWithTarget:self action:@selector(surfaceOnHover:)];
+            [self.surfaceView addGestureRecognizer:hoverGesture];
+    }
+
     UILongPressGestureRecognizer *longpressGesture = [[UILongPressGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnLongpress:)];
+    longpressGesture.allowedTouchTypes = @[@(UITouchTypeDirect)];
     longpressGesture.cancelsTouchesInView = NO;
     longpressGesture.delegate = self;
     longpressGesture.minimumPressDuration = [getPreference(@"time_longPressTrigger") floatValue] / 1000;
@@ -160,22 +175,13 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     
     self.scrollPanGesture = [[UIPanGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnTouchesScroll:)];
-    self.scrollPanGesture.delegate = self;
     self.scrollPanGesture.allowedTouchTypes = @[@(UITouchTypeDirect)];
+    self.scrollPanGesture.delegate = self;
     self.scrollPanGesture.minimumNumberOfTouches = 2;
     self.scrollPanGesture.maximumNumberOfTouches = 2;
 
     if (@available(iOS 13.4, *)) {
         [self.surfaceView addInteraction:[[UIPointerInteraction alloc] initWithDelegate:self]];
-
-        UIPanGestureRecognizer *mouseWheelGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(surfaceOnMouseScroll:)];
-        mouseWheelGesture.delegate = self;
-        mouseWheelGesture.allowedScrollTypesMask = UIScrollTypeMaskDiscrete;
-        mouseWheelGesture.allowedTouchTypes = @[@(UITouchTypeIndirectPointer)];
-        mouseWheelGesture.cancelsTouchesInView = NO;
-        mouseWheelGesture.delaysTouchesBegan = NO;
-        mouseWheelGesture.delaysTouchesEnded = NO;
-        [self.surfaceView addGestureRecognizer:mouseWheelGesture];
     }
 
     // Virtual mouse
@@ -253,13 +259,35 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
         }
     }
 
+    [KeyboardInput initKeycodeTable];
+    if (@available(iOS 14.0, tvOS 14.0, *)) {
+        self.mouseConnectCallback = [[NSNotificationCenter defaultCenter] addObserverForName:GCMouseDidConnectNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+            NSLog(@"Input: Mouse connected!");
+            GCMouse* mouse = note.object;
+            [self registerMouseCallbacks: mouse];
+            [self setNeedsUpdateOfPrefersPointerLocked];
+        }];
+        self.mouseDisconnectCallback = [[NSNotificationCenter defaultCenter] addObserverForName:GCMouseDidDisconnectNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+            NSLog(@"Input: Mouse disconnected!");
+            GCMouse* mouse = note.object;
+            mouse.mouseInput.mouseMovedHandler = nil;
+            mouse.mouseInput.leftButton.pressedChangedHandler = nil;
+            mouse.mouseInput.middleButton.pressedChangedHandler = nil;
+            mouse.mouseInput.rightButton.pressedChangedHandler = nil;
+            [self setNeedsUpdateOfPrefersPointerLocked];
+        }];
+        if (GCMouse.current != nil) {
+            [self registerMouseCallbacks: GCMouse.current];
+        }
+    }
+
     [self.view addSubview:inputView];
 
     [self executebtn_special_togglebtn:0];
 
     // [self setPreferredFramesPerSecond:1000];
 
-    [self setupGL];
+    callback_SurfaceViewController_launchMinecraft(savedWidth * resolutionScale, savedHeight * resolutionScale);
 }
 
 - (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
@@ -268,10 +296,6 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 
 - (BOOL)prefersHomeIndicatorAutoHidden {
     return NO;
-}
-
-- (void)setupGL {
-    callback_SurfaceViewController_launchMinecraft(savedWidth * resolutionScale, savedHeight * resolutionScale);
 }
 
 #pragma mark - Input: send touch utilities
@@ -291,17 +315,13 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
             if (event == ACTION_MOVE) {
                 virtualMouseFrame.origin.x += location.x - lastVirtualMousePoint.x;
                 virtualMouseFrame.origin.y += location.y - lastVirtualMousePoint.y;
-                if (virtualMouseFrame.origin.x < 0) {
-                    virtualMouseFrame.origin.x = 0;
-                } else if (virtualMouseFrame.origin.x > self.view.frame.size.width) {
-                    virtualMouseFrame.origin.x = self.view.frame.size.width;
-                }
-                if (virtualMouseFrame.origin.y < 0) {
-                    virtualMouseFrame.origin.y = 0;
-                } else if (virtualMouseFrame.origin.y > self.view.frame.size.height) {
-                    virtualMouseFrame.origin.y = self.view.frame.size.height;
-                }
+            } else if (event == ACTION_MOVE_MOTION) {
+                event = ACTION_MOVE;
+                virtualMouseFrame.origin.x += location.x;
+                virtualMouseFrame.origin.y += location.y;
             }
+            virtualMouseFrame.origin.x = clamp(virtualMouseFrame.origin.x, 0, self.view.frame.size.width);
+            virtualMouseFrame.origin.y = clamp(virtualMouseFrame.origin.y, 0, self.view.frame.size.height);
             lastVirtualMousePoint = location;
             self.mousePointerView.frame = virtualMouseFrame;
             callback_SurfaceViewController_onTouch(event, virtualMouseFrame.origin.x * screenScale, virtualMouseFrame.origin.y * screenScale);
@@ -312,6 +332,8 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     callback_SurfaceViewController_onTouch(event, location.x * screenScale, location.y * screenScale);
 }
 
+#pragma mark - Input: on-surface functions
+
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     return YES;
 }
@@ -320,22 +342,15 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 {
     CGPoint locationInView = [touchEvent locationInView:self.view];
 
-    BOOL isTouchTypeIndirect = NO;
-    if (@available(iOS 13.4, *)) {
-        if (touchEvent.type == UITouchTypeIndirectPointer) {
-            isTouchTypeIndirect = YES;
-        }
-    }
-
     if (touchEvent.view == self.surfaceView) {
-        if (touchEvent == self.hotbarTouch && slideableHotbar && !isTouchTypeIndirect && ![self isTouchInactive:self.hotbarTouch]) {
+        if (touchEvent == self.hotbarTouch && slideableHotbar && ![self isTouchInactive:self.hotbarTouch]) {
             CGFloat screenScale = [[UIScreen mainScreen] scale];
             int slot = callback_SurfaceViewController_touchHotbar(locationInView.x * screenScale, locationInView.y * screenScale);
             
             if (slot != -1 && currentHotbarSlot != slot && (event == ACTION_DOWN || currentHotbarSlot != -1)) {
                 currentHotbarSlot = slot;
-                Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, slot, 0, 1, 0);
-                Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, slot, 0, 0, 0);
+                CallbackBridge_nativeSendKey(slot, 0, 1, 0);
+                CallbackBridge_nativeSendKey(slot, 0, 0, 0);
                 return;
             } /* else if ((event == ACTION_MOVE || event == ACTION_UP) && slot == -1 && currentHotbarSlot != -1) {
                 return;
@@ -357,56 +372,89 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
             [self sendTouchPoint:locationInView withEvent:event];
         }
 
-        if (!isTouchTypeIndirect) {
-            switch (event) {
-                case ACTION_DOWN:
-                    touchesMovedCount = 0;
-                    shouldTriggerClick = YES;
-                    break;
+        switch (event) {
+            case ACTION_DOWN:
+                touchesMovedCount = 0;
+                shouldTriggerClick = YES;
+                break;
 
-                case ACTION_MOVE:
-                    // TODO: better handling this
-                    if (touchesMovedCount >= 1) {
-                        shouldTriggerClick = NO;
-                    } else ++touchesMovedCount;
-                    break;
-            }
-        } else if (@available(iOS 13.4, *)) {
-            // Recheck @available for suppressing compile warnings
-
-            // Mouse clicks are handled here
-            int held = event == ACTION_MOVE || event == ACTION_UP;
-            shouldTriggerClick = NO;
-            for (int i = 1; i <= 5; ++i) {
-                if ((uievent.buttonMask & (1 << ((i)-1))) != 0) {
-                    // iOS button index = GLFW button index + 1;
-                    Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, i - 1, held, 0);
-                }
-            }
+            case ACTION_MOVE:
+                // TODO: better handling this
+                if (touchesMovedCount >= 1) {
+                     shouldTriggerClick = NO;
+                } else ++touchesMovedCount;
+                break;
         }
     }
 }
 
-#pragma mark - Input: on-surface gestures
+- (void)pressesBegan:(NSSet<UIPress *> *)presses withEvent:(UIPressesEvent *)event {
+    BOOL handled = NO;
+
+    if (@available(iOS 13.4, *)) {
+        for (UIPress *press in presses) {
+            if (press.key != nil && [KeyboardInput sendKeyEvent:press.key down:YES]) {
+                handled = YES;
+            }
+        }
+    }
+
+    if (!handled) {
+        [super pressesBegan:presses withEvent:event];
+    }
+}
+
+- (void)pressesEnded:(NSSet<UIPress *> *)presses withEvent:(UIPressesEvent *)event {
+    BOOL handled = NO;
+
+    if (@available(iOS 13.4, *)) {
+        for (UIPress *press in presses) {
+            if (press.key != nil && [KeyboardInput sendKeyEvent:press.key down:NO]) {
+                handled = YES;
+            }
+        }
+    }
+
+    if (!handled) {
+        [super pressesEnded:presses withEvent:event];
+    }
+}
+
+- (void)registerMouseCallbacks:(GCMouse *)mouse API_AVAILABLE(ios(14.0)) {
+    NSLog(@"Input: Got mouse %@", mouse);
+    mouse.mouseInput.leftButton.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
+        CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_LEFT, pressed, 0);
+    };
+    mouse.mouseInput.middleButton.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
+        CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_MIDDLE, pressed, 0);
+    };
+    mouse.mouseInput.rightButton.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
+        CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_RIGHT, pressed, 0);
+    };
+
+    mouse.mouseInput.scroll.xAxis.valueChangedHandler = ^(GCControllerAxisInput * _Nonnull axis, float value) {
+        CallbackBridge_nativeSendScroll(value, 0);
+    };
+    mouse.mouseInput.scroll.yAxis.valueChangedHandler = ^(GCControllerAxisInput * _Nonnull axis, float value) {
+        CallbackBridge_nativeSendScroll(0, value);
+    };
+
+}
 
 - (void)surfaceOnClick:(UITapGestureRecognizer *)sender {
-    if (sender.state == UIGestureRecognizerStateRecognized &&
-      shouldTriggerClick == YES) {
-        CGFloat screenScale = [[UIScreen mainScreen] scale];
-        CGPoint location = [sender locationInView:[sender.view superview]];
-        currentHotbarSlot = callback_SurfaceViewController_touchHotbar(location.x * screenScale, location.y * screenScale);
-        
+    if (shouldTriggerClick == NO) return;
+    if (sender.state == UIGestureRecognizerStateRecognized) {
         if (currentHotbarSlot == -1) {
             inputView.text = INPUT_SPACE_CHAR;
             inputTextLength = 0;
 
-            Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL,
+            CallbackBridge_nativeSendMouseButton(
                 isGrabbing == JNI_TRUE ? GLFW_MOUSE_BUTTON_RIGHT : GLFW_MOUSE_BUTTON_LEFT, 1, 0);
-            Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL,
+            CallbackBridge_nativeSendMouseButton(
                 isGrabbing == JNI_TRUE ? GLFW_MOUSE_BUTTON_RIGHT : GLFW_MOUSE_BUTTON_LEFT, 0, 0);
         } else {
-            Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, currentHotbarSlot, 0, 1, 0);
-            Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, currentHotbarSlot, 0, 0, 0);
+            CallbackBridge_nativeSendKey(currentHotbarSlot, 0, 1, 0);
+            CallbackBridge_nativeSendKey(currentHotbarSlot, 0, 0, 0);
         }
     }
 }
@@ -417,8 +465,8 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
         CGPoint location = [sender locationInView:[sender.view superview]];
         int hotbarSlot = callback_SurfaceViewController_touchHotbar(location.x * screenScale * resolutionScale, location.y * screenScale * resolutionScale);
         if (hotbarSlot != -1 && currentHotbarSlot == hotbarSlot) {
-            Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_F, 0, 1, 0);
-            Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_F, 0, 0, 0);
+            CallbackBridge_nativeSendKey(GLFW_KEY_F, 0, 1, 0);
+            CallbackBridge_nativeSendKey(GLFW_KEY_F, 0, 0, 0);
         }
     }
 }
@@ -427,7 +475,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     if (@available(iOS 13.0, *)) {
         CGPoint point = [sender locationInView:self.surfaceView];
         // NSLog(@"Mouse move!!");
-        // NSLog(@"Mouse pos = %d, %d", point.x, point.y);
+        // NSLog(@"Mouse pos = %f, %f", point.x, point.y);
         switch (sender.state) {
             case UIGestureRecognizerStateBegan:
                 [self sendTouchPoint:point withEvent:ACTION_DOWN];
@@ -458,9 +506,9 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
             inputView.text = INPUT_SPACE_CHAR;
             inputTextLength = 0;
 
-            Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, GLFW_MOUSE_BUTTON_LEFT, 1, 0);
+            CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_LEFT, 1, 0);
         } else {
-            Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_Q, 0, 1, 0);
+            CallbackBridge_nativeSendKey(GLFW_KEY_Q, 0, 1, 0);
         }
     } else if (sender.state == UIGestureRecognizerStateChanged) {
         // Nothing to do here, already handled in touchesMoved
@@ -473,33 +521,11 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
                 inputView.text = INPUT_SPACE_CHAR;
                 inputTextLength = 0;
 
-                Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, GLFW_MOUSE_BUTTON_LEFT, 0, 0);
+                CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_LEFT, 0, 0);
             } else {
-                Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_Q, 0, 0, 0);
+                
+CallbackBridge_nativeSendKey(GLFW_KEY_Q, 0, 0, 0);
             }
-        }
-    }
-}
-
--(void)surfaceOnMouseScroll:(UIPanGestureRecognizer *)sender API_AVAILABLE(ios(13.4))
-{
-    if (sender.state == UIGestureRecognizerStateBegan ||
-        sender.state == UIGestureRecognizerStateChanged ||
-        sender.state == UIGestureRecognizerStateEnded) {
-        CGPoint velocity = [sender velocityInView:self.view];
-
-        if (velocity.x > 0.0f) {
-            velocity.x = -1.0;
-        } else if (velocity.x < 0.0f) {
-            velocity.x = 1.0f;
-        }
-        if (velocity.y > 0.0f) {
-            velocity.y = -1.0;
-        } else if (velocity.y < 0.0f) {
-            velocity.y = 1.0f;
-        }
-        if (velocity.x != 0.0f || velocity.y != 0.0f) {
-            Java_org_lwjgl_glfw_CallbackBridge_nativeSendScroll(NULL, NULL, (jdouble) velocity.x * 4.0, (jdouble) velocity.y * 4.0);
         }
     }
 }
@@ -511,33 +537,20 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
         sender.state == UIGestureRecognizerStateEnded) {
         CGPoint velocity = [sender velocityInView:self.view];
         if (velocity.x != 0.0f || velocity.y != 0.0f) {
-            Java_org_lwjgl_glfw_CallbackBridge_nativeSendScroll(NULL, NULL, (jdouble) (velocity.x/10.0), (jdouble) (velocity.y/10.0));
+            CallbackBridge_nativeSendScroll((CGFloat) (velocity.x/10.0), (CGFloat) (velocity.y/10.0));
         }
     }
 }
 
 // FIXME: incomplete
 - (UIPointerRegion *)pointerInteraction:(UIPointerInteraction *)interaction regionForRequest:(UIPointerRegionRequest *)request defaultRegion:(UIPointerRegion *)defaultRegion API_AVAILABLE(ios(13.4)) API_AVAILABLE(ios(13.4)) API_AVAILABLE(ios(13.4)){
-    if (request != nil) {
-        CGPoint origin = self.surfaceView.bounds.origin;
-        CGPoint point = request.location;
-
-        point.x -= origin.x;
-        point.y -= origin.y;
-        
-        NSLog(@"UIPointerInteraction pos changed: x=%d, y=%d", (int) point.x, (int) point.y);
-
-        callback_SurfaceViewController_onTouch(ACTION_DOWN, (int)point.x, (int)point.y);
-    }
-    return [UIPointerRegion regionWithRect:self.surfaceView.bounds identifier:nil];
+    NSLog(@"regionForRequest called");
+    return nil;
 }
 
 - (UIPointerStyle *)pointerInteraction:(UIPointerInteraction *)interaction styleForRegion:(UIPointerRegion *)region  API_AVAILABLE(ios(13.4)){
-    if (isGrabbing == JNI_FALSE) {
-        return nil;
-    } else {
-        return [UIPointerStyle hiddenPointerStyle];
-    }
+    NSLog(@"styleForRegion called");
+    return [UIPointerStyle hiddenPointerStyle];
 }
 
 #pragma mark - Input view stuff
@@ -545,8 +558,8 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 NSString* inputStringBefore;
 -(void)inputViewDidChange {
     if ([inputView.text length] < INPUT_SPACE_LENGTH) {
-    Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_BACKSPACE, 0, 1, 0);
-    Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_BACKSPACE, 0, 0, 0);
+    CallbackBridge_nativeSendKey(GLFW_KEY_BACKSPACE, 0, 1, 0);
+    CallbackBridge_nativeSendKey(GLFW_KEY_BACKSPACE, 0, 0, 0);
         inputView.text = [@" " stringByAppendingString:inputView.text];
 
         if (inputTextLength > 0) {
@@ -565,9 +578,9 @@ NSString* inputStringBefore;
 
             jchar theChar = (jchar) [newText characterAtIndex:i];
             if (isUseStackQueueCall) {
-                Java_org_lwjgl_glfw_CallbackBridge_nativeSendCharMods(NULL, NULL, theChar, /* mods */ 0);
+                CallbackBridge_nativeSendCharMods(theChar, /* mods */ 0);
             } else {
-                Java_org_lwjgl_glfw_CallbackBridge_nativeSendChar(NULL, NULL, theChar);
+                CallbackBridge_nativeSendChar(theChar);
             }
 
             inputView.text = [inputView.text substringFromIndex:1];
@@ -599,12 +612,12 @@ NSString* inputStringBefore;
 */
                 
                 for (int i2 = 0; i2 < [inputStringNow length]; i2++) {
-                    Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_BACKSPACE, 0, 1, 0);
-                    Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_BACKSPACE, 0, 0, 0);
+                    CallbackBridge_nativeSendKey(GLFW_KEY_BACKSPACE, 0, 1, 0);
+                    CallbackBridge_nativeSendKey(GLFW_KEY_BACKSPACE, 0, 0, 0);
                 }
                 
                 for (int i2 = 0; i2 < [inputStringNow length]; i2++) {
-                    Java_org_lwjgl_glfw_CallbackBridge_nativeSendCharMods(NULL, NULL, (jchar) [inputStringNow characterAtIndex:i2], /* mods */ 0);
+                    CallbackBridge_nativeSendCharMods((jchar) [inputStringNow characterAtIndex:i2], /* mods */ 0);
                 }
 
                 break;
@@ -632,8 +645,8 @@ NSString* inputStringBefore;
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField {
-    Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_ENTER, 0, 1, 0);
-    Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, GLFW_KEY_ENTER, 0, 0, 0);
+    CallbackBridge_nativeSendKey(GLFW_KEY_ENTER, 0, 1, 0);
+    CallbackBridge_nativeSendKey(GLFW_KEY_ENTER, 0, 0, 0);
     return YES;
 }
 
@@ -656,15 +669,15 @@ int currentVisibility = 1;
                     break;
 
                 case SPECIALBTN_MOUSEPRI:
-                    Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, GLFW_MOUSE_BUTTON_LEFT, held, 0);
+                    CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_LEFT, held, 0);
                     break;
 
                 case SPECIALBTN_MOUSESEC:
-                    Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, GLFW_MOUSE_BUTTON_RIGHT, held, 0);
+                    CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_RIGHT, held, 0);
                     break;
 
                 case SPECIALBTN_MOUSEMID:
-                    Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(NULL, NULL, GLFW_MOUSE_BUTTON_MIDDLE, held, 0);
+                    CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_MIDDLE, held, 0);
                     break;
 
                 case SPECIALBTN_TOGGLECTRL:
@@ -673,13 +686,13 @@ int currentVisibility = 1;
 
                 case SPECIALBTN_SCROLLDOWN:
                     if (!held) {
-                        Java_org_lwjgl_glfw_CallbackBridge_nativeSendScroll(NULL, NULL, 0.0, 1.0);
+                        CallbackBridge_nativeSendScroll(0.0, 1.0);
                     }
                     break;
 
                 case SPECIALBTN_SCROLLUP:
                     if (!held) {
-                        Java_org_lwjgl_glfw_CallbackBridge_nativeSendScroll(NULL, NULL, 0.0, -1.0);
+                        CallbackBridge_nativeSendScroll(0.0, -1.0);
                     }
 
                 case SPECIALBTN_VIRTUALMOUSE:
@@ -697,7 +710,8 @@ int currentVisibility = 1;
             // there's no key id 0, but we accidentally used -1 as a special key id, so we had to do that
             // if (keycode == 0) { keycode = -1; }
             // at the moment, send unknown keycode does nothing, may even cause performance issue, so ignore it
-            Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(NULL, NULL, keycode, 0, held, 0);
+            
+CallbackBridge_nativeSendKey(keycode, 0, held, 0);
         }
     }
 }
@@ -766,6 +780,11 @@ int touchesMovedCount;
     [super touchesBegan:touches withEvent:event];
     int i = 0;
     for (UITouch *touch in touches) {
+        if (@available(iOS 14.0, *)) { // 13.4
+            if (touch.type == UITouchTypeIndirectPointer) {
+                continue; // handle this in a different place
+            }
+        }
         CGPoint locationInView = [touch locationInView:self.view];
         CGFloat screenScale = [[UIScreen mainScreen] scale];
         int slot = callback_SurfaceViewController_touchHotbar(locationInView.x * screenScale, locationInView.y * screenScale);
@@ -786,6 +805,11 @@ int touchesMovedCount;
     [super touchesMoved:touches withEvent:event];
 
     for (UITouch *touch in touches) {
+        if (@available(iOS 14.0, *)) { // 13.4
+            if (touch.type == UITouchTypeIndirectPointer) {
+                continue; // handle this in a different place
+            }
+        }
         if (self.hotbarTouch != touch && [self isTouchInactive:self.primaryTouch]) {
             // Replace the inactive touch with the current active touch
             self.primaryTouch = touch;
@@ -799,6 +823,11 @@ int touchesMovedCount;
 - (void)touchesEndedGlobal:(NSSet *)touches withEvent:(UIEvent *)event
 {
     for (UITouch *touch in touches) {
+        if (@available(iOS 14.0, *)) { // 13.4
+            if (touch.type == UITouchTypeIndirectPointer) {
+                continue; // handle this in a different place
+            }
+        }
         [self sendTouchEvent:touch withUIEvent:event withEvent:ACTION_UP];
     }
 }
