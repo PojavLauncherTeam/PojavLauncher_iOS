@@ -88,28 +88,6 @@
         for (int i = UIKeyboardHIDUsageKeyboardF1; i <= UIKeyboardHIDUsageKeyboardF12; i++) {
             keycodeTable[@(i)] = @(i - UIKeyboardHIDUsageKeyboardF1 + GLFW_KEY_F1);
         }
-
-        // Lock keys
-        keycodeTable[@(UIKeyboardHIDUsageKeyboardCapsLock)] = @(GLFW_KEY_CAPS_LOCK);
-        keycodeTable[@(UIKeyboardHIDUsageKeypadNumLock)] = @(GLFW_KEY_NUM_LOCK);
-        keycodeTable[@(UIKeyboardHIDUsageKeyboardScrollLock)] = @(GLFW_KEY_SCROLL_LOCK);
-
-        // Numpad keys
-        keycodeTable[@(UIKeyboardHIDUsageKeypadSlash)] = @(GLFW_KEY_NUMPAD_DIVIDE);
-        keycodeTable[@(UIKeyboardHIDUsageKeypadAsterisk)] = @(GLFW_KEY_NUMPAD_MULTIPLY);
-        keycodeTable[@(UIKeyboardHIDUsageKeypadHyphen)] = @(GLFW_KEY_NUMPAD_SUBTRACT);
-        keycodeTable[@(UIKeyboardHIDUsageKeypadPlus)] = @(GLFW_KEY_NUMPAD_ADD);
-        keycodeTable[@(UIKeyboardHIDUsageKeypadEnter)] = @(GLFW_KEY_NUMPAD_ENTER);
-        keycodeTable[@(UIKeyboardHIDUsageKeypadEqualSign)] = @(GLFW_KEY_NUMPAD_EQUAL);
-        keycodeTable[@(UIKeyboardHIDUsageKeypad0)] = @(GLFW_KEY_NUMPAD_0);
-        for (int i = UIKeyboardHIDUsageKeypad1; i <= UIKeyboardHIDUsageKeypad9; i++) {
-            keycodeTable[@(i)] = @(i - UIKeyboardHIDUsageKeypad1 + GLFW_KEY_NUMPAD_1);
-        }
-
-        // Function keys
-        for (int i = UIKeyboardHIDUsageKeyboardF1; i <= UIKeyboardHIDUsageKeyboardF12; i++) {
-            keycodeTable[@(i)] = @(i - UIKeyboardHIDUsageKeyboardF1 + GLFW_KEY_F1);
-        }
     }
 }
 
