@@ -24,13 +24,13 @@
 // #define DEBUG_VISIBLE_TEXT_FIELD
 // #define DEBUG_VISIBLE_TOUCH
 
-#define INPUT_SPACE_CHAR @"                    "
+#define INPUT_SPACE_CHAR @"                                        "
+#define INPUT_FULL_LENGTH 40
 #define INPUT_SPACE_LENGTH 20
 
 #ifdef DEBUG_VISIBLE_TEXT_FIELD
 UILabel *inputLengthView;
 #endif
-UITextField *inputView;
 int inputTextLength;
 
 BOOL shouldTriggerClick = NO;
@@ -41,6 +41,7 @@ BOOL slideableHotbar;
 
 // TODO: key modifiers impl
 
+#pragma mark Class GameSurfaceView
 @implementation GameSurfaceView
 const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 	return gbuffer;
@@ -84,9 +85,39 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 
 @end
 
+
+#pragma mark Class TrackedTextField
+@interface TrackedTextField : UITextField
+@property int lastPosition;
+@property UITextPosition* lockPos;
+@end
+
+@implementation TrackedTextField
+- (UITextPosition *)closestPositionToPoint:(CGPoint)point {
+    UITextPosition *position = [super closestPositionToPoint:point];
+    int start = [self offsetFromPosition:self.beginningOfDocument toPosition:position];
+    if (start - self.lastPosition != 0) {
+        int key = (start - self.lastPosition > 0) ? GLFW_KEY_DPAD_RIGHT : GLFW_KEY_DPAD_LEFT;
+        CallbackBridge_nativeSendKey(key, 0, 1, 0);
+        CallbackBridge_nativeSendKey(key, 0, 0, 0);
+    }
+    self.lastPosition = start;
+    return [self positionFromPosition:self.beginningOfDocument offset:clamp(start, 20, self.text.length - 20)];
+}
+
+- (void)setText:(NSString *)text {
+    [super setText:text];
+    self.lockPos = [self positionFromPosition:self.beginningOfDocument offset:20];
+    self.selectedTextRange = [self textRangeFromPosition:self.lockPos toPosition:self.lockPos];
+}
+@end
+
+
+#pragma mark Class SurfaceViewController
 @interface SurfaceViewController ()<UITextFieldDelegate, UIPointerInteractionDelegate, UIGestureRecognizerDelegate> {
 }
 
+@property TrackedTextField *inputView;
 @property(nonatomic, strong) NSMutableDictionary* cc_dictionary;
 @property(nonatomic, strong) NSMutableArray* swipeableButtons;
 @property(nonatomic, strong) NSMutableArray* togglableVisibleButtons;
@@ -193,21 +224,19 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     [self.view addSubview:self.mousePointerView];
 
 #ifndef DEBUG_VISIBLE_TEXT_FIELD
-    inputView = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
-    inputView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.0f];
+    self.inputView = [[TrackedTextField alloc] initWithFrame:CGRectMake(0, -1, 1, 1)];
 #else
-    inputView = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
-    inputView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.5f];
+    self.inputView = [[TrackedTextField alloc] initWithFrame:CGRectMake(5 * 2 + 160.0, 5 * 2 + 30.0, 200.0, 30.0)];
+    self.inputView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.5f];
 
     inputLengthView = [[UILabel alloc] initWithFrame:CGRectMake(5 * 2 + 80.0, 5 * 2 + 30.0, 80.0, 30.0)];
     inputLengthView.text = @"length=?";
     inputLengthView.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.6f];
     [self.view addSubview:inputLengthView];
 #endif
-    inputView.delegate = self;
-    [inputView addTarget:self action:@selector(inputViewDidChange) forControlEvents:UIControlEventEditingChanged];
-    [inputView addTarget:self action:@selector(inputViewDidClick) forControlEvents:UIControlEventTouchDown];
-
+    self.inputView.delegate = self;
+    self.inputView.lastPosition = 20;
+    [self.inputView addTarget:self action:@selector(inputViewDidChange) forControlEvents:UIControlEventEditingChanged];
 
     NSString *controlFilePath = [NSString stringWithFormat:@"%s/%@", getenv("POJAV_PATH_CONTROL"), (NSString *)getPreference(@"default_ctrl")];
 
@@ -233,9 +262,6 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
                 BOOL isToggleCtrlBtn = NO;
                 for (int i = 0; i < 4; i++) {
                     int keycodeInt = [button.properties[@"keycodes"][i] intValue];
-                    if (keycodeInt == SPECIALBTN_KEYBOARD) {
-                        inputView.frame = button.frame;
-                    }
                     if (keycodeInt == SPECIALBTN_TOGGLECTRL) {
                         isToggleCtrlBtn = YES;
                     }
@@ -281,7 +307,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
         }
     }
 
-    [self.view addSubview:inputView];
+    [self.view addSubview:self.inputView];
 
     [self executebtn_special_togglebtn:0];
 
@@ -445,7 +471,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     if (shouldTriggerClick == NO) return;
     if (sender.state == UIGestureRecognizerStateRecognized) {
         if (currentHotbarSlot == -1) {
-            inputView.text = INPUT_SPACE_CHAR;
+            self.inputView.text = INPUT_SPACE_CHAR;
             inputTextLength = 0;
 
             CallbackBridge_nativeSendMouseButton(
@@ -503,7 +529,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     }
     if (sender.state == UIGestureRecognizerStateBegan) {
         if (currentHotbarSlot == -1) {
-            inputView.text = INPUT_SPACE_CHAR;
+            self.inputView.text = INPUT_SPACE_CHAR;
             inputTextLength = 0;
 
             CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_LEFT, 1, 0);
@@ -518,7 +544,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
             || sender.state == UIGestureRecognizerStateEnded)
         {
             if (currentHotbarSlot == -1) {
-                inputView.text = INPUT_SPACE_CHAR;
+                self.inputView.text = INPUT_SPACE_CHAR;
                 inputTextLength = 0;
 
                 CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_LEFT, 0, 0);
@@ -556,22 +582,28 @@ CallbackBridge_nativeSendKey(GLFW_KEY_Q, 0, 0, 0);
 #pragma mark - Input view stuff
 
 NSString* inputStringBefore;
+int inputStringLength = INPUT_FULL_LENGTH;
 -(void)inputViewDidChange {
-    if ([inputView.text length] < INPUT_SPACE_LENGTH) {
-    CallbackBridge_nativeSendKey(GLFW_KEY_BACKSPACE, 0, 1, 0);
-    CallbackBridge_nativeSendKey(GLFW_KEY_BACKSPACE, 0, 0, 0);
-        inputView.text = [@" " stringByAppendingString:inputView.text];
-
-        if (inputTextLength > 0) {
-            --inputTextLength;
+    int typedLength = (int)self.inputView.text.length - inputStringLength;
+    if (typedLength < 0) {
+        for (int i = 0; i < -typedLength; i++) {
+            if (self.inputView.text.length < INPUT_FULL_LENGTH) {
+                self.inputView.text = [@" " stringByAppendingString:self.inputView.text];
+            }
+            CallbackBridge_nativeSendKey(GLFW_KEY_BACKSPACE, 0, 1, 0);
+            CallbackBridge_nativeSendKey(GLFW_KEY_BACKSPACE, 0, 0, 0);
+            if (inputTextLength > 0) {
+                --inputTextLength;
+            }
         }
 
 #ifdef DEBUG_VISIBLE_TEXT_FIELD
-            inputLengthView.text = [@"length=" stringByAppendingFormat:@"%i", 
+        inputLengthView.text = [@"length=" stringByAppendingFormat:@"%i", 
             inputTextLength];
 #endif
-    } else if ([inputView.text length] > INPUT_SPACE_LENGTH) {
-        NSString *newText = [inputView.text substringFromIndex:INPUT_SPACE_LENGTH];
+    } else if (typedLength > 0) {
+        int index = [self.inputView offsetFromPosition:self.inputView.beginningOfDocument toPosition:self.inputView.selectedTextRange.start];
+        NSString *newText = [self.inputView.text substringWithRange:NSMakeRange(index - typedLength, typedLength)];
         int charLength = (int) [newText length];
         for (int i = 0; i < charLength; i++) {
             // Directly convert unichar to jchar since both are in UTF-16 encoding.
@@ -583,30 +615,27 @@ NSString* inputStringBefore;
                 CallbackBridge_nativeSendChar(theChar);
             }
 
-            inputView.text = [inputView.text substringFromIndex:1];
-            if (inputTextLength < INPUT_SPACE_LENGTH) {
-                ++inputTextLength;
-            }
+            ++inputTextLength;
 #ifdef DEBUG_VISIBLE_TEXT_FIELD
             inputLengthView.text = [@"length=" stringByAppendingFormat:@"%i", 
             inputTextLength];
 #endif
         }
-        inputStringBefore = inputView.text;
-        // [inputView.text substringFromIndex:inputTextLength - 1];
+        inputStringBefore = self.inputView.text;
+        // [self.inputView.text substringFromIndex:inputTextLength - 1];
     } else {
 #ifdef DEBUG_VISIBLE_TEXT_FIELD
-        NSLog(@"Compare \"%@\" vs \"%@\"", inputView.text, inputStringBefore);
+        NSLog(@"Compare \"%@\" vs \"%@\"", self.inputView.text, inputStringBefore);
 #endif
-        for (int i = 0; i < INPUT_SPACE_LENGTH; i++) {
-            if ([inputView.text characterAtIndex:i] != [inputStringBefore characterAtIndex:i]) {
-                NSString *inputStringNow = [inputView.text substringFromIndex:i];
+        for (int i = 0; i < INPUT_FULL_LENGTH; i++) {
+            if ([self.inputView.text characterAtIndex:i] != [inputStringBefore characterAtIndex:i]) {
+                NSString *inputStringNow = [self.inputView.text substringFromIndex:i];
 /*
-                inputView.text = [inputView.text substringToIndex:i];
+                self.inputView.text = [self.inputView.text substringToIndex:i];
                 // self notify
                 [self inputViewDidChange];
                 
-                inputView.text = [inputView.text stringByAppendingString:inputStringNow];
+                self.inputView.text = [self.inputView.text stringByAppendingString:inputStringNow];
                 // self notify
                 [self inputViewDidChange];
 */
@@ -627,21 +656,13 @@ NSString* inputStringBefore;
 #ifdef DEBUG_VISIBLE_TEXT_FIELD
         inputLengthView.text = @"length =";
 #endif
-        inputStringBefore = inputView.text;
-        // [inputView.text substringFromIndex:inputTextLength - 1];
+        inputStringBefore = self.inputView.text;
     }
 
-    // Reset to default value
-    // inputView.text = INPUT_SPACE_CHAR;
-}
+    inputStringLength = (int)self.inputView.text.length;
 
--(void)inputViewDidClick {
-    // Zero the input field so user will no longer able to select text inside.
-#ifndef DEBUG_VISIBLE_TEXT_FIELD
-    inputView.alpha = 0.0f;
-#endif
-    inputView.text = INPUT_SPACE_CHAR;
-    inputTextLength = 0;
+    // Reset to default value
+    // self.inputView.text = INPUT_SPACE_CHAR;
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -662,9 +683,21 @@ int currentVisibility = 1;
             switch (keycode) {
                 case SPECIALBTN_KEYBOARD:
                     if (held == 0) {
-                        [inputView resignFirstResponder];
-                        inputView.alpha = 1.0f;
-                        inputView.text = @"";
+                        if (self.inputView.isFirstResponder) {
+                            [self.inputView resignFirstResponder];
+                            self.inputView.alpha = 1.0f;
+                            self.inputView.text = @"";
+                        } else {
+                            [self.inputView becomeFirstResponder];
+                            // Empty the input field so that user will no longer able to select text inside.
+                            self.inputView.text = INPUT_SPACE_CHAR;
+                            // Trigger a text field cursor lock
+                            
+#ifndef DEBUG_VISIBLE_TEXT_FIELD
+                            self.inputView.alpha = 0.0f;
+#endif
+                            inputTextLength = 0;
+                        }
                     }
                     break;
 
@@ -766,7 +799,7 @@ CallbackBridge_nativeSendKey(keycode, 0, held, 0);
         }
 
 #ifndef DEBUG_VISIBLE_TEXT_FIELD
-        inputView.hidden = currentVisibility;
+        self.inputView.hidden = currentVisibility;
 #endif
     }
 }
@@ -787,11 +820,11 @@ int touchesMovedCount;
         }
         CGPoint locationInView = [touch locationInView:self.view];
         CGFloat screenScale = [[UIScreen mainScreen] scale];
-        int slot = callback_SurfaceViewController_touchHotbar(locationInView.x * screenScale, locationInView.y * screenScale);
-        if ([self isTouchInactive:self.hotbarTouch] && slot != -1) {
+        currentHotbarSlot = callback_SurfaceViewController_touchHotbar(locationInView.x * screenScale, locationInView.y * screenScale);
+        if ([self isTouchInactive:self.hotbarTouch] && currentHotbarSlot != -1) {
             self.hotbarTouch = touch;
         }
-        if ([self isTouchInactive:self.primaryTouch] && slot == -1) {
+        if ([self isTouchInactive:self.primaryTouch] && currentHotbarSlot == -1) {
             self.primaryTouch = touch;
         }
         [self sendTouchEvent:touch withUIEvent:event withEvent:ACTION_DOWN];

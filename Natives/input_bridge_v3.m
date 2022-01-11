@@ -209,8 +209,8 @@ int callback_SurfaceViewController_touchHotbar(CGFloat x, CGFloat y) {
         return -1;
     }
 
-    int barHeight = mcscale(20);
-    int barWidth = mcscale(180);
+    int barHeight = mcscale(40); // 20
+    int barWidth = mcscale(360); // 180
     int barX = (savedWidth / 2) - (barWidth / 2);
     int barY = savedHeight - barHeight;
     if (x < barX || x >= barX + barWidth || y < barY || y >= barY + barHeight) {
