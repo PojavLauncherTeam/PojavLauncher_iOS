@@ -8,9 +8,7 @@
 @end
 
 @implementation LauncherFAQViewController
-
-CGFloat currY = 4.0;
-
+CGFloat faqcurrY = 4.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -50,7 +48,7 @@ CGFloat currY = 4.0;
 }
 
 -(UILabel *)faqContent:(bool)isHeading text:(NSString *)text width:(int)width {
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(4.0, currY, width - 40, 30.0)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(4.0, faqcurrY, width - 40, 30.0)];
     label.text = text;
     label.lineBreakMode = NSLineBreakByWordWrapping;
     label.numberOfLines = 0;
@@ -59,7 +57,7 @@ CGFloat currY = 4.0;
     } else {
         [label sizeToFit];
     }
-    currY+=label.frame.size.height;
+    faqcurrY+=label.frame.size.height;
     return label;
 }
 
