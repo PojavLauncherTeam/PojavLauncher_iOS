@@ -691,7 +691,7 @@ int currentVisibility = 1;
                             [self.inputView becomeFirstResponder];
                             // Empty the input field so that user will no longer able to select text inside.
                             self.inputView.text = INPUT_SPACE_CHAR;
-                            // Trigger a text field cursor lock
+                            inputStringLength = INPUT_FULL_LENGTH;
                             
 #ifndef DEBUG_VISIBLE_TEXT_FIELD
                             self.inputView.alpha = 0.0f;
