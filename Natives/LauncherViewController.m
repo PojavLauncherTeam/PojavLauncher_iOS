@@ -96,6 +96,7 @@ int versionSelectedAt = 0;
     [scrollView addSubview:install_progress_bar];
 
     install_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    install_button.enabled = NO;
     [install_button setTitle:@"Play" forState:UIControlStateNormal];
     install_button.frame = CGRectMake(10.0, height - 54.0, 100.0, 50.0);
     [install_button addTarget:self action:@selector(launchMinecraft:) forControlEvents:UIControlEventTouchUpInside];
@@ -205,6 +206,7 @@ int versionSelectedAt = 0;
                 [versionPickerView reloadAllComponents];
                 [versionPickerView selectRow:versionSelectedAt inComponent:0 animated:NO];
             }
+            install_button.enabled = YES;
         });
     }];
     [getDataTask resume];
@@ -286,7 +288,8 @@ int versionSelectedAt = 0;
 }
 
 - (void)launchMinecraft:(UIButton *)sender {
-    [sender setEnabled:NO];
+    sender.enabled = NO;
+    [self.navigationItem setHidesBackButton:YES animated:YES];
     
     NSObject *object = [versionList objectAtIndex:[versionPickerView selectedRowInComponent:0]];
     NSString *result;

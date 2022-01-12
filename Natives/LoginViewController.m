@@ -182,35 +182,58 @@
 }
 
 - (void)loginAccountInput:(int)type data:(NSString *)data {
-    JNIEnv *env;
-    (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &env, NULL);
+    __block BOOL shouldDismiss = NO;
+    UIAlertController *alert;
 
-    jstring jdata = (*env)->NewStringUTF(env, data.UTF8String);
-    assert(jdata);
-
-    jclass clazz = (*env)->FindClass(env, "net/kdt/pojavlaunch/uikit/AccountJNI");
-    assert(clazz);
-
-    jmethodID method = (*env)->GetStaticMethodID(env, clazz, "loginAccount", "(ILjava/lang/String;)Z");
-    assert(method);
-
-    jboolean result = (*env)->CallStaticBooleanMethod(env, clazz, method, type, jdata);
-
-    if (![NSThread isMainThread]) {
-        (*runtimeJavaVMPtr)->DetachCurrentThread(runtimeJavaVMPtr);
+    if (type == TYPE_SELECTACC) {
+        NSError *error;
+        NSString *fileContent = [NSString stringWithContentsOfFile:[NSString stringWithFormat:@"%s/accounts/%@.json", getenv("POJAV_HOME"), data] encoding:NSUTF8StringEncoding error:&error];
+        shouldDismiss = [fileContent rangeOfString:@"\"accessToken\": \"0\","].location != NSNotFound;
+    }
+    
+    if (type != TYPE_OFFLINE && !shouldDismiss) {
+        alert = createLoadingAlert(@"Logging in");
+        [self presentViewController:alert animated:YES completion:^{
+            if (shouldDismiss) {
+                [alert dismissViewControllerAnimated:YES completion:^{
+                    LauncherViewController *vc = [[LauncherViewController alloc] init];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }];
+            }
+        }];
     }
 
-    if (result == JNI_TRUE) {
-        if ([NSThread isMainThread]) {
-            LauncherViewController *vc = [[LauncherViewController alloc] init];
-            [self.navigationController pushViewController:vc animated:YES];
-        } else {
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        JNIEnv *env;
+        (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &env, NULL);
+
+        jstring jdata = (*env)->NewStringUTF(env, data.UTF8String);
+        assert(jdata);
+
+        jclass clazz = (*env)->FindClass(env, "net/kdt/pojavlaunch/uikit/AccountJNI");
+        assert(clazz);
+
+        jmethodID method = (*env)->GetStaticMethodID(env, clazz, "loginAccount", "(ILjava/lang/String;)Ljava/lang/String;");
+        assert(method);
+
+        jstring result = (*env)->CallStaticObjectMethod(env, clazz, method, type, jdata);
+
+        if (result != NULL) {
+            const char *username = (*env)->GetStringUTFChars(env, result, 0);
+            setenv("POJAV_INTERNAL_SELECTED_ACCOUNT", username, 1);
+            (*env)->ReleaseStringUTFChars(env, result, username);
             dispatch_async(dispatch_get_main_queue(), ^{
+                if (!shouldDismiss) {
+                    shouldDismiss = YES;
+                    [alert dismissViewControllerAnimated:YES completion:nil];
+                }
                 LauncherViewController *vc = [[LauncherViewController alloc] init];
                 [self.navigationController pushViewController:vc animated:YES];
             });
         }
-    }
+
+        (*runtimeJavaVMPtr)->DetachCurrentThread(runtimeJavaVMPtr);
+    });
 }
 
 - (void)loginUsername:(int)type {
@@ -272,9 +295,7 @@
 
                 if ([urlString containsString:@"/auth/?code="] == YES) {
                     NSArray *components = [urlString componentsSeparatedByString:@"/auth/?code="];
-                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-                        [self loginAccountInput:TYPE_MICROSOFT data:components[1]];
-                    });
+                    [self loginAccountInput:TYPE_MICROSOFT data:components[1]];
                 } else {
                     NSArray *components = [urlString componentsSeparatedByString:@"/auth/?error="];
                     if ([components[1] hasPrefix:@"access_denied"] == NO) {
@@ -333,6 +354,11 @@
 - (void)loginAccount:(UIButton *)sender {
     FileListViewController *vc = [[FileListViewController alloc] init];
     vc.listPath = [NSString stringWithFormat:@"%s/accounts", getenv("POJAV_HOME")];
+/*
+    vc.whenDelete = ^void(NSString* name) {
+        UIAlertController* alert = showLoadingDialog(vc, @"Logging out...");
+    };
+*/
     vc.whenItemSelected = ^void(NSString* name) {
         [self loginAccountInput:TYPE_SELECTACC data:name];
     };
@@ -347,13 +373,15 @@
 }
 
 - (void)loginMojangWithUsername:(NSString*)input_username password:(NSString*)input_password {
+    UIAlertController *alert = createLoadingAlert(@"Logging in");
+    [self presentViewController:alert animated:YES completion:nil];
+
     NSString *input_uuid = [[NSUUID UUID] UUIDString];
 
     NSURLSession *session = [NSURLSession sharedSession];
     NSURL *url = [NSURL URLWithString:@"https://authserver.mojang.com/authenticate"];
     NSMutableURLRequest *request = 
-      [[NSMutableURLRequest alloc] initWithURL:[NSURL
-      URLWithString:@"https://authserver.mojang.com/authenticate"]];
+      [[NSMutableURLRequest alloc] initWithURL:url];
     [request setHTTPMethod:@"POST"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
 
@@ -367,12 +395,12 @@
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
         long statusCode = (long)[httpResponse statusCode];
 
-        NSString *dataStr = [NSString stringWithUTF8String:[data bytes]];
-        
+        NSString *dataStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         // NSLog(@"status=%ld, data=%@, response=%@, error=%@", statusCode, dataStr, httpResponse, error);
         NSError *jsonError = nil;
         NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&jsonError];
 
+        [alert dismissViewControllerAnimated:YES completion:^{
         if (jsonError != nil) {
             NSLog(@"Error parsing JSON: %@", jsonError.localizedDescription);
             showDialog(self, @"Error parsing JSON", jsonError.localizedDescription);
@@ -382,13 +410,6 @@
                 // NSLog(@"DBG: can't login demo account!");
                 showDialog(self, @"Error", @"Can't login a demo account!");
             } else {
-/*
-                NSString *out_accessToken = [jsonArray valueForKey:@"accessToken"];
-                NSString *out_clientToken = [jsonArray valueForKey:@"clientToken"];
-                NSString *out_profileID = [selectedProfile valueForKey:@"id"];
-                NSString *out_username = [selectedProfile valueForKey:@"name"];
-                NSLog(@"DBG: Login succeed: %@, %@, %@, %@", out_accessToken, out_clientToken, out_profileID, out_username);
-*/
                 NSAssert(dataStr != nil, @"account data should not be null");
                 [self loginAccountInput:TYPE_MOJANG data:dataStr];
             }
@@ -398,6 +419,7 @@
             // NSLog(@"DBG Error: %@: %@", err_title, err_msg);
             showDialog(self, err_title, err_msg);
         }
+        }];
     }];
     [postDataTask resume];
 }

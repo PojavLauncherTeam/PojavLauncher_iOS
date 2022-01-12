@@ -17,7 +17,7 @@ public class AccountJNI {
     public static volatile MinecraftAccount CURRENT_ACCOUNT;
 
     // Call back about account credentials for login
-    public static boolean loginAccount(int type,
+    public static String loginAccount(int type,
         String data // One of:
         // Local username
         // Mojang json response
@@ -61,12 +61,12 @@ public class AccountJNI {
                     break;
             }
             
-            return true;
+            return CURRENT_ACCOUNT.username;
         } catch (Throwable th) {
             Tools.showError(th);
         }
         
-        return false;
+        return null;
     }
     
     static {

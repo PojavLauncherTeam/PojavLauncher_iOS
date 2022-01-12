@@ -177,8 +177,6 @@ public final class Tools
         if (versionInfo.inheritsFrom != null) {
             versionName = versionInfo.inheritsFrom;
         }
-        
-        String userType = "mojang";
 
         File gameDir = new File(Tools.DIR_GAME_NEW);
         gameDir.mkdirs();
@@ -187,12 +185,14 @@ public final class Tools
         varArgMap.put("auth_access_token", profile.accessToken);
         varArgMap.put("auth_player_name", username);
         varArgMap.put("auth_uuid", profile.profileId);
+        // varArgMap.put("auth_xuid", profile.profileId); // TODO!!!
         varArgMap.put("assets_root", Tools.ASSETS_PATH);
         varArgMap.put("assets_index_name", versionInfo.assets);
+        varArgMap.put("clientid", profile.clientToken);
         varArgMap.put("game_assets", Tools.ASSETS_PATH);
         varArgMap.put("game_directory", gameDir.getAbsolutePath());
         varArgMap.put("user_properties", "{}");
-        varArgMap.put("user_type", userType);
+        varArgMap.put("user_type", /* profile.isMicrosoft ? "msa" : */ "mojang"); // FIXME: handle MS auth
         varArgMap.put("version_name", versionName);
         varArgMap.put("version_type", versionInfo.type);
 
@@ -476,7 +476,7 @@ public final class Tools
                             DependentLibrary libAdded = libList.get(i);
                             String libAddedName = libAdded.name.substring(0, libAdded.name.lastIndexOf(":"));
                             
-                            if (libAddedName.equals(libName)) {
+                            if (!libAdded.name.equals(lib.name) && libAddedName.equals(libName)) {
                                 System.out.println("Library " + libName + ": Replaced version " +
                                     libAdded.name.substring(libAddedName.length() + 1) + " with " +
                                     lib.name.substring(libName.length() + 1));
@@ -539,10 +539,10 @@ public final class Tools
         for (String key : keyArr) {
             Object value = null;
             try {
-                Field fieldA = fromVer.getClass().getDeclaredField(key);
+                Field fieldA = fromVer.getClass().getField(key);
                 value = fieldA.get(fromVer);
                 if (((value instanceof String) && !((String) value).isEmpty()) || value != null) {
-                    Field fieldB = targetVer.getClass().getDeclaredField(key);
+                    Field fieldB = targetVer.getClass().getField(key);
                     fieldB.set(targetVer, value);
                 }
             } catch (Throwable th) {

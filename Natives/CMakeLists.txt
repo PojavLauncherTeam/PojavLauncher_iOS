@@ -50,6 +50,7 @@ add_executable(PojavLauncher
   CustomControlsViewController.m
   FileListViewController.m
   JavaGUIViewController.m
+  KeyboardInput.m
   LauncherFAQViewController.m
   LauncherPreferences.m
   LauncherPreferencesViewController.m
@@ -73,6 +74,7 @@ target_link_libraries(PojavLauncher
   "-F'${CMAKE_CURRENT_LIST_DIR}/build'"
   "-framework AuthenticationServices"
   "-framework CoreGraphics"
+  "-framework GameController"
   "-framework QuartzCore"
   "-framework UIKit"
   "-framework SafariServices"

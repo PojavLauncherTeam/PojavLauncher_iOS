@@ -12,7 +12,8 @@ public class UIKit {
     public static final int ACTION_DOWN = 0;
     public static final int ACTION_UP = 1;
     public static final int ACTION_MOVE = 2;
-    
+    public static final int ACTION_MOVE_MOTION = 3;
+
     private static int guiScale;
 
     private static void patch_FlatLAF_setLinux() {
@@ -123,6 +124,10 @@ public class UIKit {
                     CallbackBridge.mouseY = y;
                 }
                 break;
+
+            case ACTION_MOVE_MOTION:
+                CallbackBridge.mouseX += x;
+                CallbackBridge.mouseY += y;
         }
         CallbackBridge.mouseLastX = x;
         CallbackBridge.mouseLastY = y;

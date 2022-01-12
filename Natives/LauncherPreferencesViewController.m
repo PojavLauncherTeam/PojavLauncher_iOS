@@ -21,7 +21,8 @@
 #define SLIDEHOTBAR 13
 #define SAFEAREA 14
 #define HOMESYM 15
-#define ERASEPREF 16
+#define RELAUNCH 16
+#define ERASEPREF 17
 
 #define TAG_BTNSCALE 98
 #define TAG_RESOLUTION 99
@@ -55,7 +56,9 @@
 
 #define TAG_HOMESYM 114
 
-#define TAG_ERASEPREF 115
+#define TAG_RELAUNCH 115
+
+#define TAG_ERASEPREF 116
 
 @interface LauncherPreferencesViewController () <UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDelegate> {
 }
@@ -484,6 +487,18 @@ int tempIndex;
     [homesymSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:homesymSwitch];
     
+    UILabel *relaunchTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
+    relaunchTextView.text = @"Restart before launching game";
+    relaunchTextView.numberOfLines = 0;
+    [relaunchTextView sizeToFit];
+    [tableView addSubview:relaunchTextView];
+
+    UISwitch *relaunchSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
+    relaunchSwitch.tag = TAG_RELAUNCH;
+    [relaunchSwitch setOn:[getPreference(@"restart_before_launch") boolValue] animated:NO];
+    [relaunchSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    [tableView addSubview:relaunchSwitch];
+    
     UILabel *erasePrefTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
     erasePrefTextView.text = @"Reset all settings";
     erasePrefTextView.numberOfLines = 0;
@@ -536,6 +551,8 @@ int tempIndex;
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:DEBUGLOG];}],
             [UIAction actionWithTitle:@"Home symlink" image:[[UIImage systemImageNamed:@"link"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:HOMESYM];}],
+            [UIAction actionWithTitle:@"Restart before launching game" image:[[UIImage systemImageNamed:@"arrowtriangle.left.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:RELAUNCH];}],
             [UIAction actionWithTitle:@"Reset preferences" image:[[UIImage systemImageNamed:@"trash"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:ERASEPREF];}],
         ]];
@@ -808,6 +825,7 @@ int tempIndex;
         UIAlertAction *typesel = [UIAlertAction actionWithTitle:@"Type switches" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:TYPESEL];}];
         UIAlertAction *debuglog = [UIAlertAction actionWithTitle:@"Debug logging" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:DEBUGLOG];}];
         UIAlertAction *homesym = [UIAlertAction actionWithTitle:@"Home symlink" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:HOMESYM];}];
+        UIAlertAction *relaunch = [UIAlertAction actionWithTitle:@"Restart before launching game" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:RELAUNCH];}];
         UIAlertAction *erasepref = [UIAlertAction actionWithTitle:@"Reset preferences" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:ERASEPREF];}];
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
         [self setPopoverProperties:helpAlert.popoverPresentationController sender:(UIButton *)self.navigationItem.rightBarButtonItem];
@@ -825,6 +843,7 @@ int tempIndex;
         [helpAlert addAction:resetwarn];
         [helpAlert addAction:typesel];
         [helpAlert addAction:debuglog];
+        [helpAlert addAction:relaunch];
         [helpAlert addAction:homesym];
         [helpAlert addAction:cancel];
     }
@@ -875,6 +894,15 @@ int tempIndex;
     } else if(setting == HOMESYM) {
         title = @"Disable home symlink";
         message = @"This option disables the home symlink to /var/mobile/Documents/.pojavlauncher from the new game directory.";
+    } else if(setting == RELAUNCH) {
+        title = @"Restart before launching game";
+        message = @"This option allows the launcher to restart itself before launching the game, therefore all changes are applied such as JVM Arguments and Java version. The restart mechanism doesn't always work, so a toggle is here for now.";
+    } else if (setting == ERASEPREF) {
+        title = @"Reset preferences";
+        message = @"This option resets the launcher preferences to their initial state.";
+    } else {
+        title = @"Error";
+        message = [NSString stringWithFormat:@"The setting %d hasn't been specified with a description.", setting];
     }
     UIAlertController *helpAlertOpt = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
@@ -974,6 +1002,9 @@ int tempIndex;
                 [homesymWarn addAction:cancel];
                 [homesymWarn addAction:ok];
             }
+            break;
+        case TAG_RELAUNCH:
+            setPreference(@"restart_before_launch", @(sender.isOn));
             break;
         case TAG_ERASEPREF:
             {

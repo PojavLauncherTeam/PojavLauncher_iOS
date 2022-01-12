@@ -209,8 +209,8 @@ int callback_SurfaceViewController_touchHotbar(CGFloat x, CGFloat y) {
         return -1;
     }
 
-    int barHeight = mcscale(20);
-    int barWidth = mcscale(180);
+    int barHeight = mcscale(40); // 20
+    int barWidth = mcscale(360); // 180
     int barX = (savedWidth / 2) - (barWidth / 2);
     int barY = savedHeight - barHeight;
     if (x < barX || x >= barX + barWidth || y < barY || y >= barY + barHeight) {
@@ -287,7 +287,7 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeIsGrabbing(J
     return isGrabbing;
 }
 
-JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendChar(JNIEnv* env, jclass clazz, jchar codepoint /* jint codepoint */) {
+BOOL CallbackBridge_nativeSendChar(jchar codepoint /* jint codepoint */) {
     if (GLFW_invoke_Char && isInputReady) {
         if (isUseStackQueueCall) {
             sendData(EVENT_TYPE_CHAR, codepoint, 0, 0, 0);
@@ -295,21 +295,21 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendChar(JNI
             GLFW_invoke_Char((void*) showingWindow, (unsigned int) codepoint);
             // return lwjgl2_triggerCharEvent(codepoint);
         }
-        return JNI_TRUE;
+        return YES;
     }
-    return JNI_FALSE;
+    return NO;
 }
 
-JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendCharMods(JNIEnv* env, jclass clazz, jchar codepoint, jint mods) {
+BOOL CallbackBridge_nativeSendCharMods(jchar codepoint, int mods) {
     if (GLFW_invoke_CharMods && isInputReady) {
         if (isUseStackQueueCall) {
             sendData(EVENT_TYPE_CHAR_MODS, (unsigned int) codepoint, mods, 0, 0);
         } else {
             GLFW_invoke_CharMods((void*) showingWindow, codepoint, mods);
         }
-        return JNI_TRUE;
+        return YES;
     }
-    return JNI_FALSE;
+    return NO;
 }
 /*
 JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendCursorEnter(JNIEnv* env, jclass clazz, jint entered) {
@@ -318,7 +318,7 @@ JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendCursorEnter(
     }
 }
 */
-JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendCursorPos(JNIEnv* env, jclass clazz, jfloat x, jfloat y) {
+void CallbackBridge_nativeSendCursorPos(CGFloat x, CGFloat y) {
     if (GLFW_invoke_CursorPos && isInputReady) {
         if (!isCursorEntered) {
             if (GLFW_invoke_CursorEnter) {
@@ -361,7 +361,7 @@ JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendCursorPos(JN
     }
 }
 
-JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(JNIEnv* env, jclass clazz, jint key, jint scancode, jint action, jint mods) {
+void CallbackBridge_nativeSendKey(int key, int scancode, int action, int mods) {
     if (GLFW_invoke_Key && isInputReady) {
         if (isUseStackQueueCall) {
             sendData(EVENT_TYPE_KEY, key, scancode, action, mods);
@@ -371,16 +371,16 @@ JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(JNIEnv* 
     }
 }
 
-JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendKeycode(JNIEnv* env, jclass clazz, jint keycode, jchar keychar, jint scancode, jint action, jint mods) {
+void CallbackBridge_nativeSendKeycode(int keycode, char keychar, int scancode, int action, int mods) {
     if (isInputReady) {
-        Java_org_lwjgl_glfw_CallbackBridge_nativeSendKey(env, clazz, keycode, scancode, action, mods);
-        if (!Java_org_lwjgl_glfw_CallbackBridge_nativeSendCharMods(env, clazz, keychar, mods)) {
-            Java_org_lwjgl_glfw_CallbackBridge_nativeSendChar(env, clazz, keychar);
+        CallbackBridge_nativeSendKey(keycode, scancode, action, mods);
+        if (!CallbackBridge_nativeSendCharMods(keychar, mods)) {
+            CallbackBridge_nativeSendChar(keychar);
         }
     }
 }
 
-JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(JNIEnv* env, jclass clazz, jint button, jint action, jint mods) {
+void CallbackBridge_nativeSendMouseButton(int button, int action, int mods) {
     if (isInputReady) {
         if (button == -1) {
             // Notify to prepare set new grab pos
@@ -395,7 +395,7 @@ JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendMouseButton(
     }
 }
 
-JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendScreenSize(JNIEnv* env, jclass clazz, jint width, jint height) {
+void CallbackBridge_nativeSendScreenSize(int width, int height) {
     savedWidth = width;
     savedHeight = height;
     
@@ -420,7 +420,7 @@ JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendScreenSize(J
     // return (isInputReady && (GLFW_invoke_FramebufferSize || GLFW_invoke_WindowSize));
 }
 
-JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendScroll(JNIEnv* env, jclass clazz, jdouble xoffset, jdouble yoffset) {
+void CallbackBridge_nativeSendScroll(CGFloat xoffset, CGFloat yoffset) {
     if (GLFW_invoke_Scroll && isInputReady) {
         if (isUseStackQueueCall) {
             sendData(EVENT_TYPE_SCROLL, xoffset, yoffset, 0, 0);
@@ -430,7 +430,7 @@ JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendScroll(JNIEn
     }
 }
 
-JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendWindowPos(JNIEnv* env, jclass clazz, jint x, jint y) {
+void CallbackBridge_nativeSendWindowPos(int x, int y) {
     if (GLFW_invoke_WindowPos && isInputReady) {
         if (isUseStackQueueCall) {
             sendData(EVENT_TYPE_WINDOW_POS, x, y, 0, 0);
@@ -444,3 +444,10 @@ JNIEXPORT void JNICALL Java_org_lwjgl_glfw_GLFW_nglfwSetShowingWindow(JNIEnv* en
     showingWindow = (long) window;
 }
 
+void CallbackBridge_sendKeycode(int keycode, jchar keychar, int scancode, int modifiers, BOOL isDown) {
+    if(keycode != 0)  CallbackBridge_nativeSendKey(keycode,scancode,isDown ? 1 : 0, modifiers);
+    if(isDown && keychar != '\0') {
+        CallbackBridge_nativeSendCharMods(keychar, modifiers);
+        CallbackBridge_nativeSendChar(keychar);
+    }
+}

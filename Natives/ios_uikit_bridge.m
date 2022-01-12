@@ -1,6 +1,9 @@
 
 #import "AppDelegate.h"
+#import "BKSSystemService.h"
 #import "SceneDelegate.h"
+#import "LoginViewController.h"
+#import "LauncherPreferences.h"
 #import "LauncherViewController.h"
 #import "SurfaceViewController.h"
 
@@ -37,6 +40,17 @@ void showDialog(UIViewController *viewController, NSString* title, NSString* mes
             internal_showDialog(viewController, title, message);
         });
     }
+}
+
+UIAlertController* createLoadingAlert(NSString* message) {
+    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(10, 5, 50, 50)];
+    indicator.hidesWhenStopped = YES;
+    [indicator startAnimating];
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil
+        message:message
+            preferredStyle:UIAlertControllerStyleAlert];
+    [alert.view addSubview:indicator];
+    return alert;
 }
 
 JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_showError(JNIEnv* env, jclass clazz, jstring title, jstring message, jboolean exitIfOk) {
@@ -127,27 +141,34 @@ void UIKit_launchJarFile(const char* filepath) {
 }
 
 void UIKit_launchMinecraftSurfaceVC() {
-#if 1 // debug
-    NSLog(@"DBG: are we on main thread = %d", [NSThread isMainThread]);
+    setPreference(@"internal_selected_account", @(getenv("POJAV_INTERNAL_SELECTED_ACCOUNT")));
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSLog(@"DBG: INSIDE main queue: are we on main thread = %d", [NSThread isMainThread]);
-        UIViewController *rootController = UIApplication.sharedApplication.windows.lastObject.rootViewController;
-        NSLog(@"DBG: Got rootController = %p", rootController);
-        SurfaceViewController *vc = [[SurfaceViewController alloc] init];
-        NSLog(@"DBG: Got Surface VC = %p", vc);
-        vc.modalPresentationStyle = UIModalPresentationFullScreen;
-        NSLog(@"DBG: set present style");
-        [rootController presentViewController:vc animated:YES completion:nil];
-        NSLog(@"DBG: presented vc");
-        // rootController.childForScreenEdgesDeferringSystemGestures = vc;
+        if ([getPreference(@"restart_before_launch") boolValue]) {
+            NSURL *url = [NSURL URLWithString:@"pojavlauncher://"];
+            BKSSystemService *service = [[NSClassFromString(@"BKSSystemService") alloc] init];
+            unsigned int port = [service createClientPort];
+            [service openURL:url application:@"net.kdt.pojavlauncher" options:nil clientPort:port withResult:nil];
+
+            // exiting too fast will cause it to fail (race condition?)
+            //  [FBSystemService][0xbb88] Caller "PojavLauncher:pid" has a sandbox that does not allow opening URL's.
+            //  The request was denied by service delegate (SBMainWorkspace) for reason: Security ("Sandbox check failed for process (PojavLauncher:pid) openURL not allowed").
+            // therefore, sleep for 1ms before exit
+            usleep(1000);
+            exit(0);
+        } else {
+            SurfaceViewController *vc = [[SurfaceViewController alloc] init];
+            vc.modalPresentationStyle = UIModalPresentationFullScreen;
+            [viewController.navigationController pushViewController:vc animated:YES];
+        }
     });
-#else
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIViewController *rootController = UIApplication.sharedApplication.windows.lastObject.rootViewController;
-        SurfaceViewController *vc = [[SurfaceViewController alloc] init];
-        vc.modalPresentationStyle = UIModalPresentationFullScreen;
-        [rootController presentViewController:vc animated:YES completion:nil];
-        // rootController.childForScreenEdgesDeferringSystemGestures = vc;
-    });
-#endif
+}
+
+void launchInitialViewController(UIWindow *window) {
+    NSString *selectedAccount = getPreference(@"internal_selected_account");
+    if (selectedAccount == nil) {
+        LoginViewController *vc = [[LoginViewController alloc] init];
+        window.rootViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+    } else {
+        window.rootViewController = [[SurfaceViewController alloc] init];
+    }
 }
