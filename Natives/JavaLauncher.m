@@ -232,7 +232,7 @@ void init_logDeviceAndVer (char *argument) {
     const char *deviceSoftware = [[[UIDevice currentDevice] systemVersion] cStringUsingEncoding:NSUTF8StringEncoding];
 
     // Jailbreak
-    const char *deviceJailbreak;
+    const char *jbStrap;
     if (strncmp(argument, "/Applications", 13) == 0) {
         if ([[NSFileManager defaultManager] fileExistsAtPath:@"/.procursus_strapped"]) {
             jbStrap = "Procursus";
