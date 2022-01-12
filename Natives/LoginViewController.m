@@ -57,8 +57,8 @@
     }
     
     if(getenv("POJAV_DETECTEDJB")) {
-        if(![[NSFileManager defaultManager] fileExistsAtPath:@"/.procursus_strapped"] && [getPreference(@"jb_warn") boolValue] == YES) {
-            NSString *jbMessage = [NSString stringWithFormat:@"Your current jailbreak (%s) does not have the Procursus bootstrap, which means that certain issues may occur that cannot be fixed. Please switch to a completely supported jailbreak, if possible. See the FAQ page for more information.", getenv("POJAV_DETECTEDJB")];
+        if(strcmp(getenv("POJAV_DETECTEDJB"), "Other") && [getPreference(@"jb_warn") boolValue] == YES) {
+            NSString *jbMessage = @"Your current jailbreak does not have the Procursus bootstrap. Certain issues may occur that cannot be fixed, please switch to or wait for a fully compatible jailbreak.";
             UIAlertController *jbAlert = [UIAlertController alertControllerWithTitle:@"Jailbreak not completely supported." message:jbMessage preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
             [self presentViewController:jbAlert animated:YES completion:nil];

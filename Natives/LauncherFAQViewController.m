@@ -4,10 +4,12 @@
 
 @interface LauncherFAQViewController () {
 }
-
+-(UILabel *)faqContent:(bool)isHeading text:(NSString *)text width:(int)width;
 @end
 
 @implementation LauncherFAQViewController
+
+CGFloat currY = 4.0;
 
 - (void)viewDidLoad
 {
@@ -18,10 +20,10 @@
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];
-
+    
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height) - self.navigationController.navigationBar.frame.size.height;
-
+    
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
     [self.view addSubview:scrollView];
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -33,48 +35,32 @@
     } else {
         self.view.backgroundColor = [UIColor whiteColor];
     }
+    NSString *snapheadingtext = @"Vanilla versions after 21w08b";
+    
+    
+    [scrollView addSubview:[self faqContent:true text:@"Modded versions before 1.16" width:width]];
+    [scrollView addSubview:[self faqContent:false text:@"In order to use these versions, you need to install openjdk-8-jre from Doregon's Repo and change Java home in Preferences to 'Java 8'." width:width]];
+    [scrollView addSubview:[self faqContent:true text:@"Vanilla versions after 21w10b" width:width]];
+    [scrollView addSubview:[self faqContent:false text:@"In order to use these versions, you need to install openjdk-16-jre and change the Renderer in Preferences to tinygl4angle." width:width]];
+    [scrollView addSubview:[self faqContent:true text:@"Vanilla versions after 21w37a" width:width]];
+    [scrollView addSubview:[self faqContent:false text:@"In order to use these versions, you need to install openjdk-17-jre and change the Renderer in Preferences to tinygl4angle. If you are using unc0ver, switch to or wait for a Procursus jailbreak." width:width]];
+    [scrollView addSubview:[self faqContent:true text:@"Jetsam crashing" width:width]];
+    [scrollView addSubview:[self faqContent:false text:@"Even though PojavLauncher only allocates 1/4 of the system's total memory, jetsam can still kill the game. A solution is described on the PojavLauncher website (iOS Wiki > Going further > overb0arding)" width:width]];
+    
+}
 
-    UILabel *boldJDKView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 4.0, width - 40, 30.0)];
-    boldJDKView.text = @"Modded versions before 1.16";
-    boldJDKView.lineBreakMode = NSLineBreakByWordWrapping;
-    boldJDKView.numberOfLines = 0;
-    [scrollView addSubview:boldJDKView];
-    [boldJDKView setFont:[UIFont boldSystemFontOfSize:20]];
-
-    UILabel *JDKView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, boldJDKView.frame.origin.y + boldJDKView.frame.size.height, width - 40, 30.0)];
-    JDKView.text = @"In order to use these versions, you need to install openjdk-8-jre from Doregon's Repo and change Java home in Preferences to 'Java 8'.";
-    JDKView.lineBreakMode = NSLineBreakByWordWrapping;
-    JDKView.numberOfLines = 0;
-    [JDKView sizeToFit];
-    [scrollView addSubview:JDKView];
-
-    UILabel *boldSnapView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, JDKView.frame.origin.y + JDKView.frame.size.height, width - 40, 30.0)];
-    boldSnapView.text = @"Vanilla versions after 21w08b";
-    boldSnapView.lineBreakMode = NSLineBreakByWordWrapping;
-    boldSnapView.numberOfLines = 0;
-    [scrollView addSubview:boldSnapView];
-    [boldSnapView setFont:[UIFont boldSystemFontOfSize:20]];
-
-    UILabel *snapView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, boldSnapView.frame.origin.y + boldSnapView.frame.size.height, width - 40, 30.0)];
-    snapView.text = @"In order to use these versions, you need to install openjdk-16-jre and change the Renderer in Preferences to tinygl4angle.";
-    snapView.lineBreakMode = NSLineBreakByWordWrapping;
-    snapView.numberOfLines = 0;
-    [snapView sizeToFit];
-    [scrollView addSubview:snapView];
-
-    UILabel *boldJetsamView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, snapView.frame.origin.y + snapView.frame.size.height, width - 40, 30.0)];
-    boldJetsamView.text = @"Jetsam crashes";
-    boldJetsamView.lineBreakMode = NSLineBreakByWordWrapping;
-    boldJetsamView.numberOfLines = 0;
-    [scrollView addSubview:boldJetsamView];
-    [boldJetsamView setFont:[UIFont boldSystemFontOfSize:20]];
-
-    UILabel *jetsamView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, boldJetsamView.frame.origin.y + boldJetsamView.frame.size.height, width - 40, 30.0)];
-    jetsamView.text = @"Even though PojavLauncher only allocates 1/4 of the system's total memory, jetsam can still kill the game. A solution is described on the PojavLauncher website (iOS Wiki > Going further > overb0arding)";
-    jetsamView.lineBreakMode = NSLineBreakByWordWrapping;
-    jetsamView.numberOfLines = 0;
-    [jetsamView sizeToFit];
-    [scrollView addSubview:jetsamView];
+-(UILabel *)faqContent:(bool)isHeading text:(NSString *)text width:(int)width {
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(4.0, currY, width - 40, 30.0)];
+    label.text = text;
+    label.lineBreakMode = NSLineBreakByWordWrapping;
+    label.numberOfLines = 0;
+    if(isHeading) {
+        [label setFont:[UIFont boldSystemFontOfSize:20]];
+    } else {
+        [label sizeToFit];
+    }
+    currY+=label.frame.size.height;
+    return label;
 }
 
 -(void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {

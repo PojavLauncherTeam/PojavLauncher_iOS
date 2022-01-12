@@ -231,28 +231,12 @@ void init_logDeviceAndVer (char *argument) {
     // Jailbreak
     const char *deviceJailbreak;
     if (strncmp(argument, "/Applications", 13) == 0) {
-        if ([[NSFileManager defaultManager] fileExistsAtPath:@"/taurine"]) {
-            deviceJailbreak = "Taurine";
-        } else if ([[NSFileManager defaultManager] fileExistsAtPath:@"/odyssey"]) {
-            deviceJailbreak = "Odyssey";
-        } else if ([[NSFileManager defaultManager] fileExistsAtPath:@"/chimera"]) {
-            if ([[NSFileManager defaultManager] fileExistsAtPath:@"/.procursus_strapped"]) {
-                deviceJailbreak = "Chimera";
-            } else {
-                deviceJailbreak = "Chimera <1.4";
-            }
+        if ([[NSFileManager defaultManager] fileExistsAtPath:@"/.procursus_strapped"]) {
+            jbStrap = "Procursus";
         } else {
-            if ([[NSFileManager defaultManager] fileExistsAtPath:@"/private/etc/apt/undecimus"]) {
-                deviceJailbreak = "unc0ver";
-            } else if ([[NSFileManager defaultManager] fileExistsAtPath:@"/binpack/lib/dyld"]) {
-                if ([[NSFileManager defaultManager] fileExistsAtPath:@"/.procursus_strapped"]) {
-                    deviceJailbreak = "odysseyra1n";
-                } else {
-                    deviceJailbreak = "checkra1n";
-                }
-            }
+            jbStrap = "Other";
         }
-        debug("[Pre-Init] %s with iOS %s (%s)", deviceHardware, deviceSoftware, deviceJailbreak);
+        debug("[Pre-Init] %s with iOS %s (%s)", deviceHardware, deviceSoftware, jbStrap);
     } else {
         debug("[Pre-Init] %s with iOS %s", deviceHardware, deviceSoftware);
     }
@@ -263,7 +247,7 @@ void init_logDeviceAndVer (char *argument) {
     setenv("POJAV_DETECTEDHW", deviceHardware, 1);
     setenv("POJAV_DETECTEDSW", deviceSoftware, 1);
     if (strncmp(argument, "/Applications", 13) == 0) {
-        setenv("POJAV_DETECTEDJB", deviceJailbreak, 1);
+        setenv("POJAV_DETECTEDJB", jbStrap, 1);
     }
 }
 
