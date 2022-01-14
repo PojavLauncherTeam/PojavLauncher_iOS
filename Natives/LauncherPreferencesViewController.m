@@ -74,7 +74,7 @@ UITextField *rendTextField;
 UITextField *jhomeTextField;
 UITextField *gdirTextField;
 UITextField *activeField;
-NSMutableArray* rendererList;
+NSArray* rendererList;
 NSMutableArray* gdirList;
 NSMutableArray* jhomeList;
 UIPickerView* rendPickerView;
@@ -84,9 +84,11 @@ UISwitch *noshaderconvSwitch, *slideHotbarSwitch;
 UIBlurEffect *blur;
 UIVisualEffectView *blurView;
 UIScrollView *scrollView;
+//NSDictionary *rendererDict, javaDict;
 NSString *gl4es114 = @"GL4ES 1.1.4 - exports OpenGL 2.1";
 NSString *gl4es115 = @"GL4ES 1.1.5 (1.16+) - exports OpenGL 2.1";
 NSString *tinygl4angle = @"tinygl4angle (1.17+) - exports OpenGL 3.2 (Core Profile, limited)";
+NSString *vgpu = @"vgpu 1.3.6 - exports OpenGL 3.0";
 NSString *zink = @"Zink (Mesa 21.0) - exports OpenGL 4.1";
 NSString *java8jben = @"Java 8";
 NSString *java16jben = @"Java 16";
@@ -99,6 +101,7 @@ NSString *libsjava8;
 NSString *lib_gl4es114 = @"libgl4es_114.dylib";
 NSString *lib_gl4es115 = @"libgl4es_115.dylib";
 NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
+NSString *lib_vgpu = @"libvgpu.dylib";
 NSString *lib_zink = @"libOSMesaOverride.dylib";
 
 int tempIndex;
@@ -107,7 +110,7 @@ int tempIndex;
 {
     [super viewDidLoad];
     viewController = self;
-    
+
     [self setTitle:@"Preferences"];
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
@@ -116,7 +119,21 @@ int tempIndex;
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height) - self.navigationController.navigationBar.frame.size.height;
     CGFloat currY = 8.0;
-    
+/*
+    javaDict = @{
+        @"/usr/lib/jvm/java-8-openjdk": @"Java 8",
+        @"/usr/lib/jvm/java-16-openjdk": @"Java 16",
+        @"/usr/lib/jvm/java-17-openjdk": @"Java 17",
+        [NSString stringWithFormat:@"%s/jre8", getenv("POJAV_HOME")], @"Java 8 (sandbox)"
+    };
+    rendererDict = @{
+        @"libgl4es_114.dylib": @"GL4ES 1.1.4 - exports OpenGL 2.1",
+        @"libgl4es_115.dylib": @"GL4ES 1.1.5 (1.16+) - exports OpenGL 2.1",
+        @"libtinygl4angle.dylib": @"tinygl4angle (1.17+) - exports OpenGL 3.2 (Core Profile, limited)",
+        @"libvgpu.dylib": @"vgpu 1.3.6 - exports OpenGL 3.0",
+        @"libOSMesaOverride.dylib": @"Zink (Mesa 21.0) - exports OpenGL 4.1"
+    };
+*/
     scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
     [self.view addSubview:scrollView];
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -224,6 +241,7 @@ int tempIndex;
     rendTextField.tag = TAG_REND;
     rendTextField.delegate = self;
     rendTextField.placeholder = @"Override renderer...";
+    //rendTextField.text = self.rendererDict[getPreference(@"renderer")];
     if ([getPreference(@"renderer") isEqualToString:lib_gl4es114]) {
         rendTextField.text = gl4es114;
         tempIndex = 0;
@@ -233,20 +251,19 @@ int tempIndex;
     } else if ([getPreference(@"renderer") isEqualToString:lib_tinygl4angle]) {
         rendTextField.text = tinygl4angle;
         tempIndex = 2;
+    } else if ([getPreference(@"renderer") isEqualToString:lib_vgpu]) {
+        rendTextField.text = vgpu;
+        tempIndex = 3;
     } else if ([getPreference(@"renderer") isEqualToString:lib_zink]) {
         rendTextField.text = zink;
-        tempIndex = 3;
+        tempIndex = 4;
     }
     
     rendTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
     rendTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [tableView addSubview:rendTextField];
 
-    rendererList = [[NSMutableArray alloc] init];
-    [rendererList addObject:gl4es114];
-    [rendererList addObject:gl4es115];
-    [rendererList addObject:tinygl4angle];
-    [rendererList addObject:zink];
+    rendererList = @[gl4es114, gl4es115, tinygl4angle, vgpu, zink];
     
     rendPickerView = [[UIPickerView alloc] init];
     rendPickerView.delegate = self;
@@ -275,7 +292,6 @@ int tempIndex;
     jhomeTextField.delegate = self;
     jhomeTextField.placeholder = @"Override Java path...";
     
-    libsjava8 = [NSString stringWithFormat:@"%s/jre8", getenv("POJAV_HOME")];
     if(getenv("POJAV_DETECTEDJB")) {
         if ([getPreference(@"java_home") isEqualToString:libsjava8jben]) {
             jhomeTextField.text = java8jben;
@@ -616,6 +632,8 @@ int tempIndex;
             setPreference(@"renderer", lib_gl4es115);
         } else if ([textField.text isEqualToString:tinygl4angle]) {
             setPreference(@"renderer", lib_tinygl4angle);
+        } else if ([textField.text isEqualToString:vgpu]) {
+            setPreference(@"renderer", lib_vgpu);
         } else if ([textField.text isEqualToString:zink]) {
             setPreference(@"renderer", lib_zink);
         }
