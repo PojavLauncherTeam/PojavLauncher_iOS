@@ -291,7 +291,8 @@ int tempIndex;
     jhomeTextField.tag = TAG_JHOME;
     jhomeTextField.delegate = self;
     jhomeTextField.placeholder = @"Override Java path...";
-    
+
+    libsjava8 = [NSString stringWithFormat:@"%s/jre8", getenv("POJAV_HOME")];
     if(getenv("POJAV_DETECTEDJB")) {
         if ([getPreference(@"java_home") isEqualToString:libsjava8jben]) {
             jhomeTextField.text = java8jben;
