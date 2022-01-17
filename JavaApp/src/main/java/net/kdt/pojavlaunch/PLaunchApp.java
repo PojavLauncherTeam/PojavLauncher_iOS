@@ -65,6 +65,8 @@ public class PLaunchApp {
             if (mVersion.logging != null) {
                 if (mVersion.logging.client.file.id.equals("client-1.12.xml")) {
                     configPath = Tools.DIR_BUNDLE + "/log4j-rce-patch-1.12.xml";
+                } else if (mVersion.logging.client.file.id.equals("client-1.7.xml")) {
+                    configPath = Tools.DIR_BUNDLE + "/log4j-rce-patch-1.7.xml";
                 } else {
                     configPath = Tools.DIR_GAME_NEW + "/" + mVersion.logging.client.file.id;
                 }

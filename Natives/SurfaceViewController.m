@@ -228,6 +228,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 #else
     self.inputView = [[TrackedTextField alloc] initWithFrame:CGRectMake(5 * 2 + 160.0, 5 * 2 + 30.0, 200.0, 30.0)];
     self.inputView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.5f];
+    self.inputView.font = [self.inputView.font fontWithSize:20];
 
     inputLengthView = [[UILabel alloc] initWithFrame:CGRectMake(5 * 2 + 80.0, 5 * 2 + 30.0, 80.0, 30.0)];
     inputLengthView.text = @"length=?";

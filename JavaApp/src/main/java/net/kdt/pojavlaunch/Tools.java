@@ -150,7 +150,8 @@ public final class Tools
             // URLClassLoader loader = new URLClassLoader(urlList.toArray(new URL[0]), ClassLoader.getSystemClassLoader());
             
                 PojavClassLoader loader = (PojavClassLoader) ClassLoader.getSystemClassLoader();
-                
+                // add launcher.jar itself
+                loader.addURL(Tools.class.getProtectionDomain().getCodeSource().getLocation().toURI().toURL());
                 for (String s : launchClassPath.split(":")) {
                     if (!s.isEmpty()) {
                         loader.addURL(new File(s).toURI().toURL());
@@ -417,7 +418,7 @@ public final class Tools
         // Support for text2speech is not planned, so skip it for now.
         for (int i = 0; i < libraries.length; i++) {
             DependentLibrary libItem = libraries[i];
-            if (libItem.name.startsWith("com.mojang.text2speech") ||
+            if (libItem.name.startsWith("com.mojang:text2speech") ||
                 libItem.name.startsWith("net.java.jinput") ||
                 libItem.name.startsWith("net.java.dev.jna:platform:") ||
                 libItem.name.startsWith("org.lwjgl") ||
