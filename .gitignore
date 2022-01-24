@@ -8,5 +8,4 @@
 /Natives/resources/*.png
 .DS_Store
 /pojavlauncher.xcodeproj
-/Natives/resources/Frameworks/libvgpu.dylib
 

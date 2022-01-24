@@ -33,7 +33,6 @@ UILabel *inputLengthView;
 #endif
 int inputTextLength;
 
-BOOL shouldTriggerClick = NO;
 int notchOffset;
 
 int currentHotbarSlot = -1;
@@ -124,6 +123,9 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 @property ControlButton* swipingButton;
 @property UITouch *primaryTouch, *hotbarTouch;
 @property id mouseConnectCallback, mouseDisconnectCallback;
+
+@property CGRect clickRange;
+@property BOOL shouldTriggerClick;
 
 @end
 
@@ -228,6 +230,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 #else
     self.inputView = [[TrackedTextField alloc] initWithFrame:CGRectMake(5 * 2 + 160.0, 5 * 2 + 30.0, 200.0, 30.0)];
     self.inputView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.5f];
+    self.inputView.font = [self.inputView.font fontWithSize:20];
 
     inputLengthView = [[UILabel alloc] initWithFrame:CGRectMake(5 * 2 + 80.0, 5 * 2 + 30.0, 80.0, 30.0)];
     inputLengthView.text = @"length=?";
@@ -369,6 +372,20 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     CGPoint locationInView = [touchEvent locationInView:self.view];
 
     if (touchEvent.view == self.surfaceView) {
+        switch (event) {
+            case ACTION_DOWN:
+                self.clickRange = CGRectMake(locationInView.x - 2, locationInView.y - 2, 5, 5);
+                self.shouldTriggerClick = YES;
+
+                break;
+
+            case ACTION_MOVE:
+                if (self.shouldTriggerClick && !CGRectContainsPoint(self.clickRange, locationInView)) {
+                    self.shouldTriggerClick = NO;
+                }
+                break;
+        }
+
         if (touchEvent == self.hotbarTouch && slideableHotbar && ![self isTouchInactive:self.hotbarTouch]) {
             CGFloat screenScale = [[UIScreen mainScreen] scale];
             int slot = callback_SurfaceViewController_touchHotbar(locationInView.x * screenScale, locationInView.y * screenScale);
@@ -396,20 +413,6 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
         if (touchEvent == self.primaryTouch) {
             if ([self isTouchInactive:self.primaryTouch]) return; // FIXME: should be? ACTION_UP will never be sent
             [self sendTouchPoint:locationInView withEvent:event];
-        }
-
-        switch (event) {
-            case ACTION_DOWN:
-                touchesMovedCount = 0;
-                shouldTriggerClick = YES;
-                break;
-
-            case ACTION_MOVE:
-                // TODO: better handling this
-                if (touchesMovedCount >= 1) {
-                     shouldTriggerClick = NO;
-                } else ++touchesMovedCount;
-                break;
         }
     }
 }
@@ -468,7 +471,8 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 }
 
 - (void)surfaceOnClick:(UITapGestureRecognizer *)sender {
-    if (shouldTriggerClick == NO) return;
+    if (!self.shouldTriggerClick) return;
+
     if (sender.state == UIGestureRecognizerStateRecognized) {
         if (currentHotbarSlot == -1) {
             self.inputView.text = INPUT_SPACE_CHAR;
@@ -522,12 +526,13 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 
 -(void)surfaceOnLongpress:(UILongPressGestureRecognizer *)sender
 {
-    CGFloat screenScale = [[UIScreen mainScreen] scale];
-    CGPoint location = [sender locationInView:[sender.view superview]];
     if (!slideableHotbar) {
+        CGFloat screenScale = [[UIScreen mainScreen] scale];
+        CGPoint location = [sender locationInView:[sender.view superview]];
         currentHotbarSlot = callback_SurfaceViewController_touchHotbar(location.x * screenScale * resolutionScale, location.y * screenScale * resolutionScale);
     }
     if (sender.state == UIGestureRecognizerStateBegan) {
+        self.shouldTriggerClick = NO;
         if (currentHotbarSlot == -1) {
             self.inputView.text = INPUT_SPACE_CHAR;
             inputTextLength = 0;

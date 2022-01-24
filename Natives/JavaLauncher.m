@@ -329,7 +329,7 @@ int launchJVM(int argc, char *argv[]) {
     mkdir(dirname(log_path), 755);
 
     if (!started) {
-        debug("[Pre-init] Staring logging STDIO as jrelog:V\n");
+        debug("[Pre-init] Starting logging STDIO as jrelog:V\n");
         // Redirect stdio to latestlog.txt
         char newname[2048];
         sprintf(newname, "%s/latestlog.old.txt", homeDir);
@@ -654,7 +654,7 @@ int launchJVM(int argc, char *argv[]) {
     char **targv = started ? argv : margv;
     
     if (!started) {
-        started = true;
+        started = YES;
     }
 /* debug:
 for (int i = 0; i < targc; i++) {

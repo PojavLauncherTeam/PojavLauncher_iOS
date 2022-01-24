@@ -2,7 +2,7 @@ SHELL := /bin/bash
 .SHELLFLAGS = -ec
 
 # Prerequisite variables
-SOURCEDIR   := $(shell pwd)
+SOURCEDIR   := $(shell printf "%q\n" "$(shell pwd)")
 OUTPUTDIR   := $(SOURCEDIR)/artifacts
 WORKINGDIR  := $(SOURCEDIR)/Natives/build
 DETECTPLAT  := $(shell uname -s)
