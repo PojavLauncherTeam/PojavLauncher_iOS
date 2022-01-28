@@ -13,7 +13,14 @@
 
 @property(nonatomic, strong) NSMutableDictionary* properties;
 
-+ (id)initWithProperties:(NSMutableDictionary *)propArray;
-+ (id)initWithName:(NSString *)name keycode:(int)keycode rect:(CGRect)rect transparency:(float)transparency;
++ (id)buttonWithProperties:(NSMutableDictionary *)propArray willUpdate:(BOOL)update;
++ (id)buttonWithProperties:(NSMutableDictionary *)propArray;
+
+- (BOOL)canSnap:(ControlButton *)button;
+- (NSString *)generateDynamicX:(CGFloat)x;
+- (NSString *)generateDynamicY:(CGFloat)y;
+- (void)snapAndAlignX:(CGFloat)x Y:(CGFloat)y;
+- (void)preProcessProperties;
+- (void)update;
 
 @end

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <stdbool.h>
+#include <Foundation/Foundation.h>
 
-static bool started = false;
+static BOOL started = NO;
 
 int launchJVM(int argc, char *argv[]);

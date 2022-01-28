@@ -18,6 +18,47 @@
 #define DEBUGLOG 10
 #define MKGDIR 11
 #define RMGDIR 12
+#define SLIDEHOTBAR 13
+#define SAFEAREA 14
+#define HOMESYM 15
+#define RELAUNCH 16
+#define ERASEPREF 17
+
+#define TAG_BTNSCALE 98
+#define TAG_RESOLUTION 99
+#define TAG_ALLOCMEM 100
+#define TAG_JARGS 101
+
+#define TAG_REND 102
+#define TAG_PICKER_REND 142
+#define TAG_DONE_REND 152
+
+#define TAG_JHOME 103
+#define TAG_PICKER_JHOME 143
+#define TAG_DONE_JHOME 153
+
+#define TAG_GDIR 104
+#define TAG_PICKER_GDIR 144
+#define TAG_DONE_GDIR 154
+
+#define TAG_NOSHADERCONV 105
+#define TAG_RESETWARN 106
+
+#define TAG_SWITCH_VRELEASE 107
+#define TAG_SWITCH_VSNAPSHOT 108
+#define TAG_SWITCH_VOLDBETA 109
+#define TAG_SWITCH_VOLDALPHA 110
+
+#define TAG_DEBUGLOG 111
+#define TAG_SLIDEHOTBAR 112
+
+#define TAG_SAFEAREA 113
+
+#define TAG_HOMESYM 114
+
+#define TAG_RELAUNCH 115
+
+#define TAG_ERASEPREF 116
 
 @interface LauncherPreferencesViewController () <UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDelegate> {
 }
@@ -33,19 +74,21 @@ UITextField *rendTextField;
 UITextField *jhomeTextField;
 UITextField *gdirTextField;
 UITextField *activeField;
-NSMutableArray* rendererList;
+NSArray* rendererList;
 NSMutableArray* gdirList;
 NSMutableArray* jhomeList;
 UIPickerView* rendPickerView;
 UIPickerView* gdirPickerView;
 UIPickerView* jhomePickerView;
-UISwitch *noshaderconvSwitch;
+UISwitch *noshaderconvSwitch, *slideHotbarSwitch;
 UIBlurEffect *blur;
 UIVisualEffectView *blurView;
 UIScrollView *scrollView;
+//NSDictionary *rendererDict, javaDict;
 NSString *gl4es114 = @"GL4ES 1.1.4 - exports OpenGL 2.1";
 NSString *gl4es115 = @"GL4ES 1.1.5 (1.16+) - exports OpenGL 2.1";
 NSString *tinygl4angle = @"tinygl4angle (1.17+) - exports OpenGL 3.2 (Core Profile, limited)";
+NSString *vgpu = @"vgpu 1.3.6 - exports OpenGL 3.0";
 NSString *zink = @"Zink (Mesa 21.0) - exports OpenGL 4.1";
 NSString *java8jben = @"Java 8";
 NSString *java16jben = @"Java 16";
@@ -58,13 +101,16 @@ NSString *libsjava8;
 NSString *lib_gl4es114 = @"libgl4es_114.dylib";
 NSString *lib_gl4es115 = @"libgl4es_115.dylib";
 NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
+NSString *lib_vgpu = @"libvgpu.dylib";
 NSString *lib_zink = @"libOSMesaOverride.dylib";
+
+int tempIndex;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     viewController = self;
-    
+
     [self setTitle:@"Preferences"];
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
@@ -73,7 +119,21 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height) - self.navigationController.navigationBar.frame.size.height;
     CGFloat currY = 8.0;
-    
+/*
+    javaDict = @{
+        @"/usr/lib/jvm/java-8-openjdk": @"Java 8",
+        @"/usr/lib/jvm/java-16-openjdk": @"Java 16",
+        @"/usr/lib/jvm/java-17-openjdk": @"Java 17",
+        [NSString stringWithFormat:@"%s/jre8", getenv("POJAV_HOME")], @"Java 8 (sandbox)"
+    };
+    rendererDict = @{
+        @"libgl4es_114.dylib": @"GL4ES 1.1.4 - exports OpenGL 2.1",
+        @"libgl4es_115.dylib": @"GL4ES 1.1.5 (1.16+) - exports OpenGL 2.1",
+        @"libtinygl4angle.dylib": @"tinygl4angle (1.17+) - exports OpenGL 3.2 (Core Profile, limited)",
+        @"libvgpu.dylib": @"vgpu 1.3.6 - exports OpenGL 3.0",
+        @"libOSMesaOverride.dylib": @"Zink (Mesa 21.0) - exports OpenGL 4.1"
+    };
+*/
     scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
     [self.view addSubview:scrollView];
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -103,7 +163,7 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
     [tableView addSubview:btnsizeTextView];
     
     DBNumberedSlider *buttonSizeSlider = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(20.0 + btnsizeTextView.frame.size.width, currY, self.view.frame.size.width - btnsizeTextView.frame.size.width - 28.0, btnsizeTextView.frame.size.height)];
-    buttonSizeSlider.tag = 98;
+    buttonSizeSlider.tag = TAG_BTNSCALE;
     [buttonSizeSlider addTarget:self action:@selector(sliderMoved:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
     [buttonSizeSlider setBackgroundColor:[UIColor clearColor]];
     buttonSizeSlider.minimumValue = 50.0;
@@ -123,7 +183,7 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
     [tableView addSubview:resolutionTextView];
     
     DBNumberedSlider *resolutionSlider = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(20.0 + btnsizeTextView.frame.size.width, currY, self.view.frame.size.width - btnsizeTextView.frame.size.width - 28.0, resolutionTextView.frame.size.height)];
-    resolutionSlider.tag = 99;
+    resolutionSlider.tag = TAG_RESOLUTION;
     [resolutionSlider addTarget:self action:@selector(sliderMoved:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
     [resolutionSlider setBackgroundColor:[UIColor clearColor]];
     resolutionSlider.minimumValue = 25;
@@ -143,7 +203,7 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
     [tableView addSubview:memTextView];
 
     DBNumberedSlider *memSlider = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(20.0 + btnsizeTextView.frame.size.width, currY, self.view.frame.size.width - btnsizeTextView.frame.size.width - 28.0, resolutionTextView.frame.size.height)];
-    memSlider.tag = 100;
+    memSlider.tag = TAG_ALLOCMEM;
     [memSlider addTarget:self action:@selector(sliderMoved:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
     [memSlider setBackgroundColor:[UIColor clearColor]];
     memSlider.minimumValue = roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.25);
@@ -161,21 +221,14 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
 
     jargsTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 28.0, 30)];
     [jargsTextField addTarget:jargsTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
-    jargsTextField.tag = 101;
+    [jargsTextField setReturnKeyType:UIReturnKeyDone];
+    jargsTextField.tag = TAG_JARGS;
     jargsTextField.delegate = self;
     jargsTextField.placeholder = @"Specify arguments...";
     jargsTextField.text = (NSString *) getPreference(@"java_args");
     jargsTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
     jargsTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [tableView addSubview:jargsTextField];
-    
-    UIToolbar *jargsPickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
-    UIBarButtonItem *jargsFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
-    UIBarButtonItem *jargsDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeKeyboard:)];
-    jargsDoneButton.tag = 150;
-    jargsPickerToolbar.items = @[jargsFlexibleSpace, jargsDoneButton];
-
-    jargsTextField.inputAccessoryView = jargsPickerToolbar;
 
     UILabel *rendTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
     rendTextView.text = @"Renderer";
@@ -185,39 +238,43 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
 
     rendTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 28.0, 30)];
     [rendTextField addTarget:rendTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
-    rendTextField.tag = 102;
+    rendTextField.tag = TAG_REND;
     rendTextField.delegate = self;
     rendTextField.placeholder = @"Override renderer...";
+    //rendTextField.text = self.rendererDict[getPreference(@"renderer")];
     if ([getPreference(@"renderer") isEqualToString:lib_gl4es114]) {
         rendTextField.text = gl4es114;
+        tempIndex = 0;
     } else if ([getPreference(@"renderer") isEqualToString:lib_gl4es115]) {
         rendTextField.text = gl4es115;
+        tempIndex = 1;
     } else if ([getPreference(@"renderer") isEqualToString:lib_tinygl4angle]) {
         rendTextField.text = tinygl4angle;
+        tempIndex = 2;
+    } else if ([getPreference(@"renderer") isEqualToString:lib_vgpu]) {
+        rendTextField.text = vgpu;
+        tempIndex = 3;
     } else if ([getPreference(@"renderer") isEqualToString:lib_zink]) {
         rendTextField.text = zink;
+        tempIndex = 4;
     }
     
     rendTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
     rendTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [tableView addSubview:rendTextField];
 
-    rendererList = [[NSMutableArray alloc] init];
-    [rendererList addObject:gl4es114];
-    [rendererList addObject:gl4es115];
-    [rendererList addObject:tinygl4angle];
-    [rendererList addObject:zink];
-
-    [self instanceDirCont];
+    rendererList = @[gl4es114, gl4es115, tinygl4angle, vgpu, zink];
     
     rendPickerView = [[UIPickerView alloc] init];
     rendPickerView.delegate = self;
     rendPickerView.dataSource = self;
-    rendPickerView.tag = 112;
+    rendPickerView.tag = TAG_PICKER_REND;
+    [rendPickerView reloadAllComponents];
+    [rendPickerView selectRow:tempIndex inComponent:0 animated:NO];
     UIToolbar *rendPickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
     UIBarButtonItem *rendFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     UIBarButtonItem *rendDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeKeyboard:)];
-    rendDoneButton.tag = 151;
+    rendDoneButton.tag = TAG_DONE_REND;
     rendPickerToolbar.items = @[rendFlexibleSpace, rendDoneButton];
 
     rendTextField.inputAccessoryView = rendPickerToolbar;
@@ -231,10 +288,10 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
 
     jhomeTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 28.0, 30)];
     [jhomeTextField addTarget:jhomeTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
-    jhomeTextField.tag = 103;
+    jhomeTextField.tag = TAG_JHOME;
     jhomeTextField.delegate = self;
     jhomeTextField.placeholder = @"Override Java path...";
-    
+
     libsjava8 = [NSString stringWithFormat:@"%s/jre8", getenv("POJAV_HOME")];
     if(getenv("POJAV_DETECTEDJB")) {
         if ([getPreference(@"java_home") isEqualToString:libsjava8jben]) {
@@ -269,11 +326,18 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
     jhomePickerView = [[UIPickerView alloc] init];
     jhomePickerView.delegate = self;
     jhomePickerView.dataSource = self;
-    jhomePickerView.tag = 113;
+    jhomePickerView.tag = TAG_PICKER_JHOME;
+    [jhomePickerView reloadAllComponents];
+    for (int i = 0; i < jhomeList.count; i++) {
+        if ([jhomeList[i] isEqualToString:jhomeTextField.text]) {
+            [jhomePickerView selectRow:i inComponent:0 animated:NO];
+            break;
+        }
+    }
     UIToolbar *jhomePickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
     UIBarButtonItem *jhomeFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     UIBarButtonItem *jhomeDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeKeyboard:)];
-    jhomeDoneButton.tag = 152;
+    jhomeDoneButton.tag = TAG_DONE_JHOME;
     jhomePickerToolbar.items = @[jhomeFlexibleSpace, jhomeDoneButton];
 
     jhomeTextField.inputAccessoryView = jhomePickerToolbar;
@@ -295,7 +359,7 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
 
     gdirTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 28.0, 30)];
     [gdirTextField addTarget:jhomeTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
-    gdirTextField.tag = 104;
+    gdirTextField.tag = TAG_GDIR;
     gdirTextField.delegate = self;
     gdirTextField.placeholder = @"Custom game directory...";
     gdirTextField.text = (NSString *) getPreference(@"game_directory");
@@ -306,13 +370,14 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
     gdirPickerView = [[UIPickerView alloc] init];
     gdirPickerView.delegate = self;
     gdirPickerView.dataSource = self;
-    gdirPickerView.tag = 114;
+    gdirPickerView.tag = TAG_PICKER_GDIR;
+    [self instanceDirCont];
     UIToolbar *gdirPickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
     UIBarButtonItem *gdirFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     UIBarButtonItem *gdirDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeKeyboard:)];
     UIBarButtonItem *gdirCreateButton = [[UIBarButtonItem alloc] initWithTitle:@"Create new" style:UIBarButtonItemStyleDone target:self action:@selector(createDir:)];
     UIBarButtonItem *gdirDeleteButton = [[UIBarButtonItem alloc] initWithTitle:@"Delete" style:UIBarButtonItemStyleDone target:self action:@selector(removeDir:)];
-    gdirDoneButton.tag = 153;
+    gdirDoneButton.tag = TAG_DONE_GDIR;
     gdirPickerToolbar.items = @[gdirCreateButton, gdirDeleteButton, gdirFlexibleSpace, gdirDoneButton];
 
     gdirTextField.inputAccessoryView = gdirPickerToolbar;
@@ -333,15 +398,23 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
     [tableView addSubview:noshaderconvTextView];
 
     noshaderconvSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
-    noshaderconvSwitch.tag = 105;
+    noshaderconvSwitch.tag = TAG_NOSHADERCONV;
     [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:NO];
     [noshaderconvSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:noshaderconvSwitch];
-    if ([getPreference(@"renderer") isEqualToString:gl4es115]) {
-            [noshaderconvSwitch setEnabled:YES];
-        } else {
-            [noshaderconvSwitch setEnabled:NO];
-    }
+    [noshaderconvSwitch setEnabled:[getPreference(@"renderer") isEqualToString:gl4es115]];
+    
+    UILabel *slideHotbarTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
+    slideHotbarTextView.text = @"Slideable hotbar";
+    slideHotbarTextView.numberOfLines = 0;
+    [slideHotbarTextView sizeToFit];
+    [tableView addSubview:slideHotbarTextView];
+
+    slideHotbarSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
+    slideHotbarSwitch.tag = TAG_SLIDEHOTBAR;
+    [slideHotbarSwitch setOn:[getPreference(@"slideable_hotbar") boolValue] animated:NO];
+    [slideHotbarSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    [tableView addSubview:slideHotbarSwitch];
     
     UILabel *resetWarnTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
     resetWarnTextView.text = @"Reset launcher warnings";
@@ -350,7 +423,7 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
     [tableView addSubview:resetWarnTextView];
 
     UISwitch *resetWarnSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
-    resetWarnSwitch.tag = 106;
+    resetWarnSwitch.tag = TAG_RESETWARN;
     [resetWarnSwitch setOn:NO animated:NO];
     [resetWarnSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:resetWarnSwitch];
@@ -363,7 +436,7 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
     [tableView addSubview:releaseTextView];
 
     UISwitch *releaseSwitch = [[UISwitch alloc] initWithFrame:CGRectMake((width * .25) - 62.0, currY - 5.0, 50.0, 30)];
-    releaseSwitch.tag = 107;
+    releaseSwitch.tag = TAG_SWITCH_VRELEASE;
     [releaseSwitch setOn:[getPreference(@"vertype_release") boolValue] animated:NO];
     [releaseSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:releaseSwitch];
@@ -376,7 +449,7 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
     [tableView addSubview:snapshotTextView];
 
     UISwitch *snapshotSwitch = [[UISwitch alloc] initWithFrame:CGRectMake((width * .50) - 62.0, currY - 5.0, 50.0, 30)];
-    snapshotSwitch.tag = 108;
+    snapshotSwitch.tag = TAG_SWITCH_VSNAPSHOT;
     [snapshotSwitch setOn:[getPreference(@"vertype_snapshot") boolValue] animated:NO];
     [snapshotSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:snapshotSwitch];
@@ -389,7 +462,7 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
     [tableView addSubview:oldbetaTextView];
 
     UISwitch *oldbetaSwitch = [[UISwitch alloc] initWithFrame:CGRectMake((width * .75) - 62.0, currY - 5.0, 50.0, 30)];
-    oldbetaSwitch.tag = 109;
+    oldbetaSwitch.tag = TAG_SWITCH_VOLDBETA;
     [oldbetaSwitch setOn:[getPreference(@"vertype_oldbeta") boolValue] animated:NO];
     [oldbetaSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:oldbetaSwitch];
@@ -402,7 +475,7 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
     [tableView addSubview:oldalphaTextView];
 
     UISwitch *oldalphaSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
-    oldalphaSwitch.tag = 110;
+    oldalphaSwitch.tag = TAG_SWITCH_VOLDALPHA;
     [oldalphaSwitch setOn:[getPreference(@"vertype_oldalpha") boolValue] animated:NO];
     [oldalphaSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:oldalphaSwitch];
@@ -414,10 +487,46 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
     [tableView addSubview:debugLogTextView];
 
     UISwitch *debugLogSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
-    debugLogSwitch.tag = 111;
+    debugLogSwitch.tag = TAG_DEBUGLOG;
     [debugLogSwitch setOn:[getPreference(@"debug_logging") boolValue] animated:NO];
     [debugLogSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:debugLogSwitch];
+    
+    UILabel *homesymTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
+    homesymTextView.text = @"Disable home symlink";
+    homesymTextView.numberOfLines = 0;
+    [homesymTextView sizeToFit];
+    [tableView addSubview:homesymTextView];
+
+    UISwitch *homesymSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
+    homesymSwitch.tag = TAG_HOMESYM;
+    [homesymSwitch setOn:[getPreference(@"disable_home_symlink") boolValue] animated:NO];
+    [homesymSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    [tableView addSubview:homesymSwitch];
+    
+    UILabel *relaunchTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
+    relaunchTextView.text = @"Restart before launching game";
+    relaunchTextView.numberOfLines = 0;
+    [relaunchTextView sizeToFit];
+    [tableView addSubview:relaunchTextView];
+
+    UISwitch *relaunchSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
+    relaunchSwitch.tag = TAG_RELAUNCH;
+    [relaunchSwitch setOn:[getPreference(@"restart_before_launch") boolValue] animated:NO];
+    [relaunchSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    [tableView addSubview:relaunchSwitch];
+    
+    UILabel *erasePrefTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
+    erasePrefTextView.text = @"Reset all settings";
+    erasePrefTextView.numberOfLines = 0;
+    [erasePrefTextView sizeToFit];
+    [tableView addSubview:erasePrefTextView];
+
+    UISwitch *erasePrefSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
+    erasePrefSwitch.tag = TAG_ERASEPREF;
+    [erasePrefSwitch setOn:NO animated:NO];
+    [erasePrefSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    [tableView addSubview:erasePrefSwitch];
     
     CGRect frame = tableView.frame;
     frame.size.height = currY+=44;
@@ -429,30 +538,41 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
         UIBarButtonItem *help = [[UIBarButtonItem alloc] initWithImage:[[UIImage systemImageNamed:@"questionmark.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStyleDone target:self action:@selector(helpMenu)];
         UIBarButtonItem *close = [[UIBarButtonItem alloc] initWithImage:[[UIImage systemImageNamed:@"xmark.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStyleDone target:self action:@selector(exitAppAlert)];
         self.navigationItem.rightBarButtonItems = @[help, close];
-        UIAction *option1 = [UIAction actionWithTitle:@"Button scale" image:[[UIImage systemImageNamed:@"aspectratio"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:BTNSCALE];}];
-        UIAction *option2 = [UIAction actionWithTitle:@"Resolution" image:[[UIImage systemImageNamed:@"viewfinder"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:RESOLUTION];}];
-        UIAction *option3 = [UIAction actionWithTitle:@"Allocated RAM" image:[[UIImage systemImageNamed:@"memorychip"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:ALLOCMEM];}];
-        UIAction *option4 = [UIAction actionWithTitle:@"Java arguments" image:[[UIImage systemImageNamed:@"character.cursor.ibeam"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:JARGS];}];
-        UIAction *option5 = [UIAction actionWithTitle:@"Renderer" image:[[UIImage systemImageNamed:@"cpu"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:REND];}];
-        UIAction *option6 = [UIAction actionWithTitle:@"Java version" image:[[UIImage systemImageNamed:@"cube"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:JHOME];}];
-        UIAction *option7 = [UIAction actionWithTitle:@"Game directory" image:[[UIImage systemImageNamed:@"folder"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:GDIRECTORY];}];
-        UIAction *option8 = [UIAction actionWithTitle:@"Disable shaderconv" image:[[UIImage systemImageNamed:@"circle.lefthalf.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:NOSHADERCONV];}];
-        UIAction *option9 = [UIAction actionWithTitle:@"Reset warnings" image:[[UIImage systemImageNamed:@"exclamationmark.triangle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:RESETWARN];}];
-        UIAction *option10 = [UIAction actionWithTitle:@"Type switches" image:[[UIImage systemImageNamed:@"list.bullet"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:TYPESEL];}];
-        UIAction *option11 = [UIAction actionWithTitle:@"Debug logging" image:[[UIImage systemImageNamed:@"doc.badge.gearshape"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:DEBUGLOG];}];
         UIMenu *menu = [UIMenu menuWithTitle:@"" image:nil identifier:nil
-                        options:UIMenuOptionsDisplayInline children:@[option1, option2, option3, option4, option5, option6, option7, option8, option9, option10, option11]];
+                        options:UIMenuOptionsDisplayInline children:@[
+            [UIAction actionWithTitle:@"Button scale" image:[[UIImage systemImageNamed:@"aspectratio"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:BTNSCALE];}],
+            [UIAction actionWithTitle:@"Resolution" image:[[UIImage systemImageNamed:@"viewfinder"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:RESOLUTION];}],
+            [UIAction actionWithTitle:@"Allocated RAM" image:[[UIImage systemImageNamed:@"memorychip"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:ALLOCMEM];}],
+            [UIAction actionWithTitle:@"Java arguments" image:[[UIImage systemImageNamed:@"character.cursor.ibeam"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:JARGS];}],
+            [UIAction actionWithTitle:@"Renderer" image:[[UIImage systemImageNamed:@"cpu"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:REND];}],
+            [UIAction actionWithTitle:@"Java version" image:[[UIImage systemImageNamed:@"cube"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:JHOME];}],
+            [UIAction actionWithTitle:@"Game directory" image:[[UIImage systemImageNamed:@"folder"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:GDIRECTORY];}],
+            [UIAction actionWithTitle:@"Disable shaderconv" image:[[UIImage systemImageNamed:@"circle.lefthalf.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:NOSHADERCONV];}],
+            [UIAction actionWithTitle:@"Slideable hotbar" image:[[UIImage systemImageNamed:@"slider.horizontal.below.rectangle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:SLIDEHOTBAR];}],
+            [UIAction actionWithTitle:@"Safe area" image:[[UIImage systemImageNamed:@"crop"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:SAFEAREA];}],
+            [UIAction actionWithTitle:@"Reset warnings" image:[[UIImage systemImageNamed:@"exclamationmark.triangle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:RESETWARN];}],
+            [UIAction actionWithTitle:@"Type switches" image:[[UIImage systemImageNamed:@"list.bullet"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:TYPESEL];}],
+            [UIAction actionWithTitle:@"Debug logging" image:[[UIImage systemImageNamed:@"doc.badge.gearshape"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:DEBUGLOG];}],
+            [UIAction actionWithTitle:@"Home symlink" image:[[UIImage systemImageNamed:@"link"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:HOMESYM];}],
+            [UIAction actionWithTitle:@"Restart before launching game" image:[[UIImage systemImageNamed:@"arrowtriangle.left.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:RELAUNCH];}],
+            [UIAction actionWithTitle:@"Reset preferences" image:[[UIImage systemImageNamed:@"trash"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:ERASEPREF];}],
+        ]];
         self.navigationItem.rightBarButtonItem.action = nil;
         self.navigationItem.rightBarButtonItem.primaryAction = nil;
         self.navigationItem.rightBarButtonItem.menu = menu;
@@ -504,15 +624,17 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     activeField = nil;
-    if (textField.tag == 101) {
+    if (textField.tag == TAG_JARGS) {
         setPreference(@"java_args", textField.text);
-    } else if (textField.tag == 102) {
+    } else if (textField.tag == TAG_REND) {
         if ([textField.text isEqualToString:gl4es114]) {
             setPreference(@"renderer", lib_gl4es114);
         } else if ([textField.text isEqualToString:gl4es115]) {
             setPreference(@"renderer", lib_gl4es115);
         } else if ([textField.text isEqualToString:tinygl4angle]) {
             setPreference(@"renderer", lib_tinygl4angle);
+        } else if ([textField.text isEqualToString:vgpu]) {
+            setPreference(@"renderer", lib_vgpu);
         } else if ([textField.text isEqualToString:zink]) {
             setPreference(@"renderer", lib_zink);
         }
@@ -527,7 +649,7 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
             [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:YES];
             [noshaderconvSwitch setEnabled:YES];
         }
-    } else if (textField.tag == 103) {
+    } else if (textField.tag == TAG_JHOME) {
         if ([textField.text isEqualToString:java8jben]) {
             setPreference(@"java_home", libsjava8jben);
             setenv("JAVA_HOME", [libsjava8jben cStringUsingEncoding:NSUTF8StringEncoding], 1);
@@ -548,7 +670,7 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
             [javaAlert addAction:ok];
             setPreference(@"java_warn", @NO);
         }
-    } else if (textField.tag == 104) {
+    } else if (textField.tag == TAG_GDIR) {
         setPreference(@"game_directory", textField.text);
     }
 }
@@ -567,7 +689,7 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
     [blurView setFrame:[[self view] bounds]];
     [blurView setAlpha:0];
     [self.view addSubview:blurView];
-
+    
     [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         [blurView setAlpha:1];
     } completion:^(BOOL finished) {
@@ -578,15 +700,29 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
 -(void)instanceDirCont {
     NSFileManager *fm = [NSFileManager defaultManager];
     NSArray* files = [fm contentsOfDirectoryAtPath:[NSString stringWithFormat:@"%s/instances", getenv("POJAV_HOME")] error:nil];
-    gdirList = [NSMutableArray arrayWithCapacity:10];
+    if (gdirList == nil) {
+        gdirList = [NSMutableArray arrayWithCapacity:10];
+    } else {
+        [gdirList removeAllObjects];
+    }
+    BOOL updateTempIndex = YES;
+    tempIndex = 0;
     for(NSString *file in files) {
         NSString *path = [[NSString stringWithFormat:@"%s/instances", getenv("POJAV_HOME")] stringByAppendingPathComponent:file];
         BOOL isDir = NO;
         [fm fileExistsAtPath:path isDirectory:(&isDir)];
         if(isDir) {
             [gdirList addObject:file];
+            if ([file isEqualToString:gdirTextField.text]) {
+                updateTempIndex = NO;
+            }
+            if (updateTempIndex) {
+                ++tempIndex;
+            }
         }
     }
+    [gdirPickerView reloadAllComponents];
+    [gdirPickerView selectRow:tempIndex inComponent:0 animated:NO];
 }
 
 - (void)createDir:(UIBarButtonItem *)sender {
@@ -702,9 +838,14 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
         UIAlertAction *jhome = [UIAlertAction actionWithTitle:@"Java version" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:JHOME];}];
         UIAlertAction *gdirectory = [UIAlertAction actionWithTitle:@"Game directory"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:GDIRECTORY];}];
         UIAlertAction *noshaderconv = [UIAlertAction actionWithTitle:@"Disable shaderconv" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:NOSHADERCONV];}];
+        UIAlertAction *slidehotbar = [UIAlertAction actionWithTitle:@"Slideable hotbar" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:SLIDEHOTBAR];}];
+        UIAlertAction *safearea = [UIAlertAction actionWithTitle:@"Safe area" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:SAFEAREA];}];
         UIAlertAction *resetwarn = [UIAlertAction actionWithTitle:@"Reset warnings" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:RESETWARN];}];
         UIAlertAction *typesel = [UIAlertAction actionWithTitle:@"Type switches" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:TYPESEL];}];
         UIAlertAction *debuglog = [UIAlertAction actionWithTitle:@"Debug logging" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:DEBUGLOG];}];
+        UIAlertAction *homesym = [UIAlertAction actionWithTitle:@"Home symlink" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:HOMESYM];}];
+        UIAlertAction *relaunch = [UIAlertAction actionWithTitle:@"Restart before launching game" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:RELAUNCH];}];
+        UIAlertAction *erasepref = [UIAlertAction actionWithTitle:@"Reset preferences" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:ERASEPREF];}];
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
         [self setPopoverProperties:helpAlert.popoverPresentationController sender:(UIButton *)self.navigationItem.rightBarButtonItem];
         [self presentViewController:helpAlert animated:YES completion:nil];
@@ -716,9 +857,13 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
         [helpAlert addAction:jhome];
         [helpAlert addAction:gdirectory];
         [helpAlert addAction:noshaderconv];
+        [helpAlert addAction:slidehotbar];
+        [helpAlert addAction:safearea];
         [helpAlert addAction:resetwarn];
         [helpAlert addAction:typesel];
         [helpAlert addAction:debuglog];
+        [helpAlert addAction:relaunch];
+        [helpAlert addAction:homesym];
         [helpAlert addAction:cancel];
     }
 }
@@ -750,6 +895,12 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
     } else if(setting == NOSHADERCONV) {
         title = @"Disable shaderconv";
         message = @"This option allows you to disable the shader converter inside gl4es 1.1.5 in order to let ANGLE processes them directly. This option is experimental and should only be enabled when playing Minecraft 1.17 or above. Alternatively you can use tinygl4angle for 1.17.";
+    } else if(setting == SLIDEHOTBAR) {
+        title = @"Slideable hotbar";
+        message = @"This option allows you to use a finger to slide between hotbar slots.";
+    } else if(setting == SAFEAREA) {
+        title = @"Safe area";
+        message = @"This option moves the game surface area into a safe area instead of fullscreen. This option is only available for iPhones with notch.";
     } else if(setting == RESETWARN) {
         title = @"Reset warnings";
         message = @"This option re-enables all warnings to be shown again.";
@@ -759,6 +910,18 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
     } else if(setting == DEBUGLOG) {
         title = @"Enable debug logging";
         message = @"This option logs internal settings and actions to latestlog.txt. This helps the developers find issues easier, but Minecraft may run slower as the logs will be written to more often.";
+    } else if(setting == HOMESYM) {
+        title = @"Disable home symlink";
+        message = @"This option disables the home symlink to /var/mobile/Documents/.pojavlauncher from the new game directory.";
+    } else if(setting == RELAUNCH) {
+        title = @"Restart before launching game";
+        message = @"This option allows the launcher to restart itself before launching the game, therefore all changes are applied such as JVM Arguments and Java version. The restart mechanism doesn't always work, so a toggle is here for now.";
+    } else if (setting == ERASEPREF) {
+        title = @"Reset preferences";
+        message = @"This option resets the launcher preferences to their initial state.";
+    } else {
+        title = @"Error";
+        message = [NSString stringWithFormat:@"The setting %d hasn't been specified with a description.", setting];
     }
     UIAlertController *helpAlertOpt = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
@@ -770,13 +933,13 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
 - (void)sliderMoved:(DBNumberedSlider *)sender {
     float memVal;
     switch (sender.tag) {
-        case 98:
+        case TAG_BTNSCALE:
             setPreference(@"button_scale", @((int)sender.value));
             break;
-        case 99:
+        case TAG_RESOLUTION:
             setPreference(@"resolution", @((int)sender.value));
             break;
-        case 100:
+        case TAG_ALLOCMEM:
             memVal = roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.40);
             if(sender.value >= memVal && [getPreference(@"mem_warn") boolValue] == YES) {
                 UIAlertController *memAlert = [UIAlertController alertControllerWithTitle:@"High memory value selected." message:@"Due to limitations in the operating system itself, you will need to use a tool like overb0ard to prevent jetsam crashes." preferredStyle:UIAlertControllerStyleActionSheet];
@@ -796,15 +959,16 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
 
 - (void)switchChanged:(UISwitch *)sender {
     switch (sender.tag) {
-        case 105:
+        case TAG_NOSHADERCONV:
             setPreference(@"disable_gl4es_shaderconv", @(sender.isOn));
             break;
-        case 106:
+        case TAG_RESETWARN:
             setPreference(@"mem_warn", @YES);
             setPreference(@"option_warn", @YES);
             setPreference(@"local_warn", @YES);
             setPreference(@"java_warn", @YES);
             setPreference(@"jb_warn", @YES);
+            setPreference(@"customctrl_warn", @YES);
             {
             UIAlertController *resetWarn = [UIAlertController alertControllerWithTitle:@"Warnings reset." message:@"Restart to show warnings again." preferredStyle:UIAlertControllerStyleActionSheet];
             [self setPopoverProperties:resetWarn.popoverPresentationController sender:(UIButton *)sender];
@@ -813,25 +977,72 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
             [resetWarn addAction:ok];
             }
             break;
-        case 107:
+        case TAG_SLIDEHOTBAR:
+            setPreference(@"slideable_hotbar", @(sender.isOn));
+            break;
+        case TAG_SWITCH_VRELEASE:
             setPreference(@"vertype_release", @(sender.isOn));
             [LauncherViewController fetchVersionList];
             break;
-        case 108:
+        case TAG_SWITCH_VSNAPSHOT:
             setPreference(@"vertype_snapshot", @(sender.isOn));
             [LauncherViewController fetchVersionList];
             break;
-        case 109:
+        case TAG_SWITCH_VOLDBETA:
             setPreference(@"vertype_oldbeta", @(sender.isOn));
             [LauncherViewController fetchVersionList];
             break;
-        case 110:
+        case TAG_SWITCH_VOLDALPHA:
             setPreference(@"vertype_oldalpha", @(sender.isOn));
             [LauncherViewController fetchVersionList];
             break;
-        case 111:
+        case TAG_DEBUGLOG:
             setPreference(@"debug_logging", @(sender.isOn));
             [LauncherViewController fetchVersionList];
+            break;
+        case TAG_HOMESYM:
+            setPreference(@"disable_home_symlink", @(sender.isOn));
+            if([getPreference(@"disable_home_symlink") boolValue] == YES){
+                NSString *message = [NSString stringWithFormat:@"This will remove the link at /var/mobile/Documents/.pojavlauncher. The new directory is %s.", getenv("POJAV_HOME")];
+                UIAlertController *homesymWarn = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:message preferredStyle:UIAlertControllerStyleActionSheet];
+                [self setPopoverProperties:homesymWarn.popoverPresentationController sender:(UIButton *)sender];
+                UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Continue" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[[NSFileManager defaultManager] removeItemAtPath:@"/var/mobile/Documents/.pojavlauncher" error:nil];}];
+                UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+                [self presentViewController:homesymWarn animated:YES completion:nil];
+                [homesymWarn addAction:cancel];
+                [homesymWarn addAction:ok];
+            } else {
+                NSString *message = [NSString stringWithFormat:@"This will create a link to %s at /var/mobile/Documents/.pojavlauncher. This option will be removed in a future release.", getenv("POJAV_HOME")];
+                UIAlertController *homesymWarn = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:message preferredStyle:UIAlertControllerStyleActionSheet];
+                [self setPopoverProperties:homesymWarn.popoverPresentationController sender:(UIButton *)sender];
+                UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Continue" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {symlink("/usr/share/pojavlauncher", "/var/mobile/Documents/.pojavlauncher");}];
+                UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+                [self presentViewController:homesymWarn animated:YES completion:nil];
+                [homesymWarn addAction:cancel];
+                [homesymWarn addAction:ok];
+            }
+            break;
+        case TAG_RELAUNCH:
+            setPreference(@"restart_before_launch", @(sender.isOn));
+            break;
+        case TAG_ERASEPREF:
+            {
+                NSString *prefFile = [NSString stringWithFormat:@"%s/launcher_preferences.plist", getenv("POJAV_HOME")];
+                UIAlertController *eraseprefWarn = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:@"This will remove all of your custom preferences, including resolution, button size, and Java arguments." preferredStyle:UIAlertControllerStyleActionSheet];
+                [self setPopoverProperties:eraseprefWarn.popoverPresentationController sender:(UIButton *)sender];
+                UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Continue" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    [[NSFileManager defaultManager] removeItemAtPath:prefFile error:nil];
+                    UIAlertController *eraseprefPost = [UIAlertController alertControllerWithTitle:@"Preferences reset" message:@"The next time you open PojavLauncher, all of the default settings will be restored." preferredStyle:UIAlertControllerStyleActionSheet];
+                    [self setPopoverProperties:eraseprefWarn.popoverPresentationController sender:(UIButton *)sender];
+                    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+                    [self presentViewController:eraseprefPost animated:YES completion:nil];
+                    [eraseprefPost addAction:cancel];
+                }];
+                UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+                [self presentViewController:eraseprefWarn animated:YES completion:nil];
+                [eraseprefWarn addAction:cancel];
+                [eraseprefWarn addAction:ok];
+            }
             break;
         default:
             NSLog(@"what does switch %ld for? implement me!", sender.tag);
@@ -863,11 +1074,11 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
 
 #pragma mark - UIPickerView
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    if(pickerView.tag == 112) {
+    if(pickerView.tag == TAG_PICKER_REND) {
         rendTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
-    } else if(pickerView.tag == 113) {
+    } else if(pickerView.tag == TAG_PICKER_JHOME) {
         jhomeTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
-    } else if(pickerView.tag == 114) {
+    } else if(pickerView.tag == TAG_PICKER_GDIR) {
         gdirTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
         setPreference(@"game_directory", gdirTextField.text);
     }
@@ -878,11 +1089,11 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    if(pickerView.tag == 112) {
+    if(pickerView.tag == TAG_PICKER_REND) {
         return rendererList.count;
-    } else if(pickerView.tag == 113) {
+    } else if(pickerView.tag == TAG_PICKER_JHOME) {
         return jhomeList.count;
-    } else if(pickerView.tag == 114) {
+    } else if(pickerView.tag == TAG_PICKER_GDIR) {
         return gdirList.count;
     } else {
         return 0;
@@ -891,24 +1102,22 @@ NSString *lib_zink = @"libOSMesaOverride.dylib";
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
     NSObject *object;
-    if(pickerView.tag == 112) {
+    if(pickerView.tag == TAG_PICKER_REND) {
         object = [rendererList objectAtIndex:row];
-    } else if(pickerView.tag == 113) {
+    } else if(pickerView.tag == TAG_PICKER_JHOME) {
         object = [jhomeList objectAtIndex:row];
-    } else if(pickerView.tag == 114) {
+    } else if(pickerView.tag == TAG_PICKER_GDIR) {
         object = [gdirList objectAtIndex:row];
     }
     return (NSString*) object;
 }
 
 - (void)closeKeyboard:(UIBarButtonItem *)doneButton {
-    if (doneButton.tag == 150) {
-        [jargsTextField endEditing:YES];
-    } else if (doneButton.tag == 151) {
+    if (doneButton.tag == TAG_DONE_REND) {
         [rendTextField endEditing:YES];
-    } else if (doneButton.tag == 152) {
+    } else if (doneButton.tag == TAG_DONE_JHOME) {
         [jhomeTextField endEditing:YES];
-    } else if (doneButton.tag == 153) {
+    } else if (doneButton.tag == TAG_DONE_GDIR) {
         [gdirTextField endEditing:YES];
     } 
 }

@@ -1,7 +1,7 @@
-name: iOS build
+name: Release build
 
 on:
-  [push, workflow_dispatch]
+  workflow_dispatch
 
 jobs:
   build:
@@ -52,31 +52,28 @@ jobs:
           sudo /opt/procursus/bin/apt-get -V dist-upgrade -y
 
       - name: Build the Debian package
-        run: gmake -j$(sysctl -n hw.ncpu) package
-
-      - name: Generate dSYM for PojavCore
-        run: dsymutil --arch arm64 packages/pojavlauncher_iphoneos-arm/Applications/PojavLauncher.app/Frameworks/PojavCore.framework/PojavCore
+        run: gmake -j$(sysctl -n hw.ncpu) dsym RELEASE=1
 
       - name: Generate dSYM for PojavLauncher
-        run: dsymutil --arch arm64 packages/pojavlauncher_iphoneos-arm/Applications/PojavLauncher.app/PojavLauncher
+        run: dsymutil --arch arm64 Natives/build/PojavLauncher.app/PojavLauncher
 
-      - name: Upload build artifact
+      - name: Upload regular artifact
         uses: actions/upload-artifact@v2
         with:
-          name: pojavlauncher_iphoneos-arm.deb
-          path: packages/pojavlauncher_iphoneos-arm.deb
-
-      - name: Upload PojavCore.dSYM
+          name: net.kdt.pojavlauncher.release_iphoneos-arm.deb
+          path: artifacts/net.kdt.pojavlauncher.*_iphoneos-arm.deb
+          
+      - name: Upload rootless artifact
         uses: actions/upload-artifact@v2
         with:
-          name: PojavCore.dSYM
-          path: packages/pojavlauncher_iphoneos-arm/Applications/PojavLauncher.app/PojavCore.framework/PojavCore.dSYM
+          name: net.kdt.pojavlauncher.release-rootless_iphoneos-arm.deb
+          path: artifacts/net.kdt.pojavlauncher.*_iphoneos-arm64.deb
 
       - name: Upload PojavLauncher.dSYM
         uses: actions/upload-artifact@v2
         with:
           name: PojavLauncher.dSYM
-          path: packages/pojavlauncher_iphoneos-arm/Applications/PojavLauncher.app/PojavLauncher.dSYM
+          path: Natives/build/PojavLauncher.app/PojavLauncher.dSYM
 
       - name: Copy Procursus to Cache Location
         run: |

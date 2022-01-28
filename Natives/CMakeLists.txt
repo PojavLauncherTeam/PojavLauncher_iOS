@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.6)
 project(PojavLauncher)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcommon -fobjc-arc -ObjC -I'${CMAKE_CURRENT_LIST_DIR}/resources/Frameworks/MetalANGLE.framework/Headers' -I'${CMAKE_CURRENT_LIST_DIR}/external/DBNumberedSlider/Classes' -I'${CMAKE_CURRENT_LIST_DIR}/external/fishhook' -I'${CMAKE_CURRENT_LIST_DIR}/external_include'"
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcommon -fobjc-arc -ObjC -I'${CMAKE_CURRENT_LIST_DIR}/resources/Frameworks/MetalANGLE.framework/Headers' -I'${CMAKE_CURRENT_LIST_DIR}/external/DBNumberedSlider/Classes' -I'${CMAKE_CURRENT_LIST_DIR}/external/fishhook' -I'${CMAKE_CURRENT_LIST_DIR}/external/zink'"
 )
 set(CMAKE_C_FLAGS_DEBUG "-funwind-tables -g")
 
@@ -40,11 +40,18 @@ set_target_properties(libOSMesaOverride.dylib PROPERTIES
 )
 target_link_libraries(libOSMesaOverride.dylib ${OSMESA_LIB})
 
-add_library(PojavCore SHARED
+add_executable(PojavLauncher
+  main.m
+  log.m
+  JavaLauncher.m
+  external/fishhook/fishhook.c
+
   AboutLauncherViewController.m
   AppDelegate.m
   CustomControlsViewController.m
+  FileListViewController.m
   JavaGUIViewController.m
+  KeyboardInput.m
   LauncherFAQViewController.m
   LauncherPreferences.m
   LauncherPreferencesViewController.m
@@ -54,6 +61,8 @@ add_library(PojavCore SHARED
   SurfaceViewController.m
   UpdateHistoryViewController.m
   customcontrols/ControlButton.m
+  customcontrols/ControlDrawer.m
+  customcontrols/ControlSubButton.m
   customcontrols/CustomControlsUtils.m
   egl_bridge.m
   external/DBNumberedSlider/Classes/DBNumberedSlider.m
@@ -62,27 +71,16 @@ add_library(PojavCore SHARED
   log.m
   utils.m
 )
-set_target_properties(PojavCore PROPERTIES
-    FRAMEWORK TRUE
-    MACOSX_FRAMEWORK_IDENTIFIER net.kdt.pojavlauncher.PojavCore
-)
-target_link_libraries(PojavCore
-  "-framework AuthenticationServices"
-  "-framework CoreGraphics"
-  "-framework QuartzCore"
-  "-framework UIKit"
-)
 
-add_executable(PojavLauncher
-  main.m
-  log.m
-  JavaLauncher.m
-  external/fishhook/fishhook.c
-)
 target_link_libraries(PojavLauncher
   "-F'${CMAKE_CURRENT_LIST_DIR}/build'"
-  "-framework PojavCore"
+  "-framework AuthenticationServices"
+  "-framework CoreGraphics"
+  "-framework GameController"
+  "-framework QuartzCore"
   "-framework UIKit"
+  "-framework SafariServices"
+  "-framework WebKit"
 )
 set_target_properties(PojavLauncher PROPERTIES
   MACOSX_BUNDLE TRUE

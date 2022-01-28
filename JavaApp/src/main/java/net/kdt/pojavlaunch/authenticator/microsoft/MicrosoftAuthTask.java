@@ -46,6 +46,13 @@ public class MicrosoftAuthTask {
                 acc.profileId = msa.mcUuid;
                 acc.isMicrosoft = true;
                 acc.msaRefreshToken = msa.msRefreshToken;
+            } else if(msa.doesDemo) {
+                acc.clientToken = "0"; /* FIXME */
+                acc.accessToken = "-1"; // Differentiate from local accounts
+                acc.username = "demo_user";
+                acc.profileId = "25e00594-cf57-3f87-b3af-3f06591be252";
+                acc.isMicrosoft = false;
+                acc.msaRefreshToken = "0";
             }
             acc.save();
            

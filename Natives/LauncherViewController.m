@@ -96,6 +96,7 @@ int versionSelectedAt = 0;
     [scrollView addSubview:install_progress_bar];
 
     install_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    install_button.enabled = NO;
     [install_button setTitle:@"Play" forState:UIControlStateNormal];
     install_button.frame = CGRectMake(10.0, height - 54.0, 100.0, 50.0);
     [install_button addTarget:self action:@selector(launchMinecraft:) forControlEvents:UIControlEventTouchUpInside];
@@ -105,16 +106,22 @@ int versionSelectedAt = 0;
     [scrollView addSubview:install_progress_text];
 }
 
++ (BOOL)isVersionInstalled:(NSString *)versionId
+{
+    NSString *localPath = [NSString stringWithFormat:@"%s/versions/%@", getenv("POJAV_GAME_DIR"), versionId];
+    BOOL isDirectory;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    [fileManager fileExistsAtPath:localPath isDirectory:&isDirectory];
+    return isDirectory;
+}
+
 + (void)fetchLocalVersionList:(NSMutableArray *)finalVersionList withPreviousIndex:(int)index
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *versionPath = [NSString stringWithFormat:@"%s/versions/", getenv("POJAV_GAME_DIR")];
     NSArray *localVersionList = [fileManager contentsOfDirectoryAtPath:versionPath error:Nil];
     for (NSString *versionId in localVersionList) {
-        NSString *localPath = [versionPath stringByAppendingString:versionId];
-        BOOL isDir;
-        [fileManager fileExistsAtPath:localPath isDirectory:&isDir];
-        if (isDir) {
+        if ([self isVersionInstalled:versionId]) {
             BOOL shouldAdd = YES;
             for (NSObject *object in finalVersionList) {
                 if (![object isKindOfClass:[NSDictionary class]]) continue;
@@ -169,7 +176,8 @@ int versionSelectedAt = 0;
                         ([versionType containsString:@"snapshot"] && [getPreference(@"vertype_snapshot") boolValue]) ||
                         ([versionType containsString:@"old_beta"] && [getPreference(@"vertype_oldbeta") boolValue]) ||
                         ([versionType containsString:@"old_alpha"] && [getPreference(@"vertype_oldalpha") boolValue]) ||
-                        [versionType containsString:@"modified"]) {
+                        [versionType containsString:@"modified"] ||
+                        [self isVersionInstalled:versionId]) {
                         [finalVersionList addObject:versionInfo];
                         
                         if ([versionTextField.text isEqualToString:versionId]) {
@@ -198,6 +206,7 @@ int versionSelectedAt = 0;
                 [versionPickerView reloadAllComponents];
                 [versionPickerView selectRow:versionSelectedAt inComponent:0 animated:NO];
             }
+            install_button.enabled = YES;
         });
     }];
     [getDataTask resume];
@@ -225,18 +234,36 @@ int versionSelectedAt = 0;
 }
 
 - (void)enterCustomControls {
-    CustomControlsViewController *vc = [[CustomControlsViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    if (![getPreference(@"customctrl_warn") boolValue]) {
+        CustomControlsViewController *vc = [[CustomControlsViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+        return;
+    }
+    setPreference(@"customctrl_warn", @(NO));
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Warning" message:@"This option is unfinished, some might be incomplete or missing." preferredStyle:UIAlertControllerStyleActionSheet];
+    if (alert.popoverPresentationController != nil) {
+        alert.popoverPresentationController.sourceView = self.view;
+        alert.popoverPresentationController.sourceRect = CGRectMake(self.view.frame.size.width-10.0, 0, 10, 10);
+    }
+    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        CustomControlsViewController *vc = [[CustomControlsViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }];
+    [self presentViewController:alert animated:YES completion:nil];
+    [alert addAction:ok];
 }
 
 - (void)enterModInstaller:(UIBarButtonItem*)sender {
     NSString *javaVer = getPreference(@"java_home");
     if(![javaVer containsString:(@"java-8-openjdk")] && ![javaVer containsString:(@"jre8")]) {
-        UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:@"Cannot use the mod installer" message:@"In order to use the mod installer, you need to install Java 8 and specify it in the Preferences menu." preferredStyle:UIAlertControllerStyleActionSheet];
-        [self setPopoverProperties:offlineAlert.popoverPresentationController sender:(UIButton *)sender];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Cannot use the mod installer" message:@"In order to use the mod installer, you need to install Java 8 and specify it in the Preferences menu." preferredStyle:UIAlertControllerStyleActionSheet];
+        if (alert.popoverPresentationController != nil) {
+            alert.popoverPresentationController.sourceView = self.view;
+            alert.popoverPresentationController.sourceRect = CGRectMake(self.view.frame.size.width-10.0, 0, 10, 10);
+        }
         UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
-        [self presentViewController:offlineAlert animated:YES completion:nil];
-        [offlineAlert addAction:ok];
+        [self presentViewController:alert animated:YES completion:nil];
+        [alert addAction:ok];
     } else {
         UIDocumentPickerViewController *documentPicker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:@[@"com.sun.java-archive"]
                                                           inMode:UIDocumentPickerModeImport];
@@ -261,7 +288,8 @@ int versionSelectedAt = 0;
 }
 
 - (void)launchMinecraft:(UIButton *)sender {
-    [sender setEnabled:NO];
+    sender.enabled = NO;
+    [self.navigationItem setHidesBackButton:YES animated:YES];
     
     NSObject *object = [versionList objectAtIndex:[versionPickerView selectedRowInComponent:0]];
     NSString *result;
@@ -273,13 +301,6 @@ int versionSelectedAt = 0;
     NSAssert(result != nil, @"version should not be null");
 
     callback_LauncherViewController_installMinecraft([result UTF8String]);
-}
-
-- (void)setPopoverProperties:(UIPopoverPresentationController *)controller sender:(UIButton *)sender {
-    if (controller != nil) {
-        controller.sourceView = sender;
-        controller.sourceRect = sender.bounds;
-    }
 }
 
 #pragma mark - UIPopoverPresentationControllerDelegate

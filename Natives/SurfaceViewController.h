@@ -2,6 +2,9 @@
 #import <MetalKit/MetalKit.h>
 #import "MGLKit.h"
 
+CGRect virtualMouseFrame;
+CGPoint lastVirtualMousePoint;
+
 @interface GameSurfaceView : UIView
 {
     CALayer* layer;
@@ -15,5 +18,7 @@
 @interface SurfaceViewController : UIViewController
 
 @property(nonatomic, strong) GameSurfaceView* surfaceView;
+@property UIImageView* mousePointerView;
+@property UIPanGestureRecognizer* scrollPanGesture;
 
 @end

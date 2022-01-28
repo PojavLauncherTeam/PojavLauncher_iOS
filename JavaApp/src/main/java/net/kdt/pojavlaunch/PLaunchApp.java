@@ -30,23 +30,48 @@ public class PLaunchApp {
             new File(Tools.DIR_ACCOUNT_NEW).mkdirs();
             if (!new File(mcDir.getAbsolutePath() + "/launcher_profiles.json").exists()) {
                 Tools.write(mcDir.getAbsolutePath() + "/launcher_profiles.json",
-                  Tools.read(Tools.DIR_DATA + "/launcher_profiles.json"));
+                  Tools.read(Tools.DIR_BUNDLE + "/launcher_profiles.json"));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         System.out.println("We are on java now! Starting UI...");
-        UIKit.launchUI(args);
+        UIKit.launchUI();
+    }
+
+    public static String getSelectedVersion() {
+        try {
+            String plistContent = Tools.read(Tools.DIR_APP_DATA + "/launcher_preferences.plist");
+            plistContent = plistContent.substring(plistContent.indexOf("<key>selected_version</key>") + 27);
+            return plistContent.substring(
+                    plistContent.indexOf("<string>") + 8,
+                plistContent.indexOf("</string>"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     // Called from SurfaceViewController
     public static void launchMinecraft() {
-        System.out.println("Saving GLES context");
-        JREUtils.saveGLContext();
-
-        System.out.println("Launching Minecraft " + mVersion.id);
         try {
+            if (AccountJNI.CURRENT_ACCOUNT == null) {
+                AccountJNI.CURRENT_ACCOUNT = MinecraftAccount.load(System.getProperty("pojav.selectedAccount"));
+                mVersion = Tools.getVersionInfo(getSelectedVersion());
+            }
+            System.out.println("Launching Minecraft " + mVersion.id);
+            String configPath;
+            if (mVersion.logging != null) {
+                if (mVersion.logging.client.file.id.equals("client-1.12.xml")) {
+                    configPath = Tools.DIR_BUNDLE + "/log4j-rce-patch-1.12.xml";
+                } else if (mVersion.logging.client.file.id.equals("client-1.7.xml")) {
+                    configPath = Tools.DIR_BUNDLE + "/log4j-rce-patch-1.7.xml";
+                } else {
+                    configPath = Tools.DIR_GAME_NEW + "/" + mVersion.logging.client.file.id;
+                }
+                System.setProperty("log4j.configurationFile", configPath);
+            }
             Tools.launchMinecraft(AccountJNI.CURRENT_ACCOUNT, mVersion);
         } catch (Throwable th) {
             Tools.showError(th);
@@ -60,18 +85,7 @@ public class PLaunchApp {
             maxProgress = 0;
 
             UIKit.updateProgressSafe(0, "Finding a version");
-            String mcver = "1.16.5";
-
-            try {
-                String plistContent = Tools.read(Tools.DIR_APP_DATA + "/launcher_preferences.plist");
-                plistContent = plistContent.substring(plistContent.indexOf("<key>selected_version</key>") + 27);
-                mcver = plistContent.substring(
-                    plistContent.indexOf("<string>") + 8,
-                    plistContent.indexOf("</string>"));
-            } catch (IOException e) {
-                e.printStackTrace();
-                UIKit.updateProgressSafe(0, "Could not parse plist, defaulting to Minecraft 1.16.5");
-            }
+            String mcver = getSelectedVersion();
 
             AccountJNI.CURRENT_ACCOUNT.selectedVersion = mcver;
             try {
@@ -97,7 +111,7 @@ public class PLaunchApp {
                 if (AccountJNI.CURRENT_ACCOUNT.accessToken.equals("0")) {
                     if (!new File(verJsonDir).exists()) {
                         // Local account: disallow install new version
-                        UIKit.showError("Error", "Minecraft can't be legally installed when logged in with a local account. Please switch to Mojang/Microsoft account to continue.", false);
+                        UIKit.showError("Error", "Minecraft can't be legally installed when logged in with a local account. Please switch to an online account to continue.", false);
                         return;
                     } else {
                         // Local account: jump to launch Minecraft, not download anything
@@ -119,21 +133,28 @@ public class PLaunchApp {
                     e.printStackTrace();
                 }
 
+                if (mVersion.logging != null && !mVersion.logging.client.file.id.equals("client-1.12.xml")) {
+                    UIKit.updateProgressSafe(0, "Downloading " + mVersion.logging.client.file.id);
+                    String configPath = Tools.DIR_GAME_NEW + "/" + mVersion.logging.client.file.id;
+                    Tools.downloadFile(mVersion.logging.client.file.url, configPath);
+                }
+
                 maxProgress = mVersion.libraries.length + 1 + (assets == null ? 0 : assets.objects.size());
 
                 File outLib;
                 String libPathURL;
 
+                Tools.preProcessLibraries(mVersion.libraries);
                 for (final DependentLibrary libItem : mVersion.libraries) {
-                    if (
-                        // Support for text2speech is not planned, so skip it for now.
-                        libItem.name.startsWith("com.mojang.text2speech") ||
-                        libItem.name.startsWith("net.java.jinput") ||
-                        libItem.name.startsWith("org.lwjgl")
-                        ) { // Black list
+                    if (libItem._skip) {
                         currProgress++;
-                        UIKit.updateProgressSafe(currProgress / maxProgress, "Ignored " + libItem.name);
+                        UIKit.updateProgressSafe(currProgress / maxProgress, "Skipped " + libItem.name);
                         // Thread.sleep(100);
+                        
+                        String[] libInfo = libItem.name.split(":");
+                        String libArtifact = Tools.artifactToPath(libInfo[0], libInfo[1], libInfo[2]);
+                        outLib = new File(Tools.DIR_HOME_LIBRARY + "/" + libArtifact);
+                        outLib.delete();
                     } else {
                         String[] libInfo = libItem.name.split(":");
                         String libArtifact = Tools.artifactToPath(libInfo[0], libInfo[1], libInfo[2]);

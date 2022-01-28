@@ -7,7 +7,7 @@ public class MinecraftAccount
 {
     public String accessToken = "0"; // access token
     public String clientToken = "0"; // clientID: refresh and invalidate
-    public String profileId = "0"; // authenticate UUID
+    public String profileId = "00000000-0000-0000-0000-000000000000"; // authenticate UUID
     public String username = "Steve";
     public String selectedVersion = "1.7.10";
     public boolean isMicrosoft = false;
@@ -43,15 +43,16 @@ public class MinecraftAccount
         }
         return acc;
     }
-    
+/*
     public static void clearTempAccount() {
-        File tempAccFile = new File(Tools.DIR_DATA, "cache/tempacc.json");
+        File tempAccFile = new File(Tools.DIR_BUNDLE, "cache/tempacc.json");
         tempAccFile.delete();
     }
-    
+
     public static void saveTempAccount(MinecraftAccount acc) throws IOException {
         File tempAccFile = new File(Tools.DIR_DATA, "cache/tempacc.json");
         tempAccFile.delete();
         acc.save(tempAccFile.getAbsolutePath());
     }
+*/
 }

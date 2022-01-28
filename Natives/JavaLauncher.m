@@ -236,12 +236,15 @@ void init_loadCustomJvmFlags() {
     BOOL isFirstArg = YES;
     for (NSString *jvmarg in [jvmargs componentsSeparatedByString:@" -"]) {
         if ([jvmarg length] == 0) continue;
+        //margv[margc] = (char *) [jvmarg UTF8String];
+
         if (isFirstArg) {
             isFirstArg = NO;
             margv[margc] = (char *) [jvmarg UTF8String];
         } else {
             margv[margc] = (char *) [[@"-" stringByAppendingString:jvmarg] UTF8String];
         }
+
         NSLog(@"[Pre-init] Added custom JVM flag: %s", margv[margc]);
         ++margc;
     }
@@ -269,30 +272,14 @@ void init_logDeviceAndVer (char *argument) {
     const char *deviceSoftware = [[[UIDevice currentDevice] systemVersion] cStringUsingEncoding:NSUTF8StringEncoding];
 
     // Jailbreak
-    const char *deviceJailbreak;
+    const char *jbStrap;
     if (strncmp(argument, "/Applications", 13) == 0) {
-        if ([[NSFileManager defaultManager] fileExistsAtPath:@"/taurine"]) {
-            deviceJailbreak = "Taurine";
-        } else if ([[NSFileManager defaultManager] fileExistsAtPath:@"/odyssey"]) {
-            deviceJailbreak = "Odyssey";
-        } else if ([[NSFileManager defaultManager] fileExistsAtPath:@"/chimera"]) {
-            if ([[NSFileManager defaultManager] fileExistsAtPath:@"/.procursus_strapped"]) {
-                deviceJailbreak = "Chimera";
-            } else {
-                deviceJailbreak = "Chimera <1.4";
-            }
+        if ([[NSFileManager defaultManager] fileExistsAtPath:@"/.procursus_strapped"]) {
+            jbStrap = "Procursus";
         } else {
-            if ([[NSFileManager defaultManager] fileExistsAtPath:@"/private/etc/apt/undecimus"]) {
-                deviceJailbreak = "unc0ver";
-            } else if ([[NSFileManager defaultManager] fileExistsAtPath:@"/binpack/lib/dyld"]) {
-                if ([[NSFileManager defaultManager] fileExistsAtPath:@"/.procursus_strapped"]) {
-                    deviceJailbreak = "odysseyra1n";
-                } else {
-                    deviceJailbreak = "checkra1n";
-                }
-            }
+            jbStrap = "Other";
         }
-        debug("[Pre-Init] %s with iOS %s (%s)", deviceHardware, deviceSoftware, deviceJailbreak);
+        debug("[Pre-Init] %s with iOS %s (%s)", deviceHardware, deviceSoftware, jbStrap);
     } else {
         debug("[Pre-Init] %s with iOS %s", deviceHardware, deviceSoftware);
     }
@@ -303,7 +290,7 @@ void init_logDeviceAndVer (char *argument) {
     setenv("POJAV_DETECTEDHW", deviceHardware, 1);
     setenv("POJAV_DETECTEDSW", deviceSoftware, 1);
     if (strncmp(argument, "/Applications", 13) == 0) {
-        setenv("POJAV_DETECTEDJB", deviceJailbreak, 1);
+        setenv("POJAV_DETECTEDJB", jbStrap, 1);
     }
 }
 
@@ -353,19 +340,38 @@ void environmentFailsafes(char *argv[]) {
         javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
         setPreference(@"java_home", javaHome_pre);
     } else {
-        javaHome = calloc(1, 2048);
-        sprintf((char *)javaHome, "%s/jre", homeDir);
+        asprintf((char **)&javaHome, "%s/jre", homeDir);
     }
 }
 
 int launchJVM(int argc, char *argv[]) {
+    if (0 != [[NSFileManager defaultManager] fileExistsAtPath:@"/var/mobile/Documents/.pojavlauncher"] && 0 == [[NSFileManager defaultManager] fileExistsAtPath:@"/var/mobile/Documents/.pojavlauncher/migration_complete"]) {
+        NSString *newDir = @"/usr/share/pojavlauncher";
+        if([[[UIDevice currentDevice] systemVersion] containsString:@"15."]) {
+            newDir = @"/private/preboot/procursus/usr/share/pojavlauncher";
+        }
+        NSString *oldDir = @"/var/mobile/Documents/.pojavlauncher";
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSArray *files = [fm contentsOfDirectoryAtPath:oldDir error:nil];
+        for (NSString *file in files) {
+            [fm moveItemAtPath:[oldDir stringByAppendingPathComponent:file] toPath:[newDir stringByAppendingPathComponent:file] error:nil];
+        }
+        [fm removeItemAtPath:oldDir error:nil];
+        symlink([newDir cStringUsingEncoding:NSUTF8StringEncoding], [oldDir cStringUsingEncoding:NSUTF8StringEncoding]);
+        FILE* file_ptr = fopen("/var/mobile/Documents/.pojavlauncher/migration_complete", "w");
+        fprintf(file_ptr, "#README - The PojavLauncher data directory is now %s. All of your existing data has been moved to the new location.", [newDir cStringUsingEncoding:NSUTF8StringEncoding]);
+        fclose(file_ptr);
+    }
+    
     if (!started) {
-        setenv("BUNDLE_PATH", realpath(dirname(argv[0]), NULL), 1);
+        setenv("EXEC_PATH", argv[0], 1);
+        setenv("BUNDLE_PATH", dirname(argv[0]), 1);
 
         // Are we running on a jailbroken environment?
         if (strncmp(argv[0], "/Applications", 13) == 0) {
-            setenv("HOME", "/private/var/mobile", 1);
-            homeDir = "/private/var/mobile/Documents/.pojavlauncher";
+            setenv("HOME", "/usr/share", 1);
+            setenv("OLD_POJAV_HOME", "/var/mobile/Documents/.pojavlauncher", 1);
+            homeDir = "/usr/share/pojavlauncher";
         } else {
             char pojavHome[2048];
             sprintf(pojavHome, "%s/Documents", getenv("HOME"));
@@ -531,8 +537,8 @@ int launchJVM(int argc, char *argv[]) {
     allocmem_pre = [getPreference(@"allocated_memory") stringValue];
     allocmem = [allocmem_pre cStringUsingEncoding:NSUTF8StringEncoding];
     
-    char *controlPath = calloc(1, 2048);
-    sprintf(controlPath, "%s/controlmap", homeDir);
+    char *controlPath;
+    asprintf(&controlPath, "%s/controlmap", homeDir);
     mkdir(controlPath, S_IRWXU | S_IRWXG | S_IRWXO);
     setenv("POJAV_PATH_CONTROL", controlPath, 1);
     free(controlPath);
@@ -567,10 +573,9 @@ int launchJVM(int argc, char *argv[]) {
         multidir = [multidir_pre cStringUsingEncoding:NSUTF8StringEncoding];
         debug("[Pre-init] Restored preference: MULTI_DIR is set to %s\n", multidir);
     }
-    char *multidir_char = calloc(1, 2048);
-    char *librarySym = calloc(1, 2048);
-    snprintf(multidir_char, 2048, "%s/instances/%s", getenv("POJAV_HOME"), multidir);
-    snprintf(librarySym, 2048, "%s/Library/Application Support/minecraft", getenv("POJAV_HOME"));
+    char *multidir_char, *librarySym;
+    asprintf(&multidir_char, "%s/instances/%s", getenv("POJAV_HOME"), multidir);
+    asprintf(&librarySym, "%s/Library/Application Support/minecraft", getenv("POJAV_HOME"));
     remove(librarySym);
     if (0 != access(multidir_char, F_OK)) {
         mkdir(multidir_char, 755);
@@ -578,32 +583,24 @@ int launchJVM(int argc, char *argv[]) {
     symlink(multidir_char, librarySym);
     setenv("POJAV_GAME_DIR", librarySym, 1);
     
-    char *oldGameDir = calloc(1, 2048);
-    snprintf(oldGameDir, 2048, "%s/Documents/minecraft", getenv("HOME"));
-    if (0 == access(oldGameDir, F_OK)) {
-        rename(oldGameDir, multidir_char);
+    if (0 == access("/var/mobile/Documents/minecraft", F_OK)) {
+        rename("/var/mobile/Documents/minecraft", multidir_char);
         debug("[Pre-Init] Migrated old minecraft folder to new location.");
     }
     
-    char *oldLibraryDir = calloc(1, 2048);
-    snprintf(oldLibraryDir, 2048, "%s/Documents/Library", getenv("HOME"));
-    if (0 == access(oldLibraryDir, F_OK)) {
-        remove(oldLibraryDir);
+    if (0 == access("/var/mobile/Documents/Library", F_OK)) {
+        remove("/var/mobile/Documents/Library");
     }
     // Check if JVM restarts
     if (!started) {
-        char *frameworkPath = calloc(1, 2048);
-        char *javaPath = calloc(1, 2048);
-        char *userDir = calloc(1, 2048);
-        char *userHome = calloc(1, 2048);
-        char *memMin = calloc(1, 2048);
-        char *memMax = calloc(1, 2048);
-        snprintf(frameworkPath, 2048, "-Djava.library.path=%s/Frameworks:%s/Frameworks/libOSMesaOverride.dylib.framework", getenv("BUNDLE_PATH"), getenv("BUNDLE_PATH"));
-        snprintf(javaPath, 2048, "%s/bin/java", javaHome);
-        snprintf(userDir, 2048, "-Duser.dir=%s", getenv("POJAV_GAME_DIR"));
-        snprintf(userHome, 2048, "-Duser.home=%s", getenv("POJAV_HOME"));
-        snprintf(memMin, 2048, "-Xms%sM", allocmem);
-        snprintf(memMax, 2048, "-Xmx%sM", allocmem);
+        char *frameworkPath, *javaPath, *jnaLibPath, *userDir, *userHome, *memMin, *memMax;
+        asprintf(&frameworkPath, "-Djava.library.path=%s/Frameworks:%s/Frameworks/libOSMesaOverride.dylib.framework", getenv("BUNDLE_PATH"), getenv("BUNDLE_PATH"));
+        asprintf(&javaPath, "%s/bin/java", javaHome);
+        asprintf(&jnaLibPath, "-Djna.boot.library.path=%s/Frameworks/libjnidispatch.dylib.framework", getenv("BUNDLE_PATH"));
+        asprintf(&userDir, "-Duser.dir=%s", getenv("POJAV_GAME_DIR"));
+        asprintf(&userHome, "-Duser.home=%s", getenv("POJAV_HOME"));
+        asprintf(&memMin, "-Xms%sM", allocmem);
+        asprintf(&memMax, "-Xmx%sM", allocmem);
         NSLog(@"[Pre-init] Java executable path: %s", javaPath);
         setenv("JAVA_EXT_EXECNAME", javaPath, 1);
 
@@ -615,9 +612,15 @@ int launchJVM(int argc, char *argv[]) {
         margv[margc++] = memMin;
         margv[margc++] = memMax;
         margv[margc++] = frameworkPath;
+        margv[margc++] = jnaLibPath;
         margv[margc++] = userDir;
         margv[margc++] = userHome;
         margv[margc++] = "-Dorg.lwjgl.system.allocator=system";
+        margv[margc++] = "-Dlog4j2.formatMsgNoLookups=true";
+        NSString *selectedAccount = getPreference(@"internal_selected_account");
+        if (selectedAccount != nil) {
+            margv[margc++] = (char *) [NSString stringWithFormat:@"-Dpojav.selectedAccount=%@", selectedAccount].UTF8String;
+        }
     } else {
         setenv("RENDERER", renderer, 1);
         debug("[Pre-init] RENDERER has been set to %s", getenv("RENDERER"));
@@ -672,10 +675,6 @@ int launchJVM(int argc, char *argv[]) {
         margv[margc++] = "-cp";
         margv[margc++] = classpath;
         margv[margc++] = "net.kdt.pojavlaunch.PLaunchApp";
-        
-        for (int i = 0; i < argc; i++) {
-            margv[margc++] = argv[i];
-        }
     }
 
     JLI_Launch_func *pJLI_Launch =
@@ -689,8 +688,6 @@ int launchJVM(int argc, char *argv[]) {
     // Free unused char arrays
     free(librarySym);
     free(multidir_char);
-    free(oldGameDir);
-    free(oldLibraryDir);
 
     debug("[Init] Calling JLI_Launch");
 /*
@@ -702,7 +699,7 @@ int launchJVM(int argc, char *argv[]) {
     char **targv = started ? argv : margv;
     
     if (!started) {
-        started = true;
+        started = YES;
     }
 /* debug:
 for (int i = 0; i < targc; i++) {

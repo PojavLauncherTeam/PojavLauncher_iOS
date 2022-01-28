@@ -30,6 +30,7 @@ void setPreference(NSString* key, id value) {
 }
 
 void loadPreferences() {
+    assert(getenv("POJAV_HOME"));
     prefPath = [@(getenv("POJAV_HOME"))
       stringByAppendingPathComponent:@"launcher_preferences.plist"];
     
@@ -39,6 +40,8 @@ void loadPreferences() {
     } else {
         prefDict = [NSMutableDictionary dictionaryWithContentsOfFile:prefPath];
     }
+
+    assert(prefDict);
 
     // set default value
     setDefaultValueForPref(@"resolution", @(100));
@@ -60,8 +63,15 @@ void loadPreferences() {
     setDefaultValueForPref(@"local_warn", @YES);
     setDefaultValueForPref(@"mem_warn", @YES);
     setDefaultValueForPref(@"java_warn", @YES);
+    setDefaultValueForPref(@"demo_warn", @YES);
     setDefaultValueForPref(@"jb_warn", @YES);
+    setDefaultValueForPref(@"customctrl_warn", @YES);
     setDefaultValueForPref(@"disable_gl4es_shaderconv", @NO);
-
+    setDefaultValueForPref(@"slideable_hotbar", @NO);
+    if (0 != [fileManager fileExistsAtPath:@"/var/mobile/Documents/.pojavlauncher"]) {
+        setDefaultValueForPref(@"disable_home_symlink", @NO);
+    } else {
+        setDefaultValueForPref(@"disable_home_symlink", @YES);
+    }
     [prefDict writeToFile:prefPath atomically:YES];
 }

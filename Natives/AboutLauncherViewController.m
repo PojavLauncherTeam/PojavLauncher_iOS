@@ -55,7 +55,7 @@
     NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
 
     UILabel *logoVerView = [[UILabel alloc] initWithFrame:CGRectMake(4, 0, width - 8, 30)];
-    logoVerView.text = [NSString stringWithFormat:@"version 2.0 (%s - %s) on %@ with iOS %@", CONFIG_TYPE, CONFIG_COMMIT, deviceModel, currSysVer];
+    logoVerView.text = [NSString stringWithFormat:@"version 2.1 (%s - %s) on %@ with iOS %@", CONFIG_TYPE, CONFIG_COMMIT, deviceModel, currSysVer];
     logoVerView.lineBreakMode = NSLineBreakByWordWrapping;
     logoVerView.numberOfLines = 0;
     [scrollView addSubview:logoVerView];
@@ -103,7 +103,7 @@
 
 -(void)latestLogShare
 {
-    NSString *latestlogPath = [NSString stringWithFormat:@"file://%s/Documents/.pojavlauncher/latestlog.old.txt", getenv("HOME")];
+    NSString *latestlogPath = [NSString stringWithFormat:@"file://%s/latestlog.old.txt", getenv("HOME")];
     activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[@"latestlog.txt", [NSURL URLWithString:latestlogPath]] applicationActivities:nil];
 
     [self presentViewController:activityViewController animated:YES completion:nil];

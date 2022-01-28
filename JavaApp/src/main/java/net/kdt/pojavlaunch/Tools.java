@@ -47,16 +47,16 @@ public final class Tools
 {
     public static final boolean ENABLE_DEV_FEATURES = true; // BuildConfig.DEBUG;
 
-    public static String APP_NAME = "null";
+    public static String APP_NAME = "PojavLauncher";
     
     public static final Gson GLOBAL_GSON = new GsonBuilder().setPrettyPrinting().create();
     
     public static final String URL_HOME = "https://pojavlauncherteam.github.io/PojavLauncher";
-    public static String DIR_DATA = System.getenv("BUNDLE_PATH");
+    public static String DIR_BUNDLE = System.getenv("BUNDLE_PATH"); // path to "PojavLauncher.app"
     public static String CURRENT_ARCHITECTURE;
 
     public static final String DIR_GAME_HOME = System.getenv("POJAV_HOME");
-    public static final String DIR_GAME_NEW = System.getenv("POJAV_GAME_DIR");
+    public static final String DIR_GAME_NEW = System.getenv("POJAV_GAME_DIR"); // path to "Library/Application Support/minecraft"
     
     public static final String DIR_APP_DATA = System.getenv("POJAV_HOME");
     public static final String DIR_ACCOUNT_NEW = DIR_APP_DATA + "/accounts";
@@ -101,12 +101,29 @@ public final class Tools
         final String launchClassPath = generateLaunchClassPath(profile.selectedVersion);
 
         List<String> javaArgList = new ArrayList<String>();
-        
+        //javaArgList.add(versionInfo.logging.client.argument.replace("${path}", DIR_GAME_NEW.getAbsolutePath() + "/" + mVersion.logging.client.file.id));
         javaArgList.add("-cp");
         javaArgList.add(launchClassPath);
 
         javaArgList.add(versionInfo.mainClass);
         javaArgList.addAll(Arrays.asList(launchArgs));
+        if(profile.username.equals("demo_user")) {
+            File demoHome = new File(DIR_GAME_HOME + "/demo");
+            if(demoHome.exists()) {
+                for (File demoStuff : demoHome.listFiles()) { demoStuff.delete(); }
+            } else {
+                demoHome.mkdirs();
+            }
+            javaArgList.add("-Duser.home=" + DIR_GAME_HOME + "/demo");
+            File demoDir = new File(DIR_GAME_NEW + "/demo");
+            if(demoDir.exists()) {
+                for (File demoStuff : demoDir.listFiles()) { demoStuff.delete(); }
+            } else {
+                demoDir.mkdirs();
+            }
+            javaArgList.add("-Duser.dir=" + DIR_GAME_NEW + "/demo");
+            javaArgList.add("--demo");
+        }
         
         // Debug
 /*
@@ -133,7 +150,8 @@ public final class Tools
             // URLClassLoader loader = new URLClassLoader(urlList.toArray(new URL[0]), ClassLoader.getSystemClassLoader());
             
                 PojavClassLoader loader = (PojavClassLoader) ClassLoader.getSystemClassLoader();
-                
+                // add launcher.jar itself
+                loader.addURL(Tools.class.getProtectionDomain().getCodeSource().getLocation().toURI().toURL());
                 for (String s : launchClassPath.split(":")) {
                     if (!s.isEmpty()) {
                         loader.addURL(new File(s).toURI().toURL());
@@ -160,8 +178,6 @@ public final class Tools
         if (versionInfo.inheritsFrom != null) {
             versionName = versionInfo.inheritsFrom;
         }
-        
-        String userType = "mojang";
 
         File gameDir = new File(Tools.DIR_GAME_NEW);
         gameDir.mkdirs();
@@ -170,12 +186,14 @@ public final class Tools
         varArgMap.put("auth_access_token", profile.accessToken);
         varArgMap.put("auth_player_name", username);
         varArgMap.put("auth_uuid", profile.profileId);
+        // varArgMap.put("auth_xuid", profile.profileId); // TODO!!!
         varArgMap.put("assets_root", Tools.ASSETS_PATH);
         varArgMap.put("assets_index_name", versionInfo.assets);
+        varArgMap.put("clientid", profile.clientToken);
         varArgMap.put("game_assets", Tools.ASSETS_PATH);
         varArgMap.put("game_directory", gameDir.getAbsolutePath());
         varArgMap.put("user_properties", "{}");
-        varArgMap.put("user_type", userType);
+        varArgMap.put("user_type", /* profile.isMicrosoft ? "msa" : */ "mojang"); // FIXME: handle MS auth
         varArgMap.put("version_name", versionName);
         varArgMap.put("version_type", versionInfo.type);
 
@@ -394,10 +412,36 @@ public final class Tools
         act.startActivity(browserIntent);
     }
 */
+
+    public static void preProcessLibraries(DependentLibrary[] libraries) {
+        // Ignore some libraries since they are unsupported (jinput, text2speech) or unused (LWJGL)
+        // Support for text2speech is not planned, so skip it for now.
+        for (int i = 0; i < libraries.length; i++) {
+            DependentLibrary libItem = libraries[i];
+            if (libItem.name.startsWith("com.mojang:text2speech") ||
+                libItem.name.startsWith("net.java.jinput") ||
+                libItem.name.startsWith("net.java.dev.jna:platform:") ||
+                libItem.name.startsWith("org.lwjgl") ||
+                libItem.name.startsWith("tv.twitch")) {
+                    libItem._skip = true;
+            } else if (libItem.name.startsWith("net.java.dev.jna:jna:")) {
+                // Special handling for LabyMod 1.8.9 and Forge 1.12.2(?)
+                // we have libjnidispatch 5.8.0 in Frameworks directory
+                System.out.println("Library " + libItem.name + " has been changed to version 5.8.0");
+                libItem.name = "net.java.dev.jna:jna:5.8.0";
+                libItem.downloads.artifact.path = "net/java/dev/jna/jna/5.8.0/jna-5.8.0.jar";
+                libItem.downloads.artifact.url = "https://libraries.minecraft.net/net/java/dev/jna/jna/5.8.0/jna-5.8.0.jar";
+            }
+        }
+    }
+
     public static String[] generateLibClasspath(JMinecraftVersionList.Version info) {
         List<String> libDir = new ArrayList<String>();
 
-        for (DependentLibrary libItem: info.libraries) {
+        preProcessLibraries(info.libraries);
+        for (DependentLibrary libItem : info.libraries) {
+            if (libItem._skip) continue;
+            
             String[] libInfos = libItem.name.split(":");
             libDir.add(Tools.DIR_HOME_LIBRARY + "/" + Tools.artifactToPath(libInfos[0], libInfos[1], libInfos[2]));
         }
@@ -433,7 +477,7 @@ public final class Tools
                             DependentLibrary libAdded = libList.get(i);
                             String libAddedName = libAdded.name.substring(0, libAdded.name.lastIndexOf(":"));
                             
-                            if (libAddedName.equals(libName)) {
+                            if (!libAdded.name.equals(lib.name) && libAddedName.equals(libName)) {
                                 System.out.println("Library " + libName + ": Replaced version " +
                                     libAdded.name.substring(libAddedName.length() + 1) + " with " +
                                     lib.name.substring(libName.length() + 1));
@@ -496,10 +540,10 @@ public final class Tools
         for (String key : keyArr) {
             Object value = null;
             try {
-                Field fieldA = fromVer.getClass().getDeclaredField(key);
+                Field fieldA = fromVer.getClass().getField(key);
                 value = fieldA.get(fromVer);
                 if (((value instanceof String) && !((String) value).isEmpty()) || value != null) {
-                    Field fieldB = targetVer.getClass().getDeclaredField(key);
+                    Field fieldB = targetVer.getClass().getField(key);
                     fieldB.set(targetVer, value);
                 }
             } catch (Throwable th) {

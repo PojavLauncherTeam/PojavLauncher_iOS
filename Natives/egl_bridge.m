@@ -97,10 +97,6 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_setenv(JNIEnv *en
     (*env)->ReleaseStringUTFChars(env, value, value_c);
 }
 
-JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_saveGLContext(JNIEnv* env, jclass clazz) {
-    // @deprecated, remove later
-}
-
 void terminateEgl() {
     debug("EGLBridge: Terminating");
 
@@ -192,7 +188,8 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglInit(JNIEnv* env, j
     //const char *renderer = getenv("POJAV_RENDERER");
     //if (strncmp("opengles", renderer, 8) == 0) {
     NSString *renderer = @(getenv("RENDERER"));
-    if ([renderer hasPrefix:@"libgl4es"] || [renderer hasPrefix:@"libtinygl4angle"]) {
+    BOOL isVGPU = [renderer hasPrefix:@"libvgpu"];
+    if ([renderer hasPrefix:@"libgl4es"] || [renderer hasPrefix:@"libtinygl4angle"] || isVGPU) {
         config_renderer = RENDERER_MTL_ANGLE;
         loadSymbols();
         if (potatoBridge.eglDisplay == EGL_NO_DISPLAY) {
@@ -240,13 +237,15 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_GLFW_nativeEglInit(JNIEnv* env, j
 
         //ANativeWindow_setBuffersGeometry(potatoBridge.androidWindow, 0, 0, vid);
 
-        if (!eglBindAPI_p(EGL_OPENGL_API)) {
-            NSLog(@"EGLBridge: Failed to bind EGL_OPENGL_API, fallbacking to EGL_OPENGL_ES_API, error=0x%x", eglGetError_p());
+        if (/*!isVGPU &&*/ !eglBindAPI_p(EGL_OPENGL_API)) {
+            NSLog(@"EGLBridge: Failed to bind EGL_OPENGL_API, falling back to EGL_OPENGL_ES_API, error=0x%x", eglGetError_p());
+            eglBindAPI_p(EGL_OPENGL_ES_API);
+        } else if (isVGPU) {
             eglBindAPI_p(EGL_OPENGL_ES_API);
         }
 
         potatoBridge.eglSurface = eglCreateWindowSurface_p(potatoBridge.eglDisplay, config, (__bridge EGLNativeWindowType) ((SurfaceViewController *)viewController).surfaceView.layer, NULL);
-        NSLog(@"Layer %@", ((SurfaceViewController *)viewController).surfaceView.layer);
+        //NSLog(@"Layer %@", ((SurfaceViewController *)viewController).surfaceView.layer);
 
         if (!potatoBridge.eglSurface) {
             NSLog(@"EGLBridge: Error eglCreateWindowSurface failed: 0x%x", eglGetError_p());

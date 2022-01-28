@@ -12,7 +12,8 @@ public class UIKit {
     public static final int ACTION_DOWN = 0;
     public static final int ACTION_UP = 1;
     public static final int ACTION_MOVE = 2;
-    
+    public static final int ACTION_MOVE_MOTION = 3;
+
     private static int guiScale;
 
     private static void patch_FlatLAF_setLinux() {
@@ -104,7 +105,7 @@ public class UIKit {
         PLaunchApp.launchMinecraft();
     }
     
-    public static void callback_SurfaceViewController_onTouch(int event, int x, int y) {
+    public static void callback_SurfaceViewController_onTouch(int event, float x, float y) {
         switch (event) {
             case ACTION_DOWN:
             case ACTION_UP:
@@ -112,23 +113,24 @@ public class UIKit {
                     CallbackBridge.mouseX = x;
                     CallbackBridge.mouseY = y;
                 }
-                CallbackBridge.mouseLastX = x;
-                CallbackBridge.mouseLastY = y;
                 break;
                 
             case ACTION_MOVE:
                 if (GLFW.mGLFWIsGrabbing) {
                     CallbackBridge.mouseX += x - CallbackBridge.mouseLastX;
                     CallbackBridge.mouseY += y - CallbackBridge.mouseLastY;
-                    
-                    CallbackBridge.mouseLastX = x;
-                    CallbackBridge.mouseLastY = y;
                 } else {
                     CallbackBridge.mouseX = x;
                     CallbackBridge.mouseY = y;
                 }
                 break;
+
+            case ACTION_MOVE_MOTION:
+                CallbackBridge.mouseX += x;
+                CallbackBridge.mouseY += y;
         }
+        CallbackBridge.mouseLastX = x;
+        CallbackBridge.mouseLastY = y;
         
         CallbackBridge.sendCursorPos(CallbackBridge.mouseX, CallbackBridge.mouseY);
     }
@@ -151,12 +153,12 @@ public class UIKit {
     }
 
     static {
-        System.load(System.getenv("BUNDLE_PATH") + "/Frameworks/PojavCore.framework/PojavCore");
+        System.load(System.getenv("BUNDLE_PATH") + "/PojavLauncher");
     }
 
     public static native void refreshAWTBuffer(int[] array);
 
-    public static native int launchUI(String[] uiArgs);
+    public static native int launchUI();
     // public static native void runOnUIThread(UIKitCallback callback);
     
     public static native void showError(String title, String message, boolean exitIfOk);

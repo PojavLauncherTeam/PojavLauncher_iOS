@@ -25,7 +25,7 @@ public class CallbackBridge {
     public static final int ANDROID_TYPE_GRAB_STATE = 0;
     
     // Should pending events be limited?
-    volatile public static List<Integer[]> PENDING_EVENT_LIST = new ArrayList<>();
+    volatile public static List<Object[]> PENDING_EVENT_LIST = new ArrayList<>();
     volatile public static boolean PENDING_EVENT_READY = false;
     
     public static final boolean INPUT_DEBUG_ENABLED;
@@ -35,21 +35,21 @@ public class CallbackBridge {
     // TODO send grab state event to Android
     
     static {
-        System.load(System.getenv("BUNDLE_PATH") + "/Frameworks/PojavCore.framework/PojavCore");
+        System.load(System.getenv("BUNDLE_PATH") + "/PojavLauncher");
     
         INPUT_DEBUG_ENABLED = Boolean.parseBoolean(System.getProperty("glfwstub.debugInput", "false"));
     }
     
 // BEGIN launcher side
-    public static int mouseX, mouseY, mouseLastX, mouseLastY;
+    public static float mouseX, mouseY, mouseLastX, mouseLastY;
     public static boolean mouseLeft;
-    public static StringBuilder DEBUG_STRING = new StringBuilder();
-    
+    //public static StringBuilder DEBUG_STRING = new StringBuilder();
+
     public static boolean nativeIsGrabbing() {
         return GLFW.mGLFWIsGrabbing;
     }
     
-    private static void nativeSendCursorPos(int x, int y) {
+    private static void nativeSendCursorPos(float x, float y) {
         if (!inputReady) return;
         GLFW.mGLFWCursorX = x + GLFW.internalGetWindow(GLFW.mainContext).x;
         GLFW.mGLFWCursorY = y + GLFW.internalGetWindow(GLFW.mainContext).y;
@@ -61,26 +61,26 @@ public class CallbackBridge {
     }
     private static void nativeSendMouseButton(int button, int action, int mods) {
         if (!inputReady) return;
-        PENDING_EVENT_LIST.add(new Integer[]{EVENT_TYPE_MOUSE_BUTTON, button, action, mods, 0});
+        PENDING_EVENT_LIST.add(new Object[]{EVENT_TYPE_MOUSE_BUTTON, button, action, mods, 0});
     }
     private static void nativeSendScroll(double xoffset, double yoffset) {
         if (!inputReady) return;
-        PENDING_EVENT_LIST.add(new Integer[]{EVENT_TYPE_SCROLL, (int) xoffset, (int) yoffset, 0, 0});
+        PENDING_EVENT_LIST.add(new Object[]{EVENT_TYPE_SCROLL, (int) xoffset, (int) yoffset, 0, 0});
     }
     private static void nativeSendScreenSize(int width, int height) {
         if (!inputReady) return;
-        PENDING_EVENT_LIST.add(new Integer[]{EVENT_TYPE_FRAMEBUFFER_SIZE, width, height, 0, 0});
-        PENDING_EVENT_LIST.add(new Integer[]{EVENT_TYPE_WINDOW_SIZE, width, height, 0, 0});
+        PENDING_EVENT_LIST.add(new Object[]{EVENT_TYPE_FRAMEBUFFER_SIZE, width, height, 0, 0});
+        PENDING_EVENT_LIST.add(new Object[]{EVENT_TYPE_WINDOW_SIZE, width, height, 0, 0});
     }
     private static void nativeSendWindowPos(int x, int y) {
         if (!inputReady) return;
-        PENDING_EVENT_LIST.add(new Integer[]{EVENT_TYPE_WINDOW_POS, x, y, 0, 0});
+        PENDING_EVENT_LIST.add(new Object[]{EVENT_TYPE_WINDOW_POS, x, y, 0, 0});
     }
 
     // volatile private static boolean isGrabbing = false;
     public static class PusherRunnable implements Runnable {
-        int button; int x; int y;
-        public PusherRunnable(int button, int x, int y) {
+        int button; float x; float y;
+        public PusherRunnable(int button, float x, float y) {
            this.button = button;
            this.x = x;
            this.y = y;
@@ -92,29 +92,29 @@ public class CallbackBridge {
             putMouseEventWithCoords(button, 0, x, y);
         }
     }
-    public static void putMouseEventWithCoords(int button, int x, int y /* , int dz, long nanos */) {
+    public static void putMouseEventWithCoords(int button, float x, float y /* , int dz, long nanos */) {
         new Thread(new PusherRunnable(button,x,y)).run();
     }
 
-    public static void putMouseEventWithCoords(int button, int state, int x, int y /* , int dz, long nanos */) {
+    public static void putMouseEventWithCoords(int button, int state, float x, float y /* , int dz, long nanos */) {
         sendCursorPos(x, y);
         sendMouseKeycode(button, CallbackBridge.getCurrentMods(), state == 1);
     }
 
     private static boolean threadAttached;
-    public static void sendCursorPos(int x, int y) {
+    public static void sendCursorPos(float x, float y) {
         if (!threadAttached) {
             threadAttached = true; // CallbackBridge.nativeAttachThreadToOther(true, true /* TODO BaseMainActivity.isInputStackCall */);
         }
 
-        DEBUG_STRING.append("CursorPos=" + x + ", " + y + "\n");
+        //DEBUG_STRING.append("CursorPos=" + x + ", " + y + "\n");
         mouseX = x;
         mouseY = y;
         nativeSendCursorPos(x, y);
     }
 
     public static void sendKeycode(int keycode, char keychar, int scancode, int modifiers, boolean isDown) {
-        DEBUG_STRING.append("KeyCode=" + keycode + ", Char=" + keychar);
+        //DEBUG_STRING.append("KeyCode=" + keycode + ", Char=" + keychar);
         // TODO CHECK: This may cause input issue, not receive input!
         /*
          if (!nativeSendCharMods((int) keychar, modifiers) || !nativeSendChar(keychar)) {
@@ -128,7 +128,7 @@ public class CallbackBridge {
     }
 
     public static void sendMouseKeycode(int button, int modifiers, boolean isDown) {
-        DEBUG_STRING.append("MouseKey=" + button + ", down=" + isDown + "\n");
+        //DEBUG_STRING.append("MouseKey=" + button + ", down=" + isDown + "\n");
         // if (isGrabbing()) DEBUG_STRING.append("MouseGrabStrace: " + android.util.Log.getStackTraceString(new Throwable()) + "\n");
         nativeSendMouseButton(button, isDown ? 1 : 0, modifiers);
     }
@@ -139,7 +139,7 @@ public class CallbackBridge {
     }
 
     public static void sendScroll(double xoffset, double yoffset) {
-        DEBUG_STRING.append("ScrollX=" + xoffset + ",ScrollY=" + yoffset);
+        //DEBUG_STRING.append("ScrollX=" + xoffset + ",ScrollY=" + yoffset);
         nativeSendScroll(xoffset, yoffset);
     }
 
@@ -150,13 +150,7 @@ public class CallbackBridge {
     public static boolean isGrabbing() {
         return nativeIsGrabbing();
     }
-   
-    public static void sendPrepareGrabInitialPos() {
-        DEBUG_STRING.append("Prepare set grab initial posititon");
-        // TODO grab mode
-        // nativeSendMouseKeycode(-1, CallbackBridge.getCurrentMods(), false);
-    }
-    
+
     public static boolean holdingAlt, holdingCapslock, holdingCtrl,
     holdingNumlock, holdingShift;
     public static int getCurrentMods() {
@@ -176,7 +170,7 @@ public class CallbackBridge {
     }
 // END launcher side
     
-    public static void sendGrabbing(boolean grab, int xset, int yset) {
+    public static void sendGrabbing(boolean grab, float xset, float yset) {
         // sendData(ANDROID_TYPE_GRAB_STATE, Boolean.toString(grab));
         
         if (grab) {
@@ -190,8 +184,8 @@ public class CallbackBridge {
         nativeSetGrabbing(grab, xset, yset);
     }
     
-	// Called from Android side
-	public static void receiveCallback(int type, int i1, int i2, int i3, int i4) {
+	// Called from native code
+	public static void receiveCallback(int type, float i1, float i2, int i3, int i4) {
        /*
         if (INPUT_DEBUG_ENABLED) {
             System.out.println("LWJGL GLFW Callback received type=" + Integer.toString(type) + ", data=" + i1 + ", " + i2 + ", " + i3 + ", " + i4);
@@ -199,10 +193,12 @@ public class CallbackBridge {
         */
         if (PENDING_EVENT_READY) {
             if (type == EVENT_TYPE_CURSOR_POS) {
-                GLFW.mGLFWCursorX = i1;
-                GLFW.mGLFWCursorY = i2;
+                GLFW.mGLFWCursorX = (double) i1;
+                GLFW.mGLFWCursorY = (double) i2;
+            } else if (type == EVENT_TYPE_SCROLL) {
+                PENDING_EVENT_LIST.add(new Object[]{type, i1, i2, i3, i4});
             } else {
-                PENDING_EVENT_LIST.add(new Integer[]{type, i1, i2, i3, i4});
+                PENDING_EVENT_LIST.add(new Object[]{type, (int)i1, (int)i2, i3, i4});
             }
         } // else System.out.println("Event input is not ready yet!");
 	}
@@ -214,6 +210,6 @@ public class CallbackBridge {
     }
     
     public static native String nativeClipboard(int action, String copy);
-    private static native void nativeSetGrabbing(boolean grab, int xset, int yset);
+    private static native void nativeSetGrabbing(boolean grab, float xset, float yset);
 }
 

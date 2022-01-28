@@ -38,6 +38,7 @@ public class Msa {
     public String mcToken;
     public String mcUuid;
     public boolean doesOwnGame;
+    public boolean doesDemo;
 
     public Msa(MicrosoftAuthTask task, boolean isRefresh, String authCode) throws IOException, JSONException {
         this.task = task;
@@ -270,10 +271,16 @@ public class Msa {
             // Log.i("MicroAuth","Uuid Minecraft = " + uuidDashes);
             mcName=name;
             mcUuid=uuidDashes;
-        }else{
+        } else if(conn.getResponseCode() == 404) {
+            // Demo mode stuff
+            doesOwnGame = false;
+            doesDemo = true;
+        } else {
             // Log.i("MicroAuth","It seems that this Microsoft Account does not own the game.");
             doesOwnGame = false;
+            doesDemo = false;
             throwResponseError(conn);
+            
         }
     }
 
@@ -299,9 +306,34 @@ public class Msa {
     }
 
     private static void throwResponseError(HttpURLConnection conn) throws IOException {
+        String otherErrStr = "";
         String errStr = Tools.read(conn.getErrorStream());
         // Log.i("MicroAuth","Error code: " + conn.getResponseCode() + ": " + conn.getResponseMessage() + "\n" + errStr);
-        throw new RuntimeException("MSA Error: " + conn.getResponseCode() + ": " + conn.getResponseMessage() + ", error stream:\n" + errStr);
+
+// it seems already handled by the demo mode..
+/*
+        if (errStr.contains("NOT_FOUND") &&
+            errStr.contains("The server has not found anything matching the request URI"))
+        {
+            // TODO localize this
+            otherErrStr = "It seems that this Microsoft Account does not own the game. Make sure that you have bought/migrated to your Microsoft account.";
+        } else {
+*/
+            try {
+                JSONObject jo = new JSONObject(errStr);
+                switch ((int)(jo.getLong("XErr") - 2148916230l)) {
+                    case 8: // AddChildToFamily
+                        otherErrStr = "This account is under 18 and needs to be added to a Family by an adult before proceed.";
+                        break;
+                    case 3: // CreateAccount
+                        otherErrStr = "The account isn't created yet.";
+                        break;
+                }
+            } catch (Throwable th) { // not a JSON?
+            }
+        //}
+
+        throw new RuntimeException(otherErrStr + "\n\nMSA Error: " + conn.getResponseCode() + ": " + conn.getResponseMessage() + ", error stream:\n" + errStr);
     }
 }
 
