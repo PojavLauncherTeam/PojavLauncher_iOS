@@ -36,6 +36,7 @@ find_library(OSMESA_LIB libOSMesa.8.dylib)
 add_library(libOSMesaOverride.dylib SHARED gl_mesa3d_patch.m)
 set_target_properties(libOSMesaOverride.dylib PROPERTIES
     FRAMEWORK TRUE
+    MACOSX_FRAMEWORK_IDENTIFIER dylib.mesa3d.libOSMesaOverride
 )
 target_link_libraries(libOSMesaOverride.dylib ${OSMESA_LIB})
 
@@ -70,6 +71,7 @@ add_executable(PojavLauncher
   log.m
   utils.m
 )
+
 target_link_libraries(PojavLauncher
   "-F'${CMAKE_CURRENT_LIST_DIR}/build'"
   "-framework AuthenticationServices"

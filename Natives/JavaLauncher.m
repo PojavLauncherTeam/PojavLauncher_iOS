@@ -69,9 +69,10 @@ typedef jint JLI_Launch_func(int argc, char ** argv, /* main argc, argc */
 int main(int argc, char * argv[]);
 
 static int (*orig_dladdr)(const void* addr, Dl_info* info);
-static void* (*orig_mmap)(void *addr, size_t len, int prot, int flags, int fd, off_t offset);
+static void* (*orig_dlopen)(const char* path, int mode);
+//static void* (*orig_mmap)(void *addr, size_t len, int prot, int flags, int fd, off_t offset);
 static char* (*orig_realpath)(const char *restrict path, char *restrict resolved_path);
-static void (*orig_sys_icache_invalidate)(void *start, size_t len);
+//static void (*orig_sys_icache_invalidate)(void *start, size_t len);
 
 static int margc = 0;
 static char* margv[1000];
@@ -93,15 +94,52 @@ NSString *allocmem_pre;
 NSString *multidir_pre;
 
 int hooked_dladdr(const void* addr, Dl_info* info) {
+    //NSLog(@"hook dladdr(%p, %p)", addr, info);
     int retVal = orig_dladdr(addr, info);
     if (addr == main) {
-        NSLog(@"hooked dladdr");
+        //NSLog(@"hooked dladdr");
         info->dli_fname = getenv("JAVA_EXT_EXECNAME");
-        NSLog(@"name = %s", info->dli_fname);
+    } else if (retVal != 0) {
+        //NSLog(@"hooked dladdr");
+        char *libname = basename((char *)info->dli_fname);
+        char src[2048], dst[2048];
+        sprintf((char *)src, "%s/Frameworks", getenv("BUNDLE_PATH"));
+        if (0 == strncmp(info->dli_fname, src, strlen(src))) {
+            if (0 == strncmp(libname, "libjli.dylib", 12)) {
+                info->dli_fname = getenv("INTERNAL_JLI_PATH");
+            } else if (0 == strncmp(libname, "libjvm.dylib", 12)) {
+                sprintf((char *)dst, "%s/lib/server/libjvm.dylib", getenv("JAVA_HOME"));
+                info->dli_fname = (char *)dst;
+            }
+        }
     }
+    //if (retVal) NSLog(@"dli_fname=%s", info->dli_fname);
     return retVal;
 }
 
+void* hooked_dlopen(const char* path, int mode) {
+    void *handle = orig_dlopen(path, mode);
+    if (handle) {
+        return handle;
+    }
+
+    char src[2048], dst[2048];
+    sprintf((char *)src, "%s/Frameworks", getenv("BUNDLE_PATH"));
+    //NSLog(@"path=%s, src=%s, length=%lu, compare=%d", path, src, strlen(src), strncmp(path, src, strlen(src)));
+    if (!strncmp(path, src, strlen(src))) {
+        //NSLog(@"hooked dlopen %s", path);
+        char *libname = basename((char *)path);
+        sprintf((char *)dst, "%s/%s.framework/%s", src, libname, libname);
+        handle = orig_dlopen(dst, mode);
+        if (handle) {
+            dlerror(); // clear error
+        }
+    }
+
+    return handle;
+}
+
+/*
 void *hooked_mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset) {
     NSLog(@"mmap(%p, %ld, %d, %d, %d, %lld)", addr, len, prot, flags, fd, offset);
 
@@ -113,10 +151,11 @@ void *hooked_mmap(void *addr, size_t len, int prot, int flags, int fd, off_t off
     // raise(SIGINT);
     return orig_mmap(addr, len, prot, flags, fd, offset);
 }
+*/
 
 char *hooked_realpath(const char *restrict path, char *restrict resolved_path) {
-    NSLog(@"hooked realpath %s", path);
-    if (!strncmp(javaHome, path, strlen(javaHome))) {
+    //NSLog(@"hook realpath %s", path);
+    if (0 == strncmp(path, javaHome, strlen(javaHome))) {
         strcpy(resolved_path, path);
         return resolved_path;
     } else {
@@ -124,11 +163,13 @@ char *hooked_realpath(const char *restrict path, char *restrict resolved_path) {
     }
 }
 
+/*
 void hooked_sys_icache_invalidate(void *start, size_t len) {
     // mprotect(start, 16384, PROT_EXEC | PROT_READ);
     // NSLog(@"mprotect errno %d", errno);
     orig_sys_icache_invalidate(start, len);
 }
+*/
 
 static void *logger_thread() {
     ssize_t rsize;
@@ -153,17 +194,16 @@ static void *logger_thread() {
 
 void init_hookFunctions() {
     // if (!started && strncmp(argv[0], "/Applications", 13)) 
-    {
-        // Jailed only: hook some functions for symlinked JRE home dir
-        int retval = rebind_symbols((struct rebinding[4]){
-            //{"dlopen", hooked_dlopen, (void *)&orig_dlopen},
-            {"dladdr", hooked_dladdr, (void *)&orig_dladdr},
-            {"mmap", hooked_mmap, (void *)&orig_mmap},
-            {"realpath", hooked_realpath, (void *)&orig_realpath},
-            {"sys_icache_invalidate", hooked_sys_icache_invalidate, (void *)&orig_sys_icache_invalidate}
-        }, 4);
-        NSLog(@"hook retval = %d", retval);
-    }
+    // Jailed only: hook some functions for symlinked JRE home dir
+    int retval = rebind_symbols((struct rebinding[3]){
+        {"dladdr", hooked_dladdr, (void *)&orig_dladdr},
+        {"dlopen", hooked_dlopen, (void *)&orig_dlopen},
+        //{"realpath", hooked_realpath, (void *)&orig_realpath},
+        {"realpath$DARWIN_EXTSN", hooked_realpath, (void *)&orig_realpath}
+        //{"mmap", hooked_mmap, (void *)&orig_mmap},
+        //{"sys_icache_invalidate", hooked_sys_icache_invalidate, (void *)&orig_sys_icache_invalidate}
+    }, 3);
+    NSLog(@"hook retval = %d", retval);
 }
 
 void init_loadCustomEnv() {
@@ -254,6 +294,35 @@ void init_logDeviceAndVer (char *argument) {
     }
 }
 
+void init_redirectStdio(char* homeDir) {
+    debug("[Pre-init] Staring logging STDIO as jrelog:V\n");
+    // Redirect stdio to latestlog.txt
+    char newname[2048];
+    sprintf(newname, "%s/latestlog.old.txt", homeDir);
+    rename(log_path, newname);
+    FILE* logFile = fopen(log_path, "w");
+    if (!logFile) {
+        debug("[Pre-init] Error: failed to open %s: %s", log_path, strerror(errno));
+        assert(0 && "Failed to open latestlog.txt. Check oslog for more details.");
+    }
+    log_fd = fileno(logFile);
+    setvbuf(stdout, 0, _IOLBF, 0); // make stdout line-buffered
+    setvbuf(stderr, 0, _IONBF, 0); // make stderr unbuffered
+
+    /* create the pipe and redirect stdout and stderr */
+    pipe(pfd);
+    dup2(pfd[1], 1);
+    dup2(pfd[1], 2);
+
+    /* spawn the logging thread */
+    if(pthread_create(&logger, 0, logger_thread, 0) == -1) {
+        char *fail_str = "Failed to start logging!";
+        write(log_fd, fail_str, strlen(fail_str));
+        close(log_fd);
+    }
+    pthread_detach(logger);
+}
+
 void environmentFailsafes(char *argv[]) {
     if (strncmp(argv[0], "/Applications", 13) == 0) {
         if (0 == access("/usr/lib/jvm/java-8-openjdk/", F_OK)) {
@@ -329,32 +398,7 @@ int launchJVM(int argc, char *argv[]) {
     mkdir(dirname(log_path), 755);
 
     if (!started) {
-        debug("[Pre-init] Starting logging STDIO as jrelog:V\n");
-        // Redirect stdio to latestlog.txt
-        char newname[2048];
-        sprintf(newname, "%s/latestlog.old.txt", homeDir);
-        rename(log_path, newname);
-        FILE* logFile = fopen(log_path, "w");
-        if (!logFile) {
-            debug("[Pre-init] Error: failed to open %s: %s", log_path, strerror(errno));
-            assert(0 && "Failed to open latestlog.txt. Check oslog for more details.");
-        }
-        log_fd = fileno(logFile);
-        setvbuf(stdout, 0, _IOLBF, 0); // make stdout line-buffered
-        setvbuf(stderr, 0, _IONBF, 0); // make stderr unbuffered
-
-        /* create the pipe and redirect stdout and stderr */
-        pipe(pfd);
-        dup2(pfd[1], 1);
-        dup2(pfd[1], 2);
-
-        /* spawn the logging thread */
-        if(pthread_create(&logger, 0, logger_thread, 0) == -1) {
-            char *fail_str = "Failed to start logging!";
-            write(log_fd, fail_str, strlen(fail_str));
-            close(log_fd);
-        }
-        pthread_detach(logger);
+        init_redirectStdio(homeDir);
     }
 
     init_logDeviceAndVer(argv[0]);
@@ -587,10 +631,11 @@ int launchJVM(int argc, char *argv[]) {
     char libjlipath16[2048]; // java 16+ (?)
     sprintf(libjlipath8, "%s/lib/jli/libjli.dylib", javaHome);
     sprintf(libjlipath16, "%s/lib/libjli.dylib", javaHome);
+    setenv("INTERNAL_JLI_PATH", libjlipath16, 1);
     void* libjli = dlopen(libjlipath16, RTLD_LAZY | RTLD_GLOBAL);
-
     if (!libjli) {
         debug("[Init] Can't load %s, trying %s", libjlipath16, libjlipath8);
+        setenv("INTERNAL_JLI_PATH", libjlipath8, 1);
         libjli = dlopen(libjlipath8, RTLD_LAZY | RTLD_GLOBAL);
         if (!libjli) {
             debug("[Init] JLI lib = NULL: %s", dlerror());

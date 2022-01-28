@@ -9,6 +9,26 @@ NSString* prefPath;
 # define CONFIG_TYPE @YES
 #endif
 
+id getPreference(NSString* key) {
+    NSObject *object = prefDict[key];
+    if (object == [NSNull null] || object == nil) {
+        NSLog(@"LauncherPreferences: %@ is NULL", key);
+    }
+    return object;
+}
+
+void setDefaultValueForPref(NSString* key, id value) {
+    if (!prefDict[key]) {
+        prefDict[key] = value;
+        NSLog(@"[Pre-init] Set default value for key %@", value);
+    }
+}
+
+void setPreference(NSString* key, id value) {
+    prefDict[key] = value;
+    [prefDict writeToFile:prefPath atomically:YES];
+}
+
 void loadPreferences() {
     assert(getenv("POJAV_HOME"));
     prefPath = [@(getenv("POJAV_HOME"))
@@ -53,25 +73,5 @@ void loadPreferences() {
     } else {
         setDefaultValueForPref(@"disable_home_symlink", @YES);
     }
-    [prefDict writeToFile:prefPath atomically:YES];
-}
-
-id getPreference(NSString* key) {
-    NSObject *object = prefDict[key];
-    if (object == [NSNull null] || object == nil) {
-        NSLog(@"LauncherPreferences: %@ is NULL", key);
-    }
-    return object;
-}
-
-void setDefaultValueForPref(NSString* key, id value) {
-    if (!prefDict[key]) {
-        prefDict[key] = value;
-        NSLog(@"[Pre-init] Set default value for key %@", value);
-    }
-}
-
-void setPreference(NSString* key, id value) {
-    prefDict[key] = value;
     [prefDict writeToFile:prefPath atomically:YES];
 }
