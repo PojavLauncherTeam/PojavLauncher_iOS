@@ -54,7 +54,7 @@ jobs:
       - name: Build the Debian package
         run: gmake -j$(sysctl -n hw.ncpu) deb
 
-      - name: 
+      - name: Generate dSYM for PojavLauncher
         run: gmake -j$(sysctl -n hw.ncpu) dsym
 
       - name: Upload regular artifact
