@@ -52,10 +52,10 @@ jobs:
           sudo /opt/procursus/bin/apt-get -V dist-upgrade -y
 
       - name: Build the Debian package
-        run: gmake -j$(sysctl -n hw.ncpu) deb
+        run: gmake -j$(sysctl -n hw.ncpu) dsym
 
       - name: Generate dSYM for PojavLauncher
-        run: gmake -j$(sysctl -n hw.ncpu) dsym
+        run: dsymutil --arch arm64 Natives/build/PojavLauncher.app/PojavLauncher
 
       - name: Upload regular artifact
         uses: actions/upload-artifact@v2
