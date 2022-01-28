@@ -40,6 +40,8 @@ CGFloat uhcurrY = 4.0;
         self.view.backgroundColor = [UIColor whiteColor];
     }
     
+    uhcurrY = 4.0;
+    
     [scrollView addSubview:[self uhContent:true size:25 text:@"Current version" width:width]];
     [scrollView addSubview:[self uhContent:true size:20 text:[NSString stringWithFormat:@"2.1 (%s)", CONFIG_TYPE] width:width]];
     [scrollView addSubview:[self uhContent:true size:17 text:@"Changes" width:width]];

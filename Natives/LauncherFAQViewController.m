@@ -35,6 +35,7 @@ CGFloat faqcurrY = 4.0;
     }
     NSString *snapheadingtext = @"Vanilla versions after 21w08b";
     
+    faqcurrY = 4.0;
     
     [scrollView addSubview:[self faqContent:true text:@"Modded versions before 1.16" width:width]];
     [scrollView addSubview:[self faqContent:false text:@"In order to use these versions, you need to install openjdk-8-jre from Doregon's Repo and change Java home in Preferences to 'Java 8'." width:width]];
