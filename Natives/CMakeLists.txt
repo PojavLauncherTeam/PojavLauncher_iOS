@@ -1,9 +1,15 @@
 cmake_minimum_required(VERSION 3.6)
 project(PojavLauncher)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcommon -fobjc-arc -ObjC -I'${CMAKE_CURRENT_LIST_DIR}/resources/Frameworks/MetalANGLE.framework/Headers' -I'${CMAKE_CURRENT_LIST_DIR}/external/DBNumberedSlider/Classes' -I'${CMAKE_CURRENT_LIST_DIR}/external/fishhook' -I'${CMAKE_CURRENT_LIST_DIR}/external/zink'"
-)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcommon -fobjc-arc -ObjC")
 set(CMAKE_C_FLAGS_DEBUG "-funwind-tables -g")
+
+include_directories(
+  "resources/Frameworks/MetalANGLE.framework/Headers"
+  "external/DBNumberedSlider/Classes"
+  "external/fishhook"
+  "external/zink"
+)
 
 # For cacio support library
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -rpath /usr/lib/jvm/java-8-openjdk/lib")

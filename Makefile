@@ -10,6 +10,7 @@ DETECTARCH  := $(shell uname -m)
 VERSION     := $(shell cat $(SOURCEDIR)/DEBIAN/control.development | grep Version | cut -b 10-60)
 COMMIT      := $(shell git log --oneline | sed '2,10000000d' | cut -b 1-7)
 IOS15PREF   := private/preboot/procursus
+JOBS        ?= $(shell nproc)
 
 # Release vs Debug
 RELEASE ?= 0
@@ -231,7 +232,9 @@ native:
 		-DCONFIG_COMMIT="$(COMMIT)" \
 		-DCONFIG_RELEASE=$(RELEASE) \
 		..
-	@cd $(WORKINGDIR) && cmake --build . --config $(CMAKE_BUILD_TYPE) --target awt_headless awt_xawt libOSMesaOverride.dylib PojavLauncher
+
+	@cmake --build $(WORKINGDIR) --config $(CMAKE_BUILD_TYPE) -j$(JOBS)
+	# --target awt_headless awt_xawt libOSMesaOverride.dylib PojavLauncher
 	@rm $(WORKINGDIR)/libawt_headless.dylib
 	@echo 'Building PojavLauncher $(VERSION) - NATIVES - End'
 
