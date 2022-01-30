@@ -10,7 +10,6 @@ DETECTARCH  := $(shell uname -m)
 VERSION     := $(shell cat $(SOURCEDIR)/DEBIAN/control.development | grep Version | cut -b 10-60)
 COMMIT      := $(shell git log --oneline | sed '2,10000000d' | cut -b 1-7)
 IOS15PREF   := private/preboot/procursus
-JOBS        ?= $(shell nproc)
 
 # Release vs Debug
 RELEASE ?= 0
@@ -183,6 +182,15 @@ ifeq ($(call HAS_COMMAND,dpkg-deb --version),1)
 $(error You need to install dpkg-dev)
 endif
 
+ifeq ($(call HAS_COMMAND,nproc --version),1)
+ifeq ($(call HAS_COMMAND,gnproc --version),1)
+$(warning Unable to determine number of threads, defaulting to 2.)
+JOBS   ?= 2
+else
+JOBS   ?= $(shell gnproc)
+endif
+else
+JOBS   ?= $(shell nproc)
 
 # Now for the actual Makefile recipes.
 #  all     - runs clean, native, java, extras, and package.
@@ -206,6 +214,7 @@ check:
 	@printf 'SOURCEDIR            - $(SOURCEDIR)\n'
 	@printf 'WORKINGDIR           - $(WORKINGDIR)\n'
 	@printf 'OUTPUTDIR            - $(OUTPUTDIR)\n'
+	@printf 'JOBS                 - $(JOBS)\n'
 	@printf 'VERSION              - $(VERSION)\n'
 	@printf 'COMMIT               - $(COMMIT)\n'
 	@printf 'RELEASE              - $(RELEASE)\n'
