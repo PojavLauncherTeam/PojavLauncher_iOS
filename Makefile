@@ -191,6 +191,7 @@ JOBS   ?= $(shell gnproc)
 endif
 else
 JOBS   ?= $(shell nproc)
+endif
 
 # Now for the actual Makefile recipes.
 #  all     - runs clean, native, java, extras, and package.
