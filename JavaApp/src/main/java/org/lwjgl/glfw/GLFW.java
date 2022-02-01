@@ -1104,7 +1104,7 @@ public class GLFW
                         break;
                     case CallbackBridge.EVENT_TYPE_SCROLL:
                         if (mGLFWScrollCallback != null) {
-                            mGLFWScrollCallback.invoke(ptr, (int)dataArr[1], (int)dataArr[2]);
+                            mGLFWScrollCallback.invoke(ptr, (double)dataArr[1], (double)dataArr[2]);
                         }
                         break;
                     case CallbackBridge.EVENT_TYPE_WINDOW_POS:

@@ -5,6 +5,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcommon -fobjc-arc -ObjC")
 set(CMAKE_C_FLAGS_DEBUG "-funwind-tables -g")
 
 include_directories(
+  "resources/Frameworks/Alderis.framework/Headers"
   "resources/Frameworks/MetalANGLE.framework/Headers"
   "external/DBNumberedSlider/Classes"
   "external/fishhook"
@@ -80,6 +81,8 @@ add_executable(PojavLauncher
 
 target_link_libraries(PojavLauncher
   "-F'${CMAKE_CURRENT_LIST_DIR}/build'"
+  "-F'${CMAKE_CURRENT_LIST_DIR}/resources/Frameworks'"
+  "-framework Alderis"
   "-framework AuthenticationServices"
   "-framework CoreGraphics"
   "-framework GameController"

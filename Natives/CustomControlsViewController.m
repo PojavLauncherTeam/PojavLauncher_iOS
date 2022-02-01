@@ -1,3 +1,5 @@
+#import "Alderis.h"
+#import "Alderis-Swift.h"
 #import "CustomControlsViewController.h"
 #import "DBNumberedSlider.h"
 #import "FileListViewController.h"
@@ -347,19 +349,10 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 - (void)actionMenuBtnEdit {
     shouldDismissPopover = NO;
     CCMenuViewController *vc = [[CCMenuViewController alloc] init];
-    vc.modalPresentationStyle = UIModalPresentationPopover;
-    vc.preferredContentSize = CGSizeMake(350, 250);
-    UIPopoverPresentationController *popoverController = [vc popoverPresentationController];
-    popoverController.sourceView = self.currentGesture.view;
-    if ([self.currentGesture isKindOfClass:[UILongPressGestureRecognizer class]]) {
-        CGPoint point = [self.currentGesture locationInView:self.currentGesture.view];
-        popoverController.sourceRect = self.selectedPoint;
-    } else {
+    vc.modalPresentationStyle = UIModalPresentationFormSheet;
+    if (![self.currentGesture isKindOfClass:[UILongPressGestureRecognizer class]]) {
         vc.targetButton = (ControlButton *)self.currentGesture.view;
-        popoverController.sourceRect = self.currentGesture.view.bounds;
     }
-    popoverController.permittedArrowDirections = UIPopoverArrowDirectionAny;
-    popoverController.delegate = self;
     [self presentViewController:vc animated:YES completion:nil];
 }
 
@@ -516,18 +509,20 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 
 CGFloat currentY;
 
-@interface CCMenuViewController () <UIPickerViewDataSource, UIPickerViewDelegate> {
+@interface CCMenuViewController () <UIPickerViewDataSource, UIPickerViewDelegate, HBColorPickerDelegate> {
 }
 
 @property(nonatomic) NSArray* arrOrientation;
 
+@property UITextField *activeField;
 @property(nonatomic) UIScrollView* scrollView;
 @property(nonatomic) UITextField *editName, *editSizeWidth, *editSizeHeight, *editDynamicX, *editDynamicY;
 @property(nonatomic) UITextView* editMapping;
 @property(nonatomic) UIPickerView* pickerMapping;
 @property(nonatomic) UISegmentedControl* ctrlOrientation;
 @property(nonatomic) UISwitch *switchToggleable, *switchMousePass, *switchSwipeable, *switchDynamicPos;
-@property(nonatomic) UIColorWell API_AVAILABLE(ios(14.0)) *colorWellBackground, *colorWellStroke;
+@property(nonatomic) UIColorWell API_AVAILABLE(ios(14.0)) *colorWellINTBackground, *colorWellINTStroke;
+@property(nonatomic) HBColorWell *colorWellEXTBackground, *colorWellEXTStroke;
 @property(nonatomic) DBNumberedSlider *sliderStrokeWidth, *sliderCornerRadius, *sliderOpacity;
 
 @end
@@ -545,19 +540,18 @@ CGFloat currentY;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self registerForKeyboardNotifications];
     currentY = 6.0;
-
-    self.view.frame = CGRectMake(0, 0, self.preferredContentSize.width, self.preferredContentSize.height);
 
     UIBarButtonItem *btnFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
 
-    UIToolbar *popoverToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.preferredContentSize.width, 44.0)];
+    UIToolbar *popoverToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
     UIBarButtonItem *popoverCancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(actionEditCancel)];
     UIBarButtonItem *popoverDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(actionEditFinish)];
     popoverToolbar.items = @[popoverCancelButton, btnFlexibleSpace, popoverDoneButton];
     [self.view addSubview:popoverToolbar];
 
-    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(5.0, popoverToolbar.frame.size.height, self.preferredContentSize.width - 10.0, self.preferredContentSize.height - popoverToolbar.frame.size.height)];
+    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(5.0, popoverToolbar.frame.size.height, self.view.frame.size.width - 10.0, self.view.frame.size.height - popoverToolbar.frame.size.height)];
     [self.view addSubview:self.scrollView];
 
     UIToolbar *editPickToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
@@ -666,12 +660,16 @@ CGFloat currentY;
     currentY += labelName.frame.size.height + 12.0;
     UILabel *labelBGColor = [self addLabel:@"Background color"];
     if(@available(iOS 14.0, *)) {
-        self.colorWellBackground = [[UIColorWell alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
-        self.colorWellBackground.selectedColor = self.targetButton.backgroundColor;
-        [self.scrollView addSubview:self.colorWellBackground];
+        self.colorWellINTBackground = [[UIColorWell alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
+        self.colorWellINTBackground.selectedColor = self.targetButton.backgroundColor;
+        [self.scrollView addSubview:self.colorWellINTBackground];
     } else {
-        
-        // TODO: color picker for iOS < 14.0
+        self.colorWellEXTBackground = [[HBColorWell alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
+        self.colorWellEXTBackground.color = self.targetButton.backgroundColor;
+        self.colorWellEXTBackground.isDragInteractionEnabled = YES;
+        self.colorWellEXTBackground.isDropInteractionEnabled = YES;
+        [self.colorWellEXTBackground addTarget:self action:@selector(presentColorPicker:) forControlEvents:UIControlEventTouchUpInside];
+        [self.scrollView addSubview:self.colorWellEXTBackground];
     }
 
 
@@ -691,14 +689,16 @@ CGFloat currentY;
     currentY += labelName.frame.size.height + 12.0;
     UILabel *labelStrokeColor = [self addLabel:@"Stroke color"];
     if(@available(iOS 14.0, *)) {
-        self.colorWellStroke = [[UIColorWell alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
-        self.colorWellStroke.supportsAlpha = NO;
-        self.colorWellStroke.selectedColor = [[UIColor alloc] initWithCGColor:self.targetButton.layer.borderColor];
-        [self.scrollView addSubview:self.colorWellStroke];
-        [self sliderValueChanged:self.sliderStrokeWidth];
+        self.colorWellINTStroke = [[UIColorWell alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
+        self.colorWellINTStroke.selectedColor = [[UIColor alloc] initWithCGColor:self.targetButton.layer.borderColor];
+        self.colorWellINTStroke.supportsAlpha = NO;
     } else {
-        // TODO: color picker for iOS < 14.0
+        self.colorWellEXTStroke = [[HBColorWell alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
+        self.colorWellEXTStroke.color = [[UIColor alloc] initWithCGColor:self.targetButton.layer.borderColor];
+        [self.colorWellEXTStroke addTarget:self action:@selector(presentColorPicker:) forControlEvents:UIControlEventTouchUpInside];
+        [self.scrollView addSubview:self.colorWellEXTStroke];
     }
+    [self sliderValueChanged:self.sliderStrokeWidth];
 
 
     // Property: Corner radius
@@ -759,14 +759,82 @@ CGFloat currentY;
 
 
     currentY += labelName.frame.size.height + 12.0;
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.contentSize.width, currentY + 100.0);
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.contentSize.width, currentY);
 }
 
-- (void)viewSafeAreaInsetsDidChange {
-    [super viewSafeAreaInsetsDidChange];
-    self.scrollView.contentInset = self.view.safeAreaInsets;
-    self.scrollView.frame = CGRectMake(self.scrollView.frame.origin.x, self.scrollView.frame.origin.y + self.view.safeAreaInsets.top, self.scrollView.frame.size.width + self.view.safeAreaInsets.left, self.scrollView.frame.size.height + self.view.safeAreaInsets.bottom);
-    self.view.subviews[0].frame = CGRectOffset(self.view.subviews[0].frame, self.view.safeAreaInsets.left, self.view.safeAreaInsets.top);
+#pragma mark - Alderis functions
+// HBColorWell
+- (void)presentColorPicker:(HBColorWell *)sender {
+    HBColorPickerViewController *vc = [[HBColorPickerViewController alloc] init];
+    vc.delegate = self;
+    vc.popoverPresentationController.sourceView = sender;
+    vc.configuration = [[HBColorPickerConfiguration alloc] initWithColor:sender.color];
+    if (sender == self.colorWellEXTBackground) {
+        vc.configuration.title = @"Background color";
+        vc.configuration.supportsAlpha = YES;
+    } else if (sender == self.colorWellEXTStroke) {
+        vc.configuration.title = @"Stroke color";
+        vc.configuration.supportsAlpha = NO;
+    } else {
+        NSLog(@"Unknown color well: %@", sender);
+        abort();
+    }
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
+// HBColorPickerDelegate
+- (void)colorPicker:(HBColorPickerViewController *)picker didSelectColor:(UIColor *)color {
+    if ([picker.configuration.title isEqualToString:@"Background color"]) {
+        self.colorWellEXTBackground.color = color;
+    } else if ([picker.configuration.title isEqualToString:@"Stroke color"]) {
+        self.colorWellEXTStroke.color = color;
+    } else {
+        NSLog(@"Unknown color well: %@", picker.configuration.title);
+        abort();
+    }
+}
+
+#pragma mark - Keyboard observer functions
+- (void)registerForKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+            selector:@selector(keyboardWasShown:)
+            name:UIKeyboardDidShowNotification object:nil];
+ 
+    [[NSNotificationCenter defaultCenter] addObserver:self
+             selector:@selector(keyboardWillBeHidden:)
+             name:UIKeyboardWillHideNotification object:nil];
+ 
+}
+ 
+- (void)keyboardWasShown:(NSNotification*)aNotification
+{
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+ 
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    self.scrollView.contentInset = contentInsets;
+    self.scrollView.scrollIndicatorInsets = contentInsets;
+    CGRect aRect = self.view.frame;
+    aRect.size.height -= kbSize.height;
+    if (!CGRectContainsPoint(aRect, self.activeField.frame.origin) ) {
+        [self.scrollView scrollRectToVisible:self.activeField.frame animated:YES];
+    }
+}
+
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification
+{
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    self.scrollView.contentInset = contentInsets;
+    self.scrollView.scrollIndicatorInsets = contentInsets;
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    self.activeField = textField;
+}
+
+ - (void)textFieldDidEndEditing:(UITextField *)textField {
+    self.activeField = nil;
 }
 
 #pragma mark - Control editor
@@ -795,8 +863,11 @@ CGFloat currentY;
     self.targetButton.properties[@"passThruEnabled"] = @(self.switchMousePass.isOn);
     self.targetButton.properties[@"isSwipeable"] = @(self.switchSwipeable.isOn);
     if(@available(iOS 14.0, *)) {
-        self.targetButton.properties[@"bgColor"] = @(convertUIColor2ARGB(self.colorWellBackground.selectedColor));
-        self.targetButton.properties[@"strokeColor"] = @(convertUIColor2RGB(self.colorWellStroke.selectedColor));
+        self.targetButton.properties[@"bgColor"] = @(convertUIColor2ARGB(self.colorWellINTBackground.selectedColor));
+        self.targetButton.properties[@"strokeColor"] = @(convertUIColor2RGB(self.colorWellINTStroke.selectedColor));
+    } else {
+        self.targetButton.properties[@"bgColor"] = @(convertUIColor2ARGB(self.colorWellEXTBackground.color));
+        self.targetButton.properties[@"strokeColor"] = @(convertUIColor2RGB(self.colorWellEXTStroke.color));
     }
     self.targetButton.properties[@"strokeWidth"] = @((NSInteger) self.sliderStrokeWidth.value);
     self.targetButton.properties[@"cornerRadius"] = @((NSInteger) self.sliderCornerRadius.value);
@@ -812,9 +883,9 @@ CGFloat currentY;
     [sender setValue:(NSInteger)sender.value animated:NO];
     if (sender.tag == TAG_SLIDER_STROKEWIDTH) {
         if(@available(iOS 14.0, *)) {
-            self.colorWellStroke.enabled = sender.value != 0;
+            self.colorWellINTStroke.enabled = sender.value != 0;
         } else {
-            // TODO
+            self.colorWellEXTStroke.enabled = sender.value != 0;
         }
     }
 }
