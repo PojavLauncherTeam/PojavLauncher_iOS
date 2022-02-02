@@ -48,7 +48,7 @@ jobs:
           sudo mkdir -p ~/__cache/procursus/var/cache/apt/archives/partial ~/__cache/procursus/var/lib/apt/lists/partial
           sudo rsync -aP ~/__cache/procursus /opt
           sudo /opt/procursus/bin/apt-get update
-          sudo /opt/procursus/bin/apt-get -V dist-upgrade -y
+          sudo /opt/procursus/bin/apt-get -V dist-upgrade -y || :
           sudo /opt/procursus/bin/apt-get -V dist-upgrade -y
 
       - name: Build the Debian package
