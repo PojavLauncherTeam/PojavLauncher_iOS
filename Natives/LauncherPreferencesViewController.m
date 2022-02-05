@@ -538,7 +538,7 @@ int tempIndex;
 
     UISwitch *arcCapesSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
     arcCapesSwitch.tag = TAG_ARCCAPES;
-    [arcCapesSwitch setOn:NO animated:NO];
+    [arcCapesSwitch setOn:[getPreference(@"arccapes_enable") boolValue] animated:NO];
     [arcCapesSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:arcCapesSwitch];
     
