@@ -193,7 +193,7 @@ public final class Tools
         varArgMap.put("game_assets", Tools.ASSETS_PATH);
         varArgMap.put("game_directory", gameDir.getAbsolutePath());
         varArgMap.put("user_properties", "{}");
-        varArgMap.put("user_type", /* profile.isMicrosoft ? "msa" : */ "mojang"); // FIXME: handle MS auth
+        varArgMap.put("user_type", profile.isMicrosoft ? "msa" : "mojang");
         varArgMap.put("version_name", versionName);
         varArgMap.put("version_type", versionInfo.type);
 

@@ -1,5 +1,6 @@
 package net.kdt.pojavlaunch;
 
+import java.io.File;
 import java.net.*;
 
 /**
@@ -16,5 +17,10 @@ public class PojavClassLoader extends URLClassLoader {
     @Override
     public void addURL(URL url) {
         super.addURL(url);
+        try {
+            System.setProperty("java.class.path", System.getProperty("java.class.path") + ":" + new File(url.toURI()).getAbsolutePath());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 }

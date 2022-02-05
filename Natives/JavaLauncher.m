@@ -552,12 +552,17 @@ int launchJVM(int argc, char *argv[]) {
     DIR *d;
     struct dirent *dir;
     d = opendir(java_libs_path);
-    int cplen = 0;
+    int cplen = -2;
     if (d) {
         // cplen += sprintf(classpath + cplen, "-Xbootclasspath/a:");
         while ((dir = readdir(d)) != NULL) {
+            if (cplen < 0) {
+                ++cplen;
+                continue;
+            }
             cplen += sprintf(classpath + cplen, "%s/%s:", java_libs_path, dir->d_name);
         }
+        classpath[cplen-1] = '\0';
         closedir(d);
     }
     debug("[Pre-init] Classpath generated: %s", classpath);

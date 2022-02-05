@@ -90,6 +90,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     longpressGesture.minimumPressDuration = 0.5;
     [self.offsetView addGestureRecognizer:longpressGesture];
     self.currentFileName = [getPreference(@"default_ctrl") stringByDeletingPathExtension];
+    [self initKeyCodeMap];
     [self loadControlFile:[NSString stringWithFormat:@"%s/%@", getenv("POJAV_PATH_CONTROL"), getPreference(@"default_ctrl")]];
 }
 
@@ -106,23 +107,23 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     if (cc_error) {
         NSLog(@"Error: could not read %@: %@", controlFilePath, cc_error.localizedDescription);
         showDialog(self, @"Error", [NSString stringWithFormat:@"Could not read %@: %@", controlFilePath, cc_error.localizedDescription]);
-    } else {
-        NSData* cc_objc_data = [cc_data dataUsingEncoding:NSUTF8StringEncoding];
-        self.cc_dictionary = [NSJSONSerialization JSONObjectWithData:cc_objc_data options:NSJSONReadingMutableContainers error:&cc_error];
-        if (cc_error) {
-            showDialog(self, @"Error parsing JSON", cc_error.localizedDescription);
-        } else {
-            loadControlObject(self.offsetView, self.cc_dictionary, ^void(ControlButton* button) {
-                [button addGestureRecognizer:[[UITapGestureRecognizer alloc]
-                    initWithTarget:self action:@selector(showControlPopover:)]];
-                [button addGestureRecognizer:[[UIPanGestureRecognizer alloc]
-                    initWithTarget:self action:@selector(onTouch:)]];
-            });
-        }
+        return;
     }
 
-    [self initKeyCodeMap];
-} 
+    NSData* cc_objc_data = [cc_data dataUsingEncoding:NSUTF8StringEncoding];
+    self.cc_dictionary = [NSJSONSerialization JSONObjectWithData:cc_objc_data options:NSJSONReadingMutableContainers error:&cc_error];
+    if (cc_error) {
+        showDialog(self, @"Error parsing JSON", cc_error.localizedDescription);
+        return;
+    }
+
+    loadControlObject(self.offsetView, self.cc_dictionary, ^void(ControlButton* button) {
+        [button addGestureRecognizer:[[UITapGestureRecognizer alloc]
+            initWithTarget:self action:@selector(showControlPopover:)]];
+        [button addGestureRecognizer:[[UIPanGestureRecognizer alloc]
+            initWithTarget:self action:@selector(onTouch:)]];
+    });
+}
 
 - (void)showControlPopover:(UIGestureRecognizer *)sender {
     self.currentGesture = sender;
