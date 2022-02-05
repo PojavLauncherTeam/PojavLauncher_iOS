@@ -57,6 +57,7 @@ void loadPreferences() {
     setDefaultValueForPref(@"java_args", @"");
     setDefaultValueForPref(@"allocated_memory", [NSNumber numberWithFloat:roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.30)]);
     setDefaultValueForPref(@"debug_logging", CONFIG_TYPE);
+    setDefaultValueForPref(@"arccapes_enable", @YES);
     setDefaultValueForPref(@"java_home", @"");
     setDefaultValueForPref(@"renderer", @"libgl4es_114.dylib");
     setDefaultValueForPref(@"option_warn", @YES);

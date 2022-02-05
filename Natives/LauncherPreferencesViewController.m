@@ -23,6 +23,7 @@
 #define HOMESYM 15
 #define RELAUNCH 16
 #define ERASEPREF 17
+#define ARCCAPES 18
 
 #define TAG_BTNSCALE 98
 #define TAG_RESOLUTION 99
@@ -60,6 +61,7 @@
 
 #define TAG_ERASEPREF 116
 
+#define TAG_ARCCAPES 117
 @interface LauncherPreferencesViewController () <UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDelegate> {
 }
 
@@ -528,6 +530,18 @@ int tempIndex;
     [erasePrefSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:erasePrefSwitch];
     
+    UILabel *arcCapesTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
+    arcCapesTextView.text = @"Enable Arc capes";
+    arcCapesTextView.numberOfLines = 0;
+    [arcCapesTextView sizeToFit];
+    [tableView addSubview:arcCapesTextView];
+
+    UISwitch *arcCapesSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
+    arcCapesSwitch.tag = TAG_ARCCAPES;
+    [arcCapesSwitch setOn:NO animated:NO];
+    [arcCapesSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    [tableView addSubview:arcCapesSwitch];
+    
     CGRect frame = tableView.frame;
     frame.size.height = currY+=44;
     tableView.frame = frame;
@@ -572,6 +586,8 @@ int tempIndex;
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:RELAUNCH];}],
             [UIAction actionWithTitle:@"Reset preferences" image:[[UIImage systemImageNamed:@"trash"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:ERASEPREF];}],
+            [UIAction actionWithTitle:@"Enable Arc capes" image:[[UIImage systemImageNamed:@"square.and.arrow.down"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:ARCCAPES];}],
         ]];
         self.navigationItem.rightBarButtonItem.action = nil;
         self.navigationItem.rightBarButtonItem.primaryAction = nil;
@@ -846,6 +862,7 @@ int tempIndex;
         UIAlertAction *homesym = [UIAlertAction actionWithTitle:@"Home symlink" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:HOMESYM];}];
         UIAlertAction *relaunch = [UIAlertAction actionWithTitle:@"Restart before launching game" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:RELAUNCH];}];
         UIAlertAction *erasepref = [UIAlertAction actionWithTitle:@"Reset preferences" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:ERASEPREF];}];
+        UIAlertAction *arccapes = [UIAlertAction actionWithTitle:@"Enable Arc capes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:ARCCAPES];}];
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
         [self setPopoverProperties:helpAlert.popoverPresentationController sender:(UIButton *)self.navigationItem.rightBarButtonItem];
         [self presentViewController:helpAlert animated:YES completion:nil];
@@ -864,6 +881,8 @@ int tempIndex;
         [helpAlert addAction:debuglog];
         [helpAlert addAction:relaunch];
         [helpAlert addAction:homesym];
+        [helpAlert addAction:erasepref];
+        [helpAlert addAction:arccapes];
         [helpAlert addAction:cancel];
     }
 }
@@ -919,6 +938,9 @@ int tempIndex;
     } else if (setting == ERASEPREF) {
         title = @"Reset preferences";
         message = @"This option resets the launcher preferences to their initial state.";
+    } else if (setting == ARCCAPES) {
+        title = @"Enable Arc capes";
+        message = @"This option allows you to switch from the OptiFine cape service to Arc. See more about Arc on our website.";
     } else {
         title = @"Error";
         message = [NSString stringWithFormat:@"The setting %d hasn't been specified with a description.", setting];
@@ -1043,6 +1065,9 @@ int tempIndex;
                 [eraseprefWarn addAction:cancel];
                 [eraseprefWarn addAction:ok];
             }
+            break;
+        case TAG_ARCCAPES:
+            setPreference(@"arccapes_enable", @(sender.isOn));
             break;
         default:
             NSLog(@"what does switch %ld for? implement me!", sender.tag);

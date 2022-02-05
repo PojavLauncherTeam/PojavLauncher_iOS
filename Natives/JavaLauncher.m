@@ -598,7 +598,7 @@ int launchJVM(int argc, char *argv[]) {
     }
     // Check if JVM restarts
     if (!started) {
-        char *frameworkPath, *javaPath, *jnaLibPath, *userDir, *userHome, *memMin, *memMax;
+        char *frameworkPath, *javaPath, *jnaLibPath, *userDir, *userHome, *memMin, *memMax, *arcDNS;
         asprintf(&frameworkPath, "-Djava.library.path=%s/Frameworks:%s/Frameworks/libOSMesaOverride.dylib.framework", getenv("BUNDLE_PATH"), getenv("BUNDLE_PATH"));
         asprintf(&javaPath, "%s/bin/java", javaHome);
         asprintf(&jnaLibPath, "-Djna.boot.library.path=%s/Frameworks/libjnidispatch.dylib.framework", getenv("BUNDLE_PATH"));
@@ -606,6 +606,7 @@ int launchJVM(int argc, char *argv[]) {
         asprintf(&userHome, "-Duser.home=%s", getenv("POJAV_HOME"));
         asprintf(&memMin, "-Xms%sM", allocmem);
         asprintf(&memMax, "-Xmx%sM", allocmem);
+        asprintf(&arcDNS, "-javaagent:%s/arc_dns_injector.jar=23.95.137.176", java_libs_path);
         NSLog(@"[Pre-init] Java executable path: %s", javaPath);
         setenv("JAVA_EXT_EXECNAME", javaPath, 1);
 
@@ -622,6 +623,9 @@ int launchJVM(int argc, char *argv[]) {
         margv[margc++] = userHome;
         margv[margc++] = "-Dorg.lwjgl.system.allocator=system";
         margv[margc++] = "-Dlog4j2.formatMsgNoLookups=true";
+        if([getPreference(@"arccapes_enable") boolValue]) {
+            margv[margc++] = arcDNS;
+        }
         NSString *selectedAccount = getPreference(@"internal_selected_account");
         if (selectedAccount != nil) {
             margv[margc++] = (char *) [NSString stringWithFormat:@"-Dpojav.selectedAccount=%@", selectedAccount].UTF8String;
