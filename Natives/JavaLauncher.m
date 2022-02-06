@@ -674,7 +674,11 @@ int launchJVM(int argc, char *argv[]) {
             }
             margv[margc++] = cacio_classpath;
         }
+    } else if (!started) {
+        // Opens to ARC DNS
+        margv[margc++] = "--add-opens=java.base/java.net=ALL-UNNAMED";
     }
+
     if (!started) {
         init_loadCustomJvmFlags();
     }
