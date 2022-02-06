@@ -42,17 +42,6 @@ void showDialog(UIViewController *viewController, NSString* title, NSString* mes
     }
 }
 
-UIAlertController* createLoadingAlert(NSString* message) {
-    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(10, 5, 50, 50)];
-    indicator.hidesWhenStopped = YES;
-    [indicator startAnimating];
-    UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil
-        message:message
-            preferredStyle:UIAlertControllerStyleAlert];
-    [alert.view addSubview:indicator];
-    return alert;
-}
-
 JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_showError(JNIEnv* env, jclass clazz, jstring title, jstring message, jboolean exitIfOk) {
     const char *title_c = (*env)->GetStringUTFChars(env, title, 0);
     const char *message_c = (*env)->GetStringUTFChars(env, message, 0);
