@@ -42,7 +42,7 @@ CGFloat faqcurrY = 4.0;
     [scrollView addSubview:[self faqContent:true text:@"Vanilla versions after 21w10b" width:width]];
     [scrollView addSubview:[self faqContent:false text:@"In order to use these versions, you need to install openjdk-16-jre and change the Renderer in Preferences to tinygl4angle." width:width]];
     [scrollView addSubview:[self faqContent:true text:@"Vanilla versions after 21w37a" width:width]];
-    [scrollView addSubview:[self faqContent:false text:@"In order to use these versions, you need to install openjdk-17-jre and change the Renderer in Preferences to tinygl4angle. If you are using unc0ver, switch to or wait for a Procursus jailbreak." width:width]];
+    [scrollView addSubview:[self faqContent:false text:@"In order to use these versions, you need to install openjdk-17-jre and change the Renderer in Preferences to tinygl4angle. If you are using unc0ver/checkra1n, switch to or wait for a Procursus jailbreak." width:width]];
     [scrollView addSubview:[self faqContent:true text:@"Jetsam crashing" width:width]];
     [scrollView addSubview:[self faqContent:false text:@"Even though PojavLauncher only allocates 1/4 of the system's total memory, jetsam can still kill the game. A solution is described on the PojavLauncher website (iOS Wiki > Going further > overb0arding)" width:width]];
     

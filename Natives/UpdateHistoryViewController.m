@@ -45,13 +45,28 @@ CGFloat uhcurrY = 4.0;
     [scrollView addSubview:[self uhContent:true size:25 text:@"Current version" width:width]];
     [scrollView addSubview:[self uhContent:true size:20 text:[NSString stringWithFormat:@"2.1 (%s)", CONFIG_TYPE] width:width]];
     [scrollView addSubview:[self uhContent:true size:17 text:@"Changes" width:width]];
-    [scrollView addSubview:[self uhContent:false size:0 text:@"- Various bug fixes" width:width]];
+    [scrollView addSubview:[self uhContent:false size:0 text:@"- Now shows when currently logging in\n"
+                            "- Play button is greyed out when launching\n"
+                            "- Back button is hidden when launching\n"
+                            "- New toggle to allow restarting JVM before launching\n"
+                            "- Added WIP Demo mode support!\n"
+                            "- Patch log4shell exploit in client\n"
+                            "- Keyboard and mouse support deepened\n"
+                            "- New \"vgpu\" renderer, exports OpenGL 3.0\n"
+                            "- Custom controls UI completed\n"
+                            "- Arc custom capes integration!" width:width]];
     [scrollView addSubview:[self uhContent:true size:17 text:@"Fixes" width:width]];
-    [scrollView addSubview:[self uhContent:false size:0 text:@"- Custom controls page is now complete" width:width]];
+    [scrollView addSubview:[self uhContent:false size:0 text:@"- Slight changes to error messages\n"
+                            "- Fix Makefile errors in `deploy` and `ipa`\n"
+                            "- Fix some instances of Mojang login failing\n"
+                            "- Fix NullPointerException when launching ≤1.6.4\n"
+                            "- Fix NullPointerException when setting inherited fields\n"
+                            "- Fix \"Share your logs\" not working\n"
+                            "- Fix Fabric 1.17+ not launching\n"
+                            "- Fix postinst issue on Procursus" width:width]];
     [scrollView addSubview:[self uhContent:true size:17 text:@"Issues" width:width]];
-    [scrollView addSubview:[self uhContent:false size:0 text:@"- Crash if login to Microsoft fails\n"
-                            "- Old custom control .json files no longer work, remove to fix\n"
-                            "- An unknown issue might cause Taurine, 14.3, and A12+ to crash on launch." width:width]];
+    [scrollView addSubview:[self uhContent:false size:0 text:@"- Mouse support requires iOS 14.0 or later, keyboards require iOS 13.4 or later\n"
+                            "- Old custom control .json files no longer work, remove to fix" width:width]];
     [scrollView addSubview:[self uhContent:true size:25 text:@"Previous versions" width:width]];
     [scrollView addSubview:[self uhContent:true size:20 text:@"2.0 - Raw Iron" width:width]];
     [scrollView addSubview:[self uhContent:true size:17 text:@"Changes" width:width]];
