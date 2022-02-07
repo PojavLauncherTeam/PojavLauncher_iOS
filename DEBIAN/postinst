@@ -1,7 +1,5 @@
 #!/bin/sh
 
-set -e
-
 if [ -d '/private/preboot/procursus' ]; then
     export PREFIX=/private/preboot/procursus
 fi
