@@ -391,7 +391,7 @@ deploy: deb
 dsym: deb
 	@echo 'Building PojavLauncher $(VERSION) - DSYM - Start'
 	@cd $(OUTPUTDIR) && dsymutil --arch arm64 $(OUTPUTDIR)/PojavLauncher.app/PojavLauncher
-	@cp -r $(OUTPUTDIR)/PojavLauncher.app/PojavLauncher.dSYM $(OUTPUTDIR)
+	@cp -r $(OUTPUTDIR)/PojavLauncher.app/PojavLauncher.dSYM $(OUTPUTDIR)/PojavLauncher.dSYM
 	@echo 'Building PojavLauncher $(VERSION) - DSYM - Start'
   
 clean:

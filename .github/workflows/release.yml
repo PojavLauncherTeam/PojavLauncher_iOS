@@ -70,7 +70,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: PojavLauncher.dSYM
-          path: Natives/build/PojavLauncher.app/PojavLauncher.dSYM
+          path: artifacts/PojavLauncher.dSYM
 
       - name: Copy Procursus to Cache Location
         run: |
