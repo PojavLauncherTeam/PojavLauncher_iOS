@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    name: The guts
+    name: Development build
     runs-on: macOS-11
     steps:
       - name: Set up cache
@@ -53,9 +53,6 @@ jobs:
 
       - name: Build the Debian package
         run: gmake -j$(sysctl -n hw.ncpu) dsym
-
-      - name: Generate dSYM for PojavLauncher
-        run: dsymutil --arch arm64 Natives/build/PojavLauncher.app/PojavLauncher
 
       - name: Upload regular artifact
         uses: actions/upload-artifact@v2
