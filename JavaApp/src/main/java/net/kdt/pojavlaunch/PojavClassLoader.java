@@ -1,6 +1,7 @@
 package net.kdt.pojavlaunch;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.*;
 
 /**
@@ -13,7 +14,7 @@ public class PojavClassLoader extends URLClassLoader {
     public PojavClassLoader(ClassLoader parent) {
         super(new URL[0], parent);
     }
-    
+
     @Override
     public void addURL(URL url) {
         super.addURL(url);
@@ -22,5 +23,31 @@ public class PojavClassLoader extends URLClassLoader {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+    }
+
+    static URL getFileURL(File file) {
+        try {
+            file = file.getCanonicalFile();
+        } catch (IOException e) {}
+
+        try {
+            return file.toURL();
+        } catch (MalformedURLException e) {
+            // Should never happen since we specify the protocol...
+            throw new InternalError(e);
+        }
+    }
+
+    /**
+     * This class loader supports dynamic additions to the class path
+     * at runtime.
+     *
+     * @see java.lang.instrument.Instrumentation#appendToSystemClassPathSearch
+     */
+    private void appendToClassPathForInstrumentation(String path) {
+        assert(Thread.holdsLock(this));
+
+        // addURL is a no-op if path already contains the URL
+        super.addURL(getFileURL(new File(path)));
     }
 }

@@ -161,6 +161,13 @@
     }
 }
 
+- (void)displayProgress:(NSString *)title {
+    self.title = title;
+    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:indicator];
+    [indicator startAnimating];
+}
+
 - (void)accountType:(UIButton *)sender {
     if(@available (iOS 14.0, *)) {
         // UIMenu
@@ -192,15 +199,7 @@
     }
     
     if (type != TYPE_OFFLINE && !shouldDismiss) {
-        alert = createLoadingAlert(@"Logging in");
-        [self presentViewController:alert animated:YES completion:^{
-            if (shouldDismiss) {
-                [alert dismissViewControllerAnimated:YES completion:^{
-                    LauncherViewController *vc = [[LauncherViewController alloc] init];
-                    [self.navigationController pushViewController:vc animated:YES];
-                }];
-            }
-        }];
+        [self displayProgress:@"Logging in"];
     }
 
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
@@ -218,15 +217,16 @@
 
         jstring result = (*env)->CallStaticObjectMethod(env, clazz, method, type, jdata);
 
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.title = @"";
+            self.navigationItem.rightBarButtonItem = nil;
+        });
+
         if (result != NULL) {
             const char *username = (*env)->GetStringUTFChars(env, result, 0);
             setenv("POJAV_INTERNAL_SELECTED_ACCOUNT", username, 1);
             (*env)->ReleaseStringUTFChars(env, result, username);
             dispatch_async(dispatch_get_main_queue(), ^{
-                if (!shouldDismiss) {
-                    shouldDismiss = YES;
-                    [alert dismissViewControllerAnimated:YES completion:nil];
-                }
                 LauncherViewController *vc = [[LauncherViewController alloc] init];
                 [self.navigationController pushViewController:vc animated:YES];
             });
@@ -373,8 +373,7 @@
 }
 
 - (void)loginMojangWithUsername:(NSString*)input_username password:(NSString*)input_password {
-    UIAlertController *alert = createLoadingAlert(@"Logging in");
-    [self presentViewController:alert animated:YES completion:nil];
+    [self displayProgress:@"Logging in"];
 
     NSString *input_uuid = [[NSUUID UUID] UUIDString];
 
@@ -392,6 +391,11 @@
     [request setHTTPBody:[jsonString dataUsingEncoding:NSUTF8StringEncoding]];
 
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.title = @"";
+            self.navigationItem.rightBarButtonItem = nil;
+        });
+
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
         long statusCode = (long)[httpResponse statusCode];
 
@@ -400,7 +404,6 @@
         NSError *jsonError = nil;
         NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&jsonError];
 
-        [alert dismissViewControllerAnimated:YES completion:^{
         if (jsonError != nil) {
             NSLog(@"Error parsing JSON: %@", jsonError.localizedDescription);
             showDialog(self, @"Error parsing JSON", jsonError.localizedDescription);
@@ -419,15 +422,14 @@
             // NSLog(@"DBG Error: %@: %@", err_title, err_msg);
             showDialog(self, err_title, err_msg);
         }
-        }];
     }];
     [postDataTask resume];
 }
 
 - (void)aboutLauncher
 {
-        AboutLauncherViewController *vc = [[AboutLauncherViewController alloc] init];
-        [self.navigationController pushViewController:vc animated:YES];
+    AboutLauncherViewController *vc = [[AboutLauncherViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)showFAQ
