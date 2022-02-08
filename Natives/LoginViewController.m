@@ -67,6 +67,14 @@
         }
     }
 
+    if(strncmp(getenv("POJAV_DETECTEDHW"), "iPhone6,", 9) == 0 || strncmp(getenv("POJAV_DETECTEDHW"), "iPad4,", 9) == 0) {
+        NSString *jbMessage = @"Your device will not support PojavLauncher 2.2. This change is due to hardware and software limitations.";
+        UIAlertController *jbAlert = [UIAlertController alertControllerWithTitle:@"This is the last update for this device." message:jbMessage preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+        [self presentViewController:jbAlert animated:YES completion:nil];
+        [jbAlert addAction:ok];
+    }
+    
     CGFloat widthSplit = width / 4.0;
     CGFloat widthSplit2 = width / 2.0;
 
