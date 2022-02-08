@@ -766,7 +766,7 @@ CallbackBridge_nativeSendKey(keycode, 0, held, 0);
 {
     CGPoint location = [sender locationInView:self.view];
     if (sender.state == UIGestureRecognizerStateCancelled || sender.state == UIGestureRecognizerStateEnded) {
-        [self executebtn_up:nil];
+        [self executebtn_up:self.swipingButton];
         return;
     }
     for (ControlButton *button in self.swipeableButtons) {
@@ -781,7 +781,7 @@ CallbackBridge_nativeSendKey(keycode, 0, held, 0);
 
 - (void)executebtn_up:(ControlButton *)sender
 {
-    if (self.swipingButton) {
+    if (self.swipingButton == sender) {
         [self executebtn:self.swipingButton withAction:ACTION_UP];
         self.swipingButton = nil;
     } else {
