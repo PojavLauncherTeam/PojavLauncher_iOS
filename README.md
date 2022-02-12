@@ -78,4 +78,4 @@ PojavLauncher is amazing, and surprisingly stable, and it wouldn't be this way w
 - [Java Native Access](https://github.com/java-native-access/jna): [Apache 2.0 License](https://github.com/java-native-access/jna/blob/master/LICENSE).
 
 
-<!-- Ava was here -->
+<!-- sillysock was here -->
