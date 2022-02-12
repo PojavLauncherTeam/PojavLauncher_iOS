@@ -9,6 +9,8 @@
 #import "customcontrols/ControlDrawer.h"
 #import "customcontrols/CustomControlsUtils.h"
 
+#include <dlfcn.h>
+
 #include "glfw_keycodes.h"
 #include "utils.h"
 
@@ -665,7 +667,11 @@ CGFloat currentY;
         self.colorWellINTBackground.selectedColor = self.targetButton.backgroundColor;
         [self.scrollView addSubview:self.colorWellINTBackground];
     } else {
-        self.colorWellEXTBackground = [[HBColorWell alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
+        if (!dlopen("Alderis.framework/Alderis", RTLD_NOW)) {
+            NSLog(@"Cannot load Alderis framework: %s", dlerror());
+        }
+
+        self.colorWellEXTBackground = [[NSClassFromString(@"HBColorWell") alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
         self.colorWellEXTBackground.color = self.targetButton.backgroundColor;
         self.colorWellEXTBackground.isDragInteractionEnabled = YES;
         self.colorWellEXTBackground.isDropInteractionEnabled = YES;
@@ -694,7 +700,7 @@ CGFloat currentY;
         self.colorWellINTStroke.selectedColor = [[UIColor alloc] initWithCGColor:self.targetButton.layer.borderColor];
         self.colorWellINTStroke.supportsAlpha = NO;
     } else {
-        self.colorWellEXTStroke = [[HBColorWell alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
+        self.colorWellEXTStroke = [[NSClassFromString(@"HBColorWell") alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
         self.colorWellEXTStroke.color = [[UIColor alloc] initWithCGColor:self.targetButton.layer.borderColor];
         [self.colorWellEXTStroke addTarget:self action:@selector(presentColorPicker:) forControlEvents:UIControlEventTouchUpInside];
         [self.scrollView addSubview:self.colorWellEXTStroke];
@@ -766,10 +772,10 @@ CGFloat currentY;
 #pragma mark - Alderis functions
 // HBColorWell
 - (void)presentColorPicker:(HBColorWell *)sender {
-    HBColorPickerViewController *vc = [[HBColorPickerViewController alloc] init];
+    HBColorPickerViewController *vc = [[NSClassFromString(@"HBColorPickerViewController") alloc] init];
     vc.delegate = self;
     vc.popoverPresentationController.sourceView = sender;
-    vc.configuration = [[HBColorPickerConfiguration alloc] initWithColor:sender.color];
+    vc.configuration = [[NSClassFromString(@"HBColorPickerConfiguration") alloc] initWithColor:sender.color];
     if (sender == self.colorWellEXTBackground) {
         vc.configuration.title = @"Background color";
         vc.configuration.supportsAlpha = YES;
