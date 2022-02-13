@@ -546,23 +546,34 @@ CGFloat currentY;
     [self registerForKeyboardNotifications];
     currentY = 6.0;
 
+    if (self.view.bounds.origin.x == 0) {
+        CGFloat x = self.view.bounds.size.width/10.0;
+        CGFloat y = self.view.bounds.size.height/10.0;
+        self.view.bounds = CGRectMake(-x, -y, self.view.bounds.size.width - x * 2.0, self.view.bounds.size.height - y * 2.0);
+        //self.view.layer.cornerRadius = self.view.bounds.size.height/2;
+        //self.view.layer.masksToBounds = YES;
+    }
+    UIVisualEffectView *blurView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular]];
+    blurView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
+    [self.view addSubview:blurView];
+
     UIBarButtonItem *btnFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
 
-    UIToolbar *popoverToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
+    UIToolbar *popoverToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, 44.0)];
     UIBarButtonItem *popoverCancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(actionEditCancel)];
     UIBarButtonItem *popoverDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(actionEditFinish)];
     popoverToolbar.items = @[popoverCancelButton, btnFlexibleSpace, popoverDoneButton];
     [self.view addSubview:popoverToolbar];
 
-    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(5.0, popoverToolbar.frame.size.height, self.view.frame.size.width - 10.0, self.view.frame.size.height - popoverToolbar.frame.size.height)];
+    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(5.0, popoverToolbar.frame.size.height, self.view.bounds.size.width - 10.0, self.view.bounds.size.height - popoverToolbar.frame.size.height)];
     [self.view addSubview:self.scrollView];
 
-    UIToolbar *editPickToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
+    UIToolbar *editPickToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, 44.0)];
     UIBarButtonItem *editDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeTextField)];
     editPickToolbar.items = @[btnFlexibleSpace, editDoneButton];
 
-    CGFloat width = self.view.frame.size.width - 10.0;
-    CGFloat height = self.view.frame.size.height - 10.0;
+    CGFloat width = self.view.bounds.size.width - 10.0;
+    CGFloat height = self.view.bounds.size.height - 10.0;
 
 
     // Property: Name
@@ -818,12 +829,11 @@ CGFloat currentY;
 {
     NSDictionary* info = [aNotification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
- 
     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
     self.scrollView.contentInset = contentInsets;
     self.scrollView.scrollIndicatorInsets = contentInsets;
-    CGRect aRect = self.view.frame;
-    aRect.size.height -= kbSize.height;
+    CGRect aRect = self.view.bounds;
+    aRect.size.height = self.view.frame.size.height - kbSize.height;
     if (!CGRectContainsPoint(aRect, self.activeField.frame.origin) ) {
         [self.scrollView scrollRectToVisible:self.activeField.frame animated:YES];
     }
