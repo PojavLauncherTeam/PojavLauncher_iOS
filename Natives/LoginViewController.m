@@ -57,8 +57,8 @@
     }
     
     if(getenv("POJAV_DETECTEDJB")) {
-        if(![[NSFileManager defaultManager] fileExistsAtPath:@"/.procursus_strapped"] && [getPreference(@"jb_warn") boolValue] == YES) {
-            NSString *jbMessage = [NSString stringWithFormat:@"Your current jailbreak (%s) does not have the Procursus bootstrap, which means that certain issues may occur that cannot be fixed. Please switch to a completely supported jailbreak, if possible.", getenv("POJAV_DETECTEDJB")];
+        if(strcmp(getenv("POJAV_DETECTEDJB"), "Other") == 0 && [getPreference(@"jb_warn") boolValue] == YES) {
+            NSString *jbMessage = @"Your current jailbreak does not have the Procursus bootstrap. Certain issues may occur that cannot be fixed, please switch to or wait for a fully compatible jailbreak.";
             UIAlertController *jbAlert = [UIAlertController alertControllerWithTitle:@"Jailbreak not completely supported." message:jbMessage preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
             [self presentViewController:jbAlert animated:YES completion:nil];
@@ -67,6 +67,14 @@
         }
     }
 
+    if(strncmp(getenv("POJAV_DETECTEDHW"), "iPhone6,", 9) == 0 || strncmp(getenv("POJAV_DETECTEDHW"), "iPad4,", 9) == 0) {
+        NSString *jbMessage = @"Your device will not support PojavLauncher 2.2. This change is due to hardware and software limitations.";
+        UIAlertController *jbAlert = [UIAlertController alertControllerWithTitle:@"This is the last update for this device." message:jbMessage preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+        [self presentViewController:jbAlert animated:YES completion:nil];
+        [jbAlert addAction:ok];
+    }
+    
     CGFloat widthSplit = width / 4.0;
     CGFloat widthSplit2 = width / 2.0;
 
@@ -161,6 +169,13 @@
     }
 }
 
+- (void)displayProgress:(NSString *)title {
+    self.title = title;
+    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:indicator];
+    [indicator startAnimating];
+}
+
 - (void)accountType:(UIButton *)sender {
     if(@available (iOS 14.0, *)) {
         // UIMenu
@@ -182,35 +197,51 @@
 }
 
 - (void)loginAccountInput:(int)type data:(NSString *)data {
-    JNIEnv *env;
-    (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &env, NULL);
+    __block BOOL shouldDismiss = NO;
+    UIAlertController *alert;
 
-    jstring jdata = (*env)->NewStringUTF(env, data.UTF8String);
-    assert(jdata);
-
-    jclass clazz = (*env)->FindClass(env, "net/kdt/pojavlaunch/uikit/AccountJNI");
-    assert(clazz);
-
-    jmethodID method = (*env)->GetStaticMethodID(env, clazz, "loginAccount", "(ILjava/lang/String;)Z");
-    assert(method);
-
-    jboolean result = (*env)->CallStaticBooleanMethod(env, clazz, method, type, jdata);
-
-    if (![NSThread isMainThread]) {
-        (*runtimeJavaVMPtr)->DetachCurrentThread(runtimeJavaVMPtr);
+    if (type == TYPE_SELECTACC) {
+        NSError *error;
+        NSString *fileContent = [NSString stringWithContentsOfFile:[NSString stringWithFormat:@"%s/accounts/%@.json", getenv("POJAV_HOME"), data] encoding:NSUTF8StringEncoding error:&error];
+        shouldDismiss = [fileContent rangeOfString:@"\"accessToken\": \"0\","].location != NSNotFound;
+    }
+    
+    if (type != TYPE_OFFLINE && !shouldDismiss) {
+        [self displayProgress:@"Logging in"];
     }
 
-    if (result == JNI_TRUE) {
-        if ([NSThread isMainThread]) {
-            LauncherViewController *vc = [[LauncherViewController alloc] init];
-            [self.navigationController pushViewController:vc animated:YES];
-        } else {
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        JNIEnv *env;
+        (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &env, NULL);
+
+        jstring jdata = (*env)->NewStringUTF(env, data.UTF8String);
+        assert(jdata);
+
+        jclass clazz = (*env)->FindClass(env, "net/kdt/pojavlaunch/uikit/AccountJNI");
+        assert(clazz);
+
+        jmethodID method = (*env)->GetStaticMethodID(env, clazz, "loginAccount", "(ILjava/lang/String;)Ljava/lang/String;");
+        assert(method);
+
+        jstring result = (*env)->CallStaticObjectMethod(env, clazz, method, type, jdata);
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.title = @"";
+            self.navigationItem.rightBarButtonItem = nil;
+        });
+
+        if (result != NULL) {
+            const char *username = (*env)->GetStringUTFChars(env, result, 0);
+            setenv("POJAV_INTERNAL_SELECTED_ACCOUNT", username, 1);
+            (*env)->ReleaseStringUTFChars(env, result, username);
             dispatch_async(dispatch_get_main_queue(), ^{
                 LauncherViewController *vc = [[LauncherViewController alloc] init];
                 [self.navigationController pushViewController:vc animated:YES];
             });
         }
-    }
+
+        (*runtimeJavaVMPtr)->DetachCurrentThread(runtimeJavaVMPtr);
+    });
 }
 
 - (void)loginUsername:(int)type {
@@ -272,9 +303,7 @@
 
                 if ([urlString containsString:@"/auth/?code="] == YES) {
                     NSArray *components = [urlString componentsSeparatedByString:@"/auth/?code="];
-                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-                        [self loginAccountInput:TYPE_MICROSOFT data:components[1]];
-                    });
+                    [self loginAccountInput:TYPE_MICROSOFT data:components[1]];
                 } else {
                     NSArray *components = [urlString componentsSeparatedByString:@"/auth/?error="];
                     if ([components[1] hasPrefix:@"access_denied"] == NO) {
@@ -302,7 +331,7 @@
 
 - (void)loginOffline:(UIButton *)sender {
     if ([getPreference(@"local_warn") boolValue] == YES) {
-        UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:@"Offline mode is now Local mode." message:@"You can continue to play installed versions, but you can no longer download Minecraft without a paid account. No support will be provided for issues with local accounts, or other means of acquiring Minecraft. See our website for more information."preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:@"Offline mode is now Local mode." message:@"You can continue to play installed versions, but you can no longer download Minecraft without a paid account. No support will be provided for issues with local accounts, or other means of acquiring Minecraft. See the FAQ for more information."preferredStyle:UIAlertControllerStyleActionSheet];
         [self setPopoverProperties:offlineAlert.popoverPresentationController sender:sender];
         UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginUsername:TYPE_OFFLINE];}];
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self accountType:sender];}];
@@ -316,16 +345,28 @@
 }
 
 - (void)loginDemo:(UIButton *)sender {
-    UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:@"This option is currently unavailable." message:@"It will be fully implemented in a future update." preferredStyle:UIAlertControllerStyleActionSheet];
-    [self setPopoverProperties:offlineAlert.popoverPresentationController sender:sender];
-    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self accountType:sender];}];
-    [self presentViewController:offlineAlert animated:YES completion:nil];
-    [offlineAlert addAction:ok];
+    if ([getPreference(@"demo_warn") boolValue] == YES) {
+        UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:@"This option is in beta." message:@"As a replacement to offline and local mode, demo mode will allow you to sign into a Microsoft account that does not own the game and play the Java Edition trial, introduced in 1.3.1 and newer versions. Older versions contain the full game, as the official launcher does not place these restrictions. See our website to learn more about this transition from offline mode."preferredStyle:UIAlertControllerStyleActionSheet];
+        [self setPopoverProperties:offlineAlert.popoverPresentationController sender:sender];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginMicrosoft];}];
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self accountType:sender];}];
+        [self presentViewController:offlineAlert animated:YES completion:nil];
+        [offlineAlert addAction:ok];
+        [offlineAlert addAction:cancel];
+        setPreference(@"demo_warn", @NO);
+    } else {
+        [self loginMicrosoft];
+    }
 }
 
 - (void)loginAccount:(UIButton *)sender {
     FileListViewController *vc = [[FileListViewController alloc] init];
     vc.listPath = [NSString stringWithFormat:@"%s/accounts", getenv("POJAV_HOME")];
+/*
+    vc.whenDelete = ^void(NSString* name) {
+        UIAlertController* alert = showLoadingDialog(vc, @"Logging out...");
+    };
+*/
     vc.whenItemSelected = ^void(NSString* name) {
         [self loginAccountInput:TYPE_SELECTACC data:name];
     };
@@ -340,13 +381,14 @@
 }
 
 - (void)loginMojangWithUsername:(NSString*)input_username password:(NSString*)input_password {
+    [self displayProgress:@"Logging in"];
+
     NSString *input_uuid = [[NSUUID UUID] UUIDString];
 
     NSURLSession *session = [NSURLSession sharedSession];
     NSURL *url = [NSURL URLWithString:@"https://authserver.mojang.com/authenticate"];
     NSMutableURLRequest *request = 
-      [[NSMutableURLRequest alloc] initWithURL:[NSURL
-      URLWithString:@"https://authserver.mojang.com/authenticate"]];
+      [[NSMutableURLRequest alloc] initWithURL:url];
     [request setHTTPMethod:@"POST"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
 
@@ -357,11 +399,15 @@
     [request setHTTPBody:[jsonString dataUsingEncoding:NSUTF8StringEncoding]];
 
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.title = @"";
+            self.navigationItem.rightBarButtonItem = nil;
+        });
+
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
         long statusCode = (long)[httpResponse statusCode];
 
-        NSString *dataStr = [NSString stringWithUTF8String:[data bytes]];
-        
+        NSString *dataStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         // NSLog(@"status=%ld, data=%@, response=%@, error=%@", statusCode, dataStr, httpResponse, error);
         NSError *jsonError = nil;
         NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&jsonError];
@@ -375,13 +421,6 @@
                 // NSLog(@"DBG: can't login demo account!");
                 showDialog(self, @"Error", @"Can't login a demo account!");
             } else {
-/*
-                NSString *out_accessToken = [jsonArray valueForKey:@"accessToken"];
-                NSString *out_clientToken = [jsonArray valueForKey:@"clientToken"];
-                NSString *out_profileID = [selectedProfile valueForKey:@"id"];
-                NSString *out_username = [selectedProfile valueForKey:@"name"];
-                NSLog(@"DBG: Login succeed: %@, %@, %@, %@", out_accessToken, out_clientToken, out_profileID, out_username);
-*/
                 NSAssert(dataStr != nil, @"account data should not be null");
                 [self loginAccountInput:TYPE_MOJANG data:dataStr];
             }
@@ -397,8 +436,8 @@
 
 - (void)aboutLauncher
 {
-        AboutLauncherViewController *vc = [[AboutLauncherViewController alloc] init];
-        [self.navigationController pushViewController:vc animated:YES];
+    AboutLauncherViewController *vc = [[AboutLauncherViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)showFAQ
@@ -409,7 +448,8 @@
 
 -(void)latestLogShare
 {
-    NSString *latestlogPath = [NSString stringWithFormat:@"file://%s/latestlog.old.txt", getenv("HOME")];
+    NSString *latestlogPath = [NSString stringWithFormat:@"file://%s/latestlog.old.txt", getenv("POJAV_HOME")];
+    NSLog(@"Path is %@", latestlogPath);
     activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[@"latestlog.txt", [NSURL URLWithString:latestlogPath]] applicationActivities:nil];
 
     [self presentViewController:activityViewController animated:YES completion:nil];

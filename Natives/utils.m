@@ -12,7 +12,13 @@ CGFloat MathUtils_dist(CGFloat x1, CGFloat y1, CGFloat x2, CGFloat y2) {
     const CGFloat x = (x2 - x1);
     const CGFloat y = (y2 - y1);
     return (CGFloat) hypot(x, y);
- }
+}
+
+//Ported from https://www.arduino.cc/reference/en/language/functions/math/map/
+CGFloat MathUtils_map(CGFloat x, CGFloat in_min, CGFloat in_max, CGFloat out_min, CGFloat out_max) {
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
 void _CGDataProviderReleaseBytePointerCallback(void *info,const void *pointer) {
 }
 

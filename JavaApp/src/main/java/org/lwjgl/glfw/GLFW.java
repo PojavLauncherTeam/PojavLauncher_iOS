@@ -820,29 +820,18 @@ public class GLFW
         }
         width.put(internalGetWindow(window).width);
         height.put(internalGetWindow(window).height);
-	}
-
-	public static void glfwGetFramebufferSize(@NativeType("GLFWwindow *") long window, @Nullable @NativeType("int *") int[] width, @Nullable @NativeType("int *") int[] height) {
-        if (CHECKS) {
-            // check(window);
-            checkSafe(width, 1);
-            checkSafe(height, 1);
-        }
-
-		width[0] = internalGetWindow(window).width;
-        height[0] = internalGetWindow(window).height;
     }
 
-	@Nullable
+    @Nullable
     @NativeType("GLFWmonitor **")
     public static PointerBuffer glfwGetMonitors() {
         PointerBuffer pBuffer = PointerBuffer.allocateDirect(1);
-		pBuffer.put(glfwGetPrimaryMonitor());
-		return pBuffer;
+        pBuffer.put(glfwGetPrimaryMonitor());
+        return pBuffer;
     }
 
     public static long glfwGetPrimaryMonitor() {
-	    // Prevent NULL check
+        // Prevent NULL check
         return 1L;
     }
 
@@ -870,44 +859,17 @@ public class GLFW
         height.put(mGLFWWindowHeight);
     }
 
-    public static void glfwGetMonitorPos(@NativeType("GLFWmonitor *") long monitor, @Nullable @NativeType("int *") int[] xpos, @Nullable @NativeType("int *") int[] ypos) {
-        if (CHECKS) {
-            // check(monitor);
-            checkSafe(xpos, 1);
-            checkSafe(ypos, 1);
-        }
-
-        xpos[0] = 0;
-        ypos[0] = 0;
-    }
-
-    /** Array version of: {@link #glfwGetMonitorWorkarea GetMonitorWorkarea} */
-    public static void glfwGetMonitorWorkarea(@NativeType("GLFWmonitor *") long monitor, @Nullable @NativeType("int *") int[] xpos, @Nullable @NativeType("int *") int[] ypos, @Nullable @NativeType("int *") int[] width, @Nullable @NativeType("int *") int[] height) {
-        if (CHECKS) {
-            // check(monitor);
-            checkSafe(xpos, 1);
-            checkSafe(ypos, 1);
-            checkSafe(width, 1);
-            checkSafe(height, 1);
-        }
-
-        xpos[0] = 0;
-        ypos[0] = 0;
-        width[0] = mGLFWWindowWidth;
-        height[0] = mGLFWWindowHeight;
-    }
-
     @NativeType("GLFWmonitor *")
     public static long glfwGetWindowMonitor(@NativeType("GLFWwindow *") long window) {
         return internalGetWindow(window).monitor;
     }
-	
-	public static void glfwSetWindowMonitor(@NativeType("GLFWwindow *") long window, @NativeType("GLFWmonitor *") long monitor, int xpos, int ypos, int width, int height, int refreshRate) {
-		GLFWWindowProperties properties = internalGetWindow(window);
-		properties.monitor = monitor;
-		properties.x = xpos;
-		properties.y = ypos;
-		internalChangeMonitorSize(width, height);
+
+    public static void glfwSetWindowMonitor(@NativeType("GLFWwindow *") long window, @NativeType("GLFWmonitor *") long monitor, int xpos, int ypos, int width, int height, int refreshRate) {
+        GLFWWindowProperties properties = internalGetWindow(window);
+        properties.monitor = monitor;
+        properties.x = xpos;
+        properties.y = ypos;
+        internalChangeMonitorSize(width, height);
     }
 
     public static int glfwGetWindowAttrib(@NativeType("GLFWwindow *") long window, int attrib) {
@@ -1090,7 +1052,7 @@ public class GLFW
         
         // Indirect event
         while (CallbackBridge.PENDING_EVENT_LIST.size() > 0) {
-            Integer[] dataArr = CallbackBridge.PENDING_EVENT_LIST.remove(0);
+            Object[] dataArr = CallbackBridge.PENDING_EVENT_LIST.remove(0);
             
             if (dataArr == null) { // It should not be null, but still should be catched
                 // System.out.println("GLFW: popped callback is null, skipping");
@@ -1098,53 +1060,53 @@ public class GLFW
             }
             
             for (Long ptr : mGLFWWindowMap.keySet()) {
-                switch (dataArr[0]) {
+                switch ((int)dataArr[0]) {
                     case CallbackBridge.EVENT_TYPE_CHAR:
                         if (mGLFWCharCallback != null) {
-                            mGLFWCharCallback.invoke(ptr, dataArr[1]);
+                            mGLFWCharCallback.invoke(ptr, (int)dataArr[1]);
                         }
                         break;
                     case CallbackBridge.EVENT_TYPE_CHAR_MODS:
                         if (mGLFWCharModsCallback != null) {
-                            mGLFWCharModsCallback.invoke(ptr, dataArr[1], dataArr[2]);
+                            mGLFWCharModsCallback.invoke(ptr, (int)dataArr[1], (int)dataArr[2]);
                         }
                         break;
                     case CallbackBridge.EVENT_TYPE_CURSOR_ENTER:
                         if (mGLFWCursorEnterCallback != null) {
-                            mGLFWCursorEnterCallback.invoke(ptr, dataArr[1] == 1);
+                            mGLFWCursorEnterCallback.invoke(ptr, (int)dataArr[1] == 1);
                         }
                         break;
                     case CallbackBridge.EVENT_TYPE_KEY:
                         if (mGLFWKeyCallback != null) {
-                        	keyDownBuffer[Math.max(0, dataArr[1]-31)]=(byte)(int)dataArr[3];
-                            mGLFWKeyCallback.invoke(ptr, dataArr[1], dataArr[2], dataArr[3], dataArr[4]);
+                        	keyDownBuffer[Math.max(0, (int)dataArr[1]-31)]=(byte)(int)dataArr[3];
+                            mGLFWKeyCallback.invoke(ptr, (int)dataArr[1], (int)dataArr[2], (int)dataArr[3], (int)dataArr[4]);
                         }
                         break;
                     case CallbackBridge.EVENT_TYPE_MOUSE_BUTTON:
                         if (mGLFWMouseButtonCallback != null) {
-                            mGLFWMouseButtonCallback.invoke(ptr, dataArr[1], dataArr[2], dataArr[3]);
+                            mGLFWMouseButtonCallback.invoke(ptr, (int)dataArr[1], (int)dataArr[2], (int)dataArr[3]);
                         }
                         break;
                     case CallbackBridge.EVENT_TYPE_SCROLL:
                         if (mGLFWScrollCallback != null) {
-                            mGLFWScrollCallback.invoke(ptr, dataArr[1], dataArr[2]);
+                            mGLFWScrollCallback.invoke(ptr, (double)dataArr[1], (double)dataArr[2]);
                         }
                         break;
                     case CallbackBridge.EVENT_TYPE_WINDOW_POS:
-                        glfwSetWindowPos(ptr, dataArr[1], dataArr[2]);
+                        glfwSetWindowPos(ptr, (int)dataArr[1], (int)dataArr[2]);
                         break;
                     case CallbackBridge.EVENT_TYPE_FRAMEBUFFER_SIZE:
                     case CallbackBridge.EVENT_TYPE_WINDOW_SIZE:
-                        internalChangeMonitorSize(dataArr[1], dataArr[2]);
+                        internalChangeMonitorSize((int)dataArr[1], (int)dataArr[2]);
                         glfwSetWindowSize(ptr, mGLFWWindowWidth, mGLFWWindowHeight);
-                        if (dataArr[0] == CallbackBridge.EVENT_TYPE_FRAMEBUFFER_SIZE && mGLFWFramebufferSizeCallback != null) {
+                        if ((int)dataArr[0] == CallbackBridge.EVENT_TYPE_FRAMEBUFFER_SIZE && mGLFWFramebufferSizeCallback != null) {
                             mGLFWFramebufferSizeCallback.invoke(ptr, mGLFWWindowWidth, mGLFWWindowHeight);
-                        } else if (dataArr[0] == CallbackBridge.EVENT_TYPE_WINDOW_SIZE && mGLFWWindowSizeCallback != null) {
+                        } else if ((int)dataArr[0] == CallbackBridge.EVENT_TYPE_WINDOW_SIZE && mGLFWWindowSizeCallback != null) {
                             mGLFWWindowSizeCallback.invoke(ptr, mGLFWWindowWidth, mGLFWWindowHeight);
                         }
                         break;
                     default:
-                        System.err.println("GLFWEvent: unknown callback type " + dataArr[0]);
+                        System.err.println("GLFWEvent: unknown callback type " + (int)dataArr[0]);
                         break;
                 }
             }
@@ -1156,7 +1118,7 @@ public class GLFW
             for (Long ptr : mGLFWWindowMap.keySet()) {
                 mGLFWCursorPosCallback.invoke(ptr, mGLFWCursorX, mGLFWCursorY);
             }
-            // System.out.println("CursorPos updated to x=" + mGLFWCursorX + ",y=" + mGLFWCursorY);
+            //System.out.println("CursorPos updated to x=" + mGLFWCursorX + ",y=" + mGLFWCursorY);
         }
     }
 
@@ -1302,4 +1264,140 @@ return false;
 	public static boolean glfwGetGamepadState(int jid, GLFWGamepadState state) {
     	return false;
 	}
+
+    /** Array version of: {@link #glfwGetVersion GetVersion} */
+    public static void glfwGetVersion(@Nullable @NativeType("int *") int[] major, @Nullable @NativeType("int *") int[] minor, @Nullable @NativeType("int *") int[] rev) {
+        if (CHECKS) {
+            checkSafe(major, 1);
+            checkSafe(minor, 1);
+            checkSafe(rev, 1);
+        }
+        major[0] = GLFW_VERSION_MAJOR;
+        minor[0] = GLFW_VERSION_MINOR;
+        rev[0] = GLFW_VERSION_REVISION;
+    }
+
+    /** Array version of: {@link #glfwGetMonitorPos GetMonitorPos} */
+    public static void glfwGetMonitorPos(@NativeType("GLFWmonitor *") long monitor, @Nullable @NativeType("int *") int[] xpos, @Nullable @NativeType("int *") int[] ypos) {
+        if (CHECKS) {
+            // check(monitor);
+            checkSafe(xpos, 1);
+            checkSafe(ypos, 1);
+        }
+        xpos[0] = 0;
+        ypos[0] = 0;
+    }
+
+    /** Array version of: {@link #glfwGetMonitorWorkarea GetMonitorWorkarea} */
+    public static void glfwGetMonitorWorkarea(@NativeType("GLFWmonitor *") long monitor, @Nullable @NativeType("int *") int[] xpos, @Nullable @NativeType("int *") int[] ypos, @Nullable @NativeType("int *") int[] width, @Nullable @NativeType("int *") int[] height) {
+        if (CHECKS) {
+            // check(monitor);
+            checkSafe(xpos, 1);
+            checkSafe(ypos, 1);
+            checkSafe(width, 1);
+            checkSafe(height, 1);
+        }
+
+        xpos[0] = 0;
+        ypos[0] = 0;
+        width[0] = mGLFWWindowWidth;
+        height[0] = mGLFWWindowHeight;
+    }
+
+    /** Array version of: {@link #glfwGetMonitorPhysicalSize GetMonitorPhysicalSize} */
+/*
+    public static void glfwGetMonitorPhysicalSize(@NativeType("GLFWmonitor *") long monitor, @Nullable @NativeType("int *") int[] widthMM, @Nullable @NativeType("int *") int[] heightMM) {
+        long __functionAddress = Functions.GetMonitorPhysicalSize;
+        if (CHECKS) {
+            check(monitor);
+            checkSafe(widthMM, 1);
+            checkSafe(heightMM, 1);
+        }
+        invokePPPV(monitor, widthMM, heightMM, __functionAddress);
+    }
+*/
+
+    /** Array version of: {@link #glfwGetMonitorContentScale GetMonitorContentScale} */
+/*
+    public static void glfwGetMonitorContentScale(@NativeType("GLFWmonitor *") long monitor, @Nullable @NativeType("float *") float[] xscale, @Nullable @NativeType("float *") float[] yscale) {
+        long __functionAddress = Functions.GetMonitorContentScale;
+        if (CHECKS) {
+            check(monitor);
+            checkSafe(xscale, 1);
+            checkSafe(yscale, 1);
+        }
+        invokePPPV(monitor, xscale, yscale, __functionAddress);
+    }
+*/
+
+    /** Array version of: {@link #glfwGetWindowPos GetWindowPos} */
+    public static void glfwGetWindowPos(@NativeType("GLFWwindow *") long window, @Nullable @NativeType("int *") int[] xpos, @Nullable @NativeType("int *") int[] ypos) {
+        if (CHECKS) {
+            // check(window);
+            checkSafe(xpos, 1);
+            checkSafe(ypos, 1);
+        }
+        xpos[0] = 0;
+        ypos[0] = 0;
+    }
+
+    /** Array version of: {@link #glfwGetWindowSize GetWindowSize} */
+    public static void glfwGetWindowSize(@NativeType("GLFWwindow *") long window, @Nullable @NativeType("int *") int[] width, @Nullable @NativeType("int *") int[] height) {
+        if (CHECKS) {
+            // check(window);
+            checkSafe(width, 1);
+            checkSafe(height, 1);
+        }
+        width[0] = internalGetWindow(window).width;
+        height[0] = internalGetWindow(window).height;
+    }
+
+    /** Array version of: {@link #glfwGetFramebufferSize GetFramebufferSize} */
+    public static void glfwGetFramebufferSize(@NativeType("GLFWwindow *") long window, @Nullable @NativeType("int *") int[] width, @Nullable @NativeType("int *") int[] height) {
+        if (CHECKS) {
+            // check(window);
+            checkSafe(width, 1);
+            checkSafe(height, 1);
+        }
+        width[0] = internalGetWindow(window).width;
+        height[0] = internalGetWindow(window).height;
+    }
+
+    /** Array version of: {@link #glfwGetWindowFrameSize GetWindowFrameSize} */
+    public static void glfwGetWindowFrameSize(@NativeType("GLFWwindow *") long window, @Nullable @NativeType("int *") int[] left, @Nullable @NativeType("int *") int[] top, @Nullable @NativeType("int *") int[] right, @Nullable @NativeType("int *") int[] bottom) {
+        if (CHECKS) {
+            // check(window);
+            checkSafe(left, 1);
+            checkSafe(top, 1);
+            checkSafe(right, 1);
+            checkSafe(bottom, 1);
+        }
+        left[0] = top[0] = 0;
+        right[0] = internalGetWindow(window).width;
+        bottom[0] = internalGetWindow(window).height;
+    }
+
+    /** Array version of: {@link #glfwGetWindowContentScale GetWindowContentScale} */
+/*
+    public static void glfwGetWindowContentScale(@NativeType("GLFWwindow *") long window, @Nullable @NativeType("float *") float[] xscale, @Nullable @NativeType("float *") float[] yscale) {
+        long __functionAddress = Functions.GetWindowContentScale;
+        if (CHECKS) {
+            check(window);
+            checkSafe(xscale, 1);
+            checkSafe(yscale, 1);
+        }
+        invokePPPV(window, xscale, yscale, __functionAddress);
+    }
+*/
+
+    /** Array version of: {@link #glfwGetCursorPos GetCursorPos} */
+    public static void glfwGetCursorPos(@NativeType("GLFWwindow *") long window, @Nullable @NativeType("double *") double[] xpos, @Nullable @NativeType("double *") double[] ypos) {
+        if (CHECKS) {
+            // check(window);
+            checkSafe(xpos, 1);
+            checkSafe(ypos, 1);
+        }
+        xpos[0] = mGLFWCursorX;
+        ypos[0] = mGLFWCursorY;
+    }
 }

@@ -4,16 +4,6 @@ title: "[Info] <Short description>"
 labels: [documentation]
 body:
 - type: textarea
-  id: version
-  attributes:
-    label: Describe the bug
-    description: |
-      A clear and concise description of what the bug is.
-    placeholder: 'Example: Login results in a crash'
-  validations:
-    required: true
-
-- type: textarea
   attributes:
     label: Add some background
     description: |

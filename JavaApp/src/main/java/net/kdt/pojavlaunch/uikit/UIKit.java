@@ -12,7 +12,8 @@ public class UIKit {
     public static final int ACTION_DOWN = 0;
     public static final int ACTION_UP = 1;
     public static final int ACTION_MOVE = 2;
-    
+    public static final int ACTION_MOVE_MOTION = 3;
+
     private static int guiScale;
 
     private static void patch_FlatLAF_setLinux() {
@@ -104,7 +105,7 @@ public class UIKit {
         PLaunchApp.launchMinecraft();
     }
     
-    public static void callback_SurfaceViewController_onTouch(int event, int x, int y) {
+    public static void callback_SurfaceViewController_onTouch(int event, float x, float y) {
         switch (event) {
             case ACTION_DOWN:
             case ACTION_UP:
@@ -123,6 +124,10 @@ public class UIKit {
                     CallbackBridge.mouseY = y;
                 }
                 break;
+
+            case ACTION_MOVE_MOTION:
+                CallbackBridge.mouseX += x;
+                CallbackBridge.mouseY += y;
         }
         CallbackBridge.mouseLastX = x;
         CallbackBridge.mouseLastY = y;

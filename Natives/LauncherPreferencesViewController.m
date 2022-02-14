@@ -20,6 +20,10 @@
 #define RMGDIR 12
 #define SLIDEHOTBAR 13
 #define SAFEAREA 14
+#define HOMESYM 15
+#define RELAUNCH 16
+#define ERASEPREF 17
+#define ARCCAPES 18
 
 #define TAG_BTNSCALE 98
 #define TAG_RESOLUTION 99
@@ -51,6 +55,13 @@
 
 #define TAG_SAFEAREA 113
 
+#define TAG_HOMESYM 114
+
+#define TAG_RELAUNCH 115
+
+#define TAG_ERASEPREF 116
+
+#define TAG_ARCCAPES 117
 @interface LauncherPreferencesViewController () <UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDelegate> {
 }
 
@@ -78,6 +89,7 @@ UIScrollView *scrollView;
 NSString *gl4es114 = @"GL4ES 1.1.4 - exports OpenGL 2.1";
 NSString *gl4es115 = @"GL4ES 1.1.5 (1.16+) - exports OpenGL 2.1";
 NSString *tinygl4angle = @"tinygl4angle (1.17+) - exports OpenGL 3.2 (Core Profile, limited)";
+NSString *vgpu = @"vgpu 1.3.6 - exports OpenGL 3.0";
 NSString *zink = @"Zink (Mesa 21.0) - exports OpenGL 4.1";
 NSString *virglrenderer = @"virglrenderer - exports OpenGL 4.1";
 NSString *java8jben = @"Java 8";
@@ -91,6 +103,7 @@ NSString *libsjava8;
 NSString *lib_gl4es114 = @"libgl4es_114.dylib";
 NSString *lib_gl4es115 = @"libgl4es_115.dylib";
 NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
+NSString *lib_vgpu = @"libvgpu.dylib";
 NSString *lib_zink = @"libOSMesaOverride.dylib";
 NSString *lib_virglrenderer = @"libOSMesa.8.dylib";
 
@@ -100,7 +113,7 @@ int tempIndex;
 {
     [super viewDidLoad];
     viewController = self;
-    
+
     [self setTitle:@"Preferences"];
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
@@ -109,7 +122,21 @@ int tempIndex;
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height) - self.navigationController.navigationBar.frame.size.height;
     CGFloat currY = 8.0;
-    
+/*
+    javaDict = @{
+        @"/usr/lib/jvm/java-8-openjdk": @"Java 8",
+        @"/usr/lib/jvm/java-16-openjdk": @"Java 16",
+        @"/usr/lib/jvm/java-17-openjdk": @"Java 17",
+        [NSString stringWithFormat:@"%s/jre8", getenv("POJAV_HOME")], @"Java 8 (sandbox)"
+    };
+    rendererDict = @{
+        @"libgl4es_114.dylib": @"GL4ES 1.1.4 - exports OpenGL 2.1",
+        @"libgl4es_115.dylib": @"GL4ES 1.1.5 (1.16+) - exports OpenGL 2.1",
+        @"libtinygl4angle.dylib": @"tinygl4angle (1.17+) - exports OpenGL 3.2 (Core Profile, limited)",
+        @"libvgpu.dylib": @"vgpu 1.3.6 - exports OpenGL 3.0",
+        @"libOSMesaOverride.dylib": @"Zink (Mesa 21.0) - exports OpenGL 4.1"
+    };
+*/
     scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
     [self.view addSubview:scrollView];
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -217,6 +244,7 @@ int tempIndex;
     rendTextField.tag = TAG_REND;
     rendTextField.delegate = self;
     rendTextField.placeholder = @"Override renderer...";
+    //rendTextField.text = self.rendererDict[getPreference(@"renderer")];
     if ([getPreference(@"renderer") isEqualToString:lib_gl4es114]) {
         rendTextField.text = gl4es114;
         tempIndex = 0;
@@ -226,12 +254,15 @@ int tempIndex;
     } else if ([getPreference(@"renderer") isEqualToString:lib_tinygl4angle]) {
         rendTextField.text = tinygl4angle;
         tempIndex = 2;
+    } else if ([getPreference(@"renderer") isEqualToString:lib_vgpu]) {
+        rendTextField.text = vgpu;
+        tempIndex = 3;
     } else if ([getPreference(@"renderer") isEqualToString:lib_zink]) {
         rendTextField.text = zink;
-        tempIndex = 3;
+        tempIndex = 4;
     } else if ([getPreference(@"renderer") isEqualToString:lib_virglrenderer]) {
         rendTextField.text = virglrenderer;
-        tempIndex = 4;
+        tempIndex = 5;
     }
     
     rendTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
@@ -242,6 +273,7 @@ int tempIndex;
     [rendererList addObject:gl4es114];
     [rendererList addObject:gl4es115];
     [rendererList addObject:tinygl4angle];
+    [rendererList addObject:vgpu];
     [rendererList addObject:zink];
     [rendererList addObject:virglrenderer];
     
@@ -271,7 +303,7 @@ int tempIndex;
     jhomeTextField.tag = TAG_JHOME;
     jhomeTextField.delegate = self;
     jhomeTextField.placeholder = @"Override Java path...";
-    
+
     libsjava8 = [NSString stringWithFormat:@"%s/jre8", getenv("POJAV_HOME")];
     if(getenv("POJAV_DETECTEDJB")) {
         if ([getPreference(@"java_home") isEqualToString:libsjava8jben]) {
@@ -472,6 +504,54 @@ int tempIndex;
     [debugLogSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:debugLogSwitch];
     
+    UILabel *homesymTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
+    homesymTextView.text = @"Disable home symlink";
+    homesymTextView.numberOfLines = 0;
+    [homesymTextView sizeToFit];
+    [tableView addSubview:homesymTextView];
+
+    UISwitch *homesymSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
+    homesymSwitch.tag = TAG_HOMESYM;
+    [homesymSwitch setOn:[getPreference(@"disable_home_symlink") boolValue] animated:NO];
+    [homesymSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    [tableView addSubview:homesymSwitch];
+    
+    UILabel *relaunchTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
+    relaunchTextView.text = @"Restart before launching game";
+    relaunchTextView.numberOfLines = 0;
+    [relaunchTextView sizeToFit];
+    [tableView addSubview:relaunchTextView];
+
+    UISwitch *relaunchSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
+    relaunchSwitch.tag = TAG_RELAUNCH;
+    [relaunchSwitch setOn:[getPreference(@"restart_before_launch") boolValue] animated:NO];
+    [relaunchSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    [tableView addSubview:relaunchSwitch];
+    
+    UILabel *erasePrefTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
+    erasePrefTextView.text = @"Reset all settings";
+    erasePrefTextView.numberOfLines = 0;
+    [erasePrefTextView sizeToFit];
+    [tableView addSubview:erasePrefTextView];
+
+    UISwitch *erasePrefSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
+    erasePrefSwitch.tag = TAG_ERASEPREF;
+    [erasePrefSwitch setOn:NO animated:NO];
+    [erasePrefSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    [tableView addSubview:erasePrefSwitch];
+    
+    UILabel *arcCapesTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
+    arcCapesTextView.text = @"Enable Arc capes";
+    arcCapesTextView.numberOfLines = 0;
+    [arcCapesTextView sizeToFit];
+    [tableView addSubview:arcCapesTextView];
+
+    UISwitch *arcCapesSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
+    arcCapesSwitch.tag = TAG_ARCCAPES;
+    [arcCapesSwitch setOn:[getPreference(@"arccapes_enable") boolValue] animated:NO];
+    [arcCapesSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    [tableView addSubview:arcCapesSwitch];
+    
     CGRect frame = tableView.frame;
     frame.size.height = currY+=44;
     tableView.frame = frame;
@@ -510,6 +590,14 @@ int tempIndex;
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:TYPESEL];}],
             [UIAction actionWithTitle:@"Debug logging" image:[[UIImage systemImageNamed:@"doc.badge.gearshape"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:DEBUGLOG];}],
+            [UIAction actionWithTitle:@"Home symlink" image:[[UIImage systemImageNamed:@"link"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:HOMESYM];}],
+            [UIAction actionWithTitle:@"Restart before launching game" image:[[UIImage systemImageNamed:@"arrowtriangle.left.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:RELAUNCH];}],
+            [UIAction actionWithTitle:@"Reset preferences" image:[[UIImage systemImageNamed:@"trash"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:ERASEPREF];}],
+            [UIAction actionWithTitle:@"Enable Arc capes" image:[[UIImage systemImageNamed:@"square.and.arrow.down"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:ARCCAPES];}],
         ]];
         self.navigationItem.rightBarButtonItem.action = nil;
         self.navigationItem.rightBarButtonItem.primaryAction = nil;
@@ -571,6 +659,8 @@ int tempIndex;
             setPreference(@"renderer", lib_gl4es115);
         } else if ([textField.text isEqualToString:tinygl4angle]) {
             setPreference(@"renderer", lib_tinygl4angle);
+        } else if ([textField.text isEqualToString:vgpu]) {
+            setPreference(@"renderer", lib_vgpu);
         } else if ([textField.text isEqualToString:zink]) {
             setPreference(@"renderer", lib_zink);
         } else if ([textField.text isEqualToString:virglrenderer]) {
@@ -781,6 +871,10 @@ int tempIndex;
         UIAlertAction *resetwarn = [UIAlertAction actionWithTitle:@"Reset warnings" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:RESETWARN];}];
         UIAlertAction *typesel = [UIAlertAction actionWithTitle:@"Type switches" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:TYPESEL];}];
         UIAlertAction *debuglog = [UIAlertAction actionWithTitle:@"Debug logging" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:DEBUGLOG];}];
+        UIAlertAction *homesym = [UIAlertAction actionWithTitle:@"Home symlink" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:HOMESYM];}];
+        UIAlertAction *relaunch = [UIAlertAction actionWithTitle:@"Restart before launching game" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:RELAUNCH];}];
+        UIAlertAction *erasepref = [UIAlertAction actionWithTitle:@"Reset preferences" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:ERASEPREF];}];
+        UIAlertAction *arccapes = [UIAlertAction actionWithTitle:@"Enable Arc capes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:ARCCAPES];}];
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
         [self setPopoverProperties:helpAlert.popoverPresentationController sender:(UIButton *)self.navigationItem.rightBarButtonItem];
         [self presentViewController:helpAlert animated:YES completion:nil];
@@ -797,6 +891,10 @@ int tempIndex;
         [helpAlert addAction:resetwarn];
         [helpAlert addAction:typesel];
         [helpAlert addAction:debuglog];
+        [helpAlert addAction:relaunch];
+        [helpAlert addAction:homesym];
+        [helpAlert addAction:erasepref];
+        [helpAlert addAction:arccapes];
         [helpAlert addAction:cancel];
     }
 }
@@ -843,6 +941,21 @@ int tempIndex;
     } else if(setting == DEBUGLOG) {
         title = @"Enable debug logging";
         message = @"This option logs internal settings and actions to latestlog.txt. This helps the developers find issues easier, but Minecraft may run slower as the logs will be written to more often.";
+    } else if(setting == HOMESYM) {
+        title = @"Disable home symlink";
+        message = @"This option disables the home symlink to /var/mobile/Documents/.pojavlauncher from the new game directory.";
+    } else if(setting == RELAUNCH) {
+        title = @"Restart before launching game";
+        message = @"This option allows the launcher to restart itself before launching the game, therefore all changes are applied such as JVM Arguments and Java version. The restart mechanism doesn't always work, so a toggle is here for now.";
+    } else if (setting == ERASEPREF) {
+        title = @"Reset preferences";
+        message = @"This option resets the launcher preferences to their initial state.";
+    } else if (setting == ARCCAPES) {
+        title = @"Enable Arc capes";
+        message = @"This option allows you to switch from the OptiFine cape service to Arc. See more about Arc on our website.";
+    } else {
+        title = @"Error";
+        message = [NSString stringWithFormat:@"The setting %d hasn't been specified with a description.", setting];
     }
     UIAlertController *helpAlertOpt = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
@@ -920,6 +1033,53 @@ int tempIndex;
         case TAG_DEBUGLOG:
             setPreference(@"debug_logging", @(sender.isOn));
             [LauncherViewController fetchVersionList];
+            break;
+        case TAG_HOMESYM:
+            setPreference(@"disable_home_symlink", @(sender.isOn));
+            if([getPreference(@"disable_home_symlink") boolValue] == YES){
+                NSString *message = [NSString stringWithFormat:@"This will remove the link at /var/mobile/Documents/.pojavlauncher. The new directory is %s.", getenv("POJAV_HOME")];
+                UIAlertController *homesymWarn = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:message preferredStyle:UIAlertControllerStyleActionSheet];
+                [self setPopoverProperties:homesymWarn.popoverPresentationController sender:(UIButton *)sender];
+                UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Continue" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[[NSFileManager defaultManager] removeItemAtPath:@"/var/mobile/Documents/.pojavlauncher" error:nil];}];
+                UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+                [self presentViewController:homesymWarn animated:YES completion:nil];
+                [homesymWarn addAction:cancel];
+                [homesymWarn addAction:ok];
+            } else {
+                NSString *message = [NSString stringWithFormat:@"This will create a link to %s at /var/mobile/Documents/.pojavlauncher. This option will be removed in a future release.", getenv("POJAV_HOME")];
+                UIAlertController *homesymWarn = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:message preferredStyle:UIAlertControllerStyleActionSheet];
+                [self setPopoverProperties:homesymWarn.popoverPresentationController sender:(UIButton *)sender];
+                UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Continue" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {symlink("/usr/share/pojavlauncher", "/var/mobile/Documents/.pojavlauncher");}];
+                UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+                [self presentViewController:homesymWarn animated:YES completion:nil];
+                [homesymWarn addAction:cancel];
+                [homesymWarn addAction:ok];
+            }
+            break;
+        case TAG_RELAUNCH:
+            setPreference(@"restart_before_launch", @(sender.isOn));
+            break;
+        case TAG_ERASEPREF:
+            {
+                NSString *prefFile = [NSString stringWithFormat:@"%s/launcher_preferences.plist", getenv("POJAV_HOME")];
+                UIAlertController *eraseprefWarn = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:@"This will remove all of your custom preferences, including resolution, button size, and Java arguments." preferredStyle:UIAlertControllerStyleActionSheet];
+                [self setPopoverProperties:eraseprefWarn.popoverPresentationController sender:(UIButton *)sender];
+                UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Continue" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    [[NSFileManager defaultManager] removeItemAtPath:prefFile error:nil];
+                    UIAlertController *eraseprefPost = [UIAlertController alertControllerWithTitle:@"Preferences reset" message:@"The next time you open PojavLauncher, all of the default settings will be restored." preferredStyle:UIAlertControllerStyleActionSheet];
+                    [self setPopoverProperties:eraseprefWarn.popoverPresentationController sender:(UIButton *)sender];
+                    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+                    [self presentViewController:eraseprefPost animated:YES completion:nil];
+                    [eraseprefPost addAction:cancel];
+                }];
+                UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+                [self presentViewController:eraseprefWarn animated:YES completion:nil];
+                [eraseprefWarn addAction:cancel];
+                [eraseprefWarn addAction:ok];
+            }
+            break;
+        case TAG_ARCCAPES:
+            setPreference(@"arccapes_enable", @(sender.isOn));
             break;
         default:
             NSLog(@"what does switch %ld for? implement me!", sender.tag);

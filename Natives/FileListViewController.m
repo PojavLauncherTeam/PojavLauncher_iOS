@@ -69,7 +69,11 @@
 
         NSString *str = [self.fileList objectAtIndex:indexPath.row];
         NSFileManager *fm = [NSFileManager defaultManager];
-        [fm removeItemAtPath:[NSString stringWithFormat:@"%@/%@.json", self.listPath, str] error:nil];
+        NSString *path = [NSString stringWithFormat:@"%@/%@.json", self.listPath, str];
+        if (self.whenDelete != nil) {
+            self.whenDelete(path);
+        }
+        [fm removeItemAtPath:path error:nil];
         [self.fileList removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }

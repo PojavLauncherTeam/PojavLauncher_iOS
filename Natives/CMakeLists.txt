@@ -1,9 +1,16 @@
 cmake_minimum_required(VERSION 3.6)
 project(PojavLauncher)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcommon -fobjc-arc -ObjC -I'${CMAKE_CURRENT_LIST_DIR}/resources/Frameworks/MetalANGLE.framework/Headers' -I'${CMAKE_CURRENT_LIST_DIR}/external/DBNumberedSlider/Classes' -I'${CMAKE_CURRENT_LIST_DIR}/external/fishhook' -I'${CMAKE_CURRENT_LIST_DIR}/external_include'"
-)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcommon -fobjc-arc -ObjC")
 set(CMAKE_C_FLAGS_DEBUG "-funwind-tables -g")
+
+include_directories(
+  "resources/Frameworks/Alderis.framework/Headers"
+  "resources/Frameworks/MetalANGLE.framework/Headers"
+  "external/DBNumberedSlider/Classes"
+  "external/fishhook"
+  "external/zink"
+)
 
 # For cacio support library
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -rpath /usr/lib/jvm/java-8-openjdk/lib")
@@ -36,6 +43,7 @@ find_library(OSMESA_LIB libOSMesa.8.dylib)
 add_library(libOSMesaOverride.dylib SHARED gl_mesa3d_patch.m)
 set_target_properties(libOSMesaOverride.dylib PROPERTIES
     FRAMEWORK TRUE
+    MACOSX_FRAMEWORK_IDENTIFIER dylib.mesa3d.libOSMesaOverride
 )
 target_link_libraries(libOSMesaOverride.dylib ${OSMESA_LIB})
 
@@ -50,6 +58,7 @@ add_executable(PojavLauncher
   CustomControlsViewController.m
   FileListViewController.m
   JavaGUIViewController.m
+  KeyboardInput.m
   LauncherFAQViewController.m
   LauncherPreferences.m
   LauncherPreferencesViewController.m
@@ -69,12 +78,17 @@ add_executable(PojavLauncher
   log.m
   utils.m
 )
+
 target_link_libraries(PojavLauncher
   "-F'${CMAKE_CURRENT_LIST_DIR}/build'"
+  "-F'${CMAKE_CURRENT_LIST_DIR}/resources/Frameworks'"
   "-framework AuthenticationServices"
   "-framework CoreGraphics"
+  "-framework GameController"
   "-framework QuartzCore"
   "-framework UIKit"
+  "-framework SafariServices"
+  "-framework WebKit"
 )
 set_target_properties(PojavLauncher PROPERTIES
   MACOSX_BUNDLE TRUE

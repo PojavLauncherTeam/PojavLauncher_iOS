@@ -221,12 +221,12 @@ int pojavInit() {
     mainThreadID = gettid();
 
     NSString *renderer = @(getenv("RENDERER"));
-
+    BOOL isVGPU = [renderer hasPrefix:@"libvgpu"];
     if ([renderer isEqualToString:@"libOSMesa.8.dylib"]) {
         config_renderer = RENDERER_VIRGL;
         setenv("GALLIUM_DRIVER", "virpipe", 1);
         loadSymbolsVirGL();
-    } else if ([renderer hasPrefix:@"libgl4es"] || [renderer hasPrefix:@"libtinygl4angle"]) {
+    } else if ([renderer hasPrefix:@"libgl4es"] || [renderer hasPrefix:@"libtinygl4angle"] || isVGPU) {
         config_renderer = RENDERER_MTL_ANGLE;
         loadSymbols();
     } else if ([renderer hasPrefix:@"libOSMesa"]) {
@@ -282,13 +282,15 @@ int pojavInit() {
 
         //ANativeWindow_setBuffersGeometry(potatoBridge.androidWindow, 0, 0, vid);
 
-        if (!eglBindAPI_p(EGL_OPENGL_API)) {
-            NSLog(@"EGLBridge: Failed to bind EGL_OPENGL_API, fallbacking to EGL_OPENGL_ES_API, error=0x%x", eglGetError_p());
+        if (/*!isVGPU &&*/ !eglBindAPI_p(EGL_OPENGL_API)) {
+            NSLog(@"EGLBridge: Failed to bind EGL_OPENGL_API, falling back to EGL_OPENGL_ES_API, error=0x%x", eglGetError_p());
+            eglBindAPI_p(EGL_OPENGL_ES_API);
+        } else if (isVGPU) {
             eglBindAPI_p(EGL_OPENGL_ES_API);
         }
 
         potatoBridge.eglSurface = eglCreateWindowSurface_p(potatoBridge.eglDisplay, config, (__bridge EGLNativeWindowType) ((SurfaceViewController *)viewController).surfaceView.layer, NULL);
-        NSLog(@"Layer %@", ((SurfaceViewController *)viewController).surfaceView.layer);
+        //NSLog(@"Layer %@", ((SurfaceViewController *)viewController).surfaceView.layer);
 
         if (!potatoBridge.eglSurface) {
             NSLog(@"EGLBridge: Error eglCreateWindowSurface failed: 0x%x", eglGetError_p());

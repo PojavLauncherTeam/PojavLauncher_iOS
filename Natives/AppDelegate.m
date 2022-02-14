@@ -1,6 +1,7 @@
 #import "AppDelegate.h"
 #import "LoginViewController.h"
 #import "SceneDelegate.h"
+#import "ios_uikit_bridge.h"
 
 @implementation AppDelegate
 
@@ -8,10 +9,8 @@
     if (@available(iOS 13.0, *)) {
         
     } else {
-        LoginViewController *vc = [[LoginViewController alloc] init];
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
         self.window = ([[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]]);
-        self.window.rootViewController = nav;
+        launchInitialViewController(self.window);
         [self.window makeKeyAndVisible];
     }
     

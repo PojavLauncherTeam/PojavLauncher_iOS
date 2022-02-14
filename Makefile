@@ -2,7 +2,7 @@ SHELL := /bin/bash
 .SHELLFLAGS = -ec
 
 # Prerequisite variables
-SOURCEDIR   := $(shell pwd)
+SOURCEDIR   := $(shell printf "%q\n" "$(shell pwd)")
 OUTPUTDIR   := $(SOURCEDIR)/artifacts
 WORKINGDIR  := $(SOURCEDIR)/Natives/build
 DETECTPLAT  := $(shell uname -s)
@@ -62,7 +62,15 @@ POJAV_BUNDLE_DYLIBS ?= $(shell cd "$(POJAV_BUNDLE_DIR)/Frameworks" && echo *.dyl
 POJAV_JRE_DYLIBS    ?= $(shell cd "$(POJAV_JRE_DIR)" && find . -name "*.dylib")
 
 # Function to use later for checking dependencies
-DEPCHECK    = $(shell type $(1) >/dev/null 2>&1 && echo 1)
+DEPCHECK   = $(shell type $(1) >/dev/null 2>&1 && echo 1)
+
+# Function to modify Info.plist files
+INFOPLIST  =  \
+	if [ '$(4)' = '0' ]; then \
+		plutil -replace $(1) -string $(2) $(3); \
+	else \
+		plutil -value $(2) -key $(1) $(3); \
+	fi
 
 # Function to use for packaging
 PACKAGING  =  \
@@ -112,30 +120,40 @@ DIRCHECK   = \
 # Function to copy + install
 INSTALL    = \
 	echo 'Please note that this may not work properly. If it doesn'\''t work for you, you can manually extract the .deb in /var/tmp/net.kdt.pojavlauncher.$(1)_$(VERSION)_$(2).deb with dpkg or Filza.'; \
-	scp -P $(DEVICE_PORT) $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)_$(VERSION)_$(2).deb root@$(DEVICE_IP):/var/tmp/net.kdt.pojavlauncher.$(1)_$(VERSION)_$(2).deb; \
-	ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t "dpkg -i /var/tmp/net.kdt.pojavlauncher.$(1)_$(VERSION)_$(2).deb; uicache -p $(3)/Applications/PojavLauncher.app"
+	if [ '$(4)' = '0' ]; then \
+		scp -P $(DEVICE_PORT) $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)_$(VERSION)_$(2).deb root@$(DEVICE_IP):/var/tmp/net.kdt.pojavlauncher.$(1)_$(VERSION)_$(2).deb; \
+		ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t "dpkg -i /var/tmp/net.kdt.pojavlauncher.$(1)_$(VERSION)_$(2).deb; uicache -p $(3)/Applications/PojavLauncher.app"; \
+	else \
+		sudo dpkg -i $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)_$(VERSION)_$(2).deb; uicache -p $(3)/Applications/PojavLauncher.app; \
+	fi
 
 # Function to copy + deploy
 DEPLOY     = \
 	ldid -S$(SOURCEDIR)/entitlements.xml $(WORKINGDIR)/PojavLauncher.app/PojavLauncher; \
-	scp -r -P $(DEVICE_PORT) -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" \
-		$(WORKINGDIR)/libOSMesaOverride.dylib.framework \
-		$(WORKINGDIR)/PojavCore.framework \
-		$(WORKINGDIR)/libawt_xawt.dylib \
-		$(WORKINGDIR)/PojavLauncher.app/PojavLauncher \
-		$(SOURCEDIR)/JavaApp/local_out/launcher.jar \
-		root@$(DEVICE_IP):/var/tmp/; \
-	ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t " \
-		mv /var/tmp/libawt_xawt.dylib $(1)/Applications/PojavLauncher.app/Frameworks/libawt_xawt.dylib && \
-		rm -rf $(1)/Applications/PojavLauncher.app/Frameworks/libOSMesaOverride.dylib.framework && \
-		mv /var/tmp/libOSMesaOverride.dylib.framework $(1)/Applications/PojavLauncher.app/Frameworks/libOSMesaOverride.dylib.framework && \
-		rm -rf $(1)/Applications/PojavLauncher.app/Frameworks/PojavCore.framework && \
-		mv /var/tmp/PojavCore.framework $(1)/Applications/PojavLauncher.app/Frameworks/PojavCore.framework && \
-		mv /var/tmp/PojavLauncher $(1)/Applications/PojavLauncher.app/PojavLauncher && \
-		mv /var/tmp/launcher.jar $(1)/Applications/PojavLauncher.app/libs/launcher.jar && \
-		cd $(1)/Applications/PojavLauncher.app/Frameworks && \
-		ln -sf libawt_xawt.dylib libawt_headless.dylib && killall PojavLauncher && \
-		chown -R 501:501 $(1)/Applications/PojavLauncher.app/*"
+	if [ '$(2)' = '0' ]; then \
+		scp -r -P $(DEVICE_PORT) -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" \
+			$(WORKINGDIR)/libOSMesaOverride.dylib.framework \
+			$(WORKINGDIR)/libawt_xawt.dylib \
+			$(WORKINGDIR)/PojavLauncher.app/PojavLauncher \
+			$(SOURCEDIR)/JavaApp/local_out/launcher.jar \
+			root@$(DEVICE_IP):/var/tmp/; \
+		ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t " \
+			mv /var/tmp/libawt_xawt.dylib $(1)/Applications/PojavLauncher.app/Frameworks/libawt_xawt.dylib && \
+			mv /var/tmp/libOSMesaOverride.dylib.framework $(1)/Applications/PojavLauncher.app/Frameworks/libOSMesaOverride.dylib.framework && \
+			mv /var/tmp/PojavLauncher $(1)/Applications/PojavLauncher.app/PojavLauncher && \
+			mv /var/tmp/launcher.jar $(1)/Applications/PojavLauncher.app/libs/launcher.jar && \
+			cd $(1)/Applications/PojavLauncher.app/Frameworks && \
+			ln -sf libawt_xawt.dylib libawt_headless.dylib && \
+			chown -R 501:501 $(1)/Applications/PojavLauncher.app/*"; \
+	else \
+		sudo mv $(WORKINGDIR)/libawt_xawt.dylib $(1)/Applications/PojavLauncher.app/Frameworks/libawt_xawt.dylib; \
+		sudo mv $(WORKINGDIR)/libOSMesaOverride.dylib.framework $(1)/Applications/PojavLauncher.app/Frameworks/libOSMesaOverride.dylib.framework; \
+		sudo mv $(WORKINGDIR)/PojavLauncher $(1)/Applications/PojavLauncher.app/PojavLauncher; \
+		sudo mv $(WORKINGDIR)/launcher.jar $(1)/Applications/PojavLauncher.app/libs/launcher.jar; \
+		cd $(1)/Applications/PojavLauncher.app/Frameworks; \
+		sudo ln -sf libawt_xawt.dylib libawt_headless.dylib; \
+		sudo chown -R 501:501 $(1)/Applications/PojavLauncher.app/*; \
+	fi
 
 # Make sure everything is already available for use. Error if they require something
 ifeq ($(call HAS_COMMAND,cmake --version),1)
@@ -164,6 +182,16 @@ ifeq ($(call HAS_COMMAND,dpkg-deb --version),1)
 $(error You need to install dpkg-dev)
 endif
 
+ifeq ($(call HAS_COMMAND,nproc --version),1)
+ifeq ($(call HAS_COMMAND,gnproc --version),1)
+$(warning Unable to determine number of threads, defaulting to 2.)
+JOBS   ?= 2
+else
+JOBS   ?= $(shell gnproc)
+endif
+else
+JOBS   ?= $(shell nproc)
+endif
 
 # Now for the actual Makefile recipes.
 #  all     - runs clean, native, java, extras, and package.
@@ -187,6 +215,7 @@ check:
 	@printf 'SOURCEDIR            - $(SOURCEDIR)\n'
 	@printf 'WORKINGDIR           - $(WORKINGDIR)\n'
 	@printf 'OUTPUTDIR            - $(OUTPUTDIR)\n'
+	@printf 'JOBS                 - $(JOBS)\n'
 	@printf 'VERSION              - $(VERSION)\n'
 	@printf 'COMMIT               - $(COMMIT)\n'
 	@printf 'RELEASE              - $(RELEASE)\n'
@@ -213,7 +242,9 @@ native:
 		-DCONFIG_COMMIT="$(COMMIT)" \
 		-DCONFIG_RELEASE=$(RELEASE) \
 		..
-	@cd $(WORKINGDIR) && cmake --build . --config $(CMAKE_BUILD_TYPE) --target awt_headless awt_xawt libOSMesaOverride.dylib PojavLauncher
+
+	@cmake --build $(WORKINGDIR) --config $(CMAKE_BUILD_TYPE) -j$(JOBS)
+	# --target awt_headless awt_xawt libOSMesaOverride.dylib PojavLauncher
 	@rm $(WORKINGDIR)/libawt_headless.dylib
 	@echo 'Building PojavLauncher $(VERSION) - NATIVES - End'
 
@@ -264,9 +295,9 @@ deb: native java extras
 	@echo 'Building PojavLauncher $(VERSION) - DEB - Start'
 
 		
-#ipa: native java extras
-#	echo 'Building PojavLauncher $(VERSION) - IPA - Start'
-#	cd $(OUTPUTDIR); \
+ipa: native java extras
+	echo 'Building PojavLauncher $(VERSION) - IPA - Start'
+	cd $(OUTPUTDIR); \
 	$(call DIRCHECK,$(OUTPUTDIR)/Payload); \
 	cp -R $(POJAV_BUNDLE_DIR) $(OUTPUTDIR)/Payload; \
 	rm -rf $(OUTPUTDIR)/Payload/PojavLauncher.app/Frameworks/*.dylib; \
@@ -279,43 +310,47 @@ deb: native java extras
 	$(call DIRCHECK,$(OUTPUTDIR)/IPABuilder); \
 	mkdir -p $(OUTPUTDIR)/IPABuilder/{OpenJDK/{Frameworks,jre/lib/jli,jre/lib/server},PojavCore/Frameworks}; \
 	cd $(OUTPUTDIR)/IPABuilder/OpenJDK/Frameworks; \
+	touch $(OUTPUTDIR)/IPABuilder/int.txt; \
 	for dylib in $(POJAV_JRE_DYLIBS); do \
 	  dylib_name=$$(basename $$dylib); \
-	  mkdir -p $${dylib_name}.framework; \
-	  cd $${dylib_name}.framework; \
+	  mkdir -p $$dylib_name.framework; \
+	  cd $$dylib_name.framework; \
 	  cp $(SOURCEDIR)/depends/Info.plist Info.plist; \
-	  defaults write "$$PWD/Info.plist" CFBundleExecutable $$dylib_name; \
-	  defaults write "$$PWD/Info.plist" CFBundleIdentifier "net.kdt.pojavlauncher.openjdk8_$$dylib_name"; \
-	  defaults write "$$PWD/Info.plist" CFBundleName $$dylib_name; \
+	  plist=$$(pwd)/Info.plist; \
+	  $(call INFOPLIST,CFBundleExecutable,$$dylib_name,$$plist,$(IOS)); \
+	  $(call INFOPLIST,CFBundleName,$$dylib_name,$$plist,$(IOS)); \
+	  $(call INFOPLIST,CFBundleIdentifier,"net.kdt.pojavlauncher.$$dylib_name",$$plist,$(IOS)); \
 	  mv $(OUTPUTDIR)/Payload/PojavLauncher.app/jre/$$dylib $$dylib_name; \
-	  RPATH_LIST+="-add_rpath @loader_path/../${dylib_name}.framework "; \
+	  RPATH_LIST+="-add_rpath @loader_path/../$$dylib_name.framework "; \
+	  echo "-add_rpath @loader_path/../$$dylib_name.framework " >> $(OUTPUTDIR)/IPABuilder/int.txt; \
 	  cd ..; \
 	  echo "- (JRE) Finished $$dylib_name"; \
 	done; \
 	for dylib in $(POJAV_JRE_DYLIBS); do \
 	  dylib_name=$$(basename $$dylib); \
-	  install_name_tool $$RPATH_LIST $${dylib_name}.framework/$${dylib_name}; \
+	  install_name_tool $$(cat $(OUTPUTDIR)/IPABuilder/int.txt | sort | uniq) $$dylib_name.framework/$$dylib_name; \
 	done; \
-	mv $(OUTPUTDIR)/OpenJDK/Frameworks/* $(OUTPUTDIR)/Payload/PojavLauncher.app/Frameworks; \
+	mv $(OUTPUTDIR)/IPABuilder/OpenJDK/Frameworks/* $(OUTPUTDIR)/Payload/PojavLauncher.app/Frameworks; \
 	cd $(OUTPUTDIR)/IPABuilder/PojavCore/Frameworks; \
-	for dylib in $(POJAV_BUNDLE_DIR); do \
+	for dylib in $(POJAV_BUNDLE_DYLIBS); do \
 	  dylib_name=$$(basename $$dylib); \
-	  mkdir -p $${dylib_name}.framework; \
-	  cd $${dylib_name}.framework; \
+	  mkdir -p $$dylib_name.framework; \
+	  cd $$dylib_name.framework; \
+	  plist=$$(pwd)/Info.plist; \
 	  cp $(SOURCEDIR)/depends/Info.plist Info.plist; \
-	  defaults write "$$PWD/Info.plist" CFBundleExecutable $$dylib_name; \
-	  defaults write "$$PWD/Info.plist" CFBundleIdentifier "net.kdt.pojavlauncher.$dylib_name"; \
-	  defaults write "$$PWD/Info.plist" CFBundleName $$dylib_name; \
-	  cp $$POJAV_BUNDLE_DIR/Frameworks/$$dylib_name $$dylib_name; \
+	  $(call INFOPLIST,CFBundleExecutable,$$dylib_name,$$plist,$(IOS)); \
+	  $(call INFOPLIST,CFBundleName,$$dylib_name,$$plist,$(IOS)); \
+	  $(call INFOPLIST,CFBundleIdentifier,"net.kdt.pojavlauncher.$$dylib_name",$$plist,$(IOS)); \
+	  cp $(POJAV_BUNDLE_DIR)/Frameworks/$$dylib_name $$dylib_name; \
 	  cd ..; \
 	  echo "- (PojavCore) Finished $$dylib_name"; \
 	done; \
 	rm -r $(OUTPUTDIR)/IPABuilder/PojavCore/Frameworks/libawt_headless.dylib.framework; \
-	mv $(OUTPUTDIR)/IPABuilder/PojavCore/Frameworks/* Payload/PojavLauncher.app/Frameworks; \
-	ldid -Sentitlements.xml Payload/PojavLauncher.app; \
-	rm -f *.ipa; \
-	zip --symlinks -r net.kdt.pojavlauncher-$(VERSION).ipa Payload*
-#	@echo 'Building PojavLauncher $(VERSION) - IPA - End'
+	mv $(OUTPUTDIR)/IPABuilder/PojavCore/Frameworks/* $(OUTPUTDIR)/Payload/PojavLauncher.app/Frameworks; \
+	ldid -S$(SOURCEDIR)/entitlements.xml $(OUTPUTDIR)/Payload/PojavLauncher.app; \
+	rm -f $(OUTPUTDIR)/*.ipa; \
+	zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher-$(VERSION).ipa $(OUTPUTDIR)/Payload/*
+	@echo 'Building PojavLauncher $(VERSION) - IPA - End'
 
 install: deb
 	@echo 'Building PojavLauncher $(VERSION) - INSTALL - Start'
@@ -340,23 +375,23 @@ install: deb
 	@echo 'Building PojavLauncher $(VERSION) - INSTALL - End'
 
 deploy: deb
-	@echo 'Building PojavLauncher $(VERSION) - DEPLOY - End'
+	@echo 'Building PojavLauncher $(VERSION) - DEPLOY - Start'
 	@if [ '$(DEVICE_IP)' != '' ]; then \
 		if [ '$(ROOTLESS)' = '1' ]; then \
-			$(call DEPLOY,$(IOS15PREF)); \
+			$(call DEPLOY,$(IOS15PREF),$(IOS)); \
 		else \
-			$(call DEPLOY); \
+			$(call DEPLOY,'/',$(IOS)); \
 		fi; \
 	else \
 		echo 'You need to run '\''export DEVICE_IP=<your iOS device IP>'\'' to use make deploy.'; \
 		echo 'If you specified a different port for your device to listen for SSH connections, you need to run '\''export DEVICE_PORT=<your port>'\'' as well.'; \
 	fi;
-	@echo 'Building PojavLauncher $(VERSION) - DEB - End'
+	@echo 'Building PojavLauncher $(VERSION) - DEPLOY - End'
 
 dsym: deb
 	@echo 'Building PojavLauncher $(VERSION) - DSYM - Start'
 	@cd $(OUTPUTDIR) && dsymutil --arch arm64 $(OUTPUTDIR)/PojavLauncher.app/PojavLauncher
-	@cp -r $(OUTPUTDIR)/PojavLauncher.app/PojavLauncher.dSYM $(OUTPUTDIR)
+	@cp -r $(OUTPUTDIR)/PojavLauncher.app/PojavLauncher.dSYM $(OUTPUTDIR)/PojavLauncher.dSYM
 	@echo 'Building PojavLauncher $(VERSION) - DSYM - Start'
   
 clean:
