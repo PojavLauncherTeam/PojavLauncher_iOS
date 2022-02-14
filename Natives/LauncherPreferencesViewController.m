@@ -76,7 +76,7 @@ UITextField *rendTextField;
 UITextField *jhomeTextField;
 UITextField *gdirTextField;
 UITextField *activeField;
-NSArray* rendererList;
+NSMutableArray* rendererList;
 NSMutableArray* gdirList;
 NSMutableArray* jhomeList;
 UIPickerView* rendPickerView;
