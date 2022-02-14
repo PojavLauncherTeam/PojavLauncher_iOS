@@ -275,7 +275,7 @@ int tempIndex;
     [rendererList addObject:tinygl4angle];
     [rendererList addObject:vgpu];
     [rendererList addObject:zink];
-    [rendererList addObject:virglrenderer];
+    //[rendererList addObject:virglrenderer];
     
     rendPickerView = [[UIPickerView alloc] init];
     rendPickerView.delegate = self;
