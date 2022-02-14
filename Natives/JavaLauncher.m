@@ -666,8 +666,13 @@ int launchJVM(int argc, char *argv[]) {
             sprintf((char*) cacio_libs_path, "%s/libs_caciocavallo", getenv("BUNDLE_PATH"));
             cplen = sprintf(cacio_classpath, "-Xbootclasspath/p");
             d = opendir(cacio_libs_path);
+            int skip = 2;
             if (d) {
                 while ((dir = readdir(d)) != NULL) {
+                    if (skip > 0) {
+                        --skip;
+                        continue;
+                    }
                     cplen += sprintf(cacio_classpath + cplen, ":%s/%s", cacio_libs_path, dir->d_name);
                 }
                 closedir(d);

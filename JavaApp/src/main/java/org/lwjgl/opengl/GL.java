@@ -90,7 +90,7 @@ public final class GL {
             create();
         }
     }
-
+    
     private static native void nativeRegalMakeCurrent();
 
     private GL() {}
@@ -368,15 +368,15 @@ public final class GL {
         GLCapabilities caps = null;
 
         try {
-            if (System.getenv("RENDERER").startsWith("libgl4es") || isUsingRegal) {
+            if (System.getenv("POJAV_RENDERER").equals("opengles3_virgl") || System.getenv("POJAV_RENDERER").equals("vulkan_zink")) {
+                int[] dims = getNativeWidthHeight();
+                callJPI(GLFW.glfwGetCurrentContext(),getGraphicsBufferAddr(),GL_UNSIGNED_BYTE,dims[0],dims[1],functionProvider.getFunctionAddress("OSMesaMakeCurrent"));
+            } else if (System.getenv("POJAV_RENDERER").startsWith("opengles")) {
                 // This fixed framebuffer issue on 1.13+ 64-bit by another making current
-                GLFW.nativeEglMakeCurrent(GLFW.mainContext);
+                GLFW.glfwMakeContextCurrent(GLFW.mainContext);
                 if (isUsingRegal) {
                     nativeRegalMakeCurrent();
                 }
-            } else if (System.getenv("RENDERER").contains("zink")) {
-                int[] dims = getNativeWidthHeight();
-                callJPI(GLFW.glfwGetCurrentContext(),getGraphicsBufferAddr(),GL_UNSIGNED_BYTE,dims[0],dims[1],functionProvider.getFunctionAddress("OSMesaMakeCurrent"));
             }
 
             // We don't have a current ContextCapabilities when this method is called
@@ -413,16 +413,10 @@ public final class GL {
                         throw new IllegalStateException("There is no OpenGL context current in the current thread.");
                     }
 
-                    try {
-                        APIVersion apiVersion = apiParseVersion(versionString);
+                    APIVersion apiVersion = apiParseVersion(versionString);
 
-                        majorVersion = apiVersion.major;
-                        minorVersion = apiVersion.minor;
-                    } catch (IllegalArgumentException e) {
-                        e.printStackTrace();
-                        majorVersion = 2;
-                        minorVersion = 1;
-                    }
+                    majorVersion = apiVersion.major;
+                    minorVersion = apiVersion.minor;
                 }
             }
 

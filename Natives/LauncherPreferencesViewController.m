@@ -86,12 +86,12 @@ UISwitch *noshaderconvSwitch, *slideHotbarSwitch;
 UIBlurEffect *blur;
 UIVisualEffectView *blurView;
 UIScrollView *scrollView;
-//NSDictionary *rendererDict, javaDict;
 NSString *gl4es114 = @"GL4ES 1.1.4 - exports OpenGL 2.1";
 NSString *gl4es115 = @"GL4ES 1.1.5 (1.16+) - exports OpenGL 2.1";
 NSString *tinygl4angle = @"tinygl4angle (1.17+) - exports OpenGL 3.2 (Core Profile, limited)";
 NSString *vgpu = @"vgpu 1.3.6 - exports OpenGL 3.0";
 NSString *zink = @"Zink (Mesa 21.0) - exports OpenGL 4.1";
+NSString *virglrenderer = @"virglrenderer - exports OpenGL 4.1";
 NSString *java8jben = @"Java 8";
 NSString *java16jben = @"Java 16";
 NSString *java17jben = @"Java 17";
@@ -105,6 +105,7 @@ NSString *lib_gl4es115 = @"libgl4es_115.dylib";
 NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
 NSString *lib_vgpu = @"libvgpu.dylib";
 NSString *lib_zink = @"libOSMesaOverride.dylib";
+NSString *lib_virglrenderer = @"libOSMesa.8.dylib";
 
 int tempIndex;
 
@@ -259,13 +260,22 @@ int tempIndex;
     } else if ([getPreference(@"renderer") isEqualToString:lib_zink]) {
         rendTextField.text = zink;
         tempIndex = 4;
+    } else if ([getPreference(@"renderer") isEqualToString:lib_virglrenderer]) {
+        rendTextField.text = virglrenderer;
+        tempIndex = 5;
     }
     
     rendTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
     rendTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [tableView addSubview:rendTextField];
 
-    rendererList = @[gl4es114, gl4es115, tinygl4angle, vgpu, zink];
+    rendererList = [[NSMutableArray alloc] init];
+    [rendererList addObject:gl4es114];
+    [rendererList addObject:gl4es115];
+    [rendererList addObject:tinygl4angle];
+    [rendererList addObject:vgpu];
+    [rendererList addObject:zink];
+    [rendererList addObject:virglrenderer];
     
     rendPickerView = [[UIPickerView alloc] init];
     rendPickerView.delegate = self;
@@ -653,6 +663,8 @@ int tempIndex;
             setPreference(@"renderer", lib_vgpu);
         } else if ([textField.text isEqualToString:zink]) {
             setPreference(@"renderer", lib_zink);
+        } else if ([textField.text isEqualToString:virglrenderer]) {
+            setPreference(@"renderer", lib_virglrenderer);
         }
         setenv("RENDERER", [getPreference(@"renderer") UTF8String], 1);
         
