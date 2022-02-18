@@ -95,10 +95,6 @@ public class PLaunchApp {
             }
             UIKit.updateProgressSafe(0, "Selected Minecraft version: " + mcver);
 
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {}
-
             new File(Tools.DIR_HOME_VERSION + "/" + mcver).mkdirs();
 
             try {
@@ -227,7 +223,6 @@ public class PLaunchApp {
                 }
                 currProgress++;
                 downloaded++;
-                
                 });
             }
             executor.shutdown();

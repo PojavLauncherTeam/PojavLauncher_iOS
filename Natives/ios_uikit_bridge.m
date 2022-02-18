@@ -130,6 +130,7 @@ void UIKit_launchJarFile(const char* filepath) {
 }
 
 void UIKit_launchMinecraftSurfaceVC() {
+    setPreference(@"internal_useStackQueue", @(isUseStackQueueCall ? YES : NO));
     setPreference(@"internal_selected_account", @(getenv("POJAV_INTERNAL_SELECTED_ACCOUNT")));
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([getPreference(@"restart_before_launch") boolValue]) {

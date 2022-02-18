@@ -138,6 +138,8 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     isControlModifiable = NO;
 
     setPreference(@"internal_selected_account", nil);
+    isUseStackQueueCall = getPreference(@"internal_useStackQueue");
+    setPreference(@"internal_useStackQueue", nil);
 
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
