@@ -30,7 +30,7 @@ add_library(awt_xawt SHARED
 )
 target_link_libraries(awt_xawt
   "-L'${CMAKE_CURRENT_LIST_DIR}/build'"
-  "-lawt_headless"
+  awt_headless
 )
 
 set(CMAKE_FRAMEWORK_PATH "${CMAKE_CURRENT_LIST_DIR}/resources/Frameworks")

@@ -76,7 +76,7 @@ UITextField *rendTextField;
 UITextField *jhomeTextField;
 UITextField *gdirTextField;
 UITextField *activeField;
-NSMutableArray* rendererList;
+NSArray* rendererList;
 NSMutableArray* gdirList;
 NSMutableArray* jhomeList;
 UIPickerView* rendPickerView;
@@ -269,12 +269,7 @@ int tempIndex;
     rendTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [tableView addSubview:rendTextField];
 
-    rendererList = [[NSMutableArray alloc] init];
-    [rendererList addObject:gl4es114];
-    [rendererList addObject:gl4es115];
-    [rendererList addObject:tinygl4angle];
-    [rendererList addObject:vgpu];
-    [rendererList addObject:zink];
+    rendererList = @[gl4es114, gl4es115, tinygl4angle, vgpu, zink];
     //[rendererList addObject:virglrenderer];
     
     rendPickerView = [[UIPickerView alloc] init];
