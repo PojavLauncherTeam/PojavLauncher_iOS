@@ -2,6 +2,14 @@
 
 NSMutableDictionary *prefDict;
 NSString* prefPath;
+// environment variables dict
+NSMutableDictionary *envPrefDict;
+// Custom environment variables dict
+NSMutableDictionary *custEnvPrefDict;
+// version type dict
+NSMutableDictionary *verPrefDict;
+// warnings dict
+NSMutableDictionary *warnPrefDict;
 
 #if CONFIG_RELEASE == 1
 # define CONFIG_TYPE @NO
@@ -10,22 +18,56 @@ NSString* prefPath;
 #endif
 
 id getPreference(NSString* key) {
-    NSObject *object = prefDict[key];
-    if (object == [NSNull null] || object == nil) {
-        NSLog(@"LauncherPreferences: %@ is NULL", key);
+    if (!(envPrefDict[key] == [NSNull null] || envPrefDict[key] == nil)) {
+        return envPrefDict[key];
+    } else if (!(verPrefDict[key] == [NSNull null] || verPrefDict[key] == nil)) {
+        return verPrefDict[key];
+    } else if (!(warnPrefDict[key] == [NSNull null] || warnPrefDict[key] == nil)) {
+        return warnPrefDict[key];
+    } else if (!(prefDict[key] == [NSNull null] || prefDict[key] == nil)) {
+        return prefDict[key];
     }
-    return object;
+    
+    NSLog(@"[Pre-init] LauncherPreferences: %@ is NULL", key);
+    return nil;
 }
 
-void setDefaultValueForPref(NSString* key, id value) {
-    if (!prefDict[key]) {
-        prefDict[key] = value;
+NSMutableDictionary *getDictionary(NSString *type) {
+    if([type containsString:@"env"]) {
+        return envPrefDict;
+    } else if([type containsString:@"ver"]) {
+        return verPrefDict;
+    } else if([type containsString:@"warn"]) {
+        return warnPrefDict;
+    } else if([type containsString:@"base"]) {
+        return prefDict;
+    } else if([type containsString:@"cenv"]) {
+        return custEnvPrefDict;
+    }
+    
+    return nil;
+}
+
+void setDefaultValueForPref(NSMutableDictionary *dict, NSString* key, id value) {
+    if (!dict[key]) {
+        dict[key] = value;
         NSLog(@"[Pre-init] Set default value for key %@", value);
     }
 }
 
 void setPreference(NSString* key, id value) {
-    prefDict[key] = value;
+    if (!(envPrefDict[key] == [NSNull null] || envPrefDict[key] == nil)) {
+        envPrefDict[key] = value;
+        prefDict[@"env_vars"] = envPrefDict;
+    } else if (!(verPrefDict[key] == [NSNull null] || verPrefDict[key] == nil)) {
+        verPrefDict[key] = value;
+        prefDict[@"ver_types"] = verPrefDict;
+    } else if (!(warnPrefDict[key] == [NSNull null] || warnPrefDict[key] == nil)) {
+        warnPrefDict[key] = value;
+        prefDict[@"warnings"] = warnPrefDict;
+    } else if (!(prefDict[key] == [NSNull null] || prefDict[key] == nil)) {
+        prefDict[key] = value;
+    }
     [prefDict writeToFile:prefPath atomically:YES];
 }
 
@@ -37,43 +79,58 @@ void loadPreferences() {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if (![fileManager fileExistsAtPath:prefPath]) {
         prefDict = [[NSMutableDictionary alloc] init];
+        envPrefDict = [[NSMutableDictionary alloc] init];
+        verPrefDict = [[NSMutableDictionary alloc] init];
+        warnPrefDict = [[NSMutableDictionary alloc] init];
+        custEnvPrefDict = [[NSMutableDictionary alloc] init];
     } else {
         prefDict = [NSMutableDictionary dictionaryWithContentsOfFile:prefPath];
+        envPrefDict = prefDict[@"env_vars"];
+        custEnvPrefDict = envPrefDict[@"cenv"];
+        verPrefDict = prefDict[@"ver_types"];
+        warnPrefDict = prefDict[@"warnings"];
     }
 
     assert(prefDict);
 
     // set default value
-    setDefaultValueForPref(@"resolution", @(100));
-    setDefaultValueForPref(@"button_scale", @(100));
-    setDefaultValueForPref(@"selected_version", @"1.7.10");
-    setDefaultValueForPref(@"vertype_release", @YES);
-    setDefaultValueForPref(@"vertype_snapshot", @NO);
-    setDefaultValueForPref(@"vertype_oldalpha", @NO);
-    setDefaultValueForPref(@"vertype_oldbeta", @NO);
-    setDefaultValueForPref(@"time_longPressTrigger", @(400));
-    setDefaultValueForPref(@"default_ctrl", @"default.json");
-    setDefaultValueForPref(@"game_directory", @"default");
-    setDefaultValueForPref(@"java_args", @"");
-    setDefaultValueForPref(@"allocated_memory", [NSNumber numberWithFloat:roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.30)]);
-    setDefaultValueForPref(@"debug_logging", CONFIG_TYPE);
-    setDefaultValueForPref(@"arccapes_enable", @YES);
-    setDefaultValueForPref(@"java_home", @"");
-    setDefaultValueForPref(@"renderer", @"libgl4es_114.dylib");
-    setDefaultValueForPref(@"option_warn", @YES);
-    setDefaultValueForPref(@"local_warn", @YES);
-    setDefaultValueForPref(@"mem_warn", @YES);
-    setDefaultValueForPref(@"java_warn", @YES);
-    setDefaultValueForPref(@"demo_warn", @YES);
-    setDefaultValueForPref(@"jb_warn", @YES);
-    setDefaultValueForPref(@"customctrl_warn", @YES);
-    setDefaultValueForPref(@"a7_allow", @NO);
-    setDefaultValueForPref(@"disable_gl4es_shaderconv", @NO);
-    setDefaultValueForPref(@"slideable_hotbar", @NO);
+    // TODO: organize the plist with nested arrays
+    setDefaultValueForPref(envPrefDict, @"resolution", @(100)); // e
+    setDefaultValueForPref(prefDict, @"button_scale", @(100)); //
+    setDefaultValueForPref(prefDict, @"selected_version", @"1.7.10");
+    setDefaultValueForPref(verPrefDict, @"vertype_release", @YES);
+    setDefaultValueForPref(verPrefDict, @"vertype_snapshot", @NO);
+    setDefaultValueForPref(verPrefDict, @"vertype_oldalpha", @NO);
+    setDefaultValueForPref(verPrefDict, @"vertype_oldbeta", @NO);
+    setDefaultValueForPref(envPrefDict, @"time_longPressTrigger", @(400));
+    setDefaultValueForPref(envPrefDict, @"default_ctrl", @"default.json");
+    setDefaultValueForPref(envPrefDict, @"game_directory", @"default");
+    setDefaultValueForPref(envPrefDict, @"java_args", @"");
+    setDefaultValueForPref(envPrefDict, @"allocated_memory", [NSNumber numberWithFloat:roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.30)]);
+    setDefaultValueForPref(prefDict, @"debug_logging", CONFIG_TYPE);
+    setDefaultValueForPref(prefDict, @"arccapes_enable", @YES);
+    setDefaultValueForPref(envPrefDict, @"java_home", @"");
+    setDefaultValueForPref(envPrefDict, @"renderer", @"libgl4es_114.dylib");
+    setDefaultValueForPref(warnPrefDict, @"option_warn", @YES);
+    setDefaultValueForPref(warnPrefDict, @"local_warn", @YES);
+    setDefaultValueForPref(warnPrefDict, @"mem_warn", @YES);
+    setDefaultValueForPref(warnPrefDict, @"java_warn", @YES);
+    setDefaultValueForPref(warnPrefDict, @"demo_warn", @YES);
+    setDefaultValueForPref(warnPrefDict, @"jb_warn", @YES);
+    setDefaultValueForPref(warnPrefDict, @"customctrl_warn", @YES);
+    setDefaultValueForPref(prefDict, @"a7_allow", @NO);
+    setDefaultValueForPref(envPrefDict, @"disable_gl4es_shaderconv", @NO);
+    setDefaultValueForPref(prefDict, @"slideable_hotbar", @NO);
     if (0 != [fileManager fileExistsAtPath:@"/var/mobile/Documents/.pojavlauncher"]) {
-        setDefaultValueForPref(@"disable_home_symlink", @NO);
+        setDefaultValueForPref(prefDict, @"disable_home_symlink", @NO);
     } else {
-        setDefaultValueForPref(@"disable_home_symlink", @YES);
+        setDefaultValueForPref(prefDict, @"disable_home_symlink", @YES);
     }
+    
+    prefDict[@"env_vars"] = envPrefDict;
+    prefDict[@"ver_types"] = verPrefDict;
+    prefDict[@"warnings"] = warnPrefDict;
+    prefDict[@"cenv"] = custEnvPrefDict;
+        
     [prefDict writeToFile:prefPath atomically:YES];
 }
