@@ -661,7 +661,7 @@ int tempIndex;
         } else if ([textField.text isEqualToString:virglrenderer]) {
             setPreference(@"renderer", lib_virglrenderer);
         }
-        setenv("RENDERER", [getPreference(@"renderer") UTF8String], 1);
+        setenv("POJAV_RENDERER", [getPreference(@"renderer") UTF8String], 1);
         
         if (![textField.text isEqualToString:gl4es115] && [getPreference(@"disable_gl4es_shaderconv") boolValue] == YES) {
             setPreference(@"disable_gl4es_shaderconv", @NO);

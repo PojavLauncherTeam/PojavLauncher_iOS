@@ -67,6 +67,7 @@ void loadPreferences() {
     setDefaultValueForPref(@"demo_warn", @YES);
     setDefaultValueForPref(@"jb_warn", @YES);
     setDefaultValueForPref(@"customctrl_warn", @YES);
+    setDefaultValueForPref(@"a7_allow", @NO);
     setDefaultValueForPref(@"disable_gl4es_shaderconv", @NO);
     setDefaultValueForPref(@"slideable_hotbar", @NO);
     if (0 != [fileManager fileExistsAtPath:@"/var/mobile/Documents/.pojavlauncher"]) {

@@ -164,7 +164,7 @@ void callback_SurfaceViewController_launchMinecraft(int width, int height) {
         assert(uikitBridgeClass != NULL);
     }
 
-    jstring rendererLibStr = (*runtimeJNIEnvPtr_JRE)->NewStringUTF(runtimeJNIEnvPtr_JRE, getenv("RENDERER"));
+    jstring rendererLibStr = (*runtimeJNIEnvPtr_JRE)->NewStringUTF(runtimeJNIEnvPtr_JRE, getenv("POJAV_RENDERER"));
 
     jmethodID method = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, uikitBridgeClass, "callback_SurfaceViewController_launchMinecraft", "(IILjava/lang/String;)V");
     assert(method != NULL);

@@ -175,7 +175,7 @@ void loadSymbols() {
     char fileName[2048];
     switch (config_renderer) {
         case RENDERER_VK_ZINK:
-            sprintf((char *)fileName, "%s/Frameworks/%s.framework/%s", getenv("BUNDLE_PATH"), getenv("RENDERER"), getenv("RENDERER"));
+            sprintf((char *)fileName, "%s/Frameworks/%s.framework/%s", getenv("BUNDLE_PATH"), getenv("POJAV_RENDERER"), getenv("POJAV_RENDERER"));
             break;
         case RENDERER_MTL_ANGLE:
             sprintf((char *)fileName, "%s/Frameworks/MetalANGLE.framework/MetalANGLE", getenv("BUNDLE_PATH"));
@@ -220,7 +220,7 @@ int pojavInit() {
     isInputReady = 1;
     mainThreadID = gettid();
 
-    NSString *renderer = @(getenv("RENDERER"));
+    NSString *renderer = @(getenv("POJAV_RENDERER"));
     BOOL isVGPU = [renderer hasPrefix:@"libvgpu"];
     if ([renderer isEqualToString:@"libOSMesa.8.dylib"]) {
         config_renderer = RENDERER_VIRGL;
@@ -421,8 +421,8 @@ void pojavMakeCurrent(void* window) {
 #endif
 
                 // ADDITIONAL STEP ON IOS: Initialize gl4es
-                void *gl4es_handle = dlopen(getenv("RENDERER"), RTLD_GLOBAL);
-                debug("%s=%p, error=%s", getenv("RENDERER"), gl4es_handle, dlerror());
+                void *gl4es_handle = dlopen(getenv("POJAV_RENDERER"), RTLD_GLOBAL);
+                debug("%s=%p, error=%s", getenv("POJAV_RENDERER"), gl4es_handle, dlerror());
 
                 gl4esInitialize_func *gl4esInitialize = (gl4esInitialize_func*) dlsym(gl4es_handle, "initialize_gl4es");
                 // debug("initialize_gl4es = %p", gl4esInitialize);

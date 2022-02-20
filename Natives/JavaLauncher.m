@@ -528,7 +528,7 @@ int launchJVM(int argc, char *argv[]) {
         renderer_pre = @"libgl4es_114.dylib";
         setPreference(@"renderer", renderer_pre);
         renderer = [renderer_pre cStringUsingEncoding:NSUTF8StringEncoding];
-        setenv("RENDERER", renderer, 1);
+        setenv("POJAV_RENDERER", renderer, 1);
         debug("[Pre-init] RENDERER environment variable was not set. Defaulting to %s for future use.\n", renderer);
     } else {
         debug("[Pre-Init] Restored preference: RENDERER is set to %s\n", renderer);
@@ -631,8 +631,8 @@ int launchJVM(int argc, char *argv[]) {
             margv[margc++] = (char *) [NSString stringWithFormat:@"-Dpojav.selectedAccount=%@", selectedAccount].UTF8String;
         }
     } else {
-        setenv("RENDERER", renderer, 1);
-        debug("[Pre-init] RENDERER has been set to %s", getenv("RENDERER"));
+        setenv("POJAV_RENDERER", renderer, 1);
+        debug("[Pre-init] RENDERER has been set to %s", getenv("POJAV_RENDERER"));
     }
 
     // Load java
