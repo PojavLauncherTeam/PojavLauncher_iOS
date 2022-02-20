@@ -4,8 +4,6 @@ NSMutableDictionary *prefDict;
 NSString* prefPath;
 // environment variables dict
 NSMutableDictionary *envPrefDict;
-// Custom environment variables dict
-NSMutableDictionary *custEnvPrefDict;
 // version type dict
 NSMutableDictionary *verPrefDict;
 // warnings dict
@@ -41,8 +39,6 @@ NSMutableDictionary *getDictionary(NSString *type) {
         return warnPrefDict;
     } else if([type containsString:@"base"]) {
         return prefDict;
-    } else if([type containsString:@"cenv"]) {
-        return custEnvPrefDict;
     }
     
     return nil;
@@ -82,11 +78,9 @@ void loadPreferences() {
         envPrefDict = [[NSMutableDictionary alloc] init];
         verPrefDict = [[NSMutableDictionary alloc] init];
         warnPrefDict = [[NSMutableDictionary alloc] init];
-        custEnvPrefDict = [[NSMutableDictionary alloc] init];
     } else {
         prefDict = [NSMutableDictionary dictionaryWithContentsOfFile:prefPath];
         envPrefDict = prefDict[@"env_vars"];
-        custEnvPrefDict = envPrefDict[@"cenv"];
         verPrefDict = prefDict[@"ver_types"];
         warnPrefDict = prefDict[@"warnings"];
     }
@@ -130,7 +124,6 @@ void loadPreferences() {
     prefDict[@"env_vars"] = envPrefDict;
     prefDict[@"ver_types"] = verPrefDict;
     prefDict[@"warnings"] = warnPrefDict;
-    prefDict[@"cenv"] = custEnvPrefDict;
         
     [prefDict writeToFile:prefPath atomically:YES];
 }
