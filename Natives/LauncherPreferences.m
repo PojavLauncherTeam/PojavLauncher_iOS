@@ -63,8 +63,10 @@ void setPreference(NSString* key, id value) {
     } else if (!(warnPrefDict[key] == [NSNull null] || warnPrefDict[key] == nil)) {
         warnPrefDict[key] = value;
         prefDict[@"warnings"] = warnPrefDict;
-    } else if (!(prefDict[key] == [NSNull null] || prefDict[key] == nil)) {
+    } else if (!(prefDict[key] == [NSNull null] || prefDict[key] == nil) || [key hasPrefix:@"internal_"]) {
         prefDict[key] = value;
+    } else {
+        NSLog(@"LauncherPreferences: Unknown key %@", key);
     }
     [prefDict writeToFile:prefPath atomically:YES];
 }
