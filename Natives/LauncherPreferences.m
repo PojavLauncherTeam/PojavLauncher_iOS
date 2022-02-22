@@ -22,8 +22,10 @@ id getPreference(NSString* key) {
         return verPrefDict[key];
     } else if (!(warnPrefDict[key] == [NSNull null] || warnPrefDict[key] == nil)) {
         return warnPrefDict[key];
-    } else if (!(prefDict[key] == [NSNull null] || prefDict[key] == nil)) {
+    } else if (!(prefDict[key] == [NSNull null] || prefDict[key] == nil) || [key hasPrefix:@"internal_"]) {
         return prefDict[key];
+    } else {
+        NSLog(@"LauncherPreferences: Unknown key %@", key);
     }
     
     NSLog(@"[Pre-init] LauncherPreferences: %@ is NULL", key);
