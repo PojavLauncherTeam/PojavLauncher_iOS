@@ -24,6 +24,7 @@
 #define RELAUNCH 16
 #define ERASEPREF 17
 #define ARCCAPES 18
+#define VIRTMOUSE 19
 
 #define TAG_BTNSCALE 98
 #define TAG_RESOLUTION 99
@@ -62,6 +63,8 @@
 #define TAG_ERASEPREF 116
 
 #define TAG_ARCCAPES 117
+
+#define TAG_VIRTMOUSE 118
 @interface LauncherPreferencesViewController () <UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDelegate> {
 }
 
@@ -523,18 +526,6 @@ int tempIndex;
     [relaunchSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:relaunchSwitch];
     
-    UILabel *erasePrefTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
-    erasePrefTextView.text = @"Reset all settings";
-    erasePrefTextView.numberOfLines = 0;
-    [erasePrefTextView sizeToFit];
-    [tableView addSubview:erasePrefTextView];
-
-    UISwitch *erasePrefSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
-    erasePrefSwitch.tag = TAG_ERASEPREF;
-    [erasePrefSwitch setOn:NO animated:NO];
-    [erasePrefSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
-    [tableView addSubview:erasePrefSwitch];
-    
     UILabel *arcCapesTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
     arcCapesTextView.text = @"Enable Arc capes";
     arcCapesTextView.numberOfLines = 0;
@@ -546,6 +537,30 @@ int tempIndex;
     [arcCapesSwitch setOn:[getPreference(@"arccapes_enable") boolValue] animated:NO];
     [arcCapesSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:arcCapesSwitch];
+    
+    UILabel *erasePrefTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
+    erasePrefTextView.text = @"Enable virtual mouse";
+    erasePrefTextView.numberOfLines = 0;
+    [erasePrefTextView sizeToFit];
+    [tableView addSubview:erasePrefTextView];
+
+    UISwitch *erasePrefSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
+    erasePrefSwitch.tag = TAG_VIRTMOUSE;
+    [erasePrefSwitch setOn:[getPreference(@"virtmouse_enable") boolValue]  animated:NO];
+    [erasePrefSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    [tableView addSubview:erasePrefSwitch];
+    
+    UILabel *virtMouseTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
+    virtMouseTextView.text = @"Reset all settings";
+    virtMouseTextView.numberOfLines = 0;
+    [virtMouseTextView sizeToFit];
+    [tableView addSubview:virtMouseTextView];
+
+    UISwitch *virtMouseSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
+    virtMouseSwitch.tag = TAG_ERASEPREF;
+    [virtMouseSwitch setOn:NO animated:NO];
+    [virtMouseSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    [tableView addSubview:virtMouseSwitch];
     
     CGRect frame = tableView.frame;
     frame.size.height = currY+=44;
@@ -589,10 +604,12 @@ int tempIndex;
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:HOMESYM];}],
             [UIAction actionWithTitle:@"Restart before launching game" image:[[UIImage systemImageNamed:@"arrowtriangle.left.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:RELAUNCH];}],
-            [UIAction actionWithTitle:@"Reset preferences" image:[[UIImage systemImageNamed:@"trash"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:ERASEPREF];}],
             [UIAction actionWithTitle:@"Enable Arc capes" image:[[UIImage systemImageNamed:@"square.and.arrow.down"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:ARCCAPES];}],
+            [UIAction actionWithTitle:@"Enable virtual mouse" image:[[UIImage systemImageNamed:@"cursorarrow.rays"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:VIRTMOUSE];}],
+            [UIAction actionWithTitle:@"Reset preferences" image:[[UIImage systemImageNamed:@"trash"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:ERASEPREF];}],
         ]];
         self.navigationItem.rightBarButtonItem.action = nil;
         self.navigationItem.rightBarButtonItem.primaryAction = nil;
@@ -868,8 +885,9 @@ int tempIndex;
         UIAlertAction *debuglog = [UIAlertAction actionWithTitle:@"Debug logging" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:DEBUGLOG];}];
         UIAlertAction *homesym = [UIAlertAction actionWithTitle:@"Home symlink" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:HOMESYM];}];
         UIAlertAction *relaunch = [UIAlertAction actionWithTitle:@"Restart before launching game" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:RELAUNCH];}];
-        UIAlertAction *erasepref = [UIAlertAction actionWithTitle:@"Reset preferences" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:ERASEPREF];}];
         UIAlertAction *arccapes = [UIAlertAction actionWithTitle:@"Enable Arc capes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:ARCCAPES];}];
+        UIAlertAction *virtmouse = [UIAlertAction actionWithTitle:@"Enable virtual mouse" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:VIRTMOUSE];}];
+        UIAlertAction *erasepref = [UIAlertAction actionWithTitle:@"Reset preferences" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:ERASEPREF];}];
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
         [self setPopoverProperties:helpAlert.popoverPresentationController sender:(UIButton *)self.navigationItem.rightBarButtonItem];
         [self presentViewController:helpAlert animated:YES completion:nil];
@@ -888,8 +906,9 @@ int tempIndex;
         [helpAlert addAction:debuglog];
         [helpAlert addAction:relaunch];
         [helpAlert addAction:homesym];
-        [helpAlert addAction:erasepref];
         [helpAlert addAction:arccapes];
+        [helpAlert addAction:virtmouse];
+        [helpAlert addAction:erasepref];
         [helpAlert addAction:cancel];
     }
 }
@@ -948,6 +967,9 @@ int tempIndex;
     } else if (setting == ARCCAPES) {
         title = @"Enable Arc capes";
         message = @"This option allows you to switch from the OptiFine cape service to Arc. See more about Arc on our website.";
+    } else if (setting == VIRTMOUSE) {
+        title = @"Enable virtual mouse";
+        message = @"This option allows you to enable or disable the virtual mouse pointer at launch of the game.";
     } else {
         title = @"Error";
         message = [NSString stringWithFormat:@"The setting %d hasn't been specified with a description.", setting];
@@ -1075,6 +1097,9 @@ int tempIndex;
             break;
         case TAG_ARCCAPES:
             setPreference(@"arccapes_enable", @(sender.isOn));
+            break;
+        case TAG_VIRTMOUSE:
+            setPreference(@"virtmouse_enable", @(sender.isOn));
             break;
         default:
             NSLog(@"what does switch %ld for? implement me!", sender.tag);
