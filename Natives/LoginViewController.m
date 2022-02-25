@@ -160,7 +160,7 @@
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
-    if(@available(iOS 13.0, *)) {
+    if (@available(iOS 13.0, *)) {
         if (UITraitCollection.currentTraitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
             self.view.backgroundColor = [UIColor blackColor];
         } else {
@@ -171,8 +171,14 @@
 
 - (void)displayProgress:(NSString *)title {
     self.title = title;
-    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:indicator];
+    UIActivityIndicatorViewStyle style;
+    if (@available(iOS 13.0, *)) {
+        style = UIActivityIndicatorViewStyleMedium;
+    } else {
+        style = UIActivityIndicatorViewStyleGray;
+    } 
+    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:style];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:indicator];
     [indicator startAnimating];
 }
 
@@ -227,7 +233,7 @@
 
         dispatch_async(dispatch_get_main_queue(), ^{
             self.title = @"";
-            self.navigationItem.rightBarButtonItem = nil;
+            self.navigationItem.leftBarButtonItem = nil;
         });
 
         if (result != NULL) {
@@ -401,7 +407,7 @@
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             self.title = @"";
-            self.navigationItem.rightBarButtonItem = nil;
+            self.navigationItem.leftBarButtonItem = nil;
         });
 
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
