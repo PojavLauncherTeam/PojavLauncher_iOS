@@ -49,6 +49,7 @@
         self.view.backgroundColor = [UIColor whiteColor];
     }
 
+    // TODO: Move this into utils?
     struct utsname systemInfo;
     uname(&systemInfo);
     NSString *deviceModel = [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
