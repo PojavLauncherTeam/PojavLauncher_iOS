@@ -374,7 +374,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 {
     CGPoint locationInView = [touchEvent locationInView:self.view];
 
-    if (touchEvent.view == self.surfaceView) {
+    //if (touchEvent.view == self.surfaceView) {
         switch (event) {
             case ACTION_DOWN:
                 self.clickRange = CGRectMake(locationInView.x - 2, locationInView.y - 2, 5, 5);
@@ -417,7 +417,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
             if ([self isTouchInactive:self.primaryTouch]) return; // FIXME: should be? ACTION_UP will never be sent
             [self sendTouchPoint:locationInView withEvent:event];
         }
-    }
+    //}
 }
 
 - (void)pressesBegan:(NSSet<UIPress *> *)presses withEvent:(UIPressesEvent *)event {
@@ -452,8 +452,19 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     }
 }
 
+- (BOOL)prefersPointerLocked {
+    return isGrabbing;
+}
+
 - (void)registerMouseCallbacks:(GCMouse *)mouse API_AVAILABLE(ios(14.0)) {
     NSLog(@"Input: Got mouse %@", mouse);
+/*
+    mouse.mouseInput.mouseMovedHandler = ^(GCMouseInput * _Nonnull mouse, float deltaX, float deltaY) {
+        if (!isGrabbing) return;
+        x += deltaX / 2.5;
+        y += -deltaY / 2.5;
+    };
+*/
     mouse.mouseInput.leftButton.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
         CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_LEFT, pressed, 0);
     };
@@ -470,7 +481,6 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     mouse.mouseInput.scroll.yAxis.valueChangedHandler = ^(GCControllerAxisInput * _Nonnull axis, float value) {
         CallbackBridge_nativeSendScroll(0, value);
     };
-
 }
 
 - (void)surfaceOnClick:(UITapGestureRecognizer *)sender {
@@ -495,8 +505,8 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 - (void)surfaceOnDoubleClick:(UITapGestureRecognizer *)sender {
     if (sender.state == UIGestureRecognizerStateRecognized && isGrabbing) {
         CGFloat screenScale = [[UIScreen mainScreen] scale];
-        CGPoint location = [sender locationInView:[sender.view superview]];
-        int hotbarSlot = callback_SurfaceViewController_touchHotbar(location.x * screenScale * resolutionScale, location.y * screenScale * resolutionScale);
+        CGPoint point = [sender locationInView:self.view];
+        int hotbarSlot = callback_SurfaceViewController_touchHotbar(point.x * screenScale * resolutionScale, point.y * screenScale * resolutionScale);
         if (hotbarSlot != -1 && currentHotbarSlot == hotbarSlot) {
             CallbackBridge_nativeSendKey(GLFW_KEY_F, 0, 1, 0);
             CallbackBridge_nativeSendKey(GLFW_KEY_F, 0, 0, 0);
@@ -506,7 +516,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 
 - (void)surfaceOnHover:(UIHoverGestureRecognizer *)sender API_AVAILABLE(ios(13.0)) {
     if (@available(iOS 13.0, *)) {
-        CGPoint point = [sender locationInView:self.surfaceView];
+        CGPoint point = [sender locationInView:self.view];
         // NSLog(@"Mouse move!!");
         // NSLog(@"Mouse pos = %f, %f", point.x, point.y);
         switch (sender.state) {
@@ -531,7 +541,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 {
     if (!slideableHotbar) {
         CGFloat screenScale = [[UIScreen mainScreen] scale];
-        CGPoint location = [sender locationInView:[sender.view superview]];
+        CGPoint location = [sender locationInView:self.view];
         currentHotbarSlot = callback_SurfaceViewController_touchHotbar(location.x * screenScale * resolutionScale, location.y * screenScale * resolutionScale);
     }
     if (sender.state == UIGestureRecognizerStateBegan) {

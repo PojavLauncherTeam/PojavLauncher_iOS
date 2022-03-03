@@ -57,6 +57,34 @@
 }
 */
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    [super touchesBegan:touches withEvent:event];
+    if (!isControlModifiable && [self.properties[@"passThruEnabled"] boolValue]) {
+        [viewController touchesBegan:touches withEvent:event];
+    }
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    [super touchesMoved:touches withEvent:event];
+    if (!isControlModifiable && [self.properties[@"passThruEnabled"] boolValue]) {
+        [viewController touchesMoved:touches withEvent:event];
+    }
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    [super touchesEnded:touches withEvent:event];
+    if (!isControlModifiable && [self.properties[@"passThruEnabled"] boolValue]) {
+        [viewController touchesEnded:touches withEvent:event];
+    }
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
+    [super touchesCancelled:touches withEvent:event];
+    if (!isControlModifiable && [self.properties[@"passThruEnabled"] boolValue]) {
+        [viewController touchesCancelled:touches withEvent:event];
+    }
+}
+
 - (void)preProcessProperties {
     CGFloat currentScale = [current_control_object[@"scaledAt"] floatValue];
     CGFloat savedScale = [getPreference(@"button_scale") floatValue];
