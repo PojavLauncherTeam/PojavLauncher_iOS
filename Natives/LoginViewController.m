@@ -17,8 +17,7 @@
 
 #define TYPE_SELECTACC 0
 #define TYPE_MICROSOFT 1
-#define TYPE_MOJANG 2
-#define TYPE_OFFLINE 3
+#define TYPE_OFFLINE 2
 
 #pragma mark - LoginViewController
 @interface LoginViewController () <ASWebAuthenticationPresentationContextProviding, UIPopoverPresentationControllerDelegate>{

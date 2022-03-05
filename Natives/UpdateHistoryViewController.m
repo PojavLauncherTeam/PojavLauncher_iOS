@@ -54,7 +54,8 @@ CGFloat uhcurrY = 4.0;
                             "- Keyboard and mouse support deepened\n"
                             "- New \"vgpu\" renderer, exports OpenGL 3.0\n"
                             "- Custom controls UI completed\n"
-                            "- Arc custom capes integration!" width:width]];
+                            "- Arc custom capes integration!\n"
+                            "- Removed Mojang account login" width:width]];
     [scrollView addSubview:[self uhContent:true size:17 text:@"Fixes" width:width]];
     [scrollView addSubview:[self uhContent:false size:0 text:@"- Slight changes to error messages\n"
                             "- Fix Makefile errors in `deploy` and `ipa`\n"
