@@ -280,7 +280,9 @@ JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetGrabbing(JNIE
             [surfaceView addGestureRecognizer:((SurfaceViewController *)viewController).scrollPanGesture];
         }
         ((SurfaceViewController *)viewController).mousePointerView.hidden = isGrabbing || !virtualMouseEnabled;
-        [viewController setNeedsUpdateOfPrefersPointerLocked];
+        if(@available(iOS 14.0, *)) {
+            [viewController setNeedsUpdateOfPrefersPointerLocked];
+        }
     });
 }
 
