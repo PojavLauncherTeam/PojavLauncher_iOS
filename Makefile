@@ -349,7 +349,8 @@ ipa: native java extras
 	mv $(OUTPUTDIR)/IPABuilder/PojavCore/Frameworks/* $(OUTPUTDIR)/Payload/PojavLauncher.app/Frameworks; \
 	ldid -S$(SOURCEDIR)/entitlements.xml $(OUTPUTDIR)/Payload/PojavLauncher.app; \
 	rm -f $(OUTPUTDIR)/*.ipa; \
-	zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher-$(VERSION).ipa $(OUTPUTDIR)/Payload/*
+	cd $(OUTPUTDIR); \
+	zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher-$(VERSION).ipa Payload/*
 	@echo 'Building PojavLauncher $(VERSION) - IPA - End'
 
 install: deb
