@@ -244,7 +244,7 @@ native:
 		..
 
 	@cmake --build $(WORKINGDIR) --config $(CMAKE_BUILD_TYPE) -j$(JOBS)
-	# --target awt_headless awt_xawt libOSMesaOverride.dylib PojavLauncher
+	@# --target awt_headless awt_xawt libOSMesaOverride.dylib PojavLauncher
 	@rm $(WORKINGDIR)/libawt_headless.dylib
 	@echo 'Building PojavLauncher $(VERSION) - NATIVES - End'
 

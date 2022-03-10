@@ -17,8 +17,7 @@
 
 #define TYPE_SELECTACC 0
 #define TYPE_MICROSOFT 1
-#define TYPE_MOJANG 2
-#define TYPE_OFFLINE 3
+#define TYPE_OFFLINE 2
 
 #pragma mark - LoginViewController
 @interface LoginViewController () <ASWebAuthenticationPresentationContextProviding, UIPopoverPresentationControllerDelegate>{
@@ -126,14 +125,12 @@
     if(@available (iOS 14.0, *)) {
         UIAction *option1 = [UIAction actionWithTitle:@"Microsoft account" image:nil identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self loginMicrosoft];}];
-        UIAction *option2 = [UIAction actionWithTitle:@"Mojang account" image:nil identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self loginUsername:TYPE_MOJANG];}];
         UIAction *option3 = [UIAction actionWithTitle:@"Demo account" image:nil identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self loginDemo:button_login];}];
         UIAction *option4 = [UIAction actionWithTitle:@"Local account" image:nil identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self loginOffline:button_login];}];
         UIMenu *menu = [UIMenu menuWithTitle:@"" image:nil identifier:nil
-                        options:UIMenuOptionsDisplayInline children:@[option4, option3, option2, option1]];
+                        options:UIMenuOptionsDisplayInline children:@[option4, option3, option1]];
         button_login.menu = menu;
         button_login.showsMenuAsPrimaryAction = YES;
     }
@@ -187,7 +184,6 @@
         // UIMenu
     } else {
         UIAlertController *fullAlert = [UIAlertController alertControllerWithTitle:@"Let's get you signed in." message:@"What account do you use to log into Minecraft?"preferredStyle:UIAlertControllerStyleActionSheet];
-        UIAlertAction *mojang = [UIAlertAction actionWithTitle:@"Mojang account" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginUsername:TYPE_MOJANG];}];
         UIAlertAction *microsoft = [UIAlertAction actionWithTitle:@"Microsoft account" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginMicrosoft];}];
         UIAlertAction *offline = [UIAlertAction actionWithTitle:@"Local account"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginOffline:sender];}];
         UIAlertAction *demo = [UIAlertAction actionWithTitle:@"Demo account" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginDemo:sender];}];
@@ -195,7 +191,6 @@
         [self setPopoverProperties:fullAlert.popoverPresentationController sender:sender];
         [self presentViewController:fullAlert animated:YES completion:nil];
         [fullAlert addAction:microsoft];
-        [fullAlert addAction:mojang];
         [fullAlert addAction:demo];
         [fullAlert addAction:offline];
         [fullAlert addAction:cancel];
@@ -250,51 +245,6 @@
     });
 }
 
-- (void)loginUsername:(int)type {
-    UIAlertController *controller = [UIAlertController alertControllerWithTitle: @"Login"
-        message: @(type == TYPE_MOJANG ?
-        "Account type: Mojang" : "Account type: Local")
-        preferredStyle:UIAlertControllerStyleAlert];
-    [controller addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        if (type == TYPE_MOJANG) {
-            textField.placeholder = @"Email or username";
-        } else {
-            textField.placeholder = @"Username";
-        }
-        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        textField.borderStyle = UITextBorderStyleRoundedRect;
-    }];
-    if (type == TYPE_MOJANG) {
-        [controller addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.placeholder = @"Password";
-            textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-            textField.borderStyle = UITextBorderStyleRoundedRect;
-            textField.secureTextEntry = YES;
-        }];
-    }
-    [controller addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        NSArray *textFields = controller.textFields;
-        UITextField *usernameField = textFields[0];
-
-        if (type == TYPE_MOJANG) {
-            [self loginMojangWithUsername:usernameField.text password:((UITextField *) textFields[1]).text];
-        } else {
-            if (usernameField.text.length < 3 || usernameField.text.length > 16) {
-                controller.message = @"Username must be at least 3 characters and maximum 16 characters";
-                [self presentViewController:controller animated:YES completion:nil];
-            } else {
-                [self loginAccountInput:TYPE_OFFLINE data:usernameField.text];
-            }
-        }
-    }]];
-    [controller addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
-    [self presentViewController:controller animated:YES completion:nil];
-}
-
-- (void)loginMojang {
-    [self loginUsername:TYPE_MOJANG];
-}
-
 - (void)loginMicrosoft {
     NSURL *url = [NSURL URLWithString:@"https://login.live.com/oauth20_authorize.srf?client_id=00000000402b5328&response_type=code&scope=service%3A%3Auser.auth.xboxlive.com%3A%3AMBI_SSL&redirect_url=https%3A%2F%2Flogin.live.com%2Foauth20_desktop.srf"];
 
@@ -339,14 +289,31 @@
     if ([getPreference(@"local_warn") boolValue] == YES) {
         UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:@"Offline mode is now Local mode." message:@"You can continue to play installed versions, but you can no longer download Minecraft without a paid account. No support will be provided for issues with local accounts, or other means of acquiring Minecraft. See the FAQ for more information."preferredStyle:UIAlertControllerStyleActionSheet];
         [self setPopoverProperties:offlineAlert.popoverPresentationController sender:sender];
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginUsername:TYPE_OFFLINE];}];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginOffline:sender];}];
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self accountType:sender];}];
         [self presentViewController:offlineAlert animated:YES completion:nil];
         [offlineAlert addAction:ok];
         [offlineAlert addAction:cancel];
         setPreference(@"local_warn", @NO);
     } else {
-        [self loginUsername:(TYPE_OFFLINE)];
+        UIAlertController *controller = [UIAlertController alertControllerWithTitle:@"Login" message:@"Account type: Local" preferredStyle:UIAlertControllerStyleAlert];
+        [controller addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+            textField.placeholder = @"Username";
+            textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+            textField.borderStyle = UITextBorderStyleRoundedRect;
+        }];
+        [controller addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            NSArray *textFields = controller.textFields;
+            UITextField *usernameField = textFields[0];
+            if (usernameField.text.length < 3 || usernameField.text.length > 16) {
+                controller.message = @"Username must be at least 3 characters and maximum 16 characters";
+                [self presentViewController:controller animated:YES completion:nil];
+            } else {
+                [self loginAccountInput:TYPE_OFFLINE data:usernameField.text];
+            }
+        }]];
+        [controller addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+        [self presentViewController:controller animated:YES completion:nil];
     }
 }
 
@@ -385,7 +352,7 @@
     popoverController.delegate = self;
     [self presentViewController:vc animated:YES completion:nil];
 }
-
+/*
 - (void)loginMojangWithUsername:(NSString*)input_username password:(NSString*)input_password {
     [self displayProgress:@"Logging in"];
 
@@ -439,7 +406,7 @@
     }];
     [postDataTask resume];
 }
-
+*/
 - (void)aboutLauncher
 {
     AboutLauncherViewController *vc = [[AboutLauncherViewController alloc] init];
