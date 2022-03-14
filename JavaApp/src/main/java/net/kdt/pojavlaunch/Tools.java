@@ -96,7 +96,7 @@ public final class Tools
 
         String[] launchArgs = getMinecraftArgs(profile, versionInfo);
 
-        // ctx.appendlnToLog("Minecraft Args: " + Arrays.toString(launchArgs));
+        System.out.println("Minecraft Args: " + Arrays.toString(launchArgs));
 
         final String launchClassPath = generateLaunchClassPath(profile.selectedVersion);
 
@@ -107,24 +107,6 @@ public final class Tools
 
         javaArgList.add(versionInfo.mainClass);
         javaArgList.addAll(Arrays.asList(launchArgs));
-        if(profile.username.equals("demo_user")) {
-            File demoHome = new File(DIR_GAME_HOME + "/demo");
-            if(demoHome.exists()) {
-                for (File demoStuff : demoHome.listFiles()) { demoStuff.delete(); }
-            } else {
-                demoHome.mkdirs();
-            }
-            javaArgList.add("-Duser.home=" + DIR_GAME_HOME + "/demo");
-            File demoDir = new File(DIR_GAME_NEW + "/demo");
-            if(demoDir.exists()) {
-                for (File demoStuff : demoDir.listFiles()) { demoStuff.delete(); }
-            } else {
-                demoDir.mkdirs();
-            }
-            javaArgList.add("-Duser.dir=" + DIR_GAME_NEW + "/demo");
-            javaArgList.add("--demo");
-        }
-        
         // Debug
 /*
         BufferedWriter bw = new BufferedWriter(new FileWriter(new File(Tools.DIR_GAME_HOME, "currargs_generated.txt")));
@@ -233,7 +215,8 @@ public final class Tools
             splitAndFilterEmpty(
                 versionInfo.minecraftArguments == null ?
                 fromStringArray(minecraftArgs.toArray(new String[0])):
-                versionInfo.minecraftArguments
+                versionInfo.minecraftArguments,
+                profile
             ), varArgMap
         );
         // Tools.dialogOnUiThread(this, "Result args", Arrays.asList(argsFromJson).toString());
@@ -250,8 +233,11 @@ public final class Tools
         return builder.toString();
     }
 
-    private static String[] splitAndFilterEmpty(String argStr) {
+    private static String[] splitAndFilterEmpty(String argStr, MinecraftAccount profile) {
         List<String> strList = new ArrayList<String>();
+        if(profile.username.equals("demo_user") && profile.accessToken.equals("-1") && profile.profileId.equals("25e00594-cf57-3f87-b3af-3f06591be252")) {
+            strList.add("--demo"); // if statement is this complex to prevent tampering with the .json
+        }
         for (String arg : argStr.split(" ")) {
             if (!arg.isEmpty()) {
                 strList.add(arg);
