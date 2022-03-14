@@ -51,7 +51,7 @@ public final class Tools
     
     public static final Gson GLOBAL_GSON = new GsonBuilder().setPrettyPrinting().create();
     
-    public static final String URL_HOME = "https://pojavlauncherteam.github.io/PojavLauncher";
+    public static final String URL_HOME = "https://pojav.ml";
     public static String DIR_BUNDLE = System.getenv("BUNDLE_PATH"); // path to "PojavLauncher.app"
     public static String CURRENT_ARCHITECTURE;
 
@@ -96,7 +96,7 @@ public final class Tools
 
         String[] launchArgs = getMinecraftArgs(profile, versionInfo);
 
-        System.out.println("Minecraft Args: " + Arrays.toString(launchArgs));
+        // System.out.println("Minecraft Args: " + Arrays.toString(launchArgs));
 
         final String launchClassPath = generateLaunchClassPath(profile.selectedVersion);
 

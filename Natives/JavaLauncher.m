@@ -209,7 +209,7 @@ void init_hookFunctions() {
 void init_loadCustomEnv() {
     FILE *envFile = fopen(env_path, "r");
 
-    debug("[Pre-init] Reading custom environment variables (custom_env.txt), opened=%d\n", envFile != NULL);
+    regLog("[Pre-init] Reading custom environment variables (custom_env.txt), opened=%d\n", envFile != NULL);
 
     if (envFile) {
         char *line = NULL;
@@ -221,10 +221,10 @@ void init_loadCustomEnv() {
                 line[read-1] = '\0';
             }
             if (strchr(line, '=') != NULL) {
-                debug("[Pre-init] Added custom env: %s", line);
+                regLog("[Pre-init] Added custom env: %s", line);
                 setenv(strtok(line, "="), strtok(NULL, "="), 1);
             } else {
-                debug("[Pre-init] Warning: skipped empty value custom env: %s", line);
+                regLog("[Pre-init] Warning: skipped empty value custom env: %s", line);
             }
         }
         fclose(envFile);
@@ -279,13 +279,13 @@ void init_logDeviceAndVer (char *argument) {
         } else {
             jbStrap = "Other";
         }
-        debug("[Pre-Init] %s with iOS %s (%s)", deviceHardware, deviceSoftware, jbStrap);
+        regLog("[Pre-Init] %s with iOS %s (%s)", deviceHardware, deviceSoftware, jbStrap);
     } else {
-        debug("[Pre-Init] %s with iOS %s", deviceHardware, deviceSoftware);
+        regLog("[Pre-Init] %s with iOS %s", deviceHardware, deviceSoftware);
     }
 
     // PojavLauncher version
-    debug("[Pre-Init] PojavLauncher version: %s - %s", CONFIG_TYPE, CONFIG_COMMIT);
+    regLog("[Pre-Init] PojavLauncher version: %s - %s", CONFIG_TYPE, CONFIG_COMMIT);
 
     setenv("POJAV_DETECTEDHW", deviceHardware, 1);
     setenv("POJAV_DETECTEDSW", deviceSoftware, 1);
@@ -295,14 +295,14 @@ void init_logDeviceAndVer (char *argument) {
 }
 
 void init_redirectStdio(char* homeDir) {
-    debug("[Pre-init] Staring logging STDIO as jrelog:V\n");
+    regLog("[Pre-init] Staring logging STDIO as jrelog:V\n");
     // Redirect stdio to latestlog.txt
     char newname[2048];
     sprintf(newname, "%s/latestlog.old.txt", homeDir);
     rename(log_path, newname);
     FILE* logFile = fopen(log_path, "w");
     if (!logFile) {
-        debug("[Pre-init] Error: failed to open %s: %s", log_path, strerror(errno));
+        regLog("[Pre-init] Error: failed to open %s: %s", log_path, strerror(errno));
         assert(0 && "Failed to open latestlog.txt. Check oslog for more details.");
     }
     log_fd = fileno(logFile);
@@ -328,13 +328,13 @@ void environmentFailsafes(char *argv[]) {
         if (0 == access("/usr/lib/jvm/java-8-openjdk/", F_OK)) {
             javaHome_pre = @"/usr/lib/jvm/java-8-openjdk";
         } else if (0 == access("/usr/lib/jvm/java-16-openjdk/", F_OK)) {
-            debug("[Pre-init] Java 8 wasn't found on your device. Install Java 8 for more compatibility and the mod installer.");
+            regLog("[Pre-init] Java 8 wasn't found on your device. Install Java 8 for more compatibility and the mod installer.");
             javaHome_pre = @"/usr/lib/jvm/java-16-openjdk";
         } else if (0 == access("/usr/lib/jvm/java-17-openjdk/", F_OK)) {
-            debug("[Pre-init] Java 8 wasn't found on your device. Install Java 8 for more compatibility and the mod installer.");
+            regLog("[Pre-init] Java 8 wasn't found on your device. Install Java 8 for more compatibility and the mod installer.");
             javaHome_pre = @"/usr/lib/jvm/java-17-openjdk";
         } else {
-            debug("[Pre-init] FATAL ERROR: Java wasn't found on your device, PojavLauncher cannot continue, aborting.");
+            regLog("[Pre-init] FATAL ERROR: Java wasn't found on your device, PojavLauncher cannot continue, aborting.");
             abort();
         }
         javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
@@ -402,7 +402,7 @@ int launchJVM(int argc, char *argv[]) {
     }
 
     init_logDeviceAndVer(argv[0]);
-    debug("[Pre-init] Beginning JVM launch\n");
+    regLog("[Pre-init] Beginning JVM launch\n");
     
     char javaAwtPath[4096];
     // I accidentally patched a bit wrong, the value should be a path containing libawt_xawt.dylib, but here is libawt.dylib path (no need to exist)
@@ -425,13 +425,13 @@ int launchJVM(int argc, char *argv[]) {
     javaHome = [javaHome_pre cStringUsingEncoding:NSUTF8StringEncoding];
     if ([javaHome_pre length] == 0) {
         environmentFailsafes(argv);
-        debug("[Pre-init] JAVA_HOME environment variable was not set. Defaulting to %s for future use.\n", javaHome);
+        regLog("[Pre-init] JAVA_HOME environment variable was not set. Defaulting to %s for future use.\n", javaHome);
     } else {
         if (0 == [[NSFileManager defaultManager] fileExistsAtPath:javaHome_pre]) {
-            debug("[Pre-Init] Failed to locate %s. Restoring default value for JAVA_HOME.", javaHome);
+            regLog("[Pre-Init] Failed to locate %s. Restoring default value for JAVA_HOME.", javaHome);
             environmentFailsafes(argv);
         } else {
-            debug("[Pre-Init] Restored preference: JAVA_HOME is set to %s\n", javaHome);
+            regLog("[Pre-Init] Restored preference: JAVA_HOME is set to %s\n", javaHome);
         }
     }
     setenv("JAVA_HOME", javaHome, 1);
@@ -529,9 +529,9 @@ int launchJVM(int argc, char *argv[]) {
         setPreference(@"renderer", renderer_pre);
         renderer = [renderer_pre cStringUsingEncoding:NSUTF8StringEncoding];
         setenv("POJAV_RENDERER", renderer, 1);
-        debug("[Pre-init] RENDERER environment variable was not set. Defaulting to %s for future use.\n", renderer);
+        regLog("[Pre-init] RENDERER environment variable was not set. Defaulting to %s for future use.\n", renderer);
     } else {
-        debug("[Pre-Init] Restored preference: RENDERER is set to %s\n", renderer);
+        regLog("[Pre-Init] Restored preference: RENDERER is set to %s\n", renderer);
     }
     
     allocmem_pre = [getPreference(@"allocated_memory") stringValue];
@@ -565,7 +565,7 @@ int launchJVM(int argc, char *argv[]) {
         classpath[cplen-1] = '\0';
         closedir(d);
     }
-    debug("[Pre-init] Classpath generated: %s", classpath);
+    debugLog("[Pre-init] Classpath generated: %s", classpath);
     
     multidir_pre = getPreference(@"game_directory");
     multidir = [multidir_pre cStringUsingEncoding:NSUTF8StringEncoding];
@@ -573,10 +573,10 @@ int launchJVM(int argc, char *argv[]) {
         multidir_pre = @"default";
         multidir = [multidir_pre cStringUsingEncoding:NSUTF8StringEncoding];
         setPreference(@"game_directory", multidir_pre);
-        debug("[Pre-init] MULTI_DIR environment variable was not set. Defaulting to %s for future use.\n", multidir);
+        regLog("[Pre-init] MULTI_DIR environment variable was not set. Defaulting to %s for future use.\n", multidir);
     } else {
         multidir = [multidir_pre cStringUsingEncoding:NSUTF8StringEncoding];
-        debug("[Pre-init] Restored preference: MULTI_DIR is set to %s\n", multidir);
+        regLog("[Pre-init] Restored preference: MULTI_DIR is set to %s\n", multidir);
     }
     char *multidir_char, *librarySym;
     asprintf(&multidir_char, "%s/instances/%s", getenv("POJAV_HOME"), multidir);
@@ -590,7 +590,7 @@ int launchJVM(int argc, char *argv[]) {
     
     if (0 == access("/var/mobile/Documents/minecraft", F_OK)) {
         rename("/var/mobile/Documents/minecraft", multidir_char);
-        debug("[Pre-Init] Migrated old minecraft folder to new location.");
+        regLog("[Pre-Init] Migrated old minecraft folder to new location.");
     }
     
     if (0 == access("/var/mobile/Documents/Library", F_OK)) {
@@ -632,7 +632,7 @@ int launchJVM(int argc, char *argv[]) {
         }
     } else {
         setenv("POJAV_RENDERER", renderer, 1);
-        debug("[Pre-init] RENDERER has been set to %s", getenv("POJAV_RENDERER"));
+        regLog("[Pre-init] RENDERER has been set to %s", getenv("POJAV_RENDERER"));
     }
 
     // Load java
@@ -643,11 +643,11 @@ int launchJVM(int argc, char *argv[]) {
     setenv("INTERNAL_JLI_PATH", libjlipath16, 1);
     void* libjli = dlopen(libjlipath16, RTLD_LAZY | RTLD_GLOBAL);
     if (!libjli) {
-        debug("[Init] Can't load %s, trying %s", libjlipath16, libjlipath8);
+        debugLog("[Init] Can't load %s, trying %s", libjlipath16, libjlipath8);
         setenv("INTERNAL_JLI_PATH", libjlipath8, 1);
         libjli = dlopen(libjlipath8, RTLD_LAZY | RTLD_GLOBAL);
         if (!libjli) {
-            debug("[Init] JLI lib = NULL: %s", dlerror());
+            debugLog("[Init] JLI lib = NULL: %s", dlerror());
             return -1;
         }
 
@@ -687,7 +687,7 @@ int launchJVM(int argc, char *argv[]) {
     if (!started) {
         init_loadCustomJvmFlags();
     }
-    debug("[Init] Found JLI lib");
+    regLog("[Init] Found JLI lib");
 
     if (!started) {
         margv[margc++] = "-cp";
@@ -699,7 +699,7 @@ int launchJVM(int argc, char *argv[]) {
           (JLI_Launch_func *)dlsym(libjli, "JLI_Launch");
           
     if (NULL == pJLI_Launch) {
-        debug("[Init] JLI_Launch = NULL");
+        regLog("[Init] JLI_Launch = NULL");
         return -2;
     }
 
@@ -707,10 +707,10 @@ int launchJVM(int argc, char *argv[]) {
     free(librarySym);
     free(multidir_char);
 
-    debug("[Init] Calling JLI_Launch");
+    regLog("[Init] Calling JLI_Launch");
 /*
     for (int i = 0; i < margc; i++) {
-        debug("arg[%d] = %s", i, margv[i]);
+        regLog("arg[%d] = %s", i, margv[i]);
     }
 */
     int targc = started ? argc : margc;
@@ -719,11 +719,11 @@ int launchJVM(int argc, char *argv[]) {
     if (!started) {
         started = YES;
     }
-/* debug:
-for (int i = 0; i < targc; i++) {
-debug("Arg=%s", targv[i]);
-}
-*/
+    
+    for (int i = 0; i < targc; i++) {
+        debugLog("Arg=%s", targv[i]);
+    }
+    
     return pJLI_Launch(targc, targv,
                    0, NULL, // sizeof(const_jargs) / sizeof(char *), const_jargs,
                    0, NULL, // sizeof(const_appclasspath) / sizeof(char *), const_appclasspath,

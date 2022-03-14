@@ -21,7 +21,8 @@ extern "C" {
 # define DEBUG_LOGD(...)
 #endif
 
-void debug(const char *message, ...) __attribute__((format(printf, 1, 2)));
+void regLog(const char *message, ...) __attribute__((format(printf, 1, 2)));
+void debugLog(const char *message, ...) __attribute__((format(printf, 1, 2)));
 
 #ifdef __cplusplus
 }

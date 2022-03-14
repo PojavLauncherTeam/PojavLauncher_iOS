@@ -81,9 +81,7 @@ ADD_CALLBACK_WWIN(WindowPos);
 #undef ADD_CALLBACK_WWIN
 
 void getJavaInputBridge(jclass* clazz, jmethodID* method) {
-#ifdef DEBUG
-    debug("Debug: Initializing input bridge, method.isNull=%d, jnienv.isNull=%d\n", *method == NULL, runtimeJNIEnvPtr_ANDROID == NULL);
-#endif
+    debugLog("Debug: Initializing input bridge, method.isNull=%d, jnienv.isNull=%d\n", *method == NULL, runtimeJNIEnvPtr_ANDROID == NULL);
     if (*method == NULL && runtimeJNIEnvPtr_ANDROID != NULL) {
         *clazz = (*runtimeJNIEnvPtr_ANDROID)->FindClass(runtimeJNIEnvPtr_ANDROID, "org/lwjgl/glfw/CallbackBridge");
         assert(*clazz != NULL);
@@ -98,11 +96,9 @@ void sendData(int type, CGFloat i1, CGFloat i2, int i3, int i4) {
         getJavaInputBridge(&inputBridgeClass_ANDROID, &inputBridgeMethod_ANDROID);
     }
 
-#ifdef DEBUG
-    debug("Debug: Send data, jnienv.isNull=%d\n", runtimeJNIEnvPtr_ANDROID == NULL);
-#endif
+    debugLog("Debug: Send data, jnienv.isNull=%d\n", runtimeJNIEnvPtr_ANDROID == NULL);
     if (runtimeJNIEnvPtr_ANDROID == NULL) {
-        debug("BUG: Input is ready but thread is not attached yet.");
+        debugLog("BUG: Input is ready but thread is not attached yet.");
         return;
     }
     // FIXME: should we send double instead of float?
@@ -154,7 +150,7 @@ void callback_LauncherViewController_installMinecraft(char* versionPath) {
 }
 
 void callback_SurfaceViewController_launchMinecraft(int width, int height) {
-    debug("Received SurfaceViewController callback, width=%d, height=%d\n", width, height);
+    debugLog("Received SurfaceViewController callback, width=%d, height=%d\n", width, height);
 
     // Because UI init after JVM init, this should not be null
     assert(runtimeJNIEnvPtr_JRE != NULL);
