@@ -352,61 +352,7 @@
     popoverController.delegate = self;
     [self presentViewController:vc animated:YES completion:nil];
 }
-/*
-- (void)loginMojangWithUsername:(NSString*)input_username password:(NSString*)input_password {
-    [self displayProgress:@"Logging in"];
 
-    NSString *input_uuid = [[NSUUID UUID] UUIDString];
-
-    NSURLSession *session = [NSURLSession sharedSession];
-    NSURL *url = [NSURL URLWithString:@"https://authserver.mojang.com/authenticate"];
-    NSMutableURLRequest *request = 
-      [[NSMutableURLRequest alloc] initWithURL:url];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-
-    NSString *jsonString = [NSString stringWithFormat:@"{\"agent\": {\"name\": \"Minecraft\", \"version\": 1}, \"username\": \"%@\", \"password\": \"%@\", \"clientToken\": \"%@\"}", input_username, input_password, input_uuid];
-    // NSLog(jsonString);
-    [request setValue:[NSString stringWithFormat:@"%d",
-      (int) [jsonString length]] forHTTPHeaderField:@"Content-length"];
-    [request setHTTPBody:[jsonString dataUsingEncoding:NSUTF8StringEncoding]];
-
-    NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.title = @"";
-            self.navigationItem.leftBarButtonItem = nil;
-        });
-
-        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
-        long statusCode = (long)[httpResponse statusCode];
-
-        NSString *dataStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        // NSLog(@"status=%ld, data=%@, response=%@, error=%@", statusCode, dataStr, httpResponse, error);
-        NSError *jsonError = nil;
-        NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&jsonError];
-
-        if (jsonError != nil) {
-            NSLog(@"Error parsing JSON: %@", jsonError.localizedDescription);
-            showDialog(self, @"Error parsing JSON", jsonError.localizedDescription);
-        } else if (statusCode == 200) {
-            NSArray *selectedProfile = [jsonArray valueForKey:@"selectedProfile"];
-            if (selectedProfile == nil) {
-                // NSLog(@"DBG: can't login demo account!");
-                showDialog(self, @"Error", @"Can't login a demo account!");
-            } else {
-                NSAssert(dataStr != nil, @"account data should not be null");
-                [self loginAccountInput:TYPE_MOJANG data:dataStr];
-            }
-        } else {
-            NSString *err_title = [jsonArray valueForKey:@"error"];
-            NSString *err_msg = [jsonArray valueForKey:@"errorMessage"];
-            // NSLog(@"DBG Error: %@: %@", err_title, err_msg);
-            showDialog(self, err_title, err_msg);
-        }
-    }];
-    [postDataTask resume];
-}
-*/
 - (void)aboutLauncher
 {
     AboutLauncherViewController *vc = [[AboutLauncherViewController alloc] init];
