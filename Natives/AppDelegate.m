@@ -2,12 +2,12 @@
 #import "LoginViewController.h"
 #import "SceneDelegate.h"
 #import "ios_uikit_bridge.h"
+#include "utils.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     if (@available(iOS 13.0, *)) {
-        
     } else {
         self.window = ([[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]]);
         launchInitialViewController(self.window);
@@ -37,6 +37,22 @@
     NSDictionary *data = [NSDictionary dictionaryWithObject:url forKey:@"url"];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"MSALoginCallback" object:self userInfo:data];
     return YES;
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+        CallbackBridge_setWindowAttrib(GLFW_FOCUSED, 1);
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application {
+    CallbackBridge_setWindowAttrib(GLFW_VISIBLE, 0);
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application {
+    CallbackBridge_setWindowAttrib(GLFW_VISIBLE, 1);
+}
+
+- (void)applicationWillResignActive:(UIApplication *)application {
+    CallbackBridge_setWindowAttrib(GLFW_FOCUSED, 0);
 }
 
 @end

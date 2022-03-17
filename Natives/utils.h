@@ -24,6 +24,9 @@
 #define EVENT_TYPE_WINDOW_POS 1008
 #define EVENT_TYPE_WINDOW_SIZE 1009
 
+#define GLFW_FOCUSED 0x00020001
+#define GLFW_VISIBLE 0x00020004
+
 #define SPECIALBTN_KEYBOARD -1
 #define SPECIALBTN_TOGGLECTRL -2
 #define SPECIALBTN_MOUSEPRI -3
@@ -90,3 +93,4 @@ void CallbackBridge_nativeSendScreenSize(int width, int height);
 void CallbackBridge_nativeSendScroll(CGFloat xoffset, CGFloat yoffset);
 void CallbackBridge_nativeSendWindowPos(jint x, jint y);
 void CallbackBridge_sendKeycode(int keycode, jchar keychar, int scancode, int modifiers, BOOL isDown);
+void CallbackBridge_setWindowAttrib(int attrib, int value);

@@ -873,7 +873,7 @@ public class GLFW
     }
 
     public static int glfwGetWindowAttrib(@NativeType("GLFWwindow *") long window, int attrib) {
-        return internalGetWindow(window).windowAttribs.get(attrib);
+        return internalGetWindow(window).windowAttribs.getOrDefault(attrib, 0);
     }
 
     public static void glfwSetWindowAttrib(@NativeType("GLFWwindow *") long window, int attrib, int value) {
@@ -976,6 +976,9 @@ public class GLFW
         win.height = height;
 
         win.title = title;
+
+        win.windowAttribs.put(GLFW_HOVERED, 1);
+        win.windowAttribs.put(GLFW_VISIBLE, 1);
 
         mGLFWWindowMap.put(ptr, win);
         mainContext = ptr;

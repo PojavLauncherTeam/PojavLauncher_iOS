@@ -458,13 +458,11 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 
 - (void)registerMouseCallbacks:(GCMouse *)mouse API_AVAILABLE(ios(14.0)) {
     NSLog(@"Input: Got mouse %@", mouse);
-/*
     mouse.mouseInput.mouseMovedHandler = ^(GCMouseInput * _Nonnull mouse, float deltaX, float deltaY) {
         if (!isGrabbing) return;
-        x += deltaX / 2.5;
-        y += -deltaY / 2.5;
+        [self sendTouchPoint:CGPointMake(deltaX / 2.5, -deltaY / 2.5) withEvent:ACTION_MOVE_MOTION];
     };
-*/
+
     mouse.mouseInput.leftButton.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
         CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_LEFT, pressed, 0);
     };
@@ -516,6 +514,9 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 
 - (void)surfaceOnHover:(UIHoverGestureRecognizer *)sender API_AVAILABLE(ios(13.0)) {
     if (@available(iOS 13.0, *)) {
+        if (isGrabbing && @available(iOS 14.0, *)) {
+            return;
+        }
         CGPoint point = [sender locationInView:self.view];
         // NSLog(@"Mouse move!!");
         // NSLog(@"Mouse pos = %f, %f", point.x, point.y);

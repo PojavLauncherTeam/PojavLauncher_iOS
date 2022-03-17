@@ -450,3 +450,20 @@ void CallbackBridge_sendKeycode(int keycode, jchar keychar, int scancode, int mo
         CallbackBridge_nativeSendChar(keychar);
     }
 }
+
+void CallbackBridge_setWindowAttrib(int attrib, int value) {
+    if (!showingWindow || !isInputReady) {
+        return; // nothing to do yet
+    }
+
+    jclass glfwClazz = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "org/lwjgl/glfw/GLFW");
+    assert(glfwClazz != NULL);
+    jmethodID glfwMethod = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, glfwClazz, "glfwSetWindowAttrib", "(JII)V");
+    assert(glfwMethod != NULL);
+
+    (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
+        runtimeJNIEnvPtr_JRE,
+        glfwClazz, glfwMethod,
+        (jlong) showingWindow, attrib, value
+    );
+}
