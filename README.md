@@ -25,7 +25,7 @@ If you have Chimera, Taurine, Odyssey, or another jailbreak that comes with **li
 ### Bingner/Elucubratus bootstraps
 If you have unc0ver, checkra1n, or another jailbreak that comes with **Cydia Substrate** or **Substitute**, this one's for you. You can also use this if you have a libhooker jailbreak.
 
-1. Add `https://apt.doregon.gq` to your sources list.
+1. Add `https://repository.crystall1ne.software` to your sources list.
 2. Search for `pojavlauncher` with your favorite package manager.
 3. Install the package you wish to have, according to your preference:
    * `pojavlauncher.release` is the stable build. This one gets updated with new releases or tags on this repository, or when Procursus updated their copy.
@@ -45,7 +45,7 @@ If you have unc0ver, checkra1n, or another jailbreak that comes with **Cydia Sub
 PojavLauncher is amazing, and surprisingly stable, and it wouldn't be this way without the following people that helped and contribute to the project!
 
 @khanhduytran0 - Lead iOS port developer  
-@Doregon - PojavLauncher hosting on Doregon's Repository, iOS port developer  
+@crystall1nedev - Lead iOS port developer  
 @artdeell - Lead developer  
 @LegacyGamerHD - Lead developer  
 @zhouwei - Original Boardwalk code  
