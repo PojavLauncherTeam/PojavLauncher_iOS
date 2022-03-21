@@ -546,7 +546,11 @@ CGFloat currentY;
     [self registerForKeyboardNotifications];
     currentY = 6.0;
 
-    if (self.view.bounds.origin.x == 0) {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        CGFloat x = self.view.bounds.size.width/4.0;
+        CGFloat y = self.view.bounds.size.height/10.0;
+        self.view.bounds = CGRectMake(-x, -y, self.view.bounds.size.width - x * 2.0, self.view.bounds.size.height - y * 2.0);
+    } else {
         CGFloat x = self.view.bounds.size.width/10.0;
         CGFloat y = self.view.bounds.size.height/10.0;
         self.view.bounds = CGRectMake(-x, -y, self.view.bounds.size.width - x * 2.0, self.view.bounds.size.height - y * 2.0);
@@ -560,6 +564,11 @@ CGFloat currentY;
     UIBarButtonItem *btnFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
 
     UIToolbar *popoverToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, 44.0)];
+    UIPanGestureRecognizer *dragVCGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(dragViewController:)];
+    dragVCGesture.minimumNumberOfTouches = 1;
+    dragVCGesture.maximumNumberOfTouches = 1;
+    [popoverToolbar addGestureRecognizer:dragVCGesture];
+    
     UIBarButtonItem *popoverCancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(actionEditCancel)];
     UIBarButtonItem *popoverDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(actionEditFinish)];
     popoverToolbar.items = @[popoverCancelButton, btnFlexibleSpace, popoverDoneButton];
@@ -569,6 +578,7 @@ CGFloat currentY;
     [self.view addSubview:self.scrollView];
 
     UIToolbar *editPickToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, 44.0)];
+ 
     UIBarButtonItem *editDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeTextField)];
     editPickToolbar.items = @[btnFlexibleSpace, editDoneButton];
 
@@ -778,6 +788,19 @@ CGFloat currentY;
 
     currentY += labelName.frame.size.height + 12.0;
     self.scrollView.contentSize = CGSizeMake(self.scrollView.contentSize.width, currentY);
+}
+
+#pragma mark - Gesture callback
+- (void)dragViewController:(UIPanGestureRecognizer *)sender {
+    static CGPoint lastPoint;
+    CGPoint point = [sender translationInView:self.view];
+    if (sender.state != UIGestureRecognizerStateBegan) {
+        CGRect rect = self.view.bounds;
+        rect.origin.x = clamp(rect.origin.x + lastPoint.x - point.x, sender.view.frame.size.width - self.view.frame.size.width, 0);
+        rect.origin.y = clamp(rect.origin.y + lastPoint.y - point.y, sender.view.frame.size.height - self.view.frame.size.height, 0);
+        self.view.bounds = rect;
+    }
+    lastPoint = point;
 }
 
 #pragma mark - Alderis functions
