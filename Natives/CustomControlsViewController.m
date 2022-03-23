@@ -43,11 +43,37 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 }
 @end
 
+@interface ControlHandleView : UIView
+@property ControlButton* target;
+@end
+@implementation ControlHandleView
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    [super touchesMoved:touches withEvent:event];
+    UITouch *touch = touches.anyObject;
+    CGPoint currPoint = [touch locationInView:self];
+    CGPoint prevPoint = [touch previousLocationInView:self];
+
+    CGFloat deltaX = currPoint.x - prevPoint.x;
+    CGFloat deltaY = currPoint.y - prevPoint.y;
+    CGFloat width = MAX(10, [self.target.properties[@"width"] floatValue] + deltaX);
+    CGFloat height = MAX(10, [self.target.properties[@"height"] floatValue] + deltaY);
+    self.target.properties[@"width"] = @(width);
+    self.target.properties[@"height"] = @(height);
+    [self.target update];
+
+    CGRect selfFrame = self.frame;
+    selfFrame.origin.x = self.target.frame.origin.x + width;
+    selfFrame.origin.y = self.target.frame.origin.y + height;
+    self.frame = selfFrame;
+}
+@end
+
 @interface CustomControlsViewController () <UIPopoverPresentationControllerDelegate>{
 }
 
 @property(nonatomic, strong) NSMutableDictionary* cc_dictionary;
 @property(nonatomic) UIView* offsetView;
+@property(nonatomic) ControlHandleView* resizeView;
 @property(nonatomic) NSString* currentFileName;
 @property(nonatomic) CGRect selectedPoint;
 
@@ -82,12 +108,22 @@ NSMutableArray *keyCodeMap, *keyValueMap;
         self.view.frame.size.width - insets.left - insets.right,
         self.view.frame.size.height
     )];
-    [self.view addSubview:self.offsetView];
+    [self.offsetView addGestureRecognizer:[[UIPanGestureRecognizer alloc]
+        initWithTarget:self action:@selector(onTouch:)]];
+    [self.view addSubview:self.offsetView]; 
 
     int height = (int) roundf(screenBounds.size.height);
     width = width - insets.left - insets.right;
     CGFloat buttonScale = [getPreference(@"button_scale") floatValue] / 100.0;
 
+    self.resizeView = [[ControlHandleView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+    self.resizeView.backgroundColor = self.view.tintColor;
+    self.resizeView.layer.cornerRadius = self.resizeView.frame.size.width / 2;
+    self.resizeView.clipsToBounds = YES;
+    self.resizeView.layer.maskedCorners = kCALayerMaxXMaxYCorner | kCALayerMaxXMinYCorner | kCALayerMinXMaxYCorner;
+    self.resizeView.hidden = YES;
+    [self.view addSubview:self.resizeView];
+  
     UILongPressGestureRecognizer *longpressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(showControlPopover:)];
     longpressGesture.minimumPressDuration = 0.5;
     [self.offsetView addGestureRecognizer:longpressGesture];
@@ -176,12 +212,8 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     }
     [sender.view becomeFirstResponder];
 
-    if(@available(iOS 13.0, *)) {
-        [menuController showMenuFromView:sender.view rect:self.selectedPoint];
-    } else {
-        [menuController setTargetRect:self.selectedPoint inView:sender.view];
-        [menuController setMenuVisible:YES animated:YES];
-    }
+    self.resizeView.hidden = sender.view == self.offsetView;
+    [self setButtonMenuVisibleForView:sender.view];
 }
 
 - (void)actionMenuExit {
@@ -359,8 +391,28 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     [self presentViewController:vc animated:YES completion:nil];
 }
 
+- (void)setButtonMenuVisibleForView:(UIView *)view {
+    self.resizeView.target = (ControlButton *)view;
+    UIMenuController *menuController = [UIMenuController sharedMenuController];
+    if(@available(iOS 13.0, *)) {
+        if (view) {
+            [menuController showMenuFromView:view rect:self.selectedPoint];
+        } else {
+            [menuController hideMenu];
+        }
+    } else {
+        if (view) {
+            [menuController setTargetRect:self.selectedPoint inView:view];
+        }
+        [menuController setMenuVisible:(view!=nil) animated:YES];
+    }
+    if (view) {
+        self.resizeView.frame = CGRectMake(view.frame.origin.x + view.frame.size.width, view.frame.origin.y + view.frame.size.height, self.resizeView.frame.size.width, self.resizeView.frame.size.height);
+    }
+}
+
 - (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
-    return UIRectEdgeBottom;
+    return UIRectEdgeAll;
 }
 
 - (BOOL)prefersHomeIndicatorAutoHidden {
@@ -368,24 +420,32 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 }
 
 - (void)onTouch:(UIPanGestureRecognizer *)sender {
-    ControlButton *button = (ControlButton *)sender.view;
-    if (![button.properties[@"isDynamicBtn"] boolValue]) {
-        if ([button isKindOfClass:[ControlSubButton class]] &&
-          ![((ControlSubButton *)button).parentDrawer.drawerData[@"orientation"] isEqualToString:@"FREE"]) return;
-
+    CGPoint translation = [sender translationInView:sender.view];
+    if (sender.view == self.offsetView) {
         if (sender.state == UIGestureRecognizerStateBegan) {
-            UIMenuController *menuController = [UIMenuController sharedMenuController];
-            if(@available(iOS 13.0, *)) {
-                [menuController hideMenu];
-            } else {
-                [menuController setMenuVisible:NO animated:YES];
-            }
-        } else if (sender.state == UIGestureRecognizerStateChanged) {
-            CGPoint translation = [sender translationInView:button];
+            [self setButtonMenuVisibleForView:nil];
+            self.resizeView.hidden = YES;
+        }
+        return;
+    }
+
+    ControlButton *button = (ControlButton *)sender.view;
+    if ([button.properties[@"isDynamicBtn"] boolValue]) return;
+    else if ([button isKindOfClass:[ControlSubButton class]] &&
+        ![((ControlSubButton *)button).parentDrawer.drawerData[@"orientation"] isEqualToString:@"FREE"]) return;
+
+    switch (sender.state) {
+        case UIGestureRecognizerStateBegan: {
+            [self setButtonMenuVisibleForView:nil];
+            self.resizeView.hidden = NO;
+        } break;
+        case UIGestureRecognizerStateChanged: {
             //button.center = CGPointMake(button.center.x + translation.x, button.center.y + translation.y);
             [button snapAndAlignX:clamp(button.frame.origin.x+translation.x, 0, self.offsetView.frame.size.width - button.frame.size.width) Y:clamp(button.frame.origin.y+translation.y, 0, self.offsetView.frame.size.height - button.frame.size.height)];
             [sender setTranslation:CGPointZero inView:button];
-        }
+            self.resizeView.frame = CGRectMake(button.frame.origin.x + button.frame.size.width, button.frame.origin.y + button.frame.size.height, self.resizeView.frame.size.width, self.resizeView.frame.size.height);
+        } break;
+        default: break;
     }
 }
 
@@ -546,19 +606,14 @@ CGFloat currentY;
     [self registerForKeyboardNotifications];
     currentY = 6.0;
 
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        CGFloat x = self.view.bounds.size.width/4.0;
-        CGFloat y = self.view.bounds.size.height/10.0;
-        self.view.bounds = CGRectMake(-x, -y, self.view.bounds.size.width - x * 2.0, self.view.bounds.size.height - y * 2.0);
-    } else {
-        CGFloat x = self.view.bounds.size.width/10.0;
-        CGFloat y = self.view.bounds.size.height/10.0;
-        self.view.bounds = CGRectMake(-x, -y, self.view.bounds.size.width - x * 2.0, self.view.bounds.size.height - y * 2.0);
-        //self.view.layer.cornerRadius = self.view.bounds.size.height/2;
-        //self.view.layer.masksToBounds = YES;
-    }
+    CGFloat x = self.view.frame.size.width/5.0;
+    CGFloat y = self.view.frame.size.height/10.0;
+    self.view.bounds = CGRectMake(-x, -y, self.view.frame.size.width - x * 2.0, self.view.frame.size.height - y * 2.0);
+
     UIVisualEffectView *blurView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular]];
-    blurView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
+    blurView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height); 
+    blurView.layer.cornerRadius = 10.0;
+    blurView.clipsToBounds = YES;
     [self.view addSubview:blurView];
 
     UIBarButtonItem *btnFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
@@ -571,11 +626,11 @@ CGFloat currentY;
     
     UIBarButtonItem *popoverCancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(actionEditCancel)];
     UIBarButtonItem *popoverDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(actionEditFinish)];
-    popoverToolbar.items = @[popoverCancelButton, btnFlexibleSpace, popoverDoneButton];
-    [self.view addSubview:popoverToolbar];
+    popoverToolbar.items = @[popoverCancelButton, btnFlexibleSpace, popoverDoneButton]; 
+    [blurView.contentView addSubview:popoverToolbar];
 
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(5.0, popoverToolbar.frame.size.height, self.view.bounds.size.width - 10.0, self.view.bounds.size.height - popoverToolbar.frame.size.height)];
-    [self.view addSubview:self.scrollView];
+    [blurView.contentView addSubview:self.scrollView];
 
     UIToolbar *editPickToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, 44.0)];
  
