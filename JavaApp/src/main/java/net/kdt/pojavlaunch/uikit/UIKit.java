@@ -85,10 +85,6 @@ public class UIKit {
             }
         }, "ModInstallerThread").start();
     }
-    
-    public static void callback_LauncherViewController_installMinecraft(String versionPath) {
-        PLaunchApp.installMinecraft(versionPath);
-    }
 
     public static void callback_SurfaceViewController_launchMinecraft(int width, int height, String rendererLibName) {
         MCOptionUtils.load();
@@ -146,11 +142,6 @@ public class UIKit {
         }
         updateMCGuiScale(guiScale);
     }
-    
-    public static void updateProgressSafe(final float progress, final String message) {
-        System.out.println(message);
-        updateProgress(progress, ((int) (progress * 100)) + "% - " + message);
-    }
 
     static {
         System.load(System.getenv("BUNDLE_PATH") + "/PojavLauncher");
@@ -164,10 +155,4 @@ public class UIKit {
     public static native void showError(String title, String message, boolean exitIfOk);
     
     private static native void updateMCGuiScale(int scale);
-    
-    // Update progress
-    public static native void updateProgress(float progress, String message);
-    
-    // Start SurfaceViewController
-    public static native void launchMinecraftSurface(boolean isUseStackQueueBool);
-}
+    }

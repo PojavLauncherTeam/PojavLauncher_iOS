@@ -219,16 +219,6 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_updateMCGuiScale(JNI
     guiScale = scale;
 }
 
-JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_updateProgress(JNIEnv* env, jclass clazz, jfloat progress, jstring message) {
-	const char *message_c = (*env)->GetStringUTFChars(env, message, 0);
-	UIKit_updateProgress(progress, message_c);
-	(*env)->ReleaseStringUTFChars(env, message, message_c);
-}
-
-JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_launchMinecraftSurface(JNIEnv* env, jclass clazz, jboolean isUseStackQueueBool) {
-    isUseStackQueueCall = (int) isUseStackQueueBool;
-    UIKit_launchMinecraftSurfaceVC();
-}
 /*
 JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_runOnUIThread(JNIEnv* env, jclass clazz, jobject callback) {
     UIKit_runOnUIThread(callback);

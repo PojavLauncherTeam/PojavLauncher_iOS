@@ -5,6 +5,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcommon -fobjc-arc -ObjC")
 set(CMAKE_C_FLAGS_DEBUG "-funwind-tables -g")
 
 include_directories(
+  "resources/Frameworks/AFNetworking.framework/Headers"
   "resources/Frameworks/Alderis.framework/Headers"
   "resources/Frameworks/MetalANGLE.framework/Headers"
   "external/DBNumberedSlider/Classes"
@@ -64,6 +65,7 @@ add_executable(PojavLauncher
   LauncherPreferencesViewController.m
   LauncherViewController.m
   LoginViewController.m
+  MinecraftDownloader.m
   SceneDelegate.m 
   SurfaceViewController.m
   UpdateHistoryViewController.m
@@ -82,6 +84,7 @@ add_executable(PojavLauncher
 target_link_libraries(PojavLauncher
   "-F'${CMAKE_CURRENT_LIST_DIR}/build'"
   "-F'${CMAKE_CURRENT_LIST_DIR}/resources/Frameworks'"
+  "-framework AFNetworking" 
   "-framework AuthenticationServices"
   "-framework CoreGraphics"
   "-framework GameController"

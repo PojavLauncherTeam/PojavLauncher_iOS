@@ -120,6 +120,7 @@ void loadPreferences() {
     setDefaultValueForPref(envPrefDict, @"disable_gl4es_shaderconv", @NO);
     setDefaultValueForPref(prefDict, @"slideable_hotbar", @NO);
     setDefaultValueForPref(prefDict, @"virtmouse_enable", @NO);
+    setDefaultValueForPref(prefDict, @"check_sha", @YES);
     if (0 != [fileManager fileExistsAtPath:@"/var/mobile/Documents/.pojavlauncher"]) {
         setDefaultValueForPref(prefDict, @"disable_home_symlink", @NO);
     } else {

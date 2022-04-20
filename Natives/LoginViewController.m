@@ -73,7 +73,7 @@
         [self presentViewController:jbAlert animated:YES completion:nil];
         [jbAlert addAction:ok];
     }
-    
+
     CGFloat widthSplit = width / 4.0;
     CGFloat widthSplit2 = width / 2.0;
 
@@ -81,8 +81,6 @@
     logoView.frame = CGRectMake(0, (rawHeight / 2) - 35, width, 70);
     [logoView setContentMode:UIViewContentModeScaleAspectFit];
     [self.view addSubview:logoView];
-
-
 
     if(@available (iOS 14.0, *)) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage systemImageNamed:@"info.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStyleDone target:self action:@selector(aboutLauncher)];
@@ -233,7 +231,11 @@
 
         if (result != NULL) {
             const char *username = (*env)->GetStringUTFChars(env, result, 0);
-            setenv("POJAV_INTERNAL_SELECTED_ACCOUNT", username, 1);
+
+            // temporary check, will be replaced once objc rewrite is complete
+            setenv("POJAV_INTERNAL_ALLOW_DOWNLOAD", (username[0] == '$' ? "1" : "0"), 1);
+
+            setenv("POJAV_INTERNAL_SELECTED_ACCOUNT", username+1, 1);
             (*env)->ReleaseStringUTFChars(env, result, username);
             dispatch_async(dispatch_get_main_queue(), ^{
                 LauncherViewController *vc = [[LauncherViewController alloc] init];

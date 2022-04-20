@@ -25,6 +25,7 @@
 #define ERASEPREF 17
 #define ARCCAPES 18
 #define VIRTMOUSE 19
+#define CHECKSHA 20
 
 #define TAG_BTNSCALE 98
 #define TAG_RESOLUTION 99
@@ -65,6 +66,8 @@
 #define TAG_ARCCAPES 117
 
 #define TAG_VIRTMOUSE 118
+
+#define TAG_CHECKSHA 119
 @interface LauncherPreferencesViewController () <UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDelegate> {
 }
 
@@ -89,12 +92,11 @@ UISwitch *noshaderconvSwitch, *slideHotbarSwitch;
 UIBlurEffect *blur;
 UIVisualEffectView *blurView;
 UIScrollView *scrollView;
-NSString *gl4es114 = @"GL4ES 1.1.4 - exports OpenGL 2.1";
-NSString *gl4es115 = @"GL4ES 1.1.5 (1.16+) - exports OpenGL 2.1";
-NSString *tinygl4angle = @"tinygl4angle (1.17+) - exports OpenGL 3.2 (Core Profile, limited)";
-NSString *vgpu = @"vgpu 1.3.6 - exports OpenGL 3.0";
-NSString *zink = @"Zink (Mesa 21.0) - exports OpenGL 4.1";
-NSString *virglrenderer = @"virglrenderer - exports OpenGL 4.1";
+
+NSString *gl4es114 = @"gl4es 1.1.4 - exports OpenGL 2.1";
+NSString *gl4es115 = @"gl4es 1.1.5 (1.16+) - exports OpenGL 2.1";
+NSDictionary *rendererDict;
+
 NSString *java8jben = @"Java 8";
 NSString *java16jben = @"Java 16";
 NSString *java17jben = @"Java 17";
@@ -103,12 +105,6 @@ NSString *libsjava8jben = @"/usr/lib/jvm/java-8-openjdk";
 NSString *libsjava16jben = @"/usr/lib/jvm/java-16-openjdk";
 NSString *libsjava17jben = @"/usr/lib/jvm/java-17-openjdk";
 NSString *libsjava8;
-NSString *lib_gl4es114 = @"libgl4es_114.dylib";
-NSString *lib_gl4es115 = @"libgl4es_115.dylib";
-NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
-NSString *lib_vgpu = @"libvgpu.dylib";
-NSString *lib_zink = @"libOSMesaOverride.dylib";
-NSString *lib_virglrenderer = @"libOSMesa.8.dylib";
 
 int tempIndex;
 
@@ -132,14 +128,14 @@ int tempIndex;
         @"/usr/lib/jvm/java-17-openjdk": @"Java 17",
         [NSString stringWithFormat:@"%s/jre8", getenv("POJAV_HOME")], @"Java 8 (sandbox)"
     };
-    rendererDict = @{
-        @"libgl4es_114.dylib": @"GL4ES 1.1.4 - exports OpenGL 2.1",
-        @"libgl4es_115.dylib": @"GL4ES 1.1.5 (1.16+) - exports OpenGL 2.1",
-        @"libtinygl4angle.dylib": @"tinygl4angle (1.17+) - exports OpenGL 3.2 (Core Profile, limited)",
-        @"libvgpu.dylib": @"vgpu 1.3.6 - exports OpenGL 3.0",
-        @"libOSMesaOverride.dylib": @"Zink (Mesa 21.0) - exports OpenGL 4.1"
-    };
 */
+    rendererDict = @{
+        gl4es114: @"libgl4es_114.dylib",
+        gl4es115: @"libgl4es_115.dylib",
+        @"tinygl4angle (1.17+) - exports OpenGL 3.2 (Core Profile, limited)": @"libtinygl4angle.dylib",
+        @"Zink (Mesa 21.0) - exports OpenGL 4.1": @"libOSMesaOverride.dylib"
+    };
+
     scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
     [self.view addSubview:scrollView];
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -248,33 +244,15 @@ int tempIndex;
     rendTextField.delegate = self;
     rendTextField.placeholder = @"Override renderer...";
     //rendTextField.text = self.rendererDict[getPreference(@"renderer")];
-    if ([getPreference(@"renderer") isEqualToString:lib_gl4es114]) {
-        rendTextField.text = gl4es114;
-        tempIndex = 0;
-    } else if ([getPreference(@"renderer") isEqualToString:lib_gl4es115]) {
-        rendTextField.text = gl4es115;
-        tempIndex = 1;
-    } else if ([getPreference(@"renderer") isEqualToString:lib_tinygl4angle]) {
-        rendTextField.text = tinygl4angle;
-        tempIndex = 2;
-    } else if ([getPreference(@"renderer") isEqualToString:lib_vgpu]) {
-        rendTextField.text = vgpu;
-        tempIndex = 3;
-    } else if ([getPreference(@"renderer") isEqualToString:lib_zink]) {
-        rendTextField.text = zink;
-        tempIndex = 4;
-    } else if ([getPreference(@"renderer") isEqualToString:lib_virglrenderer]) {
-        rendTextField.text = virglrenderer;
-        tempIndex = 5;
-    }
-    
+    tempIndex = [rendererDict.allValues indexOfObject:getPreference(@"renderer")];
+    rendTextField.text = rendererDict.allKeys[tempIndex];
+
     rendTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
     rendTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [tableView addSubview:rendTextField];
 
-    rendererList = @[gl4es114, gl4es115, tinygl4angle, vgpu, zink];
     //[rendererList addObject:virglrenderer];
-    
+
     rendPickerView = [[UIPickerView alloc] init];
     rendPickerView.delegate = self;
     rendPickerView.dataSource = self;
@@ -490,6 +468,18 @@ int tempIndex;
     [oldalphaSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:oldalphaSwitch];
     
+    UILabel *checkSHATextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
+    checkSHATextView.text = @"Check game files before launching";
+    checkSHATextView.numberOfLines = 0;
+    [checkSHATextView sizeToFit];
+    [tableView addSubview:checkSHATextView];
+
+    UISwitch *checkSHASwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
+    checkSHASwitch.tag = TAG_CHECKSHA;
+    [checkSHASwitch setOn:[getPreference(@"check_sha") boolValue] animated:NO];
+    [checkSHASwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    [tableView addSubview:checkSHASwitch];
+    
     UILabel *debugLogTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
     debugLogTextView.text = @"Enable debug logging";
     debugLogTextView.numberOfLines = 0;
@@ -538,29 +528,29 @@ int tempIndex;
     [arcCapesSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:arcCapesSwitch];
     
-    UILabel *erasePrefTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
-    erasePrefTextView.text = @"Enable virtual mouse";
-    erasePrefTextView.numberOfLines = 0;
-    [erasePrefTextView sizeToFit];
-    [tableView addSubview:erasePrefTextView];
-
-    UISwitch *erasePrefSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
-    erasePrefSwitch.tag = TAG_VIRTMOUSE;
-    [erasePrefSwitch setOn:[getPreference(@"virtmouse_enable") boolValue]  animated:NO];
-    [erasePrefSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
-    [tableView addSubview:erasePrefSwitch];
-    
     UILabel *virtMouseTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
-    virtMouseTextView.text = @"Reset all settings";
+    virtMouseTextView.text = @"Enable virtual mouse";
     virtMouseTextView.numberOfLines = 0;
     [virtMouseTextView sizeToFit];
     [tableView addSubview:virtMouseTextView];
 
     UISwitch *virtMouseSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
-    virtMouseSwitch.tag = TAG_ERASEPREF;
-    [virtMouseSwitch setOn:NO animated:NO];
+    virtMouseSwitch.tag = TAG_VIRTMOUSE;
+    [virtMouseSwitch setOn:[getPreference(@"virtmouse_enable") boolValue]  animated:NO];
     [virtMouseSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:virtMouseSwitch];
+    
+    UILabel *erasePrefTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
+    erasePrefTextView.text = @"Reset all settings";
+    erasePrefTextView.numberOfLines = 0;
+    [erasePrefTextView sizeToFit];
+    [tableView addSubview:erasePrefTextView];
+    
+    UISwitch *erasePrefSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
+    erasePrefSwitch.tag = TAG_ERASEPREF;
+    [erasePrefSwitch setOn:NO animated:NO];
+    [erasePrefSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    [tableView addSubview:erasePrefSwitch];
     
     CGRect frame = tableView.frame;
     frame.size.height = currY+=44;
@@ -608,6 +598,8 @@ int tempIndex;
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:ARCCAPES];}],
             [UIAction actionWithTitle:@"Enable virtual mouse" image:[[UIImage systemImageNamed:@"cursorarrow.rays"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:VIRTMOUSE];}],
+            [UIAction actionWithTitle:@"Check game files before launching" image:[[UIImage systemImageNamed:@"shield.lefthalf.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:CHECKSHA];}],
             [UIAction actionWithTitle:@"Reset preferences" image:[[UIImage systemImageNamed:@"trash"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:ERASEPREF];}],
         ]];
@@ -663,21 +655,9 @@ int tempIndex;
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     activeField = nil;
     if (textField.tag == TAG_JARGS) {
-        setPreference(@"java_args", textField.text);
+        setPreference(@"java_args", textField.text); 
     } else if (textField.tag == TAG_REND) {
-        if ([textField.text isEqualToString:gl4es114]) {
-            setPreference(@"renderer", lib_gl4es114);
-        } else if ([textField.text isEqualToString:gl4es115]) {
-            setPreference(@"renderer", lib_gl4es115);
-        } else if ([textField.text isEqualToString:tinygl4angle]) {
-            setPreference(@"renderer", lib_tinygl4angle);
-        } else if ([textField.text isEqualToString:vgpu]) {
-            setPreference(@"renderer", lib_vgpu);
-        } else if ([textField.text isEqualToString:zink]) {
-            setPreference(@"renderer", lib_zink);
-        } else if ([textField.text isEqualToString:virglrenderer]) {
-            setPreference(@"renderer", lib_virglrenderer);
-        }
+        setPreference(@"renderer", rendererDict[textField.text]);
         setenv("POJAV_RENDERER", [getPreference(@"renderer") UTF8String], 1);
         
         if (![textField.text isEqualToString:gl4es115] && [getPreference(@"disable_gl4es_shaderconv") boolValue] == YES) {
@@ -887,6 +867,7 @@ int tempIndex;
         UIAlertAction *relaunch = [UIAlertAction actionWithTitle:@"Restart before launching game" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:RELAUNCH];}];
         UIAlertAction *arccapes = [UIAlertAction actionWithTitle:@"Enable Arc capes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:ARCCAPES];}];
         UIAlertAction *virtmouse = [UIAlertAction actionWithTitle:@"Enable virtual mouse" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:VIRTMOUSE];}];
+        UIAlertAction *checksha = [UIAlertAction actionWithTitle:@"Check game files before launching" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:VIRTMOUSE];}];
         UIAlertAction *erasepref = [UIAlertAction actionWithTitle:@"Reset preferences" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:ERASEPREF];}];
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
         [self setPopoverProperties:helpAlert.popoverPresentationController sender:(UIButton *)self.navigationItem.rightBarButtonItem];
@@ -908,6 +889,7 @@ int tempIndex;
         [helpAlert addAction:homesym];
         [helpAlert addAction:arccapes];
         [helpAlert addAction:virtmouse];
+        [helpAlert addAction:checksha];
         [helpAlert addAction:erasepref];
         [helpAlert addAction:cancel];
     }
@@ -952,6 +934,9 @@ int tempIndex;
     } else if(setting == TYPESEL) {
         title = @"Type switches";
         message = @"These switches allow to to change where or not releases, snapshots, old betas, and old alphas will show up in the version selection menu.";
+    } else if(setting == CHECKSHA) {
+        title = @"Check game files before launching"; 
+        message = @"When this option is enabled, every file is validated with SHA1, therefore local modifications will be overwritten.";
     } else if(setting == DEBUGLOG) {
         title = @"Enable debug logging";
         message = @"This option logs internal settings and actions to latestlog.txt. This helps the developers find issues easier, but Minecraft may run slower as the logs will be written to more often.";
@@ -1047,9 +1032,11 @@ int tempIndex;
             setPreference(@"vertype_oldalpha", @(sender.isOn));
             [LauncherViewController fetchVersionList];
             break;
+        case TAG_CHECKSHA:
+            setPreference(@"check_sha", @(sender.isOn));
+            break;
         case TAG_DEBUGLOG:
             setPreference(@"debug_logging", @(sender.isOn));
-            [LauncherViewController fetchVersionList];
             break;
         case TAG_HOMESYM:
             setPreference(@"disable_home_symlink", @(sender.isOn));
@@ -1147,7 +1134,7 @@ int tempIndex;
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
     if(pickerView.tag == TAG_PICKER_REND) {
-        return rendererList.count;
+        return rendererDict.allKeys.count;
     } else if(pickerView.tag == TAG_PICKER_JHOME) {
         return jhomeList.count;
     } else if(pickerView.tag == TAG_PICKER_GDIR) {
@@ -1160,7 +1147,7 @@ int tempIndex;
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
     NSObject *object;
     if(pickerView.tag == TAG_PICKER_REND) {
-        object = [rendererList objectAtIndex:row];
+        object = [rendererDict.allKeys objectAtIndex:row];
     } else if(pickerView.tag == TAG_PICKER_JHOME) {
         object = [jhomeList objectAtIndex:row];
     } else if(pickerView.tag == TAG_PICKER_GDIR) {

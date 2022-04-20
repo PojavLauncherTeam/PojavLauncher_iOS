@@ -1,8 +1,11 @@
+#import "AFNetworking.h"
 #import "CustomControlsViewController.h"
 #import "JavaGUIViewController.h"
 #import "LauncherPreferences.h"
 #import "LauncherPreferencesViewController.h"
 #import "LauncherViewController.h"
+#import "MinecraftDownloader.h"
+#import "ios_uikit_bridge.h"
 
 #include "utils.h"
 
@@ -15,7 +18,6 @@
 
 @implementation LauncherViewController
 
-NSArray* versionList;
 UIPickerView* versionPickerView;
 UITextField* versionTextField;
 int versionSelectedAt = 0;
@@ -92,18 +94,22 @@ int versionSelectedAt = 0;
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Options" style:UIBarButtonItemStyleDone target:self action:@selector(displayOptions:)];
     }
 
-    install_progress_bar = [[UIProgressView alloc] initWithFrame:CGRectMake(4.0, height - 58.0, width - 8.0, 6.0)];
-    [scrollView addSubview:install_progress_bar];
+    self.progressViewMain = [[UIProgressView alloc] initWithFrame:CGRectMake(4.0, height - 58.0, width - 8.0, 6.0)];
+    self.progressViewSub = [[UIProgressView alloc] initWithFrame:CGRectMake(4.0, height - 58.0, width - 8.0, 6.0)];
+    self.progressViewMain.alpha = 0.6;
+    self.progressViewSub.alpha = 0.4;
+    [scrollView addSubview:self.progressViewSub];
+    [scrollView addSubview:self.progressViewMain];
 
-    install_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    install_button.enabled = NO;
-    [install_button setTitle:@"Play" forState:UIControlStateNormal];
-    install_button.frame = CGRectMake(10.0, height - 54.0, 100.0, 50.0);
-    [install_button addTarget:self action:@selector(launchMinecraft:) forControlEvents:UIControlEventTouchUpInside];
-    [scrollView addSubview:install_button];
+    self.buttonInstall = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    self.buttonInstall.enabled = NO;
+    [self.buttonInstall setTitle:@"Play" forState:UIControlStateNormal];
+    self.buttonInstall.frame = CGRectMake(10.0, height - 54.0, 100.0, 50.0);
+    [self.buttonInstall addTarget:self action:@selector(launchMinecraft:) forControlEvents:UIControlEventTouchUpInside];
+    [scrollView addSubview:self.buttonInstall];
     
-    install_progress_text = [[UILabel alloc] initWithFrame:CGRectMake(120.0, height - 54.0, width - 124.0, 50.0)];
-    [scrollView addSubview:install_progress_text];
+    self.progressText = [[UILabel alloc] initWithFrame:CGRectMake(120.0, height - 54.0, width - 124.0, 50.0)];
+    [scrollView addSubview:self.progressText];
 }
 
 + (BOOL)isVersionInstalled:(NSString *)versionId
@@ -146,70 +152,44 @@ int versionSelectedAt = 0;
 
 + (void)fetchVersionList
 {
-    NSURLSession *session = [NSURLSession sharedSession];
-    NSMutableURLRequest *request = 
-      [[NSMutableURLRequest alloc] initWithURL:[NSURL
-      URLWithString:@"https://launchermeta.mojang.com/mc/game/version_manifest.json"]];
-    [request setCachePolicy:NSURLRequestReloadRevalidatingCacheData];
-    [request setHTTPMethod:@"GET"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-
-    NSURLSessionDataTask *getDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
-        long statusCode = (long)[httpResponse statusCode];
-
-        NSError *jsonError = nil;
-        NSDictionary *jsonArray = (data == nil) ? nil : [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-
-        if (jsonError != nil) {
-            NSLog(@"Warning: Error parsing version list JSON: %@", jsonError);
-        } else if (statusCode == 200) {
-            NSArray *remoteVersionList = [jsonArray valueForKey:@"versions"];
-            assert(remoteVersionList != nil);
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSMutableArray *finalVersionList = [[NSMutableArray alloc] init];
-                int i = 0;
-                for (NSDictionary *versionInfo in remoteVersionList) {
-                    NSString *versionId = [versionInfo valueForKey:@"id"];
-                    NSString *versionType = [versionInfo valueForKey:@"type"];
-                    if (([versionType containsString:@"release"] && [getPreference(@"vertype_release") boolValue]) ||
-                        ([versionType containsString:@"snapshot"] && [getPreference(@"vertype_snapshot") boolValue]) ||
-                        ([versionType containsString:@"old_beta"] && [getPreference(@"vertype_oldbeta") boolValue]) ||
-                        ([versionType containsString:@"old_alpha"] && [getPreference(@"vertype_oldalpha") boolValue]) ||
-                        [versionType containsString:@"modified"] ||
-                        [self isVersionInstalled:versionId]) {
-                        [finalVersionList addObject:versionInfo];
+    __weak LauncherViewController *weakSelf = ((LauncherViewController *)viewController);
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager GET:@"https://launchermeta.mojang.com/mc/game/version_manifest.json" parameters:nil headers:nil progress:^(NSProgress * _Nonnull progress) {
+        weakSelf.progressViewMain.progress = progress.fractionCompleted;
+    } success:^(NSURLSessionTask *task, id responseObject) {
+        NSDictionary *jsonArray = responseObject;
+        NSArray *remoteVersionList = [jsonArray valueForKey:@"versions"];
+        assert(remoteVersionList != nil);
+        NSMutableArray *finalVersionList = [[NSMutableArray alloc] init];
+        int i = 0;
+        for (NSDictionary *versionInfo in remoteVersionList) {
+            NSString *versionId = [versionInfo valueForKey:@"id"];
+            NSString *versionType = [versionInfo valueForKey:@"type"];
+            if (([versionType containsString:@"release"] && [getPreference(@"vertype_release") boolValue]) ||
+                ([versionType containsString:@"snapshot"] && [getPreference(@"vertype_snapshot") boolValue]) ||
+                ([versionType containsString:@"old_beta"] && [getPreference(@"vertype_oldbeta") boolValue]) ||
+                ([versionType containsString:@"old_alpha"] && [getPreference(@"vertype_oldalpha") boolValue]) ||
+                [versionType containsString:@"modified"] ||
+                [self isVersionInstalled:versionId]) {
+                [finalVersionList addObject:versionInfo];
                         
-                        if ([versionTextField.text isEqualToString:versionId]) {
-                            versionSelectedAt = i;
-                        }
-                        i++;
-                    }
+                if ([versionTextField.text isEqualToString:versionId]) {
+                    versionSelectedAt = i;
                 }
-                [self fetchLocalVersionList:finalVersionList withPreviousIndex:i];
-                
-                versionList = [finalVersionList copy];
-                
-                [versionPickerView reloadAllComponents];
-                [versionPickerView selectRow:versionSelectedAt inComponent:0 animated:NO];
-            });
-        } else {
-            NSString *err_title = [jsonArray valueForKey:@"error"];
-            NSString *err_msg = [jsonArray valueForKey:@"errorMessage"];
-            NSLog(@"Warning: Error %ld fetching version list: %@: %@", statusCode, err_title, err_msg);
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (versionList == nil) { // no internet connection
-                NSMutableArray *finalVersionList = [[NSMutableArray alloc] init];
-                [self fetchLocalVersionList:finalVersionList withPreviousIndex:0];
-                versionList = [finalVersionList copy];
-                [versionPickerView reloadAllComponents];
-                [versionPickerView selectRow:versionSelectedAt inComponent:0 animated:NO];
+                i++;
             }
-            install_button.enabled = YES;
-        });
+        }
+        [self fetchLocalVersionList:finalVersionList withPreviousIndex:i];
+        versionList = [finalVersionList copy];
+        [versionPickerView reloadAllComponents];
+        [versionPickerView selectRow:versionSelectedAt inComponent:0 animated:NO];
+
+        weakSelf.buttonInstall.enabled = YES;
+        weakSelf.progressViewMain.progress = 0;
+    } failure:^(NSURLSessionTask *operation, NSError *error) {
+        NSLog(@"Warning: Error fetching version list: %@", error);
+        weakSelf.buttonInstall.enabled = YES;
     }];
-    [getDataTask resume];
 }
 
 #pragma mark - Button click events
@@ -292,15 +272,27 @@ int versionSelectedAt = 0;
     [self.navigationItem setHidesBackButton:YES animated:YES];
     
     NSObject *object = [versionList objectAtIndex:[versionPickerView selectedRowInComponent:0]];
-    NSString *result;
-    if ([object isKindOfClass:[NSString class]]) {
-        result = (NSString *)object;
-    } else {
-        result = [object valueForKey:@"url"];
-    }
-    NSAssert(result != nil, @"version should not be null");
 
-    callback_LauncherViewController_installMinecraft([result UTF8String]);
+    [MinecraftDownloader start:object callback:^(NSString *stage, NSProgress *mainProgress, NSProgress *progress) {
+        if (progress == nil && stage != nil) {
+            NSLog(@"[MCDL] %@", stage);
+        }
+        self.progressViewMain.observedProgress
+ = mainProgress;
+        self.progressViewSub.observedProgress
+ = progress;
+        if (stage == nil) {
+            sender.enabled = YES;
+            [self.navigationItem setHidesBackButton:NO animated:YES];
+            if (mainProgress != nil) {
+                UIKit_launchMinecraftSurfaceVC();
+            }
+            return;
+        }
+        self.progressText.text = [NSString stringWithFormat:@"%@ (%.2f MB / %.2f MB)", stage, progress.completedUnitCount/1048576.0, progress.totalUnitCount/1048576.0];
+    }];
+
+    //callback_LauncherViewController_installMinecraft("1.12.2");
 }
 
 #pragma mark - UIPopoverPresentationControllerDelegate

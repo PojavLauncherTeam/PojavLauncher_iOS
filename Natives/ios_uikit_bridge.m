@@ -95,21 +95,13 @@ jstring UIKit_accessClipboard(JNIEnv* env, jint action, jstring copySrc) {
         // copy request
         const char* copySrcC = (*env)->GetStringUTFChars(env, copySrc, 0);
         UIPasteboard.generalPasteboard.string = @(copySrcC);
-	    (*env)->ReleaseStringUTFChars(env, copySrc, copySrcC);
+        (*env)->ReleaseStringUTFChars(env, copySrc, copySrcC);
         return NULL;
     } else {
         // unknown request
         NSLog(@"Warning: unknown clipboard action: %x", action);
         return NULL;
     }
-}
-
-void UIKit_updateProgress(float progress, const char* message) {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        install_progress_bar.progress = progress;
-        install_progress_text.text = [[NSString alloc] initWithUTF8String:message];
-        // @(message);
-    });
 }
 
 void UIKit_launchJarFile(const char* filepath) {

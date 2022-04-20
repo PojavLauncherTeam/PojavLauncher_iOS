@@ -385,6 +385,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     shouldDismissPopover = NO;
     CCMenuViewController *vc = [[CCMenuViewController alloc] init];
     vc.modalPresentationStyle = UIModalPresentationFormSheet;
+    vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     if (![self.currentGesture isKindOfClass:[UILongPressGestureRecognizer class]]) {
         vc.targetButton = (ControlButton *)self.currentGesture.view;
     }
@@ -939,9 +940,6 @@ CGFloat currentY;
 }
 
 - (void)actionEditFinish {
-    shouldDismissPopover = YES;
-    [self dismissViewControllerAnimated:YES completion:nil];
-
     self.targetButton.properties[@"name"] = self.editName.text;
     self.targetButton.properties[@"width"]  = @([self.editSizeWidth.text floatValue]);
     self.targetButton.properties[@"height"] = @([self.editSizeHeight.text floatValue]);
@@ -968,10 +966,20 @@ CGFloat currentY;
     self.targetButton.properties[@"cornerRadius"] = @((NSInteger) self.sliderCornerRadius.value);
     self.targetButton.properties[@"opacity"] = @(self.sliderOpacity.value / 100.0);
     self.targetButton.properties[@"isDynamicBtn"] = @(self.switchDynamicPos.isOn);
+
+    NSString *oldDynamicX = self.targetButton.properties[@"dynamicX"];
+    NSString *oldDynamicY = self.targetButton.properties[@"dynamicY"];
     self.targetButton.properties[@"dynamicX"] = self.editDynamicX.text;
     self.targetButton.properties[@"dynamicY"] = self.editDynamicY.text;
 
-    [self.targetButton update];
+    @try {
+        [self.targetButton update];
+        [self actionEditCancel];
+    } @catch (NSException *exception) {
+        self.targetButton.properties[@"dynamicX"] = oldDynamicX;
+        self.targetButton.properties[@"dynamicY"] = oldDynamicY;
+        showDialog(self, @"Error processing dynamic position", exception.reason);
+    }
 }
 
 - (void)sliderValueChanged:(DBNumberedSlider *)sender {

@@ -98,7 +98,7 @@ public final class Tools
 
         // System.out.println("Minecraft Args: " + Arrays.toString(launchArgs));
 
-        final String launchClassPath = generateLaunchClassPath(profile.selectedVersion);
+        final String launchClassPath = generateLaunchClassPath(versionInfo);
 
         List<String> javaArgList = new ArrayList<String>();
         //javaArgList.add(versionInfo.logging.client.argument.replace("${path}", DIR_GAME_NEW.getAbsolutePath() + "/" + mVersion.logging.client.file.id));
@@ -251,9 +251,6 @@ public final class Tools
         return group.replaceAll("\\.", "/") + "/" + artifact + "/" + version + "/" + artifact + "-" + version + ".jar";
     }
 
-    public static String getPatchedFile(String version) {
-        return DIR_HOME_VERSION + "/" + version + "/" + version + ".jar";
-    }
 /*
     private static String getLWJGL3ClassPath() {
         StringBuilder libStr = new StringBuilder();
@@ -271,10 +268,9 @@ public final class Tools
     }
 */
     private static boolean isClientFirst = false;
-    public static String generateLaunchClassPath(String version) {
+    public static String generateLaunchClassPath(JMinecraftVersionList.Version info) {
         StringBuilder libStr = new StringBuilder(); //versnDir + "/" + version + "/" + version + ".jar:";
 
-        JMinecraftVersionList.Version info = getVersionInfo(version);
         String[] classpath = generateLibClasspath(info);
 
         // Debug: LWJGL 3 override
@@ -298,7 +294,7 @@ public final class Tools
          */
 
         if (isClientFirst) {
-            libStr.append(getPatchedFile(version));
+            libStr.append(DIR_HOME_VERSION + "/" + info.id + "/" + info.id + ".jar");
         }
         for (String perJar : classpath) {
             if (!new File(perJar).exists()) {
@@ -308,7 +304,7 @@ public final class Tools
             libStr.append((isClientFirst ? ":" : "") + perJar + (!isClientFirst ? ":" : ""));
         }
         if (!isClientFirst) {
-            libStr.append(getPatchedFile(version));
+            libStr.append(DIR_HOME_VERSION + "/" + info.id + "/" + info.id + ".jar");
         }
 
         return libStr.toString();

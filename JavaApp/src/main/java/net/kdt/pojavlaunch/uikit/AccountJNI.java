@@ -31,20 +31,18 @@ public class AccountJNI {
                         e.printStackTrace();
                         // ignore, since it's likely that the user is offline
                     }
-                    break;
+                    return (CURRENT_ACCOUNT.accessToken.equals("0") ? "-" : "$") + CURRENT_ACCOUNT.username;
                 
                 case TYPE_MICROSOFT:
                     CURRENT_ACCOUNT = new MicrosoftAuthTask().run("false", data);
-                    break;
+                    return "$" + CURRENT_ACCOUNT.username;
                 
                 case TYPE_OFFLINE:
                     CURRENT_ACCOUNT = new MinecraftAccount();
                     CURRENT_ACCOUNT.username = data;
                     CURRENT_ACCOUNT.save();
-                    break;
+                    return "-" + CURRENT_ACCOUNT.username;
             }
-            
-            return CURRENT_ACCOUNT.username;
         } catch (Throwable th) {
             Tools.showError(th);
         }
