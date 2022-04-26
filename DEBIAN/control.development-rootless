@@ -3,7 +3,7 @@ Name: PojavLauncher iOS (Development) Rootless
 Maintainer: PojavLauncherTeam <https://discord.gg/6RpEJda>
 Author: DuyKhanhTran
 Architecture: iphoneos-arm64
-Version: 2.0
+Version: 2.0.1
 Depends: openjdk-8-jre | openjdk-16-jre | openjdk-8-jdk | openjdk-16-jdk, firmware (>= 15.0)
 Conflicts: pojavlauncher-dev, pojavlauncher-zink, pojavlauncher, net.kdt.pojavlauncher.release, net.kdt.pojavlauncher.release-rootless, net.kdt.pojavlauncher.development
 Replaces: pojavlauncher-dev, pojavlauncher
@@ -11,5 +11,4 @@ Section: Games
 Priority: optional
 Homepage: https://github.com/PojavLauncherTeam/PojavLauncher_iOS
 Description: Minecraft: Java Edition launcher for iOS, based on PojavLauncher Android.
-Depiction: https://doregon.github.io/json-webviews/?json=https://repo.doregon.gq/depictions/natives/net.kdt.pojavlauncher.development-rootless.json&name=PojavLauncher%20iOS%20%28Development%29&dev=PojavLauncherTeam&section=Games&icon=https://repo.doregon.gq/images/icons/pojavlauncher_icon.png
-SileoDepiction: https://repo.doregon.gq/depictions/natives/net.kdt.pojavlauncher.development-rootless.json
+SileoDepiction: https://repository.crystall1ne.software/depictions/natives/net.kdt.pojavlauncher.development-rootless.json
