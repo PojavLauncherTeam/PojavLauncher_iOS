@@ -1,19 +1,28 @@
 {
   "images" : [
     {
-      "filename" : "AppLogo_63x515.png",
-      "idiom" : "universal",
-      "scale" : "1x"
+      "filename" : "bitmap copy.png",
+      "idiom" : "universal"
     },
     {
-      "filename" : "AppLogo_63x515@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "light"
+        }
+      ],
+      "filename" : "bitmap copy-5.png",
+      "idiom" : "universal"
     },
     {
-      "filename" : "AppLogo_63x515@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "bitmap copy 4-2.png",
+      "idiom" : "universal"
     }
   ],
   "info" : {

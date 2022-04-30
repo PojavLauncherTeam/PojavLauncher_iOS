@@ -514,8 +514,10 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 
 - (void)surfaceOnHover:(UIHoverGestureRecognizer *)sender API_AVAILABLE(ios(13.0)) {
     if (@available(iOS 13.0, *)) {
-        if (isGrabbing && @available(iOS 14.0, *)) {
-            return;
+        if (@available(iOS 14.0, *)) {
+            if(isGrabbing) { // Can't put into above if statement
+                return;
+            }
         }
         CGPoint point = [sender locationInView:self.view];
         // NSLog(@"Mouse move!!");
