@@ -527,7 +527,7 @@ int tempIndex;
     [tableView addSubview:relaunchSwitch];
     
     UILabel *arcCapesTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
-    arcCapesTextView.text = @"Enable Arc capes";
+    arcCapesTextView.text = @"Enable Cosmetica capes";
     arcCapesTextView.numberOfLines = 0;
     [arcCapesTextView sizeToFit];
     [tableView addSubview:arcCapesTextView];
