@@ -45,15 +45,24 @@
     int height = (int) roundf(screenBounds.size.height) - self.navigationController.navigationBar.frame.size.height;
     int rawHeight = (int) roundf(screenBounds.size.height);
 
+    UIImage *wallpaper = [UIImage imageNamed:@"Wallpaper"];
+    UIImageView *background = [[UIImageView alloc] initWithFrame:self.view.frame];
+    background.image = wallpaper;
+    background.clipsToBounds = YES;
+    background.contentMode = UIViewContentModeScaleAspectFill;
+    [self.view addSubview:background];
+
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     [self.view addSubview:scrollView];
 
-    if(@available(iOS 13.0, *)) {
+    /*if(@available(iOS 13.0, *)) {
         [self traitCollectionDidChange:nil];
     } else {
         self.view.backgroundColor = [UIColor whiteColor];
-    }
+    } */
+
+
     
     if(getenv("POJAV_DETECTEDJB")) {
         if(strcmp(getenv("POJAV_DETECTEDJB"), "Other") == 0 && [getPreference(@"jb_warn") boolValue] == YES) {
@@ -102,8 +111,12 @@
     }
 
     UIButton *button_faq = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [button_faq setTitle:@"  FAQ" forState:UIControlStateNormal];
-    button_faq.frame = CGRectMake(widthSplit2 - (((width - widthSplit * 2.0) / 2) / 2), (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
+    if(@available (iOS 13.0, *)) {
+        [button_faq setTitle:@"  FAQ" forState:UIControlStateNormal];
+    } else {
+        [button_faq setTitle:@"FAQ" forState:UIControlStateNormal];
+    }
+    button_faq.frame = CGRectMake(widthSplit2 - (((width - widthSplit * 2.0) / 2) / 2), (height - 40.0), (width - widthSplit * 2.0) / 2, 40.0);
     button_faq.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
     button_faq.layer.cornerRadius = 5;
     [button_faq setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -116,8 +129,12 @@
     [scrollView addSubview:button_faq];
 
     UIButton *button_login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [button_login setTitle:@"  Sign In" forState:UIControlStateNormal];
-    button_login.frame = CGRectMake(button_faq.frame.origin.x - button_faq.frame.size.width - 20, (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
+    if(@available (iOS 13.0, *)) {
+        [button_login setTitle:@"  Sign In" forState:UIControlStateNormal];
+    } else {
+        [button_login setTitle:@"Sign In" forState:UIControlStateNormal];
+    }
+    button_login.frame = CGRectMake(button_faq.frame.origin.x - button_faq.frame.size.width - 20, (height - 40.0), (width - widthSplit * 2.0) / 2, 40.0);
     button_login.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
     button_login.layer.cornerRadius = 5;
     [button_login setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -142,8 +159,12 @@
     [scrollView addSubview:button_login];
 
     UIButton *button_accounts = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [button_accounts setTitle:@"  Accounts" forState:UIControlStateNormal];
-    button_accounts.frame = CGRectMake(button_faq.frame.origin.x + button_faq.frame.size.width + 20, (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
+    if(@available (iOS 13.0, *)) {
+        [button_accounts setTitle:@"  Accounts" forState:UIControlStateNormal];
+    } else {
+        [button_accounts setTitle:@"Accounts" forState:UIControlStateNormal];
+    }
+    button_accounts.frame = CGRectMake(button_faq.frame.origin.x + button_faq.frame.size.width + 20, (height - 40.0), (width - widthSplit * 2.0) / 2, 40.0);
     button_accounts.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
     button_accounts.layer.cornerRadius = 5;
     [button_accounts setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

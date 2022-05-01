@@ -1,27 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "bitmap copy.png",
-      "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "light"
-        }
-      ],
-      "filename" : "bitmap copy-5.png",
-      "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "bitmap copy 4-2.png",
+      "filename" : "wordmark.png",
       "idiom" : "universal"
     }
   ],
