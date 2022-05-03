@@ -16,7 +16,7 @@ This launcher is available on the Procursus repo, thanks to [@Diatrus](https://t
 The [PojavLauncher Website](https://pojavlauncherteam.github.io) has extensive documentation on how to install, set up, and play! For those who wish to install quickly, here's the basics (on iOS 12 or later):
 
 ### Procursus-bootstraps
-*Note: This is currently unavailable. Will be fixed soon!*
+*Note: This is currently unavailable. Will be fixed soon! For the meantime, you can follow the same way as [below](#bingnerelucubratus-bootstraps)*.
 If you have Chimera, Taurine, Odyssey, or another jailbreak that comes with **libhooker**, this one's for you.
 
 1. Search for `pojavlauncher` with your favorite package manager.
