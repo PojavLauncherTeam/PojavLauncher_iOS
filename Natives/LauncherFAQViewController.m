@@ -48,8 +48,8 @@ CGFloat faqcurrY = 4.0;
     [scrollView addSubview:[self faqContent:false text:@"Sodium is currently broken with 1.17 and higher, due to the workaround required to get these versions to launch." width:width]];
     [scrollView addSubview:[self faqContent:true text:@"Jetsam crashing" width:width]];
     [scrollView addSubview:[self faqContent:false text:@"Even though PojavLauncher only allocates 1/4 of the system's total memory, jetsam can still kill the game. A solution is described on the PojavLauncher website (iOS Wiki > Going further > overb0arding)" width:width]];
-    [scrollView addSubview:[self faqContent:true text:@"Arc custom capes" width:width]];
-    [scrollView addSubview:[self faqContent:false text:@"To get started with Arc capes, install OptiFine or the Capes Mod, visit dashboard.arccapes.com and follow the steps to link your Minecraft account." width:width]];
+    [scrollView addSubview:[self faqContent:true text:@"Cosmetica capes" width:width]];
+    [scrollView addSubview:[self faqContent:false text:@"To get started with Cosmetica capes, install OptiFine or the Cosmetica Mod, and visit login.cosmetica.cc to link with your Minecraft account." width:width]];
     
     scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, faqcurrY);
 }

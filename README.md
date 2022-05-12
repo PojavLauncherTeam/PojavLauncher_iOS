@@ -1,5 +1,5 @@
 # PojavLauncher
-![iOS build](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/workflows/iOS%20build/badge.svg)
+[![Development build](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/actions/workflows/development.yml/badge.svg?branch=main)](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/actions/workflows/development.yml)
 [![Discord](https://img.shields.io/discord/724163890803638273.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/x5pxnANzbX)
 [![Reddit](https://img.shields.io/badge/dynamic/json.svg?label=r/PojavLauncher%20member%20count&query=$.data.subscribers&url=https://www.reddit.com/r/PojavLauncher/about.json)](https://reddit.com/r/PojavLauncher)
 
@@ -13,7 +13,7 @@ This launcher is available on the Procursus repo, thanks to [@Diatrus](https://t
 
 ## Getting started with PojavLauncher
 
-The [PojavLauncher Website](https://pojavlauncherteam.github.io) has extensive documentation on how to install, set up, and play! For those who wish to install quickly, here's the basics (on iOS 12 or later):
+The [PojavLauncher Website](https://pojav.ml) has extensive documentation on how to install, set up, and play! For those who wish to install quickly, here's the basics (on iOS 12 or later):
 
 ### Procursus-bootstraps
 *Note: This is currently unavailable. Will be fixed soon!*
