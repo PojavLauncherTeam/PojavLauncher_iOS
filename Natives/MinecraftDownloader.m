@@ -349,7 +349,7 @@ static AFURLSessionManager* manager;
          * Since 1.19-pre1, setting the window icon on macOS goes through ObjC.
          * However, if an IOException occurrs, it won't try to set.
          * We skip downloading the icon file to trigger this. */
-        if ([name isEqualToString:@"icons/minecraft.icns") continue;
+        if ([name isEqualToString:@"icons/minecraft.icns"]) continue;
 
         --jobsAvailable;
         dispatch_group_enter(group);
