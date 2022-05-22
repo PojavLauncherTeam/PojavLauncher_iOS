@@ -1,4 +1,4 @@
-
+#import "authenticator/BaseAuthenticator.h"
 #import "AppDelegate.h"
 #import "BKSSystemService.h"
 #import "SceneDelegate.h"
@@ -24,7 +24,7 @@ void internal_showDialog(UIViewController *viewController, NSString* title, NSSt
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:title
         message:message
         preferredStyle:UIAlertControllerStyleAlert];
-
+    //text.dataDetectorTypes = UIDataDetectorTypeLink;
     UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
         handler:^(UIAlertAction * action) {}];
     [alert addAction:okAction];
@@ -122,8 +122,9 @@ void UIKit_launchJarFile(const char* filepath) {
 }
 
 void UIKit_launchMinecraftSurfaceVC() {
+    setPreference(@"internal_launch_on_boot", getPreference(@"restart_before_launch"));
+    setPreference(@"internal_selected_account", BaseAuthenticator.current.authData[@"username"]);
     setPreference(@"internal_useStackQueue", @(isUseStackQueueCall ? YES : NO));
-    setPreference(@"internal_selected_account", @(getenv("POJAV_INTERNAL_SELECTED_ACCOUNT")));
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([getPreference(@"restart_before_launch") boolValue]) {
             NSURL *url = [NSURL URLWithString:@"pojavlauncher://"];
@@ -146,11 +147,10 @@ void UIKit_launchMinecraftSurfaceVC() {
 }
 
 void launchInitialViewController(UIWindow *window) {
-    NSString *selectedAccount = getPreference(@"internal_selected_account");
-    if (selectedAccount == nil) {
+    if ([getPreference(@"internal_launch_on_boot") boolValue]) {
+        window.rootViewController = [[SurfaceViewController alloc] init];
+    } else {
         LoginViewController *vc = [[LoginViewController alloc] init];
         window.rootViewController = [[UINavigationController alloc] initWithRootViewController:vc];
-    } else {
-        window.rootViewController = [[SurfaceViewController alloc] init];
     }
 }

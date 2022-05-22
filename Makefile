@@ -285,6 +285,7 @@ deb: native java extras
 	@cp $(SOURCEDIR)/JavaApp/local_out/launcher.jar $(WORKINGDIR)/PojavLauncher.app/libs/launcher.jar || exit 1
 	@cp -R $(SOURCEDIR)/JavaApp/libs/* $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
 	@cp -R $(SOURCEDIR)/JavaApp/libs_caciocavallo/* $(WORKINGDIR)/PojavLauncher.app/libs_caciocavallo/ || exit 1
+	@cp -R $(SOURCEDIR)/Natives/*.lproj $(WORKINGDIR)/PojavLauncher.app/ || exit 1
 	$(call DIRCHECK,$(OUTPUTDIR))
 	@cp -R $(WORKINGDIR)/PojavLauncher.app $(OUTPUTDIR)
 	@if [ '$(RELEASE)' = '1' ]; then \

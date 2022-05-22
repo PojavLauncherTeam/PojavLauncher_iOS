@@ -16,8 +16,7 @@
 #endif
 
 
-@interface AboutLauncherViewController () {
-}
+@interface AboutLauncherViewController()
 @property (nonatomic, strong) UIActivityViewController *activityViewController;
 @end
 

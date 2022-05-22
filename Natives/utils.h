@@ -60,6 +60,9 @@ int savedWidth, savedHeight;
 
 BOOL virtualMouseEnabled;
 
+NSMutableDictionary* parseJSONFromFile(NSString *path);
+NSError* saveJSONToFile(NSMutableDictionary *dict, NSString *path);
+
 static inline CGFloat clamp(CGFloat x, CGFloat lower, CGFloat upper) {
     return fmin(upper, fmax(x, lower));
 }

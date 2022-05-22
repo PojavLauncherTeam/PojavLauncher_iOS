@@ -117,7 +117,6 @@ void loadPreferences() {
     setDefaultValueForPref(warnPrefDict, @"jb_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"customctrl_warn", @YES);
     setDefaultValueForPref(prefDict, @"a7_allow", @NO);
-    setDefaultValueForPref(envPrefDict, @"disable_gl4es_shaderconv", @NO);
     setDefaultValueForPref(prefDict, @"slideable_hotbar", @NO);
     setDefaultValueForPref(prefDict, @"virtmouse_enable", @NO);
     setDefaultValueForPref(prefDict, @"check_sha", @YES);

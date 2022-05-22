@@ -54,7 +54,11 @@ add_executable(PojavLauncher
   JavaLauncher.m
   external/fishhook/fishhook.c
 
+  authenticator/BaseAuthenticator.m
+  authenticator/LocalAuthenticator.m
+  authenticator/MicrosoftAuthenticator.m
   AboutLauncherViewController.m
+  AccountListViewController.m
   AppDelegate.m
   CustomControlsViewController.m
   FileListViewController.m

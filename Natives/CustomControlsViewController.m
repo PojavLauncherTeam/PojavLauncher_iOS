@@ -139,21 +139,8 @@ NSMutableArray *keyCodeMap, *keyValueMap;
         }
     }
 
-    NSError *cc_error;
-    NSString *cc_data = [NSString stringWithContentsOfFile:controlFilePath encoding:NSUTF8StringEncoding error:&cc_error];
-
-    if (cc_error) {
-        NSLog(@"Error: could not read %@: %@", controlFilePath, cc_error.localizedDescription);
-        showDialog(self, @"Error", [NSString stringWithFormat:@"Could not read %@: %@", controlFilePath, cc_error.localizedDescription]);
-        return;
-    }
-
-    NSData* cc_objc_data = [cc_data dataUsingEncoding:NSUTF8StringEncoding];
-    self.cc_dictionary = [NSJSONSerialization JSONObjectWithData:cc_objc_data options:NSJSONReadingMutableContainers error:&cc_error];
-    if (cc_error) {
-        showDialog(self, @"Error parsing JSON", cc_error.localizedDescription);
-        return;
-    }
+    self.cc_dictionary = parseJSONFromFile(controlFilePath);
+    if (self.cc_dictionary == nil) return;
 
     loadControlObject(self.offsetView, self.cc_dictionary, ^void(ControlButton* button) {
         [button addGestureRecognizer:[[UITapGestureRecognizer alloc]

@@ -8,6 +8,39 @@
 
 #include "utils.h"
 
+NSMutableDictionary* parseJSONFromFile(NSString *path) {
+    NSError *error;
+
+    NSString *content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
+    if (content == nil) {
+        NSLog(@"[ParseJSON] Error: could not read %@: %@", path, error.localizedDescription);
+        return [@{@"error": error} mutableCopy];
+    }
+
+    NSData* data = [content dataUsingEncoding:NSUTF8StringEncoding];
+    NSMutableDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
+    if (error) {
+        NSLog(@"[ParseJSON] Error: could not parse JSON: %@", error.localizedDescription);
+        return [@{@"error": error} mutableCopy];
+    }
+    return dict;
+}
+
+NSError* saveJSONToFile(NSMutableDictionary *dict, NSString *path) {
+    // TODO: handle rename
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:&error];
+    if (jsonData == nil) {
+        return error;
+    }
+    NSString *jsonStr = [NSString stringWithUTF8String:jsonData.bytes];
+    BOOL success = [jsonStr writeToFile:[NSString stringWithFormat:@"%s/accounts/%@.json", getenv("POJAV_HOME"), dict[@"username"]] atomically:YES encoding:NSUTF8StringEncoding error:&error];
+    if (!success) {
+        return error;
+    }
+    return nil;
+}
+
 CGFloat MathUtils_dist(CGFloat x1, CGFloat y1, CGFloat x2, CGFloat y2) {
     const CGFloat x = (x2 - x1);
     const CGFloat y = (y2 - y1);

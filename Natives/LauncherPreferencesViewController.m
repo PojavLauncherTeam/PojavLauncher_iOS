@@ -12,7 +12,7 @@
 #define REND 4
 #define JHOME 5
 #define GDIRECTORY 6
-#define NOSHADERCONV 7
+
 #define RESETWARN 8
 #define TYPESEL 9
 #define DEBUGLOG 10
@@ -44,7 +44,7 @@
 #define TAG_PICKER_GDIR 144
 #define TAG_DONE_GDIR 154
 
-#define TAG_NOSHADERCONV 105
+
 #define TAG_RESETWARN 106
 
 #define TAG_SWITCH_VRELEASE 107
@@ -88,13 +88,11 @@ NSMutableArray* jhomeList;
 UIPickerView* rendPickerView;
 UIPickerView* gdirPickerView;
 UIPickerView* jhomePickerView;
-UISwitch *noshaderconvSwitch, *slideHotbarSwitch;
+UISwitch *slideHotbarSwitch;
 UIBlurEffect *blur;
 UIVisualEffectView *blurView;
 UIScrollView *scrollView;
 
-NSString *gl4es114 = @"gl4es 1.1.4 - exports OpenGL 2.1";
-NSString *gl4es115 = @"gl4es 1.1.5 (1.16+) - exports OpenGL 2.1";
 NSDictionary *rendererDict;
 
 NSString *java8jben = @"Java 8";
@@ -130,8 +128,7 @@ int tempIndex;
     };
 */
     rendererDict = @{
-        gl4es114: @"libgl4es_114.dylib",
-        gl4es115: @"libgl4es_115.dylib",
+        @"gl4es 1.1.4 - exports OpenGL 2.1": @"libgl4es_114.dylib",
         @"tinygl4angle (1.17+) - exports OpenGL 3.2 (Core Profile, limited)": @"libtinygl4angle.dylib",
         @"Zink (Mesa 21.0) - exports OpenGL 4.1": @"libOSMesaOverride.dylib"
     };
@@ -379,19 +376,6 @@ int tempIndex;
         setPreference(@"option_warn", @NO);
     }
 
-    UILabel *noshaderconvTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
-    noshaderconvTextView.text = @"Disable gl4es 1.1.5 shaderconv";
-    noshaderconvTextView.numberOfLines = 0;
-    [noshaderconvTextView sizeToFit];
-    [tableView addSubview:noshaderconvTextView];
-
-    noshaderconvSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
-    noshaderconvSwitch.tag = TAG_NOSHADERCONV;
-    [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:NO];
-    [noshaderconvSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
-    [tableView addSubview:noshaderconvSwitch];
-    [noshaderconvSwitch setEnabled:[getPreference(@"renderer") isEqualToString:gl4es115]];
-    
     UILabel *slideHotbarTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
     slideHotbarTextView.text = @"Slideable hotbar";
     slideHotbarTextView.numberOfLines = 0;
@@ -578,8 +562,6 @@ int tempIndex;
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:JHOME];}],
             [UIAction actionWithTitle:@"Game directory" image:[[UIImage systemImageNamed:@"folder"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:GDIRECTORY];}],
-            [UIAction actionWithTitle:@"Disable shaderconv" image:[[UIImage systemImageNamed:@"circle.lefthalf.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:NOSHADERCONV];}],
             [UIAction actionWithTitle:@"Slideable hotbar" image:[[UIImage systemImageNamed:@"slider.horizontal.below.rectangle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:SLIDEHOTBAR];}],
             [UIAction actionWithTitle:@"Safe area" image:[[UIImage systemImageNamed:@"crop"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
@@ -659,16 +641,6 @@ int tempIndex;
     } else if (textField.tag == TAG_REND) {
         setPreference(@"renderer", rendererDict[textField.text]);
         setenv("POJAV_RENDERER", [getPreference(@"renderer") UTF8String], 1);
-        
-        if (![textField.text isEqualToString:gl4es115] && [getPreference(@"disable_gl4es_shaderconv") boolValue] == YES) {
-            setPreference(@"disable_gl4es_shaderconv", @NO);
-            [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:YES];
-            [noshaderconvSwitch setEnabled:NO];
-        } else if (![textField.text isEqualToString:gl4es114] && [getPreference(@"disable_gl4es_shaderconv") boolValue] == NO){
-            setPreference(@"disable_gl4es_shaderconv", @YES);
-            [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:YES];
-            [noshaderconvSwitch setEnabled:YES];
-        }
     } else if (textField.tag == TAG_JHOME) {
         if ([textField.text isEqualToString:java8jben]) {
             setPreference(@"java_home", libsjava8jben);
@@ -857,7 +829,6 @@ int tempIndex;
         UIAlertAction *renderer = [UIAlertAction actionWithTitle:@"Renderer"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:REND];}];
         UIAlertAction *jhome = [UIAlertAction actionWithTitle:@"Java version" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:JHOME];}];
         UIAlertAction *gdirectory = [UIAlertAction actionWithTitle:@"Game directory"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:GDIRECTORY];}];
-        UIAlertAction *noshaderconv = [UIAlertAction actionWithTitle:@"Disable shaderconv" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:NOSHADERCONV];}];
         UIAlertAction *slidehotbar = [UIAlertAction actionWithTitle:@"Slideable hotbar" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:SLIDEHOTBAR];}];
         UIAlertAction *safearea = [UIAlertAction actionWithTitle:@"Safe area" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:SAFEAREA];}];
         UIAlertAction *resetwarn = [UIAlertAction actionWithTitle:@"Reset warnings" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:RESETWARN];}];
@@ -879,7 +850,6 @@ int tempIndex;
         [helpAlert addAction:renderer];
         [helpAlert addAction:jhome];
         [helpAlert addAction:gdirectory];
-        [helpAlert addAction:noshaderconv];
         [helpAlert addAction:slidehotbar];
         [helpAlert addAction:safearea];
         [helpAlert addAction:resetwarn];
@@ -912,16 +882,13 @@ int tempIndex;
         message = @"This option allows you to edit arguments that can be passed to Minecraft. Not all arguments work with PojavLauncher, so be aware. This option also requires a restart of the launcher to take effect.";
     } else if(setting == REND) {
         title = @"Renderer";
-        message = @"This option allows you to change the renderer in use. Choosing GL4ES 1.1.5 or tinygl4angle may fix sheep and banner colors on 1.16 and allow 1.17 to be played, but will also not work with older versions.";
+        message = @"This option allows you to change the renderer in use. Choosing  tinygl4angle will allow 1.17+ to be played, but will also not work with older versions.";
     } else if(setting == JHOME) {
         title = @"Java version";
         message = @"This option allows you to change the Java executable directory. Choosing Java 16 or Java 17 may allow you to play 1.17, however older versions and most versions of modded Minecraft, as well as the mod installer, will not work. This option also requires a restart of the launcher to take effect.";
     } else if(setting == GDIRECTORY) {
         title = @"Game directory";
         message = @"This option allows you to change where your Minecraft settings and saves are stored in a MultiMC like fashion. Useful for when you want to have multiple mod loaders installed but do not want to delete/move mods around to switch. This option also requires a restart of the launcher to take effect.";
-    } else if(setting == NOSHADERCONV) {
-        title = @"Disable shaderconv";
-        message = @"This option allows you to disable the shader converter inside gl4es 1.1.5 in order to let ANGLE processes them directly. This option is experimental and should only be enabled when playing Minecraft 1.17 or above. Alternatively you can use tinygl4angle for 1.17.";
     } else if(setting == SLIDEHOTBAR) {
         title = @"Slideable hotbar";
         message = @"This option allows you to use a finger to slide between hotbar slots.";
@@ -995,9 +962,6 @@ int tempIndex;
 
 - (void)switchChanged:(UISwitch *)sender {
     switch (sender.tag) {
-        case TAG_NOSHADERCONV:
-            setPreference(@"disable_gl4es_shaderconv", @(sender.isOn));
-            break;
         case TAG_RESETWARN:
             setPreference(@"mem_warn", @YES);
             setPreference(@"option_warn", @YES);

@@ -1,5 +1,6 @@
 #include <CommonCrypto/CommonDigest.h>
 
+#import "authenticator/BaseAuthenticator.h"
 #import "AFNetworking.h"
 #import "LauncherPreferences.h"
 #import "LauncherViewController.h"
@@ -33,10 +34,12 @@ todo for now - might change anytime
 
 @implementation MinecraftDownloader
 
+static AFURLSessionManager* manager;
+
 // Check if the account has permission to download
 + (BOOL)checkAccessWithDialog:(BOOL)show {
     // for now
-    if (getenv("POJAV_INTERNAL_ALLOW_DOWNLOAD")[0] == '1') {
+    if ([BaseAuthenticator.current.authData[@"username"] hasPrefix:@"Demo."] || BaseAuthenticator.current.authData[@"xboxGamertag"] != nil) {
         return YES;
     } else {
         if (show) {
@@ -151,7 +154,6 @@ todo for now - might change anytime
         }
 
         callback([NSString stringWithFormat:@"Downloading %@.json", versionStr], mainProgress, nil);
-        AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:versionURL]];
 
         NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull progress){
@@ -175,7 +177,7 @@ todo for now - might change anytime
                 }
                 ++mainProgress.completedUnitCount;
 
-                NSMutableDictionary *json = [self parseVersionJson:jsonPath];
+                NSMutableDictionary *json = parseJSONFromFile(jsonPath);
                 if (isAssetIndex) {
                     success(json);
                     return;
@@ -187,9 +189,10 @@ todo for now - might change anytime
                 }];
             }
         }];
+        callback([NSString stringWithFormat:@"Downloading %@.json", versionStr], mainProgress, [manager downloadProgressForTask:downloadTask]);
         [downloadTask resume];
     } else {
-        NSMutableDictionary *json = [self parseVersionJson:jsonPath];
+        NSMutableDictionary *json = parseJSONFromFile(jsonPath);
         if (json == nil) {
             callback(nil, nil, nil);
             return;
@@ -245,24 +248,6 @@ todo for now - might change anytime
     }
 }
 
-+ (NSMutableDictionary *)parseVersionJson:(NSString *)path {
-    NSError *error;
-
-    NSString *content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
-    if (content == nil) {
-        NSLog(@"[MCDL] Error: could not read %@: %@", path, error.localizedDescription);
-        showDialog(viewController, @"Error", [NSString stringWithFormat:@"Could not read %@: %@", path, error.localizedDescription]);
-        return nil;
-    }
-
-    NSData* data = [content dataUsingEncoding:NSUTF8StringEncoding];
-    NSMutableDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
-    if (error) {
-        showDialog(viewController, @"Error parsing JSON", error.localizedDescription);
-    }
-    return dict;
-}
-
 + (void)tweakVersionJson:(NSMutableDictionary *)json {
     // Exclude some libraries
     for (NSMutableDictionary *library in json[@"libraries"]) {
@@ -286,7 +271,6 @@ todo for now - might change anytime
     __block BOOL cancel = NO;
 
     dispatch_group_t group = dispatch_group_create();
-    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];
 
     for (NSDictionary *library in libraries) {
         if (cancel) {
@@ -312,7 +296,8 @@ todo for now - might change anytime
 
         if (![self checkAccessWithDialog:YES]) {
             callback(nil, nil);
-            return NO;
+            cancel = YES;
+            continue;
         }
 
         dispatch_group_enter(group);
@@ -339,6 +324,7 @@ todo for now - might change anytime
             dispatch_group_leave(group);
             ++mainProgress.completedUnitCount;
         }];
+        callback([NSString stringWithFormat:@"Downloading library %@", name], [manager downloadProgressForTask:downloadTask]);
         [downloadTask resume];
     }
     dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
@@ -350,7 +336,6 @@ todo for now - might change anytime
     callback(@"Begin: download assets", nil);
  
     dispatch_group_t group = dispatch_group_create();
-    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];
     int downloadIndex = -1;
     __block int jobsAvailable = 20;
     for (NSString *name in assets) {
@@ -359,21 +344,29 @@ todo for now - might change anytime
         } else if (jobsAvailable == 0) {
             dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
         }
+
+        /** Special case for 1.19+
+         * Since 1.19-pre1, setting the window icon on macOS goes through ObjC.
+         * However, if an IOException occurrs, it won't try to set.
+         * We skip downloading the icon file to trigger this. */
+        if ([name isEqualToString:@"icons/minecraft.icns") continue;
+
         --jobsAvailable;
         dispatch_group_enter(group);
         NSString *hash = assets[name][@"hash"];
-        NSString *pathname = [NSString stringWithFormat:@"%@/%@", [hash substringToIndex:2], hash]; 
+        NSString *pathname = [NSString stringWithFormat:@"%@/%@", [hash substringToIndex:2], hash];
         NSString *path = [NSString stringWithFormat:@"%s/assets/objects/%@", getenv("POJAV_GAME_DIR"), pathname];
         if ([self checkSHA:hash forFile:path altName:name]) { 
             ++mainProgress.completedUnitCount;
             ++jobsAvailable;
             dispatch_group_leave(group);
+            usleep(1000);
             continue;
         }
 
         if (![self checkAccessWithDialog:NO]) {
             dispatch_group_leave(group);
-            return jobsAvailable != -1;
+            break;
         }
 
         [NSFileManager.defaultManager createDirectoryAtPath:path.stringByDeletingLastPathComponent withIntermediateDirectories:YES attributes:nil error:nil];
@@ -386,13 +379,21 @@ todo for now - might change anytime
             return [NSURL fileURLWithPath:path];
         } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
             if (error != nil) {
-                jobsAvailable = -2;
+                if (jobsAvailable < 0) {
+                    dispatch_group_leave(group);
+                    return;
+                }
+                jobsAvailable = -3;
                 NSString *errorStr = [NSString stringWithFormat:@"Failed to download %@: %@", url, error.localizedDescription];
                 NSLog(@"[MCDL] Error: %@", errorStr);
                 showDialog(viewController, @"Error", errorStr);
                 callback(nil, nil);
             } else if (![self checkSHA:hash forFile:path altName:name]) {
                 // Abort when a downloaded file's SHA mismatches
+                if (jobsAvailable < 0) {
+                    dispatch_group_leave(group);
+                    return;
+                }
                 jobsAvailable = -2;
                 showDialog(viewController, @"Error", [NSString stringWithFormat:@"Failed to verify file %@: SHA1 mismatch", path.lastPathComponent]);
                 callback(nil, nil);
@@ -401,6 +402,7 @@ todo for now - might change anytime
             ++mainProgress.completedUnitCount;
             dispatch_group_leave(group);
         }];
+        callback([NSString stringWithFormat:@"Downloading %@", name], [manager downloadProgressForTask:downloadTask]);
         [downloadTask resume];
         NSLog(@"%@: %@", name, hash);
     }
@@ -410,13 +412,14 @@ todo for now - might change anytime
 }
 
 + (void)start:(NSObject *)version callback:(void (^)(NSString *stage, NSProgress *mainProgress, NSProgress *progress))callback {
+    manager = [[AFURLSessionManager alloc] init];
     NSProgress *mainProgress = [NSProgress progressWithTotalUnitCount:0];
     [self downloadClientJson:version progress:mainProgress callback:callback success:^(NSMutableDictionary *json) {
         [self tweakVersionJson:json];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             BOOL success;
 
-            mainProgress.totalUnitCount = [json[@"libraries"] count] + [json[@"assetObjects"] count] /* TODO: assets */;
+            mainProgress.totalUnitCount = [json[@"libraries"] count] + [json[@"assetObjects"] count];
             id wrappedCallback = ^(NSString *s, NSProgress *p) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     callback(s, mainProgress, p);
@@ -431,8 +434,6 @@ todo for now - might change anytime
 
             isUseStackQueueCall = json[@"arguments"] != nil;
 
-            // Finish
-            // TODO: pass the success value
             dispatch_async(dispatch_get_main_queue(), ^{
                 callback(nil, mainProgress, nil);
             });

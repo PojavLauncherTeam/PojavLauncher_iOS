@@ -155,7 +155,7 @@ public final class Tools
     }
 
     public static String[] getMinecraftArgs(MinecraftAccount profile, JMinecraftVersionList.Version versionInfo) {
-        String username = profile.username;
+        String username = profile.username.replace("Demo.", "");
         String versionName = versionInfo.id;
         if (versionInfo.inheritsFrom != null) {
             versionName = versionInfo.inheritsFrom;
@@ -210,7 +210,6 @@ public final class Tools
         minecraftArgs.add(Integer.toString(GLFW.mGLFWWindowWidth));
         minecraftArgs.add("--fullscreenHeight");
         minecraftArgs.add(Integer.toString(GLFW.mGLFWWindowHeight));
-        
         String[] argsFromJson = JSONUtils.insertJSONValueList(
             splitAndFilterEmpty(
                 versionInfo.minecraftArguments == null ?
@@ -235,8 +234,8 @@ public final class Tools
 
     private static String[] splitAndFilterEmpty(String argStr, MinecraftAccount profile) {
         List<String> strList = new ArrayList<String>();
-        if(profile.username.equals("demo_user") && profile.accessToken.equals("-1") && profile.profileId.equals("25e00594-cf57-3f87-b3af-3f06591be252")) {
-            strList.add("--demo"); // if statement is this complex to prevent tampering with the .json
+        if(profile.username.startsWith("Demo.")) {
+            strList.add("--demo");
         }
         for (String arg : argStr.split(" ")) {
             if (!arg.isEmpty()) {
@@ -409,6 +408,8 @@ public final class Tools
             } else if (libItem.name.startsWith("net.java.dev.jna:jna:")) {
                 // Special handling for LabyMod 1.8.9 and Forge 1.12.2(?)
                 // we have libjnidispatch 5.8.0 in Frameworks directory
+                int[] version = Arrays.stream(libItem.name.split(":")[2].split("\\.")).mapToInt(Integer::parseInt).toArray();
+                if (version[0] >= 5 && version[1] >= 8) return;
                 System.out.println("Library " + libItem.name + " has been changed to version 5.8.0");
                 libItem.name = "net.java.dev.jna:jna:5.8.0";
                 libItem.downloads.artifact.path = "net/java/dev/jna/jna/5.8.0/jna-5.8.0.jar";

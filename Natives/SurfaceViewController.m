@@ -137,7 +137,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     viewController = self;
     isControlModifiable = NO;
 
-    setPreference(@"internal_selected_account", nil);
+    setPreference(@"internal_launch_on_boot", @(NO));
     isUseStackQueueCall = [getPreference(@"internal_useStackQueue") boolValue];
     setPreference(@"internal_useStackQueue", nil);
 
@@ -167,11 +167,6 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     self.surfaceView.layer.magnificationFilter = self.surfaceView.layer.minificationFilter = kCAFilterNearest;
     [self.view addSubview:self.surfaceView];
 
-    // Enable support for desktop GLSL
-    if ([getPreference(@"disable_gl4es_shaderconv") boolValue]) {
-        setenv("LIBGL_NOSHADERCONV", "1", 1);
-    }
-
     notchOffset = insets.left;
     width = width - notchOffset * 2;
     CGFloat buttonScale = [getPreference(@"button_scale") floatValue] / 100.0;
@@ -196,8 +191,8 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 
     if (@available(iOS 13.0, *)) {
         UIHoverGestureRecognizer *hoverGesture = [[UIHoverGestureRecognizer alloc]
-            initWithTarget:self action:@selector(surfaceOnHover:)];
-            [self.surfaceView addGestureRecognizer:hoverGesture];
+        initWithTarget:self action:@selector(surfaceOnHover:)];
+        [self.surfaceView addGestureRecognizer:hoverGesture];
     }
 
     UILongPressGestureRecognizer *longpressGesture = [[UILongPressGestureRecognizer alloc]
