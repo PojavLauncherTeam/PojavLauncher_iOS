@@ -77,7 +77,7 @@
     }
 
     UILabel *logoNoteView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, logoNoteViewOriginY, width - 8, 700)];
-    logoNoteView.text = @"Created by PojavLauncherTeam in 2021. We do not exist on TikTok. No one from the dev team makes TikTok videos.\n\nDuyKhanhTran - lead iOS port developer\nDoregon - iOS port developer\nSpecial thanks to Hayden Seay, for porting OpenJDK 16, making this possible, and hosting on Procursus.";
+    logoNoteView.text = @"Created by PojavLauncherTeam in 2022. We do not exist on TikTok. No one from the dev team makes TikTok videos.";
     logoNoteView.lineBreakMode = NSLineBreakByWordWrapping;
     logoNoteView.numberOfLines = 0;
     [logoNoteView sizeToFit];

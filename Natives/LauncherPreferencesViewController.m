@@ -501,7 +501,7 @@ int tempIndex;
     [tableView addSubview:relaunchSwitch];
     
     UILabel *arcCapesTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
-    arcCapesTextView.text = @"Enable Arc capes";
+    arcCapesTextView.text = @"Enable Cosmetica capes";
     arcCapesTextView.numberOfLines = 0;
     [arcCapesTextView sizeToFit];
     [tableView addSubview:arcCapesTextView];
@@ -576,7 +576,7 @@ int tempIndex;
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:HOMESYM];}],
             [UIAction actionWithTitle:@"Restart before launching game" image:[[UIImage systemImageNamed:@"arrowtriangle.left.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:RELAUNCH];}],
-            [UIAction actionWithTitle:@"Enable Arc capes" image:[[UIImage systemImageNamed:@"square.and.arrow.down"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+            [UIAction actionWithTitle:@"Enable Cosmetica capes" image:[[UIImage systemImageNamed:@"square.and.arrow.down"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:ARCCAPES];}],
             [UIAction actionWithTitle:@"Enable virtual mouse" image:[[UIImage systemImageNamed:@"cursorarrow.rays"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:VIRTMOUSE];}],
@@ -836,7 +836,7 @@ int tempIndex;
         UIAlertAction *debuglog = [UIAlertAction actionWithTitle:@"Debug logging" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:DEBUGLOG];}];
         UIAlertAction *homesym = [UIAlertAction actionWithTitle:@"Home symlink" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:HOMESYM];}];
         UIAlertAction *relaunch = [UIAlertAction actionWithTitle:@"Restart before launching game" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:RELAUNCH];}];
-        UIAlertAction *arccapes = [UIAlertAction actionWithTitle:@"Enable Arc capes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:ARCCAPES];}];
+        UIAlertAction *arccapes = [UIAlertAction actionWithTitle:@"Enable Cosmetica capes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:ARCCAPES];}];
         UIAlertAction *virtmouse = [UIAlertAction actionWithTitle:@"Enable virtual mouse" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:VIRTMOUSE];}];
         UIAlertAction *checksha = [UIAlertAction actionWithTitle:@"Check game files before launching" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:VIRTMOUSE];}];
         UIAlertAction *erasepref = [UIAlertAction actionWithTitle:@"Reset preferences" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:ERASEPREF];}];
@@ -909,7 +909,7 @@ int tempIndex;
         message = @"This option logs internal settings and actions to latestlog.txt. This helps the developers find issues easier, but Minecraft may run slower as the logs will be written to more often.";
     } else if(setting == HOMESYM) {
         title = @"Disable home symlink";
-        message = @"This option disables the home symlink to /var/mobile/Documents/.pojavlauncher from the new game directory.";
+        message = @"This option disables the home symlink to /var/mobile/Documents/.pojavlauncher from the new game directory. This is used for legacy add-ons to continue working, and as a transition from the old 1.2 directory structure.";
     } else if(setting == RELAUNCH) {
         title = @"Restart before launching game";
         message = @"This option allows the launcher to restart itself before launching the game, therefore all changes are applied such as JVM Arguments and Java version. The restart mechanism doesn't always work, so a toggle is here for now.";
@@ -917,8 +917,8 @@ int tempIndex;
         title = @"Reset preferences";
         message = @"This option resets the launcher preferences to their initial state.";
     } else if (setting == ARCCAPES) {
-        title = @"Enable Arc capes";
-        message = @"This option allows you to switch from the OptiFine cape service to Arc. See more about Arc on our website.";
+        title = @"Enable Cosmetica capes";
+        message = @"This option allows you to switch from the OptiFine cape service to Cosmetica. See more about Cosmetica on our website.";
     } else if (setting == VIRTMOUSE) {
         title = @"Enable virtual mouse";
         message = @"This option allows you to enable or disable the virtual mouse pointer at launch of the game.";

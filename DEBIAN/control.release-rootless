@@ -11,6 +11,6 @@ Section: Games
 Priority: optional
 Homepage: https://github.com/PojavLauncherTeam/PojavLauncher_iOS
 Description: Minecraft: Java Edition launcher for iOS, based on PojavLauncher Android.
-Icon: https://repo.doregon.gq/images/icons/pojavlauncher_icon.png
-Depiction: https://doregon.github.io/json-webviews/?json=https://repo.doregon.gq/depictions/natives/net.kdt.pojavlauncher.release-rootless.json&name=PojavLauncher%20iOS%20Rootless&dev=PojavLauncherTeam&section=Games&icon=https://repo.doregon.gq/images/icons/pojavlauncher_icon.png
-SileoDepiction: https://repo.doregon.gq/depictions/natives/net.kdt.pojavlauncher.release-rootless.json
+Icon: https://repository.crystall1ne.software/images/pojavlauncher_icon.png
+SileoDepiction: https://repository.crystall1ne.software/depictions/natives/net.kdt.pojavlauncher.release-rootless.json
+
