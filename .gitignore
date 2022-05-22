@@ -5,6 +5,5 @@
 /JavaApp/local_out
 /Natives/PojavLauncher
 /Natives/build
-/Natives/resources/*.png
 .DS_Store
 /pojavlauncher.xcodeproj
