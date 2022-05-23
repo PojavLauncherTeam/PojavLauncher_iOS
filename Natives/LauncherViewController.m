@@ -192,6 +192,41 @@ int versionSelectedAt = 0;
     }];
 }
 
++ (void)reloadVersionList
+{
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager GET:@"https://launchermeta.mojang.com/mc/game/version_manifest.json" parameters:nil headers:nil progress:^(NSProgress * _Nonnull progress) {
+    } success:^(NSURLSessionTask *task, id responseObject) {
+        NSDictionary *jsonArray = responseObject;
+        NSArray *remoteVersionList = [jsonArray valueForKey:@"versions"];
+        assert(remoteVersionList != nil);
+        NSMutableArray *finalVersionList = [[NSMutableArray alloc] init];
+        int i = 0;
+        for (NSDictionary *versionInfo in remoteVersionList) {
+            NSString *versionId = [versionInfo valueForKey:@"id"];
+            NSString *versionType = [versionInfo valueForKey:@"type"];
+            if (([versionType containsString:@"release"] && [getPreference(@"vertype_release") boolValue]) ||
+                ([versionType containsString:@"snapshot"] && [getPreference(@"vertype_snapshot") boolValue]) ||
+                ([versionType containsString:@"old_beta"] && [getPreference(@"vertype_oldbeta") boolValue]) ||
+                ([versionType containsString:@"old_alpha"] && [getPreference(@"vertype_oldalpha") boolValue]) ||
+                [versionType containsString:@"modified"] ||
+                [self isVersionInstalled:versionId]) {
+                [finalVersionList addObject:versionInfo];
+                        
+                if ([versionTextField.text isEqualToString:versionId]) {
+                    versionSelectedAt = i;
+                }
+                i++;
+            }
+        }
+        [self fetchLocalVersionList:finalVersionList withPreviousIndex:i];
+        versionList = [finalVersionList copy];
+        [versionPickerView reloadAllComponents];
+        [versionPickerView selectRow:versionSelectedAt inComponent:0 animated:NO];
+    } failure:^(NSURLSessionTask *operation, NSError *error) {
+        NSLog(@"Warning: Error fetching version list: %@", error);
+    }];
+}
 #pragma mark - Button click events
 - (void)displayOptions:(UIBarButtonItem*)sender {
     if (@available(iOS 14.0, *)) {
