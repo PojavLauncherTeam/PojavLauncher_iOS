@@ -1,7 +1,27 @@
 {
   "images" : [
     {
-      "filename" : "wordmark.png",
+      "filename" : "AppLogo-Black.png",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "light"
+        }
+      ],
+      "filename" : "AppLogo-Black-1.png",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "AppLogo-White-1.png",
       "idiom" : "universal"
     }
   ],
