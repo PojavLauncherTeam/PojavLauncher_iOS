@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 
-typedef void (^MDCallback)(NSString *stage, NSInteger currProgress, NSInteger maxProgress);
+typedef void (^MDCallback)(NSString *stage, NSProgress *mainProgress, NSProgress *progress);
 
 @interface MinecraftDownloader : NSObject
 

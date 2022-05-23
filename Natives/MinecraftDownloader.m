@@ -51,10 +51,13 @@ static AFURLSessionManager* manager;
 
 // Check SHA of the file
 + (BOOL)checkSHAIgnorePref:(NSString *)sha forFile:(NSString *)path altName:(NSString *)altName {
-    // if (LauncherPreferences.isSHACheckEnabled)
     if (sha == nil) {
-        NSLog(@"[MCDL] Warning: couldn't find SHA for %@, have to assume it's good.", path);
-        return YES;
+        // When sha = skip, only check for file existence
+        BOOL existence = [NSFileManager.defaultManager fileExistsAtPath:path];
+        if (existence) {
+            NSLog(@"[MCDL] Warning: couldn't find SHA for %@, have to assume it's good.", path);
+        }
+        return existence;
     }
 
     NSData *data = [NSData dataWithContentsOfFile:path];
@@ -112,8 +115,47 @@ static AFURLSessionManager* manager;
     return dict;
 }
 
+// Handle inheritsFrom
++ (void)processVersion:(NSMutableDictionary *)json inheritsFrom:(id)object progress:(NSProgress *)mainProgress callback:(MDCallback)callback success:(void (^)(NSMutableDictionary *json))success {
+    [self downloadClientJson:object progress:mainProgress callback:callback success:^(NSMutableDictionary *inheritsFrom){
+        [self insertSafety:inheritsFrom from:json arr:@[
+            @"assetIndex", @"assets", @"id",
+            @"mainClass", @"minecraftArguments",
+            @"optifineLib", @"releaseTime", @"time", @"type"
+        ]];
+
+        for (NSMutableDictionary *lib in json[@"libraries"]) {
+            NSString *libName = [lib[@"name"] substringToIndex:[lib[@"name"] rangeOfString:@":" options:NSBackwardsSearch].location];
+            int i;
+            for (i = 0; i < [inheritsFrom[@"libraries"] count]; i++) {
+                NSMutableDictionary *libAdded = inheritsFrom[@"libraries"][i];
+                NSString *libAddedName = [libAdded[@"name"] substringToIndex:[libAdded[@"name"] rangeOfString:@":" options:NSBackwardsSearch].location];
+
+                if ([libAdded[@"name"] hasPrefix:libName]) {
+                                //Log.d(APP_NAME, "Library " + libName + ": Replaced version " + 
+                                    //libName.substring(libName.lastIndexOf(":") + 1) + " with " +
+                                    //libAddedName.substring(libAddedName.lastIndexOf(":") + 1));
+                                inheritsFrom[@"libraries"][i] = lib;
+                    i = -1;
+                    break;
+                }
+            }
+
+            if (i != -1) {
+                [inheritsFrom[@"libraries"] addObject:lib];
+            }
+        }
+                    
+        //inheritsFrom[@"inheritsFrom"] = nil;
+        [self downloadClientJson:inheritsFrom[@"assetIndex"] progress:mainProgress callback:callback success:^(NSMutableDictionary *assetJson){
+            inheritsFrom[@"assetObjects"] = assetJson[@"objects"];
+            success(inheritsFrom);
+        }];
+    }];
+}
+
 // Download the client and assets index file
-+ (void)downloadClientJson:(NSObject *)version progress:(NSProgress *)mainProgress callback:(void (^)(NSString *stage, NSProgress *mainProgress, NSProgress *progress))callback success:(void (^)(NSMutableDictionary *json))success {
++ (void)downloadClientJson:(NSObject *)version progress:(NSProgress *)mainProgress callback:(MDCallback)callback success:(void (^)(NSMutableDictionary *json))success {
     ++mainProgress.totalUnitCount;
 
     BOOL isAssetIndex = NO;
@@ -211,7 +253,7 @@ static AFURLSessionManager* manager;
         }
 
         // Find the inheritsFrom
-        for (NSObject *object in versionList) {
+        for (id object in versionList) {
             NSString *iversionStr;
             if ([object isKindOfClass:[NSDictionary class]]) {
                 iversionStr = [object valueForKey:@"id"];
@@ -219,18 +261,7 @@ static AFURLSessionManager* manager;
                 iversionStr = (NSString *)object;
             }
             if ([iversionStr isEqualToString:json[@"inheritsFrom"]]) {
-                [self downloadClientJson:object progress:mainProgress callback:callback success:^(NSMutableDictionary *inheritsFrom){
-                    [self insertSafety:json from:inheritsFrom arr:@[
-                        @"assetIndex", @"assets", @"id",
-                        @"mainClass", @"minecraftArguments",
-                        @"optifineLib", @"releaseTime", @"time", @"type"
-                    ]];
-                    json[@"inheritsFrom"] = [NSNull null];
-                    [self downloadClientJson:json[@"assetIndex"] progress:mainProgress callback:callback success:^(NSMutableDictionary *assetJson){
-                        json[@"assetObjects"] = assetJson[@"objects"];
-                        success(json);
-                    }];
-                }];
+                [self processVersion:json inheritsFrom:object progress:mainProgress callback:callback success:success];
                 return;
             }
         }
@@ -242,8 +273,10 @@ static AFURLSessionManager* manager;
 
 + (void)insertSafety:(NSMutableDictionary *)targetVer from:(NSDictionary *)fromVer arr:(NSArray *)arr {
     for (NSString *key in arr) {
-        if (fromVer[key] != nil) {
+        if (([fromVer[key] isKindOfClass:NSString.class] && [fromVer[key] length] > 0) || targetVer[key] == nil) {
             targetVer[key] = fromVer[key];
+        } else {
+            NSLog(@"[MCDL] insertSafety: how to insert %@?", key);
         }
     }
 }
@@ -278,18 +311,27 @@ static AFURLSessionManager* manager;
             return NO;
         }
         dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-        NSDictionary *downloads = library[@"downloads"];
         NSString *name = library[@"name"];
-        NSDictionary *artifact = downloads[@"artifact"];
+
+        NSMutableDictionary *artifact = library[@"downloads"][@"artifact"];
+        if (artifact == nil && [name containsString:@":"]) {
+            NSLog(@"[MCDL] Unknown artifact object for %@, attempting to generate one", name);
+            artifact = [[NSMutableDictionary alloc] init];
+            NSString *prefix = library[@"url"] == nil ? @"https://libraries.minecraft.net/" : [library[@"url"] stringByReplacingOccurrencesOfString:@"http://" withString:@"https://"];
+            NSArray *libParts = [name componentsSeparatedByString:@":"];
+            artifact[@"path"] = [NSString stringWithFormat:@"%1$@/%2$@/%3$@/%2$@-%3$@.jar", [libParts[0] stringByReplacingOccurrencesOfString:@"." withString:@"/"], libParts[1], libParts[2]];
+            artifact[@"url"] = [NSString stringWithFormat:@"%@%@", prefix, artifact[@"path"]];
+            artifact[@"sha1"] = library[@"checksums"][0];
+        }
+
         NSString *path = [NSString stringWithFormat:@"%s/libraries/%@", getenv("POJAV_GAME_DIR"), artifact[@"path"]];
         NSString *sha1 = artifact[@"sha1"];
         NSString *url = artifact[@"url"];
-        if (artifact[@"path"] == nil || [library[@"skip"] boolValue]) {
+        if ([library[@"skip"] boolValue]) {
             callback([NSString stringWithFormat:@"Skipped library %@", name], nil);
             ++mainProgress.completedUnitCount;
             continue;
-        }
-        if ([self checkSHA:sha1 forFile:path altName:nil]) { 
+        } else if ([self checkSHA:sha1 forFile:path altName:nil]) { 
             ++mainProgress.completedUnitCount;
             continue;
         }
@@ -302,7 +344,7 @@ static AFURLSessionManager* manager;
 
         dispatch_group_enter(group);
         [NSFileManager.defaultManager createDirectoryAtPath:path.stringByDeletingLastPathComponent withIntermediateDirectories:YES attributes:nil error:nil];
-        callback([NSString stringWithFormat:@"Downloading library %@", name], nil);
+        callback([NSString stringWithFormat:@"Downloading library %@", name], nil); 
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
         NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull progress){
             callback([NSString stringWithFormat:@"Downloading library %@", name], progress);
@@ -404,14 +446,13 @@ static AFURLSessionManager* manager;
         }];
         callback([NSString stringWithFormat:@"Downloading %@", name], [manager downloadProgressForTask:downloadTask]);
         [downloadTask resume];
-        NSLog(@"%@: %@", name, hash);
     }
     dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
     callback(@"Finished: download assets", nil);
     return jobsAvailable != -1;
 }
 
-+ (void)start:(NSObject *)version callback:(void (^)(NSString *stage, NSProgress *mainProgress, NSProgress *progress))callback {
++ (void)start:(NSObject *)version callback:(MDCallback)callback {
     manager = [[AFURLSessionManager alloc] init];
     NSProgress *mainProgress = [NSProgress progressWithTotalUnitCount:0];
     [self downloadClientJson:version progress:mainProgress callback:callback success:^(NSMutableDictionary *json) {
