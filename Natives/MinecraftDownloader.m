@@ -135,7 +135,7 @@ static AFURLSessionManager* manager;
                                 //Log.d(APP_NAME, "Library " + libName + ": Replaced version " + 
                                     //libName.substring(libName.lastIndexOf(":") + 1) + " with " +
                                     //libAddedName.substring(libAddedName.lastIndexOf(":") + 1));
-                                inheritsFrom[@"libraries"][i] = lib;
+                    inheritsFrom[@"libraries"][i] = lib;
                     i = -1;
                     break;
                 }
@@ -284,9 +284,12 @@ static AFURLSessionManager* manager;
 + (void)tweakVersionJson:(NSMutableDictionary *)json {
     // Exclude some libraries
     for (NSMutableDictionary *library in json[@"libraries"]) {
-        if ([library[@"name"] hasPrefix:@"org.lwjgl"]) {
-            library[@"skip"] = @(YES);
-        }
+        library[@"skip"] = @(
+            // Exclude platform-dependant libraries
+            library[@"downloads"][@"classifiers"] != nil ||
+            // Exclude LWJGL libraries
+            [library[@"name"] hasPrefix:@"org.lwjgl"]
+        );
     }
 
     // Add the client as a library

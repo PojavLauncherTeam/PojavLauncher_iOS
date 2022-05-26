@@ -95,14 +95,7 @@ UIScrollView *scrollView;
 
 NSDictionary *rendererDict;
 
-NSString *java8jben = @"Java 8";
-NSString *java16jben = @"Java 16";
-NSString *java17jben = @"Java 17";
-NSString *java8 = @"Java 8 (sandbox)";
-NSString *libsjava8jben = @"/usr/lib/jvm/java-8-openjdk";
-NSString *libsjava16jben = @"/usr/lib/jvm/java-16-openjdk";
-NSString *libsjava17jben = @"/usr/lib/jvm/java-17-openjdk";
-NSString *libsjava8;
+NSString *JRE8_HOME_SB;
 
 int tempIndex;
 
@@ -277,17 +270,17 @@ int tempIndex;
     jhomeTextField.delegate = self;
     jhomeTextField.placeholder = @"Override Java path...";
 
-    libsjava8 = [NSString stringWithFormat:@"%s/jre8", getenv("POJAV_HOME")];
+    JRE8_HOME_SB = [NSString stringWithFormat:@"%s/jre8", getenv("POJAV_HOME")];
     if(getenv("POJAV_DETECTEDJB")) {
-        if ([getPreference(@"java_home") isEqualToString:libsjava8jben]) {
-            jhomeTextField.text = java8jben;
-        } else if ([getPreference(@"java_home") isEqualToString:libsjava16jben]) {
-            jhomeTextField.text = java16jben;
-        } else if ([getPreference(@"java_home") isEqualToString:libsjava17jben]) {
-            jhomeTextField.text = java17jben;
+        if ([getPreference(@"java_home") isEqualToString:JRE8_HOME_JB]) {
+            jhomeTextField.text = JRE8_NAME_JB;
+        } else if ([getPreference(@"java_home") isEqualToString:JRE16_HOME_JB]) {
+            jhomeTextField.text = JRE16_NAME_JB;
+        } else if ([getPreference(@"java_home") isEqualToString:JRE17_HOME_JB]) {
+            jhomeTextField.text = JRE17_NAME_JB;
         }
     } else {
-        jhomeTextField.text = java8;
+        jhomeTextField.text = JRE8_NAME_SB;
     }
     
     jhomeTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
@@ -295,17 +288,17 @@ int tempIndex;
     [tableView addSubview:jhomeTextField];
     
     jhomeList = [[NSMutableArray alloc] init];
-    if ([[NSFileManager defaultManager] fileExistsAtPath:libsjava8jben]) {
-        [jhomeList addObject:java8jben];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:JRE8_HOME_JB]) {
+        [jhomeList addObject:JRE8_NAME_JB];
     }
-    if ([[NSFileManager defaultManager] fileExistsAtPath:libsjava16jben]) {
-        [jhomeList addObject:java16jben];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:JRE16_HOME_JB]) {
+        [jhomeList addObject:JRE16_NAME_JB];
     }
-    if ([[NSFileManager defaultManager] fileExistsAtPath:libsjava17jben]) {
-        [jhomeList addObject:java17jben];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:JRE17_HOME_JB]) {
+        [jhomeList addObject:JRE17_NAME_JB];
     }
-    if ([[NSFileManager defaultManager] fileExistsAtPath:libsjava8]) {
-        [jhomeList addObject:java8];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:JRE8_HOME_SB]) {
+        [jhomeList addObject:JRE8_NAME_SB];
     }
     
     jhomePickerView = [[UIPickerView alloc] init];
@@ -642,20 +635,20 @@ int tempIndex;
         setPreference(@"renderer", rendererDict[textField.text]);
         setenv("POJAV_RENDERER", [getPreference(@"renderer") UTF8String], 1);
     } else if (textField.tag == TAG_JHOME) {
-        if ([textField.text isEqualToString:java8jben]) {
-            setPreference(@"java_home", libsjava8jben);
-            setenv("JAVA_HOME", [libsjava8jben cStringUsingEncoding:NSUTF8StringEncoding], 1);
-        } else if ([textField.text isEqualToString:java16jben]) {
-            setPreference(@"java_home", libsjava16jben);
-            setenv("JAVA_HOME", [libsjava16jben cStringUsingEncoding:NSUTF8StringEncoding], 1);
-        } else if ([textField.text isEqualToString:java17jben]) {
-            setPreference(@"java_home", libsjava17jben);
-            setenv("JAVA_HOME", [libsjava17jben cStringUsingEncoding:NSUTF8StringEncoding], 1);
-        } else if ([textField.text isEqualToString:java8]) {
-            setPreference(@"java_home", libsjava8);
-            setenv("JAVA_HOME", [libsjava8 cStringUsingEncoding:NSUTF8StringEncoding], 1);
+        if ([textField.text isEqualToString:JRE8_NAME_JB]) {
+            setPreference(@"java_home", JRE8_HOME_JB);
+            setenv("JAVA_HOME", [JRE8_HOME_JB cStringUsingEncoding:NSUTF8StringEncoding], 1);
+        } else if ([textField.text isEqualToString:JRE16_NAME_JB]) {
+            setPreference(@"java_home", JRE16_HOME_JB);
+            setenv("JAVA_HOME", [JRE16_HOME_JB cStringUsingEncoding:NSUTF8StringEncoding], 1);
+        } else if ([textField.text isEqualToString:JRE17_NAME_JB]) {
+            setPreference(@"java_home", JRE17_HOME_JB);
+            setenv("JAVA_HOME", [JRE17_HOME_JB cStringUsingEncoding:NSUTF8StringEncoding], 1);
+        } else if ([textField.text isEqualToString:JRE8_NAME_SB]) {
+            setPreference(@"java_home", JRE8_HOME_SB);
+            setenv("JAVA_HOME", [JRE8_HOME_SB cStringUsingEncoding:NSUTF8StringEncoding], 1);
         }
-        if (![textField.text containsString:java8jben] && ![textField.text containsString:java8] && [getPreference(@"java_warn") boolValue] == YES) {
+        if (![textField.text containsString:JRE8_NAME_JB] && ![textField.text containsString:JRE8_NAME_SB] && [getPreference(@"java_warn") boolValue] == YES) {
             UIAlertController *javaAlert = [UIAlertController alertControllerWithTitle:@"Java version is not Java 8" message:@"Minecraft versions below 1.6, modded below 1.16.4, and the mod installer will not work unless you have Java 8 installed on your device."preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
             [self presentViewController:javaAlert animated:YES completion:nil];

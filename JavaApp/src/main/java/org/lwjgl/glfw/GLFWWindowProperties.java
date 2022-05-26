@@ -1,10 +1,11 @@
 package org.lwjgl.glfw;
 
 import java.util.*;
+import net.kdt.pojavlaunch.Tools;
 
 public class GLFWWindowProperties {
-    public int width = GLFW.mGLFWWindowWidth;
-    public int height = GLFW.mGLFWWindowHeight;
+    public int width = Tools.mGLFWWindowWidth;
+    public int height = Tools.mGLFWWindowHeight;
     public float x, y;
     public CharSequence title;
     public boolean shouldClose, isInitialSizeCalled, isCursorEntered;

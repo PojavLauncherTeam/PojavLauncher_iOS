@@ -105,20 +105,20 @@ jstring UIKit_accessClipboard(JNIEnv* env, jint action, jstring copySrc) {
 }
 
 void UIKit_launchJarFile(const char* filepath) {
-    jclass uikitBridgeClass = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "net/kdt/pojavlaunch/uikit/UIKit");
+    jclass uikitBridgeClass = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "net/kdt/pojavlaunch/uikit/UIKit");
     assert(uikitBridgeClass != NULL);
 
-    jstring filepathStr = (*runtimeJNIEnvPtr_JRE)->NewStringUTF(runtimeJNIEnvPtr_JRE, filepath);
-    jmethodID method = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, uikitBridgeClass, "callback_JavaGUIViewController_launchJarFile", "(Ljava/lang/String;II)V");
+    jstring filepathStr = (*runtimeJNIEnvPtr)->NewStringUTF(runtimeJNIEnvPtr, filepath);
+    jmethodID method = (*runtimeJNIEnvPtr)->GetStaticMethodID(runtimeJNIEnvPtr, uikitBridgeClass, "callback_JavaGUIViewController_launchJarFile", "(Ljava/lang/String;II)V");
     assert(method != NULL);
 
-    (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
-        runtimeJNIEnvPtr_JRE,
+    (*runtimeJNIEnvPtr)->CallStaticVoidMethod(
+        runtimeJNIEnvPtr,
         uikitBridgeClass, method,
         filepathStr,
         savedWidth, savedHeight
     );
-    (*runtimeJNIEnvPtr_JRE)->DeleteLocalRef(runtimeJNIEnvPtr_JRE, filepathStr);
+    (*runtimeJNIEnvPtr)->DeleteLocalRef(runtimeJNIEnvPtr, filepathStr);
 }
 
 void UIKit_launchMinecraftSurfaceVC() {

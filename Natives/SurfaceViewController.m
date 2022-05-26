@@ -1,10 +1,12 @@
 #import <GameController/GameController.h>
 
+#import "JavaLauncher.h"
 #import "LauncherPreferences.h"
 #import "SurfaceViewController.h"
 #import "egl_bridge.h"
 #import "ios_uikit_bridge.h"
 
+#import "authenticator/BaseAuthenticator.h"
 #import "customcontrols/ControlButton.h"
 #import "customcontrols/ControlDrawer.h"
 #import "customcontrols/ControlSubButton.h"
@@ -239,7 +241,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     self.inputView.lastPosition = 20;
     [self.inputView addTarget:self action:@selector(inputViewDidChange) forControlEvents:UIControlEventEditingChanged];
 
-    NSString *controlFilePath = [NSString stringWithFormat:@"%s/%@", getenv("POJAV_PATH_CONTROL"), (NSString *)getPreference(@"default_ctrl")];
+    NSString *controlFilePath = [NSString stringWithFormat:@"%s/controlmap/%@", getenv("POJAV_HOME"), (NSString *)getPreference(@"default_ctrl")];
 
     NSError *cc_error;
     NSString *cc_data = [NSString stringWithContentsOfFile:controlFilePath encoding:NSUTF8StringEncoding error:&cc_error];
@@ -314,7 +316,10 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 
     // [self setPreferredFramesPerSecond:1000];
 
-    callback_SurfaceViewController_launchMinecraft(savedWidth * resolutionScale, savedHeight * resolutionScale);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        launchJVM(BaseAuthenticator.current.authData[@"username"], getPreference(@"selected_version"), savedWidth * resolutionScale, savedHeight * resolutionScale);
+    });
+    //callback_SurfaceViewController_launchMinecraft(savedWidth * resolutionScale, savedHeight * resolutionScale);
 }
 
 - (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {

@@ -37,12 +37,7 @@ import net.kdt.pojavlaunch.utils.JSONUtils;
 import net.kdt.pojavlaunch.value.DependentLibrary;
 import net.kdt.pojavlaunch.value.MinecraftAccount;
 import org.lwjgl.glfw.GLFW;
-/*
-import org.robovm.apple.foundation.*;
-import org.robovm.apple.uikit.*;
-import org.robovm.pods.dialog.*;
-import org.robovm.pods.*;
-*/
+
 public final class Tools
 {
     public static final boolean ENABLE_DEV_FEATURES = true; // BuildConfig.DEBUG;
@@ -77,6 +72,8 @@ public final class Tools
     public static final String CTRLDEF_FILE = DIR_GAME_NEW + "/controlmap/default.json";
     
     public static final String LIBNAME_OPTIFINE = "optifine:OptiFine";
+
+    volatile public static int mGLFWWindowWidth, mGLFWWindowHeight;
 
     public static void launchMinecraft(MinecraftAccount profile, final JMinecraftVersionList.Version versionInfo) throws Throwable {
         String javaVersion = System.getProperty("java.version");
@@ -125,31 +122,27 @@ public final class Tools
             }
         }
 */
-        
-        new Thread(() -> { try {
-            System.out.println("Args init finished. Now starting game");
-        
-            // URLClassLoader loader = new URLClassLoader(urlList.toArray(new URL[0]), ClassLoader.getSystemClassLoader());
-            
-                PojavClassLoader loader = (PojavClassLoader) ClassLoader.getSystemClassLoader();
-                // add launcher.jar itself
-                loader.addURL(Tools.class.getProtectionDomain().getCodeSource().getLocation().toURI().toURL());
-                for (String s : launchClassPath.split(":")) {
-                    if (!s.isEmpty()) {
-                        loader.addURL(new File(s).toURI().toURL());
-                    }
-                }
-            
-            Class<?> clazz = loader.loadClass(versionInfo.mainClass);
-            Method method = clazz.getMethod("main", String[].class);
-            method.invoke(null, new Object[]{launchArgs});
 
-            // throw new RuntimeException("Game exited. Check latestlog.txt for more details.");
-        } catch (Throwable th) {
-            showError(th);
+        System.out.println("Args init finished. Now starting game");
+
+        // URLClassLoader loader = new URLClassLoader(urlList.toArray(new URL[0]), ClassLoader.getSystemClassLoader());
+
+        PojavClassLoader loader = (PojavClassLoader) ClassLoader.getSystemClassLoader();
+        // add launcher.jar itself
+        loader.addURL(Tools.class.getProtectionDomain().getCodeSource().getLocation().toURI().toURL());
+        for (String s : launchClassPath.split(":")) {
+            if (!s.isEmpty()) {
+                loader.addURL(new File(s).toURI().toURL());
+            }
         }
+            
+        Class<?> clazz = loader.loadClass(versionInfo.mainClass);
+        Method method = clazz.getMethod("main", String[].class);
+        method.invoke(null, new Object[]{launchArgs});
+
+        // throw new RuntimeException("Game exited. Check latestlog.txt for more details.");
         
-        }).start();
+        //}).start();
         
         // JREUtils.launchJavaVM(javaArgList);
     }
@@ -203,13 +196,13 @@ public final class Tools
             }
         }
         minecraftArgs.add("--width");
-        minecraftArgs.add(Integer.toString(GLFW.mGLFWWindowWidth));
+        minecraftArgs.add(Integer.toString(mGLFWWindowWidth));
         minecraftArgs.add("--height");
-        minecraftArgs.add(Integer.toString(GLFW.mGLFWWindowHeight));
+        minecraftArgs.add(Integer.toString(mGLFWWindowHeight));
         minecraftArgs.add("--fullscreenWidth");
-        minecraftArgs.add(Integer.toString(GLFW.mGLFWWindowWidth));
+        minecraftArgs.add(Integer.toString(mGLFWWindowWidth));
         minecraftArgs.add("--fullscreenHeight");
-        minecraftArgs.add(Integer.toString(GLFW.mGLFWWindowHeight));
+        minecraftArgs.add(Integer.toString(mGLFWWindowHeight));
         String[] argsFromJson = JSONUtils.insertJSONValueList(
             splitAndFilterEmpty(
                 versionInfo.minecraftArguments == null ?

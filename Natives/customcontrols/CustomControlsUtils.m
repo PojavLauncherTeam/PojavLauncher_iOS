@@ -287,7 +287,7 @@ void generateAndSaveDefaultControl() {
         BTN_RECT
     )];
     NSOutputStream *os = [[NSOutputStream alloc] initToFileAtPath:
-        [@(getenv("POJAV_PATH_CONTROL")) stringByAppendingString:@"/default.json"] append:NO];
+        [NSString stringWithFormat:@"%s/controlmap/default.json", getenv("POJAV_HOME")] append:NO];
     [os open];
     [NSJSONSerialization writeJSONObject:dict toStream:os options:NSJSONWritingPrettyPrinted error:nil];
     [os close];

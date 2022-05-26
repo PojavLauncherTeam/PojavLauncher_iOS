@@ -50,6 +50,7 @@ target_link_libraries(libOSMesaOverride.dylib ${OSMESA_LIB})
 
 add_executable(PojavLauncher
   main.m
+  main_hook.m
   log.m
   JavaLauncher.m
   external/fishhook/fishhook.c

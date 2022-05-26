@@ -1,4 +1,5 @@
 #import "JavaGUIViewController.h"
+#import "JavaLauncher.h"
 #import "LauncherPreferences.h"
 #import "ios_uikit_bridge.h"
 #include "utils.h"
@@ -10,6 +11,12 @@ jclass class_CTCAndroidInput;
 jmethodID method_ReceiveInput;
 
 JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_refreshAWTBuffer(JNIEnv* env, jclass clazz, jintArray jreRgbArray) {
+    if (!runtimeJNIEnvPtr) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &runtimeJNIEnvPtr, NULL);
+        });
+    }
+
     int *tmpArray = (*env)->GetIntArrayElements(env, jreRgbArray, 0);
     memcpy(rgbArray, tmpArray, savedWidth * savedHeight * 4);
     (*env)->ReleaseIntArrayElements(env, jreRgbArray, tmpArray, JNI_ABORT);
@@ -106,14 +113,16 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
 
     rgbArray = calloc(4, (size_t) (savedWidth * savedHeight));
 
-    UIKit_launchJarFile(self.filepath.UTF8String);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        launchJVM(@".LaunchJAR", self.filepath, savedWidth * resolutionScale, savedHeight * resolutionScale);
+    });
 }
 
 - (void)surfaceOnClick:(UITapGestureRecognizer *)sender {
     if (method_ReceiveInput == NULL) {
-        class_CTCAndroidInput = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "net/java/openjdk/cacio/ctc/CTCAndroidInput");
+        class_CTCAndroidInput = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "net/java/openjdk/cacio/ctc/CTCAndroidInput");
         assert(class_CTCAndroidInput != NULL);
-        method_ReceiveInput = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, class_CTCAndroidInput, "receiveData", "(IIIII)V");
+        method_ReceiveInput = (*runtimeJNIEnvPtr)->GetStaticMethodID(runtimeJNIEnvPtr, class_CTCAndroidInput, "receiveData", "(IIIII)V");
         assert(method_ReceiveInput != NULL);
     }
 
@@ -123,20 +132,20 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
         CGPoint location = [sender locationInView:sender.view];
         CGFloat x = location.x * screenScale * resolution;
         CGFloat y = location.y * screenScale * resolution;
-        (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
-            runtimeJNIEnvPtr_JRE,
+        (*runtimeJNIEnvPtr)->CallStaticVoidMethod(
+            runtimeJNIEnvPtr,
             class_CTCAndroidInput,
             method_ReceiveInput,
             EVENT_TYPE_CURSOR_POS, (int)x, (int)y, 0, 0
         );
-        (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
-            runtimeJNIEnvPtr_JRE,
+        (*runtimeJNIEnvPtr)->CallStaticVoidMethod(
+            runtimeJNIEnvPtr,
             class_CTCAndroidInput,
             method_ReceiveInput,
             EVENT_TYPE_MOUSE_BUTTON, BUTTON1_DOWN_MASK, 1, 0, 0
         );
-        (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
-            runtimeJNIEnvPtr_JRE,
+        (*runtimeJNIEnvPtr)->CallStaticVoidMethod(
+            runtimeJNIEnvPtr,
             class_CTCAndroidInput,
             method_ReceiveInput,
             EVENT_TYPE_MOUSE_BUTTON, BUTTON1_DOWN_MASK, 0, 0, 0

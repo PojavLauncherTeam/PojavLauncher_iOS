@@ -26,7 +26,7 @@ NSMutableDictionary* parseJSONFromFile(NSString *path) {
     return dict;
 }
 
-NSError* saveJSONToFile(NSMutableDictionary *dict, NSString *path) {
+NSError* saveJSONToFile(NSDictionary *dict, NSString *path) {
     // TODO: handle rename
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:&error];
@@ -34,7 +34,7 @@ NSError* saveJSONToFile(NSMutableDictionary *dict, NSString *path) {
         return error;
     }
     NSString *jsonStr = [NSString stringWithUTF8String:jsonData.bytes];
-    BOOL success = [jsonStr writeToFile:[NSString stringWithFormat:@"%s/accounts/%@.json", getenv("POJAV_HOME"), dict[@"username"]] atomically:YES encoding:NSUTF8StringEncoding error:&error];
+    BOOL success = [jsonStr writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:&error];
     if (!success) {
         return error;
     }

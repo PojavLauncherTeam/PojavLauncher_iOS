@@ -38,8 +38,8 @@ typedef void GLFW_invoke_WindowPos_func(void* window, int x, int y);
 
 CGFloat grabCursorX, grabCursorY, lastCursorX, lastCursorY;
 
-jclass inputBridgeClass_ANDROID, inputBridgeClass_JRE;
-jmethodID inputBridgeMethod_ANDROID, inputBridgeMethod_JRE;
+jclass inputBridgeClass_ANDROID;
+jmethodID inputBridgeMethod_ANDROID;
 
 jclass uikitBridgeClass;
 jmethodID uikitBridgeTouchMethod;
@@ -47,16 +47,12 @@ jmethodID uikitBridgeTouchMethod;
 // JNI_OnLoad
 jint JNI_OnLoad(JavaVM* vm, void* reserved) {
     runtimeJavaVMPtr = vm;
-    (*vm)->GetEnv(vm, (void**) &runtimeJNIEnvPtr_JRE, JNI_VERSION_1_4);
-    
-    isGrabbing = JNI_FALSE;
-    
     return JNI_VERSION_1_4;
 }
 
 // Should be?
 void JNI_OnUnload(JavaVM* vm, void* reserved) {
-    runtimeJNIEnvPtr_JRE = NULL;
+    runtimeJNIEnvPtr = NULL;
 }
 
 #define ADD_CALLBACK_WWIN(NAME) \
@@ -81,29 +77,29 @@ ADD_CALLBACK_WWIN(WindowPos);
 #undef ADD_CALLBACK_WWIN
 
 void getJavaInputBridge(jclass* clazz, jmethodID* method) {
-    debugLog("Debug: Initializing input bridge, method.isNull=%d, jnienv.isNull=%d\n", *method == NULL, runtimeJNIEnvPtr_ANDROID == NULL);
-    if (*method == NULL && runtimeJNIEnvPtr_ANDROID != NULL) {
-        *clazz = (*runtimeJNIEnvPtr_ANDROID)->FindClass(runtimeJNIEnvPtr_ANDROID, "org/lwjgl/glfw/CallbackBridge");
+    debugLog("Debug: Initializing input bridge, method.isNull=%d, jnienv.isNull=%d\n", *method == NULL, runtimeJNIEnvPtr == NULL);
+    if (*method == NULL && runtimeJNIEnvPtr != NULL) {
+        *clazz = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "org/lwjgl/glfw/CallbackBridge");
         assert(*clazz != NULL);
-        *method = (*runtimeJNIEnvPtr_ANDROID)->GetStaticMethodID(runtimeJNIEnvPtr_ANDROID, *clazz, "receiveCallback", "(IFFII)V");
+        *method = (*runtimeJNIEnvPtr)->GetStaticMethodID(runtimeJNIEnvPtr, *clazz, "receiveCallback", "(IFFII)V");
         assert(*method != NULL);
     }
 }
 
 void sendData(int type, CGFloat i1, CGFloat i2, int i3, int i4) {
-    if (runtimeJNIEnvPtr_ANDROID == NULL) {
-        (*runtimeJavaVMPtr)->GetEnv(runtimeJavaVMPtr, (void**) &runtimeJNIEnvPtr_ANDROID, JNI_VERSION_1_4);
+    if (inputBridgeMethod_ANDROID == NULL) {
+        (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &runtimeJNIEnvPtr, NULL);
         getJavaInputBridge(&inputBridgeClass_ANDROID, &inputBridgeMethod_ANDROID);
     }
 
-    debugLog("Debug: Send data, jnienv.isNull=%d\n", runtimeJNIEnvPtr_ANDROID == NULL);
-    if (runtimeJNIEnvPtr_ANDROID == NULL) {
+    debugLog("Debug: Send data, jnienv.isNull=%d\n", runtimeJNIEnvPtr == NULL);
+    if (runtimeJNIEnvPtr == NULL) {
         debugLog("BUG: Input is ready but thread is not attached yet.");
         return;
     }
     // FIXME: should we send double instead of float?
-    (*runtimeJNIEnvPtr_ANDROID)->CallStaticVoidMethod(
-        runtimeJNIEnvPtr_ANDROID,
+    (*runtimeJNIEnvPtr)->CallStaticVoidMethod(
+        runtimeJNIEnvPtr,
         inputBridgeClass_ANDROID,
         inputBridgeMethod_ANDROID,
         type,
@@ -115,13 +111,13 @@ void closeGLFWWindow() {
     NSLog(@"Closing GLFW window");
 
     /*
-    jclass glfwClazz = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "org/lwjgl/glfw/GLFW");
+    jclass glfwClazz = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "org/lwjgl/glfw/GLFW");
     assert(glfwClazz != NULL);
-    jmethodID glfwMethod = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, glfwMethod, "glfwSetWindowShouldClose", "(JZ)V");
+    jmethodID glfwMethod = (*runtimeJNIEnvPtr)->GetStaticMethodID(runtimeJNIEnvPtr, glfwMethod, "glfwSetWindowShouldClose", "(JZ)V");
     assert(glfwMethod != NULL);
     
-    (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
-        runtimeJNIEnvPtr_JRE,
+    (*runtimeJNIEnvPtr)->CallStaticVoidMethod(
+        runtimeJNIEnvPtr,
         glfwClazz, glfwMethod,
         (jlong) showingWindow, JNI_TRUE
     );
@@ -129,63 +125,51 @@ void closeGLFWWindow() {
     exit(-1);
 }
 
-void callback_LauncherViewController_installMinecraft(char* versionPath) {
-    // Because UI init after JVM init, this should not be null
-    assert(runtimeJNIEnvPtr_JRE != NULL);
-    
-    if (!uikitBridgeClass) {
-        uikitBridgeClass = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "net/kdt/pojavlaunch/uikit/UIKit");
-        assert(uikitBridgeClass != NULL);
-    }
-
-    jstring versionPathStr = (*runtimeJNIEnvPtr_JRE)->NewStringUTF(runtimeJNIEnvPtr_JRE, versionPath);
-
-    jmethodID method = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, uikitBridgeClass, "callback_LauncherViewController_installMinecraft", "(Ljava/lang/String;)V");
-    assert(method != NULL);
-    (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
-        runtimeJNIEnvPtr_JRE,
-        uikitBridgeClass, method,
-        versionPathStr  
-    );
-}
-
+/*
 void callback_SurfaceViewController_launchMinecraft(int width, int height) {
     debugLog("Received SurfaceViewController callback, width=%d, height=%d\n", width, height);
 
     // Because UI init after JVM init, this should not be null
-    assert(runtimeJNIEnvPtr_JRE != NULL);
+    assert(runtimeJNIEnvPtr != NULL);
     
     if (!uikitBridgeClass) {
-        uikitBridgeClass = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "net/kdt/pojavlaunch/uikit/UIKit");
+        uikitBridgeClass = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "net/kdt/pojavlaunch/uikit/UIKit");
         assert(uikitBridgeClass != NULL);
     }
 
-    jstring rendererLibStr = (*runtimeJNIEnvPtr_JRE)->NewStringUTF(runtimeJNIEnvPtr_JRE, getenv("POJAV_RENDERER"));
+    jstring rendererLibStr = (*runtimeJNIEnvPtr)->NewStringUTF(runtimeJNIEnvPtr, getenv("POJAV_RENDERER"));
 
-    jmethodID method = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, uikitBridgeClass, "callback_SurfaceViewController_launchMinecraft", "(IILjava/lang/String;)V");
+    jmethodID method = (*runtimeJNIEnvPtr)->GetStaticMethodID(runtimeJNIEnvPtr, uikitBridgeClass, "callback_SurfaceViewController_launchMinecraft", "(IILjava/lang/String;)V");
     assert(method != NULL);
     
-    (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
-        runtimeJNIEnvPtr_JRE,
+    (*runtimeJNIEnvPtr)->CallStaticVoidMethod(
+        runtimeJNIEnvPtr,
         uikitBridgeClass, method,
         width, height,
         rendererLibStr
     );
 }
+*/
 
 void callback_SurfaceViewController_onTouch(int event, CGFloat x, CGFloat y) {
+    if (!isInputReady) return;
+
+    if (!runtimeJNIEnvPtr) {
+        (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &runtimeJNIEnvPtr, NULL);
+    }
+
     if (!uikitBridgeClass) {
-        uikitBridgeClass = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "net/kdt/pojavlaunch/uikit/UIKit");
+        uikitBridgeClass = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "net/kdt/pojavlaunch/uikit/UIKit");
         assert(uikitBridgeClass != NULL);
     }
-    
+
     if (!uikitBridgeTouchMethod) {
-        uikitBridgeTouchMethod = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, uikitBridgeClass, "callback_SurfaceViewController_onTouch", "(IFF)V");
+        uikitBridgeTouchMethod = (*runtimeJNIEnvPtr)->GetStaticMethodID(runtimeJNIEnvPtr, uikitBridgeClass, "callback_SurfaceViewController_onTouch", "(IFF)V");
         assert(uikitBridgeTouchMethod != NULL);
     }
-    
-    (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
-        runtimeJNIEnvPtr_JRE,
+
+    (*runtimeJNIEnvPtr)->CallStaticVoidMethod(
+        runtimeJNIEnvPtr,
         uikitBridgeClass, uikitBridgeTouchMethod,
         event, (jfloat)x, (jfloat)y
     );
@@ -239,7 +223,9 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetInputRead
 #ifdef DEBUG
     LOGD("Debug: Changing input state, isReady=%d, isUseStackQueueCall=%d\n", inputReady, isUseStackQueueCall);
 #endif
+
     isInputReady = inputReady;
+
     return isUseStackQueueCall;
 }
 
@@ -446,13 +432,13 @@ void CallbackBridge_setWindowAttrib(int attrib, int value) {
         return; // nothing to do yet
     }
 
-    jclass glfwClazz = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "org/lwjgl/glfw/GLFW");
+    jclass glfwClazz = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "org/lwjgl/glfw/GLFW");
     assert(glfwClazz != NULL);
-    jmethodID glfwMethod = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, glfwClazz, "glfwSetWindowAttrib", "(JII)V");
+    jmethodID glfwMethod = (*runtimeJNIEnvPtr)->GetStaticMethodID(runtimeJNIEnvPtr, glfwClazz, "glfwSetWindowAttrib", "(JII)V");
     assert(glfwMethod != NULL);
 
-    (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
-        runtimeJNIEnvPtr_JRE,
+    (*runtimeJNIEnvPtr)->CallStaticVoidMethod(
+        runtimeJNIEnvPtr,
         glfwClazz, glfwMethod,
         (jlong) showingWindow, attrib, value
     );

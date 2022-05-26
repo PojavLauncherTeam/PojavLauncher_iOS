@@ -11,6 +11,8 @@ import java.nio.*;
 
 import javax.annotation.*;
 
+import net.kdt.pojavlaunch.Tools;
+
 import org.lwjgl.*;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.*;
@@ -484,7 +486,6 @@ public class GLFW
 	/* volatile */ public static GLFWWindowRefreshCallback mGLFWWindowRefreshCallback;
 	/* volatile */ public static GLFWWindowSizeCallback mGLFWWindowSizeCallback;
 
-    volatile public static int mGLFWWindowWidth, mGLFWWindowHeight;
     volatile public static double mGLFWCursorX, mGLFWCursorY, mGLFWCursorLastX, mGLFWCursorLastY;
     
 	private static GLFWGammaRamp mGLFWGammaRamp;
@@ -499,23 +500,26 @@ public class GLFW
 	public static boolean mGLFWIsGrabbing, mGLFWIsInputReady, mGLFWIsUseStackQueue = false;
     public static final byte[] keyDownBuffer = new byte[317];
     public static long mainContext = 0;
-	static {
-		try {
+    static {
+        try {
             System.load(System.getenv("BUNDLE_PATH") + "/PojavLauncher");
         } catch (UnsatisfiedLinkError e) {
             e.printStackTrace();
         }
-                
-        // Minecraft triggers a glfwPollEvents() on splash screen, so update window size there.
-        CallbackBridge.receiveCallback(CallbackBridge.EVENT_TYPE_FRAMEBUFFER_SIZE, mGLFWWindowWidth, mGLFWWindowHeight, 0, 0);
-        CallbackBridge.receiveCallback(CallbackBridge.EVENT_TYPE_WINDOW_SIZE, mGLFWWindowWidth, mGLFWWindowHeight, 0, 0);
 
-		mGLFWErrorCallback = GLFWErrorCallback.createPrint();
-		mGLFWKeyCodes = new ArrayMap<>();
+        // Minecraft triggers a glfwPollEvents() on splash screen, so update window size there.
+        // TODO objc-rewrite: commented out for testing only
+        //CallbackBridge.receiveCallback(CallbackBridge.EVENT_TYPE_FRAMEBUFFER_SIZE, Tools.mGLFWWindowWidth, Tools.mGLFWWindowHeight, 0, 0);
+        //CallbackBridge.receiveCallback(CallbackBridge.EVENT_TYPE_WINDOW_SIZE, Tools.mGLFWWindowWidth, Tools.mGLFWWindowHeight, 0, 0);
+
+        mGLFWErrorCallback = GLFWErrorCallback.createPrint();
+        mGLFWKeyCodes = new ArrayMap<>();
         
         mGLFWWindowMap = new ArrayMap<>();
         
         mGLFWVideoMode = new GLFWVidMode(ByteBuffer.allocateDirect(GLFWVidMode.SIZEOF));
+        internalChangeMonitorSize(Tools.mGLFWWindowWidth, Tools.mGLFWWindowHeight);
+
 /*
         memPutInt(mGLFWVideoMode.address() + (long) mGLFWVideoMode.REDBITS, 8);
         memPutInt(mGLFWVideoMode.address() + (long) mGLFWVideoMode.GREENBITS, 8);
@@ -593,10 +597,10 @@ public class GLFW
     }
     
     public static void internalChangeMonitorSize(int width, int height) {
-        mGLFWWindowWidth = width;
-        mGLFWWindowHeight = height;
-        memPutInt(mGLFWVideoMode.address() + (long) mGLFWVideoMode.WIDTH, mGLFWWindowWidth);
-        memPutInt(mGLFWVideoMode.address() + (long) mGLFWVideoMode.HEIGHT, mGLFWWindowHeight);
+        Tools.mGLFWWindowWidth = width;
+        Tools.mGLFWWindowHeight = height;
+        memPutInt(mGLFWVideoMode.address() + (long) mGLFWVideoMode.WIDTH, Tools.mGLFWWindowWidth);
+        memPutInt(mGLFWVideoMode.address() + (long) mGLFWVideoMode.HEIGHT, Tools.mGLFWWindowHeight);
     }
     
     public static GLFWWindowProperties internalGetWindow(long window) {
@@ -671,7 +675,7 @@ public class GLFW
 
         /*
         try {
-            mGLFWFramebufferSizeCallback.invoke(window, mGLFWWindowWidth, mGLFWWindowHeight);
+            mGLFWFramebufferSizeCallback.invoke(window, Tools.mGLFWWindowWidth, Tools.mGLFWWindowHeight);
         } catch (Throwable th) {}
         */
 
@@ -781,7 +785,7 @@ public class GLFW
         mGLFWWindowSizeCallback = GLFWWindowSizeCallback.createSafe(nglfwSetWindowSizeCallback(window, memAddressSafe(cbfun)));
 
         try {
-            mGLFWWindowSizeCallback.invoke(window, mGLFWWindowWidth, mGLFWWindowHeight);
+            mGLFWWindowSizeCallback.invoke(window, Tools.mGLFWWindowWidth, Tools.mGLFWWindowHeight);
         } catch (Throwable th) {}
 
         return lastCallback;
@@ -855,8 +859,8 @@ public class GLFW
 
         xpos.put(0);
         ypos.put(0);
-        width.put(mGLFWWindowWidth);
-        height.put(mGLFWWindowHeight);
+        width.put(Tools.mGLFWWindowWidth);
+        height.put(Tools.mGLFWWindowHeight);
     }
 
     @NativeType("GLFWmonitor *")
@@ -1101,11 +1105,11 @@ public class GLFW
                     case CallbackBridge.EVENT_TYPE_FRAMEBUFFER_SIZE:
                     case CallbackBridge.EVENT_TYPE_WINDOW_SIZE:
                         internalChangeMonitorSize((int)dataArr[1], (int)dataArr[2]);
-                        glfwSetWindowSize(ptr, mGLFWWindowWidth, mGLFWWindowHeight);
+                        glfwSetWindowSize(ptr, Tools.mGLFWWindowWidth, Tools.mGLFWWindowHeight);
                         if ((int)dataArr[0] == CallbackBridge.EVENT_TYPE_FRAMEBUFFER_SIZE && mGLFWFramebufferSizeCallback != null) {
-                            mGLFWFramebufferSizeCallback.invoke(ptr, mGLFWWindowWidth, mGLFWWindowHeight);
+                            mGLFWFramebufferSizeCallback.invoke(ptr, Tools.mGLFWWindowWidth, Tools.mGLFWWindowHeight);
                         } else if ((int)dataArr[0] == CallbackBridge.EVENT_TYPE_WINDOW_SIZE && mGLFWWindowSizeCallback != null) {
-                            mGLFWWindowSizeCallback.invoke(ptr, mGLFWWindowWidth, mGLFWWindowHeight);
+                            mGLFWWindowSizeCallback.invoke(ptr, Tools.mGLFWWindowWidth, Tools.mGLFWWindowHeight);
                         }
                         break;
                     default:
@@ -1303,8 +1307,8 @@ return false;
 
         xpos[0] = 0;
         ypos[0] = 0;
-        width[0] = mGLFWWindowWidth;
-        height[0] = mGLFWWindowHeight;
+        width[0] = Tools.mGLFWWindowWidth;
+        height[0] = Tools.mGLFWWindowHeight;
     }
 
     /** Array version of: {@link #glfwGetMonitorPhysicalSize GetMonitorPhysicalSize} */

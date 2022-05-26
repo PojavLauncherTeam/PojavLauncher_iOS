@@ -44,8 +44,7 @@ UIViewController *viewController;
 void* gbuffer; // OSMesa framebuffer
 
 JavaVM* runtimeJavaVMPtr;
-JNIEnv* runtimeJNIEnvPtr_ANDROID;
-JNIEnv* runtimeJNIEnvPtr_JRE;
+JNIEnv* runtimeJNIEnvPtr;
 
 //JNIEnv* dalvikJNIEnvPtr_ANDROID;
 //JNIEnv* dalvikJNIEnvPtr_JRE;
@@ -60,8 +59,14 @@ int savedWidth, savedHeight;
 
 BOOL virtualMouseEnabled;
 
+
+// Init functions
+void init_hookCFRunLoop();
+void init_hookFunctions();
+
+
 NSMutableDictionary* parseJSONFromFile(NSString *path);
-NSError* saveJSONToFile(NSMutableDictionary *dict, NSString *path);
+NSError* saveJSONToFile(NSDictionary *dict, NSString *path);
 
 static inline CGFloat clamp(CGFloat x, CGFloat lower, CGFloat upper) {
     return fmin(upper, fmax(x, lower));

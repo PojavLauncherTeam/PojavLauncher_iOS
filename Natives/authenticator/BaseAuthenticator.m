@@ -59,17 +59,12 @@ static BaseAuthenticator *current = nil;
 
     [self.authData removeObjectForKey:@"oldusername"];
 
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self.authData options:NSJSONWritingPrettyPrinted error:&error];
-    if (jsonData == nil) {
-        showDialog(viewController, @"Error while converting to JSON", error.localizedDescription);
-        return NO;
-    }
+    error = saveJSONToFile(self.authData, newPath);
 
-    BOOL success = [jsonData writeToFile:newPath options:NSDataWritingAtomic error:&error];
-    if (!success) {
+    if (error != nil) {
         showDialog(viewController, @"Error while saving file", error.localizedDescription);
     }
-    return success;
+    return error == nil;
 }
 
 @end

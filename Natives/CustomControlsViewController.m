@@ -129,7 +129,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     [self.offsetView addGestureRecognizer:longpressGesture];
     self.currentFileName = [getPreference(@"default_ctrl") stringByDeletingPathExtension];
     [self initKeyCodeMap];
-    [self loadControlFile:[NSString stringWithFormat:@"%s/%@", getenv("POJAV_PATH_CONTROL"), getPreference(@"default_ctrl")]];
+    [self loadControlFile:[NSString stringWithFormat:@"%s/controlmap/%@", getenv("POJAV_HOME"), getPreference(@"default_ctrl")]];
 }
 
 - (void)loadControlFile:(NSString *)controlFilePath {
@@ -210,7 +210,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 
 - (void)actionMenuSave {
       UIAlertController *controller = [UIAlertController alertControllerWithTitle: @"Save"
-        message:[NSString stringWithFormat:@"File will be saved to %s directory.", getenv("POJAV_PATH_CONTROL")]
+        message:[NSString stringWithFormat:@"File will be saved to %s/controlmap directory.", getenv("POJAV_HOME")]
         preferredStyle:UIAlertControllerStyleAlert];
     [controller addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         textField.placeholder = @"Name";
@@ -232,7 +232,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
                 return;
             }
             NSString *jsonStr = [NSString stringWithUTF8String:jsonData.bytes];
-            BOOL success = [jsonStr writeToFile:[NSString stringWithFormat:@"%s/%@.json", getenv("POJAV_PATH_CONTROL"), field.text] atomically:YES encoding:NSUTF8StringEncoding error:&error];
+            BOOL success = [jsonStr writeToFile:[NSString stringWithFormat:@"%s/controlmap/%@.json", getenv("POJAV_HOME"), field.text] atomically:YES encoding:NSUTF8StringEncoding error:&error];
             if (!success) {
                 showDialog(self, @"Error while saving file", error.localizedDescription);
                 return;
@@ -263,14 +263,14 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 - (void)actionMenuLoad {
     [self actionOpenFilePicker:^void(NSString* name) {
         self.currentFileName = name;
-        [self loadControlFile:[NSString stringWithFormat:@"%s/%@.json", getenv("POJAV_PATH_CONTROL"), name]];
+        [self loadControlFile:[NSString stringWithFormat:@"%s/controlmap/%@.json", getenv("POJAV_HOME"), name]];
     }];
 }
 
 - (void)actionMenuSetDef {
     [self actionOpenFilePicker:^void(NSString* name) {
         self.currentFileName = name;
-        [self loadControlFile:[NSString stringWithFormat:@"%s/%@.json", getenv("POJAV_PATH_CONTROL"), name]];
+        [self loadControlFile:[NSString stringWithFormat:@"%s/controlmap/%@.json", getenv("POJAV_HOME"), name]];
         setPreference(@"default_ctrl", [NSString stringWithFormat:@"%@.json", name]);
     }];
 }
