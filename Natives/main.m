@@ -31,43 +31,6 @@
 
 #define fm NSFileManager.defaultManager
 
-void init_loadCustomEnv() {
-    /* Define default env */
-
-    // I accidentally patched a bit wrong, the value should be a path containing libawt_xawt.dylib, but here is libawt.dylib path (no need to exist)
-    setenv("JAVA_AWT_PATH", [NSString stringWithFormat:@"%s/Frameworks/libawt.dylib", getenv("BUNDLE_PATH")].UTF8String, 1);
-
-    // Disable overloaded functions hack for Minecraft 1.17+
-    setenv("LIBGL_NOINTOVLHACK", "1", 1);
-
-    // Override OpenGL version to 4.1 for Zink
-    setenv("MESA_GL_VERSION_OVERRIDE", "4.1", 1);
-
-    /* Load custom env */
-    FILE *envFile = fopen([NSString stringWithFormat:@"%s/custom_env.txt", getenv("POJAV_HOME")].UTF8String, "r");
-
-    regLog("[Pre-init] Reading custom environment variables (custom_env.txt), opened=%d\n", envFile != NULL);
-
-    if (envFile) {
-        char *line = NULL;
-        size_t len = 0;
-        ssize_t read;
-        while ((read = getline(&line, &len, envFile)) != -1) {
-            if (line[0] == '#' || line[0] == '\n') continue;
-            if (line[read-1] == '\n') {
-                line[read-1] = '\0';
-            }
-            if (strchr(line, '=') != NULL) {
-                regLog("[Pre-init] Added custom env: %s", line);
-                setenv(strtok(line, "="), strtok(NULL, "="), 1);
-            } else {
-                regLog("[Pre-init] Warning: skipped empty value custom env: %s", line);
-            }
-        }
-        fclose(envFile);
-    }
-}
-
 void init_logDeviceAndVer(char *argument) {
     struct utsname systemInfo;
     uname(&systemInfo);
@@ -264,7 +227,6 @@ int main(int argc, char * argv[]) {
     init_redirectStdio();
     init_logDeviceAndVer(argv[0]);
 
-    init_loadCustomEnv();
     loadPreferences();
     init_setupMultiDir();
     init_setupLauncherProfiles();

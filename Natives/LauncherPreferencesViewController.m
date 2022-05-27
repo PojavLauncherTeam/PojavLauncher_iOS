@@ -319,14 +319,6 @@ int tempIndex;
     jhomeTextField.inputAccessoryView = jhomePickerToolbar;
     jhomeTextField.inputView = jhomePickerView;
 
-    if ([getPreference(@"option_warn") boolValue] == YES) {
-        UIAlertController *preferenceWarn = [UIAlertController alertControllerWithTitle:@"Restart required" message:@"Some options in this menu will require that you restart the launcher for them to take effect."preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
-        [self presentViewController:preferenceWarn animated:YES completion:nil];
-        [preferenceWarn addAction:ok];
-        setPreference(@"option_warn", @NO);
-    }
-    
     UILabel *gdirTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
     gdirTextView.text = @"Game directory";
     gdirTextView.numberOfLines = 0;
@@ -358,14 +350,6 @@ int tempIndex;
 
     gdirTextField.inputAccessoryView = gdirPickerToolbar;
     gdirTextField.inputView = gdirPickerView;
-    
-    if ([getPreference(@"option_warn") boolValue] == YES) {
-        UIAlertController *preferenceWarn = [UIAlertController alertControllerWithTitle:@"Restart required" message:@"Some options in this menu will require that you restart the launcher for them to take effect."preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
-        [self presentViewController:preferenceWarn animated:YES completion:nil];
-        [preferenceWarn addAction:ok];
-        setPreference(@"option_warn", @NO);
-    }
 
     UILabel *slideHotbarTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
     slideHotbarTextView.text = @"Slideable hotbar";
@@ -647,7 +631,7 @@ int tempIndex;
             setenv("JAVA_HOME", [JRE8_HOME_SB cStringUsingEncoding:NSUTF8StringEncoding], 1);
         }
         if (![textField.text containsString:JRE8_NAME_JB] && ![textField.text containsString:JRE8_NAME_SB] && [getPreference(@"java_warn") boolValue] == YES) {
-            UIAlertController *javaAlert = [UIAlertController alertControllerWithTitle:@"Java version is not Java 8" message:@"Minecraft versions below 1.6, modded below 1.16.4, and the mod installer will not work unless you have Java 8 installed on your device."preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertController *javaAlert = [UIAlertController alertControllerWithTitle:@"Java version is not Java 8" message:@"Minecraft versions below 1.6, modded below 1.16.4, and the mod installer will not work unless you have Java 8 installed on your device." preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
             [self presentViewController:javaAlert animated:YES completion:nil];
             [javaAlert addAction:ok];
@@ -655,6 +639,7 @@ int tempIndex;
         }
     } else if (textField.tag == TAG_GDIR) {
         setPreference(@"game_directory", textField.text);
+        init_setupMultiDir();
     }
 }
 
@@ -717,24 +702,14 @@ int tempIndex;
     }];
     UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         NSString *directory = [NSString stringWithFormat:@"%s/instances/%@", getenv("POJAV_HOME"), [[manageDirAC textFields][0] text]];
+        NSError *error;
         BOOL isDir = NO;
-        BOOL isFailed = NO;
-        if(![[NSFileManager defaultManager] fileExistsAtPath:directory isDirectory:&isDir]) {
-            if([[NSFileManager defaultManager] createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:NULL]) {
-                isFailed = NO;
-                [self instanceDirCont];
-                gdirTextField.text = [[manageDirAC textFields][0] text];
-                [gdirTextField endEditing:YES];
-                [self manageDirResult:(UIButton *)sender success:isFailed directory:[[manageDirAC textFields][0] text] type:type];
-                
-            } else {
-                isFailed = YES;
-                [self manageDirResult:(UIButton *)sender success:isFailed directory:[[manageDirAC textFields][0] text] type:type];
-            }
-        } else {
-            isFailed = YES;
-            [self manageDirResult:(UIButton *)sender success:isFailed directory:[[manageDirAC textFields][0] text] type:type];
+        if([[NSFileManager defaultManager] createDirectoryAtPath:directory withIntermediateDirectories:NO attributes:nil error:&error]) {
+            [self instanceDirCont];
+            gdirTextField.text = [[manageDirAC textFields][0] text];
+            [gdirTextField endEditing:YES];
         }
+        [self manageDirResult:(UIButton *)sender error:error directory:[[manageDirAC textFields][0] text] type:type];
     }];
     [manageDirAC addAction:confirm];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
@@ -748,24 +723,14 @@ int tempIndex;
     UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         NSString *directory = [NSString stringWithFormat:@"%s/instances/%@", getenv("POJAV_HOME"), gdirTextField.text];
         NSLog(@"%@", directory);
+        NSError *error;
         BOOL isDir = NO;
-        BOOL isFailed = NO;
-        
-            if([[NSFileManager defaultManager] fileExistsAtPath:directory isDirectory:&isDir]) {
-                if([[NSFileManager defaultManager] removeItemAtPath:directory error:NULL]) {
-                    isFailed = NO;
-                    [self instanceDirCont];
-                    gdirTextField.text = @"default";
-                    [gdirTextField endEditing:YES];
-                    [self manageDirResult:(UIButton *)sender success:isFailed directory:gdirTextField.text type:type];
-                } else {
-                    isFailed = YES;
-                    [self manageDirResult:(UIButton *)sender success:isFailed directory:gdirTextField.text type:type];
-                }
-            } else {
-                isFailed = YES;
-                [self manageDirResult:(UIButton *)sender success:isFailed directory:gdirTextField.text type:type];
-            }
+        if([[NSFileManager defaultManager] removeItemAtPath:directory error:&error]) {
+            [self instanceDirCont];
+            gdirTextField.text = @"default";
+            [gdirTextField endEditing:YES];
+        }
+        [self manageDirResult:(UIButton *)sender error:error directory:gdirTextField.text type:type];
     }];
     [manageDirAC addAction:confirm];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
@@ -780,27 +745,20 @@ int tempIndex;
     }
 }
 
-- (void)manageDirResult:(UIButton *)sender success:(BOOL)boolean directory:(NSString *)dirName type:(int)type {
+- (void)manageDirResult:(UIButton *)sender error:(NSError *)error directory:(NSString *)dirName type:(int)type {
     NSString *title;
     NSString *message;
-    if(type == MKGDIR) {
-        if(boolean == YES) {
-            title = @"An error occurred.";
-            message = [NSString stringWithFormat:@"Ensure that a file with the name %@ does not exist, and that the instances directory is writeable.", dirName];
-        } else if(boolean == NO) {
+    if (error == nil) {
+        if(type == MKGDIR) {
             title = @"Successfully changed directory.";
-            message = @"";
-        }
-    } else if (type == RMGDIR) {
-        if(boolean == YES) {
-            title = @"An error occurred.";
-            message = @"Ensure that the instances directory is writeable.";
-        } else if(boolean == NO) {
+        } else if (type == RMGDIR) {
             title = @"Successfully removed directory.";
-            message = @"";
         }
+    } else {
+        title = @"An error occurred.";
+        message = error.localizedDescription;
     }
-    
+
     UIAlertController *gdirAlert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
     [self setPopoverProperties:gdirAlert.popoverPresentationController sender:sender];
     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
@@ -867,19 +825,19 @@ int tempIndex;
         message = @"This option allows you to downscale the resolution of the game. Reducing resolution reduces GPU workload for better performance. The minimum resolution scale is 25%.";
     } else if(setting == ALLOCMEM) {
         title = @"Allocated RAM";
-        message = @"This option allows you to change the amount of memory used by the game. The minimum is 25% (default) and the maximum is 85%. Any value over 40% will require that you use a tool like overb0ard to prevent jetsam crashes. Take note that Java uses some of the memory itself, so the value you set will be lowered slightly in game. This option also requires a restart of the launcher to take effect.";
+        message = @"This option allows you to change the amount of memory used by the game. The minimum is 25% (default) and the maximum is 85%. Any value over 40% will require that you use a tool like overb0ard to prevent jetsam crashes. Take note that Java uses some of the memory itself, so the value you set will be lowered slightly in game.";
     } else if(setting == JARGS) {
         title = @"Java arguments";
-        message = @"This option allows you to edit arguments that can be passed to Minecraft. Not all arguments work with PojavLauncher, so be aware. This option also requires a restart of the launcher to take effect.";
+        message = @"This option allows you to edit arguments that can be passed to Minecraft. Not all arguments work with PojavLauncher, so be aware.";
     } else if(setting == REND) {
         title = @"Renderer";
         message = @"This option allows you to change the renderer in use. Choosing  tinygl4angle will allow 1.17+ to be played, but will also not work with older versions.";
     } else if(setting == JHOME) {
         title = @"Java version";
-        message = @"This option allows you to change the Java executable directory. Choosing Java 16 or Java 17 may allow you to play 1.17, however older versions and most versions of modded Minecraft, as well as the mod installer, will not work. This option also requires a restart of the launcher to take effect.";
+        message = @"This option allows you to change the Java executable directory. Choosing Java 16 or Java 17 may allow you to play 1.17, however older versions and most versions of modded Minecraft, as well as the mod installer, will not work.";
     } else if(setting == GDIRECTORY) {
         title = @"Game directory";
-        message = @"This option allows you to change where your Minecraft settings and saves are stored in a MultiMC like fashion. Useful for when you want to have multiple mod loaders installed but do not want to delete/move mods around to switch. This option also requires a restart of the launcher to take effect.";
+        message = @"This option allows you to change where your Minecraft settings and saves are stored in a MultiMC like fashion. Useful for when you want to have multiple mod loaders installed but do not want to delete/move mods around to switch.";
     } else if(setting == SLIDEHOTBAR) {
         title = @"Slideable hotbar";
         message = @"This option allows you to use a finger to slide between hotbar slots.";
@@ -1080,6 +1038,7 @@ int tempIndex;
     } else if(pickerView.tag == TAG_PICKER_GDIR) {
         gdirTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
         setPreference(@"game_directory", gdirTextField.text);
+        init_setupMultiDir();
     }
 }
 

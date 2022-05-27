@@ -53,7 +53,7 @@ BOOL isControlModifiable;
 
 // Init functions
 void init_hookFunctions();
-
+void init_setupMultiDir();
 
 NSMutableDictionary* parseJSONFromFile(NSString *path);
 NSError* saveJSONToFile(NSDictionary *dict, NSString *path);
