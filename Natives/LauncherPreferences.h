@@ -7,5 +7,6 @@
 void loadPreferences();
 id getPreference(NSString* key);
 NSMutableDictionary* getDictionary(NSString *type);
+int getSelectedJavaVersion();
 void setDefaultValueForPref(NSMutableDictionary *dict, NSString* key, id value);
 void setPreference(NSString* key, id value);

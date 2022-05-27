@@ -272,12 +272,10 @@ int tempIndex;
 
     JRE8_HOME_SB = [NSString stringWithFormat:@"%s/jre8", getenv("POJAV_HOME")];
     if(getenv("POJAV_DETECTEDJB")) {
-        if ([getPreference(@"java_home") isEqualToString:JRE8_HOME_JB]) {
-            jhomeTextField.text = JRE8_NAME_JB;
-        } else if ([getPreference(@"java_home") isEqualToString:JRE16_HOME_JB]) {
-            jhomeTextField.text = JRE16_NAME_JB;
-        } else if ([getPreference(@"java_home") isEqualToString:JRE17_HOME_JB]) {
-            jhomeTextField.text = JRE17_NAME_JB;
+        switch (getSelectedJavaVersion()) {
+            case 8: jhomeTextField.text = JRE8_NAME_JB; break;
+            case 16: jhomeTextField.text = JRE16_NAME_JB; break;
+            case 17: jhomeTextField.text = JRE17_NAME_JB; break;
         }
     } else {
         jhomeTextField.text = JRE8_NAME_SB;

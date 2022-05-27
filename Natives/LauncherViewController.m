@@ -270,8 +270,9 @@ int versionSelectedAt = 0;
 
 - (void)enterModInstaller:(UIBarButtonItem*)sender {
     NSString *javaVer = getPreference(@"java_home");
-    if(![javaVer containsString:(@"java-8-openjdk")] && ![javaVer containsString:(@"jre8")]) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Cannot use the mod installer" message:@"In order to use the mod installer, you need to install Java 8 and specify it in the Preferences menu." preferredStyle:UIAlertControllerStyleActionSheet];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if(![fileManager fileExistsAtPath:JRE8_HOME_JB] && !getenv("POJAV_DETECTEDJB")) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Cannot use the mod installer" message:@"In order to use the mod installer, you need to install Java 8." preferredStyle:UIAlertControllerStyleActionSheet];
         if (alert.popoverPresentationController != nil) {
             alert.popoverPresentationController.sourceView = self.view;
             alert.popoverPresentationController.sourceRect = CGRectMake(self.view.frame.size.width-10.0, 0, 10, 10);

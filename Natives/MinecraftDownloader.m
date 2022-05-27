@@ -477,6 +477,7 @@ static AFURLSessionManager* manager;
             if (!success) return;
 
             isUseStackQueueCall = json[@"arguments"] != nil;
+            minJavaVersion = [json[@"javaVersion"][@"majorVersion"] intValue];
 
             dispatch_async(dispatch_get_main_queue(), ^{
                 callback(nil, mainProgress, nil);

@@ -12,8 +12,9 @@
 
 #include "log.h"
 #include "utils.h"
-#include "JavaLauncher.h"
 
+#import "ios_uikit_bridge.h"
+#import "JavaLauncher.h"
 #import "LauncherPreferences.h"
 
 #define fm NSFileManager.defaultManager
@@ -59,56 +60,70 @@ void init_loadCustomJvmFlags() {
             margv[margc] = (char *) [[@"-" stringByAppendingString:jvmarg] UTF8String];
         }
 
-        NSLog(@"[Pre-init] Added custom JVM flag: %s", margv[margc]);
+        NSLog(@"[JavaLauncher] Added custom JVM flag: %s", margv[margc]);
         ++margc;
     }
 }
 
-NSString* environmentFailsafes() {
-    NSString *javaHome_pre;
-    if (strncmp(getenv("BUNDLE_PATH"), "/Applications", 13) == 0) {
-        if ([fm fileExistsAtPath:JRE8_HOME_JB]) {
-            javaHome_pre = JRE8_HOME_JB;
-        } else if ([fm fileExistsAtPath:JRE16_HOME_JB]) {
-            regLog("[Pre-init] Java 8 wasn't found on your device. Install Java 8 for more compatibility and the mod installer.");
-            javaHome_pre = JRE16_HOME_JB;
-        } else if ([fm fileExistsAtPath:JRE17_HOME_JB]) {
-            regLog("[Pre-init] Java 8 wasn't found on your device. Install Java 8 for more compatibility and the mod installer.");
-            javaHome_pre = JRE17_HOME_JB;
-        } else {
-            regLog("[Pre-init] FATAL ERROR: Java wasn't found on your device, PojavLauncher cannot continue, aborting.");
-            abort();
+NSString* environmentFailsafes(int minVersion) {
+    NSString *javaHome = nil;
+    if (getenv("POJAV_DETECTEDJB")) {
+        BOOL foundJava8 = [fm fileExistsAtPath:JRE8_HOME_JB];
+        if (!foundJava8) {
+            regLog("[JavaLauncher] Java 8 wasn't found on your device. Install Java 8 for more compatibility and the mod installer.");
         }
-    } else {
-        javaHome_pre = [NSString stringWithFormat:@"%s/jre", getenv("POJAV_HOME")];
+
+        if (foundJava8 && minVersion <= 8) {
+            javaHome = JRE8_HOME_JB;
+        } else if ([fm fileExistsAtPath:JRE16_HOME_JB] && minVersion <= 16) {
+            javaHome = JRE16_HOME_JB;
+        } else if ([fm fileExistsAtPath:JRE17_HOME_JB] && minVersion <= 17) {
+            javaHome = JRE17_HOME_JB;
+        }
+    } else if (minVersion <= 8) {
+        javaHome = [NSString stringWithFormat:@"%s/jre", getenv("POJAV_HOME")];
     }
 
-    javaHome = javaHome_pre.UTF8String;
-    setPreference(@"java_home", javaHome_pre);
-    return javaHome_pre;
+    if (javaHome == nil) {
+        showDialog(viewController, NSLocalizedString(@"Error", nil), [NSString stringWithFormat:@"Minecraft %@ requires Java %d in order to run. Please install it first.", getPreference(@"selected_version"), minVersion]);
+    }
+
+    return javaHome;
 }
 
-int launchJVM(NSString *username, NSString *selectedVersion, int width, int height) {
+int launchJVM(NSString *username, NSString *selectedVersion, int width, int height, int minVersion) {
     sprintf((char*) java_libs_path, "%s/libs", getenv("BUNDLE_PATH"));
 
-    regLog("[Pre-init] Beginning JVM launch\n");
+    regLog("[JavaLauncher] Beginning JVM launch\n");
 
     NSString *javaHome_pre = getPreference(@"java_home");
-    javaHome = javaHome_pre.UTF8String;
-    if (javaHome_pre.length == 0) {
-        environmentFailsafes();
-        regLog("[Pre-init] JAVA_HOME environment variable was not set. Defaulting to %s for future use.\n", javaHome);
-    } else {
+
+    // We handle unset JAVA_HOME right there
+    if (username == nil || getSelectedJavaVersion() < minVersion) {
+        javaHome_pre = environmentFailsafes(minVersion);
+        NSLog(@"[JavaLauncher] Changed to Java %d for the request", minVersion);
+    } /* else if (javaHome_pre.length == 0) {
+        javaHome_pre = environmentFailsafes(minVersion);
+        setPreference(@"java_home", javaHome_pre);
+        NSLog(@"[JavaLauncher] JAVA_HOME environment variable was not set. Default to %@ for future use.\n", javaHome_pre);
+    } */ else {
         if (![NSFileManager.defaultManager fileExistsAtPath:javaHome_pre]) {
-            regLog("[Pre-Init] Failed to locate %s. Restoring default value for JAVA_HOME.", javaHome);
-            environmentFailsafes();
+            javaHome_pre = environmentFailsafes(minVersion);
+            setPreference(@"java_home", javaHome_pre);
+            NSLog(@"[JavaLauncher] Failed to locate %@. Restored default value for JAVA_HOME.", javaHome_pre);
         } else {
-            regLog("[Pre-Init] Restored preference: JAVA_HOME is set to %s\n", javaHome);
+            NSLog(@"[JavaLauncher] Restored preference: JAVA_HOME is set to %@\n", javaHome_pre);
         }
     }
+
+    if (javaHome_pre == nil) {
+        return 1;
+    }
+
+    javaHome = javaHome_pre.UTF8String;
     setenv("JAVA_HOME", javaHome, 1);
 
-    if (strncmp(getenv("BUNDLE_PATH"), "/Applications", 13)) {
+    if (!getenv("POJAV_DETECTEDJB")) {
         char src[2048], dst[2048];
 
         // Symlink frameworks -> dylibs on jailed environment
@@ -200,9 +215,9 @@ int launchJVM(NSString *username, NSString *selectedVersion, int width, int heig
         renderer_pre = @"libgl4es_114.dylib";
         setPreference(@"renderer", renderer_pre);
         renderer = [renderer_pre cStringUsingEncoding:NSUTF8StringEncoding];
-        regLog("[Pre-init] RENDERER environment variable was not set. Defaulting to %s for future use.\n", renderer);
+        regLog("[JavaLauncher] RENDERER environment variable was not set. Defaulting to %s for future use.\n", renderer);
     } else {
-        regLog("[Pre-Init] Restored preference: RENDERER is set to %s\n", renderer);
+        regLog("[JavaLauncher] Restored preference: RENDERER is set to %s\n", renderer);
     }
     setenv("POJAV_RENDERER", renderer, 1);
     
@@ -230,7 +245,7 @@ int launchJVM(NSString *username, NSString *selectedVersion, int width, int heig
         classpath[cplen-1] = '\0';
         closedir(d);
     }
-    debugLog("[Pre-init] Classpath generated: %s", classpath);
+    debugLog("[JavaLauncher] Classpath generated: %s", classpath);
 
     // Check if JVM restarts
     char *frameworkPath, *javaPath, *jnaLibPath, *userDir, *userHome, *memMin, *memMax, *arcDNS;
@@ -242,7 +257,7 @@ int launchJVM(NSString *username, NSString *selectedVersion, int width, int heig
     asprintf(&memMin, "-Xms%sM", allocmem);
     asprintf(&memMax, "-Xmx%sM", allocmem);
     asprintf(&arcDNS, "-javaagent:%s/arc_dns_injector.jar=23.95.137.176", java_libs_path);
-    NSLog(@"[Pre-init] Java executable path: %s", javaPath);
+    NSLog(@"[JavaLauncher] Java executable path: %s", javaPath);
     setenv("JAVA_EXT_EXECNAME", javaPath, 1);
 
     margv[margc++] = javaPath;
@@ -315,7 +330,11 @@ int launchJVM(NSString *username, NSString *selectedVersion, int width, int heig
     margv[margc++] = classpath;
     margv[margc++] = "net.kdt.pojavlaunch.PLaunchApp";
 
-    margv[margc++] = (char *)username.UTF8String;
+    if (username == nil) {
+        margv[margc++] = ".LaunchJAR";
+    } else {
+        margv[margc++] = (char *)username.UTF8String;
+    }
     margv[margc++] = (char *)selectedVersion.UTF8String;
     margv[margc++] = (char *)[NSString stringWithFormat:@"%dx%d", width, height].UTF8String;
 

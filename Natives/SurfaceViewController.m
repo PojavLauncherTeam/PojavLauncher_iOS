@@ -317,7 +317,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     // [self setPreferredFramesPerSecond:1000];
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        launchJVM(BaseAuthenticator.current.authData[@"username"], getPreference(@"selected_version"), savedWidth * resolutionScale, savedHeight * resolutionScale);
+        launchJVM(BaseAuthenticator.current.authData[@"username"], getPreference(@"selected_version"), savedWidth * resolutionScale, savedHeight * resolutionScale, minJavaVersion);
     });
     //callback_SurfaceViewController_launchMinecraft(savedWidth * resolutionScale, savedHeight * resolutionScale);
 }
