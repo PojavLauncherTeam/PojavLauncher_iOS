@@ -102,7 +102,6 @@ int tempIndex;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    viewController = self;
 
     [self setTitle:@"Preferences"];
 
@@ -931,19 +930,19 @@ int tempIndex;
             break;
         case TAG_SWITCH_VRELEASE:
             setPreference(@"vertype_release", @(sender.isOn));
-            [LauncherViewController reloadVersionList];
+            [LauncherViewController reloadVersionList:nil];
             break;
         case TAG_SWITCH_VSNAPSHOT:
             setPreference(@"vertype_snapshot", @(sender.isOn));
-            [LauncherViewController reloadVersionList];
+            [LauncherViewController reloadVersionList:nil];
             break;
         case TAG_SWITCH_VOLDBETA:
             setPreference(@"vertype_oldbeta", @(sender.isOn));
-            [LauncherViewController reloadVersionList];
+            [LauncherViewController reloadVersionList:nil];
             break;
         case TAG_SWITCH_VOLDALPHA:
             setPreference(@"vertype_oldalpha", @(sender.isOn));
-            [LauncherViewController reloadVersionList];
+            [LauncherViewController reloadVersionList:nil];
             break;
         case TAG_CHECKSHA:
             setPreference(@"check_sha", @(sender.isOn));

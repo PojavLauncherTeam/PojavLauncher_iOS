@@ -34,7 +34,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    viewController = self;
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(msaLoginCallback:) name:@"MSALoginCallback" object:nil];
 
@@ -57,8 +56,6 @@
         self.view.backgroundColor = [UIColor whiteColor];
     }
 
-
-    
     if(getenv("POJAV_DETECTEDJB")) {
         if(strcmp(getenv("POJAV_DETECTEDJB"), "Other") == 0 && [getPreference(@"jb_warn") boolValue] == YES) {
             UIAlertController *jbAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"login.warn.title.otherjb", nil) message:NSLocalizedString(@"login.warn.message.otherjb", nil) preferredStyle:UIAlertControllerStyleAlert];

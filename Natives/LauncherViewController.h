@@ -8,7 +8,7 @@ NSArray* versionList;
 @property UILabel* progressText;
 @property UIButton* buttonInstall;
 
-+ (void)reloadVersionList;
++ (void)reloadVersionList:(LauncherViewController *)vc;
 + (void)fetchLocalVersionList:(NSMutableArray *)finalVersionList withPreviousIndex:(int)index;
 
 @end

@@ -2,15 +2,20 @@
 #import "LoginViewController.h"
 #import "SceneDelegate.h"
 #import "ios_uikit_bridge.h"
-#include "utils.h"
+#import "utils.h"
 
 @implementation AppDelegate
+
+- (void)navigationController:(UINavigationController *)controller willShowViewController:(UIViewController *)vc animated:(BOOL)animated {
+    viewController = vc;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     if (@available(iOS 13.0, *)) {
     } else {
         self.window = ([[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]]);
         launchInitialViewController(self.window);
+        ((UINavigationController *)self.window.rootViewController).delegate = self;
         [self.window makeKeyAndVisible];
     }
     

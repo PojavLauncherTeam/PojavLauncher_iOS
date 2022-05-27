@@ -39,7 +39,7 @@
 int minJavaVersion;
 JavaVM* runtimeJavaVMPtr;
 JNIEnv* runtimeJNIEnvPtr;
-UIViewController *viewController;
+__weak UIViewController *viewController;
 
 void* gbuffer; // OSMesa framebuffer
 long showingWindow;

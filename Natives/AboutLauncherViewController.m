@@ -26,8 +26,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    viewController = self;
-    
+
     [self setTitle:@"About PojavLauncher"];
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];

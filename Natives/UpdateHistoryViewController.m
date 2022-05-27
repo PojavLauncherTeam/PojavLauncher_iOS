@@ -18,8 +18,7 @@ CGFloat uhcurrY = 4.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    viewController = self;
-    
+
     [self setTitle:@"Update History"];
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];

@@ -86,7 +86,6 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    viewController = self;
     isControlModifiable = YES;
 
     [self.navigationController setNavigationBarHidden:YES animated:YES];

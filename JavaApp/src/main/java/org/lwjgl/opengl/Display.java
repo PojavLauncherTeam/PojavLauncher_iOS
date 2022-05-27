@@ -341,6 +341,8 @@ public class Display {
                 latestResized = true;
                 latestWidth = width;
                 latestHeight = height;
+
+                if(parent != null) parent.setSize(width, height);
             }
         };
 

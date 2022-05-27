@@ -33,8 +33,7 @@ NSError* saveJSONToFile(NSDictionary *dict, NSString *path) {
     if (jsonData == nil) {
         return error;
     }
-    NSString *jsonStr = [NSString stringWithUTF8String:jsonData.bytes];
-    BOOL success = [jsonStr writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:&error];
+    BOOL success = [jsonData writeToFile:path options:NSDataWritingAtomic error:&error];
     if (!success) {
         return error;
     }

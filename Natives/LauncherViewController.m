@@ -25,7 +25,6 @@ int versionSelectedAt = 0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    viewController = self;
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
     [self setNeedsUpdateOfHomeIndicatorAutoHidden];
@@ -62,7 +61,7 @@ int versionSelectedAt = 0;
     versionTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
     versionTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 
-    [LauncherViewController fetchVersionList];
+    [LauncherViewController reloadVersionList:self];
     versionPickerView = [[UIPickerView alloc] init];
     versionPickerView.delegate = self;
     versionPickerView.dataSource = self;
@@ -150,21 +149,20 @@ int versionSelectedAt = 0;
     }
 }
 
-+ (void)fetchVersionList
++ (void)reloadVersionList:(LauncherViewController *)vc
 {
-    __weak LauncherViewController *weakSelf = ((LauncherViewController *)viewController);
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     [manager GET:@"https://launchermeta.mojang.com/mc/game/version_manifest.json" parameters:nil headers:nil progress:^(NSProgress * _Nonnull progress) {
-        weakSelf.progressViewMain.progress = progress.fractionCompleted;
+        vc.progressViewMain.progress = progress.fractionCompleted;
     } success:^(NSURLSessionTask *task, id responseObject) {
         NSDictionary *jsonArray = responseObject;
-        NSArray *remoteVersionList = [jsonArray valueForKey:@"versions"];
+        NSArray *remoteVersionList = jsonArray[@"versions"];
         assert(remoteVersionList != nil);
         NSMutableArray *finalVersionList = [[NSMutableArray alloc] init];
         int i = 0;
         for (NSDictionary *versionInfo in remoteVersionList) {
-            NSString *versionId = [versionInfo valueForKey:@"id"];
-            NSString *versionType = [versionInfo valueForKey:@"type"];
+            NSString *versionId = versionInfo[@"id"];
+            NSString *versionType = versionInfo[@"type"];
             if (([versionType containsString:@"release"] && [getPreference(@"vertype_release") boolValue]) ||
                 ([versionType containsString:@"snapshot"] && [getPreference(@"vertype_snapshot") boolValue]) ||
                 ([versionType containsString:@"old_beta"] && [getPreference(@"vertype_oldbeta") boolValue]) ||
@@ -184,49 +182,14 @@ int versionSelectedAt = 0;
         [versionPickerView reloadAllComponents];
         [versionPickerView selectRow:versionSelectedAt inComponent:0 animated:NO];
 
-        weakSelf.buttonInstall.enabled = YES;
-        weakSelf.progressViewMain.progress = 0;
+        vc.buttonInstall.enabled = YES;
+        vc.progressViewMain.progress = 0;
     } failure:^(NSURLSessionTask *operation, NSError *error) {
         NSLog(@"Warning: Error fetching version list: %@", error);
-        weakSelf.buttonInstall.enabled = YES;
+        vc.buttonInstall.enabled = YES;
     }];
 }
 
-+ (void)reloadVersionList
-{
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    [manager GET:@"https://launchermeta.mojang.com/mc/game/version_manifest.json" parameters:nil headers:nil progress:^(NSProgress * _Nonnull progress) {
-    } success:^(NSURLSessionTask *task, id responseObject) {
-        NSDictionary *jsonArray = responseObject;
-        NSArray *remoteVersionList = [jsonArray valueForKey:@"versions"];
-        assert(remoteVersionList != nil);
-        NSMutableArray *finalVersionList = [[NSMutableArray alloc] init];
-        int i = 0;
-        for (NSDictionary *versionInfo in remoteVersionList) {
-            NSString *versionId = [versionInfo valueForKey:@"id"];
-            NSString *versionType = [versionInfo valueForKey:@"type"];
-            if (([versionType containsString:@"release"] && [getPreference(@"vertype_release") boolValue]) ||
-                ([versionType containsString:@"snapshot"] && [getPreference(@"vertype_snapshot") boolValue]) ||
-                ([versionType containsString:@"old_beta"] && [getPreference(@"vertype_oldbeta") boolValue]) ||
-                ([versionType containsString:@"old_alpha"] && [getPreference(@"vertype_oldalpha") boolValue]) ||
-                [versionType containsString:@"modified"] ||
-                [self isVersionInstalled:versionId]) {
-                [finalVersionList addObject:versionInfo];
-                        
-                if ([versionTextField.text isEqualToString:versionId]) {
-                    versionSelectedAt = i;
-                }
-                i++;
-            }
-        }
-        [self fetchLocalVersionList:finalVersionList withPreviousIndex:i];
-        versionList = [finalVersionList copy];
-        [versionPickerView reloadAllComponents];
-        [versionPickerView selectRow:versionSelectedAt inComponent:0 animated:NO];
-    } failure:^(NSURLSessionTask *operation, NSError *error) {
-        NSLog(@"Warning: Error fetching version list: %@", error);
-    }];
-}
 #pragma mark - Button click events
 - (void)displayOptions:(UIBarButtonItem*)sender {
     if (@available(iOS 14.0, *)) {
@@ -271,7 +234,7 @@ int versionSelectedAt = 0;
 - (void)enterModInstaller:(UIBarButtonItem*)sender {
     NSString *javaVer = getPreference(@"java_home");
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    if(![fileManager fileExistsAtPath:JRE8_HOME_JB] && !getenv("POJAV_DETECTEDJB")) {
+    if(![fileManager fileExistsAtPath:JRE8_HOME_JB] && getenv("POJAV_DETECTEDJB")) {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Cannot use the mod installer" message:@"In order to use the mod installer, you need to install Java 8." preferredStyle:UIAlertControllerStyleActionSheet];
         if (alert.popoverPresentationController != nil) {
             alert.popoverPresentationController.sourceView = self.view;
