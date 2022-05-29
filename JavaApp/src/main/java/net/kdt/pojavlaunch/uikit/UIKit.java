@@ -125,10 +125,9 @@ public class UIKit {
 
     public static native void refreshAWTBuffer(int[] array);
 
-    public static native int launchUI();
     // public static native void runOnUIThread(UIKitCallback callback);
-    
+
     public static native void showError(String title, String message, boolean exitIfOk);
-    
+
     private static native void updateMCGuiScale(int scale);
-    }
+} 

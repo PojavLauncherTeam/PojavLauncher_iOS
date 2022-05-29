@@ -14,7 +14,6 @@ import javax.annotation.*;
 import net.kdt.pojavlaunch.Tools;
 
 import org.lwjgl.*;
-import org.lwjgl.opengl.GL;
 import org.lwjgl.system.*;
 
 import static org.lwjgl.system.APIUtil.*;
@@ -508,9 +507,8 @@ public class GLFW
         }
 
         // Minecraft triggers a glfwPollEvents() on splash screen, so update window size there.
-        // TODO objc-rewrite: commented out for testing only
-        //CallbackBridge.receiveCallback(CallbackBridge.EVENT_TYPE_FRAMEBUFFER_SIZE, Tools.mGLFWWindowWidth, Tools.mGLFWWindowHeight, 0, 0);
-        //CallbackBridge.receiveCallback(CallbackBridge.EVENT_TYPE_WINDOW_SIZE, Tools.mGLFWWindowWidth, Tools.mGLFWWindowHeight, 0, 0);
+        CallbackBridge.receiveCallback(CallbackBridge.EVENT_TYPE_FRAMEBUFFER_SIZE, Tools.mGLFWWindowWidth, Tools.mGLFWWindowHeight, 0, 0);
+        CallbackBridge.receiveCallback(CallbackBridge.EVENT_TYPE_WINDOW_SIZE, Tools.mGLFWWindowWidth, Tools.mGLFWWindowHeight, 0, 0);
 
         mGLFWErrorCallback = GLFWErrorCallback.createPrint();
         mGLFWKeyCodes = new ArrayMap<>();
@@ -1060,12 +1058,7 @@ public class GLFW
         // Indirect event
         while (CallbackBridge.PENDING_EVENT_LIST.size() > 0) {
             Object[] dataArr = CallbackBridge.PENDING_EVENT_LIST.remove(0);
-            
-            if (dataArr == null) { // It should not be null, but still should be catched
-                // System.out.println("GLFW: popped callback is null, skipping");
-                continue;
-            }
-            
+
             for (Long ptr : mGLFWWindowMap.keySet()) {
                 switch ((int)dataArr[0]) {
                     case CallbackBridge.EVENT_TYPE_CHAR:

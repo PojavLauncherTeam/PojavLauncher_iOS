@@ -36,7 +36,6 @@
 #define SPECIALBTN_SCROLLUP -7
 #define SPECIALBTN_SCROLLDOWN -8
 
-int minJavaVersion;
 JavaVM* runtimeJavaVMPtr;
 JNIEnv* runtimeJNIEnvPtr;
 __weak UIViewController *viewController;

@@ -135,13 +135,13 @@ DEPLOY     = \
 			$(WORKINGDIR)/libOSMesaOverride.dylib.framework \
 			$(WORKINGDIR)/libawt_xawt.dylib \
 			$(WORKINGDIR)/PojavLauncher.app/PojavLauncher \
-			$(SOURCEDIR)/JavaApp/local_out/launcher.jar \
+			$(SOURCEDIR)/JavaApp/local_out/*.jar \
 			root@$(DEVICE_IP):/var/tmp/; \
 		ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t " \
 			mv /var/tmp/libawt_xawt.dylib $(1)/Applications/PojavLauncher.app/Frameworks/libawt_xawt.dylib && \
 			mv /var/tmp/libOSMesaOverride.dylib.framework $(1)/Applications/PojavLauncher.app/Frameworks/libOSMesaOverride.dylib.framework && \
 			mv /var/tmp/PojavLauncher $(1)/Applications/PojavLauncher.app/PojavLauncher && \
-			mv /var/tmp/launcher.jar $(1)/Applications/PojavLauncher.app/libs/launcher.jar && \
+			mv /var/tmp/*.jar $(1)/Applications/PojavLauncher.app/libs/ && \
 			cd $(1)/Applications/PojavLauncher.app/Frameworks && \
 			ln -sf libawt_xawt.dylib libawt_headless.dylib && \
 			chown -R 501:501 $(1)/Applications/PojavLauncher.app/*"; \
@@ -149,7 +149,7 @@ DEPLOY     = \
 		sudo mv $(WORKINGDIR)/libawt_xawt.dylib $(1)/Applications/PojavLauncher.app/Frameworks/libawt_xawt.dylib; \
 		sudo mv $(WORKINGDIR)/libOSMesaOverride.dylib.framework $(1)/Applications/PojavLauncher.app/Frameworks/libOSMesaOverride.dylib.framework; \
 		sudo mv $(WORKINGDIR)/PojavLauncher $(1)/Applications/PojavLauncher.app/PojavLauncher; \
-		sudo mv $(WORKINGDIR)/launcher.jar $(1)/Applications/PojavLauncher.app/libs/launcher.jar; \
+		sudo mv $(WORKINGDIR)/*.jar $(1)/Applications/PojavLauncher.app/libs/; \
 		cd $(1)/Applications/PojavLauncher.app/Frameworks; \
 		sudo ln -sf libawt_xawt.dylib libawt_headless.dylib; \
 		sudo chown -R 501:501 $(1)/Applications/PojavLauncher.app/*; \
@@ -254,7 +254,9 @@ java:
 	mkdir -p local_out/classes; \
 	$(BOOTJDK)/javac -cp "libs/*:libs_caciocavallo/*" -d local_out/classes $$(find src -type f -name "*.java" -print) -XDignore.symbol.file || exit 1; \
 	cd local_out/classes; \
-	$(BOOTJDK)/jar -cf ../launcher.jar * || exit 1
+	$(BOOTJDK)/jar -cf ../launcher.jar android com net || exit 1; \
+	cp $(SOURCEDIR)/JavaApp/libs/lwjgl3-minecraft.jar ../lwjgl3-minecraft.jar; \
+	$(BOOTJDK)/jar -uf ../lwjgl3-minecraft.jar org || exit 1;
 	@echo 'Building PojavLauncher $(VERSION) - JAVA - End'
 
 extras:
@@ -282,7 +284,7 @@ deb: native java extras
 	@cp $(WORKINGDIR)/libawt_xawt.dylib $(WORKINGDIR)/PojavLauncher.app/Frameworks/ || exit 1
 	@( cd $(WORKINGDIR)/PojavLauncher.app/Frameworks; ln -sf libawt_xawt.dylib libawt_headless.dylib ) || exit 1
 	@cp -R $(WORKINGDIR)/libOSMesaOverride.dylib.framework $(WORKINGDIR)/PojavLauncher.app/Frameworks/ || exit 1
-	@cp $(SOURCEDIR)/JavaApp/local_out/launcher.jar $(WORKINGDIR)/PojavLauncher.app/libs/launcher.jar || exit 1
+	@cp $(SOURCEDIR)/JavaApp/local_out/*.jar $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
 	@cp -R $(SOURCEDIR)/JavaApp/libs/* $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
 	@cp -R $(SOURCEDIR)/JavaApp/libs_caciocavallo/* $(WORKINGDIR)/PojavLauncher.app/libs_caciocavallo/ || exit 1
 	@cp -R $(SOURCEDIR)/Natives/*.lproj $(WORKINGDIR)/PojavLauncher.app/ || exit 1

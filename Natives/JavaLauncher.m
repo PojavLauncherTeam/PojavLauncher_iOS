@@ -32,7 +32,7 @@ static const jboolean const_javaw = JNI_FALSE;
 static const jboolean const_cpwildcard = JNI_TRUE;
 static const jint const_ergo_class = 0; // DEFAULT_POLICY
 
-static int margc = 0;
+static int margc = -1;
 static char* margv[1000];
 
 const char *javaHome;
@@ -90,6 +90,7 @@ void init_loadCustomJvmFlags() {
         if ([jvmarg length] == 0) continue;
         //margv[margc] = (char *) [jvmarg UTF8String];
 
+        ++margc;
         if (isFirstArg) {
             isFirstArg = NO;
             margv[margc] = (char *) [jvmarg UTF8String];
@@ -98,7 +99,6 @@ void init_loadCustomJvmFlags() {
         }
 
         NSLog(@"[JavaLauncher] Added custom JVM flag: %s", margv[margc]);
-        ++margc;
     }
 }
 
@@ -128,7 +128,7 @@ NSString* environmentFailsafes(int minVersion) {
     return javaHome;
 }
 
-int launchJVM(NSString *username, NSString *selectedVersion, int width, int height, int minVersion) {
+int launchJVM(NSString *username, id launchTarget, int width, int height, int minVersion) {
     sprintf((char*) java_libs_path, "%s/libs", getenv("BUNDLE_PATH"));
 
     init_loadCustomEnv();
@@ -139,8 +139,9 @@ int launchJVM(NSString *username, NSString *selectedVersion, int width, int heig
 
     // We handle unset JAVA_HOME right there
     if (username == nil || getSelectedJavaVersion() < minVersion) {
+        NSLog(@"[JavaLauncher] Attempting to change to Java %d (actual might be higher)", minVersion);
         javaHome_pre = environmentFailsafes(minVersion);
-        NSLog(@"[JavaLauncher] Changed to Java %d for the request", minVersion);
+        NSLog(@"[JavaLauncher] JAVA_HOME is now set to %@", javaHome_pre);
     } /* else if (javaHome_pre.length == 0) {
         javaHome_pre = environmentFailsafes(minVersion);
         setPreference(@"java_home", javaHome_pre);
@@ -299,23 +300,23 @@ int launchJVM(NSString *username, NSString *selectedVersion, int width, int heig
     NSLog(@"[JavaLauncher] Java executable path: %s", javaPath);
     setenv("JAVA_EXT_EXECNAME", javaPath, 1);
 
-    margv[margc++] = javaPath;
-    margv[margc++] = "-XstartOnFirstThread";
-    margv[margc++] = "-Djava.system.class.loader=net.kdt.pojavlaunch.PojavClassLoader";
-    margv[margc++] = memMin;
-    margv[margc++] = memMax;
-    margv[margc++] = frameworkPath;
-    margv[margc++] = jnaLibPath;
-    margv[margc++] = userDir;
-    margv[margc++] = userHome;
-    margv[margc++] = "-Dorg.lwjgl.system.allocator=system";
-    margv[margc++] = "-Dlog4j2.formatMsgNoLookups=true";
+    margv[++margc] = javaPath;
+    margv[++margc] = "-XstartOnFirstThread";
+    margv[++margc] = "-Djava.system.class.loader=net.kdt.pojavlaunch.PojavClassLoader";
+    margv[++margc] = memMin;
+    margv[++margc] = memMax;
+    margv[++margc] = frameworkPath;
+    margv[++margc] = jnaLibPath;
+    margv[++margc] = userDir;
+    margv[++margc] = userHome;
+    margv[++margc] = "-Dorg.lwjgl.system.allocator=system";
+    margv[++margc] = "-Dlog4j2.formatMsgNoLookups=true";
     if([getPreference(@"arccapes_enable") boolValue]) {
-        margv[margc++] = arcDNS;
+        margv[++margc] = arcDNS;
     }
     NSString *selectedAccount = getPreference(@"internal_selected_account");
     if (selectedAccount != nil) {
-        margv[margc++] = (char *) [NSString stringWithFormat:@"-Dpojav.selectedAccount=%@", selectedAccount].UTF8String;
+        margv[++margc] = (char *) [NSString stringWithFormat:@"-Dpojav.selectedAccount=%@", selectedAccount].UTF8String;
     }
 
     // Load java
@@ -335,12 +336,12 @@ int launchJVM(NSString *username, NSString *selectedVersion, int width, int heig
         }
 
         // Setup Caciocavallo
-        margv[margc++] = "-Djava.awt.headless=false";
-        margv[margc++] = "-Dcacio.font.fontmanager=sun.awt.X11FontManager";
-        margv[margc++] = "-Dcacio.font.fontscaler=sun.font.FreetypeFontScaler";
-        margv[margc++] = "-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel";
-        margv[margc++] = "-Dawt.toolkit=net.java.openjdk.cacio.ctc.CTCToolkit";
-        margv[margc++] = "-Djava.awt.graphicsenv=net.java.openjdk.cacio.ctc.CTCGraphicsEnvironment";
+        margv[++margc] = "-Djava.awt.headless=false";
+        margv[++margc] = "-Dcacio.font.fontmanager=sun.awt.X11FontManager";
+        margv[++margc] = "-Dcacio.font.fontscaler=sun.font.FreetypeFontScaler";
+        margv[++margc] = "-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel";
+        margv[++margc] = "-Dawt.toolkit=net.java.openjdk.cacio.ctc.CTCToolkit";
+        margv[++margc] = "-Djava.awt.graphicsenv=net.java.openjdk.cacio.ctc.CTCGraphicsEnvironment";
 
         // Generate Caciocavallo bootclasspath
         char cacio_libs_path[2048];
@@ -359,23 +360,38 @@ int launchJVM(NSString *username, NSString *selectedVersion, int width, int heig
             }
             closedir(d);
         }
-        margv[margc++] = cacio_classpath;
+        margv[++margc] = cacio_classpath;
+    } else {
+        margv[++margc] = "--add-opens=java.base/java.net=ALL-UNNAMED";
+
+        // TODO: workaround, will be removed once the startup part works without PLaunchApp
+        margv[++margc] = "--add-exports=cpw.mods.bootstraplauncher/cpw.mods.bootstraplauncher=ALL-UNNAMED";
+    }
+
+    if ([launchTarget isKindOfClass:NSDictionary.class]) {
+        for (NSString *arg in launchTarget[@"arguments"][@"jvm_processed"]) {
+            margv[++margc] = (char *)arg.UTF8String;
+        }
     }
 
     init_loadCustomJvmFlags();
     regLog("[Init] Found JLI lib");
 
-    margv[margc++] = "-cp";
-    margv[margc++] = classpath;
-    margv[margc++] = "net.kdt.pojavlaunch.PLaunchApp";
+    margv[++margc] = "-cp";
+    margv[++margc] = classpath;
+    margv[++margc] = "net.kdt.pojavlaunch.PLaunchApp";
 
     if (username == nil) {
-        margv[margc++] = ".LaunchJAR";
+        margv[++margc] = ".LaunchJAR";
     } else {
-        margv[margc++] = (char *)username.UTF8String;
+        margv[++margc] = (char *)username.UTF8String;
     }
-    margv[margc++] = (char *)selectedVersion.UTF8String;
-    margv[margc++] = (char *)[NSString stringWithFormat:@"%dx%d", width, height].UTF8String;
+    if ([launchTarget isKindOfClass:NSDictionary.class]) {
+        margv[++margc] = (char *)[launchTarget[@"id"] UTF8String];
+    } else {
+        margv[++margc] = (char *)[launchTarget UTF8String];
+    }
+    margv[++margc] = (char *)[NSString stringWithFormat:@"%dx%d", width, height].UTF8String;
 
     pJLI_Launch = (JLI_Launch_func *)dlsym(libjli, "JLI_Launch");
           
@@ -392,7 +408,7 @@ int launchJVM(NSString *username, NSString *selectedVersion, int width, int heig
     }
 */
 
-    return pJLI_Launch(margc, margv,
+    return pJLI_Launch(++margc, margv,
                    0, NULL, // sizeof(const_jargs) / sizeof(char *), const_jargs,
                    0, NULL, // sizeof(const_appclasspath) / sizeof(char *), const_appclasspath,
                    // PojavLancher: fixme: are these wrong?

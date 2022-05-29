@@ -2,6 +2,7 @@
 
 #import "JavaLauncher.h"
 #import "LauncherPreferences.h"
+#import "MinecraftDownloader.h"
 #import "SurfaceViewController.h"
 #import "egl_bridge.h"
 #import "ios_uikit_bridge.h"
@@ -204,7 +205,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     longpressGesture.delegate = self;
     longpressGesture.minimumPressDuration = [getPreference(@"time_longPressTrigger") floatValue] / 1000;
     [self.surfaceView addGestureRecognizer:longpressGesture];
-    
+
     self.scrollPanGesture = [[UIPanGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnTouchesScroll:)];
     self.scrollPanGesture.allowedTouchTypes = @[@(UITouchTypeDirect)];
@@ -316,10 +317,46 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 
     // [self setPreferredFramesPerSecond:1000];
 
+    [self launchMinecraft];
+}
+
+- (void)processMinecraftJVMArgs:(NSMutableDictionary *)json {
+    // Parse Forge 1.17+ additional JVM Arguments
+    if (json[@"inheritsFrom"] == nil || json[@"arguments"][@"jvm"] == nil) {
+        return;
+    }
+
+    json[@"arguments"][@"jvm_processed"] = [[NSMutableArray alloc] init];
+
+    NSDictionary *varArgMap = @{
+        @"${classpath_separator}": @":",
+        @"${library_directory}": [NSString stringWithFormat:@"%s/libraries", getenv("POJAV_GAME_DIR")],
+        @"${version_name}": json[@"id"]
+    };
+
+    for (id arg in json[@"arguments"][@"jvm"]) {
+        if ([arg isKindOfClass:NSString.class]) {
+            NSString *argStr = arg;
+            for (NSString *key in varArgMap.allKeys) {
+                argStr = [argStr stringByReplacingOccurrencesOfString:key withString:varArgMap[key]];
+            }
+            [json[@"arguments"][@"jvm_processed"] addObject:argStr];
+        }
+    }
+}
+
+- (void)launchMinecraft {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        launchJVM(BaseAuthenticator.current.authData[@"username"], getPreference(@"selected_version"), savedWidth * resolutionScale, savedHeight * resolutionScale, minJavaVersion);
+        [MinecraftDownloader downloadClientJson:getPreference(@"selected_version") progress:nil callback:nil success:^(NSMutableDictionary *json) {
+            [self processMinecraftJVMArgs:json];
+            launchJVM(
+                BaseAuthenticator.current.authData[@"username"],
+                json,
+                savedWidth * resolutionScale, savedHeight * resolutionScale,
+                [json[@"javaVersion"][@"majorVersion"] intValue]
+            );
+        }];
     });
-    //callback_SurfaceViewController_launchMinecraft(savedWidth * resolutionScale, savedHeight * resolutionScale);
 }
 
 - (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {

@@ -269,7 +269,7 @@ int versionSelectedAt = 0;
 - (void)launchMinecraft:(UIButton *)sender {
     sender.enabled = NO;
     [self.navigationItem setHidesBackButton:YES animated:YES];
-    
+
     NSObject *object = [versionList objectAtIndex:[versionPickerView selectedRowInComponent:0]];
 
     [MinecraftDownloader start:object callback:^(NSString *stage, NSProgress *mainProgress, NSProgress *progress) {

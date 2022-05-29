@@ -76,28 +76,12 @@ ADD_CALLBACK_WWIN(WindowPos);
 
 #undef ADD_CALLBACK_WWIN
 
-void getJavaInputBridge(jclass* clazz, jmethodID* method) {
-    debugLog("Debug: Initializing input bridge, method.isNull=%d, jnienv.isNull=%d\n", *method == NULL, runtimeJNIEnvPtr == NULL);
-    if (*method == NULL && runtimeJNIEnvPtr != NULL) {
-        *clazz = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "org/lwjgl/glfw/CallbackBridge");
-        assert(*clazz != NULL);
-        *method = (*runtimeJNIEnvPtr)->GetStaticMethodID(runtimeJNIEnvPtr, *clazz, "receiveCallback", "(IFFII)V");
-        assert(*method != NULL);
-    }
-}
-
 void sendData(int type, CGFloat i1, CGFloat i2, int i3, int i4) {
-    if (inputBridgeMethod_ANDROID == NULL) {
-        (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &runtimeJNIEnvPtr, NULL);
-        getJavaInputBridge(&inputBridgeClass_ANDROID, &inputBridgeMethod_ANDROID);
-    }
-
     debugLog("Debug: Send data, jnienv.isNull=%d\n", runtimeJNIEnvPtr == NULL);
     if (runtimeJNIEnvPtr == NULL) {
-        debugLog("BUG: Input is ready but thread is not attached yet.");
-        return;
+        (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &runtimeJNIEnvPtr, NULL);
     }
-    // FIXME: should we send double instead of float?
+    if(inputBridgeClass_ANDROID == NULL) return;
     (*runtimeJNIEnvPtr)->CallStaticVoidMethod(
         runtimeJNIEnvPtr,
         inputBridgeClass_ANDROID,
@@ -158,15 +142,6 @@ void callback_SurfaceViewController_onTouch(int event, CGFloat x, CGFloat y) {
         (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &runtimeJNIEnvPtr, NULL);
     }
 
-    if (!uikitBridgeClass) {
-        uikitBridgeClass = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "net/kdt/pojavlaunch/uikit/UIKit");
-        assert(uikitBridgeClass != NULL);
-    }
-
-    if (!uikitBridgeTouchMethod) {
-        uikitBridgeTouchMethod = (*runtimeJNIEnvPtr)->GetStaticMethodID(runtimeJNIEnvPtr, uikitBridgeClass, "callback_SurfaceViewController_onTouch", "(IFF)V");
-        assert(uikitBridgeTouchMethod != NULL);
-    }
 
     (*runtimeJNIEnvPtr)->CallStaticVoidMethod(
         runtimeJNIEnvPtr,
@@ -442,4 +417,17 @@ void CallbackBridge_setWindowAttrib(int attrib, int value) {
         glfwClazz, glfwMethod,
         (jlong) showingWindow, attrib, value
     );
+}
+
+JNIEXPORT void JNICALL
+Java_org_lwjgl_glfw_CallbackBridge_setClass(JNIEnv *env, jclass clazz) {
+    inputBridgeMethod_ANDROID = (*env)->GetStaticMethodID(env, clazz, "receiveCallback", "(IFFII)V");
+    assert(inputBridgeMethod_ANDROID != NULL);
+    inputBridgeClass_ANDROID = (*env)->NewGlobalRef(env, clazz);
+    assert(inputBridgeClass_ANDROID != NULL);
+
+    uikitBridgeClass = (*env)->NewGlobalRef(env, (*env)->FindClass(env, "net/kdt/pojavlaunch/uikit/UIKit"));
+    assert(uikitBridgeClass != NULL);
+    uikitBridgeTouchMethod = (*env)->GetStaticMethodID(env, uikitBridgeClass, "callback_SurfaceViewController_onTouch", "(IFF)V");
+    assert(uikitBridgeTouchMethod != NULL);
 }

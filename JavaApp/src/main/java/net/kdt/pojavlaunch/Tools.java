@@ -419,7 +419,10 @@ public final class Tools
             if (libItem._skip) continue;
             
             String[] libInfos = libItem.name.split(":");
-            libDir.add(Tools.DIR_HOME_LIBRARY + "/" + Tools.artifactToPath(libInfos[0], libInfos[1], libInfos[2]));
+            String fullPath = Tools.DIR_HOME_LIBRARY + "/" + Tools.artifactToPath(libInfos[0], libInfos[1], libInfos[2]);
+            if (!libDir.contains(fullPath)) {
+                libDir.add(fullPath);
+            }
         }
         return libDir.toArray(new String[0]);
     }
@@ -458,11 +461,11 @@ public final class Tools
                                     libAdded.name.substring(libAddedName.length() + 1) + " with " +
                                     lib.name.substring(libName.length() + 1));
                                 libList.set(i, lib);
-                                continue loop_1;
+                                libName = null;
                             }
                         }
 
-                        libList.add(lib);
+                        if (libName != null) libList.add(lib);
                     }
                 } finally {
                     inheritsVer.libraries = libList.toArray(new DependentLibrary[0]);

@@ -71,5 +71,6 @@ public class MCOptionUtils
             System.err.println("Could not save options.txt");
             e.printStackTrace();
         }
+        mLineList = null;
     }
 }

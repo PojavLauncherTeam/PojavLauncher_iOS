@@ -6,6 +6,7 @@ import android.util.*;
 
 import net.kdt.pojavlaunch.*;
 import net.kdt.pojavlaunch.uikit.UIKit;
+import net.kdt.pojavlaunch.utils.MCOptionUtils;
 
 public class CallbackBridge {
     public static final int CLIPBOARD_COPY = 2000;
@@ -36,7 +37,19 @@ public class CallbackBridge {
     
     static {
         System.load(System.getenv("BUNDLE_PATH") + "/PojavLauncher");
-    
+
+        // Forge 1.17+ initialize their very own space (both Java and JNI) so we re-init stuff here
+        MCOptionUtils.load();
+        Tools.mGLFWWindowWidth = Integer.parseInt(MCOptionUtils.get("overrideWidth"));
+        Tools.mGLFWWindowHeight = Integer.parseInt(MCOptionUtils.get("overrideHeight"));
+        MCOptionUtils.save(); // Free the loaded data
+        CallbackBridge.setClass();
+        try {
+            Class.forName("net.kdt.pojavlaunch.uikit.UIKit");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
         INPUT_DEBUG_ENABLED = Boolean.parseBoolean(System.getProperty("glfwstub.debugInput", "false"));
     }
     
@@ -184,8 +197,8 @@ public class CallbackBridge {
         nativeSetGrabbing(grab, xset, yset);
     }
     
-	// Called from native code
-	public static void receiveCallback(int type, float i1, float i2, int i3, int i4) {
+    // Called from native code
+    public static void receiveCallback(int type, float i1, float i2, int i3, int i4) {
        /*
         if (INPUT_DEBUG_ENABLED) {
             System.out.println("LWJGL GLFW Callback received type=" + Integer.toString(type) + ", data=" + i1 + ", " + i2 + ", " + i3 + ", " + i4);
@@ -201,7 +214,7 @@ public class CallbackBridge {
                 PENDING_EVENT_LIST.add(new Object[]{type, (int)i1, (int)i2, i3, i4});
             }
         } // else System.out.println("Event input is not ready yet!");
-	}
+    }
     
     // public static native void nativeSendData(boolean isAndroid, int type, String data);
     public static boolean nativeSetInputReady(boolean ready) {
@@ -211,5 +224,6 @@ public class CallbackBridge {
     
     public static native String nativeClipboard(int action, String copy);
     private static native void nativeSetGrabbing(boolean grab, float xset, float yset);
+    public static native void setClass();
 }
 

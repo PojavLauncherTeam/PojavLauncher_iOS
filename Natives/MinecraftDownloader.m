@@ -120,9 +120,11 @@ static AFURLSessionManager* manager;
     [self downloadClientJson:object progress:mainProgress callback:callback success:^(NSMutableDictionary *inheritsFrom){
         [self insertSafety:inheritsFrom from:json arr:@[
             @"assetIndex", @"assets", @"id",
+            @"inheritsFrom",
             @"mainClass", @"minecraftArguments",
             @"optifineLib", @"releaseTime", @"time", @"type"
         ]];
+        inheritsFrom[@"arguments"] = json[@"arguments"];
 
         for (NSMutableDictionary *lib in json[@"libraries"]) {
             NSString *libName = [lib[@"name"] substringToIndex:[lib[@"name"] rangeOfString:@":" options:NSBackwardsSearch].location];
@@ -477,7 +479,6 @@ static AFURLSessionManager* manager;
             if (!success) return;
 
             isUseStackQueueCall = json[@"arguments"] != nil;
-            minJavaVersion = [json[@"javaVersion"][@"majorVersion"] intValue];
 
             dispatch_async(dispatch_get_main_queue(), ^{
                 callback(nil, mainProgress, nil);
