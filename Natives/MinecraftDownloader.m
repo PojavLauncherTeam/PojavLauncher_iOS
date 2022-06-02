@@ -150,7 +150,7 @@ static AFURLSessionManager* manager;
                     
         //inheritsFrom[@"inheritsFrom"] = nil;
         [self downloadClientJson:inheritsFrom[@"assetIndex"] progress:mainProgress callback:callback success:^(NSMutableDictionary *assetJson){
-            inheritsFrom[@"assetObjects"] = assetJson[@"objects"];
+            inheritsFrom[@"assetIndexObj"] = assetJson;
             success(inheritsFrom);
         }];
     }];
@@ -228,7 +228,7 @@ static AFURLSessionManager* manager;
                 }
 
                 [self downloadClientJson:json[@"assetIndex"] progress:mainProgress callback:callback success:^(NSMutableDictionary *assetJson){
-                    json[@"assetObjects"] = assetJson[@"objects"];
+                    json[@"assetIndexObj"] = assetJson;
                     success(json);
                 }];
             }
@@ -248,7 +248,7 @@ static AFURLSessionManager* manager;
         if (json[@"inheritsFrom"] == nil) {
             ++mainProgress.completedUnitCount;
             [self downloadClientJson:json[@"assetIndex"] progress:mainProgress callback:callback success:^(NSMutableDictionary *assetJson){
-                json[@"assetObjects"] = assetJson[@"objects"];
+                json[@"assetIndexObj"] = assetJson;
                 success(json);
             }];
             return;
@@ -354,6 +354,7 @@ static AFURLSessionManager* manager;
         NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull progress){
             callback([NSString stringWithFormat:@"Downloading library %@", name], progress);
         } destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+            [NSFileManager.defaultManager removeItemAtPath:path error:nil];
             return [NSURL fileURLWithPath:path];
         } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
             if (error != nil) {
@@ -381,18 +382,18 @@ static AFURLSessionManager* manager;
 
 + (BOOL)downloadClientAssets:(NSDictionary *)assets progress:(NSProgress *)mainProgress callback:(void (^)(NSString *stage, NSProgress *progress))callback {
     callback(@"Begin: download assets", nil);
- 
+
     dispatch_group_t group = dispatch_group_create();
     int downloadIndex = -1;
     __block int jobsAvailable = 20;
-    for (NSString *name in assets) {
+    for (NSString *name in assets[@"objects"]) {
         if (jobsAvailable < 0) {
             break;
         } else if (jobsAvailable == 0) {
             dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
         }
 
-        /** Special case for 1.19+
+        /* Special case for 1.19+
          * Since 1.19-pre1, setting the window icon on macOS goes through ObjC.
          * However, if an IOException occurrs, it won't try to set.
          * We skip downloading the icon file to trigger this. */
@@ -400,9 +401,14 @@ static AFURLSessionManager* manager;
 
         --jobsAvailable;
         dispatch_group_enter(group);
-        NSString *hash = assets[name][@"hash"];
+        NSString *hash = assets[@"objects"][name][@"hash"];
         NSString *pathname = [NSString stringWithFormat:@"%@/%@", [hash substringToIndex:2], hash];
-        NSString *path = [NSString stringWithFormat:@"%s/assets/objects/%@", getenv("POJAV_GAME_DIR"), pathname];
+        NSString *path;
+        if ([assets[@"map_to_resources"] boolValue]) {
+            path = [NSString stringWithFormat:@"%s/resources/%@", getenv("POJAV_GAME_DIR"), name];
+        } else {
+            path = [NSString stringWithFormat:@"%s/assets/objects/%@", getenv("POJAV_GAME_DIR"), pathname];
+        }
         if ([self checkSHA:hash forFile:path altName:name]) { 
             ++mainProgress.completedUnitCount;
             ++jobsAvailable;
@@ -416,7 +422,9 @@ static AFURLSessionManager* manager;
             break;
         }
 
-        [NSFileManager.defaultManager createDirectoryAtPath:path.stringByDeletingLastPathComponent withIntermediateDirectories:YES attributes:nil error:nil];
+        NSError *err;
+        [NSFileManager.defaultManager createDirectoryAtPath:path.stringByDeletingLastPathComponent withIntermediateDirectories:YES attributes:nil error:&err];
+        NSLog(@"path %@ err %@", path, err);
         callback([NSString stringWithFormat:@"Downloading %@", name], nil);
         NSString *url = [NSString stringWithFormat:@"https://resources.download.minecraft.net/%@", pathname];
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
@@ -465,7 +473,7 @@ static AFURLSessionManager* manager;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             BOOL success;
 
-            mainProgress.totalUnitCount = [json[@"libraries"] count] + [json[@"assetObjects"] count];
+            mainProgress.totalUnitCount = [json[@"libraries"] count] + [json[@"assetIndexObj"][@"objects"] count];
             id wrappedCallback = ^(NSString *s, NSProgress *p) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     callback(s, mainProgress, p);
@@ -475,7 +483,7 @@ static AFURLSessionManager* manager;
             success = [self downloadClientLibraries:json[@"libraries"] progress:mainProgress callback:wrappedCallback];
             if (!success) return;
 
-            success = [self downloadClientAssets:json[@"assetObjects"] progress:mainProgress callback:wrappedCallback];
+            success = [self downloadClientAssets:json[@"assetIndexObj"] progress:mainProgress callback:wrappedCallback];
             if (!success) return;
 
             isUseStackQueueCall = json[@"arguments"] != nil;

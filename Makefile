@@ -255,7 +255,7 @@ java:
 	$(BOOTJDK)/javac -cp "libs/*:libs_caciocavallo/*" -d local_out/classes $$(find src -type f -name "*.java" -print) -XDignore.symbol.file || exit 1; \
 	cd local_out/classes; \
 	$(BOOTJDK)/jar -cf ../launcher.jar android com net || exit 1; \
-	cp $(SOURCEDIR)/JavaApp/libs/lwjgl3-minecraft.jar ../lwjgl3-minecraft.jar; \
+	cp $(SOURCEDIR)/JavaApp/libs/lwjgl3-minecraft.jar ../lwjgl3-minecraft.jar || exit 1; \
 	$(BOOTJDK)/jar -uf ../lwjgl3-minecraft.jar org || exit 1;
 	@echo 'Building PojavLauncher $(VERSION) - JAVA - End'
 
@@ -284,8 +284,8 @@ deb: native java extras
 	@cp $(WORKINGDIR)/libawt_xawt.dylib $(WORKINGDIR)/PojavLauncher.app/Frameworks/ || exit 1
 	@( cd $(WORKINGDIR)/PojavLauncher.app/Frameworks; ln -sf libawt_xawt.dylib libawt_headless.dylib ) || exit 1
 	@cp -R $(WORKINGDIR)/libOSMesaOverride.dylib.framework $(WORKINGDIR)/PojavLauncher.app/Frameworks/ || exit 1
-	@cp $(SOURCEDIR)/JavaApp/local_out/*.jar $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
 	@cp -R $(SOURCEDIR)/JavaApp/libs/* $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
+	@cp $(SOURCEDIR)/JavaApp/local_out/*.jar $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
 	@cp -R $(SOURCEDIR)/JavaApp/libs_caciocavallo/* $(WORKINGDIR)/PojavLauncher.app/libs_caciocavallo/ || exit 1
 	@cp -R $(SOURCEDIR)/Natives/*.lproj $(WORKINGDIR)/PojavLauncher.app/ || exit 1
 	$(call DIRCHECK,$(OUTPUTDIR))
