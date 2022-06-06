@@ -11,10 +11,15 @@ import net.kdt.pojavlaunch.uikit.*;
 import net.kdt.pojavlaunch.utils.*;
 import net.kdt.pojavlaunch.value.*;
 
-public class PLaunchApp {
+public class PojavLauncher {
     private static float currProgress, maxProgress;
 
     public static void main(String[] args) throws Throwable {
+    /*
+        try {
+            Runtime.getRuntime().exec("/usr/bin/true");
+        } catch (IOException e) {}
+        */
         try {
             sun.font.FontUtilities.isLinux = true;
         } catch (Throwable th) {
@@ -72,16 +77,4 @@ public class PLaunchApp {
 
         Tools.launchMinecraft(account, version);
     }
-
-// TODO
-/*
-    public static void downloadAssetMapped(String assetName, JAssetInfo asset, File resDir) throws IOException {
-        String assetPath = asset.hash.substring(0, 2) + "/" + asset.hash;
-        File outFile = new File(resDir,"/"+assetName);
-        if (!outFile.exists()) {
-            UIKit.updateProgressSafe(currProgress / maxProgress, "Downloading " + assetName);
-            DownloadUtils.downloadFile(MINECRAFT_RES + assetPath, outFile);
-        }
-    }
-    */
 }

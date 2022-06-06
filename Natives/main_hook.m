@@ -1,5 +1,7 @@
 #include <dlfcn.h>
+#include <fnmatch.h>
 #include <libgen.h>
+#include <spawn.h>
 #include <stdio.h>
 
 #include "external/fishhook/fishhook.h"
@@ -13,6 +15,7 @@ static int (*orig_dladdr)(const void* addr, Dl_info* info);
 static void* (*orig_dlopen)(const char* path, int mode);
 //static void* (*orig_mmap)(void *addr, size_t len, int prot, int flags, int fd, off_t offset);
 static char* (*orig_realpath)(const char *restrict path, char *restrict resolved_path);
+pid_t (*orig_waitpid)(pid_t pid, int *status, int options);
 //static void (*orig_sys_icache_invalidate)(void *start, size_t len);
 
 
@@ -100,7 +103,7 @@ void init_hookFunctions() {
     // Jailed only: hook some functions for symlinked JRE home dir
     int retval = rebind_symbols((struct rebinding[3]){
         {"dladdr", hooked_dladdr, (void *)&orig_dladdr},
-        {"dlopen", hooked_dlopen, (void *)&orig_dlopen},
+        {"dlopen", hooked_dlopen, (void *)&orig_dlopen}, 
         //{"realpath", hooked_realpath, (void *)&orig_realpath},
         {"realpath$DARWIN_EXTSN", hooked_realpath, (void *)&orig_realpath}
         //{"mmap", hooked_mmap, (void *)&orig_mmap},

@@ -15,6 +15,8 @@
 #import "SurfaceViewController.h"
 
 #include <assert.h>
+#include <dlfcn.h>
+#include <libgen.h>
 #include <stdlib.h>
 
 #include "jni.h"
@@ -24,6 +26,8 @@
 #include "utils.h"
 
 #include "JavaLauncher.h"
+
+jint (*orig_ProcessImpl_forkAndExec)(JNIEnv *env, jobject process, jint mode, jbyteArray helperpath, jbyteArray prog, jbyteArray argBlock, jint argc, jbyteArray envBlock, jint envc, jbyteArray dir, jintArray std_fds, jboolean redirectErrorStream);
 
 typedef void GLFW_invoke_Char_func(void* window, unsigned int codepoint);
 typedef void GLFW_invoke_CharMods_func(void* window, unsigned int codepoint, int mods);
@@ -44,8 +48,71 @@ jmethodID inputBridgeMethod_ANDROID;
 jclass uikitBridgeClass;
 jmethodID uikitBridgeTouchMethod;
 
+/**
+ * Hooked version of java.lang.UNIXProcess.forkAndExec()
+ * which is used to handle the "open" command.
+ */
+jint
+hooked_ProcessImpl_forkAndExec(JNIEnv *env, jobject process, jint mode, jbyteArray helperpath, jbyteArray prog, jbyteArray argBlock, jint argc, jbyteArray envBlock, jint envc, jbyteArray dir, jintArray std_fds, jboolean redirectErrorStream) {
+    char *pProg = (char *)((*env)->GetByteArrayElements(env, prog, NULL));
+
+    // Here we only handle the "open" command
+    if (strcmp(basename(pProg), "open")) {
+        (*env)->ReleaseByteArrayElements(env, prog, (jbyte *)pProg, 0);
+        return orig_ProcessImpl_forkAndExec(env, process, mode, helperpath, prog, argBlock, argc, envBlock, envc, dir, std_fds, redirectErrorStream);
+    }
+
+    dispatch_group_t group = dispatch_group_create();
+    dispatch_group_enter(group);
+
+    char *path = (char *)((*env)->GetByteArrayElements(env, argBlock, NULL));
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSString *realPath = @(path);
+        if ([realPath hasPrefix:@"file:"]) {
+            realPath = [realPath substringFromIndex:5].stringByRemovingPercentEncoding;
+        }
+        if (![realPath hasPrefix:@"http"]) {
+            realPath = [NSString stringWithFormat:@"filza:/%@", realPath.stringByResolvingSymlinksInPath];
+        }
+
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:realPath] options:@{} completionHandler:^(BOOL success) {
+            if (success) {
+                NSLog(@"Opened \"%@\"", realPath);
+            } else {
+                NSLog(@"Failed to open \"%@\"", realPath);
+            }
+            dispatch_group_leave(group);
+        }];
+    });
+
+    dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+
+    (*env)->ReleaseByteArrayElements(env, prog, (jbyte *)pProg, 0);
+    (*env)->ReleaseByteArrayElements(env, argBlock, (jbyte *)path, 0);
+    return 0;
+}
+
+void hookExec(JNIEnv *env) {
+    jclass cls;
+    orig_ProcessImpl_forkAndExec = dlsym(RTLD_DEFAULT, "Java_java_lang_UNIXProcess_forkAndExec");
+    if (!orig_ProcessImpl_forkAndExec) {
+        orig_ProcessImpl_forkAndExec = dlsym(RTLD_DEFAULT, "Java_java_lang_ProcessImpl_forkAndExec");
+        cls = (*env)->FindClass(env, "java/lang/ProcessImpl");
+    } else {
+        cls = (*env)->FindClass(env, "java/lang/UNIXProcess");
+    }
+    JNINativeMethod methods[] = {
+        {"forkAndExec", "(I[B[B[BI[BI[B[IZ)I", (void *)&hooked_ProcessImpl_forkAndExec}
+    };
+    (*env)->RegisterNatives(env, cls, methods, 1);
+}
+
 // JNI_OnLoad
 jint JNI_OnLoad(JavaVM* vm, void* reserved) {
+    JNIEnv *env;
+    (*vm)->GetEnv(vm, (void **)&env, JNI_VERSION_1_4);
+    hookExec(env);
+
     runtimeJavaVMPtr = vm;
     return JNI_VERSION_1_4;
 }
@@ -178,17 +245,6 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_updateMCGuiScale(JNI
     guiScale = scale;
 }
 
-/*
-JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_runOnUIThread(JNIEnv* env, jclass clazz, jobject callback) {
-    UIKit_runOnUIThread(callback);
-}
-*/
-JNIEXPORT jint JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_launchUI(JNIEnv* env, jclass clazz) {
-    @autoreleasepool {
-        return UIApplicationMain(1, (char *[]){ getenv("EXEC_PATH") }, nil, NSStringFromClass([AppDelegate class]));
-    }
-}
-
 JNIEXPORT jstring JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeClipboard(JNIEnv* env, jclass clazz, jint action, jstring copySrc) {
     DEBUG_LOGD("Debug: Clipboard access is going on\n");
     return UIKit_accessClipboard(env, action, copySrc);
@@ -198,7 +254,6 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetInputRead
 #ifdef DEBUG
     LOGD("Debug: Changing input state, isReady=%d, isUseStackQueueCall=%d\n", inputReady, isUseStackQueueCall);
 #endif
-
     isInputReady = inputReady;
 
     return isUseStackQueueCall;

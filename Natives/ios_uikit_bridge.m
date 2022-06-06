@@ -104,23 +104,6 @@ jstring UIKit_accessClipboard(JNIEnv* env, jint action, jstring copySrc) {
     }
 }
 
-void UIKit_launchJarFile(const char* filepath) {
-    jclass uikitBridgeClass = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "net/kdt/pojavlaunch/uikit/UIKit");
-    assert(uikitBridgeClass != NULL);
-
-    jstring filepathStr = (*runtimeJNIEnvPtr)->NewStringUTF(runtimeJNIEnvPtr, filepath);
-    jmethodID method = (*runtimeJNIEnvPtr)->GetStaticMethodID(runtimeJNIEnvPtr, uikitBridgeClass, "callback_JavaGUIViewController_launchJarFile", "(Ljava/lang/String;II)V");
-    assert(method != NULL);
-
-    (*runtimeJNIEnvPtr)->CallStaticVoidMethod(
-        runtimeJNIEnvPtr,
-        uikitBridgeClass, method,
-        filepathStr,
-        savedWidth, savedHeight
-    );
-    (*runtimeJNIEnvPtr)->DeleteLocalRef(runtimeJNIEnvPtr, filepathStr);
-}
-
 void UIKit_launchMinecraftSurfaceVC() {
     setPreference(@"internal_launch_on_boot", getPreference(@"restart_before_launch"));
     setPreference(@"internal_selected_account", BaseAuthenticator.current.authData[@"username"]);

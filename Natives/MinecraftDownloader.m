@@ -29,7 +29,7 @@ todo for now - might change anytime
  + assets
 - download assets
  + new structure
- + old structure
+ + old structure (mapped)
 */  
 
 @implementation MinecraftDownloader

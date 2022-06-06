@@ -379,7 +379,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
 
     margv[++margc] = "-cp";
     margv[++margc] = classpath;
-    margv[++margc] = "net.kdt.pojavlaunch.PLaunchApp";
+    margv[++margc] = "net.kdt.pojavlaunch.PojavLauncher";
 
     if (username == nil) {
         margv[++margc] = ".LaunchJAR";
