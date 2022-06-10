@@ -18,8 +18,7 @@ CGFloat uhcurrY = 4.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    viewController = self;
-    
+
     [self setTitle:@"Update History"];
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
@@ -46,13 +45,13 @@ CGFloat uhcurrY = 4.0;
     [scrollView addSubview:[self uhContent:true size:20 text:[NSString stringWithFormat:@"2.1 (%s)", CONFIG_TYPE] width:width]];
     [scrollView addSubview:[self uhContent:true size:17 text:@"Changes" width:width]];
     [scrollView addSubview:[self uhContent:false size:0 text:@"- Now shows when currently logging in\n"
+                            "- Account list now displays profile picture and account type\n"
                             "- Play button is greyed out when launching\n"
                             "- Back button is hidden when launching\n"
                             "- New toggle to allow restarting JVM before launching\n"
                             "- Added WIP Demo mode support!\n"
                             "- Patch log4shell exploit in client\n"
                             "- Keyboard and mouse support deepened\n"
-                            "- New \"vgpu\" renderer, exports OpenGL 3.0\n"
                             "- Custom controls UI completed\n"
                             "- Arc custom capes integration!\n"
                             "- Removed Mojang account login" width:width]];

@@ -12,7 +12,7 @@
 #define REND 4
 #define JHOME 5
 #define GDIRECTORY 6
-#define NOSHADERCONV 7
+
 #define RESETWARN 8
 #define TYPESEL 9
 #define DEBUGLOG 10
@@ -25,6 +25,7 @@
 #define ERASEPREF 17
 #define ARCCAPES 18
 #define VIRTMOUSE 19
+#define CHECKSHA 20
 
 #define TAG_BTNSCALE 98
 #define TAG_RESOLUTION 99
@@ -43,7 +44,7 @@
 #define TAG_PICKER_GDIR 144
 #define TAG_DONE_GDIR 154
 
-#define TAG_NOSHADERCONV 105
+
 #define TAG_RESETWARN 106
 
 #define TAG_SWITCH_VRELEASE 107
@@ -65,6 +66,8 @@
 #define TAG_ARCCAPES 117
 
 #define TAG_VIRTMOUSE 118
+
+#define TAG_CHECKSHA 119
 @interface LauncherPreferencesViewController () <UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDelegate> {
 }
 
@@ -85,37 +88,20 @@ NSMutableArray* jhomeList;
 UIPickerView* rendPickerView;
 UIPickerView* gdirPickerView;
 UIPickerView* jhomePickerView;
-UISwitch *noshaderconvSwitch, *slideHotbarSwitch;
+UISwitch *slideHotbarSwitch;
 UIBlurEffect *blur;
 UIVisualEffectView *blurView;
 UIScrollView *scrollView;
-NSString *gl4es114 = @"GL4ES 1.1.4 - exports OpenGL 2.1";
-NSString *gl4es115 = @"GL4ES 1.1.5 (1.16+) - exports OpenGL 2.1";
-NSString *tinygl4angle = @"tinygl4angle (1.17+) - exports OpenGL 3.2 (Core Profile, limited)";
-NSString *vgpu = @"vgpu 1.3.6 - exports OpenGL 3.0";
-NSString *zink = @"Zink (Mesa 21.0) - exports OpenGL 4.1";
-NSString *virglrenderer = @"virglrenderer - exports OpenGL 4.1";
-NSString *java8jben = @"Java 8";
-NSString *java16jben = @"Java 16";
-NSString *java17jben = @"Java 17";
-NSString *java8 = @"Java 8 (sandbox)";
-NSString *libsjava8jben = @"/usr/lib/jvm/java-8-openjdk";
-NSString *libsjava16jben = @"/usr/lib/jvm/java-16-openjdk";
-NSString *libsjava17jben = @"/usr/lib/jvm/java-17-openjdk";
-NSString *libsjava8;
-NSString *lib_gl4es114 = @"libgl4es_114.dylib";
-NSString *lib_gl4es115 = @"libgl4es_115.dylib";
-NSString *lib_tinygl4angle = @"libtinygl4angle.dylib";
-NSString *lib_vgpu = @"libvgpu.dylib";
-NSString *lib_zink = @"libOSMesaOverride.dylib";
-NSString *lib_virglrenderer = @"libOSMesa.8.dylib";
+
+NSDictionary *rendererDict;
+
+NSString *JRE8_HOME_SB;
 
 int tempIndex;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    viewController = self;
 
     [self setTitle:@"Preferences"];
 
@@ -132,14 +118,13 @@ int tempIndex;
         @"/usr/lib/jvm/java-17-openjdk": @"Java 17",
         [NSString stringWithFormat:@"%s/jre8", getenv("POJAV_HOME")], @"Java 8 (sandbox)"
     };
-    rendererDict = @{
-        @"libgl4es_114.dylib": @"GL4ES 1.1.4 - exports OpenGL 2.1",
-        @"libgl4es_115.dylib": @"GL4ES 1.1.5 (1.16+) - exports OpenGL 2.1",
-        @"libtinygl4angle.dylib": @"tinygl4angle (1.17+) - exports OpenGL 3.2 (Core Profile, limited)",
-        @"libvgpu.dylib": @"vgpu 1.3.6 - exports OpenGL 3.0",
-        @"libOSMesaOverride.dylib": @"Zink (Mesa 21.0) - exports OpenGL 4.1"
-    };
 */
+    rendererDict = @{
+        @"gl4es 1.1.4 - exports OpenGL 2.1": @"libgl4es_114.dylib",
+        @"tinygl4angle (1.17+) - exports OpenGL 3.2 (Core Profile, limited)": @"libtinygl4angle.dylib",
+        @"Zink (Mesa 21.0) - exports OpenGL 4.1": @"libOSMesaOverride.dylib"
+    };
+
     scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
     [self.view addSubview:scrollView];
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -248,33 +233,15 @@ int tempIndex;
     rendTextField.delegate = self;
     rendTextField.placeholder = @"Override renderer...";
     //rendTextField.text = self.rendererDict[getPreference(@"renderer")];
-    if ([getPreference(@"renderer") isEqualToString:lib_gl4es114]) {
-        rendTextField.text = gl4es114;
-        tempIndex = 0;
-    } else if ([getPreference(@"renderer") isEqualToString:lib_gl4es115]) {
-        rendTextField.text = gl4es115;
-        tempIndex = 1;
-    } else if ([getPreference(@"renderer") isEqualToString:lib_tinygl4angle]) {
-        rendTextField.text = tinygl4angle;
-        tempIndex = 2;
-    } else if ([getPreference(@"renderer") isEqualToString:lib_vgpu]) {
-        rendTextField.text = vgpu;
-        tempIndex = 3;
-    } else if ([getPreference(@"renderer") isEqualToString:lib_zink]) {
-        rendTextField.text = zink;
-        tempIndex = 4;
-    } else if ([getPreference(@"renderer") isEqualToString:lib_virglrenderer]) {
-        rendTextField.text = virglrenderer;
-        tempIndex = 5;
-    }
-    
+    tempIndex = [rendererDict.allValues indexOfObject:getPreference(@"renderer")];
+    rendTextField.text = rendererDict.allKeys[tempIndex];
+
     rendTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
     rendTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [tableView addSubview:rendTextField];
 
-    rendererList = @[gl4es114, gl4es115, tinygl4angle, vgpu, zink];
     //[rendererList addObject:virglrenderer];
-    
+
     rendPickerView = [[UIPickerView alloc] init];
     rendPickerView.delegate = self;
     rendPickerView.dataSource = self;
@@ -302,17 +269,15 @@ int tempIndex;
     jhomeTextField.delegate = self;
     jhomeTextField.placeholder = @"Override Java path...";
 
-    libsjava8 = [NSString stringWithFormat:@"%s/jre8", getenv("POJAV_HOME")];
+    JRE8_HOME_SB = [NSString stringWithFormat:@"%s/jre8", getenv("POJAV_HOME")];
     if(getenv("POJAV_DETECTEDJB")) {
-        if ([getPreference(@"java_home") isEqualToString:libsjava8jben]) {
-            jhomeTextField.text = java8jben;
-        } else if ([getPreference(@"java_home") isEqualToString:libsjava16jben]) {
-            jhomeTextField.text = java16jben;
-        } else if ([getPreference(@"java_home") isEqualToString:libsjava17jben]) {
-            jhomeTextField.text = java17jben;
+        switch (getSelectedJavaVersion()) {
+            case 8: jhomeTextField.text = JRE8_NAME_JB; break;
+            case 16: jhomeTextField.text = JRE16_NAME_JB; break;
+            case 17: jhomeTextField.text = JRE17_NAME_JB; break;
         }
     } else {
-        jhomeTextField.text = java8;
+        jhomeTextField.text = JRE8_NAME_SB;
     }
     
     jhomeTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
@@ -320,17 +285,17 @@ int tempIndex;
     [tableView addSubview:jhomeTextField];
     
     jhomeList = [[NSMutableArray alloc] init];
-    if ([[NSFileManager defaultManager] fileExistsAtPath:libsjava8jben]) {
-        [jhomeList addObject:java8jben];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:JRE8_HOME_JB]) {
+        [jhomeList addObject:JRE8_NAME_JB];
     }
-    if ([[NSFileManager defaultManager] fileExistsAtPath:libsjava16jben]) {
-        [jhomeList addObject:java16jben];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:JRE16_HOME_JB]) {
+        [jhomeList addObject:JRE16_NAME_JB];
     }
-    if ([[NSFileManager defaultManager] fileExistsAtPath:libsjava17jben]) {
-        [jhomeList addObject:java17jben];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:JRE17_HOME_JB]) {
+        [jhomeList addObject:JRE17_NAME_JB];
     }
-    if ([[NSFileManager defaultManager] fileExistsAtPath:libsjava8]) {
-        [jhomeList addObject:java8];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:JRE8_HOME_SB]) {
+        [jhomeList addObject:JRE8_NAME_SB];
     }
     
     jhomePickerView = [[UIPickerView alloc] init];
@@ -353,14 +318,6 @@ int tempIndex;
     jhomeTextField.inputAccessoryView = jhomePickerToolbar;
     jhomeTextField.inputView = jhomePickerView;
 
-    if ([getPreference(@"option_warn") boolValue] == YES) {
-        UIAlertController *preferenceWarn = [UIAlertController alertControllerWithTitle:@"Restart required" message:@"Some options in this menu will require that you restart the launcher for them to take effect."preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
-        [self presentViewController:preferenceWarn animated:YES completion:nil];
-        [preferenceWarn addAction:ok];
-        setPreference(@"option_warn", @NO);
-    }
-    
     UILabel *gdirTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
     gdirTextView.text = @"Game directory";
     gdirTextView.numberOfLines = 0;
@@ -392,28 +349,7 @@ int tempIndex;
 
     gdirTextField.inputAccessoryView = gdirPickerToolbar;
     gdirTextField.inputView = gdirPickerView;
-    
-    if ([getPreference(@"option_warn") boolValue] == YES) {
-        UIAlertController *preferenceWarn = [UIAlertController alertControllerWithTitle:@"Restart required" message:@"Some options in this menu will require that you restart the launcher for them to take effect."preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
-        [self presentViewController:preferenceWarn animated:YES completion:nil];
-        [preferenceWarn addAction:ok];
-        setPreference(@"option_warn", @NO);
-    }
 
-    UILabel *noshaderconvTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
-    noshaderconvTextView.text = @"Disable gl4es 1.1.5 shaderconv";
-    noshaderconvTextView.numberOfLines = 0;
-    [noshaderconvTextView sizeToFit];
-    [tableView addSubview:noshaderconvTextView];
-
-    noshaderconvSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
-    noshaderconvSwitch.tag = TAG_NOSHADERCONV;
-    [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:NO];
-    [noshaderconvSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
-    [tableView addSubview:noshaderconvSwitch];
-    [noshaderconvSwitch setEnabled:[getPreference(@"renderer") isEqualToString:gl4es115]];
-    
     UILabel *slideHotbarTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
     slideHotbarTextView.text = @"Slideable hotbar";
     slideHotbarTextView.numberOfLines = 0;
@@ -490,6 +426,18 @@ int tempIndex;
     [oldalphaSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:oldalphaSwitch];
     
+    UILabel *checkSHATextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
+    checkSHATextView.text = @"Check game files before launching";
+    checkSHATextView.numberOfLines = 0;
+    [checkSHATextView sizeToFit];
+    [tableView addSubview:checkSHATextView];
+
+    UISwitch *checkSHASwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
+    checkSHASwitch.tag = TAG_CHECKSHA;
+    [checkSHASwitch setOn:[getPreference(@"check_sha") boolValue] animated:NO];
+    [checkSHASwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    [tableView addSubview:checkSHASwitch];
+    
     UILabel *debugLogTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
     debugLogTextView.text = @"Enable debug logging";
     debugLogTextView.numberOfLines = 0;
@@ -538,29 +486,29 @@ int tempIndex;
     [arcCapesSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:arcCapesSwitch];
     
-    UILabel *erasePrefTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
-    erasePrefTextView.text = @"Enable virtual mouse";
-    erasePrefTextView.numberOfLines = 0;
-    [erasePrefTextView sizeToFit];
-    [tableView addSubview:erasePrefTextView];
-
-    UISwitch *erasePrefSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
-    erasePrefSwitch.tag = TAG_VIRTMOUSE;
-    [erasePrefSwitch setOn:[getPreference(@"virtmouse_enable") boolValue]  animated:NO];
-    [erasePrefSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
-    [tableView addSubview:erasePrefSwitch];
-    
     UILabel *virtMouseTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
-    virtMouseTextView.text = @"Reset all settings";
+    virtMouseTextView.text = @"Enable virtual mouse";
     virtMouseTextView.numberOfLines = 0;
     [virtMouseTextView sizeToFit];
     [tableView addSubview:virtMouseTextView];
 
     UISwitch *virtMouseSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
-    virtMouseSwitch.tag = TAG_ERASEPREF;
-    [virtMouseSwitch setOn:NO animated:NO];
+    virtMouseSwitch.tag = TAG_VIRTMOUSE;
+    [virtMouseSwitch setOn:[getPreference(@"virtmouse_enable") boolValue]  animated:NO];
     [virtMouseSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:virtMouseSwitch];
+    
+    UILabel *erasePrefTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
+    erasePrefTextView.text = @"Reset all settings";
+    erasePrefTextView.numberOfLines = 0;
+    [erasePrefTextView sizeToFit];
+    [tableView addSubview:erasePrefTextView];
+    
+    UISwitch *erasePrefSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
+    erasePrefSwitch.tag = TAG_ERASEPREF;
+    [erasePrefSwitch setOn:NO animated:NO];
+    [erasePrefSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    [tableView addSubview:erasePrefSwitch];
     
     CGRect frame = tableView.frame;
     frame.size.height = currY+=44;
@@ -588,8 +536,6 @@ int tempIndex;
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:JHOME];}],
             [UIAction actionWithTitle:@"Game directory" image:[[UIImage systemImageNamed:@"folder"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:GDIRECTORY];}],
-            [UIAction actionWithTitle:@"Disable shaderconv" image:[[UIImage systemImageNamed:@"circle.lefthalf.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:NOSHADERCONV];}],
             [UIAction actionWithTitle:@"Slideable hotbar" image:[[UIImage systemImageNamed:@"slider.horizontal.below.rectangle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:SLIDEHOTBAR];}],
             [UIAction actionWithTitle:@"Safe area" image:[[UIImage systemImageNamed:@"crop"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
@@ -608,6 +554,8 @@ int tempIndex;
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:ARCCAPES];}],
             [UIAction actionWithTitle:@"Enable virtual mouse" image:[[UIImage systemImageNamed:@"cursorarrow.rays"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:VIRTMOUSE];}],
+            [UIAction actionWithTitle:@"Check game files before launching" image:[[UIImage systemImageNamed:@"shield.lefthalf.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:CHECKSHA];}],
             [UIAction actionWithTitle:@"Reset preferences" image:[[UIImage systemImageNamed:@"trash"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:ERASEPREF];}],
         ]];
@@ -663,48 +611,26 @@ int tempIndex;
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     activeField = nil;
     if (textField.tag == TAG_JARGS) {
-        setPreference(@"java_args", textField.text);
+        setPreference(@"java_args", textField.text); 
     } else if (textField.tag == TAG_REND) {
-        if ([textField.text isEqualToString:gl4es114]) {
-            setPreference(@"renderer", lib_gl4es114);
-        } else if ([textField.text isEqualToString:gl4es115]) {
-            setPreference(@"renderer", lib_gl4es115);
-        } else if ([textField.text isEqualToString:tinygl4angle]) {
-            setPreference(@"renderer", lib_tinygl4angle);
-        } else if ([textField.text isEqualToString:vgpu]) {
-            setPreference(@"renderer", lib_vgpu);
-        } else if ([textField.text isEqualToString:zink]) {
-            setPreference(@"renderer", lib_zink);
-        } else if ([textField.text isEqualToString:virglrenderer]) {
-            setPreference(@"renderer", lib_virglrenderer);
-        }
+        setPreference(@"renderer", rendererDict[textField.text]);
         setenv("POJAV_RENDERER", [getPreference(@"renderer") UTF8String], 1);
-        
-        if (![textField.text isEqualToString:gl4es115] && [getPreference(@"disable_gl4es_shaderconv") boolValue] == YES) {
-            setPreference(@"disable_gl4es_shaderconv", @NO);
-            [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:YES];
-            [noshaderconvSwitch setEnabled:NO];
-        } else if (![textField.text isEqualToString:gl4es114] && [getPreference(@"disable_gl4es_shaderconv") boolValue] == NO){
-            setPreference(@"disable_gl4es_shaderconv", @YES);
-            [noshaderconvSwitch setOn:[getPreference(@"disable_gl4es_shaderconv") boolValue] animated:YES];
-            [noshaderconvSwitch setEnabled:YES];
-        }
     } else if (textField.tag == TAG_JHOME) {
-        if ([textField.text isEqualToString:java8jben]) {
-            setPreference(@"java_home", libsjava8jben);
-            setenv("JAVA_HOME", [libsjava8jben cStringUsingEncoding:NSUTF8StringEncoding], 1);
-        } else if ([textField.text isEqualToString:java16jben]) {
-            setPreference(@"java_home", libsjava16jben);
-            setenv("JAVA_HOME", [libsjava16jben cStringUsingEncoding:NSUTF8StringEncoding], 1);
-        } else if ([textField.text isEqualToString:java17jben]) {
-            setPreference(@"java_home", libsjava17jben);
-            setenv("JAVA_HOME", [libsjava17jben cStringUsingEncoding:NSUTF8StringEncoding], 1);
-        } else if ([textField.text isEqualToString:java8]) {
-            setPreference(@"java_home", libsjava8);
-            setenv("JAVA_HOME", [libsjava8 cStringUsingEncoding:NSUTF8StringEncoding], 1);
+        if ([textField.text isEqualToString:JRE8_NAME_JB]) {
+            setPreference(@"java_home", JRE8_HOME_JB);
+            setenv("JAVA_HOME", [JRE8_HOME_JB cStringUsingEncoding:NSUTF8StringEncoding], 1);
+        } else if ([textField.text isEqualToString:JRE16_NAME_JB]) {
+            setPreference(@"java_home", JRE16_HOME_JB);
+            setenv("JAVA_HOME", [JRE16_HOME_JB cStringUsingEncoding:NSUTF8StringEncoding], 1);
+        } else if ([textField.text isEqualToString:JRE17_NAME_JB]) {
+            setPreference(@"java_home", JRE17_HOME_JB);
+            setenv("JAVA_HOME", [JRE17_HOME_JB cStringUsingEncoding:NSUTF8StringEncoding], 1);
+        } else if ([textField.text isEqualToString:JRE8_NAME_SB]) {
+            setPreference(@"java_home", JRE8_HOME_SB);
+            setenv("JAVA_HOME", [JRE8_HOME_SB cStringUsingEncoding:NSUTF8StringEncoding], 1);
         }
-        if (![textField.text containsString:java8jben] && ![textField.text containsString:java8] && [getPreference(@"java_warn") boolValue] == YES) {
-            UIAlertController *javaAlert = [UIAlertController alertControllerWithTitle:@"Java version is not Java 8" message:@"Minecraft versions below 1.6, modded below 1.16.4, and the mod installer will not work unless you have Java 8 installed on your device."preferredStyle:UIAlertControllerStyleAlert];
+        if (![textField.text containsString:JRE8_NAME_JB] && ![textField.text containsString:JRE8_NAME_SB] && [getPreference(@"java_warn") boolValue] == YES) {
+            UIAlertController *javaAlert = [UIAlertController alertControllerWithTitle:@"Java version is not Java 8" message:@"Minecraft versions below 1.6, modded below 1.16.4, and the mod installer will not work unless you have Java 8 installed on your device." preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
             [self presentViewController:javaAlert animated:YES completion:nil];
             [javaAlert addAction:ok];
@@ -712,6 +638,7 @@ int tempIndex;
         }
     } else if (textField.tag == TAG_GDIR) {
         setPreference(@"game_directory", textField.text);
+        init_setupMultiDir();
     }
 }
 
@@ -774,24 +701,14 @@ int tempIndex;
     }];
     UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         NSString *directory = [NSString stringWithFormat:@"%s/instances/%@", getenv("POJAV_HOME"), [[manageDirAC textFields][0] text]];
+        NSError *error;
         BOOL isDir = NO;
-        BOOL isFailed = NO;
-        if(![[NSFileManager defaultManager] fileExistsAtPath:directory isDirectory:&isDir]) {
-            if([[NSFileManager defaultManager] createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:NULL]) {
-                isFailed = NO;
-                [self instanceDirCont];
-                gdirTextField.text = [[manageDirAC textFields][0] text];
-                [gdirTextField endEditing:YES];
-                [self manageDirResult:(UIButton *)sender success:isFailed directory:[[manageDirAC textFields][0] text] type:type];
-                
-            } else {
-                isFailed = YES;
-                [self manageDirResult:(UIButton *)sender success:isFailed directory:[[manageDirAC textFields][0] text] type:type];
-            }
-        } else {
-            isFailed = YES;
-            [self manageDirResult:(UIButton *)sender success:isFailed directory:[[manageDirAC textFields][0] text] type:type];
+        if([[NSFileManager defaultManager] createDirectoryAtPath:directory withIntermediateDirectories:NO attributes:nil error:&error]) {
+            [self instanceDirCont];
+            gdirTextField.text = [[manageDirAC textFields][0] text];
+            [gdirTextField endEditing:YES];
         }
+        [self manageDirResult:(UIButton *)sender error:error directory:[[manageDirAC textFields][0] text] type:type];
     }];
     [manageDirAC addAction:confirm];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
@@ -805,24 +722,14 @@ int tempIndex;
     UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         NSString *directory = [NSString stringWithFormat:@"%s/instances/%@", getenv("POJAV_HOME"), gdirTextField.text];
         NSLog(@"%@", directory);
+        NSError *error;
         BOOL isDir = NO;
-        BOOL isFailed = NO;
-        
-            if([[NSFileManager defaultManager] fileExistsAtPath:directory isDirectory:&isDir]) {
-                if([[NSFileManager defaultManager] removeItemAtPath:directory error:NULL]) {
-                    isFailed = NO;
-                    [self instanceDirCont];
-                    gdirTextField.text = @"default";
-                    [gdirTextField endEditing:YES];
-                    [self manageDirResult:(UIButton *)sender success:isFailed directory:gdirTextField.text type:type];
-                } else {
-                    isFailed = YES;
-                    [self manageDirResult:(UIButton *)sender success:isFailed directory:gdirTextField.text type:type];
-                }
-            } else {
-                isFailed = YES;
-                [self manageDirResult:(UIButton *)sender success:isFailed directory:gdirTextField.text type:type];
-            }
+        if([[NSFileManager defaultManager] removeItemAtPath:directory error:&error]) {
+            [self instanceDirCont];
+            gdirTextField.text = @"default";
+            [gdirTextField endEditing:YES];
+        }
+        [self manageDirResult:(UIButton *)sender error:error directory:gdirTextField.text type:type];
     }];
     [manageDirAC addAction:confirm];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
@@ -837,27 +744,20 @@ int tempIndex;
     }
 }
 
-- (void)manageDirResult:(UIButton *)sender success:(BOOL)boolean directory:(NSString *)dirName type:(int)type {
+- (void)manageDirResult:(UIButton *)sender error:(NSError *)error directory:(NSString *)dirName type:(int)type {
     NSString *title;
     NSString *message;
-    if(type == MKGDIR) {
-        if(boolean == YES) {
-            title = @"An error occurred.";
-            message = [NSString stringWithFormat:@"Ensure that a file with the name %@ does not exist, and that the instances directory is writeable.", dirName];
-        } else if(boolean == NO) {
+    if (error == nil) {
+        if(type == MKGDIR) {
             title = @"Successfully changed directory.";
-            message = @"";
-        }
-    } else if (type == RMGDIR) {
-        if(boolean == YES) {
-            title = @"An error occurred.";
-            message = @"Ensure that the instances directory is writeable.";
-        } else if(boolean == NO) {
+        } else if (type == RMGDIR) {
             title = @"Successfully removed directory.";
-            message = @"";
         }
+    } else {
+        title = @"An error occurred.";
+        message = error.localizedDescription;
     }
-    
+
     UIAlertController *gdirAlert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
     [self setPopoverProperties:gdirAlert.popoverPresentationController sender:sender];
     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
@@ -877,7 +777,6 @@ int tempIndex;
         UIAlertAction *renderer = [UIAlertAction actionWithTitle:@"Renderer"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:REND];}];
         UIAlertAction *jhome = [UIAlertAction actionWithTitle:@"Java version" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:JHOME];}];
         UIAlertAction *gdirectory = [UIAlertAction actionWithTitle:@"Game directory"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:GDIRECTORY];}];
-        UIAlertAction *noshaderconv = [UIAlertAction actionWithTitle:@"Disable shaderconv" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:NOSHADERCONV];}];
         UIAlertAction *slidehotbar = [UIAlertAction actionWithTitle:@"Slideable hotbar" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:SLIDEHOTBAR];}];
         UIAlertAction *safearea = [UIAlertAction actionWithTitle:@"Safe area" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:SAFEAREA];}];
         UIAlertAction *resetwarn = [UIAlertAction actionWithTitle:@"Reset warnings" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:RESETWARN];}];
@@ -887,6 +786,7 @@ int tempIndex;
         UIAlertAction *relaunch = [UIAlertAction actionWithTitle:@"Restart before launching game" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:RELAUNCH];}];
         UIAlertAction *arccapes = [UIAlertAction actionWithTitle:@"Enable Cosmetica capes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:ARCCAPES];}];
         UIAlertAction *virtmouse = [UIAlertAction actionWithTitle:@"Enable virtual mouse" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:VIRTMOUSE];}];
+        UIAlertAction *checksha = [UIAlertAction actionWithTitle:@"Check game files before launching" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:VIRTMOUSE];}];
         UIAlertAction *erasepref = [UIAlertAction actionWithTitle:@"Reset preferences" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:ERASEPREF];}];
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
         [self setPopoverProperties:helpAlert.popoverPresentationController sender:(UIButton *)self.navigationItem.rightBarButtonItem];
@@ -898,7 +798,6 @@ int tempIndex;
         [helpAlert addAction:renderer];
         [helpAlert addAction:jhome];
         [helpAlert addAction:gdirectory];
-        [helpAlert addAction:noshaderconv];
         [helpAlert addAction:slidehotbar];
         [helpAlert addAction:safearea];
         [helpAlert addAction:resetwarn];
@@ -908,6 +807,7 @@ int tempIndex;
         [helpAlert addAction:homesym];
         [helpAlert addAction:arccapes];
         [helpAlert addAction:virtmouse];
+        [helpAlert addAction:checksha];
         [helpAlert addAction:erasepref];
         [helpAlert addAction:cancel];
     }
@@ -924,22 +824,19 @@ int tempIndex;
         message = @"This option allows you to downscale the resolution of the game. Reducing resolution reduces GPU workload for better performance. The minimum resolution scale is 25%.";
     } else if(setting == ALLOCMEM) {
         title = @"Allocated RAM";
-        message = @"This option allows you to change the amount of memory used by the game. The minimum is 25% (default) and the maximum is 85%. Any value over 40% will require that you use a tool like overb0ard to prevent jetsam crashes. Take note that Java uses some of the memory itself, so the value you set will be lowered slightly in game. This option also requires a restart of the launcher to take effect.";
+        message = @"This option allows you to change the amount of memory used by the game. The minimum is 25% (default) and the maximum is 85%. Any value over 40% will require that you use a tool like overb0ard to prevent jetsam crashes. Take note that Java uses some of the memory itself, so the value you set will be lowered slightly in game.";
     } else if(setting == JARGS) {
         title = @"Java arguments";
-        message = @"This option allows you to edit arguments that can be passed to Minecraft. Not all arguments work with PojavLauncher, so be aware. This option also requires a restart of the launcher to take effect.";
+        message = @"This option allows you to edit arguments that can be passed to Minecraft. Not all arguments work with PojavLauncher, so be aware.";
     } else if(setting == REND) {
         title = @"Renderer";
-        message = @"This option allows you to change the renderer in use. Choosing GL4ES 1.1.5 or tinygl4angle may fix sheep and banner colors on 1.16 and allow 1.17 to be played, but will also not work with older versions.";
+        message = @"This option allows you to change the renderer in use. Choosing  tinygl4angle will allow 1.17+ to be played, but will also not work with older versions.";
     } else if(setting == JHOME) {
         title = @"Java version";
-        message = @"This option allows you to change the Java executable directory. Choosing Java 16 or Java 17 may allow you to play 1.17, however older versions and most versions of modded Minecraft, as well as the mod installer, will not work. This option also requires a restart of the launcher to take effect.";
+        message = @"This option allows you to change the Java executable directory. Choosing Java 16 or Java 17 may allow you to play 1.17, however older versions and most versions of modded Minecraft, as well as the mod installer, will not work.";
     } else if(setting == GDIRECTORY) {
         title = @"Game directory";
-        message = @"This option allows you to change where your Minecraft settings and saves are stored in a MultiMC like fashion. Useful for when you want to have multiple mod loaders installed but do not want to delete/move mods around to switch. This option also requires a restart of the launcher to take effect.";
-    } else if(setting == NOSHADERCONV) {
-        title = @"Disable shaderconv";
-        message = @"This option allows you to disable the shader converter inside gl4es 1.1.5 in order to let ANGLE processes them directly. This option is experimental and should only be enabled when playing Minecraft 1.17 or above. Alternatively you can use tinygl4angle for 1.17.";
+        message = @"This option allows you to change where your Minecraft settings and saves are stored in a MultiMC like fashion. Useful for when you want to have multiple mod loaders installed but do not want to delete/move mods around to switch.";
     } else if(setting == SLIDEHOTBAR) {
         title = @"Slideable hotbar";
         message = @"This option allows you to use a finger to slide between hotbar slots.";
@@ -952,6 +849,9 @@ int tempIndex;
     } else if(setting == TYPESEL) {
         title = @"Type switches";
         message = @"These switches allow to to change where or not releases, snapshots, old betas, and old alphas will show up in the version selection menu.";
+    } else if(setting == CHECKSHA) {
+        title = @"Check game files before launching"; 
+        message = @"When this option is enabled, every file is validated with SHA1, therefore local modifications will be overwritten.";
     } else if(setting == DEBUGLOG) {
         title = @"Enable debug logging";
         message = @"This option logs internal settings and actions to latestlog.txt. This helps the developers find issues easier, but Minecraft may run slower as the logs will be written to more often.";
@@ -1010,9 +910,6 @@ int tempIndex;
 
 - (void)switchChanged:(UISwitch *)sender {
     switch (sender.tag) {
-        case TAG_NOSHADERCONV:
-            setPreference(@"disable_gl4es_shaderconv", @(sender.isOn));
-            break;
         case TAG_RESETWARN:
             setPreference(@"mem_warn", @YES);
             setPreference(@"option_warn", @YES);
@@ -1033,23 +930,25 @@ int tempIndex;
             break;
         case TAG_SWITCH_VRELEASE:
             setPreference(@"vertype_release", @(sender.isOn));
-            [LauncherViewController fetchVersionList];
+            [LauncherViewController reloadVersionList:nil];
             break;
         case TAG_SWITCH_VSNAPSHOT:
             setPreference(@"vertype_snapshot", @(sender.isOn));
-            [LauncherViewController fetchVersionList];
+            [LauncherViewController reloadVersionList:nil];
             break;
         case TAG_SWITCH_VOLDBETA:
             setPreference(@"vertype_oldbeta", @(sender.isOn));
-            [LauncherViewController fetchVersionList];
+            [LauncherViewController reloadVersionList:nil];
             break;
         case TAG_SWITCH_VOLDALPHA:
             setPreference(@"vertype_oldalpha", @(sender.isOn));
-            [LauncherViewController fetchVersionList];
+            [LauncherViewController reloadVersionList:nil];
+            break;
+        case TAG_CHECKSHA:
+            setPreference(@"check_sha", @(sender.isOn));
             break;
         case TAG_DEBUGLOG:
             setPreference(@"debug_logging", @(sender.isOn));
-            [LauncherViewController fetchVersionList];
             break;
         case TAG_HOMESYM:
             setPreference(@"disable_home_symlink", @(sender.isOn));
@@ -1138,6 +1037,7 @@ int tempIndex;
     } else if(pickerView.tag == TAG_PICKER_GDIR) {
         gdirTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
         setPreference(@"game_directory", gdirTextField.text);
+        init_setupMultiDir();
     }
 }
 
@@ -1147,7 +1047,7 @@ int tempIndex;
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
     if(pickerView.tag == TAG_PICKER_REND) {
-        return rendererList.count;
+        return rendererDict.allKeys.count;
     } else if(pickerView.tag == TAG_PICKER_JHOME) {
         return jhomeList.count;
     } else if(pickerView.tag == TAG_PICKER_GDIR) {
@@ -1160,7 +1060,7 @@ int tempIndex;
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
     NSObject *object;
     if(pickerView.tag == TAG_PICKER_REND) {
-        object = [rendererList objectAtIndex:row];
+        object = [rendererDict.allKeys objectAtIndex:row];
     } else if(pickerView.tag == TAG_PICKER_JHOME) {
         object = [jhomeList objectAtIndex:row];
     } else if(pickerView.tag == TAG_PICKER_GDIR) {

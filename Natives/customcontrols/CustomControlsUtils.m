@@ -287,7 +287,7 @@ void generateAndSaveDefaultControl() {
         BTN_RECT
     )];
     NSOutputStream *os = [[NSOutputStream alloc] initToFileAtPath:
-        [@(getenv("POJAV_PATH_CONTROL")) stringByAppendingString:@"/default.json"] append:NO];
+        [NSString stringWithFormat:@"%s/controlmap/default.json", getenv("POJAV_HOME")] append:NO];
     [os open];
     [NSJSONSerialization writeJSONObject:dict toStream:os options:NSJSONWritingPrettyPrinted error:nil];
     [os close];
@@ -303,21 +303,32 @@ void generateAndSaveDefaultControl() {
 }
 
 void loadControlObject(UIView* targetView, NSMutableDictionary* controlDictionary, void(^walkToButton)(ControlButton* button)) {
+    NSMutableString *errorString = [[NSMutableString alloc] init];
+
     current_control_object = controlDictionary;
     if (convertLayoutIfNecessary(controlDictionary)) {
         NSMutableArray *controlDataList = controlDictionary[@"mControlDataList"];
         setPreference(@"internal_current_button_scale", controlDictionary[@"scaledAt"]);
         for (NSMutableDictionary *buttonDict in controlDataList) {
             //APPLY_SCALE(buttonDict[@"strokeWidth"]);
-            ControlButton *button = [ControlButton buttonWithProperties:buttonDict];
-            walkToButton(button);
-            [targetView addSubview:button];
+            @try {
+                ControlButton *button = [ControlButton buttonWithProperties:buttonDict];
+                walkToButton(button);
+                [targetView addSubview:button];
+            } @catch (NSException *exception) {
+                [errorString appendFormat:@"%@: %@\n", buttonDict[@"name"], exception.reason];
+            }
             //NSLog(@"DBG Added button=%@", button);
         }
 
         NSMutableArray *drawerDataList = controlDictionary[@"mDrawerDataList"];
         for (NSMutableDictionary *drawerData in drawerDataList) {
-            ControlDrawer *drawer = [ControlDrawer buttonWithData:drawerData];
+            ControlDrawer *drawer;
+            @try {
+                drawer = [ControlDrawer buttonWithData:drawerData];
+            } @catch (NSException *exception) {
+                [errorString appendFormat:@"%@: %@\n", drawerData[@"name"], exception.reason];
+            }
             if (isControlModifiable) drawer.areButtonsVisible = YES;
             walkToButton(drawer);
             [targetView addSubview:drawer];
@@ -325,13 +336,17 @@ void loadControlObject(UIView* targetView, NSMutableDictionary* controlDictionar
 
             for (NSMutableDictionary *subButton in drawerData[@"buttonProperties"]) {
                 ControlSubButton *subView = [ControlSubButton buttonWithProperties:subButton];
-			    [drawer addButton:subView];
-			    walkToButton(subView);
-			    [targetView addSubview:subView];
-		    }
+                [drawer addButton:subView];
+                walkToButton(subView);
+                [targetView addSubview:subView];
+            }
             [drawer syncButtons];
         }
 
         controlDictionary[@"scaledAt"] = @([getPreference(@"button_scale") floatValue]);
+
+        if (errorString.length > 0) {
+            showDialog(viewController, @"Error processing dynamic position", errorString);
+        }
     }
 }

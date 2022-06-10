@@ -1,12 +1,14 @@
 #import <UIKit/UIKit.h>
 
-UIProgressView* install_progress_bar;
-UILabel* install_progress_text;
-UIButton* install_button;
+NSArray* versionList;
 
 @interface LauncherViewController : UIViewController
 
-+ (void)fetchVersionList;
+@property UIProgressView *progressViewMain, *progressViewSub;
+@property UILabel* progressText;
+@property UIButton* buttonInstall;
+
++ (void)reloadVersionList:(LauncherViewController *)vc;
 + (void)fetchLocalVersionList:(NSMutableArray *)finalVersionList withPreviousIndex:(int)index;
 
 @end

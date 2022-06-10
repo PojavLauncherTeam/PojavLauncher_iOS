@@ -37,12 +37,7 @@ import net.kdt.pojavlaunch.utils.JSONUtils;
 import net.kdt.pojavlaunch.value.DependentLibrary;
 import net.kdt.pojavlaunch.value.MinecraftAccount;
 import org.lwjgl.glfw.GLFW;
-/*
-import org.robovm.apple.foundation.*;
-import org.robovm.apple.uikit.*;
-import org.robovm.pods.dialog.*;
-import org.robovm.pods.*;
-*/
+
 public final class Tools
 {
     public static final boolean ENABLE_DEV_FEATURES = true; // BuildConfig.DEBUG;
@@ -78,6 +73,8 @@ public final class Tools
     
     public static final String LIBNAME_OPTIFINE = "optifine:OptiFine";
 
+    volatile public static int mGLFWWindowWidth, mGLFWWindowHeight;
+
     public static void launchMinecraft(MinecraftAccount profile, final JMinecraftVersionList.Version versionInfo) throws Throwable {
         String javaVersion = System.getProperty("java.version");
         if (javaVersion.startsWith("1.")) {
@@ -98,7 +95,7 @@ public final class Tools
 
         // System.out.println("Minecraft Args: " + Arrays.toString(launchArgs));
 
-        final String launchClassPath = generateLaunchClassPath(profile.selectedVersion);
+        final String launchClassPath = generateLaunchClassPath(versionInfo);
 
         List<String> javaArgList = new ArrayList<String>();
         //javaArgList.add(versionInfo.logging.client.argument.replace("${path}", DIR_GAME_NEW.getAbsolutePath() + "/" + mVersion.logging.client.file.id));
@@ -125,37 +122,33 @@ public final class Tools
             }
         }
 */
-        
-        new Thread(() -> { try {
-            System.out.println("Args init finished. Now starting game");
-        
-            // URLClassLoader loader = new URLClassLoader(urlList.toArray(new URL[0]), ClassLoader.getSystemClassLoader());
-            
-                PojavClassLoader loader = (PojavClassLoader) ClassLoader.getSystemClassLoader();
-                // add launcher.jar itself
-                loader.addURL(Tools.class.getProtectionDomain().getCodeSource().getLocation().toURI().toURL());
-                for (String s : launchClassPath.split(":")) {
-                    if (!s.isEmpty()) {
-                        loader.addURL(new File(s).toURI().toURL());
-                    }
-                }
-            
-            Class<?> clazz = loader.loadClass(versionInfo.mainClass);
-            Method method = clazz.getMethod("main", String[].class);
-            method.invoke(null, new Object[]{launchArgs});
 
-            // throw new RuntimeException("Game exited. Check latestlog.txt for more details.");
-        } catch (Throwable th) {
-            showError(th);
+        System.out.println("Args init finished. Now starting game");
+
+        // URLClassLoader loader = new URLClassLoader(urlList.toArray(new URL[0]), ClassLoader.getSystemClassLoader());
+
+        PojavClassLoader loader = (PojavClassLoader) ClassLoader.getSystemClassLoader();
+        // add launcher.jar itself
+        loader.addURL(Tools.class.getProtectionDomain().getCodeSource().getLocation().toURI().toURL());
+        for (String s : launchClassPath.split(":")) {
+            if (!s.isEmpty()) {
+                loader.addURL(new File(s).toURI().toURL());
+            }
         }
+            
+        Class<?> clazz = loader.loadClass(versionInfo.mainClass);
+        Method method = clazz.getMethod("main", String[].class);
+        method.invoke(null, new Object[]{launchArgs});
+
+        // throw new RuntimeException("Game exited. Check latestlog.txt for more details.");
         
-        }).start();
+        //}).start();
         
         // JREUtils.launchJavaVM(javaArgList);
     }
 
     public static String[] getMinecraftArgs(MinecraftAccount profile, JMinecraftVersionList.Version versionInfo) {
-        String username = profile.username;
+        String username = profile.username.replace("Demo.", "");
         String versionName = versionInfo.id;
         if (versionInfo.inheritsFrom != null) {
             versionName = versionInfo.inheritsFrom;
@@ -203,14 +196,13 @@ public final class Tools
             }
         }
         minecraftArgs.add("--width");
-        minecraftArgs.add(Integer.toString(GLFW.mGLFWWindowWidth));
+        minecraftArgs.add(Integer.toString(mGLFWWindowWidth));
         minecraftArgs.add("--height");
-        minecraftArgs.add(Integer.toString(GLFW.mGLFWWindowHeight));
+        minecraftArgs.add(Integer.toString(mGLFWWindowHeight));
         minecraftArgs.add("--fullscreenWidth");
-        minecraftArgs.add(Integer.toString(GLFW.mGLFWWindowWidth));
+        minecraftArgs.add(Integer.toString(mGLFWWindowWidth));
         minecraftArgs.add("--fullscreenHeight");
-        minecraftArgs.add(Integer.toString(GLFW.mGLFWWindowHeight));
-        
+        minecraftArgs.add(Integer.toString(mGLFWWindowHeight));
         String[] argsFromJson = JSONUtils.insertJSONValueList(
             splitAndFilterEmpty(
                 versionInfo.minecraftArguments == null ?
@@ -235,8 +227,8 @@ public final class Tools
 
     private static String[] splitAndFilterEmpty(String argStr, MinecraftAccount profile) {
         List<String> strList = new ArrayList<String>();
-        if(profile.username.equals("demo_user") && profile.accessToken.equals("-1") && profile.profileId.equals("25e00594-cf57-3f87-b3af-3f06591be252")) {
-            strList.add("--demo"); // if statement is this complex to prevent tampering with the .json
+        if(profile.username.startsWith("Demo.")) {
+            strList.add("--demo");
         }
         for (String arg : argStr.split(" ")) {
             if (!arg.isEmpty()) {
@@ -251,9 +243,6 @@ public final class Tools
         return group.replaceAll("\\.", "/") + "/" + artifact + "/" + version + "/" + artifact + "-" + version + ".jar";
     }
 
-    public static String getPatchedFile(String version) {
-        return DIR_HOME_VERSION + "/" + version + "/" + version + ".jar";
-    }
 /*
     private static String getLWJGL3ClassPath() {
         StringBuilder libStr = new StringBuilder();
@@ -271,10 +260,9 @@ public final class Tools
     }
 */
     private static boolean isClientFirst = false;
-    public static String generateLaunchClassPath(String version) {
+    public static String generateLaunchClassPath(JMinecraftVersionList.Version info) {
         StringBuilder libStr = new StringBuilder(); //versnDir + "/" + version + "/" + version + ".jar:";
 
-        JMinecraftVersionList.Version info = getVersionInfo(version);
         String[] classpath = generateLibClasspath(info);
 
         // Debug: LWJGL 3 override
@@ -298,7 +286,7 @@ public final class Tools
          */
 
         if (isClientFirst) {
-            libStr.append(getPatchedFile(version));
+            libStr.append(DIR_HOME_VERSION + "/" + info.id + "/" + info.id + ".jar");
         }
         for (String perJar : classpath) {
             if (!new File(perJar).exists()) {
@@ -308,7 +296,7 @@ public final class Tools
             libStr.append((isClientFirst ? ":" : "") + perJar + (!isClientFirst ? ":" : ""));
         }
         if (!isClientFirst) {
-            libStr.append(getPatchedFile(version));
+            libStr.append(DIR_HOME_VERSION + "/" + info.id + "/" + info.id + ".jar");
         }
 
         return libStr.toString();
@@ -413,6 +401,8 @@ public final class Tools
             } else if (libItem.name.startsWith("net.java.dev.jna:jna:")) {
                 // Special handling for LabyMod 1.8.9 and Forge 1.12.2(?)
                 // we have libjnidispatch 5.8.0 in Frameworks directory
+                int[] version = Arrays.stream(libItem.name.split(":")[2].split("\\.")).mapToInt(Integer::parseInt).toArray();
+                if (version[0] >= 5 && version[1] >= 8) return;
                 System.out.println("Library " + libItem.name + " has been changed to version 5.8.0");
                 libItem.name = "net.java.dev.jna:jna:5.8.0";
                 libItem.downloads.artifact.path = "net/java/dev/jna/jna/5.8.0/jna-5.8.0.jar";
@@ -429,7 +419,10 @@ public final class Tools
             if (libItem._skip) continue;
             
             String[] libInfos = libItem.name.split(":");
-            libDir.add(Tools.DIR_HOME_LIBRARY + "/" + Tools.artifactToPath(libInfos[0], libInfos[1], libInfos[2]));
+            String fullPath = Tools.DIR_HOME_LIBRARY + "/" + Tools.artifactToPath(libInfos[0], libInfos[1], libInfos[2]);
+            if (!libDir.contains(fullPath)) {
+                libDir.add(fullPath);
+            }
         }
         return libDir.toArray(new String[0]);
     }
@@ -468,11 +461,11 @@ public final class Tools
                                     libAdded.name.substring(libAddedName.length() + 1) + " with " +
                                     lib.name.substring(libName.length() + 1));
                                 libList.set(i, lib);
-                                continue loop_1;
+                                libName = null;
                             }
                         }
 
-                        libList.add(lib);
+                        if (libName != null) libList.add(lib);
                     }
                 } finally {
                     inheritsVer.libraries = libList.toArray(new DependentLibrary[0]);

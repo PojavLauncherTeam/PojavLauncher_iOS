@@ -36,29 +36,26 @@
 #define SPECIALBTN_SCROLLUP -7
 #define SPECIALBTN_SCROLLDOWN -8
 
+JavaVM* runtimeJavaVMPtr;
+JNIEnv* runtimeJNIEnvPtr;
+__weak UIViewController *viewController;
+
+void* gbuffer; // OSMesa framebuffer
+long showingWindow;
+int savedWidth, savedHeight;
+bool isInputReady, isCursorEntered, isPrepareGrabPos, isUseStackQueueCall;
+jboolean isGrabbing;
+BOOL virtualMouseEnabled;
+
 static float resolutionScale = 1.0;
 BOOL isControlModifiable;
 
-UIViewController *viewController;
+// Init functions
+void init_hookFunctions();
+void init_setupMultiDir();
 
-void* gbuffer; // OSMesa framebuffer
-
-JavaVM* runtimeJavaVMPtr;
-JNIEnv* runtimeJNIEnvPtr_ANDROID;
-JNIEnv* runtimeJNIEnvPtr_JRE;
-
-//JNIEnv* dalvikJNIEnvPtr_ANDROID;
-//JNIEnv* dalvikJNIEnvPtr_JRE;
-
-long showingWindow;
-
-bool isInputReady, isCursorEntered, isPrepareGrabPos, isUseStackQueueCall;
-
-jboolean isGrabbing;
-
-int savedWidth, savedHeight;
-
-BOOL virtualMouseEnabled;
+NSMutableDictionary* parseJSONFromFile(NSString *path);
+NSError* saveJSONToFile(NSDictionary *dict, NSString *path);
 
 static inline CGFloat clamp(CGFloat x, CGFloat lower, CGFloat upper) {
     return fmin(upper, fmax(x, lower));

@@ -221,12 +221,11 @@ int pojavInit() {
     mainThreadID = gettid();
 
     NSString *renderer = @(getenv("POJAV_RENDERER"));
-    BOOL isVGPU = [renderer hasPrefix:@"libvgpu"];
     if ([renderer isEqualToString:@"libOSMesa.8.dylib"]) {
         config_renderer = RENDERER_VIRGL;
         setenv("GALLIUM_DRIVER", "virpipe", 1);
         loadSymbolsVirGL();
-    } else if ([renderer hasPrefix:@"libgl4es"] || [renderer hasPrefix:@"libtinygl4angle"] || isVGPU) {
+    } else if ([renderer hasPrefix:@"libgl4es"] || [renderer hasPrefix:@"libtinygl4angle"]) {
         config_renderer = RENDERER_MTL_ANGLE;
         loadSymbols();
     } else if ([renderer hasPrefix:@"libOSMesa"]) {
@@ -235,7 +234,6 @@ int pojavInit() {
         loadSymbols();
     }
 
-    
     if (config_renderer == RENDERER_MTL_ANGLE || config_renderer == RENDERER_VIRGL) {
         if (potatoBridge.eglDisplay == EGL_NO_DISPLAY) {
             potatoBridge.eglDisplay = eglGetPlatformDisplay_p(EGL_PLATFORM_ANGLE_ANGLE, (void *)EGL_DEFAULT_DISPLAY, NULL);
@@ -244,6 +242,10 @@ int pojavInit() {
                 return JNI_FALSE;
             }
         }
+
+        // Pre-load the renderer library
+        void *renderer_handle = dlopen(getenv("POJAV_RENDERER"), RTLD_GLOBAL);
+        debugLog("%s=%p, error=%s", getenv("POJAV_RENDERER"), renderer_handle, dlerror());
 
         debugLog("EGLBridge: Initializing");
         // printf("EGLBridge: ANativeWindow pointer = %p\n", potatoBridge.androidWindow);
@@ -282,10 +284,8 @@ int pojavInit() {
 
         //ANativeWindow_setBuffersGeometry(potatoBridge.androidWindow, 0, 0, vid);
 
-        if (/*!isVGPU &&*/ !eglBindAPI_p(EGL_OPENGL_API)) {
+        if (!eglBindAPI_p(EGL_OPENGL_API)) {
             debugLog("EGLBridge: Failed to bind EGL_OPENGL_API, falling back to EGL_OPENGL_ES_API, error=0x%x", eglGetError_p());
-            eglBindAPI_p(EGL_OPENGL_ES_API);
-        } else if (isVGPU) {
             eglBindAPI_p(EGL_OPENGL_ES_API);
         }
 
@@ -419,20 +419,6 @@ void pojavMakeCurrent(void* window) {
                 eglSwapBuffers(potatoBridge.eglDisplay, potatoBridge.eglSurface);
                 debugLog("First frame error: 0x%x", eglGetError());
 #endif
-
-                // ADDITIONAL STEP ON IOS: Initialize gl4es
-                void *gl4es_handle = dlopen(getenv("POJAV_RENDERER"), RTLD_GLOBAL);
-                debugLog("%s=%p, error=%s", getenv("POJAV_RENDERER"), gl4es_handle, dlerror());
-
-                gl4esInitialize_func *gl4esInitialize = (gl4esInitialize_func*) dlsym(gl4es_handle, "initialize_gl4es");
-                // debugLog("initialize_gl4es = %p", gl4esInitialize);
-                if (gl4esInitialize) {
-                    gl4esInitialize();
-                } else {
-                    debugLog("%s", dlerror());
-                }
-                regLog("Renderer init success");
-
                 return;
             } else {
                 // (*env)->ThrowNew(env,(*env)->FindClass(env,"java/lang/Exception"),"Trace exception");
@@ -469,6 +455,10 @@ void* pojavCreateContext(void* contextSrc) {
                 EGL_NONE
             };
             EGLContext* ctx = eglCreateContext_p(potatoBridge.eglDisplay, config, (void*)contextSrc, ctx_attribs);
+            if (!ctx) {
+                debugLog("EGLBridge: Failed to create context: 0x%x, returning previous one.", eglGetError_p());
+                return potatoBridge.eglContext;
+            }
             potatoBridge.eglContext = ctx;
             debugLog("EGLBridge: Created CTX pointer = %p",ctx);
             //(*env)->ThrowNew(env,(*env)->FindClass(env,"java/lang/Exception"),"Trace exception");

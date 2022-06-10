@@ -29,9 +29,7 @@ public class UIKit {
         System.setProperty("os.name", osName);
     }
 
-    public static void callback_JavaGUIViewController_launchJarFile(final String filepath, int width, int height) {
-        System.setProperty("cacio.managed.screensize", width + "x" + height);
-
+    public static void callback_JavaGUIViewController_launchJarFile(final String filepath) throws Throwable {
         // Thread for refreshing the AWT buffer
         new Thread(() -> {
             try {
@@ -58,53 +56,27 @@ public class UIKit {
             }
         }, "AWTFBRefreshThread").start();
 
-        // Thread for launching the JAR file
-        new Thread(() -> {
-            String mainClassName = null;
-            try {
-                JarFile jarfile = new JarFile(filepath);
-                String mainClass = jarfile.getManifest().getMainAttributes().getValue("Main-Class");
-                jarfile.close();
-                if (mainClass == null) {
-                    throw new IllegalArgumentException("no main manifest attribute, in \"" + filepath + "\"");
-                }
+        // Launch the JAR file
+        String mainClassName = null;
 
-                PojavClassLoader loader = (PojavClassLoader) ClassLoader.getSystemClassLoader();
-                loader.addURL(new File(filepath).toURI().toURL());
+        JarFile jarfile = new JarFile(filepath);
+        String mainClass = jarfile.getManifest().getMainAttributes().getValue("Main-Class");
+        jarfile.close();
+        if (mainClass == null) {
+            throw new IllegalArgumentException("no main manifest attribute, in \"" + filepath + "\"");
+        }
 
-                // LabyMod Installer uses FlatLAF which has some macOS-specific codes, so we make it thinks it's running on Linux.
-                patch_FlatLAF_setLinux();
+        PojavClassLoader loader = (PojavClassLoader) ClassLoader.getSystemClassLoader();
+        loader.addURL(new File(filepath).toURI().toURL());
 
-                Class<?> clazz = loader.loadClass(mainClass);
-                Method method = clazz.getMethod("main", String[].class);
-                method.invoke(null, new Object[]{new String[]{}});
+        // LabyMod Installer uses FlatLAF which has some macOS-specific codes, so we make it thinks it's running on Linux.
+        patch_FlatLAF_setLinux();
 
-                // throw new RuntimeException("Application exited");
-            } catch (Throwable th) {
-                Tools.showError(th, true);
-            }
-        }, "ModInstallerThread").start();
-    }
-    
-    public static void callback_LauncherViewController_installMinecraft(String versionPath) {
-        PLaunchApp.installMinecraft(versionPath);
+        Class<?> clazz = loader.loadClass(mainClass);
+        Method method = clazz.getMethod("main", String[].class);
+        method.invoke(null, new Object[]{new String[]{}});
     }
 
-    public static void callback_SurfaceViewController_launchMinecraft(int width, int height, String rendererLibName) {
-        MCOptionUtils.load();
-        MCOptionUtils.set("overrideWidth", Integer.toString(width));
-        MCOptionUtils.set("overrideHeight", Integer.toString(height));
-        MCOptionUtils.save();
-
-        System.setProperty("cacio.managed.screensize", width + "x" + height);
-        System.setProperty("org.lwjgl.opengl.libname", rendererLibName);
-
-        GLFW.internalChangeMonitorSize(width, height);
-        CallbackBridge.mouseX = width / 2;
-        CallbackBridge.mouseY = height / 2;
-        PLaunchApp.launchMinecraft();
-    }
-    
     public static void callback_SurfaceViewController_onTouch(int event, float x, float y) {
         switch (event) {
             case ACTION_DOWN:
@@ -114,7 +86,7 @@ public class UIKit {
                     CallbackBridge.mouseY = y;
                 }
                 break;
-                
+
             case ACTION_MOVE:
                 if (GLFW.mGLFWIsGrabbing) {
                     CallbackBridge.mouseX += x - CallbackBridge.mouseLastX;
@@ -140,16 +112,11 @@ public class UIKit {
         String str = MCOptionUtils.get("guiScale");
         guiScale = (str == null ? 0 :Integer.parseInt(str));
 
-        int scale = Math.max(Math.min(GLFW.mGLFWWindowWidth / 320, GLFW.mGLFWWindowHeight / 240), 1);
+        int scale = Math.max(Math.min(Tools.mGLFWWindowWidth / 320, Tools.mGLFWWindowHeight / 240), 1);
         if(scale < guiScale || guiScale == 0){
             guiScale = scale;
         }
         updateMCGuiScale(guiScale);
-    }
-    
-    public static void updateProgressSafe(final float progress, final String message) {
-        System.out.println(message);
-        updateProgress(progress, ((int) (progress * 100)) + "% - " + message);
     }
 
     static {
@@ -158,16 +125,9 @@ public class UIKit {
 
     public static native void refreshAWTBuffer(int[] array);
 
-    public static native int launchUI();
     // public static native void runOnUIThread(UIKitCallback callback);
-    
+
     public static native void showError(String title, String message, boolean exitIfOk);
-    
+
     private static native void updateMCGuiScale(int scale);
-    
-    // Update progress
-    public static native void updateProgress(float progress, String message);
-    
-    // Start SurfaceViewController
-    public static native void launchMinecraftSurface(boolean isUseStackQueueBool);
-}
+} 

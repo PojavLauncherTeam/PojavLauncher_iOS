@@ -16,8 +16,7 @@
 #endif
 
 
-@interface AboutLauncherViewController () {
-}
+@interface AboutLauncherViewController()
 @property (nonatomic, strong) UIActivityViewController *activityViewController;
 @end
 
@@ -27,8 +26,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    viewController = self;
-    
+
     [self setTitle:@"About PojavLauncher"];
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];

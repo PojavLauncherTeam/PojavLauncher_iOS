@@ -1,0 +1,17 @@
+#import "BaseAuthenticator.h"
+
+@implementation LocalAuthenticator
+
+- (void)loginWithCallback:(Callback)callback {
+    self.authData[@"oldusername"] = self.authData[@"username"] = self.authData[@"input"];       
+    self.authData[@"accessToken"] = @"0";
+    self.authData[@"profileId"] = @"00000000-0000-0000-0000-000000000000";
+    callback([super saveChanges]);
+}
+
+- (void)refreshTokenWithCallback:(Callback)callback {
+    // Nothing to do
+    callback(YES);
+}
+
+@end

@@ -1,0 +1,47 @@
+/* 
+  Localizable.strings
+  StringLocalization
+*/
+
+"init.migrateDir" = "The PojavLauncher data directory is now %@. All of your existing data has been moved to the new location.";
+
+"login.error.username.outOfRange" = "Username must be at least 3 characters and maximum 16 characters";
+
+"login.alert.title" = "Login";
+"login.alert.field.username" = "Username";
+
+"login.menu.about" = "About PojavLauncher";
+"login.menu.sendlogs" = "Send your logs";
+"login.menu.updates" = "Recent updates";
+
+"login.option.microsoft" = "Microsoft account";
+"login.option.demo" = "Demo account";
+"login.option.local" = "Local account";
+
+"login.progress.title" = "Logging in";
+
+"login.warn.title.a7" = "This is the last update for this device.";
+"login.warn.message.a7" = "Your device will not support PojavLauncher 2.2. This change is due to hardware and software limitations.";
+
+"login.warn.title.demomode" = "This option is in beta.";
+"login.warn.message.demomode" = "As a replacement to offline and local mode, demo mode will allow you to sign into a Microsoft account that does not own the game and play the Java Edition trial, introduced in 1.3.1 and newer versions. Older versions contain the full game, as the official launcher does not place these restrictions. See our website to learn more about this transition from offline mode.";
+
+"login.warn.title.otherjb" = "Jailbreak not completely supported.";
+"login.warn.message.otherjb" = "Your current jailbreak does not have the Procursus bootstrap. Certain issues may occur that cannot be fixed, please switch to or wait for a fully compatible jailbreak.";
+
+"login.warn.title.localmode" = "Offline mode is now Local mode.";
+"login.warn.message.localmode" = "You can continue to play installed versions, but you can no longer download Minecraft without a paid account. No support will be provided for issues with local accounts, or other means of acquiring Minecraft. See the FAQ for more information.";
+
+"login.msa.error.xsts.noxboxacc" = "An Xbox profile is not registered for this Microsoft account. Please make sure that you have made an Xbox profile.\nError code: 2148916233";
+"login.msa.error.xsts.noxbox" = "Xbox Live is currently unavailable in your country.\nError code: 2148916235";
+"login.msa.error.xsts.krverify" = "Your account needs to be verified by your parents before continue.\nError code: 2148916236 or 2148916237.";
+"login.msa.error.xsts.underage" = "Your account needs to be linked to a patent account before continue.\nError code: 2148916238";
+
+"login.msa.notice.demomode" = "Could not find a Minecraft profile on this account. The account is now set to Demo mode. Did you buy Minecraft, or is there an active Xbox GamePass subscription? Please configure your profile in https://minecraft.net/msaprofle to restore to Full mode.";
+
+"login.msa.progress.acquireAccessToken" = "(1/5) Acquiring the Access token";
+"login.msa.progress.acquireXBLToken" = "(2/5) Acquiring the Xbox Live token";
+"login.msa.progress.acquireXSTS" = "Acquiring XSTS";
+"login.msa.progress.acquireXboxProfile" = "(3/5) Acquiring the Xbox profile";
+"login.msa.progress.acquireMCToken" = "(4/5) Acquiring the Minecraft token";
+"login.msa.progress.checkMCProfile" = "(5/5) Checking the Minecraft profile";

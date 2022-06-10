@@ -86,7 +86,6 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    viewController = self;
     isControlModifiable = YES;
 
     [self.navigationController setNavigationBarHidden:YES animated:YES];
@@ -129,7 +128,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     [self.offsetView addGestureRecognizer:longpressGesture];
     self.currentFileName = [getPreference(@"default_ctrl") stringByDeletingPathExtension];
     [self initKeyCodeMap];
-    [self loadControlFile:[NSString stringWithFormat:@"%s/%@", getenv("POJAV_PATH_CONTROL"), getPreference(@"default_ctrl")]];
+    [self loadControlFile:[NSString stringWithFormat:@"%s/controlmap/%@", getenv("POJAV_HOME"), getPreference(@"default_ctrl")]];
 }
 
 - (void)loadControlFile:(NSString *)controlFilePath {
@@ -139,21 +138,8 @@ NSMutableArray *keyCodeMap, *keyValueMap;
         }
     }
 
-    NSError *cc_error;
-    NSString *cc_data = [NSString stringWithContentsOfFile:controlFilePath encoding:NSUTF8StringEncoding error:&cc_error];
-
-    if (cc_error) {
-        NSLog(@"Error: could not read %@: %@", controlFilePath, cc_error.localizedDescription);
-        showDialog(self, @"Error", [NSString stringWithFormat:@"Could not read %@: %@", controlFilePath, cc_error.localizedDescription]);
-        return;
-    }
-
-    NSData* cc_objc_data = [cc_data dataUsingEncoding:NSUTF8StringEncoding];
-    self.cc_dictionary = [NSJSONSerialization JSONObjectWithData:cc_objc_data options:NSJSONReadingMutableContainers error:&cc_error];
-    if (cc_error) {
-        showDialog(self, @"Error parsing JSON", cc_error.localizedDescription);
-        return;
-    }
+    self.cc_dictionary = parseJSONFromFile(controlFilePath);
+    if (self.cc_dictionary == nil) return;
 
     loadControlObject(self.offsetView, self.cc_dictionary, ^void(ControlButton* button) {
         [button addGestureRecognizer:[[UITapGestureRecognizer alloc]
@@ -223,7 +209,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 
 - (void)actionMenuSave {
       UIAlertController *controller = [UIAlertController alertControllerWithTitle: @"Save"
-        message:[NSString stringWithFormat:@"File will be saved to %s directory.", getenv("POJAV_PATH_CONTROL")]
+        message:[NSString stringWithFormat:@"File will be saved to %s/controlmap directory.", getenv("POJAV_HOME")]
         preferredStyle:UIAlertControllerStyleAlert];
     [controller addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         textField.placeholder = @"Name";
@@ -245,7 +231,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
                 return;
             }
             NSString *jsonStr = [NSString stringWithUTF8String:jsonData.bytes];
-            BOOL success = [jsonStr writeToFile:[NSString stringWithFormat:@"%s/%@.json", getenv("POJAV_PATH_CONTROL"), field.text] atomically:YES encoding:NSUTF8StringEncoding error:&error];
+            BOOL success = [jsonStr writeToFile:[NSString stringWithFormat:@"%s/controlmap/%@.json", getenv("POJAV_HOME"), field.text] atomically:YES encoding:NSUTF8StringEncoding error:&error];
             if (!success) {
                 showDialog(self, @"Error while saving file", error.localizedDescription);
                 return;
@@ -276,14 +262,14 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 - (void)actionMenuLoad {
     [self actionOpenFilePicker:^void(NSString* name) {
         self.currentFileName = name;
-        [self loadControlFile:[NSString stringWithFormat:@"%s/%@.json", getenv("POJAV_PATH_CONTROL"), name]];
+        [self loadControlFile:[NSString stringWithFormat:@"%s/controlmap/%@.json", getenv("POJAV_HOME"), name]];
     }];
 }
 
 - (void)actionMenuSetDef {
     [self actionOpenFilePicker:^void(NSString* name) {
         self.currentFileName = name;
-        [self loadControlFile:[NSString stringWithFormat:@"%s/%@.json", getenv("POJAV_PATH_CONTROL"), name]];
+        [self loadControlFile:[NSString stringWithFormat:@"%s/controlmap/%@.json", getenv("POJAV_HOME"), name]];
         setPreference(@"default_ctrl", [NSString stringWithFormat:@"%@.json", name]);
     }];
 }
@@ -385,6 +371,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     shouldDismissPopover = NO;
     CCMenuViewController *vc = [[CCMenuViewController alloc] init];
     vc.modalPresentationStyle = UIModalPresentationFormSheet;
+    vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     if (![self.currentGesture isKindOfClass:[UILongPressGestureRecognizer class]]) {
         vc.targetButton = (ControlButton *)self.currentGesture.view;
     }
@@ -939,9 +926,6 @@ CGFloat currentY;
 }
 
 - (void)actionEditFinish {
-    shouldDismissPopover = YES;
-    [self dismissViewControllerAnimated:YES completion:nil];
-
     self.targetButton.properties[@"name"] = self.editName.text;
     self.targetButton.properties[@"width"]  = @([self.editSizeWidth.text floatValue]);
     self.targetButton.properties[@"height"] = @([self.editSizeHeight.text floatValue]);
@@ -968,10 +952,20 @@ CGFloat currentY;
     self.targetButton.properties[@"cornerRadius"] = @((NSInteger) self.sliderCornerRadius.value);
     self.targetButton.properties[@"opacity"] = @(self.sliderOpacity.value / 100.0);
     self.targetButton.properties[@"isDynamicBtn"] = @(self.switchDynamicPos.isOn);
+
+    NSString *oldDynamicX = self.targetButton.properties[@"dynamicX"];
+    NSString *oldDynamicY = self.targetButton.properties[@"dynamicY"];
     self.targetButton.properties[@"dynamicX"] = self.editDynamicX.text;
     self.targetButton.properties[@"dynamicY"] = self.editDynamicY.text;
 
-    [self.targetButton update];
+    @try {
+        [self.targetButton update];
+        [self actionEditCancel];
+    } @catch (NSException *exception) {
+        self.targetButton.properties[@"dynamicX"] = oldDynamicX;
+        self.targetButton.properties[@"dynamicY"] = oldDynamicY;
+        showDialog(self, @"Error processing dynamic position", exception.reason);
+    }
 }
 
 - (void)sliderValueChanged:(DBNumberedSlider *)sender {

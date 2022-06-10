@@ -1,10 +1,13 @@
 #import <GameController/GameController.h>
 
+#import "JavaLauncher.h"
 #import "LauncherPreferences.h"
+#import "MinecraftDownloader.h"
 #import "SurfaceViewController.h"
 #import "egl_bridge.h"
 #import "ios_uikit_bridge.h"
 
+#import "authenticator/BaseAuthenticator.h"
 #import "customcontrols/ControlButton.h"
 #import "customcontrols/ControlDrawer.h"
 #import "customcontrols/ControlSubButton.h"
@@ -137,7 +140,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     viewController = self;
     isControlModifiable = NO;
 
-    setPreference(@"internal_selected_account", nil);
+    setPreference(@"internal_launch_on_boot", @(NO));
     isUseStackQueueCall = [getPreference(@"internal_useStackQueue") boolValue];
     setPreference(@"internal_useStackQueue", nil);
 
@@ -167,11 +170,6 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     self.surfaceView.layer.magnificationFilter = self.surfaceView.layer.minificationFilter = kCAFilterNearest;
     [self.view addSubview:self.surfaceView];
 
-    // Enable support for desktop GLSL
-    if ([getPreference(@"disable_gl4es_shaderconv") boolValue]) {
-        setenv("LIBGL_NOSHADERCONV", "1", 1);
-    }
-
     notchOffset = insets.left;
     width = width - notchOffset * 2;
     CGFloat buttonScale = [getPreference(@"button_scale") floatValue] / 100.0;
@@ -196,8 +194,8 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 
     if (@available(iOS 13.0, *)) {
         UIHoverGestureRecognizer *hoverGesture = [[UIHoverGestureRecognizer alloc]
-            initWithTarget:self action:@selector(surfaceOnHover:)];
-            [self.surfaceView addGestureRecognizer:hoverGesture];
+        initWithTarget:self action:@selector(surfaceOnHover:)];
+        [self.surfaceView addGestureRecognizer:hoverGesture];
     }
 
     UILongPressGestureRecognizer *longpressGesture = [[UILongPressGestureRecognizer alloc]
@@ -207,7 +205,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     longpressGesture.delegate = self;
     longpressGesture.minimumPressDuration = [getPreference(@"time_longPressTrigger") floatValue] / 1000;
     [self.surfaceView addGestureRecognizer:longpressGesture];
-    
+
     self.scrollPanGesture = [[UIPanGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnTouchesScroll:)];
     self.scrollPanGesture.allowedTouchTypes = @[@(UITouchTypeDirect)];
@@ -244,7 +242,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     self.inputView.lastPosition = 20;
     [self.inputView addTarget:self action:@selector(inputViewDidChange) forControlEvents:UIControlEventEditingChanged];
 
-    NSString *controlFilePath = [NSString stringWithFormat:@"%s/%@", getenv("POJAV_PATH_CONTROL"), (NSString *)getPreference(@"default_ctrl")];
+    NSString *controlFilePath = [NSString stringWithFormat:@"%s/controlmap/%@", getenv("POJAV_HOME"), (NSString *)getPreference(@"default_ctrl")];
 
     NSError *cc_error;
     NSString *cc_data = [NSString stringWithContentsOfFile:controlFilePath encoding:NSUTF8StringEncoding error:&cc_error];
@@ -319,7 +317,46 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 
     // [self setPreferredFramesPerSecond:1000];
 
-    callback_SurfaceViewController_launchMinecraft(savedWidth * resolutionScale, savedHeight * resolutionScale);
+    [self launchMinecraft];
+}
+
+- (void)processMinecraftJVMArgs:(NSMutableDictionary *)json {
+    // Parse Forge 1.17+ additional JVM Arguments
+    if (json[@"inheritsFrom"] == nil || json[@"arguments"][@"jvm"] == nil) {
+        return;
+    }
+
+    json[@"arguments"][@"jvm_processed"] = [[NSMutableArray alloc] init];
+
+    NSDictionary *varArgMap = @{
+        @"${classpath_separator}": @":",
+        @"${library_directory}": [NSString stringWithFormat:@"%s/libraries", getenv("POJAV_GAME_DIR")],
+        @"${version_name}": json[@"id"]
+    };
+
+    for (id arg in json[@"arguments"][@"jvm"]) {
+        if ([arg isKindOfClass:NSString.class]) {
+            NSString *argStr = arg;
+            for (NSString *key in varArgMap.allKeys) {
+                argStr = [argStr stringByReplacingOccurrencesOfString:key withString:varArgMap[key]];
+            }
+            [json[@"arguments"][@"jvm_processed"] addObject:argStr];
+        }
+    }
+}
+
+- (void)launchMinecraft {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [MinecraftDownloader downloadClientJson:getPreference(@"selected_version") progress:nil callback:nil success:^(NSMutableDictionary *json) {
+            [self processMinecraftJVMArgs:json];
+            launchJVM(
+                BaseAuthenticator.current.authData[@"username"],
+                json,
+                savedWidth * resolutionScale, savedHeight * resolutionScale,
+                [json[@"javaVersion"][@"majorVersion"] intValue]
+            );
+        }];
+    });
 }
 
 - (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {

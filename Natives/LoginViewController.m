@@ -3,11 +3,13 @@
 
 #import <AuthenticationServices/AuthenticationServices.h>
 
+#import "authenticator/BaseAuthenticator.h"
+
 #import "AppDelegate.h"
 #import "LauncherViewController.h"
 #import "LoginViewController.h"
 #import "AboutLauncherViewController.h"
-#import "FileListViewController.h"
+#import "AccountListViewController.h"
 #import "LauncherFAQViewController.h"
 #import "LauncherPreferences.h"
 #import "UpdateHistoryViewController.h"
@@ -32,7 +34,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    viewController = self;
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(msaLoginCallback:) name:@"MSALoginCallback" object:nil];
 
@@ -55,13 +56,10 @@
         self.view.backgroundColor = [UIColor whiteColor];
     }
 
-
-    
     if(getenv("POJAV_DETECTEDJB")) {
         if(strcmp(getenv("POJAV_DETECTEDJB"), "Other") == 0 && [getPreference(@"jb_warn") boolValue] == YES) {
-            NSString *jbMessage = @"Your current jailbreak does not have the Procursus bootstrap. Certain issues may occur that cannot be fixed, please switch to or wait for a fully compatible jailbreak.";
-            UIAlertController *jbAlert = [UIAlertController alertControllerWithTitle:@"Jailbreak not completely supported." message:jbMessage preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+            UIAlertController *jbAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"login.warn.title.otherjb", nil) message:NSLocalizedString(@"login.warn.message.otherjb", nil) preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleCancel handler:nil];
             [self presentViewController:jbAlert animated:YES completion:nil];
             [jbAlert addAction:ok];
             setPreference(@"jb_warn", @NO);
@@ -69,13 +67,12 @@
     }
 
     if(strncmp(getenv("POJAV_DETECTEDHW"), "iPhone6,", 9) == 0 || strncmp(getenv("POJAV_DETECTEDHW"), "iPad4,", 9) == 0) {
-        NSString *jbMessage = @"Your device will not support PojavLauncher 2.2. This change is due to hardware and software limitations.";
-        UIAlertController *jbAlert = [UIAlertController alertControllerWithTitle:@"This is the last update for this device." message:jbMessage preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+        UIAlertController *jbAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"login.warn.title.a7", nil) message:NSLocalizedString(@"login.warn.message.a7", nil) preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleCancel handler:nil];
         [self presentViewController:jbAlert animated:YES completion:nil];
         [jbAlert addAction:ok];
     }
-    
+
     CGFloat widthSplit = width / 4.0;
     CGFloat widthSplit2 = width / 2.0;
 
@@ -86,11 +83,11 @@
 
     if(@available (iOS 14.0, *)) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage systemImageNamed:@"info.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStyleDone target:self action:@selector(aboutLauncher)];
-        UIAction *option1 = [UIAction actionWithTitle:@"About PojavLauncher" image:[[UIImage systemImageNamed:@"eyes.inverse"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+        UIAction *option1 = [UIAction actionWithTitle:NSLocalizedString(@"login.menu.about", nil) image:[[UIImage systemImageNamed:@"eyes.inverse"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self aboutLauncher];}];
-        UIAction *option2 = [UIAction actionWithTitle:@"Send your logs" image:[[UIImage systemImageNamed:@"square.and.arrow.up"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+        UIAction *option2 = [UIAction actionWithTitle:NSLocalizedString(@"login.menu.sendlogs", nil) image:[[UIImage systemImageNamed:@"square.and.arrow.up"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self latestLogShare];}];
-        UIAction *option3 = [UIAction actionWithTitle:@"Recent updates" image:[[UIImage systemImageNamed:@"arrow.triangle.2.circlepath.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
+        UIAction *option3 = [UIAction actionWithTitle:NSLocalizedString(@"login.menu.updates", nil) image:[[UIImage systemImageNamed:@"arrow.triangle.2.circlepath.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self updateHistory];}];
         UIMenu *menu = [UIMenu menuWithTitle:@"" image:nil identifier:nil
                         options:UIMenuOptionsDisplayInline children:@[option1, option2, option3]];
@@ -98,7 +95,7 @@
         self.navigationItem.rightBarButtonItem.primaryAction = nil;
         self.navigationItem.rightBarButtonItem.menu = menu;
     } else {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"About" style:UIBarButtonItemStyleDone target:self action:@selector(aboutLauncher)];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"login.menu.about", nil) style:UIBarButtonItemStyleDone target:self action:@selector(aboutLauncher)];
     }
 
     UIButton *button_faq = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -131,11 +128,11 @@
     [button_login setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button_login addTarget:self action:@selector(accountType:) forControlEvents:UIControlEventTouchUpInside];
     if(@available (iOS 14.0, *)) {
-        UIAction *option1 = [UIAction actionWithTitle:@"Microsoft account" image:nil identifier:nil
+        UIAction *option1 = [UIAction actionWithTitle:NSLocalizedString(@"login.option.microsoft", nil) image:nil identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self loginMicrosoft];}];
-        UIAction *option3 = [UIAction actionWithTitle:@"Demo account" image:nil identifier:nil
+        UIAction *option3 = [UIAction actionWithTitle:NSLocalizedString(@"login.option.demo", nil) image:nil identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self loginDemo:button_login];}];
-        UIAction *option4 = [UIAction actionWithTitle:@"Local account" image:nil identifier:nil
+        UIAction *option4 = [UIAction actionWithTitle:NSLocalizedString(@"login.option.local", nil) image:nil identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self loginOffline:button_login];}];
         UIMenu *menu = [UIMenu menuWithTitle:@"" image:nil identifier:nil
                         options:UIMenuOptionsDisplayInline children:@[option4, option3, option1]];
@@ -195,11 +192,11 @@
     if(@available (iOS 14.0, *)) {
         // UIMenu
     } else {
-        UIAlertController *fullAlert = [UIAlertController alertControllerWithTitle:@"Let's get you signed in." message:@"What account do you use to log into Minecraft?"preferredStyle:UIAlertControllerStyleActionSheet];
-        UIAlertAction *microsoft = [UIAlertAction actionWithTitle:@"Microsoft account" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginMicrosoft];}];
-        UIAlertAction *offline = [UIAlertAction actionWithTitle:@"Local account"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginOffline:sender];}];
-        UIAlertAction *demo = [UIAlertAction actionWithTitle:@"Demo account" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginDemo:sender];}];
-        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+        UIAlertController *fullAlert = [UIAlertController alertControllerWithTitle:@"Let's get you signed in." message:@"What account do you use to log into Minecraft?" preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertAction *microsoft = [UIAlertAction actionWithTitle:NSLocalizedString(@"login.option.microsoft", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginMicrosoft];}];
+        UIAlertAction *offline = [UIAlertAction actionWithTitle:NSLocalizedString(@"login.option.local", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginOffline:sender];}];
+        UIAlertAction *demo = [UIAlertAction actionWithTitle:NSLocalizedString(@"login.option.demo", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginDemo:sender];}];
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(NSLocalizedString(@"Cancel", nil), nil) style:UIAlertActionStyleCancel handler:nil];
         [self setPopoverProperties:fullAlert.popoverPresentationController sender:sender];
         [self presentViewController:fullAlert animated:YES completion:nil];
         [fullAlert addAction:microsoft];
@@ -212,49 +209,41 @@
 - (void)loginAccountInput:(int)type data:(NSString *)data {
     __block BOOL shouldDismiss = NO;
     UIAlertController *alert;
+    BaseAuthenticator *auth;
 
-    if (type == TYPE_SELECTACC) {
-        NSError *error;
-        NSString *fileContent = [NSString stringWithContentsOfFile:[NSString stringWithFormat:@"%s/accounts/%@.json", getenv("POJAV_HOME"), data] encoding:NSUTF8StringEncoding error:&error];
-        shouldDismiss = [fileContent rangeOfString:@"\"accessToken\": \"0\","].location != NSNotFound;
+    switch (type) {
+        case TYPE_MICROSOFT:
+            auth = [[MicrosoftAuthenticator alloc] initWithInput:data];
+            break;
+        case TYPE_OFFLINE:
+            auth = [[LocalAuthenticator alloc] initWithInput:data];
+            break;
+        case TYPE_SELECTACC: {
+            NSString *fileContent = [NSString stringWithContentsOfFile:[NSString stringWithFormat:@"%s/accounts/%@.json", getenv("POJAV_HOME"), data] encoding:NSUTF8StringEncoding error:nil];
+            shouldDismiss = [fileContent rangeOfString:@"\"accessToken\": \"0\","].location != NSNotFound;
+            auth = [BaseAuthenticator loadSavedName:data];
+            } break;
     }
-    
+
+    if (auth == nil) return;
+
     if (type != TYPE_OFFLINE && !shouldDismiss) {
-        [self displayProgress:@"Logging in"];
+        [self displayProgress:NSLocalizedString(@"login.progress.title", nil)];
     }
 
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        JNIEnv *env;
-        (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &env, NULL);
-
-        jstring jdata = (*env)->NewStringUTF(env, data.UTF8String);
-        assert(jdata);
-
-        jclass clazz = (*env)->FindClass(env, "net/kdt/pojavlaunch/uikit/AccountJNI");
-        assert(clazz);
-
-        jmethodID method = (*env)->GetStaticMethodID(env, clazz, "loginAccount", "(ILjava/lang/String;)Ljava/lang/String;");
-        assert(method);
-
-        jstring result = (*env)->CallStaticObjectMethod(env, clazz, method, type, jdata);
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.title = @"";
-            self.navigationItem.leftBarButtonItem = nil;
-        });
-
-        if (result != NULL) {
-            const char *username = (*env)->GetStringUTFChars(env, result, 0);
-            setenv("POJAV_INTERNAL_SELECTED_ACCOUNT", username, 1);
-            (*env)->ReleaseStringUTFChars(env, result, username);
-            dispatch_async(dispatch_get_main_queue(), ^{
-                LauncherViewController *vc = [[LauncherViewController alloc] init];
-                [self.navigationController pushViewController:vc animated:YES];
-            });
+    id callback = ^(BOOL success) {
+        self.title = @"";
+        self.navigationItem.leftBarButtonItem = nil;
+        if (success) {
+            LauncherViewController *vc = [[LauncherViewController alloc] init];
+            [self.navigationController pushViewController:vc animated:YES]; 
         }
-
-        (*runtimeJavaVMPtr)->DetachCurrentThread(runtimeJavaVMPtr);
-    });
+    };
+    if (type == TYPE_SELECTACC) {
+        [auth refreshTokenWithCallback:callback];
+    } else {
+        [auth loginWithCallback:callback];
+    }
 }
 
 - (void)loginMicrosoft {
@@ -278,63 +267,64 @@
                         NSString *outError = [components[1]
                             stringByReplacingOccurrencesOfString:@"&error_description=" withString:@": "];
                         outError = [outError stringByRemovingPercentEncoding];
-                        showDialog(self, @"Error", outError);
+                        showDialog(self, NSLocalizedString(@"Error", nil), outError);
                     }
                 }
             } else {
                 if (error.code != ASWebAuthenticationSessionErrorCodeCanceledLogin) {
-                    showDialog(self, @"Error", error.localizedDescription);
+                    showDialog(self, NSLocalizedString(@"Error", nil), error.localizedDescription);
                 }
             }
         }];
 
     if (@available(iOS 13.0, *)) {
+        authVC.prefersEphemeralWebBrowserSession = YES;
         authVC.presentationContextProvider = self;
     }
 
     if ([authVC start] == NO) {
-        showDialog(self, @"Error", @"Unable to open Safari");
+        showDialog(self, NSLocalizedString(@"Error", nil), @"Unable to open Safari");
     }
 }
 
 - (void)loginOffline:(UIButton *)sender {
     if ([getPreference(@"local_warn") boolValue] == YES) {
-        UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:@"Offline mode is now Local mode." message:@"You can continue to play installed versions, but you can no longer download Minecraft without a paid account. No support will be provided for issues with local accounts, or other means of acquiring Minecraft. See the FAQ for more information."preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"login.warn.title.localmode", nil) message:NSLocalizedString(@"login.warn.message.localmode", nil) preferredStyle:UIAlertControllerStyleActionSheet];
         [self setPopoverProperties:offlineAlert.popoverPresentationController sender:sender];
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginOffline:sender];}];
-        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self accountType:sender];}];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginOffline:sender];}];
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self accountType:sender];}];
         [self presentViewController:offlineAlert animated:YES completion:nil];
         [offlineAlert addAction:ok];
         [offlineAlert addAction:cancel];
         setPreference(@"local_warn", @NO);
     } else {
-        UIAlertController *controller = [UIAlertController alertControllerWithTitle:@"Login" message:@"Account type: Local" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"login.alert.title", nil) message:NSLocalizedString(@"login.option.local", nil) preferredStyle:UIAlertControllerStyleAlert];
         [controller addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.placeholder = @"Username";
+            textField.placeholder = NSLocalizedString(@"login.alert.field.username", nil);
             textField.clearButtonMode = UITextFieldViewModeWhileEditing;
             textField.borderStyle = UITextBorderStyleRoundedRect;
         }];
-        [controller addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             NSArray *textFields = controller.textFields;
             UITextField *usernameField = textFields[0];
             if (usernameField.text.length < 3 || usernameField.text.length > 16) {
-                controller.message = @"Username must be at least 3 characters and maximum 16 characters";
+                controller.message = NSLocalizedString(@"login.error.username.outOfRange", nil);
                 [self presentViewController:controller animated:YES completion:nil];
             } else {
                 [self loginAccountInput:TYPE_OFFLINE data:usernameField.text];
             }
         }]];
-        [controller addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+        [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil]];
         [self presentViewController:controller animated:YES completion:nil];
     }
 }
 
 - (void)loginDemo:(UIButton *)sender {
     if ([getPreference(@"demo_warn") boolValue] == YES) {
-        UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:@"This option is in beta." message:@"As a replacement to offline and local mode, demo mode will allow you to sign into a Microsoft account that does not own the game and play the Java Edition trial, introduced in 1.3.1 and newer versions. Older versions contain the full game, as the official launcher does not place these restrictions. See our website to learn more about this transition from offline mode."preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"login.warn.title.demomode", nil) message:NSLocalizedString(@"login.warn.message.demomode", nil) preferredStyle:UIAlertControllerStyleActionSheet];
         [self setPopoverProperties:offlineAlert.popoverPresentationController sender:sender];
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginMicrosoft];}];
-        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self accountType:sender];}];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginMicrosoft];}];
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self accountType:sender];}];
         [self presentViewController:offlineAlert animated:YES completion:nil];
         [offlineAlert addAction:ok];
         [offlineAlert addAction:cancel];
@@ -345,8 +335,7 @@
 }
 
 - (void)loginAccount:(UIButton *)sender {
-    FileListViewController *vc = [[FileListViewController alloc] init];
-    vc.listPath = [NSString stringWithFormat:@"%s/accounts", getenv("POJAV_HOME")];
+    AccountListViewController *vc = [[AccountListViewController alloc] init];
 /*
     vc.whenDelete = ^void(NSString* name) {
         UIAlertController* alert = showLoadingDialog(vc, @"Logging out...");

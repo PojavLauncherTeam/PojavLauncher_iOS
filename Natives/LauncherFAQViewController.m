@@ -12,7 +12,6 @@ CGFloat faqcurrY = 4.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    viewController = self;
     
     [self setTitle:@"Launcher FAQ"];
 

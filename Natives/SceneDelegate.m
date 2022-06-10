@@ -1,13 +1,18 @@
 #import "SceneDelegate.h"
 #import "LoginViewController.h"
 #import "ios_uikit_bridge.h"
-#include "utils.h"
+#import "utils.h"
 
 @interface SceneDelegate ()
 
 @end
 
 @implementation SceneDelegate
+
+
+- (void)navigationController:(UINavigationController *)controller willShowViewController:(UIViewController *)vc animated:(BOOL)animated {
+    viewController = vc;
+}
 
 
 - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions  API_AVAILABLE(ios(13.0)) API_AVAILABLE(ios(13.0)) API_AVAILABLE(ios(13.0)){
@@ -17,6 +22,7 @@
         self.window = [[UIWindow alloc] initWithWindowScene:windowScene];
         self.window.frame = windowScene.coordinateSpace.bounds;
         launchInitialViewController(self.window);
+        ((UINavigationController *)self.window.rootViewController).delegate = self;
         [self.window makeKeyAndVisible];
     } else {
         

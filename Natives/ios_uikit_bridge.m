@@ -1,4 +1,4 @@
-
+#import "authenticator/BaseAuthenticator.h"
 #import "AppDelegate.h"
 #import "BKSSystemService.h"
 #import "SceneDelegate.h"
@@ -24,7 +24,7 @@ void internal_showDialog(UIViewController *viewController, NSString* title, NSSt
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:title
         message:message
         preferredStyle:UIAlertControllerStyleAlert];
-
+    //text.dataDetectorTypes = UIDataDetectorTypeLink;
     UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
         handler:^(UIAlertAction * action) {}];
     [alert addAction:okAction];
@@ -95,7 +95,7 @@ jstring UIKit_accessClipboard(JNIEnv* env, jint action, jstring copySrc) {
         // copy request
         const char* copySrcC = (*env)->GetStringUTFChars(env, copySrc, 0);
         UIPasteboard.generalPasteboard.string = @(copySrcC);
-	    (*env)->ReleaseStringUTFChars(env, copySrc, copySrcC);
+        (*env)->ReleaseStringUTFChars(env, copySrc, copySrcC);
         return NULL;
     } else {
         // unknown request
@@ -104,34 +104,10 @@ jstring UIKit_accessClipboard(JNIEnv* env, jint action, jstring copySrc) {
     }
 }
 
-void UIKit_updateProgress(float progress, const char* message) {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        install_progress_bar.progress = progress;
-        install_progress_text.text = [[NSString alloc] initWithUTF8String:message];
-        // @(message);
-    });
-}
-
-void UIKit_launchJarFile(const char* filepath) {
-    jclass uikitBridgeClass = (*runtimeJNIEnvPtr_JRE)->FindClass(runtimeJNIEnvPtr_JRE, "net/kdt/pojavlaunch/uikit/UIKit");
-    assert(uikitBridgeClass != NULL);
-
-    jstring filepathStr = (*runtimeJNIEnvPtr_JRE)->NewStringUTF(runtimeJNIEnvPtr_JRE, filepath);
-    jmethodID method = (*runtimeJNIEnvPtr_JRE)->GetStaticMethodID(runtimeJNIEnvPtr_JRE, uikitBridgeClass, "callback_JavaGUIViewController_launchJarFile", "(Ljava/lang/String;II)V");
-    assert(method != NULL);
-
-    (*runtimeJNIEnvPtr_JRE)->CallStaticVoidMethod(
-        runtimeJNIEnvPtr_JRE,
-        uikitBridgeClass, method,
-        filepathStr,
-        savedWidth, savedHeight
-    );
-    (*runtimeJNIEnvPtr_JRE)->DeleteLocalRef(runtimeJNIEnvPtr_JRE, filepathStr);
-}
-
 void UIKit_launchMinecraftSurfaceVC() {
+    setPreference(@"internal_launch_on_boot", getPreference(@"restart_before_launch"));
+    setPreference(@"internal_selected_account", BaseAuthenticator.current.authData[@"username"]);
     setPreference(@"internal_useStackQueue", @(isUseStackQueueCall ? YES : NO));
-    setPreference(@"internal_selected_account", @(getenv("POJAV_INTERNAL_SELECTED_ACCOUNT")));
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([getPreference(@"restart_before_launch") boolValue]) {
             NSURL *url = [NSURL URLWithString:@"pojavlauncher://"];
@@ -154,11 +130,10 @@ void UIKit_launchMinecraftSurfaceVC() {
 }
 
 void launchInitialViewController(UIWindow *window) {
-    NSString *selectedAccount = getPreference(@"internal_selected_account");
-    if (selectedAccount == nil) {
+    if ([getPreference(@"internal_launch_on_boot") boolValue]) {
+        window.rootViewController = [[SurfaceViewController alloc] init];
+    } else {
         LoginViewController *vc = [[LoginViewController alloc] init];
         window.rootViewController = [[UINavigationController alloc] initWithRootViewController:vc];
-    } else {
-        window.rootViewController = [[SurfaceViewController alloc] init];
     }
 }
