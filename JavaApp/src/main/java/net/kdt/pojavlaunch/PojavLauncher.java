@@ -53,6 +53,7 @@ public class PojavLauncher {
         MCOptionUtils.save();
 
         System.setProperty("org.lwjgl.opengl.libname", System.getenv("POJAV_RENDERER"));
+        System.setProperty("org.lwjgl.vulkan.libname", "libMoltenVK.dylib");
 
         Tools.mGLFWWindowWidth = Integer.parseInt(size[0]);
         Tools.mGLFWWindowHeight = Integer.parseInt(size[1]);

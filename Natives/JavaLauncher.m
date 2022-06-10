@@ -289,7 +289,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
 
     // Check if JVM restarts
     char *frameworkPath, *javaPath, *jnaLibPath, *userDir, *userHome, *memMin, *memMax, *arcDNS;
-    asprintf(&frameworkPath, "-Djava.library.path=%s/Frameworks:%s/Frameworks/libOSMesaOverride.dylib.framework", getenv("BUNDLE_PATH"), getenv("BUNDLE_PATH"));
+    asprintf(&frameworkPath, "-Djava.library.path=%1$s/Frameworks:%1$s/Frameworks/libOSMesaOverride.dylib.framework:%1$s/Frameworks/libMoltenVK.dylib.framework", getenv("BUNDLE_PATH"));
     asprintf(&javaPath, "%s/bin/java", javaHome);
     asprintf(&jnaLibPath, "-Djna.boot.library.path=%s/Frameworks/libjnidispatch.dylib.framework", getenv("BUNDLE_PATH"));
     asprintf(&userDir, "-Duser.dir=%s", getenv("POJAV_GAME_DIR"));

@@ -217,6 +217,8 @@ int tempIndex;
     jargsTextField.delegate = self;
     jargsTextField.placeholder = @"Specify arguments...";
     jargsTextField.text = (NSString *) getPreference(@"java_args");
+    jargsTextField.autocorrectionType = UITextAutocorrectionTypeNo
+;
     jargsTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
     jargsTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [tableView addSubview:jargsTextField];

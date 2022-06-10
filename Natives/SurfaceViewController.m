@@ -46,7 +46,7 @@ BOOL slideableHotbar;
 #pragma mark Class GameSurfaceView
 @implementation GameSurfaceView
 const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
-	return gbuffer;
+    return gbuffer;
 }
 
 - (void)displayLayer {
@@ -238,6 +238,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     inputLengthView.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.6f];
     [self.view addSubview:inputLengthView];
 #endif
+    //self.inputView.autocorrectionType = UITextAutocorrectionTypeNo;
     self.inputView.delegate = self;
     self.inputView.lastPosition = 20;
     [self.inputView addTarget:self action:@selector(inputViewDidChange) forControlEvents:UIControlEventEditingChanged];

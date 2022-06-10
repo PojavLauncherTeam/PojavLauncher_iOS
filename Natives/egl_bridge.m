@@ -14,6 +14,7 @@
 #include "GLES2/gl2.h"
 
 #include "egl_bridge.h"
+#include "glfw_keycodes.h"
 #include "osmesa_internal.h"
 
 #include "log.h"
@@ -71,6 +72,7 @@ int (*vtest_main_p) (int, const char*[]);
 void (*vtest_swap_buffers_p) (void);
 void* egl_make_current(void* window);
 
+#define RENDERER_VULKAN 0
 #define RENDERER_MTL_ANGLE 1
 #define RENDERER_VK_ZINK 2
 #define RENDERER_VIRGL 3
@@ -219,7 +221,10 @@ void loadSymbolsVirGL() {
 int pojavInit() {
     isInputReady = 1;
     mainThreadID = gettid();
+    return JNI_TRUE;
+}
 
+jboolean pojavInit_OpenGL() {
     NSString *renderer = @(getenv("POJAV_RENDERER"));
     if ([renderer isEqualToString:@"libOSMesa.8.dylib"]) {
         config_renderer = RENDERER_VIRGL;
@@ -346,6 +351,23 @@ int pojavInit() {
     return JNI_FALSE;
 }
 
+void pojavSetWindowHint(int hint, int value) {
+    if (hint != GLFW_CLIENT_API) return;
+    switch (value) {
+        case GLFW_NO_API:
+            config_renderer = RENDERER_VULKAN;
+            /* Nothing to do: initialization is handled in Java-side */
+            // pojavInit_Vulkan();
+            break;
+        case GLFW_OPENGL_API:
+            pojavInit_OpenGL();
+            break;
+        default:
+            NSLog(@"GLFW: Unimplemented API 0x%x", value);
+            abort();
+    }
+}
+
 int32_t stride;
 bool stopSwapBuffers;
 void pojavSwapBuffers() {
@@ -449,6 +471,10 @@ void pojavMakeCurrent(void* window) {
 }
 
 void* pojavCreateContext(void* contextSrc) {
+    if (config_renderer == RENDERER_VULKAN) {
+        return (__bridge void *)(((SurfaceViewController *)viewController).surfaceView.layer);
+    }
+
     if (config_renderer == RENDERER_MTL_ANGLE) {
             const EGLint ctx_attribs[] = {
                 EGL_CONTEXT_CLIENT_VERSION, 3,

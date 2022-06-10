@@ -586,6 +586,7 @@ public class GLFW
             //DetachOnCurrentThread = apiGetFunctionAddress(GLFW, "pojavDetachOnCurrentThread"),
             MakeContextCurrent = apiGetFunctionAddress(GLFW, "pojavMakeCurrent"),
             Terminate = apiGetFunctionAddress(GLFW, "pojavTerminate"),
+            SetWindowHint = apiGetFunctionAddress(GLFW, "pojavSetWindowHint"),
             SwapBuffers = apiGetFunctionAddress(GLFW, "pojavSwapBuffers"),
             SwapInterval = apiGetFunctionAddress(GLFW, "pojavSwapInterval");
     }
@@ -905,7 +906,8 @@ public class GLFW
     @Nullable
     @NativeType("GLFWvidmode const *")
     public static GLFWVidMode.Buffer glfwGetVideoModes(@NativeType("GLFWmonitor *") long monitor) {
-        MemoryStack stack = stackGet(); int stackPointer = stack.getPointer();
+        MemoryStack stack = stackGet();
+        int stackPointer = stack.getPointer();
         IntBuffer count = stack.callocInt(1);
         try {
             // long __result = nglfwGetVideoModes(monitor, memAddress(count));
@@ -1017,12 +1019,16 @@ public class GLFW
             th.printStackTrace();
         }
     }
-    
+
     public static void glfwShowWindow(long window) {
         System.out.println("GLFW: Showing window " + window + ", " + internalGetWindow(window).toString());
         nglfwSetShowingWindow(window);
     }
-    public static void glfwWindowHint(int hint, int value) {}
+    public static void glfwWindowHint(int hint, int value) {
+        long __functionAddress = Functions.SetWindowHint;
+        invokeV(hint, value, __functionAddress);
+    }
+
     public static void glfwWindowHintString(int hint, @NativeType("const char *") ByteBuffer value) {}
     public static void glfwWindowHintString(int hint, @NativeType("const char *") CharSequence value) {}
 

@@ -30,6 +30,11 @@
 
 #pragma once
 
+#define GLFW_CLIENT_API 0x22001
+/* Consider GLFW_NO_API as Vulkan API */
+#define GLFW_NO_API 0
+#define GLFW_OPENGL_API 0x30001
+
 /*! @defgroup hat_state Joystick hat states
  *  @brief Joystick hat states.
  *
