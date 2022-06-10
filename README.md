@@ -7,7 +7,13 @@
 - The official Twitter for PojavLauncher is [@PLaunchTeam](https://twitter.com/PLaunchTeam). Any others (most notably @PojavLauncher) are fake, please report them to Twitter's moderation team.
 
 ## Introduction
-PojavLauncher is a Minecraft: Java Edition launcher for Android and iOS based on [Boardwalk](https://github.com/zhuowei/Boardwalk). This launcher can launch most of available Minecraft versions (from 1.6.1 to 1.19, including Combat Test versions). 1.17+ support is available as of v2.0, or with the workarounds described on our [website](https://pojav.ml). Modding via Forge (1.16.x only) and Fabric are also supported. Older versions of Forge and Fabric can be used with OpenJDK 8. This repository contains source code for iOS/iPadOS platform. For Android platform, check out [PojavLauncher repository](https://github.com/PojavLauncherTeam/PojavLauncher).
+PojavLauncher is a Minecraft: Java Edition launcher for Android and iOS based on [Boardwalk](https://github.com/zhuowei/Boardwalk).
+This launcher can launch most of available Minecraft versions (up to latest 1.19, including Combat Test versions).
+1.17+ support is available as of v2.0, or with the workarounds described on our [website](https://pojav.ml).
+Modding via Forge and Fabric are also supported.
+Older versions of Forge and Fabric can be used with OpenJDK 8.
+This repository contains source code for iOS/iPadOS platform.
+For Android platform, check out [PojavLauncher repository](https://github.com/PojavLauncherTeam/PojavLauncher).
 
 This launcher is available on the Procursus repo, thanks to [@Diatrus](https://twitter.com/Diatrus), and Doregon's Repository, thanks to [@crystall1ndev](https://twitter.com/crystall1nedev)
 
@@ -33,13 +39,8 @@ If you have unc0ver, checkra1n, or another jailbreak that comes with **Cydia Sub
    * The rootless variants serve the same purpose, but only work with Procursus jailbreaks and iOS 15 (see our website for more information).
 
 ## Known issues
-* Minecraft 1.12.2 and below are very buggy: you can't type text, random crashes, etc...
-* When using certain versions, the camera may jump to a random position when you start to touch the screen.
 * Some Forge versions may fail with `java.lang.reflect.InvocationTargetException`.
 * The game will be prone to JetsamEvents.
-
-## Work in progress
-* Custom controls
 
 ## Contributors
 PojavLauncher is amazing, and surprisingly stable, and it wouldn't be this way without the following people that helped and contribute to the project!
