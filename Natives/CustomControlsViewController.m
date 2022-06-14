@@ -250,7 +250,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     vc.whenItemSelected = handler;
     vc.modalPresentationStyle = UIModalPresentationPopover;
     vc.preferredContentSize = CGSizeMake(350, 250);
-    
+
     UIPopoverPresentationController *popoverController = [vc popoverPresentationController];
     popoverController.sourceView = self.view;
     popoverController.sourceRect = self.selectedPoint;
@@ -372,6 +372,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     CCMenuViewController *vc = [[CCMenuViewController alloc] init];
     vc.modalPresentationStyle = UIModalPresentationFormSheet;
     vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    vc.preferredContentSize = self.view.frame.size;
     if (![self.currentGesture isKindOfClass:[UILongPressGestureRecognizer class]]) {
         vc.targetButton = (ControlButton *)self.currentGesture.view;
     }
