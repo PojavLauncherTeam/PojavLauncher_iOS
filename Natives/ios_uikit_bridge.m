@@ -25,8 +25,7 @@ void internal_showDialog(UIViewController *viewController, NSString* title, NSSt
         message:message
         preferredStyle:UIAlertControllerStyleAlert];
     //text.dataDetectorTypes = UIDataDetectorTypeLink;
-    UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-        handler:^(UIAlertAction * action) {}];
+    UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
     [alert addAction:okAction];
 
     [viewController presentViewController:alert animated:YES completion:nil];

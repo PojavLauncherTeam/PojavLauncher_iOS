@@ -36,8 +36,6 @@ UILabel *inputLengthView;
 #endif
 int inputTextLength;
 
-int notchOffset;
-
 int currentHotbarSlot = -1;
 BOOL slideableHotbar;
 
@@ -116,9 +114,13 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 
 
 #pragma mark Class SurfaceViewController
-@interface SurfaceViewController ()<UITextFieldDelegate, UIPointerInteractionDelegate, UIGestureRecognizerDelegate> {
+@interface SurfaceViewController ()<UITextFieldDelegate, UIPointerInteractionDelegate, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate> {
 }
 
+@property NSArray *menuArray;
+@property UITableView *menuView;
+
+@property UIView *rootView;
 @property TrackedTextField *inputView;
 @property(nonatomic, strong) NSMutableDictionary* cc_dictionary;
 @property(nonatomic, strong) NSMutableArray* swipeableButtons;
@@ -158,20 +160,55 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     resolutionScale = ((NSNumber *)getPreference(@"resolution")).floatValue / 100.0;
     slideableHotbar = [getPreference(@"slideable_hotbar") boolValue];
 
-    int width = (int) roundf(screenBounds.size.width);
-    int height = (int) roundf(screenBounds.size.height);
+    savedWidth = roundf(screenBounds.size.width * screenScale);
+    savedHeight = roundf(screenBounds.size.height * screenScale);
 
-    savedWidth = roundf(width * screenScale);
-    savedHeight = roundf(height * screenScale);
+    self.rootView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width * 1.4, self.view.frame.size.height)];
+    [self.view addSubview:self.rootView];
+
+
+    // Side menu
+    UIScreenEdgePanGestureRecognizer *edgeGesture = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handleRightEdge:)];
+    edgeGesture.edges = UIRectEdgeRight;
+    edgeGesture.delegate = self;
+
+    UIPanGestureRecognizer *menuPanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleRightEdge:)];
+    menuPanGesture.delegate = self;
+
+    UIView *menuSwipeLineView = [[UIView alloc] initWithFrame:CGRectMake(11.0, self.view.frame.size.height/2 - 100.0, 
+8.0, 200.0)];
+    menuSwipeLineView.backgroundColor = UIColor.whiteColor;
+    menuSwipeLineView.layer.cornerRadius = 4;
+    menuSwipeLineView.userInteractionEnabled = NO;
+
+    UIView *menuSwipeView = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width, 0, 30.0, self.view.frame.size.height)];
+    menuSwipeView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
+    [menuSwipeView addGestureRecognizer:menuPanGesture];
+    [menuSwipeView addSubview:menuSwipeLineView];
+    [self.rootView addSubview:menuSwipeView];
+
+    self.menuArray = @[@"game.menu.forceClose" /*, @"game.menu.logOutput" */];
+
+    self.menuView = [[UITableView alloc] initWithFrame:CGRectMake(self.view.frame.size.width + 30.0, 0, 
+self.view.frame.size.width * 3.0/7.0 - 36.0, self.view.frame.size.height)];
+    //menuView.backgroundColor = [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1];
+    self.menuView.dataSource = self;
+    self.menuView.delegate = self;
+    self.menuView.layer.cornerRadius = 20;
+    self.menuView.scrollEnabled = NO;
+    self.menuView.separatorInset = UIEdgeInsetsZero;
+    [self.rootView addSubview:self.menuView];
+
 
     self.surfaceView = [[GameSurfaceView alloc] initWithFrame:self.view.frame];
+    self.surfaceView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
     self.surfaceView.multipleTouchEnabled = YES;
     self.surfaceView.layer.contentsScale = screenScale * resolutionScale;
     self.surfaceView.layer.magnificationFilter = self.surfaceView.layer.minificationFilter = kCAFilterNearest;
-    [self.view addSubview:self.surfaceView];
+    [self.surfaceView addGestureRecognizer:edgeGesture];
+    [self.rootView addSubview:self.surfaceView];
 
-    notchOffset = insets.left;
-    width = width - notchOffset * 2;
+
     CGFloat buttonScale = [getPreference(@"button_scale") floatValue] / 100.0;
 
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]
@@ -224,7 +261,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     self.mousePointerView.hidden = !virtualMouseEnabled;
     self.mousePointerView.image = [UIImage imageNamed:@"mouse_pointer.png"];
     self.mousePointerView.userInteractionEnabled = NO;
-    [self.view addSubview:self.mousePointerView];
+    [self.rootView addSubview:self.mousePointerView];
 
 #ifndef DEBUG_VISIBLE_TEXT_FIELD
     self.inputView = [[TrackedTextField alloc] initWithFrame:CGRectMake(0, -1, 1, 1)];
@@ -236,7 +273,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     inputLengthView = [[UILabel alloc] initWithFrame:CGRectMake(5 * 2 + 80.0, 5 * 2 + 30.0, 80.0, 30.0)];
     inputLengthView.text = @"length=?";
     inputLengthView.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.6f];
-    [self.view addSubview:inputLengthView];
+    [self.rootView addSubview:inputLengthView];
 #endif
     //self.inputView.autocorrectionType = UITextAutocorrectionTypeNo;
     self.inputView.delegate = self;
@@ -261,7 +298,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
         } else {
             CGFloat currentScale = [self.cc_dictionary[@"scaledAt"] floatValue];
             CGFloat savedScale = [getPreference(@"button_scale") floatValue];
-            loadControlObject(self.view, self.cc_dictionary, ^void(ControlButton* button) {
+            loadControlObject(self.rootView, self.cc_dictionary, ^void(ControlButton* button) {
                 BOOL isSwipeable = [button.properties[@"isSwipeable"] boolValue];
 
                 BOOL isToggleCtrlBtn = NO;
@@ -312,7 +349,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
         }
     }
 
-    [self.view addSubview:self.inputView];
+    [self.rootView addSubview:self.inputView];
 
     [self executebtn_special_togglebtn:0];
 
@@ -368,8 +405,100 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     return NO;
 }
 
-#pragma mark - Input: send touch utilities
 
+#pragma mark - Menu functions
+
+CGPoint lastCenterPoint;
+- (void)handleRightEdge:(UIPanGestureRecognizer *)sender {
+    if (lastCenterPoint.y == 0) {
+        lastCenterPoint.x = self.rootView.center.x;
+        lastCenterPoint.y = 1;
+
+        // Set the height to fit the content
+        CGRect menuFrame = self.menuView.frame;
+        menuFrame.size.height = MIN(self.view.frame.size.height, self.menuView.contentSize.height);
+        self.menuView.frame = menuFrame;
+    }
+
+    CGFloat centerX = self.rootView.bounds.size.width / 2;
+    CGFloat centerY = self.rootView.bounds.size.height / 2;
+
+    CGPoint translation = [sender translationInView:sender.view];
+
+    if (sender.state == UIGestureRecognizerStateBegan || sender.state == UIGestureRecognizerStateChanged) {
+        self.rootView.center = CGPointMake(lastCenterPoint.x + translation.x/UIScreen.mainScreen.scale, centerY + translation.y/10.0);
+        CGFloat scale = MAX(0.7, self.rootView.center.x / centerX);
+        self.rootView.transform = CGAffineTransformScale(CGAffineTransformIdentity, scale, scale);
+    } else {
+        CGPoint velocity = [sender velocityInView:sender.view];
+        CGFloat value = (velocity.x >= 0) ? 1 : 0.7;
+
+        // calculate duration to produce smooth movement
+        // FIXME: any better way?
+        CGFloat duration = fabs(self.rootView.center.x - centerX * value) / centerX + 0.1;
+        //(110 - MIN(100, fabs(velocity.x))) / 100
+
+        [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveEaseOut
+ animations:^{
+            lastCenterPoint.x = centerX * value;
+            self.rootView.center = CGPointMake(lastCenterPoint.x, centerY);
+            self.rootView.transform = CGAffineTransformScale(CGAffineTransformIdentity, value, value);
+        } completion:nil];
+    }
+}
+
+- (void)actionForceClose {
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil
+        message:NSLocalizedString(@"game.menu.confirm.forceClose", nil)
+        preferredStyle:UIAlertControllerStyleAlert];
+
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleDefault handler:nil];
+    [alert addAction:cancelAction];
+
+    UIAlertAction* okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+        [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+            self.rootView.center = CGPointMake(self.rootView.bounds.size.width/-2, self.rootView.center.y);
+        } completion:^(BOOL finished) {
+            exit(0);
+        }];
+    }];
+    [alert addAction:okAction];
+
+    [viewController presentViewController:alert animated:YES completion:nil];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.menuArray.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+    }
+    if (@available(iOS 13.0, *)) {
+        cell.backgroundColor = UIColor.systemFillColor;
+    } else {
+        cell.backgroundColor = UIColor.groupTableViewBackgroundColor;
+    }
+
+    cell.textLabel.text = NSLocalizedString(self.menuArray[indexPath.row], nil);
+
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    switch (indexPath.row) {
+        case 0:
+            [self actionForceClose];
+            break;
+    }
+}
+
+
+#pragma mark - Input: send touch utilities
 
 - (BOOL)isTouchInactive:(UITouch *)touch {
     return touch == nil || touch.phase == UITouchPhaseEnded || touch.phase == UITouchPhaseCancelled;
@@ -410,7 +539,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 
 - (void)sendTouchEvent:(UITouch *)touchEvent withUIEvent:(UIEvent *)uievent withEvent:(int)event
 {
-    CGPoint locationInView = [touchEvent locationInView:self.view];
+    CGPoint locationInView = [touchEvent locationInView:self.rootView];
 
     //if (touchEvent.view == self.surfaceView) {
         switch (event) {
@@ -541,7 +670,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 - (void)surfaceOnDoubleClick:(UITapGestureRecognizer *)sender {
     if (sender.state == UIGestureRecognizerStateRecognized && isGrabbing) {
         CGFloat screenScale = [[UIScreen mainScreen] scale];
-        CGPoint point = [sender locationInView:self.view];
+        CGPoint point = [sender locationInView:self.rootView];
         int hotbarSlot = callback_SurfaceViewController_touchHotbar(point.x * screenScale * resolutionScale, point.y * screenScale * resolutionScale);
         if (hotbarSlot != -1 && currentHotbarSlot == hotbarSlot) {
             CallbackBridge_nativeSendKey(GLFW_KEY_F, 0, 1, 0);
@@ -557,7 +686,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
                 return;
             }
         }
-        CGPoint point = [sender locationInView:self.view];
+        CGPoint point = [sender locationInView:self.rootView];
         // NSLog(@"Mouse move!!");
         // NSLog(@"Mouse pos = %f, %f", point.x, point.y);
         switch (sender.state) {
@@ -582,7 +711,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 {
     if (!slideableHotbar) {
         CGFloat screenScale = [[UIScreen mainScreen] scale];
-        CGPoint location = [sender locationInView:self.view];
+        CGPoint location = [sender locationInView:self.rootView];
         currentHotbarSlot = callback_SurfaceViewController_touchHotbar(location.x * screenScale * resolutionScale, location.y * screenScale * resolutionScale);
     }
     if (sender.state == UIGestureRecognizerStateBegan) {
@@ -620,7 +749,7 @@ CallbackBridge_nativeSendKey(GLFW_KEY_Q, 0, 0, 0);
     if (sender.state == UIGestureRecognizerStateBegan ||
         sender.state == UIGestureRecognizerStateChanged ||
         sender.state == UIGestureRecognizerStateEnded) {
-        CGPoint velocity = [sender velocityInView:self.view];
+        CGPoint velocity = [sender velocityInView:self.rootView];
         if (velocity.x != 0.0f || velocity.y != 0.0f) {
             CallbackBridge_nativeSendScroll((CGFloat) (velocity.x/10.0), (CGFloat) (velocity.y/10.0));
         }
@@ -818,7 +947,7 @@ CallbackBridge_nativeSendKey(keycode, 0, held, 0);
 
 - (void)executebtn_swipe:(UIPanGestureRecognizer *)sender
 {
-    CGPoint location = [sender locationInView:self.view];
+    CGPoint location = [sender locationInView:self.rootView];
     if (sender.state == UIGestureRecognizerStateCancelled || sender.state == UIGestureRecognizerStateEnded) {
         [self executebtn_up:self.swipingButton];
         return;
@@ -877,7 +1006,7 @@ int touchesMovedCount;
                 continue; // handle this in a different place
             }
         }
-        CGPoint locationInView = [touch locationInView:self.view];
+        CGPoint locationInView = [touch locationInView:self.rootView];
         CGFloat screenScale = [[UIScreen mainScreen] scale];
         currentHotbarSlot = callback_SurfaceViewController_touchHotbar(locationInView.x * screenScale, locationInView.y * screenScale);
         if ([self isTouchInactive:self.hotbarTouch] && currentHotbarSlot != -1) {

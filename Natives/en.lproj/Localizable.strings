@@ -3,6 +3,10 @@
   StringLocalization
 */
 
+"game.menu.forceClose" = "Force close";
+"game.menu.confirm.forceClose" = "Are you sure you want to force close?";
+"game.menu.logOutput" = "Log output";
+
 "init.migrateDir" = "The PojavLauncher data directory is now %@. All of your existing data has been moved to the new location.";
 
 "login.error.username.outOfRange" = "Username must be at least 3 characters and maximum 16 characters";
