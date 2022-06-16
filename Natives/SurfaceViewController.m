@@ -163,7 +163,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     savedWidth = roundf(screenBounds.size.width * screenScale);
     savedHeight = roundf(screenBounds.size.height * screenScale);
 
-    self.rootView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width * 1.4, self.view.frame.size.height)];
+    self.rootView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width + 30.0, self.view.frame.size.height)];
     [self.view addSubview:self.rootView];
 
 
@@ -187,17 +187,18 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     [menuSwipeView addSubview:menuSwipeLineView];
     [self.rootView addSubview:menuSwipeView];
 
-    self.menuArray = @[@"game.menu.forceClose" /*, @"game.menu.logOutput" */];
+    self.menuArray = @[@"game.menu.forceClose", @"game.menu.logOutput"];
 
     self.menuView = [[UITableView alloc] initWithFrame:CGRectMake(self.view.frame.size.width + 30.0, 0, 
-self.view.frame.size.width * 3.0/7.0 - 36.0, self.view.frame.size.height)];
+self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
+
     //menuView.backgroundColor = [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1];
     self.menuView.dataSource = self;
     self.menuView.delegate = self;
-    self.menuView.layer.cornerRadius = 20;
+    self.menuView.layer.cornerRadius = 12;
     self.menuView.scrollEnabled = NO;
     self.menuView.separatorInset = UIEdgeInsetsZero;
-    [self.rootView addSubview:self.menuView];
+    [self.view addSubview:self.menuView];
 
 
     self.surfaceView = [[GameSurfaceView alloc] initWithFrame:self.view.frame];
@@ -398,7 +399,7 @@ self.view.frame.size.width * 3.0/7.0 - 36.0, self.view.frame.size.height)];
 }
 
 - (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
-    return UIRectEdgeBottom;
+    return UIRectEdgeBottom | UIRectEdgeRight;
 }
 
 - (BOOL)prefersHomeIndicatorAutoHidden {
@@ -425,25 +426,34 @@ CGPoint lastCenterPoint;
 
     CGPoint translation = [sender translationInView:sender.view];
 
-    if (sender.state == UIGestureRecognizerStateBegan || sender.state == UIGestureRecognizerStateChanged) {
-        self.rootView.center = CGPointMake(lastCenterPoint.x + translation.x/UIScreen.mainScreen.scale, centerY + translation.y/10.0);
+    if (sender.state == UIGestureRecognizerStateBegan) {
+        self.menuView.hidden = NO;
+    } else if (sender.state == UIGestureRecognizerStateChanged) {
+        self.rootView.center = CGPointMake(lastCenterPoint.x + translation.x/2, centerY + translation.y/10.0);
         CGFloat scale = MAX(0.7, self.rootView.center.x / centerX);
         self.rootView.transform = CGAffineTransformScale(CGAffineTransformIdentity, scale, scale);
+
+        self.menuView.frame = CGRectMake(self.rootView.frame.size.width, self.rootView.frame.origin.y, self.menuView.frame.size.width,  self.menuView.frame.size.height);
+        self.menuView.transform = CGAffineTransformScale(CGAffineTransformIdentity, (1.1-scale)*2.5, (1.1-scale)*2.5);
     } else {
         CGPoint velocity = [sender velocityInView:sender.view];
-        CGFloat value = (velocity.x >= 0) ? 1 : 0.7;
+        CGFloat scale = (velocity.x >= 0) ? 1 : 0.7;
 
         // calculate duration to produce smooth movement
         // FIXME: any better way?
-        CGFloat duration = fabs(self.rootView.center.x - centerX * value) / centerX + 0.1;
+        CGFloat duration = fabs(self.rootView.center.x - centerX * scale) / centerX + 0.1;
         //(110 - MIN(100, fabs(velocity.x))) / 100
 
         [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveEaseOut
  animations:^{
-            lastCenterPoint.x = centerX * value;
+            lastCenterPoint.x = centerX * scale;
             self.rootView.center = CGPointMake(lastCenterPoint.x, centerY);
-            self.rootView.transform = CGAffineTransformScale(CGAffineTransformIdentity, value, value);
-        } completion:nil];
+            self.rootView.transform = CGAffineTransformScale(CGAffineTransformIdentity, scale, scale);
+            self.menuView.transform = CGAffineTransformScale(CGAffineTransformIdentity, (1.1-scale)*2.5, (1.1-scale)*2.5);
+            self.menuView.frame = CGRectMake(self.rootView.frame.size.width, self.rootView.frame.origin.y, self.menuView.frame.size.width, self.menuView.frame.size.height);
+        } completion:^(BOOL finished) {
+            self.menuView.hidden = scale == 1.0;
+        }];
     }
 }
 
@@ -456,8 +466,9 @@ CGPoint lastCenterPoint;
     [alert addAction:cancelAction];
 
     UIAlertAction* okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
-        [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        [UIView animateWithDuration:0.4          delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
             self.rootView.center = CGPointMake(self.rootView.bounds.size.width/-2, self.rootView.center.y);
+            self.menuView.frame = CGRectMake(self.view.frame.size.width, 0, 0, 0);
         } completion:^(BOOL finished) {
             exit(0);
         }];
