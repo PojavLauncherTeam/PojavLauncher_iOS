@@ -5,9 +5,10 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcommon -fobjc-arc -ObjC")
 set(CMAKE_C_FLAGS_DEBUG "-funwind-tables -g")
 
 include_directories(
-  "resources/Frameworks/AFNetworking.framework/Headers"
   "resources/Frameworks/Alderis.framework/Headers"
   "resources/Frameworks/MetalANGLE.framework/Headers"
+  "external/AFNetworking/AFNetworking"
+  "external/AFNetworking/UIKit+AFNetworking"
   "external/DBNumberedSlider/Classes"
   "external/fishhook"
   "external/zink"
@@ -49,6 +50,17 @@ set_target_properties(libOSMesaOverride.dylib PROPERTIES
 target_link_libraries(libOSMesaOverride.dylib ${OSMESA_LIB})
 
 add_executable(PojavLauncher
+  external/AFNetworking/AFNetworking/AFSecurityPolicy.m
+  external/AFNetworking/AFNetworking/AFHTTPSessionManager.m
+  external/AFNetworking/AFNetworking/AFURLRequestSerialization.m
+  external/AFNetworking/AFNetworking/AFURLSessionManager.m
+  external/AFNetworking/AFNetworking/AFNetworkReachabilityManager.m
+  external/AFNetworking/AFNetworking/AFURLResponseSerialization.m
+  external/AFNetworking/UIKit+AFNetworking/AFNetworkActivityIndicatorManager.m
+  external/AFNetworking/UIKit+AFNetworking/AFAutoPurgingImageCache.m
+  external/AFNetworking/UIKit+AFNetworking/AFImageDownloader.m
+  external/AFNetworking/UIKit+AFNetworking/UIImageView+AFNetworking.m
+
   main.m
   main_hook.m
   log.m
@@ -89,13 +101,15 @@ add_executable(PojavLauncher
 target_link_libraries(PojavLauncher
   "-F'${CMAKE_CURRENT_LIST_DIR}/build'"
   "-F'${CMAKE_CURRENT_LIST_DIR}/resources/Frameworks'"
-  "-framework AFNetworking" 
   "-framework AuthenticationServices"
   "-framework CoreGraphics"
+  "-framework CoreServices"
   "-framework GameController"
   "-framework QuartzCore"
-  "-framework UIKit"
   "-framework SafariServices"
+  "-framework Security"
+  "-framework SystemConfiguration"
+  "-framework UIKit"
   "-framework WebKit"
 )
 set_target_properties(PojavLauncher PROPERTIES

@@ -1,7 +1,7 @@
 #import "AccountListViewController.h"
 #import "AFNetworking.h"
 #import "utils.h"
-
+#import "UIImageView+AFNetworking.h"
 
 @interface ATableViewCell : UITableViewCell
 @end
