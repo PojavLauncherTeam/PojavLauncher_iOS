@@ -96,8 +96,20 @@
     [safetyNoteView sizeToFit];
     [scrollView addSubview:safetyNoteView];
 
-    scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, safetyNoteView.frame.origin.y + safetyNoteView.frame.size.height + 0);
-
+    NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"MM-dd"];
+    NSString* date = [dateFormatter stringFromDate:[NSDate date]];
+    if([date isEqualToString:@"06-29"] || [date isEqualToString:@"06-30"] || [date isEqualToString:@"07-01"]) {
+        UILabel *technoDay = [[UILabel alloc] initWithFrame:CGRectMake(4, safetyNoteView.frame.origin.y + safetyNoteView.frame.size.height + 9, width - 8, 700)];
+        technoDay.text = @"May you rest in peace, Technoblade. The Minecraft community will always remember you.";
+        technoDay.lineBreakMode = NSLineBreakByWordWrapping;
+        technoDay.numberOfLines = 0;
+        [technoDay sizeToFit];
+        [scrollView addSubview:technoDay];
+        scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, technoDay.frame.origin.y + technoDay.frame.size.height + 0);
+    } else {
+        scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, safetyNoteView.frame.origin.y + safetyNoteView.frame.size.height + 0);
+    }
 }
 
 -(void)latestLogShare
