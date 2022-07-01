@@ -76,7 +76,7 @@ INFOPLIST  =  \
 PACKAGING  =  \
 	mkdir -p $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)_$(VERSION)_iphoneos-arm; \
 	cd $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)_$(VERSION)_iphoneos-arm; \
-	mkdir -p {DEBIAN,Applications,usr/share/pojavlauncher/{instances/default,Library/{Application\ Support,Caches}}}; \
+	mkdir -p {DEBIAN,Applications,usr/share/pojavlauncher/{accounts,instances/default,Library/{Application\ Support,Caches}}}; \
 	cd usr/share/pojavlauncher; \
 	ln -sf ../../instances/default Library/Application\ Support/minecraft; \
 	cd $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)_$(VERSION)_iphoneos-arm; \
@@ -93,7 +93,7 @@ PACKAGING  =  \
 	fakeroot dpkg-deb -b $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)_$(VERSION)_iphoneos-arm; \
 	mkdir -p $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)-rootless_$(VERSION)_iphoneos-arm64; \
 	cd $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)-rootless_$(VERSION)_iphoneos-arm64; \
-	mkdir -p {DEBIAN,$(IOS15PREF)/{Applications,usr/share/pojavlauncher/{instances/default,Library/{Application\ Support,Caches}}}}; \
+	mkdir -p {DEBIAN,$(IOS15PREF)/{Applications,usr/share/pojavlauncher/{accounts,instances/default,Library/{Application\ Support,Caches}}}}; \
 	cd $(IOS15PREF)/usr/share/pojavlauncher; \
 	ln -sf ../../instances/default Library/Application\ Support/minecraft; \
 	cd $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)-rootless_$(VERSION)_iphoneos-arm64; \

@@ -8,5 +8,5 @@ chown -R 501:501 $PREFIX/usr/share/pojavlauncher
 chmod -R 0755 $PREFIX/usr/share/pojavlauncher
 
 echo " "
-echo "PojavLauncher has been installed! Take a look at the wiki to learn more about PojavLauncher at https://bit.ly/2PgpexZ."
+echo "PojavLauncher has been installed! Take a look at the wiki to learn more about PojavLauncher at https://pojav.ml."
 
