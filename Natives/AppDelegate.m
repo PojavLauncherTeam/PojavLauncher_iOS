@@ -15,7 +15,9 @@
     } else {
         self.window = ([[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]]);
         launchInitialViewController(self.window);
-        ((UINavigationController *)self.window.rootViewController).delegate = self;
+        if ([self.window.rootViewController isKindOfClass:UINavigationController.class]) {
+            ((UINavigationController *)self.window.rootViewController).delegate = self;
+        }
         [self.window makeKeyAndVisible];
     }
     

@@ -144,7 +144,7 @@ ADD_CALLBACK_WWIN(WindowPos);
 #undef ADD_CALLBACK_WWIN
 
 void sendData(int type, CGFloat i1, CGFloat i2, int i3, int i4) {
-    debugLog("Debug: Send data, jnienv.isNull=%d\n", runtimeJNIEnvPtr == NULL);
+    debugLog("Debug: Send data, jnienv.isNull=%d, bridgeClass.isNull=%d\n", runtimeJNIEnvPtr == NULL, inputBridgeClass_ANDROID == NULL);
     if (runtimeJNIEnvPtr == NULL) {
         (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &runtimeJNIEnvPtr, NULL);
     }

@@ -22,7 +22,9 @@
         self.window = [[UIWindow alloc] initWithWindowScene:windowScene];
         self.window.frame = windowScene.coordinateSpace.bounds;
         launchInitialViewController(self.window);
-        ((UINavigationController *)self.window.rootViewController).delegate = self;
+        if ([self.window.rootViewController isKindOfClass:UINavigationController.class]) {
+            ((UINavigationController *)self.window.rootViewController).delegate = self;
+        }
         [self.window makeKeyAndVisible];
     } else {
         

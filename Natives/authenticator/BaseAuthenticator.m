@@ -1,4 +1,5 @@
 #import "BaseAuthenticator.h"
+#import "../LauncherPreferences.h"
 #import "../ios_uikit_bridge.h"
 #import "../utils.h"
 
@@ -7,6 +8,9 @@
 static BaseAuthenticator *current = nil;
 
 + (id)current {
+    if (current == nil) {
+        [self loadSavedName:getPreference(@"internal_selected_account")];
+    }
     return current;
 }
 

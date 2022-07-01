@@ -252,9 +252,10 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
         loadControlObject(self.rootView, self.cc_dictionary, ^void(ControlButton* button) {
             BOOL isSwipeable = [button.properties[@"isSwipeable"] boolValue];
 
+            button.canBeHidden = YES;
             for (int i = 0; i < 4; i++) {
                 int keycodeInt = [button.properties[@"keycodes"][i] intValue];
-                button.canBeHidden = keycodeInt == SPECIALBTN_TOGGLECTRL;
+                button.canBeHidden &= keycodeInt != SPECIALBTN_TOGGLECTRL;
             }
 
             [button addTarget:self action:@selector(executebtn_down:) forControlEvents:UIControlEventTouchDown];
@@ -926,13 +927,15 @@ CallbackBridge_nativeSendKey(keycode, 0, held, 0);
         for (UIView *view in self.rootView.subviews) {
             if (![view isKindOfClass:[ControlButton class]]) continue;
             ControlButton *button = (ControlButton *)view;
-            if (button.canBeHidden && !currentVisibility && ![button isKindOfClass:[ControlSubButton class]]) {
-                button.hidden = currentVisibility;
-                if ([button isKindOfClass:[ControlDrawer class]]) {
-                    [(ControlDrawer *)button restoreButtonVisibility];
+            if (button.canBeHidden) {
+                if (!currentVisibility && ![button isKindOfClass:[ControlSubButton class]]) {
+                    button.hidden = currentVisibility;
+                    if ([button isKindOfClass:[ControlDrawer class]]) {
+                        [(ControlDrawer *)button restoreButtonVisibility];
+                    }
+                } else if (currentVisibility) {
+                    button.hidden = currentVisibility;
                 }
-            } else if (currentVisibility) {
-                button.hidden = currentVisibility;
             }
         }
 

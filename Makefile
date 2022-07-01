@@ -150,7 +150,7 @@ DEPLOY     = \
 		sudo mv $(WORKINGDIR)/libawt_xawt.dylib $(1)/Applications/PojavLauncher.app/Frameworks/libawt_xawt.dylib; \
 		sudo mv $(WORKINGDIR)/libOSMesaOverride.dylib.framework $(1)/Applications/PojavLauncher.app/Frameworks/; \
 		sudo mv $(WORKINGDIR)/PojavLauncher.app/PojavLauncher $(1)/Applications/PojavLauncher.app/PojavLauncher; \
-		sudo mv $(WORKINGDIR)/*.jar $(1)/Applications/PojavLauncher.app/libs/; \
+		sudo mv $(SOURCEDIR)/JavaApp/local_out/*.jar $(1)/Applications/PojavLauncher.app/libs/; \
 		cd $(1)/Applications/PojavLauncher.app/Frameworks; \
 		sudo ln -sf libawt_xawt.dylib libawt_headless.dylib; \
 		sudo chown -R 501:501 $(1)/Applications/PojavLauncher.app/*; \
