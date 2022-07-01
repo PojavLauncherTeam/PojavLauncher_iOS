@@ -1,3 +1,5 @@
+#import "SurfaceViewController.h"
+
 #include "jni.h"
 #include <assert.h>
 #include <dlfcn.h>
@@ -13,7 +15,6 @@
 #include "GL/osmesa.h"
 #include "GLES2/gl2.h"
 
-#include "egl_bridge.h"
 #include "glfw_keycodes.h"
 #include "osmesa_internal.h"
 
@@ -225,6 +226,8 @@ int pojavInit() {
 }
 
 jboolean pojavInit_OpenGL() {
+    if (config_renderer) return JNI_TRUE;
+
     NSString *renderer = @(getenv("POJAV_RENDERER"));
     if ([renderer isEqualToString:@"libOSMesa.8.dylib"]) {
         config_renderer = RENDERER_VIRGL;

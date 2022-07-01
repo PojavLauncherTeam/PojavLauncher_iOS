@@ -1,19 +1,18 @@
 #import <GameController/GameController.h>
 
-#import "JavaLauncher.h"
-#import "LauncherPreferences.h"
-#import "MinecraftDownloader.h"
-#import "SurfaceViewController.h"
-#import "egl_bridge.h"
-#import "ios_uikit_bridge.h"
-
 #import "authenticator/BaseAuthenticator.h"
 #import "customcontrols/ControlButton.h"
 #import "customcontrols/ControlDrawer.h"
 #import "customcontrols/ControlSubButton.h"
 #import "customcontrols/CustomControlsUtils.h"
 
+#import "JavaLauncher.h"
 #import "KeyboardInput.h"
+#import "LauncherPreferences.h"
+#import "MinecraftResourceUtils.h"
+#import "SurfaceViewController.h"
+
+#import "ios_uikit_bridge.h"
 
 #include "glfw_keycodes.h"
 #include "utils.h"
@@ -40,50 +39,6 @@ int currentHotbarSlot = -1;
 BOOL slideableHotbar;
 
 // TODO: key modifiers impl
-
-#pragma mark Class GameSurfaceView
-@implementation GameSurfaceView
-const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
-    return gbuffer;
-}
-
-- (void)displayLayer {
-    CGDataProviderRef bitmapProvider = CGDataProviderCreateDirect(NULL, savedWidth * savedHeight * 4, &callbacks);
-    CGImageRef bitmap = CGImageCreate(savedWidth, savedHeight, 8, 32, 4 * savedWidth, colorSpace, kCGImageAlphaNoneSkipLast | kCGBitmapByteOrder16Little, bitmapProvider, NULL, FALSE, kCGRenderingIntentDefault);     
-
-    self.layer.contents = (__bridge id) bitmap;
-    CGImageRelease(bitmap);
-    CGDataProviderRelease(bitmapProvider);
-   //  CGColorSpaceRelease(colorSpace);
-}
-
-- (id)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
-
-    if ([getPreference(@"renderer") hasPrefix:@"libOSMesaOverride"]) {
-        self.layer.opaque = YES;
-
-        colorSpace = CGColorSpaceCreateDeviceRGB();
-
-        callbacks.version = 0;
-        callbacks.getBytePointer = _CGDataProviderGetBytePointerCallbackOSMESA;
-        callbacks.releaseBytePointer = _CGDataProviderReleaseBytePointerCallback;
-        callbacks.getBytesAtPosition = NULL;
-        callbacks.releaseInfo = NULL;
-    }
-
-    return self;
-}
-
-+ (Class)layerClass {
-    if ([getPreference(@"renderer") hasPrefix:@"libOSMesa"]) {
-        return CALayer.class;
-    } else {
-        return CAMetalLayer.class;
-    }
-}
-
-@end
 
 
 #pragma mark Class TrackedTextField
@@ -121,12 +76,15 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 @property UITableView *menuView;
 
 @property UIView *rootView;
+
 @property TrackedTextField *inputView;
 @property(nonatomic, strong) NSMutableDictionary* cc_dictionary;
 @property(nonatomic, strong) NSMutableArray* swipeableButtons;
-@property(nonatomic, strong) NSMutableArray* togglableVisibleButtons;
 @property ControlButton* swipingButton;
 @property UITouch *primaryTouch, *hotbarTouch;
+
+@property UIView *logOutputView;
+
 @property id mouseConnectCallback, mouseDisconnectCallback;
 
 @property CGRect clickRange;
@@ -187,7 +145,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     [menuSwipeView addSubview:menuSwipeLineView];
     [self.rootView addSubview:menuSwipeView];
 
-    self.menuArray = @[@"game.menu.forceClose", @"game.menu.logOutput"];
+    self.menuArray = @[@"game.menu.forceClose" /*, @"game.menu.logOutput" */];
 
     self.menuView = [[UITableView alloc] initWithFrame:CGRectMake(self.view.frame.size.width + 30.0, 0, 
 self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
@@ -283,49 +241,34 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
 
     NSString *controlFilePath = [NSString stringWithFormat:@"%s/controlmap/%@", getenv("POJAV_HOME"), (NSString *)getPreference(@"default_ctrl")];
 
-    NSError *cc_error;
-    NSString *cc_data = [NSString stringWithContentsOfFile:controlFilePath encoding:NSUTF8StringEncoding error:&cc_error];
-
     self.swipeableButtons = [[NSMutableArray alloc] init];
-    self.togglableVisibleButtons = [[NSMutableArray alloc] init];
-    if (cc_error) {
-        NSLog(@"Error: could not read %@: %@", controlFilePath, cc_error.localizedDescription);
-        showDialog(self, @"Error", [NSString stringWithFormat:@"Could not read %@: %@", controlFilePath, cc_error.localizedDescription]);
+
+    self.cc_dictionary = parseJSONFromFile(controlFilePath);
+    if (self.cc_dictionary[@"error"] != nil) {
+        showDialog(self, @"Error", [NSString stringWithFormat:@"Could not open %@: %@", controlFilePath, [self.cc_dictionary[@"error"] localizedDescription]]);
     } else {
-        NSData* cc_objc_data = [cc_data dataUsingEncoding:NSUTF8StringEncoding];
-        self.cc_dictionary = [NSJSONSerialization JSONObjectWithData:cc_objc_data options:NSJSONReadingMutableContainers error:&cc_error];
-        if (cc_error != nil) {
-            showDialog(self, @"Error parsing JSON", cc_error.localizedDescription);
-        } else {
-            CGFloat currentScale = [self.cc_dictionary[@"scaledAt"] floatValue];
-            CGFloat savedScale = [getPreference(@"button_scale") floatValue];
-            loadControlObject(self.rootView, self.cc_dictionary, ^void(ControlButton* button) {
-                BOOL isSwipeable = [button.properties[@"isSwipeable"] boolValue];
+        CGFloat currentScale = [self.cc_dictionary[@"scaledAt"] floatValue];
+        CGFloat savedScale = [getPreference(@"button_scale") floatValue];
+        loadControlObject(self.rootView, self.cc_dictionary, ^void(ControlButton* button) {
+            BOOL isSwipeable = [button.properties[@"isSwipeable"] boolValue];
 
-                BOOL isToggleCtrlBtn = NO;
-                for (int i = 0; i < 4; i++) {
-                    int keycodeInt = [button.properties[@"keycodes"][i] intValue];
-                    if (keycodeInt == SPECIALBTN_TOGGLECTRL) {
-                        isToggleCtrlBtn = YES;
-                    }
-                }
+            for (int i = 0; i < 4; i++) {
+                int keycodeInt = [button.properties[@"keycodes"][i] intValue];
+                button.canBeHidden = keycodeInt == SPECIALBTN_TOGGLECTRL;
+            }
 
-                [button addTarget:self action:@selector(executebtn_down:) forControlEvents:UIControlEventTouchDown];
-                [button addTarget:self action:@selector(executebtn_up:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
+            [button addTarget:self action:@selector(executebtn_down:) forControlEvents:UIControlEventTouchDown];
+            [button addTarget:self action:@selector(executebtn_up:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
 
-                if (isSwipeable) {
-                    UIPanGestureRecognizer *panRecognizerButton = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(executebtn_swipe:)];
-                    panRecognizerButton.delegate = self;
-                    [button addGestureRecognizer:panRecognizerButton];
-                    [self.swipeableButtons addObject:button];
-                }
-                if (!isToggleCtrlBtn) {
-                    [self.togglableVisibleButtons addObject:button];
-                }
-            });
+            if (isSwipeable) {
+                UIPanGestureRecognizer *panRecognizerButton = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(executebtn_swipe:)];
+                panRecognizerButton.delegate = self;
+                [button addGestureRecognizer:panRecognizerButton];
+                [self.swipeableButtons addObject:button];
+            }
+        });
 
-            self.cc_dictionary[@"scaledAt"] = @(savedScale);
-        }
+        self.cc_dictionary[@"scaledAt"] = @(savedScale);
     }
 
     [KeyboardInput initKeycodeTable];
@@ -352,42 +295,28 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
 
     [self.rootView addSubview:self.inputView];
 
-    [self executebtn_special_togglebtn:0];
+/*
+    self.logOutputView = [[UIView alloc] initWithFrame:self.view.frame];
+    self.logOutputView.hidden = YES;
+    [self.rootView addSubview:self.logOutputView];
+
+    UINavigationBar *logNavbar = [[UINavigationBar alloc] init];
+    [logNavbar
+    NSLog(@"NavBar %@", logNavbar);
+    //logNavbar.title = NSLocalizedString(self.menuArray[1], nil);
+    [logNavbar sizeToFit];
+    [self.logOutputView addSubview:logNavbar];
+*/
 
     // [self setPreferredFramesPerSecond:1000];
-
+    [self executebtn_special_togglebtn:0];
     [self launchMinecraft];
-}
-
-- (void)processMinecraftJVMArgs:(NSMutableDictionary *)json {
-    // Parse Forge 1.17+ additional JVM Arguments
-    if (json[@"inheritsFrom"] == nil || json[@"arguments"][@"jvm"] == nil) {
-        return;
-    }
-
-    json[@"arguments"][@"jvm_processed"] = [[NSMutableArray alloc] init];
-
-    NSDictionary *varArgMap = @{
-        @"${classpath_separator}": @":",
-        @"${library_directory}": [NSString stringWithFormat:@"%s/libraries", getenv("POJAV_GAME_DIR")],
-        @"${version_name}": json[@"id"]
-    };
-
-    for (id arg in json[@"arguments"][@"jvm"]) {
-        if ([arg isKindOfClass:NSString.class]) {
-            NSString *argStr = arg;
-            for (NSString *key in varArgMap.allKeys) {
-                argStr = [argStr stringByReplacingOccurrencesOfString:key withString:varArgMap[key]];
-            }
-            [json[@"arguments"][@"jvm_processed"] addObject:argStr];
-        }
-    }
 }
 
 - (void)launchMinecraft {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [MinecraftDownloader downloadClientJson:getPreference(@"selected_version") progress:nil callback:nil success:^(NSMutableDictionary *json) {
-            [self processMinecraftJVMArgs:json];
+        [MinecraftResourceUtils downloadClientJson:getPreference(@"selected_version") progress:nil callback:nil success:^(NSMutableDictionary *json) {
+            [MinecraftResourceUtils processJVMArgs:json];
             launchJVM(
                 BaseAuthenticator.current.authData[@"username"],
                 json,
@@ -466,7 +395,7 @@ CGPoint lastCenterPoint;
     [alert addAction:cancelAction];
 
     UIAlertAction* okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
-        [UIView animateWithDuration:0.4          delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        [UIView animateWithDuration:0.4 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
             self.rootView.center = CGPointMake(self.rootView.bounds.size.width/-2, self.rootView.center.y);
             self.menuView.frame = CGRectMake(self.view.frame.size.width, 0, 0, 0);
         } completion:^(BOOL finished) {
@@ -476,6 +405,11 @@ CGPoint lastCenterPoint;
     [alert addAction:okAction];
 
     [viewController presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)actionToggleLogOutput {
+    self.logOutputView.hidden = !self.logOutputView.hidden;
+    // TODO impl log enable/disable
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -504,6 +438,9 @@ CGPoint lastCenterPoint;
     switch (indexPath.row) {
         case 0:
             [self actionForceClose];
+            break;
+        case 1:
+            [self actionToggleLogOutput];
             break;
     }
 }
@@ -986,8 +923,10 @@ CallbackBridge_nativeSendKey(keycode, 0, held, 0);
 - (void)executebtn_special_togglebtn:(int)held {
     if (held == 0) {
         currentVisibility = !currentVisibility;
-        for (ControlButton *button in self.togglableVisibleButtons) {
-            if (!currentVisibility && ![button isKindOfClass:[ControlSubButton class]]) {
+        for (UIView *view in self.rootView.subviews) {
+            if (![view isKindOfClass:[ControlButton class]]) continue;
+            ControlButton *button = (ControlButton *)view;
+            if (button.canBeHidden && !currentVisibility && ![button isKindOfClass:[ControlSubButton class]]) {
                 button.hidden = currentVisibility;
                 if ([button isKindOfClass:[ControlDrawer class]]) {
                     [(ControlDrawer *)button restoreButtonVisibility];

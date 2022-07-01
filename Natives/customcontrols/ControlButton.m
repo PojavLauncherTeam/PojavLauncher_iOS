@@ -186,12 +186,7 @@
     // Update other properties
     self.frame = CGRectMake(propX + insets.left, propY, propW, propH);
     self.alpha = [self.properties[@"opacity"] floatValue];
-    if (self.alpha < 0.02) {
-        self.alpha = 0.02;
-    }
-    if (isControlModifiable && self.alpha < 0.1) {
-        self.alpha = 0.1;
-    }
+    self.alpha = MAX(self.alpha, isControlModifiable ? 0.1 : 0.01);
     self.backgroundColor = convertARGB2UIColor(propBackgroundColor);
 
     self.layer.borderColor = [convertARGB2UIColor(propStrokeColor) CGColor];

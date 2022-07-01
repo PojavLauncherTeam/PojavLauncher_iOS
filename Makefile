@@ -146,9 +146,10 @@ DEPLOY     = \
 			ln -sf libawt_xawt.dylib libawt_headless.dylib && \
 			chown -R 501:501 $(1)/Applications/PojavLauncher.app/*"; \
 	else \
+		sudo rm -rf $(1)/Applications/PojavLauncher.app/Frameworks/libOSMesaOverride.dylib.framework; \
 		sudo mv $(WORKINGDIR)/libawt_xawt.dylib $(1)/Applications/PojavLauncher.app/Frameworks/libawt_xawt.dylib; \
-		sudo mv $(WORKINGDIR)/libOSMesaOverride.dylib.framework $(1)/Applications/PojavLauncher.app/Frameworks/libOSMesaOverride.dylib.framework; \
-		sudo mv $(WORKINGDIR)/PojavLauncher $(1)/Applications/PojavLauncher.app/PojavLauncher; \
+		sudo mv $(WORKINGDIR)/libOSMesaOverride.dylib.framework $(1)/Applications/PojavLauncher.app/Frameworks/; \
+		sudo mv $(WORKINGDIR)/PojavLauncher.app/PojavLauncher $(1)/Applications/PojavLauncher.app/PojavLauncher; \
 		sudo mv $(WORKINGDIR)/*.jar $(1)/Applications/PojavLauncher.app/libs/; \
 		cd $(1)/Applications/PojavLauncher.app/Frameworks; \
 		sudo ln -sf libawt_xawt.dylib libawt_headless.dylib; \
@@ -378,7 +379,8 @@ install: deb
 	fi
 	@echo 'Building PojavLauncher $(VERSION) - INSTALL - End'
 
-deploy: deb
+# deb
+deploy:
 	@echo 'Building PojavLauncher $(VERSION) - DEPLOY - Start'
 	@if [ '$(DEVICE_IP)' != '' ]; then \
 		if [ '$(ROOTLESS)' = '1' ]; then \

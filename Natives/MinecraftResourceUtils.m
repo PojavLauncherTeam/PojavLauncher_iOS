@@ -4,7 +4,7 @@
 #import "AFNetworking.h"
 #import "LauncherPreferences.h"
 #import "LauncherViewController.h"
-#import "MinecraftDownloader.h"
+#import "MinecraftResourceUtils.h"
 #import "ios_uikit_bridge.h"
 #import "utils.h"
 
@@ -32,7 +32,7 @@ todo for now - might change anytime
  + old structure (mapped)
 */  
 
-@implementation MinecraftDownloader
+@implementation MinecraftResourceUtils
 
 static AFURLSessionManager* manager;
 
@@ -393,16 +393,19 @@ static AFURLSessionManager* manager;
             dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
         }
 
+        NSString *hash = assets[@"objects"][name][@"hash"];
+        NSString *pathname = [NSString stringWithFormat:@"%@/%@", [hash substringToIndex:2], hash];
+
         /* Special case for 1.19+
          * Since 1.19-pre1, setting the window icon on macOS goes through ObjC.
          * However, if an IOException occurrs, it won't try to set.
          * We skip downloading the icon file to trigger this. */
-        if ([name isEqualToString:@"icons/minecraft.icns"]) continue;
+        if ([name hasSuffix:@"icons/minecraft.icns"]) {
+            [NSFileManager.defaultManager removeItemAtPath:pathname error:nil];
+        }
 
         --jobsAvailable;
         dispatch_group_enter(group);
-        NSString *hash = assets[@"objects"][name][@"hash"];
-        NSString *pathname = [NSString stringWithFormat:@"%@/%@", [hash substringToIndex:2], hash];
         NSString *path;
         if ([assets[@"map_to_resources"] boolValue]) {
             path = [NSString stringWithFormat:@"%s/resources/%@", getenv("POJAV_GAME_DIR"), name];
@@ -465,7 +468,7 @@ static AFURLSessionManager* manager;
     return jobsAvailable != -1;
 }
 
-+ (void)start:(NSObject *)version callback:(MDCallback)callback {
++ (void)downloadVersion:(NSObject *)version callback:(MDCallback)callback {
     manager = [[AFURLSessionManager alloc] init];
     NSProgress *mainProgress = [NSProgress progressWithTotalUnitCount:0];
     [self downloadClientJson:version progress:mainProgress callback:callback success:^(NSMutableDictionary *json) {
@@ -493,6 +496,31 @@ static AFURLSessionManager* manager;
             });
         });
     }];
+}
+
++ (void)processJVMArgs:(NSMutableDictionary *)json {
+    // Parse Forge 1.17+ additional JVM Arguments
+    if (json[@"inheritsFrom"] == nil || json[@"arguments"][@"jvm"] == nil) {
+        return;
+    }
+
+    json[@"arguments"][@"jvm_processed"] = [[NSMutableArray alloc] init];
+
+    NSDictionary *varArgMap = @{
+        @"${classpath_separator}": @":",
+        @"${library_directory}": [NSString stringWithFormat:@"%s/libraries", getenv("POJAV_GAME_DIR")],
+        @"${version_name}": json[@"id"]
+    };
+
+    for (id arg in json[@"arguments"][@"jvm"]) {
+        if ([arg isKindOfClass:NSString.class]) {
+            NSString *argStr = arg;
+            for (NSString *key in varArgMap.allKeys) {
+                argStr = [argStr stringByReplacingOccurrencesOfString:key withString:varArgMap[key]];
+            }
+            [json[@"arguments"][@"jvm_processed"] addObject:argStr];
+        }
+    }
 }
 
 @end

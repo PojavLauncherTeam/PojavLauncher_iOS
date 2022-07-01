@@ -1,19 +1,10 @@
 #import <UIKit/UIKit.h>
-#import <MetalKit/MetalKit.h>
-#import "MGLKit.h"
+
+#import "GameSurfaceView.h"
 
 CGRect virtualMouseFrame;
 CGPoint lastVirtualMousePoint;
 
-@interface GameSurfaceView : UIView
-{
-    CALayer* layer;
-    CGColorSpaceRef colorSpace;
-    CGDataProviderDirectCallbacks callbacks;
-}
-
-- (void)displayLayer;
-@end
 
 @interface SurfaceViewController : UIViewController
 

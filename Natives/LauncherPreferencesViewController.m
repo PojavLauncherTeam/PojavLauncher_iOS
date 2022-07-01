@@ -126,13 +126,15 @@ int tempIndex;
     };
 
     scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
+    scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     [self.view addSubview:scrollView];
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width + 20, 0)];
     [scrollView addSubview:tableView];
-    
+
     [self registerForKeyboardNotifications];
-    
+
     blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular];
     blurView = [[UIVisualEffectView alloc] initWithEffect:blur];
     
@@ -594,7 +596,8 @@ int tempIndex;
     CGRect aRect = self.view.frame;
     aRect.size.height -= kbSize.height;
     if (!CGRectContainsPoint(aRect, activeField.frame.origin) ) {
-        [scrollView scrollRectToVisible:activeField.frame animated:YES];
+        CGPoint scrollPoint = CGPointMake(0.0, activeField.frame.origin.y-kbSize.height);
+        [scrollView setContentOffset:scrollPoint animated:YES];
     }
 }
 

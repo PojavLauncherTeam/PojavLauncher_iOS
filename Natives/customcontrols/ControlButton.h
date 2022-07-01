@@ -11,6 +11,7 @@
 @interface ControlButton : UIButton {
 }
 
+@property BOOL canBeHidden;
 @property(nonatomic, strong) NSMutableDictionary* properties;
 
 + (id)buttonWithProperties:(NSMutableDictionary *)propArray willUpdate:(BOOL)update;

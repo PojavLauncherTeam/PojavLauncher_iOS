@@ -4,7 +4,7 @@
 #import "LauncherPreferences.h"
 #import "LauncherPreferencesViewController.h"
 #import "LauncherViewController.h"
-#import "MinecraftDownloader.h"
+#import "MinecraftResourceUtils.h"
 #import "ios_uikit_bridge.h"
 
 #include "utils.h"
@@ -272,7 +272,7 @@ int versionSelectedAt = 0;
 
     NSObject *object = [versionList objectAtIndex:[versionPickerView selectedRowInComponent:0]];
 
-    [MinecraftDownloader start:object callback:^(NSString *stage, NSProgress *mainProgress, NSProgress *progress) {
+    [MinecraftResourceUtils downloadVersion:object callback:^(NSString *stage, NSProgress *mainProgress, NSProgress *progress) {
         if (progress == nil && stage != nil) {
             NSLog(@"[MCDL] %@", stage);
         }

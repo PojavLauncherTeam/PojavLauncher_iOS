@@ -70,11 +70,20 @@ add_executable(PojavLauncher
   authenticator/BaseAuthenticator.m
   authenticator/LocalAuthenticator.m
   authenticator/MicrosoftAuthenticator.m
+ 
+  customcontrols/ControlButton.m
+  customcontrols/ControlDrawer.m
+  customcontrols/ControlSubButton.m
+  customcontrols/CustomControlsUtils.m
+
+  external/DBNumberedSlider/Classes/DBNumberedSlider.m
+
   AboutLauncherViewController.m
   AccountListViewController.m
   AppDelegate.m
   CustomControlsViewController.m
   FileListViewController.m
+  GameSurfaceView.m
   JavaGUIViewController.m
   KeyboardInput.m
   LauncherFAQViewController.m
@@ -82,16 +91,11 @@ add_executable(PojavLauncher
   LauncherPreferencesViewController.m
   LauncherViewController.m
   LoginViewController.m
-  MinecraftDownloader.m
+  MinecraftResourceUtils.m
   SceneDelegate.m 
   SurfaceViewController.m
   UpdateHistoryViewController.m
-  customcontrols/ControlButton.m
-  customcontrols/ControlDrawer.m
-  customcontrols/ControlSubButton.m
-  customcontrols/CustomControlsUtils.m
   egl_bridge.m
-  external/DBNumberedSlider/Classes/DBNumberedSlider.m
   input_bridge_v3.m
   ios_uikit_bridge.m
   log.m

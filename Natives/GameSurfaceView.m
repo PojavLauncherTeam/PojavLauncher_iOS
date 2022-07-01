@@ -1,0 +1,46 @@
+#import "GameSurfaceView.h"
+#import "LauncherPreferences.h"
+#import "utils.h"
+
+@implementation GameSurfaceView
+const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
+    return gbuffer;
+}
+
+- (void)displayLayer {
+    CGDataProviderRef bitmapProvider = CGDataProviderCreateDirect(NULL, savedWidth * savedHeight * 4, &callbacks);
+    CGImageRef bitmap = CGImageCreate(savedWidth, savedHeight, 8, 32, 4 * savedWidth, colorSpace, kCGImageAlphaNoneSkipLast | kCGBitmapByteOrder16Little, bitmapProvider, NULL, FALSE, kCGRenderingIntentDefault);     
+
+    self.layer.contents = (__bridge id) bitmap;
+    CGImageRelease(bitmap);
+    CGDataProviderRelease(bitmapProvider);
+   //  CGColorSpaceRelease(colorSpace);
+}
+
+- (id)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+
+    if ([getPreference(@"renderer") hasPrefix:@"libOSMesaOverride"]) {
+        self.layer.opaque = YES;
+
+        colorSpace = CGColorSpaceCreateDeviceRGB();
+
+        callbacks.version = 0;
+        callbacks.getBytePointer = _CGDataProviderGetBytePointerCallbackOSMESA;
+        callbacks.releaseBytePointer = _CGDataProviderReleaseBytePointerCallback;
+        callbacks.getBytesAtPosition = NULL;
+        callbacks.releaseInfo = NULL;
+    }
+
+    return self;
+}
+
++ (Class)layerClass {
+    if ([getPreference(@"renderer") hasPrefix:@"libOSMesa"]) {
+        return CALayer.class;
+    } else {
+        return CAMetalLayer.class;
+    }
+}
+
+@end

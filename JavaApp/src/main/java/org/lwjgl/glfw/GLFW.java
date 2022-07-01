@@ -997,7 +997,9 @@ public class GLFW
         nglfwSetShowingWindow(mGLFWWindowMap.size() == 0 ? 0 : mGLFWWindowMap.keyAt(mGLFWWindowMap.size() - 1));
     }
 
-    public static void glfwDefaultWindowHints() {}
+    public static void glfwDefaultWindowHints() {
+        glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
+    }
 
     public static void glfwGetWindowSize(long window, IntBuffer width, IntBuffer height) {
         if (width != null) width.put(internalGetWindow(window).width);
