@@ -81,6 +81,10 @@
     [logoView setContentMode:UIViewContentModeScaleAspectFit];
     [self.view addSubview:logoView];
 
+    NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"MM-dd"];
+    NSString* date = [dateFormatter stringFromDate:[NSDate date]];
+    
     if(@available (iOS 14.0, *)) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage systemImageNamed:@"info.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStyleDone target:self action:@selector(aboutLauncher)];
         UIAction *option1 = [UIAction actionWithTitle:NSLocalizedString(@"login.menu.about", nil) image:[[UIImage systemImageNamed:@"eyes.inverse"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
@@ -105,7 +109,11 @@
         [button_faq setTitle:@"FAQ" forState:UIControlStateNormal];
     }
     button_faq.frame = CGRectMake(widthSplit2 - (((width - widthSplit * 2.0) / 2) / 2), (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
-    button_faq.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
+    if([date isEqualToString:@"06-29"] || [date isEqualToString:@"06-30"] || [date isEqualToString:@"07-01"]) {
+        button_faq.backgroundColor = [UIColor colorWithRed:67/255.0 green:0/255.0 blue:8/255.0 alpha:1.0];
+    } else {
+        button_faq.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
+    }
     button_faq.layer.cornerRadius = 5;
     [button_faq setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button_faq addTarget:self action:@selector(showFAQ) forControlEvents:UIControlEventTouchUpInside];
@@ -123,7 +131,11 @@
         [button_login setTitle:@"Sign In" forState:UIControlStateNormal];
     }
     button_login.frame = CGRectMake(button_faq.frame.origin.x - button_faq.frame.size.width - 20, (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
-    button_login.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
+    if([date isEqualToString:@"06-29"] || [date isEqualToString:@"06-30"] || [date isEqualToString:@"07-01"]) {
+        button_login.backgroundColor = [UIColor colorWithRed:67/255.0 green:0/255.0 blue:8/255.0 alpha:1.0];
+    } else {
+        button_login.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
+    }
     button_login.layer.cornerRadius = 5;
     [button_login setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button_login addTarget:self action:@selector(accountType:) forControlEvents:UIControlEventTouchUpInside];
@@ -153,7 +165,11 @@
         [button_accounts setTitle:@"Accounts" forState:UIControlStateNormal];
     }
     button_accounts.frame = CGRectMake(button_faq.frame.origin.x + button_faq.frame.size.width + 20, (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
-    button_accounts.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
+    if([date isEqualToString:@"06-29"] || [date isEqualToString:@"06-30"] || [date isEqualToString:@"07-01"]) {
+        button_accounts.backgroundColor = [UIColor colorWithRed:67/255.0 green:0/255.0 blue:8/255.0 alpha:1.0];
+    } else {
+        button_accounts.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
+    }
     button_accounts.layer.cornerRadius = 5;
     [button_accounts setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button_accounts addTarget:self action:@selector(loginAccount:) forControlEvents:UIControlEventTouchUpInside];
@@ -163,6 +179,16 @@
         [button_accounts setImage:button_accounts.imageView.image forState:UIControlStateNormal];
     }
     [scrollView addSubview:button_accounts];
+    
+    if([date isEqualToString:@"06-29"] || [date isEqualToString:@"06-30"] || [date isEqualToString:@"07-01"]) {
+        UILabel *technoNote = [[UILabel alloc] initWithFrame:CGRectMake(0, 15, width, 40.0)];
+        technoNote.text = @"Technoblade never dies!";
+        technoNote.lineBreakMode = NSLineBreakByWordWrapping;
+        technoNote.numberOfLines = 1;
+        [technoNote setFont:[UIFont boldSystemFontOfSize:10]];
+        technoNote.textAlignment = NSTextAlignmentCenter;
+        [scrollView addSubview:technoNote];
+    }
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
