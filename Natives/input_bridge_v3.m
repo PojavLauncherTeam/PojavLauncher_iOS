@@ -246,14 +246,12 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_updateMCGuiScale(JNI
 }
 
 JNIEXPORT jstring JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeClipboard(JNIEnv* env, jclass clazz, jint action, jstring copySrc) {
-    DEBUG_LOGD("Debug: Clipboard access is going on\n");
+    debugLog("Debug: Clipboard access is going on\n");
     return UIKit_accessClipboard(env, action, copySrc);
 }
 
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetInputReady(JNIEnv* env, jclass clazz, jboolean inputReady) {
-#ifdef DEBUG
-    LOGD("Debug: Changing input state, isReady=%d, isUseStackQueueCall=%d\n", inputReady, isUseStackQueueCall);
-#endif
+    debugLog("Debug: Changing input state, isReady=%d, isUseStackQueueCall=%d\n", inputReady, isUseStackQueueCall);
     isInputReady = inputReady;
 
     return isUseStackQueueCall;
@@ -377,11 +375,9 @@ void CallbackBridge_nativeSendKey(int key, int scancode, int action, int mods) {
 }
 
 void CallbackBridge_nativeSendKeycode(int keycode, char keychar, int scancode, int action, int mods) {
-    if (isInputReady) {
-        CallbackBridge_nativeSendKey(keycode, scancode, action, mods);
-        if (!CallbackBridge_nativeSendCharMods(keychar, mods)) {
-            CallbackBridge_nativeSendChar(keychar);
-        }
+    CallbackBridge_nativeSendKey(keycode, scancode, action, mods);
+    if (!CallbackBridge_nativeSendCharMods(keychar, mods)) {
+        CallbackBridge_nativeSendChar(keychar);
     }
 }
 

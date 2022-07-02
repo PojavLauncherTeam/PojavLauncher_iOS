@@ -85,7 +85,7 @@
         self.properties[@"width"] = @([self.properties[@"width"] floatValue] * savedScale / currentScale);
         self.properties[@"height"] = @([self.properties[@"height"] floatValue] * savedScale / currentScale);
     }
-    current_control_object[@"scaledAt"] = getPreference(@"button_scale");
+    //current_control_object[@"scaledAt"] = getPreference(@"button_scale");
 }
 
 - (NSString *)processFunctions:(NSString *)string {
