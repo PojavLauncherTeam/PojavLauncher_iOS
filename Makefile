@@ -90,7 +90,7 @@ PACKAGING  =  \
 	cp $(SOURCEDIR)/DEBIAN/postinst DEBIAN/postinst; \
 	ldid -S$(SOURCEDIR)/entitlements.xml Applications/PojavLauncher.app; \
 	cd $(OUTPUTDIR); \
-	fakeroot dpkg-deb -b $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)_$(VERSION)_iphoneos-arm -Zlzma; \
+	fakeroot dpkg-deb -Zlzma -b $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)_$(VERSION)_iphoneos-arm; \
 	mkdir -p $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)-rootless_$(VERSION)_iphoneos-arm64; \
 	cd $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)-rootless_$(VERSION)_iphoneos-arm64; \
 	mkdir -p {DEBIAN,$(IOS15PREF)/{Applications,usr/share/pojavlauncher/{accounts,instances/default,Library/{Application\ Support,Caches}}}}; \
@@ -107,7 +107,7 @@ PACKAGING  =  \
 	cp $(SOURCEDIR)/DEBIAN/postinst DEBIAN/postinst; \
 	ldid -S$(SOURCEDIR)/entitlements.xml $(IOS15PREF)/Applications/PojavLauncher.app; \
 	cd $(OUTPUTDIR); \
-	fakeroot dpkg-deb -b $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)-rootless_$(VERSION)_iphoneos-arm64 -Zlzma
+	fakeroot dpkg-deb -Zlzma -b $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)-rootless_$(VERSION)_iphoneos-arm64
 
 # Function to check directories
 DIRCHECK   = \
