@@ -39,14 +39,11 @@ static AFURLSessionManager* manager;
 // Check if the account has permission to download
 + (BOOL)checkAccessWithDialog:(BOOL)show {
     // for now
-    if ([BaseAuthenticator.current.authData[@"username"] hasPrefix:@"Demo."] || BaseAuthenticator.current.authData[@"xboxGamertag"] != nil) {
-        return YES;
-    } else {
-        if (show) {
-            showDialog(viewController, @"Error", @"Minecraft can't be legally installed when logged in with a local account. Please switch to an online account to continue.");
-        }
-        return NO;
+    BOOL accessible = [BaseAuthenticator.current.authData[@"username"] hasPrefix:@"Demo."] || BaseAuthenticator.current.authData[@"xboxGamertag"] != nil;
+    if (!accessible && show) {
+        showDialog(viewController, @"Error", @"Minecraft can't be legally installed when logged in with a local account. Please switch to an online account to continue.");
     }
+    return accessible;
 }
 
 // Check SHA of the file

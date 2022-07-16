@@ -113,8 +113,6 @@ BOOL slideableHotbar;
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];
 
-    UIEdgeInsets insets = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets;
-
     resolutionScale = ((NSNumber *)getPreference(@"resolution")).floatValue / 100.0;
     slideableHotbar = [getPreference(@"slideable_hotbar") boolValue];
 
@@ -630,10 +628,8 @@ CGPoint lastCenterPoint;
 
 - (void)surfaceOnHover:(UIHoverGestureRecognizer *)sender API_AVAILABLE(ios(13.0)) {
     if (@available(iOS 13.0, *)) {
-        if (@available(iOS 14.0, *)) {
-            if(isGrabbing) { // Can't put into above if statement
-                return;
-            }
+        if (@available(iOS 14.0, *) && isGrabbing) {
+            return;
         }
         CGPoint point = [sender locationInView:self.rootView];
         // NSLog(@"Mouse move!!");
@@ -864,6 +860,7 @@ int currentVisibility = 1;
                     if (!held) {
                         CallbackBridge_nativeSendScroll(0.0, -1.0);
                     }
+                    break;
 
                 case SPECIALBTN_VIRTUALMOUSE:
                     if (!isGrabbing && !held) {
