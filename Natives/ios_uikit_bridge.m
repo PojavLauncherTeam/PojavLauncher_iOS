@@ -127,10 +127,11 @@ void UIKit_launchMinecraftSurfaceVC() {
             }
             UIWindow *window = [delegate window];
             [UIView animateWithDuration:0.2 animations:^{
-                window.rootViewController.view.alpha = 0;
+                window.alpha = 0;
             } completion:^(BOOL b){
                 [window resignKeyWindow];
-                window.rootViewController = [[SurfaceViewController alloc] init]; 
+                window.alpha = 1;
+                window.rootViewController = [[SurfaceViewController alloc] init];
                 [window makeKeyAndVisible];
             }];
         }

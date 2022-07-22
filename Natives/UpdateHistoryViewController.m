@@ -18,6 +18,7 @@ CGFloat uhcurrY = 4.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    setViewBackgroundColor(self.view);
 
     [self setTitle:@"Update History"];
 
@@ -32,15 +33,8 @@ CGFloat uhcurrY = 4.0;
     [self.view addSubview:scrollView];
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
-    // Update color mode once
-    if(@available(iOS 13.0, *)) {
-        [self traitCollectionDidChange:nil];
-    } else {
-        self.view.backgroundColor = [UIColor whiteColor];
-    }
-    
     uhcurrY = 4.0;
-    
+
     [scrollView addSubview:[self uhContent:true size:25 text:@"Current version" width:width]];
     [scrollView addSubview:[self uhContent:true size:20 text:[NSString stringWithFormat:@"2.1 (%s)", CONFIG_TYPE] width:width]];
     [scrollView addSubview:[self uhContent:true size:17 text:@"Changes" width:width]];
@@ -134,17 +128,6 @@ CGFloat uhcurrY = 4.0;
     }
     uhcurrY+=label.frame.size.height;
     return label;
-}
-
-
--(void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
-    if(@available(iOS 13.0, *)) {
-        if (UITraitCollection.currentTraitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
-            self.view.backgroundColor = [UIColor blackColor];
-        } else {
-            self.view.backgroundColor = [UIColor whiteColor];
-        }
-    }
 }
 
 @end

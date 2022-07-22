@@ -158,6 +158,7 @@ public final class Tools
         gameDir.mkdirs();
 
         Map<String, String> varArgMap = new ArrayMap<String, String>();
+        varArgMap.put("auth_session", profile.accessToken); // For legacy versions of MC
         varArgMap.put("auth_access_token", profile.accessToken);
         varArgMap.put("auth_player_name", username);
         varArgMap.put("auth_uuid", profile.profileId);

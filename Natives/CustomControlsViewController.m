@@ -86,18 +86,11 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    viewController = self;
     isControlModifiable = YES;
 
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
     [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
     [self setNeedsUpdateOfHomeIndicatorAutoHidden];
-
-    // Update color mode once
-    if(@available(iOS 13.0, *)) {
-        [self traitCollectionDidChange:nil];
-    } else {
-        self.view.backgroundColor = [UIColor whiteColor];
-    }
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     UIEdgeInsets insets = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets;
@@ -203,8 +196,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 }
 
 - (void)actionMenuExit {
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-    [self.navigationController popViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)actionMenuSave {
@@ -434,16 +426,6 @@ NSMutableArray *keyCodeMap, *keyValueMap;
             self.resizeView.frame = CGRectMake(button.frame.origin.x + button.frame.size.width, button.frame.origin.y + button.frame.size.height, self.resizeView.frame.size.width, self.resizeView.frame.size.height);
         } break;
         default: break;
-    }
-}
-
--(void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
-    if(@available(iOS 13.0, *)) {
-        if (UITraitCollection.currentTraitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
-            self.view.backgroundColor = [UIColor blackColor];
-        } else {
-            self.view.backgroundColor = [UIColor whiteColor];
-        }
     }
 }
 

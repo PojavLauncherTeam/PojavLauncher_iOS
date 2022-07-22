@@ -60,6 +60,20 @@ BOOL slideableHotbar;
     return [self positionFromPosition:self.beginningOfDocument offset:clamp(start, 20, self.text.length - 20)];
 }
 
+- (void)deleteBackward {
+    [super deleteBackward];
+    
+}
+
+- (BOOL)hasText {
+    return YES;
+}
+
+- (BOOL)insertText:(NSString *)text {
+    [super insertText:text];
+    
+}
+
 - (void)setText:(NSString *)text {
     [super setText:text];
     self.lockPos = [self positionFromPosition:self.beginningOfDocument offset:20];
@@ -362,6 +376,9 @@ CGPoint lastCenterPoint;
         self.rootView.transform = CGAffineTransformScale(CGAffineTransformIdentity, scale, scale);
 
         self.menuView.frame = CGRectMake(self.rootView.frame.size.width, self.rootView.frame.origin.y, self.menuView.frame.size.width,  self.menuView.frame.size.height);
+        // scale is in range of 0.7-1
+        // 1.1 - scale produces in range of 0.4-0.1
+        // result in transform scale range of 1-0.25
         self.menuView.transform = CGAffineTransformScale(CGAffineTransformIdentity, (1.1-scale)*2.5, (1.1-scale)*2.5);
     } else {
         CGPoint velocity = [sender velocityInView:sender.view];
@@ -370,6 +387,7 @@ CGPoint lastCenterPoint;
         // calculate duration to produce smooth movement
         // FIXME: any better way?
         CGFloat duration = fabs(self.rootView.center.x - centerX * scale) / centerX + 0.1;
+        duration = MIN(0.4, duration);
         //(110 - MIN(100, fabs(velocity.x))) / 100
 
         [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveEaseOut
@@ -628,8 +646,8 @@ CGPoint lastCenterPoint;
 
 - (void)surfaceOnHover:(UIHoverGestureRecognizer *)sender API_AVAILABLE(ios(13.0)) {
     if (@available(iOS 13.0, *)) {
-        if (@available(iOS 14.0, *) && isGrabbing) {
-            return;
+        if (@available(iOS 14.0, *)) {
+            if (isGrabbing) return;
         }
         CGPoint point = [sender locationInView:self.rootView];
         // NSLog(@"Mouse move!!");

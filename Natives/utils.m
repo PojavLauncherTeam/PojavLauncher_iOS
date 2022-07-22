@@ -102,6 +102,14 @@ CGFloat pxToDp(CGFloat px) {
 	return px / screenScale;
 }
 
+void setViewBackgroundColor(UIView* view) {
+    if(@available(iOS 13.0, *)) {
+        view.backgroundColor = UIColor.systemBackgroundColor;
+    } else {
+        view.backgroundColor = UIColor.whiteColor;
+    }
+}
+
 jstring convertStringJVM(JNIEnv* srcEnv, JNIEnv* dstEnv, jstring srcStr) {
     if (srcStr == NULL) {
         return NULL;

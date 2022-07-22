@@ -28,8 +28,6 @@ int versionSelectedAt = 0;
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
     [self setNeedsUpdateOfHomeIndicatorAutoHidden];
-    
-    [self setTitle:@"PojavLauncher"];
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];
@@ -40,13 +38,6 @@ int versionSelectedAt = 0;
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
     [self.view addSubview:scrollView];
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-
-    // Update color mode once
-    if(@available(iOS 13.0, *)) {
-        [self traitCollectionDidChange:nil];
-    } else {
-        self.view.backgroundColor = [UIColor whiteColor];
-    }
 
     UILabel *versionTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 4.0, 0.0, 0.0)];
     versionTextView.text = @"Minecraft version: ";
@@ -82,10 +73,8 @@ int versionSelectedAt = 0;
             handler:^(__kindof UIAction * _Nonnull action) {[self enterModInstaller:self.navigationItem.rightBarButtonItem];}];
         UIAction *option2 = [UIAction actionWithTitle:@"Custom controls" image:[[UIImage systemImageNamed:@"dpad.right.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
             handler:^(__kindof UIAction * _Nonnull action) {[self enterCustomControls];}];
-        UIAction *option3 = [UIAction actionWithTitle:@"Preferences" image:[[UIImage systemImageNamed:@"wrench.and.screwdriver"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-            handler:^(__kindof UIAction * _Nonnull action) {[self enterPreferences];}];
         UIMenu *menu = [UIMenu menuWithTitle:@"" image:nil identifier:nil
-            options:UIMenuOptionsDisplayInline children:@[option1, option2, option3]];
+            options:UIMenuOptionsDisplayInline children:@[option1, option2]];
         self.navigationItem.rightBarButtonItem.action = nil;
         self.navigationItem.rightBarButtonItem.primaryAction = nil;
         self.navigationItem.rightBarButtonItem.menu = menu;
@@ -201,20 +190,17 @@ int versionSelectedAt = 0;
             handler:^(UIAlertAction * _Nonnull action) {[self enterModInstaller:self.navigationItem.rightBarButtonItem];}];
         UIAlertAction *option2 = [UIAlertAction actionWithTitle:@"Custom controls" style:UIAlertActionStyleDefault
             handler:^(UIAlertAction * _Nonnull action) {[self enterCustomControls];}];
-        UIAlertAction *option3 = [UIAlertAction actionWithTitle:@"Preferences"  style:UIAlertActionStyleDefault
-            handler:^(UIAlertAction * _Nonnull action) {[self enterPreferences];}];
         fullAlert.popoverPresentationController.barButtonItem = sender;
         [self presentViewController:fullAlert animated:YES completion:nil];
         [fullAlert addAction:option1];
         [fullAlert addAction:option2];
-        [fullAlert addAction:option3];
     }
 }
 
 - (void)enterCustomControls {
     if (![getPreference(@"customctrl_warn") boolValue]) {
         CustomControlsViewController *vc = [[CustomControlsViewController alloc] init];
-        [self.navigationController pushViewController:vc animated:YES];
+        [self presentViewController:vc animated:YES completion:nil];
         return;
     }
     setPreference(@"customctrl_warn", @(NO));
@@ -225,7 +211,7 @@ int versionSelectedAt = 0;
     }
     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         CustomControlsViewController *vc = [[CustomControlsViewController alloc] init];
-        [self.navigationController pushViewController:vc animated:YES];
+        [self presentViewController:vc animated:YES completion:nil];
     }];
     [self presentViewController:alert animated:YES completion:nil];
     [alert addAction:ok];
@@ -257,18 +243,12 @@ int versionSelectedAt = 0;
         JavaGUIViewController *vc = [[JavaGUIViewController alloc] init];
         vc.filepath = url.path;
         NSLog(@"ModInstaller: launching %@", vc.filepath);
-        [self.navigationController pushViewController:vc animated:YES];
+        [self presentViewController:vc animated:YES completion:nil];
     }
-}
-
-- (void)enterPreferences {
-    LauncherPreferencesViewController *vc = [[LauncherPreferencesViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)launchMinecraft:(UIButton *)sender {
     sender.enabled = NO;
-    [self.navigationItem setHidesBackButton:YES animated:YES];
 
     NSObject *object = [versionList objectAtIndex:[versionPickerView selectedRowInComponent:0]];
 
@@ -282,7 +262,6 @@ int versionSelectedAt = 0;
  = progress;
         if (stage == nil) {
             sender.enabled = YES;
-            [self.navigationItem setHidesBackButton:NO animated:YES];
             if (mainProgress != nil) {
                 UIKit_launchMinecraftSurfaceVC();
             }
@@ -333,16 +312,6 @@ int versionSelectedAt = 0;
 
 - (BOOL)prefersHomeIndicatorAutoHidden {
     return NO;
-}
-
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
-    if(@available(iOS 13.0, *)) {
-        if (UITraitCollection.currentTraitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
-            self.view.backgroundColor = [UIColor blackColor];
-        } else {
-            self.view.backgroundColor = [UIColor whiteColor];
-        }
-    }
 }
 
 @end

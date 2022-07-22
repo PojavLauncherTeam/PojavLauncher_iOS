@@ -12,7 +12,7 @@ CGFloat faqcurrY = 4.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    setViewBackgroundColor(self.view);
     [self setTitle:@"Launcher FAQ"];
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
@@ -25,12 +25,6 @@ CGFloat faqcurrY = 4.0;
     [self.view addSubview:scrollView];
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
-    // Update color mode once
-    if(@available(iOS 13.0, *)) {
-        [self traitCollectionDidChange:nil];
-    } else {
-        self.view.backgroundColor = [UIColor whiteColor];
-    }
     NSString *snapheadingtext = @"Vanilla versions after 21w08b";
     
     faqcurrY = 4.0;
@@ -65,16 +59,6 @@ CGFloat faqcurrY = 4.0;
     }
     faqcurrY+=label.frame.size.height;
     return label;
-}
-
--(void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
-    if(@available(iOS 13.0, *)) {
-        if (UITraitCollection.currentTraitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
-            self.view.backgroundColor = [UIColor blackColor];
-        } else {
-            self.view.backgroundColor = [UIColor whiteColor];
-        }
-    }
 }
 
 @end

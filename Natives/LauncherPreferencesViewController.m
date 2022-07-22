@@ -102,8 +102,7 @@ int tempIndex;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    [self setTitle:@"Preferences"];
+    setViewBackgroundColor(self.view);
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];
@@ -137,13 +136,6 @@ int tempIndex;
 
     blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular];
     blurView = [[UIVisualEffectView alloc] initWithEffect:blur];
-    
-    // Update color mode once
-    if(@available(iOS 13.0, *)) {
-        [self traitCollectionDidChange:nil];
-    } else {
-        self.view.backgroundColor = [UIColor whiteColor];
-    }
 
     UILabel *btnsizeTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY, 0.0, 30.0)];
     btnsizeTextView.text = @"Button scale (%)";
@@ -1015,16 +1007,6 @@ int tempIndex;
     if (controller != nil) {
         controller.sourceView = sender;
         controller.sourceRect = sender.bounds;
-    }
-}
-
--(void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
-    if(@available(iOS 13.0, *)) {
-        if (UITraitCollection.currentTraitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
-            self.view.backgroundColor = [UIColor blackColor];
-        } else {
-            self.view.backgroundColor = [UIColor whiteColor];
-        }
     }
 }
 

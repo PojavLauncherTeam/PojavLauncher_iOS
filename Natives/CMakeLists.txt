@@ -59,6 +59,7 @@ add_executable(PojavLauncher
   external/AFNetworking/UIKit+AFNetworking/AFNetworkActivityIndicatorManager.m
   external/AFNetworking/UIKit+AFNetworking/AFAutoPurgingImageCache.m
   external/AFNetworking/UIKit+AFNetworking/AFImageDownloader.m
+  external/AFNetworking/UIKit+AFNetworking/UIButton+AFNetworking.m
   external/AFNetworking/UIKit+AFNetworking/UIImageView+AFNetworking.m
 
   main.m
@@ -87,8 +88,10 @@ add_executable(PojavLauncher
   JavaGUIViewController.m
   KeyboardInput.m
   LauncherFAQViewController.m
+  LauncherMenuViewController.m
   LauncherPreferences.m
   LauncherPreferencesViewController.m
+  LauncherSplitViewController.m
   LauncherViewController.m
   LoginViewController.m
   MinecraftResourceUtils.m
