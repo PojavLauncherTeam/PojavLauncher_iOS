@@ -58,6 +58,9 @@ void init_loadCustomEnv() {
     // Override OpenGL version to 4.1 for Zink
     setenv("MESA_GL_VERSION_OVERRIDE", "4.1", 1);
 
+    // Runs JVM in a separate thread
+    setenv("HACK_IGNORE_START_ON_FIRST_THREAD", "1", 1);
+
     /* Load custom env */
     FILE *envFile = fopen([NSString stringWithFormat:@"%s/custom_env.txt", getenv("POJAV_HOME")].UTF8String, "r");
 
