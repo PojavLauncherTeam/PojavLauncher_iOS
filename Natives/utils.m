@@ -8,6 +8,13 @@
 
 #include "utils.h"
 
+// This forces the navigation bar to keep its height (44dp) in landscape
+@implementation UINavigationBar(forceFullHeightInLandscape)
+- (BOOL)forceFullHeightInLandscape {
+    return YES;
+}
+@end
+
 NSMutableDictionary* parseJSONFromFile(NSString *path) {
     NSError *error;
 
