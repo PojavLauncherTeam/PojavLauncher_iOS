@@ -178,6 +178,7 @@ void init_setupMultiDir() {
 
     [fm createDirectoryAtPath:multidirPath withIntermediateDirectories:YES attributes:nil error:nil];
     [fm removeItemAtPath:lasmPath error:nil];
+    [fm createDirectoryAtPath:lasmPath.stringByDeletingLastPathComponent withIntermediateDirectories:YES attributes:nil error:nil];
     [fm createSymbolicLinkAtPath:lasmPath withDestinationPath:multidirPath error:nil];
     setenv("POJAV_GAME_DIR", lasmPath.UTF8String, 1);
 

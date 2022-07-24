@@ -26,10 +26,6 @@
 // #define DEBUG_VISIBLE_TEXT_FIELD
 // #define DEBUG_VISIBLE_TOUCH
 
-#define INPUT_SPACE_CHAR @"                                        "
-#define INPUT_FULL_LENGTH 40
-#define INPUT_SPACE_LENGTH 20
-
 #ifdef DEBUG_VISIBLE_TEXT_FIELD
 UILabel *inputLengthView;
 #endif
@@ -41,44 +37,141 @@ BOOL slideableHotbar;
 // TODO: key modifiers impl
 
 
+// There are private functions that we are unable to find public replacements
+// (Both are found by placing breakpoints)
+@interface UITextField(private)
+- (NSRange)insertFilteredText:(NSString *)text;
+- (id) replaceRangeWithTextWithoutClosingTyping:(UITextRange *)range replacementText:(NSString *)text;
+@end
+
+
 #pragma mark Class TrackedTextField
 @interface TrackedTextField : UITextField
-@property int lastPosition;
-@property UITextPosition* lockPos;
+@property int lastTextPos;
+@property CGFloat lastPointX;
 @end
 
 @implementation TrackedTextField
+
+- (void)sendMultiBackspaces:(int)times {
+    for (int i = 0; i < times; i++) {
+        CallbackBridge_nativeSendKey(GLFW_KEY_BACKSPACE, 0, 1, 0);
+        CallbackBridge_nativeSendKey(GLFW_KEY_BACKSPACE, 0, 0, 0);
+    }
+}
+
+- (void)sendText:(NSString *)text {
+    for (int i = 0; i < text.length; i++) {
+        // Directly convert unichar to jchar since both are in UTF-16 encoding.
+        jchar theChar = (jchar) [text characterAtIndex:i];
+        if (isUseStackQueueCall) {
+            CallbackBridge_nativeSendCharMods(theChar, 0);
+        } else {
+            CallbackBridge_nativeSendChar(theChar);
+        }
+#ifdef DEBUG_VISIBLE_TEXT_FIELD
+        inputLengthView.text = [NSString stringWithFormat:@"length=%lu", self.text.length];
+#endif
+    }
+}
+
+- (void)beginFloatingCursorAtPoint:(CGPoint)point {
+    [super beginFloatingCursorAtPoint:point];
+    self.lastPointX = point.x;
+}
+
+// Handle cursor movement in the empty space
+- (void)updateFloatingCursorAtPoint:(CGPoint)point {
+    [super updateFloatingCursorAtPoint:point];
+
+    if (self.lastPointX == 0 || (self.lastTextPos > 0 && self.lastTextPos < self.text.length)) {
+        // This is handled in -[TrackedTextField closestPositionToPoint:]
+        return;
+    }
+
+#ifdef DEBUG_VISIBLE_TEXT_FIELD
+    inputLengthView.text = [NSString stringWithFormat:@"updateFloatingCursorAtPoint lastPointX=%f, lastTextPos=%d\n", self.lastPointX, self.lastTextPos];
+#endif
+
+    CGFloat diff = point.x - self.lastPointX;
+    if (ABS(diff) < 8) {
+        return;
+    }
+    self.lastPointX = point.x;
+
+    int key = (diff > 0) ? GLFW_KEY_DPAD_RIGHT : GLFW_KEY_DPAD_LEFT;
+    CallbackBridge_nativeSendKey(key, 0, 1, 0);
+    CallbackBridge_nativeSendKey(key, 0, 0, 0);
+}
+
+- (void)endFloatingCursor {
+    [super endFloatingCursor];
+    self.lastPointX = 0;
+}
+
 - (UITextPosition *)closestPositionToPoint:(CGPoint)point {
+    // Handle cursor movement between characters
     UITextPosition *position = [super closestPositionToPoint:point];
     int start = [self offsetFromPosition:self.beginningOfDocument toPosition:position];
-    if (start - self.lastPosition != 0) {
-        int key = (start - self.lastPosition > 0) ? GLFW_KEY_DPAD_RIGHT : GLFW_KEY_DPAD_LEFT;
+    if (start - self.lastTextPos != 0) {
+        int key = (start - self.lastTextPos > 0) ? GLFW_KEY_DPAD_RIGHT : GLFW_KEY_DPAD_LEFT;
         CallbackBridge_nativeSendKey(key, 0, 1, 0);
         CallbackBridge_nativeSendKey(key, 0, 0, 0);
     }
-    self.lastPosition = start;
-    return [self positionFromPosition:self.beginningOfDocument offset:clamp(start, 20, self.text.length - 20)];
+    self.lastTextPos = start;
+    return position;
 }
 
 - (void)deleteBackward {
-    [super deleteBackward];
-    
+    if (self.text.length > 1) {
+        // Keep the first character (a space)
+        [super deleteBackward];
+    } else {
+        self.text = @" ";
+    }
+    self.lastTextPos = [super offsetFromPosition:self.beginningOfDocument toPosition:self.selectedTextRange.start];
+
+    [self sendMultiBackspaces:1];
 }
 
 - (BOOL)hasText {
+    self.lastTextPos = MAX(self.lastTextPos, 1);
     return YES;
 }
 
-- (BOOL)insertText:(NSString *)text {
-    [super insertText:text];
-    
+// Old name: insertText
+- (NSRange)insertFilteredText:(NSString *)text {
+    int cursorPos = [super offsetFromPosition:self.beginningOfDocument toPosition:self.selectedTextRange.start];
+
+    // This also makes sure that lastTextPos != cursorPos (text should never be empty)
+    if (self.lastTextPos - cursorPos == text.length) {
+        // Handle text markup by first deleting N amount of characters equal to the replaced text
+        [self sendMultiBackspaces:text.length];
+    }
+    // What else is done by past-autocomplete (insert a space after autocompletion)
+    // See -[TrackedTextField replaceRangeWithTextWithoutClosingTyping:replacementText:]
+
+    self.lastTextPos = cursorPos + text.length;
+
+    [self sendText:text];
+
+    NSRange range = [super insertFilteredText:text];
+    return range;
 }
 
-- (void)setText:(NSString *)text {
-    [super setText:text];
-    self.lockPos = [self positionFromPosition:self.beginningOfDocument offset:20];
-    self.selectedTextRange = [self textRangeFromPosition:self.lockPos toPosition:self.lockPos];
+- (id) replaceRangeWithTextWithoutClosingTyping:(UITextRange *)range replacementText:(NSString *)text
+{
+    int length = [super offsetFromPosition:range.start toPosition:range.end];
+
+    // Delete the range of needs for autocompletion
+    [self sendMultiBackspaces:length];
+
+    // Insert the autocompleted text
+    [self sendText:text];
+
+    return [super replaceRangeWithTextWithoutClosingTyping:range replacementText:text];
 }
+
 @end
 
 
@@ -234,22 +327,21 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
     self.mousePointerView.userInteractionEnabled = NO;
     [self.rootView addSubview:self.mousePointerView];
 
-#ifndef DEBUG_VISIBLE_TEXT_FIELD
-    self.inputView = [[TrackedTextField alloc] initWithFrame:CGRectMake(0, -1, 1, 1)];
-#else
-    self.inputView = [[TrackedTextField alloc] initWithFrame:CGRectMake(5 * 2 + 160.0, 5 * 2 + 30.0, 200.0, 30.0)];
-    self.inputView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.5f];
-    self.inputView.font = [self.inputView.font fontWithSize:20];
-
-    inputLengthView = [[UILabel alloc] initWithFrame:CGRectMake(5 * 2 + 80.0, 5 * 2 + 30.0, 80.0, 30.0)];
+    self.inputView = [[TrackedTextField alloc] initWithFrame:CGRectMake(0, -32.0, self.view.frame.size.width, 30.0)];
+#ifdef DEBUG_VISIBLE_TEXT_FIELD
+    inputLengthView = [[UILabel alloc] initWithFrame:CGRectMake(0, -62.0, self.view.frame.size.width, 30.0)];
     inputLengthView.text = @"length=?";
     inputLengthView.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.6f];
     [self.rootView addSubview:inputLengthView];
 #endif
-    //self.inputView.autocorrectionType = UITextAutocorrectionTypeNo;
-    self.inputView.delegate = self;
-    self.inputView.lastPosition = 20;
-    [self.inputView addTarget:self action:@selector(inputViewDidChange) forControlEvents:UIControlEventEditingChanged];
+    if (@available(iOS 13.0, *)) {
+        self.inputView.backgroundColor = UIColor.secondarySystemBackgroundColor;
+    } else {
+        self.inputView.backgroundColor = UIColor.groupTableViewBackgroundColor;
+    }
+    self.inputView.font = [UIFont fontWithName:@"Menlo-Regular" size:20];
+    self.inputView.clearsOnBeginEditing = YES;
+    self.inputView.textAlignment = NSTextAlignmentCenter;
 
     NSString *controlFilePath = [NSString stringWithFormat:@"%s/controlmap/%@", getenv("POJAV_HOME"), (NSString *)getPreference(@"default_ctrl")];
 
@@ -618,7 +710,6 @@ CGPoint lastCenterPoint;
 
     if (sender.state == UIGestureRecognizerStateRecognized) {
         if (currentHotbarSlot == -1) {
-            self.inputView.text = INPUT_SPACE_CHAR;
             inputTextLength = 0;
 
             CallbackBridge_nativeSendMouseButton(
@@ -680,7 +771,6 @@ CGPoint lastCenterPoint;
     if (sender.state == UIGestureRecognizerStateBegan) {
         self.shouldTriggerClick = NO;
         if (currentHotbarSlot == -1) {
-            self.inputView.text = INPUT_SPACE_CHAR;
             inputTextLength = 0;
 
             CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_LEFT, 1, 0);
@@ -695,9 +785,6 @@ CGPoint lastCenterPoint;
             || sender.state == UIGestureRecognizerStateEnded)
         {
             if (currentHotbarSlot == -1) {
-                self.inputView.text = INPUT_SPACE_CHAR;
-                inputTextLength = 0;
-
                 CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_LEFT, 0, 0);
             } else {
                 
@@ -732,90 +819,6 @@ CallbackBridge_nativeSendKey(GLFW_KEY_Q, 0, 0, 0);
 
 #pragma mark - Input view stuff
 
-NSString* inputStringBefore;
-int inputStringLength = INPUT_FULL_LENGTH;
--(void)inputViewDidChange {
-    int typedLength = (int)self.inputView.text.length - inputStringLength;
-    if (typedLength < 0) {
-        for (int i = 0; i < -typedLength; i++) {
-            if (self.inputView.text.length < INPUT_FULL_LENGTH) {
-                self.inputView.text = [@" " stringByAppendingString:self.inputView.text];
-            }
-            CallbackBridge_nativeSendKey(GLFW_KEY_BACKSPACE, 0, 1, 0);
-            CallbackBridge_nativeSendKey(GLFW_KEY_BACKSPACE, 0, 0, 0);
-            if (inputTextLength > 0) {
-                --inputTextLength;
-            }
-        }
-
-#ifdef DEBUG_VISIBLE_TEXT_FIELD
-        inputLengthView.text = [@"length=" stringByAppendingFormat:@"%i", 
-            inputTextLength];
-#endif
-    } else if (typedLength > 0) {
-        int index = [self.inputView offsetFromPosition:self.inputView.beginningOfDocument toPosition:self.inputView.selectedTextRange.start];
-        NSString *newText = [self.inputView.text substringWithRange:NSMakeRange(index - typedLength, typedLength)];
-        int charLength = (int) [newText length];
-        for (int i = 0; i < charLength; i++) {
-            // Directly convert unichar to jchar since both are in UTF-16 encoding.
-
-            jchar theChar = (jchar) [newText characterAtIndex:i];
-            if (isUseStackQueueCall) {
-                CallbackBridge_nativeSendCharMods(theChar, /* mods */ 0);
-            } else {
-                CallbackBridge_nativeSendChar(theChar);
-            }
-
-            ++inputTextLength;
-#ifdef DEBUG_VISIBLE_TEXT_FIELD
-            inputLengthView.text = [@"length=" stringByAppendingFormat:@"%i", 
-            inputTextLength];
-#endif
-        }
-        inputStringBefore = self.inputView.text;
-        // [self.inputView.text substringFromIndex:inputTextLength - 1];
-    } else {
-#ifdef DEBUG_VISIBLE_TEXT_FIELD
-        NSLog(@"Compare \"%@\" vs \"%@\"", self.inputView.text, inputStringBefore);
-#endif
-        for (int i = 0; i < INPUT_FULL_LENGTH; i++) {
-            if ([self.inputView.text characterAtIndex:i] != [inputStringBefore characterAtIndex:i]) {
-                NSString *inputStringNow = [self.inputView.text substringFromIndex:i];
-/*
-                self.inputView.text = [self.inputView.text substringToIndex:i];
-                // self notify
-                [self inputViewDidChange];
-                
-                self.inputView.text = [self.inputView.text stringByAppendingString:inputStringNow];
-                // self notify
-                [self inputViewDidChange];
-*/
-                
-                for (int i2 = 0; i2 < [inputStringNow length]; i2++) {
-                    CallbackBridge_nativeSendKey(GLFW_KEY_BACKSPACE, 0, 1, 0);
-                    CallbackBridge_nativeSendKey(GLFW_KEY_BACKSPACE, 0, 0, 0);
-                }
-                
-                for (int i2 = 0; i2 < [inputStringNow length]; i2++) {
-                    CallbackBridge_nativeSendCharMods((jchar) [inputStringNow characterAtIndex:i2], /* mods */ 0);
-                }
-
-                break;
-            }
-        }
-
-#ifdef DEBUG_VISIBLE_TEXT_FIELD
-        inputLengthView.text = @"length =";
-#endif
-        inputStringBefore = self.inputView.text;
-    }
-
-    inputStringLength = (int)self.inputView.text.length;
-
-    // Reset to default value
-    // self.inputView.text = INPUT_SPACE_CHAR;
-}
-
 -(BOOL)textFieldShouldReturn:(UITextField *)textField {
     CallbackBridge_nativeSendKey(GLFW_KEY_ENTER, 0, 1, 0);
     CallbackBridge_nativeSendKey(GLFW_KEY_ENTER, 0, 0, 0);
@@ -837,16 +840,10 @@ int currentVisibility = 1;
                         if (self.inputView.isFirstResponder) {
                             [self.inputView resignFirstResponder];
                             self.inputView.alpha = 1.0f;
-                            self.inputView.text = @"";
                         } else {
                             [self.inputView becomeFirstResponder];
-                            // Empty the input field so that user will no longer able to select text inside.
-                            self.inputView.text = INPUT_SPACE_CHAR;
-                            inputStringLength = INPUT_FULL_LENGTH;
-                            
-#ifndef DEBUG_VISIBLE_TEXT_FIELD
-                            self.inputView.alpha = 0.0f;
-#endif
+                            // Insert an undeletable space
+                            self.inputView.text = @" ";
                             inputTextLength = 0;
                         }
                     }
