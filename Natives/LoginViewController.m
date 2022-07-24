@@ -249,6 +249,7 @@
         } else {
             splitVc = [[LauncherSplitViewController alloc] init];
         }
+        splitVc.modalPresentationStyle = UIModalPresentationFullScreen;
         [self presentViewController:splitVc animated:YES completion:nil];
     };
     if (type == TYPE_SELECTACC) {

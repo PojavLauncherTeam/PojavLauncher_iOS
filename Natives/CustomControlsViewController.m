@@ -86,6 +86,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.5];
     viewController = self;
     isControlModifiable = YES;
 

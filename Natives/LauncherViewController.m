@@ -200,6 +200,7 @@ int versionSelectedAt = 0;
 - (void)enterCustomControls {
     if (![getPreference(@"customctrl_warn") boolValue]) {
         CustomControlsViewController *vc = [[CustomControlsViewController alloc] init];
+        vc.modalPresentationStyle = UIModalPresentationOverFullScreen;
         [self presentViewController:vc animated:YES completion:nil];
         return;
     }
@@ -210,8 +211,7 @@ int versionSelectedAt = 0;
         alert.popoverPresentationController.sourceRect = CGRectMake(self.view.frame.size.width-10.0, 0, 10, 10);
     }
     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        CustomControlsViewController *vc = [[CustomControlsViewController alloc] init];
-        [self presentViewController:vc animated:YES completion:nil];
+        [self enterCustomControls];
     }];
     [self presentViewController:alert animated:YES completion:nil];
     [alert addAction:ok];
@@ -241,6 +241,7 @@ int versionSelectedAt = 0;
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url {
     if (controller.documentPickerMode == UIDocumentPickerModeImport) {
         JavaGUIViewController *vc = [[JavaGUIViewController alloc] init];
+        vc.modalPresentationStyle = UIModalPresentationFullScreen;
         vc.filepath = url.path;
         NSLog(@"ModInstaller: launching %@", vc.filepath);
         [self presentViewController:vc animated:YES completion:nil];
