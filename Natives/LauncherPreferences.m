@@ -46,19 +46,19 @@ NSMutableDictionary *getDictionary(NSString *type) {
     return nil;
 }
 
-int getSelectedJavaVersion() {
-    NSString *java = [getPreference(@"java_home") lastPathComponent];
+int getJavaVersion(NSString* java) {
     if (java.length == 0) {
         return 0;
     } else if ([java hasPrefix:@"java-"] && [java hasSuffix:@"-openjdk"]) {
         return [java substringWithRange:NSMakeRange(5, java.length - 13)].intValue;
-    } else if ([java isEqualToString:@"jre"]) {
-        // TODO for jailbroken: jre8 and jre17
-        return 8;
     } else {
         NSLog(@"FIXME: What is the Java version of %@?", java);
         return 0;
     }
+}
+
+int getSelectedJavaVersion() {
+    return getJavaVersion([getPreference(@"java_home") lastPathComponent]);
 }
 
 void setDefaultValueForPref(NSMutableDictionary *dict, NSString* key, id value) {

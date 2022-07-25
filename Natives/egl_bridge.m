@@ -80,9 +80,6 @@ void* egl_make_current(void* window);
 
 int config_renderer;
 
-typedef void gl4esInitialize_func();
-// typedef void gl4esSwapBuffers_func();
-// gl4esSwapBuffers_func *gl4esSwapBuffers;
 typedef jint RegalMakeCurrent_func(EGLContext context);
 
 // Called from JNI_OnLoad of liblwjgl_opengl, TODO: check if unused
@@ -381,6 +378,7 @@ void pojavSwapBuffers() {
         case RENDERER_MTL_ANGLE: {
             if (!eglSwapBuffers_p(potatoBridge.eglDisplay, potatoBridge.eglSurface)) {
                 if (eglGetError_p() == EGL_BAD_SURFACE) {
+                    NSLog(@"eglSwapBuffers error 0x%x", eglGetError_p());
                     stopSwapBuffers = true;
                     closeGLFWWindow();
                 }

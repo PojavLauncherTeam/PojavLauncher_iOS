@@ -106,22 +106,24 @@ void init_loadCustomJvmFlags() {
 }
 
 NSString* environmentFailsafes(int minVersion) {
+    NSString *jvmPath = getenv("POJAV_DETECTEDJB") ? @"/usr/lib/jvm" : [NSString stringWithFormat:@"%s/jvm", getenv("BUNDLE_PATH")];
     NSString *javaHome = nil;
-    if (getenv("POJAV_DETECTEDJB")) {
-        BOOL foundJava8 = [fm fileExistsAtPath:JRE8_HOME_JB];
-        if (!foundJava8) {
-            regLog("[JavaLauncher] Java 8 wasn't found on your device. Install Java 8 for more compatibility and the mod installer.");
-        }
 
-        if (foundJava8 && minVersion <= 8) {
-            javaHome = JRE8_HOME_JB;
-        } else if ([fm fileExistsAtPath:JRE16_HOME_JB] && minVersion <= 16) {
-            javaHome = JRE16_HOME_JB;
-        } else if ([fm fileExistsAtPath:JRE17_HOME_JB] && minVersion <= 17) {
-            javaHome = JRE17_HOME_JB;
-        }
-    } else if (minVersion <= 8) {
-        javaHome = [NSString stringWithFormat:@"%s/jre", getenv("POJAV_HOME")];
+    NSString *jre8Path = [NSString stringWithFormat:@"%@/java-8-openjdk", jvmPath];
+    NSString *jre16Path = [NSString stringWithFormat:@"%@/java-16-openjdk", jvmPath];
+    NSString *jre17Path = [NSString stringWithFormat:@"%@/java-17-openjdk", jvmPath];
+
+    BOOL foundJava8 = [fm fileExistsAtPath:jre8Path];
+    if (!foundJava8) {
+        regLog("[JavaLauncher] Java 8 wasn't found on your device. Install Java 8 for more compatibility and the mod installer.");
+    }
+
+    if (foundJava8 && minVersion <= 8) {
+        javaHome = jre8Path;
+    } else if ([fm fileExistsAtPath:jre16Path] && minVersion <= 16) {
+        javaHome = jre16Path;
+    } else if ([fm fileExistsAtPath:jre17Path] && minVersion <= 17) {
+        javaHome = jre17Path;
     }
 
     if (javaHome == nil) {
@@ -165,92 +167,6 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
 
     javaHome = javaHome_pre.UTF8String;
     setenv("JAVA_HOME", javaHome, 1);
-
-    if (!getenv("POJAV_DETECTEDJB")) {
-        char src[2048], dst[2048];
-
-        // Symlink frameworks -> dylibs on jailed environment
-        mkdir(javaHome, 755);
-
-        // Symlink the skeleton part of JRE
-        sprintf((char *)src, "%s/jre/man", getenv("BUNDLE_PATH"));
-        sprintf((char *)dst, "%s/man", javaHome);
-        symlink(src, dst);
-
-        sprintf((char *)src, "%s/jre/lib", getenv("BUNDLE_PATH"));
-        sprintf((char *)dst, "%s/lib", javaHome);
-        mkdir(dst, 755);
-
-        DIR *d;
-        struct dirent *dir;
-        d = opendir(src);
-        assert(d);
-        int i = 0;
-        while ((dir = readdir(d)) != NULL) {
-            // Skip "." and ".."
-            if (i < 2) {
-                i++;
-                continue;
-            } else if (!strncmp(dir->d_name, "jli", 3)) {
-                sprintf((char *)dst, "%s/lib/jli", javaHome);
-                mkdir(dst, 755);
-                
-                // libjli.dylib
-                sprintf((char *)src, "%s/Frameworks/libjli.dylib.framework/libjli.dylib", getenv("BUNDLE_PATH"));
-                sprintf((char *)dst, "%s/lib/jli/libjli.dylib", javaHome);
-                symlink(src, dst);
-            } else if (!strncmp(dir->d_name, "server", 6)) {
-                sprintf((char *)dst, "%s/lib/server", javaHome);
-                mkdir(dst, 755);
-
-                // libjsig.dylib
-                sprintf((char *)src, "%s/Frameworks/libjsig.dylib.framework/libjsig.dylib", getenv("BUNDLE_PATH"));
-                sprintf((char *)dst, "%s/lib/server/libjsig.dylib", javaHome);
-                symlink(src, dst);
-
-                // libjvm.dylib
-                sprintf((char *)src, "%s/Frameworks/libjvm.dylib.framework/libjvm.dylib", getenv("BUNDLE_PATH"));
-                sprintf((char *)dst, "%s/lib/server/libjvm.dylib", javaHome);
-                symlink(src, dst);
-
-                // Xusage.txt
-                sprintf((char *)src, "%s/jre/lib/server/Xusage.txt", getenv("BUNDLE_PATH"));
-                sprintf((char *)dst, "%s/lib/server/Xusage.txt", javaHome);
-                symlink(src, dst);
-            } else {
-                sprintf((char *)src, "%s/jre/lib/%s", getenv("BUNDLE_PATH"), dir->d_name);
-                sprintf((char *)dst, "%s/lib/%s", javaHome, dir->d_name);
-                symlink(src, dst);
-            }
-        }
-        closedir(d);
-
-        // Symlink dylibs
-        sprintf((char *)src, "%s/Frameworks", getenv("BUNDLE_PATH"));
-        d = opendir(src);
-        assert(d);
-        i = 0;
-        while ((dir = readdir(d)) != NULL) {
-            // Skip "." and ".."
-            if (i < 2) {
-                i++;
-                continue;
-            } else if (!strncmp(dir->d_name, "lib", 3) && strlen(dir->d_name) > 12) {
-                char *dylibName = strdup(dir->d_name);
-                dylibName[strlen(dylibName) - 10] = '\0';
-                sprintf((char *)src, "%s/Frameworks/%s/%s", getenv("BUNDLE_PATH"), dir->d_name, dylibName);
-                if (!strncmp(dir->d_name, "libjvm.dylib", 12)) {
-                    sprintf((char *)dst, "%s/lib/server/%s", javaHome, dylibName);
-                } else {
-                    sprintf((char *)dst, "%s/lib/%s", javaHome, dylibName);
-                }
-                symlink(src, dst);
-                dylibName[strlen(dylibName) - 11] = '.';
-                free(dylibName);
-            }
-        }
-        closedir(d);
-    }
 
     renderer_pre = getPreference(@"renderer");
     renderer = renderer_pre.UTF8String;
