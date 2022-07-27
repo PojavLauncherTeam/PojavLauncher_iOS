@@ -106,7 +106,7 @@ void loadPreferences() {
 
     assert(prefDict);
 
-    // set default value\
+    // set default value
     setDefaultValueForPref(envPrefDict, @"resolution", @(100));
     setDefaultValueForPref(prefDict, @"button_scale", @(100));
     setDefaultValueForPref(prefDict, @"selected_version", @"1.7.10");
