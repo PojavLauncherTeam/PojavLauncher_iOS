@@ -26,7 +26,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    setViewBackgroundColor(self.view);
     [self setTitle:@"About PojavLauncher"];
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
@@ -39,13 +39,6 @@
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, self.navigationController.navigationBar.frame.size.height + 5, width, height)];
     [self.view addSubview:scrollView];
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-
-    // Update color mode once
-    if(@available(iOS 13.0, *)) {
-        [self traitCollectionDidChange:nil];
-    } else {
-        self.view.backgroundColor = [UIColor whiteColor];
-    }
 
     // TODO: Move this into utils?
     struct utsname systemInfo;
@@ -123,16 +116,6 @@
 - (void)updateHistory {
     UpdateHistoryViewController *vc = [[UpdateHistoryViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
-}
-
--(void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
-    if(@available(iOS 13.0, *)) {
-        if (UITraitCollection.currentTraitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
-            self.view.backgroundColor = [UIColor blackColor];
-        } else {
-            self.view.backgroundColor = [UIColor whiteColor];
-        }
-    }
 }
 
 @end

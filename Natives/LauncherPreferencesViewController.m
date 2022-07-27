@@ -84,7 +84,7 @@ UITextField *gdirTextField;
 UITextField *activeField;
 NSArray* rendererList;
 NSMutableArray* gdirList;
-NSMutableArray* jhomeList;
+NSArray* jhomeList;
 UIPickerView* rendPickerView;
 UIPickerView* gdirPickerView;
 UIPickerView* jhomePickerView;
@@ -95,15 +95,12 @@ UIScrollView *scrollView;
 
 NSDictionary *rendererDict;
 
-NSString *JRE8_HOME_SB;
-
 int tempIndex;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    [self setTitle:@"Preferences"];
+    setViewBackgroundColor(self.view);
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];
@@ -111,14 +108,7 @@ int tempIndex;
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height) - self.navigationController.navigationBar.frame.size.height;
     CGFloat currY = 8.0;
-/*
-    javaDict = @{
-        @"/usr/lib/jvm/java-8-openjdk": @"Java 8",
-        @"/usr/lib/jvm/java-16-openjdk": @"Java 16",
-        @"/usr/lib/jvm/java-17-openjdk": @"Java 17",
-        [NSString stringWithFormat:@"%s/jre8", getenv("POJAV_HOME")], @"Java 8 (sandbox)"
-    };
-*/
+
     rendererDict = @{
         @"gl4es 1.1.4 - exports OpenGL 2.1": @"libgl4es_114.dylib",
         @"tinygl4angle (1.17+) - exports OpenGL 3.2 (Core Profile, limited)": @"libtinygl4angle.dylib",
@@ -137,13 +127,6 @@ int tempIndex;
 
     blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular];
     blurView = [[UIVisualEffectView alloc] initWithEffect:blur];
-    
-    // Update color mode once
-    if(@available(iOS 13.0, *)) {
-        [self traitCollectionDidChange:nil];
-    } else {
-        self.view.backgroundColor = [UIColor whiteColor];
-    }
 
     UILabel *btnsizeTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY, 0.0, 30.0)];
     btnsizeTextView.text = @"Button scale (%)";
@@ -219,8 +202,7 @@ int tempIndex;
     jargsTextField.delegate = self;
     jargsTextField.placeholder = @"Specify arguments...";
     jargsTextField.text = (NSString *) getPreference(@"java_args");
-    jargsTextField.autocorrectionType = UITextAutocorrectionTypeNo
-;
+    jargsTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     jargsTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
     jargsTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [tableView addSubview:jargsTextField];
@@ -234,6 +216,7 @@ int tempIndex;
     rendTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 28.0, 30)];
     [rendTextField addTarget:rendTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     rendTextField.tag = TAG_REND;
+    rendTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     rendTextField.delegate = self;
     rendTextField.placeholder = @"Override renderer...";
     //rendTextField.text = self.rendererDict[getPreference(@"renderer")];
@@ -270,45 +253,26 @@ int tempIndex;
     jhomeTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 28.0, 30)];
     [jhomeTextField addTarget:jhomeTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     jhomeTextField.tag = TAG_JHOME;
+    jhomeTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     jhomeTextField.delegate = self;
     jhomeTextField.placeholder = @"Override Java path...";
 
-    JRE8_HOME_SB = [NSString stringWithFormat:@"%s/jre8", getenv("POJAV_HOME")];
-    if(getenv("POJAV_DETECTEDJB")) {
-        switch (getSelectedJavaVersion()) {
-            case 8: jhomeTextField.text = JRE8_NAME_JB; break;
-            case 16: jhomeTextField.text = JRE16_NAME_JB; break;
-            case 17: jhomeTextField.text = JRE17_NAME_JB; break;
-        }
-    } else {
-        jhomeTextField.text = JRE8_NAME_SB;
-    }
-    
+    jhomeTextField.text = [getPreference(@"java_home") lastPathComponent];
+
     jhomeTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
     jhomeTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [tableView addSubview:jhomeTextField];
-    
-    jhomeList = [[NSMutableArray alloc] init];
-    if ([[NSFileManager defaultManager] fileExistsAtPath:JRE8_HOME_JB]) {
-        [jhomeList addObject:JRE8_NAME_JB];
-    }
-    if ([[NSFileManager defaultManager] fileExistsAtPath:JRE16_HOME_JB]) {
-        [jhomeList addObject:JRE16_NAME_JB];
-    }
-    if ([[NSFileManager defaultManager] fileExistsAtPath:JRE17_HOME_JB]) {
-        [jhomeList addObject:JRE17_NAME_JB];
-    }
-    if ([[NSFileManager defaultManager] fileExistsAtPath:JRE8_HOME_SB]) {
-        [jhomeList addObject:JRE8_NAME_SB];
-    }
-    
+
+    NSString *listPath = getenv("POJAV_DETECTEDJB") ? @"/usr/lib/jvm" : [NSString stringWithFormat:@"%s/jvm", getenv("BUNDLE_PATH")];
+    jhomeList = [NSFileManager.defaultManager contentsOfDirectoryAtPath:listPath error:nil];
+
     jhomePickerView = [[UIPickerView alloc] init];
     jhomePickerView.delegate = self;
     jhomePickerView.dataSource = self;
     jhomePickerView.tag = TAG_PICKER_JHOME;
     [jhomePickerView reloadAllComponents];
     for (int i = 0; i < jhomeList.count; i++) {
-        if ([jhomeList[i] isEqualToString:jhomeTextField.text]) {
+        if ([jhomeTextField.text isEqualToString:jhomeList[i]]) {
             [jhomePickerView selectRow:i inComponent:0 animated:NO];
             break;
         }
@@ -616,24 +580,14 @@ int tempIndex;
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     activeField = nil;
     if (textField.tag == TAG_JARGS) {
-        setPreference(@"java_args", textField.text); 
+        setPreference(@"java_args", textField.text);
     } else if (textField.tag == TAG_REND) {
         setPreference(@"renderer", rendererDict[textField.text]);
         setenv("POJAV_RENDERER", [getPreference(@"renderer") UTF8String], 1);
     } else if (textField.tag == TAG_JHOME) {
-        if ([textField.text isEqualToString:JRE8_NAME_JB]) {
-            setPreference(@"java_home", JRE8_HOME_JB);
-            setenv("JAVA_HOME", [JRE8_HOME_JB cStringUsingEncoding:NSUTF8StringEncoding], 1);
-        } else if ([textField.text isEqualToString:JRE16_NAME_JB]) {
-            setPreference(@"java_home", JRE16_HOME_JB);
-            setenv("JAVA_HOME", [JRE16_HOME_JB cStringUsingEncoding:NSUTF8StringEncoding], 1);
-        } else if ([textField.text isEqualToString:JRE17_NAME_JB]) {
-            setPreference(@"java_home", JRE17_HOME_JB);
-            setenv("JAVA_HOME", [JRE17_HOME_JB cStringUsingEncoding:NSUTF8StringEncoding], 1);
-        } else if ([textField.text isEqualToString:JRE8_NAME_SB]) {
-            setPreference(@"java_home", JRE8_HOME_SB);
-            setenv("JAVA_HOME", [JRE8_HOME_SB cStringUsingEncoding:NSUTF8StringEncoding], 1);
-        }
+        NSString *listPath = getenv("POJAV_DETECTEDJB") ? @"/usr/lib/jvm" : [NSString stringWithFormat:@"%s/jvm", getenv("BUNDLE_PATH")];
+        setPreference(@"java_home", [NSString stringWithFormat:@"%@/%@", listPath, textField.text]);
+        setenv("JAVA_HOME", [getPreference(@"java_home") UTF8String], 1);
         if (![textField.text containsString:JRE8_NAME_JB] && ![textField.text containsString:JRE8_NAME_SB] && [getPreference(@"java_warn") boolValue] == YES) {
             UIAlertController *javaAlert = [UIAlertController alertControllerWithTitle:@"Java version is not Java 8" message:@"Minecraft versions below 1.6, modded below 1.16.4, and the mod installer will not work unless you have Java 8 installed on your device." preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
@@ -1015,16 +969,6 @@ int tempIndex;
     if (controller != nil) {
         controller.sourceView = sender;
         controller.sourceRect = sender.bounds;
-    }
-}
-
--(void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
-    if(@available(iOS 13.0, *)) {
-        if (UITraitCollection.currentTraitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
-            self.view.backgroundColor = [UIColor blackColor];
-        } else {
-            self.view.backgroundColor = [UIColor whiteColor];
-        }
     }
 }
 

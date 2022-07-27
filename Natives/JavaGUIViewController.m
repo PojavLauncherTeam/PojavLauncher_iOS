@@ -69,7 +69,8 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    viewController = self;
+    self.view.backgroundColor = UIColor.blackColor;
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
     [self setNeedsUpdateOfHomeIndicatorAutoHidden];
@@ -94,13 +95,6 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
     [scrollView addSubview:surfaceView];
 
     [self.view addSubview:scrollView];
-
-    // Update color mode once
-    if(@available(iOS 13.0, *)) {
-        [self traitCollectionDidChange:nil];
-    } else {
-        self.view.backgroundColor = [UIColor whiteColor];
-    }
 
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnClick:)];
@@ -162,16 +156,6 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
 
 - (BOOL)prefersHomeIndicatorAutoHidden {
     return NO;
-}
-
--(void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
-    if(@available(iOS 13.0, *)) {
-        if (UITraitCollection.currentTraitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
-            self.view.backgroundColor = [UIColor blackColor];
-        } else {
-            self.view.backgroundColor = [UIColor whiteColor];
-        }
-    }
 }
 
 @end

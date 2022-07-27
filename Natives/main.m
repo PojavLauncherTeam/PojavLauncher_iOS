@@ -141,6 +141,11 @@ void init_redirectStdio() {
     });
 }
 
+void init_setupAccounts() {
+    NSString *controlPath = [@(getenv("POJAV_HOME")) stringByAppendingPathComponent:@"accounts"];
+    [fm createDirectoryAtPath:controlPath withIntermediateDirectories:NO attributes:nil error:nil];
+}
+
 void init_setupCustomControls() {
     NSString *controlPath = [@(getenv("POJAV_HOME")) stringByAppendingPathComponent:@"controlmap"];
     [fm createDirectoryAtPath:controlPath withIntermediateDirectories:NO attributes:nil error:nil];
@@ -178,6 +183,7 @@ void init_setupMultiDir() {
 
     [fm createDirectoryAtPath:multidirPath withIntermediateDirectories:YES attributes:nil error:nil];
     [fm removeItemAtPath:lasmPath error:nil];
+    [fm createDirectoryAtPath:lasmPath.stringByDeletingLastPathComponent withIntermediateDirectories:YES attributes:nil error:nil];
     [fm createSymbolicLinkAtPath:lasmPath withDestinationPath:multidirPath error:nil];
     setenv("POJAV_GAME_DIR", lasmPath.UTF8String, 1);
 
@@ -230,7 +236,7 @@ int main(int argc, char * argv[]) {
     loadPreferences();
     init_setupMultiDir();
     init_setupLauncherProfiles();
-
+    init_setupAccounts();
     init_setupCustomControls();
 
     init_migrateToPlist("selected_version", "config_ver.txt");

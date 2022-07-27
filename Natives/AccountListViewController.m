@@ -58,8 +58,10 @@
     }
 
     NSDictionary *selected = self.accountList[indexPath.row];
+    // By default, display the saved username
     cell.textLabel.text = selected[@"username"];
     if ([selected[@"username"] hasPrefix:@"Demo."]) {
+        // Remove the prefix "Demo."
         cell.textLabel.text = [selected[@"username"] substringFromIndex:5];
         cell.detailTextLabel.text = NSLocalizedString(@"login.option.demo", nil);
     } else if (selected[@"xboxGamertag"] == nil) {
@@ -85,7 +87,7 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // TODO: invalidate token
 
-        NSString *str = [self.accountList objectAtIndex:indexPath.row][@"username"];
+        NSString *str = self.accountList[indexPath.row][@"username"];
         NSFileManager *fm = [NSFileManager defaultManager];
         NSString *path = [NSString stringWithFormat:@"%s/accounts/%@.json", getenv("POJAV_HOME"), str];
         if (self.whenDelete != nil) {
@@ -95,6 +97,11 @@
         [self.accountList removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
+}
+
+#pragma mark - UIPopoverPresentationControllerDelegate
+- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller traitCollection:(UITraitCollection *)traitCollection {
+    return UIModalPresentationNone;
 }
 
 @end

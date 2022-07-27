@@ -2,27 +2,26 @@
 #include <stdio.h>
 
 #import <AuthenticationServices/AuthenticationServices.h>
-
 #import "authenticator/BaseAuthenticator.h"
 
 #import "AppDelegate.h"
-#import "LauncherViewController.h"
-#import "LoginViewController.h"
 #import "AboutLauncherViewController.h"
 #import "AccountListViewController.h"
 #import "LauncherFAQViewController.h"
-#import "LauncherPreferences.h"
+#import "LauncherSplitViewController.h"
+#import "LoginViewController.h"
 #import "UpdateHistoryViewController.h"
 
-#include "ios_uikit_bridge.h"
-#include "utils.h"
+#import "LauncherPreferences.h"
+#import "ios_uikit_bridge.h"
+#import "utils.h"
 
 #define TYPE_SELECTACC 0
 #define TYPE_MICROSOFT 1
 #define TYPE_OFFLINE 2
 
 #pragma mark - LoginViewController
-@interface LoginViewController () <ASWebAuthenticationPresentationContextProviding, UIPopoverPresentationControllerDelegate>{
+@interface LoginViewController () <ASWebAuthenticationPresentationContextProviding>{
 }
 @property (nonatomic, strong) ASWebAuthenticationSession *authVC;
 @property (nonatomic, strong) UIActivityViewController *activityViewController;
@@ -34,11 +33,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    setViewBackgroundColor(self.view);
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(msaLoginCallback:) name:@"MSALoginCallback" object:nil];
-
-    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
-    [self.navigationItem setBackBarButtonItem:backItem];
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
 
@@ -49,12 +46,6 @@
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     [self.view addSubview:scrollView];
-
-    if(@available(iOS 13.0, *)) {
-        [self traitCollectionDidChange:nil];
-    } else {
-        self.view.backgroundColor = [UIColor whiteColor];
-    }
 
     if(getenv("POJAV_DETECTEDJB")) {
         if(strcmp(getenv("POJAV_DETECTEDJB"), "Other") == 0 && [getPreference(@"jb_warn") boolValue] == YES) {
@@ -85,7 +76,7 @@
     [dateFormatter setDateFormat:@"MM-dd"];
     NSString* date = [dateFormatter stringFromDate:[NSDate date]];
     
-    if(@available (iOS 14.0, *)) {
+    if(@available(iOS 14.0, *)) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage systemImageNamed:@"info.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStyleDone target:self action:@selector(aboutLauncher)];
         UIAction *option1 = [UIAction actionWithTitle:NSLocalizedString(@"login.menu.about", nil) image:[[UIImage systemImageNamed:@"eyes.inverse"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self aboutLauncher];}];
@@ -191,16 +182,6 @@
     }
 }
 
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
-    if (@available(iOS 13.0, *)) {
-        if (UITraitCollection.currentTraitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
-            self.view.backgroundColor = [UIColor blackColor];
-        } else {
-            self.view.backgroundColor = [UIColor whiteColor];
-        }
-    }
-}
-
 - (void)displayProgress:(NSString *)title {
     self.title = title;
     UIActivityIndicatorViewStyle style;
@@ -260,10 +241,16 @@
     id callback = ^(BOOL success) {
         self.title = @"";
         self.navigationItem.leftBarButtonItem = nil;
-        if (success) {
-            LauncherViewController *vc = [[LauncherViewController alloc] init];
-            [self.navigationController pushViewController:vc animated:YES]; 
+        if (!success) return;
+
+        LauncherSplitViewController *splitVc;
+        if (@available(iOS 14.0, tvOS 14.0, *)) {
+            splitVc = [[LauncherSplitViewController alloc] initWithStyle:UISplitViewControllerStyleDoubleColumn];
+        } else {
+            splitVc = [[LauncherSplitViewController alloc] init];
         }
+        splitVc.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:splitVc animated:YES completion:nil];
     };
     if (type == TYPE_SELECTACC) {
         [auth refreshTokenWithCallback:callback];
@@ -376,7 +363,7 @@
     UIPopoverPresentationController *popoverController = [vc popoverPresentationController];
     [self setPopoverProperties:popoverController sender:sender];
     popoverController.permittedArrowDirections = UIPopoverArrowDirectionAny;
-    popoverController.delegate = self;
+    popoverController.delegate = vc;
     [self presentViewController:vc animated:YES completion:nil];
 }
 
@@ -411,11 +398,6 @@
         controller.sourceView = sender;
         controller.sourceRect = sender.bounds;
     }
-}
-
-#pragma mark - UIPopoverPresentationControllerDelegate
-- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller traitCollection:(UITraitCollection *)traitCollection {
-    return UIModalPresentationNone;
 }
 
 #pragma mark - ASWebAuthenticationPresentationContextProviding

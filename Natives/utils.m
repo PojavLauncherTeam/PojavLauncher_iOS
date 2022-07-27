@@ -8,6 +8,13 @@
 
 #include "utils.h"
 
+// This forces the navigation bar to keep its height (44dp) in landscape
+@implementation UINavigationBar(forceFullHeightInLandscape)
+- (BOOL)forceFullHeightInLandscape {
+    return YES;
+}
+@end
+
 NSMutableDictionary* parseJSONFromFile(NSString *path) {
     NSError *error;
 
@@ -100,6 +107,14 @@ CGFloat dpToPx(CGFloat dp) {
 CGFloat pxToDp(CGFloat px) {
 	CGFloat screenScale = [[UIScreen mainScreen] scale];
 	return px / screenScale;
+}
+
+void setViewBackgroundColor(UIView* view) {
+    if(@available(iOS 13.0, *)) {
+        view.backgroundColor = UIColor.systemBackgroundColor;
+    } else {
+        view.backgroundColor = UIColor.whiteColor;
+    }
 }
 
 jstring convertStringJVM(JNIEnv* srcEnv, JNIEnv* dstEnv, jstring srcStr) {

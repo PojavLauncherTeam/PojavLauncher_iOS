@@ -121,9 +121,19 @@ void UIKit_launchMinecraftSurfaceVC() {
             usleep(1000);
             exit(0);
         } else {
-            SurfaceViewController *vc = [[SurfaceViewController alloc] init];
-            vc.modalPresentationStyle = UIModalPresentationFullScreen;
-            [viewController.navigationController pushViewController:vc animated:YES];
+            id delegate = UIApplication.sharedApplication.delegate;
+            if (@available(iOS 13.0, *)) {
+                delegate = UIApplication.sharedApplication.connectedScenes.anyObject.delegate;
+            }
+            UIWindow *window = [delegate window];
+            [UIView animateWithDuration:0.2 animations:^{
+                window.alpha = 0;
+            } completion:^(BOOL b){
+                [window resignKeyWindow];
+                window.alpha = 1;
+                window.rootViewController = [[SurfaceViewController alloc] init];
+                [window makeKeyAndVisible];
+            }];
         }
     });
 }

@@ -44,6 +44,11 @@ int hooked_dladdr(const void* addr, Dl_info* info) {
 }
 
 void* hooked_dlopen(const char* path, int mode) {
+    // Avoid loading the executable itself twice
+    if (path && [@(path) hasSuffix:@"PojavLauncher"]) {
+        return orig_dlopen(NULL, mode);
+    }
+
     void *handle = orig_dlopen(path, mode);
     if (handle) {
         return handle;
