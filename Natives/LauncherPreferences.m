@@ -106,10 +106,9 @@ void loadPreferences() {
 
     assert(prefDict);
 
-    // set default value
-    // TODO: organize the plist with nested arrays
-    setDefaultValueForPref(envPrefDict, @"resolution", @(100)); // e
-    setDefaultValueForPref(prefDict, @"button_scale", @(100)); //
+    // set default value\
+    setDefaultValueForPref(envPrefDict, @"resolution", @(100));
+    setDefaultValueForPref(prefDict, @"button_scale", @(100));
     setDefaultValueForPref(prefDict, @"selected_version", @"1.7.10");
     setDefaultValueForPref(verPrefDict, @"vertype_release", @YES);
     setDefaultValueForPref(verPrefDict, @"vertype_snapshot", @NO);
@@ -120,6 +119,7 @@ void loadPreferences() {
     setDefaultValueForPref(envPrefDict, @"game_directory", @"default");
     setDefaultValueForPref(envPrefDict, @"java_args", @"");
     setDefaultValueForPref(envPrefDict, @"allocated_memory", [NSNumber numberWithFloat:roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.30)]);
+    setDefaultValueForPref(prefDict, @"restart_before_launch", @NO);
     setDefaultValueForPref(prefDict, @"debug_logging", CONFIG_TYPE);
     setDefaultValueForPref(prefDict, @"arccapes_enable", @YES);
     setDefaultValueForPref(envPrefDict, @"java_home", @"");
