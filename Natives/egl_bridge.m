@@ -13,7 +13,6 @@
 #include "EGL/egl.h"
 #include "EGL/eglext.h"
 #include "GL/osmesa.h"
-#include "GLES2/gl2.h"
 
 #include "glfw_keycodes.h"
 #include "osmesa_internal.h"
