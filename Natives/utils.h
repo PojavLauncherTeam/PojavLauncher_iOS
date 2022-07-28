@@ -1,6 +1,7 @@
 #pragma once
 
-#import "MGLKit.h"
+#import <UIKit/UIKit.h>
+
 #include <stdbool.h>
 #include "jni.h"
 

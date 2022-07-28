@@ -454,8 +454,10 @@ void CallbackBridge_sendKeycode(int keycode, jchar keychar, int scancode, int mo
 }
 
 void CallbackBridge_setWindowAttrib(int attrib, int value) {
-    if (!showingWindow || !isInputReady) {
-        return; // nothing to do yet
+    if (!showingWindow || !isUseStackQueueCall) {
+        // If the window is not shown, there is nothing to do yet.
+        // For Minecraft < 1.13, calling to JNI functions here crashes the JVM for some reason, therefore it is skipped for now.
+        return;
     }
 
     jclass glfwClazz = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "org/lwjgl/glfw/GLFW");

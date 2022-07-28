@@ -141,7 +141,7 @@ int versionSelectedAt = 0;
 + (void)reloadVersionList:(LauncherViewController *)vc
 {
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    [manager GET:@"https://launchermeta.mojang.com/mc/game/version_manifest.json" parameters:nil headers:nil progress:^(NSProgress * _Nonnull progress) {
+    [manager GET:@"https://piston-meta.mojang.com/mc/game/version_manifest_v2.json" parameters:nil headers:nil progress:^(NSProgress * _Nonnull progress) {
         vc.progressViewMain.progress = progress.fractionCompleted;
     } success:^(NSURLSessionTask *task, id responseObject) {
         NSDictionary *jsonArray = responseObject;

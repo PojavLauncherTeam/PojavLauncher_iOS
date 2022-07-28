@@ -17,11 +17,6 @@
 #include "glfw_keycodes.h"
 #include "utils.h"
 
-#include "EGL/egl.h"
-
-#include "GLES2/gl2.h"
-#include "GLES2/gl2ext.h"
-
 // Debugging only
 // #define DEBUG_VISIBLE_TEXT_FIELD
 // #define DEBUG_VISIBLE_TOUCH
