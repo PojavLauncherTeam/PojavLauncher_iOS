@@ -152,7 +152,7 @@ DEPLOY     = \
 			ln -sf libawt_xawt.dylib libawt_headless.dylib && \
 			chown -R 501:501 $(1)/Applications/PojavLauncher.app/*"; \
 	else \
-		sudo rm -rf $(1)/Applications/PojavLauncher.app/Frameworks/{libOSMesaOverride.dylib,MetalANGLE}.framework; \
+		sudo rm -rf $(1)/Applications/PojavLauncher.app/Frameworks/libOSMesaOverride.dylib.framework; \
 		sudo mv $(WORKINGDIR)/*.dylib $(1)/Applications/PojavLauncher.app/Frameworks/; \
 		sudo mv $(WORKINGDIR)/*.framework $(1)/Applications/PojavLauncher.app/Frameworks/; \
 		sudo mv $(WORKINGDIR)/PojavLauncher.app/PojavLauncher $(1)/Applications/PojavLauncher.app/PojavLauncher; \
@@ -261,7 +261,7 @@ native:
 		..
 
 	@cmake --build $(WORKINGDIR) --config $(CMAKE_BUILD_TYPE) -j$(JOBS)
-	@# --target awt_headless awt_xawt libOSMesaOverride.dylib PojavLauncher
+	@# --target awt_headless awt_xawt libOSMesaOverride.dylib tinygl4angle PojavLauncher
 	@rm $(WORKINGDIR)/libawt_headless.dylib
 	@echo 'Building PojavLauncher $(VERSION) - NATIVES - End'
 
