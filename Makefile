@@ -46,6 +46,12 @@ DEVICE_IP   ?= 127.0.0.1
 DEVICE_PORT ?= 22
 $(warning Building on a jailbroken iOS device.)
 endif
+else ifeq ($(DETECTPLAT),Linux)
+$(warning Building on Linux. Note that all targets may not compile or require external components.)
+IOS         := 0
+# SDKPATH presence is checked later
+BOOTJDK     ?= /usr/bin
+SYSARCH     := $(shell uname -m)
 else
 $(error This platform is not currently supported for building PojavLauncher.)
 endif
@@ -132,23 +138,23 @@ DEPLOY     = \
 	ldid -S$(SOURCEDIR)/entitlements.xml $(WORKINGDIR)/PojavLauncher.app/PojavLauncher; \
 	if [ '$(2)' = '0' ]; then \
 		scp -r -P $(DEVICE_PORT) -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" \
-			$(WORKINGDIR)/libOSMesaOverride.dylib.framework \
-			$(WORKINGDIR)/libawt_xawt.dylib \
+			$(WORKINGDIR)/*.framework \
+			$(WORKINGDIR)/*.dylib \
 			$(WORKINGDIR)/PojavLauncher.app/PojavLauncher \
 			$(SOURCEDIR)/JavaApp/local_out/*.jar \
 			root@$(DEVICE_IP):/var/tmp/; \
 		ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t " \
-			mv /var/tmp/libawt_xawt.dylib $(1)/Applications/PojavLauncher.app/Frameworks/libawt_xawt.dylib && \
-			mv /var/tmp/libOSMesaOverride.dylib.framework $(1)/Applications/PojavLauncher.app/Frameworks/libOSMesaOverride.dylib.framework && \
+			mv /var/tmp/*.dylib $(1)/Applications/PojavLauncher.app/Frameworks/ && \
+			mv /var/tmp/*.framework $(1)/Applications/PojavLauncher.app/Frameworks/ && \
 			mv /var/tmp/PojavLauncher $(1)/Applications/PojavLauncher.app/PojavLauncher && \
 			mv /var/tmp/*.jar $(1)/Applications/PojavLauncher.app/libs/ && \
 			cd $(1)/Applications/PojavLauncher.app/Frameworks && \
 			ln -sf libawt_xawt.dylib libawt_headless.dylib && \
 			chown -R 501:501 $(1)/Applications/PojavLauncher.app/*"; \
 	else \
-		sudo rm -rf $(1)/Applications/PojavLauncher.app/Frameworks/libOSMesaOverride.dylib.framework; \
-		sudo mv $(WORKINGDIR)/libawt_xawt.dylib $(1)/Applications/PojavLauncher.app/Frameworks/libawt_xawt.dylib; \
-		sudo mv $(WORKINGDIR)/libOSMesaOverride.dylib.framework $(1)/Applications/PojavLauncher.app/Frameworks/; \
+		sudo rm -rf $(1)/Applications/PojavLauncher.app/Frameworks/{libOSMesaOverride.dylib,MetalANGLE}.framework; \
+		sudo mv $(WORKINGDIR)/*.dylib $(1)/Applications/PojavLauncher.app/Frameworks/; \
+		sudo mv $(WORKINGDIR)/*.framework $(1)/Applications/PojavLauncher.app/Frameworks/; \
 		sudo mv $(WORKINGDIR)/PojavLauncher.app/PojavLauncher $(1)/Applications/PojavLauncher.app/PojavLauncher; \
 		sudo mv $(SOURCEDIR)/JavaApp/local_out/*.jar $(1)/Applications/PojavLauncher.app/libs/; \
 		cd $(1)/Applications/PojavLauncher.app/Frameworks; \
@@ -183,6 +189,12 @@ ifeq ($(call HAS_COMMAND,dpkg-deb --version),1)
 $(error You need to install dpkg-dev)
 endif
 
+ifeq ($(DETECTPLAT),Linux)
+ifeq ($(call HAS_COMMAND,lld),1)
+$(error You need to install lld)
+endif
+endif
+
 ifeq ($(call HAS_COMMAND,nproc --version),1)
 ifeq ($(call HAS_COMMAND,gnproc --version),1)
 $(warning Unable to determine number of threads, defaulting to 2.)
@@ -192,6 +204,10 @@ JOBS   ?= $(shell gnproc)
 endif
 else
 JOBS   ?= $(shell nproc)
+endif
+
+ifndef SDKPATH
+$(error You need to specify SDKPATH to the path of iPhoneOS.sdk. The SDK version should be 14.0 or newer.)
 endif
 
 # Now for the actual Makefile recipes.
@@ -282,9 +298,9 @@ deb: native java extras
 	$(call DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs)
 	$(call DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs_caciocavallo)
 	@cp -R $(SOURCEDIR)/Natives/resources/* $(WORKINGDIR)/PojavLauncher.app/ || exit 1
-	@cp $(WORKINGDIR)/libawt_xawt.dylib $(WORKINGDIR)/PojavLauncher.app/Frameworks/ || exit 1
+	@cp $(WORKINGDIR)/*.dylib $(WORKINGDIR)/PojavLauncher.app/Frameworks/ || exit 1
 	@( cd $(WORKINGDIR)/PojavLauncher.app/Frameworks; ln -sf libawt_xawt.dylib libawt_headless.dylib ) || exit 1
-	@cp -R $(WORKINGDIR)/libOSMesaOverride.dylib.framework $(WORKINGDIR)/PojavLauncher.app/Frameworks/ || exit 1
+	@cp -R $(WORKINGDIR)/*.framework $(WORKINGDIR)/PojavLauncher.app/Frameworks/ || exit 1
 	@cp -R $(SOURCEDIR)/JavaApp/libs/* $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
 	@cp $(SOURCEDIR)/JavaApp/local_out/*.jar $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
 	@cp -R $(SOURCEDIR)/JavaApp/libs_caciocavallo/* $(WORKINGDIR)/PojavLauncher.app/libs_caciocavallo/ || exit 1

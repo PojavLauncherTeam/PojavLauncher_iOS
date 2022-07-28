@@ -1,8 +1,14 @@
 cmake_minimum_required(VERSION 3.6)
 project(PojavLauncher)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcommon -fobjc-arc -ObjC")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -target arm64-apple-ios -fcommon -fobjc-arc -ObjC")
 set(CMAKE_C_FLAGS_DEBUG "-funwind-tables -g")
+
+if("${CMAKE_HOST_SYSTEM_NAME}" MATCHES "Linux|^GNU$|Android")
+set(GLOBAL_LDFLAGS "-isysroot ${CMAKE_OSX_SYSROOT} -Wl,-syslibroot,${CMAKE_OSX_SYSROOT} -fuse-ld=lld")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${GLOBAL_LDFLAGS}")
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${GLOBAL_LDFLAGS}")
+endif()
 
 include_directories(
   "resources/Frameworks/Alderis.framework/Headers"
@@ -48,6 +54,7 @@ set_target_properties(libOSMesaOverride.dylib PROPERTIES
     MACOSX_FRAMEWORK_IDENTIFIER dylib.mesa3d.libOSMesaOverride
 )
 target_link_libraries(libOSMesaOverride.dylib
+  "${GLOBAL_LDFLAGS}"
   "${OSMESA_LIB}"
 )
 
@@ -57,6 +64,7 @@ add_library(tinygl4angle SHARED
   external/gl4es/tinygl4angle.c
 )
 target_link_libraries(tinygl4angle
+  "${GLOBAL_LDFLAGS}"
   "-F'${CMAKE_CURRENT_LIST_DIR}/resources/Frameworks'"
   "-framework MetalANGLE"
 )
@@ -117,6 +125,10 @@ add_executable(PojavLauncher
   log.m
   utils.m
 )
+
+if("${CMAKE_HOST_SYSTEM_NAME}" MATCHES "Linux|^GNU$|Android")
+target_sources(PojavLauncher PUBLIC non_darwin_utils.m)
+endif()
 
 target_link_libraries(PojavLauncher
   "-F'${CMAKE_CURRENT_LIST_DIR}/build'"
