@@ -110,7 +110,7 @@
     [button_faq addTarget:self action:@selector(showFAQ) forControlEvents:UIControlEventTouchUpInside];
     if(@available (iOS 13.0, *)) {
         button_faq.imageView.image = [[UIImage systemImageNamed:@"doc.text"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        [button_faq setTintColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]];
+        [button_faq setTintColor:UIColor.whiteColor];
         [button_faq setImage:button_faq.imageView.image forState:UIControlStateNormal];
     }
     [scrollView addSubview:button_faq];
@@ -144,7 +144,7 @@
     }
     if(@available (iOS 13.0, *)) {
         button_login.imageView.image = [[UIImage systemImageNamed:@"person.crop.circle.badge.plus"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        [button_login setTintColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]];
+        [button_login setTintColor:UIColor.whiteColor];
         [button_login setImage:button_login.imageView.image forState:UIControlStateNormal];
     }
     [scrollView addSubview:button_login];
@@ -166,7 +166,7 @@
     [button_accounts addTarget:self action:@selector(loginAccount:) forControlEvents:UIControlEventTouchUpInside];
     if(@available (iOS 13.0, *)) {
         button_accounts.imageView.image = [[UIImage systemImageNamed:@"person.crop.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        [button_accounts setTintColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]];
+        [button_accounts setTintColor:UIColor.whiteColor];
         [button_accounts setImage:button_accounts.imageView.image forState:UIControlStateNormal];
     }
     [scrollView addSubview:button_accounts];
@@ -180,6 +180,10 @@
         technoNote.textAlignment = NSTextAlignmentCenter;
         [scrollView addSubview:technoNote];
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    viewController = self;
 }
 
 - (void)displayProgress:(NSString *)title {

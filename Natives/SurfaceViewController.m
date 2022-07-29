@@ -876,6 +876,7 @@ int currentVisibility = 1;
                     if (!isGrabbing && !held) {
                         virtualMouseEnabled = !virtualMouseEnabled;
                         self.mousePointerView.hidden = !virtualMouseEnabled;
+                        setPreference(@"virtmouse_enable", @(virtualMouseEnabled));
                     }
                     break;
 

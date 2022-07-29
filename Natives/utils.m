@@ -11,7 +11,7 @@
 // This forces the navigation bar to keep its height (44dp) in landscape
 @implementation UINavigationBar(forceFullHeightInLandscape)
 - (BOOL)forceFullHeightInLandscape {
-    return YES;
+    return UIScreen.mainScreen.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPhone;
 }
 @end
 
