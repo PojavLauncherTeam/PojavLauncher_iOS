@@ -8,7 +8,7 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
 @implementation MicrosoftAuthenticator
 
 - (void)acquireAccessToken:(NSString *)authcode refresh:(BOOL)refresh callback:(Callback)callback {
-    viewController.title = NSLocalizedString(@"login.msa.progress.acquireAccessToken", nil);
+    currentVC().title = NSLocalizedString(@"login.msa.progress.acquireAccessToken", nil);
 
     NSDictionary *data = @{
         @"client_id": @"00000000402b5328",
@@ -25,12 +25,12 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         callback(NO);
         NSLog(@"[MSA] Error: %@", error);
-        showDialog(viewController, @"Error", error.localizedDescription);
+        showDialog(currentVC(), @"Error", error.localizedDescription);
     }];
 }
 
 - (void)acquireXBLToken:(NSString *)accessToken callback:(Callback)callback {
-    viewController.title = NSLocalizedString(@"login.msa.progress.acquireXBLToken", nil);
+    currentVC().title = NSLocalizedString(@"login.msa.progress.acquireXBLToken", nil);
 
     NSDictionary *data = @{
         @"Properties": @{
@@ -71,12 +71,12 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         callback(NO);
         NSLog(@"[MSA] Error: %@", error);
-        showDialog(viewController, @"Error", error.localizedDescription);
+        showDialog(currentVC(), @"Error", error.localizedDescription);
     }];
 }
 
 - (void)acquireXSTSFor:(NSString *)replyingParty token:(NSString *)xblToken callback:(XSTSCallback)callback {
-    viewController.title = NSLocalizedString(@"login.msa.progress.acquireXSTS", nil);
+    currentVC().title = NSLocalizedString(@"login.msa.progress.acquireXSTS", nil);
 
     NSDictionary *data = @{
        @"Properties": @{
@@ -118,13 +118,13 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
                 break;
         }
         NSLog(@"[MSA] Error: %@", errorString);
-        showDialog(viewController, NSLocalizedString(@"Error", nil), NSLocalizedString(errorString, nil));
+        showDialog(currentVC(), NSLocalizedString(@"Error", nil), NSLocalizedString(errorString, nil));
     }];
 }
 
 
 - (void)acquireXboxProfile:(NSString *)xblUhs xstsToken:(NSString *)xblXsts callback:(Callback)callback {
-    viewController.title = NSLocalizedString(@"login.msa.progress.acquireXboxProfile", nil);
+    currentVC().title = NSLocalizedString(@"login.msa.progress.acquireXboxProfile", nil);
 
     NSDictionary *headers = @{
         @"x-xbl-contract-version": @"2",
@@ -139,12 +139,12 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         callback(NO);
         NSLog(@"[MSA] Error: %@", error);
-        showDialog(viewController, @"Error", error.localizedDescription);
+        showDialog(currentVC(), @"Error", error.localizedDescription);
     }];
 }
 
 - (void)acquireMinecraftToken:(NSString *)xblUhs xstsToken:(NSString *)xblXsts callback:(Callback)callback {
-    viewController.title = NSLocalizedString(@"login.msa.progress.acquireMCToken", nil);
+    currentVC().title = NSLocalizedString(@"login.msa.progress.acquireMCToken", nil);
 
     NSDictionary *data = @{
         @"identityToken": [NSString stringWithFormat:@"XBL3.0 x=%@;%@", xblUhs, xblXsts]
@@ -158,14 +158,14 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         callback(NO);
         NSLog(@"[MSA] Error: %@", error);
-        showDialog(viewController, @"Error", error.localizedDescription);
+        showDialog(currentVC(), @"Error", error.localizedDescription);
     }];
 }
 
 - (void)checkMCProfile:(NSString *)mcAccessToken callback:(Callback)callback {
     self.authData[@"expiresAt"] = @((long)[NSDate.date timeIntervalSince1970] + 86400);
 
-    viewController.title = NSLocalizedString(@"login.msa.progress.checkMCProfile", nil);
+    currentVC().title = NSLocalizedString(@"login.msa.progress.checkMCProfile", nil);
 
     NSDictionary *headers = @{
         @"Authorization": [NSString stringWithFormat:@"Bearer %@", mcAccessToken]
@@ -193,14 +193,14 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
             self.authData[@"profileId"] = @"00000000-0000-0000-0000-000000000000";
             self.authData[@"username"] = [NSString stringWithFormat:@"Demo.%@", self.authData[@"xboxGamertag"]];
 
-            showDialog(viewController, NSLocalizedString(@"Notice", nil), NSLocalizedString(@"login.msa.notice.demomode", nil));
+            showDialog(currentVC(), NSLocalizedString(@"Notice", nil), NSLocalizedString(@"login.msa.notice.demomode", nil));
             callback([super saveChanges]);
             return;
         }
 
         callback(NO);
         NSLog(@"[MSA] Error: %@", errorDict);
-        showDialog(viewController, @"Error", [[NSString alloc] initWithData:errorData encoding:NSUTF8StringEncoding]);
+        showDialog(currentVC(), @"Error", [[NSString alloc] initWithData:errorData encoding:NSUTF8StringEncoding]);
     }];
 }
 

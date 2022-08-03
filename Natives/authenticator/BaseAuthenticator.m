@@ -21,7 +21,7 @@ static BaseAuthenticator *current = nil;
 + (id)loadSavedName:(NSString *)name {
     NSMutableDictionary *authData = parseJSONFromFile([NSString stringWithFormat:@"%s/accounts/%@.json", getenv("POJAV_HOME"), name]);
     if (authData[@"error"] != nil) {
-        showDialog(viewController, NSLocalizedString(@"Error", nil), ((NSError *)authData[@"error"]).localizedDescription);
+        showDialog(currentVC(), NSLocalizedString(@"Error", nil), ((NSError *)authData[@"error"]).localizedDescription);
         return nil;
     }
     if ([authData[@"accessToken"] length] < 5) {
@@ -66,7 +66,7 @@ static BaseAuthenticator *current = nil;
     error = saveJSONToFile(self.authData, newPath);
 
     if (error != nil) {
-        showDialog(viewController, @"Error while saving file", error.localizedDescription);
+        showDialog(currentVC(), @"Error while saving file", error.localizedDescription);
     }
     return error == nil;
 }

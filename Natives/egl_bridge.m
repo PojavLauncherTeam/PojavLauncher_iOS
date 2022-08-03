@@ -293,8 +293,8 @@ jboolean pojavInit_OpenGL() {
             eglBindAPI_p(EGL_OPENGL_ES_API);
         }
 
-        potatoBridge.eglSurface = eglCreateWindowSurface_p(potatoBridge.eglDisplay, config, (__bridge EGLNativeWindowType) ((SurfaceViewController *)viewController).surfaceView.layer, NULL);
-        //NSLog(@"Layer %@", ((SurfaceViewController *)viewController).surfaceView.layer);
+        potatoBridge.eglSurface = eglCreateWindowSurface_p(potatoBridge.eglDisplay, config, (__bridge EGLNativeWindowType) ((SurfaceViewController *)currentVC()).surfaceView.layer, NULL);
+        //NSLog(@"Layer %@", ((SurfaceViewController *)currentVC()).surfaceView.layer);
 
         if (!potatoBridge.eglSurface) {
             debugLog("EGLBridge: Error eglCreateWindowSurface failed: 0x%x", eglGetError_p());
@@ -392,7 +392,7 @@ void pojavSwapBuffers() {
         case RENDERER_VK_ZINK: {
             glFinish_p();
             dispatch_async(dispatch_get_main_queue(), ^{
-                [((SurfaceViewController *)viewController).surfaceView displayLayer];
+                [((SurfaceViewController *)currentVC()).surfaceView displayLayer];
             });
         } break;
     }
@@ -472,7 +472,7 @@ void pojavMakeCurrent(void* window) {
 
 void* pojavCreateContext(void* contextSrc) {
     if (config_renderer == RENDERER_VULKAN) {
-        return (__bridge void *)(((SurfaceViewController *)viewController).surfaceView.layer);
+        return (__bridge void *)(((SurfaceViewController *)currentVC()).surfaceView.layer);
     }
 
     if (config_renderer == RENDERER_MTL_ANGLE) {

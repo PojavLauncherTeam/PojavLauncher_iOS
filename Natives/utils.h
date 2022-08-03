@@ -39,7 +39,7 @@
 
 JavaVM* runtimeJavaVMPtr;
 JNIEnv* runtimeJNIEnvPtr;
-__weak UIViewController *viewController;
+//__weak UIViewController *viewController;
 
 void* gbuffer; // OSMesa framebuffer
 long showingWindow;
@@ -55,6 +55,8 @@ BOOL isControlModifiable;
 void init_hookFunctions();
 void init_setupMultiDir();
 
+UIViewController* currentVC();
+
 NSMutableDictionary* parseJSONFromFile(NSString *path);
 NSError* saveJSONToFile(NSDictionary *dict, NSString *path);
 
@@ -69,10 +71,6 @@ void setViewBackgroundColor(UIView* view);
 void _CGDataProviderReleaseBytePointerCallback(void *info,const void *pointer);
 
 jboolean attachThread(bool isAndroid, JNIEnv** secondJNIEnvPtr);
-char** convert_to_char_array(JNIEnv *env, jobjectArray jstringArray);
-jobjectArray convert_from_char_array(JNIEnv *env, char **charArray, int num_rows);
-void free_char_array(JNIEnv *env, jobjectArray jstringArray, char **charArray);
-jstring convertStringJVM(JNIEnv* srcEnv, JNIEnv* dstEnv, jstring srcStr);
 
 void sendData(int type, CGFloat i1, CGFloat i2, int i3, int i4);
 

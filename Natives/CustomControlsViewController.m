@@ -7,6 +7,7 @@
 #import "ios_uikit_bridge.h"
 
 #import "customcontrols/ControlDrawer.h"
+#import "customcontrols/ControlLayout.h"
 #import "customcontrols/CustomControlsUtils.h"
 
 #include <dlfcn.h>
@@ -15,38 +16,13 @@
 #include "utils.h"
 
 BOOL shouldDismissPopover = YES;
-int width;
 NSMutableArray *keyCodeMap, *keyValueMap;
-
-@interface ControlLayout ()
-@end
-@implementation ControlLayout
-- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
-{
-    if (action == @selector(actionMenuExit:) ||
-        action == @selector(actionMenuSave:) ||
-        action == @selector(actionMenuLoad:) ||
-        action == @selector(actionMenuSetDef:) ||
-        action == @selector(actionMenuAddButton:) ||
-        action == @selector(actionMenuAddDrawer:) ||
-        action == @selector(actionMenuAddSubButton:) ||
-        action == @selector(actionMenuBtnCopy:) ||
-        action == @selector(actionMenuBtnDelete:) ||
-        action == @selector(actionMenuBtnEdit:)) {
-            return YES;
-    }
-    return NO;
-}
-
-- (BOOL)canBecomeFirstResponder {
-    return YES;
-}
-@end
 
 @interface ControlHandleView : UIView
 @property ControlButton* target;
 @end
 @implementation ControlHandleView
+
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
     [super touchesMoved:touches withEvent:event];
     UITouch *touch = touches.anyObject;
@@ -55,29 +31,39 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 
     CGFloat deltaX = currPoint.x - prevPoint.x;
     CGFloat deltaY = currPoint.y - prevPoint.y;
-    CGFloat width = MAX(10, [self.target.properties[@"width"] floatValue] + deltaX);
-    CGFloat height = MAX(10, [self.target.properties[@"height"] floatValue] + deltaY);
-    self.target.properties[@"width"] = @(width);
-    self.target.properties[@"height"] = @(height);
-    [self.target update];
+    CGFloat width, height;
+
+    UIView *target = self.target;
+    if (target != nil) {
+        width = MAX(10, [self.target.properties[@"width"] floatValue] + deltaX);
+        height = MAX(10, [self.target.properties[@"height"] floatValue] + deltaY);
+        self.target.properties[@"width"] = @(width);
+        self.target.properties[@"height"] = @(height);
+        [self.target update];
+    } else {
+        target = self.superview.subviews[0];
+        CGRect targetFrame = target.frame;
+        width = targetFrame.size.width += deltaX;
+        height = targetFrame.size.height += deltaY;
+        target.frame = targetFrame;
+    }
 
     CGRect selfFrame = self.frame;
-    selfFrame.origin.x = self.target.frame.origin.x + width;
-    selfFrame.origin.y = self.target.frame.origin.y + height;
+    selfFrame.origin.x += deltaX;
+    selfFrame.origin.y += deltaY;
     self.frame = selfFrame;
 }
 @end
 
-@interface CustomControlsViewController () <UIPopoverPresentationControllerDelegate>{
+@interface CustomControlsViewController () <UIGestureRecognizerDelegate, UIPopoverPresentationControllerDelegate>{
 }
 
 @property(nonatomic, strong) NSMutableDictionary* cc_dictionary;
-@property(nonatomic) UIView* offsetView;
+@property(nonatomic) UIView* ctrlView;
 @property(nonatomic) ControlHandleView* resizeView;
 @property(nonatomic) NSString* currentFileName;
 @property(nonatomic) CGRect selectedPoint;
-
-// - (void)method
+@property UINavigationBar* navigationBar;
 
 @end
 
@@ -87,7 +73,6 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.5];
-    viewController = self;
     isControlModifiable = YES;
 
     [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
@@ -96,37 +81,114 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     UIEdgeInsets insets = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets;
 
-    self.offsetView = [[ControlLayout alloc] initWithFrame:CGRectMake(
-        insets.left, 0,
-        self.view.frame.size.width - insets.left - insets.right,
-        self.view.frame.size.height
-    )];
-    [self.offsetView addGestureRecognizer:[[UIPanGestureRecognizer alloc]
-        initWithTarget:self action:@selector(onTouch:)]];
-    [self.view addSubview:self.offsetView]; 
+    self.ctrlView = [[ControlLayout alloc] initWithFrame:CGRectFromString(getPreference(@"control_safe_area"))];
+    NSLog(@"%@", self.ctrlView);
+    if (@available(iOS 13.0, *)) {
+        self.ctrlView.layer.borderColor = UIColor.labelColor.CGColor;
+    } else {
+        self.ctrlView.layer.borderColor = UIColor.blackColor.CGColor;
+    }
+    [self.view addSubview:self.ctrlView]; 
 
-    int height = (int) roundf(screenBounds.size.height);
-    width = width - insets.left - insets.right;
+    // Prepare the navigation bar for safe area customization
+    UINavigationItem *navigationItem = [[UINavigationItem alloc] init];
+    UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"None", @"Default", @"Custom"]];
+    [segmentedControl addTarget:self action:@selector(changeSafeAreaSelection:) forControlEvents:UIControlEventValueChanged];
+    [segmentedControl setEnabled:(insets.left+insets.right)>0 forSegmentAtIndex:1];
+    [self loadSafeAreaSelectionFor:segmentedControl];
+    navigationItem.titleView = segmentedControl;
+    navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(actionMenuSafeAreaCancel)];
+    navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(actionMenuSafeAreaDone)];
+    self.navigationBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44.0)];
+    self.navigationBar.hidden = YES;
+    self.navigationBar.items = @[navigationItem];
+    [self.view addSubview:self.navigationBar];
+
     CGFloat buttonScale = [getPreference(@"button_scale") floatValue] / 100.0;
 
     self.resizeView = [[ControlHandleView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
     self.resizeView.backgroundColor = self.view.tintColor;
     self.resizeView.layer.cornerRadius = self.resizeView.frame.size.width / 2;
     self.resizeView.clipsToBounds = YES;
-    self.resizeView.layer.maskedCorners = kCALayerMaxXMaxYCorner | kCALayerMaxXMinYCorner | kCALayerMinXMaxYCorner;
     self.resizeView.hidden = YES;
     [self.view addSubview:self.resizeView];
-  
+
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panControlArea:)];
+    panGesture.delegate = self;
+    panGesture.maximumNumberOfTouches = 1;
+    [self.ctrlView addGestureRecognizer:panGesture];
+
+    UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchControlArea:)];
+    pinchGesture.delegate = self;
+    [self.ctrlView addGestureRecognizer:pinchGesture];
+
     UILongPressGestureRecognizer *longpressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(showControlPopover:)];
     longpressGesture.minimumPressDuration = 0.5;
-    [self.offsetView addGestureRecognizer:longpressGesture];
+    [self.ctrlView addGestureRecognizer:longpressGesture];
     self.currentFileName = [getPreference(@"default_ctrl") stringByDeletingPathExtension];
     [self initKeyCodeMap];
     [self loadControlFile:[NSString stringWithFormat:@"%s/controlmap/%@", getenv("POJAV_HOME"), getPreference(@"default_ctrl")]];
 }
 
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)sender shouldReceiveTouch:(UITouch *)touch {
+    return sender.view != self.view || !CGRectContainsPoint(self.resizeView.frame, [sender locationInView:self.view]);
+}
+/*
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)sender shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return YES;
+}
+*/
+- (void)panControlArea:(UIPanGestureRecognizer *)sender {
+    static CGPoint previous;
+    if (sender.state == UIGestureRecognizerStateBegan) {
+        [self setButtonMenuVisibleForView:nil];
+        self.resizeView.hidden = self.ctrlView.layer.borderWidth == 0;
+        self.resizeView.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMinYCorner | kCALayerMinXMaxYCorner;
+        previous = [sender locationInView:self.view];
+        return;
+    } else if (self.navigationBar.hidden) {
+        return;
+    }
+
+    CGPoint current = [sender locationInView:self.view];
+
+    CGRect rect = self.ctrlView.frame;
+    rect.origin.x = clamp(rect.origin.x + current.x - previous.x, 0, self.view.frame.size.width - rect.size.width);
+    rect.origin.y = clamp(rect.origin.y + current.y - previous.y, 0, self.view.frame.size.height - rect.size.height);
+    self.ctrlView.frame = rect;
+
+    self.resizeView.frame = CGRectMake(CGRectGetMaxX(self.ctrlView.frame) - self.resizeView.frame.size.width, CGRectGetMaxY(self.ctrlView.frame) - self.resizeView.frame.size.height, self.resizeView.frame.size.width, self.resizeView.frame.size.height);
+
+    previous = current;
+}
+
+- (void)pinchControlArea:(UIPinchGestureRecognizer *)sender {
+    if (sender.numberOfTouches < 2 || self.navigationBar.hidden) {
+        return;
+    }
+
+    static CGPoint previous;
+    CGPoint current = [sender locationInView:self.view];
+    if (sender.state == UIGestureRecognizerStateBegan) {
+        previous = current;
+        return;
+    }
+
+    self.ctrlView.frame = CGRectMake(
+        clamp(self.ctrlView.frame.origin.x + current.x - previous.x, 0, self.view.frame.size.width - self.ctrlView.frame.size.width),
+        clamp(self.ctrlView.frame.origin.y + current.y - previous.y, 0, self.view.frame.size.height - self.ctrlView.frame.size.height),
+        clamp(self.ctrlView.frame.size.width * sender.scale, self.view.frame.size.width / 2, self.view.frame.size.width),
+        clamp(self.ctrlView.frame.size.height * sender.scale, self.view.frame.size.height / 2, self.view.frame.size.height)
+    );
+    self.resizeView.frame = CGRectMake(CGRectGetMaxX(self.ctrlView.frame), CGRectGetMaxY(self.ctrlView.frame), self.resizeView.frame.size.width, self.resizeView.frame.size.height);
+
+    previous = current;
+
+    sender.scale = 1.0;
+}
+
 - (void)loadControlFile:(NSString *)controlFilePath {
-    for (UIView *view in self.offsetView.subviews) {
+    for (UIView *view in self.ctrlView.subviews) {
         if ([view isKindOfClass:[ControlButton class]]) {
             [view removeFromSuperview];
         }
@@ -135,12 +197,36 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     self.cc_dictionary = parseJSONFromFile(controlFilePath);
     if (self.cc_dictionary == nil) return;
 
-    loadControlObject(self.offsetView, self.cc_dictionary, ^void(ControlButton* button) {
+    loadControlObject(self.ctrlView, self.cc_dictionary, ^void(ControlButton* button) {
         [button addGestureRecognizer:[[UITapGestureRecognizer alloc]
             initWithTarget:self action:@selector(showControlPopover:)]];
         [button addGestureRecognizer:[[UIPanGestureRecognizer alloc]
             initWithTarget:self action:@selector(onTouch:)]];
     });
+}
+
+- (void)changeSafeAreaSelection:(UISegmentedControl *)sender {
+    switch (sender.selectedSegmentIndex) {
+        case 0:
+            self.ctrlView.frame = self.view.frame;
+            break;
+        case 1:
+            self.ctrlView.frame = getDefaultSafeArea();
+            break;
+        case 2:
+            self.ctrlView.frame = CGRectFromString(getPreference(@"control_safe_area"));
+            break;
+    }
+    self.ctrlView.userInteractionEnabled = sender.selectedSegmentIndex == 2;
+    self.resizeView.hidden = sender.selectedSegmentIndex != 2;
+}
+
+- (void)loadSafeAreaSelectionFor:(UISegmentedControl *)control {
+    if (CGRectEqualToRect(self.ctrlView.frame, UIScreen.mainScreen.bounds)) {
+        control.selectedSegmentIndex = 0;
+    } else {
+        control.selectedSegmentIndex = !CGRectEqualToRect(self.ctrlView.frame, getDefaultSafeArea()) + 1;
+    }
 }
 
 - (void)showControlPopover:(UIGestureRecognizer *)sender {
@@ -168,9 +254,10 @@ NSMutableArray *keyCodeMap, *keyValueMap;
         UIMenuItem *actionSave = [[UIMenuItem alloc] initWithTitle:@"Save" action:@selector(actionMenuSave)];
         UIMenuItem *actionLoad = [[UIMenuItem alloc] initWithTitle:@"Load" action:@selector(actionMenuLoad)];
         UIMenuItem *actionSetDef = [[UIMenuItem alloc] initWithTitle:@"Select as default" action:@selector(actionMenuSetDef)];
+        UIMenuItem *actionSafeArea = [[UIMenuItem alloc] initWithTitle:@"Safe area" action:@selector(actionMenuSafeArea)];
         UIMenuItem *actionAddButton = [[UIMenuItem alloc] initWithTitle:@"Add button" action:@selector(actionMenuAddButton)];
         UIMenuItem *actionAddDrawer = [[UIMenuItem alloc] initWithTitle:@"Add drawer" action:@selector(actionMenuAddDrawer)];
-        [menuController setMenuItems:@[actionExit, actionSave, actionLoad, actionSetDef, actionAddButton, actionAddDrawer]];
+        [menuController setMenuItems:@[actionExit, actionSave, actionLoad, actionSetDef, actionSafeArea, actionAddButton, actionAddDrawer]];
 
         CGPoint point = [sender locationInView:sender.view];
         self.selectedPoint = CGRectMake(point.x, point.y, 1.0, 1.0);
@@ -187,12 +274,12 @@ NSMutableArray *keyCodeMap, *keyValueMap;
         self.selectedPoint = sender.view.bounds;
     }
 
-    if (sender.view != self.offsetView) {
-        [self.offsetView becomeFirstResponder];
+    if (sender.view != self.ctrlView) {
+        [self.ctrlView becomeFirstResponder];
     }
     [sender.view becomeFirstResponder];
 
-    self.resizeView.hidden = sender.view == self.offsetView;
+    self.resizeView.hidden = sender.view == self.ctrlView;
     [self setButtonMenuVisibleForView:sender.view];
 }
 
@@ -267,6 +354,31 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     }];
 }
 
+- (void)actionMenuSafeArea {
+    // Set _UIBarBackground alpha to 0.8
+    self.navigationBar.subviews[0].alpha = 0.8;
+
+    BOOL isCustom = ((UISegmentedControl *)self.navigationBar.items[0].titleView).selectedSegmentIndex == 2;
+
+    self.navigationBar.hidden = !self.navigationBar.hidden;
+    self.ctrlView.layer.borderWidth = self.navigationBar.hidden ? 0 : 2;
+    self.ctrlView.userInteractionEnabled = self.navigationBar.hidden || isCustom;
+    self.resizeView.frame = CGRectMake(CGRectGetMaxX(self.ctrlView.frame), CGRectGetMaxY(self.ctrlView.frame), self.resizeView.frame.size.width, self.resizeView.frame.size.height);
+    self.resizeView.hidden = self.navigationBar.hidden || !isCustom;
+    self.resizeView.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMinYCorner | kCALayerMinXMaxYCorner;
+    self.resizeView.target = nil;
+}
+
+- (void)actionMenuSafeAreaCancel {
+    self.ctrlView.frame = CGRectFromString(getPreference(@"control_safe_area"));
+    [self actionMenuSafeArea];
+}
+
+- (void)actionMenuSafeAreaDone {
+    setPreference(@"control_safe_area", NSStringFromCGRect(self.ctrlView.frame));
+    [self actionMenuSafeArea];
+}
+
 - (void)actionMenuAddButtonWithDrawer:(ControlDrawer *)drawer {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     dict[@"name"] = @"New";
@@ -284,18 +396,21 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     ControlButton *button;
     if (drawer == nil) {
         button = [ControlButton buttonWithProperties:dict];
+        [self.ctrlView addSubview:button];
         [button snapAndAlignX:self.selectedPoint.origin.x-25.0 Y:self.selectedPoint.origin.y-25.0];
+        [button update];
         [self.cc_dictionary[@"mControlDataList"] addObject:button.properties];
     } else {
         button = [drawer addButtonProp:dict];
+        [self.ctrlView addSubview:button];
         [button snapAndAlignX:self.selectedPoint.origin.x-25.0 Y:self.selectedPoint.origin.y-25.0];
         [drawer syncButtons];
     }
+
     [button addGestureRecognizer:[[UITapGestureRecognizer alloc]
         initWithTarget:self action:@selector(showControlPopover:)]];
     [button addGestureRecognizer:[[UIPanGestureRecognizer alloc]
         initWithTarget:self action:@selector(onTouch:)]];
-    [self.offsetView addSubview:button];
 }
 
 - (void)actionMenuAddButton {
@@ -317,13 +432,15 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     data[@"properties"] = properties;
     data[@"buttonProperties"] = [[NSMutableArray alloc] init];
     ControlDrawer *button = [ControlDrawer buttonWithData:data];
+    [self.ctrlView addSubview:button];
     [button snapAndAlignX:self.selectedPoint.origin.x-25.0 Y:self.selectedPoint.origin.y-25.0];
+    [button update];
+    [self.cc_dictionary[@"mDrawerDataList"] addObject:button.drawerData];
+
     [button addGestureRecognizer:[[UITapGestureRecognizer alloc]
         initWithTarget:self action:@selector(showControlPopover:)]];
     [button addGestureRecognizer:[[UIPanGestureRecognizer alloc]
         initWithTarget:self action:@selector(onTouch:)]];
-    [self.offsetView addSubview:button];
-    [self.cc_dictionary[@"mDrawerDataList"] addObject:button.drawerData];
 }
 
 - (void)actionMenuAddSubButton {
@@ -339,6 +456,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:((ControlButton *)self.currentGesture.view).currentTitle message:@"Are you sure to remove this button?"preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        self.resizeView.hidden = YES;
         ControlButton *button = (ControlButton *)self.currentGesture.view;
         if ([button isKindOfClass:[ControlSubButton class]]) {
             [((ControlSubButton *)button).parentDrawer.buttons removeObject:button];
@@ -373,6 +491,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 }
 
 - (void)setButtonMenuVisibleForView:(UIView *)view {
+    self.resizeView.layer.maskedCorners = kCALayerMaxXMaxYCorner | kCALayerMaxXMinYCorner | kCALayerMinXMaxYCorner;
     self.resizeView.target = (ControlButton *)view;
     UIMenuController *menuController = [UIMenuController sharedMenuController];
     if(@available(iOS 13.0, *)) {
@@ -388,7 +507,8 @@ NSMutableArray *keyCodeMap, *keyValueMap;
         [menuController setMenuVisible:(view!=nil) animated:YES];
     }
     if (view) {
-        self.resizeView.frame = CGRectMake(view.frame.origin.x + view.frame.size.width, view.frame.origin.y + view.frame.size.height, self.resizeView.frame.size.width, self.resizeView.frame.size.height);
+        CGPoint origin = [self.ctrlView convertPoint:view.frame.origin toView:self.view];
+        self.resizeView.frame = CGRectMake(origin.x + view.frame.size.width, origin.y + view.frame.size.height, self.resizeView.frame.size.width, self.resizeView.frame.size.height);
     }
 }
 
@@ -402,13 +522,6 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 
 - (void)onTouch:(UIPanGestureRecognizer *)sender {
     CGPoint translation = [sender translationInView:sender.view];
-    if (sender.view == self.offsetView) {
-        if (sender.state == UIGestureRecognizerStateBegan) {
-            [self setButtonMenuVisibleForView:nil];
-            self.resizeView.hidden = YES;
-        }
-        return;
-    }
 
     ControlButton *button = (ControlButton *)sender.view;
     if ([button.properties[@"isDynamicBtn"] boolValue]) return;
@@ -422,9 +535,9 @@ NSMutableArray *keyCodeMap, *keyValueMap;
         } break;
         case UIGestureRecognizerStateChanged: {
             //button.center = CGPointMake(button.center.x + translation.x, button.center.y + translation.y);
-            [button snapAndAlignX:clamp(button.frame.origin.x+translation.x, 0, self.offsetView.frame.size.width - button.frame.size.width) Y:clamp(button.frame.origin.y+translation.y, 0, self.offsetView.frame.size.height - button.frame.size.height)];
+            [button snapAndAlignX:clamp(button.frame.origin.x+translation.x, 0, self.ctrlView.frame.size.width - button.frame.size.width) Y:clamp(button.frame.origin.y+translation.y, 0, self.ctrlView.frame.size.height - button.frame.size.height)];
             [sender setTranslation:CGPointZero inView:button];
-            self.resizeView.frame = CGRectMake(button.frame.origin.x + button.frame.size.width, button.frame.origin.y + button.frame.size.height, self.resizeView.frame.size.width, self.resizeView.frame.size.height);
+            self.resizeView.frame = CGRectMake(CGRectGetMaxX(button.frame), CGRectGetMaxY(button.frame), self.resizeView.frame.size.width, self.resizeView.frame.size.height);
         } break;
         default: break;
     }
@@ -581,7 +694,10 @@ CGFloat currentY;
     CGFloat y = self.view.frame.size.height/10.0;
     self.view.bounds = CGRectMake(-x, -y, self.view.frame.size.width - x * 2.0, self.view.frame.size.height - y * 2.0);
 
-    UIVisualEffectView *blurView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular]];
+    UIVisualEffectView *blurView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight]];
+    if (@available(iOS 13.0, *)) {
+        blurView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleSystemMaterial];
+    }
     blurView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height); 
     blurView.layer.cornerRadius = 10.0;
     blurView.clipsToBounds = YES;
@@ -672,7 +788,7 @@ CGFloat currentY;
         currentY += self.editMapping.frame.size.height + 12.0;
     } else {
         // Property: Orientation
-        self.arrOrientation = [NSArray arrayWithObjects:@"DOWN", @"LEFT", @"UP", @"RIGHT", @"FREE", nil];
+        self.arrOrientation = @[@"DOWN", @"LEFT", @"UP", @"RIGHT", @"FREE"];
         UILabel *labelOrientation = [self addLabel:@"Orientation"];
         self.ctrlOrientation = [[UISegmentedControl alloc] initWithItems:self.arrOrientation];
         self.ctrlOrientation.frame = CGRectMake(labelOrientation.frame.size.width + 5.0, currentY - 5.0, width - labelOrientation.frame.size.width - 5.0, 30.0);

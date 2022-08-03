@@ -10,7 +10,7 @@
 
 @implementation ControlButton
 
-+ (id)buttonWithProperties:(NSMutableDictionary *)propArray willUpdate:(BOOL)update {
++ (id)buttonWithProperties:(NSMutableDictionary *)propArray {
     //NSLog(@"DBG button prop = %@", propArray);
     ControlButton *instance = [self buttonWithType:UIButtonTypeRoundedRect];
     instance.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -20,15 +20,8 @@
     instance.titleLabel.numberOfLines = 0;
     instance.titleLabel.textAlignment = NSTextAlignmentCenter;
     instance.properties = propArray;
-    if (update) {
-        [instance update];
-    }
 
     return instance;
-}
-
-+ (id)buttonWithProperties:(NSMutableDictionary *)propArray {
-    return [self buttonWithProperties:propArray willUpdate:YES];
 }
 
 /*
@@ -53,28 +46,28 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     [super touchesBegan:touches withEvent:event];
     if (!isControlModifiable && [self.properties[@"passThruEnabled"] boolValue]) {
-        [viewController touchesBegan:touches withEvent:event];
+        [currentVC() touchesBegan:touches withEvent:event];
     }
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
     [super touchesMoved:touches withEvent:event];
     if (!isControlModifiable && [self.properties[@"passThruEnabled"] boolValue]) {
-        [viewController touchesMoved:touches withEvent:event];
+        [currentVC() touchesMoved:touches withEvent:event];
     }
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     [super touchesEnded:touches withEvent:event];
     if (!isControlModifiable && [self.properties[@"passThruEnabled"] boolValue]) {
-        [viewController touchesEnded:touches withEvent:event];
+        [currentVC() touchesEnded:touches withEvent:event];
     }
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
     [super touchesCancelled:touches withEvent:event];
     if (!isControlModifiable && [self.properties[@"passThruEnabled"] boolValue]) {
-        [viewController touchesCancelled:touches withEvent:event];
+        [currentVC() touchesCancelled:touches withEvent:event];
     }
 }
 
@@ -104,12 +97,11 @@
 }
 
 - (CGFloat)calculateDynamicPos:(NSString *)string {
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    CGRect screenBounds = self.superview.bounds;
+    NSAssert(self.superview, @"Why is it null");
     CGFloat screenScale = [[UIScreen mainScreen] scale];
-    UIEdgeInsets insets = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets;
 
-    // width: offset the notch parts
-    CGFloat screenWidth = dpToPx(screenBounds.size.width - insets.left - insets.right);
+    CGFloat screenWidth = dpToPx(screenBounds.size.width);
     CGFloat screenHeight = dpToPx(screenBounds.size.height);
     
     CGFloat width = [self.properties[@"width"] floatValue];
@@ -137,24 +129,18 @@
 
 // NOTE: Unlike Android's impl, this method uses dp instead of px (no call to dpToPx)
 - (NSString *)generateDynamicX:(CGFloat)x {
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    UIEdgeInsets insets = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets;
-    // width: offset the notch parts
-    CGFloat physicalWidth = screenBounds.size.width - insets.left - insets.right;
+    CGFloat physicalWidth = self.superview.bounds.size.width;
 
     if (x + ([self.properties[@"width"] floatValue] / 2.0) > physicalWidth / 2.0) {
         return [NSString stringWithFormat:@"%f  * ${screen_width} - ${width}", (x + [self.properties[@"width"] floatValue]) / physicalWidth];
-    } else{
+    } else {
         return [NSString stringWithFormat:@"%f  * ${screen_width}", x / physicalWidth];
     }
 }
 
 // NOTE: Unlike Android's impl, this method uses dp instead of px (no call to dpToPx)
 - (NSString *)generateDynamicY:(CGFloat)y {
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    UIEdgeInsets insets = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets;
-
-    CGFloat physicalHeight = screenBounds.size.height;
+    CGFloat physicalHeight = self.superview.bounds.size.height;
 
     if (y + ([self.properties[@"height"] floatValue] / 2.0) > physicalHeight / 2.0) {
         return [NSString stringWithFormat:@"%f  * ${screen_height} - ${height}", (y + [self.properties[@"height"] floatValue]) / physicalHeight];
@@ -166,8 +152,6 @@
 - (void)update {
     // net/kdt/pojavlaunch/customcontrols/ControlData.update()
     [self preProcessProperties];
-
-    UIEdgeInsets insets = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets;
 
     NSString *propDynamicX = (NSString *) self.properties[@"dynamicX"];
     NSString *propDynamicY = (NSString *) self.properties[@"dynamicY"];
@@ -184,7 +168,7 @@
     CGFloat propY = [self calculateDynamicPos:propDynamicY];
 
     // Update other properties
-    self.frame = CGRectMake(propX + insets.left, propY, propW, propH);
+    self.frame = CGRectMake(propX, propY, propW, propH);
     self.alpha = [self.properties[@"opacity"] floatValue];
     self.alpha = MAX(self.alpha, isControlModifiable ? 0.1 : 0.01);
     self.backgroundColor = convertARGB2UIColor(propBackgroundColor);

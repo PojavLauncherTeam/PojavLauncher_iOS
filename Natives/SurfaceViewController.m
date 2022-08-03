@@ -3,6 +3,7 @@
 #import "authenticator/BaseAuthenticator.h"
 #import "customcontrols/ControlButton.h"
 #import "customcontrols/ControlDrawer.h"
+#import "customcontrols/ControlLayout.h"
 #import "customcontrols/ControlSubButton.h"
 #import "customcontrols/CustomControlsUtils.h"
 
@@ -177,7 +178,7 @@ BOOL slideableHotbar;
 @property NSArray *menuArray;
 @property UITableView *menuView;
 
-@property UIView *rootView;
+@property UIView *ctrlView, *rootView;
 
 @property TrackedTextField *inputView;
 @property(nonatomic, strong) NSMutableDictionary* cc_dictionary;
@@ -199,7 +200,6 @@ BOOL slideableHotbar;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    viewController = self;
     isControlModifiable = NO;
 
     setPreference(@"internal_launch_on_boot", @(NO));
@@ -224,6 +224,7 @@ BOOL slideableHotbar;
     self.rootView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width + 30.0, self.view.frame.size.height)];
     [self.view addSubview:self.rootView];
 
+    self.ctrlView = [[ControlLayout alloc] initWithFrame:CGRectFromString(getPreference(@"control_safe_area"))];
 
     // Side menu
     UIScreenEdgePanGestureRecognizer *edgeGesture = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handleRightEdge:)];
@@ -266,6 +267,7 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
     self.surfaceView.layer.magnificationFilter = self.surfaceView.layer.minificationFilter = kCAFilterNearest;
     [self.surfaceView addGestureRecognizer:edgeGesture];
     [self.rootView addSubview:self.surfaceView];
+    [self.rootView addSubview:self.ctrlView];
 
 
     CGFloat buttonScale = [getPreference(@"button_scale") floatValue] / 100.0;
@@ -348,7 +350,7 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
     } else {
         CGFloat currentScale = [self.cc_dictionary[@"scaledAt"] floatValue];
         CGFloat savedScale = [getPreference(@"button_scale") floatValue];
-        loadControlObject(self.rootView, self.cc_dictionary, ^void(ControlButton* button) {
+        loadControlObject(self.ctrlView, self.cc_dictionary, ^void(ControlButton* button) {
             BOOL isSwipeable = [button.properties[@"isSwipeable"] boolValue];
 
             button.canBeHidden = YES;
@@ -508,7 +510,7 @@ CGPoint lastCenterPoint;
     }];
     [alert addAction:okAction];
 
-    [viewController presentViewController:alert animated:YES completion:nil];
+    [currentVC() presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)actionToggleLogOutput {
@@ -932,8 +934,7 @@ CallbackBridge_nativeSendKey(keycode, 0, held, 0);
 - (void)executebtn_special_togglebtn:(int)held {
     if (held == 0) {
         currentVisibility = !currentVisibility;
-        for (UIView *view in self.rootView.subviews) {
-            if (![view isKindOfClass:[ControlButton class]]) continue;
+        for (UIView *view in self.ctrlView.subviews) {
             ControlButton *button = (ControlButton *)view;
             if (button.canBeHidden) {
                 if (!currentVisibility && ![button isKindOfClass:[ControlSubButton class]]) {

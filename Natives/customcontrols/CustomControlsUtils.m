@@ -152,7 +152,7 @@ BOOL convertLayoutIfNecessary(NSMutableDictionary* dict) {
         case 4:
             break;
         default:
-            showDialog(viewController, @"Error parsing JSON", [NSString stringWithFormat:@"Incompatible control version code %d. This control version was not implemented in this launcher build.", version]);
+            showDialog(currentVC(), @"Error parsing JSON", [NSString stringWithFormat:@"Incompatible control version code %d. This control version was not implemented in this launcher build.", version]);
             return NO;
     }
     return YES;
@@ -315,6 +315,7 @@ void loadControlObject(UIView* targetView, NSMutableDictionary* controlDictionar
                 ControlButton *button = [ControlButton buttonWithProperties:buttonDict];
                 walkToButton(button);
                 [targetView addSubview:button];
+                [button update];
             } @catch (NSException *exception) {
                 [errorString appendFormat:@"%@: %@\n", buttonDict[@"name"], exception.reason];
             }
@@ -346,7 +347,7 @@ void loadControlObject(UIView* targetView, NSMutableDictionary* controlDictionar
         controlDictionary[@"scaledAt"] = @([getPreference(@"button_scale") floatValue]);
 
         if (errorString.length > 0) {
-            showDialog(viewController, @"Error processing dynamic position", errorString);
+            showDialog(currentVC(), @"Error processing dynamic position", errorString);
         }
     }
 }

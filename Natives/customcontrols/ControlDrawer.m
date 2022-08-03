@@ -11,10 +11,9 @@
 @implementation ControlDrawer
 
 + (id)buttonWithData:(NSMutableDictionary *)drawerData {
-    ControlDrawer *instance = [self buttonWithProperties:drawerData[@"properties"] willUpdate:NO];
+    ControlDrawer *instance = [self buttonWithProperties:drawerData[@"properties"]];
     instance.buttons = [[NSMutableArray alloc] init];
     instance.drawerData = drawerData;
-    [instance update];
 
     return instance;
 }
@@ -81,6 +80,11 @@
 - (void)syncButtons {
     [self alignButtons];
     [self resizeButtons];
+}
+
+- (void)update {
+    [super update];
+    [self syncButtons];
 }
 
 - (BOOL)containsChild:(ControlButton *)button {

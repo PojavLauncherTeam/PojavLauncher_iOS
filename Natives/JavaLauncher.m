@@ -127,7 +127,7 @@ NSString* environmentFailsafes(int minVersion) {
     }
 
     if (javaHome == nil) {
-        showDialog(viewController, NSLocalizedString(@"Error", nil), [NSString stringWithFormat:@"Minecraft %@ requires Java %d in order to run. Please install it first.", getPreference(@"selected_version"), minVersion]);
+        showDialog(currentVC(), NSLocalizedString(@"Error", nil), [NSString stringWithFormat:@"Minecraft %@ requires Java %d in order to run. Please install it first.", getPreference(@"selected_version"), minVersion]);
     }
 
     return javaHome;
@@ -236,6 +236,14 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     NSString *selectedAccount = getPreference(@"internal_selected_account");
     if (selectedAccount != nil) {
         margv[++margc] = (char *) [NSString stringWithFormat:@"-Dpojav.selectedAccount=%@", selectedAccount].UTF8String;
+    }
+
+    if (!getenv("POJAV_DETECTEDJB")) {
+        // In jailed environment, where extended virtual addressing entitlement isn't
+        // present (for free dev account), the maximum metaspace size is 896M.
+        // Sometimes it can go lower, so it is set to 800M
+        // TODO: check if the entitlement is present instead?
+        margv[++margc] = "-XX:CompressedClassSpaceSize=800M";
     }
 
     // Load java

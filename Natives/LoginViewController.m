@@ -182,10 +182,6 @@
     }
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    viewController = self;
-}
-
 - (void)displayProgress:(NSString *)title {
     self.title = title;
     UIActivityIndicatorViewStyle style;

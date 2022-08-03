@@ -28,15 +28,15 @@ void internal_showDialog(UIViewController *viewController, NSString* title, NSSt
     UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
     [alert addAction:okAction];
 
-    [viewController presentViewController:alert animated:YES completion:nil];
+    [currentVC() presentViewController:alert animated:YES completion:nil];
 }
 
 void showDialog(UIViewController *viewController, NSString* title, NSString* message) {
     if ([NSThread isMainThread] == YES) {
-        internal_showDialog(viewController, title, message);
+        internal_showDialog(currentVC(), title, message);
     } else {
         dispatch_async(dispatch_get_main_queue(), ^{
-            internal_showDialog(viewController, title, message);
+            internal_showDialog(currentVC(), title, message);
         });
     }
 }
@@ -78,7 +78,7 @@ dispatch_async(dispatch_get_main_queue(), ^{
         }];
     [alert addAction:copyAction];
     
-    [viewController presentViewController:alert animated:YES completion:nil];
+    [currentVC() presentViewController:alert animated:YES completion:nil];
 });
 }
 

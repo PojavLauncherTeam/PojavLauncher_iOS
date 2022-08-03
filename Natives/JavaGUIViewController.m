@@ -69,7 +69,6 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    viewController = self;
     self.view.backgroundColor = UIColor.blackColor;
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];

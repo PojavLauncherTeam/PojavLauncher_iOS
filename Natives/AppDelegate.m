@@ -6,18 +6,11 @@
 
 @implementation AppDelegate
 
-- (void)navigationController:(UINavigationController *)controller willShowViewController:(UIViewController *)vc animated:(BOOL)animated {
-    viewController = vc;
-}
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     if (@available(iOS 13.0, *)) {
     } else {
         self.window = ([[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]]);
         launchInitialViewController(self.window);
-        if ([self.window.rootViewController isKindOfClass:UINavigationController.class]) {
-            ((UINavigationController *)self.window.rootViewController).delegate = self;
-        }
         [self.window makeKeyAndVisible];
     }
     

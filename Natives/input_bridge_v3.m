@@ -270,18 +270,18 @@ JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetGrabbing(JNIE
     }
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIView *surfaceView = ((SurfaceViewController *)viewController).surfaceView;
+        UIView *surfaceView = ((SurfaceViewController *)currentVC()).surfaceView;
         if (isGrabbing == JNI_TRUE) {
             CGFloat screenScale = [[UIScreen mainScreen] scale] * resolutionScale;
             callback_SurfaceViewController_onTouch(ACTION_DOWN, lastVirtualMousePoint.x * screenScale, lastVirtualMousePoint.y * screenScale);
-            ((SurfaceViewController *)viewController).mousePointerView.frame = virtualMouseFrame;
-            [surfaceView removeGestureRecognizer:((SurfaceViewController *)viewController).scrollPanGesture];
+            ((SurfaceViewController *)currentVC()).mousePointerView.frame = virtualMouseFrame;
+            [surfaceView removeGestureRecognizer:((SurfaceViewController *)currentVC()).scrollPanGesture];
         } else {
-            [surfaceView addGestureRecognizer:((SurfaceViewController *)viewController).scrollPanGesture];
+            [surfaceView addGestureRecognizer:((SurfaceViewController *)currentVC()).scrollPanGesture];
         }
-        ((SurfaceViewController *)viewController).mousePointerView.hidden = isGrabbing || !virtualMouseEnabled;
+        ((SurfaceViewController *)currentVC()).mousePointerView.hidden = isGrabbing || !virtualMouseEnabled;
         if(@available(iOS 14.0, *)) {
-            [viewController setNeedsUpdateOfPrefersPointerLocked];
+            [currentVC() setNeedsUpdateOfPrefersPointerLocked];
         }
     });
 }

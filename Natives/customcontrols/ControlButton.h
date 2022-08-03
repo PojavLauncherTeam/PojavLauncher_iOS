@@ -14,7 +14,6 @@
 @property BOOL canBeHidden;
 @property(nonatomic, strong) NSMutableDictionary* properties;
 
-+ (id)buttonWithProperties:(NSMutableDictionary *)propArray willUpdate:(BOOL)update;
 + (id)buttonWithProperties:(NSMutableDictionary *)propArray;
 
 - (BOOL)canSnap:(ControlButton *)button;

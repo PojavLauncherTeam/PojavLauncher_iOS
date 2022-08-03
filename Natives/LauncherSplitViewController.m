@@ -12,7 +12,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    viewController = self;
     setViewBackgroundColor(self.view);
 
     //TODO: maximumPrimaryColumnWidth

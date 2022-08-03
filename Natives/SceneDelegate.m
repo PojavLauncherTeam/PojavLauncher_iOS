@@ -10,20 +10,12 @@
 @implementation SceneDelegate
 
 
-- (void)navigationController:(UINavigationController *)controller willShowViewController:(UIViewController *)vc animated:(BOOL)animated {
-    viewController = vc;
-}
-
-
 - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions  API_AVAILABLE(ios(13.0)) API_AVAILABLE(ios(13.0)) API_AVAILABLE(ios(13.0)){
     if (@available(iOS 13.0, *)) {
         UIWindowScene *windowScene = (UIWindowScene *)scene;
         self.window = [[UIWindow alloc] initWithWindowScene:windowScene];
         self.window.frame = windowScene.coordinateSpace.bounds;
         launchInitialViewController(self.window);
-        if ([self.window.rootViewController isKindOfClass:UINavigationController.class]) {
-            ((UINavigationController *)self.window.rootViewController).delegate = self;
-        }
         [self.window makeKeyAndVisible];
     } else {
         
@@ -72,7 +64,6 @@ API_AVAILABLE(ios(13.0)){
     NSURL *url = [[URLContexts allObjects] firstObject].URL;
     NSDictionary *data = [NSDictionary dictionaryWithObject:url forKey:@"url"];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"MSALoginCallback" object:self userInfo:data];
-        
 }
 
 @end

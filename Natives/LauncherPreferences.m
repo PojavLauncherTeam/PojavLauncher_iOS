@@ -64,7 +64,7 @@ int getSelectedJavaVersion() {
 void setDefaultValueForPref(NSMutableDictionary *dict, NSString* key, id value) {
     if (!dict[key]) {
         dict[key] = value;
-        NSLog(@"[Pre-init] Set default value for key %@", value);
+        NSLog(@"[Pre-init] LauncherPreferences: Set default %@: %@", key, value);
     }
 }
 
@@ -140,10 +140,28 @@ void loadPreferences() {
     } else {
         setDefaultValueForPref(prefDict, @"disable_home_symlink", @YES);
     }
-    
+
+    setDefaultValueForPref(prefDict, @"control_safe_area", NSStringFromCGRect(getDefaultSafeArea()));
+
     prefDict[@"env_vars"] = envPrefDict;
     prefDict[@"ver_types"] = verPrefDict;
     prefDict[@"warnings"] = warnPrefDict;
-        
+
     [prefDict writeToFile:prefPath atomically:YES];
+}
+
+CGRect getDefaultSafeArea() {
+    CGRect defaultSafeArea = UIScreen.mainScreen.bounds;
+    UIEdgeInsets insets = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets;
+    defaultSafeArea.origin.x = insets.left;
+    //defaultSafeArea.origin.y = insets.top;
+    defaultSafeArea.size.width -= insets.left + insets.right;
+    //defaultSafeArea.size.height -= insets.bottom;
+    // In some cases, the returned bounds is portrait instead of landscape
+    if (defaultSafeArea.size.width < defaultSafeArea.size.height) {
+        CGFloat height = defaultSafeArea.size.width;
+        defaultSafeArea.size.width = defaultSafeArea.size.height;
+        defaultSafeArea.size.height = height;
+    }
+    return defaultSafeArea;
 }

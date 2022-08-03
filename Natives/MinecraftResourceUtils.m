@@ -41,7 +41,7 @@ static AFURLSessionManager* manager;
     // for now
     BOOL accessible = [BaseAuthenticator.current.authData[@"username"] hasPrefix:@"Demo."] || BaseAuthenticator.current.authData[@"xboxGamertag"] != nil;
     if (!accessible && show) {
-        showDialog(viewController, @"Error", @"Minecraft can't be legally installed when logged in with a local account. Please switch to an online account to continue.");
+        showDialog(currentVC(), @"Error", @"Minecraft can't be legally installed when logged in with a local account. Please switch to an online account to continue.");
     }
     return accessible;
 }
@@ -94,7 +94,7 @@ static AFURLSessionManager* manager;
     NSString *content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
     if (error) {
         NSLog(@"[MCDL] Error: couldn't read %@: %@", path, error.localizedDescription);
-        showDialog(viewController, @"Error", [NSString stringWithFormat:@"Could not read %@: %@", path, error.localizedDescription]);
+        showDialog(currentVC(), @"Error", [NSString stringWithFormat:@"Could not read %@: %@", path, error.localizedDescription]);
         return nil;
     }
 
@@ -103,7 +103,7 @@ static AFURLSessionManager* manager;
     if (![self checkSHAIgnorePref:sha forFile:path altName:nil] && error) {
         // If it gives an error, we check back SHA 
         NSLog(@"[MCDL] Error: parsing %@: %@", path, error.localizedDescription);
-        showDialog(viewController, @"Error", [NSString stringWithFormat:@"Error parsing %@ (SHA mismatch, is file corrupted?): %@", path, error.localizedDescription]);
+        showDialog(currentVC(), @"Error", [NSString stringWithFormat:@"Error parsing %@ (SHA mismatch, is file corrupted?): %@", path, error.localizedDescription]);
     } else if (error) {
         // This shouldn't happen
         NSLog(@"[MCDL] Fatal Error: parsing %@ (SHA Passed): %@", path, error.localizedDescription);
@@ -189,7 +189,7 @@ static AFURLSessionManager* manager;
         if (error != nil) {
             NSString *errorStr = [NSString stringWithFormat:@"Failed to create directory %@: %@", verPath, error.localizedDescription];
             NSLog(@"[MCDL] Error: %@", errorStr);
-            showDialog(viewController, @"Error", errorStr);
+            showDialog(currentVC(), @"Error", errorStr);
             callback(nil, nil, nil);
             return;
         }
@@ -205,14 +205,14 @@ static AFURLSessionManager* manager;
             if (error != nil) { // FIXME: correct?
                 NSString *errorStr = [NSString stringWithFormat:@"Failed to download %@: %@", versionURL, error.localizedDescription];
                 NSLog(@"[MCDL] Error: %@", errorStr);
-                showDialog(viewController, @"Error", errorStr);
+                showDialog(currentVC(), @"Error", errorStr);
                 callback(nil, nil, nil);
                 return;
             } else {
                 // A version from the offical server won't likely to have inheritsFrom, so return immediately
                 if (![self checkSHA:versionSHA forFile:jsonPath altName:nil]) {
                     // Abort when a downloaded file's SHA mismatches
-                    showDialog(viewController, @"Error", [NSString stringWithFormat:@"Failed to verify file %@: SHA1 mismatch", versionStr]);
+                    showDialog(currentVC(), @"Error", [NSString stringWithFormat:@"Failed to verify file %@: SHA1 mismatch", versionStr]);
                     callback(nil, nil, nil);
                     return;
                 }
@@ -266,7 +266,7 @@ static AFURLSessionManager* manager;
         }
 
         // If the inheritsFrom is not found, return an error
-        showDialog(viewController, @"Error", [NSString stringWithFormat:@"Could not find inheritsFrom=%@ for version %@", json[@"inheritsFrom"], versionStr]);
+        showDialog(currentVC(), @"Error", [NSString stringWithFormat:@"Could not find inheritsFrom=%@ for version %@", json[@"inheritsFrom"], versionStr]);
     }
 }
 
@@ -358,12 +358,12 @@ static AFURLSessionManager* manager;
                 cancel = YES;
                 NSString *errorStr = [NSString stringWithFormat:@"Failed to download %@: %@", url, error.localizedDescription];
                 NSLog(@"[MCDL] Error: %@", errorStr);
-                showDialog(viewController, @"Error", errorStr);
+                showDialog(currentVC(), @"Error", errorStr);
                 callback(nil, nil);
             } else if (![self checkSHA:sha1 forFile:path altName:nil]) {
                 // Abort when a downloaded file's SHA mismatches
                 cancel = YES;
-                showDialog(viewController, @"Error", [NSString stringWithFormat:@"Failed to verify file %@: SHA1 mismatch", path.lastPathComponent]);
+                showDialog(currentVC(), @"Error", [NSString stringWithFormat:@"Failed to verify file %@: SHA1 mismatch", path.lastPathComponent]);
                 callback(nil, nil);
             }
             dispatch_group_leave(group);
@@ -442,7 +442,7 @@ static AFURLSessionManager* manager;
                 jobsAvailable = -3;
                 NSString *errorStr = [NSString stringWithFormat:@"Failed to download %@: %@", url, error.localizedDescription];
                 NSLog(@"[MCDL] Error: %@", errorStr);
-                showDialog(viewController, @"Error", errorStr);
+                showDialog(currentVC(), @"Error", errorStr);
                 callback(nil, nil);
             } else if (![self checkSHA:hash forFile:path altName:name]) {
                 // Abort when a downloaded file's SHA mismatches
@@ -451,7 +451,7 @@ static AFURLSessionManager* manager;
                     return;
                 }
                 jobsAvailable = -2;
-                showDialog(viewController, @"Error", [NSString stringWithFormat:@"Failed to verify file %@: SHA1 mismatch", path.lastPathComponent]);
+                showDialog(currentVC(), @"Error", [NSString stringWithFormat:@"Failed to verify file %@: SHA1 mismatch", path.lastPathComponent]);
                 callback(nil, nil);
             }
             ++jobsAvailable;
