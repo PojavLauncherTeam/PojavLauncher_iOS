@@ -336,6 +336,7 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
     } else {
         self.inputView.backgroundColor = UIColor.groupTableViewBackgroundColor;
     }
+    self.inputView.delegate = self;
     self.inputView.font = [UIFont fontWithName:@"Menlo-Regular" size:20];
     self.inputView.clearsOnBeginEditing = YES;
     self.inputView.textAlignment = NSTextAlignmentCenter;
@@ -819,6 +820,7 @@ CallbackBridge_nativeSendKey(GLFW_KEY_Q, 0, 0, 0);
 -(BOOL)textFieldShouldReturn:(UITextField *)textField {
     CallbackBridge_nativeSendKey(GLFW_KEY_ENTER, 0, 1, 0);
     CallbackBridge_nativeSendKey(GLFW_KEY_ENTER, 0, 0, 0);
+    textField.text = @" ";
     return YES;
 }
 
