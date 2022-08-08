@@ -195,10 +195,6 @@ int versionSelectedAt = 0;
             }
         }
 
-        if (self.versionList.count == 0) {
-            return;
-        }
-
         // Get back the currently selected in case none matching version found
         versionSelectedAt = MIN(abs(versionSelectedAt), self.versionList.count - 1);
 
@@ -288,6 +284,10 @@ int versionSelectedAt = 0;
 }
 
 - (void)launchMinecraft:(UIButton *)sender {
+    if (!versionTextField.hasText) {
+        return;
+    }
+
     sender.enabled = NO;
 
     NSObject *object = [self.versionList objectAtIndex:[versionPickerView selectedRowInComponent:0]];
@@ -319,7 +319,11 @@ int versionSelectedAt = 0;
 }
 
 #pragma mark - UIPickerView stuff
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {self.buttonInstall.enabled &= self.versionList.count > 0;
+    if (self.versionList.count == 0) {
+        versionTextField.text = @"";
+        return;
+    }
     versionSelectedAt = row;
     versionTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
     setPreference(@"selected_version", versionTextField.text);
