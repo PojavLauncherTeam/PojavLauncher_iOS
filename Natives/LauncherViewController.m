@@ -296,10 +296,8 @@ int versionSelectedAt = 0;
         if (progress == nil && stage != nil) {
             NSLog(@"[MCDL] %@", stage);
         }
-        self.progressViewMain.observedProgress
- = mainProgress;
-        self.progressViewSub.observedProgress
- = progress;
+        self.progressViewMain.observedProgress = mainProgress;
+        self.progressViewSub.observedProgress = progress;
         if (stage == nil) {
             sender.enabled = YES;
             if (mainProgress != nil) {
@@ -319,7 +317,7 @@ int versionSelectedAt = 0;
 }
 
 #pragma mark - UIPickerView stuff
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {self.buttonInstall.enabled &= self.versionList.count > 0;
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     if (self.versionList.count == 0) {
         versionTextField.text = @"";
         return;
