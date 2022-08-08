@@ -194,6 +194,11 @@ int versionSelectedAt = 0;
                 versionSelectedAt = [self.versionList indexOfObject:nearest];
             }
         }
+
+        if (self.versionList.count == 0) {
+            return;
+        }
+
         // Get back the currently selected in case none matching version found
         versionSelectedAt = MIN(abs(versionSelectedAt), self.versionList.count - 1);
 
