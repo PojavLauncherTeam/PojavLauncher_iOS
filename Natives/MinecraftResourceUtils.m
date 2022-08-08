@@ -561,12 +561,15 @@ static AFURLSessionManager* manager;
         }
         return result;
     } else if ([versionType isEqualToString:@"snapshot"] && type == TYPE_RELEASE) {
-        while (true) {
-            NSDictionary *result = remoteVersionList[index];
-            // Returns the corresponding release for the snapshot, or latest if none found
-            if ([result[@"type"] isEqualToString:@"release"] || --index == 0) {
+        while (remoteVersionList.count > abs(index)) {
+            // In case the snapshot has yet attached to a release, perform a reverse find
+            NSDictionary *result = remoteVersionList[abs(index)];
+            // Returns the corresponding release for the snapshot, or latest release if none found
+            if ([result[@"type"] isEqualToString:@"release"]) {
                 return result;
             }
+            // Continue to decrement, later abs() it
+            index--;
         }
     }
 
