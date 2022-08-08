@@ -252,17 +252,9 @@ static AFURLSessionManager* manager;
         }
 
         // Find the inheritsFrom
-        for (id object in versionList) {
-            NSString *iversionStr;
-            if ([object isKindOfClass:[NSDictionary class]]) {
-                iversionStr = [object valueForKey:@"id"];
-            } else {
-                iversionStr = (NSString *)object;
-            }
-            if ([iversionStr isEqualToString:json[@"inheritsFrom"]]) {
-                [self processVersion:json inheritsFrom:object progress:mainProgress callback:callback success:success];
-                return;
-            }
+        id inheritsFrom = [self findVersion:json[@"inheritsFrom"] inList:remoteVersionList];
+        if (inheritsFrom != nil) {
+            [self processVersion:json inheritsFrom:inheritsFrom progress:mainProgress callback:callback success:success];
         }
 
         // If the inheritsFrom is not found, return an error
@@ -519,6 +511,67 @@ static AFURLSessionManager* manager;
             [json[@"arguments"][@"jvm_processed"] addObject:argStr];
         }
     }
+}
+
++ (NSObject *)findVersion:(NSString *)version inList:(NSArray *)list {
+    for (id object in list) {
+        NSString *item;
+        if ([object isKindOfClass:[NSDictionary class]]) {
+            item = [object valueForKey:@"id"];
+        } else {
+            item = (NSString *)object;
+        }
+        if ([version isEqualToString:item]) {
+            return object;
+        }
+    }
+    return nil;
+}
+
++ (NSObject *)findNearestVersion:(NSObject *)version expectedType:(int)type {
+    if (type != TYPE_RELEASE && type != TYPE_SNAPSHOT) {
+        // Only support finding for releases and snapshot for now
+        return nil;
+    }
+
+    if ([version isKindOfClass:NSString.class]){
+        // Find in inheritsFrom
+        NSDictionary *versionDict = parseJSONFromFile([NSString stringWithFormat:@"%s/versions/%@/%@.json", getenv("POJAV_GAME_DIR"), version, version]);
+        NSAssert(versionDict != nil, @"version should not be null");
+        if (versionDict[@"inheritsFrom"] == nil) {
+            // How then?
+            return nil; 
+        }
+        NSObject *inheritsFrom = [self findVersion:versionDict[@"inheritsFrom"] inList:remoteVersionList];
+        if (type == TYPE_RELEASE) {
+            return inheritsFrom;
+        } else if (type == TYPE_SNAPSHOT) {
+            return [self findNearestVersion:inheritsFrom expectedType:type];
+        }
+    }
+
+    NSString *versionType = [version valueForKey:@"type"];
+    int index = [remoteVersionList indexOfObject:(NSDictionary *)version];
+    if ([versionType isEqualToString:@"release"] && type == TYPE_SNAPSHOT) {
+        // Returns the (possible) latest snapshot for the version
+        NSDictionary *result = remoteVersionList[index + 1];
+        // Sometimes, a release is followed with another release (1.16->1.16.1), go lower in this case
+        if ([result[@"type"] isEqualToString:@"release"]) {
+            return [self findNearestVersion:result expectedType:type];
+        }
+        return result;
+    } else if ([versionType isEqualToString:@"snapshot"] && type == TYPE_RELEASE) {
+        while (true) {
+            NSDictionary *result = remoteVersionList[index];
+            // Returns the corresponding release for the snapshot, or latest if none found
+            if ([result[@"type"] isEqualToString:@"release"] || --index == 0) {
+                return result;
+            }
+        }
+    }
+
+    // No idea on handling everything else
+    return nil;
 }
 
 @end

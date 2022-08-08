@@ -342,58 +342,6 @@ int tempIndex;
     [resetWarnSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:resetWarnSwitch];
     
-    UILabel *releaseTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
-    releaseTextView.text = @"Releases";
-    releaseTextView.numberOfLines = 0;
-    [releaseTextView sizeToFit];
-        [releaseTextView setFont:[UIFont systemFontOfSize:13]];
-    [tableView addSubview:releaseTextView];
-
-    UISwitch *releaseSwitch = [[UISwitch alloc] initWithFrame:CGRectMake((width * .25) - 62.0, currY - 5.0, 50.0, 30)];
-    releaseSwitch.tag = TAG_SWITCH_VRELEASE;
-    [releaseSwitch setOn:[getPreference(@"vertype_release") boolValue] animated:NO];
-    [releaseSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
-    [tableView addSubview:releaseSwitch];
-    
-    UILabel *snapshotTextView = [[UILabel alloc] initWithFrame:CGRectMake(releaseSwitch.frame.origin.x + releaseSwitch.frame.size.width + 8.0, currY, 0.0, 0.0)];
-    snapshotTextView.text = @"Snapshot";
-    snapshotTextView.numberOfLines = 0;
-    [snapshotTextView sizeToFit];
-        [snapshotTextView setFont:[UIFont systemFontOfSize:13]];
-    [tableView addSubview:snapshotTextView];
-
-    UISwitch *snapshotSwitch = [[UISwitch alloc] initWithFrame:CGRectMake((width * .50) - 62.0, currY - 5.0, 50.0, 30)];
-    snapshotSwitch.tag = TAG_SWITCH_VSNAPSHOT;
-    [snapshotSwitch setOn:[getPreference(@"vertype_snapshot") boolValue] animated:NO];
-    [snapshotSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
-    [tableView addSubview:snapshotSwitch];
-
-    UILabel *oldbetaTextView = [[UILabel alloc] initWithFrame:CGRectMake(snapshotSwitch.frame.origin.x + snapshotSwitch.frame.size.width + 8.0, currY, 0.0, 0.0)];
-    oldbetaTextView.text = @"Old beta";
-    oldbetaTextView.numberOfLines = 0;
-    [oldbetaTextView sizeToFit];
-        [oldbetaTextView setFont:[UIFont systemFontOfSize:13]];
-    [tableView addSubview:oldbetaTextView];
-
-    UISwitch *oldbetaSwitch = [[UISwitch alloc] initWithFrame:CGRectMake((width * .75) - 62.0, currY - 5.0, 50.0, 30)];
-    oldbetaSwitch.tag = TAG_SWITCH_VOLDBETA;
-    [oldbetaSwitch setOn:[getPreference(@"vertype_oldbeta") boolValue] animated:NO];
-    [oldbetaSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
-    [tableView addSubview:oldbetaSwitch];
-    
-    UILabel *oldalphaTextView = [[UILabel alloc] initWithFrame:CGRectMake(oldbetaSwitch.frame.origin.x + oldbetaSwitch.frame.size.width + 8.0, currY, 0.0, 0.0)];
-    oldalphaTextView.text = @"Old alpha";
-    oldalphaTextView.numberOfLines = 0;
-    [oldalphaTextView sizeToFit];
-        [oldalphaTextView setFont:[UIFont systemFontOfSize:13]];
-    [tableView addSubview:oldalphaTextView];
-
-    UISwitch *oldalphaSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
-    oldalphaSwitch.tag = TAG_SWITCH_VOLDALPHA;
-    [oldalphaSwitch setOn:[getPreference(@"vertype_oldalpha") boolValue] animated:NO];
-    [oldalphaSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
-    [tableView addSubview:oldalphaSwitch];
-    
     UILabel *checkSHATextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
     checkSHATextView.text = @"Check game files before launching";
     checkSHATextView.numberOfLines = 0;
@@ -886,22 +834,6 @@ int tempIndex;
             break;
         case TAG_SLIDEHOTBAR:
             setPreference(@"slideable_hotbar", @(sender.isOn));
-            break;
-        case TAG_SWITCH_VRELEASE:
-            setPreference(@"vertype_release", @(sender.isOn));
-            [LauncherViewController reloadVersionList:nil];
-            break;
-        case TAG_SWITCH_VSNAPSHOT:
-            setPreference(@"vertype_snapshot", @(sender.isOn));
-            [LauncherViewController reloadVersionList:nil];
-            break;
-        case TAG_SWITCH_VOLDBETA:
-            setPreference(@"vertype_oldbeta", @(sender.isOn));
-            [LauncherViewController reloadVersionList:nil];
-            break;
-        case TAG_SWITCH_VOLDALPHA:
-            setPreference(@"vertype_oldalpha", @(sender.isOn));
-            [LauncherViewController reloadVersionList:nil];
             break;
         case TAG_CHECKSHA:
             setPreference(@"check_sha", @(sender.isOn));

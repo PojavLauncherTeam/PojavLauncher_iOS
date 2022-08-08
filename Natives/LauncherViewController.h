@@ -1,14 +1,11 @@
 #import <UIKit/UIKit.h>
 
-NSArray* versionList;
+NSArray<NSDictionary *> *remoteVersionList;
 
 @interface LauncherViewController : UIViewController
 
 @property UIProgressView *progressViewMain, *progressViewSub;
 @property UILabel* progressText;
 @property UIButton* buttonInstall;
-
-+ (void)reloadVersionList:(LauncherViewController *)vc;
-+ (void)fetchLocalVersionList:(NSMutableArray *)finalVersionList withPreviousIndex:(int)index;
 
 @end

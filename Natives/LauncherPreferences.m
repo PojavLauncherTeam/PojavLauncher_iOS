@@ -4,8 +4,6 @@ NSMutableDictionary *prefDict;
 NSString* prefPath;
 // environment variables dict
 NSMutableDictionary *envPrefDict;
-// version type dict
-NSMutableDictionary *verPrefDict;
 // warnings dict
 NSMutableDictionary *warnPrefDict;
 
@@ -18,8 +16,6 @@ NSMutableDictionary *warnPrefDict;
 id getPreference(NSString* key) {
     if (!(envPrefDict[key] == [NSNull null] || envPrefDict[key] == nil)) {
         return envPrefDict[key];
-    } else if (!(verPrefDict[key] == [NSNull null] || verPrefDict[key] == nil)) {
-        return verPrefDict[key];
     } else if (!(warnPrefDict[key] == [NSNull null] || warnPrefDict[key] == nil)) {
         return warnPrefDict[key];
     } else if (!(prefDict[key] == [NSNull null] || prefDict[key] == nil) || [key hasPrefix:@"internal_"]) {
@@ -35,8 +31,6 @@ id getPreference(NSString* key) {
 NSMutableDictionary *getDictionary(NSString *type) {
     if([type containsString:@"env"]) {
         return envPrefDict;
-    } else if([type containsString:@"ver"]) {
-        return verPrefDict;
     } else if([type containsString:@"warn"]) {
         return warnPrefDict;
     } else if([type containsString:@"base"]) {
@@ -72,9 +66,6 @@ void setPreference(NSString* key, id value) {
     if (!(envPrefDict[key] == [NSNull null] || envPrefDict[key] == nil)) {
         envPrefDict[key] = value;
         prefDict[@"env_vars"] = envPrefDict;
-    } else if (!(verPrefDict[key] == [NSNull null] || verPrefDict[key] == nil)) {
-        verPrefDict[key] = value;
-        prefDict[@"ver_types"] = verPrefDict;
     } else if (!(warnPrefDict[key] == [NSNull null] || warnPrefDict[key] == nil)) {
         warnPrefDict[key] = value;
         prefDict[@"warnings"] = warnPrefDict;
@@ -95,12 +86,10 @@ void loadPreferences() {
     if (![fileManager fileExistsAtPath:prefPath]) {
         prefDict = [[NSMutableDictionary alloc] init];
         envPrefDict = [[NSMutableDictionary alloc] init];
-        verPrefDict = [[NSMutableDictionary alloc] init];
         warnPrefDict = [[NSMutableDictionary alloc] init];
     } else {
         prefDict = [NSMutableDictionary dictionaryWithContentsOfFile:prefPath];
         envPrefDict = prefDict[@"env_vars"];
-        verPrefDict = prefDict[@"ver_types"];
         warnPrefDict = prefDict[@"warnings"];
     }
 
@@ -110,10 +99,7 @@ void loadPreferences() {
     setDefaultValueForPref(envPrefDict, @"resolution", @(100));
     setDefaultValueForPref(prefDict, @"button_scale", @(100));
     setDefaultValueForPref(prefDict, @"selected_version", @"1.7.10");
-    setDefaultValueForPref(verPrefDict, @"vertype_release", @YES);
-    setDefaultValueForPref(verPrefDict, @"vertype_snapshot", @NO);
-    setDefaultValueForPref(verPrefDict, @"vertype_oldalpha", @NO);
-    setDefaultValueForPref(verPrefDict, @"vertype_oldbeta", @NO);
+    setDefaultValueForPref(prefDict, @"selected_version_type", @(0));
     setDefaultValueForPref(envPrefDict, @"time_longPressTrigger", @(400));
     setDefaultValueForPref(envPrefDict, @"default_ctrl", @"default.json");
     setDefaultValueForPref(envPrefDict, @"game_directory", @"default");
@@ -144,7 +130,6 @@ void loadPreferences() {
     setDefaultValueForPref(prefDict, @"control_safe_area", NSStringFromCGRect(getDefaultSafeArea()));
 
     prefDict[@"env_vars"] = envPrefDict;
-    prefDict[@"ver_types"] = verPrefDict;
     prefDict[@"warnings"] = warnPrefDict;
 
     [prefDict writeToFile:prefPath atomically:YES];

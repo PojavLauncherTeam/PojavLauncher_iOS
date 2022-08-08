@@ -12,6 +12,7 @@
 @interface LauncherViewController () <UIDocumentPickerDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDelegate> {
 }
 
+@property NSMutableArray* versionList;
 // - (void)method
 
 @end
@@ -29,8 +30,7 @@ int versionSelectedAt = 0;
     [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
     [self setNeedsUpdateOfHomeIndicatorAutoHidden];
 
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    CGFloat screenScale = [[UIScreen mainScreen] scale];
+    CGRect screenBounds = self.view.frame;
 
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height) - self.navigationController.navigationBar.frame.size.height;
@@ -52,14 +52,28 @@ int versionSelectedAt = 0;
     versionTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
     versionTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 
-    [LauncherViewController reloadVersionList:self];
+
+    self.versionList = [[NSMutableArray alloc] init];
+    int selectedVersionType = [getPreference(@"selected_version_type") intValue];
+    [self reloadVersionList:selectedVersionType];
     versionPickerView = [[UIPickerView alloc] init];
     versionPickerView.delegate = self;
     versionPickerView.dataSource = self;
     UIToolbar *versionPickToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
+
+    UISegmentedControl *versionTypeControl = [[UISegmentedControl alloc]    initWithItems:@[
+        NSLocalizedString(@"Installed", nil),
+        NSLocalizedString(@"Releases", nil),
+        NSLocalizedString(@"Snapshot", nil),
+        NSLocalizedString(@"Old-beta", nil),
+        NSLocalizedString(@"Old-alpha", nil)
+    ]];
+    versionTypeControl.selectedSegmentIndex = selectedVersionType;
+    [versionTypeControl addTarget:self action:@selector(changeVersionType:) forControlEvents:UIControlEventValueChanged];
+    UIBarButtonItem *versionTypeItem = [[UIBarButtonItem alloc] initWithCustomView:versionTypeControl];
     UIBarButtonItem *versionFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     UIBarButtonItem *versionDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(versionClosePicker)];
-    versionPickToolbar.items = @[versionFlexibleSpace, versionDoneButton];
+    versionPickToolbar.items = @[versionTypeItem, versionFlexibleSpace, versionDoneButton];
 
     versionTextField.inputAccessoryView = versionPickToolbar;
     versionTextField.inputView = versionPickerView;
@@ -100,7 +114,7 @@ int versionSelectedAt = 0;
     [scrollView addSubview:self.progressText];
 }
 
-+ (BOOL)isVersionInstalled:(NSString *)versionId
+- (BOOL)isVersionInstalled:(NSString *)versionId
 {
     NSString *localPath = [NSString stringWithFormat:@"%s/versions/%@", getenv("POJAV_GAME_DIR"), versionId];
     BOOL isDirectory;
@@ -109,7 +123,7 @@ int versionSelectedAt = 0;
     return isDirectory;
 }
 
-+ (void)fetchLocalVersionList:(NSMutableArray *)finalVersionList withPreviousIndex:(int)index
+- (void)fetchLocalVersionList:(NSMutableArray *)finalVersionList
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *versionPath = [NSString stringWithFormat:@"%s/versions/", getenv("POJAV_GAME_DIR")];
@@ -127,56 +141,76 @@ int versionSelectedAt = 0;
                     shouldAdd = NO;
                 }
             }
-            if (shouldAdd && ![finalVersionList containsObject:versionId]) {
+            if (shouldAdd && [MinecraftResourceUtils findVersion:versionId inList:self.versionList] == nil) {
                 [finalVersionList addObject:versionId];
                 if ([versionTextField.text isEqualToString:versionId]) {
-                    versionSelectedAt = index;
+                    versionSelectedAt = finalVersionList.count - 1;
                 }
-                index++;
             }
         }
     }
 }
 
-+ (void)reloadVersionList:(LauncherViewController *)vc
+- (void)reloadVersionList:(int)type
 {
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     [manager GET:@"https://piston-meta.mojang.com/mc/game/version_manifest_v2.json" parameters:nil headers:nil progress:^(NSProgress * _Nonnull progress) {
-        vc.progressViewMain.progress = progress.fractionCompleted;
-    } success:^(NSURLSessionTask *task, id responseObject) {
-        NSDictionary *jsonArray = responseObject;
-        NSArray *remoteVersionList = jsonArray[@"versions"];
+        self.progressViewMain.progress = progress.fractionCompleted;
+    } success:^(NSURLSessionTask *task, NSDictionary *responseObject) {
+        NSObject *lastSelected = nil;
+        if (self.versionList.count > 0 && versionSelectedAt >= 0) {
+            lastSelected = self.versionList[versionSelectedAt];
+        }
+        [self.versionList removeAllObjects];        
+
+        remoteVersionList = responseObject[@"versions"];
         assert(remoteVersionList != nil);
-        NSMutableArray *finalVersionList = [[NSMutableArray alloc] init];
-        int i = 0;
+        versionSelectedAt = -versionSelectedAt;
+
         for (NSDictionary *versionInfo in remoteVersionList) {
             NSString *versionId = versionInfo[@"id"];
             NSString *versionType = versionInfo[@"type"];
-            if (([versionType containsString:@"release"] && [getPreference(@"vertype_release") boolValue]) ||
-                ([versionType containsString:@"snapshot"] && [getPreference(@"vertype_snapshot") boolValue]) ||
-                ([versionType containsString:@"old_beta"] && [getPreference(@"vertype_oldbeta") boolValue]) ||
-                ([versionType containsString:@"old_alpha"] && [getPreference(@"vertype_oldalpha") boolValue]) ||
-                [versionType containsString:@"modified"] ||
-                [self isVersionInstalled:versionId]) {
-                [finalVersionList addObject:versionInfo];
-                        
+            if (([self isVersionInstalled:versionId] && type == TYPE_INSTALLED) ||
+                ([versionType isEqualToString:@"release"] && type == TYPE_RELEASE) ||
+                ([versionType isEqualToString:@"snapshot"] && type == TYPE_SNAPSHOT) ||
+                ([versionType isEqualToString:@"old_beta"] && type == TYPE_OLDBETA) ||
+                ([versionType isEqualToString:@"old_alpha"] && type == TYPE_OLDALPHA)) {
+                [self.versionList addObject:versionInfo];
+
                 if ([versionTextField.text isEqualToString:versionId]) {
-                    versionSelectedAt = i;
+                    versionSelectedAt = self.versionList.count - 1;
                 }
-                i++;
             }
         }
-        [self fetchLocalVersionList:finalVersionList withPreviousIndex:i];
-        versionList = [finalVersionList copy];
-        [versionPickerView reloadAllComponents];
-        [versionPickerView selectRow:versionSelectedAt inComponent:0 animated:NO];
 
-        vc.buttonInstall.enabled = YES;
-        vc.progressViewMain.progress = 0;
+        if (type == TYPE_INSTALLED) {
+            [self fetchLocalVersionList:self.versionList];
+        }
+
+        [versionPickerView reloadAllComponents];
+        if (versionSelectedAt < 0 && lastSelected != nil) {
+            NSObject *nearest = [MinecraftResourceUtils findNearestVersion:lastSelected expectedType:type];
+            if (nearest != nil) {
+                versionSelectedAt = [self.versionList indexOfObject:nearest];
+            }
+        }
+        // Get back the currently selected in case none matching version found
+        versionSelectedAt = MIN(abs(versionSelectedAt), self.versionList.count - 1);
+
+        [versionPickerView selectRow:versionSelectedAt inComponent:0 animated:NO];
+        [self pickerView:versionPickerView didSelectRow:versionSelectedAt inComponent:0];
+
+        self.buttonInstall.enabled = YES;
+        self.progressViewMain.progress = 0;
     } failure:^(NSURLSessionTask *operation, NSError *error) {
         NSLog(@"Warning: Error fetching version list: %@", error);
-        vc.buttonInstall.enabled = YES;
+        self.buttonInstall.enabled = YES;
     }];
+}
+
+- (void)changeVersionType:(UISegmentedControl *)sender {
+    setPreference(@"selected_version_type", @(sender.selectedSegmentIndex));
+    [self reloadVersionList:sender.selectedSegmentIndex];
 }
 
 #pragma mark - Button click events
@@ -251,7 +285,7 @@ int versionSelectedAt = 0;
 - (void)launchMinecraft:(UIButton *)sender {
     sender.enabled = NO;
 
-    NSObject *object = [versionList objectAtIndex:[versionPickerView selectedRowInComponent:0]];
+    NSObject *object = [self.versionList objectAtIndex:[versionPickerView selectedRowInComponent:0]];
 
     [MinecraftResourceUtils downloadVersion:object callback:^(NSString *stage, NSProgress *mainProgress, NSProgress *progress) {
         if (progress == nil && stage != nil) {
@@ -281,6 +315,7 @@ int versionSelectedAt = 0;
 
 #pragma mark - UIPickerView stuff
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    versionSelectedAt = row;
     versionTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
     setPreference(@"selected_version", versionTextField.text);
 }
@@ -290,11 +325,11 @@ int versionSelectedAt = 0;
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    return versionList.count;
+    return self.versionList.count;
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    NSObject *object = [versionList objectAtIndex:row];
+    NSObject *object = [self.versionList objectAtIndex:row];
     if ([object isKindOfClass:[NSString class]]) {
         return (NSString*) object;
     } else {
@@ -304,6 +339,7 @@ int versionSelectedAt = 0;
 
 - (void)versionClosePicker {
     [versionTextField endEditing:YES];
+    [self pickerView:versionPickerView didSelectRow:[versionPickerView selectedRowInComponent:0] inComponent:0];
 }
 
 #pragma mark - View controller UI mode

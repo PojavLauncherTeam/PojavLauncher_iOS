@@ -32,13 +32,9 @@ void internal_showDialog(UIViewController *viewController, NSString* title, NSSt
 }
 
 void showDialog(UIViewController *viewController, NSString* title, NSString* message) {
-    if ([NSThread isMainThread] == YES) {
+    dispatch_async(dispatch_get_main_queue(), ^{
         internal_showDialog(currentVC(), title, message);
-    } else {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            internal_showDialog(currentVC(), title, message);
-        });
-    }
+    });
 }
 
 JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_showError(JNIEnv* env, jclass clazz, jstring title, jstring message, jboolean exitIfOk) {

@@ -9,7 +9,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     if (@available(iOS 13.0, *)) {
     } else {
-        self.window = ([[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]]);
+        self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
         launchInitialViewController(self.window);
         [self.window makeKeyAndVisible];
     }

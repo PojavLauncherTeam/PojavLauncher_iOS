@@ -6,6 +6,13 @@
 "game.menu.forceClose" = "Force close";
 "game.menu.confirm.forceClose" = "Are you sure you want to force close?";
 "game.menu.logOutput" = "Log output";
+"game.menu.customControls" = "Custom controls";
+
+"Installed" = "Installed";
+"Snapshot" = "Snapshot";
+"Releases" = "Releases";
+"Old-beta" = "Old-beta";
+"Old-alpha" = "Old-alpha"
 
 "init.migrateDir" = "The PojavLauncher data directory is now %@. All of your existing data has been moved to the new location.";
 
@@ -41,7 +48,7 @@
 "login.msa.error.xsts.krverify" = "Your account needs to be verified by your parents before continue.\nError code: 2148916236 or 2148916237.";
 "login.msa.error.xsts.underage" = "Your account needs to be linked to a patent account before continue.\nError code: 2148916238";
 
-"login.msa.notice.demomode" = "Could not find a Minecraft profile on this account. The account is now set to Demo mode. Did you buy Minecraft, or is there an active Xbox GamePass subscription? Please configure your profile in https://minecraft.net/msaprofle to restore to Full mode.";
+"login.msa.notice.demomode" = "Could not find a Minecraft profile on this account. The account is now set to Demo mode. Did you buy Minecraft, or is there an active Xbox GamePass subscription? Please configure your profile in https://minecraft.net/msaprofle to restore to Online mode.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Acquiring the Access token";
 "login.msa.progress.acquireXBLToken" = "(2/5) Acquiring the Xbox Live token";
