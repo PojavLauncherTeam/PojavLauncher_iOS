@@ -79,7 +79,8 @@ jobs:
 
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v2
-          name: net.kdt.pojavlauncher.ipa
+        with:
+          name: net.kdt.pojavlauncher-INT.ipa
           path: artifacts/net.kdt.pojavlauncher-*.ipa
 
       - name: Upload PojavLauncher.dSYM
