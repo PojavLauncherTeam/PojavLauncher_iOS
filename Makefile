@@ -326,7 +326,7 @@ ipa: native java extras
 	mkdir $(OUTPUTDIR)/Payload/PojavLauncher.app/jvm; \
 	cp -R $(POJAV_JRE8_DIR) $(OUTPUTDIR)/Payload/PojavLauncher.app/jvm/; \
 	rm -rf $(OUTPUTDIR)/Payload/PojavLauncher.app/jvm/*/{bin,include,jre,lib/{ct.sym,libjsig.dylib,src.zip,tools.jar}}; \
-	ldid -S$(SOURCEDIR)/entitlements_ipa.xml $(OUTPUTDIR)/Payload/PojavLauncher.app; \
+	ldid -S$(SOURCEDIR)/entitlements_ipa.xml $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher; \
 	rm -f $(OUTPUTDIR)/*.ipa; \
 	cd $(OUTPUTDIR); \
 	zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher-$(VERSION)-INT.ipa Payload/*
