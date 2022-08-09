@@ -315,8 +315,14 @@ deb: native java extras
 	fi
 	@echo 'Building PojavLauncher $(VERSION) - DEB - Start'
 
-		
-ipa: deb
+dsym: deb
+	@echo 'Building PojavLauncher $(VERSION) - DSYM - Start'
+	@cd $(OUTPUTDIR) && dsymutil --arch arm64 $(OUTPUTDIR)/PojavLauncher.app/PojavLauncher
+	@rm -rf $(OUTPUTDIR)/PojavLauncher.dSYM
+	@mv $(OUTPUTDIR)/PojavLauncher.app/PojavLauncher.dSYM $(OUTPUTDIR)/PojavLauncher.dSYM
+	@echo 'Building PojavLauncher $(VERSION) - DSYM - Start'
+
+ipa: dsym
 	echo 'Building PojavLauncher $(VERSION) - IPA - Start'
 	$(call DIRCHECK,$(SOURCEDIR)/depends); \
 	cd $(SOURCEDIR)/depends; \
@@ -373,13 +379,6 @@ deploy:
 		echo 'If you specified a different port for your device to listen for SSH connections, you need to run '\''export DEVICE_PORT=<your port>'\'' as well.'; \
 	fi;
 	@echo 'Building PojavLauncher $(VERSION) - DEPLOY - End'
-
-dsym: deb
-	@echo 'Building PojavLauncher $(VERSION) - DSYM - Start'
-	@cd $(OUTPUTDIR) && dsymutil --arch arm64 $(OUTPUTDIR)/PojavLauncher.app/PojavLauncher
-	@rm -rf $(OUTPUTDIR)/PojavLauncher.dSYM
-	@mv $(OUTPUTDIR)/PojavLauncher.app/PojavLauncher.dSYM $(OUTPUTDIR)/PojavLauncher.dSYM
-	@echo 'Building PojavLauncher $(VERSION) - DSYM - Start'
 
 clean:
 	@echo 'Building PojavLauncher $(VERSION) - CLEAN - Start'
