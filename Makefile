@@ -316,7 +316,7 @@ deb: native java extras
 	@echo 'Building PojavLauncher $(VERSION) - DEB - Start'
 
 		
-ipa: native java extras
+ipa: deb
 	echo 'Building PojavLauncher $(VERSION) - IPA - Start'
 	mkdir -p $(OUTPUTDIR); \
 	cd $(OUTPUTDIR); \
