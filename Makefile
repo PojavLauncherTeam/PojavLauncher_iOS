@@ -318,6 +318,11 @@ deb: native java extras
 		
 ipa: deb
 	echo 'Building PojavLauncher $(VERSION) - IPA - Start'
+	$(call DIRCHECK,$(SOURCEDIR)/depends); \
+	cd $(SOURCEDIR)/depends; \
+	wget 'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre8-99f3f8b/jre8-zero-aarch64-ios.tar.xz'; \
+	tar xvf jre8-zero-aarch64-ios.tar.xz; \
+	rm jre8-zero-aarch64-ios.tar.xz; \
 	mkdir -p $(OUTPUTDIR); \
 	cd $(OUTPUTDIR); \
 	$(call DIRCHECK,$(OUTPUTDIR)/Payload); \
