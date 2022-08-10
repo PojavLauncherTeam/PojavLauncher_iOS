@@ -117,6 +117,7 @@ void loadPreferences() {
     setDefaultValueForPref(warnPrefDict, @"demo_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"jb_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"customctrl_warn", @YES);
+    setDefaultValueForPref(warnPrefDict, @"int_warn", @YES);
     setDefaultValueForPref(prefDict, @"a7_allow", @NO);
     setDefaultValueForPref(prefDict, @"slideable_hotbar", @NO);
     setDefaultValueForPref(prefDict, @"virtmouse_enable", @NO);
