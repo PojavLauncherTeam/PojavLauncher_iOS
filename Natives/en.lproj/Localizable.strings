@@ -31,6 +31,9 @@
 
 "login.progress.title" = "Logging in";
 
+"login.warn.title.int" = "This build of PojavLauncher is for testing purposes.";
+"login.warn.message.int" = "Being the first builds of PojavLauncher for unjailbroken devices, there may be unexpected bugs and issues with the launcher. It also uses an interpreter rather than JIT compilation to run the game, so performance will be heavily decreased until we can fix this issue.";
+
 "login.warn.title.a7" = "This is the last update for this device.";
 "login.warn.message.a7" = "Your device will not support PojavLauncher 2.2. This change is due to hardware and software limitations.";
 

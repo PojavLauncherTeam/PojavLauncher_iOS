@@ -101,33 +101,33 @@ int tempIndex;
 {
     [super viewDidLoad];
     setViewBackgroundColor(self.view);
-
+    
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];
-
+    
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height) - self.navigationController.navigationBar.frame.size.height;
     CGFloat currY = 8.0;
-
+    
     rendererDict = @{
         @"gl4es 1.1.4 - exports OpenGL 2.1": @"libgl4es_114.dylib",
         @"tinygl4angle (1.17+) - exports OpenGL 3.2 (Core Profile, limited)": @"libtinygl4angle.dylib",
         @"Zink (Mesa 21.0) - exports OpenGL 4.1": @"libOSMesaOverride.dylib"
     };
-
+    
     scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
     scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     [self.view addSubview:scrollView];
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-
+    
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width + 20, 0)];
     [scrollView addSubview:tableView];
-
+    
     [self registerForKeyboardNotifications];
-
+    
     blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular];
     blurView = [[UIVisualEffectView alloc] initWithEffect:blur];
-
+    
     UILabel *btnsizeTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY, 0.0, 30.0)];
     btnsizeTextView.text = @"Button scale (%)";
     btnsizeTextView.numberOfLines = 0;
@@ -147,7 +147,7 @@ int tempIndex;
     buttonSizeSlider.continuous = YES;
     buttonSizeSlider.value = [getPreference(@"button_scale") floatValue];
     [tableView addSubview:buttonSizeSlider];
-
+    
     UILabel *resolutionTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=43.0, 0.0, 30.0)];
     resolutionTextView.text = @"Resolution (%)";
     resolutionTextView.numberOfLines = 0;
@@ -167,27 +167,32 @@ int tempIndex;
     resolutionSlider.continuous = YES;
     resolutionSlider.value = [getPreference(@"resolution") intValue];
     [tableView addSubview:resolutionSlider];
-
-    UILabel *memTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=45.0, 0.0, 30.0)];
-    memTextView.text = @"Allocated RAM";
-    memTextView.numberOfLines = 0;
-    memTextView.textAlignment = NSTextAlignmentCenter;
-    [memTextView sizeToFit];
-    tempRect = memTextView.frame;
-    tempRect.size.height = 30.0;
-    memTextView.frame = tempRect;
-    [tableView addSubview:memTextView];
-
-    DBNumberedSlider *memSlider = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(20.0 + btnsizeTextView.frame.size.width, currY, self.view.frame.size.width - btnsizeTextView.frame.size.width - 28.0, resolutionTextView.frame.size.height)];
-    memSlider.tag = TAG_ALLOCMEM;
-    [memSlider addTarget:self action:@selector(sliderMoved:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
-    [memSlider setBackgroundColor:[UIColor clearColor]];
-    memSlider.minimumValue = roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.25);
-    memSlider.maximumValue = roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.85);
-    memSlider.fontSize = 10;
-    memSlider.continuous = YES;
-    memSlider.value = [getPreference(@"allocated_memory") intValue];
-    [tableView addSubview:memSlider];
+    
+    if(getenv("POJAV_DETECTEDJB")) {
+        // You cannot bypass jetsam memory limits unjailbroken
+        // Safest option is do disable the entire slider outright.
+        // TODO: Enforce default value when unjailbroken
+        UILabel *memTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=45.0, 0.0, 30.0)];
+        memTextView.text = @"Allocated RAM";
+        memTextView.numberOfLines = 0;
+        memTextView.textAlignment = NSTextAlignmentCenter;
+        [memTextView sizeToFit];
+        tempRect = memTextView.frame;
+        tempRect.size.height = 30.0;
+        memTextView.frame = tempRect;
+        [tableView addSubview:memTextView];
+        
+        DBNumberedSlider *memSlider = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(20.0 + btnsizeTextView.frame.size.width, currY, self.view.frame.size.width - btnsizeTextView.frame.size.width - 28.0, resolutionTextView.frame.size.height)];
+        memSlider.tag = TAG_ALLOCMEM;
+        [memSlider addTarget:self action:@selector(sliderMoved:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
+        [memSlider setBackgroundColor:[UIColor clearColor]];
+        memSlider.minimumValue = roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.25);
+        memSlider.maximumValue = roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.85);
+        memSlider.fontSize = 10;
+        memSlider.continuous = YES;
+        memSlider.value = [getPreference(@"allocated_memory") intValue];
+        [tableView addSubview:memSlider];
+    }
 
     UILabel *jargsTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=47.0, 0.0, 0.0)];
     jargsTextView.text = @"Java arguments  ";
@@ -244,48 +249,52 @@ int tempIndex;
     rendTextField.inputAccessoryView = rendPickerToolbar;
     rendTextField.inputView = rendPickerView;
 
-    UILabel *jhomeTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
-    jhomeTextView.text = @"Java version";
-    jhomeTextView.numberOfLines = 0;
-    [jhomeTextView sizeToFit];
-    [tableView addSubview:jhomeTextView];
-
-    jhomeTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 28.0, 30)];
-    [jhomeTextField addTarget:jhomeTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
-    jhomeTextField.tag = TAG_JHOME;
-    jhomeTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-    jhomeTextField.delegate = self;
-    jhomeTextField.placeholder = @"Override Java path...";
-
-    jhomeTextField.text = [getPreference(@"java_home") lastPathComponent];
-
-    jhomeTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
-    jhomeTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    [tableView addSubview:jhomeTextField];
-
-    NSString *listPath = getenv("POJAV_DETECTEDJB") ? @"/usr/lib/jvm" : [NSString stringWithFormat:@"%s/jvm", getenv("BUNDLE_PATH")];
-    jhomeList = [NSFileManager.defaultManager contentsOfDirectoryAtPath:listPath error:nil];
-
-    jhomePickerView = [[UIPickerView alloc] init];
-    jhomePickerView.delegate = self;
-    jhomePickerView.dataSource = self;
-    jhomePickerView.tag = TAG_PICKER_JHOME;
-    [jhomePickerView reloadAllComponents];
-    for (int i = 0; i < jhomeList.count; i++) {
-        if ([jhomeTextField.text isEqualToString:jhomeList[i]]) {
-            [jhomePickerView selectRow:i inComponent:0 animated:NO];
-            break;
+    if(getenv("POJAV_DETECTEDJB")) {
+        // Currently, only Java 8 zero works unjailbroken
+        // TODO: Fix Java 8 RW/RX
+        // TODO: Port Java 16/17 to unjailbroken
+        UILabel *jhomeTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
+        jhomeTextView.text = @"Java version";
+        jhomeTextView.numberOfLines = 0;
+        [jhomeTextView sizeToFit];
+        [tableView addSubview:jhomeTextView];
+        
+        jhomeTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 28.0, 30)];
+        [jhomeTextField addTarget:jhomeTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
+        jhomeTextField.tag = TAG_JHOME;
+        jhomeTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+        jhomeTextField.delegate = self;
+        jhomeTextField.placeholder = @"Override Java path...";
+        
+        jhomeTextField.text = [getPreference(@"java_home") lastPathComponent];
+        
+        jhomeTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
+        jhomeTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        [tableView addSubview:jhomeTextField];
+        
+        NSString *listPath = getenv("POJAV_DETECTEDJB") ? @"/usr/lib/jvm" : [NSString stringWithFormat:@"%s/jvm", getenv("BUNDLE_PATH")];
+        jhomeList = [NSFileManager.defaultManager contentsOfDirectoryAtPath:listPath error:nil];
+        
+        jhomePickerView = [[UIPickerView alloc] init];
+        jhomePickerView.delegate = self;
+        jhomePickerView.dataSource = self;
+        jhomePickerView.tag = TAG_PICKER_JHOME;
+        [jhomePickerView reloadAllComponents];
+        for (int i = 0; i < jhomeList.count; i++) {
+            if ([jhomeTextField.text isEqualToString:jhomeList[i]]) {
+                [jhomePickerView selectRow:i inComponent:0 animated:NO];
+                break;
+            }
         }
+        UIToolbar *jhomePickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
+        UIBarButtonItem *jhomeFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+        UIBarButtonItem *jhomeDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeKeyboard:)];
+        jhomeDoneButton.tag = TAG_DONE_JHOME;
+        jhomePickerToolbar.items = @[jhomeFlexibleSpace, jhomeDoneButton];
+        
+        jhomeTextField.inputAccessoryView = jhomePickerToolbar;
+        jhomeTextField.inputView = jhomePickerView;
     }
-    UIToolbar *jhomePickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
-    UIBarButtonItem *jhomeFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
-    UIBarButtonItem *jhomeDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeKeyboard:)];
-    jhomeDoneButton.tag = TAG_DONE_JHOME;
-    jhomePickerToolbar.items = @[jhomeFlexibleSpace, jhomeDoneButton];
-
-    jhomeTextField.inputAccessoryView = jhomePickerToolbar;
-    jhomeTextField.inputView = jhomePickerView;
-
     UILabel *gdirTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
     gdirTextView.text = @"Game directory";
     gdirTextView.numberOfLines = 0;
@@ -366,17 +375,22 @@ int tempIndex;
     [debugLogSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:debugLogSwitch];
     
-    UILabel *homesymTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
-    homesymTextView.text = @"Disable home symlink";
-    homesymTextView.numberOfLines = 0;
-    [homesymTextView sizeToFit];
-    [tableView addSubview:homesymTextView];
-
-    UISwitch *homesymSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
-    homesymSwitch.tag = TAG_HOMESYM;
-    [homesymSwitch setOn:[getPreference(@"disable_home_symlink") boolValue] animated:NO];
-    [homesymSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
-    [tableView addSubview:homesymSwitch];
+    if(getenv("POJAV_DETECTEDJB")) {
+        // Used for legacy iOS users who are used to
+        // the old home directory for the game
+        // TODO: Remove for everyone
+        UILabel *homesymTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
+        homesymTextView.text = @"Disable home symlink";
+        homesymTextView.numberOfLines = 0;
+        [homesymTextView sizeToFit];
+        [tableView addSubview:homesymTextView];
+        
+        UISwitch *homesymSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
+        homesymSwitch.tag = TAG_HOMESYM;
+        [homesymSwitch setOn:[getPreference(@"disable_home_symlink") boolValue] animated:NO];
+        [homesymSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+        [tableView addSubview:homesymSwitch];
+    }
     
     UILabel *relaunchTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
     relaunchTextView.text = @"Restart before launching game";
@@ -731,7 +745,11 @@ int tempIndex;
         message = @"This option allows you to downscale the resolution of the game. Reducing resolution reduces GPU workload for better performance. The minimum resolution scale is 25%.";
     } else if(setting == ALLOCMEM) {
         title = @"Allocated RAM";
-        message = @"This option allows you to change the amount of memory used by the game. The minimum is 25% (default) and the maximum is 85%. Any value over 40% will require that you use a tool like overb0ard to prevent jetsam crashes. Take note that Java uses some of the memory itself, so the value you set will be lowered slightly in game.";
+        if(getenv("POJAV_DETECTEDJB")) {
+            message = @"This option allows you to change the amount of memory used by the game. The minimum is 25% (default) and the maximum is 85%. Any value over 40% will require that you use a tool like overb0ard to prevent jetsam crashes. Take note that Java uses some of the memory itself, so the value you set will be lowered slightly in game.";
+        } else {
+            message = @"This option is disabled when running PojavLauncher unjailbroken.";
+        }
     } else if(setting == JARGS) {
         title = @"Java arguments";
         message = @"This option allows you to edit arguments that can be passed to Minecraft. Not all arguments work with PojavLauncher, so be aware.";
@@ -740,7 +758,11 @@ int tempIndex;
         message = @"This option allows you to change the renderer in use. Choosing  tinygl4angle will allow 1.17+ to be played, but will also not work with older versions.";
     } else if(setting == JHOME) {
         title = @"Java version";
+        if(getenv("POJAV_DETECTEDJB")) {
         message = @"This option allows you to change the Java executable directory. Choosing Java 16 or Java 17 may allow you to play 1.17, however older versions and most versions of modded Minecraft, as well as the mod installer, will not work.";
+        } else {
+            message = @"This option is disabled when running PojavLauncher unjailbroken.";
+        }
     } else if(setting == GDIRECTORY) {
         title = @"Game directory";
         message = @"This option allows you to change where your Minecraft settings and saves are stored in a MultiMC like fashion. Useful for when you want to have multiple mod loaders installed but do not want to delete/move mods around to switch.";
@@ -764,7 +786,11 @@ int tempIndex;
         message = @"This option logs internal settings and actions to latestlog.txt. This helps the developers find issues easier, but Minecraft may run slower as the logs will be written to more often.";
     } else if(setting == HOMESYM) {
         title = @"Disable home symlink";
-        message = @"This option disables the home symlink to /var/mobile/Documents/.pojavlauncher from the new game directory. This is used for legacy add-ons to continue working, and as a transition from the old 1.2 directory structure.";
+        if(getenv("POJAV_DETECTEDJB")) {
+            message = @"This option disables the home symlink to /var/mobile/Documents/.pojavlauncher from the new game directory. This is used for legacy add-ons to continue working, and as a transition from the old 1.2 directory structure.";
+        } else {
+            message = @"This option is disabled when running PojavLauncher unjailbroken.";
+        }
     } else if(setting == RELAUNCH) {
         title = @"Restart before launching game";
         message = @"This option allows the launcher to restart itself before launching the game, therefore all changes are applied such as JVM Arguments and Java version. The restart mechanism doesn't always work, so a toggle is here for now.";
@@ -824,6 +850,7 @@ int tempIndex;
             setPreference(@"java_warn", @YES);
             setPreference(@"jb_warn", @YES);
             setPreference(@"customctrl_warn", @YES);
+            setPreference(@"int_warn", @YES);
             {
             UIAlertController *resetWarn = [UIAlertController alertControllerWithTitle:@"Warnings reset." message:@"Restart to show warnings again." preferredStyle:UIAlertControllerStyleActionSheet];
             [self setPopoverProperties:resetWarn.popoverPresentationController sender:(UIButton *)sender];
