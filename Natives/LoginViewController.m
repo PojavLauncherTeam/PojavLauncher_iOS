@@ -60,7 +60,7 @@
             UIAlertController *intAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"login.warn.title.int", nil) message:NSLocalizedString(@"login.warn.message.int", nil) preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleCancel handler:nil];
             [self presentViewController:intAlert animated:YES completion:nil];
-            [int addAction:ok];
+            [intAlert addAction:ok];
             setPreference(@"int_warn", @NO);
         }
     }
