@@ -57,7 +57,7 @@
         }
     } else {
         if([getPreference(@"jb_warn") boolValue] == YES) {
-            UIAlertController *intAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"login.warn.title.int", nil) message:NSLocalizedString(@"login.warn.message.int", nil) preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertController *intAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"login.warn.title.ipa", nil) message:NSLocalizedString(@"login.warn.message.ipa", nil) preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleCancel handler:nil];
             [self presentViewController:intAlert animated:YES completion:nil];
             [intAlert addAction:ok];
