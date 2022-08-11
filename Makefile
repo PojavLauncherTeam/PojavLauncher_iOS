@@ -327,6 +327,7 @@ ipa: dsym
 	mkdir -p $(SOURCEDIR)/depends; \
 	cd $(SOURCEDIR)/depends; \
 	if [ ! -d "java-8-openjdk" ]; then \
+                mkdir java-8-openjdk && cd java-8-openjdk; \
 		wget 'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre8-40df388/jre8-arm64-20220811-release.tar.xz'; \
 		tar xvf *.tar.xz; \
 		rm *.tar.xz; \
