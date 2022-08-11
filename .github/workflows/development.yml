@@ -56,13 +56,6 @@ jobs:
 
       - name: Build the iOS package
         run: |
-          mkdir -p depends
-          # java-8-openjdk
-          cd depends
-          wget https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre8-99f3f8b/jre8-zero-aarch64-ios.tar.xz
-          tar xvf jre8-zero-aarch64-ios.tar.xz
-          rm jre8-zero-aarch64-ios.tar.xz
-          cd ..
           gmake -j$(sysctl -n hw.ncpu) ipa
 
       - name: Upload regular artifact
