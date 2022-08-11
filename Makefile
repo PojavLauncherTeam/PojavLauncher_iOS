@@ -341,7 +341,7 @@ ipa: dsym
 	ldid -S$(SOURCEDIR)/entitlements_ipa.xml $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher; \
 	rm -f $(OUTPUTDIR)/*.ipa; \
 	cd $(OUTPUTDIR); \
-	zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher-$(VERSION)-INT.ipa Payload/*
+	zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher-$(VERSION).ipa Payload/*
 	@echo 'Building PojavLauncher $(VERSION) - IPA - End'
 
 install: deb
