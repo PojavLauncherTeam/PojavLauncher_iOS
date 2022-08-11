@@ -328,8 +328,8 @@ ipa: dsym
 	cd $(SOURCEDIR)/depends; \
 	if [ ! -d "java-8-openjdk" ]; then \
 		wget 'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre8-40df388/jre8-arm64-20220811-release.tar.xz'; \
-		tar xvf jre8-zero-aarch64-ios.tar.xz; \
-		rm jre8-zero-aarch64-ios.tar.xz; \
+		tar xvf *.tar.xz; \
+		rm *.tar.xz; \
 	fi; \
 	mkdir -p $(OUTPUTDIR); \
 	cd $(OUTPUTDIR); \
