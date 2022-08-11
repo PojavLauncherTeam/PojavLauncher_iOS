@@ -324,17 +324,18 @@ dsym: deb
 
 ipa: dsym
 	echo 'Building PojavLauncher $(VERSION) - IPA - Start'
-	$(call DIRCHECK,$(SOURCEDIR)/depends); \
+	mkdir -p $(SOURCEDIR)/depends; \
 	cd $(SOURCEDIR)/depends; \
-	wget 'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre8-99f3f8b/jre8-zero-aarch64-ios.tar.xz'; \
-	tar xvf jre8-zero-aarch64-ios.tar.xz; \
-	rm jre8-zero-aarch64-ios.tar.xz; \
+	if [ ! -d "java-8-openjdk" ]; then \
+		wget 'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre8-40df388/jre8-arm64-20220811-release.tar.xz'; \
+		tar xvf jre8-zero-aarch64-ios.tar.xz; \
+		rm jre8-zero-aarch64-ios.tar.xz; \
+	fi; \
 	mkdir -p $(OUTPUTDIR); \
 	cd $(OUTPUTDIR); \
 	$(call DIRCHECK,$(OUTPUTDIR)/Payload); \
 	cp -R $(POJAV_BUNDLE_DIR) $(OUTPUTDIR)/Payload; \
-	rm -rf $(OUTPUTDIR)/Payload/PojavLauncher.app/jvm; \
-	mkdir $(OUTPUTDIR)/Payload/PojavLauncher.app/jvm; \
+	$(call DIRCHECK,$(OUTPUTDIR)/Payload/PojavLauncher.app/jvm); \
 	cp -R $(POJAV_JRE8_DIR) $(OUTPUTDIR)/Payload/PojavLauncher.app/jvm/; \
 	rm -rf $(OUTPUTDIR)/Payload/PojavLauncher.app/jvm/*/{bin,include,jre,lib/{ct.sym,libjsig.dylib,src.zip,tools.jar}}; \
 	ldid -S$(SOURCEDIR)/entitlements_ipa.xml $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher; \
