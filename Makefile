@@ -342,6 +342,7 @@ ipa: dsym
 	ldid -S$(SOURCEDIR)/entitlements_ipa.xml $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher; \
 	rm -f $(OUTPUTDIR)/*.ipa; \
 	cd $(OUTPUTDIR); \
+        sudo chown -R 501:501 Payload; \
 	zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher-$(VERSION).ipa Payload/*
 	@echo 'Building PojavLauncher $(VERSION) - IPA - End'
 
