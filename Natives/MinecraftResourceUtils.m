@@ -243,6 +243,10 @@ static AFURLSessionManager* manager;
             return;
         }
         if (json[@"inheritsFrom"] == nil) {
+            if (json[@"assetIndex"] == nil) {
+                success(json);
+                return;
+            }
             ++mainProgress.completedUnitCount;
             [self downloadClientJson:json[@"assetIndex"] progress:mainProgress callback:callback success:^(NSMutableDictionary *assetJson){
                 json[@"assetIndexObj"] = assetJson;

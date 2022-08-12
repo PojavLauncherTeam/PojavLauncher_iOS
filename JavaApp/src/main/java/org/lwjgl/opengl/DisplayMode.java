@@ -60,7 +60,7 @@ public final class DisplayMode {
 	 * @see Display
 	 */
 	public DisplayMode(int width, int height) {
-		this(width, height, 0, 0, false);
+		this(width, height, 0, 0, true);
 	}
 
 	DisplayMode(int width, int height, int bpp, int freq) {

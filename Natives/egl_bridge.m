@@ -480,13 +480,13 @@ void* pojavCreateContext(void* contextSrc) {
                 EGL_CONTEXT_CLIENT_VERSION, 3,
                 EGL_NONE
             };
-            EGLContext* ctx = eglCreateContext_p(potatoBridge.eglDisplay, config, (void*)contextSrc, ctx_attribs);
+            EGLContext* ctx = eglCreateContext_p(potatoBridge.eglDisplay, config, contextSrc, ctx_attribs);
             if (!ctx) {
                 debugLog("EGLBridge: Failed to create context: 0x%x, returning previous one.", eglGetError_p());
                 return potatoBridge.eglContext;
             }
             potatoBridge.eglContext = ctx;
-            debugLog("EGLBridge: Created CTX pointer = %p",ctx);
+            debugLog("EGLBridge: Created CTX pointer = %p (source = %p)", ctx, contextSrc);
             //(*env)->ThrowNew(env,(*env)->FindClass(env,"java/lang/Exception"),"Trace exception");
             return (void *)ctx;
     }

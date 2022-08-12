@@ -321,8 +321,6 @@ public final class Tools
         e.printStackTrace(pw);
         pw.flush();
         
-        System.err.println(sw.toString());
-        
         UIKit.showError(title, sw.toString(), exitIfOk);
         
 /*

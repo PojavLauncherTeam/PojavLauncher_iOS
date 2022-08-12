@@ -1,6 +1,8 @@
 package net.kdt.pojavlaunch;
 
+import java.beans.Beans;
 import java.io.*;
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -15,15 +17,20 @@ public class PojavLauncher {
     private static float currProgress, maxProgress;
 
     public static void main(String[] args) throws Throwable {
-    /*
+        // Skip calling to com.apple.eawt.Application.nativeInitializeApplicationDelegate()
+        Beans.setDesignTime(true);
         try {
-            Runtime.getRuntime().exec("/usr/bin/true");
-        } catch (IOException e) {}
-        */
-        try {
+            // Some places use macOS-specific code, which is unavailable on iOS
+            // In this case, try to get it to use Linux-specific code instead.
+            com.apple.eawt.Application.getApplication();
+            Class clazz = Class.forName("com.apple.eawt.Application");
+            Field field = clazz.getDeclaredField("sApplication");
+            field.setAccessible(true);
+            field.set(null, null);
             sun.font.FontUtilities.isLinux = true;
         } catch (Throwable th) {
             // Not on JRE8, ignore exception
+            //Tools.showError(th);
         }
 
         Thread.currentThread().setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {

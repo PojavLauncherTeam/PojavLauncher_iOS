@@ -45,6 +45,8 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_showError(JNIEnv* en
     (*env)->ReleaseStringUTFChars(env, title, title_c);
     (*env)->ReleaseStringUTFChars(env, message, message_c);
 
+    NSLog(@"Dialog shown: %@: %@", title_o, message_o);
+
 dispatch_async(dispatch_get_main_queue(), ^{
 
     UIAlertController* alert = [UIAlertController

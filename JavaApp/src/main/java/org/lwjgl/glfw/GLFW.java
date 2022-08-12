@@ -518,12 +518,11 @@ public class GLFW
         mGLFWVideoMode = new GLFWVidMode(ByteBuffer.allocateDirect(GLFWVidMode.SIZEOF));
         internalChangeMonitorSize(Tools.mGLFWWindowWidth, Tools.mGLFWWindowHeight);
 
-/*
         memPutInt(mGLFWVideoMode.address() + (long) mGLFWVideoMode.REDBITS, 8);
         memPutInt(mGLFWVideoMode.address() + (long) mGLFWVideoMode.GREENBITS, 8);
         memPutInt(mGLFWVideoMode.address() + (long) mGLFWVideoMode.BLUEBITS, 8);
         memPutInt(mGLFWVideoMode.address() + (long) mGLFWVideoMode.REFRESHRATE, 60);
-*/
+
         // A way to generate key code names
         Field[] thisFieldArr = GLFW.class.getFields();
         try {
@@ -912,7 +911,9 @@ public class GLFW
         try {
             // long __result = nglfwGetVideoModes(monitor, memAddress(count));
             long __result = memAddress(stack.callocLong(1));
-            return GLFWVidMode.createSafe(__result, 1);
+            GLFWVidMode.Buffer buffer = GLFWVidMode.createSafe(__result, 1);
+            buffer.put(glfwGetVideoMode(monitor));
+            return buffer;
         } finally {
             stack.setPointer(stackPointer);
         }
