@@ -168,31 +168,34 @@ int tempIndex;
     resolutionSlider.value = [getPreference(@"resolution") intValue];
     [tableView addSubview:resolutionSlider];
     
+    // You cannot bypass jetsam memory limits unjailbroken
+    // Limit total amount the slider can go to
+    UILabel *memTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=45.0, 0.0, 30.0)];
+    memTextView.text = @"Allocated RAM";
+    memTextView.numberOfLines = 0;
+    memTextView.textAlignment = NSTextAlignmentCenter;
+    [memTextView sizeToFit];
+    tempRect = memTextView.frame;
+    tempRect.size.height = 30.0;
+    memTextView.frame = tempRect;
+    [tableView addSubview:memTextView];
+
+    DBNumberedSlider *memSlider = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(20.0 + btnsizeTextView.frame.size.width, currY, self.view.frame.size.width - btnsizeTextView.frame.size.width - 28.0, resolutionTextView.frame.size.height)];
+    memSlider.tag = TAG_ALLOCMEM;
+    [memSlider addTarget:self action:@selector(sliderMoved:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
+    [memSlider setBackgroundColor:[UIColor clearColor]];
+    memSlider.minimumValue = roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.25);
     if(getenv("POJAV_DETECTEDJB")) {
-        // You cannot bypass jetsam memory limits unjailbroken
-        // Safest option is do disable the entire slider outright.
-        // TODO: Enforce default value when unjailbroken
-        UILabel *memTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=45.0, 0.0, 30.0)];
-        memTextView.text = @"Allocated RAM";
-        memTextView.numberOfLines = 0;
-        memTextView.textAlignment = NSTextAlignmentCenter;
-        [memTextView sizeToFit];
-        tempRect = memTextView.frame;
-        tempRect.size.height = 30.0;
-        memTextView.frame = tempRect;
-        [tableView addSubview:memTextView];
-        
-        DBNumberedSlider *memSlider = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(20.0 + btnsizeTextView.frame.size.width, currY, self.view.frame.size.width - btnsizeTextView.frame.size.width - 28.0, resolutionTextView.frame.size.height)];
-        memSlider.tag = TAG_ALLOCMEM;
-        [memSlider addTarget:self action:@selector(sliderMoved:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
-        [memSlider setBackgroundColor:[UIColor clearColor]];
-        memSlider.minimumValue = roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.25);
         memSlider.maximumValue = roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.85);
-        memSlider.fontSize = 10;
-        memSlider.continuous = YES;
-        memSlider.value = [getPreference(@"allocated_memory") intValue];
-        [tableView addSubview:memSlider];
+    } else {
+        // 40% seems like a safe bet, tested with a bunch of devices
+        // TODO: Allow extra RAM on com.apple.developer.kernel.increased-memory-limit devices
+        memSlider.maximumValue = roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.40);
     }
+    memSlider.fontSize = 10;
+    memSlider.continuous = YES;
+    memSlider.value = [getPreference(@"allocated_memory") intValue];
+    [tableView addSubview:memSlider];
 
     UILabel *jargsTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=47.0, 0.0, 0.0)];
     jargsTextView.text = @"Java arguments  ";
@@ -250,8 +253,7 @@ int tempIndex;
     rendTextField.inputView = rendPickerView;
 
     if(getenv("POJAV_DETECTEDJB")) {
-        // Currently, only Java 8 zero works unjailbroken
-        // TODO: Fix Java 8 RW/RX
+        // Currently, only Java 8 works unjailbroken
         // TODO: Port Java 16/17 to unjailbroken
         UILabel *jhomeTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
         jhomeTextView.text = @"Java version";
@@ -746,9 +748,9 @@ int tempIndex;
     } else if(setting == ALLOCMEM) {
         title = @"Allocated RAM";
         if(getenv("POJAV_DETECTEDJB")) {
-            message = @"This option allows you to change the amount of memory used by the game. The minimum is 25% (default) and the maximum is 85%. Any value over 40% will require that you use a tool like overb0ard to prevent jetsam crashes. Take note that Java uses some of the memory itself, so the value you set will be lowered slightly in game.";
+            message = @"This option allows you to change the amount of memory used by the game. The minimum is 25% (default) and the maximum is 85%. Any value over 40% will require that you use a tool like overb0ard to prevent jetsam crashes.";
         } else {
-            message = @"This option is disabled when running PojavLauncher unjailbroken.";
+            message = @"This option allows you to change the amount of memory used by the game. The minimum is 25% (default) and the maximum is 40% when unjailbroken. We're working on bringing higher memory limits to supported devices.";
         }
     } else if(setting == JARGS) {
         title = @"Java arguments";
