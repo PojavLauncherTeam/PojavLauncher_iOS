@@ -59,6 +59,17 @@ public class PojavLauncher {
         MCOptionUtils.set("overrideHeight", size[1]);
         MCOptionUtils.save();
 
+        // Setup Forge splash.properties
+        File forgeSplashFile = new File(Tools.DIR_GAME_NEW, "config/splash.properties");
+        if (System.getProperty("pojav.internal.keepForgeSplash") == null) {
+            forgeSplashFile.getParentFile().mkdir();
+            if (forgeSplashFile.exists()) {
+                Tools.write(forgeSplashFile.getAbsolutePath(), Tools.read(forgeSplashFile.getAbsolutePath().replace("enabled=true", "enabled=false")));
+            } else {
+                Tools.write(forgeSplashFile.getAbsolutePath(), "enabled=false");
+            }
+        }
+
         System.setProperty("org.lwjgl.opengl.libname", System.getenv("POJAV_RENDERER"));
         System.setProperty("org.lwjgl.vulkan.libname", "libMoltenVK.dylib");
 
