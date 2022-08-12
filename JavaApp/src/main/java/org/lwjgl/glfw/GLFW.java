@@ -521,7 +521,7 @@ public class GLFW
         memPutInt(mGLFWVideoMode.address() + (long) mGLFWVideoMode.REDBITS, 8);
         memPutInt(mGLFWVideoMode.address() + (long) mGLFWVideoMode.GREENBITS, 8);
         memPutInt(mGLFWVideoMode.address() + (long) mGLFWVideoMode.BLUEBITS, 8);
-        memPutInt(mGLFWVideoMode.address() + (long) mGLFWVideoMode.REFRESHRATE, 60);
+        memPutInt(mGLFWVideoMode.address() + (long) mGLFWVideoMode.REFRESHRATE, Integer.parseInt(System.getProperty("UIScreen.maximumFramesPerSecond")));
 
         // A way to generate key code names
         Field[] thisFieldArr = GLFW.class.getFields();
@@ -669,14 +669,6 @@ public class GLFW
         if (cbfun == null) mGLFWFramebufferSizeCallback = null;
         else mGLFWFramebufferSizeCallback = GLFWFramebufferSizeCallback.createSafe(nglfwSetFramebufferSizeCallback(window, memAddressSafe(cbfun)));
 
-        mGLFWFramebufferSizeCallback = GLFWFramebufferSizeCallback.createSafe(nglfwSetFramebufferSizeCallback(window, memAddressSafe(cbfun)));
-
-        /*
-        try {
-            mGLFWFramebufferSizeCallback.invoke(window, Tools.mGLFWWindowWidth, Tools.mGLFWWindowHeight);
-        } catch (Throwable th) {}
-        */
-
         return lastCallback;
     }
 
@@ -779,12 +771,6 @@ public class GLFW
         GLFWWindowSizeCallback lastCallback = mGLFWWindowSizeCallback;
         if (cbfun == null) mGLFWWindowSizeCallback = null;
         else mGLFWWindowSizeCallback = GLFWWindowSizeCallback.createSafe(nglfwSetWindowSizeCallback(window, memAddressSafe(cbfun)));
-
-        mGLFWWindowSizeCallback = GLFWWindowSizeCallback.createSafe(nglfwSetWindowSizeCallback(window, memAddressSafe(cbfun)));
-
-        try {
-            mGLFWWindowSizeCallback.invoke(window, Tools.mGLFWWindowWidth, Tools.mGLFWWindowHeight);
-        } catch (Throwable th) {}
 
         return lastCallback;
     }
