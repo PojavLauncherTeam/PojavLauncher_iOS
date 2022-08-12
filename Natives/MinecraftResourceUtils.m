@@ -259,6 +259,7 @@ static AFURLSessionManager* manager;
         id inheritsFrom = [self findVersion:json[@"inheritsFrom"] inList:remoteVersionList];
         if (inheritsFrom != nil) {
             [self processVersion:json inheritsFrom:inheritsFrom progress:mainProgress callback:callback success:success];
+            return;
         }
 
         // If the inheritsFrom is not found, return an error
@@ -473,7 +474,7 @@ static AFURLSessionManager* manager;
             mainProgress.totalUnitCount = [json[@"libraries"] count] + [json[@"assetIndexObj"][@"objects"] count];
             id wrappedCallback = ^(NSString *s, NSProgress *p) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    callback(s, mainProgress, p);
+                    callback(s, s?mainProgress:nil, p);
                 });
             };
 

@@ -21,6 +21,8 @@ jclass class_CTCAndroidInput;
 jmethodID method_ReceiveInput;
 
 void internal_showDialog(UIViewController *viewController, NSString* title, NSString* message) {
+    NSLog(@"Dialog shown: %@: %@", title, message);
+
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:title
         message:message
         preferredStyle:UIAlertControllerStyleAlert];
@@ -45,7 +47,7 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_showError(JNIEnv* en
     (*env)->ReleaseStringUTFChars(env, title, title_c);
     (*env)->ReleaseStringUTFChars(env, message, message_c);
 
-    NSLog(@"Dialog shown: %@: %@", title_o, message_o);
+    NSLog(@"Dialog shown from Java: %@: %@", title_o, message_o);
 
 dispatch_async(dispatch_get_main_queue(), ^{
 
