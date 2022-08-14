@@ -446,7 +446,7 @@ int tempIndex;
     [erasePrefSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:erasePrefSwitch];
     
-    if(getenv("POJAV_DETECTEDJB")) {
+    if(!getenv("POJAV_DETECTEDJB")) {
         UILabel *enableRAMTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
         enableRAMTextView.text = @"Enable RAM slider";
         enableRAMTextView.numberOfLines = 0;
