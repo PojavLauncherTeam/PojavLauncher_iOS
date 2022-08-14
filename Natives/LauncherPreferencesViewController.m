@@ -172,35 +172,31 @@ int tempIndex;
     resolutionSlider.value = [getPreference(@"resolution") intValue];
     [tableView addSubview:resolutionSlider];
     
-    // You cannot bypass jetsam memory limits unjailbroken
-    // Limit total amount the slider can go to
-    UILabel *memTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=45.0, 0.0, 30.0)];
-    memTextView.text = @"Allocated RAM";
-    memTextView.numberOfLines = 0;
-    memTextView.textAlignment = NSTextAlignmentCenter;
-    [memTextView sizeToFit];
-    tempRect = memTextView.frame;
-    tempRect.size.height = 30.0;
-    memTextView.frame = tempRect;
-    [tableView addSubview:memTextView];
-
-    DBNumberedSlider *memSlider = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(20.0 + btnsizeTextView.frame.size.width, currY, self.view.frame.size.width - btnsizeTextView.frame.size.width - 28.0, resolutionTextView.frame.size.height)];
-    memSlider.tag = TAG_ALLOCMEM;
-    [memSlider addTarget:self action:@selector(sliderMoved:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
-    [memSlider setBackgroundColor:[UIColor clearColor]];
-    memSlider.minimumValue = roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.25);
-    if(getenv("POJAV_DETECTEDJB")) {
+    
+    if(getenv("POJAV_DETECTEDJB") || [getPreference(@"ram_unjb_enable") boolValue] == YES) {
+        // You cannot bypass jetsam memory limits unjailbroken
+        // Use with caution on unjailbroken devices
+        UILabel *memTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=45.0, 0.0, 30.0)];
+        memTextView.text = @"Allocated RAM";
+        memTextView.numberOfLines = 0;
+        memTextView.textAlignment = NSTextAlignmentCenter;
+        [memTextView sizeToFit];
+        tempRect = memTextView.frame;
+        tempRect.size.height = 30.0;
+        memTextView.frame = tempRect;
+        [tableView addSubview:memTextView];
+    
+        DBNumberedSlider *memSlider = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(20.0 + btnsizeTextView.frame.size.width, currY, self.view.frame.size.width - btnsizeTextView.frame.size.width - 28.0, resolutionTextView.frame.size.height)];
+        memSlider.tag = TAG_ALLOCMEM;
+        [memSlider addTarget:self action:@selector(sliderMoved:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
+        [memSlider setBackgroundColor:[UIColor clearColor]];
+        memSlider.minimumValue = roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.25);
         memSlider.maximumValue = roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.85);
-    } else {
-        // 40% seems like a safe bet, tested with a bunch of devices
-        // TODO: Allow extra RAM on com.apple.developer.kernel.increased-memory-limit devices
-        memSlider.maximumValue = roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.40);
+        memSlider.fontSize = 10;
+        memSlider.continuous = YES;
+        memSlider.value = [getPreference(@"allocated_memory") intValue];
+        [tableView addSubview:memSlider];
     }
-    memSlider.fontSize = 10;
-    memSlider.continuous = YES;
-    memSlider.value = [getPreference(@"allocated_memory") intValue];
-    [tableView addSubview:memSlider];
-
     UILabel *jargsTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=47.0, 0.0, 0.0)];
     jargsTextView.text = @"Java arguments  ";
     jargsTextView.numberOfLines = 0;
@@ -848,7 +844,14 @@ int tempIndex;
         case TAG_ALLOCMEM:
             memVal = roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.40);
             if(sender.value >= memVal && [getPreference(@"mem_warn") boolValue] == YES) {
-                UIAlertController *memAlert = [UIAlertController alertControllerWithTitle:@"High memory value selected." message:@"Due to limitations in the operating system itself, you will need to use a tool like overb0ard to prevent jetsam crashes." preferredStyle:UIAlertControllerStyleActionSheet];
+                NSString *title = @"High memory value selected.";
+                NSString *message;
+                if(getenv("POJAV_DETECTEDJB")) {
+                    message = @"Due to limitations in the operating system itself, you will need to use a tool like overb0ard to prevent jetsam crashes.";
+                } else {
+                    message = @"Due to limitations in the operating system itself, this option may cause instability at this and higher values. Proceed with caution.";
+                }
+                UIAlertController *memAlert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
                 [self setPopoverProperties:memAlert.popoverPresentationController sender:(UIButton *)sender];
                 UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
                 [self presentViewController:memAlert animated:YES completion:nil];
