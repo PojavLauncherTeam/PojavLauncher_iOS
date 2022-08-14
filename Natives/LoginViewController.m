@@ -63,6 +63,13 @@
         [self presentViewController:jbAlert animated:YES completion:nil];
         [jbAlert addAction:ok];
     }
+    
+    if(!getenv("POJAV_DETECTEDJB") && [getPreference(@"jb_warn") boolValue] == YES) {
+        UIAlertController *ramalert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"login.warn.title.ram_unjb", nil) message:NSLocalizedString(@"login.warn.message.ram_unjb", nil) preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleCancel handler:nil];
+        [self presentViewController:ramalert animated:YES completion:nil];
+        [ramalert addAction:ok];
+    }
 
     CGFloat widthSplit = width / 4.0;
     CGFloat widthSplit2 = width / 2.0;

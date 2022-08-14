@@ -31,8 +31,8 @@
 
 "login.progress.title" = "Logging in";
 
-"login.warn.title.ipa" = "This build of PojavLauncher is for testing purposes.";
-"login.warn.message.ipa" = "Being the first builds of PojavLauncher for unjailbroken devices, there may be unexpected bugs and issues with the launcher.";
+"login.warn.title.ram_unjb" = "Memory slider is enabled";
+"login.warn.message.ram_unjb" = "Be aware that changing this setting can cause game instability or break the ability to play at all.";
 
 "login.warn.title.a7" = "This is the last update for this device.";
 "login.warn.message.a7" = "Your device will not support PojavLauncher 2.2. This change is due to hardware and software limitations.";

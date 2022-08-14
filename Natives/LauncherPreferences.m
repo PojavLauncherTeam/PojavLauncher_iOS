@@ -118,10 +118,13 @@ void loadPreferences() {
     setDefaultValueForPref(warnPrefDict, @"jb_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"customctrl_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"int_warn", @YES);
+    setDefaultValueForPref(warnPrefDict, @"ram_unjb_warn", @YES);
     setDefaultValueForPref(prefDict, @"a7_allow", @NO);
     setDefaultValueForPref(prefDict, @"slideable_hotbar", @NO);
     setDefaultValueForPref(prefDict, @"virtmouse_enable", @NO);
     setDefaultValueForPref(prefDict, @"check_sha", @YES);
+    setDefaultValueForPref(prefDict, @"ram_unjb_enable", @NO);
+    
     if (0 != [fileManager fileExistsAtPath:@"/var/mobile/Documents/.pojavlauncher"]) {
         setDefaultValueForPref(prefDict, @"disable_home_symlink", @NO);
     } else {

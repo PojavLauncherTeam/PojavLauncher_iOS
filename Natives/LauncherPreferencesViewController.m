@@ -26,6 +26,7 @@
 #define ARCCAPES 18
 #define VIRTMOUSE 19
 #define CHECKSHA 20
+#define UNJBRAM 21
 
 #define TAG_BTNSCALE 98
 #define TAG_RESOLUTION 99
@@ -43,7 +44,6 @@
 #define TAG_GDIR 104
 #define TAG_PICKER_GDIR 144
 #define TAG_DONE_GDIR 154
-
 
 #define TAG_RESETWARN 106
 
@@ -68,6 +68,9 @@
 #define TAG_VIRTMOUSE 118
 
 #define TAG_CHECKSHA 119
+
+#define TAG_UNJBRAM 120
+
 @interface LauncherPreferencesViewController () <UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDelegate> {
 }
 
@@ -94,6 +97,7 @@ UIVisualEffectView *blurView;
 UIScrollView *scrollView;
 
 NSDictionary *rendererDict;
+NSArray *menuDict;
 
 int tempIndex;
 
@@ -442,6 +446,20 @@ int tempIndex;
     [erasePrefSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:erasePrefSwitch];
     
+    if(getenv("POJAV_DETECTEDJB")) {
+        UILabel *enableRAMTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
+        enableRAMTextView.text = @"Enable RAM slider";
+        enableRAMTextView.numberOfLines = 0;
+        [enableRAMTextView sizeToFit];
+        [tableView addSubview:enableRAMTextView];
+
+        UISwitch *enableRAMSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currY - 5.0, 50.0, 30)];
+        enableRAMSwitch.tag = TAG_UNJBRAM;
+        [enableRAMSwitch setOn:[getPreference(@"ram_unjb_enable") boolValue] animated:NO];
+        [enableRAMSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+        [tableView addSubview:enableRAMSwitch];
+    }
+    
     CGRect frame = tableView.frame;
     frame.size.height = currY+=44;
     tableView.frame = frame;
@@ -452,45 +470,34 @@ int tempIndex;
         UIBarButtonItem *help = [[UIBarButtonItem alloc] initWithImage:[[UIImage systemImageNamed:@"questionmark.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStyleDone target:self action:@selector(helpMenu)];
         UIBarButtonItem *close = [[UIBarButtonItem alloc] initWithImage:[[UIImage systemImageNamed:@"xmark.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStyleDone target:self action:@selector(exitAppAlert)];
         self.navigationItem.rightBarButtonItems = @[help, close];
-        UIMenu *menu = [UIMenu menuWithTitle:@"" image:nil identifier:nil
-                        options:UIMenuOptionsDisplayInline children:@[
-            [UIAction actionWithTitle:@"Button scale" image:[[UIImage systemImageNamed:@"aspectratio"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:BTNSCALE];}],
-            [UIAction actionWithTitle:@"Resolution" image:[[UIImage systemImageNamed:@"viewfinder"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:RESOLUTION];}],
-            [UIAction actionWithTitle:@"Allocated RAM" image:[[UIImage systemImageNamed:@"memorychip"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:ALLOCMEM];}],
-            [UIAction actionWithTitle:@"Java arguments" image:[[UIImage systemImageNamed:@"character.cursor.ibeam"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:JARGS];}],
-            [UIAction actionWithTitle:@"Renderer" image:[[UIImage systemImageNamed:@"cpu"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:REND];}],
-            [UIAction actionWithTitle:@"Java version" image:[[UIImage systemImageNamed:@"cube"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:JHOME];}],
-            [UIAction actionWithTitle:@"Game directory" image:[[UIImage systemImageNamed:@"folder"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:GDIRECTORY];}],
-            [UIAction actionWithTitle:@"Slideable hotbar" image:[[UIImage systemImageNamed:@"slider.horizontal.below.rectangle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:SLIDEHOTBAR];}],
-            [UIAction actionWithTitle:@"Safe area" image:[[UIImage systemImageNamed:@"crop"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:SAFEAREA];}],
-            [UIAction actionWithTitle:@"Reset warnings" image:[[UIImage systemImageNamed:@"exclamationmark.triangle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:RESETWARN];}],
-            [UIAction actionWithTitle:@"Type switches" image:[[UIImage systemImageNamed:@"list.bullet"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:TYPESEL];}],
-            [UIAction actionWithTitle:@"Debug logging" image:[[UIImage systemImageNamed:@"doc.badge.gearshape"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:DEBUGLOG];}],
-            [UIAction actionWithTitle:@"Home symlink" image:[[UIImage systemImageNamed:@"link"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:HOMESYM];}],
-            [UIAction actionWithTitle:@"Restart before launching game" image:[[UIImage systemImageNamed:@"arrowtriangle.left.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:RELAUNCH];}],
-            [UIAction actionWithTitle:@"Enable Cosmetica capes" image:[[UIImage systemImageNamed:@"square.and.arrow.down"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:ARCCAPES];}],
-            [UIAction actionWithTitle:@"Enable virtual mouse" image:[[UIImage systemImageNamed:@"cursorarrow.rays"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:VIRTMOUSE];}],
-            [UIAction actionWithTitle:@"Check game files before launching" image:[[UIImage systemImageNamed:@"shield.lefthalf.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:CHECKSHA];}],
-            [UIAction actionWithTitle:@"Reset preferences" image:[[UIImage systemImageNamed:@"trash"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:ERASEPREF];}],
-        ]];
+        UIAction *buttonScale = [UIAction actionWithTitle:@"Button scale" image:[[UIImage systemImageNamed:@"aspectratio"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:BTNSCALE];}];
+        UIAction *resolution = [UIAction actionWithTitle:@"Resolution" image:[[UIImage systemImageNamed:@"viewfinder"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:RESOLUTION];}];
+        UIAction *allocRAM = [UIAction actionWithTitle:@"Allocated RAM" image:[[UIImage systemImageNamed:@"memorychip"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:ALLOCMEM];}];
+        UIAction *jargs = [UIAction actionWithTitle:@"Java arguments" image:[[UIImage systemImageNamed:@"character.cursor.ibeam"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:JARGS];}];
+        UIAction *renderer = [UIAction actionWithTitle:@"Renderer" image:[[UIImage systemImageNamed:@"cpu"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:REND];}];
+        UIAction *jversion = [UIAction actionWithTitle:@"Java version" image:[[UIImage systemImageNamed:@"cube"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:JHOME];}];
+        UIAction *gamedir = [UIAction actionWithTitle:@"Game directory" image:[[UIImage systemImageNamed:@"folder"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:GDIRECTORY];}];
+        UIAction *hotbar = [UIAction actionWithTitle:@"Slideable hotbar" image:[[UIImage systemImageNamed:@"slider.horizontal.below.rectangle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:SLIDEHOTBAR];}];
+        UIAction *resetwarn = [UIAction actionWithTitle:@"Reset warnings" image:[[UIImage systemImageNamed:@"exclamationmark.triangle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:RESETWARN];}];
+        UIAction *shacheck = [UIAction actionWithTitle:@"Check game files before launching" image:[[UIImage systemImageNamed:@"shield.lefthalf.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:CHECKSHA];}];
+        UIAction *safearea = [UIAction actionWithTitle:@"Safe area" image:[[UIImage systemImageNamed:@"crop"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:SAFEAREA];}];
+        UIAction *debugLog = [UIAction actionWithTitle:@"Debug logging" image:[[UIImage systemImageNamed:@"doc.badge.gearshape"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:DEBUGLOG];}];
+        UIAction *restart = [UIAction actionWithTitle:@"Restart before launching game" image:[[UIImage systemImageNamed:@"arrowtriangle.left.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:RELAUNCH];}];
+        UIAction *symlink = [UIAction actionWithTitle:@"Home symlink" image:[[UIImage systemImageNamed:@"link"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:HOMESYM];}];
+        UIAction *cosmetica = [UIAction actionWithTitle:@"Enable Cosmetica capes" image:[[UIImage systemImageNamed:@"square.and.arrow.down"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:ARCCAPES];}];
+        UIAction *virtmouse = [UIAction actionWithTitle:@"Enable virtual mouse" image:[[UIImage systemImageNamed:@"cursorarrow.rays"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:VIRTMOUSE];}];
+        UIAction *resetprefs = [UIAction actionWithTitle:@"Reset preferences" image:[[UIImage systemImageNamed:@"trash"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:ERASEPREF];}];
+        UIAction *enableRAM = [UIAction actionWithTitle:@"Enable RAM slider" image:[[UIImage systemImageNamed:@"slider.horizontal.3"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {[self helpAlertOpt:UNJBRAM];}];
+        
+        if(getenv("POJAV_DETECTEDJB")) {
+            menuDict = @[buttonScale, resolution, allocRAM, jargs, renderer, jversion, gamedir, hotbar, resetwarn, shacheck, safearea, debugLog, restart, symlink, cosmetica, virtmouse, resetprefs];
+        } else if(!getenv("POJAV_DETECTEDJB") && [getPreference(@"disable_home_symlink") boolValue] == YES) {
+            menuDict = @[buttonScale, resolution, allocRAM, jargs, renderer, jversion, gamedir, hotbar, resetwarn, shacheck, safearea, debugLog, restart, symlink, cosmetica, virtmouse, resetprefs, enableRAM];
+        } else {
+            menuDict = @[buttonScale, resolution, jargs, renderer, jversion, gamedir, hotbar, resetwarn, shacheck, safearea, debugLog, restart, symlink, cosmetica, virtmouse, resetprefs, enableRAM];
+        }
+        
+        UIMenu *menu = [UIMenu menuWithTitle:@"" image:nil identifier:nil options:UIMenuOptionsDisplayInline children:menuDict];
         self.navigationItem.rightBarButtonItem.action = nil;
         self.navigationItem.rightBarButtonItem.primaryAction = nil;
         self.navigationItem.rightBarButtonItem.menu = menu;
@@ -694,45 +701,53 @@ int tempIndex;
     } else {
         UIAlertController *helpAlert = [UIAlertController alertControllerWithTitle:@"Needing help with these preferences?" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         UIAlertAction *btnscale = [UIAlertAction actionWithTitle:@"Button scale" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:BTNSCALE];}];
+        [helpAlert addAction:btnscale];
         UIAlertAction *resolution = [UIAlertAction actionWithTitle:@"Resolution" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:RESOLUTION];}];
-        UIAlertAction *allocmem = [UIAlertAction actionWithTitle:@"Allocated RAM" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:ALLOCMEM];}];
+        [helpAlert addAction:resolution];
+        if(getenv("POJAV_DETECTEDJB") || [getPreference(@"disable_home_symlink") boolValue] == YES) {
+            UIAlertAction *allocmem = [UIAlertAction actionWithTitle:@"Allocated RAM" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:ALLOCMEM];}];
+            [helpAlert addAction:allocmem];
+        }
         UIAlertAction *jargs = [UIAlertAction actionWithTitle:@"Java arguments" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:JARGS];}];
+        [helpAlert addAction:jargs];
         UIAlertAction *renderer = [UIAlertAction actionWithTitle:@"Renderer"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:REND];}];
-        UIAlertAction *jhome = [UIAlertAction actionWithTitle:@"Java version" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:JHOME];}];
+        [helpAlert addAction:renderer];
+        if(getenv("POJAV_DETECTEDJB")) {
+            UIAlertAction *jhome = [UIAlertAction actionWithTitle:@"Java version" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:JHOME];}];
+            [helpAlert addAction:jhome];
+        }
         UIAlertAction *gdirectory = [UIAlertAction actionWithTitle:@"Game directory"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:GDIRECTORY];}];
+        [helpAlert addAction:gdirectory];
         UIAlertAction *slidehotbar = [UIAlertAction actionWithTitle:@"Slideable hotbar" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:SLIDEHOTBAR];}];
-        UIAlertAction *safearea = [UIAlertAction actionWithTitle:@"Safe area" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:SAFEAREA];}];
+        [helpAlert addAction:slidehotbar];
         UIAlertAction *resetwarn = [UIAlertAction actionWithTitle:@"Reset warnings" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:RESETWARN];}];
-        UIAlertAction *typesel = [UIAlertAction actionWithTitle:@"Type switches" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:TYPESEL];}];
-        UIAlertAction *debuglog = [UIAlertAction actionWithTitle:@"Debug logging" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:DEBUGLOG];}];
-        UIAlertAction *homesym = [UIAlertAction actionWithTitle:@"Home symlink" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:HOMESYM];}];
-        UIAlertAction *relaunch = [UIAlertAction actionWithTitle:@"Restart before launching game" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:RELAUNCH];}];
-        UIAlertAction *arccapes = [UIAlertAction actionWithTitle:@"Enable Cosmetica capes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:ARCCAPES];}];
-        UIAlertAction *virtmouse = [UIAlertAction actionWithTitle:@"Enable virtual mouse" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:VIRTMOUSE];}];
+        [helpAlert addAction:resetwarn];
         UIAlertAction *checksha = [UIAlertAction actionWithTitle:@"Check game files before launching" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:VIRTMOUSE];}];
+        [helpAlert addAction:checksha];
+        UIAlertAction *safearea = [UIAlertAction actionWithTitle:@"Safe area" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:SAFEAREA];}];
+        [helpAlert addAction:safearea];
+        UIAlertAction *debuglog = [UIAlertAction actionWithTitle:@"Debug logging" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:DEBUGLOG];}];
+        [helpAlert addAction:debuglog];
+        UIAlertAction *relaunch = [UIAlertAction actionWithTitle:@"Restart before launching game" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:RELAUNCH];}];
+        [helpAlert addAction:relaunch];
+        if(getenv("POJAV_DETECTEDJB")) {
+            UIAlertAction *homesym = [UIAlertAction actionWithTitle:@"Home symlink" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:HOMESYM];}];
+            [helpAlert addAction:homesym];
+        }
+        UIAlertAction *arccapes = [UIAlertAction actionWithTitle:@"Enable Cosmetica capes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:ARCCAPES];}];
+        [helpAlert addAction:arccapes];
+        UIAlertAction *virtmouse = [UIAlertAction actionWithTitle:@"Enable virtual mouse" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:VIRTMOUSE];}];
+        [helpAlert addAction:virtmouse];
         UIAlertAction *erasepref = [UIAlertAction actionWithTitle:@"Reset preferences" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:ERASEPREF];}];
+        [helpAlert addAction:erasepref];
+        if(!getenv("POJAV_DETECTEDJB")) {
+            UIAlertAction *enableRAM = [UIAlertAction actionWithTitle:@"Enable RAM slider" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self helpAlertOpt:UNJBRAM];}];
+            [helpAlert addAction:enableRAM];
+        }
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+        [helpAlert addAction:cancel];
         [self setPopoverProperties:helpAlert.popoverPresentationController sender:(UIButton *)self.navigationItem.rightBarButtonItem];
         [self presentViewController:helpAlert animated:YES completion:nil];
-        [helpAlert addAction:btnscale];
-        [helpAlert addAction:resolution];
-        [helpAlert addAction:allocmem];
-        [helpAlert addAction:jargs];
-        [helpAlert addAction:renderer];
-        [helpAlert addAction:jhome];
-        [helpAlert addAction:gdirectory];
-        [helpAlert addAction:slidehotbar];
-        [helpAlert addAction:safearea];
-        [helpAlert addAction:resetwarn];
-        [helpAlert addAction:typesel];
-        [helpAlert addAction:debuglog];
-        [helpAlert addAction:relaunch];
-        [helpAlert addAction:homesym];
-        [helpAlert addAction:arccapes];
-        [helpAlert addAction:virtmouse];
-        [helpAlert addAction:checksha];
-        [helpAlert addAction:erasepref];
-        [helpAlert addAction:cancel];
     }
 }
 
@@ -748,9 +763,11 @@ int tempIndex;
     } else if(setting == ALLOCMEM) {
         title = @"Allocated RAM";
         if(getenv("POJAV_DETECTEDJB")) {
-            message = @"This option allows you to change the amount of memory used by the game. The minimum is 25% (default) and the maximum is 85%. Any value over 40% will require that you use a tool like overb0ard to prevent jetsam crashes.";
+            message = @"This option allows you to change the amount of memory used by the game. The minimum is 25% (default) and the maximum is 85%. To be safe, any value over 40% will require a tool like jetsamctl to prevent memory crashes.";
+        } else if (!(getenv("POJAV_DETECTEDJB") && ![getPreference(@"disable_home_symlink") boolValue] == YES)){
+            message = @"This option allows you to change the amount of memory used by the game. This option is disabled by default on unjailbroken devices due to potential instability of the launcher.";
         } else {
-            message = @"This option allows you to change the amount of memory used by the game. The minimum is 25% (default) and the maximum is 40% when unjailbroken. We're working on bringing higher memory limits to supported devices.";
+            message = @"This option allows you to change the amount of memory used by the game. The minimum is 25% (default) and the maximum is 85%. Use this at your own risk while unjailbroken, as it can cause instability or break launching the game entirely.";
         }
     } else if(setting == JARGS) {
         title = @"Java arguments";
@@ -805,6 +822,9 @@ int tempIndex;
     } else if (setting == VIRTMOUSE) {
         title = @"Enable virtual mouse";
         message = @"This option allows you to enable or disable the virtual mouse pointer at launch of the game.";
+    } else if (setting == UNJBRAM){
+        title = @"Enable RAM slider";
+        message = @"This option allows you to enable or disable the Allocated RAM slider when unjailbroken. See \"Allocated RAM\" for more information.";
     } else {
         title = @"Error";
         message = [NSString stringWithFormat:@"The setting %d hasn't been specified with a description.", setting];
@@ -853,6 +873,7 @@ int tempIndex;
             setPreference(@"jb_warn", @YES);
             setPreference(@"customctrl_warn", @YES);
             setPreference(@"int_warn", @YES);
+            setPreference(@"ram_unjb_warn", @YES);
             {
             UIAlertController *resetWarn = [UIAlertController alertControllerWithTitle:@"Warnings reset." message:@"Restart to show warnings again." preferredStyle:UIAlertControllerStyleActionSheet];
             [self setPopoverProperties:resetWarn.popoverPresentationController sender:(UIButton *)sender];
@@ -897,21 +918,21 @@ int tempIndex;
             break;
         case TAG_ERASEPREF:
             {
-                NSString *prefFile = [NSString stringWithFormat:@"%s/launcher_preferences.plist", getenv("POJAV_HOME")];
-                UIAlertController *eraseprefWarn = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:@"This will remove all of your custom preferences, including resolution, button size, and Java arguments." preferredStyle:UIAlertControllerStyleActionSheet];
+            NSString *prefFile = [NSString stringWithFormat:@"%s/launcher_preferences.plist", getenv("POJAV_HOME")];
+            UIAlertController *eraseprefWarn = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:@"This will remove all of your custom preferences, including resolution, button size, and Java arguments." preferredStyle:UIAlertControllerStyleActionSheet];
+            [self setPopoverProperties:eraseprefWarn.popoverPresentationController sender:(UIButton *)sender];
+            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Continue" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [[NSFileManager defaultManager] removeItemAtPath:prefFile error:nil];
+                UIAlertController *eraseprefPost = [UIAlertController alertControllerWithTitle:@"Preferences reset" message:@"The next time you open PojavLauncher, all of the default settings will be restored." preferredStyle:UIAlertControllerStyleActionSheet];
                 [self setPopoverProperties:eraseprefWarn.popoverPresentationController sender:(UIButton *)sender];
-                UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Continue" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    [[NSFileManager defaultManager] removeItemAtPath:prefFile error:nil];
-                    UIAlertController *eraseprefPost = [UIAlertController alertControllerWithTitle:@"Preferences reset" message:@"The next time you open PojavLauncher, all of the default settings will be restored." preferredStyle:UIAlertControllerStyleActionSheet];
-                    [self setPopoverProperties:eraseprefWarn.popoverPresentationController sender:(UIButton *)sender];
-                    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
-                    [self presentViewController:eraseprefPost animated:YES completion:nil];
-                    [eraseprefPost addAction:cancel];
-                }];
-                UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
-                [self presentViewController:eraseprefWarn animated:YES completion:nil];
-                [eraseprefWarn addAction:cancel];
-                [eraseprefWarn addAction:ok];
+                UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+                [self presentViewController:eraseprefPost animated:YES completion:nil];
+                [eraseprefPost addAction:cancel];
+            }];
+            UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+            [self presentViewController:eraseprefWarn animated:YES completion:nil];
+            [eraseprefWarn addAction:cancel];
+            [eraseprefWarn addAction:ok];
             }
             break;
         case TAG_ARCCAPES:
@@ -919,6 +940,16 @@ int tempIndex;
             break;
         case TAG_VIRTMOUSE:
             setPreference(@"virtmouse_enable", @(sender.isOn));
+            break;
+        case TAG_UNJBRAM:
+            {
+            setPreference(@"ram_unjb_enable", @YES);
+            UIAlertController *enableRAMPost = [UIAlertController alertControllerWithTitle:@"RAM slider enabled" message:@"You will need to restart the launcher to be able to use the memory slider." preferredStyle:UIAlertControllerStyleActionSheet];
+            [self setPopoverProperties:enableRAMPost.popoverPresentationController sender:(UIButton *)sender];
+            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+            [self presentViewController:enableRAMPost animated:YES completion:nil];
+            [enableRAMPost addAction:ok];
+            }
             break;
         default:
             NSLog(@"what does switch %ld for? implement me!", sender.tag);
