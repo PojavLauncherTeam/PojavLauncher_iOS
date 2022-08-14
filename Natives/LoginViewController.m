@@ -64,7 +64,7 @@
         [jbAlert addAction:ok];
     }
     
-    if(!getenv("POJAV_DETECTEDJB") && [getPreference(@"jb_warn") boolValue] == YES) {
+    if(!getenv("POJAV_DETECTEDJB") && [getPreference(@"ram_unjb_warn") boolValue] == YES) {
         UIAlertController *ramalert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"login.warn.title.ram_unjb", nil) message:NSLocalizedString(@"login.warn.message.ram_unjb", nil) preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleCancel handler:nil];
         [self presentViewController:ramalert animated:YES completion:nil];
