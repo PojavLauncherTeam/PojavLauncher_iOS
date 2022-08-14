@@ -3,6 +3,8 @@
 <dict>
     <key>com.apple.developer.kernel.extended-virtual-addressing</key>
     <true/>
+    <key>com.apple.developer.kernel.increased-memory-limit</key>
+    <true/>
     <key>com.apple.private.security.container-required</key>
     <true/>
     <key>com.apple.security.exception.files.absolute-path.read-write</key>
