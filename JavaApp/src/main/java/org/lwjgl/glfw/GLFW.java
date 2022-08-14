@@ -896,7 +896,7 @@ public class GLFW
         try {
             // long __result = nglfwGetVideoModes(monitor, memAddress(count));
             long __result = glfwGetVideoMode(monitor).address();
-            return GLFWVidMode.createSafe(__result, 1);;
+            return GLFWVidMode.createSafe(__result, 1);
         } finally {
             stack.setPointer(stackPointer);
         }

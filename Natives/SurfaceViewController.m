@@ -310,6 +310,7 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
     self.scrollPanGesture.delegate = self;
     self.scrollPanGesture.minimumNumberOfTouches = 2;
     self.scrollPanGesture.maximumNumberOfTouches = 2;
+    [self.surfaceView addGestureRecognizer:self.scrollPanGesture];
 
     if (@available(iOS 13.4, *)) {
         [self.surfaceView addInteraction:[[UIPointerInteraction alloc] initWithDelegate:self]];
