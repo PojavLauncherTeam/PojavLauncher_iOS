@@ -69,6 +69,7 @@
         UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleCancel handler:nil];
         [self presentViewController:ramalert animated:YES completion:nil];
         [ramalert addAction:ok];
+        setPreference(@"ram_unjb_warn", @NO);
     }
 
     CGFloat widthSplit = width / 4.0;
