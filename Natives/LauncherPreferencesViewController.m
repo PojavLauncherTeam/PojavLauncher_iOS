@@ -946,8 +946,8 @@ int tempIndex;
             break;
         case TAG_UNJBRAM:
             {
-            setPreference(@"ram_unjb_enable", @YES);
-            UIAlertController *enableRAMPost = [UIAlertController alertControllerWithTitle:@"RAM slider enabled" message:@"You will need to restart the launcher to be able to use the memory slider." preferredStyle:UIAlertControllerStyleActionSheet];
+            setPreference(@"ram_unjb_enable", @(sender.isOn);
+            UIAlertController *enableRAMPost = [UIAlertController alertControllerWithTitle:@"RAM slider enabled" message:@"You will need to restart the launcher for changes to take effect." preferredStyle:UIAlertControllerStyleActionSheet];
             [self setPopoverProperties:enableRAMPost.popoverPresentationController sender:(UIButton *)sender];
             UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
             [self presentViewController:enableRAMPost animated:YES completion:nil];
