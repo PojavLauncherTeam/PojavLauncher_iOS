@@ -239,11 +239,10 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
         margv[++margc] = (char *) [NSString stringWithFormat:@"-Dpojav.selectedAccount=%@", selectedAccount].UTF8String;
     }
 
-    if (!getenv("POJAV_DETECTEDJB")) {
+    if (!getEntitlementValue(@"com.apple.developer.kernel.extended-virtual-addressing")) {
         // In jailed environment, where extended virtual addressing entitlement isn't
         // present (for free dev account), the maximum metaspace size is 896M.
         // Sometimes it can go lower, so it is set to 800M
-        // TODO: check if the entitlement is present instead?
         margv[++margc] = "-XX:CompressedClassSpaceSize=800M";
     }
 

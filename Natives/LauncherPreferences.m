@@ -1,4 +1,5 @@
 #import "LauncherPreferences.h"
+#import <CoreFoundation/CoreFoundation.h>
 
 NSMutableDictionary *prefDict;
 NSString* prefPath;
@@ -153,4 +154,17 @@ CGRect getDefaultSafeArea() {
         defaultSafeArea.size.height = height;
     }
     return defaultSafeArea;
+}
+
+CFTypeRef SecTaskCopyValueForEntitlement(void* task, NSString* entitlement, CFErrorRef  _Nullable *error);
+void* SecTaskCreateFromSelf(CFAllocatorRef allocator);
+BOOL getEntitlementValue(NSString *key) {
+    void *secTask = SecTaskCreateFromSelf(NULL);
+    CFTypeRef value = SecTaskCopyValueForEntitlement(SecTaskCreateFromSelf(NULL), key, nil);
+    if (value != nil) {
+        CFRelease(value);
+    }
+    CFRelease(secTask);
+
+    return value != nil && [(__bridge id)value boolValue];
 }
