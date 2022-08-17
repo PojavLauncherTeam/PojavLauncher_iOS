@@ -17,6 +17,7 @@ jobs:
       - name: Build packages
         run: |
           export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
+          export PATH=/opt/procursus/bin:$PATH
           gmake -j$(sysctl -n hw.ncpu) ipa
 
       - name: Upload regular artifact
