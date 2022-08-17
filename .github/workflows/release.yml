@@ -15,7 +15,10 @@ jobs:
         run: git submodule update --init --recursive
         
       - name: Build packages
+        env:
+          password=${{ secrets.ELLIES_MINI_SECRET }}
         run: |
+          export NOSTDIN=1 SUDOPASS=$password RELEASE=1
           export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
           gmake -j$(sysctl -n hw.ncpu) ipa
 
@@ -34,7 +37,7 @@ jobs:
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v2
         with:
-          name: net.kdt.pojavlauncher-INT.ipa
+          name: net.kdt.pojavlauncher.ipa
           path: artifacts/net.kdt.pojavlauncher-*.ipa
 
       - name: Upload PojavLauncher.dSYM
