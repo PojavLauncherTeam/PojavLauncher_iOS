@@ -331,6 +331,7 @@ ipa: dsym
 		tar xvf *.tar.xz; \
 		rm *.tar.xz; \
 	fi; \
+        cd ..; \
 	if [ ! -d "java-17-openjdk" ]; then \
 		mkdir java-17-openjdk && cd java-17-openjdk; \
 		wget 'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre17-ca01427/jre17-arm64-20220817-release.tar.xz'; \
