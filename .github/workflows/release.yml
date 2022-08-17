@@ -16,9 +16,10 @@ jobs:
         
       - name: Build packages
         env:
-          password: ${{ secrets.ELLIES_MINI_SECRET }}
+          password: ${{ secrets.ELLIE_MINI_SECRET }}
         run: |
-          export NOSTDIN=1 SUDOPASS=$password RELEASE=1
+          export RELEASE=1
+          export NOSTDIN=1 SUDOPASS=$password
           export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
           gmake -j$(sysctl -n hw.ncpu) ipa
 
