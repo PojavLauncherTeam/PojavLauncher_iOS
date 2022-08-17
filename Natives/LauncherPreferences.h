@@ -13,3 +13,4 @@ void setDefaultValueForPref(NSMutableDictionary *dict, NSString* key, id value);
 void setPreference(NSString* key, id value);
 
 CGRect getDefaultSafeArea();
+BOOL getEntitlementValue(NSString *key);

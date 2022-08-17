@@ -31,6 +31,10 @@
 
 #define fm NSFileManager.defaultManager
 
+void printEntitlementAvailability(NSString *key) {
+    NSLog(@"- %@: %@", key, getEntitlementValue(key) ? @"YES" : @"NO");
+}
+
 void init_logDeviceAndVer(char *argument) {
     struct utsname systemInfo;
     uname(&systemInfo);
@@ -48,7 +52,7 @@ void init_logDeviceAndVer(char *argument) {
         }
         regLog("[Pre-Init] %s with iOS %s (%s)", deviceHardware, deviceSoftware, jbStrap);
     } else {
-        regLog("[Pre-Init] %s with iOS %s", deviceHardware, deviceSoftware);
+        regLog("[Pre-Init] %s with iOS %s (sideloaded)", deviceHardware, deviceSoftware);
     }
 
     // PojavLauncher version
@@ -59,6 +63,11 @@ void init_logDeviceAndVer(char *argument) {
     if (strncmp(argument, "/Applications", 13) == 0) {
         setenv("POJAV_DETECTEDJB", jbStrap, 1);
     }
+
+    regLog("[Pre-init] Entitlements availability:");
+    printEntitlementAvailability(@"com.apple.developer.kernel.extended-virtual-addressing");
+    printEntitlementAvailability(@"com.apple.developer.kernel.increased-memory-limit");
+    printEntitlementAvailability(@"dynamic-codesigning");
 }
 
 void init_migrateDirIfNecessary() {
