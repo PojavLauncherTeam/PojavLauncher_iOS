@@ -8,6 +8,12 @@ jobs:
     name: Development build
     runs-on: MacStadium
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Checkout repository submodules
+        run: git submodule update --init --recursive
+        
       - name: Build packages
         run: |
           export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
