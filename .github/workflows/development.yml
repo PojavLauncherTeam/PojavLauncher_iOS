@@ -15,8 +15,10 @@ jobs:
         run: git submodule update --init --recursive
         
       - name: Build packages
+        env:
+          password: ${{ secrets.ELLIE_MINI_SECRET }}
         run: |
-          export NOSTDIN=1 SUDOPASS=${{ secrets.ELLIE_MINI_SECRET }}
+          export NOSTDIN=1 SUDOPASS=$password
           export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
           gmake -j$(sysctl -n hw.ncpu) ipa
 
