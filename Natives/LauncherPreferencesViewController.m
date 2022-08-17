@@ -252,51 +252,48 @@ int tempIndex;
     rendTextField.inputAccessoryView = rendPickerToolbar;
     rendTextField.inputView = rendPickerView;
 
-    if(getenv("POJAV_DETECTEDJB")) {
-        // Currently, only Java 8 works unjailbroken
-        // TODO: Port Java 16/17 to unjailbroken
-        UILabel *jhomeTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
-        jhomeTextView.text = @"Java version";
-        jhomeTextView.numberOfLines = 0;
-        [jhomeTextView sizeToFit];
-        [tableView addSubview:jhomeTextView];
-        
-        jhomeTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 28.0, 30)];
-        [jhomeTextField addTarget:jhomeTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
-        jhomeTextField.tag = TAG_JHOME;
-        jhomeTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-        jhomeTextField.delegate = self;
-        jhomeTextField.placeholder = @"Override Java path...";
-        
-        jhomeTextField.text = [getPreference(@"java_home") lastPathComponent];
-        
-        jhomeTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
-        jhomeTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        [tableView addSubview:jhomeTextField];
-        
-        NSString *listPath = getenv("POJAV_DETECTEDJB") ? @"/usr/lib/jvm" : [NSString stringWithFormat:@"%s/jvm", getenv("BUNDLE_PATH")];
-        jhomeList = [NSFileManager.defaultManager contentsOfDirectoryAtPath:listPath error:nil];
-        
-        jhomePickerView = [[UIPickerView alloc] init];
-        jhomePickerView.delegate = self;
-        jhomePickerView.dataSource = self;
-        jhomePickerView.tag = TAG_PICKER_JHOME;
-        [jhomePickerView reloadAllComponents];
-        for (int i = 0; i < jhomeList.count; i++) {
-            if ([jhomeTextField.text isEqualToString:jhomeList[i]]) {
-                [jhomePickerView selectRow:i inComponent:0 animated:NO];
-                break;
-            }
+    UILabel *jhomeTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
+    jhomeTextView.text = @"Java version";
+    jhomeTextView.numberOfLines = 0;
+    [jhomeTextView sizeToFit];
+    [tableView addSubview:jhomeTextView];
+    
+    jhomeTextField = [[UITextField alloc] initWithFrame:CGRectMake(buttonSizeSlider.frame.origin.x + 3, currY, width - jargsTextView.bounds.size.width - 28.0, 30)];
+    [jhomeTextField addTarget:jhomeTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
+    jhomeTextField.tag = TAG_JHOME;
+    jhomeTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+    jhomeTextField.delegate = self;
+    jhomeTextField.placeholder = @"Override Java path...";
+    
+    jhomeTextField.text = [getPreference(@"java_home") lastPathComponent];
+    
+    jhomeTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
+    jhomeTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [tableView addSubview:jhomeTextField];
+    
+    NSString *listPath = getenv("POJAV_DETECTEDJB") ? @"/usr/lib/jvm" : [NSString stringWithFormat:@"%s/jvm", getenv("BUNDLE_PATH")];
+    jhomeList = [NSFileManager.defaultManager contentsOfDirectoryAtPath:listPath error:nil];
+    
+    jhomePickerView = [[UIPickerView alloc] init];
+    jhomePickerView.delegate = self;
+    jhomePickerView.dataSource = self;
+    jhomePickerView.tag = TAG_PICKER_JHOME;
+    [jhomePickerView reloadAllComponents];
+    for (int i = 0; i < jhomeList.count; i++) {
+        if ([jhomeTextField.text isEqualToString:jhomeList[i]]) {
+            [jhomePickerView selectRow:i inComponent:0 animated:NO];
+            break;
         }
-        UIToolbar *jhomePickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
-        UIBarButtonItem *jhomeFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
-        UIBarButtonItem *jhomeDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeKeyboard:)];
-        jhomeDoneButton.tag = TAG_DONE_JHOME;
-        jhomePickerToolbar.items = @[jhomeFlexibleSpace, jhomeDoneButton];
-        
-        jhomeTextField.inputAccessoryView = jhomePickerToolbar;
-        jhomeTextField.inputView = jhomePickerView;
     }
+    UIToolbar *jhomePickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
+    UIBarButtonItem *jhomeFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    UIBarButtonItem *jhomeDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeKeyboard:)];
+    jhomeDoneButton.tag = TAG_DONE_JHOME;
+    jhomePickerToolbar.items = @[jhomeFlexibleSpace, jhomeDoneButton];
+    
+    jhomeTextField.inputAccessoryView = jhomePickerToolbar;
+    jhomeTextField.inputView = jhomePickerView;
+    
     UILabel *gdirTextView = [[UILabel alloc] initWithFrame:CGRectMake(16.0, currY+=44.0, 0.0, 0.0)];
     gdirTextView.text = @"Game directory";
     gdirTextView.numberOfLines = 0;

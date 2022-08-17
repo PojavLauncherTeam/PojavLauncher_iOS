@@ -327,10 +327,13 @@ ipa: dsym
 	mkdir -p $(SOURCEDIR)/depends; \
 	cd $(SOURCEDIR)/depends; \
 	if [ ! -d "java-8-openjdk" ]; then \
-                mkdir java-8-openjdk && cd java-8-openjdk; \
+		mkdir java-8-openjdk && cd java-8-openjdk; \
 		wget 'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre8-40df388/jre8-arm64-20220811-release.tar.xz'; \
 		tar xvf *.tar.xz; \
 		rm *.tar.xz; \
+	fi; \
+	if [ ! -d "java-17-openjdk" ]; then \
+		echo "todo"; \
 	fi; \
 	mkdir -p $(OUTPUTDIR); \
 	cd $(OUTPUTDIR); \
@@ -342,8 +345,8 @@ ipa: dsym
 	ldid -S$(SOURCEDIR)/entitlements_ipa.xml $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher; \
 	rm -f $(OUTPUTDIR)/*.ipa; \
 	cd $(OUTPUTDIR); \
-        chmod -R 755 Payload; \
-        sudo chown -R 501:501 Payload; \
+	chmod -R 755 Payload; \
+	sudo chown -R 501:501 Payload; \
 	zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher-$(VERSION).ipa Payload/*
 	@echo 'Building PojavLauncher $(VERSION) - IPA - End'
 
