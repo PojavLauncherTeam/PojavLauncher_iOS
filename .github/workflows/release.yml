@@ -8,61 +8,15 @@ jobs:
     name: Release build
     runs-on: macOS-11
     steps:
-      - name: Set up cache
-        uses: actions/cache@v2
-        id: procache
-        with:
-          path: |
-            ~/__cache
-          key: ${{ runner.os }}-procursus
-
-      - name: Set up build environment
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: '13.2.1'
-      
-      - name: Set up build environment pt. II
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up build environment pt. III
+      - name: Checkout repository submodules
         run: git submodule update --init --recursive
-      
-      - name: Set up build environment pt. IV (Install)
-        if: steps.procache.outputs.cache-hit != 'true'
+        
+      - name: Build packages
         run: |
-          wget https://apt.procurs.us/bootstrap_darwin-amd64.tar.zst
-          sudo gtar --preserve-permissions -xkf ./bootstrap_darwin-amd64.tar.zst -C /
-          echo '/opt/procursus/sbin:/opt/procursus/bin' >> $GITHUB_PATH
-          PATH=/opt/procursus/sbin:/opt/procursus/bin:$PATH sudo /opt/procursus/bin/apt-get update
-          sudo /opt/procursus/bin/apt-get -V dist-upgrade -y || :
-          sudo /opt/procursus/bin/apt-get -V dist-upgrade -y
-          sudo /opt/procursus/bin/apt-get install ldid make sed fakeroot -y
-
-      - name: Set up build environment pt. V
-        run: |
-          echo '/opt/procursus/sbin:/opt/procursus/bin' >> $GITHUB_PATH
-
-      - name: Set up build environment pt. IV (cache)
-        if: steps.procache.outputs.cache-hit == 'true'
-        run: |
-          sudo mkdir -p ~/__cache/procursus/var/cache/apt/archives/partial ~/__cache/procursus/var/lib/apt/lists/partial
-          sudo rsync -aP ~/__cache/procursus /opt
-          sudo /opt/procursus/bin/apt-get update
-          sudo /opt/procursus/bin/apt-get -V dist-upgrade -y
-          sudo /opt/procursus/bin/apt-get -V dist-upgrade -y
-
-      - name: Build the Debian package
-        run: gmake -j$(sysctl -n hw.ncpu) dsym RELEASE=1
-
-      - name: Build the iOS package
-        run: |
-          mkdir -p depends
-          # java-8-openjdk
-          cd depends
-          wget https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre8-99f3f8b/jre8-zero-aarch64-ios.tar.xz
-          tar xvf jre8-zero-aarch64-ios.tar.xz
-          rm jre8-zero-aarch64-ios.tar.xz
-          cd ..
+          export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
           gmake -j$(sysctl -n hw.ncpu) ipa
 
       - name: Upload regular artifact
@@ -88,9 +42,4 @@ jobs:
         with:
           name: PojavLauncher.dSYM
           path: artifacts/PojavLauncher.dSYM
-
-      - name: Copy Procursus to Cache Location
-        run: |
-          sudo mkdir -p ~/__cache
-          sudo rsync -aP /opt/procursus ~/__cache
-          sudo rm -rf ~/__cache/procursus/var/cache/apt/archives/partial ~/__cache/procursus/var/lib/apt/lists/partial ~/__cache/procursus/Library/dpkg/triggers/Lock
+          
