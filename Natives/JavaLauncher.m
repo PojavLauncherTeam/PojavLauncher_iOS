@@ -239,22 +239,17 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
         margv[++margc] = (char *) [NSString stringWithFormat:@"-Dpojav.selectedAccount=%@", selectedAccount].UTF8String;
     }
 
-    if (!getEntitlementValue(@"com.apple.developer.kernel.extended-virtual-addressing")) {
-        // In jailed environment, where extended virtual addressing entitlement isn't
-        // present (for free dev account), the maximum metaspace size is 896M.
-        // Sometimes it can go lower, so it is set to 800M
-        margv[++margc] = "-XX:CompressedClassSpaceSize=800M";
-    }
-
     // Load java
     char libjlipath8[2048]; // java 8
     char libjlipath16[2048]; // java 16+ (?)
     sprintf(libjlipath8, "%s/lib/jli/libjli.dylib", javaHome);
     sprintf(libjlipath16, "%s/lib/libjli.dylib", javaHome);
     setenv("INTERNAL_JLI_PATH", libjlipath16, 1);
+    BOOL isJava8;
     void* libjli = dlopen(libjlipath16, RTLD_LAZY | RTLD_GLOBAL);
+    isJava8 = libjli == NULL;
     if (!libjli) {
-        debugLog("[Init] Can't load %s, trying %s", libjlipath16, libjlipath8);
+        debugLog("[Init] Can't load %s (%s), trying %s", libjlipath16, dlerror(), libjlipath8);
         setenv("INTERNAL_JLI_PATH", libjlipath8, 1);
         libjli = dlopen(libjlipath8, RTLD_LAZY | RTLD_GLOBAL);
         if (!libjli) {
@@ -293,6 +288,18 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
 
         // TODO: workaround, will be removed once the startup part works without PLaunchApp
         margv[++margc] = "--add-exports=cpw.mods.bootstraplauncher/cpw.mods.bootstraplauncher=ALL-UNNAMED";
+    }
+
+    if (!getEntitlementValue(@"com.apple.developer.kernel.extended-virtual-addressing")) {
+        // In jailed environment, where extended virtual addressing entitlement isn't
+        // present (for free dev account), the maximum metaspace size is 896M.
+        // Sometimes it can go lower, so it is set to 800M
+        if (isJava8) {
+            margv[++margc] = "-XX:CompressedClassSpaceSize=800M";
+        } else {
+            // FIXME: does extended VA allow allocating compressed class space?
+            margv[++margc] = "-XX:-UseCompressedClassPointers";
+        }
     }
 
     if ([launchTarget isKindOfClass:NSDictionary.class]) {

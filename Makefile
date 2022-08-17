@@ -64,9 +64,8 @@ POJAV_JRE8_DIR       ?= /usr/lib/jvm/java-8-openjdk
 else
 POJAV_BUNDLE_DIR    ?= $(OUTPUTDIR)/PojavLauncher.app
 POJAV_JRE8_DIR       ?= $(SOURCEDIR)/depends/java-8-openjdk
-# POJAV_JRE17_DIR       ?= $(SOURCEDIR)/depends/java-17-openjdk
+POJAV_JRE17_DIR       ?= $(SOURCEDIR)/depends/java-17-openjdk
 endif
-POJAV_JRE_DYLIBS    ?= $(shell cd "$(POJAV_JRE_DIR)" && find . -name "*.dylib")
 
 # Function to use later for checking dependencies
 DEPCHECK   = $(shell type $(1) >/dev/null 2>&1 && echo 1)
@@ -333,7 +332,10 @@ ipa: dsym
 		rm *.tar.xz; \
 	fi; \
 	if [ ! -d "java-17-openjdk" ]; then \
-		echo "todo"; \
+		mkdir java-17-openjdk && cd java-17-openjdk; \
+		wget 'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre17-ca01427/jre17-arm64-20220817-release.tar.xz'; \
+		tar xvf *.tar.xz; \
+		rm *.tar.xz; \
 	fi; \
 	mkdir -p $(OUTPUTDIR); \
 	cd $(OUTPUTDIR); \
@@ -341,6 +343,7 @@ ipa: dsym
 	cp -R $(POJAV_BUNDLE_DIR) $(OUTPUTDIR)/Payload; \
 	$(call DIRCHECK,$(OUTPUTDIR)/Payload/PojavLauncher.app/jvm); \
 	cp -R $(POJAV_JRE8_DIR) $(OUTPUTDIR)/Payload/PojavLauncher.app/jvm/; \
+	cp -R $(POJAV_JRE17_DIR) $(OUTPUTDIR)/Payload/PojavLauncher.app/jvm/; \
 	rm -rf $(OUTPUTDIR)/Payload/PojavLauncher.app/jvm/*/{bin,include,jre,lib/{ct.sym,libjsig.dylib,src.zip,tools.jar}}; \
 	ldid -S$(SOURCEDIR)/entitlements_ipa.xml $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher; \
 	rm -f $(OUTPUTDIR)/*.ipa; \

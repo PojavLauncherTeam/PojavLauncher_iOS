@@ -44,30 +44,15 @@ int hooked_dladdr(const void* addr, Dl_info* info) {
 }
 
 void* hooked_dlopen(const char* path, int mode) {
+    //NSLog(@"dlopen(%s, %d)", path, mode);
+
     // Avoid loading the executable itself twice
     if (path && [@(path) hasSuffix:@"PojavLauncher"]) {
         return orig_dlopen(NULL, mode);
     }
 
-    void *handle = orig_dlopen(path, mode);
-    if (handle) {
-        return handle;
-    }
+    return orig_dlopen(path, mode);
 
-    char src[2048], dst[2048];
-    sprintf((char *)src, "%s/Frameworks", getenv("BUNDLE_PATH"));
-    //NSLog(@"path=%s, src=%s, length=%lu, compare=%d", path, src, strlen(src), strncmp(path, src, strlen(src)));
-    if (!strncmp(path, src, strlen(src))) {
-        //NSLog(@"hooked dlopen %s", path);
-        char *libname = basename((char *)path);
-        sprintf((char *)dst, "%s/%s.framework/%s", src, libname, libname);
-        handle = orig_dlopen(dst, mode);
-        if (handle) {
-            dlerror(); // clear error
-        }
-    }
-
-    return handle;
 }
 
 /*
