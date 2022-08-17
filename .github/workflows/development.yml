@@ -6,7 +6,7 @@ on:
 jobs:
   build:
     name: Development build
-    runs-on: Ellies-mini
+    runs-on: MacStadium
     steps:
       - name: Build packages
         run: |
