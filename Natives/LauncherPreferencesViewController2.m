@@ -112,7 +112,7 @@
                 @"icon": @"slider.vertical.3",
                 @"type": @"TextField"
             },
-            @"ram_unjb_enable": @{ // TODO: name as Auto RAM
+            @"auto_ram": @{ // TODO: name as Auto RAM
                 @"icon": @"slider.horizontal.3",
                 @"type": @"Switch",
                 @"hidden": @(getenv("POJAV_DETECTEDJB") != NULL)
