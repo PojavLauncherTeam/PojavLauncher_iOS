@@ -373,12 +373,12 @@ void pojavSetWindowHint(int hint, int value) {
                 NSLog(@"GLFW: Unimplemented API 0x%x", value);
                 abort();
         }
-    } else if (getenv("POJAV_RENDERER_AUTO") && hint == GLFW_CONTEXT_VERSION_MAJOR && value >= 3) {
-        jclass System = env
+    } /*else if (getenv("POJAV_RENDERER_AUTO") && hint == GLFW_CONTEXT_VERSION_MAJOR && value >= 3) {
+        jclass System = env;
         setenv("POJAV_RENDERER", RENDERER_NAME_MTL_ANGLE, 1);
         NSLog(@"----- Set RENDERER to tinygl4angle -----");
         // setProperty org.lwjgl.opengl.libname
-    }
+    } */
 }
 
 int32_t stride;
