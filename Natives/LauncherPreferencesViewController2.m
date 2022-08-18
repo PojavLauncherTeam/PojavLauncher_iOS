@@ -50,7 +50,7 @@
             @"reset_settings": @{
                 @"icon": @"trash",
                 @"type": @"Switch"
-            },
+            }
         }, @{
         // Video and renderer settings
             @"renderer": @{
