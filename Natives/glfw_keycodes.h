@@ -35,6 +35,8 @@
 #define GLFW_NO_API 0
 #define GLFW_OPENGL_API 0x30001
 
+#define GLFW_CONTEXT_VERSION_MAJOR 0x00022002
+
 /*! @defgroup hat_state Joystick hat states
  *  @brief Joystick hat states.
  *

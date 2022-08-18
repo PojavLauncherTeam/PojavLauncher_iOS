@@ -110,7 +110,7 @@ void loadPreferences() {
     setDefaultValueForPref(prefDict, @"debug_logging", CONFIG_TYPE);
     setDefaultValueForPref(prefDict, @"arccapes_enable", @YES);
     setDefaultValueForPref(envPrefDict, @"java_home", @"");
-    setDefaultValueForPref(envPrefDict, @"renderer", @"libgl4es_114.dylib");
+    setDefaultValueForPref(envPrefDict, @"renderer", @"auto");
     setDefaultValueForPref(warnPrefDict, @"option_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"local_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"mem_warn", @YES);

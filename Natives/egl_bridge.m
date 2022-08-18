@@ -225,12 +225,15 @@ jboolean pojavInit_OpenGL() {
     if (config_renderer) return JNI_TRUE;
 
     NSString *renderer = @(getenv("POJAV_RENDERER"));
+    BOOL isAuto = [renderer isEqualToString:@"auto"];
     if ([renderer isEqualToString:@"libOSMesa.8.dylib"]) {
         config_renderer = RENDERER_VIRGL;
         setenv("GALLIUM_DRIVER", "virpipe", 1);
         loadSymbolsVirGL();
-    } else if ([renderer hasPrefix:@"libgl4es"] || [renderer hasPrefix:@"libtinygl4angle"]) {
+    } else if (isAuto || [renderer isEqualToString:@ RENDERER_NAME_GL4ES] || [renderer isEqualToString:@ RENDERER_NAME_MTL_ANGLE]) {
         config_renderer = RENDERER_MTL_ANGLE;
+        setenv("POJAV_RENDERER", RENDERER_NAME_MTL_ANGLE, 1);
+        setenv("POJAV_RENDERER_AUTO", "1", 1);
         loadSymbols();
     } else if ([renderer hasPrefix:@"libOSMesa"]) {
         config_renderer = RENDERER_VK_ZINK;
@@ -250,6 +253,11 @@ jboolean pojavInit_OpenGL() {
         // Pre-load the renderer library
         void *renderer_handle = dlopen(getenv("POJAV_RENDERER"), RTLD_GLOBAL);
         debugLog("%s=%p, error=%s", getenv("POJAV_RENDERER"), renderer_handle, dlerror());
+
+        // Set back to gl4es
+        if (isAuto) {
+            setenv("POJAV_RENDERER", RENDERER_NAME_GL4ES, 1);
+        }
 
         debugLog("EGLBridge: Initializing");
         // printf("EGLBridge: ANativeWindow pointer = %p\n", potatoBridge.androidWindow);
@@ -351,19 +359,25 @@ jboolean pojavInit_OpenGL() {
 }
 
 void pojavSetWindowHint(int hint, int value) {
-    if (hint != GLFW_CLIENT_API) return;
-    switch (value) {
-        case GLFW_NO_API:
-            config_renderer = RENDERER_VULKAN;
-            /* Nothing to do: initialization is handled in Java-side */
-            // pojavInit_Vulkan();
-            break;
-        case GLFW_OPENGL_API:
-            pojavInit_OpenGL();
-            break;
-        default:
-            NSLog(@"GLFW: Unimplemented API 0x%x", value);
-            abort();
+    if (hint == GLFW_CLIENT_API) {
+        switch (value) {
+            case GLFW_NO_API:
+                config_renderer = RENDERER_VULKAN;
+                /* Nothing to do: initialization is handled in Java-side */
+                // pojavInit_Vulkan();
+                break;
+            case GLFW_OPENGL_API:
+                pojavInit_OpenGL();
+                break;
+            default:
+                NSLog(@"GLFW: Unimplemented API 0x%x", value);
+                abort();
+        }
+    } else if (getenv("POJAV_RENDERER_AUTO") && hint == GLFW_CONTEXT_VERSION_MAJOR && value >= 3) {
+        jclass System = env
+        setenv("POJAV_RENDERER", RENDERER_NAME_MTL_ANGLE, 1);
+        NSLog(@"----- Set RENDERER to tinygl4angle -----");
+        // setProperty org.lwjgl.opengl.libname
     }
 }
 
