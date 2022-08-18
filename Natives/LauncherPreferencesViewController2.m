@@ -31,6 +31,26 @@
                 @"type": @"PickField",
                 @"pickList": @[@"default", @"TODO"]
             }
+            @"home_symlink": @{
+                @"icon": @"link",
+                @"type": @"Switch"
+            },
+            @"check_sha": @{
+                @"icon": @"lock.shield",
+                @"type": @"Switch"
+            },
+            @"cosmetica": @{
+                @"icon": @"eyeglasses",
+                @"type": @"Switch"
+            },
+            @"reset_warnings": @{
+                @"icon": @"exclamationmark.triangle",
+                @"type": @"Switch"
+            },
+            @"reset_settings": @{
+                @"icon": @"trash",
+                @"type": @"Switch"
+            },
         }, @{
         // Video and renderer settings
             @"renderer": @{
