@@ -15,6 +15,7 @@ include_directories(
   "external/AFNetworking/AFNetworking"
   "external/AFNetworking/UIKit+AFNetworking"
   "external/DBNumberedSlider/Classes"
+  "external/TOInsetGroupedTableView/TOInsetGroupedTableView"
   "external/fishhook"
   "external/mesa"
 )
@@ -100,6 +101,7 @@ add_executable(PojavLauncher
   customcontrols/CustomControlsUtils.m
 
   external/DBNumberedSlider/Classes/DBNumberedSlider.m
+  external/TOInsetGroupedTableView/TOInsetGroupedTableView/TOInsetGroupedTableView.m
 
   AboutLauncherViewController.m
   AccountListViewController.m
@@ -113,6 +115,7 @@ add_executable(PojavLauncher
   LauncherMenuViewController.m
   LauncherPreferences.m
   LauncherPreferencesViewController.m
+  LauncherPreferencesViewController2.m
   LauncherSplitViewController.m
   LauncherViewController.m
   LoginViewController.m
