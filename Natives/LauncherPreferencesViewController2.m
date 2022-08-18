@@ -30,7 +30,7 @@
                 @"icon": @"folder",
                 @"type": @"PickField",
                 @"pickList": @[@"default", @"TODO"]
-            }
+            },
             @"home_symlink": @{
                 @"icon": @"link",
                 @"type": @"Switch"
