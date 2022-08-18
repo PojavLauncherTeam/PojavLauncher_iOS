@@ -126,11 +126,11 @@
             @"allocated_memory": @{
                 @"icon": @"memorychip",
                 @"type": @"Slider",
-                @"min": @(500),
-                @"max": @(2000),
-                @"warnAlways": @YES,
+                @"min": @(NSProcessInfo.processInfo.physicalMemory / 1048576 * 0.25),
+                @"max": @(NSProcessInfo.processInfo.physicalMemory / 1048576 * 0.85),
+                @"warnAlways": @NO,
                 @"warnCondition": ^BOOL(DBNumberedSlider *view){
-                    return view.value > 1000;
+                    return view.value >= NSProcessInfo.processInfo.physicalMemory / 1048576 * 0.4;
                 }
             }
         }
