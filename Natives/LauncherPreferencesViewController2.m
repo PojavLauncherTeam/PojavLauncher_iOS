@@ -103,25 +103,35 @@
             }
         }, @{
         // Java tweaks
-            @"java_home": @{
+            @"java_home": @{ // TODO: name as Use Java 17 for older MC
                 @"icon": @"cube",
                 @"type": @"PickField",
-                @"pickList": @[@"java-8-openjdk", @"java-17-openjdk", @"TODO"]
+                // false: 8, true: 17
+                @"customSwitchValue": @[@"java-8-openjdk", @"java-17-openjdk"]
             },
             @"java_args": @{
                 @"icon": @"slider.vertical.3",
                 @"type": @"TextField"
             },
-            @"auto_ram": @{ // TODO: name as Auto RAM
+            @"auto_ram": @{
                 @"icon": @"slider.horizontal.3",
                 @"type": @"Switch",
-                @"hidden": @(getenv("POJAV_DETECTEDJB") != NULL)
+                @"hidden": @(getenv("POJAV_DETECTEDJB") != NULL),
+                @"warnCondition": ^BOOL(UISwitch *view){
+                    return view.isOn;
+                },
+                //@"warnMessage": @"TODO",
+                @"warnAlways": @YES
             },
             @"allocated_memory": @{
                 @"icon": @"memorychip",
                 @"type": @"Slider",
-                @"min": @(25),
-                @"max": @(300)
+                @"min": @(500),
+                @"max": @(2000),
+                @"warnAlways": @YES,
+                @"warnCondition": ^BOOL(DBNumberedSlider *view){
+                    return view.value > 1000;
+                }
             }
         }
     ];
