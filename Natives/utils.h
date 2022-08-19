@@ -28,6 +28,10 @@
 #define GLFW_FOCUSED 0x00020001
 #define GLFW_VISIBLE 0x00020004
 
+#define RENDERER_NAME_GL4ES "libgl4es_114.dylib"
+#define RENDERER_NAME_MTL_ANGLE "libtinygl4angle.dylib"
+#define RENDERER_NAME_VK_ZINK "libOSMesaOverride.dylib"
+
 #define SPECIALBTN_KEYBOARD -1
 #define SPECIALBTN_TOGGLECTRL -2
 #define SPECIALBTN_MOUSEPRI -3

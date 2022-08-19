@@ -108,7 +108,9 @@ public final class GL {
                 GL = Library.loadNative(GL.class, "org.lwjgl.opengl", Configuration.OPENGL_LIBRARY_NAME, "libGL.so.1", "libGL.so");
                 break;
             case MACOSX:
-                String override = Configuration.OPENGL_LIBRARY_NAME.get();
+                // Configuration does not get updated if the value changes, so we have to use System.getProperty()
+                String override = System.getProperty("org.lwjgl.opengl.libname");
+                //Configuration.OPENGL_LIBRARY_NAME.get();
                 GL = override != null
                     ? Library.loadNative(GL.class, "org.lwjgl.opengl", override)
                     : MacOSXLibrary.getWithIdentifier("com.apple.opengl");

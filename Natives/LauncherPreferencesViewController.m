@@ -114,9 +114,10 @@ int tempIndex;
     CGFloat currY = 8.0;
     
     rendererDict = @{
-        @"gl4es 1.1.4 - exports OpenGL 2.1": @"libgl4es_114.dylib",
-        @"tinygl4angle (1.17+) - exports OpenGL 3.2 (Core Profile, limited)": @"libtinygl4angle.dylib",
-        @"Zink (Mesa 21.0) - exports OpenGL 4.1": @"libOSMesaOverride.dylib"
+        @"Auto: gl4es or tinygl4angle": @"auto",
+        @"gl4es 1.1.4 - exports OpenGL 2.1": @ RENDERER_NAME_GL4ES,
+        @"tinygl4angle (1.17+) - exports OpenGL 3.2 (Core Profile, limited)": @ RENDERER_NAME_MTL_ANGLE,
+        @"Zink (Mesa 21.0) - exports OpenGL 4.1": @ RENDERER_NAME_VK_ZINK
     };
     
     scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
