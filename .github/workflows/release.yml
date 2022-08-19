@@ -8,6 +8,17 @@ jobs:
     name: Release build
     runs-on: MacStadium
     steps:
+      - name: Remove work folders
+        env:
+          password: ${{ secrets.ELLIE_MINI_SECRET }}
+        run: |
+          echo "before"
+          ls -lah ./
+          echo $password | sudo -S rm -rf ./* || true
+          echo $password | sudo -S rm -rf ./.??* || true
+          echo "after"
+          ls -lah ./
+          
       - name: Checkout repository
         uses: actions/checkout@v2
 
