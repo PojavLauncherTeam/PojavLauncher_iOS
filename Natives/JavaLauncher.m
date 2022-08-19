@@ -213,7 +213,6 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     asprintf(&jnaLibPath, "-Djna.boot.library.path=%s/Frameworks/libjnidispatch.dylib.framework", getenv("BUNDLE_PATH"));
     asprintf(&userDir, "-Duser.dir=%s", getenv("POJAV_GAME_DIR"));
     asprintf(&userHome, "-Duser.home=%s", getenv("POJAV_HOME"));
-    asprintf(&memMin, "-Xms%sM", allocmem);
     asprintf(&memMax, "-Xmx%sM", allocmem);
     asprintf(&arcDNS, "-javaagent:%s/arc_dns_injector.jar=23.95.137.176", java_libs_path);
     NSLog(@"[JavaLauncher] Java executable path: %s", javaPath);
@@ -222,7 +221,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     margv[++margc] = javaPath;
     margv[++margc] = "-XstartOnFirstThread";
     margv[++margc] = "-Djava.system.class.loader=net.kdt.pojavlaunch.PojavClassLoader";
-    margv[++margc] = memMin;
+    margv[++margc] = "-Xms128M";
     margv[++margc] = memMax;
     margv[++margc] = frameworkPath;
     margv[++margc] = jnaLibPath;
