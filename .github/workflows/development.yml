@@ -45,3 +45,13 @@ jobs:
         with:
           name: PojavLauncher.dSYM
           path: artifacts/PojavLauncher.dSYM
+          
+      - name: Remove repository from runner
+        env:
+          password: ${{ secrets.ELLIE_MINI_SECRET }}
+        run: |
+          echo $password | sudo -S rm -rf /Users/administrator/Desktop/actions/actions-runner/_work/PojavLauncher_iOS
+          echo $password | sudo -S rm -rf /Users/administrator/Desktop/actions/actions-runner-2/_work/PojavLauncher_iOS
+          echo $password | sudo -S rm -rf /Users/administrator/Desktop/actions/actions-runner-3/_work/PojavLauncher_iOS
+          echo $password | sudo -S rm -rf /Users/administrator/Desktop/actions/actions-runner-4/_work/PojavLauncher_iOS
+          
