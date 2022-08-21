@@ -15,6 +15,7 @@ import net.kdt.pojavlaunch.Tools;
 
 import org.lwjgl.*;
 import org.lwjgl.system.*;
+import org.lwjgl.system.macosx.*;
 
 import static org.lwjgl.system.APIUtil.*;
 import static org.lwjgl.system.Checks.*;
@@ -569,7 +570,7 @@ public class GLFW
         throw new UnsupportedOperationException();
     }
 
-    private static final SharedLibrary GLFW = Library.loadNative(GLFW.class, "org.lwjgl.glfw", System.getenv("BUNDLE_PATH") + "/PojavLauncher", true);
+    private static final SharedLibrary GLFW = new MacOSXLibraryDL("PojavLauncher", DynamicLinkLoader.RTLD_DEFAULT);
 
 
     /** Contains the function pointers loaded from the glfw {@link SharedLibrary}. */
