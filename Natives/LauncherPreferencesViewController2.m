@@ -251,7 +251,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     NSDictionary *item = objc_getAssociatedObject(sender, @"item");
 
     // Special switches may define custom value instead of NO/YES
-    NSArray *customSwitchValue = objc_getAssociatedObject(sender, @"customSwitchValue");
+    NSArray *customSwitchValue = item[@"customSwitchValue"];
     if (customSwitchValue != nil) {
         setPreference(key, customSwitchValue[sender.isOn]);
     } else {
