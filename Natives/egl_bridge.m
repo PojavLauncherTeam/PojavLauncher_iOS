@@ -224,6 +224,7 @@ jboolean pojavInit_OpenGL() {
     if (config_renderer) return JNI_TRUE;
 
     NSString *renderer = @(getenv("POJAV_RENDERER"));
+    JNI_LWJGL_changeRenderer(renderer.UTF8String);
     BOOL isAuto = [renderer isEqualToString:@"auto"];
     if ([renderer isEqualToString:@"libOSMesa.8.dylib"]) {
         config_renderer = RENDERER_VIRGL;
@@ -261,8 +262,6 @@ jboolean pojavInit_OpenGL() {
         setenv("POJAV_RENDERER", renderer.UTF8String, 1);
         if (isAuto) {
             JNI_LWJGL_changeRenderer(RENDERER_NAME_GL4ES);
-        } else {
-            JNI_LWJGL_changeRenderer(renderer.UTF8String);
         }
 
         debugLog("EGLBridge: Initializing");

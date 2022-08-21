@@ -7,9 +7,13 @@
 
 #include "utils.h"
 
+typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
+
 @interface LauncherPreferencesViewController2() {}
 @property NSArray<NSString*>* prefSections;
 @property NSArray<NSDictionary<NSString*, NSDictionary*>*>* prefContents;
+
+@property CreateView typePickField, typeTextField, typeSlider, typeSwitch;
 @end
 
 @implementation LauncherPreferencesViewController2
@@ -17,6 +21,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    [self initViewCreation];
 
     self.tableView = [[TOInsetGroupedTableView alloc] init];
     self.tableView.allowsSelection = NO;
@@ -28,94 +34,94 @@
         // General settings
             @"game_directory": @{
                 @"icon": @"folder",
-                @"type": @"PickField",
+                @"type": self.typePickField,
                 @"pickList": @[@"default", @"TODO"]
             },
             @"home_symlink": @{
                 @"icon": @"link",
-                @"type": @"Switch"
+                @"type": self.typeSwitch
             },
             @"check_sha": @{
                 @"icon": @"lock.shield",
-                @"type": @"Switch"
+                @"type": self.typeSwitch
             },
             @"cosmetica": @{
                 @"icon": @"eyeglasses",
-                @"type": @"Switch"
+                @"type": self.typeSwitch
             },
             @"reset_warnings": @{
                 @"icon": @"exclamationmark.triangle",
-                @"type": @"Switch"
+                @"type": self.typeSwitch
             },
             @"reset_settings": @{
                 @"icon": @"trash",
-                @"type": @"Switch"
+                @"type": self.typeSwitch
             }
         }, @{
         // Video and renderer settings
             @"renderer": @{
                 @"icon": @"cpu",
-                @"type": @"PickField",
+                @"type": self.typePickField,
                 @"pickList": @[@"gl4es", @"zink", @"wip"]
             },
             @"resolution": @{
                 @"icon": @"viewfinder",
-                @"type": @"Slider"
+                @"type": self.typeSlider
             },
         }, @{
         // Control settings
         /*
             @"disable_gesture": @{
-                @"type": @"Switch"
+                @"type": self.typeSwitch
             },
         */
             @"press_duration": @{
                 @"icon": @"timer",
-                @"type": @"Slider",
+                @"type": self.typeSlider,
                 @"min": @(100),
                 @"max": @(1000)
             },
             @"button_scale": @{
                 @"icon": @"aspectratio",
-                @"type": @"Slider",
+                @"type": self.typeSlider,
                 @"min": @(50), // 80?
                 @"max": @(500)
             },
             @"mouse_scale": @{
                 @"icon": @"arrow.up.left.and.arrow.down.right.circle",
-                @"type": @"Slider",
+                @"type": self.typeSlider,
                 @"min": @(25),
                 @"max": @(300)
             },
             @"mouse_speed": @{
                 @"icon": @"arrow.left.and.right",
-                @"type": @"Slider",
+                @"type": self.typeSlider,
                 @"min": @(25),
                 @"max": @(300)
             },
             @"virtmouse_enable": @{
                 @"icon": @"cursorarrow.rays",
-                @"type": @"Switch"
+                @"type": self.typeSwitch
             },
             @"slideable_hotbar": @{
                 @"icon": @"slider.horizontal.below.rectangle",
-                @"type": @"Switch"
+                @"type": self.typeSwitch
             }
         }, @{
         // Java tweaks
             @"java_home": @{ // TODO: name as Use Java 17 for older MC
                 @"icon": @"cube",
-                @"type": @"PickField",
+                @"type": self.typeSwitch,
                 // false: 8, true: 17
                 @"customSwitchValue": @[@"java-8-openjdk", @"java-17-openjdk"]
             },
             @"java_args": @{
                 @"icon": @"slider.vertical.3",
-                @"type": @"TextField"
+                @"type": self.typeTextField
             },
             @"auto_ram": @{
                 @"icon": @"slider.horizontal.3",
-                @"type": @"Switch",
+                @"type": self.typeSwitch,
                 @"hidden": @(getenv("POJAV_DETECTEDJB") != NULL),
                 @"warnCondition": ^BOOL(UISwitch *view){
                     return view.isOn;
@@ -125,7 +131,7 @@
             },
             @"allocated_memory": @{
                 @"icon": @"memorychip",
-                @"type": @"Slider",
+                @"type": self.typeSlider,
                 @"min": @(NSProcessInfo.processInfo.physicalMemory / 1048576 * 0.25),
                 @"max": @(NSProcessInfo.processInfo.physicalMemory / 1048576 * 0.85),
                 @"warnAlways": @NO,
@@ -157,11 +163,25 @@
 
     NSString *key = self.prefContents[indexPath.section].allKeys[indexPath.row];
     NSDictionary *item = self.prefContents[indexPath.section].allValues[indexPath.row];
-    NSString *type = item[@"type"];
-    if ([type isEqualToString:@"PickField"]) {
+    CreateView createView = item[@"type"];
+    createView(cell, key, item);
+
+    // Set general properties
+    if (@available(iOS 13.0, *)) {
+        cell.imageView.image = [UIImage systemImageNamed:item[@"icon"]];
+    }
+    cell.textLabel.text = NSLocalizedString(([NSString stringWithFormat:@"preference.title.%@", key]), nil);
+
+    return cell;
+}
+
+- (void)initViewCreation {
+    self.typePickField = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
         cell.accessoryView = [[UITextField alloc] init];
         [(id)(cell.accessoryView) setText:getPreference(key)];
-    } else if ([type isEqualToString:@"TextField"]) {
+    };
+
+    self.typeTextField = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
         UITextField *view = [[UITextField alloc] init];
         view.autocorrectionType = UITextAutocorrectionTypeNo;
         view.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -169,26 +189,21 @@
         view.text = getPreference(key);
         view.adjustsFontSizeToFitWidth = YES;
         cell.accessoryView = view;
-    } else if ([type isEqualToString:@"Slider"]) {
+    };
+
+    self.typeSlider = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
         DBNumberedSlider *view = [[DBNumberedSlider alloc] init];
         view.minimumValue = [item[@"min"] intValue];
         view.maximumValue = [item[@"max"] intValue];
         view.continuous = YES;
         view.value = [getPreference(key) intValue];
         cell.accessoryView = view;
-    } else if ([type isEqualToString:@"Switch"]) {
+    };
+
+    self.typeSwitch = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
         cell.accessoryView = [[UISwitch alloc] init];
         [(id)(cell.accessoryView) setOn:[getPreference(key) boolValue] animated:NO];
-    } else {
-        NSAssert(NO, @"Unknown type: %@", type);
-    }
-
-    if (@available(iOS 13.0, *)) {
-        cell.imageView.image = [UIImage systemImageNamed:item[@"icon"]];
-    }
-    cell.textLabel.text = NSLocalizedString(([NSString stringWithFormat:@"preference.title.%@", key]), nil);
-
-    return cell;
+    };
 }
 
 @end
