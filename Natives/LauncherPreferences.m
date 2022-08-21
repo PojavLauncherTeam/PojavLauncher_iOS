@@ -84,12 +84,12 @@ void loadPreferences() {
       stringByAppendingPathComponent:@"launcher_preferences.plist"];
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    if (![fileManager fileExistsAtPath:prefPath]) {
+    prefDict = [NSMutableDictionary dictionaryWithContentsOfFile:prefPath];
+    if (![fileManager fileExistsAtPath:prefPath] || [prefDict[@"reset_settings"] boolValue]) {
         prefDict = [[NSMutableDictionary alloc] init];
         envPrefDict = [[NSMutableDictionary alloc] init];
         warnPrefDict = [[NSMutableDictionary alloc] init];
     } else {
-        prefDict = [NSMutableDictionary dictionaryWithContentsOfFile:prefPath];
         envPrefDict = prefDict[@"env_vars"];
         warnPrefDict = prefDict[@"warnings"];
     }
@@ -124,7 +124,7 @@ void loadPreferences() {
     setDefaultValueForPref(prefDict, @"slideable_hotbar", @NO);
     setDefaultValueForPref(prefDict, @"virtmouse_enable", @NO);
     setDefaultValueForPref(prefDict, @"check_sha", @YES);
-    setDefaultValueForPref(prefDict, @"ram_unjb_enable", @NO);
+    setDefaultValueForPref(prefDict, @"auto_ram", @(getenv("POJAV_DETECTEDJB") == NULL));
     
     if (0 != [fileManager fileExistsAtPath:@"/var/mobile/Documents/.pojavlauncher"]) {
         setDefaultValueForPref(prefDict, @"disable_home_symlink", @NO);

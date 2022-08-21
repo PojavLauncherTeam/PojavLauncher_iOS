@@ -234,7 +234,7 @@ int main(int argc, char * argv[]) {
     } else {
         setenv("POJAV_HOME", [NSString stringWithFormat:@"%s/Documents", getenv("HOME")].UTF8String, 1);
 
-        init_hookFunctions();
+        //init_hookFunctions();
     }
 
     [fm createDirectoryAtPath:@(getenv("POJAV_HOME")) withIntermediateDirectories:NO attributes:nil error:nil];
