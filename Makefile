@@ -325,13 +325,13 @@ ipa: dsym
 	echo 'Building PojavLauncher $(VERSION) - IPA - Start'
 	mkdir -p $(SOURCEDIR)/depends; \
 	cd $(SOURCEDIR)/depends; \
-	if [ ! -d "java-8-openjdk" ] && [ -n "$(ls ../jre8-*.tar.xz)" ]; then \
+	if [ ! -d "java-8-openjdk" ] && [ ! -f "$(ls ../jre8-*.tar.xz)" ]; then \
 		mkdir java-8-openjdk && cd java-8-openjdk; \
 		tar xvf ../jre8-*.tar.xz; \
 		rm ../jre8-*.tar.xz; \
 	fi; \
 	cd ..; \
-	if [ ! -d "java-17-openjdk" ] && [ -n "$(ls ../jre17-*.tar.xz)" ]; then \
+	if [ ! -d "java-17-openjdk" ] && [ ! -f "$(ls ../jre17-*.tar.xz)" ]; then \
 		mkdir java-17-openjdk && cd java-17-openjdk; \
 		tar xvf ../jre17-*.tar.xz; \
 		rm ../jre17-*.tar.xz; \
