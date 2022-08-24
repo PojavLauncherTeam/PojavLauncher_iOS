@@ -1,8 +1,13 @@
 #include "../jni.h"
 
-jfieldID colorValueID;
+//jfieldID colorValueID;
 
 // java.awt.*
+JNIEXPORT void JNICALL
+Java_java_awt_AWTEvent_initIDs(JNIEnv *env, jclass cls)
+{
+}
+
 JNIEXPORT void JNICALL
 Java_java_awt_Button_initIDs
   (JNIEnv *env, jclass cls)
@@ -13,7 +18,7 @@ JNIEXPORT void JNICALL
 Java_java_awt_Color_initIDs
   (JNIEnv *env, jclass clazz)
 {
-    colorValueID = (*env)->GetFieldID(env, clazz, "value", "I");
+    //colorValueID = (*env)->GetFieldID(env, clazz, "value", "I");
 }
 
 JNIEXPORT void JNICALL
@@ -94,6 +99,11 @@ Java_java_awt_FontMetrics_initIDs
 JNIEXPORT void JNICALL
 Java_java_awt_Frame_initIDs
   (JNIEnv *env, jclass cls)
+{
+}
+
+JNIEXPORT void JNICALL
+Java_java_awt_Insets_initIDs(JNIEnv *env, jclass cls)
 {
 }
 
@@ -189,6 +199,16 @@ JNIEXPORT void JNICALL
 Java_java_awt_AWTEvent_nativeSetSource(JNIEnv *env, jobject self, jobject newSource)
 {
     // Maybe implement this?
+}
+
+JNIEXPORT void JNICALL
+Java_java_awt_event_InputEvent_initIDs(JNIEnv *env, jclass cls)
+{
+}
+
+JNIEXPORT void JNICALL
+Java_java_awt_event_KeyEvent_initIDs(JNIEnv *env, jclass cls)
+{
 }
 
 JNIEXPORT void JNICALL

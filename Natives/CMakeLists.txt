@@ -20,7 +20,7 @@ include_directories(
 )
 
 # For cacio support library
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -rpath @executable_path/jvm/java-8-openjdk/lib -rpath /usr/lib/jvm/java-8-openjdk/lib")
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -rpath @loader_path -rpath @executable_path/jvm/java-8-openjdk/lib -rpath /usr/lib/jvm/java-8-openjdk/lib")
 
 add_definitions(-DCONFIG_COMMIT="${CONFIG_COMMIT}")
 add_definitions(-DCONFIG_RELEASE=${CONFIG_RELEASE})

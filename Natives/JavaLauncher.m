@@ -113,12 +113,7 @@ NSString* environmentFailsafes(int minVersion) {
     NSString *jre16Path = [NSString stringWithFormat:@"%@/java-16-openjdk", jvmPath];
     NSString *jre17Path = [NSString stringWithFormat:@"%@/java-17-openjdk", jvmPath];
 
-    BOOL foundJava8 = [fm fileExistsAtPath:jre8Path];
-    if (!foundJava8) {
-        regLog("[JavaLauncher] Java 8 wasn't found on your device. Install Java 8 for more compatibility and the mod installer.");
-    }
-
-    if (foundJava8 && minVersion <= 8) {
+    if ([fm fileExistsAtPath:jre8Path] && minVersion <= 8) {
         javaHome = jre8Path;
     } else if ([fm fileExistsAtPath:jre16Path] && minVersion <= 16) {
         javaHome = jre16Path;
@@ -143,7 +138,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     NSString *javaHome_pre = getPreference(@"java_home");
 
     // We handle unset JAVA_HOME right there
-    if (username == nil || getSelectedJavaVersion() < minVersion) {
+    if (getSelectedJavaVersion() < minVersion) {
         NSLog(@"[JavaLauncher] Attempting to change to Java %d (actual might be higher)", minVersion);
         javaHome_pre = environmentFailsafes(minVersion);
         NSLog(@"[JavaLauncher] JAVA_HOME is now set to %@", javaHome_pre);
@@ -182,29 +177,8 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     
     allocmem_pre = [getPreference(@"allocated_memory") stringValue];
     allocmem = [allocmem_pre cStringUsingEncoding:NSUTF8StringEncoding];
-    
-    char classpath[10000];
 
     // "/Applications/PojavLauncher.app/libs/launcher.jar:/Applications/PojavLauncher.app/libs/ExagearApacheCommons.jar:/Applications/PojavLauncher.app/libs/gson-2.8.6.jar:/Applications/PojavLauncher.app/libs/jsr305.jar:/Applications/PojavLauncher.app/libs/lwjgl3-minecraft.jar";
-
-    // Generate classpath
-    DIR *d;
-    struct dirent *dir;
-    d = opendir(java_libs_path);
-    int cplen = -2;
-    if (d) {
-        // cplen += sprintf(classpath + cplen, "-Xbootclasspath/a:");
-        while ((dir = readdir(d)) != NULL) {
-            if (cplen < 0) {
-                ++cplen;
-                continue;
-            }
-            cplen += sprintf(classpath + cplen, "%s/%s:", java_libs_path, dir->d_name);
-        }
-        classpath[cplen-1] = '\0';
-        closedir(d);
-    }
-    debugLog("[JavaLauncher] Classpath generated: %s", classpath);
 
     // Check if JVM restarts
     char *frameworkPath, *javaPath, *jnaLibPath, *userDir, *userHome, *memMin, *memMax, *arcDNS;
@@ -238,6 +212,11 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
         margv[++margc] = (char *) [NSString stringWithFormat:@"-Dpojav.selectedAccount=%@", selectedAccount].UTF8String;
     }
 
+    // Setup Caciocavallo
+    margv[++margc] = "-Djava.awt.headless=false";
+    margv[++margc] = "-Dcacio.font.fontmanager=sun.awt.X11FontManager";
+    margv[++margc] = "-Dcacio.font.fontscaler=sun.font.FreetypeFontScaler";
+
     // Load java
     char libjlipath8[2048]; // java 8
     char libjlipath16[2048]; // java 16+ (?)
@@ -257,37 +236,68 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
         }
 
         // Setup Caciocavallo
-        margv[++margc] = "-Djava.awt.headless=false";
-        margv[++margc] = "-Dcacio.font.fontmanager=sun.awt.X11FontManager";
-        margv[++margc] = "-Dcacio.font.fontscaler=sun.font.FreetypeFontScaler";
         margv[++margc] = "-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel";
         margv[++margc] = "-Dawt.toolkit=net.java.openjdk.cacio.ctc.CTCToolkit";
         margv[++margc] = "-Djava.awt.graphicsenv=net.java.openjdk.cacio.ctc.CTCGraphicsEnvironment";
-
-        // Generate Caciocavallo bootclasspath
-        char cacio_libs_path[2048];
-        char cacio_classpath[8192];
-        sprintf((char*) cacio_libs_path, "%s/libs_caciocavallo", getenv("BUNDLE_PATH"));
-        cplen = sprintf(cacio_classpath, "-Xbootclasspath/p");
-        d = opendir(cacio_libs_path);
-        int skip = 2;
-        if (d) {
-            while ((dir = readdir(d)) != NULL) {
-                if (skip > 0) {
-                    --skip;
-                    continue;
-                }
-                cplen += sprintf(cacio_classpath + cplen, ":%s/%s", cacio_libs_path, dir->d_name);
-            }
-            closedir(d);
-        }
-        margv[++margc] = cacio_classpath;
     } else {
+        // Required by Cosmetica to inject DNS
         margv[++margc] = "--add-opens=java.base/java.net=ALL-UNNAMED";
+
+        // Setup Caciocavallo
+        margv[++margc] = "-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel";
+        margv[++margc] = "-Dawt.toolkit=com.github.caciocavallosilano.cacio.ctc.CTCToolkit";
+        margv[++margc] = "-Djava.awt.graphicsenv=com.github.caciocavallosilano.cacio.ctc.CTCGraphicsEnvironment";
+        // Required by Caciocavallo17 to access internal API
+        margv[++margc] = "--add-exports=java.desktop/java.awt=ALL-UNNAMED";
+        margv[++margc] = "--add-exports=java.desktop/java.awt.peer=ALL-UNNAMED";
+        margv[++margc] = "--add-exports=java.desktop/sun.awt.image=ALL-UNNAMED";
+        margv[++margc] = "--add-exports=java.desktop/sun.java2d=ALL-UNNAMED";
+        margv[++margc] = "--add-exports=java.desktop/java.awt.dnd.peer=ALL-UNNAMED";
+        margv[++margc] = "--add-exports=java.desktop/sun.awt=ALL-UNNAMED";
+        margv[++margc] = "--add-exports=java.desktop/sun.awt.event=ALL-UNNAMED";
+        margv[++margc] = "--add-exports=java.desktop/sun.awt.datatransfer=ALL-UNNAMED";
+        margv[++margc] = "--add-exports=java.desktop/sun.font=ALL-UNNAMED";
+        margv[++margc] = "--add-exports=java.base/sun.security.action=ALL-UNNAMED";
+        margv[++margc] = "--add-opens=java.base/java.util=ALL-UNNAMED";
+        margv[++margc] = "--add-opens=java.desktop/java.awt=ALL-UNNAMED";
+        margv[++margc] = "--add-opens=java.desktop/sun.font=ALL-UNNAMED";
+        margv[++margc] = "--add-opens=java.desktop/sun.java2d=ALL-UNNAMED";
+        margv[++margc] = "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED";
 
         // TODO: workaround, will be removed once the startup part works without PLaunchApp
         margv[++margc] = "--add-exports=cpw.mods.bootstraplauncher/cpw.mods.bootstraplauncher=ALL-UNNAMED";
     }
+
+    // Add Caciocavallo bootclasspath
+    NSString *cacio_classpath = [NSString stringWithFormat:@"-Xbootclasspath/%s", isJava8 ? "p" : "a"];
+    NSString *cacio_libs_path = [NSString stringWithFormat:@"%s/libs_caciocavallo%s", getenv("BUNDLE_PATH"), isJava8 ? "" : "17"];
+    NSArray *files = [fm contentsOfDirectoryAtPath:cacio_libs_path error:nil];
+    for(NSString *file in files) {
+        if ([file hasSuffix:@".jar"]) {
+            cacio_classpath = [NSString stringWithFormat:@"%@:%@/%@", cacio_classpath, cacio_libs_path, file];
+        }
+    }
+    margv[++margc] = (char *)cacio_classpath.UTF8String;
+    
+/*
+    char cacio_libs_path[2048];
+    char cacio_classpath[8192];
+    sprintf((char*) cacio_libs_path, "%s/libs_caciocavallo", getenv("BUNDLE_PATH"));
+    cplen = sprintf(cacio_classpath, "-Xbootclasspath/p");
+    d = opendir(cacio_libs_path);
+    int skip = 2;
+    if (d) {
+        while ((dir = readdir(d)) != NULL) {
+            if (skip > 0) {
+                --skip;
+                continue;
+            }
+            cplen += sprintf(cacio_classpath + cplen, ":%s/%s", cacio_libs_path, dir->d_name);
+        }
+        closedir(d);
+    }
+    margv[++margc] = cacio_classpath;
+*/
 
     if (!getEntitlementValue(@"com.apple.developer.kernel.extended-virtual-addressing")) {
         // In jailed environment, where extended virtual addressing entitlement isn't
@@ -311,7 +321,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     regLog("[Init] Found JLI lib");
 
     margv[++margc] = "-cp";
-    margv[++margc] = classpath;
+    margv[++margc] = (char *)[NSString stringWithFormat:@"%s/*", java_libs_path].UTF8String;
     margv[++margc] = "net.kdt.pojavlaunch.PojavLauncher";
 
     if (username == nil) {

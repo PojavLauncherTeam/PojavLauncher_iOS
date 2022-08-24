@@ -25,6 +25,28 @@ jobs:
       - name: Checkout repository submodules
         run: git submodule update --init --recursive
         
+    - name: Get JRE8
+      uses: dawidd6/action-download-artifact@v2
+      with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          workflow: build.yml
+          path: depends
+          workflow_conclusion: success
+          repo: PojavLauncherTeam/android-openjdk-build-multiarch
+          branch: jre8-ios-jitjailed
+          name: jre8-ios-aarch64
+
+    - name: Get JRE17
+      uses: dawidd6/action-download-artifact@v2
+      with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          workflow: build.yml
+          path: depends
+          workflow_conclusion: success
+          repo: PojavLauncherTeam/android-openjdk-build-multiarch
+          branch: buildjre17
+          name: jre17-ios-aarch64
+
       - name: Build packages
         env:
           password: ${{ secrets.ELLIE_MINI_SECRET }}

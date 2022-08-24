@@ -231,10 +231,11 @@ int main(int argc, char * argv[]) {
         setenv("HOME", "/usr/share", 1);
         setenv("OLD_POJAV_HOME", "/var/mobile/Documents/.pojavlauncher", 1);
         setenv("POJAV_HOME", "/usr/share/pojavlauncher", 1);
+        // In this environment, libawt_xawt is not available/X11 only.
+        // hook dlopen to use our libawt_xawt
+        init_hookFunctions();
     } else {
         setenv("POJAV_HOME", [NSString stringWithFormat:@"%s/Documents", getenv("HOME")].UTF8String, 1);
-
-        init_hookFunctions();
     }
 
     [fm createDirectoryAtPath:@(getenv("POJAV_HOME")) withIntermediateDirectories:NO attributes:nil error:nil];

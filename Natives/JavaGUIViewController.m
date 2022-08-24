@@ -113,6 +113,10 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
 - (void)surfaceOnClick:(UITapGestureRecognizer *)sender {
     if (method_ReceiveInput == NULL) {
         class_CTCAndroidInput = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "net/java/openjdk/cacio/ctc/CTCAndroidInput");
+        if ((*runtimeJNIEnvPtr)->ExceptionCheck(runtimeJNIEnvPtr) == JNI_TRUE) {
+            (*runtimeJNIEnvPtr)->ExceptionClear(runtimeJNIEnvPtr);
+            class_CTCAndroidInput = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "com/github/caciocavallosilano/cacio/ctc/CTCAndroidInput");
+        }
         assert(class_CTCAndroidInput != NULL);
         method_ReceiveInput = (*runtimeJNIEnvPtr)->GetStaticMethodID(runtimeJNIEnvPtr, class_CTCAndroidInput, "receiveData", "(IIIII)V");
         assert(method_ReceiveInput != NULL);
