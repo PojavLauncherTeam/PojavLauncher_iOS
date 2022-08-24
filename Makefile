@@ -297,13 +297,14 @@ deb: native java extras
 	fi
 	$(call DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs)
 	$(call DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs_caciocavallo)
+	$(call DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs_caciocavallo17)
 	@cp -R $(SOURCEDIR)/Natives/resources/* $(WORKINGDIR)/PojavLauncher.app/ || exit 1
 	@cp $(WORKINGDIR)/*.dylib $(WORKINGDIR)/PojavLauncher.app/Frameworks/ || exit 1
 	@( cd $(WORKINGDIR)/PojavLauncher.app/Frameworks; ln -sf libawt_xawt.dylib libawt_headless.dylib ) || exit 1
 	@cp -R $(WORKINGDIR)/*.framework $(WORKINGDIR)/PojavLauncher.app/Frameworks/ || exit 1
 	@cp -R $(SOURCEDIR)/JavaApp/libs/* $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
 	@cp $(SOURCEDIR)/JavaApp/local_out/*.jar $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
-	@cp -R $(SOURCEDIR)/JavaApp/libs_caciocavallo/* $(WORKINGDIR)/PojavLauncher.app/libs_caciocavallo/ || exit 1
+	@cp -R $(SOURCEDIR)/JavaApp/libs_caciocavallo* $(WORKINGDIR)/PojavLauncher.app/ || exit 1
 	@cp -R $(SOURCEDIR)/Natives/*.lproj $(WORKINGDIR)/PojavLauncher.app/ || exit 1
 	$(call DIRCHECK,$(OUTPUTDIR))
 	@cp -R $(WORKINGDIR)/PojavLauncher.app $(OUTPUTDIR)
