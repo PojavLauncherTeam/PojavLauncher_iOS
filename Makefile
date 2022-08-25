@@ -14,6 +14,9 @@ IOS15PREF   := private/preboot/procursus
 # Release vs Debug
 RELEASE ?= 0
 
+# Check if running on github runner
+RUNNER ?= 0
+
 ifeq (1,$(RELEASE))
 CMAKE_BUILD_TYPE := Release
 else
@@ -328,12 +331,18 @@ ipa: dsym
 	cd $(SOURCEDIR)/depends; \
 	if [ ! -d "java-8-openjdk" ] && [ ! -f "$(ls ../jre8-*.tar.xz)" ]; then \
 		mkdir java-8-openjdk && cd java-8-openjdk; \
+		if [ "$(RUNNER)" != "1" ]; then \
+			wget 'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre8-40df388/jre8-arm64-20220811-release.tar.xz'; \
+		fi; \
 		tar xvf ../jre8-*.tar.xz; \
 		rm ../jre8-*.tar.xz; \
 	fi; \
 	cd ..; \
 	if [ ! -d "java-17-openjdk" ] && [ ! -f "$(ls ../jre17-*.tar.xz)" ]; then \
 		mkdir java-17-openjdk && cd java-17-openjdk; \
+		if [ "$(RUNNER)" != "1" ]; then \
+			wget 'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre17-ca01427/jre17-arm64-20220817-release.tar.xz'; \
+		fi; \
 		tar xvf ../jre17-*.tar.xz; \
 		rm ../jre17-*.tar.xz; \
 	fi; \
