@@ -41,11 +41,13 @@ GLboolean (*OSMesaMakeCurrent_p) (OSMesaContext ctx, void *buffer, GLenum type,
 OSMesaContext (*OSMesaGetCurrentContext_p) (void);
 OSMesaContext  (*OSMesaCreateContext_p) (GLenum format, OSMesaContext sharelist);
 void (*OSMesaDestroyContext_p) (OSMesaContext ctx);
+void (*OSMesaFlushFrontbuffer_p) ();
 void (*OSMesaPixelStore_p) ( GLint pname, GLint value );
 GLubyte* (*glGetString_p) (GLenum name);
 void (*glFinish_p) (void);
 void (*glClearColor_p) (GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha);
 void (*glClear_p) (GLbitfield mask);
+void (*glReadBuffer_p) (GLenum mode);
 
 /*EGL functions */
 EGLBoolean (*eglMakeCurrent_p) (EGLDisplay dpy, EGLSurface draw, EGLSurface read, EGLContext ctx);
@@ -160,11 +162,13 @@ void dlsym_OSMesa(void* dl_handle) {
     OSMesaGetCurrentContext_p = dlsym(dl_handle,"OSMesaGetCurrentContext");
     OSMesaCreateContext_p = dlsym(dl_handle, "OSMesaCreateContext");
     OSMesaDestroyContext_p = dlsym(dl_handle, "OSMesaDestroyContext");
+    OSMesaFlushFrontbuffer_p = dlsym(dl_handle, "OSMesaFlushFrontbuffer");
     OSMesaPixelStore_p = dlsym(dl_handle,"OSMesaPixelStore");
     glGetString_p = dlsym(dl_handle,"glGetString");
     glClearColor_p = dlsym(dl_handle, "glClearColor");
     glClear_p = dlsym(dl_handle,"glClear");
     glFinish_p = dlsym(dl_handle,"glFinish");
+    glReadBuffer_p = dlsym(dl_handle,"glReadBuffer");
 }
 
 void loadSymbols(int renderer) {
@@ -332,17 +336,6 @@ jboolean pojavInit_OpenGL() {
             NSLog(@"OSMDroid: %s",dlerror());
             return JNI_FALSE;
         }
-        
-        NSLog(@"OSMDroid: width=%i;height=%i, reserving %i bytes for frame buffer", windowWidth, windowHeight,
-             windowWidth * 4 * windowHeight);
-        gbuffer = malloc(windowWidth * 4 * windowHeight+1);
-        if (gbuffer) {
-            NSLog(@"OSMDroid: created frame buffer");
-            return JNI_TRUE;
-        } else {
-            NSLog(@"OSMDroid: can't generate frame buffer");
-            return JNI_FALSE;
-        }
     }
     
     return JNI_FALSE;
@@ -403,10 +396,7 @@ void pojavSwapBuffers() {
         } break;
 
         case RENDERER_VK_ZINK: {
-            glFinish_p();
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [((SurfaceViewController *)currentWindow().rootViewController).surfaceView displayLayer];
-            });
+            OSMesaFlushFrontbuffer_p();
         } break;
     }
 }
@@ -463,18 +453,24 @@ void pojavMakeCurrent(void* window) {
 
     if (config_renderer == RENDERER_VK_ZINK || config_renderer == RENDERER_VIRGL) {
             NSLog(@"OSMDroid: making current");
-            OSMesaMakeCurrent_p((OSMesaContext)window,gbuffer,GL_UNSIGNED_BYTE,windowWidth,windowHeight);
+            OSMesaMakeCurrent_p((OSMesaContext)window,(__bridge void *)(((SurfaceViewController *)currentVC()).surfaceView.layer),GL_UNSIGNED_BYTE,savedWidth,savedHeight);
+/*
             if (config_renderer == RENDERER_VK_ZINK) {
                 OSMesaPixelStore_p(OSMESA_ROW_LENGTH,windowWidth);
                 OSMesaPixelStore_p(OSMESA_Y_UP,0);
             }
-
+*/
             NSDebugLog(@"OSMDroid: vendor: %s",glGetString_p(GL_VENDOR));
             NSDebugLog(@"OSMDroid: renderer: %s",glGetString_p(GL_RENDERER));
             NSDebugLog(@"OSMDroid: extensions: %s",glGetString_p(GL_EXTENSIONS));
+
+            glReadBuffer_p(GL_BACK);
+            glReadBuffer_p(GL_FRONT);
+/*
             glClear_p(GL_COLOR_BUFFER_BIT);
             glClearColor_p(0.4f, 0.4f, 0.4f, 1.0f);
             pojavSwapBuffers();
+*/
             return;
     }
 
@@ -531,7 +527,8 @@ JNIEXPORT void JNICALL Java_org_lwjgl_opengl_GL_nativeRegalMakeCurrent(JNIEnv *e
 
 JNIEXPORT jlong JNICALL
 Java_org_lwjgl_opengl_GL_getGraphicsBufferAddr(JNIEnv *env, jobject thiz) {
-    return (jlong)&gbuffer;
+    return (jlong)[[(id)currentVC() surfaceView] layer];
+    //(__bridge void *)((SurfaceViewController *)currentVC()).surfaceView.layer);
 }
 JNIEXPORT jintArray JNICALL
 Java_org_lwjgl_opengl_GL_getNativeWidthHeight(JNIEnv *env, jobject thiz) {
