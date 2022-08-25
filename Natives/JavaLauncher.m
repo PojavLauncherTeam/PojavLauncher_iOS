@@ -50,7 +50,9 @@ void init_loadCustomEnv() {
     /* Define default env */
 
     // I accidentally patched a bit wrong, the value should be a path containing libawt_xawt.dylib, but here is libawt.dylib path (no need to exist)
-    setenv("JAVA_AWT_PATH", [NSString stringWithFormat:@"%s/Frameworks/libawt.dylib", getenv("BUNDLE_PATH")].UTF8String, 1);
+    if (getenv("POJAV_DETECTEDJB")) {
+        setenv("JAVA_AWT_PATH", [NSString stringWithFormat:@"%s/Frameworks/libawt.dylib", getenv("BUNDLE_PATH")].UTF8String, 1);
+    }
 
     // Disable overloaded functions hack for Minecraft 1.17+
     setenv("LIBGL_NOINTOVLHACK", "1", 1);

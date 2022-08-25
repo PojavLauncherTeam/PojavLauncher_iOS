@@ -38,27 +38,32 @@ public class UIKit {
                 } catch (ClassNotFoundException e) {
                     getCurrentScreenRGB = Class.forName("com.github.caciocavallosilano.cacio.ctc.CTCScreen").getMethod("getCurrentScreenRGB");
                 }
+            } catch (Throwable th) {
+                System.err.println("Failed to find class CTCScreen");
+                th.printStackTrace();
+                System.exit(1);
+                return;
+            }
 
-                long lastTime = System.currentTimeMillis();
-                while (true) {
-                    int[] pixelsArray = null;
-                    try{
-                        pixelsArray = (int[])getCurrentScreenRGB.invoke(null);
-                    } catch (NullPointerException e) {
-                        Thread.sleep(500);
-                    }
-                    if (pixelsArray != null) {
-                        //System.out.println(java.util.Arrays.toString(pixelsArray));
-                        refreshAWTBuffer(pixelsArray);
-                    }
-                    long currentTime = System.currentTimeMillis();
-                    if (currentTime - lastTime < 16) {
-                        Thread.sleep(16 - (currentTime - lastTime));
-                    }
-                    lastTime = currentTime;
+            long lastTime = System.currentTimeMillis();
+            while (true) {
+                int[] pixelsArray = null;
+                try{
+                    pixelsArray = (int[])getCurrentScreenRGB.invoke(null);
+                } catch (Throwable e) {}
+                if (pixelsArray != null) {
+                    //System.out.println(java.util.Arrays.toString(pixelsArray));
+                    refreshAWTBuffer(pixelsArray);
                 }
-            } catch (Throwable e) {
-                e.printStackTrace();
+                long currentTime = System.currentTimeMillis();
+                if (currentTime - lastTime < 16) {
+                    try {
+                        Thread.sleep(16 - (currentTime - lastTime));
+                    } catch (InterruptedException e) {
+                        break;
+                    }
+                }
+                lastTime = currentTime;
             }
         }, "AWTFBRefreshThread").start();
 
