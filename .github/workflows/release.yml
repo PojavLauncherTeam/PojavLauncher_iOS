@@ -52,7 +52,7 @@ jobs:
           password: ${{ secrets.ELLIE_MINI_SECRET }}
         run: |
           export RELEASE=1
-          export NOSTDIN=1 SUDOPASS=$password RELEASE=1
+          export NOSTDIN=1 SUDOPASS=$password RUNNER=1
           export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
           gmake -j$(sysctl -n hw.ncpu) ipa
 
