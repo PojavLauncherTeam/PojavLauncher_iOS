@@ -153,6 +153,12 @@ void loadPreferences(BOOL reset) {
     setPreference(@"java_home", [getPreference(@"java_home") lastPathComponent]);
 
     prefDict[@"debugs"] = debugPrefDict;
+    // Perform migrations
+    if ([getPreference(@"renderer") isEqualToString:@"libOSMesaOverride.dylib"]) {
+        // Triangle fan hack is no longer needed
+        setPreference(@"renderer", @"libOSMesa.8.dylib");
+    }
+
     prefDict[@"env_vars"] = envPrefDict;
     prefDict[@"warnings"] = warnPrefDict;
 

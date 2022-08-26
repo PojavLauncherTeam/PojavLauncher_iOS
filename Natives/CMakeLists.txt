@@ -50,14 +50,6 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -rpath @executable_path/Fr
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -rpath @executable_path/Frameworks -rpath @loader_path/Frameworks")
 
 
-add_library(OSMesaOverride SHARED gl_mesa3d_patch.m)
-target_link_libraries(OSMesaOverride
-  "${GLOBAL_LDFLAGS}"
-  "-L${CMAKE_FRAMEWORK_PATH}"
-  "-lOSMesa.8"
-)
-
-
 add_library(tinygl4angle SHARED
   external/gl4es/string_utils.c
   external/gl4es/tinygl4angle.c

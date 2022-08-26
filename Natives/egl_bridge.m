@@ -235,7 +235,7 @@ jboolean pojavInit_OpenGL() {
         setenv("POJAV_RENDERER", renderer.UTF8String, 1);
     } else if ([renderer isEqualToString:@ RENDERER_NAME_MTL_ANGLE]) {
         config_renderer = RENDERER_MTL_ANGLE;
-    } else if ([renderer hasPrefix:@"libOSMesa"]) {
+    } else if ([renderer isEqualToString:@"libOSMesa.8.dylib"]) {
         config_renderer = RENDERER_VK_ZINK;
         setenv("GALLIUM_DRIVER","zink",1);
     }
