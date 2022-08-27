@@ -41,6 +41,10 @@ JavaVM* runtimeJavaVMPtr;
 JNIEnv* runtimeJNIEnvPtr;
 //__weak UIViewController *viewController;
 
+#define CS_DEBUGGED 0x10000000
+int csops(pid_t pid, unsigned int ops, void *useraddr, size_t usersize);
+BOOL isJITEnabled();
+
 void* gbuffer; // OSMesa framebuffer
 long showingWindow;
 int savedWidth, savedHeight;
