@@ -401,22 +401,26 @@
         self.title = NSLocalizedString(@"login.jit.found.JitStreamer", nil);
         manager.requestSerializer.timeoutInterval = 0;
         manager.responseSerializer = AFJSONResponseSerializer.serializer;
-        [manager POST:[NSString stringWithFormat:@"http://%@/attach/%d/", address, getpid()] parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask *task, id response) {
-            self.title = NSLocalizedString(@"login.jit.enabled", nil);
+        void(^handleResponse)(NSURLSessionDataTask *task, id response) = ^void(NSURLSessionDataTask *task, id response){
             self.navigationItem.leftBarButtonItem = nil;
-        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            NSData *errorData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
-            NSDictionary *errorDict = [NSJSONSerialization JSONObjectWithData:errorData options:0 error:nil];
-            self.title = [NSString stringWithFormat:NSLocalizedString(@"login.jit.fail.JitStreamer", nil), errorDict[@"message"]];
-            self.navigationItem.leftBarButtonItem = nil;
-            showDialog(self, NSLocalizedString(@"Error", nil), errorDict[@"message"]);
-            // Request may fail if detach is unsuccessful
-            if (isJITEnabled()) {
+            NSDictionary *responseDict;
+            // FIXME: successful response may fail due to serialization issues
+            if ([response isKindOfClass:NSError.class]) {
+                NSLog(@"Error?: %@", responseDict);
+                NSData *errorData = ((NSError *)response).userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+                responseDict = [NSJSONSerialization JSONObjectWithData:errorData options:0 error:nil];
+            } else {
+                responseDict = response;
+            }
+            if ([responseDict[@"success"] boolValue]) {
                 self.title = NSLocalizedString(@"login.jit.enabled", nil);
             } else {
+                self.title = [NSString stringWithFormat:NSLocalizedString(@"login.jit.fail.JitStreamer", nil), responseDict[@"message"]];
+                showDialog(self, NSLocalizedString(@"Error", nil), responseDict[@"message"]);
                 // TODO: [self enableJITWithAltJIT];
-            } 
-        }];
+            }
+        };
+        [manager POST:[NSString stringWithFormat:@"http://%@/attach/%d/", address, getpid()] parameters:nil headers:nil progress:nil success:handleResponse failure:handleResponse];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         self.title = @"";
         self.navigationItem.leftBarButtonItem = nil;
