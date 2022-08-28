@@ -1,9 +1,11 @@
 #import "KeyboardInput.h"
-#import "utils.h"
+#import "../utils.h"
 
-#include "glfw_keycodes.h"
+#include "../glfw_keycodes.h"
 
 @implementation KeyboardInput
+
+NSMutableDictionary* keycodeTable;
 
 + (void)initKeycodeTable {
     if (@available(iOS 13.4, *)) {

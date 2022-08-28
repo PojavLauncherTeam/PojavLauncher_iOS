@@ -21,6 +21,9 @@ BOOL getEntitlementValue(NSString *key);
 - (UIViewController *)visibleViewController {
     UIViewController *current = self.rootViewController;
     while (current.presentedViewController) {
+        if ([current.presentedViewController isKindOfClass:UIAlertController.class]) {
+            break;
+        }
         current = current.presentedViewController;
     }
     if ([current isKindOfClass:UINavigationController.class]) {

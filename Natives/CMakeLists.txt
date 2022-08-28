@@ -101,6 +101,9 @@ add_executable(PojavLauncher
 
   external/DBNumberedSlider/Classes/DBNumberedSlider.m
 
+  input/ControllerInput.m
+  input/KeyboardInput.m
+
   AboutLauncherViewController.m
   AccountListViewController.m
   AppDelegate.m
@@ -108,7 +111,6 @@ add_executable(PojavLauncher
   FileListViewController.m
   GameSurfaceView.m
   JavaGUIViewController.m
-  KeyboardInput.m
   LauncherFAQViewController.m
   LauncherMenuViewController.m
   LauncherPreferences.m

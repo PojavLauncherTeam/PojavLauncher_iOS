@@ -7,8 +7,10 @@
 #import "customcontrols/ControlSubButton.h"
 #import "customcontrols/CustomControlsUtils.h"
 
+#import "input/ControllerInput.h"
+#import "input/KeyboardInput.h"
+
 #import "JavaLauncher.h"
-#import "KeyboardInput.h"
 #import "LauncherPreferences.h"
 #import "MinecraftResourceUtils.h"
 #import "SurfaceViewController.h"
@@ -189,6 +191,7 @@ BOOL slideableHotbar;
 @property UIView *logOutputView;
 
 @property id mouseConnectCallback, mouseDisconnectCallback;
+@property id controllerConnectCallback, controllerDisconnectCallback;
 
 @property CGRect clickRange;
 @property BOOL shouldTriggerClick;
@@ -395,6 +398,22 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
         if (GCMouse.current != nil) {
             [self registerMouseCallbacks: GCMouse.current];
         }
+    }
+
+    // TODO: deal with multiple controllers by letting users decide which one to use?
+    self.controllerConnectCallback = [[NSNotificationCenter defaultCenter] addObserverForName:GCControllerDidConnectNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+        NSLog(@"Input: Controller connected!");
+        GCController* controller = note.object;
+        [ControllerInput initKeycodeTable];
+        [ControllerInput registerControllerCallbacks:controller];
+    }];
+    self.controllerDisconnectCallback = [[NSNotificationCenter defaultCenter] addObserverForName:GCControllerDidDisconnectNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+        NSLog(@"Input: Controller disconnected!");
+        GCController* controller = note.object;
+        [ControllerInput unregisterControllerCallbacks:controller];
+    }];
+    if (GCController.controllers.count == 1) {
+        [ControllerInput registerControllerCallbacks:GCController.controllers.firstObject];
     }
 
     [self.rootView addSubview:self.inputView];

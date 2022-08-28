@@ -1,7 +1,5 @@
 #import <UIKit/UIKit.h>
 
-NSMutableDictionary* keycodeTable;
-
 @interface KeyboardInput : NSObject
 
 + (void)initKeycodeTable;
