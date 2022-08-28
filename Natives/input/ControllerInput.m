@@ -118,10 +118,10 @@ BOOL leftShiftHeld;
     };
 
     gamepad.leftTrigger.pressedChangedHandler = ^(GCControllerButtonInput *button, float value, BOOL pressed) {
-        [self sendKeyEvent:GLFW_GAMEPAD_AXIS_LEFT_TRIGGER pressed:pressed];
+        [self sendKeyEvent:SPECIALBTN_MOUSESEC pressed:pressed];
     };
     gamepad.rightTrigger.pressedChangedHandler = ^(GCControllerButtonInput *button, float value, BOOL pressed) {
-        [self sendKeyEvent:GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER pressed:pressed];
+        [self sendKeyEvent:SPECIALBTN_MOUSEPRI pressed:pressed];
     };
 
     if (@available(iOS 13.0, *)) {
