@@ -14,6 +14,9 @@ IOS15PREF   := private/preboot/procursus
 # Release vs Debug
 RELEASE ?= 0
 
+# Check if running on github runner
+RUNNER ?= 0
+
 ifeq (1,$(RELEASE))
 CMAKE_BUILD_TYPE := Release
 else
@@ -149,7 +152,6 @@ DEPLOY     = \
 			mv /var/tmp/PojavLauncher $(1)/Applications/PojavLauncher.app/PojavLauncher && \
 			mv /var/tmp/*.jar $(1)/Applications/PojavLauncher.app/libs/ && \
 			cd $(1)/Applications/PojavLauncher.app/Frameworks && \
-			ln -sf libawt_xawt.dylib libawt_headless.dylib && \
 			chown -R 501:501 $(1)/Applications/PojavLauncher.app/*"; \
 	else \
 		sudo rm -rf $(1)/Applications/PojavLauncher.app/Frameworks/libOSMesaOverride.dylib.framework; \
@@ -158,7 +160,6 @@ DEPLOY     = \
 		sudo mv $(WORKINGDIR)/PojavLauncher.app/PojavLauncher $(1)/Applications/PojavLauncher.app/PojavLauncher; \
 		sudo mv $(SOURCEDIR)/JavaApp/local_out/*.jar $(1)/Applications/PojavLauncher.app/libs/; \
 		cd $(1)/Applications/PojavLauncher.app/Frameworks; \
-		sudo ln -sf libawt_xawt.dylib libawt_headless.dylib; \
 		sudo chown -R 501:501 $(1)/Applications/PojavLauncher.app/*; \
 	fi
 
@@ -297,13 +298,13 @@ deb: native java extras
 	fi
 	$(call DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs)
 	$(call DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs_caciocavallo)
+	$(call DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs_caciocavallo17)
 	@cp -R $(SOURCEDIR)/Natives/resources/* $(WORKINGDIR)/PojavLauncher.app/ || exit 1
 	@cp $(WORKINGDIR)/*.dylib $(WORKINGDIR)/PojavLauncher.app/Frameworks/ || exit 1
-	@( cd $(WORKINGDIR)/PojavLauncher.app/Frameworks; ln -sf libawt_xawt.dylib libawt_headless.dylib ) || exit 1
 	@cp -R $(WORKINGDIR)/*.framework $(WORKINGDIR)/PojavLauncher.app/Frameworks/ || exit 1
 	@cp -R $(SOURCEDIR)/JavaApp/libs/* $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
 	@cp $(SOURCEDIR)/JavaApp/local_out/*.jar $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
-	@cp -R $(SOURCEDIR)/JavaApp/libs_caciocavallo/* $(WORKINGDIR)/PojavLauncher.app/libs_caciocavallo/ || exit 1
+	@cp -R $(SOURCEDIR)/JavaApp/libs_caciocavallo* $(WORKINGDIR)/PojavLauncher.app/ || exit 1
 	@cp -R $(SOURCEDIR)/Natives/*.lproj $(WORKINGDIR)/PojavLauncher.app/ || exit 1
 	$(call DIRCHECK,$(OUTPUTDIR))
 	@cp -R $(WORKINGDIR)/PojavLauncher.app $(OUTPUTDIR)
@@ -325,18 +326,22 @@ ipa: dsym
 	echo 'Building PojavLauncher $(VERSION) - IPA - Start'
 	mkdir -p $(SOURCEDIR)/depends; \
 	cd $(SOURCEDIR)/depends; \
-	if [ ! -d "java-8-openjdk" ]; then \
+	if [ ! -f "java-8-openjdk/bin/java" ] && [ ! -f "$(ls ../jre8-*.tar.xz)" ]; then \
+		if [ "$(RUNNER)" != "1" ]; then \
+			wget 'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre8-40df388/jre8-arm64-20220811-release.tar.xz'; \
+		fi; \
 		mkdir java-8-openjdk && cd java-8-openjdk; \
-		wget 'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre8-40df388/jre8-arm64-20220811-release.tar.xz'; \
-		tar xvf *.tar.xz; \
-		rm *.tar.xz; \
+		tar xvf ../jre8-*.tar.xz; \
+		rm ../jre8-*.tar.xz; \
 	fi; \
-        cd ..; \
-	if [ ! -d "java-17-openjdk" ]; then \
+	cd ..; \
+	if [ ! -f "java-17-openjdk/bin/java" ] && [ ! -f "$(ls ../jre17-*.tar.xz)" ]; then \
+		if [ "$(RUNNER)" != "1" ]; then \
+			wget 'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre17-ca01427/jre17-arm64-20220817-release.tar.xz'; \
+		fi; \
 		mkdir java-17-openjdk && cd java-17-openjdk; \
-		wget 'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre17-ca01427/jre17-arm64-20220817-release.tar.xz'; \
-		tar xvf *.tar.xz; \
-		rm *.tar.xz; \
+		tar xvf ../jre17-*.tar.xz; \
+		rm ../jre17-*.tar.xz; \
 	fi; \
 	mkdir -p $(OUTPUTDIR); \
 	cd $(OUTPUTDIR); \
@@ -346,6 +351,9 @@ ipa: dsym
 	cp -R $(POJAV_JRE8_DIR) $(OUTPUTDIR)/Payload/PojavLauncher.app/jvm/; \
 	cp -R $(POJAV_JRE17_DIR) $(OUTPUTDIR)/Payload/PojavLauncher.app/jvm/; \
 	rm -rf $(OUTPUTDIR)/Payload/PojavLauncher.app/jvm/*/{bin,include,jre,lib/{ct.sym,libjsig.dylib,src.zip,tools.jar}}; \
+	cp $(OUTPUTDIR)/Payload/PojavLauncher.app/Frameworks/libawt_xawt.dylib $(OUTPUTDIR)/Payload/PojavLauncher.app/jvm/java-17-openjdk/lib/; \
+	cp $(OUTPUTDIR)/Payload/PojavLauncher.app/Frameworks/libawt_xawt.dylib $(OUTPUTDIR)/Payload/PojavLauncher.app/jvm/java-8-openjdk/lib/; \
+	rm $(OUTPUTDIR)/Payload/PojavLauncher.app/Frameworks/libawt_*.dylib; \
 	ldid -S$(SOURCEDIR)/entitlements_ipa.xml $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher; \
 	rm -f $(OUTPUTDIR)/*.ipa; \
 	cd $(OUTPUTDIR); \

@@ -5,9 +5,9 @@
 #include <unistd.h>
 
 #include "log.h"
-
 #include "utils.h"
 
+BOOL getEntitlementValue(NSString *key);
 
 @implementation UIWindow(ext)
 
@@ -21,6 +21,9 @@
 - (UIViewController *)visibleViewController {
     UIViewController *current = self.rootViewController;
     while (current.presentedViewController) {
+        if ([current.presentedViewController isKindOfClass:UIAlertController.class] || [current.presentedViewController isKindOfClass:NSClassFromString(@"UIInputWindowController")]) {
+            break;
+        }
         current = current.presentedViewController;
     }
     if ([current isKindOfClass:UINavigationController.class]) {
@@ -48,6 +51,15 @@ UIViewController* currentVC() {
     return [delegate window].visibleViewController;
 }
 
+BOOL isJITEnabled() {
+    if (getEntitlementValue(@"dynamic-codesigning")) {
+        return YES;
+    }
+
+    int flags;
+    csops(getpid(), 0, &flags, sizeof(flags));
+    return (flags & CS_DEBUGGED) != 0;
+}
 
 NSMutableDictionary* parseJSONFromFile(NSString *path) {
     NSError *error;

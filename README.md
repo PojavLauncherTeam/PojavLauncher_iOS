@@ -24,10 +24,13 @@ The [PojavLauncher Website](https://pojav.ml) has extensive documentation on how
 ### Without jailbreak (sideload as IPA)
 Note: This is experimental, although game works smoothly, you should not set Render distance too much.
 
-1. Install [AltStore](https://altstore.io)
+1. Install [AltStore](https://altstore.io). Others will also work.
 2. Download an IPA build of PojavLauncher in the Actions tab.
-3. Open the downloaded IPA in AltStore to install.
-4. Launch PojavLauncher with JIT enabled.
+3. Open the downloaded IPA in the sideload app to install.
+4. For enabling JIT, choose one of these:
+ - Setup [JitStreamer](http://jitstreamer.com), then launch PojavLauncher. JIT will be automatically enabled on startup. This is the most convenient way.
+ - Launch PojavLauncher with `Enable JIT` option in AltStore. This requires the device to be plugged in the computer or have Wi-Fi syncing enabled.
+ - Setup and use others such as [Jitterbug](https://github.com/osy/Jitterbug).
 
 ### Procursus-bootstraps
 *Note: This is currently unavailable. Will be fixed soon! For the meantime, you can follow the same way as [below](#bingnerelucubratus-bootstraps)*.
@@ -59,6 +62,7 @@ PojavLauncher is amazing, and surprisingly stable, and it wouldn't be this way w
 @LegacyGamerHD - Lead developer  
 @zhouwei - Original Boardwalk code  
 @Mathius-Boulay - Developer   
+@jkcoxson - JitStreamer author   
 @Diatrus - PojavLauncher hosting on Procursus  
 @Syjalo  
 @pedrosouzabrasil  

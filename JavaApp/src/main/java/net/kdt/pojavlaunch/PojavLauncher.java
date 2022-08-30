@@ -43,6 +43,10 @@ public class PojavLauncher {
         });
 
         System.setProperty("cacio.managed.screensize", args[2]);
+        try {
+            // Try to initialize Caciocavallo17
+            Class.forName("com.github.caciocavallosilano.cacio.ctc.CTCPreloadClassLoader");
+        } catch (ClassNotFoundException e) {}
 
         if (args[0].equals(".LaunchJAR")) {
             UIKit.callback_JavaGUIViewController_launchJarFile(args[1]);

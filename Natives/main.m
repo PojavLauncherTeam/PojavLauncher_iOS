@@ -208,6 +208,16 @@ void init_setupMultiDir() {
     [fm changeCurrentDirectoryPath:lasmPath];
 }
 
+void init_setupResolvConf() {
+    // Write known DNS servers to the config
+    NSString *path = [NSString stringWithFormat:@"%s/resolv.conf", getenv("POJAV_HOME")];
+    if (![fm fileExistsAtPath:path]) {
+        [@"nameserver 8.8.8.8\n"
+         @"nameserver 8.8.4.4"
+        writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:nil];
+    }
+}
+
 int main(int argc, char * argv[]) {
     if (pJLI_Launch) {
         return pJLI_Launch(argc, argv,
@@ -233,8 +243,6 @@ int main(int argc, char * argv[]) {
         setenv("POJAV_HOME", "/usr/share/pojavlauncher", 1);
     } else {
         setenv("POJAV_HOME", [NSString stringWithFormat:@"%s/Documents", getenv("HOME")].UTF8String, 1);
-
-        //init_hookFunctions();
     }
 
     [fm createDirectoryAtPath:@(getenv("POJAV_HOME")) withIntermediateDirectories:NO attributes:nil error:nil];
@@ -242,7 +250,10 @@ int main(int argc, char * argv[]) {
     init_redirectStdio();
     init_logDeviceAndVer(argv[0]);
 
+    init_hookFunctions();
+
     loadPreferences();
+    init_setupResolvConf();
     init_setupMultiDir();
     init_setupLauncherProfiles();
     init_setupAccounts();

@@ -35,7 +35,7 @@ void internal_showDialog(UIViewController *viewController, NSString* title, NSSt
 
 void showDialog(UIViewController *viewController, NSString* title, NSString* message) {
     dispatch_async(dispatch_get_main_queue(), ^{
-        internal_showDialog(currentVC(), title, message);
+        internal_showDialog(viewController ? viewController : currentVC(), title, message);
     });
 }
 

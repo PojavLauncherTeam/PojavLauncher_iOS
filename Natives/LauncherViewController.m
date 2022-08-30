@@ -253,24 +253,11 @@ int versionSelectedAt = 0;
 }
 
 - (void)enterModInstaller:(UIBarButtonItem*)sender {
-    NSString *javaVer = getPreference(@"java_home");
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    if(![fileManager fileExistsAtPath:JRE8_HOME_JB] && getenv("POJAV_DETECTEDJB")) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Cannot use the mod installer" message:@"In order to use the mod installer, you need to install Java 8." preferredStyle:UIAlertControllerStyleActionSheet];
-        if (alert.popoverPresentationController != nil) {
-            alert.popoverPresentationController.sourceView = self.view;
-            alert.popoverPresentationController.sourceRect = CGRectMake(self.view.frame.size.width-10.0, 0, 10, 10);
-        }
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
-        [self presentViewController:alert animated:YES completion:nil];
-        [alert addAction:ok];
-    } else {
-        UIDocumentPickerViewController *documentPicker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:@[@"com.sun.java-archive"]
-                                                          inMode:UIDocumentPickerModeImport];
-        documentPicker.delegate = self;
-        documentPicker.modalPresentationStyle = UIModalPresentationFormSheet;
-        [self presentViewController:documentPicker animated:YES completion:nil];
-    }
+    UIDocumentPickerViewController *documentPicker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:@[@"com.sun.java-archive"]
+            inMode:UIDocumentPickerModeImport];
+    documentPicker.delegate = self;
+    documentPicker.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:documentPicker animated:YES completion:nil];
 }
 
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url {

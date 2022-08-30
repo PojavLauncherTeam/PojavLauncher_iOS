@@ -3,7 +3,6 @@ package net.kdt.pojavlaunch.uikit;
 import java.io.*;
 import java.lang.reflect.*;
 import java.util.jar.*;
-import net.java.openjdk.cacio.ctc.CTCScreen;
 import net.kdt.pojavlaunch.utils.MCOptionUtils;
 import net.kdt.pojavlaunch.*;
 import org.lwjgl.glfw.*;
@@ -32,27 +31,39 @@ public class UIKit {
     public static void callback_JavaGUIViewController_launchJarFile(final String filepath) throws Throwable {
         // Thread for refreshing the AWT buffer
         new Thread(() -> {
+            Method getCurrentScreenRGB;
             try {
-                long lastTime = System.currentTimeMillis();
-                while (true) {
-                    int[] pixelsArray = null;
-                    try{
-                        pixelsArray = CTCScreen.getCurrentScreenRGB();
-                    } catch (NullPointerException e) {
-                        Thread.sleep(500);
-                    }
-                    if (pixelsArray != null) {
-                        //System.out.println(java.util.Arrays.toString(pixelsArray));
-                        refreshAWTBuffer(pixelsArray);
-                    }
-                    long currentTime = System.currentTimeMillis();
-                    if (currentTime - lastTime < 16) {
-                        Thread.sleep(16 - (currentTime - lastTime));
-                    }
-                    lastTime = currentTime;
+                try {
+                    getCurrentScreenRGB = Class.forName("net.java.openjdk.cacio.ctc.CTCScreen").getMethod("getCurrentScreenRGB");
+                } catch (ClassNotFoundException e) {
+                    getCurrentScreenRGB = Class.forName("com.github.caciocavallosilano.cacio.ctc.CTCScreen").getMethod("getCurrentScreenRGB");
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (Throwable th) {
+                System.err.println("Failed to find class CTCScreen");
+                th.printStackTrace();
+                System.exit(1);
+                return;
+            }
+
+            long lastTime = System.currentTimeMillis();
+            while (true) {
+                int[] pixelsArray = null;
+                try{
+                    pixelsArray = (int[])getCurrentScreenRGB.invoke(null);
+                } catch (Throwable e) {}
+                if (pixelsArray != null) {
+                    //System.out.println(java.util.Arrays.toString(pixelsArray));
+                    refreshAWTBuffer(pixelsArray);
+                }
+                long currentTime = System.currentTimeMillis();
+                if (currentTime - lastTime < 16) {
+                    try {
+                        Thread.sleep(16 - (currentTime - lastTime));
+                    } catch (InterruptedException e) {
+                        break;
+                    }
+                }
+                lastTime = currentTime;
             }
         }, "AWTFBRefreshThread").start();
 

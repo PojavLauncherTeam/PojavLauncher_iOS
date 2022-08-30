@@ -21,6 +21,11 @@
 "login.alert.title" = "Login";
 "login.alert.field.username" = "Username";
 
+"login.jit.checking" = "Checking for JIT";
+"login.jit.enabled" = "JIT has been enabled";
+"login.jit.fail.JitStreamer" = "JitStreamer error: %@";
+"login.jit.found.JitStreamer" = "Found JitStreamer, enabling JIT";
+
 "login.menu.about" = "About PojavLauncher";
 "login.menu.sendlogs" = "Send your logs";
 "login.menu.updates" = "Recent updates";

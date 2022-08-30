@@ -1,6 +1,7 @@
 #include <dirent.h>
 #include <stdio.h>
 
+#import "AFNetworking.h"
 #import <AuthenticationServices/AuthenticationServices.h>
 #import "authenticator/BaseAuthenticator.h"
 
@@ -188,6 +189,14 @@
         technoNote.textAlignment = NSTextAlignmentCenter;
         [scrollView addSubview:technoNote];
     }
+
+    if (!getEntitlementValue(@"dynamic-codesigning")) {
+        if (isJITEnabled()) {
+            self.title = NSLocalizedString(@"login.jit.enabled", nil);
+        } else { 
+            [self enableJITWithJitStreamer];
+        }
+    }
 }
 
 - (void)displayProgress:(NSString *)title {
@@ -373,6 +382,51 @@
     popoverController.permittedArrowDirections = UIPopoverArrowDirectionAny;
     popoverController.delegate = vc;
     [self presentViewController:vc animated:YES completion:nil];
+}
+
+- (void)enableJITWithJitStreamer
+{
+    [self displayProgress:NSLocalizedString(@"login.jit.checking", nil)];
+
+    // TODO: customizable address
+    NSString *address = @"69.69.0.1";
+
+    AFHTTPSessionManager *manager = AFHTTPSessionManager.manager;
+    manager.requestSerializer.timeoutInterval = 10;
+    manager.responseSerializer = AFHTTPResponseSerializer.serializer;
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain", nil];
+    [manager GET:[NSString stringWithFormat:@"http://%@/version", address] parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask *task, NSData *response) {
+        NSString *version = [[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding];
+        NSLog(@"Found JitStreamer %@", version);
+        self.title = NSLocalizedString(@"login.jit.found.JitStreamer", nil);
+        manager.requestSerializer.timeoutInterval = 0;
+        manager.responseSerializer = AFJSONResponseSerializer.serializer;
+        void(^handleResponse)(NSURLSessionDataTask *task, id response) = ^void(NSURLSessionDataTask *task, id response){
+            self.navigationItem.leftBarButtonItem = nil;
+            NSDictionary *responseDict;
+            // FIXME: successful response may fail due to serialization issues
+            if ([response isKindOfClass:NSError.class]) {
+                NSLog(@"Error?: %@", responseDict);
+                NSData *errorData = ((NSError *)response).userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+                responseDict = [NSJSONSerialization JSONObjectWithData:errorData options:0 error:nil];
+            } else {
+                responseDict = response;
+            }
+            if ([responseDict[@"success"] boolValue]) {
+                self.title = NSLocalizedString(@"login.jit.enabled", nil);
+            } else {
+                self.title = [NSString stringWithFormat:NSLocalizedString(@"login.jit.fail.JitStreamer", nil), responseDict[@"message"]];
+                showDialog(self, NSLocalizedString(@"Error", nil), responseDict[@"message"]);
+                // TODO: [self enableJITWithAltJIT];
+            }
+        };
+        [manager POST:[NSString stringWithFormat:@"http://%@/attach/%d/", address, getpid()] parameters:nil headers:nil progress:nil success:handleResponse failure:handleResponse];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        self.title = @"";
+        self.navigationItem.leftBarButtonItem = nil;
+        //showDialog(self, @"Error", [NSString stringWithFormat:@"%@", error]);
+        // TODO: [self enableJITWithAltJIT];
+    }];
 }
 
 - (void)aboutLauncher
