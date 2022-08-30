@@ -152,7 +152,6 @@ DEPLOY     = \
 			mv /var/tmp/PojavLauncher $(1)/Applications/PojavLauncher.app/PojavLauncher && \
 			mv /var/tmp/*.jar $(1)/Applications/PojavLauncher.app/libs/ && \
 			cd $(1)/Applications/PojavLauncher.app/Frameworks && \
-			ln -sf libawt_xawt.dylib libawt_headless.dylib && \
 			chown -R 501:501 $(1)/Applications/PojavLauncher.app/*"; \
 	else \
 		sudo rm -rf $(1)/Applications/PojavLauncher.app/Frameworks/libOSMesaOverride.dylib.framework; \
@@ -161,7 +160,6 @@ DEPLOY     = \
 		sudo mv $(WORKINGDIR)/PojavLauncher.app/PojavLauncher $(1)/Applications/PojavLauncher.app/PojavLauncher; \
 		sudo mv $(SOURCEDIR)/JavaApp/local_out/*.jar $(1)/Applications/PojavLauncher.app/libs/; \
 		cd $(1)/Applications/PojavLauncher.app/Frameworks; \
-		sudo ln -sf libawt_xawt.dylib libawt_headless.dylib; \
 		sudo chown -R 501:501 $(1)/Applications/PojavLauncher.app/*; \
 	fi
 
@@ -303,7 +301,6 @@ deb: native java extras
 	$(call DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs_caciocavallo17)
 	@cp -R $(SOURCEDIR)/Natives/resources/* $(WORKINGDIR)/PojavLauncher.app/ || exit 1
 	@cp $(WORKINGDIR)/*.dylib $(WORKINGDIR)/PojavLauncher.app/Frameworks/ || exit 1
-	@( cd $(WORKINGDIR)/PojavLauncher.app/Frameworks; ln -sf libawt_xawt.dylib libawt_headless.dylib ) || exit 1
 	@cp -R $(WORKINGDIR)/*.framework $(WORKINGDIR)/PojavLauncher.app/Frameworks/ || exit 1
 	@cp -R $(SOURCEDIR)/JavaApp/libs/* $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
 	@cp $(SOURCEDIR)/JavaApp/local_out/*.jar $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
