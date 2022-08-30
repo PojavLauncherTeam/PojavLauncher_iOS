@@ -62,6 +62,7 @@ PojavLauncher is amazing, and surprisingly stable, and it wouldn't be this way w
 @LegacyGamerHD - Lead developer  
 @zhouwei - Original Boardwalk code  
 @Mathius-Boulay - Developer   
+@jkcoxson - JitStreamer author   
 @Diatrus - PojavLauncher hosting on Procursus  
 @Syjalo  
 @pedrosouzabrasil  
