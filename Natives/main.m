@@ -212,8 +212,7 @@ void init_setupResolvConf() {
     // Write known DNS servers to the config
     NSString *path = [NSString stringWithFormat:@"%s/resolv.conf", getenv("POJAV_HOME")];
     if (![fm fileExistsAtPath:path]) {
-        [@"nameserver 1.1.1.1\n"
-         @"nameserver 8.8.8.8\n"
+        [@"nameserver 8.8.8.8\n"
          @"nameserver 8.8.4.4"
         writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:nil];
     }
