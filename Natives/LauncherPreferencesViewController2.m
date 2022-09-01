@@ -27,6 +27,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
     self.tableView = [[TOInsetGroupedTableView alloc] init];
     self.tableView.allowsSelection = NO;
+    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
 
     self.prefSections = @[@"general", @"video", @"control", @"java"];
 
@@ -191,24 +192,33 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
 - (void)initViewCreation {
     __weak LauncherPreferencesViewController2 *weakSelf = self;
-
+/*
     self.typePickField = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
-        cell.accessoryView = [[UITextField alloc] init];
+        cell.accessoryView = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, cell.bounds.size.width / 2, cell.bounds.size.height)];
         [(id)(cell.accessoryView) setText:getPreference(key)];
     };
-
+*/
     self.typeTextField = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
-        UITextField *view = [[UITextField alloc] init];
+        UITextField *view = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, cell.bounds.size.width / 2.1, cell.bounds.size.height)];
         view.autocorrectionType = UITextAutocorrectionTypeNo;
         view.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
         view.placeholder = NSLocalizedString(([NSString stringWithFormat:@"preference.placeholder.%@", key]), nil);
+        view.returnKeyType = UIReturnKeyDone;
         view.text = getPreference(key);
+        view.textAlignment = NSTextAlignmentRight;
         view.adjustsFontSizeToFitWidth = YES;
         cell.accessoryView = view;
     };
 
+    self.typePickField = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
+        weakSelf.typeTextField(cell, key, item);
+        //???
+    };
+
     self.typeSlider = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
-        DBNumberedSlider *view = [[DBNumberedSlider alloc] init];
+        DBNumberedSlider *view = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(0, 0, cell.bounds.size.width / 2.1, cell.bounds.size.height)];
+        view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
         view.minimumValue = [item[@"min"] intValue];
         view.maximumValue = [item[@"max"] intValue];
         view.continuous = YES;
