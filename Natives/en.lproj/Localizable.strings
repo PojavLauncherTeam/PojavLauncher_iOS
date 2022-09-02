@@ -70,13 +70,20 @@
 "preference.section.control" = "Control Settings";
 "preference.section.java" = "Java Runtime Settings";
 
+"preference.title.confirm" = "Are you sure?";
+
 "preference.title.game_directory" = "Minecraft game directory";
 "preference.title.home_symlink" = "Enable compatibility symlink";
 "preference.title.check_sha" = "Enable asset verification when launching";
 "preference.title.cosmetica" = "Enable Cosmetica integration";
+
 "preference.title.reset_warnings" = "Reset all warnings";
+"preference.title.done.reset_warnings" = "All warnings have been reset.";
+
 "preference.title.reset_settings" = "Reset all settings";
-"preference.warn.reset_settings" = "The next time you open PojavLauncher, all of the default settings will be restored. If you did this by accident, you can turn this off back.";
+"preference.title.confirm.reset_settings" = "This will remove all of your custom preferences, including resolution, button size, and Java arguments.";
+"preference.title.done.reset_settings" = "All of the default settings have been restored.";
+
 "preference.title.renderer" = "Game renderer";
 "preference.title.resolution" = "Game resolution";
 "preference.title.disable_gesture" = "Disable gestures";
@@ -91,7 +98,7 @@
 // "preference.subtitle.java_home" = "Java 8 is used by default on Minecraft 1.16.5 and older. This switch forces old versions to use Java 17.";
 "preference.title.java_args" = "Custom java arguments";
 "preference.title.auto_ram" = "Auto determine RAM amount";
-"preference.warn.auto_ram" = "Due to limitations in the operating system itself, high amount may cause instability. Proceed with caution.";
 "preference.title.allocated_memory" = "Allocated memory";
+"preference.warn.allocated_memory" = "Due to limitations in the operating system itself, this option may cause instability at this and higher values. Proceed with caution.";
 // sha check
 // home symlink

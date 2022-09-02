@@ -129,6 +129,9 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     regLog("[JavaLauncher] Beginning JVM launch\n");
 
     NSString *javaHome_pre = getPreference(@"java_home");
+    if (![javaHome_pre hasPrefix:@"/"]) {
+        javaHome_pre = [NSString stringWithFormat:@"%s/jvm/%@", getenv("POJAV_DETECTEDJB") ? "/usr/lib" : getenv("BUNDLE_PATH"), javaHome_pre];
+    }
 
     // We handle unset JAVA_HOME right there
     if (getSelectedJavaVersion() < minVersion) {

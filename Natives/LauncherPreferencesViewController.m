@@ -550,9 +550,7 @@ int tempIndex;
         setPreference(@"renderer", rendererDict[textField.text]);
         setenv("POJAV_RENDERER", [getPreference(@"renderer") UTF8String], 1);
     } else if (textField.tag == TAG_JHOME) {
-        NSString *listPath = getenv("POJAV_DETECTEDJB") ? @"/usr/lib/jvm" : [NSString stringWithFormat:@"%s/jvm", getenv("BUNDLE_PATH")];
-        setPreference(@"java_home", [NSString stringWithFormat:@"%@/%@", listPath, textField.text]);
-        setenv("JAVA_HOME", [getPreference(@"java_home") UTF8String], 1);
+        setPreference(@"java_home", textField.text);
         if (![textField.text containsString:JRE8_NAME_JB] && ![textField.text containsString:JRE8_NAME_SB] && [getPreference(@"java_warn") boolValue] == YES) {
             UIAlertController *javaAlert = [UIAlertController alertControllerWithTitle:@"Java version is not Java 8" message:@"Minecraft versions below 1.6, modded below 1.16.4, and the mod installer will not work unless you have Java 8 installed on your device." preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];

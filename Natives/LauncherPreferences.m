@@ -78,14 +78,26 @@ void setPreference(NSString* key, id value) {
     [prefDict writeToFile:prefPath atomically:YES];
 }
 
-void loadPreferences() {
+void fillDefaultWarningDict() {
+    setDefaultValueForPref(warnPrefDict, @"option_warn", @YES);
+    setDefaultValueForPref(warnPrefDict, @"local_warn", @YES);
+    setDefaultValueForPref(warnPrefDict, @"mem_warn", @YES);
+    setDefaultValueForPref(warnPrefDict, @"java_warn", @YES);
+    setDefaultValueForPref(warnPrefDict, @"demo_warn", @YES);
+    setDefaultValueForPref(warnPrefDict, @"jb_warn", @YES);
+    setDefaultValueForPref(warnPrefDict, @"customctrl_warn", @YES);
+    setDefaultValueForPref(warnPrefDict, @"int_warn", @YES);
+    setDefaultValueForPref(warnPrefDict, @"ram_unjb_warn", @YES);
+}
+
+void loadPreferences(BOOL reset) {
     assert(getenv("POJAV_HOME"));
     prefPath = [@(getenv("POJAV_HOME"))
       stringByAppendingPathComponent:@"launcher_preferences.plist"];
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
     prefDict = [NSMutableDictionary dictionaryWithContentsOfFile:prefPath];
-    if (![fileManager fileExistsAtPath:prefPath] || [prefDict[@"reset_settings"] boolValue]) {
+    if (reset || ![fileManager fileExistsAtPath:prefPath]) {
         prefDict = [[NSMutableDictionary alloc] init];
         envPrefDict = [[NSMutableDictionary alloc] init];
         warnPrefDict = [[NSMutableDictionary alloc] init];
@@ -111,15 +123,7 @@ void loadPreferences() {
     setDefaultValueForPref(prefDict, @"arccapes_enable", @YES);
     setDefaultValueForPref(envPrefDict, @"java_home", @"");
     setDefaultValueForPref(envPrefDict, @"renderer", @"auto");
-    setDefaultValueForPref(warnPrefDict, @"option_warn", @YES);
-    setDefaultValueForPref(warnPrefDict, @"local_warn", @YES);
-    setDefaultValueForPref(warnPrefDict, @"mem_warn", @YES);
-    setDefaultValueForPref(warnPrefDict, @"java_warn", @YES);
-    setDefaultValueForPref(warnPrefDict, @"demo_warn", @YES);
-    setDefaultValueForPref(warnPrefDict, @"jb_warn", @YES);
-    setDefaultValueForPref(warnPrefDict, @"customctrl_warn", @YES);
-    setDefaultValueForPref(warnPrefDict, @"int_warn", @YES);
-    setDefaultValueForPref(warnPrefDict, @"ram_unjb_warn", @YES);
+    fillDefaultWarningDict();
     setDefaultValueForPref(prefDict, @"a7_allow", @NO);
     setDefaultValueForPref(prefDict, @"slideable_hotbar", @NO);
     setDefaultValueForPref(prefDict, @"virtmouse_enable", @NO);
@@ -132,11 +136,19 @@ void loadPreferences() {
         setDefaultValueForPref(prefDict, @"disable_home_symlink", @YES);
     }
 
-    setDefaultValueForPref(prefDict, @"control_safe_area", NSStringFromCGRect(getDefaultSafeArea()));
+    // Migrate some prefs
+    setPreference(@"java_home", [getPreference(@"java_home") lastPathComponent]);
 
     prefDict[@"env_vars"] = envPrefDict;
     prefDict[@"warnings"] = warnPrefDict;
 
+    [prefDict writeToFile:prefPath atomically:YES];
+}
+
+void resetWarnings() {
+    [warnPrefDict removeAllObjects];
+    fillDefaultWarningDict();
+    prefDict[@"warnings"] = warnPrefDict;
     [prefDict writeToFile:prefPath atomically:YES];
 }
 

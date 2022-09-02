@@ -14,7 +14,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 @property NSArray<NSString*>* prefSections;
 @property NSArray<NSDictionary<NSString*, NSDictionary*>*>* prefContents;
 
-@property CreateView typePickField, typeTextField, typeSlider, typeSwitch;
+@property CreateView typeButton, typePickField, typeTextField, typeSlider, typeSwitch;
 @end
 
 @implementation LauncherPreferencesViewController2
@@ -26,7 +26,6 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     [self initViewCreation];
 
     self.tableView = [[TOInsetGroupedTableView alloc] init];
-    self.tableView.allowsSelection = NO;
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
 
     self.prefSections = @[@"general", @"video", @"control", @"java"];
@@ -51,18 +50,23 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"icon": @"eyeglasses",
                 @"type": self.typeSwitch
             },
-            @"reset_warnings": @{
-                @"icon": @"exclamationmark.triangle",
-                @"type": self.typeSwitch
-            },
             @"reset_settings": @{
                 @"icon": @"trash",
-                @"type": self.typeSwitch,
-                @"warnCondition": ^BOOL(UISwitch *view){
-                    return view.isOn;
-                },
-                @"warnAlways": @YES
-            }
+                @"type": self.typeButton,
+                @"requestReload": @YES,
+                @"showConfirmPrompt": @(YES),
+                @"action": ^void(){
+                    loadPreferences(YES);
+                    // TODO: reset UI states
+                }
+            },
+            @"reset_warnings": @{
+                @"icon": @"exclamationmark.triangle",
+                @"type": self.typeButton,
+                @"action": ^void(){
+                    resetWarnings();
+                }
+            },
         }, @{
         // Video and renderer settings
             @"renderer": @{
@@ -129,11 +133,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"icon": @"slider.horizontal.3",
                 @"type": self.typeSwitch,
                 //@"hidden": @(getenv("POJAV_DETECTEDJB") == NULL),
-                @"requestReload": @YES,
-                @"warnCondition": ^BOOL(UISwitch *view){
-                    return !view.isOn;
-                },
-                @"warnAlways": @YES
+                @"requestReload": @YES
             },
             @"allocated_memory": @{
                 @"icon": @"memorychip",
@@ -146,7 +146,8 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"warnAlways": @NO,
                 @"warnCondition": ^BOOL(DBNumberedSlider *view){
                     return view.value >= NSProcessInfo.processInfo.physicalMemory / 1048576 * 0.4;
-                }
+                },
+                @"warnKey": @"mem_warn"
             }
         }
     ];
@@ -169,13 +170,17 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.textLabel.textColor = nil;
 
     NSString *key = self.prefContents[indexPath.section].allKeys[indexPath.row];
     NSDictionary *item = self.prefContents[indexPath.section].allValues[indexPath.row];
     CreateView createView = item[@"type"];
     createView(cell, key, item);
-    objc_setAssociatedObject(cell.accessoryView, @"key", key, OBJC_ASSOCIATION_ASSIGN);
-    objc_setAssociatedObject(cell.accessoryView, @"item", item, OBJC_ASSOCIATION_ASSIGN);
+    if (cell.accessoryView) {
+        objc_setAssociatedObject(cell.accessoryView, @"key", key, OBJC_ASSOCIATION_ASSIGN);
+        objc_setAssociatedObject(cell.accessoryView, @"item", item, OBJC_ASSOCIATION_ASSIGN);
+    }
 
     // Set general properties
     if (@available(iOS 13.0, *)) {
@@ -186,23 +191,34 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     // Check if one has enable condition and call if it does
     BOOL(^checkEnable)(void) = item[@"enableCondition"];
     cell.userInteractionEnabled = !checkEnable || checkEnable();
+    cell.textLabel.enabled = cell.detailTextLabel.enabled = cell.userInteractionEnabled;
 
     return cell;
 }
 
 - (void)initViewCreation {
     __weak LauncherPreferencesViewController2 *weakSelf = self;
+
+    self.typeButton = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
+        cell.accessoryView = nil;
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.textLabel.textColor = UIColor.systemBlueColor;
+    };
+
 /*
     self.typePickField = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
         cell.accessoryView = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, cell.bounds.size.width / 2, cell.bounds.size.height)];
         [(id)(cell.accessoryView) setText:getPreference(key)];
     };
 */
+
     self.typeTextField = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
         UITextField *view = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, cell.bounds.size.width / 2.1, cell.bounds.size.height)];
+        [view addTarget:view action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
         view.autocorrectionType = UITextAutocorrectionTypeNo;
         view.autocapitalizationType = UITextAutocapitalizationTypeNone;
         view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
+        view.delegate = weakSelf;
         view.placeholder = NSLocalizedString(([NSString stringWithFormat:@"preference.placeholder.%@", key]), nil);
         view.returnKeyType = UIReturnKeyDone;
         view.text = getPreference(key);
@@ -218,6 +234,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
     self.typeSlider = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
         DBNumberedSlider *view = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(0, 0, cell.bounds.size.width / 2.1, cell.bounds.size.height)];
+        [view addTarget:weakSelf action:@selector(sliderMoved:) forControlEvents:UIControlEventValueChanged];
         view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
         view.minimumValue = [item[@"min"] intValue];
         view.maximumValue = [item[@"max"] intValue];
@@ -234,25 +251,38 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     };
 }
 
+- (void)showAlertOnView:(UIView *)view title:(NSString *)title message:(NSString *)message {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
+    alert.popoverPresentationController.sourceView = view;
+    alert.popoverPresentationController.sourceRect = view.bounds;
+    UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleCancel handler:nil];
+    [alert addAction:ok];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
 - (void)checkWarn:(UIView *)view {
     NSString *key = objc_getAssociatedObject(view, @"key");
     NSDictionary *item = objc_getAssociatedObject(view, @"item");
 
     BOOL(^isWarnable)(UIView *) = item[@"warnCondition"];
     NSString *warnKey = item[@"warnKey"];
-    if (isWarnable && isWarnable(view) && ![getPreference(warnKey) boolValue]) {
+    if (isWarnable && isWarnable(view) && (!warnKey || [getPreference(warnKey) boolValue])) {
         if (warnKey) {
-            setPreference(warnKey, @YES);
+            setPreference(warnKey, @NO);
         }
 
         NSString *message = NSLocalizedString(([NSString stringWithFormat:@"preference.warn.%@", key]), nil);
-        UIAlertController *warnAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Warning", nil) message:message preferredStyle:UIAlertControllerStyleActionSheet];
-        warnAlert.popoverPresentationController.sourceView = view;
-        warnAlert.popoverPresentationController.sourceRect = view.bounds;
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleCancel handler:nil];
-        [warnAlert addAction:ok];
-        [self presentViewController:warnAlert animated:YES completion:nil];
+        [self showAlertOnView:view title:NSLocalizedString(@"Warning", nil) message:message];
     }
+}
+
+#pragma mark Control event handlers
+
+- (void)sliderMoved:(DBNumberedSlider *)sender {
+    [self checkWarn:sender];
+    NSString *key = objc_getAssociatedObject(sender, @"key");
+
+    setPreference(key, @(sender.value));
 }
 
 - (void)switchChanged:(UISwitch *)sender {
@@ -274,6 +304,57 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
         // TODO: only reload needed rows
         [self.tableView reloadData];
     }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+
+    UITableViewCell *view = [self.tableView cellForRowAtIndexPath:indexPath];
+    if (view.selectionStyle == UITableViewCellSelectionStyleNone) {
+        return;
+    }
+
+    NSString *key = self.prefContents[indexPath.section].allKeys[indexPath.row];
+    NSDictionary *item = self.prefContents[indexPath.section].allValues[indexPath.row];
+
+    if ([item[@"showConfirmPrompt"] boolValue]) {
+        NSString *title = NSLocalizedString(@"preference.title.confirm", nil);
+        NSString *message = NSLocalizedString(([NSString stringWithFormat:@"preference.title.confirm.%@", key]), nil);
+        UIAlertController *confirmAlert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
+        confirmAlert.popoverPresentationController.sourceView = view;
+        confirmAlert.popoverPresentationController.sourceRect = view.bounds;
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self tableView:tableView invokeActionAtIndexPath:indexPath];
+        }];
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
+        [confirmAlert addAction:cancel];
+        [confirmAlert addAction:ok];
+        [self presentViewController:confirmAlert animated:YES completion:nil];
+    } else {
+        [self tableView:tableView invokeActionAtIndexPath:indexPath];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView invokeActionAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *key = self.prefContents[indexPath.section].allKeys[indexPath.row];
+    NSDictionary *item = self.prefContents[indexPath.section].allValues[indexPath.row];
+
+    void(^invokeAction)(void) = item[@"action"];
+    if (invokeAction) {
+        invokeAction();
+    }
+
+    UIView *view = [self.tableView cellForRowAtIndexPath:indexPath];
+    NSString *title = NSLocalizedString(([NSString stringWithFormat:@"preference.title.done.%@", key]), nil);
+    //NSString *message = NSLocalizedString(([NSString stringWithFormat:@"preference.message.done.%@", key]), nil);
+    [self showAlertOnView:view title:title message:nil];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)sender {
+    [self checkWarn:sender];
+    NSString *key = objc_getAssociatedObject(sender, @"key");
+
+    setPreference(key, sender.text);
 }
 
 @end

@@ -252,7 +252,7 @@ int main(int argc, char * argv[]) {
 
     init_hookFunctions();
 
-    loadPreferences();
+    loadPreferences(NO);
     init_setupResolvConf();
     init_setupMultiDir();
     init_setupLauncherProfiles();
