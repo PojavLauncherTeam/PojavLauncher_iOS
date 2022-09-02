@@ -10,9 +10,9 @@
 
 typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
-@interface LauncherPreferencesViewController2() {}
+@interface LauncherPreferencesViewController2()<UIPickerViewDataSource, UIPickerViewDelegate> {}
 @property NSArray<NSString*>* prefSections;
-@property NSArray<NSDictionary<NSString*, NSDictionary*>*>* prefContents;
+@property NSArray<NSArray<NSDictionary*>*>* prefContents;
 
 @property CreateView typeButton, typePickField, typeTextField, typeSlider, typeSwitch;
 @end
@@ -31,111 +31,114 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     self.prefSections = @[@"general", @"video", @"control", @"java"];
 
     self.prefContents = @[
-        @{
+        @[
         // General settings
-            @"game_directory": @{
+            @{@"key": @"game_directory",
                 @"icon": @"folder",
                 @"type": self.typePickField,
                 @"pickList": @[@"default", @"TODO"]
             },
-            @"home_symlink": @{
+            @{@"key": @"home_symlink",
                 @"icon": @"link",
                 @"type": self.typeSwitch
             },
-            @"check_sha": @{
+            @{@"key": @"check_sha",
                 @"icon": @"lock.shield",
                 @"type": self.typeSwitch
             },
-            @"cosmetica": @{
+            @{@"key": @"cosmetica",
                 @"icon": @"eyeglasses",
                 @"type": self.typeSwitch
             },
-            @"reset_settings": @{
-                @"icon": @"trash",
-                @"type": self.typeButton,
-                @"requestReload": @YES,
-                @"showConfirmPrompt": @(YES),
-                @"action": ^void(){
-                    loadPreferences(YES);
-                    // TODO: reset UI states
-                }
-            },
-            @"reset_warnings": @{
+            @{@"key": @"reset_warnings",
                 @"icon": @"exclamationmark.triangle",
                 @"type": self.typeButton,
                 @"action": ^void(){
                     resetWarnings();
                 }
             },
-        }, @{
+            @{@"key": @"reset_settings",
+                @"icon": @"trash",
+                @"type": self.typeButton,
+                @"requestReload": @YES,
+                @"showConfirmPrompt": @YES,
+                @"destructive": @YES,
+                @"action": ^void(){
+                    loadPreferences(YES);
+                    // TODO: reset UI states
+                }
+            },
+        ], @[
         // Video and renderer settings
-            @"renderer": @{
+            @{@"key": @"renderer",
                 @"icon": @"cpu",
                 @"type": self.typePickField,
                 @"pickList": @[@"gl4es", @"zink", @"wip"]
             },
-            @"resolution": @{
+            @{@"key": @"resolution",
                 @"icon": @"viewfinder",
-                @"type": self.typeSlider
+                @"type": self.typeSlider,
+                @"min": @(25),
+                @"max": @(150)
             },
-        }, @{
+        ], @[
         // Control settings
         /*
             @"disable_gesture": @{
                 @"type": self.typeSwitch
             },
         */
-            @"press_duration": @{
+            @{@"key": @"press_duration",
                 @"icon": @"timer",
                 @"type": self.typeSlider,
                 @"min": @(100),
                 @"max": @(1000)
             },
-            @"button_scale": @{
+            @{@"key": @"button_scale",
                 @"icon": @"aspectratio",
                 @"type": self.typeSlider,
                 @"min": @(50), // 80?
                 @"max": @(500)
             },
-            @"mouse_scale": @{
+            @{@"key": @"mouse_scale",
                 @"icon": @"arrow.up.left.and.arrow.down.right.circle",
                 @"type": self.typeSlider,
                 @"min": @(25),
                 @"max": @(300)
             },
-            @"mouse_speed": @{
+            @{@"key": @"mouse_speed",
                 @"icon": @"arrow.left.and.right",
                 @"type": self.typeSlider,
                 @"min": @(25),
                 @"max": @(300)
             },
-            @"virtmouse_enable": @{
+            @{@"key": @"virtmouse_enable",
                 @"icon": @"cursorarrow.rays",
                 @"type": self.typeSwitch
             },
-            @"slideable_hotbar": @{
+            @{@"key": @"slideable_hotbar",
                 @"icon": @"slider.horizontal.below.rectangle",
                 @"type": self.typeSwitch
             }
-        }, @{
+        ], @[
         // Java tweaks
-            @"java_home": @{ // TODO: name as Use Java 17 for older MC
+            @{@"key": @"java_home", // TODO: name as Use Java 17 for older MC
                 @"icon": @"cube",
                 @"type": self.typeSwitch,
                 // false: 8, true: 17
                 @"customSwitchValue": @[@"java-8-openjdk", @"java-17-openjdk"]
             },
-            @"java_args": @{
+            @{@"key": @"java_args",
                 @"icon": @"slider.vertical.3",
                 @"type": self.typeTextField
             },
-            @"auto_ram": @{
+            @{@"key": @"auto_ram",
                 @"icon": @"slider.horizontal.3",
                 @"type": self.typeSwitch,
                 //@"hidden": @(getenv("POJAV_DETECTEDJB") == NULL),
                 @"requestReload": @YES
             },
-            @"allocated_memory": @{
+            @{@"key": @"allocated_memory",
                 @"icon": @"memorychip",
                 @"type": self.typeSlider,
                 @"min": @(NSProcessInfo.processInfo.physicalMemory / 1048576 * 0.25),
@@ -149,7 +152,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 },
                 @"warnKey": @"mem_warn"
             }
-        }
+        ]
     ];
 }
 
@@ -173,8 +176,8 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.textLabel.textColor = nil;
 
-    NSString *key = self.prefContents[indexPath.section].allKeys[indexPath.row];
-    NSDictionary *item = self.prefContents[indexPath.section].allValues[indexPath.row];
+    NSDictionary *item = self.prefContents[indexPath.section][indexPath.row];
+    NSString *key = item[@"key"];
     CreateView createView = item[@"type"];
     createView(cell, key, item);
     if (cell.accessoryView) {
@@ -184,6 +187,8 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
     // Set general properties
     if (@available(iOS 13.0, *)) {
+        BOOL destructive = [item[@"destructive"] boolValue];
+        cell.imageView.tintColor = destructive ? UIColor.systemRedColor : nil;
         cell.imageView.image = [UIImage systemImageNamed:item[@"icon"]];
     }
     cell.textLabel.text = NSLocalizedString(([NSString stringWithFormat:@"preference.title.%@", key]), nil);
@@ -200,9 +205,10 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     __weak LauncherPreferencesViewController2 *weakSelf = self;
 
     self.typeButton = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
+        BOOL destructive = [item[@"destructive"] boolValue];
         cell.accessoryView = nil;
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
-        cell.textLabel.textColor = UIColor.systemBlueColor;
+        cell.textLabel.textColor = destructive ? UIColor.systemRedColor : UIColor.systemBlueColor;
     };
 
 /*
@@ -229,7 +235,18 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
     self.typePickField = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
         weakSelf.typeTextField(cell, key, item);
-        //???
+        UITextField *view = (UITextField *)cell.accessoryView;
+        UIPickerView *picker = [[UIPickerView alloc] init];
+        objc_setAssociatedObject(picker, @"item", item, OBJC_ASSOCIATION_ASSIGN);
+        picker.delegate = weakSelf;
+        picker.dataSource = weakSelf;
+        [picker reloadAllComponents];
+        UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, weakSelf.view.frame.size.width, 44.0)];
+        UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:view action:@selector(resignFirstResponder)];
+        toolbar.items = @[flexibleSpace, doneButton];
+        view.inputAccessoryView = toolbar;
+        view.inputView = picker;
     };
 
     self.typeSlider = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
@@ -261,8 +278,8 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 }
 
 - (void)checkWarn:(UIView *)view {
-    NSString *key = objc_getAssociatedObject(view, @"key");
     NSDictionary *item = objc_getAssociatedObject(view, @"item");
+    NSString *key = item[@"key"];
 
     BOOL(^isWarnable)(UIView *) = item[@"warnCondition"];
     NSString *warnKey = item[@"warnKey"];
@@ -276,19 +293,40 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     }
 }
 
+#pragma mark - UIPickerView
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    
+}
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)thePickerView {
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    NSDictionary *item = objc_getAssociatedObject(pickerView, @"item");
+    return [item[@"pickList"] count];
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    NSDictionary *item = objc_getAssociatedObject(pickerView, @"item");
+    return item[@"pickList"][row];
+}
+
 #pragma mark Control event handlers
 
 - (void)sliderMoved:(DBNumberedSlider *)sender {
     [self checkWarn:sender];
     NSString *key = objc_getAssociatedObject(sender, @"key");
 
+    sender.value = (int)sender.value;
     setPreference(key, @(sender.value));
 }
 
 - (void)switchChanged:(UISwitch *)sender {
     [self checkWarn:sender];
-    NSString *key = objc_getAssociatedObject(sender, @"key");
     NSDictionary *item = objc_getAssociatedObject(sender, @"item");
+    NSString *key = item[@"key"];
 
     // Special switches may define custom value instead of NO/YES
     NSArray *customSwitchValue = item[@"customSwitchValue"];
@@ -311,19 +349,21 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
     UITableViewCell *view = [self.tableView cellForRowAtIndexPath:indexPath];
     if (view.selectionStyle == UITableViewCellSelectionStyleNone) {
+        // Ignore if selection style is none
         return;
     }
 
-    NSString *key = self.prefContents[indexPath.section].allKeys[indexPath.row];
-    NSDictionary *item = self.prefContents[indexPath.section].allValues[indexPath.row];
+    NSDictionary *item = self.prefContents[indexPath.section][indexPath.row];
+    NSString *key = item[@"key"];
 
     if ([item[@"showConfirmPrompt"] boolValue]) {
+        BOOL destructive = [item[@"destructive"] boolValue];
         NSString *title = NSLocalizedString(@"preference.title.confirm", nil);
         NSString *message = NSLocalizedString(([NSString stringWithFormat:@"preference.title.confirm.%@", key]), nil);
         UIAlertController *confirmAlert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
         confirmAlert.popoverPresentationController.sourceView = view;
         confirmAlert.popoverPresentationController.sourceRect = view.bounds;
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:destructive?UIAlertActionStyleDestructive:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [self tableView:tableView invokeActionAtIndexPath:indexPath];
         }];
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
@@ -336,8 +376,8 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 }
 
 - (void)tableView:(UITableView *)tableView invokeActionAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *key = self.prefContents[indexPath.section].allKeys[indexPath.row];
-    NSDictionary *item = self.prefContents[indexPath.section].allValues[indexPath.row];
+    NSDictionary *item = self.prefContents[indexPath.section][indexPath.row];
+    NSString *key = item[@"key"];
 
     void(^invokeAction)(void) = item[@"action"];
     if (invokeAction) {
