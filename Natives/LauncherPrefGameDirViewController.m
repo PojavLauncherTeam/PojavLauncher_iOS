@@ -34,6 +34,14 @@
     }
 }
 
+- (void)changeSelectionTo:(NSString *)name {
+    setPreference(@"game_directory", name);
+    NSString *multidirPath = [NSString stringWithFormat:@"%s/instances/%@", getenv("POJAV_HOME"), name];
+    NSString *lasmPath = [NSString stringWithFormat:@"%s/Library/Application Support/minecraft", getenv("POJAV_HOME")];
+    [NSFileManager.defaultManager removeItemAtPath:lasmPath error:nil];
+    [NSFileManager.defaultManager createSymbolicLinkAtPath:lasmPath withDestinationPath:multidirPath error:nil];
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.array.count;
@@ -89,7 +97,7 @@ viewForFooterInSection:(NSInteger)section
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    setPreference(@"game_directory", self.array[indexPath.row]);
+    [self changeSelectionTo:self.array[indexPath.row]];
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     for (int i = 0; i < self.array.count; i++) {
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
@@ -154,9 +162,9 @@ viewForFooterInSection:(NSInteger)section
     UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
         NSString *directory = [NSString stringWithFormat:@"%s/instances/%@", getenv("POJAV_HOME"), self.array[indexPath.row]];
         NSError *error;
-        if([[NSFileManager defaultManager] removeItemAtPath:directory error:&error]) {
+        if([NSFileManager.defaultManager removeItemAtPath:directory error:&error]) {
             if ([getPreference(@"game_directory") isEqualToString:self.array[indexPath.row]]) {
-                setPreference(@"game_directory", self.array[0]);
+                [self changeSelectionTo:self.array[0]];
                 [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]].accessoryType = UITableViewCellAccessoryCheckmark;
             }
             [self.array removeObjectAtIndex:indexPath.row];
@@ -187,14 +195,14 @@ viewForFooterInSection:(NSInteger)section
 
     NSString *dest = [NSString stringWithFormat:@"%s/instances/%@", getenv("POJAV_HOME"), sender.text];
     if (isFooterView) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:dest withIntermediateDirectories:NO attributes:nil error:&error];
+        [NSFileManager.defaultManager createDirectoryAtPath:dest withIntermediateDirectories:NO attributes:nil error:&error];
     } else {
         NSString *source = [NSString stringWithFormat:@"%s/instances/%@", getenv("POJAV_HOME"), sender.placeholder];
         [NSFileManager.defaultManager moveItemAtPath:source toPath:dest error:&error];
     }
 
     if (error == nil) {
-        setPreference(@"game_directory", sender.text);
+        [self changeSelectionTo:sender.text];
         if (isFooterView) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.array.count inSection:0];
             [self.array addObject:sender.text];
@@ -207,6 +215,8 @@ viewForFooterInSection:(NSInteger)section
         } else {
             int index = [self.array indexOfObject:sender.placeholder];
             self.array[index] = sender.placeholder = sender.text;
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+            [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
         }
     } else {
         // Restore to the previous name if we encounter an error

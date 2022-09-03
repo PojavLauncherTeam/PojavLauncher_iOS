@@ -168,6 +168,22 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     ];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
+    // Scan for child pane cells and reload them
+    // FIXME: any cheaper operations?
+    NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+    for (int section = 0; section < self.prefContents.count; section++) {
+        for (int row = 0; row < self.prefContents[section].count; row++) {
+            if (self.prefContents[section][row][@"type"] == self.typeChildPane) {
+                [indexPaths addObject:[NSIndexPath indexPathForRow:row inSection:section]];
+            }
+        }
+    }
+    [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return self.prefSections.count;
 }
