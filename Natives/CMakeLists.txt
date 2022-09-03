@@ -17,6 +17,7 @@ include_directories(
   "external/DBNumberedSlider/Classes"
   "external/fishhook"
   "external/mesa"
+  "external/Apple"
 )
 
 # For cacio support library
