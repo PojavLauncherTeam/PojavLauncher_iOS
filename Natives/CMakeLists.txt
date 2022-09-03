@@ -118,6 +118,7 @@ add_executable(PojavLauncher
   LauncherPreferences.m
   LauncherPreferencesViewController.m
   LauncherPreferencesViewController2.m
+  LauncherPrefGameDirViewController.m
   LauncherSplitViewController.m
   LauncherViewController.m
   LoginViewController.m

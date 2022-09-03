@@ -1,0 +1,227 @@
+#import "LauncherPreferences.h"
+#import "LauncherPrefGameDirViewController.h"
+#import "TOInsetGroupedTableView.h"
+#import "ios_uikit_bridge.h"
+
+@interface LauncherPrefGameDirViewController ()<UITextFieldDelegate>
+@property NSMutableArray *array;
+@end
+
+@implementation LauncherPrefGameDirViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self setTitle:NSLocalizedString(@"preference.title.game_directory", nil)];
+
+    self.array = [[NSMutableArray alloc] init];
+    [self.array addObject:@"default"];
+
+    self.tableView = [[TOInsetGroupedTableView alloc] init];
+    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
+    self.tableView.sectionFooterHeight = 50;
+
+    NSString *path = [NSString stringWithFormat:@"%s/instances", getenv("POJAV_HOME")];
+
+    NSFileManager *fm = NSFileManager.defaultManager;
+    NSArray *files = [fm contentsOfDirectoryAtPath:path error:nil];
+    BOOL isDir;
+    for (NSString *file in files) {
+        [fm fileExistsAtPath:path isDirectory:(&isDir)];
+        if (isDir && ![file isEqualToString:@"default"]) {
+            [self.array addObject:file];
+        }
+    }
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.array.count;
+}
+
+- (UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITextField *view;
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+ 
+        if (indexPath.row == 0) {
+            cell.textLabel.text = self.array[indexPath.row];
+        } else {
+            view = [[UITextField alloc] initWithFrame:CGRectMake(20, 10, cell.bounds.size.width/2, cell.bounds.size.height-20)];
+            [view addTarget:view action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
+            view.autocorrectionType = UITextAutocorrectionTypeNo;
+            view.autocapitalizationType = UITextAutocapitalizationTypeNone;
+            view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+            view.delegate = self;
+            view.returnKeyType = UIReturnKeyDone;
+            [cell.contentView addSubview:view];
+        }
+    }
+    if (indexPath.row > 0) {
+        view = cell.contentView.subviews.lastObject;
+        view.placeholder = self.array[indexPath.row];
+        view.text = self.array[indexPath.row];
+    }
+
+    if ([getPreference(@"game_directory") isEqualToString:self.array[indexPath.row]]) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    } else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+
+    // TODO: display size in the detail label
+    return cell;
+}
+
+- (UIView *)tableView:(UITableView *)tableView 
+viewForFooterInSection:(NSInteger)section
+{
+    UITextField *view = [[UITextField alloc] init];
+    [view addTarget:view action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
+    view.autocorrectionType = UITextAutocorrectionTypeNo;
+    view.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    view.delegate = self;
+    view.placeholder = @"add game directory";
+    view.returnKeyType = UIReturnKeyDone;
+    return view;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    setPreference(@"game_directory", self.array[indexPath.row]);
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    for (int i = 0; i < self.array.count; i++) {
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+        if (i == indexPath.row) {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        } else {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
+    }
+}
+
+- (UIContextMenuConfiguration *)tableView:(UITableView *)tableView contextMenuConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath point:(CGPoint)point API_AVAILABLE(ios(13.0))
+{
+    // You can't delete or rename the default instance, though there will be a reset action (TODO)
+    if (indexPath.row == 0) {
+        return nil;
+    }
+
+    if (@available(iOS 13.0, *)) {
+        UIAction *delete = [UIAction actionWithTitle:@"Delete" image:[UIImage systemImageNamed:@"trash"] identifier:@"deleteAction" handler:^(__kindof UIAction * _Nonnull action) {
+            [self actionDeleteAtIndexPath:indexPath];
+        }];
+        delete.attributes = UIMenuElementAttributesDestructive;
+
+        UIAction *rename = [UIAction actionWithTitle:@"Rename" image:[UIImage systemImageNamed:@"pencil"] identifier:@"editAction" handler:^(__kindof UIAction * _Nonnull action) {
+            UITableViewCell *view = [self.tableView cellForRowAtIndexPath:indexPath];
+            [view.contentView.subviews.lastObject becomeFirstResponder];
+        }];
+
+        return [UIContextMenuConfiguration configurationWithIdentifier:nil previewProvider:nil actionProvider:^UIMenu * _Nullable(NSArray<UIMenuElement *> * _Nonnull suggestedActions) {
+            return [UIMenu menuWithTitle:self.array[indexPath.row] children:@[delete, rename]];
+        }];
+    }
+    return nil;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        [self actionDeleteAtIndexPath:indexPath];
+    }
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row == 0) {
+        // TODO: Reset action?
+        return UITableViewCellEditingStyleNone;
+    } else {
+        return UITableViewCellEditingStyleDelete;
+    }
+}
+
+- (void)actionDeleteAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *view = [self.tableView cellForRowAtIndexPath:indexPath];
+    NSString *title = NSLocalizedString(@"preference.title.confirm", nil);
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"preference.title.confirm.delete_game_directory", nil), self.array[indexPath.row]];
+    UIAlertController *confirmAlert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
+    confirmAlert.popoverPresentationController.sourceView = view;
+    confirmAlert.popoverPresentationController.sourceRect = view.bounds;
+    UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        NSString *directory = [NSString stringWithFormat:@"%s/instances/%@", getenv("POJAV_HOME"), self.array[indexPath.row]];
+        NSError *error;
+        if([[NSFileManager defaultManager] removeItemAtPath:directory error:&error]) {
+            if ([getPreference(@"game_directory") isEqualToString:self.array[indexPath.row]]) {
+                setPreference(@"game_directory", self.array[0]);
+                [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]].accessoryType = UITableViewCellAccessoryCheckmark;
+            }
+            [self.array removeObjectAtIndex:indexPath.row];
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade]; 
+        } else {
+            showDialog(self, NSLocalizedString(@"Error", nil), error.localizedDescription);
+        }
+    }];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
+    [confirmAlert addAction:cancel];
+    [confirmAlert addAction:ok];
+    [self presentViewController:confirmAlert animated:YES completion:nil];
+}
+
+#pragma mark UITextField
+
+- (void)textFieldDidEndEditing:(UITextField *)sender {
+    BOOL isFooterView = sender.superview == self.tableView;
+    if (!sender.hasText || [sender.text isEqualToString:sender.placeholder]) {
+        if (isFooterView) {
+            return;
+        }
+        sender.text = sender.placeholder;
+        return;
+    }
+
+    NSError *error;
+
+    NSString *dest = [NSString stringWithFormat:@"%s/instances/%@", getenv("POJAV_HOME"), sender.text];
+    if (isFooterView) {
+        [[NSFileManager defaultManager] createDirectoryAtPath:dest withIntermediateDirectories:NO attributes:nil error:&error];
+    } else {
+        NSString *source = [NSString stringWithFormat:@"%s/instances/%@", getenv("POJAV_HOME"), sender.placeholder];
+        [NSFileManager.defaultManager moveItemAtPath:source toPath:dest error:&error];
+    }
+
+    if (error == nil) {
+        setPreference(@"game_directory", sender.text);
+        if (isFooterView) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.array.count inSection:0];
+            [self.array addObject:sender.text];
+            [self.tableView beginUpdates];
+            [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.tableView endUpdates];
+            [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
+            // Clear text
+            sender.text = @"";
+        } else {
+            int index = [self.array indexOfObject:sender.placeholder];
+            self.array[index] = sender.placeholder = sender.text;
+        }
+    } else {
+        // Restore to the previous name if we encounter an error
+        if (!isFooterView) {
+            sender.text = sender.placeholder;
+        }
+        showDialog(self, NSLocalizedString(@"Error", nil), error.localizedDescription);
+    }
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    CGRect frame = textField.frame;
+    frame.size.width = MAX(50, textField.intrinsicContentSize.width + 10);
+    textField.frame = frame;
+    return YES;
+}
+
+@end

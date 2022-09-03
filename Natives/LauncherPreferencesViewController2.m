@@ -4,6 +4,7 @@
 #import "DBNumberedSlider.h"
 #import "LauncherPreferences.h"
 #import "LauncherPreferencesViewController2.h"
+#import "LauncherPrefGameDirViewController.h"
 #import "TOInsetGroupedTableView.h"
 
 #include "utils.h"
@@ -14,7 +15,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 @property NSArray<NSString*>* prefSections;
 @property NSArray<NSArray<NSDictionary*>*>* prefContents;
 
-@property CreateView typeButton, typePickField, typeTextField, typeSlider, typeSwitch;
+@property CreateView typeButton, typeChildPane, typePickField, typeTextField, typeSlider, typeSwitch;
 @end
 
 @implementation LauncherPreferencesViewController2
@@ -35,8 +36,8 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
         // General settings
             @{@"key": @"game_directory",
                 @"icon": @"folder",
-                @"type": self.typePickField,
-                @"pickList": @[@"default", @"TODO"]
+                @"type": self.typeChildPane,
+                @"class": LauncherPrefGameDirViewController.class,
             },
             @{@"key": @"home_symlink",
                 @"icon": @"link",
@@ -73,7 +74,18 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             @{@"key": @"renderer",
                 @"icon": @"cpu",
                 @"type": self.typePickField,
-                @"pickList": @[@"gl4es", @"zink", @"wip"]
+                @"pickKeys": @[
+                    @"auto",
+                    @ RENDERER_NAME_GL4ES,
+                    @ RENDERER_NAME_MTL_ANGLE,
+                    @ RENDERER_NAME_VK_ZINK
+                ],
+                @"pickList": @[
+                    NSLocalizedString(@"preference.title.renderer.auto", nil),
+                    NSLocalizedString(@"preference.title.renderer.gl4es", nil),
+                    NSLocalizedString(@"preference.title.renderer.tinygl4angle", nil),
+                    NSLocalizedString(@"preference.title.renderer.zink", nil)
+                ]
             },
             @{@"key": @"resolution",
                 @"icon": @"viewfinder",
@@ -171,10 +183,14 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 - (UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cell"];
     }
+    // Reset cell properties, as it could be reused
+    cell.accessoryType = UITableViewCellAccessoryNone;
+    cell.accessoryView = nil;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.textLabel.textColor = nil;
+    cell.detailTextLabel.text = nil;
 
     NSDictionary *item = self.prefContents[indexPath.section][indexPath.row];
     NSString *key = item[@"key"];
@@ -206,9 +222,14 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
     self.typeButton = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
         BOOL destructive = [item[@"destructive"] boolValue];
-        cell.accessoryView = nil;
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.textLabel.textColor = destructive ? UIColor.systemRedColor : UIColor.systemBlueColor;
+    };
+
+    self.typeChildPane = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.detailTextLabel.text = getPreference(key);
     };
 
 /*
@@ -238,9 +259,11 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
         UITextField *view = (UITextField *)cell.accessoryView;
         UIPickerView *picker = [[UIPickerView alloc] init];
         objc_setAssociatedObject(picker, @"item", item, OBJC_ASSOCIATION_ASSIGN);
+        objc_setAssociatedObject(picker, @"view", cell.accessoryView, OBJC_ASSOCIATION_ASSIGN);
         picker.delegate = weakSelf;
         picker.dataSource = weakSelf;
         [picker reloadAllComponents];
+        [picker selectRow:[item[@"pickKeys"] indexOfObject:getPreference(key)] inComponent:0 animated:NO];
         UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, weakSelf.view.frame.size.width, 44.0)];
         UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:view action:@selector(resignFirstResponder)];
@@ -296,7 +319,18 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 #pragma mark - UIPickerView
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    
+    NSDictionary *item = objc_getAssociatedObject(pickerView, @"item");
+    UITextField *view = objc_getAssociatedObject(pickerView, @"view");
+
+    // If there is key, use it
+    if (item[@"pickKeys"] != nil) {
+        view.text = item[@"pickKeys"][row];
+    } else {
+        view.text = item[@"pickList"][row];
+    }
+
+    // Save the preference
+    [self textFieldDidEndEditing:view];
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)thePickerView {
@@ -347,12 +381,25 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
 
-    UITableViewCell *view = [self.tableView cellForRowAtIndexPath:indexPath];
-    if (view.selectionStyle == UITableViewCellSelectionStyleNone) {
-        // Ignore if selection style is none
-        return;
-    }
+    NSDictionary *item = self.prefContents[indexPath.section][indexPath.row];
 
+    if (item[@"type"] == self.typeButton) {
+        [self tableView:tableView invokeActionWithPromptAtIndexPath:indexPath];
+    } else if (item[@"type"] == self.typeChildPane) {
+        [self tableView:tableView openChildPaneAtIndexPath:indexPath];
+    }
+}
+
+#pragma mark External UITableView functions
+
+- (void)tableView:(UITableView *)tableView openChildPaneAtIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary *item = self.prefContents[indexPath.section][indexPath.row];
+    UIViewController *vc = [[item[@"class"] alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)tableView:(UITableView *)tableView invokeActionWithPromptAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *view = [self.tableView cellForRowAtIndexPath:indexPath];
     NSDictionary *item = self.prefContents[indexPath.section][indexPath.row];
     NSString *key = item[@"key"];
 
@@ -389,6 +436,8 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     //NSString *message = NSLocalizedString(([NSString stringWithFormat:@"preference.message.done.%@", key]), nil);
     [self showAlertOnView:view title:title message:nil];
 }
+
+#pragma mark UITextField
 
 - (void)textFieldDidEndEditing:(UITextField *)sender {
     [self checkWarn:sender];
