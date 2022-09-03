@@ -164,11 +164,11 @@ DEPLOY     = \
 	fi
 
 # Make sure everything is already available for use. Error if they require something
-ifeq ($(call HAS_COMMAND,cmake --version),1)
+ifneq ($(call DEPCHECK,cmake --version),1)
 $(error You need to install cmake)
 endif
 
-ifeq ($(call HAS_COMMAND,$(BOOTJDK)/javac -version),1)
+ifneq ($(call DEPCHECK,$(BOOTJDK)/javac -version),1)
 $(error You need to install JDK 8)
 endif
 
@@ -178,26 +178,26 @@ $(error You need to install JDK 8)
 endif
 endif
 
-ifeq ($(call HAS_COMMAND,ldid),1)
+ifneq ($(call DEPCHECK,ldid),1)
 $(error You need to install ldid)
 endif
 
-ifeq ($(call HAS_COMMAND,fakeroot -v),1)
+ifneq ($(call DEPCHECK,fakeroot -v),1)
 $(error You need to install fakeroot)
 endif
 
-ifeq ($(call HAS_COMMAND,dpkg-deb --version),1)
+ifneq ($(call DEPCHECK,dpkg-deb --version),1)
 $(error You need to install dpkg-dev)
 endif
 
 ifeq ($(DETECTPLAT),Linux)
-ifeq ($(call HAS_COMMAND,lld),1)
+ifneq ($(call DEPCHECK,lld),1)
 $(error You need to install lld)
 endif
 endif
 
-ifeq ($(call HAS_COMMAND,nproc --version),1)
-ifeq ($(call HAS_COMMAND,gnproc --version),1)
+ifneq ($(call DEPCHECK,nproc --version),1)
+ifneq ($(call DEPCHECK,gnproc --version),1)
 $(warning Unable to determine number of threads, defaulting to 2.)
 JOBS   ?= 2
 else
@@ -217,12 +217,13 @@ endif
 #  native  - Builds the Objective-C code.
 #  java    - Builds the Java code.
 #  extras  - Builds the Assets and Storyboard.
-#  deb     - Builds the Debian package.
+#  deb     - Builds the Debian package. Will be removed in 2.2.
 #  ipa     - Builds the application package.
-#  install - runs deb + installs to jailbroken device.
-#  deploy  - runs native and java + installs to jailbroken device.
+#  install - runs deb + installs to jailbroken device. Will be removed in 2.2.
+#  deploy  - runs native and java + installs to jailbroken device. Will be removed in 2.2.
+#  dsym    - Generates debug symbol files
 
-all: clean native java extras deb
+all: clean native java extras deb dsym ipa
 
 check:
 	@printf '\nDumping all Makefile variables.\n'
@@ -313,7 +314,7 @@ deb: native java extras
 	else \
 		$(call PACKAGING,development); \
 	fi
-	@echo 'Building PojavLauncher $(VERSION) - DEB - Start'
+	@echo 'Building PojavLauncher $(VERSION) - DEB - End'
 
 dsym: deb
 	@echo 'Building PojavLauncher $(VERSION) - DSYM - Start'
@@ -418,13 +419,14 @@ help:
 	@echo ''
 	@echo 'Usage:'
 	@echo '    make                                Makes everything under all'
-	@echo '    make all                            Builds natives, javaapp, extras, and package'
+	@echo '    make all                            Builds the entire app'
 	@echo '    make native                         Builds the native app'
 	@echo '    make java                           Builds the Java app'
-	@echo '    make deb                            Builds deb of PojavLauncher'
-#	@echo '    make ipa                            Builds ipa of PojavLauncher'
-	@echo '    make install                        Copy package to local iDevice'
-	@echo '    make deploy                         Copy package to local iDevice'
+	@echo '    make deb      (DEPRECATED)          Builds deb of PojavLauncher'
+	@echo '    make ipa                            Builds ipa of PojavLauncher'
+	@echo '    make install  (DEPRECATED)          Copy package to local iDevice'
+	@echo '    make deploy   (DEPRECATED)          Copy package to local iDevice'
+	@echo '    make dsym                           Generate debug symbol files'
 	@echo '    make clean                          Cleans build directories'
 
-.PHONY: all clean native java extras deb ipa install deploy
+.PHONY: all clean native java extras deb ipa install deploy dsym
