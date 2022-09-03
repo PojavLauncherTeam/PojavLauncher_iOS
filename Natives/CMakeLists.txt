@@ -18,6 +18,7 @@ include_directories(
   "external/TOInsetGroupedTableView/TOInsetGroupedTableView"
   "external/fishhook"
   "external/mesa"
+  "external/Apple"
 )
 
 # For cacio support library

@@ -8,3 +8,5 @@
 .DS_Store
 /pojavlauncher.xcodeproj
 /depends
+/Natives/resources/AppIcon60x60@2x.png
+/Natives/resources/AppIcon76x76@2x~ipad.png

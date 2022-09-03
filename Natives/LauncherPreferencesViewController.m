@@ -756,7 +756,7 @@ int tempIndex;
         title = @"Allocated RAM";
         if(getenv("POJAV_DETECTEDJB")) {
             message = @"This option allows you to change the amount of memory used by the game. The minimum is 25% (default) and the maximum is 85%. To be safe, any value over 40% will require a tool like jetsamctl to prevent memory crashes.";
-        } else if (!(getenv("POJAV_DETECTEDJB") && ![getPreference(@"disable_home_symlink") boolValue] == YES)){
+        } else if (!(getenv("POJAV_DETECTEDJB") && ![getPreference(@"ram_unjb_enable") boolValue] == NO)){
             message = @"This option allows you to change the amount of memory used by the game. This option is disabled by default on unjailbroken devices due to potential instability of the launcher.";
         } else {
             message = @"This option allows you to change the amount of memory used by the game. The minimum is 25% (default) and the maximum is 85%. Use this at your own risk while unjailbroken, as it can cause instability or break launching the game entirely.";
