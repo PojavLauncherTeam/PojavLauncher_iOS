@@ -324,25 +324,26 @@ dsym: deb
 
 ipa: dsym
 	echo 'Building PojavLauncher $(VERSION) - IPA - Start'
-	mkdir -p $(SOURCEDIR)/depends; \
+		@mkdir -p $(SOURCEDIR)/depends; \
 	cd $(SOURCEDIR)/depends; \
 	if [ ! -f "java-8-openjdk/bin/java" ] && [ ! -f "$(ls ../jre8-*.tar.xz)" ]; then \
 		if [ "$(RUNNER)" != "1" ]; then \
-			wget 'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre8-40df388/jre8-arm64-20220811-release.tar.xz'; \
+			wget 'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre8-40df388/jre8-arm64-20220811-release.tar.xz' -q --show-progress; \
 		fi; \
 		mkdir java-8-openjdk && cd java-8-openjdk; \
 		tar xvf ../jre8-*.tar.xz; \
 		rm ../jre8-*.tar.xz; \
 	fi; \
-	cd ..; \
+	cd $(SOURCEDIR)/depends; \
 	if [ ! -f "java-17-openjdk/bin/java" ] && [ ! -f "$(ls ../jre17-*.tar.xz)" ]; then \
 		if [ "$(RUNNER)" != "1" ]; then \
-			wget 'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre17-ca01427/jre17-arm64-20220817-release.tar.xz'; \
+			wget 'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre17-ca01427/jre17-arm64-20220817-release.tar.xz' -q --show-progress; \
 		fi; \
 		mkdir java-17-openjdk && cd java-17-openjdk; \
 		tar xvf ../jre17-*.tar.xz; \
 		rm ../jre17-*.tar.xz; \
 	fi; \
+	cd ..; \
 	mkdir -p $(OUTPUTDIR); \
 	cd $(OUTPUTDIR); \
 	$(call DIRCHECK,$(OUTPUTDIR)/Payload); \
