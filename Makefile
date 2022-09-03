@@ -324,7 +324,7 @@ dsym: deb
 
 ipa: dsym
 	echo 'Building PojavLauncher $(VERSION) - IPA - Start'
-		@mkdir -p $(SOURCEDIR)/depends; \
+	@mkdir -p $(SOURCEDIR)/depends; \
 	cd $(SOURCEDIR)/depends; \
 	if [ ! -f "java-8-openjdk/bin/java" ] && [ ! -f "$(ls ../jre8-*.tar.xz)" ]; then \
 		if [ "$(RUNNER)" != "1" ]; then \
