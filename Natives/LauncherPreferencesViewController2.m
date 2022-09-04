@@ -283,7 +283,7 @@ viewForHeaderInSection:(NSInteger)section {
     self.typeButton = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
         BOOL destructive = [item[@"destructive"] boolValue];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
-        cell.textLabel.textColor = destructive ? UIColor.systemRedColor : UIColor.systemBlueColor;
+        cell.textLabel.textColor = destructive ? UIColor.systemRedColor : weakSelf.view.tintColor;
     };
 
     self.typeChildPane = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
@@ -291,13 +291,6 @@ viewForHeaderInSection:(NSInteger)section {
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.detailTextLabel.text = getPreference(key);
     };
-
-/*
-    self.typePickField = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
-        cell.accessoryView = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, cell.bounds.size.width / 2, cell.bounds.size.height)];
-        [(id)(cell.accessoryView) setText:getPreference(key)];
-    };
-*/
 
     self.typeTextField = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
         UITextField *view = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, cell.bounds.size.width / 2.1, cell.bounds.size.height)];

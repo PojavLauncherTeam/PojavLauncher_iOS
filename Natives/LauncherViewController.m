@@ -2,7 +2,6 @@
 #import "CustomControlsViewController.h"
 #import "JavaGUIViewController.h"
 #import "LauncherPreferences.h"
-#import "LauncherPreferencesViewController.h"
 #import "LauncherViewController.h"
 #import "MinecraftResourceUtils.h"
 #import "ios_uikit_bridge.h"

@@ -7,7 +7,6 @@
 #import "AppDelegate.h"
 #import "customcontrols/CustomControlsUtils.h"
 #import "LauncherPreferences.h"
-#import "LauncherPreferencesViewController.h"
 
 #include <libgen.h>
 #include <pthread.h>

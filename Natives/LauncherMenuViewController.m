@@ -1,7 +1,6 @@
 #import "authenticator/BaseAuthenticator.h"
 #import "AccountListViewController.h"
 #import "LauncherMenuViewController.h"
-#import "LauncherPreferencesViewController.h"
 #import "LauncherPreferencesViewController2.h"
 #import "LauncherViewController.h"
 #import "UIButton+AFNetworking.h"
@@ -21,12 +20,10 @@
     // View controllers are put into an array to keep its state
     self.options = @[
         [[LauncherViewController alloc] init],
-        [[LauncherPreferencesViewController alloc] init],
         [[LauncherPreferencesViewController2 alloc] init]
     ];
     self.options[0].title = @"PojavLauncher";
-    self.options[1].title = @"Preferences";
-    self.options[2].title = NSLocalizedString(@"Settings", nil);
+    self.options[1].title = NSLocalizedString(@"Settings", nil);
     //@[@"News", @"Development Console", @"Crash logs"];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
