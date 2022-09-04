@@ -71,7 +71,7 @@ POJAV_JRE17_DIR       ?= $(SOURCEDIR)/depends/java-17-openjdk
 endif
 
 # Function to use later for checking dependencies
-DEPCHECK   = $(shell type $(1) >/dev/null 2>&1 && echo 1)
+DEPCHECK   = $(shell $(1) >/dev/null 2>&1 && echo 1)
 
 # Function to modify Info.plist files
 INFOPLIST  =  \
