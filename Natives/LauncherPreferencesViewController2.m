@@ -168,8 +168,14 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             @{@"key": @"auto_ram",
                 @"icon": @"slider.horizontal.3",
                 @"type": self.typeSwitch,
-                @"enableCondition": whenNotInGame,
-                //@"hidden": @(getenv("POJAV_DETECTEDJB") == NULL),
+                @"enableCondition": ^BOOL(){
+                    return getenv("POJAV_DETECTEDJB") == NULL && whenNotInGame();
+                },
+                @"warnAlways": @NO,
+                @"warnCondition": ^BOOL(){
+                    return getenv("POJAV_DETECTEDJB") == NULL && whenNotInGame();
+                },
+                @"warnKey": @"auto_ram_warn",
                 @"requestReload": @YES
             },
             @{@"key": @"allocated_memory",
@@ -182,7 +188,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 },
                 @"warnAlways": @NO,
                 @"warnCondition": ^BOOL(DBNumberedSlider *view){
-                    return view.value >= NSProcessInfo.processInfo.physicalMemory / 1048576 * 0.4;
+                    return view.value >= NSProcessInfo.processInfo.physicalMemory / 1048576 * 0.37;
                 },
                 @"warnKey": @"mem_warn"
             }

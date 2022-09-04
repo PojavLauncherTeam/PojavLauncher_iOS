@@ -114,6 +114,7 @@
 "preference.title.java_args" = "Custom java arguments";
 "preference.placeholder.java_args" = "Specify arguments...";
 "preference.title.auto_ram" = "Auto determine RAM amount";
+"preference.warn.auto_ram" = "Disabling this option on an unjailbroken devices can create instability if altered. Proceed with caution.";
 "preference.title.allocated_memory" = "Allocated memory (MB)";
 "preference.warn.allocated_memory" = "Due to limitations in the operating system itself, this option may cause instability at this and higher values. Proceed with caution.";
 // sha check

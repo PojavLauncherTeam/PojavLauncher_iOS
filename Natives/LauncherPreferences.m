@@ -87,7 +87,7 @@ void fillDefaultWarningDict() {
     setDefaultValueForPref(warnPrefDict, @"jb_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"customctrl_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"int_warn", @YES);
-    setDefaultValueForPref(warnPrefDict, @"ram_unjb_warn", @YES);
+    setDefaultValueForPref(warnPrefDict, @"auto_ram_warn", @YES);
 }
 
 void loadPreferences(BOOL reset) {
@@ -119,7 +119,7 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(envPrefDict, @"default_ctrl", @"default.json");
     setDefaultValueForPref(envPrefDict, @"game_directory", @"default");
     setDefaultValueForPref(envPrefDict, @"java_args", @"");
-    setDefaultValueForPref(envPrefDict, @"allocated_memory", [NSNumber numberWithFloat:roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.30)]);
+    setDefaultValueForPref(envPrefDict, @"allocated_memory", [NSNumber numberWithFloat:roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.25)]);
     setDefaultValueForPref(prefDict, @"restart_before_launch", @NO);
     setDefaultValueForPref(prefDict, @"debug_logging", CONFIG_TYPE);
     setDefaultValueForPref(prefDict, @"arccapes_enable", @YES);
