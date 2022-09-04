@@ -28,6 +28,11 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
     self.tableView = [[TOInsetGroupedTableView alloc] init];
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
+    self.tableView.sectionHeaderHeight = 50;
+
+    BOOL(^whenNotInGame)() = ^BOOL(){
+        return self.navigationController != nil;
+    };
 
     self.prefSections = @[@"general", @"video", @"control", @"java"];
 
@@ -37,23 +42,28 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             @{@"key": @"game_directory",
                 @"icon": @"folder",
                 @"type": self.typeChildPane,
+                @"enableCondition": whenNotInGame,
                 @"class": LauncherPrefGameDirViewController.class,
             },
             @{@"key": @"home_symlink",
                 @"icon": @"link",
-                @"type": self.typeSwitch
+                @"type": self.typeSwitch,
+                @"enableCondition": whenNotInGame
             },
             @{@"key": @"check_sha",
                 @"icon": @"lock.shield",
-                @"type": self.typeSwitch
+                @"type": self.typeSwitch,
+                @"enableCondition": whenNotInGame
             },
             @{@"key": @"cosmetica",
                 @"icon": @"eyeglasses",
-                @"type": self.typeSwitch
+                @"type": self.typeSwitch,
+                @"enableCondition": whenNotInGame
             },
             @{@"key": @"reset_warnings",
                 @"icon": @"exclamationmark.triangle",
                 @"type": self.typeButton,
+                @"enableCondition": whenNotInGame,
                 @"action": ^void(){
                     resetWarnings();
                 }
@@ -61,12 +71,13 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             @{@"key": @"reset_settings",
                 @"icon": @"trash",
                 @"type": self.typeButton,
+                @"enableCondition": whenNotInGame,
                 @"requestReload": @YES,
                 @"showConfirmPrompt": @YES,
                 @"destructive": @YES,
                 @"action": ^void(){
                     loadPreferences(YES);
-                    // TODO: reset UI states
+                    [self.tableView reloadData];
                 }
             },
         ], @[
@@ -74,6 +85,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             @{@"key": @"renderer",
                 @"icon": @"cpu",
                 @"type": self.typePickField,
+                @"enableCondition": whenNotInGame,
                 @"pickKeys": @[
                     @"auto",
                     @ RENDERER_NAME_GL4ES,
@@ -90,6 +102,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             @{@"key": @"resolution",
                 @"icon": @"viewfinder",
                 @"type": self.typeSlider,
+                @"enableCondition": whenNotInGame,
                 @"min": @(25),
                 @"max": @(150)
             },
@@ -137,16 +150,19 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             @{@"key": @"java_home", // TODO: name as Use Java 17 for older MC
                 @"icon": @"cube",
                 @"type": self.typeSwitch,
+                @"enableCondition": whenNotInGame,
                 // false: 8, true: 17
                 @"customSwitchValue": @[@"java-8-openjdk", @"java-17-openjdk"]
             },
             @{@"key": @"java_args",
                 @"icon": @"slider.vertical.3",
-                @"type": self.typeTextField
+                @"type": self.typeTextField,
+                @"enableCondition": whenNotInGame
             },
             @{@"key": @"auto_ram",
                 @"icon": @"slider.horizontal.3",
                 @"type": self.typeSwitch,
+                @"enableCondition": whenNotInGame,
                 //@"hidden": @(getenv("POJAV_DETECTEDJB") == NULL),
                 @"requestReload": @YES
             },
@@ -156,7 +172,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"min": @(NSProcessInfo.processInfo.physicalMemory / 1048576 * 0.25),
                 @"max": @(NSProcessInfo.processInfo.physicalMemory / 1048576 * 0.85),
                 @"enableCondition": ^BOOL(){
-                    return ![getPreference(@"auto_ram") boolValue];
+                    return ![getPreference(@"auto_ram") boolValue] && whenNotInGame();
                 },
                 @"warnAlways": @NO,
                 @"warnCondition": ^BOOL(DBNumberedSlider *view){
@@ -184,8 +200,25 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
 }
 
+- (void)dismissViewController {
+    [self.presentingViewController performSelector:@selector(updatePreferenceChanges)];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return self.prefSections.count;
+}
+
+- (UIView *)tableView:(UITableView *)tableView 
+viewForHeaderInSection:(NSInteger)section {
+    if (section != 0 || self.navigationController != nil) {
+        return nil;
+    }
+
+    UIButton *doneButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [doneButton setTitle:NSLocalizedString(@"Done", nil) forState:UIControlStateNormal];
+    [doneButton addTarget:self action:@selector(dismissViewController) forControlEvents:UIControlEventTouchUpInside];
+    return doneButton;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -229,6 +262,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     BOOL(^checkEnable)(void) = item[@"enableCondition"];
     cell.userInteractionEnabled = !checkEnable || checkEnable();
     cell.textLabel.enabled = cell.detailTextLabel.enabled = cell.userInteractionEnabled;
+    [(id)cell.accessoryView setEnabled:cell.userInteractionEnabled];
 
     return cell;
 }
@@ -301,7 +335,12 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
     self.typeSwitch = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
         UISwitch *view = [[UISwitch alloc] init];
-        [view setOn:[getPreference(key) boolValue] animated:NO];
+        NSArray *customSwitchValue = item[@"customSwitchValue"];
+        if (customSwitchValue == nil) {
+            [view setOn:[getPreference(key) boolValue] animated:NO];
+        } else {
+            [view setOn:[getPreference(key) isEqualToString:customSwitchValue[1]] animated:NO];
+        }
         [view addTarget:weakSelf action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
         cell.accessoryView = view;
     };

@@ -169,7 +169,7 @@ BOOL leftShiftHeld;
             return;
         }
 
-        UIImageView *pointerView = [(id)currentVC() mousePointerView];
+        UIImageView *pointerView = [(id)currentWindow().rootViewController mousePointerView];
         virtualMouseFrame.origin.x += xValue;
         virtualMouseFrame.origin.y += yValue;
         pointerView.frame = virtualMouseFrame;

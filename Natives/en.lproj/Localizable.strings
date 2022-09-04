@@ -3,10 +3,10 @@
   StringLocalization
 */
 
-"game.menu.forceClose" = "Force close";
-"game.menu.confirm.forceClose" = "Are you sure you want to force close?";
-"game.menu.logOutput" = "Log output";
-"game.menu.customControls" = "Custom controls";
+"game.menu.force_close" = "Force close";
+"game.menu.confirm.force_close" = "Are you sure you want to force close?";
+"game.menu.log_output" = "Log output";
+"game.menu.custom_controls" = "Custom controls";
 
 "Installed" = "Installed";
 "Snapshot" = "Snapshot";
@@ -65,6 +65,8 @@
 "login.msa.progress.acquireMCToken" = "(4/5) Acquiring the Minecraft token";
 "login.msa.progress.checkMCProfile" = "(5/5) Checking the Minecraft profile";
 
+"Settings" = "Settings";
+
 "preference.section.general" = "General Settings";
 "preference.section.video" = "Video Settings";
 "preference.section.control" = "Control Settings";
@@ -74,6 +76,8 @@
 
 "preference.title.game_directory" = "Minecraft game directory";
 "preference.title.confirm.delete_game_directory" = "The instance %@ will be deleted forever and cannot be restored.";
+"preference.multidir.add_directory" = "add game directory";
+
 "preference.title.home_symlink" = "Enable compatibility symlink";
 "preference.title.check_sha" = "Enable asset verification when launching";
 "preference.title.cosmetica" = "Enable Cosmetica integration";
@@ -91,20 +95,21 @@
 "preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - exports OpenGL 3.2 (Core Profile, limited)";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - exports OpenGL 4.1";
 
-"preference.title.resolution" = "Game resolution";
+"preference.title.resolution" = "Game resolution (%)";
 "preference.title.disable_gesture" = "Disable gestures";
-"preference.title.press_duration" = "Long-press duration";
-"preference.title.button_scale" = "On-screen button scale";
-"preference.title.mouse_scale" = "On-screen mouse scale";
-"preference.title.mouse_speed" = "On-screen mouse speed";
+"preference.title.press_duration" = "Long-press duration (ms)";
+"preference.title.button_scale" = "On-screen button scale (%)";
+"preference.title.mouse_scale" = "On-screen mouse scale (%)";
+"preference.title.mouse_speed" = "On-screen mouse speed (%)";
 "preference.title.virtmouse_enable" = "Enable on-screen mouse";
 "preference.title.slideable_hotbar" = "Enable slideable hotbar";
-"preference.title.java_home" = "Use Java 17 for version < 1.17";
+"preference.title.java_home" = "Use Java 17 for Minecraft < 1.17";
 // FIXME: is this filled well in the subtitle?
 // "preference.subtitle.java_home" = "Java 8 is used by default on Minecraft 1.16.5 and older. This switch forces old versions to use Java 17.";
 "preference.title.java_args" = "Custom java arguments";
+"preference.placeholder.java_args" = "Specify arguments...";
 "preference.title.auto_ram" = "Auto determine RAM amount";
-"preference.title.allocated_memory" = "Allocated memory";
+"preference.title.allocated_memory" = "Allocated memory (MB)";
 "preference.warn.allocated_memory" = "Due to limitations in the operating system itself, this option may cause instability at this and higher values. Proceed with caution.";
 // sha check
 // home symlink

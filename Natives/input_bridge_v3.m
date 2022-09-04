@@ -270,16 +270,16 @@ JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetGrabbing(JNIE
     }
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIView *surfaceView = ((SurfaceViewController *)currentVC()).surfaceView;
+        UIView *surfaceView = ((SurfaceViewController *)currentWindow().rootViewController).surfaceView;
         if (isGrabbing == JNI_TRUE) {
             CGFloat screenScale = [[UIScreen mainScreen] scale] * resolutionScale;
             callback_SurfaceViewController_onTouch(ACTION_DOWN, lastVirtualMousePoint.x * screenScale, lastVirtualMousePoint.y * screenScale);
-            ((SurfaceViewController *)currentVC()).mousePointerView.frame = virtualMouseFrame;
+            ((SurfaceViewController *)currentWindow().rootViewController).mousePointerView.frame = virtualMouseFrame;
         }
-        ((SurfaceViewController *)currentVC()).scrollPanGesture.enabled = !isGrabbing;
-        ((SurfaceViewController *)currentVC()).mousePointerView.hidden = isGrabbing || !virtualMouseEnabled;
+        ((SurfaceViewController *)currentWindow().rootViewController).scrollPanGesture.enabled = !isGrabbing;
+        ((SurfaceViewController *)currentWindow().rootViewController).mousePointerView.hidden = isGrabbing || !virtualMouseEnabled;
         if(@available(iOS 14.0, *)) {
-            [(SurfaceViewController *)currentVC() setNeedsUpdateOfPrefersPointerLocked];
+            [(SurfaceViewController *)currentWindow().rootViewController setNeedsUpdateOfPrefersPointerLocked];
         }
     });
 }

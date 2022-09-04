@@ -43,12 +43,16 @@ BOOL getEntitlementValue(NSString *key);
 }
 @end
 
-UIViewController* currentVC() {
+UIWindow* currentWindow() {
     id delegate = UIApplication.sharedApplication.delegate;
     if (@available(iOS 13.0, *)) {
         delegate = UIApplication.sharedApplication.connectedScenes.anyObject.delegate;
     }
-    return [delegate window].visibleViewController;
+    return [delegate window];
+}
+
+UIViewController* currentVC() {
+    return currentWindow().visibleViewController;
 }
 
 BOOL isJITEnabled() {

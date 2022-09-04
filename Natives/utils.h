@@ -63,6 +63,7 @@ BOOL isControlModifiable;
 void init_hookFunctions();
 void init_setupMultiDir();
 
+UIWindow* currentWindow();
 UIViewController* currentVC();
 
 NSMutableDictionary* parseJSONFromFile(NSString *path);

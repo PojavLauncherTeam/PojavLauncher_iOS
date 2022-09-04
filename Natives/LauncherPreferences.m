@@ -113,7 +113,9 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(prefDict, @"button_scale", @(100));
     setDefaultValueForPref(prefDict, @"selected_version", @"1.7.10");
     setDefaultValueForPref(prefDict, @"selected_version_type", @(0));
-    setDefaultValueForPref(envPrefDict, @"time_longPressTrigger", @(400));
+    setDefaultValueForPref(envPrefDict, @"press_duration", @(400));
+    setDefaultValueForPref(envPrefDict, @"mouse_scale", @(100));
+    setDefaultValueForPref(envPrefDict, @"mouse_speed", @(100));
     setDefaultValueForPref(envPrefDict, @"default_ctrl", @"default.json");
     setDefaultValueForPref(envPrefDict, @"game_directory", @"default");
     setDefaultValueForPref(envPrefDict, @"java_args", @"");

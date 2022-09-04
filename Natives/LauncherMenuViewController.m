@@ -26,7 +26,7 @@
     ];
     self.options[0].title = @"PojavLauncher";
     self.options[1].title = @"Preferences";
-    self.options[2].title = @"Preferences (v2)";
+    self.options[2].title = NSLocalizedString(@"Settings", nil);
     //@[@"News", @"Development Console", @"Crash logs"];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
@@ -91,7 +91,7 @@
         selected.navigationItem.leftItemsSupplementBackButton = true;
     }
 
-    // This button is placed temporarily while  migrating to the new UI (or just keep here?)
+    // Put a close button, as iOS does not have a dedicated back button
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"❌" style:UIBarButtonItemStyleDone target:self.splitViewController action:@selector(dismissViewController)];
 }
 

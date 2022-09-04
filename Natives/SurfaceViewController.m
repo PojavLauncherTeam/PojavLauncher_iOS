@@ -12,6 +12,7 @@
 
 #import "JavaLauncher.h"
 #import "LauncherPreferences.h"
+#import "LauncherPreferencesViewController2.h"
 #import "MinecraftResourceUtils.h"
 #import "SurfaceViewController.h"
 
@@ -193,6 +194,7 @@ BOOL slideableHotbar;
 @property id mouseConnectCallback, mouseDisconnectCallback;
 @property id controllerConnectCallback, controllerDisconnectCallback;
 
+@property CGFloat mouseSpeed;
 @property CGRect clickRange;
 @property BOOL shouldTriggerClick;
 
@@ -219,7 +221,6 @@ BOOL slideableHotbar;
     CGFloat screenScale = [[UIScreen mainScreen] scale];
 
     resolutionScale = ((NSNumber *)getPreference(@"resolution")).floatValue / 100.0;
-    slideableHotbar = [getPreference(@"slideable_hotbar") boolValue];
 
     savedWidth = roundf(screenBounds.size.width * screenScale);
     savedHeight = roundf(screenBounds.size.height * screenScale);
@@ -249,7 +250,7 @@ BOOL slideableHotbar;
     [menuSwipeView addSubview:menuSwipeLineView];
     [self.rootView addSubview:menuSwipeView];
 
-    self.menuArray = @[@"game.menu.forceClose" /*, @"game.menu.logOutput" */];
+    self.menuArray = @[@"game.menu.force_close", @"Settings" /*, @"game.menu.log_output" */];
 
     self.menuView = [[UITableView alloc] initWithFrame:CGRectMake(self.view.frame.size.width + 30.0, 0, 
 self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
@@ -271,9 +272,6 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
     [self.surfaceView addGestureRecognizer:edgeGesture];
     [self.rootView addSubview:self.surfaceView];
     [self.rootView addSubview:self.ctrlView];
-
-
-    CGFloat buttonScale = [getPreference(@"button_scale") floatValue] / 100.0;
 
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnClick:)];
@@ -304,7 +302,6 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
     longpressGesture.allowedTouchTypes = @[@(UITouchTypeDirect)];
     longpressGesture.cancelsTouchesInView = NO;
     longpressGesture.delegate = self;
-    longpressGesture.minimumPressDuration = [getPreference(@"time_longPressTrigger") floatValue] / 1000;
     [self.surfaceView addGestureRecognizer:longpressGesture];
 
     self.scrollPanGesture = [[UIPanGestureRecognizer alloc]
@@ -348,35 +345,6 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
     NSString *controlFilePath = [NSString stringWithFormat:@"%s/controlmap/%@", getenv("POJAV_HOME"), (NSString *)getPreference(@"default_ctrl")];
 
     self.swipeableButtons = [[NSMutableArray alloc] init];
-
-    self.cc_dictionary = parseJSONFromFile(controlFilePath);
-    if (self.cc_dictionary[@"error"] != nil) {
-        showDialog(self, @"Error", [NSString stringWithFormat:@"Could not open %@: %@", controlFilePath, [self.cc_dictionary[@"error"] localizedDescription]]);
-    } else {
-        CGFloat currentScale = [self.cc_dictionary[@"scaledAt"] floatValue];
-        CGFloat savedScale = [getPreference(@"button_scale") floatValue];
-        loadControlObject(self.ctrlView, self.cc_dictionary, ^void(ControlButton* button) {
-            BOOL isSwipeable = [button.properties[@"isSwipeable"] boolValue];
-
-            button.canBeHidden = YES;
-            for (int i = 0; i < 4; i++) {
-                int keycodeInt = [button.properties[@"keycodes"][i] intValue];
-                button.canBeHidden &= keycodeInt != SPECIALBTN_TOGGLECTRL;
-            }
-
-            [button addTarget:self action:@selector(executebtn_down:) forControlEvents:UIControlEventTouchDown];
-            [button addTarget:self action:@selector(executebtn_up:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
-
-            if (isSwipeable) {
-                UIPanGestureRecognizer *panRecognizerButton = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(executebtn_swipe:)];
-                panRecognizerButton.delegate = self;
-                [button addGestureRecognizer:panRecognizerButton];
-                [self.swipeableButtons addObject:button];
-            }
-        });
-
-        self.cc_dictionary[@"scaledAt"] = @(savedScale);
-    }
 
     [KeyboardInput initKeycodeTable];
     if (@available(iOS 14.0, tvOS 14.0, *)) {
@@ -432,8 +400,31 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
 */
 
     // [self setPreferredFramesPerSecond:1000];
+    [self updatePreferenceChanges];
     [self executebtn_special_togglebtn:0];
     [self launchMinecraft];
+}
+
+- (void)updatePreferenceChanges {
+    self.mouseSpeed = [getPreference(@"mouse_speed") floatValue] / 100.0;
+    slideableHotbar = [getPreference(@"slideable_hotbar") boolValue];
+
+    virtualMouseEnabled = [getPreference(@"virtmouse_enable") boolValue];
+    if (!isGrabbing) {
+        self.mousePointerView.hidden = !virtualMouseEnabled;
+    }
+
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    CGFloat mouseScale = [getPreference(@"mouse_scale") floatValue] / 100.0;
+    virtualMouseFrame = CGRectMake(screenBounds.size.width / 2, screenBounds.size.height / 2, 18.0 * mouseScale, 27 * mouseScale);
+    self.mousePointerView.frame = virtualMouseFrame;
+
+    // May break anytime lol, current: edge, tap, doubleTap, hover, longPress, scrollPan
+    UILongPressGestureRecognizer *longpressGesture = self.surfaceView.gestureRecognizers[4];
+    longpressGesture.minimumPressDuration = [getPreference(@"press_duration") floatValue] / 1000.0;
+
+    self.ctrlView.frame = CGRectFromString(getPreference(@"control_safe_area"));
+    [self loadCustomControls];
 }
 
 - (void)launchMinecraft {
@@ -450,6 +441,44 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
     });
 }
 
+- (void)loadCustomControls {
+    [self.ctrlView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [self.swipeableButtons removeAllObjects];
+    [self.cc_dictionary removeAllObjects];
+
+    NSString *controlFilePath = [NSString stringWithFormat:@"%s/controlmap/%@", getenv("POJAV_HOME"), (NSString *)getPreference(@"default_ctrl")];
+
+    self.cc_dictionary = parseJSONFromFile(controlFilePath);
+    if (self.cc_dictionary[@"error"] != nil) {
+        showDialog(self, NSLocalizedString(@"Error", nil), [NSString stringWithFormat:@"Could not open %@: %@", controlFilePath, [self.cc_dictionary[@"error"] localizedDescription]]);
+        return;
+    }
+
+    CGFloat currentScale = [self.cc_dictionary[@"scaledAt"] floatValue];
+    CGFloat savedScale = [getPreference(@"button_scale") floatValue];
+    loadControlObject(self.ctrlView, self.cc_dictionary, ^void(ControlButton* button) {
+        BOOL isSwipeable = [button.properties[@"isSwipeable"] boolValue];
+
+        button.canBeHidden = YES;
+        for (int i = 0; i < 4; i++) {
+            int keycodeInt = [button.properties[@"keycodes"][i] intValue];
+            button.canBeHidden &= keycodeInt != SPECIALBTN_TOGGLECTRL;
+        }
+
+        [button addTarget:self action:@selector(executebtn_down:) forControlEvents:UIControlEventTouchDown];
+        [button addTarget:self action:@selector(executebtn_up:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
+
+        if (isSwipeable) {
+            UIPanGestureRecognizer *panRecognizerButton = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(executebtn_swipe:)];
+            panRecognizerButton.delegate = self;
+            [button addGestureRecognizer:panRecognizerButton];
+            [self.swipeableButtons addObject:button];
+        }
+    });
+
+    self.cc_dictionary[@"scaledAt"] = @(savedScale);
+}
+
 - (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
     return UIRectEdgeBottom | UIRectEdgeRight;
 }
@@ -457,7 +486,6 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
 - (BOOL)prefersHomeIndicatorAutoHidden {
     return NO;
 }
-
 
 #pragma mark - Menu functions
 
@@ -515,7 +543,7 @@ CGPoint lastCenterPoint;
 
 - (void)actionForceClose {
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil
-        message:NSLocalizedString(@"game.menu.confirm.forceClose", nil)
+        message:NSLocalizedString(@"game.menu.confirm.force_close", nil)
         preferredStyle:UIAlertControllerStyleAlert];
 
     UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleDefault handler:nil];
@@ -531,7 +559,12 @@ CGPoint lastCenterPoint;
     }];
     [alert addAction:okAction];
 
-    [currentVC() presentViewController:alert animated:YES completion:nil];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)actionOpenPreferences {
+    LauncherPreferencesViewController2 *vc = [[LauncherPreferencesViewController2 alloc] init];
+    [self presentViewController:vc animated:YES completion:nil];
 }
 
 - (void)actionToggleLogOutput {
@@ -567,6 +600,9 @@ CGPoint lastCenterPoint;
             [self actionForceClose];
             break;
         case 1:
+            [self actionOpenPreferences];
+            break;
+        case 2:
             [self actionToggleLogOutput];
             break;
     }
@@ -587,12 +623,12 @@ CGPoint lastCenterPoint;
         screenScale *= resolutionScale;
         if (virtualMouseEnabled) {
             if (event == ACTION_MOVE) {
-                virtualMouseFrame.origin.x += location.x - lastVirtualMousePoint.x;
-                virtualMouseFrame.origin.y += location.y - lastVirtualMousePoint.y;
+                virtualMouseFrame.origin.x += (location.x - lastVirtualMousePoint.x) * self.mouseSpeed;
+                virtualMouseFrame.origin.y += (location.y - lastVirtualMousePoint.y) * self.mouseSpeed;
             } else if (event == ACTION_MOVE_MOTION) {
                 event = ACTION_MOVE;
-                virtualMouseFrame.origin.x += location.x;
-                virtualMouseFrame.origin.y += location.y;
+                virtualMouseFrame.origin.x += location.x * self.mouseSpeed;
+                virtualMouseFrame.origin.y += location.y * self.mouseSpeed;
             }
             virtualMouseFrame.origin.x = clamp(virtualMouseFrame.origin.x, 0, self.view.frame.size.width);
             virtualMouseFrame.origin.y = clamp(virtualMouseFrame.origin.y, 0, self.view.frame.size.height);

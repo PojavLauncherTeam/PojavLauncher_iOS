@@ -57,7 +57,7 @@
         if (indexPath.row == 0) {
             cell.textLabel.text = self.array[indexPath.row];
         } else {
-            view = [[UITextField alloc] initWithFrame:CGRectMake(20, 10, cell.bounds.size.width/2, cell.bounds.size.height-20)];
+            view = [[UITextField alloc] initWithFrame:CGRectMake(20, 10, (cell.bounds.size.width-40)/2, cell.bounds.size.height-20)];
             [view addTarget:view action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
             view.autocorrectionType = UITextAutocorrectionTypeNo;
             view.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -91,7 +91,7 @@ viewForFooterInSection:(NSInteger)section
     view.autocorrectionType = UITextAutocorrectionTypeNo;
     view.autocapitalizationType = UITextAutocapitalizationTypeNone;
     view.delegate = self;
-    view.placeholder = @"add game directory";
+    view.placeholder = NSLocalizedString(@"preference.multidir.add_directory", nil);
     view.returnKeyType = UIReturnKeyDone;
     return view;
 }
@@ -228,6 +228,7 @@ viewForFooterInSection:(NSInteger)section
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    [textField invalidateIntrinsicContentSize];
     CGRect frame = textField.frame;
     frame.size.width = MAX(50, textField.intrinsicContentSize.width + 10);
     textField.frame = frame;
