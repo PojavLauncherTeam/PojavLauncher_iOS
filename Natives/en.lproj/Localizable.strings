@@ -54,7 +54,7 @@
 "login.msa.error.xsts.noxboxacc" = "An Xbox profile is not registered for this Microsoft account. Please make sure that you have made an Xbox profile.\nError code: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live is currently unavailable in your country.\nError code: 2148916235";
 "login.msa.error.xsts.krverify" = "Your account needs to be verified by your parents before continue.\nError code: 2148916236 or 2148916237.";
-"login.msa.error.xsts.underage" = "Your account needs to be linked to a patent account before continue.\nError code: 2148916238";
+"login.msa.error.xsts.underage" = "Your account needs to be linked to a parent account before continue.\nError code: 2148916238";
 
 "login.msa.notice.demomode" = "Could not find a Minecraft profile on this account. The account is now set to Demo mode. Did you buy Minecraft, or is there an active Xbox GamePass subscription? Please configure your profile in https://minecraft.net/msaprofle to restore to Online mode.";
 
