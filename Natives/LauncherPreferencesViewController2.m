@@ -48,7 +48,9 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             @{@"key": @"home_symlink",
                 @"icon": @"link",
                 @"type": self.typeSwitch,
-                @"enableCondition": whenNotInGame
+                @"enableCondition": ^BOOL(){
+                    return getenv("POJAV_DETECTEDJB") != NULL && whenNotInGame();
+                }
             },
             @{@"key": @"check_sha",
                 @"icon": @"lock.shield",
@@ -59,6 +61,10 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"icon": @"eyeglasses",
                 @"type": self.typeSwitch,
                 @"enableCondition": whenNotInGame
+            },
+            @{@"key": @"debug_logging",
+                @"icon": @"doc.badge.gearshape",
+                @"type": self.typeSwitch
             },
             @{@"key": @"reset_warnings",
                 @"icon": @"exclamationmark.triangle",
@@ -223,6 +229,10 @@ viewForHeaderInSection:(NSInteger)section {
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     return NSLocalizedString(([NSString stringWithFormat:@"preference.section.%@", self.prefSections[section]]), nil);
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+    return NSLocalizedString(([NSString stringWithFormat:@"preference.section.footer.%@", self.prefSections[section]]), nil);
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
