@@ -222,8 +222,8 @@ BOOL slideableHotbar;
 
     resolutionScale = ((NSNumber *)getPreference(@"resolution")).floatValue / 100.0;
 
-    savedWidth = roundf(screenBounds.size.width * screenScale);
-    savedHeight = roundf(screenBounds.size.height * screenScale);
+    savedWidth = roundf(screenBounds.size.width * screenScale * resolutionScale);
+    savedHeight = roundf(screenBounds.size.height * screenScale * resolutionScale);
 
     self.rootView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width + 30.0, self.view.frame.size.height)];
     [self.view addSubview:self.rootView];
@@ -410,11 +410,12 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
     slideableHotbar = [getPreference(@"slideable_hotbar") boolValue];
 
     virtualMouseEnabled = [getPreference(@"virtmouse_enable") boolValue];
-    if (!isGrabbing) {
-        self.mousePointerView.hidden = !virtualMouseEnabled;
-    }
+    self.mousePointerView.hidden = isGrabbing || !virtualMouseEnabled;
 
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    CGRect screenBounds = UIScreen.mainScreen.bounds;
+    CGFloat screenScale = UIScreen.mainScreen.scale;
+
+    // Update virtual mouse scale
     CGFloat mouseScale = [getPreference(@"mouse_scale") floatValue] / 100.0;
     virtualMouseFrame = CGRectMake(screenBounds.size.width / 2, screenBounds.size.height / 2, 18.0 * mouseScale, 27 * mouseScale);
     self.mousePointerView.frame = virtualMouseFrame;
@@ -425,6 +426,13 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
 
     self.ctrlView.frame = CGRectFromString(getPreference(@"control_safe_area"));
     [self loadCustomControls];
+
+    // Update resolution
+    resolutionScale = [getPreference(@"resolution") floatValue] / 100.0;
+    self.surfaceView.layer.contentsScale = screenScale * resolutionScale;
+    savedWidth = roundf(screenBounds.size.width * screenScale * resolutionScale);
+    savedHeight = roundf(screenBounds.size.height * screenScale * resolutionScale);
+    CallbackBridge_nativeSendScreenSize(savedWidth, savedHeight);
 }
 
 - (void)launchMinecraft {
@@ -434,7 +442,7 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
             launchJVM(
                 BaseAuthenticator.current.authData[@"username"],
                 json,
-                savedWidth * resolutionScale, savedHeight * resolutionScale,
+                savedWidth, savedHeight,
                 [json[@"javaVersion"][@"majorVersion"] intValue]
             );
         }];
@@ -484,7 +492,7 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
 }
 
 - (BOOL)prefersHomeIndicatorAutoHidden {
-    return NO;
+    return YES;
 }
 
 #pragma mark - Menu functions

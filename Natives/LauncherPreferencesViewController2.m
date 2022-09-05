@@ -30,6 +30,10 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     self.tableView.sectionHeaderHeight = 50;
 
+    if (self.navigationController == nil) {
+        self.tableView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.4];
+    }
+
     BOOL(^whenNotInGame)() = ^BOOL(){
         return self.navigationController != nil;
     };
@@ -108,7 +112,6 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             @{@"key": @"resolution",
                 @"icon": @"viewfinder",
                 @"type": self.typeSlider,
-                @"enableCondition": whenNotInGame,
                 @"min": @(25),
                 @"max": @(150)
             },
