@@ -70,7 +70,7 @@
 "preference.section.general" = "General Settings";
 "preference.section.footer.general" = "* Compatibility symlink option is planned to be removed in a future release.";
 "preference.section.video" = "Video Settings";
-"preference.section.footer.video" = "Auto renderer allows Minecraft to request which renderer to use. Reducing resolution reduces GPU workload for better performance.";
+"preference.section.footer.video" = "Auto renderer allows Minecraft to decide which renderer to use. Reducing resolution reduces GPU workload for better performance.";
 "preference.section.control" = "Control Settings";
 "preference.section.footer.control" = "Long-press duration involves how long to perform left mouse button press and drop item from the hotbar. Mouse settings affect only for the virtual mouse. Slideable hotbar may help you to switch between hotbar slots better if there is a home indicator.";
 "preference.section.java" = "Java Runtime Settings";

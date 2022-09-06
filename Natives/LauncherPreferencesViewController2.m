@@ -31,7 +31,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     self.tableView.sectionHeaderHeight = 50;
 
     if (self.navigationController == nil) {
-        self.tableView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.4];
+        self.tableView.alpha = 0.9;
     }
 
     BOOL(^whenNotInGame)() = ^BOOL(){
@@ -156,7 +156,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             }
         ], @[
         // Java tweaks
-            @{@"key": @"java_home", // TODO: name as Use Java 17 for older MC
+            @{@"key": @"java_home", // Use Java 17 for Minecraft < 1.17
                 @"icon": @"cube",
                 @"type": self.typeSwitch,
                 @"enableCondition": whenNotInGame,
@@ -174,7 +174,6 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"enableCondition": ^BOOL(){
                     return getenv("POJAV_DETECTEDJB") == NULL && whenNotInGame();
                 },
-                @"warnAlways": @NO,
                 @"warnCondition": ^BOOL(){
                     return getenv("POJAV_DETECTEDJB") == NULL && whenNotInGame();
                 },
@@ -189,7 +188,6 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"enableCondition": ^BOOL(){
                     return ![getPreference(@"auto_ram") boolValue] && whenNotInGame();
                 },
-                @"warnAlways": @NO,
                 @"warnCondition": ^BOOL(DBNumberedSlider *view){
                     return view.value >= NSProcessInfo.processInfo.physicalMemory / 1048576 * 0.37;
                 },
@@ -373,6 +371,9 @@ viewForHeaderInSection:(NSInteger)section {
 
     BOOL(^isWarnable)(UIView *) = item[@"warnCondition"];
     NSString *warnKey = item[@"warnKey"];
+    // Display warning if: warn condition is met and either one of these:
+    // - does not have warnKey, always warn
+    // - has warnKey and its value is YES, warn once and set it to NO
     if (isWarnable && isWarnable(view) && (!warnKey || [getPreference(warnKey) boolValue])) {
         if (warnKey) {
             setPreference(warnKey, @NO);
