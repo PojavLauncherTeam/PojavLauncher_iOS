@@ -14,6 +14,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 @interface LauncherPreferencesViewController2()<UIPickerViewDataSource, UIPickerViewDelegate> {}
 @property NSArray<NSString*>* prefSections;
 @property NSArray<NSArray<NSDictionary*>*>* prefContents;
+@property BOOL prefDetailVisible;
 
 @property CreateView typeButton, typeChildPane, typePickField, typeTextField, typeSlider, typeSwitch;
 @end
@@ -25,6 +26,8 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     [super viewDidLoad];
 
     [self initViewCreation];
+
+    self.prefDetailVisible = self.navigationController == nil;
 
     self.tableView = [[TOInsetGroupedTableView alloc] init];
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
@@ -210,6 +213,14 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             }
         ]
     ];
+
+    UIBarButtonItem *helpButton;
+    if (@available(iOS 13.0, *)) {
+        helpButton = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"questionmark.circle"] style:UIBarButtonItemStyleDone target:self action:@selector(toggleDetailVisibility)];
+    } else {
+        helpButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Help", nil) style:UIBarButtonItemStyleDone target:self action:@selector(toggleDetailVisibility)];
+    }
+    self.navigationItem.rightBarButtonItems = @[helpButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -232,6 +243,13 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     [self.presentingViewController performSelector:@selector(updatePreferenceChanges)];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
+- (void)toggleDetailVisibility {
+    self.prefDetailVisible = !self.prefDetailVisible;
+    [self.tableView reloadData];
+}
+
+#pragma mark UITableView
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return self.prefSections.count;
@@ -305,8 +323,10 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
         cell.imageView.image = [UIImage systemImageNamed:item[@"icon"]];
     }
     cell.textLabel.text = NSLocalizedString(([NSString stringWithFormat:@"preference.title.%@", key]), nil);
-    if ([item[@"hasDetail"] boolValue]) {
+    if ([item[@"hasDetail"] boolValue] && self.prefDetailVisible) {
         cell.detailTextLabel.text = NSLocalizedString(([NSString stringWithFormat:@"preference.detail.%@", key]), nil);
+    } else if (createView != self.typeChildPane) {
+        cell.detailTextLabel.text = nil;
     }
 
     // Check if one has enable condition and call if it does
@@ -317,6 +337,8 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
     return cell;
 }
+
+#pragma mark initViewCreation, showAlert, checkWarn
 
 - (void)initViewCreation {
     __weak LauncherPreferencesViewController2 *weakSelf = self;
