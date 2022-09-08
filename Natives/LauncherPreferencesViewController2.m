@@ -237,8 +237,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     return self.prefSections.count;
 }
 
-- (UIView *)tableView:(UITableView *)tableView 
-viewForHeaderInSection:(NSInteger)section {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     if (section != 0 || self.navigationController != nil) {
         return nil;
     }
@@ -280,8 +279,7 @@ viewForHeaderInSection:(NSInteger)section {
 
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:cellStyle
- reuseIdentifier:cellID];
+        cell = [[UITableViewCell alloc] initWithStyle:cellStyle reuseIdentifier:cellID];
         cell.detailTextLabel.numberOfLines = 0;
         cell.detailTextLabel.lineBreakMode = NSLineBreakByWordWrapping;
     }
