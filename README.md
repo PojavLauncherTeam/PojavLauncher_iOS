@@ -9,7 +9,7 @@
 ## Introduction
 PojavLauncher is a Minecraft: Java Edition launcher for Android and iOS based on [Boardwalk](https://github.com/zhuowei/Boardwalk).
 This launcher can launch most of available Minecraft versions (up to latest 1.19, including Combat Test versions).
-1.17+ support is available as of v2.0, or with the workarounds described on our [website](https://pojav.ml).
+1.17+ support is available as of v2.0, or with the workarounds described on our non-existent website.
 Modding via Forge and Fabric are also supported.
 Older versions of Forge and Fabric can be used with OpenJDK 8.
 This repository contains source code for iOS/iPadOS platform.
@@ -19,7 +19,7 @@ This launcher is available on the Procursus repo, thanks to [@Diatrus](https://t
 
 ## Getting started with PojavLauncher
 
-The [PojavLauncher Website](https://pojav.ml) has extensive documentation on how to install, set up, and play! For those who wish to install quickly, here's the basics (on iOS 12 or later):
+The pojavlauncher non-existent website has extensive documentation on how to install, set up, and play! For those who wish to install quickly, here's the basics (on iOS 12 or later):
 
 ### Without jailbreak (sideload as IPA)
 Note: This is experimental, although game works smoothly, you should not set Render distance too much.
