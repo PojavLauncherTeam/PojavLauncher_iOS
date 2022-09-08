@@ -70,11 +70,11 @@
 "preference.section.general" = "General Settings";
 "preference.section.footer.general" = "* Compatibility symlink option is planned to be removed in a future release.";
 "preference.section.video" = "Video Settings";
-"preference.section.footer.video" = "Auto renderer allows Minecraft to decide which renderer to use. Reducing resolution reduces GPU workload for better performance.";
-"preference.section.control" = "Control Settings";
-"preference.section.footer.control" = "Long-press duration involves how long to perform left mouse button press and drop item from the hotbar. Mouse settings affect only for the virtual mouse. Slideable hotbar may help you to switch between hotbar slots better if there is a home indicator.";
-"preference.section.java" = "Java Runtime Settings";
-"preference.section.footer.java" = "Java 8 is used by default for Minecraft < 1.17. You can use Java 17 for these versions, but compatibility with modded is not guaranteed.";
+"preference.section.footer.video" = "Auto renderer allows Minecraft to decide which renderer to use. Decreasing resolution reduces GPU workload for better performance.";
+"preference.section.control" = "Control customization";
+//"preference.section.footer.control" = "";
+"preference.section.java" = "Java Tweaks";
+//"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "Are you sure?";
 
@@ -83,9 +83,13 @@
 "preference.multidir.add_directory" = "add game directory";
 
 "preference.title.home_symlink" = "Enable compatibility symlink *";
-"preference.title.check_sha" = "Enable asset verification when launching";
-"preference.title.cosmetica" = "Enable Cosmetica integration";
+"preference.detail.home_symlink" = "Make a symlink at /var/mobile/Documents/.pojavlauncher. Unavailable in sandboxed environment.";
+"preference.title.check_sha" = "Check files after downloading";
+"preference.detail.check_sha" = "This option forces launcher to check the file hash if it's available. Prevents broken downloads.";
+"preference.title.cosmetica" = "Cosmetica Capes";
+"preference.detail.cosmetica" = "Enable capes from Cosmetica (previously Arc). For more information please visit https://cosmetica.cc. Requires OptiFine";
 "preference.title.debug_logging" = "Debug logging";
+"preference.detail.debug_logging" = "Logs internal settings and actions to latestlog.txt. This helps the developers find issues easier, but Minecraft may run slower as the logs will be written to more often.";
 
 "preference.title.reset_warnings" = "Reset all warnings";
 "preference.title.done.reset_warnings" = "All warnings have been reset.";
@@ -94,28 +98,40 @@
 "preference.title.confirm.reset_settings" = "This will remove all of your custom preferences, including resolution, button size, and Java arguments.";
 "preference.title.done.reset_settings" = "All of the default settings have been restored.";
 
-"preference.title.renderer" = "Game renderer";
+"preference.title.renderer" = "Renderer";
 "preference.title.renderer.auto" = "Auto: gl4es or tinygl4angle";
 "preference.title.renderer.gl4es" = "gl4es 1.1.4 - exports OpenGL 2.1";
 "preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - exports OpenGL 3.2 (Core Profile, limited)";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - exports OpenGL 4.1";
+"preference.detail.renderer" = "Change the OpenGL render engine to use";
 
-"preference.title.resolution" = "Game resolution (%)";
+"preference.title.resolution" = "Resolution (%)";
+"preference.detail.resolution" = "Allows you to decrease the game resolution.";
 "preference.title.disable_gesture" = "Disable gestures";
 "preference.title.press_duration" = "Long-press duration (ms)";
+"preference.detail.press_duration" = "Change trigger time for long press in destroy block and drop item.";
 "preference.title.button_scale" = "On-screen button scale (%)";
-"preference.title.mouse_scale" = "On-screen mouse scale (%)";
-"preference.title.mouse_speed" = "On-screen mouse speed (%)";
-"preference.title.virtmouse_enable" = "Enable on-screen mouse";
-"preference.title.slideable_hotbar" = "Enable slideable hotbar";
+"preference.detail.button_scale" = "Upscale them if buttons are too small, usually needed for iPad users.";
+"preference.title.mouse_scale" = "Mouse scaling (%)";
+"preference.detail.mouse_scale" = "Change the size of the virtual mouse";
+"preference.title.mouse_speed" = "Mouse speed (%)";
+"preference.detail.mouse_speed" = "Change the speed of the virtual mouse";
+"preference.title.virtmouse_enable" = "Virtual mouse";
+"preference.detail.virtmouse_enable" = "Enable this option to start with virtual mouse on";
+"preference.title.slideable_hotbar" = "Slideable hotbar";
+"preference.detail.slideable_hotbar" = "Make the hotbar slideable like the mouse wheel";
 "preference.title.java_home" = "Use Java 17 for Minecraft < 1.17";
-// FIXME: is this filled well in the subtitle?
-// "preference.subtitle.java_home" = "Java 8 is used by default on Minecraft 1.16.5 and older. This switch forces old versions to use Java 17.";
-"preference.title.java_args" = "Custom java arguments";
+"preference.detail.java_home" = "Java 8 is used by default for those versions. Enable this option to force use Java 17, however compatibility with modded is not guaranteed.";
+"preference.title.java_args" = "JVM Launch arguments";
+"preference.detail.java_args" = "Be careful, this can make the game crash if modified without any prior knowledge.";
 "preference.placeholder.java_args" = "Specify arguments...";
-"preference.title.auto_ram" = "Auto determine RAM amount";
-"preference.warn.auto_ram" = "Disabling this option on an unjailbroken devices can create instability if altered. Proceed with caution.";
-"preference.title.allocated_memory" = "Allocated memory (MB)";
+"preference.title.auto_ram" = "Auto RAM";
+"preference.detail.auto_ram" = "Enables automatic RAM adjuster";
+"preference.warn.auto_ram" = "Disabling this option on an unjailbroken device can create instability if altered. Proceed with caution.";
+"preference.title.allocated_memory" = "Memory allocation (MB)";
+"preference.detail.allocated_memory" = "Controls how much memory is given to Minecraft";
 "preference.warn.allocated_memory" = "Due to limitations in the operating system itself, this option may cause instability at this and higher values. Proceed with caution.";
+"preference.title.custom_env" = "Environment variables";
+"preference.detail.custom_env" = "This option is under construction.";
 // sha check
 // home symlink

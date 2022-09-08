@@ -50,6 +50,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"class": LauncherPrefGameDirViewController.class,
             },
             @{@"key": @"home_symlink",
+                @"hasDetail": @YES,
                 @"icon": @"link",
                 @"type": self.typeSwitch,
                 @"enableCondition": ^BOOL(){
@@ -57,16 +58,19 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 }
             },
             @{@"key": @"check_sha",
+                @"hasDetail": @YES,
                 @"icon": @"lock.shield",
                 @"type": self.typeSwitch,
                 @"enableCondition": whenNotInGame
             },
             @{@"key": @"cosmetica",
+                @"hasDetail": @YES,
                 @"icon": @"eyeglasses",
                 @"type": self.typeSwitch,
                 @"enableCondition": whenNotInGame
             },
             @{@"key": @"debug_logging",
+                @"hasDetail": @YES,
                 @"icon": @"doc.badge.gearshape",
                 @"type": self.typeSwitch
             },
@@ -110,6 +114,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 ]
             },
             @{@"key": @"resolution",
+                @"hasDetail": @YES,
                 @"icon": @"viewfinder",
                 @"type": self.typeSlider,
                 @"min": @(25),
@@ -123,40 +128,47 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             },
         */
             @{@"key": @"press_duration",
+                @"hasDetail": @YES,
                 @"icon": @"timer",
                 @"type": self.typeSlider,
                 @"min": @(100),
                 @"max": @(1000)
             },
             @{@"key": @"button_scale",
+                @"hasDetail": @YES,
                 @"icon": @"aspectratio",
                 @"type": self.typeSlider,
                 @"min": @(50), // 80?
                 @"max": @(500)
             },
             @{@"key": @"mouse_scale",
+                @"hasDetail": @YES,
                 @"icon": @"arrow.up.left.and.arrow.down.right.circle",
                 @"type": self.typeSlider,
                 @"min": @(25),
                 @"max": @(300)
             },
             @{@"key": @"mouse_speed",
+                @"hasDetail": @YES,
                 @"icon": @"arrow.left.and.right",
                 @"type": self.typeSlider,
                 @"min": @(25),
                 @"max": @(300)
             },
             @{@"key": @"virtmouse_enable",
+                @"hasDetail": @YES,
                 @"icon": @"cursorarrow.rays",
                 @"type": self.typeSwitch
             },
             @{@"key": @"slideable_hotbar",
+                @"hasDetail": @YES,
                 @"icon": @"slider.horizontal.below.rectangle",
                 @"type": self.typeSwitch
             }
         ], @[
         // Java tweaks
             @{@"key": @"java_home", // Use Java 17 for Minecraft < 1.17
+                @"hasDetail": @YES,
                 @"icon": @"cube",
                 @"type": self.typeSwitch,
                 @"enableCondition": whenNotInGame,
@@ -164,11 +176,13 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"customSwitchValue": @[@"java-8-openjdk", @"java-17-openjdk"]
             },
             @{@"key": @"java_args",
+                @"hasDetail": @YES,
                 @"icon": @"slider.vertical.3",
                 @"type": self.typeTextField,
                 @"enableCondition": whenNotInGame
             },
             @{@"key": @"auto_ram",
+                @"hasDetail": @YES,
                 @"icon": @"slider.horizontal.3",
                 @"type": self.typeSwitch,
                 @"enableCondition": ^BOOL(){
@@ -181,6 +195,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"requestReload": @YES
             },
             @{@"key": @"allocated_memory",
+                @"hasDetail": @YES,
                 @"icon": @"memorychip",
                 @"type": self.typeSlider,
                 @"min": @(NSProcessInfo.processInfo.physicalMemory / 1048576 * 0.25),
@@ -239,7 +254,11 @@ viewForHeaderInSection:(NSInteger)section {
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
-    return NSLocalizedString(([NSString stringWithFormat:@"preference.section.footer.%@", self.prefSections[section]]), nil);
+    NSString *footer = NSLocalizedStringWithDefaultValue(([NSString stringWithFormat:@"preference.section.footer.%@", self.prefSections[section]]), @"Localizable", NSBundle.mainBundle, @" ", nil);
+    if ([footer isEqualToString:@" "]) {
+        return nil;
+    }
+    return footer;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -247,9 +266,24 @@ viewForHeaderInSection:(NSInteger)section {
 }
 
 - (UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    NSDictionary *item = self.prefContents[indexPath.section][indexPath.row];
+
+    NSString *cellID;
+    UITableViewCellStyle cellStyle;
+    if (item[@"type"] == self.typeChildPane) {
+        cellID = @"cellValue1";
+        cellStyle = UITableViewCellStyleValue1;
+    } else {
+        cellID = @"cellSubtitle";
+        cellStyle = UITableViewCellStyleSubtitle;
+    }
+
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cell"];
+        cell = [[UITableViewCell alloc] initWithStyle:cellStyle
+ reuseIdentifier:cellID];
+        cell.detailTextLabel.numberOfLines = 0;
+        cell.detailTextLabel.lineBreakMode = NSLineBreakByWordWrapping;
     }
     // Reset cell properties, as it could be reused
     cell.accessoryType = UITableViewCellAccessoryNone;
@@ -258,7 +292,6 @@ viewForHeaderInSection:(NSInteger)section {
     cell.textLabel.textColor = nil;
     cell.detailTextLabel.text = nil;
 
-    NSDictionary *item = self.prefContents[indexPath.section][indexPath.row];
     NSString *key = item[@"key"];
     CreateView createView = item[@"type"];
     createView(cell, key, item);
@@ -274,6 +307,9 @@ viewForHeaderInSection:(NSInteger)section {
         cell.imageView.image = [UIImage systemImageNamed:item[@"icon"]];
     }
     cell.textLabel.text = NSLocalizedString(([NSString stringWithFormat:@"preference.title.%@", key]), nil);
+    if ([item[@"hasDetail"] boolValue]) {
+        cell.detailTextLabel.text = NSLocalizedString(([NSString stringWithFormat:@"preference.detail.%@", key]), nil);
+    }
 
     // Check if one has enable condition and call if it does
     BOOL(^checkEnable)(void) = item[@"enableCondition"];
