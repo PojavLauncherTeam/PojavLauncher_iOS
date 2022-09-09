@@ -1,7 +1,7 @@
 #import "authenticator/BaseAuthenticator.h"
 #import "AccountListViewController.h"
 #import "LauncherMenuViewController.h"
-#import "LauncherPreferencesViewController.h"
+#import "LauncherPreferencesViewController2.h"
 #import "LauncherViewController.h"
 #import "UIButton+AFNetworking.h"
 #import "UIImageView+AFNetworking.h"
@@ -20,10 +20,10 @@
     // View controllers are put into an array to keep its state
     self.options = @[
         [[LauncherViewController alloc] init],
-        [[LauncherPreferencesViewController alloc] init]
+        [[LauncherPreferencesViewController2 alloc] init]
     ];
     self.options[0].title = @"PojavLauncher";
-    self.options[1].title = @"Preferences";
+    self.options[1].title = NSLocalizedString(@"Settings", nil);
     //@[@"News", @"Development Console", @"Crash logs"];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
@@ -88,7 +88,7 @@
         selected.navigationItem.leftItemsSupplementBackButton = true;
     }
 
-    // This button is placed temporarily while  migrating to the new UI
+    // Put a close button, as iOS does not have a dedicated back button
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"❌" style:UIBarButtonItemStyleDone target:self.splitViewController action:@selector(dismissViewController)];
 }
 

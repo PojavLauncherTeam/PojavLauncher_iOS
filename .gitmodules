@@ -1,6 +1,6 @@
 [submodule "Natives/external/DBNumberedSlider"]
 	path = Natives/external/DBNumberedSlider
-	url = https://github.com/immago/DBNumberedSlider
+	url = https://github.com/khanhduytran0/DBNumberedSlider
 [submodule "Natives/external/fishhook"]
 	path = Natives/external/fishhook
 	url = https://github.com/khanhduytran0/fishhook
@@ -8,3 +8,6 @@
 [submodule "Natives/external/AFNetworking"]
 	path = Natives/external/AFNetworking
 	url = https://github.com/AFNetworking/AFNetworking
+[submodule "Natives/external/TOInsetGroupedTableView"]
+	path = Natives/external/TOInsetGroupedTableView
+	url = https://github.com/TimOliver/TOInsetGroupedTableView

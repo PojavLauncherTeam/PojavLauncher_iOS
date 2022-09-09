@@ -21,6 +21,8 @@
 #define TYPE_MICROSOFT 1
 #define TYPE_OFFLINE 2
 
+extern NSMutableDictionary *prefDict;
+
 #pragma mark - LoginViewController
 @interface LoginViewController () <ASWebAuthenticationPresentationContextProviding>{
 }
@@ -35,6 +37,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     setViewBackgroundColor(self.view);
+
+    setDefaultValueForPref(prefDict, @"control_safe_area", NSStringFromCGRect(getDefaultSafeArea()));
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(msaLoginCallback:) name:@"MSALoginCallback" object:nil];
 

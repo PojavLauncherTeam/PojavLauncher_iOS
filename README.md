@@ -90,6 +90,7 @@ PojavLauncher is amazing, and surprisingly stable, and it wouldn't be this way w
 - [fishhook](https://github.com/facebook/fishhook) (jailed environment usage only): [BSD-3 License](https://github.com/facebook/fishhook/blob/main/LICENSE).
 - [Java Native Access](https://github.com/java-native-access/jna): [Apache 2.0 License](https://github.com/java-native-access/jna/blob/master/LICENSE).
 - [shaderc](https://github.com/google/shaderc) (used by mods that uses Vulkan for rendering): [Apache 2.0 License](https://github.com/google/shaderc/blob/main/LICENSE).
+- [TOInsetGroupedTableView](https://github.com/TimOliver/TOInsetGroupedTableView): [MIT License](https://github.com/TimOliver/TOInsetGroupedTableView/blob/master/LICENSE).
 
 ## Special thanks to MacStadium!
 This project is listed under the MacStadium Open Source Program, which allows all of us developers to keep on moving forward even without physical access to a Mac.

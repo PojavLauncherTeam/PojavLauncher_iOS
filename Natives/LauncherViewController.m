@@ -2,7 +2,6 @@
 #import "CustomControlsViewController.h"
 #import "JavaGUIViewController.h"
 #import "LauncherPreferences.h"
-#import "LauncherPreferencesViewController.h"
 #import "LauncherViewController.h"
 #import "MinecraftResourceUtils.h"
 #import "ios_uikit_bridge.h"
@@ -54,8 +53,6 @@ int versionSelectedAt = 0;
 
 
     self.versionList = [[NSMutableArray alloc] init];
-    int selectedVersionType = [getPreference(@"selected_version_type") intValue];
-    [self reloadVersionList:selectedVersionType];
     versionPickerView = [[UIPickerView alloc] init];
     versionPickerView.delegate = self;
     versionPickerView.dataSource = self;
@@ -68,7 +65,7 @@ int versionSelectedAt = 0;
         NSLocalizedString(@"Old-beta", nil),
         NSLocalizedString(@"Old-alpha", nil)
     ]];
-    versionTypeControl.selectedSegmentIndex = selectedVersionType;
+    versionTypeControl.selectedSegmentIndex = [getPreference(@"selected_version_type") intValue];
     [versionTypeControl addTarget:self action:@selector(changeVersionType:) forControlEvents:UIControlEventValueChanged];
     UIBarButtonItem *versionTypeItem = [[UIBarButtonItem alloc] initWithCustomView:versionTypeControl];
     UIBarButtonItem *versionFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
@@ -112,6 +109,11 @@ int versionSelectedAt = 0;
     
     self.progressText = [[UILabel alloc] initWithFrame:CGRectMake(120.0, height - 54.0, width - 124.0, 50.0)];
     [scrollView addSubview:self.progressText];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self reloadVersionList:[getPreference(@"selected_version_type") intValue]];
 }
 
 - (BOOL)isVersionInstalled:(NSString *)versionId

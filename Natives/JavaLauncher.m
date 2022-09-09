@@ -24,25 +24,16 @@ static char args_path[2048];
 
 extern char **environ;
 
-static const char* const_progname = "java";
-static const char* const_launcher = "openjdk";
-static const char** const_jargs = NULL;
-static const char** const_appclasspath = NULL;
-static const jboolean const_javaw = JNI_FALSE;
-static const jboolean const_cpwildcard = JNI_TRUE;
-static const jint const_ergo_class = 0; // DEFAULT_POLICY
-
 static int margc = -1;
 static char* margv[1000];
 
 const char *javaHome;
-const char *renderer;
 const char *allocmem;
 const char *multidir;
 
 char *homeDir;
 
-NSString *renderer_pre;
+NSString *renderer;
 NSString *allocmem_pre;
 NSString *multidir_pre;
 
@@ -138,6 +129,9 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     regLog("[JavaLauncher] Beginning JVM launch\n");
 
     NSString *javaHome_pre = getPreference(@"java_home");
+    if (![javaHome_pre hasPrefix:@"/"]) {
+        javaHome_pre = [NSString stringWithFormat:@"%s/jvm/%@", getenv("POJAV_DETECTEDJB") ? "/usr/lib" : getenv("BUNDLE_PATH"), javaHome_pre];
+    }
 
     // We handle unset JAVA_HOME right there
     if (getSelectedJavaVersion() < minVersion) {
@@ -149,7 +143,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
         setPreference(@"java_home", javaHome_pre);
         NSLog(@"[JavaLauncher] JAVA_HOME environment variable was not set. Default to %@ for future use.\n", javaHome_pre);
     } */ else {
-        if (![NSFileManager.defaultManager fileExistsAtPath:javaHome_pre]) {
+        if (![fm fileExistsAtPath:javaHome_pre]) {
             javaHome_pre = environmentFailsafes(minVersion);
             setPreference(@"java_home", javaHome_pre);
             NSLog(@"[JavaLauncher] Failed to locate %@. Restored default value for JAVA_HOME.", javaHome_pre);
@@ -165,17 +159,15 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     javaHome = javaHome_pre.UTF8String;
     setenv("JAVA_HOME", javaHome, 1);
 
-    renderer_pre = getPreference(@"renderer");
-    renderer = renderer_pre.UTF8String;
-    if (renderer_pre.length == 0) {
-        renderer_pre = @"libgl4es_114.dylib";
-        setPreference(@"renderer", renderer_pre);
-        renderer = [renderer_pre cStringUsingEncoding:NSUTF8StringEncoding];
-        regLog("[JavaLauncher] RENDERER environment variable was not set. Defaulting to %s for future use.\n", renderer);
+    renderer = getPreference(@"renderer");
+    if (renderer.length == 0) {
+        renderer = @"auto";
+        setPreference(@"renderer", renderer);
+        NSLog(@"[JavaLauncher] RENDERER environment variable was not set. Defaulting to %@ for future use.\n", renderer);
     } else {
-        regLog("[JavaLauncher] Restored preference: RENDERER is set to %s\n", renderer);
+        NSLog(@"[JavaLauncher] Restored preference: RENDERER is set to %@\n", renderer);
     }
-    setenv("POJAV_RENDERER", renderer, 1);
+    setenv("POJAV_RENDERER", renderer.UTF8String, 1);
     
     allocmem_pre = [getPreference(@"allocated_memory") stringValue];
     allocmem = [allocmem_pre cStringUsingEncoding:NSUTF8StringEncoding];

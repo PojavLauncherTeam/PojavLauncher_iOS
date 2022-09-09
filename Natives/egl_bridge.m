@@ -91,15 +91,14 @@ pid_t gettid() {
     return (pid_t) pthread_mach_thread_np(pthread_self());
 }
 
-
-JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_setenv(JNIEnv *env, jclass clazz, jstring name, jstring value, jboolean overwrite) {
-    char const *name_c = (*env)->GetStringUTFChars(env, name, NULL);
-    char const *value_c = (*env)->GetStringUTFChars(env, value, NULL);
-
-    setenv(name_c, value_c, overwrite);
-
-    (*env)->ReleaseStringUTFChars(env, name, name_c);
-    (*env)->ReleaseStringUTFChars(env, value, value_c);
+void JNI_LWJGL_changeRenderer(const char* value_c) {
+    JNIEnv *env;
+    (*runtimeJavaVMPtr)->GetEnv(runtimeJavaVMPtr, (void **)&env, JNI_VERSION_1_4);
+    jstring key = (*env)->NewStringUTF(env, "org.lwjgl.opengl.libname");
+    jstring value = (*env)->NewStringUTF(env, value_c);
+    jclass clazz = (*env)->FindClass(env, "java/lang/System");
+    jmethodID method = (*env)->GetStaticMethodID(env, clazz, "setProperty", "(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;");
+    (*env)->CallStaticObjectMethod(env, clazz, method, key, value);
 }
 
 void pojavTerminate() {
@@ -225,11 +224,17 @@ jboolean pojavInit_OpenGL() {
     if (config_renderer) return JNI_TRUE;
 
     NSString *renderer = @(getenv("POJAV_RENDERER"));
+    JNI_LWJGL_changeRenderer(renderer.UTF8String);
+    BOOL isAuto = [renderer isEqualToString:@"auto"];
     if ([renderer isEqualToString:@"libOSMesa.8.dylib"]) {
         config_renderer = RENDERER_VIRGL;
         setenv("GALLIUM_DRIVER", "virpipe", 1);
         loadSymbolsVirGL();
-    } else if ([renderer hasPrefix:@"libgl4es"] || [renderer hasPrefix:@"libtinygl4angle"]) {
+    } else if (isAuto || [renderer isEqualToString:@ RENDERER_NAME_GL4ES]) {
+        config_renderer = RENDERER_MTL_ANGLE;
+        setenv("POJAV_RENDERER", RENDERER_NAME_GL4ES, 1);
+        loadSymbols();
+    } else if ([renderer isEqualToString:@ RENDERER_NAME_MTL_ANGLE]) {
         config_renderer = RENDERER_MTL_ANGLE;
         loadSymbols();
     } else if ([renderer hasPrefix:@"libOSMesa"]) {
@@ -248,8 +253,16 @@ jboolean pojavInit_OpenGL() {
         }
 
         // Pre-load the renderer library
+        // FIXME: gl4es has to be pre-loaded if it is going to be used later,
+        // or glCheckFramebufferStatus will return an error
         void *renderer_handle = dlopen(getenv("POJAV_RENDERER"), RTLD_GLOBAL);
         debugLog("%s=%p, error=%s", getenv("POJAV_RENDERER"), renderer_handle, dlerror());
+
+        // Set back to the previous value
+        setenv("POJAV_RENDERER", renderer.UTF8String, 1);
+        if (isAuto) {
+            JNI_LWJGL_changeRenderer(RENDERER_NAME_GL4ES);
+        }
 
         debugLog("EGLBridge: Initializing");
         // printf("EGLBridge: ANativeWindow pointer = %p\n", potatoBridge.androidWindow);
@@ -293,8 +306,8 @@ jboolean pojavInit_OpenGL() {
             eglBindAPI_p(EGL_OPENGL_ES_API);
         }
 
-        potatoBridge.eglSurface = eglCreateWindowSurface_p(potatoBridge.eglDisplay, config, (__bridge EGLNativeWindowType) ((SurfaceViewController *)currentVC()).surfaceView.layer, NULL);
-        //NSLog(@"Layer %@", ((SurfaceViewController *)currentVC()).surfaceView.layer);
+        potatoBridge.eglSurface = eglCreateWindowSurface_p(potatoBridge.eglDisplay, config, (__bridge EGLNativeWindowType) ((SurfaceViewController *)currentWindow().rootViewController).surfaceView.layer, NULL);
+        //NSLog(@"Layer %@", ((SurfaceViewController *)currentWindow().rootViewController).surfaceView.layer);
 
         if (!potatoBridge.eglSurface) {
             debugLog("EGLBridge: Error eglCreateWindowSurface failed: 0x%x", eglGetError_p());
@@ -351,19 +364,26 @@ jboolean pojavInit_OpenGL() {
 }
 
 void pojavSetWindowHint(int hint, int value) {
-    if (hint != GLFW_CLIENT_API) return;
-    switch (value) {
-        case GLFW_NO_API:
-            config_renderer = RENDERER_VULKAN;
-            /* Nothing to do: initialization is handled in Java-side */
-            // pojavInit_Vulkan();
-            break;
-        case GLFW_OPENGL_API:
-            pojavInit_OpenGL();
-            break;
-        default:
-            NSLog(@"GLFW: Unimplemented API 0x%x", value);
-            abort();
+    if (hint == GLFW_CLIENT_API) {
+        switch (value) {
+            case GLFW_NO_API:
+                config_renderer = RENDERER_VULKAN;
+                /* Nothing to do: initialization is handled in Java-side */
+                // pojavInit_Vulkan();
+                break;
+            case GLFW_OPENGL_API:
+                pojavInit_OpenGL();
+                break;
+            default:
+                NSLog(@"GLFW: Unimplemented API 0x%x", value);
+                abort();
+        }
+    } else if (strcmp(getenv("POJAV_RENDERER"), "auto")==0 && hint == GLFW_CONTEXT_VERSION_MAJOR && value >= 3) {
+        // Free unused gl4es library
+        void *renderer_handle = dlopen(RENDERER_NAME_GL4ES, RTLD_GLOBAL);
+        dlclose(renderer_handle);
+
+        JNI_LWJGL_changeRenderer(RENDERER_NAME_MTL_ANGLE);
     }
 }
 
@@ -392,7 +412,7 @@ void pojavSwapBuffers() {
         case RENDERER_VK_ZINK: {
             glFinish_p();
             dispatch_async(dispatch_get_main_queue(), ^{
-                [((SurfaceViewController *)currentVC()).surfaceView displayLayer];
+                [((SurfaceViewController *)currentWindow().rootViewController).surfaceView displayLayer];
             });
         } break;
     }
@@ -472,7 +492,7 @@ void pojavMakeCurrent(void* window) {
 
 void* pojavCreateContext(void* contextSrc) {
     if (config_renderer == RENDERER_VULKAN) {
-        return (__bridge void *)(((SurfaceViewController *)currentVC()).surfaceView.layer);
+        return (__bridge void *)(((SurfaceViewController *)currentWindow().rootViewController).surfaceView.layer);
     }
 
     if (config_renderer == RENDERER_MTL_ANGLE) {

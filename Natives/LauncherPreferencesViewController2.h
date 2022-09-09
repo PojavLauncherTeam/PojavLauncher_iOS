@@ -5,6 +5,6 @@
 #define JRE17_NAME_JB @"Java 17"
 #define JRE8_NAME_SB @"Java 8 (sandbox)"
 
-@interface LauncherPreferencesViewController : UIViewController <UITextFieldDelegate>
+@interface LauncherPreferencesViewController2 : UITableViewController<UITextFieldDelegate>
 
 @end

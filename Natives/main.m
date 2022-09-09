@@ -7,7 +7,6 @@
 #import "AppDelegate.h"
 #import "customcontrols/CustomControlsUtils.h"
 #import "LauncherPreferences.h"
-#import "LauncherPreferencesViewController.h"
 
 #include <libgen.h>
 #include <pthread.h>
@@ -321,7 +320,7 @@ int main(int argc, char * argv[]) {
 
     init_hookFunctions();
 
-    loadPreferences();
+    loadPreferences(NO);
     init_setupResolvConf();
     init_setupMultiDir();
     init_setupLauncherProfiles();

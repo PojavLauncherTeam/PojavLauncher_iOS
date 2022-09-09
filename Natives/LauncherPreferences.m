@@ -78,18 +78,30 @@ void setPreference(NSString* key, id value) {
     [prefDict writeToFile:prefPath atomically:YES];
 }
 
-void loadPreferences() {
+void fillDefaultWarningDict() {
+    setDefaultValueForPref(warnPrefDict, @"option_warn", @YES);
+    setDefaultValueForPref(warnPrefDict, @"local_warn", @YES);
+    setDefaultValueForPref(warnPrefDict, @"mem_warn", @YES);
+    setDefaultValueForPref(warnPrefDict, @"java_warn", @YES);
+    setDefaultValueForPref(warnPrefDict, @"demo_warn", @YES);
+    setDefaultValueForPref(warnPrefDict, @"jb_warn", @YES);
+    setDefaultValueForPref(warnPrefDict, @"customctrl_warn", @YES);
+    setDefaultValueForPref(warnPrefDict, @"int_warn", @YES);
+    setDefaultValueForPref(warnPrefDict, @"auto_ram_warn", @YES);
+}
+
+void loadPreferences(BOOL reset) {
     assert(getenv("POJAV_HOME"));
     prefPath = [@(getenv("POJAV_HOME"))
       stringByAppendingPathComponent:@"launcher_preferences.plist"];
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    if (![fileManager fileExistsAtPath:prefPath]) {
+    prefDict = [NSMutableDictionary dictionaryWithContentsOfFile:prefPath];
+    if (reset || ![fileManager fileExistsAtPath:prefPath]) {
         prefDict = [[NSMutableDictionary alloc] init];
         envPrefDict = [[NSMutableDictionary alloc] init];
         warnPrefDict = [[NSMutableDictionary alloc] init];
     } else {
-        prefDict = [NSMutableDictionary dictionaryWithContentsOfFile:prefPath];
         envPrefDict = prefDict[@"env_vars"];
         warnPrefDict = prefDict[@"warnings"];
     }
@@ -101,30 +113,23 @@ void loadPreferences() {
     setDefaultValueForPref(prefDict, @"button_scale", @(100));
     setDefaultValueForPref(prefDict, @"selected_version", @"1.7.10");
     setDefaultValueForPref(prefDict, @"selected_version_type", @(0));
-    setDefaultValueForPref(envPrefDict, @"time_longPressTrigger", @(400));
+    setDefaultValueForPref(envPrefDict, @"press_duration", @(400));
+    setDefaultValueForPref(envPrefDict, @"mouse_scale", @(100));
+    setDefaultValueForPref(envPrefDict, @"mouse_speed", @(100));
     setDefaultValueForPref(envPrefDict, @"default_ctrl", @"default.json");
     setDefaultValueForPref(envPrefDict, @"game_directory", @"default");
     setDefaultValueForPref(envPrefDict, @"java_args", @"");
-    setDefaultValueForPref(envPrefDict, @"allocated_memory", [NSNumber numberWithFloat:roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.30)]);
-    setDefaultValueForPref(prefDict, @"restart_before_launch", @NO);
+    setDefaultValueForPref(envPrefDict, @"allocated_memory", [NSNumber numberWithFloat:roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.25)]);
     setDefaultValueForPref(prefDict, @"debug_logging", CONFIG_TYPE);
     setDefaultValueForPref(prefDict, @"arccapes_enable", @YES);
     setDefaultValueForPref(envPrefDict, @"java_home", @"");
-    setDefaultValueForPref(envPrefDict, @"renderer", @"libgl4es_114.dylib");
-    setDefaultValueForPref(warnPrefDict, @"option_warn", @YES);
-    setDefaultValueForPref(warnPrefDict, @"local_warn", @YES);
-    setDefaultValueForPref(warnPrefDict, @"mem_warn", @YES);
-    setDefaultValueForPref(warnPrefDict, @"java_warn", @YES);
-    setDefaultValueForPref(warnPrefDict, @"demo_warn", @YES);
-    setDefaultValueForPref(warnPrefDict, @"jb_warn", @YES);
-    setDefaultValueForPref(warnPrefDict, @"customctrl_warn", @YES);
-    setDefaultValueForPref(warnPrefDict, @"int_warn", @YES);
-    setDefaultValueForPref(warnPrefDict, @"ram_unjb_warn", @YES);
+    setDefaultValueForPref(envPrefDict, @"renderer", @"auto");
+    fillDefaultWarningDict();
     setDefaultValueForPref(prefDict, @"a7_allow", @NO);
     setDefaultValueForPref(prefDict, @"slideable_hotbar", @NO);
     setDefaultValueForPref(prefDict, @"virtmouse_enable", @NO);
     setDefaultValueForPref(prefDict, @"check_sha", @YES);
-    setDefaultValueForPref(prefDict, @"ram_unjb_enable", @NO);
+    setDefaultValueForPref(prefDict, @"auto_ram", @(getenv("POJAV_DETECTEDJB") == NULL));
     
     if (0 != [fileManager fileExistsAtPath:@"/var/mobile/Documents/.pojavlauncher"]) {
         setDefaultValueForPref(prefDict, @"disable_home_symlink", @NO);
@@ -132,11 +137,19 @@ void loadPreferences() {
         setDefaultValueForPref(prefDict, @"disable_home_symlink", @YES);
     }
 
-    setDefaultValueForPref(prefDict, @"control_safe_area", NSStringFromCGRect(getDefaultSafeArea()));
+    // Migrate some prefs
+    setPreference(@"java_home", [getPreference(@"java_home") lastPathComponent]);
 
     prefDict[@"env_vars"] = envPrefDict;
     prefDict[@"warnings"] = warnPrefDict;
 
+    [prefDict writeToFile:prefPath atomically:YES];
+}
+
+void resetWarnings() {
+    [warnPrefDict removeAllObjects];
+    fillDefaultWarningDict();
+    prefDict[@"warnings"] = warnPrefDict;
     [prefDict writeToFile:prefPath atomically:YES];
 }
 
