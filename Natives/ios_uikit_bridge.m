@@ -1,6 +1,5 @@
 #import "authenticator/BaseAuthenticator.h"
 #import "AppDelegate.h"
-#import "BKSSystemService.h"
 #import "SceneDelegate.h"
 #import "LoginViewController.h"
 #import "LauncherPreferences.h"
@@ -104,37 +103,24 @@ jstring UIKit_accessClipboard(JNIEnv* env, jint action, jstring copySrc) {
 }
 
 void UIKit_launchMinecraftSurfaceVC() {
-    setPreference(@"internal_launch_on_boot", getPreference(@"restart_before_launch"));
+    // Leave this pref, might be useful later for launching with Quick Actions/Shortcuts/URL Scheme
+    //setPreference(@"internal_launch_on_boot", getPreference(@"restart_before_launch"));
     setPreference(@"internal_selected_account", BaseAuthenticator.current.authData[@"username"]);
     setPreference(@"internal_useStackQueue", @(isUseStackQueueCall ? YES : NO));
     dispatch_async(dispatch_get_main_queue(), ^{
-        if ([getPreference(@"restart_before_launch") boolValue]) {
-            NSURL *url = [NSURL URLWithString:@"pojavlauncher://"];
-            BKSSystemService *service = [[NSClassFromString(@"BKSSystemService") alloc] init];
-            unsigned int port = [service createClientPort];
-            [service openURL:url application:@"net.kdt.pojavlauncher" options:nil clientPort:port withResult:nil];
-
-            // exiting too fast will cause it to fail (race condition?)
-            //  [FBSystemService][0xbb88] Caller "PojavLauncher:pid" has a sandbox that does not allow opening URL's.
-            //  The request was denied by service delegate (SBMainWorkspace) for reason: Security ("Sandbox check failed for process (PojavLauncher:pid) openURL not allowed").
-            // therefore, sleep for 1ms before exit
-            usleep(1000);
-            exit(0);
-        } else {
-            id delegate = UIApplication.sharedApplication.delegate;
-            if (@available(iOS 13.0, *)) {
-                delegate = UIApplication.sharedApplication.connectedScenes.anyObject.delegate;
-            }
-            UIWindow *window = [delegate window];
-            [UIView animateWithDuration:0.2 animations:^{
-                window.alpha = 0;
-            } completion:^(BOOL b){
-                [window resignKeyWindow];
-                window.alpha = 1;
-                window.rootViewController = [[SurfaceViewController alloc] init];
-                [window makeKeyAndVisible];
-            }];
+        id delegate = UIApplication.sharedApplication.delegate;
+        if (@available(iOS 13.0, *)) {
+            delegate = UIApplication.sharedApplication.connectedScenes.anyObject.delegate;
         }
+        UIWindow *window = [delegate window];
+        [UIView animateWithDuration:0.2 animations:^{
+            window.alpha = 0;
+        } completion:^(BOOL b){
+            [window resignKeyWindow];
+            window.alpha = 1;
+            window.rootViewController = [[SurfaceViewController alloc] init];
+            [window makeKeyAndVisible];
+        }];
     });
 }
 

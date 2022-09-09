@@ -120,7 +120,6 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(envPrefDict, @"game_directory", @"default");
     setDefaultValueForPref(envPrefDict, @"java_args", @"");
     setDefaultValueForPref(envPrefDict, @"allocated_memory", [NSNumber numberWithFloat:roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.25)]);
-    setDefaultValueForPref(prefDict, @"restart_before_launch", @NO);
     setDefaultValueForPref(prefDict, @"debug_logging", CONFIG_TYPE);
     setDefaultValueForPref(prefDict, @"arccapes_enable", @YES);
     setDefaultValueForPref(envPrefDict, @"java_home", @"");
