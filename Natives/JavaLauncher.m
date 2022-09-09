@@ -303,14 +303,9 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
 
     if (!getEntitlementValue(@"com.apple.developer.kernel.extended-virtual-addressing")) {
         // In jailed environment, where extended virtual addressing entitlement isn't
-        // present (for free dev account), the maximum metaspace size is 896M.
-        // Sometimes it can go lower, so it is set to 800M
-        if (isJava8) {
-            margv[++margc] = "-XX:CompressedClassSpaceSize=800M";
-        } else {
-            // FIXME: does extended VA allow allocating compressed class space?
-            margv[++margc] = "-XX:-UseCompressedClassPointers";
-        }
+        // present (for free dev account), allocating compressed space fails.
+        // FIXME: does extended VA allow allocating compressed class space?
+        margv[++margc] = "-XX:-UseCompressedClassPointers";
     }
 
     if ([launchTarget isKindOfClass:NSDictionary.class]) {
