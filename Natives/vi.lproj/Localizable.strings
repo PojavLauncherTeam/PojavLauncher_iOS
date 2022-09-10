@@ -1,0 +1,29 @@
+/* 
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "Đóng chương trình";
+"game.menu.log_output" = "Nhật ký ra ";
+"game.menu.custom_controls" = "Tùy chỉnh điều khiển";
+"Snapshot" = "Snapshot";
+"Old-beta" = "Bản Beta cũ";
+"Old-alpha" = "Bản Alpha cũ";
+
+"login.alert.title" = "Đăng nhập";
+
+"Settings" = "Thiết lập";
+"preference.section.control" = "Tuỳ chỉnh bộ điều khiển";
+//"preference.section.footer.control" = "";
+"preference.section.java" = "Điều chỉnh Java";
+"preference.title.cosmetica" = "Áo choàng Cosmetica";
+
+"preference.title.renderer" = "Trình kết xuất";
+"preference.title.disable_gesture" = "Tắt cử chỉ";
+"preference.detail.press_duration" = "Thay đổi thời gian nhấn giữ để kích hoạt khi phá huỷ khối và thả vật phẩm.";
+"preference.title.java_args" = "Các chỉ số chạy JVM";
+"preference.title.auto_ram" = "RAM tự động";
+"preference.detail.auto_ram" = "Bật tự động điều chỉnh RAM";
+"preference.detail.allocated_memory" = "Điều chỉnh số lượng bộ nhớ được cung cấp cho Minecraft";
+// sha check
+// home symlink
