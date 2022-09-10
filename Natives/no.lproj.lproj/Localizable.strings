@@ -1,0 +1,25 @@
+/* 
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "Tving avslutt";
+"game.menu.log_output" = "Logg utdata";
+"game.menu.custom_controls" = "Tilpassede kontroller";
+"Snapshot" = "Snapshot";
+"Old-beta" = "Old-beta";
+"Old-alpha" = "Old-alpha";
+
+"login.alert.title" = "Logg inn";
+
+"Settings" = "Innstillinger";
+
+"preference.title.renderer" = "Gjengir";
+"preference.title.disable_gesture" = "Deaktiver gester";
+"preference.detail.press_duration" = "Endre utløsertid for langt trykk i ødelegge blokk og slipp-gjenstand.";
+"preference.title.java_args" = "JVM Launch Arguments";
+"preference.title.auto_ram" = "Auto RAM";
+"preference.detail.auto_ram" = "Aktiverer automatisk RAM-justering";
+"preference.detail.allocated_memory" = "Kontrollerer hvor mye minne som blir gitt til Minecraft";
+// sha check
+// home symlink
