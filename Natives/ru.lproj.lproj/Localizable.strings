@@ -1,0 +1,29 @@
+/* 
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "Принудительное закрытие";
+"game.menu.log_output" = "Журнал";
+"game.menu.custom_controls" = "Пользовательское управление";
+"Snapshot" = "Снапшоты";
+"Old-beta" = "Старые бета";
+"Old-alpha" = "Старые альфа";
+
+"login.alert.title" = "Войти";
+
+"Settings" = "Настройки";
+"preference.section.control" = "Настройка управления";
+//"preference.section.footer.control" = "";
+"preference.section.java" = "Корректировка Java";
+"preference.title.cosmetica" = "Плащи Cosmetica";
+
+"preference.title.renderer" = "Визуализатор";
+"preference.title.disable_gesture" = "Отключение жестов";
+"preference.detail.press_duration" = "Изменяет длительность долгого нажатия для ломания блоков и выбрасывания предметов.";
+"preference.title.java_args" = "Аргументы запуска JVM";
+"preference.title.auto_ram" = "Автоматическое выделение ОЗУ";
+"preference.detail.auto_ram" = "Автоматически управляет количеством выделенного ОЗУ";
+"preference.detail.allocated_memory" = "Управляет тем, сколько памяти выделится для Minecraft";
+// sha check
+// home symlink
