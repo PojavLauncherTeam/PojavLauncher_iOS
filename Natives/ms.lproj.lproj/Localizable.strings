@@ -1,0 +1,26 @@
+/* 
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "Paksa tutup";
+"game.menu.log_output" = "Log output";
+"game.menu.custom_controls" = "Kawalan custom";
+"Snapshot" = "Petikan";
+"Old-beta" = "Beta-lama";
+"Old-alpha" = "Alfa-lama";
+
+"login.alert.title" = "Log masuk";
+
+"Settings" = "Tetapan";
+"preference.title.cosmetica" = "Mantel Cosmetica";
+
+"preference.title.renderer" = "Renderer";
+"preference.title.disable_gesture" = "Nyahdayakan gerak isyarat";
+"preference.detail.press_duration" = "Tukar masa cetusan untuk tekanan lama dalam penghancuran blok dan pelemparan item.";
+"preference.title.java_args" = "JVM Launch arguments";
+"preference.title.auto_ram" = "Auto RAM";
+"preference.detail.auto_ram" = "Membenarkan pelaras RAM automatik";
+"preference.detail.allocated_memory" = "Mengawal berapa banyak memori yang diberikan kepada Minecraft";
+// sha check
+// home symlink
