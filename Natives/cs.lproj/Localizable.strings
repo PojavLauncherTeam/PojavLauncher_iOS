@@ -1,0 +1,63 @@
+/* 
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "Vynutit zavření";
+"game.menu.confirm.force_close" = "Jsi si jist zdali chceš vynutit ukončení?";
+"game.menu.log_output" = "Záznam výstupu";
+"game.menu.custom_controls" = "Vlastní ovládací prvky";
+
+"Installed" = "Nainstalováno";
+"Snapshot" = "Snapshot";
+"Releases" = "Vydání";
+"Old-beta" = "Stará beta";
+"Old-alpha" = "Stará alfa";
+
+"init.migrateDir" = "Složka dat PojavLauncheru je nyní %@. Všechna tvá data byla přesunuta do nového umístění.";
+
+"login.error.username.outOfRange" = "Uživatelské jméno musí být dlouhé alespoň 3 znaky a nanejvýš 16 znaků";
+
+"login.alert.title" = "Přihlásit se";
+"login.alert.field.username" = "Uživatelské jméno";
+
+"login.jit.checking" = "Kontrolování JIT";
+"login.jit.enabled" = "JIT byl zapnut";
+"login.jit.fail.JitStreamer" = "Chyba JitStreameru: %@";
+"login.jit.found.JitStreamer" = "Nalezen JitStreamer, povoluji JIT";
+"login.menu.sendlogs" = "Odeslat záznamy";
+"login.menu.updates" = "Nedávné aktualizace";
+
+"login.option.microsoft" = "Účet Microsoft";
+"login.option.demo" = "Demo účet";
+"login.option.local" = "Místní účet";
+
+"login.progress.title" = "Přihlašování";
+
+"login.warn.title.ram_unjb" = "Posuvník paměti je povolen";
+"login.warn.message.ram_unjb" = "Uvědomte si, že měnění tohoto nastavení může způsobit nestabilitu hry či rozbít schopnost hrát vůbec.";
+
+"login.warn.title.a7" = "Toto je poslední aktualizace pro toto zařízení.";
+"login.warn.message.a7" = "Tvé zařízení nebude podporovat PojavLauncher 2.2. Tato změna je kvůli hardwarovým a softwarovým omezením.";
+
+"login.warn.title.demomode" = "Tato možnost je v betě.";
+"login.warn.message.demomode" = "Jako náhrada za offline a místní režim, demo režim povolí přihlášení do Microsoft účtu, jenž hru nevlastní, a hrát zkušební verzi Java edice, přidanou v 1.3.1 a novějších verzích. Starší verze obsahují plnou hru, majíce ji i v oficiálním spouštěči, jenž nemá pro ně omezení. Viz naši webovou stránku pro více informací o této změně z offline režimu.";
+
+"login.warn.title.otherjb" = "Jailbreak není plně podporován.";
+"login.warn.message.otherjb" = "Tvuj nynější jailbreak nemá bootstrap Procursu. Mouhou nastat některé chyby, jež nemohou být opraveny. Prosím používej či čekej pro plně podporovaný jailbreak.";
+
+"Settings" = "Nastavení";
+"preference.section.control" = "Přizpůsobení ovládání";
+//"preference.section.footer.control" = "";
+"preference.section.java" = "Vyladění Javy";
+"preference.title.cosmetica" = "Kápě Cosmetica";
+
+"preference.title.renderer" = "Vykreslovač";
+"preference.title.disable_gesture" = "Vypnout gesta";
+"preference.detail.press_duration" = "Změň čas pro rozbití bloku a vyhození itemu.";
+"preference.title.java_args" = "JVM spouštěcí argumenty";
+"preference.title.auto_ram" = "Auto RAM";
+"preference.detail.auto_ram" = "Automaticky bude měnit množství RAM";
+"preference.detail.allocated_memory" = "Určete kolik paměti bude mít Minecraft";
+// sha check
+// home symlink
