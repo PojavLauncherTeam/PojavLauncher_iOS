@@ -100,8 +100,17 @@
 
 "preference.title.renderer" = "渲染器";
 "preference.title.renderer.auto" = "自动选择：gl4es 或 tinygl4angle";
+"preference.title.renderer.gl4es" = "gl4es 1.1.4 - 输出 OpenGL 2.1";
+"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - 输出 OpenGL 3.2 (核心配置，存在限制)";
+"preference.title.renderer.zink" = "Zink (Mesa 21.0) - 输出 OpenGL 4.1";
+"preference.detail.renderer" = "更改 OpenGL 渲染引擎以使用";
+
+"preference.title.resolution" = "分辨率（%）";
+"preference.detail.resolution" = "允许降低游戏分辨率";
 "preference.title.disable_gesture" = "禁用手势";
+"preference.title.press_duration" = "长按延迟（单位：毫秒）";
 "preference.detail.press_duration" = "修改长按摧毁方块、丢弃物品的触发时长";
+"preference.title.button_scale" = "屏幕按钮缩放 (%)";
 "preference.title.java_args" = "JVM 启动参数";
 "preference.title.auto_ram" = "自动设置内存大小";
 "preference.detail.auto_ram" = "启用 RAM 自动调节";
