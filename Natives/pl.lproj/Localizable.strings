@@ -41,16 +41,74 @@
 "login.warn.message.a7" = "Twoje urządzenie nie będzie obsługiwać PojavLauncher 2.2. Jest to spowodowane zmianami ograniczeń sprzętowych i oprogramowania.";
 
 "login.warn.title.demomode" = "To jest testowa opcja.";
+"login.warn.message.demomode" = "Jak zamiennik dla trybu offline oraz lokalnego, tryb demo umożliwia logowanie na Konto Microsoft, które nie posiada gry i umożliwia granie w wersję próbną Java Edition wprowadzoną w wersji 1.3.1 oraz nowszych. Starsze wersje zawierają pełną wersję gry, ponieważ oficjalny launcher nie wymusza tych ograniczeń. Sprawdź naszą stronę internetową, aby dowiedzieć się więcej o przejściu z trybu offline.";
+
+"login.warn.title.otherjb" = "Jailbreak nie jest w pełni obsługiwany.";
+
+"login.warn.title.localmode" = "Tryb offline to teraz Tryb lokalny.";
+"login.warn.message.localmode" = "Możesz nadal grać w zainstalowane wersje, ale nie możesz już pobierać Minecraft bez płatnego konta. Nie oferujemy wsparcia dla problemów z kontami lokalnymi lub innymi sposobami pozyskiwania Minecraft. Sprawdź najczęstsze pytania po więcej informacji.";
+
+"login.msa.error.xsts.noxboxacc" = "Profil Xbox nie został zarejestrowany dla tego Konta Microsoft. Upewnij się, że profil Xbox został utworzony.\nKod błędu: 2148916233";
+"login.msa.error.xsts.noxbox" = "Xbox Live nie jest obecnie dostępne w Twoim kraju.\nKod błędu: 2148916235";
+"login.msa.error.xsts.krverify" = "Twoje konto musi zostać zweryfikowane przez Twoich rodziców przed kontynuowaniem.\nKod błędu: 2148916236 lub 2148916237.";
+"login.msa.error.xsts.underage" = "Twoje konto musi zostać połączone z kontem rodzica przed kontynuowaniem.\nKod błędu: 2148916238";
+
+"login.msa.notice.demomode" = "Nie można znaleźć profilu Minecraft na tym koncie. Konto jest teraz ustawione na Tryb demo. Czy Minecraft został zakupiony lub posiadasz aktywną subskrypcję Xbox Game Pass? Skonfiguruj swój profil na https://minecraft.net/msaprofle, aby powrócić do Trybu online.";
+
+"login.msa.progress.acquireAccessToken" = "(1/5) Wczytywanie klucza dostępu";
+"login.msa.progress.acquireXBLToken" = "(2/5) Wczytywanie klucza Xbox Live";
+"login.msa.progress.acquireXSTS" = "Uzyskiwanie XSTS";
+"login.msa.progress.acquireXboxProfile" = "(3/5) Wczytywanie profilu Xbox";
+"login.msa.progress.acquireMCToken" = "(4/5) Wczytywanie klucza Minecraft";
+"login.msa.progress.checkMCProfile" = "(5/5) Sprawdzanie profilu Minecraft";
 
 "Settings" = "Ustawienia";
+
+"preference.section.general" = "Ogólne ustawienia";
+"preference.section.video" = "Ustawienia grafiki";
 "preference.section.control" = "Kontroluj dostosowywanie";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Ulepszenia Javy";
+//"preference.section.footer.java" = "";
+
+"preference.title.confirm" = "Czy na pewno?";
+
+"preference.title.game_directory" = "Katalog gry Minecraft";
+"preference.title.confirm.delete_game_directory" = "Instancja %@ zostanie trwale usunięta i nie będzie można jej przywrócić.";
+"preference.multidir.add_directory" = "dodaj katalog gry";
+"preference.title.check_sha" = "Sprawdź pliki po pobraniu";
+"preference.detail.check_sha" = "Ta opcja wymusza sprawdzanie sumy kontrolnej pliku, jeśli jest dostępna. Zapobiega to uszkodzeniom pobieranych plików.";
 "preference.title.cosmetica" = "Peleryny Cosmetica";
+"preference.title.debug_logging" = "Rejestr debugowania";
+
+"preference.title.reset_warnings" = "Wyzeruj wszystkie ostrzeżenia";
+"preference.title.done.reset_warnings" = "Wszystkie ostrzeżenia zostały wyzerowane.";
+
+"preference.title.reset_settings" = "Wyzeruj wszystkie ustawienia";
+"preference.title.confirm.reset_settings" = "Spowoduje to usunięcie wszystkich własnych ustawień, w tym rozdzielczości, rozmiar przycisków oraz argumenty Java.";
+"preference.title.done.reset_settings" = "Wszystkie ustawienia zostały wyzerowane.";
 
 "preference.title.renderer" = "Silnik renderujący";
+"preference.title.renderer.auto" = "Automatycznie: gl4es lub tinygl4angle";
+"preference.title.renderer.gl4es" = "gl4es 1.1.4 - eksportuje OpenGL 2.1";
+"preference.title.renderer.zink" = "Zink (Mesa 21.0) - eksportuje OpenGL 4.1";
+"preference.detail.renderer" = "Zmień używany silnik renderujący OpenGL";
+
+"preference.title.resolution" = "Rozdzielczość (%)";
+"preference.detail.resolution" = "Umożliwia zmniejszenie rozdzielczości gry.";
 "preference.title.disable_gesture" = "Wyłącz gesty";
+"preference.title.press_duration" = "Czas długiego naciśnięcia (ms)";
 "preference.detail.press_duration" = "Zmień czas wywołania akcji długiego naciśnięcia dla niszczenia bloków i wyrzucania przedmiotów.";
+"preference.title.button_scale" = "Skala przycisków ekranowych (%)";
+"preference.detail.button_scale" = "Zwiększ skalę, jeśli przyciski są zbyt małe, zazwyczaj tak jest w przypadku iPad'ów.";
+"preference.title.mouse_scale" = "Skalowanie myszy (%)";
+"preference.detail.mouse_scale" = "Zmień rozmiar wirtualnej myszy";
+"preference.title.mouse_speed" = "Prędkość myszy (%)";
+"preference.detail.mouse_speed" = "Zmień prędkość wirtualnej myszy";
+"preference.title.virtmouse_enable" = "Wirtualna mysz";
+"preference.detail.virtmouse_enable" = "Aktywuj tę opcję, aby uruchamiać z włączoną wirtualną myszą";
+"preference.title.slideable_hotbar" = "Przesuwalny pasek narzędzi";
+"preference.title.java_home" = "Użyj Java 17 dla Minecraft < 1.17";
 "preference.title.java_args" = "Argumenty uruchomienia JVM";
 "preference.title.auto_ram" = "Automatyczny RAM";
 "preference.detail.auto_ram" = "Włącza automatyczny przydział pamięci RAM";
