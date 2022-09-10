@@ -12,7 +12,7 @@
 
 + (id)buttonWithProperties:(NSMutableDictionary *)propArray {
     //NSLog(@"DBG button prop = %@", propArray);
-    ControlButton *instance = [self buttonWithType:UIButtonTypeRoundedRect];
+    ControlButton *instance = [self buttonWithType:UIButtonTypeSystem];
     instance.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     instance.tintColor = [UIColor whiteColor];
     instance.titleLabel.adjustsFontSizeToFitWidth = YES;
@@ -172,6 +172,9 @@
     self.alpha = [self.properties[@"opacity"] floatValue];
     self.alpha = MAX(self.alpha, isControlModifiable ? 0.1 : 0.01);
     self.backgroundColor = convertARGB2UIColor(propBackgroundColor);
+    if ([self.properties[@"isToggle"] boolValue]) {
+        self.savedBackgroundColor = self.backgroundColor;
+    }
 
     self.layer.borderColor = [convertARGB2UIColor(propStrokeColor) CGColor];
     self.layer.cornerRadius = MIN(self.frame.size.width, self.frame.size.height) / 200.0 * propCornerRadius;

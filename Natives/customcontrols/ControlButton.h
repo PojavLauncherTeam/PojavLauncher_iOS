@@ -11,8 +11,9 @@
 @interface ControlButton : UIButton {
 }
 
-@property BOOL canBeHidden;
+@property BOOL canBeHidden, isToggleOn;
 @property(nonatomic, strong) NSMutableDictionary* properties;
+@property UIColor* savedBackgroundColor;
 
 + (id)buttonWithProperties:(NSMutableDictionary *)propArray;
 

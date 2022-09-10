@@ -474,7 +474,8 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
         }
 
         [button addTarget:self action:@selector(executebtn_down:) forControlEvents:UIControlEventTouchDown];
-        [button addTarget:self action:@selector(executebtn_up:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
+        [button addTarget:self action:@selector(executebtn_up_inside:) forControlEvents:UIControlEventTouchUpInside];
+        [button addTarget:self action:@selector(executebtn_up_outside:) forControlEvents:UIControlEventTouchUpOutside];
 
         if (isSwipeable) {
             UIPanGestureRecognizer *panRecognizerButton = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(executebtn_swipe:)];
@@ -964,7 +965,9 @@ CallbackBridge_nativeSendKey(keycode, 0, held, 0);
 
 - (void)executebtn_down:(ControlButton *)sender
 {
-    [self executebtn:sender withAction:ACTION_DOWN];
+    if (sender.savedBackgroundColor == nil) {
+        [self executebtn:sender withAction:ACTION_DOWN];
+    }
     if ([self.swipeableButtons containsObject:sender]) {
         self.swipingButton = sender;
     }
@@ -974,12 +977,12 @@ CallbackBridge_nativeSendKey(keycode, 0, held, 0);
 {
     CGPoint location = [sender locationInView:self.rootView];
     if (sender.state == UIGestureRecognizerStateCancelled || sender.state == UIGestureRecognizerStateEnded) {
-        [self executebtn_up:self.swipingButton];
+        [self executebtn_up:self.swipingButton isOutside:NO];
         return;
     }
     for (ControlButton *button in self.swipeableButtons) {
         if (CGRectContainsPoint(button.frame, location) && (ControlButton *)self.swipingButton != button) {
-            [self executebtn:self.swipingButton withAction:ACTION_UP];
+            [self executebtn_up:self.swipingButton isOutside:NO];
             self.swipingButton = (ControlButton *)button;
             [self executebtn:self.swipingButton withAction:ACTION_DOWN];
             break;
@@ -987,14 +990,36 @@ CallbackBridge_nativeSendKey(keycode, 0, held, 0);
     }
 }
 
-- (void)executebtn_up:(ControlButton *)sender
+- (void)executebtn_up:(ControlButton *)sender isOutside:(BOOL)isOutside
 {
     if (self.swipingButton == sender) {
         [self executebtn:self.swipingButton withAction:ACTION_UP];
         self.swipingButton = nil;
+    } else if (sender.savedBackgroundColor == nil) {
+        [self executebtn:sender withAction:ACTION_UP];
+        return;
+    }
+
+    if (isOutside || sender.savedBackgroundColor == nil) {
+        return;
+    }
+
+    sender.isToggleOn = !sender.isToggleOn;
+    if (sender.isToggleOn) {
+        sender.backgroundColor = [self.view.tintColor colorWithAlphaComponent:CGColorGetAlpha(sender.savedBackgroundColor.CGColor)];
+        [self executebtn:sender withAction:ACTION_DOWN];
     } else {
+        sender.backgroundColor = sender.savedBackgroundColor;
         [self executebtn:sender withAction:ACTION_UP];
     }
+}
+
+- (void)executebtn_up_inside:(ControlButton *)sender {
+    [self executebtn_up:sender isOutside:NO];
+}
+
+- (void)executebtn_up_outside:(ControlButton *)sender {
+    [self executebtn_up:sender isOutside:YES];
 }
 
 - (void)executebtn_special_togglebtn:(int)held {
