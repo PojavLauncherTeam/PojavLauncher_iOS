@@ -1,0 +1,31 @@
+/* 
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "Erzwinge das Beenden";
+"game.menu.log_output" = "Protokoll-Ausgabe";
+"game.menu.custom_controls" = "Benutzerdefinierte Steuerung";
+"Snapshot" = "Entwicklungsversionen";
+"Old-beta" = "Old-Beta";
+"Old-alpha" = "Old-Alpha";
+
+"login.alert.title" = "Anmelden";
+
+"login.menu.about" = "Über PojavLauncher";
+
+"Settings" = "Einstellungen";
+"preference.section.control" = "Steuerung anpassen";
+//"preference.section.footer.control" = "";
+"preference.section.java" = "Java-Optimierungen";
+"preference.title.cosmetica" = "Cosmetica-Umhänge";
+
+"preference.title.renderer" = "Renderer";
+"preference.title.disable_gesture" = "Gesten deaktivieren";
+"preference.detail.press_duration" = "Ändere die Auslösezeit für langes Drücken beim Zerstören des Blocks und Ablegen des Gegenstandes.";
+"preference.title.java_args" = "JVM-Start-Argumente";
+"preference.title.auto_ram" = "Auto-RAM";
+"preference.detail.auto_ram" = "Aktiviert automatische RAM-Einstellungen";
+"preference.detail.allocated_memory" = "Legt fest, wie viel RAM Minecraft gegeben wird";
+// sha check
+// home symlink
