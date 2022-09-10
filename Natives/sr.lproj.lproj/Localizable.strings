@@ -1,0 +1,25 @@
+/* 
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "Форсе затвори";
+"game.menu.log_output" = "Лог Избацивано";
+"game.menu.custom_controls" = "Прилагођене контроле";
+"Snapshot" = "Снепшот";
+"Old-beta" = "Стари-Бета";
+"Old-alpha" = "Стари-Аlpha";
+
+"login.alert.title" = "Пријава";
+
+"Settings" = "Подешавања";
+
+"preference.title.renderer" = "Рендерер";
+"preference.title.disable_gesture" = "Искључи покрете";
+"preference.detail.press_duration" = "Промените време за дуготрајни притисак за уништавање блока и испуштању предмета.";
+"preference.title.java_args" = "ЈВМ Покретање аргументи";
+"preference.title.auto_ram" = "Аутпматски RAM";
+"preference.detail.auto_ram" = "Укључије аутомстски подешавање RAM-а";
+"preference.detail.allocated_memory" = "Колико меморије може да корости Minecraft";
+// sha check
+// home symlink
