@@ -1,0 +1,29 @@
+/* 
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "Kapatmaya zorla";
+"game.menu.log_output" = "Konsol çıktısı";
+"game.menu.custom_controls" = "Özel kontroller";
+"Snapshot" = "Test sürümleri";
+"Old-beta" = "Eski-beta";
+"Old-alpha" = "Eski-alfa";
+
+"login.alert.title" = "Giriş yap";
+
+"Settings" = "Ayarlar";
+"preference.section.control" = "Kontrol özelleştirmesi";
+//"preference.section.footer.control" = "";
+"preference.section.java" = "Java Ayarlamaları";
+"preference.title.cosmetica" = "Turkish ";
+
+"preference.title.renderer" = "İşleyici";
+"preference.title.disable_gesture" = "İşaretleri devre dışı bırak";
+"preference.detail.press_duration" = "Blok kırma ve eşya bırakma için ne kadar süre basman gerektiğini değiştir.";
+"preference.title.java_args" = "JVM Başlatıcı argümanları";
+"preference.title.auto_ram" = "Otomatik RAM";
+"preference.detail.auto_ram" = "Otomatik RAM ayarlayıcısını etkinleştirir";
+"preference.detail.allocated_memory" = "Minecraft'a ne kadar bellek verileceğini kontrol eder";
+// sha check
+// home symlink
