@@ -1,0 +1,31 @@
+/* 
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "强制关闭";
+"game.menu.log_output" = "日志输出";
+"game.menu.custom_controls" = "自定义控制按键";
+"Snapshot" = "快照";
+"Old-beta" = "远古beta版";
+"Old-alpha" = "远古alpha版";
+
+"login.alert.title" = "登录";
+
+"login.menu.about" = "关于 PojavLauncher";
+
+"Settings" = "设置";
+"preference.section.control" = "自定义控制";
+//"preference.section.footer.control" = "";
+"preference.section.java" = "Java 调整";
+"preference.title.cosmetica" = "Cosmetica 披风";
+
+"preference.title.renderer" = "渲染器";
+"preference.title.disable_gesture" = "禁用手势";
+"preference.detail.press_duration" = "修改长按摧毁方块、丢弃物品的触发时长";
+"preference.title.java_args" = "JVM 启动参数";
+"preference.title.auto_ram" = "自动设置内存大小";
+"preference.detail.auto_ram" = "启用 RAM 自动调节";
+"preference.detail.allocated_memory" = "控制给 Minecraft 分配多少内存";
+// sha check
+// home symlink
