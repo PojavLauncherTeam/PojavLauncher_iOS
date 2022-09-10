@@ -1,0 +1,25 @@
+/* 
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "Force close";
+"game.menu.log_output" = "Log output";
+"game.menu.custom_controls" = "Custom controls";
+"Snapshot" = "Snapshot";
+"Old-beta" = "Old-alpha";
+"Old-alpha" = "Old-alpha";
+
+"login.alert.title" = "Login";
+
+"Settings" = "Settings";
+
+"preference.title.renderer" = "Renderer";
+"preference.title.disable_gesture" = "Disable gestures";
+"preference.detail.press_duration" = "Change trigger time for long press in destroy block and drop item.";
+"preference.title.java_args" = "JVM Launch arguments";
+"preference.title.auto_ram" = "Auto RAM";
+"preference.detail.auto_ram" = "Enables automatic RAM adjuster";
+"preference.detail.allocated_memory" = "Controls how much memory is given to Minecraft";
+// sha check
+// home symlink
