@@ -4,7 +4,7 @@
 */
 
 "game.menu.force_close" = "强制关闭";
-"game.menu.confirm.force_close" = "确认强制关闭？";
+"game.menu.confirm.force_close" = "是否要强行停止?";
 "game.menu.log_output" = "日志输出";
 "game.menu.custom_controls" = "自定义控制按键";
 
@@ -14,7 +14,7 @@
 "Old-beta" = "远古beta版";
 "Old-alpha" = "远古alpha版";
 
-"init.migrateDir" = "目前游戏目录为%@. 所有的游戏资源已移动到最新目录";
+"init.migrateDir" = "目前游戏目录为%@。所有的游戏资源已移动到最新目录";
 
 "login.error.username.outOfRange" = "离线账户的用户名最低要求3个字符,最多16个字符";
 
@@ -23,7 +23,7 @@
 
 "login.jit.checking" = "检查是否开启JIT权限";
 "login.jit.enabled" = "JIT权限已启用";
-"login.jit.fail.JitStreamer" = "JitStreamer错误: %@";
+"login.jit.fail.JitStreamer" = "JitStreamer 错误：%@";
 "login.jit.found.JitStreamer" = "检测到JitStreamer,正在开启JIT权限";
 
 "login.menu.about" = "关于 PojavLauncher";
@@ -36,14 +36,14 @@
 
 "login.progress.title" = "登陆中";
 
-"login.warn.title.ram_unjb" = "内存滑块已启用";
+"login.warn.title.ram_unjb" = "自动分配内存已启用";
 "login.warn.message.ram_unjb" = "关闭自动分配内存后可能导致游戏不稳定或完全不能进入游戏";
 
 "login.warn.title.a7" = "该设备存在一些问题";
 "login.warn.message.a7" = "你当前设备不完全支持PojavLauncher 2.2版本,这是你硬件环境导致(详细情况见：https://github.com/PojavLauncherTeam/PojavLauncher_iOS/issues/319)";
 
-"login.warn.title.demomode" = "此选项是 beta 选项。";
-"login.warn.message.demomode" = "作为离线和本地模式的替代品， 演示模式将允许您登录到一个不拥有 Minecraft 和试玩 Minecraft 权限的微软账号（ 见 1.3.1 及更新版本）。旧版本包含完整的游戏，因为官方启动器没有这些限制。 访问我们的网站了解更多。";
+"login.warn.title.demomode" = "该选项处于测试阶段";
+"login.warn.message.demomode" = "试玩账户允许你在没有正版Minecraft情况下玩1.3.1+版本(更多内容请去Pojav官网了解)";
 
 "login.warn.title.otherjb" = "当前的越狱环境不完全支持";
 "login.warn.message.otherjb" = "你当前的越狱环境没有Procursus越狱源(可能会出现某些BUG),请切换完全越狱状态";
@@ -52,7 +52,7 @@
 "login.warn.message.localmode" = "必须要有正版的Minecraft才能下载游戏,否则你只能启动游戏不能下载游戏(更多说明请看主页的FAQ)";
 
 "login.msa.error.xsts.noxboxacc" = "该微软账户未注册Xbox,请确认你的Xbox账户没有问题(错误代码2148916233)";
-"login.msa.error.xsts.noxbox" = "该微软账户未注册Xbox,请确认你的Xbox账户没有问题(错误代码2148916233)";
+"login.msa.error.xsts.noxbox" = "Xbox Live目前在您的国家/地区不可用(错误代码：2148916235)";
 "login.msa.error.xsts.krverify" = "你的账户必须通过你父母同意方可通过验证(错误代码2148916236或2148916237)";
 "login.msa.error.xsts.underage" = "您的账户需要绑定家长账户才能进行下一步。\n错误代码：2148916238";
 
@@ -114,7 +114,7 @@
 "preference.detail.button_scale" = "该选项一般给IPad用户使用的,如果你觉得按键太小可以将其放大";
 "preference.title.mouse_scale" = "虚拟鼠标图标大小(单位%)";
 "preference.detail.mouse_scale" = "修改虚拟鼠标的大小";
-"preference.title.mouse_speed" = "鼠标移动速度(单位%)";
+"preference.title.mouse_speed" = "鼠标速度 (%)";
 "preference.detail.mouse_speed" = "修改虚拟鼠标的移动速度";
 "preference.title.virtmouse_enable" = "虚拟鼠标";
 "preference.detail.virtmouse_enable" = "开启虚拟鼠标后将用虚拟鼠标控制游戏";
@@ -127,10 +127,10 @@
 "preference.placeholder.java_args" = "自定义参数...";
 "preference.title.auto_ram" = "自动设置内存大小";
 "preference.detail.auto_ram" = "启用 RAM 自动调节";
-"preference.warn.auto_ram" = "在未越狱的设备禁用此选项上可能会导致应用不稳定。请谨慎更改此选项";
+"preference.warn.auto_ram" = "关闭该选项后可能造成设备或应用的不稳定,谨慎行事";
 "preference.title.allocated_memory" = "游戏内存(单位MB)";
 "preference.detail.allocated_memory" = "控制给 Minecraft 分配多少内存";
-"preference.warn.allocated_memory" = "由于操作系统本身的局限，此选项的值过高可能会导致应用不稳定，请谨慎更改此选项";
+"preference.warn.allocated_memory" = "由于系统的限制,可能会导致游戏不稳定";
 "preference.title.custom_env" = "环境变量";
 "preference.detail.custom_env" = "此选项正在开发";
 // sha check
