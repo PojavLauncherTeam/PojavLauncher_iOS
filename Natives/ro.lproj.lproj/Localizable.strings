@@ -1,0 +1,29 @@
+/* 
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "Oprește forțat";
+"game.menu.log_output" = "Ieșire jurnal";
+"game.menu.custom_controls" = "Controale personalizate";
+"Snapshot" = "Lansat pentru testare";
+"Old-beta" = "Beta-vechi";
+"Old-alpha" = "Alpha-vechi";
+
+"login.alert.title" = "Autentificare";
+
+"Settings" = "Setări";
+"preference.section.control" = "Personalizarea controalelor";
+//"preference.section.footer.control" = "";
+"preference.section.java" = "Ajustări Java";
+"preference.title.cosmetica" = "Pelerine Cosmetica";
+
+"preference.title.renderer" = "Randator";
+"preference.title.disable_gesture" = "Dezactivează gesturi";
+"preference.detail.press_duration" = "Modifică timpul de declanșare pentru apăsarea lungă a butonului de distrugere a blocului și de aruncare a obiectului.";
+"preference.title.java_args" = "Argumente de lansare JVM";
+"preference.title.auto_ram" = "Auto RAM";
+"preference.detail.auto_ram" = "Activează ajustarea automată RAM";
+"preference.detail.allocated_memory" = "Controlează cât de multă memorie este dată la Minecraft";
+// sha check
+// home symlink
