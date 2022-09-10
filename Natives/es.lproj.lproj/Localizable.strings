@@ -1,0 +1,29 @@
+/* 
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "Forzar el cierre";
+"game.menu.log_output" = "Registro de salida";
+"game.menu.custom_controls" = "Controles personalizados";
+"Snapshot" = "Snapshots";
+"Old-beta" = "Betas";
+"Old-alpha" = "Alphas";
+
+"login.alert.title" = "Iniciar sesión";
+
+"Settings" = "Ajustes";
+"preference.section.control" = "Personalización del control";
+//"preference.section.footer.control" = "";
+"preference.section.java" = "Ajustes de Java";
+"preference.title.cosmetica" = "Capas de Comestica";
+
+"preference.title.renderer" = "Renderizador";
+"preference.title.disable_gesture" = "Desactivar gestos";
+"preference.detail.press_duration" = "Cambia el tiempo de activación durante una pulsación larga en destruir bloques y soltar objetos.";
+"preference.title.java_args" = "JRE Argumentos de lanzamiento";
+"preference.title.auto_ram" = "Auto RAM";
+"preference.detail.auto_ram" = "Habilita el ajuste automático de RAM";
+"preference.detail.allocated_memory" = "Controla cuánta memoria se le da a Minecraft";
+// sha check
+// home symlink
