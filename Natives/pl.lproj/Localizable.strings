@@ -4,13 +4,43 @@
 */
 
 "game.menu.force_close" = "Wymuś zamknięcie";
+"game.menu.confirm.force_close" = "Czy na pewno chcesz wymusić zamknięcie?";
 "game.menu.log_output" = "Wyjście danych";
 "game.menu.custom_controls" = "Dostosuj sterowanie";
+
+"Installed" = "Zainstalowane";
 "Snapshot" = "Wersja deweloperska";
+"Releases" = "Wydania";
 "Old-beta" = "Dawna Beta";
 "Old-alpha" = "Dawna Alpha";
 
+"init.migrateDir" = "Katalogiem danych PojavLauncher jest teraz %@. Wszystkie istniejące dane zostały przeniesione do nowej lokalizacji.";
+
+"login.error.username.outOfRange" = "Nazwa użytkownika musi zawierać od 3 do 16 znaków";
+
 "login.alert.title" = "Zaloguj się";
+"login.alert.field.username" = "Nazwa użytkownika";
+
+"login.jit.checking" = "Sprawdzanie JIT";
+"login.jit.enabled" = "JIT zostało włączone";
+"login.jit.fail.JitStreamer" = "Błąd JitStreamer: %@";
+"login.jit.found.JitStreamer" = "Znaleziono JitStreamer, włączanie JIT";
+"login.menu.sendlogs" = "Prześlij swój rejestr";
+"login.menu.updates" = "Najnowsze aktualizacje";
+
+"login.option.microsoft" = "Konto Microsoft";
+"login.option.demo" = "Konto demo";
+"login.option.local" = "Konto lokalne";
+
+"login.progress.title" = "Logowanie";
+
+"login.warn.title.ram_unjb" = "Suwak pamięci jest włączony";
+"login.warn.message.ram_unjb" = "Pamiętaj, że zmiana tego ustawienia może spowodować niestabilność gry lub całkowicie uniemożliwić grę.";
+
+"login.warn.title.a7" = "To jest ostatnia aktualizacja dla tego urządzenia.";
+"login.warn.message.a7" = "Twoje urządzenie nie będzie obsługiwać PojavLauncher 2.2. Jest to spowodowane zmianami ograniczeń sprzętowych i oprogramowania.";
+
+"login.warn.title.demomode" = "To jest testowa opcja.";
 
 "Settings" = "Ustawienia";
 "preference.section.control" = "Kontroluj dostosowywanie";
