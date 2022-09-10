@@ -4,15 +4,47 @@
 */
 
 "game.menu.force_close" = "Piliting isara";
+"game.menu.confirm.force_close" = "Sigurado ka bang gusto mong ipasara ng pilit ang iyong sesyon?";
 "game.menu.log_output" = "Output ng log";
 "game.menu.custom_controls" = "Pasadyang mga kontrol";
 "Snapshot" = "Snapshot";
 "Old-beta" = "Lumang-beta";
 "Old-alpha" = "Lumang-alpha";
 
+"login.error.username.outOfRange" = "Dapat ang username ay may 3 na characters na hindi dapat lalampas sa 16 na characters";
+
 "login.alert.title" = "Mag-login";
+"login.alert.field.username" = "Username";
+
+"login.jit.checking" = "Nagche-check para sa JIT";
+"login.jit.enabled" = "Na-enable na ang JIT";
+"login.jit.fail.JitStreamer" = "JitStreamer error: %@";
+"login.jit.found.JitStreamer" = "Found JitStreamer, enabling JIT";
 
 "login.menu.about" = "Tungkol sa PojavLauncher";
+"login.menu.sendlogs" = "I-send ang iyong logs";
+"login.menu.updates" = "Recent updates";
+
+"login.option.microsoft" = "Microsoft account";
+"login.option.demo" = "Demo na account";
+"login.option.local" = "Lokal na account";
+
+"login.progress.title" = "Logging in";
+
+"login.warn.title.ram_unjb" = "Enabled ang Memory slider";
+"login.warn.message.ram_unjb" = "Magkaroon ng kamalayan na ang pagbabago sa setting na ito ay maaaring magdulot ng kawalang-tatag ng laro o masira ang kakayahang maglaro.";
+
+"login.warn.title.a7" = "Ito ang huling update para sa device na ito.";
+"login.warn.message.a7" = "Ang iyong device ay hindi masusuporta ang PojavLauncher 2.2. Dahil ito sa limitasyon ng hardware at software.";
+
+"login.warn.title.demomode" = "Ang opsyon na ito ay nasa \"beta\".";
+"login.warn.message.demomode" = "Bilang kapalit sa offline at lokal na mode, magbibigay-daan sa iyo ang demo mode na mag-sign in sa isang Microsoft account na hindi nagmamay-ari ng laro at laruin ang pagsubok ng Java Edition, na ipinakilala sa 1.3.1 at mas bagong mga bersyon.";
+
+"login.warn.title.otherjb" = "Ang jailbreak ay hindi kompletong susuportahan.";
+"login.warn.message.otherjb" = "Ang iyong kasalukuyang jailbreak ay walang Procursus bootstrap. Maaaring mangyari ang ilang partikular na isyu na hindi maaayos, mangyaring lumipat sa o maghintay para sa isang ganap na katugmang jailbreak.";
+
+"login.warn.title.localmode" = "Ang offline mode ngayon nay' Local mode.";
+"login.warn.message.localmode" = "Maaari kang magpatuloy sa paglalaro ng mga naka-install na bersyon, ngunit hindi mo na mada-download ang Minecraft nang walang bayad na account. Walang suportang ibibigay para sa mga isyu sa mga lokal na account, o iba pang paraan ng pagkuha ng Minecraft. Basahin ang FAQ para sa ibang impormasyon.";
 
 "Settings" = "Mga Setting";
 "preference.section.control" = "Kontrolin ang customization";
