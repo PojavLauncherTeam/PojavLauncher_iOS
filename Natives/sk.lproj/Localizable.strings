@@ -10,8 +10,6 @@
 "Old-beta" = "Stará beta";
 "Old-alpha" = "Stará alfa";
 
-"login.alert.title" = "Prihlásiť";
-
 "Settings" = "Nastavenie";
 "preference.section.control" = "Prispôsobenie ovládania";
 //"preference.section.footer.control" = "";
@@ -24,5 +22,3 @@
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Automaticky bude meniť množstvo RAM";
 "preference.detail.allocated_memory" = "Určite, koľko pamäti bude mať Minecraft";
-// sha check
-// home symlink
