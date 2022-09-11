@@ -52,7 +52,7 @@
 "login.warn.message.localmode" = "必须要有正版的Minecraft才能下载游戏,否则你只能启动游戏不能下载游戏(更多说明请看主页的FAQ)";
 
 "login.msa.error.xsts.noxboxacc" = "该微软账户未注册Xbox,请确认你的Xbox账户没有问题(错误代码2148916233)";
-"login.msa.error.xsts.noxbox" = "Xbox Live目前在您的国家/地区不可用(错误代码：2148916235)";
+"login.msa.error.xsts.noxbox" = "Xbox Live目前在您的国家/地区不可用\n(错误代码：2148916235)";
 "login.msa.error.xsts.krverify" = "你的账户必须通过你父母同意方可通过验证(错误代码2148916236或2148916237)";
 "login.msa.error.xsts.underage" = "您的账户需要绑定家长账户才能进行下一步。\n错误代码：2148916238";
 
