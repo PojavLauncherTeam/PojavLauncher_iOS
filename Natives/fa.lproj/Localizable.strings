@@ -10,8 +10,6 @@
 "Old-beta" = "بتای-قدیمی";
 "Old-alpha" = "آلفای-قدیمی";
 
-"login.alert.title" = "ورود";
-
 "Settings" = "تنظیمات";
 
 "preference.title.renderer" = "رندر کننده";
@@ -21,5 +19,3 @@
 "preference.title.auto_ram" = "رم اتوماتیک";
 "preference.detail.auto_ram" = "تنظیم‌کننده اتوماتیک رم را فعال می‌کند";
 "preference.detail.allocated_memory" = "میزان مموری اختصاص یافته به ماینکرفت را کنترل می‌کند";
-// sha check
-// home symlink
