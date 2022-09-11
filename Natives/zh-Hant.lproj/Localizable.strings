@@ -10,8 +10,6 @@
 "Old-beta" = "遠古beta版";
 "Old-alpha" = "遠古alpha版";
 
-"login.alert.title" = "登入";
-
 "Settings" = "設定";
 "preference.section.control" = "自定義控制";
 //"preference.section.footer.control" = "";
@@ -25,5 +23,3 @@
 "preference.title.auto_ram" = "自動調節RAM";
 "preference.detail.auto_ram" = "啟用 RAM 自動調節";
 "preference.detail.allocated_memory" = "分配多少記憶體給Minecraft";
-// sha check
-// home symlink
