@@ -8,6 +8,7 @@
 "game.menu.log_output" = "Log output";
 "game.menu.custom_controls" = "Custom controls";
 
+// Version categories
 "Installed" = "Installed";
 "Snapshot" = "Snapshot";
 "Releases" = "Releases";
@@ -18,13 +19,17 @@
 
 "login.error.username.outOfRange" = "Username must be at least 3 characters and maximum 16 characters";
 
-"login.alert.title" = "Login";
 "login.alert.field.username" = "Username";
 
 "login.jit.checking" = "Checking for JIT";
 "login.jit.enabled" = "JIT has been enabled";
 "login.jit.fail.JitStreamer" = "JitStreamer error: %@";
 "login.jit.found.JitStreamer" = "Found JitStreamer, enabling JIT";
+
+// Login buttons
+"Sign in" = "Sign in";
+"FAQ" = "FAQ";
+"Accounts" = "Accounts";
 
 "login.menu.about" = "About PojavLauncher";
 "login.menu.sendlogs" = "Send your logs";
@@ -133,5 +138,3 @@
 "preference.warn.allocated_memory" = "Due to limitations in the operating system itself, this option may cause instability at this and higher values. Proceed with caution.";
 "preference.title.custom_env" = "Environment variables";
 "preference.detail.custom_env" = "This option is under construction.";
-// sha check
-// home symlink

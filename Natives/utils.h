@@ -5,6 +5,22 @@
 #include <stdbool.h>
 #include "jni.h"
 
+// Configuration macros
+#if CONFIG_RELEASE == 1
+# define CONFIG_TYPE "release"
+#else
+# define CONFIG_TYPE "debug"
+#endif
+
+#ifndef CONFIG_BRANCH
+# define CONFIG_BRANCH "unspecified"
+#endif
+
+#ifndef CONFIG_COMMIT
+# define CONFIG_COMMIT "unspecified"
+#endif
+
+// Control button actions
 #define ACTION_DOWN 0
 #define ACTION_UP 1
 #define ACTION_MOVE 2
@@ -14,6 +30,7 @@
 #define BUTTON2_DOWN_MASK 1 << 11 // mid btn
 #define BUTTON3_DOWN_MASK 1 << 12 // right btn
 
+// GLFW event types
 #define EVENT_TYPE_CHAR 1000
 #define EVENT_TYPE_CHAR_MODS 1001
 #define EVENT_TYPE_CURSOR_ENTER 1002

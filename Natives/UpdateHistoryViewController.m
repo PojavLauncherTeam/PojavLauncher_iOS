@@ -2,12 +2,6 @@
 
 #include "utils.h"
 
-#if CONFIG_RELEASE == 1
-# define CONFIG_TYPE "release"
-#else
-# define CONFIG_TYPE "debug"
-#endif
-
 @interface UpdateHistoryViewController () {
 }
 -(UILabel *)uhContent:(bool)isHeading size:(int)size text:(NSString *)text width:(int)width;
@@ -20,7 +14,7 @@ CGFloat uhcurrY = 4.0;
     [super viewDidLoad];
     setViewBackgroundColor(self.view);
 
-    [self setTitle:@"Update History"];
+    [self setTitle:NSLocalizedString(@"login.menu.updates", nil)];
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];

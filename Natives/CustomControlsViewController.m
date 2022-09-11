@@ -310,9 +310,9 @@ NSMutableArray *keyCodeMap, *keyValueMap;
                 showDialog(self, @"Error while converting to JSON", error.localizedDescription);
                 return;
             }
-            NSString *jsonStr = [NSString stringWithUTF8String:jsonData.bytes];
-            BOOL success = [jsonStr writeToFile:[NSString stringWithFormat:@"%s/controlmap/%@.json", getenv("POJAV_HOME"), field.text] atomically:YES encoding:NSUTF8StringEncoding error:&error];
+            BOOL success = [jsonData writeToFile:[NSString stringWithFormat:@"%s/controlmap/%@.json", getenv("POJAV_HOME"), field.text] options:NSDataWritingAtomic error:&error];
             if (!success) {
+                NSLog(@"GOT ERROR %@", error);
                 showDialog(self, @"Error while saving file", error.localizedDescription);
                 return;
             }

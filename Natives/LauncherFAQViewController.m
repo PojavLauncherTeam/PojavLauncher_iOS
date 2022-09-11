@@ -13,7 +13,7 @@ CGFloat faqcurrY = 4.0;
 {
     [super viewDidLoad];
     setViewBackgroundColor(self.view);
-    [self setTitle:@"Launcher FAQ"];
+    [self setTitle:NSLocalizedString(@"FAQ", nil)];
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];

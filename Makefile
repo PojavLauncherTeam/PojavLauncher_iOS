@@ -8,6 +8,7 @@ WORKINGDIR  := $(SOURCEDIR)/Natives/build
 DETECTPLAT  := $(shell uname -s)
 DETECTARCH  := $(shell uname -m)
 VERSION     := $(shell cat $(SOURCEDIR)/DEBIAN/control.development | grep Version | cut -b 10-60)
+BRANCH      := $(shell git branch --show-current)
 COMMIT      := $(shell git log --oneline | sed '2,10000000d' | cut -b 1-7)
 IOS15PREF   := private/preboot/procursus
 
@@ -236,6 +237,7 @@ check:
 	@printf 'OUTPUTDIR            - $(OUTPUTDIR)\n'
 	@printf 'JOBS                 - $(JOBS)\n'
 	@printf 'VERSION              - $(VERSION)\n'
+	@printf 'BRANCH               - $(BRANCH)\n'
 	@printf 'COMMIT               - $(COMMIT)\n'
 	@printf 'RELEASE              - $(RELEASE)\n'
 	@printf 'IOS15PREF            - $(IOS15PREF)\n'
@@ -258,6 +260,7 @@ native:
 		-DCMAKE_OSX_SYSROOT="$(SDKPATH)" \
 		-DCMAKE_OSX_ARCHITECTURES=arm64 \
 		-DCMAKE_C_FLAGS="-arch arm64 -miphoneos-version-min=12.0" \
+		-DCONFIG_BRANCH="$(BRANCH)" \
 		-DCONFIG_COMMIT="$(COMMIT)" \
 		-DCONFIG_RELEASE=$(RELEASE) \
 		..

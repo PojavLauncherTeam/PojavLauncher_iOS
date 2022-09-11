@@ -107,11 +107,7 @@ extern NSMutableDictionary *prefDict;
     }
 
     UIButton *button_faq = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    if(@available (iOS 13.0, *)) {
-        [button_faq setTitle:@"  FAQ" forState:UIControlStateNormal];
-    } else {
-        [button_faq setTitle:@"FAQ" forState:UIControlStateNormal];
-    }
+    [button_faq setTitle:NSLocalizedString(@"FAQ", @"Frequently asked questions") forState:UIControlStateNormal];
     button_faq.frame = CGRectMake(widthSplit2 - (((width - widthSplit * 2.0) / 2) / 2), (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
     if([date isEqualToString:@"06-29"] || [date isEqualToString:@"06-30"] || [date isEqualToString:@"07-01"]) {
         button_faq.backgroundColor = [UIColor colorWithRed:67/255.0 green:0/255.0 blue:8/255.0 alpha:1.0];
@@ -129,11 +125,7 @@ extern NSMutableDictionary *prefDict;
     [scrollView addSubview:button_faq];
 
     UIButton *button_login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    if(@available (iOS 13.0, *)) {
-        [button_login setTitle:@"  Sign In" forState:UIControlStateNormal];
-    } else {
-        [button_login setTitle:@"Sign In" forState:UIControlStateNormal];
-    }
+    [button_login setTitle:NSLocalizedString(@"Sign in", nil) forState:UIControlStateNormal];
     button_login.frame = CGRectMake(button_faq.frame.origin.x - button_faq.frame.size.width - 20, (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
     if([date isEqualToString:@"06-29"] || [date isEqualToString:@"06-30"] || [date isEqualToString:@"07-01"]) {
         button_login.backgroundColor = [UIColor colorWithRed:67/255.0 green:0/255.0 blue:8/255.0 alpha:1.0];
@@ -163,11 +155,7 @@ extern NSMutableDictionary *prefDict;
     [scrollView addSubview:button_login];
 
     UIButton *button_accounts = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    if(@available (iOS 13.0, *)) {
-        [button_accounts setTitle:@"  Accounts" forState:UIControlStateNormal];
-    } else {
-        [button_accounts setTitle:@"Accounts" forState:UIControlStateNormal];
-    }
+    [button_accounts setTitle:NSLocalizedString(@"Accounts", nil) forState:UIControlStateNormal];
     button_accounts.frame = CGRectMake(button_faq.frame.origin.x + button_faq.frame.size.width + 20, (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
     if([date isEqualToString:@"06-29"] || [date isEqualToString:@"06-30"] || [date isEqualToString:@"07-01"]) {
         button_accounts.backgroundColor = [UIColor colorWithRed:67/255.0 green:0/255.0 blue:8/255.0 alpha:1.0];
@@ -332,7 +320,7 @@ extern NSMutableDictionary *prefDict;
         [offlineAlert addAction:cancel];
         setPreference(@"local_warn", @NO);
     } else {
-        UIAlertController *controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"login.alert.title", nil) message:NSLocalizedString(@"login.option.local", nil) preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Sign in", nil) message:NSLocalizedString(@"login.option.local", nil) preferredStyle:UIAlertControllerStyleAlert];
         [controller addTextFieldWithConfigurationHandler:^(UITextField *textField) {
             textField.placeholder = NSLocalizedString(@"login.alert.field.username", nil);
             textField.clearButtonMode = UITextFieldViewModeWhileEditing;

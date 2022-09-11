@@ -25,16 +25,6 @@
 
 #define CS_PLATFORM_BINARY 0x4000000
 
-#if CONFIG_RELEASE == 1
-# define CONFIG_TYPE "release"
-#else
-# define CONFIG_TYPE "debug"
-#endif
-
-#ifndef CONFIG_COMMIT
-# define CONFIG_COMMIT unspecified
-#endif
-
 #define fm NSFileManager.defaultManager
 
 void printEntitlementAvailability(NSString *key) {
@@ -112,7 +102,7 @@ void init_logDeviceAndVer(char *argument) {
     const char *deviceSoftware = [[[UIDevice currentDevice] systemVersion] cStringUsingEncoding:NSUTF8StringEncoding];
     
     // PojavLauncher version
-    regLog("[Pre-Init] PojavLauncher version: %s - %s", CONFIG_TYPE, CONFIG_COMMIT);
+    regLog("[Pre-Init] PojavLauncher version: %s - branch %s commit %s", CONFIG_TYPE, CONFIG_BRANCH, CONFIG_COMMIT);
 
     setenv("POJAV_DETECTEDHW", deviceHardware, 1);
     setenv("POJAV_DETECTEDSW", deviceSoftware, 1);

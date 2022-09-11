@@ -8,12 +8,6 @@ NSMutableDictionary *envPrefDict;
 // warnings dict
 NSMutableDictionary *warnPrefDict;
 
-#if CONFIG_RELEASE == 1
-# define CONFIG_TYPE @NO
-#else
-# define CONFIG_TYPE @YES
-#endif
-
 id getPreference(NSString* key) {
     if (!(envPrefDict[key] == [NSNull null] || envPrefDict[key] == nil)) {
         return envPrefDict[key];
@@ -120,7 +114,7 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(envPrefDict, @"game_directory", @"default");
     setDefaultValueForPref(envPrefDict, @"java_args", @"");
     setDefaultValueForPref(envPrefDict, @"allocated_memory", [NSNumber numberWithFloat:roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.25)]);
-    setDefaultValueForPref(prefDict, @"debug_logging", CONFIG_TYPE);
+    setDefaultValueForPref(prefDict, @"debug_logging", @(CONFIG_RELEASE != 1));
     setDefaultValueForPref(prefDict, @"arccapes_enable", @YES);
     setDefaultValueForPref(envPrefDict, @"java_home", @"");
     setDefaultValueForPref(envPrefDict, @"renderer", @"auto");
