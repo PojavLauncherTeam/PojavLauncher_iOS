@@ -13,7 +13,6 @@
 
 "login.error.username.outOfRange" = "Dapat ang username ay may 3 na characters na hindi dapat lalampas sa 16 na characters";
 
-"login.alert.title" = "Mag-login";
 "login.alert.field.username" = "Username";
 
 "login.jit.checking" = "Nagche-check para sa JIT";
@@ -59,5 +58,3 @@
 "preference.title.auto_ram" = "Awtomatikong RAM";
 "preference.detail.auto_ram" = "Pinapagana ang awtomatikong RAM adjuster";
 "preference.detail.allocated_memory" = "Kinokontrol kung magkano ang memorya na ibinibigay sa Minecraft";
-// sha check
-// home symlink
