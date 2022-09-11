@@ -58,12 +58,12 @@
 
 "login.msa.notice.demomode" = "看到这条消息说明你目前账户内可能未购买正版Minecraft(因为我们无法在你账户内找到描述文件)。检查你是否购买了正版Minecraft(或者你的XGP是否有到期?)";
 
-"login.msa.progress.acquireAccessToken" = "(1/5)请求账户token...";
-"login.msa.progress.acquireXBLToken" = "(2/5)请求Xbox Live的token...";
-"login.msa.progress.acquireXSTS" = "请求XSTS";
+"login.msa.progress.acquireAccessToken" = "(1/5)请求访问令牌...";
+"login.msa.progress.acquireXBLToken" = "(2/5)请求Xbox Live的令牌...";
+"login.msa.progress.acquireXSTS" = "正在获取 XSTS";
 "login.msa.progress.acquireXboxProfile" = "(3/5)获取Xbox描述文件";
-"login.msa.progress.acquireMCToken" = "(4/5)请求Minecraft正版登录的token";
-"login.msa.progress.checkMCProfile" = "(5/5)检查Minecraft正版登录的描述文件";
+"login.msa.progress.acquireMCToken" = "(4/5)请求Minecraft的账户信息";
+"login.msa.progress.checkMCProfile" = "(5/5)检查Minecraft账户描述文件";
 
 "Settings" = "设置";
 
@@ -89,17 +89,17 @@
 "preference.title.cosmetica" = "Cosmetica 披风";
 "preference.detail.cosmetica" = "启用Cosmetica披风,有关更多信息,请访问https://cosmetica.cc";
 "preference.title.debug_logging" = "调试日志";
-"preference.detail.debug_logging" = "完整的记录启动器的各种事件到atestlog.txt文件内。有助于开发者更容易的发现错误,但Minecraft游戏内FPS会降低(频繁的记录日志内容会使得CPU负载变高)";
+"preference.detail.debug_logging" = "完整的记录启动器的各种活动事件到latestlog.txt文件内,有助于开发者更容易的发现错误。但Minecraft游戏内FPS可能会降低(频繁的记录日志内容会使得CPU负载变高)";
 
-"preference.title.reset_warnings" = "重置带有警告的设置选项";
-"preference.title.done.reset_warnings" = "重置带有警告的设置选项";
+"preference.title.reset_warnings" = "重置带有“警告”的设置选项";
+"preference.title.done.reset_warnings" = "带有“警告”的设置选项已被恢复默认状态";
 
 "preference.title.reset_settings" = "将启动器设置恢复默认";
 "preference.title.confirm.reset_settings" = "重置启动器所有的设置包括JVM参数...";
 "preference.title.done.reset_settings" = "所有设置已经恢复默认状态";
 
 "preference.title.renderer" = "渲染器";
-"preference.title.renderer.auto" = "gl4es与tinygl4angle自动选择(智能化)";
+"preference.title.renderer.auto" = "根据游戏版本自动选择gl4es与tinygl4angle渲染器启动游戏(智能化)";
 "preference.title.renderer.gl4es" = "gl4es 1.1.4 - OpenGL版本2.1";
 "preference.title.renderer.tinygl4angle" = "tinygl4angle (不支持1.17以下版本) - OpenGL版本3.2";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - OpenGL版本4.1(FPS不高)";
