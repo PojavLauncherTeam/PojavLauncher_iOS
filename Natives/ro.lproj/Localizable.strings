@@ -10,8 +10,6 @@
 "Old-beta" = "Beta-vechi";
 "Old-alpha" = "Alpha-vechi";
 
-"login.alert.title" = "Autentificare";
-
 "Settings" = "Setări";
 "preference.section.control" = "Personalizarea controalelor";
 //"preference.section.footer.control" = "";
@@ -25,5 +23,3 @@
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Activează ajustarea automată RAM";
 "preference.detail.allocated_memory" = "Controlează cât de multă memorie este dată la Minecraft";
-// sha check
-// home symlink
