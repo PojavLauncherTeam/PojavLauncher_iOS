@@ -10,8 +10,6 @@
 "Old-beta" = "Старыя бета";
 "Old-alpha" = "Старыя альфа";
 
-"login.alert.title" = "Войти";
-
 "Settings" = "Настройки";
 
 "preference.title.renderer" = "Визуализаторъ";
@@ -21,5 +19,3 @@
 "preference.title.auto_ram" = "Автоматическое выдѣленіе О.З.У.";
 "preference.detail.auto_ram" = "Автоматически управляетъ количествомъ выдѣленнаго О.З.У.";
 "preference.detail.allocated_memory" = "Управляетъ выдѣленіемъ памяти для Minecraft";
-// sha check
-// home symlink
