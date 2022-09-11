@@ -8,12 +8,11 @@
 "game.menu.log_output" = "Журнал";
 "game.menu.custom_controls" = "Користувацьке керування";
 
+// Version categories
 "Installed" = "Встановлено";
 "Snapshot" = "Снапшоти";
 "Old-beta" = "Старі бета";
 "Old-alpha" = "Старі альфа";
-
-"login.alert.title" = "Увійти";
 
 "Settings" = "Налаштування";
 "preference.section.control" = "Налаштування керування";
@@ -28,5 +27,3 @@
 "preference.title.auto_ram" = "Автоматичне виділення ОЗП";
 "preference.detail.auto_ram" = "Вмикає автоматичне регулювання ОЗП";
 "preference.detail.allocated_memory" = "Визначає, скільки пам'яті буде виділено для Minecraft";
-// sha check
-// home symlink
