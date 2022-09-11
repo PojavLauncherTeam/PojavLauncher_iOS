@@ -10,8 +10,6 @@
 "Old-beta" = "Old-Beta";
 "Old-alpha" = "Old-Alpha";
 
-"login.alert.title" = "Anmelden";
-
 "login.menu.about" = "Über PojavLauncher";
 
 "Settings" = "Einstellungen";
@@ -27,5 +25,3 @@
 "preference.title.auto_ram" = "Auto-RAM";
 "preference.detail.auto_ram" = "Aktiviert automatische RAM-Einstellungen";
 "preference.detail.allocated_memory" = "Legt fest, wie viel RAM Minecraft gegeben wird";
-// sha check
-// home symlink
