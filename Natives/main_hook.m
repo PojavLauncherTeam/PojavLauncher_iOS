@@ -26,7 +26,7 @@ int hooked_open(const char *path, int oflag, ...) {
 }
 
 void init_hookFunctions() {
-    if (getenv("POJAV_DETECTEDJB")) {
+    if (getenv("POJAV_PREFER_EXTERNAL_JRE")) {
         // In this environment, libawt_xawt is not available/X11 only.
         // hook dlopen to use our libawt_xawt
         rebind_symbols((struct rebinding[1]){{"dlopen", hooked_dlopen, (void *)&orig_dlopen}}, 1);

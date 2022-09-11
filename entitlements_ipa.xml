@@ -16,5 +16,15 @@
     <!-- Disable sandbox so that PojavLauncher can enable JIT by itself -->
     <key>com.apple.private.security.no-container</key>
     <true/>
+
+    <!-- Required if sandbox is disabled -->
+    <key>com.apple.security.iokit-user-client-class</key>
+    <array>
+        <string>IOSurfaceRootUserClient</string>
+        <string>AGXDeviceUserClient</string>
+        <string>AGXSharedUserClient</string>
+        <string>AGXCommandQueue</string>
+        <string>AGXDevice</string>
+    </array>
 </dict>
 </plist>

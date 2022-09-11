@@ -116,6 +116,11 @@ void init_logDeviceAndVer(char *argument) {
         regLog("[Pre-Init] %s with iOS %s (Unjailbroken)", deviceHardware, deviceSoftware);
     }
     
+    NSString *jvmPath = [NSString stringWithFormat:@"%s/jvm", getenv("BUNDLE_PATH")];
+    if (![fm fileExistsAtPath:jvmPath]) {
+        setenv("POJAV_PREFER_EXTERNAL_JRE", "1", 1);
+    }
+    
     regLog("[Pre-init] Entitlements availability:");
     printEntitlementAvailability(@"com.apple.developer.kernel.extended-virtual-addressing");
     printEntitlementAvailability(@"com.apple.developer.kernel.increased-memory-limit");

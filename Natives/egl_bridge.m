@@ -226,11 +226,11 @@ jboolean pojavInit_OpenGL() {
     NSString *renderer = @(getenv("POJAV_RENDERER"));
     JNI_LWJGL_changeRenderer(renderer.UTF8String);
     BOOL isAuto = [renderer isEqualToString:@"auto"];
-    if ([renderer isEqualToString:@"libOSMesa.8.dylib"]) {
+    /* if ([renderer isEqualToString:@"libOSMesa.8.dylib"]) {
         config_renderer = RENDERER_VIRGL;
         setenv("GALLIUM_DRIVER", "virpipe", 1);
         loadSymbolsVirGL();
-    } else if (isAuto || [renderer isEqualToString:@ RENDERER_NAME_GL4ES]) {
+    } else */ if (isAuto || [renderer isEqualToString:@ RENDERER_NAME_GL4ES]) {
         config_renderer = RENDERER_MTL_ANGLE;
         setenv("POJAV_RENDERER", RENDERER_NAME_GL4ES, 1);
         loadSymbols();
