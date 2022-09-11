@@ -54,6 +54,13 @@
 "login.warn.title.localmode" = "Offline režim je nyní Místní režim.";
 "login.warn.message.localmode" = "Můžeš pokračovat ve hraní instalovaných verzí, ale už nemůžeš stáhnout Minecraft bez placeného účtu. Nebudeme poskytovat podporu pro problémy s místními účty, či pro jiné způsoby získávání Minecraftu. Viz FAQ pro více informací.";
 
+"login.msa.error.xsts.noxboxacc" = "Xboxový profil není registrován pro tento Microsoft účet. Prosím ujisti se zdali máš vytvořený Xbox účet.\nKód chyby: 2148916233";
+"login.msa.error.xsts.noxbox" = "Xbox Live není právě teď k dostupný ve tvé zemi.\nKód chyby: 2148916235";
+"login.msa.error.xsts.krverify" = "Tvůj účet musí být ověřen tvými rodiči před pokračováním. \nKód chyby: 2148916236 či 2148916237.";
+"login.msa.error.xsts.underage" = "Tvůj účet musí být propojen s účtem rodiče před pokračováním.\nKód chyby: 2148916238";
+
+"login.msa.notice.demomode" = "Nebylo možno nalézt profil Minecraftu na tomto účtu. Ten účet je teď nastaven na Demo režim. Koupil sis Minecraft, či máš aktivní předplatné Xbox GamePass? Prosím nakonfiguruj si svůj profil na https://minecraft.net/msaprofle pro obnovení Onlinového režimu.";
+
 "Settings" = "Nastavení";
 "preference.section.control" = "Přizpůsobení ovládání";
 //"preference.section.footer.control" = "";
