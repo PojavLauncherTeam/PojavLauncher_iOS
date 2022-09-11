@@ -10,8 +10,6 @@
 "Old-beta" = "نسخ بيتا قديمة";
 "Old-alpha" = "نسخ ألفا قديمة";
 
-"login.alert.title" = "تسجيل الدخول";
-
 "Settings" = "الاعدادات";
 "preference.section.control" = "تخصيص التحكم";
 //"preference.section.footer.control" = "";
@@ -25,5 +23,3 @@
 "preference.title.auto_ram" = "ذاكرة الوصول العشوائية التلقائية";
 "preference.detail.auto_ram" = "تمكين  ذاكرة الوصول العشوائي التلقائي";
 "preference.detail.allocated_memory" = "يتحكم في كمية الذاكرة المعطاة لـ Minecraft";
-// sha check
-// home symlink
