@@ -25,6 +25,11 @@
 "login.jit.enabled" = "JIT byl zapnut";
 "login.jit.fail.JitStreamer" = "Chyba JitStreameru: %@";
 "login.jit.found.JitStreamer" = "Nalezen JitStreamer, povoluji JIT";
+
+// Login buttons
+"Sign in" = "Přihlásit se";
+"FAQ" = "FAQ";
+"Accounts" = "Účty";
 "login.menu.sendlogs" = "Odeslat záznamy";
 "login.menu.updates" = "Nedávné aktualizace";
 
@@ -47,6 +52,7 @@
 "login.warn.message.otherjb" = "Tvuj nynější jailbreak nemá bootstrap Procursu. Mouhou nastat některé chyby, jež nemohou být opraveny. Prosím používej či čekej na plně podporovaný jailbreak.";
 
 "login.warn.title.localmode" = "Offline režim je nyní Místní režim.";
+"login.warn.message.localmode" = "Můžeš pokračovat ve hraní instalovaných verzí, ale už nemůžeš stáhnout Minecraft bez placeného účtu. Nebudeme poskytovat podporu pro problémy s místními účty, či pro jiné způsoby získávání Minecraftu. Viz FAQ pro více informací.";
 
 "Settings" = "Nastavení";
 "preference.section.control" = "Přizpůsobení ovládání";
