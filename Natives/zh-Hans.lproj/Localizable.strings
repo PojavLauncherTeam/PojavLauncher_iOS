@@ -8,6 +8,7 @@
 "game.menu.log_output" = "日志输出";
 "game.menu.custom_controls" = "自定义控制按键";
 
+// Version categories
 "Installed" = "已安装";
 "Snapshot" = "快照";
 "Releases" = "正式版";
@@ -18,7 +19,6 @@
 
 "login.error.username.outOfRange" = "用户名必须是3-16个字符以内";
 
-"login.alert.title" = "登录";
 "login.alert.field.username" = "用户名";
 
 "login.jit.checking" = "检查是否开启JIT权限";
@@ -133,5 +133,3 @@
 "preference.warn.allocated_memory" = "由于系统的限制,可能会导致游戏不稳定";
 "preference.title.custom_env" = "环境变量";
 "preference.detail.custom_env" = "此选项正在开发";
-// sha check
-// home symlink
