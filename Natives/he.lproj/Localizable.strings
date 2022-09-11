@@ -10,8 +10,6 @@
 "Old-beta" = "בטא: גרסה ישנה";
 "Old-alpha" = "אלפא: גרסה ישנה";
 
-"login.alert.title" = "התחבר";
-
 "Settings" = "הגדרות";
 "preference.section.control" = "התאמה אישית של פקדים";
 //"preference.section.footer.control" = "";
@@ -24,5 +22,3 @@
 "preference.title.auto_ram" = "זיכרון אוטומטי";
 "preference.detail.auto_ram" = "מפעיל התאמת RAM אוטומטית";
 "preference.detail.allocated_memory" = "שולט בכמות הזיכרון הניתנת ל- Minecraft";
-// sha check
-// home symlink
