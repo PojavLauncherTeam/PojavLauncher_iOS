@@ -10,8 +10,6 @@
 "Old-beta" = "ɐʇǝq-pꞁO";
 "Old-alpha" = "ɐɥdꞁɐ-pꞁO";
 
-"login.alert.title" = "uᴉᵷoꞀ";
-
 "Settings" = "sᵷuᴉʇʇǝS";
 "preference.section.control" = "uoᴉʇɐzᴉɯoʇsnɔ ꞁoɹʇuoƆ";
 //"preference.section.footer.control" = "";
@@ -25,5 +23,3 @@
 "preference.title.auto_ram" = "WⱯᴚ oʇnⱯ";
 "preference.detail.auto_ram" = "ɹǝʇsnɾpɐ WⱯᴚ ɔᴉʇɐɯoʇnɐ sǝꞁqɐuƎ";
 "preference.detail.allocated_memory" = "ʇɟɐɹɔǝuᴉW oʇ uǝʌᴉᵷ sᴉ ʎɹoɯǝɯ ɥɔnɯ ʍoɥ sꞁoɹʇuoƆ";
-// sha check
-// home symlink
