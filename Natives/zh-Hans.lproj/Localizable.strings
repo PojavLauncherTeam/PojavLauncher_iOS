@@ -16,7 +16,7 @@
 
 "init.migrateDir" = "目前游戏目录为%@。所有的游戏资源已移动到最新目录";
 
-"login.error.username.outOfRange" = "离线账户的用户名最低要求3个字符,最多16个字符";
+"login.error.username.outOfRange" = "用户名必须是3-16个字符以内";
 
 "login.alert.title" = "登录";
 "login.alert.field.username" = "用户名";
