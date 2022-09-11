@@ -10,8 +10,6 @@
 "Old-beta" = "Beta";
 "Old-alpha" = "Alpha";
 
-"login.alert.title" = "Prisijungti";
-
 "Settings" = "Nustatymai";
 "preference.section.control" = "Kontrolių redagavimas";
 //"preference.section.footer.control" = "";
@@ -25,5 +23,3 @@
 "preference.title.auto_ram" = "Automatiškas RAM";
 "preference.detail.auto_ram" = "Įjungia automatišką RAM keitėją";
 "preference.detail.allocated_memory" = "Kontroliuoja kiek RAM atminties duodama Minecraft";
-// sha check
-// home symlink
