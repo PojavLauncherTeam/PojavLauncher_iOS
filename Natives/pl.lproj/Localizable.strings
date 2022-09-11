@@ -8,6 +8,7 @@
 "game.menu.log_output" = "Wyjście danych";
 "game.menu.custom_controls" = "Dostosuj sterowanie";
 
+// Version categories
 "Installed" = "Zainstalowane";
 "Snapshot" = "Wersja deweloperska";
 "Releases" = "Wydania";
@@ -18,7 +19,6 @@
 
 "login.error.username.outOfRange" = "Nazwa użytkownika musi zawierać od 3 do 16 znaków";
 
-"login.alert.title" = "Zaloguj się";
 "login.alert.field.username" = "Nazwa użytkownika";
 
 "login.jit.checking" = "Sprawdzanie JIT";
@@ -121,5 +121,3 @@
 "preference.warn.allocated_memory" = "Ze względu na ograniczenia samego systemu operacyjnego, ta opcja może powodować niestabilność przy tej i wyższych wartościach. Zachowaj ostrożność.";
 "preference.title.custom_env" = "Zmienne środowiskowe";
 "preference.detail.custom_env" = "Ta opcja jest w trakcie opracowania.";
-// sha check
-// home symlink
