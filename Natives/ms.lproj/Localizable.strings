@@ -10,8 +10,6 @@
 "Old-beta" = "Beta-lama";
 "Old-alpha" = "Alfa-lama";
 
-"login.alert.title" = "Log masuk";
-
 "Settings" = "Tetapan";
 "preference.title.cosmetica" = "Mantel Cosmetica";
 
@@ -22,5 +20,3 @@
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Membenarkan pelaras RAM automatik";
 "preference.detail.allocated_memory" = "Mengawal berapa banyak memori yang diberikan kepada Minecraft";
-// sha check
-// home symlink
