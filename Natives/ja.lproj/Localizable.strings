@@ -10,8 +10,6 @@
 "Old-beta" = "Beta 版";
 "Old-alpha" = "Alpha 版";
 
-"login.alert.title" = "ログイン";
-
 "Settings" = "設定";
 "preference.section.control" = "制御のカスタマイズ";
 //"preference.section.footer.control" = "";
@@ -25,5 +23,3 @@
 "preference.title.auto_ram" = "自動RAM調整";
 "preference.detail.auto_ram" = "メモリの自動調整を有効にする";
 "preference.detail.allocated_memory" = "Minecraftに与えられるメモリの量を制御します";
-// sha check
-// home symlink
