@@ -10,8 +10,6 @@
 "Old-beta" = "Beta-lama";
 "Old-alpha" = "Alpha-lama";
 
-"login.alert.title" = "Login";
-
 "Settings" = "Pengaturan";
 "preference.section.control" = "Kustomisasi kontrol";
 //"preference.section.footer.control" = "";
@@ -25,5 +23,3 @@
 "preference.title.auto_ram" = "RAM otomatis";
 "preference.detail.auto_ram" = "Mengaktifkan pengatur RAM otomatis";
 "preference.detail.allocated_memory" = "Mengkontrol berapa banyak memori yang diberikan ke Minecraft";
-// sha check
-// home symlink
