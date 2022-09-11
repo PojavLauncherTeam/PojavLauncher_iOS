@@ -10,8 +10,6 @@
 "Old-beta" = "Beta antiga";
 "Old-alpha" = "Alpha antiga";
 
-"login.alert.title" = "Iniciar sessão";
-
 "Settings" = "Configurações";
 "preference.section.control" = "Personalização dos controles";
 //"preference.section.footer.control" = "";
@@ -25,5 +23,3 @@
 "preference.title.auto_ram" = "RAM automática";
 "preference.detail.auto_ram" = "Ativa o ajuste automático de RAM";
 "preference.detail.allocated_memory" = "Controla o quanto de RAM será usado pelo Minecraft";
-// sha check
-// home symlink
