@@ -10,8 +10,6 @@
 "Old-beta" = "Bản Beta cũ";
 "Old-alpha" = "Bản Alpha cũ";
 
-"login.alert.title" = "Đăng nhập";
-
 "Settings" = "Thiết lập";
 "preference.section.control" = "Tuỳ chỉnh bộ điều khiển";
 //"preference.section.footer.control" = "";
@@ -25,5 +23,3 @@
 "preference.title.auto_ram" = "RAM tự động";
 "preference.detail.auto_ram" = "Bật tự động điều chỉnh RAM";
 "preference.detail.allocated_memory" = "Điều chỉnh số lượng bộ nhớ được cung cấp cho Minecraft";
-// sha check
-// home symlink
