@@ -26,6 +26,11 @@
 "login.jit.fail.JitStreamer" = "JitStreamer 错误：%@";
 "login.jit.found.JitStreamer" = "检测到JitStreamer,正在开启JIT权限";
 
+// Login buttons
+"Sign in" = "登录";
+"FAQ" = "常见问答（FAQ）";
+"Accounts" = "帐户";
+
 "login.menu.about" = "关于 PojavLauncher";
 "login.menu.sendlogs" = "发送日志文件";
 "login.menu.updates" = "启动器更新日志";
