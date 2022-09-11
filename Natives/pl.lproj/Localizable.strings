@@ -38,7 +38,7 @@
 "login.warn.message.ram_unjb" = "Pamiętaj, że zmiana tego ustawienia może spowodować niestabilność gry lub całkowicie uniemożliwić grę.";
 
 "login.warn.title.a7" = "To jest ostatnia aktualizacja dla tego urządzenia.";
-"login.warn.message.a7" = "Twoje urządzenie nie będzie obsługiwać PojavLauncher 2.2. Jest to spowodowane zmianami ograniczeń sprzętowych i oprogramowania.";
+"login.warn.message.a7" = "Twoje urządzenie nie będzie obsługiwać PojavLauncher 2.2. Jest to spowodowane ograniczeniami sprzętowymi oraz oprogramowania.";
 
 "login.warn.title.demomode" = "To jest testowa opcja.";
 "login.warn.message.demomode" = "Jak zamiennik dla trybu offline oraz lokalnego, tryb demo umożliwia logowanie na Konto Microsoft, które nie posiada gry i umożliwia granie w wersję próbną Java Edition wprowadzoną w wersji 1.3.1 oraz nowszych. Starsze wersje zawierają pełną wersję gry, ponieważ oficjalny launcher nie wymusza tych ograniczeń. Sprawdź naszą stronę internetową, aby dowiedzieć się więcej o przejściu z trybu offline.";
@@ -91,6 +91,7 @@
 "preference.title.renderer" = "Silnik renderujący";
 "preference.title.renderer.auto" = "Automatycznie: gl4es lub tinygl4angle";
 "preference.title.renderer.gl4es" = "gl4es 1.1.4 - eksportuje OpenGL 2.1";
+"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - eksportuje OpenGL 3.2 (Podstawowy profil, ograniczone)";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - eksportuje OpenGL 4.1";
 "preference.detail.renderer" = "Zmień używany silnik renderujący OpenGL";
 
@@ -110,8 +111,15 @@
 "preference.title.slideable_hotbar" = "Przesuwalny pasek narzędzi";
 "preference.title.java_home" = "Użyj Java 17 dla Minecraft < 1.17";
 "preference.title.java_args" = "Argumenty uruchomienia JVM";
+"preference.detail.java_args" = "Zachowaj ostrożność, ponieważ zmiany wprowadzone bez odpowiedniej wiedzy mogą doprowadzić do awarii gry.";
+"preference.placeholder.java_args" = "Określ argumenty...";
 "preference.title.auto_ram" = "Automatyczny RAM";
 "preference.detail.auto_ram" = "Włącza automatyczny przydział pamięci RAM";
-"preference.detail.allocated_memory" = "Kontroluje ilość pamięci przydzielonej Minecraft";
+"preference.warn.auto_ram" = "Wyłączenie tej opcji na urządzeniach bez jailbreak może doprowadzić do niestabilności po dostosowaniu. Zachowaj ostrożność.";
+"preference.title.allocated_memory" = "Przydział pamięci (MB)";
+"preference.detail.allocated_memory" = "Dostosuj ilość pamięci przydzieloną do Minecraft";
+"preference.warn.allocated_memory" = "Ze względu na ograniczenia samego systemu operacyjnego, ta opcja może powodować niestabilność przy tej i wyższych wartościach. Zachowaj ostrożność.";
+"preference.title.custom_env" = "Zmienne środowiskowe";
+"preference.detail.custom_env" = "Ta opcja jest w trakcie opracowania.";
 // sha check
 // home symlink
