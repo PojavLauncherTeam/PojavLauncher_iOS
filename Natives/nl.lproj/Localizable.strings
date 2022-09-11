@@ -10,8 +10,6 @@
 "Old-beta" = "Old-beta";
 "Old-alpha" = "Old-alpha";
 
-"login.alert.title" = "Aanmelden";
-
 "Settings" = "Instellingen";
 
 "preference.title.renderer" = "Renderer";
@@ -20,5 +18,3 @@
 "preference.title.java_args" = "JVM Launch argumenten";
 "preference.title.auto_ram" = "Automatische RAM";
 "preference.detail.auto_ram" = "Schakel in de automatische RAM aanpasser in";
-// sha check
-// home symlink
