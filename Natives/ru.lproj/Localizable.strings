@@ -10,8 +10,6 @@
 "Old-beta" = "Старые бета";
 "Old-alpha" = "Старые альфа";
 
-"login.alert.title" = "Войти";
-
 "Settings" = "Настройки";
 "preference.section.control" = "Настройка управления";
 //"preference.section.footer.control" = "";
@@ -25,5 +23,3 @@
 "preference.title.auto_ram" = "Автоматическое выделение ОЗУ";
 "preference.detail.auto_ram" = "Автоматически управляет количеством выделенного ОЗУ";
 "preference.detail.allocated_memory" = "Управляет тем, сколько памяти выделится для Minecraft";
-// sha check
-// home symlink
