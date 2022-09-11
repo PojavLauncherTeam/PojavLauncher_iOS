@@ -8,6 +8,7 @@
 "game.menu.log_output" = "Záznam výstupu";
 "game.menu.custom_controls" = "Vlastní ovládací prvky";
 
+// Version categories
 "Installed" = "Nainstalováno";
 "Snapshot" = "Snapshot";
 "Releases" = "Vydání";
@@ -18,7 +19,6 @@
 
 "login.error.username.outOfRange" = "Uživatelské jméno musí být dlouhé alespoň 3 znaky a nanejvýš 16 znaků";
 
-"login.alert.title" = "Přihlásit se";
 "login.alert.field.username" = "Uživatelské jméno";
 
 "login.jit.checking" = "Kontrolování JIT";
@@ -61,5 +61,3 @@
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Automaticky bude měnit množství RAM";
 "preference.detail.allocated_memory" = "Určete kolik paměti bude mít Minecraft";
-// sha check
-// home symlink
