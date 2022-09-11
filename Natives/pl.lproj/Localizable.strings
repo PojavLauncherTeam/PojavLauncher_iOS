@@ -25,6 +25,11 @@
 "login.jit.enabled" = "JIT zostało włączone";
 "login.jit.fail.JitStreamer" = "Błąd JitStreamer: %@";
 "login.jit.found.JitStreamer" = "Znaleziono JitStreamer, włączanie JIT";
+
+// Login buttons
+"Sign in" = "Zaloguj";
+"FAQ" = "Częste pytania";
+"Accounts" = "Konta";
 "login.menu.sendlogs" = "Prześlij swój rejestr";
 "login.menu.updates" = "Najnowsze aktualizacje";
 
