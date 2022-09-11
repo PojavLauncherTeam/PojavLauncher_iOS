@@ -24,10 +24,11 @@ The [PojavLauncher Website](https://pojav.ml) has extensive documentation on how
 ### Without jailbreak (sideload as IPA)
 Note: This is experimental, although game works smoothly, you should not set Render distance too much.
 
-1. Install [AltStore](https://altstore.io). Others will also work. For iOS 15.5beta4 and older on compatible devices, [TrollStore](https://github.com/opa334/TrollStore) is recommended to keep PojavLauncher permanently signed.
+1. Install [AltStore](https://altstore.io). Others will also work.
+- ~~For iOS 15.5beta4 and older on compatible devices, [TrollStore](https://github.com/opa334/TrollStore) is recommended to keep PojavLauncher permanently signed~~ (This is not tested, please let us know if you run into any problem with this)
 2. Download an IPA build of PojavLauncher in the Actions tab.
 3. Open the downloaded IPA in the sideload app to install.
-4. For enabling JIT, choose one of these: ~~(If installed with TrollStore, JIT will be automatically enabled by itself)~~ coming soon
+4. For enabling JIT, choose one of these: ~~(If installed with TrollStore, JIT might be automatically enabled by itself)~~ under investigation
  - Setup [JitStreamer](http://jitstreamer.com), then launch PojavLauncher. JIT will be automatically enabled on startup. This is the most convenient way.
  - Launch PojavLauncher with `Enable JIT` option in AltStore. This requires the device to be plugged in the computer or have Wi-Fi syncing enabled.
  - Setup and use others such as [Jitterbug](https://github.com/osy/Jitterbug).
