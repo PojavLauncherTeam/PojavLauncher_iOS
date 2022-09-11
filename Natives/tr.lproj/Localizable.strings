@@ -10,8 +10,6 @@
 "Old-beta" = "Eski-beta";
 "Old-alpha" = "Eski-alfa";
 
-"login.alert.title" = "Giriş yap";
-
 "Settings" = "Ayarlar";
 "preference.section.control" = "Kontrol özelleştirmesi";
 //"preference.section.footer.control" = "";
@@ -25,5 +23,3 @@
 "preference.title.auto_ram" = "Otomatik RAM";
 "preference.detail.auto_ram" = "Otomatik RAM ayarlayıcısını etkinleştirir";
 "preference.detail.allocated_memory" = "Minecraft'a ne kadar bellek verileceğini kontrol eder";
-// sha check
-// home symlink
