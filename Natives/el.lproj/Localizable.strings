@@ -10,8 +10,6 @@
 "Old-beta" = "Παλιά-Beta";
 "Old-alpha" = "Παλιά-alpha";
 
-"login.alert.title" = "Είσοδος";
-
 "Settings" = "Ρυθμίσεις";
 
 "preference.title.renderer" = "Απόδοση";
@@ -21,5 +19,3 @@
 "preference.title.auto_ram" = "Αυτόματη RAM";
 "preference.detail.auto_ram" = "Ενεργοποιεί τον αυτόματο ρυθμιστή RAM";
 "preference.detail.allocated_memory" = "Ελέγχει πόση μνήμη δίνεται στο Minecraft";
-// sha check
-// home symlink
