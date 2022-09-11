@@ -10,10 +10,6 @@
 "Old-beta" = "เบตาเก่า";
 "Old-alpha" = "Old-alpha";
 
-"login.alert.title" = "เข้าสู่ระบบ";
-
 "Settings" = "การตั้งค่า";
 "preference.title.auto_ram" = "RAM อัตโนมัติ";
 "preference.detail.auto_ram" = "เปิดใช้งานตัวปรับ RAM อัตโนมัติ";
-// sha check
-// home symlink
