@@ -10,8 +10,6 @@
 "Old-beta" = "Old-alpha";
 "Old-alpha" = "Old-alpha";
 
-"login.alert.title" = "Login";
-
 "Settings" = "Settings";
 
 "preference.title.renderer" = "Renderer";
@@ -21,5 +19,3 @@
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Enables automatic RAM adjuster";
 "preference.detail.allocated_memory" = "Controls how much memory is given to Minecraft";
-// sha check
-// home symlink
