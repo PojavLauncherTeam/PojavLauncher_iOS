@@ -10,8 +10,6 @@
 "Old-beta" = "Old-beat";
 "Old-alpha" = "Old-alaf";
 
-"login.alert.title" = "logout";
-
 "Settings" = "Settinz";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java Tweakz";
@@ -23,5 +21,3 @@
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Enablez automatic RAM adjustah";
 "preference.detail.allocated_memory" = "Controls how mutch RAM iz given 2 Minecraft";
-// sha check
-// home symlink
