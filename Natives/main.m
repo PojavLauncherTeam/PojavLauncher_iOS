@@ -25,6 +25,9 @@
 
 #define CS_PLATFORM_BINARY 0x4000000
 
+#define PT_TRACE_ME 0
+int ptrace(int, pid_t, caddr_t, int);
+
 #define fm NSFileManager.defaultManager
 
 void printEntitlementAvailability(NSString *key) {
@@ -116,6 +119,7 @@ void init_logDeviceAndVer(char *argument) {
     regLog("[Pre-init] Entitlements availability:");
     printEntitlementAvailability(@"com.apple.developer.kernel.extended-virtual-addressing");
     printEntitlementAvailability(@"com.apple.developer.kernel.increased-memory-limit");
+    printEntitlementAvailability(@"com.apple.private.security.no-container");
     printEntitlementAvailability(@"dynamic-codesigning");
 }
 
@@ -319,6 +323,30 @@ int main(int argc, char * argv[]) {
 
     init_migrateToPlist("selected_version", "config_ver.txt");
     init_migrateToPlist("java_args", "overrideargs.txt");
+
+    // If sandbox is disabled, W^X JIT can be enabled by PojavLauncher itself
+    if (getEntitlementValue(@"com.apple.private.security.no-container")) {
+        NSLog(@"[Pre-init] Sandbox is disabled, trying to enable JIT");
+        pid_t pid = fork();
+        if (pid == 0) {
+            // Forked process can call to PT_TRACE_ME
+            // then both parent and child processes get CS_DEBUGGED
+            int ret = ptrace(PT_TRACE_ME, 0, 0, 0);
+            // If ptrace is successful, it will not continue
+            assert(ret == 0);
+        } else if (pid > 0) {
+            // Fork is successful, let's check if JIT is enabled
+            usleep(10000);
+            if (isJITEnabled()) {
+                NSLog(@"[Pre-init] JIT has heen enabled with PT_TRACE_ME");
+            } else {
+                NSLog(@"[Pre-init] Failed to enable JIT: unknown reason");
+            }
+            kill(pid, SIGKILL);
+        } else {
+            NSLog(@"[Pre-init] Failed to enable JIT: fork() failed errno %d", errno);
+        }
+    }
 
     @autoreleasepool {
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));

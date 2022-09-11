@@ -1,6 +1,9 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>get-task-allow</key>
+    <true/>
+
     <key>com.apple.developer.kernel.extended-virtual-addressing</key>
     <true/>
     <key>com.apple.developer.kernel.increased-memory-limit</key>
@@ -9,7 +12,9 @@
     <!-- iOS may treat PojavLauncher as system app (if previously installed before under Debian package), which requires these entitlement -->
     <key>com.apple.private.mobileinstall.upgrade-enabled</key>
     <true/>
-    <key>com.apple.private.security.container-required</key>
+
+    <!-- Disable sandbox so that PojavLauncher can enable JIT by itself -->
+    <key>com.apple.private.security.no-container</key>
     <true/>
 </dict>
 </plist>
