@@ -48,9 +48,6 @@
 "login.warn.title.demomode" = "Tùy chọn này đang được thử nghiệm.";
 "login.warn.message.demomode" = "Chế độ chơi thử sẽ thay thế các chế độ ngoại tuyến và nội bộ. Nó cho phép bạn đăng nhập bằng tài khoản Microsoft chưa mua trò chơi và chơi bản chơi thử, được thêm vào từ phiên bản 1.3.1. Các phiên bản cũ hơn vẫn có bản đầy đủ, vì trình khởi chạy chính thức không đặt bất kì giới hạn nào. Xem trang web của chúng tôi để biết thêm về sự chuyển dời từ chế độ ngoại tuyến.";
 
-"login.warn.title.otherjb" = "Trình jailbreak không được hỗ trợ hoàn toàn.";
-"login.warn.message.otherjb" = "Trình jailbreak hiện tại của bạn không có bộ khởi động Procursus. Một vài sự cố có thể xảy ra mà không có cách giải quyết, do vậy bạn nên chuyển tới (hoặc đợi) một trình jailbreak được hỗ trợ.";
-
 "login.warn.title.localmode" = "Chế độ ngoại tuyến bây giờ là Chế độ nội bộ.";
 "login.warn.message.localmode" = "Bạn có thể tiếp tục chơi những phiên bản đã được cài đặt, nhưng không thể tải Minecraft mà không có một tài khoản trả phí. Bạn sẽ không được nhận hỗ trợ về những sự cố liên quan đến tài khoản nội bộ, hoặc các cách tải về Minecraft miễn phí khác. Xem \"Câu hỏi thường gặp\" để biết thêm thông tin.";
 
