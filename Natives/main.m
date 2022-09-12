@@ -1,6 +1,7 @@
 #import <mach-o/dyld.h>
 #import <mach/mach.h>
 #import <mach/mach_host.h>
+#import <spawn.h>
 #import <sys/sysctl.h>
 #import <UIKit/UIKit.h>
 
@@ -24,11 +25,10 @@
 #include "codesign.h"
 
 #define CS_PLATFORM_BINARY 0x4000000
-
 #define PT_TRACE_ME 0
 int ptrace(int, pid_t, caddr_t, int);
-
 #define fm NSFileManager.defaultManager
+extern char** environ;
 
 void printEntitlementAvailability(NSString *key) {
     NSLog(@"[Pre-Init] - %@: %@", key, getEntitlementValue(key) ? @"YES" : @"NO");
@@ -278,6 +278,15 @@ void init_setupResolvConf() {
 }
 
 int main(int argc, char * argv[]) {
+    if (getppid() != 1) {
+        NSLog(@"parent pid is not launchd, calling ptrace(PT_TRACE_ME)");
+        // Child process can call to PT_TRACE_ME
+        // then both parent and child processes get CS_DEBUGGED
+        int ret = ptrace(PT_TRACE_ME, 0, 0, 0);
+        return ret;
+        // FIXME: how to kill the child process?
+    }
+
     if (pJLI_Launch) {
         return pJLI_Launch(argc, argv,
                    0, NULL, // sizeof(const_jargs) / sizeof(char *), const_jargs,
@@ -334,24 +343,18 @@ int main(int argc, char * argv[]) {
     // If sandbox is disabled, W^X JIT can be enabled by PojavLauncher itself
     if (getEntitlementValue(@"com.apple.private.security.no-container")) {
         NSLog(@"[Pre-init] Sandbox is disabled, trying to enable JIT");
-        pid_t pid = fork();
-        if (pid == 0) {
-            // Forked process can call to PT_TRACE_ME
-            // then both parent and child processes get CS_DEBUGGED
-            int ret = ptrace(PT_TRACE_ME, 0, 0, 0);
-            // If ptrace is successful, it will not continue
-            assert(ret == 0);
-        } else if (pid > 0) {
-            // Fork is successful, let's check if JIT is enabled
+        int pid;
+        int ret = posix_spawnp(&pid, argv[0], NULL, NULL, argv, environ);
+        if (ret == 0) {
+            // posix_spawn is successful, let's check if JIT is enabled
             usleep(10000);
             if (isJITEnabled()) {
                 NSLog(@"[Pre-init] JIT has heen enabled with PT_TRACE_ME");
             } else {
                 NSLog(@"[Pre-init] Failed to enable JIT: unknown reason");
             }
-            kill(pid, SIGKILL);
         } else {
-            NSLog(@"[Pre-init] Failed to enable JIT: fork() failed errno %d", errno);
+            NSLog(@"[Pre-init] Failed to enable JIT: posix_spawn() failed errno %d", errno);
         }
     }
 
