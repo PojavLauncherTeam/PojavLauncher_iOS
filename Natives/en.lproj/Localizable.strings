@@ -50,9 +50,6 @@
 "login.warn.title.demomode" = "This option is in beta.";
 "login.warn.message.demomode" = "As a replacement to offline and local mode, demo mode will allow you to sign into a Microsoft account that does not own the game and play the Java Edition trial, introduced in 1.3.1 and newer versions. Older versions contain the full game, as the official launcher does not place these restrictions. See our website to learn more about this transition from offline mode.";
 
-"login.warn.title.otherjb" = "Jailbreak not completely supported.";
-"login.warn.message.otherjb" = "Your current jailbreak does not have the Procursus bootstrap. Certain issues may occur that cannot be fixed, please switch to or wait for a fully compatible jailbreak.";
-
 "login.warn.title.localmode" = "Offline mode is now Local mode.";
 "login.warn.message.localmode" = "You can continue to play installed versions, but you can no longer download Minecraft without a paid account. No support will be provided for issues with local accounts, or other means of acquiring Minecraft. See the FAQ for more information.";
 

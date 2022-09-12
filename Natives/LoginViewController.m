@@ -52,16 +52,6 @@ extern NSMutableDictionary *prefDict;
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     [self.view addSubview:scrollView];
 
-    if(getenv("POJAV_DETECTEDJB")) {
-        if(strcmp(getenv("POJAV_DETECTEDJB"), "Other") == 0 && [getPreference(@"jb_warn") boolValue] == YES) {
-            UIAlertController *jbAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"login.warn.title.otherjb", nil) message:NSLocalizedString(@"login.warn.message.otherjb", nil) preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleCancel handler:nil];
-            [self presentViewController:jbAlert animated:YES completion:nil];
-            [jbAlert addAction:ok];
-            setPreference(@"jb_warn", @NO);
-        }
-    }
-
     if(strncmp(getenv("POJAV_DETECTEDHW"), "iPhone6,", 9) == 0 || strncmp(getenv("POJAV_DETECTEDHW"), "iPad4,", 9) == 0) {
         UIAlertController *jbAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"login.warn.title.a7", nil) message:NSLocalizedString(@"login.warn.message.a7", nil) preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleCancel handler:nil];
