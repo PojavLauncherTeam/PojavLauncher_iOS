@@ -48,9 +48,6 @@
 "login.warn.title.demomode" = "Tato možnost je v betě.";
 "login.warn.message.demomode" = "Jako náhrada za offline a místní režim, demo režim povolí přihlášení do Microsoft účtu, jenž hru nevlastní, a hrát zkušební verzi Java edice, přidanou v 1.3.1 a novějších verzích. Starší verze obsahují plnou hru, majíce ji i v oficiálním spouštěči, jenž nemá pro ně omezení. Viz naši webovou stránku pro více informací o této změně z offline režimu.";
 
-"login.warn.title.otherjb" = "Jailbreak není plně podporován.";
-"login.warn.message.otherjb" = "Tvuj nynější jailbreak nemá bootstrap Procursu. Mouhou nastat některé chyby, jež nemohou být opraveny. Prosím používej či čekej na plně podporovaný jailbreak.";
-
 "login.warn.title.localmode" = "Offline režim je nyní Místní režim.";
 "login.warn.message.localmode" = "Můžeš pokračovat ve hraní instalovaných verzí, ale už nemůžeš stáhnout Minecraft bez placeného účtu. Nebudeme poskytovat podporu pro problémy s místními účty, či pro jiné způsoby získávání Minecraftu. Viz FAQ pro více informací.";
 
