@@ -4,11 +4,32 @@
 */
 
 "game.menu.force_close" = "Erzwinge das Beenden";
+"game.menu.confirm.force_close" = "Möchtest du wirklich das Beenden erzwingen?";
 "game.menu.log_output" = "Protokoll-Ausgabe";
 "game.menu.custom_controls" = "Benutzerdefinierte Steuerung";
+
+// Version categories
+"Installed" = "Installiert";
 "Snapshot" = "Entwicklungsversionen";
+"Releases" = "Releases";
 "Old-beta" = "Old-Beta";
 "Old-alpha" = "Old-Alpha";
+
+"init.migrateDir" = "Das PojavLauncher-Datenverzeichnis ist jetzt %@. Alle vorhandenen Daten wurden an den neuen Standort verschoben.";
+
+"login.error.username.outOfRange" = "Benutzername muss mindestens 3 und maximal 32 Zeichen lang sein";
+
+"login.alert.field.username" = "Benutzername";
+
+"login.jit.checking" = "Prüfe auf JIT";
+"login.jit.enabled" = "JIT wurde aktiviert";
+"login.jit.fail.JitStreamer" = "JitStreamer-Fehler: %@";
+"login.jit.found.JitStreamer" = "JitStreamer gefunden, JIT wird aktivieren";
+
+// Login buttons
+"Sign in" = "Anmelden";
+"FAQ" = "FAQ";
+"Accounts" = "Konten";
 
 "login.menu.about" = "Über PojavLauncher";
 
