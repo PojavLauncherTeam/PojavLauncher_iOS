@@ -124,6 +124,7 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(prefDict, @"virtmouse_enable", @NO);
     setDefaultValueForPref(prefDict, @"check_sha", @YES);
     setDefaultValueForPref(prefDict, @"auto_ram", @(getenv("POJAV_DETECTEDJB") == NULL));
+    setDefaultValueForPref(prefDict, @"unsupported_warn_counter", @(0));
     
     if (0 != [fileManager fileExistsAtPath:@"/var/mobile/Documents/.pojavlauncher"]) {
         setDefaultValueForPref(prefDict, @"disable_home_symlink", @NO);

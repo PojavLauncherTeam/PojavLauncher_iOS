@@ -51,12 +51,19 @@ extern NSMutableDictionary *prefDict;
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     [self.view addSubview:scrollView];
-
-    if(strncmp(getenv("POJAV_DETECTEDHW"), "iPhone6,", 9) == 0 || strncmp(getenv("POJAV_DETECTEDHW"), "iPad4,", 9) == 0) {
-        UIAlertController *jbAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"login.warn.title.a7", nil) message:NSLocalizedString(@"login.warn.message.a7", nil) preferredStyle:UIAlertControllerStyleAlert];
+    
+    if(roundf([[NSProcessInfo processInfo] physicalMemory] / 1048576) < 1900 && [getPreference(@"unsupported_warn_counter") intValue] == 0) {
+        UIAlertController *RAMAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"login.warn.title.a7", nil) message:NSLocalizedString(@"login.warn.message.a7", nil) preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleCancel handler:nil];
-        [self presentViewController:jbAlert animated:YES completion:nil];
-        [jbAlert addAction:ok];
+        [self presentViewController:RAMAlert animated:YES completion:nil];
+        [RAMAlert addAction:ok];
+    }
+    
+    int launchNum = [getPreference(@"unsupported_warn_counter") intValue];
+    if(launchNum > 0) {
+        setPreference(@"unsupported_warn_counter", @(launchNum - 1));
+    } else {
+        setPreference(@"unsupported_warn_counter", @(30));
     }
     
     if(!getenv("POJAV_DETECTEDJB") && [getPreference(@"ram_unjb_warn") boolValue] == YES && [getPreference(@"auto_ram") boolValue] == NO) {
