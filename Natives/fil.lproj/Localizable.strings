@@ -7,9 +7,15 @@
 "game.menu.confirm.force_close" = "Sigurado ka bang gusto mong ipasara ng pilit ang iyong sesyon?";
 "game.menu.log_output" = "Output ng log";
 "game.menu.custom_controls" = "Pasadyang mga kontrol";
+
+// Version categories
+"Installed" = "Naka-Install";
 "Snapshot" = "Snapshot";
+"Releases" = "Pagpapalabas";
 "Old-beta" = "Lumang-beta";
 "Old-alpha" = "Lumang-alpha";
+
+"init.migrateDir" = "Ang direktoryo ng data ng PojavLauncher ay %@ na ngayon. Ang lahat ng iyong umiiral na data ay inilipat sa bagong lokasyon.";
 
 "login.error.username.outOfRange" = "Dapat ang username ay may 3 na characters na hindi dapat lalampas sa 16 na characters";
 
@@ -19,6 +25,11 @@
 "login.jit.enabled" = "Na-enable na ang JIT";
 "login.jit.fail.JitStreamer" = "JitStreamer error: %@";
 "login.jit.found.JitStreamer" = "Found JitStreamer, enabling JIT";
+
+// Login buttons
+"Sign in" = "Mag-Sign in";
+"FAQ" = "Mga Madalas na Katanungan";
+"Accounts" = "Mga Accounts";
 
 "login.menu.about" = "Tungkol sa PojavLauncher";
 "login.menu.sendlogs" = "I-send ang iyong logs";
@@ -39,21 +50,73 @@
 "login.warn.title.demomode" = "Ang opsyon na ito ay nasa \"beta\".";
 "login.warn.message.demomode" = "Bilang kapalit sa offline at lokal na mode, magbibigay-daan sa iyo ang demo mode na mag-sign in sa isang Microsoft account na hindi nagmamay-ari ng laro at laruin ang pagsubok ng Java Edition, na ipinakilala sa 1.3.1 at mas bagong mga bersyon.";
 
-"login.warn.title.otherjb" = "Ang jailbreak ay hindi kompletong susuportahan.";
-"login.warn.message.otherjb" = "Ang iyong kasalukuyang jailbreak ay walang Procursus bootstrap. Maaaring mangyari ang ilang partikular na isyu na hindi maaayos, mangyaring lumipat sa o maghintay para sa isang ganap na katugmang jailbreak.";
-
 "login.warn.title.localmode" = "Ang offline mode ngayon nay' Local mode.";
 "login.warn.message.localmode" = "Maaari kang magpatuloy sa paglalaro ng mga naka-install na bersyon, ngunit hindi mo na mada-download ang Minecraft nang walang bayad na account. Walang suportang ibibigay para sa mga isyu sa mga lokal na account, o iba pang paraan ng pagkuha ng Minecraft. Basahin ang FAQ para sa ibang impormasyon.";
 
+"login.msa.error.xsts.noxboxacc" = "Ang isang Xbox profile ay hindi nakarehistro para sa Microsoft account na ito. Pakitiyak na nakagawa ka ng Xbox profile.\nError code: 2148916233";
+"login.msa.error.xsts.noxbox" = "Kasalukuyang hindi available ang Xbox Live sa iyong bansa.\nError code: 2148916235";
+"login.msa.error.xsts.krverify" = "Kailangang ma-verify ng iyong mga magulang ang iyong account bago magpatuloy.\nError code: 2148916236 o 2148916237.";
+"login.msa.error.xsts.underage" = "Kailangang ma-link ang iyong account sa isang account ng magulang bago magpatuloy.\nError code: 2148916238";
+
+"login.msa.notice.demomode" = "Hindi makahanap ng profile sa Minecraft sa account na ito. Ang account ay nakatakda na ngayon sa Demo mode. Bumili ka ba ng Minecraft, o mayroon bang aktibong subscription sa Xbox GamePass? Mangyaring i-configure ang iyong profile sa https://minecraft.net/msaprofle upang maibalik sa Online mode.";
+
+"login.msa.progress.acquireAccessToken" = "(1/5) Pagkuha ng Access token";
+"login.msa.progress.acquireXBLToken" = "(2/5) Pagkuha ng Xbox Live token";
+"login.msa.progress.acquireXSTS" = "Pagkuha ng XSTS";
+"login.msa.progress.acquireXboxProfile" = "(3/5) Pagkuha ng Xbox profile";
+"login.msa.progress.acquireMCToken" = "(4/5) Pagkuha ng Minecraft token";
+"login.msa.progress.checkMCProfile" = "(5/5) Sinusuri ang profile sa Minecraft";
+
 "Settings" = "Mga Setting";
+
+"preference.section.general" = "Mga Pangkalahatan na Setting";
+"preference.section.footer.general" = "* Ang opsyon sa compatibility symlink ay binalak na alisin sa isang release sa hinaharap.";
+"preference.section.video" = "Kaayusan ng Video";
+"preference.section.footer.video" = "Nagbibigay-daan ang auto renderer sa Minecraft na magpasya kung aling renderer ang gagamitin. Ang pagbaba ng resolution ay nagpapababa ng GPU workload para sa mas mahusay na performance.";
 "preference.section.control" = "Kontrolin ang customization";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Mga tweaks sa Java";
+//"preference.section.footer.java" = "";
+
+"preference.title.confirm" = "Sigurado ka ba?";
+
+"preference.title.game_directory" = "Direktoryo ng larong Minecraft";
+"preference.title.confirm.delete_game_directory" = "Ang instance na %@ ay tatanggalin nang tuluyan at hindi na maibabalik.";
+"preference.multidir.add_directory" = "magdagdag ng direktoryo ng laro";
+
+"preference.title.home_symlink" = "Paganahin ang compatibility symlink *";
+"preference.detail.home_symlink" = "Gumawa ng symlink sa /var/mobile/Documents/.pojavlauncher. Hindi available sa sandboxed na kapaligiran.";
+"preference.title.check_sha" = "Suriin ang mga file pagkatapos mag-download";
+"preference.detail.check_sha" = "Pinipilit ng opsyong ito ang launcher na suriin ang file hash kung available ito. Pinipigilan ang mga sirang download.";
 "preference.title.cosmetica" = "Capes galing sa Cosmetica";
+"preference.detail.cosmetica" = "Paganahin ang mga kapa mula sa Cosmetica (dating Arc). Para sa karagdagang impormasyon mangyaring bisitahin ang https://cosmetica.cc. Nangangailangan ng OptiFine";
+"preference.title.debug_logging" = "Pag-log sa pag-debug";
+"preference.detail.debug_logging" = "Nagla-log ng mga panloob na setting at pagkilos sa latestlog.txt. Nakakatulong ito sa mga developer na mas madaling mahanap ang mga isyu, ngunit ang Minecraft ay maaaring tumakbo nang mas mabagal dahil mas madalas na isusulat ang mga log.";
+
+"preference.title.reset_warnings" = "I-reset ang lahat ng mga babala";
+"preference.title.done.reset_warnings" = "Ang lahat ng mga babala ay na-reset.";
+
+"preference.title.reset_settings" = "I-reset lahat ng mga setting";
+"preference.title.confirm.reset_settings" = "Aalisin nito ang lahat ng iyong custom na kagustuhan, kabilang ang resolution, laki ng button, at Java arguments.";
+"preference.title.done.reset_settings" = "Ang lahat ng mga default na setting ay naibalik.";
 
 "preference.title.renderer" = "Renderer";
+"preference.title.renderer.auto" = "Auto: gl4es o tinygl4angle";
+"preference.title.renderer.gl4es" = "gl4es 1.1.4 - ini-export ang OpenGL 2.1";
+"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - ini-export ang OpenGL 3.2 (Core Profile, limitado)";
+"preference.title.renderer.zink" = "Zink (Mesa 21.0) - ini-export ang OpenGL 4.1";
+"preference.detail.renderer" = "Baguhin ang OpenGL render engine na gagamitin";
+
+"preference.title.resolution" = "Resolusyon (%)";
+"preference.detail.resolution" = "Binibigyang-daan kang bawasan ang resolution ng laro.";
 "preference.title.disable_gesture" = "Paganahin ang mga galaw";
+"preference.title.press_duration" = "Tagal ng pagpindot nang long-press (ms)";
 "preference.detail.press_duration" = "Baguhin ang oras ng pag-trigger para sa mahabang pindutin sa destroy block at drop item.";
+"preference.title.button_scale" = "Sukat ng button sa screen (%)";
+"preference.detail.button_scale" = "Palakihin ang mga ito kung masyadong maliit ang mga button, kadalasang kailangan para sa mga user ng iPad.";
+"preference.title.mouse_scale" = "Pag-scale ng mouse (%)";
+"preference.detail.mouse_scale" = "Baguhin ang laki ng virtual mouse";
+"preference.title.mouse_speed" = "Bilis ng Mouse (%)";
 "preference.title.java_args" = "JVM Launch arguments";
 "preference.title.auto_ram" = "Awtomatikong RAM";
 "preference.detail.auto_ram" = "Pinapagana ang awtomatikong RAM adjuster";
