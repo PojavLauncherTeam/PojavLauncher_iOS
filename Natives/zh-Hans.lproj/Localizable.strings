@@ -50,9 +50,6 @@
 "login.warn.title.demomode" = "该选项处于测试阶段";
 "login.warn.message.demomode" = "试玩账户允许你在没有正版Minecraft情况下玩1.3.1+版本(更多内容请去Pojav官网了解)";
 
-"login.warn.title.otherjb" = "当前的越狱环境不完全支持";
-"login.warn.message.otherjb" = "你当前的越狱环境没有Procursus越狱源(可能会出现某些BUG),请切换完全越狱状态";
-
 "login.warn.title.localmode" = "旧版的离线模式改名本机账户了";
 "login.warn.message.localmode" = "必须要有正版的Minecraft才能下载游戏,否则你只能启动游戏不能下载游戏(更多说明请看主页的FAQ)";
 
