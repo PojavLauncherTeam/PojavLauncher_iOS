@@ -32,17 +32,89 @@
 "Accounts" = "Konten";
 
 "login.menu.about" = "Über PojavLauncher";
+"login.menu.sendlogs" = "Fehlerprotokolle senden";
+"login.menu.updates" = "Neueste Updates";
+
+"login.option.microsoft" = "Microsoft-Konto";
+"login.option.demo" = "Demo-Konto";
+"login.option.local" = "Lokales Konto";
+
+"login.progress.title" = "Anmeldung läuft";
+
+"login.warn.title.ram_unjb" = "RAM-Regler ist aktiviert";
+"login.warn.message.ram_unjb" = "Sei dir darüber bewusst, dass Änderung dieser Einstellung die Stabilität des Spiels oder das Starten des Spiels komplett beeinträchtigt kann.";
+
+"login.warn.title.a7" = "Dies ist das letzte Update für dieses Gerät.";
+"login.warn.message.a7" = "Dein Gerät wird PojavLauncher 2.2 nicht unterstützen. Diese Änderung ist auf Hardware- und Software-Einschränkungen zurückzuführen.";
+
+"login.warn.title.demomode" = "Diese Einstellung ist in Beta.";
+
+"login.warn.title.localmode" = "Der Offline-Modus ist jetzt der Lokale Modus.";
+
+"login.msa.error.xsts.noxboxacc" = "Es ist kein Xbox-Profil mit diesem Microsoft-Konto registriert. Stelle bitte sicher, dass du ein Xbox-Profil erstellt hast.\nFehlercode: 2148916233";
+"login.msa.error.xsts.noxbox" = "Xbox Live ist derzeit in deinem Land nicht verfügbar.\nFehlercode: 2148916235";
+"login.msa.error.xsts.krverify" = "Dein Konto muss von deinen Eltern verifiziert werden bevor du fortfährst.\nFehlercode: 2148916236 oder 2148916237.";
+"login.msa.error.xsts.underage" = "Dein Konto muss mit einem Eltern-Konto verknüpft werden.\nFehlercode: 2148916238";
+
+"login.msa.progress.acquireAccessToken" = "(1/5) Erhalte Zugangs-Token";
+"login.msa.progress.acquireXBLToken" = "(2/5) Erhalte Xbox-Live-Token";
+"login.msa.progress.acquireXSTS" = "Erhalte XSTS";
+"login.msa.progress.acquireXboxProfile" = "(3/5) Erhalte Xbox-Profil";
+"login.msa.progress.acquireMCToken" = "(4/5) Erhalte Minecraft-Token";
+"login.msa.progress.checkMCProfile" = "(5/5) Überprüfe Minecraft-Profil";
 
 "Settings" = "Einstellungen";
+
+"preference.section.general" = "Allgemeine Einstellungen";
+"preference.section.video" = "Grafik-Einstellungen";
 "preference.section.control" = "Steuerung anpassen";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java-Optimierungen";
+//"preference.section.footer.java" = "";
+
+"preference.title.confirm" = "Bist du dir sicher?";
+
+"preference.title.game_directory" = "Minecraft-Spielverzeichnis";
+"preference.multidir.add_directory" = "Spielverzeichnis hinzufügen";
+
+"preference.title.home_symlink" = "Kompatibilitäts-Symlink aktivieren *";
+"preference.detail.home_symlink" = "Erstelle einen Symlink unter /var/mobile/Documents/.pojavlauncher. Nicht verfügbar in einer Sandboxed Umgebung.";
+"preference.title.check_sha" = "Dateien nach dem Download überprüfen";
 "preference.title.cosmetica" = "Cosmetica-Umhänge";
+"preference.detail.cosmetica" = "Aktiviert Umhänge von Cosmetica (früher Arc). Für weitere Informationen bitte https://cosmetica.cc besuchen. OptiFine wird benötigt";
+"preference.title.debug_logging" = "Debug-Protokolle";
+
+"preference.title.reset_warnings" = "Alle Warnungen zurücksetzen";
+"preference.title.done.reset_warnings" = "Alle Warnungen wurden zurückgesetzt.";
+
+"preference.title.reset_settings" = "Alle Einstellungen zurücksetzen";
+"preference.title.done.reset_settings" = "Alle Standard-Einstellungen wurden wiederhergestellt.";
 
 "preference.title.renderer" = "Renderer";
+"preference.title.renderer.auto" = "Auto: gl4es oder tinygl4angle";
+"preference.title.renderer.gl4es" = "gl4es 1.1.4 - gibt OpenGL 2.1 aus";
+"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - gibt OpenGL 3.2 (Core-Profil, limitiert) aus";
+"preference.title.renderer.zink" = "Zink (Mesa 21.0) - gibt OpenGL 4.1 aus";
+"preference.detail.renderer" = "Ändern Sie die OpenGL-Rendering-Engine";
+
+"preference.title.resolution" = "Auflösung (%)";
+"preference.detail.resolution" = "Ermöglicht es dir die Spielauflösung zu verringern.";
 "preference.title.disable_gesture" = "Gesten deaktivieren";
+"preference.title.press_duration" = "Dauer eines langen Touch (ms)";
 "preference.detail.press_duration" = "Ändere die Auslösezeit für langes Drücken beim Zerstören des Blocks und Ablegen des Gegenstandes.";
+"preference.title.button_scale" = "Schalflächengröße (%)";
+"preference.title.mouse_scale" = "Maus-Größe (%)";
+"preference.detail.mouse_scale" = "Ändert die Größe der Virtuellen Maus";
+"preference.title.mouse_speed" = "Mausgeschwindigkeit (%)";
+"preference.detail.mouse_speed" = "Ändert die Geschwindigkeit der Virtuellen Maus";
+"preference.title.virtmouse_enable" = "Virtuelle Maus";
+"preference.detail.virtmouse_enable" = "Aktiviere diese Option, um mit Virtueller Maus zu spielen";
+"preference.title.java_home" = "Nutze Java 17 für Minecraft < 1.17";
 "preference.title.java_args" = "JVM-Start-Argumente";
+"preference.placeholder.java_args" = "Argumente angeben...";
 "preference.title.auto_ram" = "Auto-RAM";
 "preference.detail.auto_ram" = "Aktiviert automatische RAM-Einstellungen";
+"preference.title.allocated_memory" = "RAM-Zuweisung (MB)";
 "preference.detail.allocated_memory" = "Legt fest, wie viel RAM Minecraft gegeben wird";
+"preference.title.custom_env" = "Umgebungsvariablen";
+"preference.detail.custom_env" = "Diese Einstellung ist in Bearbeitung.";
