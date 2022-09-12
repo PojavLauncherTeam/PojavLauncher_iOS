@@ -296,6 +296,8 @@ int main(int argc, char * argv[]) {
     init_migrateDirIfNecessary();
 
     setenv("BUNDLE_PATH", dirname(argv[0]), 1);
+    setenv("HOME", [NSFileManager.defaultManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask]
+        .lastObject.path.stringByDeletingLastPathComponent.UTF8String, 1);
 
     if (getenv("POJAV_DETECTEDJB")) {
         // TODO: Set to new Docs for both jben and unjben in 2.2
