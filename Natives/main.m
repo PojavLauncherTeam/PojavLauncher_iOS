@@ -347,10 +347,16 @@ int main(int argc, char * argv[]) {
         int ret = posix_spawnp(&pid, argv[0], NULL, NULL, argv, environ);
         if (ret == 0) {
             // posix_spawn is successful, let's check if JIT is enabled
-            usleep(10000);
-            if (isJITEnabled()) {
-                NSLog(@"[Pre-init] JIT has heen enabled with PT_TRACE_ME");
-            } else {
+            int retries;
+            for (retries = 0; retries < 10; retries++) {
+                usleep(10000);
+                if (isJITEnabled()) {
+                    NSLog(@"[Pre-init] JIT has heen enabled with PT_TRACE_ME");
+                    retries = -1;
+                    break;
+                }
+            }
+            if (retries != -1) {
                 NSLog(@"[Pre-init] Failed to enable JIT: unknown reason");
             }
         } else {
