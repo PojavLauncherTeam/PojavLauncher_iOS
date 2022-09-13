@@ -115,7 +115,7 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(envPrefDict, @"java_args", @"");
     setDefaultValueForPref(envPrefDict, @"allocated_memory", [NSNumber numberWithFloat:roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.25)]);
     setDefaultValueForPref(prefDict, @"debug_logging", @(CONFIG_RELEASE != 1));
-    setDefaultValueForPref(prefDict, @"arccapes_enable", @YES);
+    setDefaultValueForPref(prefDict, @"cosmetica", @YES);
     setDefaultValueForPref(envPrefDict, @"java_home", @"java-8-openjdk");
     setDefaultValueForPref(envPrefDict, @"renderer", @"auto");
     fillDefaultWarningDict();

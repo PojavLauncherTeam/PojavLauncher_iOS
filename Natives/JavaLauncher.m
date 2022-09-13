@@ -198,7 +198,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     margv[++margc] = (char *)[NSString stringWithFormat:@"-DUIScreen.maximumFramesPerSecond=%d", (int)UIScreen.mainScreen.maximumFramesPerSecond].UTF8String;
     margv[++margc] = "-Dorg.lwjgl.system.allocator=system";
     margv[++margc] = "-Dlog4j2.formatMsgNoLookups=true";
-    if([getPreference(@"arccapes_enable") boolValue]) {
+    if([getPreference(@"cosmetica") boolValue]) {
         margv[++margc] = arcDNS;
     }
     NSString *selectedAccount = getPreference(@"internal_selected_account");
