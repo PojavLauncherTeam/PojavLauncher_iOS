@@ -95,11 +95,41 @@
 "preference.title.done.reset_warnings" = "所有警告已被重設。";
 
 "preference.title.reset_settings" = "重設所有設定";
+"preference.title.confirm.reset_settings" = "這會移除你所有的自定義偏好設定，包括解像度、按鈕大小和Java參數。";
+"preference.title.done.reset_settings" = "所有的預設設定已被回復。";
 
 "preference.title.renderer" = "渲染器";
+"preference.title.renderer.auto" = "自動：gl4es或tinygl4angle";
+"preference.title.renderer.gl4es" = "gl4es 1.1.4 － 輸出OpenGL 2.1";
+"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) － 輸出OpenGL 3.2（核心數據，帶有限制）";
+"preference.title.renderer.zink" = "Zink (Mesa 21.0) － 輸出OpenGL 4.1";
+"preference.detail.renderer" = "改變要使用的OpenGL渲染引擎";
+
+"preference.title.resolution" = "解像度（%）";
+"preference.detail.resolution" = "允許你降低遊戲的解像度。";
 "preference.title.disable_gesture" = "停用手勢";
+"preference.title.press_duration" = "長按時間（毫秒）";
 "preference.detail.press_duration" = "修改長按摧毀方塊、丟棄物品的觸發時長。";
+"preference.title.button_scale" = "螢幕按鈕比例（%）";
+"preference.detail.button_scale" = "如果按鈕太小的話，就增加比例，iPad用戶通常都需要這個選項。";
+"preference.title.mouse_scale" = "滑鼠比例（%）";
+"preference.detail.mouse_scale" = "改變虛擬鼠標的大小";
+"preference.title.mouse_speed" = "滑鼠速度（%）";
+"preference.detail.mouse_speed" = "改變虛擬滑鼠的速度";
+"preference.title.virtmouse_enable" = "虛擬滑鼠";
+"preference.detail.virtmouse_enable" = "啟用這個選項以在啟動時啟動虛擬鼠標。";
+"preference.title.slideable_hotbar" = "可捲動快捷欄";
+"preference.detail.slideable_hotbar" = "令快捷欄能夠以像滑鼠輪一般地捲動";
+"preference.title.java_home" = "對於我的世界 < 1.17，使用Java 17";
+"preference.detail.java_home" = "這些版本預設使用Java 8。啟用這個選項來強制使用Java 17，但是對修改版的遊戲的相容性沒有任何保證。";
 "preference.title.java_args" = "JVM 啟動引數";
+"preference.detail.java_args" = "請小心，在沒有先前知識的情況下修改這個選項能夠導致遊戲崩潰。";
+"preference.placeholder.java_args" = "提供選項......";
 "preference.title.auto_ram" = "自動調節RAM";
 "preference.detail.auto_ram" = "啟用 RAM 自動調節";
+"preference.warn.auto_ram" = "在沒有越獄的裝置上收據這個選項能夠導致不穩定。請小心繼續。";
+"preference.title.allocated_memory" = "記憶體分配（MB）";
 "preference.detail.allocated_memory" = "分配多少記憶體給Minecraft";
+"preference.warn.allocated_memory" = "由於系統限制，在這個數值或以上時，這個選項可能會導致不穩定。";
+"preference.title.custom_env" = "環境變量";
+"preference.detail.custom_env" = "這個選項仍在建築中。";
