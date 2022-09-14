@@ -43,7 +43,6 @@
 "login.warn.message.ram_unjb" = "請注意，更改這個設定可能會導致遊戲不穩定，或導致完全無法遊玩。";
 
 "login.warn.title.a7" = "這是對於這個裝置的最後更新。";
-"login.warn.message.a7" = "PojavLauncher 2.2將不會支援此裝置，這個決定是因為軟體和硬體限制而作出的。";
 
 "login.warn.title.demomode" = "這個選項為測試版。";
 "login.warn.message.demomode" = "作為離線和本地模式的代替，示範模式會允許你用一個不擁有遊戲的微軟帳戶來登入，並遊玩在版本1.3.1引入的Java版試玩版。由於官方的啟動器沒有加入限制，更舊的版本將含有完整的遊戲。要了解更多關於從離線模式過渡到示範模式的資訊，請瀏覽我們的網頁。";
