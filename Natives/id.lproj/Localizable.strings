@@ -4,11 +4,42 @@
 */
 
 "game.menu.force_close" = "Tutup secara paksa";
+"game.menu.confirm.force_close" = "Apakah anda yakin mau menutup secara paksa?";
 "game.menu.log_output" = "Catatan log";
 "game.menu.custom_controls" = "Kontrol kustom";
+
+// Version categories
+"Installed" = "Terpasang";
 "Snapshot" = "Snapshot";
+"Releases" = "Rilis";
 "Old-beta" = "Beta-lama";
 "Old-alpha" = "Alpha-lama";
+
+"init.migrateDir" = "Data folder PojavLauncher sekarang di %@. Semua datamu yang ada telah dipindah ke lokasi baru tersebut.";
+
+"login.error.username.outOfRange" = "Username harus mempunyai setidaknya 3 karakter dan maksimum 16 karakter";
+
+"login.alert.field.username" = "Username";
+
+"login.jit.checking" = "Memeriksa JIT";
+"login.jit.enabled" = "JIT telah dinyalakan";
+"login.jit.fail.JitStreamer" = "JitStreamer error: %@";
+"login.jit.found.JitStreamer" = "Ditemukan JitStreamer, menyalakan JIT";
+
+// Login buttons
+"Sign in" = "Masuk";
+"FAQ" = "FAQ";
+"Accounts" = "Akun";
+"login.menu.sendlogs" = "Kirim log-log kamu";
+"login.menu.updates" = "Update terbaru";
+
+"login.option.microsoft" = "Akun Microsoft";
+"login.option.demo" = "Akun Demo";
+"login.option.local" = "Akun lokal";
+
+"login.progress.title" = "Sedang masuk";
+
+"login.warn.title.ram_unjb" = "Slider memory nyala";
 
 "Settings" = "Pengaturan";
 "preference.section.control" = "Kustomisasi kontrol";
