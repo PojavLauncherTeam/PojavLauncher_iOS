@@ -78,10 +78,23 @@
 
 "preference.title.confirm" = "你確定嗎？";
 
-"preference.title.game_directory" = "我的世界遊戲資料夾";
+"preference.title.game_directory" = "我的世界遊戲目錄";
 "preference.title.confirm.delete_game_directory" = "實例%@會被永久刪除，且不能回復。";
 "preference.multidir.add_directory" = "新增遊戲目錄";
+
+"preference.title.home_symlink" = "啟用相容性符號連結*";
+"preference.detail.home_symlink" = "在/var/mobile/Documents/.pojavlauncher創建一個符號連結。在容器環境中不可用。";
+"preference.title.check_sha" = "在下載後檢查檔案";
+"preference.detail.check_sha" = "這個選項強制啟動器在可用的情況下檢查檔案的雜湊值。這樣做能夠防止有問題的下載。";
 "preference.title.cosmetica" = "Cosmetica披風";
+"preference.detail.cosmetica" = "啟用來自Cosmetica（先前是Arc）的披風。要查看更多資訊請到 https://cosmetica.cc 。需要OptiFine。";
+"preference.title.debug_logging" = "除錯日誌";
+"preference.detail.debug_logging" = "把內部設定和動作記錄到lateslog.txt。這能幫助開發者更容易地找到問題，但由於日誌寫入的次數會增多，我的世界的運行速度可能會減慢。";
+
+"preference.title.reset_warnings" = "重設所有警告";
+"preference.title.done.reset_warnings" = "所有警告已被重設。";
+
+"preference.title.reset_settings" = "重設所有設定";
 
 "preference.title.renderer" = "渲染器";
 "preference.title.disable_gesture" = "停用手勢";
