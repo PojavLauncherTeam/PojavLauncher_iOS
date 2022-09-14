@@ -48,10 +48,39 @@
 "login.warn.title.demomode" = "這個選項為測試版。";
 "login.warn.message.demomode" = "作為離線和本地模式的代替，示範模式會允許你用一個不擁有遊戲的微軟帳戶來登入，並遊玩在版本1.3.1引入的Java版試玩版。由於官方的啟動器沒有加入限制，更舊的版本將含有完整的遊戲。要了解更多關於從離線模式過渡到示範模式的資訊，請瀏覽我們的網頁。";
 
+"login.warn.title.localmode" = "離線模式現為本地模式。";
+"login.warn.message.localmode" = "你可以繼續遊玩已安裝的版本，但你將無法在沒有付費帳戶的情況下下載我的世界。使用本地帳戶時的問題和其他取得我的世界的方法是不受支持的。";
+
+"login.msa.error.xsts.noxboxacc" = "這個微軟帳戶沒有註冊的Xbox用戶檔案。請確定你已經註冊Xbox用戶檔案。\n錯誤代碼：2148916233";
+"login.msa.error.xsts.noxbox" = "Xbox Live不適用於你的國家。\n錯誤代碼：2148916235";
+"login.msa.error.xsts.krverify" = "你的帳戶必須由你的家長認證，方可繼續。\n錯誤代碼：2148916236或2148916237。";
+"login.msa.error.xsts.underage" = "你的帳戶必須要連結到一個家長帳戶，方可繼續。\n錯誤代碼：2148916238";
+
+"login.msa.notice.demomode" = "在帳戶中找不到我的世界用戶檔案。這個帳戶已設為示範模式。你是否購買了我的世界，或有已啟用的Xbox Game Pass訂閱？請到 https://minecraft.net/msaprofle 設置你的用戶檔案以回復線上模式。";
+
+"login.msa.progress.acquireAccessToken" = "(1/5) 正在取得取用金鑰";
+"login.msa.progress.acquireXBLToken" = "(2/5) 正在取得Xbox Live金鑰";
+"login.msa.progress.acquireXSTS" = "正在取得XSTS";
+"login.msa.progress.acquireXboxProfile" = "(3/5) 正在取得Xbox用戶檔案";
+"login.msa.progress.acquireMCToken" = "(4/5) 正在取得我的世界金鑰";
+"login.msa.progress.checkMCProfile" = "(5/5) 正在檢查我的世界用戶檔案";
+
 "Settings" = "設定";
+
+"preference.section.general" = "一般設定";
+"preference.section.footer.general" = "* 相容性符號連結選項預計會在未來的版本中移除。";
+"preference.section.video" = "動畫設定";
+"preference.section.footer.video" = "自動宣染器允許我的世界判斷使用哪一個渲染器。降低解析度會降低圖形處理器的工作量，並提高效能。";
 "preference.section.control" = "自定義控制";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java 選項";
+//"preference.section.footer.java" = "";
+
+"preference.title.confirm" = "你確定嗎？";
+
+"preference.title.game_directory" = "我的世界遊戲資料夾";
+"preference.title.confirm.delete_game_directory" = "實例%@會被永久刪除，且不能回復。";
+"preference.multidir.add_directory" = "新增遊戲目錄";
 "preference.title.cosmetica" = "Cosmetica披風";
 
 "preference.title.renderer" = "渲染器";
