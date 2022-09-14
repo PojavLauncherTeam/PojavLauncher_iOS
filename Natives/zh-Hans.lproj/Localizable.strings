@@ -15,16 +15,16 @@
 "Old-beta" = "远古beta版";
 "Old-alpha" = "远古alpha版";
 
-"init.migrateDir" = "目前游戏目录为%@。所有的游戏资源已移动到最新目录";
+"init.migrateDir" = "目前 PojavLauncher 数据目录为%@。所有的游戏资源已移动到最新目录。";
 
-"login.error.username.outOfRange" = "用户名必须是3-16个字符以内";
+"login.error.username.outOfRange" = "用户名必须在 3-16 个字符以内";
 
 "login.alert.field.username" = "用户名";
 
-"login.jit.checking" = "检查是否开启JIT权限";
-"login.jit.enabled" = "JIT权限已启用";
+"login.jit.checking" = "检查是否开启 JIT 权限";
+"login.jit.enabled" = "JIT 权限已启用";
 "login.jit.fail.JitStreamer" = "JitStreamer 错误：%@";
-"login.jit.found.JitStreamer" = "检测到JitStreamer,正在开启JIT权限";
+"login.jit.found.JitStreamer" = "检测到 JitStreamer，正在开启 JIT 权限";
 
 // Login buttons
 "Sign in" = "登录";
@@ -42,10 +42,10 @@
 "login.progress.title" = "登陆中";
 
 "login.warn.title.ram_unjb" = "关闭自动分配内存风险通知";
-"login.warn.message.ram_unjb" = "关闭自动分配内存后可能导致游戏不稳定或完全不能进入游戏，这是因为IOS系统可用内存本来就小。我们推荐你更换更大运行内存的设备使用应用";
+"login.warn.message.ram_unjb" = "关闭自动分配内存后可能导致游戏不稳定或完全不能进入游戏，这是因为 IOS 系统可用内存本来就小。我们推荐你更换更大运行内存的设备使用应用。";
 
-"login.warn.title.a7" = "该设备存在一些问题";
-"login.warn.message.a7" = "你当前设备不完全支持PojavLauncher 2.2版本,这是你硬件环境导致(详细情况见：https://github.com/PojavLauncherTeam/PojavLauncher_iOS/issues/319)";
+"login.warn.title.a7" = "这是此设备的最后一次更新。";
+"login.warn.message.a7" = "你当前设备不完全支持 PojavLauncher 2.2 版本，这是你硬件环境导致。（详细情况见：https://github.com/PojavLauncherTeam/PojavLauncher_iOS/issues/319）";
 
 "login.warn.title.demomode" = "该选项处于测试阶段";
 "login.warn.message.demomode" = "试玩账户允许你在没有正版Minecraft情况下玩1.3.1+版本(更多内容请去Pojav官网了解)";
