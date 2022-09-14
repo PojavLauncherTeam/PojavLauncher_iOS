@@ -41,38 +41,38 @@
 
 "login.progress.title" = "登陆中";
 
-"login.warn.title.ram_unjb" = "关闭自动分配内存风险通知";
+"login.warn.title.ram_unjb" = "自动分配内存已开启";
 "login.warn.message.ram_unjb" = "关闭自动分配内存后可能导致游戏不稳定或完全不能进入游戏，这是因为 IOS 系统可用内存本来就小。我们推荐你更换更大运行内存的设备使用应用。";
 
 "login.warn.title.a7" = "这是此设备的最后一次更新。";
-"login.warn.message.a7" = "你当前设备不完全支持 PojavLauncher 2.2 版本，这是你硬件环境导致。（详细情况见：https://github.com/PojavLauncherTeam/PojavLauncher_iOS/issues/319）";
+"login.warn.message.a7" = "你当前设备不完全支持 PojavLauncher 2.2 版本，这是您硬件环境导致。（详细情况见：https://github.com/PojavLauncherTeam/PojavLauncher_iOS/issues/319）";
 
-"login.warn.title.demomode" = "该选项处于测试阶段";
-"login.warn.message.demomode" = "试玩账户允许你在没有正版Minecraft情况下玩1.3.1+版本(更多内容请去Pojav官网了解)";
+"login.warn.title.demomode" = "该选项处于测试阶段。";
+"login.warn.message.demomode" = "演示模式作为离线和本地模式的替代，将允许你登录到一个尚未购买游戏的微软账户中游玩 1.3.1 及更新版本的试玩版本。因为官方启动器的一些特性，在较旧版本中会包含完整的游戏。详情请参阅我们的网站，了解更多关于离线模式的过渡。";
 
-"login.warn.title.localmode" = "旧版的离线模式改名本机账户了";
-"login.warn.message.localmode" = "必须要有正版的Minecraft才能下载游戏,否则你只能启动游戏不能下载游戏(更多说明请看主页的FAQ)";
+"login.warn.title.localmode" = "离线模式现在是本地模式了。";
+"login.warn.message.localmode" = "您可以继续游玩已经下载的版本，但是如果没有正版账号，您将无法再下载其他版本。任何有关本地账号以及如何获取其他 Minecraft 版本的问题将不会得到任何解答。请参阅 FAQ 以获取更多信息。";
 
-"login.msa.error.xsts.noxboxacc" = "该微软账户未注册Xbox,请确认你的Xbox账户没有问题(错误代码2148916233)";
-"login.msa.error.xsts.noxbox" = "Xbox Live目前在您的国家/地区不可用\n(错误代码：2148916235)";
-"login.msa.error.xsts.krverify" = "你的账户必须通过你父母同意方可通过验证(错误代码2148916236或2148916237)";
+"login.msa.error.xsts.noxboxacc" = "该微软账户尚未注册 Xbox 账号，请确认您已经创建了 Xbox 账号。\n错误代码：2148916233";
+"login.msa.error.xsts.noxbox" = "Xbox Live 目前在您的国家/地区不可用。\n错误代码：2148916235";
+"login.msa.error.xsts.krverify" = "你的账户必须通过你父母同意方可通过验证。\n错误代码：2148916236 或 2148916237";
 "login.msa.error.xsts.underage" = "您的账户需要绑定家长账户才能进行下一步。\n错误代码：2148916238";
 
-"login.msa.notice.demomode" = "看到这条消息说明你目前账户内可能未购买正版Minecraft(因为我们无法在你账户内找到描述文件)。检查你是否购买了正版Minecraft(或者你的XGP是否有到期?)";
+"login.msa.notice.demomode" = "在此账户上找不到 Minecraft 配置文件。该账户现在已设置为演示模式。请问 您是否购买了 Minecraft，或是否订阅了 Xbox GamePass ？请在 https://minecraft.net/msaprofle 中配置您的个人资料以恢复到在线模式。";
 
-"login.msa.progress.acquireAccessToken" = "(1/5)请求访问令牌...";
-"login.msa.progress.acquireXBLToken" = "(2/5)请求Xbox Live的令牌...";
+"login.msa.progress.acquireAccessToken" = "(1/5) 请求访问令牌";
+"login.msa.progress.acquireXBLToken" = "(2/5) 请求 Xbox Live 令牌";
 "login.msa.progress.acquireXSTS" = "正在获取 XSTS";
-"login.msa.progress.acquireXboxProfile" = "(3/5)获取Xbox描述文件";
-"login.msa.progress.acquireMCToken" = "(4/5)请求Minecraft的账户信息";
-"login.msa.progress.checkMCProfile" = "(5/5)检查Minecraft账户描述文件";
+"login.msa.progress.acquireXboxProfile" = "(3/5) 获取 Xbox 描述文件";
+"login.msa.progress.acquireMCToken" = "(4/5) 请求 Minecraft 令牌";
+"login.msa.progress.checkMCProfile" = "(5/5) 检查 Minecraft 账户描述文件";
 
 "Settings" = "设置";
 
 "preference.section.general" = "常规设置";
-"preference.section.footer.general" = "通知：Enable Compatibility symlink设置选项将在未来某个版本删除";
+"preference.section.footer.general" = "* 兼容性符号链接选项将在未来某个版本中移除。";
 "preference.section.video" = "视频设置";
-"preference.section.footer.video" = "使用自动选择的渲染器将根据游戏版本选择最佳渲染器启动游戏，降低分辨率可以使得GPU负载变低从而提升性能";
+"preference.section.footer.video" = "使用自动选择的渲染器将根据游戏版本选择最佳渲染器启动游戏，降低分辨率可以使得 GPU 负载变低从而提升性能。";
 "preference.section.control" = "自定义控制";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java 调整";
@@ -80,58 +80,58 @@
 
 "preference.title.confirm" = "确认？";
 
-"preference.title.game_directory" = "游戏目录";
-"preference.title.confirm.delete_game_directory" = "目录%@将被删除(无法恢复!)";
+"preference.title.game_directory" = "Minecraft 游戏目录";
+"preference.title.confirm.delete_game_directory" = "目录 %@ 将被永久删除，并且无法恢复。";
 "preference.multidir.add_directory" = "添加游戏目录";
 
 "preference.title.home_symlink" = "启用兼容性符号链接 *";
-"preference.detail.home_symlink" = "在 /var/mobile/Documents/.pojavlauncher 创建一个符号链接。在沙盒环境中不可用。";
-"preference.title.check_sha" = "检查游戏完整性";
-"preference.detail.check_sha" = "用于效验下载的文件哈希值是否有问题(某些情况下你下载的资源可能是损坏的)";
+"preference.detail.home_symlink" = "在 /var/mobile/Documents/.pojavlauncher 中创建一个符号链接。不支持沙盒环境。";
+"preference.title.check_sha" = "在下载完成后检查游戏完整性";
+"preference.detail.check_sha" = "此选项将强制启动器在哈希值可用时检查下载文件以防止下载错误。";
 "preference.title.cosmetica" = "Cosmetica 披风";
-"preference.detail.cosmetica" = "启用Cosmetica披风,有关更多信息,请访问https://cosmetica.cc";
+"preference.detail.cosmetica" = "启用来自 Cosmetica（原 Arc ）的披风。欲了解更多信息，请访问 https://arcapes.com。需要OptiFine。";
 "preference.title.debug_logging" = "调试日志";
-"preference.detail.debug_logging" = "完整的记录启动器的各种活动事件到latestlog.txt文件内,有助于开发者更容易的发现错误。但Minecraft游戏内FPS可能会降低(频繁的记录日志内容会使得CPU负载变高)";
+"preference.detail.debug_logging" = "记录内部设置和操作到 latestlog.txt。这可以帮助开发者更容易地找到问题，但频繁地写入日志可能会导致 Minecraft 运行速度降低。";
 
-"preference.title.reset_warnings" = "重置带有“警告”的设置选项";
-"preference.title.done.reset_warnings" = "带有“警告”的设置选项已被恢复默认状态";
+"preference.title.reset_warnings" = "重置所有警告";
+"preference.title.done.reset_warnings" = "已重置所有警告";
 
-"preference.title.reset_settings" = "将启动器设置恢复默认";
-"preference.title.confirm.reset_settings" = "重置启动器所有的设置包括JVM参数...";
-"preference.title.done.reset_settings" = "所有设置已经恢复默认状态";
+"preference.title.reset_settings" = "重置所有设置";
+"preference.title.confirm.reset_settings" = "这将重制您所有的自定义首选项，包括分辨率、按钮大小以及 Java 参数。";
+"preference.title.done.reset_settings" = "已重置所有设置";
 
 "preference.title.renderer" = "渲染器";
-"preference.title.renderer.auto" = "根据游戏版本自动选择gl4es与tinygl4angle渲染器启动游戏(智能化)";
-"preference.title.renderer.gl4es" = "gl4es 1.1.4 - OpenGL版本2.1";
-"preference.title.renderer.tinygl4angle" = "tinygl4angle (不支持1.17以下版本) - OpenGL版本3.2";
-"preference.title.renderer.zink" = "Zink (Mesa 21.0) - OpenGL版本4.1(FPS不高)";
-"preference.detail.renderer" = "更改OpenGL渲染器";
+"preference.title.renderer.auto" = "自动选择：gl4es 或 tinygl4angle";
+"preference.title.renderer.gl4es" = "gl4es 1.1.4 - exports OpenGL 2.1";
+"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - exports OpenGL 3.2 (核心配置, 存在限制)";
+"preference.title.renderer.zink" = "Zink (Mesa 21.0) - exports OpenGL 4.1";
+"preference.detail.renderer" = "更改使用的 OpenGL 渲染器";
 
-"preference.title.resolution" = "分辨率缩放(单位%)";
-"preference.detail.resolution" = "降低分辨率可能会提升FPS。默认分辨率为屏幕的分辨率";
+"preference.title.resolution" = "分辨率缩放 (%)";
+"preference.detail.resolution" = "允许降低游戏分辨率。";
 "preference.title.disable_gesture" = "禁用手势";
-"preference.title.press_duration" = "长按屏幕触发时长(单位ms)";
+"preference.title.press_duration" = "长按延迟 (毫秒)";
 "preference.detail.press_duration" = "修改长按摧毁方块、丢弃物品的触发时长";
-"preference.title.button_scale" = "按键大小(单位%)";
-"preference.detail.button_scale" = "该选项一般给IPad用户使用的,如果你觉得按键太小可以将其放大";
-"preference.title.mouse_scale" = "虚拟鼠标图标大小(单位%)";
+"preference.title.button_scale" = "屏幕按钮缩放 (%)";
+"preference.detail.button_scale" = "如果按钮过小则放大按钮，通常平板用户需要更改此选项。";
+"preference.title.mouse_scale" = "鼠标缩放 (%)";
 "preference.detail.mouse_scale" = "修改虚拟鼠标的大小";
 "preference.title.mouse_speed" = "鼠标速度 (%)";
 "preference.detail.mouse_speed" = "修改虚拟鼠标的移动速度";
 "preference.title.virtmouse_enable" = "虚拟鼠标";
-"preference.detail.virtmouse_enable" = "开启虚拟鼠标后将用虚拟鼠标控制游戏";
+"preference.detail.virtmouse_enable" = "启用此选项以在游戏启动时显示虚拟鼠标";
 "preference.title.slideable_hotbar" = "可滑动快捷栏";
 "preference.detail.slideable_hotbar" = "使快捷栏像鼠标滚轮一样可滑动";
-"preference.title.java_home" = "为游戏版本<1.17启用Java17";
-"preference.detail.java_home" = "通常情况下,小于1.17版本应该使用Java8。使用这个选项后全局使用Java17启动游戏。请注意,我们不保证兼容性";
+"preference.title.java_home" = "游戏版本 < 1.17 时也启用 Java 17";
+"preference.detail.java_home" = "这些版本默认使用 Java 8。启用此选项可强制使用 Java 17，但不保证与安装了 Mod 的 Minecraft 兼容。";
 "preference.title.java_args" = "JVM 启动参数";
-"preference.detail.java_args" = "如果你不知道自己在做什么千万别动它(乱改会导致游戏崩溃)。";
+"preference.detail.java_args" = "注意，如果你不清楚自己在做什么请不要修改此选项。";
 "preference.placeholder.java_args" = "自定义参数...";
 "preference.title.auto_ram" = "自动设置内存大小";
 "preference.detail.auto_ram" = "启用 RAM 自动调节";
-"preference.warn.auto_ram" = "关闭该选项后可能造成设备或应用的不稳定,谨慎行事";
-"preference.title.allocated_memory" = "游戏内存(单位MB)";
+"preference.warn.auto_ram" = "在未越狱的设备禁用此选项上可能会导致应用不稳定。请谨慎更改此选项。";
+"preference.title.allocated_memory" = "内存分配 (MB)";
 "preference.detail.allocated_memory" = "控制给 Minecraft 分配多少内存";
-"preference.warn.allocated_memory" = "由于系统的限制,可能会导致游戏不稳定";
+"preference.warn.allocated_memory" = "由于操作系统的局限性，此选项设置过高可能会导致应用不稳定，请谨慎更改此选项。";
 "preference.title.custom_env" = "环境变量";
 "preference.detail.custom_env" = "此选项正在开发";
