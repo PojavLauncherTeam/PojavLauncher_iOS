@@ -45,7 +45,6 @@
 "login.warn.message.ram_unjb" = "Magkaroon ng kamalayan na ang pagbabago sa setting na ito ay maaaring magdulot ng kawalang-tatag ng laro o masira ang kakayahang maglaro.";
 
 "login.warn.title.a7" = "Ito ang huling update para sa device na ito.";
-"login.warn.message.a7" = "Ang iyong device ay hindi masusuporta ang PojavLauncher 2.2. Dahil ito sa limitasyon ng hardware at software.";
 
 "login.warn.title.demomode" = "Ang opsyon na ito ay nasa \"beta\".";
 "login.warn.message.demomode" = "Bilang kapalit sa offline at lokal na mode, magbibigay-daan sa iyo ang demo mode na mag-sign in sa isang Microsoft account na hindi nagmamay-ari ng laro at laruin ang pagsubok ng Java Edition, na ipinakilala sa 1.3.1 at mas bagong mga bersyon.";
