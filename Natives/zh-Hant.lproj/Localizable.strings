@@ -4,11 +4,49 @@
 */
 
 "game.menu.force_close" = "強制關閉";
+"game.menu.confirm.force_close" = "你是否肯定想強制關閉？";
 "game.menu.log_output" = "日誌輸出";
 "game.menu.custom_controls" = "自訂控制鍵";
+
+// Version categories
+"Installed" = "已安裝";
 "Snapshot" = "快照";
+"Releases" = "發行";
 "Old-beta" = "遠古beta版";
 "Old-alpha" = "遠古alpha版";
+
+"init.migrateDir" = "PojavLauncher數據資料夾現為%@。你的所有已有資料已被移動到新位置。";
+
+"login.error.username.outOfRange" = "用戶名必須是在3至16個字元之間。";
+
+"login.alert.field.username" = "用戶名";
+
+"login.jit.checking" = "正在檢查即時編譯";
+"login.jit.enabled" = "即時編譯已啟動";
+"login.jit.fail.JitStreamer" = "JitStreamer 錯誤：%@";
+"login.jit.found.JitStreamer" = "找到JitStreamer，正在啟動即時編譯。";
+
+// Login buttons
+"Sign in" = "登入";
+"FAQ" = "常見問題";
+"Accounts" = "帳戶";
+"login.menu.sendlogs" = "發送你的日誌";
+"login.menu.updates" = "最近更新";
+
+"login.option.microsoft" = "微軟帳戶";
+"login.option.demo" = "示範帳戶";
+"login.option.local" = "本地帳戶";
+
+"login.progress.title" = "正在登入";
+
+"login.warn.title.ram_unjb" = "已啟動記憶體搖桿";
+"login.warn.message.ram_unjb" = "請注意，更改這個設定可能會導致遊戲不穩定，或導致完全無法遊玩。";
+
+"login.warn.title.a7" = "這是對於這個裝置的最後更新。";
+"login.warn.message.a7" = "PojavLauncher 2.2將不會支援此裝置，這個決定是因為軟體和硬體限制而作出的。";
+
+"login.warn.title.demomode" = "這個選項為測試版。";
+"login.warn.message.demomode" = "作為離線和本地模式的代替，示範模式會允許你用一個不擁有遊戲的微軟帳戶來登入，並遊玩在版本1.3.1引入的Java版試玩版。由於官方的啟動器沒有加入限制，更舊的版本將含有完整的遊戲。要了解更多關於從離線模式過渡到示範模式的資訊，請瀏覽我們的網頁。";
 
 "Settings" = "設定";
 "preference.section.control" = "自定義控制";
