@@ -36,7 +36,7 @@
 "login.menu.updates" = "启动器更新日志";
 
 "login.option.microsoft" = "微软账户";
-"login.option.demo" = "试玩账户";
+"login.option.demo" = "演示账户";
 "login.option.local" = "本机账户(离线模式)";
 
 "login.progress.title" = "登陆中";
@@ -44,11 +44,11 @@
 "login.warn.title.ram_unjb" = "自动分配内存已开启";
 "login.warn.message.ram_unjb" = "关闭自动分配内存后可能导致游戏不稳定或完全不能进入游戏，这是因为 IOS 系统可用内存本来就小。我们推荐你更换更大运行内存的设备使用应用。";
 
-"login.warn.title.a7" = "这是此设备的最后一次更新。";
-"login.warn.message.a7" = "由于硬件和软件限制，PojavLauncher 2.2 将不再支持此设备。";
+"login.warn.title.a7" = "该设备存在一些问题";
+"login.warn.message.a7" = "你的设备不在支持PojavLauncher 2.2版本，这是因为你设备硬件限制";
 
 "login.warn.title.iosver" = "这是此 iOS 设备的最后一次更新。";
-"login.warn.message.iosver" = "由于功能不一致和开发阻碍，未来版本的 PojavLauncher 将不再支持 iOS 12 和 13。";
+"login.warn.message.iosver" = "PojavLauncher在未来某个版本更新后不在支持IOS14以下版本系统使用";
 
 "login.warn.title.2gb" = "您的设备限制了内存。";
 "login.warn.message.2gb" = "内存小于 3GB 的设备可能会运行到内存约束。我们建议为您的设备保留自动选择器。";
@@ -108,9 +108,9 @@
 
 "preference.title.renderer" = "渲染器";
 "preference.title.renderer.auto" = "自动选择：gl4es 或 tinygl4angle";
-"preference.title.renderer.gl4es" = "gl4es 1.1.4 - exports OpenGL 2.1";
-"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - exports OpenGL 3.2 (核心配置, 存在限制)";
-"preference.title.renderer.zink" = "Zink (Mesa 21.0) - exports OpenGL 4.1";
+"preference.title.renderer.gl4es" = "gl4es 1.1.4 - OpenGL版本2.1";
+"preference.title.renderer.tinygl4angle" = "tinygl4angle (不支持1.17以下版本) - OpenGL版本3.2";
+"preference.title.renderer.zink" = "Zink (Mesa 21.0) - OpenGL版本4.1(FPS不高)";
 "preference.detail.renderer" = "更改使用的 OpenGL 渲染器";
 
 "preference.title.resolution" = "分辨率缩放 (%)";
@@ -138,6 +138,6 @@
 "preference.warn.auto_ram" = "在未越狱的设备禁用此选项上可能会导致应用不稳定。请谨慎更改此选项。";
 "preference.title.allocated_memory" = "内存分配 (MB)";
 "preference.detail.allocated_memory" = "控制给 Minecraft 分配多少内存";
-"preference.warn.allocated_memory" = "由于操作系统的局限性，此选项设置过高可能会导致应用不稳定，请谨慎更改此选项。";
+"preference.warn.allocated_memory" = "由于系统的限制,可能会导致游戏不稳定";
 "preference.title.custom_env" = "环境变量";
 "preference.detail.custom_env" = "此选项正在开发";
