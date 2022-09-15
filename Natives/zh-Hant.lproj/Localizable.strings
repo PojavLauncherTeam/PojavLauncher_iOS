@@ -46,6 +46,10 @@
 "login.warn.message.a7" = "由於軟體和硬體限制，PojavLauncher 2.2將不再支援此裝置。";
 
 "login.warn.title.iosver" = "這是對於這個iOS版本的最後一次更新。";
+"login.warn.message.iosver" = "由於功能上不一致和開發困難，未來版本的PojavLauncher將不會支持iOS 12或13。";
+
+"login.warn.title.2gb" = "你的裝置的記憶體有限。";
+"login.warn.message.2gb" = "記憶體容量少於3GB的裝置可能會遇到記憶體限制。我們建議你保持自動記憶體選擇器在啟動狀態。";
 
 "login.warn.title.demomode" = "這個選項為測試版。";
 "login.warn.message.demomode" = "作為離線和本地模式的代替，示範模式會允許你用一個不擁有遊戲的微軟帳戶來登入，並遊玩在版本1.3.1引入的Java版試玩版。由於官方的啟動器沒有加入限制，更舊的版本將含有完整的遊戲。要了解更多關於從離線模式過渡到示範模式的資訊，請瀏覽我們的網頁。";
