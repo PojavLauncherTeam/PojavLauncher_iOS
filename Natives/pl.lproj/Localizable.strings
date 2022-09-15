@@ -43,6 +43,13 @@
 "login.warn.message.ram_unjb" = "Pamiętaj, że zmiana tego ustawienia może spowodować niestabilność gry lub całkowicie uniemożliwić grę.";
 
 "login.warn.title.a7" = "To jest ostatnia aktualizacja dla tego urządzenia.";
+"login.warn.message.a7" = "PojavLauncher 2.2 nie będzie obsługiwany na Twoim urządzeniu ze względu na wymagania sprzętowe.";
+
+"login.warn.title.iosver" = "To jest ostatnia aktualizacja dla tej wersji iOS.";
+"login.warn.message.iosver" = "Przyszłe wersje PojavLauncher nie będą obsługiwać iOS 12 lub 13 ze względu na niespójności funkcji oraz przeszkody w rozwoju programu.";
+
+"login.warn.title.2gb" = "Twoje urządzenie posiada mało pamięci RAM.";
+"login.warn.message.2gb" = "Na urządzeniach z mniej niż 3 GB pamięci mogą wystąpić problemy. Zalecane jest włączenie automatycznego przydziału pamięci.";
 
 "login.warn.title.demomode" = "To jest testowa opcja.";
 "login.warn.message.demomode" = "Jak zamiennik dla trybu offline oraz lokalnego, tryb demo umożliwia logowanie na Konto Microsoft, które nie posiada gry i umożliwia granie w wersję próbną Java Edition wprowadzoną w wersji 1.3.1 oraz nowszych. Starsze wersje zawierają pełną wersję gry, ponieważ oficjalny launcher nie wymusza tych ograniczeń. Sprawdź naszą stronę internetową, aby dowiedzieć się więcej o przejściu z trybu offline.";
