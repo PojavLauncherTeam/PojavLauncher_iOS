@@ -222,8 +222,9 @@ BOOL slideableHotbar;
 
     resolutionScale = ((NSNumber *)getPreference(@"resolution")).floatValue / 100.0;
 
-    savedWidth = roundf(screenBounds.size.width * screenScale * resolutionScale);
-    savedHeight = roundf(screenBounds.size.height * screenScale * resolutionScale);
+    physicalWidth = roundf(screenBounds.size.width * screenScale);
+    physicalHeight = roundf(screenBounds.size.height * screenScale);
+    [self updateSavedResolution];
 
     self.rootView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width + 30.0, self.view.frame.size.height)];
     [self.view addSubview:self.rootView];
@@ -430,9 +431,20 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
     // Update resolution
     resolutionScale = [getPreference(@"resolution") floatValue] / 100.0;
     self.surfaceView.layer.contentsScale = screenScale * resolutionScale;
-    savedWidth = roundf(screenBounds.size.width * screenScale * resolutionScale);
-    savedHeight = roundf(screenBounds.size.height * screenScale * resolutionScale);
-    CallbackBridge_nativeSendScreenSize(savedWidth, savedHeight);
+    [self updateSavedResolution];
+    CallbackBridge_nativeSendScreenSize(windowWidth, windowHeight);
+}
+
+- (void)updateSavedResolution {
+    windowWidth = roundf(physicalWidth * resolutionScale);
+    windowHeight = roundf(physicalHeight * resolutionScale);
+    // Resolution should not be odd
+    if ((windowWidth % 2) != 0) {
+        --windowWidth;
+    }
+    if ((windowHeight % 2) != 0) {
+        --windowHeight;
+    }
 }
 
 - (void)launchMinecraft {
@@ -442,7 +454,7 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
             launchJVM(
                 BaseAuthenticator.current.authData[@"username"],
                 json,
-                savedWidth, savedHeight,
+                windowWidth, windowHeight,
                 [json[@"javaVersion"][@"majorVersion"] intValue]
             );
         }];
@@ -790,7 +802,7 @@ CGPoint lastCenterPoint;
     if (sender.state == UIGestureRecognizerStateRecognized && isGrabbing) {
         CGFloat screenScale = [[UIScreen mainScreen] scale];
         CGPoint point = [sender locationInView:self.rootView];
-        int hotbarSlot = callback_SurfaceViewController_touchHotbar(point.x * screenScale * resolutionScale, point.y * screenScale * resolutionScale);
+        int hotbarSlot = callback_SurfaceViewController_touchHotbar(point.x * screenScale, point.y * screenScale);
         if (hotbarSlot != -1 && currentHotbarSlot == hotbarSlot) {
             CallbackBridge_nativeSendKey(GLFW_KEY_F, 0, 1, 0);
             CallbackBridge_nativeSendKey(GLFW_KEY_F, 0, 0, 0);
@@ -829,7 +841,7 @@ CGPoint lastCenterPoint;
     if (!slideableHotbar) {
         CGFloat screenScale = [[UIScreen mainScreen] scale];
         CGPoint location = [sender locationInView:self.rootView];
-        currentHotbarSlot = callback_SurfaceViewController_touchHotbar(location.x * screenScale * resolutionScale, location.y * screenScale * resolutionScale);
+        currentHotbarSlot = callback_SurfaceViewController_touchHotbar(location.x * screenScale, location.y * screenScale);
     }
     if (sender.state == UIGestureRecognizerStateBegan) {
         self.shouldTriggerClick = NO;

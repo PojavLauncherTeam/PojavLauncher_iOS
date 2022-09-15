@@ -231,13 +231,16 @@ int callback_SurfaceViewController_touchHotbar(CGFloat x, CGFloat y) {
         return -1;
     }
 
-    int barHeight = mcscale(40); // 20
-    int barWidth = mcscale(360); // 180
-    int barX = (savedWidth / 2) - (barWidth / 2);
-    int barY = savedHeight - barHeight;
-    if (x < barX || x >= barX + barWidth || y < barY || y >= barY + barHeight) {
-        return -1;
-    }
+    int barHeight = mcscale(20);
+    int barY = physicalHeight - barHeight;
+    if (y < barY) return -1;
+
+    int barWidth = mcscale(180);
+    int barX = (physicalWidth / 2) - (barWidth / 2);
+    if (x < barX || x >= barX + barWidth) return -1;
+
+    if (y < barY || x < barX || x >= barX + barWidth) return -1;
+
     return hotbarKeys[(int) MathUtils_map(x, barX, barX + barWidth, 0, 9)];
 }
 
@@ -251,7 +254,7 @@ JNIEXPORT jstring JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeClipboard(JNI
 }
 
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetInputReady(JNIEnv* env, jclass clazz, jboolean inputReady) {
-    debugLog("Debug: Changing input state, isReady=%d, isUseStackQueueCall=%d\n", inputReady, isUseStackQueueCall);
+    //debugLog("Debug: Changing input state, isReady=%d, isUseStackQueueCall=%d\n", inputReady, isUseStackQueueCall);
     isInputReady = inputReady;
 
     return isUseStackQueueCall;
@@ -395,8 +398,8 @@ void CallbackBridge_nativeSendMouseButton(int button, int action, int mods) {
 }
 
 void CallbackBridge_nativeSendScreenSize(int width, int height) {
-    savedWidth = width;
-    savedHeight = height;
+    windowWidth = width;
+    windowHeight = height;
     
     if (isInputReady) {
         if (GLFW_invoke_FramebufferSize) {

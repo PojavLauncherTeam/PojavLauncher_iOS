@@ -68,12 +68,13 @@ BOOL isJITEnabled();
 
 void* gbuffer; // OSMesa framebuffer
 long showingWindow;
-int savedWidth, savedHeight;
+int windowWidth, windowHeight;
+int physicalWidth, physicalHeight;
 bool isInputReady, isCursorEntered, isPrepareGrabPos, isUseStackQueueCall;
 jboolean isGrabbing;
 BOOL virtualMouseEnabled;
 
-static float resolutionScale = 1.0;
+float resolutionScale;
 BOOL isControlModifiable;
 
 // Init functions

@@ -18,7 +18,7 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_refreshAWTBuffer(JNI
     }
 
     int *tmpArray = (*env)->GetIntArrayElements(env, jreRgbArray, 0);
-    memcpy(rgbArray, tmpArray, savedWidth * savedHeight * 4);
+    memcpy(rgbArray, tmpArray, windowWidth * windowHeight * 4);
     (*env)->ReleaseIntArrayElements(env, jreRgbArray, tmpArray, JNI_ABORT);
     dispatch_async(dispatch_get_main_queue(), ^{
         [surfaceView displayLayer];
@@ -31,8 +31,8 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
 }
    
 - (void)displayLayer {
-    CGDataProviderRef bitmapProvider = CGDataProviderCreateDirect(NULL, savedWidth * savedHeight * 4, &callbacks);
-    CGImageRef bitmap = CGImageCreate(savedWidth, savedHeight, 8, 32, 4 * savedWidth, colorSpace, kCGImageAlphaFirst | kCGBitmapByteOrder32Little, bitmapProvider, NULL, FALSE, kCGRenderingIntentDefault);     
+    CGDataProviderRef bitmapProvider = CGDataProviderCreateDirect(NULL, windowWidth * windowHeight * 4, &callbacks);
+    CGImageRef bitmap = CGImageCreate(windowWidth, windowHeight, 8, 32, 4 * windowWidth, colorSpace, kCGImageAlphaFirst | kCGBitmapByteOrder32Little, bitmapProvider, NULL, FALSE, kCGRenderingIntentDefault);     
 
     self.layer.contents = (__bridge id) bitmap;
     CGImageRelease(bitmap);
@@ -81,8 +81,8 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
     int height = (int) roundf(screenBounds.size.height);
     float resolution = [getPreference(@"resolution") floatValue] / 100.0;
 
-    savedWidth = roundf(width * screenScale * resolution);
-    savedHeight = roundf(height * screenScale * resolution);
+    windowWidth = roundf(width * screenScale * resolution);
+    windowHeight = roundf(height * screenScale * resolution);
 
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
     scrollView.delegate = self;
@@ -103,10 +103,10 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
     tapGesture.cancelsTouchesInView = NO;
     [surfaceView addGestureRecognizer:tapGesture];
 
-    rgbArray = calloc(4, (size_t) (savedWidth * savedHeight));
+    rgbArray = calloc(4, (size_t) (windowWidth * windowHeight));
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        launchJVM(nil, self.filepath, savedWidth * resolutionScale, savedHeight * resolutionScale, 8);
+        launchJVM(nil, self.filepath, windowWidth * resolutionScale, windowHeight * resolutionScale, 8);
     });
 }
 
