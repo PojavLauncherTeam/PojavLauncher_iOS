@@ -239,8 +239,6 @@ int callback_SurfaceViewController_touchHotbar(CGFloat x, CGFloat y) {
     int barX = (physicalWidth / 2) - (barWidth / 2);
     if (x < barX || x >= barX + barWidth) return -1;
 
-    if (y < barY || x < barX || x >= barX + barWidth) return -1;
-
     return hotbarKeys[(int) MathUtils_map(x, barX, barX + barWidth, 0, 9)];
 }
 
