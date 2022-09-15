@@ -45,6 +45,13 @@
 "login.warn.message.ram_unjb" = "关闭自动分配内存后可能导致游戏不稳定或完全不能进入游戏，这是因为 IOS 系统可用内存本来就小。我们推荐你更换更大运行内存的设备使用应用。";
 
 "login.warn.title.a7" = "这是此设备的最后一次更新。";
+"login.warn.message.a7" = "由于硬件和软件限制，PojavLauncher 2.2 将不再支持此设备。";
+
+"login.warn.title.iosver" = "这是此 iOS 设备的最后一次更新。";
+"login.warn.message.iosver" = "由于功能不一致和开发阻碍，未来版本的 PojavLauncher 将不再支持 iOS 12 和 13。";
+
+"login.warn.title.2gb" = "您的设备限制了内存。";
+"login.warn.message.2gb" = "内存小于 3GB 的设备可能会运行到内存约束。我们建议为您的设备保留自动选择器。";
 
 "login.warn.title.demomode" = "该选项处于测试阶段。";
 "login.warn.message.demomode" = "演示模式作为离线和本地模式的替代，将允许你登录到一个尚未购买游戏的微软账户中游玩 1.3.1 及更新版本的试玩版本。因为官方启动器的一些特性，在较旧版本中会包含完整的游戏。详情请参阅我们的网站，了解更多关于离线模式的过渡。";
