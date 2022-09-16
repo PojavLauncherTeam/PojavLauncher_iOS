@@ -106,7 +106,7 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
     rgbArray = calloc(4, (size_t) (windowWidth * windowHeight));
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        launchJVM(nil, self.filepath, windowWidth * resolutionScale, windowHeight * resolutionScale, 8);
+        launchJVM(nil, self.filepath, windowWidth, windowHeight, 8);
     });
 }
 
