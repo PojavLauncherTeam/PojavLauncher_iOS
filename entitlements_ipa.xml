@@ -13,6 +13,10 @@
     <key>com.apple.private.mobileinstall.upgrade-enabled</key>
     <true/>
 
+    <!-- Give ability to change Jetsam task limit by itself -->
+    <key>com.apple.private.memorystatus</key>
+    <true/>
+
     <!-- Disable sandbox so that PojavLauncher can enable JIT by itself -->
     <key>com.apple.private.security.no-container</key>
     <true/>
