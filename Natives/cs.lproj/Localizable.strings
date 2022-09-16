@@ -43,6 +43,13 @@
 "login.warn.message.ram_unjb" = "Uvědomte si, že měnění tohoto nastavení může způsobit nestabilitu hry či rozbít schopnost hrát vůbec.";
 
 "login.warn.title.a7" = "Toto je poslední aktualizace pro toto zařízení.";
+"login.warn.message.a7" = "PojavLauncher 2.2 nebude podporovat toto zařízení, kvůli hardwarovým a softwarovým omezením.";
+
+"login.warn.title.iosver" = "Poslední aktualizace pro tuto verzi iOSu je tato.";
+"login.warn.message.iosver" = "Budoucí verze PojavLauncheru nebude podporovat iOS 12 a 13, kvůli funkčním nekonzistencím a překážkám vývoje.";
+
+"login.warn.title.2gb" = "Tvé zařízení má omezenou RAM.";
+"login.warn.message.2gb" = "Zařízení s méně než 3GB paměti mohou narazit na pamětová omezení. Doporučujeme nechat automatický selektor zapnutý pro tvé zařízení.";
 
 "login.warn.title.demomode" = "Tato možnost je v betě.";
 "login.warn.message.demomode" = "Jako náhrada za offline a místní režim, demo režim povolí přihlášení do Microsoft účtu, jenž hru nevlastní, a hrát zkušební verzi Java edice, přidanou v 1.3.1 a novějších verzích. Starší verze obsahují plnou hru, majíce ji i v oficiálním spouštěči, jenž nemá pro ně omezení. Viz naši webovou stránku pro více informací o této změně z offline režimu.";
