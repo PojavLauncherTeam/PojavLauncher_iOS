@@ -92,12 +92,12 @@
 
 "preference.title.home_symlink" = "启用兼容性符号链接 *";
 "preference.detail.home_symlink" = "在 /var/mobile/Documents/.pojavlauncher 中创建一个符号链接。不支持沙盒环境。";
-"preference.title.check_sha" = "在下载完成后检查游戏完整性";
-"preference.detail.check_sha" = "此选项将强制启动器在哈希值可用时检查下载文件以防止下载错误。";
+"preference.title.check_sha" = "检查游戏完整性";
+"preference.detail.check_sha" = "用于效验下载的文件哈希值是否有问题(某些情况下你下载的资源可能是损坏的)";
 "preference.title.cosmetica" = "Cosmetica 披风";
 "preference.detail.cosmetica" = "启用来自 Cosmetica（原 Arc ）的披风。欲了解更多信息，请访问 https://arcapes.com。需要OptiFine。";
 "preference.title.debug_logging" = "调试日志";
-"preference.detail.debug_logging" = "记录内部设置和操作到 latestlog.txt。这可以帮助开发者更容易地找到问题，但频繁地写入日志可能会导致 Minecraft 运行速度降低。";
+"preference.detail.debug_logging" = "完整的记录启动器的各种活动事件到latestlog.txt文件内,有助于开发者更容易的发现错误。但Minecraft游戏内FPS可能会降低(频繁的记录日志内容会使得CPU负载变高)";
 
 "preference.title.reset_warnings" = "重置所有警告";
 "preference.title.done.reset_warnings" = "已重置所有警告";
