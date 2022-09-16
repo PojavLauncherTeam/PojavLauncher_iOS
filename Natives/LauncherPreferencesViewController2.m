@@ -188,11 +188,9 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"hasDetail": @YES,
                 @"icon": @"slider.horizontal.3",
                 @"type": self.typeSwitch,
-                @"enableCondition": ^BOOL(){
-                    return getenv("POJAV_DETECTEDJB") == NULL && whenNotInGame();
-                },
+                @"enableCondition": whenNotInGame,
                 @"warnCondition": ^BOOL(){
-                    return getenv("POJAV_DETECTEDJB") == NULL && whenNotInGame();
+                    return getenv("POJAV_DETECTEDJB") == NULL;
                 },
                 @"warnKey": @"auto_ram_warn",
                 @"requestReload": @YES

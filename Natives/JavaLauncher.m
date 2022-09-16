@@ -28,7 +28,6 @@ static int margc = -1;
 static char* margv[1000];
 
 const char *javaHome;
-const char *allocmem;
 const char *multidir;
 
 char *homeDir;
@@ -169,19 +168,23 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     }
     setenv("POJAV_RENDERER", renderer.UTF8String, 1);
     
-    allocmem_pre = [getPreference(@"allocated_memory") stringValue];
-    allocmem = [allocmem_pre cStringUsingEncoding:NSUTF8StringEncoding];
+    int allocmem;
+    if ([getPreference(@"auto_ram") boolValue]) {
+        CGFloat autoRatio = getEntitlementValue(@"com.apple.private.memorystatus") ? 0.4 : 0.25;
+        allocmem = roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * autoRatio);
+    } else {
+        allocmem = [getPreference(@"allocated_memory") intValue];
+    }
 
     // "/Applications/PojavLauncher.app/libs/launcher.jar:/Applications/PojavLauncher.app/libs/ExagearApacheCommons.jar:/Applications/PojavLauncher.app/libs/gson-2.8.6.jar:/Applications/PojavLauncher.app/libs/jsr305.jar:/Applications/PojavLauncher.app/libs/lwjgl3-minecraft.jar";
 
     // Check if JVM restarts
-    char *frameworkPath, *javaPath, *jnaLibPath, *userDir, *userHome, *memMin, *memMax, *arcDNS;
+    char *frameworkPath, *javaPath, *jnaLibPath, *userDir, *userHome, *arcDNS;
     asprintf(&frameworkPath, "-Djava.library.path=%1$s/Frameworks:%1$s/Frameworks/libOSMesaOverride.dylib.framework:%1$s/Frameworks/libMoltenVK.dylib.framework", getenv("BUNDLE_PATH"));
     asprintf(&javaPath, "%s/bin/java", javaHome);
     asprintf(&jnaLibPath, "-Djna.boot.library.path=%s/Frameworks/libjnidispatch.dylib.framework", getenv("BUNDLE_PATH"));
     asprintf(&userDir, "-Duser.dir=%s", getenv("POJAV_GAME_DIR"));
     asprintf(&userHome, "-Duser.home=%s", getenv("POJAV_HOME"));
-    asprintf(&memMax, "-Xmx%sM", allocmem);
     asprintf(&arcDNS, "-javaagent:%s/arc_dns_injector.jar=23.95.137.176", java_libs_path);
     NSLog(@"[JavaLauncher] Java executable path: %s", javaPath);
     setenv("JAVA_EXT_EXECNAME", javaPath, 1);
@@ -190,7 +193,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     margv[++margc] = "-XstartOnFirstThread";
     margv[++margc] = "-Djava.system.class.loader=net.kdt.pojavlaunch.PojavClassLoader";
     margv[++margc] = "-Xms128M";
-    margv[++margc] = memMax;
+    margv[++margc] = (char *)[NSString stringWithFormat:@"-Xmx%dM", allocmem].UTF8String;
     margv[++margc] = frameworkPath;
     margv[++margc] = jnaLibPath;
     margv[++margc] = userDir;

@@ -123,7 +123,7 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(prefDict, @"slideable_hotbar", @NO);
     setDefaultValueForPref(prefDict, @"virtmouse_enable", @NO);
     setDefaultValueForPref(prefDict, @"check_sha", @YES);
-    setDefaultValueForPref(prefDict, @"auto_ram", @(getenv("POJAV_DETECTEDJB") == NULL));
+    setDefaultValueForPref(prefDict, @"auto_ram", @(!getEntitlementValue(@"com.apple.private.memorystatus")));
     setDefaultValueForPref(prefDict, @"unsupported_warn_counter", @(0));
     
     if (0 != [fileManager fileExistsAtPath:@"/var/mobile/Documents/.pojavlauncher"]) {
