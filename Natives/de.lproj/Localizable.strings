@@ -45,6 +45,11 @@
 "login.warn.message.ram_unjb" = "Sei dir darüber bewusst, dass Änderung dieser Einstellung die Stabilität des Spiels oder das Starten des Spiels komplett beeinträchtigt kann.";
 
 "login.warn.title.a7" = "Dies ist das letzte Update für dieses Gerät.";
+"login.warn.message.a7" = "PojavLauncher 2.2 wird dieses Gerät aufgrund von Hard- und Software Einschränkungen nicht unterstützen.";
+
+"login.warn.title.iosver" = "Dies ist das letzte Update für diese iOS Version.";
+
+"login.warn.title.2gb" = "Ihr Gerät hat begrenzten Arbeitsspeicher.";
 
 "login.warn.title.demomode" = "Diese Einstellung ist in Beta.";
 
