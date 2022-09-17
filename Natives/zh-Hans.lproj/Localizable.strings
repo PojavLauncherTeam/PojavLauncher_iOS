@@ -12,8 +12,8 @@
 "Installed" = "已安装";
 "Snapshot" = "快照";
 "Releases" = "正式版";
-"Old-beta" = "远古beta版";
-"Old-alpha" = "远古alpha版";
+"Old-beta" = "远古 beta 版";
+"Old-alpha" = "远古 alpha 版";
 
 "init.migrateDir" = "目前 PojavLauncher 数据目录为%@。所有的游戏资源已移动到最新目录。";
 
@@ -42,7 +42,7 @@
 "login.progress.title" = "登陆中";
 
 "login.warn.title.ram_unjb" = "自动分配内存已开启";
-"login.warn.message.ram_unjb" = "关闭自动分配内存后可能导致游戏不稳定或完全不能进入游戏，这是因为 IOS 系统可用内存本来就小。我们推荐你更换更大运行内存的设备使用应用。";
+"login.warn.message.ram_unjb" = "请注意，更改此选项可能会导致游戏不稳定或无法进行游戏";
 
 "login.warn.title.a7" = "该设备存在一些问题";
 "login.warn.message.a7" = "你的设备不在支持PojavLauncher 2.2版本，这是因为你设备硬件限制";
@@ -134,7 +134,7 @@
 "preference.detail.java_args" = "注意，如果你不清楚自己在做什么请不要修改此选项。";
 "preference.placeholder.java_args" = "自定义参数...";
 "preference.title.auto_ram" = "自动设置内存大小";
-"preference.detail.auto_ram" = "启用 RAM 自动调节";
+"preference.detail.auto_ram" = "启用内存自动调节";
 "preference.warn.auto_ram" = "在未越狱的设备禁用此选项上可能会导致应用不稳定。请谨慎更改此选项。";
 "preference.title.allocated_memory" = "内存分配 (MB)";
 "preference.detail.allocated_memory" = "控制给 Minecraft 分配多少内存";
