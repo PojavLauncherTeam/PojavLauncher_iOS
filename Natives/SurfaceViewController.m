@@ -804,10 +804,12 @@ CGPoint lastCenterPoint;
         if (currentHotbarSlot == -1) {
             inputTextLength = 0;
 
-            CallbackBridge_nativeSendMouseButton(
-                isGrabbing == JNI_TRUE ? GLFW_MOUSE_BUTTON_RIGHT : GLFW_MOUSE_BUTTON_LEFT, 1, 0);
-            CallbackBridge_nativeSendMouseButton(
-                isGrabbing == JNI_TRUE ? GLFW_MOUSE_BUTTON_RIGHT : GLFW_MOUSE_BUTTON_LEFT, 0, 0);
+            CallbackBridge_nativeSendMouseButton(isGrabbing == JNI_TRUE ?
+                GLFW_MOUSE_BUTTON_RIGHT : GLFW_MOUSE_BUTTON_LEFT, 1, 0);
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 33 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
+                CallbackBridge_nativeSendMouseButton(isGrabbing == JNI_TRUE ?
+                    GLFW_MOUSE_BUTTON_RIGHT : GLFW_MOUSE_BUTTON_LEFT, 0, 0);
+            });
         } else {
             CallbackBridge_nativeSendKey(currentHotbarSlot, 0, 1, 0);
             CallbackBridge_nativeSendKey(currentHotbarSlot, 0, 0, 0);
