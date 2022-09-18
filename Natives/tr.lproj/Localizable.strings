@@ -4,11 +4,42 @@
 */
 
 "game.menu.force_close" = "Kapatmaya zorla";
+"game.menu.confirm.force_close" = "Zorla kapatmak istediğinize emin misiniz?";
 "game.menu.log_output" = "Konsol çıktısı";
 "game.menu.custom_controls" = "Özel kontroller";
+
+// Version categories
+"Installed" = "Kuruldu";
 "Snapshot" = "Test sürümleri";
+"Releases" = "Sürümler";
 "Old-beta" = "Eski-beta";
 "Old-alpha" = "Eski-alfa";
+
+"init.migrateDir" = "PojavLauncher veri dosyası artık %@. Önceden varolan bütün verilerin yeni konuma taşındı.";
+
+"login.error.username.outOfRange" = "Kullanıcı adı en az 3 en fazla 16 karakter olmalıdır";
+
+"login.alert.field.username" = "Kullanıcı Adı";
+
+"login.jit.checking" = "JIT tespit ediliyor";
+"login.jit.enabled" = "JIT etkinleştirildi";
+"login.jit.fail.JitStreamer" = "JIT streamer hatası: %@";
+"login.jit.found.JitStreamer" = "JITStreamer bulundu, JIT etkinleştiriliyor";
+
+// Login buttons
+"Sign in" = "Giriş yap";
+"FAQ" = "SSS";
+"Accounts" = "Hesaplar";
+"login.menu.sendlogs" = "Kayıt günlüğünüzü gönderin";
+"login.menu.updates" = "Son güncellemeler";
+
+"login.option.microsoft" = "Microsoft hesabı";
+"login.option.demo" = "Demo hesabı";
+"login.option.local" = "Yerel hesap";
+
+"login.progress.title" = "Oturum açılıyor";
+
+"login.warn.title.ram_unjb" = "Hafıza kaydırıcısı etkinleştirildi";
 
 "Settings" = "Ayarlar";
 "preference.section.control" = "Kontrol özelleştirmesi";
