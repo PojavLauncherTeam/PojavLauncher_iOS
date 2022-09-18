@@ -30,6 +30,8 @@
 "Sign in" = "Masuk";
 "FAQ" = "FAQ";
 "Accounts" = "Akun";
+
+"login.menu.about" = "Tentang PojavLauncher";
 "login.menu.sendlogs" = "Kirim log-log kamu";
 "login.menu.updates" = "Update terbaru";
 
