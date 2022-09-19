@@ -94,7 +94,7 @@
 "preference.detail.home_symlink" = "/var/mobile/Documents/.PojavLauncher'a bir symlink oluştur. Sandbox'lu çevrelerde mevcut değil.";
 "preference.title.check_sha" = "Dosyaları indirdikten sonra kontrol et";
 "preference.detail.check_sha" = "Bu seçenek başlatıcıyı eğer varsa dosya hash'ini kontrol etmeye zorlar. Bozuk indirmeleri engeller.";
-"preference.title.cosmetica" = "Turkish ";
+"preference.title.cosmetica" = "Cosmetica Pelerinleri";
 "preference.detail.cosmetica" = "Cosmetica'nın pelerinlerini etkinleştir (önceden Arc). Daha fazla bilgi için lütfen https://cosmetica.cc'yi ziyaret edin. OptiFine gerektirir";
 "preference.title.debug_logging" = "Hata ayıklama kaydı tutma";
 "preference.detail.debug_logging" = "İç seçenekleri ve eylemleri latestlog.txt'ye kaydeder. Bu geliştiricilerin sorunu daha kolay bulmasını sağlar, fakat çok sık kayıt edileceği için Minecraft daha yavaş çalışabilir.";
@@ -130,11 +130,11 @@
 "preference.detail.slideable_hotbar" = "Hotbar'ın fare tekerleğindeki gibi kaydırılabilmesini sağlar";
 "preference.title.java_home" = "Minecraft 1.17 < için Java 17 kullan";
 "preference.detail.java_home" = "O sürümler için Java 8 varsayılan olarak kullanılır. Java 17'yi zorla kullanmak için bu seçeneği etkinleştir, ancak modlu ile uyumluluk garanti değildir.";
-"preference.title.java_args" = "JVM Başlatıcı argümanları";
+"preference.title.java_args" = "JVM Başlatıcı değişkenleri";
 "preference.detail.java_args" = "Dikkatli olun, eğer bilgisizce değiştirilirse oyunun çökmesine sebep olabilir.";
 "preference.placeholder.java_args" = "Değişkenleri belirt...";
-"preference.title.auto_ram" = "Otomatik RAM";
-"preference.detail.auto_ram" = "Otomatik RAM ayarlayıcısını etkinleştirir";
+"preference.title.auto_ram" = "Otomatik BELLEK";
+"preference.detail.auto_ram" = "Otomatik bellek ayarlayıcısını etkinleştirir";
 "preference.warn.auto_ram" = "Bu seçeneği jailbreak'lenmemiş bir cihazda devre dışı bırakmak dengesizlik oluşturabilir. Önlemle devam edin.";
 "preference.title.allocated_memory" = "Bellek ayırımı (MB)";
 "preference.detail.allocated_memory" = "Minecraft'a ne kadar bellek verileceğini kontrol eder";
