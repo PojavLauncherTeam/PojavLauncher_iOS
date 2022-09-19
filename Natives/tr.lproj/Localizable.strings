@@ -56,6 +56,7 @@
 "login.warn.title.demomode" = "Bu seçenek betada.";
 
 "login.warn.title.localmode" = "Çevrimdışı mod artık yerel mod.";
+"login.warn.message.localmode" = "Kurulu sürümleri oynamaya devam edebilirsiniz, fakat ücreti ödenmiş Minecraft hesabı olmadan Minecraft'ı indiremezsiniz. Yerel hesaplardaki sorunlar veya Minecraft'ı edinmenin diğer yollarına hiçbir şekilde destek verilmeyecektir. Daha fazla bilgi için lütfen SSS'yi inceleyin.";
 
 "login.msa.error.xsts.noxboxacc" = "Bu Microsoft hesabı için bir Xbox profili kayıt olmamış. Lütfen bir Xbox profili oluşturduğunuza emin olun.\nHata kodu: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live şu anlık ülkenizde mevcuz değil.\nHata kodu: 2148916235";
@@ -133,5 +134,6 @@
 "preference.warn.auto_ram" = "Bu seçeneği jailbreak'lenmemiş bir cihazda devre dışı bırakmak dengesizlik oluşturabilir. Önlemle devam edin.";
 "preference.title.allocated_memory" = "Bellek ayırımı (MB)";
 "preference.detail.allocated_memory" = "Minecraft'a ne kadar bellek verileceğini kontrol eder";
+"preference.warn.allocated_memory" = "İşletim sisteminin kendisindeki kısıtlamalar nedeniyle bu seçenek bunda veya daha yüksek değerlerde dengesizliğe sebep olabilir. Önlem ile devam edin.";
 "preference.title.custom_env" = "Ortam değişkenleri";
 "preference.detail.custom_env" = "Bu seçenek yapım aşamasında.";
