@@ -27,7 +27,7 @@
 "login.jit.found.JitStreamer" = "检测到 JitStreamer，正在开启 JIT 权限";
 
 // Login buttons
-"Sign in" = "登录";
+"Sign in" = "登入方式";
 "FAQ" = "常见问答（FAQ）";
 "Accounts" = "帐户";
 
