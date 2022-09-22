@@ -479,7 +479,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 - (void)actionMenuBtnEdit {
     shouldDismissPopover = NO;
     CCMenuViewController *vc = [[CCMenuViewController alloc] init];
-    vc.modalPresentationStyle = UIModalPresentationFormSheet;
+    vc.modalPresentationStyle = UIModalPresentationOverFullScreen;
     vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     vc.preferredContentSize = self.view.frame.size;
     if (![self.currentGesture isKindOfClass:[UILongPressGestureRecognizer class]]) {

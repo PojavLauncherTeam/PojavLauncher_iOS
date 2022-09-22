@@ -36,6 +36,14 @@ __attribute__((constructor)) void hookConstructor(void) {
 
 @end
 
+@implementation UITraitCollection(hook)
+
+- (UIUserInterfaceSizeClass)verticalSizeClass {
+    return UIUserInterfaceSizeClassRegular;
+}
+
+@end
+
 @implementation UIView(hook)
 const NSString *cornerLayerKey = @"cornerLayer";
 

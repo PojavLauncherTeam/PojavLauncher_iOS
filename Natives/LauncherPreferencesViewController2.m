@@ -259,9 +259,10 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
 }
 
-- (void)dismissViewController {
-    [self.presentingViewController performSelector:@selector(updatePreferenceChanges)];
-    [self dismissViewControllerAnimated:YES completion:nil];
+- (void)viewWillDisappear:(BOOL)animated {
+    if (self.navigationController == nil) {
+        [self.presentingViewController performSelector:@selector(updatePreferenceChanges)];
+    }
 }
 
 - (void)toggleDetailVisibility {
@@ -273,17 +274,6 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return self.prefSections.count;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (section != 0 || self.navigationController != nil) {
-        return nil;
-    }
-
-    UIButton *doneButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [doneButton setTitle:NSLocalizedString(@"Done", nil) forState:UIControlStateNormal];
-    [doneButton addTarget:self action:@selector(dismissViewController) forControlEvents:UIControlEventTouchUpInside];
-    return doneButton;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
