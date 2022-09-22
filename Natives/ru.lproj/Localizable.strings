@@ -6,9 +6,18 @@
 "game.menu.force_close" = "Принудительное закрытие";
 "game.menu.log_output" = "Журнал";
 "game.menu.custom_controls" = "Пользовательское управление";
+
+// The options button at the top-right corner on iOS 12
+"Options" = "Опции";
+
+// The play button
+"Play" = "Играть";
 "Snapshot" = "Снапшоты";
 "Old-beta" = "Старые бета";
 "Old-alpha" = "Старые альфа";
+
+"launcher.menu.custom_controls" = "Пользовательское управление";
+"launcher.menu.install_jar" = "Установите .jar";
 
 "Settings" = "Настройки";
 "preference.section.control" = "Настройка управления";
