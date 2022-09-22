@@ -8,11 +8,20 @@
 "game.menu.log_output" = "Журнал";
 "game.menu.custom_controls" = "Користувацьке керування";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "Опції";
+
+// The play button
+"Play" = "Грати";
+
 // Version categories
 "Installed" = "Встановлено";
 "Snapshot" = "Снапшоти";
 "Old-beta" = "Старі бета";
 "Old-alpha" = "Старі альфа";
+
+"launcher.menu.custom_controls" = "Користувацьке керування";
+"launcher.menu.install_jar" = "Встановити .jar";
 
 "Settings" = "Налаштування";
 "preference.section.control" = "Налаштування керування";
