@@ -30,10 +30,17 @@
 
 "login.alert.field.username" = "Имя пользователя";
 
+"login.jit.checking" = "Проверка JIT...";
+"login.jit.enabled" = "JIT активирован";
+"login.jit.fail.JitStreamer" = "Ошибка JitStreamer: %@";
+"login.jit.found.JitStreamer" = "Обнаружен JitStreamer, активация JIT...";
+
 // Login buttons
 "Sign in" = "Войти";
 "FAQ" = "ЧаВо";
 "Accounts" = "Учётные записи";
+"login.menu.sendlogs" = "Отправить журнал";
+"login.menu.updates" = "Последние обновления";
 
 "login.option.microsoft" = "Учётная запись Microsoft";
 "login.option.demo" = "Демонстрационный режим";
@@ -76,9 +83,12 @@
 "Settings" = "Настройки";
 
 "preference.section.general" = "Основные настройки";
+"preference.section.footer.general" = "* Функция символических ссылок может быть удалена в будущем.";
 "preference.section.video" = "Настройки графики";
+"preference.section.footer.video" = "Автоматический режим позволяет игре самой определять оптимальную реализацию. Уменьшение разрешения снижает нагрузку на ГП и улучшает производительность.";
 "preference.section.control" = "Настройка управления";
 "preference.section.debug" = "Настройки отладки";
+"preference.section.footer.debug" = "Помимо отладки, эти настройки могут оказаться полезными для пользовательских раскладок. Возможно, для применения изменений потребуется перезапустить лаунчер.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Корректировка Java";
 //"preference.section.footer.java" = "";
@@ -86,8 +96,15 @@
 "preference.title.confirm" = "Вы уверены?";
 
 "preference.title.game_directory" = "Расположение Minecraft";
+"preference.title.confirm.delete_game_directory" = "Профиль %@ будет навсегда удалён без возможности восстановления.";
 "preference.multidir.add_directory" = "Добавить расположение";
+
+"preference.title.home_symlink" = "Символьная ссылка";
+"preference.detail.home_symlink" = "Создать символьную ссылку в /var/mobile/Documents/.pojavlauncher. Недоступно в изолированных средах.";
+"preference.title.check_sha" = "Проверка файлов после загрузки";
+"preference.detail.check_sha" = "Заставить лаунчер по возможности проверять хэш файла при его загрузке. Предотвращает повреждение скачанных файлов.";
 "preference.title.cosmetica" = "Плащи Cosmetica";
+"preference.detail.cosmetica" = "Плащи Cosmetica (ранее Arc). Да получения дополнительной информации посетите https://cosmetica.cc. Требуется Optifine.";
 "preference.title.debug_logging" = "Отладочные записи";
 "preference.detail.debug_logging" = "Включить запись внутренних настроек и действий в latestlog.txt. Может облегчить нахождение ошибок продвинутым пользователям, однако это немного замедлит запуск Minecraft, поскольку журнал будет записываться значительно чаще.";
 
@@ -106,6 +123,7 @@
 "preference.detail.renderer" = "Выберите используемую графическую реализацию OpenGL";
 
 "preference.title.resolution" = "Разрешение (%)";
+"preference.detail.resolution" = "Можно уменьшить разрешение игры в целях быстродействия.";
 "preference.title.disable_gesture" = "Отключение жестов";
 "preference.title.press_duration" = "Длительность нажатия (мс)";
 "preference.detail.press_duration" = "Изменяет длительность долгого нажатия для ломания блоков и выбрасывания предметов.";
@@ -118,10 +136,19 @@
 "preference.title.virtmouse_enable" = "Виртуальная мышь";
 "preference.detail.virtmouse_enable" = "Запускать игру с включённой виртуальной мышью";
 "preference.title.slideable_hotbar" = "Прокручиваемый хотбар";
+"preference.title.java_home" = "Java 17 для старых версий Minecraft";
+"preference.detail.java_home" = "Для 1.16.5 и ниже по умолчанию используется Java 8. Включение приведёт к принудительному использованию Java 17, однако это может нарушить совместимость с модами.";
 "preference.title.java_args" = "Аргументы запуска JVM";
+"preference.detail.java_args" = "Осторожно, слепое изменение этой настройки может вывести из строя игру.";
+"preference.placeholder.java_args" = "Укажите аргументы...";
 "preference.title.auto_ram" = "Автоматическое выделение ОЗУ";
 "preference.detail.auto_ram" = "Автоматически управляет количеством выделенного ОЗУ";
+"preference.warn.auto_ram" = "Отключение этой настройки может привести к нестабильности на устройствах без jailbreak. Используйте с осторожностью.";
 "preference.title.allocated_memory" = "Выделение памяти (МБ)";
 "preference.detail.allocated_memory" = "Управляет тем, сколько памяти выделится для Minecraft";
+"preference.warn.allocated_memory" = "Из-за ограничений операционной системы может вызвать нестабильность при этом и более высоких значениях. Используйте с осторожностью.";
 "preference.title.custom_env" = "Переменные среды";
 "preference.detail.custom_env" = "Функция всё ещё в разработке.";
+
+"preference.title.debug_ipad_ui" = "Разблокировать интерфейс iPadOS";
+"preference.detail.debug_ipad_ui" = "Разблокировать уникальные для iPad элементы интерфейса (предупреждение, клавиатура и пр.) или оставить интерфейс iPhone.";
