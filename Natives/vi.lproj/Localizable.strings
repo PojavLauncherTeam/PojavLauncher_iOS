@@ -8,6 +8,12 @@
 "game.menu.log_output" = "Nhật ký ra ";
 "game.menu.custom_controls" = "Tùy chỉnh điều khiển";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "Tùy chọn";
+
+// The play button
+"Play" = "Chơi";
+
 // Version categories
 "Installed" = "Đã cài đặt";
 "Snapshot" = "Snapshot";
@@ -16,6 +22,9 @@
 "Old-alpha" = "Bản Alpha cũ";
 
 "init.migrateDir" = "Đường dẫn dữ liệu của PojavLauncher bây giờ là %@. Tất cả dữ liệu đã có của bạn đã được chuyển đến địa chỉ mới.";
+
+"launcher.menu.custom_controls" = "Tùy chỉnh điều khiển";
+"launcher.menu.install_jar" = "Cài đặt tệp .jar";
 
 "login.error.username.outOfRange" = "Tên người dùng phải có từ 3 đến 16 kí tự";
 
