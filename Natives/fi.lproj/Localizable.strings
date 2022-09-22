@@ -1,2 +1,5 @@
 
+// The options button at the top-right corner on iOS 12
+"Options" = "Asetukset";
+
 "Settings" = "Asetukset";
