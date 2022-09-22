@@ -89,6 +89,8 @@
 "preference.section.video" = "Video Ayarları";
 "preference.section.footer.video" = "Oto renderer Minecraft'ın hangi renderer'ı kullanacağını belirlemesini sağlar. Çözünürlüğü düşürmek daha iyi performans için GPU'nun is yükünü azaltır.";
 "preference.section.control" = "Kontrol özelleştirmesi";
+"preference.section.debug" = "UI hata ayıklama seçenekleri";
+"preference.section.footer.debug" = "Hata ayıklamanın yanı sıra, bu seçenekler özel kontrollerde de yardımcı olabilir. Değişikliklerin yürürlüğe girmesi için başlatıcıyı tekrar başlatmanız gerekebilir.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java Ayarlamaları";
 //"preference.section.footer.java" = "";
@@ -150,3 +152,6 @@
 "preference.warn.allocated_memory" = "İşletim sisteminin kendisindeki kısıtlamalar nedeniyle bu seçenek bunda veya daha yüksek değerlerde dengesizliğe sebep olabilir. Önlem ile devam edin.";
 "preference.title.custom_env" = "Ortam değişkenleri";
 "preference.detail.custom_env" = "Bu seçenek yapım aşamasında.";
+
+"preference.title.debug_ipad_ui" = "iPadOS UI'ını aç";
+"preference.detail.debug_ipad_ui" = "iPad'e özel UI'ı açar (uyarı, klavye vb...) Eğer etkinleştirilirse iPhone UI'ı devre dışı bırakılır.";
