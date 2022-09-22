@@ -6,9 +6,18 @@
 "game.menu.force_close" = "Forzar el cierre";
 "game.menu.log_output" = "Registro de salida";
 "game.menu.custom_controls" = "Controles personalizados";
+
+// The options button at the top-right corner on iOS 12
+"Options" = "Opciones";
+
+// The play button
+"Play" = "Jugar";
 "Snapshot" = "Snapshots";
 "Old-beta" = "Betas";
 "Old-alpha" = "Alphas";
+
+"launcher.menu.custom_controls" = "Controles personalizados";
+"launcher.menu.install_jar" = "Instalar .jar";
 
 "Settings" = "Ajustes";
 "preference.section.control" = "Personalización del control";
