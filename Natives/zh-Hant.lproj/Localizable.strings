@@ -88,6 +88,7 @@
 "preference.section.footer.video" = "自動宣染器允許我的世界判斷使用哪一個渲染器。降低解析度會降低圖形處理器的工作量，並提高效能。";
 "preference.section.control" = "自定義控制";
 "preference.section.debug" = "用戶界面除錯選項";
+"preference.section.footer.debug" = "除了除錯外，這些選項可能對自定義控制鍵有用。你可能需要重新啟動啟動器來讓更變生效。";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java 選項";
 //"preference.section.footer.java" = "";
@@ -149,3 +150,10 @@
 "preference.warn.allocated_memory" = "由於系統限制，在這個數值或以上時，這個選項可能會導致不穩定。";
 "preference.title.custom_env" = "環境變量";
 "preference.detail.custom_env" = "這個選項仍在建築中。";
+
+"preference.title.debug_ipad_ui" = "解鎖iPadOS用戶介面";
+"preference.detail.debug_ipad_ui" = "當啟動時或當iPhone用戶介面被禁用時，解鎖iPad專屬用戶介面（提示、鍵盤等）";
+"preference.title.debug_show_layout_bounds" = "顯示佈局界線";
+"preference.detail.debug_show_layout_bounds" = "顯示剪輯範圍、邊界";
+"preference.title.debug_show_layout_overlap" = "顯示重複的佈局";
+"preference.detail.debug_show_layout_overlap" = "通過用透明顏色來覆蓋所有視圖，來顯示重複的視圖";
