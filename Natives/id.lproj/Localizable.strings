@@ -8,6 +8,12 @@
 "game.menu.log_output" = "Catatan log";
 "game.menu.custom_controls" = "Kontrol kustom";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "Opsi";
+
+// The play button
+"Play" = "Main";
+
 // Version categories
 "Installed" = "Terpasang";
 "Snapshot" = "Snapshot";
@@ -16,6 +22,9 @@
 "Old-alpha" = "Alpha-lama";
 
 "init.migrateDir" = "Data folder PojavLauncher sekarang di %@. Semua datamu yang ada telah dipindah ke lokasi baru tersebut.";
+
+"launcher.menu.custom_controls" = "Kontrol kustom";
+"launcher.menu.install_jar" = "Install .jar";
 
 "login.error.username.outOfRange" = "Username harus mempunyai setidaknya 3 karakter dan maksimum 16 karakter";
 
