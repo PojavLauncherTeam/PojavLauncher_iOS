@@ -6,9 +6,17 @@
 "game.menu.force_close" = "Tving avslutt";
 "game.menu.log_output" = "Logg utdata";
 "game.menu.custom_controls" = "Tilpassede kontroller";
+
+// The options button at the top-right corner on iOS 12
+"Options" = "Innstillinger";
+
+// The play button
+"Play" = "Spill";
 "Snapshot" = "Snapshot";
 "Old-beta" = "Old-beta";
 "Old-alpha" = "Old-alpha";
+
+"launcher.menu.custom_controls" = "Tilpassede kontroller";
 
 "Settings" = "Innstillinger";
 
