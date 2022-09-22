@@ -8,6 +8,12 @@
 "game.menu.log_output" = "日誌輸出";
 "game.menu.custom_controls" = "自訂控制鍵";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "選項";
+
+// The play button
+"Play" = "啟動遊戲";
+
 // Version categories
 "Installed" = "已安裝";
 "Snapshot" = "快照";
@@ -16,6 +22,9 @@
 "Old-alpha" = "遠古alpha版";
 
 "init.migrateDir" = "PojavLauncher數據資料夾現為%@。你的所有已有資料已被移動到新位置。";
+
+"launcher.menu.custom_controls" = "自訂控制鍵";
+"launcher.menu.install_jar" = "安裝 .jar";
 
 "login.error.username.outOfRange" = "用戶名必須是在3至16個字元之間。";
 
