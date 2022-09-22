@@ -6,9 +6,17 @@
 "game.menu.force_close" = "บังคับปิด";
 "game.menu.log_output" = "ประวัติที่บันทึกไว้";
 "game.menu.custom_controls" = "การควบคุมกำหนดเอง";
+
+// The options button at the top-right corner on iOS 12
+"Options" = "ตัวเลือก";
+
+// The play button
+"Play" = "เล่น";
 "Snapshot" = "ภาพรวม";
 "Old-beta" = "เบตาเก่า";
 "Old-alpha" = "Old-alpha";
+
+"launcher.menu.custom_controls" = "การควบคุมกำหนดเอง";
 
 "Settings" = "การตั้งค่า";
 "preference.title.auto_ram" = "RAM อัตโนมัติ";
