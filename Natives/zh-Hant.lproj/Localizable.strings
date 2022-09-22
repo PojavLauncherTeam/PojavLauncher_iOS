@@ -87,6 +87,7 @@
 "preference.section.video" = "動畫設定";
 "preference.section.footer.video" = "自動宣染器允許我的世界判斷使用哪一個渲染器。降低解析度會降低圖形處理器的工作量，並提高效能。";
 "preference.section.control" = "自定義控制";
+"preference.section.debug" = "用戶界面除錯選項";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java 選項";
 //"preference.section.footer.java" = "";
