@@ -6,9 +6,17 @@
 "game.menu.force_close" = "Geforceerd sluiten";
 "game.menu.log_output" = "Logboek output";
 "game.menu.custom_controls" = "Aangepaste controles";
+
+// The options button at the top-right corner on iOS 12
+"Options" = "Opties";
+
+// The play button
+"Play" = "Speel";
 "Snapshot" = "Snapshot";
 "Old-beta" = "Old-beta";
 "Old-alpha" = "Old-alpha";
+
+"launcher.menu.custom_controls" = "Aangepaste controles";
 
 "Settings" = "Instellingen";
 
