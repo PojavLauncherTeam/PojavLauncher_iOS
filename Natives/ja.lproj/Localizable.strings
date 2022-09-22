@@ -6,9 +6,18 @@
 "game.menu.force_close" = "強制終了";
 "game.menu.log_output" = "ログ";
 "game.menu.custom_controls" = "カスタムコントロール";
+
+// The options button at the top-right corner on iOS 12
+"Options" = "設定";
+
+// The play button
+"Play" = "プレイ";
 "Snapshot" = "スナップショット";
 "Old-beta" = "Beta 版";
 "Old-alpha" = "Alpha 版";
+
+"launcher.menu.custom_controls" = "カスタムコントロール";
+"launcher.menu.install_jar" = ".jarをインストール";
 
 "Settings" = "設定";
 "preference.section.control" = "制御のカスタマイズ";
