@@ -82,7 +82,6 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     UIEdgeInsets insets = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets;
 
     self.ctrlView = [[ControlLayout alloc] initWithFrame:CGRectFromString(getPreference(@"control_safe_area"))];
-    NSLog(@"%@", self.ctrlView);
     if (@available(iOS 13.0, *)) {
         self.ctrlView.layer.borderColor = UIColor.labelColor.CGColor;
     } else {
@@ -312,7 +311,6 @@ NSMutableArray *keyCodeMap, *keyValueMap;
             }
             BOOL success = [jsonData writeToFile:[NSString stringWithFormat:@"%s/controlmap/%@.json", getenv("POJAV_HOME"), field.text] options:NSDataWritingAtomic error:&error];
             if (!success) {
-                NSLog(@"GOT ERROR %@", error);
                 showDialog(self, @"Error while saving file", error.localizedDescription);
                 return;
             }
