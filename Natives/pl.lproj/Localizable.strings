@@ -8,6 +8,12 @@
 "game.menu.log_output" = "Wyjście danych";
 "game.menu.custom_controls" = "Dostosuj sterowanie";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "Opcje";
+
+// The play button
+"Play" = "Graj";
+
 // Version categories
 "Installed" = "Zainstalowane";
 "Snapshot" = "Wersja deweloperska";
@@ -16,6 +22,9 @@
 "Old-alpha" = "Dawna Alpha";
 
 "init.migrateDir" = "Katalogiem danych PojavLauncher jest teraz %@. Wszystkie istniejące dane zostały przeniesione do nowej lokalizacji.";
+
+"launcher.menu.custom_controls" = "Dostosuj sterowanie";
+"launcher.menu.install_jar" = "Zainstaluj .jar";
 
 "login.error.username.outOfRange" = "Nazwa użytkownika musi zawierać od 3 do 16 znaków";
 
