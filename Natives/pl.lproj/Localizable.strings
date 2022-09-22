@@ -85,6 +85,8 @@
 "preference.section.general" = "Ogólne ustawienia";
 "preference.section.video" = "Ustawienia grafiki";
 "preference.section.control" = "Kontroluj dostosowywanie";
+"preference.section.debug" = "Ustawienia debugowania interfejsu";
+"preference.section.footer.debug" = "Poza debugowaniem, te ustawienia mogą być przydatne dp ustawień sterowania. Może być wymagane ponowne uruchomienie programu, aby zmiany zostały wprowadzone.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Ulepszenia Javy";
 //"preference.section.footer.java" = "";
@@ -139,3 +141,5 @@
 "preference.warn.allocated_memory" = "Ze względu na ograniczenia samego systemu operacyjnego, ta opcja może powodować niestabilność przy tej i wyższych wartościach. Zachowaj ostrożność.";
 "preference.title.custom_env" = "Zmienne środowiskowe";
 "preference.detail.custom_env" = "Ta opcja jest w trakcie opracowania.";
+
+"preference.title.debug_ipad_ui" = "Odblokuj interfejs iPadOS";
