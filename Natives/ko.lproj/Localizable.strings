@@ -6,9 +6,18 @@
 "game.menu.force_close" = "강제 종료";
 "game.menu.log_output" = "로그 확인";
 "game.menu.custom_controls" = "사용자 지정 조작";
+
+// The options button at the top-right corner on iOS 12
+"Options" = "설정";
+
+// The play button
+"Play" = "시작하기";
 "Snapshot" = "스냅숏";
 "Old-beta" = "Old-beta";
 "Old-alpha" = "Old-alpha";
+
+"launcher.menu.custom_controls" = "사용자 지정 조작";
+"launcher.menu.install_jar" = ".jar 설치";
 
 "Settings" = "설정";
 "preference.section.control" = "사용자 지정 조작";
