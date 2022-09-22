@@ -8,6 +8,12 @@
 "game.menu.log_output" = "Záznam výstupu";
 "game.menu.custom_controls" = "Vlastní ovládací prvky";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "Možnosti";
+
+// The play button
+"Play" = "Hrát";
+
 // Version categories
 "Installed" = "Nainstalováno";
 "Snapshot" = "Snapshot";
@@ -16,6 +22,9 @@
 "Old-alpha" = "Stará alfa";
 
 "init.migrateDir" = "Složka dat PojavLauncheru je nyní %@. Všechna tvá data byla přesunuta do nového umístění.";
+
+"launcher.menu.custom_controls" = "Vlastní ovládací prvky";
+"launcher.menu.install_jar" = "Instalovat .jar";
 
 "login.error.username.outOfRange" = "Uživatelské jméno musí být dlouhé alespoň 3 znaky a nanejvýš 16 znaků";
 
