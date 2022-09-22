@@ -6,9 +6,18 @@
 "game.menu.force_close" = "Priverstinai išjungti";
 "game.menu.log_output" = "Žurnalo įrašai";
 "game.menu.custom_controls" = "Kontrolės";
+
+// The options button at the top-right corner on iOS 12
+"Options" = "Pasirinkimai";
+
+// The play button
+"Play" = "Žaisti";
 "Snapshot" = "Naujinimai";
 "Old-beta" = "Beta";
 "Old-alpha" = "Alpha";
+
+"launcher.menu.custom_controls" = "Kontrolės";
+"launcher.menu.install_jar" = "Instaliuoti .jar";
 
 "Settings" = "Nustatymai";
 "preference.section.control" = "Kontrolių redagavimas";
