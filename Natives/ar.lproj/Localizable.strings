@@ -6,9 +6,18 @@
 "game.menu.force_close" = "فرض الإغلاق";
 "game.menu.log_output" = "سجل الإخراج";
 "game.menu.custom_controls" = "تخصيص التحكم";
+
+// The options button at the top-right corner on iOS 12
+"Options" = "الخيارات";
+
+// The play button
+"Play" = "إبدأ اللعب";
 "Snapshot" = "اللمحات (سنابشوت)";
 "Old-beta" = "نسخ بيتا قديمة";
 "Old-alpha" = "نسخ ألفا قديمة";
+
+"launcher.menu.custom_controls" = "تخصيص التحكم";
+"launcher.menu.install_jar" = "تثبيت ملف .jar";
 
 "Settings" = "الاعدادات";
 "preference.section.control" = "تخصيص التحكم";
