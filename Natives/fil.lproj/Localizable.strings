@@ -8,6 +8,12 @@
 "game.menu.log_output" = "Output ng log";
 "game.menu.custom_controls" = "Pasadyang mga kontrol";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "Mga pilian";
+
+// The play button
+"Play" = "Maglaro";
+
 // Version categories
 "Installed" = "Naka-Install";
 "Snapshot" = "Snapshot";
@@ -16,6 +22,9 @@
 "Old-alpha" = "Lumang-alpha";
 
 "init.migrateDir" = "Ang direktoryo ng data ng PojavLauncher ay %@ na ngayon. Ang lahat ng iyong umiiral na data ay inilipat sa bagong lokasyon.";
+
+"launcher.menu.custom_controls" = "Pasadyang mga kontrol";
+"launcher.menu.install_jar" = "Install .jar";
 
 "login.error.username.outOfRange" = "Dapat ang username ay may 3 na characters na hindi dapat lalampas sa 16 na characters";
 
