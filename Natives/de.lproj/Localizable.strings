@@ -8,6 +8,12 @@
 "game.menu.log_output" = "Protokoll-Ausgabe";
 "game.menu.custom_controls" = "Benutzerdefinierte Steuerung";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "Optionen";
+
+// The play button
+"Play" = "Spielen";
+
 // Version categories
 "Installed" = "Installiert";
 "Snapshot" = "Entwicklungsversionen";
@@ -16,6 +22,9 @@
 "Old-alpha" = "Old-Alpha";
 
 "init.migrateDir" = "Das PojavLauncher-Datenverzeichnis ist jetzt %@. Alle vorhandenen Daten wurden an den neuen Standort verschoben.";
+
+"launcher.menu.custom_controls" = "Benutzerdefinierte Steuerung";
+"launcher.menu.install_jar" = ".jar installieren";
 
 "login.error.username.outOfRange" = "Benutzername muss mindestens 3 und maximal 32 Zeichen lang sein";
 
