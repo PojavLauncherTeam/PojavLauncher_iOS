@@ -8,6 +8,12 @@
 "game.menu.log_output" = "Konsol çıktısı";
 "game.menu.custom_controls" = "Özel kontroller";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "Ayarlar";
+
+// The play button
+"Play" = "Oyna";
+
 // Version categories
 "Installed" = "Kuruldu";
 "Snapshot" = "Test sürümleri";
@@ -16,6 +22,9 @@
 "Old-alpha" = "Eski-alfa";
 
 "init.migrateDir" = "PojavLauncher veri dosyası artık %@. Önceden varolan bütün verilerin yeni konuma taşındı.";
+
+"launcher.menu.custom_controls" = "Özel kontroller";
+"launcher.menu.install_jar" = ".jar kur";
 
 "login.error.username.outOfRange" = "Kullanıcı adı en az 3 en fazla 16 karakter olmalıdır";
 
