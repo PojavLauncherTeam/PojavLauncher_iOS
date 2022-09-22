@@ -6,9 +6,18 @@
 "game.menu.force_close" = "Форсе затвори";
 "game.menu.log_output" = "Лог Избацивано";
 "game.menu.custom_controls" = "Прилагођене контроле";
+
+// The options button at the top-right corner on iOS 12
+"Options" = "Опције";
+
+// The play button
+"Play" = "Играј";
 "Snapshot" = "Снепшот";
 "Old-beta" = "Стари-Бета";
 "Old-alpha" = "Стари-Аlpha";
+
+"launcher.menu.custom_controls" = "Прилагођене контроле";
+"launcher.menu.install_jar" = "Инсталирај .jar";
 
 "Settings" = "Подешавања";
 
