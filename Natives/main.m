@@ -124,7 +124,7 @@ void init_logDeviceAndVer(char *argument) {
     regLog("[Pre-init] Entitlements availability:");
     printEntitlementAvailability(@"com.apple.developer.kernel.extended-virtual-addressing");
     printEntitlementAvailability(@"com.apple.developer.kernel.increased-memory-limit");
-    printEntitlementAvailability(@"com.apple.private.security.no-container");
+    printEntitlementAvailability(@"com.apple.private.security.no-sandbox");
     printEntitlementAvailability(@"dynamic-codesigning");
 }
 
@@ -341,7 +341,7 @@ int main(int argc, char * argv[]) {
     init_migrateToPlist("java_args", "overrideargs.txt");
 
     // If sandbox is disabled, W^X JIT can be enabled by PojavLauncher itself
-    if (getEntitlementValue(@"com.apple.private.security.no-container")) {
+    if (getEntitlementValue(@"com.apple.private.security.no-sandbox")) {
         NSLog(@"[Pre-init] Sandbox is disabled, trying to enable JIT");
         int pid;
         int ret = posix_spawnp(&pid, argv[0], NULL, NULL, argv, environ);

@@ -24,15 +24,10 @@
 extern NSMutableDictionary *prefDict;
 
 #pragma mark - LoginViewController
-@interface LoginViewController () <ASWebAuthenticationPresentationContextProviding>{
-}
-@property (nonatomic, strong) ASWebAuthenticationSession *authVC;
-@property (nonatomic, strong) UIActivityViewController *activityViewController;
+@interface LoginViewController () <ASWebAuthenticationPresentationContextProviding> {}
 @end
 
 @implementation LoginViewController
-@synthesize authVC;
-@synthesize activityViewController;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -268,7 +263,7 @@ extern NSMutableDictionary *prefDict;
 - (void)loginMicrosoft {
     NSURL *url = [NSURL URLWithString:@"https://login.live.com/oauth20_authorize.srf?client_id=00000000402b5328&response_type=code&scope=service%3A%3Auser.auth.xboxlive.com%3A%3AMBI_SSL&redirect_url=https%3A%2F%2Flogin.live.com%2Foauth20_desktop.srf"];
 
-    authVC =
+    ASWebAuthenticationSession *authVC =
         [[ASWebAuthenticationSession alloc] initWithURL:url
         callbackURLScheme:@"ms-xal-00000000402b5328"
         completionHandler:^(NSURL * _Nullable callbackURL,
@@ -434,7 +429,8 @@ extern NSMutableDictionary *prefDict;
 {
     NSString *latestlogPath = [NSString stringWithFormat:@"file://%s/latestlog.old.txt", getenv("POJAV_HOME")];
     NSLog(@"Path is %@", latestlogPath);
-    activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[@"latestlog.txt", [NSURL URLWithString:latestlogPath]] applicationActivities:nil];
+    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[@"latestlog.txt", [NSURL URLWithString:latestlogPath]] applicationActivities:nil];
+    activityViewController.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItems[0];
 
     [self presentViewController:activityViewController animated:YES completion:nil];
 }

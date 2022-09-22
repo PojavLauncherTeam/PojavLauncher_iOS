@@ -8,6 +8,12 @@
 "game.menu.log_output" = "Log output";
 "game.menu.custom_controls" = "Custom controls";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "Options";
+
+// The play button
+"Play" = "Play";
+
 // Version categories
 "Installed" = "Installed";
 "Snapshot" = "Snapshot";
@@ -16,6 +22,9 @@
 "Old-alpha" = "Old-alpha";
 
 "init.migrateDir" = "The PojavLauncher data directory is now %@. All of your existing data has been moved to the new location.";
+
+"launcher.menu.custom_controls" = "Custom controls";
+"launcher.menu.install_jar" = "Install .jar";
 
 "login.error.username.outOfRange" = "Username must be at least 3 characters and maximum 16 characters";
 
@@ -80,6 +89,8 @@
 "preference.section.video" = "Video Settings";
 "preference.section.footer.video" = "Auto renderer allows Minecraft to decide which renderer to use. Decreasing resolution reduces GPU workload for better performance.";
 "preference.section.control" = "Control customization";
+"preference.section.debug" = "UI Debugging settings";
+"preference.section.footer.debug" = "Aside from debugging, these settings may be useful for custom controls. You may need to restart the launcher for changes to take effect.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java Tweaks";
 //"preference.section.footer.java" = "";
@@ -141,3 +152,10 @@
 "preference.warn.allocated_memory" = "Due to limitations in the operating system itself, this option may cause instability at this and higher values. Proceed with caution.";
 "preference.title.custom_env" = "Environment variables";
 "preference.detail.custom_env" = "This option is under construction.";
+
+"preference.title.debug_ipad_ui" = "Unlock iPadOS UI";
+"preference.detail.debug_ipad_ui" = "Unlock iPad-exlusive UI (alert, keyboard, etc.) if enabled or iPhone UI if disabled.";
+"preference.title.debug_show_layout_bounds" = "Show layout bounds";
+"preference.detail.debug_show_layout_bounds" = "Show clip bounds, margins";
+"preference.title.debug_show_layout_overlap" = "Show layout overlapping";
+"preference.detail.debug_show_layout_overlap" = "Overlay every view with a transparent color to reveal overlapping views.";

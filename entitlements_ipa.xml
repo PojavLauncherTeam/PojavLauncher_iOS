@@ -18,7 +18,7 @@
     <true/>
 
     <!-- Disable sandbox so that PojavLauncher can enable JIT by itself -->
-    <key>com.apple.private.security.no-container</key>
+    <key>com.apple.private.security.no-sandbox</key>
     <true/>
 
     <!-- The following entitlements are required if sandbox is disabled -->

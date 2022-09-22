@@ -91,6 +91,7 @@ add_executable(PojavLauncher
   log.m
   JavaLauncher.m
   external/fishhook/fishhook.c
+  UIKit+hook.m
 
   authenticator/BaseAuthenticator.m
   authenticator/LocalAuthenticator.m

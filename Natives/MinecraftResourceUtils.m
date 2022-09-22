@@ -283,6 +283,7 @@ static AFURLSessionManager* manager;
         library[@"skip"] = @(
             // Exclude platform-dependant libraries
             library[@"downloads"][@"classifiers"] != nil ||
+            library[@"natives"] != nil ||
             // Exclude LWJGL libraries
             [library[@"name"] hasPrefix:@"org.lwjgl"]
         );
@@ -379,12 +380,15 @@ static AFURLSessionManager* manager;
 
     dispatch_group_t group = dispatch_group_create();
     int downloadIndex = -1;
-    __block int jobsAvailable = 20;
+    __block int jobsAvailable = 10;
     for (NSString *name in assets[@"objects"]) {
         if (jobsAvailable < 0) {
             break;
         } else if (jobsAvailable == 0) {
-            dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+            //dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+            while (jobsAvailable == 0) {
+                usleep(50000);
+            }
         }
 
         NSString *hash = assets[@"objects"][name][@"hash"];

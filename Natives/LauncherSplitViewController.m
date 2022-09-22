@@ -18,6 +18,7 @@
 
     LauncherMenuViewController *masterVc = [[LauncherMenuViewController alloc] init];
     UINavigationController *detailVc = [[UINavigationController alloc] init];
+    detailVc.toolbarHidden = NO;
 
     self.presentsWithGesture = YES;
     self.preferredDisplayMode = UISplitViewControllerDisplayModeOneBesideSecondary;

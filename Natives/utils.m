@@ -9,52 +9,6 @@
 
 BOOL getEntitlementValue(NSString *key);
 
-@implementation UIWindow(ext)
-
-// Simulate safe area on iPhones without notch
-/*
-- (UIEdgeInsets)safeAreaInsets {
-    return UIEdgeInsetsMake(0, 44, 21, 44);
-}
-*/
-
-- (UIViewController *)visibleViewController {
-    UIViewController *current = self.rootViewController;
-    while (current.presentedViewController) {
-        if ([current.presentedViewController isKindOfClass:UIAlertController.class] || [current.presentedViewController isKindOfClass:NSClassFromString(@"UIInputWindowController")]) {
-            break;
-        }
-        current = current.presentedViewController;
-    }
-    if ([current isKindOfClass:UINavigationController.class]) {
-        return [(UINavigationController *)self.rootViewController visibleViewController];
-    } else {
-        return current;
-    }
-}
-
-@end
-
-
-// This forces the navigation bar to keep its height (44dp) in landscape
-@implementation UINavigationBar(forceFullHeightInLandscape)
-- (BOOL)forceFullHeightInLandscape {
-    return UIScreen.mainScreen.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPhone;
-}
-@end
-
-UIWindow* currentWindow() {
-    id delegate = UIApplication.sharedApplication.delegate;
-    if (@available(iOS 13.0, *)) {
-        delegate = UIApplication.sharedApplication.connectedScenes.anyObject.delegate;
-    }
-    return [delegate window];
-}
-
-UIViewController* currentVC() {
-    return currentWindow().visibleViewController;
-}
-
 BOOL isJITEnabled() {
     if (getEntitlementValue(@"dynamic-codesigning")) {
         return YES;

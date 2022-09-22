@@ -41,7 +41,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
         return self.navigationController != nil;
     };
 
-    self.prefSections = @[@"general", @"video", @"control", @"java"];
+    self.prefSections = @[@"general", @"video", @"control", @"java", @"debug"];
 
     self.prefContents = @[
         @[
@@ -208,6 +208,28 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                     return view.value >= NSProcessInfo.processInfo.physicalMemory / 1048576 * 0.37;
                 },
                 @"warnKey": @"mem_warn"
+            }
+        ], @[
+            @{@"key": @"debug_ipad_ui",
+                @"hasDetail": @YES,
+                @"icon": @"ipad",
+                @"type": self.typeSwitch,
+                @"enableCondition": whenNotInGame
+            },
+            @{@"key": @"debug_show_layout_bounds",
+                @"hasDetail": @YES,
+                @"icon": @"square.dashed",
+                @"type": self.typeSwitch,
+                @"enableCondition": whenNotInGame,
+                @"requestReload": @YES
+            },
+            @{@"key": @"debug_show_layout_overlap",
+                @"hasDetail": @YES,
+                @"icon": @"square.on.square",
+                @"type": self.typeSwitch,
+                @"enableCondition": ^BOOL(){
+                    return [getPreference(@"debug_show_layout_bounds") boolValue] && whenNotInGame();
+                }
             }
         ]
     ];

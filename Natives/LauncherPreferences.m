@@ -3,13 +3,17 @@
 
 NSMutableDictionary *prefDict;
 NSString* prefPath;
+// developer debug dict
+NSMutableDictionary *debugPrefDict;
 // environment variables dict
 NSMutableDictionary *envPrefDict;
 // warnings dict
 NSMutableDictionary *warnPrefDict;
 
 id getPreference(NSString* key) {
-    if (!(envPrefDict[key] == [NSNull null] || envPrefDict[key] == nil)) {
+    if (!(debugPrefDict[key] == [NSNull null] || debugPrefDict[key] == nil)) {
+        return debugPrefDict[key];
+    } else if (!(envPrefDict[key] == [NSNull null] || envPrefDict[key] == nil)) {
         return envPrefDict[key];
     } else if (!(warnPrefDict[key] == [NSNull null] || warnPrefDict[key] == nil)) {
         return warnPrefDict[key];
@@ -58,7 +62,10 @@ void setDefaultValueForPref(NSMutableDictionary *dict, NSString* key, id value) 
 }
 
 void setPreference(NSString* key, id value) {
-    if (!(envPrefDict[key] == [NSNull null] || envPrefDict[key] == nil)) {
+    if (!(debugPrefDict[key] == [NSNull null] || debugPrefDict[key] == nil)) {
+        debugPrefDict[key] = value;
+        prefDict[@"debugs"] = debugPrefDict;
+    } else if (!(envPrefDict[key] == [NSNull null] || envPrefDict[key] == nil)) {
         envPrefDict[key] = value;
         prefDict[@"env_vars"] = envPrefDict;
     } else if (!(warnPrefDict[key] == [NSNull null] || warnPrefDict[key] == nil)) {
@@ -79,9 +86,15 @@ void fillDefaultWarningDict() {
     setDefaultValueForPref(warnPrefDict, @"java_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"demo_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"jb_warn", @YES);
-    setDefaultValueForPref(warnPrefDict, @"customctrl_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"int_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"auto_ram_warn", @YES);
+}
+
+NSMutableDictionary* getDictionarySafe(NSString* key) {
+    if (prefDict[key] == nil) {
+        return [[NSMutableDictionary alloc] init];
+    }
+    return prefDict[key];
 }
 
 void loadPreferences(BOOL reset) {
@@ -91,16 +104,14 @@ void loadPreferences(BOOL reset) {
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
     prefDict = [NSMutableDictionary dictionaryWithContentsOfFile:prefPath];
-    if (reset || ![fileManager fileExistsAtPath:prefPath]) {
+    if (reset) {
+        [prefDict removeAllObjects];
+    } else if (![fileManager fileExistsAtPath:prefPath]) {
         prefDict = [[NSMutableDictionary alloc] init];
-        envPrefDict = [[NSMutableDictionary alloc] init];
-        warnPrefDict = [[NSMutableDictionary alloc] init];
-    } else {
-        envPrefDict = prefDict[@"env_vars"];
-        warnPrefDict = prefDict[@"warnings"];
     }
-
-    assert(prefDict);
+    debugPrefDict = getDictionarySafe(@"debugs");
+    envPrefDict = getDictionarySafe(@"env_vars");
+    warnPrefDict = getDictionarySafe(@"warnings");
 
     // set default value
     setDefaultValueForPref(envPrefDict, @"resolution", @(100));
@@ -132,9 +143,15 @@ void loadPreferences(BOOL reset) {
         setDefaultValueForPref(prefDict, @"disable_home_symlink", @YES);
     }
 
+    // Debug settings
+    setDefaultValueForPref(debugPrefDict, @"debug_ipad_ui", @(UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad));
+    setDefaultValueForPref(debugPrefDict, @"debug_show_layout_bounds", @NO);
+    setDefaultValueForPref(debugPrefDict, @"debug_show_layout_overlap", @NO);
+
     // Migrate some prefs
     setPreference(@"java_home", [getPreference(@"java_home") lastPathComponent]);
 
+    prefDict[@"debugs"] = debugPrefDict;
     prefDict[@"env_vars"] = envPrefDict;
     prefDict[@"warnings"] = warnPrefDict;
 
