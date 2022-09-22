@@ -6,9 +6,18 @@
 "game.menu.force_close" = "Мәҗбүри ябу";
 "game.menu.log_output" = "Журнал";
 "game.menu.custom_controls" = "Көйләнелгән идарә";
+
+// The options button at the top-right corner on iOS 12
+"Options" = "Көйләүләр";
+
+// The play button
+"Play" = "Уйнарга";
 "Snapshot" = "Снапшотлар";
 "Old-beta" = "Иске бета";
 "Old-alpha" = "Иске альфа";
+
+"launcher.menu.custom_controls" = "Көйләнелгән идарә";
+"launcher.menu.install_jar" = ".jar-файлны урнату";
 
 "Settings" = "Көйләүләр";
 "preference.section.control" = "Идарә элементлары";
