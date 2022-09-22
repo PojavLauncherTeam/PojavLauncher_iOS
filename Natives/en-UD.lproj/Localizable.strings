@@ -6,9 +6,18 @@
 "game.menu.force_close" = "ǝsoꞁɔ ǝɔɹoℲ";
 "game.menu.log_output" = "ʇndʇno ᵷoꞀ";
 "game.menu.custom_controls" = "sꞁoɹʇuoɔ ɯoʇsnƆ";
+
+// The options button at the top-right corner on iOS 12
+"Options" = "suoᴉʇdO";
+
+// The play button
+"Play" = "ʎɐꞁԀ";
 "Snapshot" = "ʇoɥsdɐuS";
 "Old-beta" = "ɐʇǝq-pꞁO";
 "Old-alpha" = "ɐɥdꞁɐ-pꞁO";
+
+"launcher.menu.custom_controls" = "sꞁoɹʇuoɔ ɯoʇsnƆ";
+"launcher.menu.install_jar" = "ɹɐɾ˙ ꞁꞁɐʇsuI";
 
 "Settings" = "sᵷuᴉʇʇǝS";
 "preference.section.control" = "uoᴉʇɐzᴉɯoʇsnɔ ꞁoɹʇuoƆ";
