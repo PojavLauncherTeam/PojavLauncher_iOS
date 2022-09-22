@@ -6,9 +6,18 @@
 "game.menu.force_close" = "Paksa tutup";
 "game.menu.log_output" = "Log output";
 "game.menu.custom_controls" = "Kawalan custom";
+
+// The options button at the top-right corner on iOS 12
+"Options" = "Pilihan";
+
+// The play button
+"Play" = "Main";
 "Snapshot" = "Petikan";
 "Old-beta" = "Beta-lama";
 "Old-alpha" = "Alfa-lama";
+
+"launcher.menu.custom_controls" = "Kawalan custom";
+"launcher.menu.install_jar" = "Pasang .jar";
 
 "Settings" = "Tetapan";
 "preference.title.cosmetica" = "Mantel Cosmetica";
