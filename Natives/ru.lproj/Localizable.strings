@@ -86,12 +86,42 @@
 "preference.title.confirm" = "Вы уверены?";
 
 "preference.title.game_directory" = "Расположение Minecraft";
+"preference.multidir.add_directory" = "Добавить расположение";
 "preference.title.cosmetica" = "Плащи Cosmetica";
+"preference.title.debug_logging" = "Отладочные записи";
+"preference.detail.debug_logging" = "Включить запись внутренних настроек и действий в latestlog.txt. Может облегчить нахождение ошибок продвинутым пользователям, однако это немного замедлит запуск Minecraft, поскольку журнал будет записываться значительно чаще.";
+
+"preference.title.reset_warnings" = "Сбросить все предупреждения";
+"preference.title.done.reset_warnings" = "Все предупреждения были сброшены.";
+
+"preference.title.reset_settings" = "Сбросить все настройки";
+"preference.title.confirm.reset_settings" = "Это приведёт к удалению всех ваших настроек, в том числе разрешения, размера кнопок и аргументов Java.";
+"preference.title.done.reset_settings" = "Все настройки сброшены до значений по умолчанию.";
 
 "preference.title.renderer" = "Визуализатор";
+"preference.title.renderer.auto" = "Авто: gl4es или tinygl4angle";
+"preference.title.renderer.gl4es" = "gl4es 1.1.4 — обеспечивает OpenGL 2.1";
+"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) — обеспечивает OpenGL 3.2 (ограниченно, Core Profile)";
+"preference.title.renderer.zink" = "Zink (Mesa 21.0) — обеспечивает OpenGL 4.1";
+"preference.detail.renderer" = "Выберите используемую графическую реализацию OpenGL";
+
+"preference.title.resolution" = "Разрешение (%)";
 "preference.title.disable_gesture" = "Отключение жестов";
+"preference.title.press_duration" = "Длительность нажатия (мс)";
 "preference.detail.press_duration" = "Изменяет длительность долгого нажатия для ломания блоков и выбрасывания предметов.";
+"preference.title.button_scale" = "Размер кнопок (%)";
+"preference.detail.button_scale" = "Подстроить кнопки под размер экрана. Особенно полезно для пользователей iPad.";
+"preference.title.mouse_scale" = "Размер указателя (%)";
+"preference.detail.mouse_scale" = "Изменить размер указателя виртуальной мыши";
+"preference.title.mouse_speed" = "Скорость указателя (%)";
+"preference.detail.mouse_speed" = "Изменить скорость указателя виртуальный мыши";
+"preference.title.virtmouse_enable" = "Виртуальная мышь";
+"preference.detail.virtmouse_enable" = "Запускать игру с включённой виртуальной мышью";
+"preference.title.slideable_hotbar" = "Прокручиваемый хотбар";
 "preference.title.java_args" = "Аргументы запуска JVM";
 "preference.title.auto_ram" = "Автоматическое выделение ОЗУ";
 "preference.detail.auto_ram" = "Автоматически управляет количеством выделенного ОЗУ";
+"preference.title.allocated_memory" = "Выделение памяти (МБ)";
 "preference.detail.allocated_memory" = "Управляет тем, сколько памяти выделится для Minecraft";
+"preference.title.custom_env" = "Переменные среды";
+"preference.detail.custom_env" = "Функция всё ещё в разработке.";
