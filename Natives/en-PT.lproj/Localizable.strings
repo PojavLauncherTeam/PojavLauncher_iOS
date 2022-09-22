@@ -1,5 +1,10 @@
 "game.menu.log_output" = "Yer' Diary";
 "game.menu.custom_controls" = "custom trigger";
+
+// The play button
+"Play" = "Sail";
 "Snapshot" = "Snapshot";
+
+"launcher.menu.custom_controls" = "custom trigger";
 
 "Settings" = "Settings";
