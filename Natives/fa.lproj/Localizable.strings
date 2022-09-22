@@ -6,9 +6,18 @@
 "game.menu.force_close" = "توقف اجباری";
 "game.menu.log_output" = "خروجی گزارش (لاگ)";
 "game.menu.custom_controls" = "کنترل‌های شخصی";
+
+// The options button at the top-right corner on iOS 12
+"Options" = "گزینه‌ها";
+
+// The play button
+"Play" = "شروع بازی";
 "Snapshot" = "اسنپ‌شات";
 "Old-beta" = "بتای-قدیمی";
 "Old-alpha" = "آلفای-قدیمی";
+
+"launcher.menu.custom_controls" = "کنترل‌های شخصی";
+"launcher.menu.install_jar" = "نصب .jar";
 
 "Settings" = "تنظیمات";
 
