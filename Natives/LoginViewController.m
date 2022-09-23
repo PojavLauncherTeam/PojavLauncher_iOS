@@ -25,6 +25,7 @@ extern NSMutableDictionary *prefDict;
 
 #pragma mark - LoginViewController
 @interface LoginViewController () <ASWebAuthenticationPresentationContextProviding> {}
+@property ASWebAuthenticationSession *authVC;
 @end
 
 @implementation LoginViewController
@@ -263,7 +264,7 @@ extern NSMutableDictionary *prefDict;
 - (void)loginMicrosoft {
     NSURL *url = [NSURL URLWithString:@"https://login.live.com/oauth20_authorize.srf?client_id=00000000402b5328&response_type=code&scope=service%3A%3Auser.auth.xboxlive.com%3A%3AMBI_SSL&redirect_url=https%3A%2F%2Flogin.live.com%2Foauth20_desktop.srf"];
 
-    ASWebAuthenticationSession *authVC =
+    self.authVC =
         [[ASWebAuthenticationSession alloc] initWithURL:url
         callbackURLScheme:@"ms-xal-00000000402b5328"
         completionHandler:^(NSURL * _Nullable callbackURL,
@@ -292,11 +293,11 @@ extern NSMutableDictionary *prefDict;
         }];
 
     if (@available(iOS 13.0, *)) {
-        authVC.prefersEphemeralWebBrowserSession = YES;
-        authVC.presentationContextProvider = self;
+        self.authVC.prefersEphemeralWebBrowserSession = YES;
+        self.authVC.presentationContextProvider = self;
     }
 
-    if ([authVC start] == NO) {
+    if ([self.authVC start] == NO) {
         showDialog(self, NSLocalizedString(@"Error", nil), @"Unable to open Safari");
     }
 }
