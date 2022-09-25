@@ -19,6 +19,7 @@
 "launcher.menu.custom_controls" = "Kontrolės";
 "launcher.menu.install_jar" = "Instaliuoti .jar";
 
+"News" = "Naujienos";
 "Settings" = "Nustatymai";
 "preference.section.control" = "Kontrolių redagavimas";
 //"preference.section.footer.control" = "";
