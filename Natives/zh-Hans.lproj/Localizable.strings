@@ -51,7 +51,7 @@
 "login.progress.title" = "登陆中";
 
 "login.warn.title.ram_unjb" = "关闭自动分配内存风险通知";
-"login.warn.message.ram_unjb" = "请注意，更改此选项可能会导致游戏不稳定或无法进行游戏";
+"login.warn.message.ram_unjb" = "关闭自动分配内存后可能导致游戏不稳定或完全不能进入游戏，这是因为IOS系统可用内存本来就小。我们推荐你更换更大运行内存的设备使用应用";
 
 "login.warn.title.a7" = "该设备存在一些问题";
 "login.warn.message.a7" = "你的设备不在支持PojavLauncher 2.2版本，这是因为你设备硬件限制";
@@ -157,6 +157,6 @@
 "preference.title.debug_ipad_ui" = "解锁 iPadOS 界面";
 "preference.detail.debug_ipad_ui" = "如果启用，解锁 iPad 专用界面（提示、键盘等），如果禁用，解锁 iPhone 界面。";
 "preference.title.debug_show_layout_bounds" = "显示布局边界";
-"preference.detail.debug_show_layout_bounds" = "显示剪辑边界、边距";
+"preference.detail.debug_show_layout_bounds" = "显示剪辑板、页边距";
 "preference.title.debug_show_layout_overlap" = "显示布局重叠";
 "preference.detail.debug_show_layout_overlap" = "用透明的颜色覆盖每个视图，以显示重叠的视图。";
