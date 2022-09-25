@@ -118,11 +118,12 @@ add_executable(PojavLauncher
   JavaGUIViewController.m
   LauncherFAQViewController.m
   LauncherMenuViewController.m
+  LauncherNavigationController.m
+  LauncherNewsViewController.m
   LauncherPreferences.m
   LauncherPreferencesViewController2.m
   LauncherPrefGameDirViewController.m
   LauncherSplitViewController.m
-  LauncherViewController.m
   LoginViewController.m
   MinecraftResourceUtils.m
   SceneDelegate.m 

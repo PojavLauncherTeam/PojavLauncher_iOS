@@ -2,8 +2,8 @@
 
 #import "authenticator/BaseAuthenticator.h"
 #import "AFNetworking.h"
+#import "LauncherNavigationController.h"
 #import "LauncherPreferences.h"
-#import "LauncherViewController.h"
 #import "MinecraftResourceUtils.h"
 #import "ios_uikit_bridge.h"
 #import "utils.h"

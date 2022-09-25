@@ -2,8 +2,8 @@
 #import "AppDelegate.h"
 #import "SceneDelegate.h"
 #import "LoginViewController.h"
+#import "LauncherNavigationController.h"
 #import "LauncherPreferences.h"
-#import "LauncherViewController.h"
 #import "SurfaceViewController.h"
 
 #include "ios_uikit_bridge.h"
