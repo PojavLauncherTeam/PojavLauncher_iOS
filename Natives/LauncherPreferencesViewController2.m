@@ -199,7 +199,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"hasDetail": @YES,
                 @"icon": @"memorychip",
                 @"type": self.typeSlider,
-                @"min": @((NSProcessInfo.processInfo.physicalMemory / 1048576) * 0.25),
+                @"min": @(250),
                 @"max": @((NSProcessInfo.processInfo.physicalMemory / 1048576) * 0.85),
                 @"enableCondition": ^BOOL(){
                     return ![getPreference(@"auto_ram") boolValue] && whenNotInGame();
