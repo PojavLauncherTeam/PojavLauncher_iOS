@@ -137,21 +137,21 @@ viewForFooterInSection:(NSInteger)section
     NSString *directory = [NSString stringWithFormat:@"%s/instances/%@", getenv("POJAV_HOME"), self.array[indexPath.row]];
     if ([UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:@"shareddocuments://"]]) {
         [openItems addObject:[UIAction
-            actionWithTitle:NSLocalizedString(@"Files", nil)
+            actionWithTitle:@"Files"
             image:nil
             identifier:nil
             handler:[self createOpenScheme:@"shareddocuments" at:directory]]];
     }
     if ([UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:@"filza://"]]) {
         [openItems addObject:[UIAction
-            actionWithTitle:NSLocalizedString(@"Filza", nil)
+            actionWithTitle:@"Filza"
             image:nil
             identifier:nil
             handler:[self createOpenScheme:@"filza" at:directory]]];
     }
     if ([UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:@"santander://"]]) {
         [openItems addObject:[UIAction
-            actionWithTitle:NSLocalizedString(@"Santander", nil)
+            actionWithTitle:@"Santander"
             image:nil
             identifier:nil
             handler:[self createOpenScheme:@"santander" at:directory]]];
