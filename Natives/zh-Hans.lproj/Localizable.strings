@@ -82,6 +82,7 @@
 "login.msa.progress.acquireMCToken" = "(4/5) 请求 Minecraft 令牌";
 "login.msa.progress.checkMCProfile" = "(5/5) 检查 Minecraft 账户描述文件";
 
+"News" = "资讯";
 "Settings" = "设置";
 
 "preference.section.general" = "常规设置";
