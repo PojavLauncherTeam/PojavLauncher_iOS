@@ -18,6 +18,7 @@
 
 "launcher.menu.custom_controls" = "การควบคุมกำหนดเอง";
 
+"News" = "ข่าวสาร";
 "Settings" = "การตั้งค่า";
 "preference.title.auto_ram" = "RAM อัตโนมัติ";
 "preference.detail.auto_ram" = "เปิดใช้งานตัวปรับ RAM อัตโนมัติ";
