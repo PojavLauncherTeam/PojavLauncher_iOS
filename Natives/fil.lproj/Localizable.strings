@@ -82,6 +82,7 @@
 "login.msa.progress.acquireMCToken" = "(4/5) Pagkuha ng Minecraft token";
 "login.msa.progress.checkMCProfile" = "(5/5) Sinusuri ang profile sa Minecraft";
 
+"News" = "Mga Balita";
 "Settings" = "Mga Setting";
 
 "preference.section.general" = "Mga Pangkalahatan na Setting";
