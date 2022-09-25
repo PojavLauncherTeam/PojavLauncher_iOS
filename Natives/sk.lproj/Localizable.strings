@@ -19,6 +19,7 @@
 "launcher.menu.custom_controls" = "Vlastné ovládacie prvky";
 "launcher.menu.install_jar" = "Inštalovať .jar";
 
+"News" = "Novinky";
 "Settings" = "Nastavenie";
 "preference.section.control" = "Prispôsobenie ovládania";
 //"preference.section.footer.control" = "";
