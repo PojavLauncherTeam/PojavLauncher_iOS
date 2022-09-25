@@ -90,6 +90,8 @@
 "preference.section.video" = "视频设置";
 "preference.section.footer.video" = "使用自动选择的渲染器将根据游戏版本选择最佳渲染器启动游戏，降低分辨率可以使得 GPU 负载变低从而提升性能。";
 "preference.section.control" = "自定义控制";
+"preference.section.debug" = "界面调试设置";
+"preference.section.footer.debug" = "除了调试外，这些设置可能对自定义控件有用。您可能需要重新启动启动器才能使更改生效。";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java 调整";
 //"preference.section.footer.java" = "";
@@ -151,3 +153,10 @@
 "preference.warn.allocated_memory" = "由于系统的限制,可能会导致游戏不稳定";
 "preference.title.custom_env" = "环境变量";
 "preference.detail.custom_env" = "此选项正在开发";
+
+"preference.title.debug_ipad_ui" = "解锁 iPadOS 界面";
+"preference.detail.debug_ipad_ui" = "如果启用，解锁 iPad 专用界面（提示、键盘等），如果禁用，解锁 iPhone 界面。";
+"preference.title.debug_show_layout_bounds" = "显示布局边界";
+"preference.detail.debug_show_layout_bounds" = "显示剪辑边界、边距";
+"preference.title.debug_show_layout_overlap" = "显示布局重叠";
+"preference.detail.debug_show_layout_overlap" = "用透明的颜色覆盖每个视图，以显示重叠的视图。";
