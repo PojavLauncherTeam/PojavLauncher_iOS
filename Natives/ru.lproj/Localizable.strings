@@ -80,6 +80,7 @@
 "login.msa.progress.acquireMCToken" = "(4/5) Получение токена Minecraft...";
 "login.msa.progress.checkMCProfile" = "(5/5) Проверка профиля Minecraft...";
 
+"News" = "Новости лаунчера";
 "Settings" = "Настройки";
 
 "preference.section.general" = "Основные настройки";
