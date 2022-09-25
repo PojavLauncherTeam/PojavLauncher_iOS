@@ -73,6 +73,7 @@
 "login.msa.progress.acquireMCToken" = "(4/5) Đang nhận Khoá Minecraft";
 "login.msa.progress.checkMCProfile" = "(5/5) Kiểm tra hồ sơ Minecraft";
 
+"News" = "Tin tức";
 "Settings" = "Thiết lập";
 
 "preference.section.general" = "Cài đặt chung";
