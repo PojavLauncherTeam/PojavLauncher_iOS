@@ -76,6 +76,7 @@
 "login.msa.progress.acquireMCToken" = "(4/5) Erhalte Minecraft-Token";
 "login.msa.progress.checkMCProfile" = "(5/5) Überprüfe Minecraft-Profil";
 
+"News" = "Neuigkeiten";
 "Settings" = "Einstellungen";
 
 "preference.section.general" = "Allgemeine Einstellungen";
