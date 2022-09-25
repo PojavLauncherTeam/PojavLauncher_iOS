@@ -19,6 +19,7 @@
 "launcher.menu.custom_controls" = "カスタムコントロール";
 "launcher.menu.install_jar" = ".jarをインストール";
 
+"News" = "ニュース";
 "Settings" = "設定";
 "preference.section.control" = "制御のカスタマイズ";
 //"preference.section.footer.control" = "";
