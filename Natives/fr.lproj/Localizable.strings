@@ -19,6 +19,7 @@
 "launcher.menu.custom_controls" = "Contrôles personnalisés";
 "launcher.menu.install_jar" = "Installer le .jar";
 
+"News" = "Actualités";
 "Settings" = "Paramètres";
 "preference.section.control" = "Contrôlez la customisation";
 //"preference.section.footer.control" = "";
