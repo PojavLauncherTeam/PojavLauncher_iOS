@@ -82,6 +82,7 @@
 "login.msa.progress.acquireMCToken" = "(4/5) Minecraft Token'ı elde ediliyor";
 "login.msa.progress.checkMCProfile" = "(5/5) Minecraft hesabına bakılıyor";
 
+"News" = "Haberler";
 "Settings" = "Ayarlar";
 
 "preference.section.general" = "Genel Ayarlar";
