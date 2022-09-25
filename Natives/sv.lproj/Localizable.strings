@@ -15,6 +15,7 @@
 
 "launcher.menu.custom_controls" = "Anpassade kontroller";
 
+"News" = "Nyheter";
 "Settings" = "Inställningar";
 "preference.title.disable_gesture" = "Inaktivera gester";
 "preference.detail.allocated_memory" = "Kontrollerar hur mycket minne som ges till Minecraft";
