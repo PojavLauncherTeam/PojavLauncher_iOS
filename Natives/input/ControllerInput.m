@@ -165,14 +165,17 @@ BOOL leftShiftHeld;
     };
     
     gamepad.leftThumbstick.valueChangedHandler = ^(GCControllerDirectionPad * _Nonnull dpad, float xValue, float yValue) {
-        if (isGrabbing) {
-            return;
+        if (!isGrabbing) {
+            UIImageView *pointerView = [(id)currentWindow().rootViewController mousePointerView];
+            virtualMouseFrame.origin.x += xValue;
+            virtualMouseFrame.origin.y += yValue;
+            pointerView.frame = virtualMouseFrame;
         }
-
-        UIImageView *pointerView = [(id)currentWindow().rootViewController mousePointerView];
-        virtualMouseFrame.origin.x += xValue;
-        virtualMouseFrame.origin.y += yValue;
-        pointerView.frame = virtualMouseFrame;
+        CGFloat screenScale = UIScreen.mainScreen.scale;
+        callback_SurfaceViewController_onTouch(ACTION_MOVE_MOTION,
+            isGrabbing ? xValue : virtualMouseFrame.origin.x*screenScale,
+            isGrabbing ? yValue : virtualMouseFrame.origin.y*screenScale
+        );
     };
     gamepad.rightThumbstick.valueChangedHandler = ^(GCControllerDirectionPad * _Nonnull dpad, float xValue, float yValue) {
         if (!isGrabbing) {
