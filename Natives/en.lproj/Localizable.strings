@@ -19,6 +19,7 @@
 "launcher.menu.custom_controls" = "Custom controls";
 "launcher.menu.install_jar" = "Install .jar";
 
+"News" = "News";
 "Settings" = "Settings";
 
 "preference.title.renderer" = "Renderer";
