@@ -19,6 +19,7 @@
 "launcher.menu.custom_controls" = "Прилагођене контроле";
 "launcher.menu.install_jar" = "Инсталирај .jar";
 
+"News" = "Вести";
 "Settings" = "Подешавања";
 
 "preference.title.renderer" = "Рендерер";
