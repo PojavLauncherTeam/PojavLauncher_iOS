@@ -10,6 +10,7 @@
  * - Implements glfwSetCursorPos() to handle grab camera pos correctly.
  */
 
+#import <SafariServices/SafariServices.h>
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 #import "SurfaceViewController.h"
@@ -48,6 +49,27 @@ jmethodID inputBridgeMethod_ANDROID;
 jclass uikitBridgeClass;
 jmethodID uikitBridgeTouchMethod;
 
+NSString* processPath(NSString* path) {
+    if ([path hasPrefix:@"file:"]) {
+        path = [path substringFromIndex:5].stringByRemovingPercentEncoding.stringByResolvingSymlinksInPath;
+    }
+
+    NSString *prefix = @"file";
+    if ([UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:@"shareddocuments://"]] &&
+      ![path hasPrefix:@"/usr"]) {
+        // Prefer opening in Files if containerized
+        prefix = @"shareddocuments";
+    } else if ([UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:@"filza://"]]) {
+        // Open in Filza if installed
+        prefix = @"filza";
+    } else if ([UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:@"santander://"]]) {
+        // Open in Santander if installed
+        prefix = @"santander";
+    }
+
+    return [NSString stringWithFormat:@"%@://%@", prefix, path];
+}
+
 /**
  * Hooked version of java.lang.UNIXProcess.forkAndExec()
  * which is used to handle the "open" command.
@@ -67,14 +89,13 @@ hooked_ProcessImpl_forkAndExec(JNIEnv *env, jobject process, jint mode, jbyteArr
 
     char *path = (char *)((*env)->GetByteArrayElements(env, argBlock, NULL));
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSString *realPath = @(path);
-        if ([realPath hasPrefix:@"file:"]) {
-            realPath = [realPath substringFromIndex:5].stringByRemovingPercentEncoding;
+        if ([@(path) hasPrefix:@"http"]) {
+            SFSafariViewController *vc = [[SFSafariViewController alloc] initWithURL:[NSURL URLWithString:@(path)]];
+            [currentWindow().rootViewController presentViewController:vc animated:YES completion:nil];
+            dispatch_group_leave(group);
+            return;
         }
-        if (![realPath hasPrefix:@"http"]) {
-            realPath = [NSString stringWithFormat:@"filza:/%@", realPath.stringByResolvingSymlinksInPath];
-        }
-
+        NSString *realPath = processPath(@(path));
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:realPath] options:@{} completionHandler:^(BOOL success) {
             if (success) {
                 NSLog(@"Opened \"%@\"", realPath);
