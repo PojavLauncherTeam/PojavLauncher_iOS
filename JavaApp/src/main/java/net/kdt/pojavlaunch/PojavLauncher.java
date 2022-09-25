@@ -28,6 +28,7 @@ public class PojavLauncher {
             field.setAccessible(true);
             field.set(null, null);
             sun.font.FontUtilities.isLinux = true;
+            System.setProperty("java.util.prefs.PreferencesFactory", "java.util.prefs.FileSystemPreferencesFactory");
         } catch (Throwable th) {
             // Not on JRE8, ignore exception
             //Tools.showError(th);
