@@ -19,6 +19,7 @@
 "launcher.menu.custom_controls" = "사용자 지정 조작";
 "launcher.menu.install_jar" = ".jar 설치";
 
+"News" = "소식";
 "Settings" = "설정";
 "preference.section.control" = "사용자 지정 조작";
 //"preference.section.footer.control" = "";
