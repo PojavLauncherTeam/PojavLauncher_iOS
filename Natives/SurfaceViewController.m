@@ -1006,11 +1006,11 @@ CallbackBridge_nativeSendKey(keycode, 0, held, 0);
 
 - (void)executebtn_swipe:(UIPanGestureRecognizer *)sender
 {
-    CGPoint location = [sender locationInView:self.rootView];
     if (sender.state == UIGestureRecognizerStateCancelled || sender.state == UIGestureRecognizerStateEnded) {
         [self executebtn_up:self.swipingButton isOutside:NO];
         return;
     }
+    CGPoint location = [sender locationInView:self.ctrlView];
     for (ControlButton *button in self.swipeableButtons) {
         if (CGRectContainsPoint(button.frame, location) && (ControlButton *)self.swipingButton != button) {
             [self executebtn_up:self.swipingButton isOutside:NO];
