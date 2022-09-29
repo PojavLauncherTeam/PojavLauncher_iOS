@@ -157,7 +157,7 @@ viewForFooterInSection:(NSInteger)section
             handler:[self createOpenScheme:@"santander" at:directory]]];
     }
     UIMenu *open = [UIMenu
-        menuWithTitle:nil
+        menuWithTitle:@""
         image:nil
         identifier:nil
         options:UIMenuOptionsDisplayInline
