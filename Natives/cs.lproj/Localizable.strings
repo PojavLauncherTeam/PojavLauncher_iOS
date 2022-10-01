@@ -39,6 +39,8 @@
 "Sign in" = "Přihlásit se";
 "FAQ" = "FAQ";
 "Accounts" = "Účty";
+
+"login.menu.about" = "O PojavLauncheru";
 "login.menu.sendlogs" = "Odeslat záznamy";
 "login.menu.updates" = "Nedávné aktualizace";
 
