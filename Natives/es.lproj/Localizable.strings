@@ -4,6 +4,7 @@
 */
 
 "game.menu.force_close" = "Forzar el cierre";
+"game.menu.confirm.force_close" = "¿Estás seguro de que quieres forzar el cierre?";
 "game.menu.log_output" = "Registro de salida";
 "game.menu.custom_controls" = "Controles personalizados";
 
@@ -12,19 +13,94 @@
 
 // The play button
 "Play" = "Jugar";
+
+// Version categories
+"Installed" = "Instalada";
 "Snapshot" = "Snapshots";
 "Old-beta" = "Betas";
 "Old-alpha" = "Alphas";
 
+"init.migrateDir" = "La carpeta de PojavLauncher ahora está en %@. Todos tus datos han sido movidos a esa nueva ubicación.";
+
 "launcher.menu.custom_controls" = "Controles personalizados";
 "launcher.menu.install_jar" = "Instalar .jar";
 
+"login.error.username.outOfRange" = "Nombre de usuario debe tener al menos entre 3 y 16 caracteres";
+
+"login.alert.field.username" = "Nombre de usuario";
+
+"login.jit.checking" = "Buscando JIT";
+"login.jit.enabled" = "JIT ha sido habilitado";
+"login.jit.fail.JitStreamer" = "JitStreamer error: %@";
+"login.jit.found.JitStreamer" = "JitStreamer encontrado, habilitando JIT";
+
+// Login buttons
+"Sign in" = "Iniciar sesión";
+"FAQ" = "Preguntas frecuentes (FAQ)";
+"Accounts" = "Cuentas";
+"login.menu.sendlogs" = "Envía tus logs";
+"login.menu.updates" = "Actualizaciones recientes";
+
+"login.option.microsoft" = "Cuenta de Microsoft";
+"login.option.demo" = "Cuenta demo";
+"login.option.local" = "Cuenta local";
+
+"login.progress.title" = "Iniciando sesión";
+
+"login.warn.title.ram_unjb" = "Slider de memoria habilitado";
+"login.warn.message.ram_unjb" = "Ten en cuenta que al cambiar esta opción es posible que cause inestabilidades en el juego o la incapacidad para jugar.";
+
+"login.warn.title.a7" = "Esta es la última actualización para este dispositivo.";
+"login.warn.message.a7" = "PojavLauncher 2.2 no soportará este dispositivo debido a las limitaciones de hardware y software.";
+
+"login.warn.title.iosver" = "Esta es la última actualización para esta versión de iOS.";
+"login.warn.message.iosver" = "Una futura versión de PojavLauncher no tendrá soporte para iOS 12 o 13, debido a inconsistencias de características y obstáculos en el desarrollo.";
+
+"login.warn.title.2gb" = "Tu dispositivo tiene RAM limitada.";
+"login.warn.message.2gb" = "Dispositivos con menos de 3GB de memoria pueden tener restricciones. Recomendamos dejar al selector automático encendido para tu dispositivo.";
+
+"login.warn.title.demomode" = "Esta opción esta en beta.";
+"login.warn.message.demomode" = "Como reemplazo del modo offline y el modo local, el modo demo te permitirá iniciar sesión en una cuenta de Microsoft que no tenga el juego para jugar a las trials de Java Edition, introducido en la versión 1.3.1 y versiones nuevas. Versiones anteriores a estas tienen acceso al juego entero, porque el launcher oficial no contiene estas restricciones. Ve a nuestro sitio web para saber más sobre esta transición de el modo offline.";
+
+"login.warn.title.localmode" = "El modo offline ahora es el modo local.";
+"login.warn.message.localmode" = "Puedes seguir jugando a versiones ya instaladas, pero ya no puedes descargar Minecraft sin una cuenta de paga. No habrá soporte a casos con las cuentas locales u otros medios para adquirir Minecraft consulte a las Preguntas frecuentes (FAQ) para más información.";
+
+"login.msa.error.xsts.noxboxacc" = "Esta cuenta de Microsoft no poseé un perfil de Xbox. Por favor, asegúrate de haber creado un perfil de Xbox en esta cuenta.\nCódigo de error: 2148916233";
+"login.msa.error.xsts.noxbox" = "Xbox Live no está disponible actualmente en tu país.\nCódigo de error: 2148916235";
+"login.msa.error.xsts.krverify" = "Tu cuenta debe ser verificada por tus padres antes de continuar.\nCódigo de error: 2148916236 o 2148916237.";
+"login.msa.error.xsts.underage" = "Tu cuenta debe de estar vinculada a una cuenta de padre antes de continuar.\nCódigo de error: 2148916238";
+
+"login.msa.notice.demomode" = "No se pudo encontrar un perfil de Minecraft en esta cuenta. Esta cuenta ahora está configurada en modo demo. ¿Has comprado el juego?, ¿Hay una subscripción de Gamepass aquí? Por favor, configura tu perfil en https://minecraft.net/msaprofle para restaurar el modo online.";
+
+"login.msa.progress.acquireAccessToken" = "(1/5) Adquiriendo el token de acceso";
+"login.msa.progress.acquireXBLToken" = "(2/5) Adquiriendo el token de Xbox Live";
+"login.msa.progress.acquireXSTS" = "Adquiriendo XSTS";
+"login.msa.progress.acquireXboxProfile" = "(3/5) Adquiriendo perfil de Xbox";
+"login.msa.progress.acquireMCToken" = "(4/5) Adquiriendo token de Minecraft";
+"login.msa.progress.checkMCProfile" = "(5/5) Comprobando el perfil de Minecraft";
+
 "News" = "Noticias";
 "Settings" = "Ajustes";
+
+"preference.section.general" = "Configuración general";
+"preference.section.footer.general" = "* La opción para la compatibilidad de symlinks está planeada para ser removida en una futura versión.";
+"preference.section.video" = "Configuración de Vídeo";
+"preference.section.footer.video" = "El auto renderizador le permite a Minecraft decidir cuál renderizador usar. Reduciendo la resolución reduce la carga del GPU para un mejor rendimiento.";
 "preference.section.control" = "Personalización del control";
 "preference.section.footer.debug" = "Aparte de el debugging, estas opciones pueden ser útiles para los controles personalizados. Es posible que tengas que reiniciar el launcher para que los cambios tengan efecto.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Ajustes de Java";
+//"preference.section.footer.java" = "";
+
+"preference.title.confirm" = "¿Estás seguro?";
+
+"preference.title.game_directory" = "Carpeta de Minecraft";
+"preference.title.confirm.delete_game_directory" = "La instancia %@ va a ser borrada para siempre y nunca podrá ser restaurada.";
+"preference.multidir.add_directory" = "Añadir Ubicación de carpeta del juego";
+
+"preference.title.home_symlink" = "Habilitar compatibilidad con symlink *";
+"preference.detail.home_symlink" = "Hacer un symlink en /var/mobile/Documents/.pojavlauncher. No disponible en un entorno sanboxed.";
+"preference.title.check_sha" = "Comprobar archivos después de descargar";
 "preference.title.cosmetica" = "Capas de Comestica";
 
 "preference.title.renderer" = "Renderizador";
