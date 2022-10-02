@@ -4,6 +4,10 @@
 
 #include "../glfw_keycodes.h"
 
+CFAbsoluteTime lastFrameTime;
+CGFloat lastXValue; // lastHorizontalValue
+CGFloat lastYValue; // lastVerticalValue
+
 @implementation ControllerInput
 
 NSMutableDictionary *gameMap, *menuMap;
@@ -166,34 +170,27 @@ BOOL leftShiftHeld;
     
     gamepad.leftThumbstick.valueChangedHandler = ^(GCControllerDirectionPad * _Nonnull dpad, float xValue, float yValue) {
         if (!isGrabbing) {
-            UIImageView *pointerView = [(id)currentWindow().rootViewController mousePointerView];
-            virtualMouseFrame.origin.x += xValue;
-            virtualMouseFrame.origin.y += yValue;
-            pointerView.frame = virtualMouseFrame;
+            lastXValue = xValue;
+            lastYValue = yValue;
         }
-        CGFloat screenScale = UIScreen.mainScreen.scale;
-        callback_SurfaceViewController_onTouch(ACTION_MOVE_MOTION,
-            isGrabbing ? xValue : virtualMouseFrame.origin.x*screenScale,
-            isGrabbing ? yValue : virtualMouseFrame.origin.y*screenScale
-        );
     };
     gamepad.rightThumbstick.valueChangedHandler = ^(GCControllerDirectionPad * _Nonnull dpad, float xValue, float yValue) {
-        if (!isGrabbing) {
-            return;
+        if (isGrabbing) {
+            lastXValue = xValue;
+            lastYValue = yValue;
         }
-
-        dpad.up.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
-            [self sendKeyEvent:GLFW_KEY_W pressed:pressed];
-        };
-        dpad.left.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
-            [self sendKeyEvent:GLFW_KEY_A pressed:pressed];
-        };
-        dpad.down.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
-            [self sendKeyEvent:GLFW_KEY_S pressed:pressed];
-        };
-        dpad.right.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
-            [self sendKeyEvent:GLFW_KEY_D pressed:pressed];
-        };
+    };
+    gamepad.rightThumbstick.up.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
+        [self sendKeyEvent:GLFW_KEY_W pressed:pressed];
+    };
+    gamepad.rightThumbstick.left.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
+        [self sendKeyEvent:GLFW_KEY_A pressed:pressed];
+    };
+    gamepad.rightThumbstick.down.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
+        [self sendKeyEvent:GLFW_KEY_S pressed:pressed];
+    };
+    gamepad.rightThumbstick.right.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
+        [self sendKeyEvent:GLFW_KEY_D pressed:pressed];
     };
     if (@available(iOS 12.1, *)) {
         gamepad.leftThumbstickButton.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
@@ -203,6 +200,28 @@ BOOL leftShiftHeld;
             [self sendKeyEvent:GLFW_GAMEPAD_BUTTON_RIGHT_THUMB pressed:pressed];
         };
     }
+}
+
+/**
+ * Send the new mouse position, computing the delta
+ */
++ (void)tick {
+    // There isn't a convenient way to get ns, use ms at this point
+    CGFloat frameTimeMilis = CACurrentMediaTime();
+    // GameController automatically performs deadzone calculations
+    // so we just take the raw input
+    if (lastFrameTime != 0 && (lastXValue != 0 || lastYValue != 0)) {
+        CGFloat acceleration = MathUtils_dist(0, 0, lastXValue, lastYValue); // magnitude
+        CGFloat deltaX = lastXValue * acceleration * 18;
+        CGFloat deltaY = -lastYValue * acceleration * 18;
+        CGFloat deltaTimeScale = (frameTimeMilis - lastFrameTime) / 0.016666666; // Scale of 1 = 60Hz
+        deltaX *= deltaTimeScale;
+        deltaY *= deltaTimeScale;
+
+        SurfaceViewController *vc = (id)(currentWindow().rootViewController);
+        [vc sendTouchPoint:CGPointMake(deltaX, deltaY) withEvent:ACTION_MOVE_MOTION];
+    }
+    lastFrameTime = frameTimeMilis;
 }
 
 + (void)unregisterControllerCallbacks:(GCController *)controller {

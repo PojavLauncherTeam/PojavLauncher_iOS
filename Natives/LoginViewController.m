@@ -25,7 +25,7 @@ extern NSMutableDictionary *prefDict;
 
 #pragma mark - LoginViewController
 @interface LoginViewController () <ASWebAuthenticationPresentationContextProviding> {}
-@property ASWebAuthenticationSession *authVC;
+@property(nonatomic) ASWebAuthenticationSession *authVC;
 @end
 
 @implementation LoginViewController
@@ -38,11 +38,11 @@ extern NSMutableDictionary *prefDict;
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(msaLoginCallback:) name:@"MSALoginCallback" object:nil];
 
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    CGRect screenBounds = UIScreen.mainScreen.bounds;
 
-    int width = (int) roundf(screenBounds.size.width);
-    int height = (int) roundf(screenBounds.size.height) - self.navigationController.navigationBar.frame.size.height;
-    int rawHeight = (int) roundf(screenBounds.size.height);
+    CGFloat width = screenBounds.size.width;
+    CGFloat height = screenBounds.size.height - self.navigationController.navigationBar.frame.size.height;
+    CGFloat rawHeight = screenBounds.size.height;
 
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -99,7 +99,8 @@ extern NSMutableDictionary *prefDict;
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"login.menu.about", nil) style:UIBarButtonItemStyleDone target:self action:@selector(aboutLauncher)];
     }
 
-    UIButton *button_faq = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    UIButton *button_faq = [UIButton buttonWithType:UIButtonTypeSystem];
+    setButtonPointerInteraction(button_faq);
     [button_faq setTitle:NSLocalizedString(@"FAQ", @"Frequently asked questions") forState:UIControlStateNormal];
     button_faq.frame = CGRectMake(widthSplit2 - (((width - widthSplit * 2.0) / 2) / 2), (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
     if([date isEqualToString:@"06-29"] || [date isEqualToString:@"06-30"] || [date isEqualToString:@"07-01"]) {
@@ -117,7 +118,8 @@ extern NSMutableDictionary *prefDict;
     }
     [scrollView addSubview:button_faq];
 
-    UIButton *button_login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    UIButton *button_login = [UIButton buttonWithType:UIButtonTypeSystem];
+    setButtonPointerInteraction(button_login);
     [button_login setTitle:NSLocalizedString(@"Sign in", nil) forState:UIControlStateNormal];
     button_login.frame = CGRectMake(button_faq.frame.origin.x - button_faq.frame.size.width - 20, (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
     if([date isEqualToString:@"06-29"] || [date isEqualToString:@"06-30"] || [date isEqualToString:@"07-01"]) {
@@ -147,7 +149,8 @@ extern NSMutableDictionary *prefDict;
     }
     [scrollView addSubview:button_login];
 
-    UIButton *button_accounts = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    UIButton *button_accounts = [UIButton buttonWithType:UIButtonTypeSystem];
+    setButtonPointerInteraction(button_accounts);
     [button_accounts setTitle:NSLocalizedString(@"Accounts", nil) forState:UIControlStateNormal];
     button_accounts.frame = CGRectMake(button_faq.frame.origin.x + button_faq.frame.size.width + 20, (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
     if([date isEqualToString:@"06-29"] || [date isEqualToString:@"06-30"] || [date isEqualToString:@"07-01"]) {

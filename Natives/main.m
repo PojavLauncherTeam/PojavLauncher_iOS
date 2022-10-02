@@ -105,16 +105,19 @@ void init_logDeviceAndVer(char *argument) {
     const char *deviceSoftware = [[[UIDevice currentDevice] systemVersion] cStringUsingEncoding:NSUTF8StringEncoding];
     
     // PojavLauncher version
-    regLog("[Pre-Init] PojavLauncher version: %s - branch %s commit %s", CONFIG_TYPE, CONFIG_BRANCH, CONFIG_COMMIT);
+    regLog("[Pre-Init] PojavLauncher version: %s, branch: %s, commit: %s", CONFIG_TYPE, CONFIG_BRANCH, CONFIG_COMMIT);
 
     setenv("POJAV_DETECTEDHW", deviceHardware, 1);
     setenv("POJAV_DETECTEDSW", deviceSoftware, 1);
     
-    if (getenv("POJAV_DETECTEDJB")) {
-        regLog("[Pre-Init] %s with iOS %s (Jailbroken)", deviceHardware, deviceSoftware);
-    } else {
-        regLog("[Pre-Init] %s with iOS %s (Unjailbroken)", deviceHardware, deviceSoftware);
+    NSString *tsPath = [NSString stringWithFormat:@"%s/../_TrollStore", getenv("BUNDLE_PATH")];
+    const char *type = "Unjailbroken";
+    if ([fm fileExistsAtPath:tsPath]) {
+        type = "TrollStore";
+    } else if (getenv("POJAV_DETECTEDJB")) {
+        type = "Jailbroken";
     }
+    regLog("[Pre-Init] %s with iOS %s (%s)", deviceHardware, deviceSoftware, type);
     
     NSString *jvmPath = [NSString stringWithFormat:@"%s/jvm", getenv("BUNDLE_PATH")];
     if (![fm fileExistsAtPath:jvmPath]) {

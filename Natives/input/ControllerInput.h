@@ -6,5 +6,6 @@
 + (void)initKeycodeTable;
 + (void)registerControllerCallbacks:(GCController *)controller;
 + (void)unregisterControllerCallbacks:(GCController *)controller;
++ (void)tick;
 
 @end

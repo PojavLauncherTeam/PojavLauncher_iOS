@@ -94,6 +94,7 @@ CGFloat MathUtils_dist(CGFloat x1, CGFloat y1, CGFloat x2, CGFloat y2);
 CGFloat MathUtils_map(CGFloat x, CGFloat in_min, CGFloat in_max, CGFloat out_min, CGFloat out_max);
 CGFloat dpToPx(CGFloat dp);
 CGFloat pxToDp(CGFloat px);
+void setButtonPointerInteraction(UIButton *button);
 void setViewBackgroundColor(UIView* view);
 void _CGDataProviderReleaseBytePointerCallback(void *info,const void *pointer);
 

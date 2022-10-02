@@ -75,6 +75,16 @@ CGFloat pxToDp(CGFloat px) {
     return px / screenScale;
 }
 
+void setButtonPointerInteraction(UIButton *button) {
+    if(@available (iOS 13.4, *)) {
+        button.pointerInteractionEnabled = YES;
+        button.pointerStyleProvider = ^ UIPointerStyle* (UIButton* button, UIPointerEffect* proposedEffect, UIPointerShape* proposedShape) {
+            UITargetedPreview *preview = [[UITargetedPreview alloc] initWithView:button];
+            return [UIPointerStyle styleWithEffect:[UIPointerHighlightEffect effectWithPreview:preview] shape:proposedShape];
+        };
+    }
+}
+
 void setViewBackgroundColor(UIView* view) {
     if(@available(iOS 13.0, *)) {
         view.backgroundColor = UIColor.systemBackgroundColor;

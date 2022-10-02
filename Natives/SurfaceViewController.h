@@ -5,11 +5,12 @@
 CGRect virtualMouseFrame;
 CGPoint lastVirtualMousePoint;
 
-
 @interface SurfaceViewController : UIViewController
 
-@property(nonatomic, strong) GameSurfaceView* surfaceView;
+@property(nonatomic) GameSurfaceView* surfaceView;
 @property UIImageView* mousePointerView;
-@property UIPanGestureRecognizer* scrollPanGesture;
+@property(nonatomic) UIPanGestureRecognizer* scrollPanGesture;
+
+- (void)sendTouchPoint:(CGPoint)location withEvent:(int)event;
 
 @end

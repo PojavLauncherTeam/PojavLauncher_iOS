@@ -5,7 +5,7 @@
 #import "ios_uikit_bridge.h"
 
 @interface LauncherPrefGameDirViewController ()<UITextFieldDelegate>
-@property NSMutableArray *array;
+@property(nonatomic) NSMutableArray *array;
 @end
 
 @implementation LauncherPrefGameDirViewController

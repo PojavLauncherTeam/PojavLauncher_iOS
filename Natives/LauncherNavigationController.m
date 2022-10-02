@@ -72,6 +72,7 @@ int versionSelectedAt = 0;
     [self.toolbar addSubview:self.progressViewSub];
 
     self.buttonInstall = [UIButton buttonWithType:UIButtonTypeSystem];
+    setButtonPointerInteraction(self.buttonInstall);
     self.buttonInstall.enabled = NO;
     [self.buttonInstall setTitle:NSLocalizedString(@"Play", nil) forState:UIControlStateNormal];
     self.buttonInstall.autoresizingMask = AUTORESIZE_MASKS;
@@ -83,6 +84,7 @@ int versionSelectedAt = 0;
     [self.toolbar addSubview:self.buttonInstall];
 
     UIButton *buttonCustomControls = [UIButton buttonWithType:UIButtonTypeSystem];
+    setButtonPointerInteraction(buttonCustomControls);
     [buttonCustomControls setTitle:NSLocalizedString(@"launcher.menu.custom_controls", nil) forState:UIControlStateNormal];
     buttonCustomControls.autoresizingMask = AUTORESIZE_MASKS;
     buttonCustomControls.frame = CGRectMake(0, self.toolbar.frame.size.height/2, splitWidth, self.toolbar.frame.size.height/2);
@@ -90,6 +92,7 @@ int versionSelectedAt = 0;
     [self.toolbar addSubview:buttonCustomControls];
 
     UIButton *buttonInstallJar = [UIButton buttonWithType:UIButtonTypeSystem];
+    setButtonPointerInteraction(buttonInstallJar);
     [buttonInstallJar setTitle:NSLocalizedString(@"launcher.menu.install_jar", nil) forState:UIControlStateNormal];
     buttonInstallJar.autoresizingMask = AUTORESIZE_MASKS;
     buttonInstallJar.frame = CGRectMake(splitWidth*2, self.toolbar.frame.size.height/2, splitWidth, self.toolbar.frame.size.height/2);

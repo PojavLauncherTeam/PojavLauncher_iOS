@@ -12,9 +12,9 @@
 typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
 @interface LauncherPreferencesViewController2()<UIPickerViewDataSource, UIPickerViewDelegate> {}
-@property NSArray<NSString*>* prefSections;
-@property NSArray<NSArray<NSDictionary*>*>* prefContents;
-@property BOOL prefDetailVisible;
+@property(nonatomic) NSArray<NSString*>* prefSections;
+@property(nonatomic) NSArray<NSArray<NSDictionary*>*>* prefContents;
+@property(nonatomic) BOOL prefDetailVisible;
 
 @property CreateView typeButton, typeChildPane, typePickField, typeTextField, typeSlider, typeSwitch;
 @end

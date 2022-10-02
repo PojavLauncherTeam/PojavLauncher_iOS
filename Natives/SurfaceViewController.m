@@ -220,6 +220,12 @@ BOOL slideableHotbar;
     [self.navigationItem setHidesBackButton:YES animated:YES];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 
+    // Perform Gamepad joystick ticking, while alos controlling frame rate?
+    CADisplayLink *displayLink = [CADisplayLink displayLinkWithTarget:ControllerInput.class selector:@selector(tick)];
+    if (@available(iOS 15.0, *)) {
+        displayLink.preferredFrameRateRange = CAFrameRateRangeMake(60, 120, 120);
+    }
+    [displayLink addToRunLoop:NSRunLoop.currentRunLoop forMode:NSRunLoopCommonModes];
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];
 
@@ -355,7 +361,7 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
         self.mouseConnectCallback = [[NSNotificationCenter defaultCenter] addObserverForName:GCMouseDidConnectNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
             NSLog(@"Input: Mouse connected!");
             GCMouse* mouse = note.object;
-            [self registerMouseCallbacks: mouse];
+            [self registerMouseCallbacks:mouse];
             [self setNeedsUpdateOfPrefersPointerLocked];
         }];
         self.mouseDisconnectCallback = [[NSNotificationCenter defaultCenter] addObserverForName:GCMouseDidDisconnectNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
@@ -407,6 +413,7 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
     [self updateJetsamControl];
     [self updatePreferenceChanges];
     [self executebtn_special_togglebtn:0];
+
     [self launchMinecraft];
 }
 
@@ -830,36 +837,34 @@ CGPoint lastCenterPoint;
 }
 
 - (void)surfaceOnHover:(UIHoverGestureRecognizer *)sender API_AVAILABLE(ios(13.0)) {
-    if (@available(iOS 13.0, *)) {
-        if (@available(iOS 14.0, *)) {
-            if (isGrabbing) return;
-        }
-        CGPoint point = [sender locationInView:self.rootView];
-        // NSLog(@"Mouse move!!");
-        // NSLog(@"Mouse pos = %f, %f", point.x, point.y);
-        switch (sender.state) {
-            case UIGestureRecognizerStateBegan:
-                [self sendTouchPoint:point withEvent:ACTION_DOWN];
-                break;
-            case UIGestureRecognizerStateChanged:
-                [self sendTouchPoint:point withEvent:ACTION_MOVE];
-                break;
-            case UIGestureRecognizerStateEnded:
-            case UIGestureRecognizerStateCancelled:
-                [self sendTouchPoint:point withEvent:ACTION_UP];
-                break;
-            default:
-                // point = CGPointMake(-1, -1);
-                break;
-        }
+    if (@available(iOS 14.0, *)) {
+        if (isGrabbing) return;
+    }
+    CGPoint point = [sender locationInView:self.rootView];
+    // NSLog(@"Mouse move!!");
+    // NSLog(@"Mouse pos = %f, %f", point.x, point.y);
+    switch (sender.state) {
+        case UIGestureRecognizerStateBegan:
+            [self sendTouchPoint:point withEvent:ACTION_DOWN];
+            break;
+        case UIGestureRecognizerStateChanged:
+            [self sendTouchPoint:point withEvent:ACTION_MOVE];
+            break;
+        case UIGestureRecognizerStateEnded:
+        case UIGestureRecognizerStateCancelled:
+            [self sendTouchPoint:point withEvent:ACTION_UP];
+            break;
+        default:
+            // point = CGPointMake(-1, -1);
+            break;
     }
 }
 
 -(void)surfaceOnLongpress:(UILongPressGestureRecognizer *)sender
 {
     if (!slideableHotbar) {
-        CGFloat screenScale = [[UIScreen mainScreen] scale];
         CGPoint location = [sender locationInView:self.rootView];
+        CGFloat screenScale = UIScreen.mainScreen.scale;
         currentHotbarSlot = callback_SurfaceViewController_touchHotbar(location.x * screenScale, location.y * screenScale);
     }
     if (sender.state == UIGestureRecognizerStateBegan) {
@@ -895,19 +900,16 @@ CallbackBridge_nativeSendKey(GLFW_KEY_Q, 0, 0, 0);
         sender.state == UIGestureRecognizerStateEnded) {
         CGPoint velocity = [sender velocityInView:self.rootView];
         if (velocity.x != 0.0f || velocity.y != 0.0f) {
-            CallbackBridge_nativeSendScroll((CGFloat) (velocity.x/10.0), (CGFloat) (velocity.y/10.0));
+            CallbackBridge_nativeSendScroll(velocity.x/100.0, velocity.y/100.0);
         }
     }
 }
 
-// FIXME: incomplete
 - (UIPointerRegion *)pointerInteraction:(UIPointerInteraction *)interaction regionForRequest:(UIPointerRegionRequest *)request defaultRegion:(UIPointerRegion *)defaultRegion API_AVAILABLE(ios(13.4)) API_AVAILABLE(ios(13.4)) API_AVAILABLE(ios(13.4)){
-    NSLog(@"regionForRequest called");
     return nil;
 }
 
 - (UIPointerStyle *)pointerInteraction:(UIPointerInteraction *)interaction styleForRegion:(UIPointerRegion *)region  API_AVAILABLE(ios(13.4)){
-    NSLog(@"styleForRegion called");
     return [UIPointerStyle hiddenPointerStyle];
 }
 
@@ -1111,7 +1113,7 @@ int touchesMovedCount;
 
     for (UITouch *touch in touches) {
         if (@available(iOS 14.0, *)) { // 13.4
-            if (touch.type == UITouchTypeIndirectPointer) {
+            if (isGrabbing && touch.type == UITouchTypeIndirectPointer) {
                 continue; // handle this in a different place
             }
         }
