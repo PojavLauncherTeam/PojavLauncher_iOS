@@ -4,6 +4,7 @@
 */
 
 "game.menu.force_close" = "Chiusura forzata";
+"game.menu.confirm.force_close" = "Sicuro di chiudere forzatamente?";
 "game.menu.log_output" = "Uscita";
 "game.menu.custom_controls" = "Controlli personalizzati";
 
@@ -12,18 +13,90 @@
 
 // The play button
 "Play" = "Gioca";
+
+// Version categories
+"Installed" = "Installato";
 "Snapshot" = "Snapshot";
+"Releases" = "Releases";
 "Old-beta" = "Vecchie-beta";
 "Old-alpha" = "Vecchie-alpha";
+
+"init.migrateDir" = "La nuova cartella di PojavLauncher è %@. Tutti i tuoi dati esistenti sono stati spostati.";
 
 "launcher.menu.custom_controls" = "Controlli personalizzati";
 "launcher.menu.install_jar" = "Installa .jar";
 
+"login.error.username.outOfRange" = "Il nome utente deve contenere tra i 3 e i 16 caratteri";
+
+"login.alert.field.username" = "Nome utente";
+
+"login.jit.checking" = "Controllando JIT";
+"login.jit.enabled" = "JIT è stato attivato";
+"login.jit.fail.JitStreamer" = "JitStreamer errore: %@";
+"login.jit.found.JitStreamer" = "Trovato JitStreamer, attivando JIT";
+
+// Login buttons
+"Sign in" = "Accedi";
+"FAQ" = "FAQ";
+"Accounts" = "Accounts";
+"login.menu.sendlogs" = "Invia i logs";
+"login.menu.updates" = "Aggiornamenti recenti";
+
+"login.option.microsoft" = "Account Microsoft";
+"login.option.demo" = "Account demo";
+"login.option.local" = "Account locale";
+
+"login.progress.title" = "Accesso in corso";
+
+"login.warn.title.ram_unjb" = "Memory slider attivo";
+"login.warn.message.ram_unjb" = "Sii consapevole che cambiando questa impostazione si potrebbero causare instabilità o rendere in-giocabile il gioco.";
+
+"login.warn.title.a7" = "Questo è l'ultimo aggiornamento per questo dispositivo.";
+"login.warn.message.a7" = "PojavLauncher 2.2 non supporterà questo dispositivo, a causa delle limitazioni hardware e software.";
+
+"login.warn.title.iosver" = "Questo è l'ultimo aggiornamento per questa versione iOS.";
+"login.warn.message.iosver" = "Le versioni future di PojavLauncher non supporteranno iOS 12 o 13, a causa di incongruenze e difficoltà di sviluppo.";
+
+"login.warn.title.2gb" = "Il tuo dispositivo ha poca RAM.";
+"login.warn.message.2gb" = "I dispositivi con meno di 3GB di memoria possono avere limiti di memoria. Si consiglia di lasciare la dimensione automatica per il dispositivo.";
+
+"login.warn.title.demomode" = "Questa opzione è in beta.";
+"login.warn.message.demomode" = "In sostituzione di modalità offline e locale, la modalità demo vi permetterà di accedere ad un account Microsoft che non possiede il gioco e giocare la prova Java Edition, introdotto successivamente alla 1.3. Le versioni più vecchie contengono il gioco completo, poiché il launcher ufficiale non pone queste restrizioni. Visita il nostro sito web per saperne di più su questa transizione dalla modalità offline.";
+
+"login.warn.title.localmode" = "La modalità offline è ora modalità locale.";
+"login.warn.message.localmode" = "È possibile continuare a giocare le versioni installate, ma non è più possibile scaricare Minecraft senza un account premium. Non sarà fornito alcun supporto per i problemi con gli account locali o altri mezzi di Minecraft. Per maggiori informazioni, consultare la FAQ.";
+
+"login.msa.error.xsts.noxboxacc" = "Un profilo Xbox non è registrato per questo account Microsoft. Assicurati di aver creato un profilo Xbox.\nCodice di errore: 2148916233";
+"login.msa.error.xsts.noxbox" = "Xbox Live non è attualmente disponibile nel tuo paese.\nCodice di errore: 2148916235";
+"login.msa.error.xsts.krverify" = "Il tuo account deve essere verificato dai tuoi genitori prima di continuare.\nCodice di errore: 2148916236 o 2148916237.";
+"login.msa.error.xsts.underage" = "Il tuo account deve essere collegato ad un account genitore prima di continuare.\nCodice di errore: 2148916238";
+
+"login.msa.notice.demomode" = "Impossibile trovare un profilo Minecraft su questo account. L'account è ora impostato in modalità Demo. Hai acquistato Minecraft, o hai un abbonamento Xbox GamePass attivo? Configura il tuo profilo in https://minecraft.net/msaprofle per ripristinare la modalità Online.";
+
+"login.msa.progress.acquireAccessToken" = "(1/5) Acquisendo il token d'accesso";
+"login.msa.progress.acquireXBLToken" = "(2/5) Acquisendo il token Xbox live d'accesso";
+"login.msa.progress.acquireXSTS" = "Acquisizione XSTS";
+"login.msa.progress.acquireXboxProfile" = "(3/5) Acquisizione del profilo Xbox";
+"login.msa.progress.acquireMCToken" = "(4/5) Acquisizione del token Minecraft";
+"login.msa.progress.checkMCProfile" = "(5/5) Controllo del profilo Minecraft";
+
 "News" = "Notizie";
 "Settings" = "Impostazioni";
+
+"preference.section.general" = "Impostazioni generali";
+"preference.section.footer.general" = "* L'opzione di compatibilità symlink è programmata per essere rimossa in una versione futura.";
+"preference.section.video" = "Impostazioni video";
+"preference.section.footer.video" = "Il renderer automatico consente a Minecraft di decidere quale renderer usare. Diminuire la risoluzione riduce il carico di lavoro della GPU per prestazioni migliori.";
 "preference.section.control" = "Controlla personalizzazioni";
+"preference.section.debug" = "Impostazioni di debug UI";
+"preference.section.footer.debug" = "Oltre al debug, queste impostazioni possono essere utili per i controlli personalizzati. Potrebbe essere necessario riavviare il launcher affinché le modifiche abbiano effetto.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Tweaks Java";
+//"preference.section.footer.java" = "";
+
+"preference.title.confirm" = "Sei sicuro?";
+
+"preference.title.game_directory" = "Directory Minecraft";
 "preference.title.cosmetica" = "Mantelli Cosmetica";
 
 "preference.title.renderer" = "Renderer";
