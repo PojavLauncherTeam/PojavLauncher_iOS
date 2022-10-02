@@ -39,6 +39,8 @@
 "Sign in" = "登入";
 "FAQ" = "常見問題";
 "Accounts" = "帳戶";
+
+"login.menu.about" = "關於 PojavLauncher";
 "login.menu.sendlogs" = "發送你的日誌";
 "login.menu.updates" = "最近更新";
 
