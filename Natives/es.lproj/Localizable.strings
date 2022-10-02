@@ -101,12 +101,49 @@
 "preference.title.home_symlink" = "Habilitar compatibilidad con symlink *";
 "preference.detail.home_symlink" = "Hacer un symlink en /var/mobile/Documents/.pojavlauncher. No disponible en un entorno sanboxed.";
 "preference.title.check_sha" = "Comprobar archivos después de descargar";
+"preference.detail.check_sha" = "Está opción fuerza al launcher a verificar si el archivo hash está disponible. Previene falta de archivos y corrupciones.";
 "preference.title.cosmetica" = "Capas de Comestica";
+"preference.detail.cosmetica" = "Activar capas de Comestica (anteriormente Arc.) Para más información, por favor ve a https://cosmetica.cc. (Requiere OptiFine)";
+
+"preference.title.reset_warnings" = "Reiniciar todas las advertencias";
+"preference.title.done.reset_warnings" = "Todas las advertencias han sido reiniciadas.";
+
+"preference.title.reset_settings" = "Reiniciar todas las configuraciones";
+"preference.title.confirm.reset_settings" = "Esto va a remover todas tus configuraciones, incluyendo resolución, tamaño de botones y argumentos de Java.";
+"preference.title.done.reset_settings" = "Todas las configuraciones predeterminadas han sido restauradas.";
 
 "preference.title.renderer" = "Renderizador";
+"preference.title.renderer.auto" = "Auto: gl4es o tinygl4angle";
+"preference.title.renderer.gl4es" = "gl4es 1.1.4 - exporta a OpenGL 2.1";
+"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - exporta a OpenGL 3.2 (Core Profile, limitado)";
+"preference.title.renderer.zink" = "Zink (Mesa 21.0) - exporta a OpenGL 4.1";
+"preference.detail.renderer" = "Cambiar el motor de renderizado para que OpenGL utilicé";
+
+"preference.title.resolution" = "Resolución (%)";
+"preference.detail.resolution" = "Permite reducir la resolución del juego.";
 "preference.title.disable_gesture" = "Desactivar gestos";
+"preference.title.press_duration" = "Duración para pulsado largo (ms)";
 "preference.detail.press_duration" = "Cambia el tiempo de activación durante una pulsación larga en destruir bloques y soltar objetos.";
+"preference.title.button_scale" = "Escala de botones en pantalla (%)";
+"preference.detail.button_scale" = "Sube de tamaño a los botones si resultan ser muy pequeños, necesario para usuarios de iPad.";
+"preference.title.mouse_scale" = "Tamaño del ratón (%)";
+"preference.detail.mouse_scale" = "Cambiar el tamaño del mouse virtual";
+"preference.title.mouse_speed" = "Velocidad del ratón (%)";
+"preference.detail.mouse_speed" = "Cambiar velocidad del ratón virtual";
+"preference.title.virtmouse_enable" = "Ratón virtual";
+"preference.detail.virtmouse_enable" = "Habilita está opcion para empezar con el ratón virtual encendido";
+"preference.title.slideable_hotbar" = "Hotbar deslizable";
+"preference.detail.slideable_hotbar" = "Permite deslizarse en el hotbar como la rueda del ratón";
+"preference.title.java_home" = "Usar Java 17 para Minecraft < 1.17";
+"preference.detail.java_home" = "Java 8 es utilizado por defecto para esas versiones. Activa está opción para forzar el uso de Java 17. Sin embargo, la compatibilidad con el modeado no está garantizada.";
 "preference.title.java_args" = "JRE Argumentos de lanzamiento";
+"preference.detail.java_args" = "Ten cuidado, esto puede hacer que el juego crashee si es modificado sin ningún conocimiento previo.";
+"preference.placeholder.java_args" = "Especifica argumentos...";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Habilita el ajuste automático de RAM";
+"preference.warn.auto_ram" = "Deshabilitar esta opción para un dispositivo sin JailBreak puede crear inestabilidad si es alterada. Procede con cuidado.";
+"preference.title.allocated_memory" = "Cantidad de memoria (MB)";
 "preference.detail.allocated_memory" = "Controla cuánta memoria se le da a Minecraft";
+"preference.warn.allocated_memory" = "Debido a limitaciones con el sistema operativo en sí, esta opción puede causar inestabilidad en esta y mayores cantidades. Procede con cuidado.";
+"preference.title.custom_env" = "Variables de entorno";
+"preference.detail.custom_env" = "Está opción está en desarrollo.";
