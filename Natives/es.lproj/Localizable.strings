@@ -22,6 +22,7 @@
 "News" = "Noticias";
 "Settings" = "Ajustes";
 "preference.section.control" = "Personalización del control";
+"preference.section.footer.debug" = "Aparte de el debugging, estas opciones pueden ser útiles para los controles personalizados. Es posible que tengas que reiniciar el launcher para que los cambios tengan efecto.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Ajustes de Java";
 "preference.title.cosmetica" = "Capas de Comestica";
