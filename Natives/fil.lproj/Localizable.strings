@@ -86,7 +86,6 @@
 "Settings" = "Mga Setting";
 
 "preference.section.general" = "Mga Pangkalahatan na Setting";
-"preference.section.footer.general" = "* Ang opsyon sa compatibility symlink ay binalak na alisin sa isang release sa hinaharap.";
 "preference.section.video" = "Kaayusan ng Video";
 "preference.section.footer.video" = "Nagbibigay-daan ang auto renderer sa Minecraft na magpasya kung aling renderer ang gagamitin. Ang pagbaba ng resolution ay nagpapababa ng GPU workload para sa mas mahusay na performance.";
 "preference.section.control" = "Kontrolin ang customization";
@@ -102,8 +101,6 @@
 "preference.title.confirm.delete_game_directory" = "Ang instance na %@ ay tatanggalin nang tuluyan at hindi na maibabalik.";
 "preference.multidir.add_directory" = "magdagdag ng direktoryo ng laro";
 
-"preference.title.home_symlink" = "Paganahin ang compatibility symlink *";
-"preference.detail.home_symlink" = "Gumawa ng symlink sa /var/mobile/Documents/.pojavlauncher. Hindi available sa sandboxed na kapaligiran.";
 "preference.title.check_sha" = "Suriin ang mga file pagkatapos mag-download";
 "preference.detail.check_sha" = "Pinipilit ng opsyong ito ang launcher na suriin ang file hash kung available ito. Pinipigilan ang mga sirang download.";
 "preference.title.cosmetica" = "Capes galing sa Cosmetica";
