@@ -86,7 +86,6 @@
 "Settings" = "Nastavení";
 
 "preference.section.general" = "Obecné Nastavení";
-"preference.section.footer.general" = "* Odstranění symlinku kompatibility je naplánováno v budoucím vydání.";
 "preference.section.video" = "Nastavení obrazu";
 "preference.section.footer.video" = "Automatický vykreslovač dovolí Minecraftu rozhodnout který vykreslovač používat. Zmenšováním rozlišení sníží zatížení GPU pro lepší výkon.";
 "preference.section.control" = "Přizpůsobení ovládání";
@@ -100,7 +99,6 @@
 "preference.title.confirm.delete_game_directory" = "Instance %@ bude navždy smazána a nebude možno ji obnovit.";
 "preference.multidir.add_directory" = "přidat složku hry";
 
-"preference.title.home_symlink" = "Povolit symlink kompatibility *";
 "preference.title.check_sha" = "Zkontrolovat soubory po stažení";
 "preference.detail.check_sha" = "Tato možnost donutí spouštěč zkontrolovat hash souboru, je-li k dispozici. Zabraňuje rozbitému stažení.";
 "preference.title.cosmetica" = "Kápě Cosmetica";
