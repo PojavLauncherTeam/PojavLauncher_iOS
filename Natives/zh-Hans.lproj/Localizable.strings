@@ -86,7 +86,6 @@
 "Settings" = "设置";
 
 "preference.section.general" = "常规设置";
-"preference.section.footer.general" = "* 兼容性符号链接选项将在未来某个版本中移除。";
 "preference.section.video" = "视频设置";
 "preference.section.footer.video" = "使用自动选择的渲染器将根据游戏版本选择最佳渲染器启动游戏，降低分辨率可以使得 GPU 负载变低从而提升性能。";
 "preference.section.control" = "自定义控制";
@@ -102,8 +101,6 @@
 "preference.title.confirm.delete_game_directory" = "目录 %@ 将被永久删除，并且无法恢复。";
 "preference.multidir.add_directory" = "添加游戏目录";
 
-"preference.title.home_symlink" = "启用兼容性符号链接 *";
-"preference.detail.home_symlink" = "在 /var/mobile/Documents/.pojavlauncher 中创建一个符号链接。不支持沙盒环境。";
 "preference.title.check_sha" = "检查游戏完整性";
 "preference.detail.check_sha" = "用于效验下载的文件哈希值是否有问题(某些情况下你下载的资源可能是损坏的)";
 "preference.title.cosmetica" = "Cosmetica 披风";
@@ -157,6 +154,6 @@
 "preference.title.debug_ipad_ui" = "解锁 iPadOS 界面";
 "preference.detail.debug_ipad_ui" = "如果启用，解锁 iPad 专用界面（提示、键盘等），如果禁用，解锁 iPhone 界面。";
 "preference.title.debug_show_layout_bounds" = "显示布局边界";
-"preference.detail.debug_show_layout_bounds" = "显示剪辑板、页边距";
+"preference.detail.debug_show_layout_bounds" = "显示剪辑边界、边距";
 "preference.title.debug_show_layout_overlap" = "显示布局重叠";
 "preference.detail.debug_show_layout_overlap" = "用透明的颜色覆盖每个视图，以显示重叠的视图。";
