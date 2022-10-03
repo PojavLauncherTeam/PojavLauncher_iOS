@@ -77,7 +77,6 @@
 "Settings" = "Thiết lập";
 
 "preference.section.general" = "Cài đặt chung";
-"preference.section.footer.general" = "* Tuỳ chọn tương thích liên kết tượng trưng sẽ bị loại bỏ ở một bản cập nhật trong tương lai.";
 "preference.section.video" = "Cài đặt hình ảnh";
 "preference.section.footer.video" = "Trình kết xuất tự động cho phép Minecraft quyết định sẽ sử dụng trình kết xuất nào. Giảm độ phân giải sẽ giảm hoạt động cho GPU, giúp tăng hiệu năng.";
 "preference.section.control" = "Tuỳ chỉnh bộ điều khiển";
@@ -91,8 +90,6 @@
 "preference.title.confirm.delete_game_directory" = "Thư mục %@ sẽ bị xoá vĩnh viễn và không thể phục hồi.";
 "preference.multidir.add_directory" = "Thêm thư mục trò chơi";
 
-"preference.title.home_symlink" = "Kích hoạt chế độ tương thích liên kết tượng trưng";
-"preference.detail.home_symlink" = "Tạo một liên kết tượng trưng tại /var/mobile/Documents/.pojavlauncher. Không dùng được ở môi trường sandbox.";
 "preference.title.check_sha" = "Kiểm tra các tệp sau khi tải";
 "preference.detail.check_sha" = "Cài đặt này buộc trình khởi chạy kiểm tra hàm băm của thư viện nếu nó có sẵn. Ngăn chặn tải xuống bị hỏng.";
 "preference.title.cosmetica" = "Áo choàng Cosmetica";
