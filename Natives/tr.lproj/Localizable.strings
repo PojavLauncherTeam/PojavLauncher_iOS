@@ -86,7 +86,6 @@
 "Settings" = "Ayarlar";
 
 "preference.section.general" = "Genel Ayarlar";
-"preference.section.footer.general" = "* Uyumluluk symlink seçeneği gelecek bir sürümde kaldırılmak üzere planlandı.";
 "preference.section.video" = "Video Ayarları";
 "preference.section.footer.video" = "Oto renderer Minecraft'ın hangi renderer'ı kullanacağını belirlemesini sağlar. Çözünürlüğü düşürmek daha iyi performans için GPU'nun is yükünü azaltır.";
 "preference.section.control" = "Kontrol özelleştirmesi";
@@ -102,8 +101,6 @@
 "preference.title.confirm.delete_game_directory" = "Kurulum %@ sonsuza dek silinecek ve geri getirilemeyecek.";
 "preference.multidir.add_directory" = "oyun dizini ekle";
 
-"preference.title.home_symlink" = "Symlink uyumluluk * 'u etkinleştir";
-"preference.detail.home_symlink" = "/var/mobile/Documents/.PojavLauncher'a bir symlink oluştur. Sandbox'lu çevrelerde mevcut değil.";
 "preference.title.check_sha" = "Dosyaları indirdikten sonra kontrol et";
 "preference.detail.check_sha" = "Bu seçenek başlatıcıyı eğer varsa dosya hash'ini kontrol etmeye zorlar. Bozuk indirmeleri engeller.";
 "preference.title.cosmetica" = "Cosmetica Pelerinleri";
