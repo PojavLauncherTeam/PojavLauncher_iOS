@@ -83,7 +83,6 @@
 "Settings" = "Ajustes";
 
 "preference.section.general" = "Configuración general";
-"preference.section.footer.general" = "* La opción para la compatibilidad de symlinks está planeada para ser removida en una futura versión.";
 "preference.section.video" = "Configuración de Vídeo";
 "preference.section.footer.video" = "El auto renderizador le permite a Minecraft decidir cuál renderizador usar. Reduciendo la resolución reduce la carga del GPU para un mejor rendimiento.";
 "preference.section.control" = "Personalización del control";
@@ -98,8 +97,6 @@
 "preference.title.confirm.delete_game_directory" = "La instancia %@ va a ser borrada para siempre y nunca podrá ser restaurada.";
 "preference.multidir.add_directory" = "Añadir Ubicación de carpeta del juego";
 
-"preference.title.home_symlink" = "Habilitar compatibilidad con symlink *";
-"preference.detail.home_symlink" = "Hacer un symlink en /var/mobile/Documents/.pojavlauncher. No disponible en un entorno sanboxed.";
 "preference.title.check_sha" = "Comprobar archivos después de descargar";
 "preference.detail.check_sha" = "Está opción fuerza al launcher a verificar si el archivo hash está disponible. Previene falta de archivos y corrupciones.";
 "preference.title.cosmetica" = "Capas de Comestica";
