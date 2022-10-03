@@ -86,7 +86,6 @@
 "Settings" = "Settings";
 
 "preference.section.general" = "General Settings";
-"preference.section.footer.general" = "* Compatibility symlink option is planned to be removed in a future release.";
 "preference.section.video" = "Video Settings";
 "preference.section.footer.video" = "Auto renderer allows Minecraft to decide which renderer to use. Decreasing resolution reduces GPU workload for better performance.";
 "preference.section.control" = "Control customization";
@@ -102,8 +101,6 @@
 "preference.title.confirm.delete_game_directory" = "The instance %@ will be deleted forever and cannot be restored.";
 "preference.multidir.add_directory" = "add game directory";
 
-"preference.title.home_symlink" = "Enable compatibility symlink *";
-"preference.detail.home_symlink" = "Make a symlink at /var/mobile/Documents/.pojavlauncher. Unavailable in sandboxed environment.";
 "preference.title.check_sha" = "Check files after downloading";
 "preference.detail.check_sha" = "This option forces launcher to check the file hash if it's available. Prevents broken downloads.";
 "preference.title.cosmetica" = "Cosmetica Capes";

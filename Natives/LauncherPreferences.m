@@ -136,12 +136,6 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(prefDict, @"check_sha", @YES);
     setDefaultValueForPref(prefDict, @"auto_ram", @(!getEntitlementValue(@"com.apple.private.memorystatus")));
     setDefaultValueForPref(prefDict, @"unsupported_warn_counter", @(0));
-    
-    if (0 != [fileManager fileExistsAtPath:@"/var/mobile/Documents/.pojavlauncher"]) {
-        setDefaultValueForPref(prefDict, @"disable_home_symlink", @NO);
-    } else {
-        setDefaultValueForPref(prefDict, @"disable_home_symlink", @YES);
-    }
 
     // Debug settings
     setDefaultValueForPref(debugPrefDict, @"debug_ipad_ui", @(UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad));

@@ -52,14 +52,6 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"enableCondition": whenNotInGame,
                 @"class": LauncherPrefGameDirViewController.class,
             },
-            @{@"key": @"home_symlink",
-                @"hasDetail": @YES,
-                @"icon": @"link",
-                @"type": self.typeSwitch,
-                @"enableCondition": ^BOOL(){
-                    return getenv("POJAV_DETECTEDJB") != NULL && whenNotInGame();
-                }
-            },
             @{@"key": @"check_sha",
                 @"hasDetail": @YES,
                 @"icon": @"lock.shield",

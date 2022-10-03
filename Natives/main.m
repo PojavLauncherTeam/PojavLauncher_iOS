@@ -132,20 +132,11 @@ void init_logDeviceAndVer(char *argument) {
 }
 
 void init_migrateDirIfNecessary() {
-    // TODO: Rewrite to migrate from /usr/share -> new Docs in 2.2
-    NSString *completeFile = @"/var/mobile/Documents/.pojavlauncher/migration_complete";
-    NSString *oldDir = @"/var/mobile/Documents/.pojavlauncher";
-    if ([fm fileExistsAtPath:oldDir] && ![fm fileExistsAtPath:completeFile]) {
-        NSString *newDir = @"/usr/share/pojavlauncher";
-        if (@available(iOS 15, *)) {
-            newDir = @"/private/preboot/procursus/usr/share/pojavlauncher";
-        }
-
+    NSString *oldDir = @"/usr/share/pojavlauncher";
+    if ([fm fileExistsAtPath:oldDir]) {
+        NSString *newDir = [NSString stringWithFormat:@"%s/Documents", getenv("HOME")];
         [fm moveItemAtPath:oldDir toPath:newDir error:nil];
-        [fm createSymbolicLinkAtPath:oldDir withDestinationPath:newDir error:nil];
-
-        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"init.migrateDir", nil), newDir];
-        [message writeToFile:completeFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
+        [fm removeItemAtPath:oldDir error:nil];
     }
 }
 
@@ -310,21 +301,8 @@ int main(int argc, char * argv[]) {
     setenv("BUNDLE_PATH", dirname(argv[0]), 1);
     setenv("HOME", [NSFileManager.defaultManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask]
         .lastObject.path.stringByDeletingLastPathComponent.UTF8String, 1);
-
-    if (getenv("POJAV_DETECTEDJB")) {
-        // TODO: Set to new Docs for both jben and unjben in 2.2
-        if (0 == access("/usr/share/pojavlauncher", F_OK)) {
-            // If /usr/share/pojavlauncher isnt already available
-            // this code will crash the app on launch
-            setenv("HOME", "/usr/share", 1);
-            setenv("OLD_POJAV_HOME", "/var/mobile/Documents/.pojavlauncher", 1);
-            setenv("POJAV_HOME", "/usr/share/pojavlauncher", 1);
-        } else {
-            setenv("POJAV_HOME", [NSString stringWithFormat:@"%s/Documents", getenv("HOME")].UTF8String, 1);
-        }
-    } else {
-        setenv("POJAV_HOME", [NSString stringWithFormat:@"%s/Documents", getenv("HOME")].UTF8String, 1);
-    }
+    // WARNING: THIS DIRECTS TO /var/mobile/Documents IF INSTALLED WITH APPSYNC UNIFIED
+    setenv("POJAV_HOME", [NSString stringWithFormat:@"%s/Documents", getenv("HOME")].UTF8String, 1);
 
     [fm createDirectoryAtPath:@(getenv("POJAV_HOME")) withIntermediateDirectories:NO attributes:nil error:nil];
 
