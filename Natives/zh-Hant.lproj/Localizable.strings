@@ -86,7 +86,6 @@
 "Settings" = "設定";
 
 "preference.section.general" = "一般設定";
-"preference.section.footer.general" = "* 相容性符號連結選項預計會在未來的版本中移除。";
 "preference.section.video" = "動畫設定";
 "preference.section.footer.video" = "自動宣染器允許我的世界判斷使用哪一個渲染器。降低解析度會降低圖形處理器的工作量，並提高效能。";
 "preference.section.control" = "自定義控制";
@@ -102,8 +101,6 @@
 "preference.title.confirm.delete_game_directory" = "實例%@會被永久刪除，且不能回復。";
 "preference.multidir.add_directory" = "新增遊戲目錄";
 
-"preference.title.home_symlink" = "啟用相容性符號連結*";
-"preference.detail.home_symlink" = "在/var/mobile/Documents/.pojavlauncher創建一個符號連結。在容器環境中不可用。";
 "preference.title.check_sha" = "在下載後檢查檔案";
 "preference.detail.check_sha" = "這個選項強制啟動器在可用的情況下檢查檔案的雜湊值。這樣做能夠防止有問題的下載。";
 "preference.title.cosmetica" = "Cosmetica披風";
