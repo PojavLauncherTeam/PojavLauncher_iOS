@@ -86,7 +86,6 @@
 "Settings" = "Pengaturan";
 
 "preference.section.general" = "Peraturan Umum";
-"preference.section.footer.general" = "* Opsi kompabilitas symlink direncana untuk dihapus di rilis masa depan.";
 "preference.section.video" = "Peraturan Video";
 "preference.section.footer.video" = "Renderer otomatis memperbolehkan Minecraft untuk memilih renderer yang mana untuk dipake. Menurunkan resolusi akan menurunkan kerjaan GPU untuk perfoma lebih baik.";
 "preference.section.control" = "Kustomisasi kontrol";
@@ -100,9 +99,6 @@
 "preference.title.confirm.delete_game_directory" = "Instansi %@ akan dihapus selamanya dan tidak dapat dikembalikan.";
 "preference.multidir.add_directory" = "Tambah direktori permainan";
 
-"preference.title.home_symlink" = "Nyalakan kompabilitas symlink *";
-"preference.detail.home_symlink" = "Buatlah symlink di /var/mobile/Documents/.pojavlauncher.
-Tidak ada di environment yang telah disandbox.";
 "preference.title.check_sha" = "Periksa berkas setelah mengunduh";
 "preference.detail.check_sha" = "Opsi ini memaksa peluncur untuk memeriksa hash berkas jika ada. Mencegah pengunduhan rusak.";
 "preference.title.cosmetica" = "Capes Cosmetica";
