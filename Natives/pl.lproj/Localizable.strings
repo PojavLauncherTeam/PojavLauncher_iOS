@@ -97,6 +97,7 @@
 "preference.title.game_directory" = "Katalog gry Minecraft";
 "preference.title.confirm.delete_game_directory" = "Instancja %@ zostanie trwale usunięta i nie będzie można jej przywrócić.";
 "preference.multidir.add_directory" = "dodaj katalog gry";
+
 "preference.title.check_sha" = "Sprawdź pliki po pobraniu";
 "preference.detail.check_sha" = "Ta opcja wymusza sprawdzanie sumy kontrolnej pliku, jeśli jest dostępna. Zapobiega to uszkodzeniom pobieranych plików.";
 "preference.title.cosmetica" = "Peleryny Cosmetica";
