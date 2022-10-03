@@ -91,8 +91,6 @@
 "preference.title.game_directory" = "Minecraft-Spielverzeichnis";
 "preference.multidir.add_directory" = "Spielverzeichnis hinzufügen";
 
-"preference.title.home_symlink" = "Kompatibilitäts-Symlink aktivieren *";
-"preference.detail.home_symlink" = "Erstelle einen Symlink unter /var/mobile/Documents/.pojavlauncher. Nicht verfügbar in einer Sandboxed Umgebung.";
 "preference.title.check_sha" = "Dateien nach dem Download überprüfen";
 "preference.title.cosmetica" = "Cosmetica-Umhänge";
 "preference.detail.cosmetica" = "Aktiviert Umhänge von Cosmetica (früher Arc). Für weitere Informationen bitte https://cosmetica.cc besuchen. OptiFine wird benötigt";
