@@ -84,7 +84,6 @@
 "Settings" = "Настройки";
 
 "preference.section.general" = "Основные настройки";
-"preference.section.footer.general" = "* Функция символических ссылок может быть удалена в будущем.";
 "preference.section.video" = "Настройки графики";
 "preference.section.footer.video" = "Автоматический режим позволяет игре самой определять оптимальную реализацию. Уменьшение разрешения снижает нагрузку на ГП и улучшает производительность.";
 "preference.section.control" = "Настройка управления";
@@ -100,8 +99,6 @@
 "preference.title.confirm.delete_game_directory" = "Профиль %@ будет навсегда удалён без возможности восстановления.";
 "preference.multidir.add_directory" = "Добавить расположение";
 
-"preference.title.home_symlink" = "Символьная ссылка";
-"preference.detail.home_symlink" = "Создать символьную ссылку в /var/mobile/Documents/.pojavlauncher. Недоступно в изолированных средах.";
 "preference.title.check_sha" = "Проверка файлов после загрузки";
 "preference.detail.check_sha" = "Заставить лаунчер по возможности проверять хэш файла при его загрузке. Предотвращает повреждение скачанных файлов.";
 "preference.title.cosmetica" = "Плащи Cosmetica";
