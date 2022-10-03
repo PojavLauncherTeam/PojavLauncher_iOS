@@ -84,7 +84,6 @@
 "Settings" = "Impostazioni";
 
 "preference.section.general" = "Impostazioni generali";
-"preference.section.footer.general" = "* L'opzione di compatibilità symlink è programmata per essere rimossa in una versione futura.";
 "preference.section.video" = "Impostazioni video";
 "preference.section.footer.video" = "Il renderer automatico consente a Minecraft di decidere quale renderer usare. Diminuire la risoluzione riduce il carico di lavoro della GPU per prestazioni migliori.";
 "preference.section.control" = "Controlla personalizzazioni";
