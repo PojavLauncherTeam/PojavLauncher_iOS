@@ -150,3 +150,5 @@
 
 "preference.title.debug_ipad_ui" = "Разблокировать интерфейс iPadOS";
 "preference.detail.debug_ipad_ui" = "Разблокировать уникальные для iPad элементы интерфейса (предупреждение, клавиатура и пр.) или оставить интерфейс iPhone.";
+"preference.title.debug_show_layout_bounds" = "Показывать границы элементов";
+"preference.title.debug_show_layout_overlap" = "Показывать наложение элементов";
