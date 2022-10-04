@@ -23,6 +23,8 @@
 "launcher.menu.custom_controls" = "Користувацьке керування";
 "launcher.menu.install_jar" = "Встановити .jar";
 
+"login.menu.about" = "Про PojavLauncher";
+
 "News" = "Новини";
 "Settings" = "Налаштування";
 "preference.section.control" = "Налаштування керування";
