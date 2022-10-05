@@ -57,17 +57,23 @@
 "login.warn.message.a7" = "PojavLauncher 2.2 wird dieses Gerät aufgrund von Hard- und Software Einschränkungen nicht unterstützen.";
 
 "login.warn.title.iosver" = "Dies ist das letzte Update für diese iOS Version.";
+"login.warn.message.iosver" = "Eine zukünftige Version von PojavLauncher wird iOS 12 oder 13 aufgrund von Inkonsistenzen und Entwicklungshürden nicht unterstützen.";
 
 "login.warn.title.2gb" = "Ihr Gerät hat begrenzten Arbeitsspeicher.";
+"login.warn.message.2gb" = "Geräte mit weniger als 3 GB Arbeitsspeicher können auf Speicherbeschränkungen stoßen. Wir empfehlen den automatischen Selektor für Ihr Gerät einzuschalten.";
 
 "login.warn.title.demomode" = "Diese Einstellung ist in Beta.";
+"login.warn.message.demomode" = "Als Ersatz für den Offline- und Lokalmodus, erlaubt der Demo-Modus, sich mit einem Microsoft-Konto einzuloggen, welches das Spiel nicht besitzt. Somit kann die Testversion von Minecraft gespielt werden, die in Version 1.3 eingeführt wurde. Ältere Versionen können in der Vollversion gespielt werden, da bei ihnen der offizielle Launcher auch keine Einschränlungen setzt. Auf unserer Website findet man mehr Informationen zu diesem Übergang vom Offline-Modus.";
 
 "login.warn.title.localmode" = "Der Offline-Modus ist jetzt der Lokale Modus.";
+"login.warn.message.localmode" = "Du kannst weiterhin installierte Versionen spielen, aber ohne ein kostenpflichtiges Konto kannst du Minecraft nicht mehr herunterladen. Es wird kein Support für Probleme mit lokalen Konten oder andere Mittel zur Erlangung von Minecraft geben. Weitere Informationen findest du in unseren FAQ.";
 
 "login.msa.error.xsts.noxboxacc" = "Es ist kein Xbox-Profil mit diesem Microsoft-Konto registriert. Stelle bitte sicher, dass du ein Xbox-Profil erstellt hast.\nFehlercode: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live ist derzeit in deinem Land nicht verfügbar.\nFehlercode: 2148916235";
 "login.msa.error.xsts.krverify" = "Dein Konto muss von deinen Eltern verifiziert werden bevor du fortfährst.\nFehlercode: 2148916236 oder 2148916237.";
 "login.msa.error.xsts.underage" = "Dein Konto muss mit einem Eltern-Konto verknüpft werden.\nFehlercode: 2148916238";
+
+"login.msa.notice.demomode" = "Es konnte kein Minecraft-Profil auf diesem Konto gefunden werden. Das Konto ist jetzt auf Demo-Modus gesetzt. Hast du Minecraft gekauft oder gibt es ein aktives Xbox GamePass Abonnement? Bitte konfiguriere dein Profil auf https://minecraft.net/msaprofle um den Online-Modus wiederherzustellen.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Erhalte Zugangs-Token";
 "login.msa.progress.acquireXBLToken" = "(2/5) Erhalte Xbox-Live-Token";
@@ -81,7 +87,9 @@
 
 "preference.section.general" = "Allgemeine Einstellungen";
 "preference.section.video" = "Grafik-Einstellungen";
+"preference.section.footer.video" = "Mit dem automatischen Renderer kann Minecraft entscheiden, welcher Renderer verwendet werden soll. Verringerte Auflösung reduziert die Arbeitslast der GPU für eine bessere Leistung.";
 "preference.section.control" = "Steuerung anpassen";
+"preference.section.debug" = "UI-Debugging-Einstellungen";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java-Optimierungen";
 //"preference.section.footer.java" = "";
@@ -115,12 +123,15 @@
 "preference.title.press_duration" = "Dauer eines langen Touch (ms)";
 "preference.detail.press_duration" = "Ändere die Auslösezeit für langes Drücken beim Zerstören des Blocks und Ablegen des Gegenstandes.";
 "preference.title.button_scale" = "Schalflächengröße (%)";
+"preference.detail.button_scale" = "Erhöhe den Wert, wenn die Schaltflächen zu klein sind; Normalerweise für iPad-Nutzer notwendig.";
 "preference.title.mouse_scale" = "Maus-Größe (%)";
 "preference.detail.mouse_scale" = "Ändert die Größe der Virtuellen Maus";
 "preference.title.mouse_speed" = "Mausgeschwindigkeit (%)";
 "preference.detail.mouse_speed" = "Ändert die Geschwindigkeit der Virtuellen Maus";
 "preference.title.virtmouse_enable" = "Virtuelle Maus";
 "preference.detail.virtmouse_enable" = "Aktiviere diese Option, um mit Virtueller Maus zu spielen";
+"preference.title.slideable_hotbar" = "Schiebbare Hotbar";
+"preference.detail.slideable_hotbar" = "Macht die Hotbar wie mit dem Mausrad schiebbar";
 "preference.title.java_home" = "Nutze Java 17 für Minecraft < 1.17";
 "preference.title.java_args" = "JVM-Start-Argumente";
 "preference.placeholder.java_args" = "Argumente angeben...";
@@ -130,3 +141,10 @@
 "preference.detail.allocated_memory" = "Legt fest, wie viel RAM Minecraft gegeben wird";
 "preference.title.custom_env" = "Umgebungsvariablen";
 "preference.detail.custom_env" = "Diese Einstellung ist in Bearbeitung.";
+
+"preference.title.debug_ipad_ui" = "Aktiviere das iPadOS UI";
+"preference.detail.debug_ipad_ui" = "Aktiviert iPad-exklusives UI (Meldungen, Tastatur, usw.), wenn an, oder aktiviert iPhone UI, wenn aus.";
+"preference.title.debug_show_layout_bounds" = "Layoutgrenzen einblenden";
+"preference.detail.debug_show_layout_bounds" = "Zuschnittbegrenzungen, Ränder anzeigen";
+"preference.title.debug_show_layout_overlap" = "Layoutüberlappungen anzeigen";
+"preference.detail.debug_show_layout_overlap" = "Überlagere jede Ansicht mit einer transparenten Farbe, um überlappende Ansichten anzuzeigen.";
