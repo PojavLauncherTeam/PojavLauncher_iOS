@@ -154,6 +154,6 @@
 "preference.title.debug_ipad_ui" = "Розблокувати інтерфейс iPadOS";
 "preference.detail.debug_ipad_ui" = "Розблокуйте інтерфейс iPad-exlusive (попередження, клавіатура тощо), якщо він вимкнений або увімкнений iPhone інтерфейс, якщо вимкнено.";
 "preference.title.debug_show_layout_bounds" = "Показувати межі об'єктів";
-"preference.detail.debug_show_layout_bounds" = "Показувати межі обрізування, поля і т. п";
+"preference.detail.debug_show_layout_bounds" = "Показувати межі обрізування, поля і т. д.";
 "preference.title.debug_show_layout_overlap" = "Показати накладання макета";
 "preference.detail.debug_show_layout_overlap" = "Накладання кожного вигляду з прозорим кольором, щоб розкрити огляди, що перекриваються.";
