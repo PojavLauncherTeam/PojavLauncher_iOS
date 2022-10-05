@@ -6,7 +6,7 @@
 "game.menu.force_close" = "Wymuś zamknięcie";
 "game.menu.confirm.force_close" = "Czy na pewno chcesz wymusić zamknięcie?";
 "game.menu.log_output" = "Wyjście danych";
-"game.menu.custom_controls" = "Dostosuj sterowanie";
+"game.menu.custom_controls" = "Sterowanie niestandardowe";
 
 // The options button at the top-right corner on iOS 12
 "Options" = "Opcje";
@@ -23,7 +23,7 @@
 
 "init.migrateDir" = "Katalogiem danych PojavLauncher jest teraz %@. Wszystkie istniejące dane zostały przeniesione do nowej lokalizacji.";
 
-"launcher.menu.custom_controls" = "Dostosuj sterowanie";
+"launcher.menu.custom_controls" = "Sterowanie niestandardowe";
 "launcher.menu.install_jar" = "Zainstaluj .jar";
 
 "login.error.username.outOfRange" = "Nazwa użytkownika musi zawierać od 3 do 16 znaków";
@@ -85,11 +85,11 @@
 
 "preference.section.general" = "Ogólne ustawienia";
 "preference.section.video" = "Ustawienia grafiki";
-"preference.section.control" = "Kontroluj dostosowywanie";
+"preference.section.control" = "Sterowanie";
 "preference.section.debug" = "Ustawienia debugowania interfejsu";
 "preference.section.footer.debug" = "Poza debugowaniem, te ustawienia mogą być przydatne dp ustawień sterowania. Może być wymagane ponowne uruchomienie programu, aby zmiany zostały wprowadzone.";
 //"preference.section.footer.control" = "";
-"preference.section.java" = "Ulepszenia Javy";
+"preference.section.java" = "Konfiguracja Java";
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "Czy na pewno?";
