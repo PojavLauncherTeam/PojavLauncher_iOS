@@ -90,6 +90,7 @@
 "preference.section.footer.video" = "Mit dem automatischen Renderer kann Minecraft entscheiden, welcher Renderer verwendet werden soll. Verringerte Auflösung reduziert die Arbeitslast der GPU für eine bessere Leistung.";
 "preference.section.control" = "Steuerung anpassen";
 "preference.section.debug" = "UI-Debugging-Einstellungen";
+"preference.section.footer.debug" = "Neben dem Debuggen können diese Einstellungen für benutzerdefinierte Steuerelemente nützlich sein. Möglicherweise muss der Launcher neu startet werden, damit die Änderungen wirksam werden.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java-Optimierungen";
 //"preference.section.footer.java" = "";
@@ -97,17 +98,21 @@
 "preference.title.confirm" = "Bist du dir sicher?";
 
 "preference.title.game_directory" = "Minecraft-Spielverzeichnis";
+"preference.title.confirm.delete_game_directory" = "Die Instanz %@ wird für immer gelöscht und kann nicht wiederhergestellt werden.";
 "preference.multidir.add_directory" = "Spielverzeichnis hinzufügen";
 
 "preference.title.check_sha" = "Dateien nach dem Download überprüfen";
+"preference.detail.check_sha" = "Diese Option zwingt den Launcher dazu, den Hash der Datei zu überprüfen, falls er verfügbar ist. Verhindert fehlerhafte Downloads.";
 "preference.title.cosmetica" = "Cosmetica-Umhänge";
 "preference.detail.cosmetica" = "Aktiviert Umhänge von Cosmetica (früher Arc). Für weitere Informationen bitte https://cosmetica.cc besuchen. OptiFine wird benötigt";
 "preference.title.debug_logging" = "Debug-Protokolle";
+"preference.detail.debug_logging" = "Protokolliert interne Einstellungen und Aktionen an latestlog.txt. Dies hilft den Entwicklern Probleme leichter zu finden, kann aber Minecraft langsamer laufen lassen, da die Protokolle öfter geschrieben werden.";
 
 "preference.title.reset_warnings" = "Alle Warnungen zurücksetzen";
 "preference.title.done.reset_warnings" = "Alle Warnungen wurden zurückgesetzt.";
 
 "preference.title.reset_settings" = "Alle Einstellungen zurücksetzen";
+"preference.title.confirm.reset_settings" = "Dies wird alle deine benutzerdefinierten Einstellungen entfernen, einschließlich Auflösung, Schaltflächen-Größe und Java-Argumente.";
 "preference.title.done.reset_settings" = "Alle Standard-Einstellungen wurden wiederhergestellt.";
 
 "preference.title.renderer" = "Renderer";
@@ -133,12 +138,16 @@
 "preference.title.slideable_hotbar" = "Schiebbare Hotbar";
 "preference.detail.slideable_hotbar" = "Macht die Hotbar wie mit dem Mausrad schiebbar";
 "preference.title.java_home" = "Nutze Java 17 für Minecraft < 1.17";
+"preference.detail.java_home" = "Für diese Versionen wird standardmäßig Java 8 verwendet. Aktiviere diese Option, um die Verwendung von Java 17 zu erzwingen. Kompatibilität mit ge-moddeten Versionen ist nicht garantiert.";
 "preference.title.java_args" = "JVM-Start-Argumente";
+"preference.detail.java_args" = "Passe auf. Sollten die Argumente ohne Fachwissen einfach verändert werden, kann dies zu Abstürzen führen.";
 "preference.placeholder.java_args" = "Argumente angeben...";
 "preference.title.auto_ram" = "Auto-RAM";
 "preference.detail.auto_ram" = "Aktiviert automatische RAM-Einstellungen";
+"preference.warn.auto_ram" = "Das Deaktivieren dieser Option kann auf einem nicht-ge-jailbreakten Gerät Instabilität erzeugen. Sei vorsichtig.";
 "preference.title.allocated_memory" = "RAM-Zuweisung (MB)";
 "preference.detail.allocated_memory" = "Legt fest, wie viel RAM Minecraft gegeben wird";
+"preference.warn.allocated_memory" = "Aufgrund von Einschränkungen des Betriebssystems kann diese Option zu Instabilität bei diesem und höheren Werten führen. Sei vorsichtig.";
 "preference.title.custom_env" = "Umgebungsvariablen";
 "preference.detail.custom_env" = "Diese Einstellung ist in Bearbeitung.";
 
