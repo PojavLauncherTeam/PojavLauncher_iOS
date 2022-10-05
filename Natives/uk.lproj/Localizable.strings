@@ -17,24 +17,117 @@
 // Version categories
 "Installed" = "Встановлено";
 "Snapshot" = "Снапшоти";
+"Releases" = "Релізи";
 "Old-beta" = "Старі бета";
 "Old-alpha" = "Старі альфа";
+
+"init.migrateDir" = "Дані PojavLauncher тепер у %@. Усі ваші наявні дані було переміщено в нове місце.";
 
 "launcher.menu.custom_controls" = "Користувацьке керування";
 "launcher.menu.install_jar" = "Встановити .jar";
 
+"login.error.username.outOfRange" = "Ім'я користувача має містити від 3 до 16 символів";
+
+"login.alert.field.username" = "Ім'я користувача";
+
+"login.jit.checking" = "Перевіряю на JIT";
+"login.jit.enabled" = "JIT було увімкнено";
+"login.jit.fail.JitStreamer" = "Помилка JitStreamer: %@";
+"login.jit.found.JitStreamer" = "Знайдено JitStreamer, вмикаю JIT";
+
+// Login buttons
+"Sign in" = "Увійти";
+"FAQ" = "Часті запитання";
+"Accounts" = "Облікові записи";
+
 "login.menu.about" = "Про PojavLauncher";
+"login.menu.sendlogs" = "Надіслати свої журнали";
+"login.menu.updates" = "Нещодавні оновлення";
+
+"login.option.microsoft" = "Обліковий запис Microsoft";
+"login.option.demo" = "Тимчасовий запис";
+"login.option.local" = "Локальний профіль";
+
+"login.progress.title" = "Триває вхід";
+
+"login.warn.title.ram_unjb" = "Повзунок пам'яті ввімкнено";
+"login.warn.message.ram_unjb" = "Майте на увазі, що зміна цього налаштування може призвести до нестабільності гри чи руйнування її взагалі.";
+
+"login.warn.title.a7" = "Це останнє оновлення для цього пристрою.";
+"login.warn.message.a7" = "PojavLauncher 2.2 не підтримуватиме цей пристрій, через обмеження обладнання та програмного забезпечення.";
+
+"login.warn.title.iosver" = "Це останнє оновлення для цієї версії iOS.";
+"login.warn.message.iosver" = "Майбутня версія PojavLauncher не підтримуватиме перешкоди для роботи iOS 12 чи 13, внаслідок невідповідності та обмеження розробки.";
+
+"login.warn.title.2gb" = "Пристрій має обмеження оперативної пам'яті.";
+"login.warn.message.2gb" = "Пристрої, що мають менше ніж 3 ГБ пам'яті, можуть наштовхуватися на обмеження пам'яті. Ми рекомендуємо залишити автоматичний вибір для пристрою.";
+
+"login.warn.title.demomode" = "Ця опція знаходиться в бета-версії.";
+"login.warn.message.demomode" = "Як заміна в офлайн та локальний режимах, демо-режим дозволить вам увійти в обліковий запис Microsoft, який не володіє грою та грати в пробну версію Java Видання, введено в 1.3.1 і більш нових версій. Старіші версії містять повну версію гри, оскільки офіційний лаунчер не веде ці обмеження. Відвідайте наш веб-сайт, щоб дізнатися більше про цей перехід з автономного режиму.";
+
+"login.warn.title.localmode" = "Офлайн режим тепер локальний режим.";
+"login.warn.message.localmode" = "Ви можете продовжити грати у встановлені версії, але більше не можете завантажити Minecraft без оплаченого облікового запису. Підтримка не буде надана з питань локальних облікових записів, а також з іншими засобами отримання Minecraft. Перегляньте \"Часті питання\", щоб дізнатися більше.";
+
+"login.msa.error.xsts.noxboxacc" = "Профіль Xbox Live не зареєстровано для цього облікового запису Microsoft. Будь ласка, переконайтеся, що ви точно робили профіль Xbox.\nКод помилки: 2148916233";
+"login.msa.error.xsts.noxbox" = "Наразі Xbox Live недоступний у вашій країні. \nКод помилки: 2148916235";
+"login.msa.error.xsts.krverify" = "Ваш обліковий запис має бути підтверджено батьками/опікунами, перш ніж продовжити.\nКод помилки: 2148916236 або 2148916237.";
+"login.msa.error.xsts.underage" = "Ваш обліковий запис повинен бути прив’язаний з батьківським обліковим записом, перш ніж продовжити.\nКод помилки: 2148916238";
+
+"login.msa.notice.demomode" = "Не вдалося знайти профіль Minecraft на цьому обліковому записі. Запис тепер установлено на демо-режим. Ви придбали Minecraft, або активну передплату на Xbox GamePass підписку? Будь ласка, налаштуйте свій профіль на https://minecraft.net/msaprofle для відновлення онлайн режиму.";
+
+"login.msa.progress.acquireAccessToken" = "(1/5) Приймаю токен доступу";
+"login.msa.progress.acquireXBLToken" = "(2/5) Приймаю Xbox Live токен";
+"login.msa.progress.acquireXSTS" = "Отримання XSTS";
+"login.msa.progress.acquireXboxProfile" = "(3/5) Приймаю обліковий запис Xbox Live";
+"login.msa.progress.acquireMCToken" = "(4/5) Приймаю Minecraft токен";
+"login.msa.progress.checkMCProfile" = "(5/5) Перевіряю Minecraft профіль";
 
 "News" = "Новини";
 "Settings" = "Налаштування";
+
+"preference.section.general" = "Основні Налаштування";
+"preference.section.video" = "Налаштування вигляду";
+"preference.section.footer.video" = "Авто рендер дозволяє Minecraft вирішувати, який рендер використовувати. Зменшення розмірів зменшує навантаження на графічний процесор для підвищення продуктивності.";
 "preference.section.control" = "Налаштування керування";
+"preference.section.debug" = "Налаштування налагодження інтерфейсу";
+"preference.section.footer.debug" = "Окрім налагодження, ці параметри можуть бути корисними для користувацьких елементів керування. Можливо, вам слід перезапустити лаунчер, щоб зміни застосувалися.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Оптимізація Java";
+//"preference.section.footer.java" = "";
+
+"preference.title.confirm" = "Ви впевнені?";
+
+"preference.title.game_directory" = "Тека Minecraft";
+"preference.title.confirm.delete_game_directory" = "Екземпляр %@ буде видалено назавжди і його не можливо відновити.";
+"preference.multidir.add_directory" = "Додати теку гри";
+
+"preference.title.check_sha" = "Перевірити файли після завантаження";
+"preference.detail.check_sha" = "Ця опція змушує лаунчер перевіряти хеш, якщо він доступний. Запобігає використанню пошкоджених файлів.";
 "preference.title.cosmetica" = "Плащі Cosmetica";
+"preference.detail.cosmetica" = "Включає плащі від Cosmetica (раніше Arc). Для більш детальної інформації, будь ласка, відвідайте https://cosmetica.cc. Потребує OptiFine";
+"preference.title.debug_logging" = "Запис помилок";
+"preference.detail.debug_logging" = "Записує внутрішні налаштування і дії на latestlog.txt. Це допомагає розробникам швидше знаходити проблеми, але Minecraft може працювати повільніше, оскільки журнали пишуться часто.";
+
+"preference.title.reset_warnings" = "Стерти всі попередження";
+"preference.title.done.reset_warnings" = "Всі попередження стерті.";
+
+"preference.title.reset_settings" = "Скинути налаштування";
+"preference.title.confirm.reset_settings" = "Це прибере всі ваші користувацькі налаштування, включаючи роздільну здатність, розмір кнопок та параметри Java.";
+"preference.title.done.reset_settings" = "Всі стандартні налаштування були відновлені.";
 
 "preference.title.renderer" = "Візуалізатор";
+"preference.title.renderer.auto" = "Авто: gl4es чи tinygl4angle";
+"preference.title.renderer.gl4es" = "Gl4es 1.1.4 - експортує OpenGL 2.1";
+"preference.title.renderer.tinygl4angle" = "Tinygl4angle (1.17+) - експортує OpenGL 3.2 (Базовий профіль, обмежений)";
+"preference.title.renderer.zink" = "Zink (Mesa 21.0) - експортує OpenGL 4.1";
+"preference.detail.renderer" = "Зміни двигун візуалізації OpenGL для використання";
+
+"preference.title.resolution" = "Роздільна здатність відео (%)";
+"preference.detail.resolution" = "Дозволяє вам зменшити роздільну здатність гри.";
 "preference.title.disable_gesture" = "Вимкнути жести";
+"preference.title.press_duration" = "Тривалість тривалого натискання (мс)";
 "preference.detail.press_duration" = "Змінити тривалість довгого натискання для ламання блоків і викидання предметів.";
+"preference.title.button_scale" = "Шкала екранних кнопок (%)";
 "preference.title.java_args" = "Аргументи запуску JVM";
 "preference.title.auto_ram" = "Автоматичне виділення ОЗП";
 "preference.detail.auto_ram" = "Вмикає автоматичне регулювання ОЗП";
