@@ -128,6 +128,12 @@
 "preference.title.press_duration" = "Тривалість тривалого натискання (мс)";
 "preference.detail.press_duration" = "Змінити тривалість довгого натискання для ламання блоків і викидання предметів.";
 "preference.title.button_scale" = "Шкала екранних кнопок (%)";
+"preference.detail.button_scale" = "Якщо кнопки завеликі, вони зазвичай потрібні для користувачів iPad.";
+"preference.title.mouse_scale" = "Масштабування курсору (%)";
+"preference.detail.mouse_scale" = "Змінює розмір курсора миші";
+"preference.title.mouse_speed" = "Чутливість миші (%)";
+"preference.detail.mouse_speed" = "Змінює чутливість віртуальної миші";
+"preference.title.virtmouse_enable" = "Віртуальна миша";
 "preference.title.java_args" = "Аргументи запуску JVM";
 "preference.title.auto_ram" = "Автоматичне виділення ОЗП";
 "preference.detail.auto_ram" = "Вмикає автоматичне регулювання ОЗП";
