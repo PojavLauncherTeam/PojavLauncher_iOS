@@ -138,7 +138,22 @@
 "preference.title.slideable_hotbar" = "Панель швидкого доступу";
 "preference.detail.slideable_hotbar" = "Зробити повзунком швидкого доступу як колесо миші";
 "preference.title.java_home" = "Використовувати Java 17 для Minecraft < 1.17";
+"preference.detail.java_home" = "Java 8 використовується за замовчуванням для цих версій. Увімкніть цю опцію, щоб примусово використовувати Java 17, проте сумісність з модифікаціями не гарантується.";
 "preference.title.java_args" = "Аргументи запуску JVM";
+"preference.detail.java_args" = "Будьте обережні, це може призвести до збоїв у грі, якщо це замінити без знань.";
+"preference.placeholder.java_args" = "Вкажіть аргументи...";
 "preference.title.auto_ram" = "Автоматичне виділення ОЗП";
 "preference.detail.auto_ram" = "Вмикає автоматичне регулювання ОЗП";
+"preference.warn.auto_ram" = "Вимкнення цієї опції на незламаному Jailbreak пристрої може створити нестабільність, якщо це зміниться. Будьте обережні.";
+"preference.title.allocated_memory" = "Виділення пам'яті (МБ)";
 "preference.detail.allocated_memory" = "Визначає, скільки пам'яті буде виділено для Minecraft";
+"preference.warn.allocated_memory" = "Через обмеження у самій операційній системі, цей параметр може викликати нестабільність в цих і вищих значеннях. Будьте обережні.";
+"preference.title.custom_env" = "Змінні середовища";
+"preference.detail.custom_env" = "Ця опція у процесі розробки.";
+
+"preference.title.debug_ipad_ui" = "Розблокувати інтерфейс iPadOS";
+"preference.detail.debug_ipad_ui" = "Розблокуйте інтерфейс iPad-exlusive (попередження, клавіатура тощо), якщо він вимкнений або увімкнений iPhone інтерфейс, якщо вимкнено.";
+"preference.title.debug_show_layout_bounds" = "Показувати межі об'єктів";
+"preference.detail.debug_show_layout_bounds" = "Показувати межі обрізування, поля і т. п";
+"preference.title.debug_show_layout_overlap" = "Показати накладання макета";
+"preference.detail.debug_show_layout_overlap" = "Накладання кожного вигляду з прозорим кольором, щоб розкрити огляди, що перекриваються.";
