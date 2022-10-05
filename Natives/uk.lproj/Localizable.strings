@@ -134,6 +134,10 @@
 "preference.title.mouse_speed" = "Чутливість миші (%)";
 "preference.detail.mouse_speed" = "Змінює чутливість віртуальної миші";
 "preference.title.virtmouse_enable" = "Віртуальна миша";
+"preference.detail.virtmouse_enable" = "Увімкніть цю опцію, щоб починати з віртуальною мишею";
+"preference.title.slideable_hotbar" = "Панель швидкого доступу";
+"preference.detail.slideable_hotbar" = "Зробити повзунком швидкого доступу як колесо миші";
+"preference.title.java_home" = "Використовувати Java 17 для Minecraft < 1.17";
 "preference.title.java_args" = "Аргументи запуску JVM";
 "preference.title.auto_ram" = "Автоматичне виділення ОЗП";
 "preference.detail.auto_ram" = "Вмикає автоматичне регулювання ОЗП";
