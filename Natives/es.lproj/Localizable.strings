@@ -101,6 +101,8 @@
 "preference.detail.check_sha" = "Está opción fuerza al launcher a verificar si el archivo hash está disponible. Previene falta de archivos y corrupciones.";
 "preference.title.cosmetica" = "Capas de Comestica";
 "preference.detail.cosmetica" = "Activar capas de Comestica (anteriormente Arc.) Para más información, por favor ve a https://cosmetica.cc. (Requiere OptiFine)";
+"preference.title.debug_logging" = "Registro de depuración";
+"preference.detail.debug_logging" = "Registra las configuraciones y acciones internas en latestlog.txt. Esto ayuda a los desarrolladores a encontrar problemas más fácilmente, pero es posible que el juego sea más lento, ya que los registros serán escritos con más frecuencia.";
 
 "preference.title.reset_warnings" = "Reiniciar todas las advertencias";
 "preference.title.done.reset_warnings" = "Todas las advertencias han sido reiniciadas.";
@@ -122,9 +124,9 @@
 "preference.title.press_duration" = "Duración para pulsado largo (ms)";
 "preference.detail.press_duration" = "Cambia el tiempo de activación durante una pulsación larga en destruir bloques y soltar objetos.";
 "preference.title.button_scale" = "Escala de botones en pantalla (%)";
-"preference.detail.button_scale" = "Sube de tamaño a los botones si resultan ser muy pequeños, necesario para usuarios de iPad.";
+"preference.detail.button_scale" = "Sube de tamaño a los botones si resultan ser muy pequeños, es usualmente necesario para usuarios de iPad.";
 "preference.title.mouse_scale" = "Tamaño del ratón (%)";
-"preference.detail.mouse_scale" = "Cambiar el tamaño del mouse virtual";
+"preference.detail.mouse_scale" = "Cambiar velocidad del ratón virtual";
 "preference.title.mouse_speed" = "Velocidad del ratón (%)";
 "preference.detail.mouse_speed" = "Cambiar velocidad del ratón virtual";
 "preference.title.virtmouse_enable" = "Ratón virtual";
