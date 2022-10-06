@@ -86,7 +86,7 @@
 "Settings" = "Налаштування";
 
 "preference.section.general" = "Основні Налаштування";
-"preference.section.video" = "Налаштування вигляду";
+"preference.section.video" = "Налаштування погляду";
 "preference.section.footer.video" = "Авто рендер дозволяє Minecraft вирішувати, який рендер використовувати. Зменшення розмірів зменшує навантаження на графічний процесор для підвищення продуктивності.";
 "preference.section.control" = "Налаштування керування";
 "preference.section.debug" = "Налаштування налагодження інтерфейсу";
