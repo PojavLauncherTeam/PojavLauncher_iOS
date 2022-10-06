@@ -17,6 +17,7 @@
 // Version categories
 "Installed" = "Instalada";
 "Snapshot" = "Snapshots";
+"Releases" = "Versiones lanzadas";
 "Old-beta" = "Betas";
 "Old-alpha" = "Alphas";
 
