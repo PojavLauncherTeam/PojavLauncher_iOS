@@ -49,8 +49,8 @@ BOOL slideableHotbar;
 
 #pragma mark Class TrackedTextField
 @interface TrackedTextField : UITextField
-@property int lastTextPos;
-@property CGFloat lastPointX;
+@property(nonatomic) int lastTextPos;
+@property(nonatomic) CGFloat lastPointX;
 @end
 
 @implementation TrackedTextField
@@ -181,25 +181,25 @@ BOOL slideableHotbar;
 @interface SurfaceViewController ()<UITextFieldDelegate, UIPointerInteractionDelegate, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate> {
 }
 
-@property NSArray *menuArray;
-@property UITableView *menuView;
+@property(nonatomic) NSArray *menuArray;
+@property(nonatomic) UITableView *menuView;
 
-@property UIView *ctrlView, *rootView;
+@property(nonatomic) UIView *ctrlView, *rootView;
 
-@property TrackedTextField *inputView;
-@property(nonatomic, strong) NSMutableDictionary* cc_dictionary;
-@property(nonatomic, strong) NSMutableArray* swipeableButtons;
-@property ControlButton* swipingButton;
-@property UITouch *primaryTouch, *hotbarTouch;
+@property(nonatomic) TrackedTextField *inputView;
+@property(nonatomic) NSMutableDictionary* cc_dictionary;
+@property(nonatomic) NSMutableArray* swipeableButtons;
+@property(nonatomic) ControlButton* swipingButton;
+@property(nonatomic) UITouch *primaryTouch, *hotbarTouch;
 
 @property UIView *logOutputView;
 
-@property id mouseConnectCallback, mouseDisconnectCallback;
-@property id controllerConnectCallback, controllerDisconnectCallback;
+@property(nonatomic) id mouseConnectCallback, mouseDisconnectCallback;
+@property(nonatomic) id controllerConnectCallback, controllerDisconnectCallback;
 
-@property CGFloat mouseSpeed;
-@property CGRect clickRange;
-@property BOOL shouldTriggerClick;
+@property(nonatomic) CGFloat mouseSpeed;
+@property(nonatomic) CGRect clickRange;
+@property(nonatomic) BOOL shouldTriggerClick;
 
 @end
 
@@ -220,12 +220,13 @@ BOOL slideableHotbar;
     [self.navigationItem setHidesBackButton:YES animated:YES];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 
-    // Perform Gamepad joystick ticking, while alos controlling frame rate?
+    // Perform Gamepad joystick ticking, while also controlling frame rate?
     CADisplayLink *displayLink = [CADisplayLink displayLinkWithTarget:ControllerInput.class selector:@selector(tick)];
     if (@available(iOS 15.0, *)) {
         displayLink.preferredFrameRateRange = CAFrameRateRangeMake(60, 120, 120);
     }
     [displayLink addToRunLoop:NSRunLoop.currentRunLoop forMode:NSRunLoopCommonModes];
+
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenScale = [[UIScreen mainScreen] scale];
 
@@ -1071,10 +1072,6 @@ CallbackBridge_nativeSendKey(keycode, 0, held, 0);
                 }
             }
         }
-
-#ifndef DEBUG_VISIBLE_TEXT_FIELD
-        self.inputView.hidden = currentVisibility;
-#endif
     }
 }
 

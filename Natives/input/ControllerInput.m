@@ -180,16 +180,16 @@ BOOL leftShiftHeld;
             lastYValue = yValue;
         }
     };
-    gamepad.rightThumbstick.up.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
+    gamepad.leftThumbstick.up.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
         [self sendKeyEvent:GLFW_KEY_W pressed:pressed];
     };
-    gamepad.rightThumbstick.left.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
+    gamepad.leftThumbstick.left.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
         [self sendKeyEvent:GLFW_KEY_A pressed:pressed];
     };
-    gamepad.rightThumbstick.down.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
+    gamepad.leftThumbstick.down.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
         [self sendKeyEvent:GLFW_KEY_S pressed:pressed];
     };
-    gamepad.rightThumbstick.right.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
+    gamepad.leftThumbstick.right.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
         [self sendKeyEvent:GLFW_KEY_D pressed:pressed];
     };
     if (@available(iOS 12.1, *)) {
@@ -207,21 +207,21 @@ BOOL leftShiftHeld;
  */
 + (void)tick {
     // There isn't a convenient way to get ns, use ms at this point
-    CGFloat frameTimeMilis = CACurrentMediaTime();
+    CGFloat frameTime = CACurrentMediaTime();
     // GameController automatically performs deadzone calculations
     // so we just take the raw input
     if (lastFrameTime != 0 && (lastXValue != 0 || lastYValue != 0)) {
         CGFloat acceleration = MathUtils_dist(0, 0, lastXValue, lastYValue); // magnitude
         CGFloat deltaX = lastXValue * acceleration * 18;
         CGFloat deltaY = -lastYValue * acceleration * 18;
-        CGFloat deltaTimeScale = (frameTimeMilis - lastFrameTime) / 0.016666666; // Scale of 1 = 60Hz
+        CGFloat deltaTimeScale = (frameTime - lastFrameTime) / 0.016666666; // Scale of 1 = 60Hz
         deltaX *= deltaTimeScale;
         deltaY *= deltaTimeScale;
 
         SurfaceViewController *vc = (id)(currentWindow().rootViewController);
         [vc sendTouchPoint:CGPointMake(deltaX, deltaY) withEvent:ACTION_MOVE_MOTION];
     }
-    lastFrameTime = frameTimeMilis;
+    lastFrameTime = frameTime;
 }
 
 + (void)unregisterControllerCallbacks:(GCController *)controller {
