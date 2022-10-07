@@ -21,7 +21,7 @@
 "Old-beta" = "Старі бета";
 "Old-alpha" = "Старі альфа";
 
-"init.migrateDir" = "Дані PojavLauncher тепер у %@. Усі ваші наявні дані було переміщено в нове місце.";
+"init.migrateDir" = "Каталог даних PojavLauncher тепер у %@. Усі ваші наявні дані було переміщено в нове місце.";
 
 "launcher.menu.custom_controls" = "Користувацьке керування";
 "launcher.menu.install_jar" = "Встановити .jar";
@@ -30,18 +30,18 @@
 
 "login.alert.field.username" = "Ім'я користувача";
 
-"login.jit.checking" = "Перевіряю на JIT";
+"login.jit.checking" = "Перевірка JIT";
 "login.jit.enabled" = "JIT було увімкнено";
 "login.jit.fail.JitStreamer" = "Помилка JitStreamer: %@";
-"login.jit.found.JitStreamer" = "Знайдено JitStreamer, вмикаю JIT";
+"login.jit.found.JitStreamer" = "Знайдено JitStreamer, увімкнення JIT";
 
 // Login buttons
 "Sign in" = "Увійти";
-"FAQ" = "Часті запитання";
+"FAQ" = "ЧаПи";
 "Accounts" = "Облікові записи";
 
 "login.menu.about" = "Про PojavLauncher";
-"login.menu.sendlogs" = "Надіслати свої журнали";
+"login.menu.sendlogs" = "Надіслати ваші звіти";
 "login.menu.updates" = "Нещодавні оновлення";
 
 "login.option.microsoft" = "Обліковий запис Microsoft";
@@ -50,8 +50,8 @@
 
 "login.progress.title" = "Триває вхід";
 
-"login.warn.title.ram_unjb" = "Повзунок пам'яті ввімкнено";
-"login.warn.message.ram_unjb" = "Майте на увазі, що зміна цього налаштування може призвести до нестабільності гри чи руйнування її взагалі.";
+"login.warn.title.ram_unjb" = "Повзунок пам'яті увімкнено";
+"login.warn.message.ram_unjb" = "Майте на увазі, що зміна цього налаштування може призвести до нестабільности гри чи руйнування її взагалі.";
 
 "login.warn.title.a7" = "Це останнє оновлення для цього пристрою.";
 "login.warn.message.a7" = "PojavLauncher 2.2 не підтримуватиме цей пристрій, через обмеження обладнання та програмного забезпечення.";
@@ -75,19 +75,19 @@
 
 "login.msa.notice.demomode" = "Не вдалося знайти профіль Minecraft на цьому обліковому записі. Запис тепер установлено на демо-режим. Ви придбали Minecraft, або активну передплату на Xbox GamePass підписку? Будь ласка, налаштуйте свій профіль на https://minecraft.net/msaprofle для відновлення онлайн режиму.";
 
-"login.msa.progress.acquireAccessToken" = "(1/5) Приймаю токен доступу";
-"login.msa.progress.acquireXBLToken" = "(2/5) Приймаю Xbox Live токен";
+"login.msa.progress.acquireAccessToken" = "(1/5) Приймається токен доступу";
+"login.msa.progress.acquireXBLToken" = "(2/5) Приймається токен Xbox Live";
 "login.msa.progress.acquireXSTS" = "Отримання XSTS";
-"login.msa.progress.acquireXboxProfile" = "(3/5) Приймаю обліковий запис Xbox Live";
-"login.msa.progress.acquireMCToken" = "(4/5) Приймаю Minecraft токен";
-"login.msa.progress.checkMCProfile" = "(5/5) Перевіряю Minecraft профіль";
+"login.msa.progress.acquireXboxProfile" = "(3/5) Приймається обліковий запис Xbox Live";
+"login.msa.progress.acquireMCToken" = "(4/5) Приймається токен Minecraft";
+"login.msa.progress.checkMCProfile" = "(5/5) Перевіряється профіль Minecraft";
 
 "News" = "Новини";
 "Settings" = "Налаштування";
 
-"preference.section.general" = "Основні Налаштування";
-"preference.section.video" = "Налаштування погляду";
-"preference.section.footer.video" = "Авто рендер дозволяє Minecraft вирішувати, який рендер використовувати. Зменшення розмірів зменшує навантаження на графічний процесор для підвищення продуктивності.";
+"preference.section.general" = "Загальні налаштування";
+"preference.section.video" = "Налаштування графіки";
+"preference.section.footer.video" = "Авто рендер дозволяє Minecraft вирішувати, який рендер використовувати. Зменшення розмірів зменшує навантаження на графічний процесор для підвищення продуктивности.";
 "preference.section.control" = "Налаштування керування";
 "preference.section.debug" = "Налаштування налагодження інтерфейсу";
 "preference.section.footer.debug" = "Окрім налагодження, ці параметри можуть бути корисними для користувацьких елементів керування. Можливо, вам слід перезапустити лаунчер, щоб зміни застосувалися.";
