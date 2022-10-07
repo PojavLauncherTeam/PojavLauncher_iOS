@@ -39,6 +39,8 @@
 "Sign in" = "Iniciar sesión";
 "FAQ" = "Preguntas frecuentes (FAQ)";
 "Accounts" = "Cuentas";
+
+"login.menu.about" = "Acerca de PojavLauncher";
 "login.menu.sendlogs" = "Envía tus logs";
 "login.menu.updates" = "Actualizaciones recientes";
 
