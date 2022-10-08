@@ -39,6 +39,8 @@
 "Sign in" = "Войти";
 "FAQ" = "ЧаВо";
 "Accounts" = "Учётные записи";
+
+"login.menu.about" = "О PojavLauncher";
 "login.menu.sendlogs" = "Отправить журнал";
 "login.menu.updates" = "Последние обновления";
 
