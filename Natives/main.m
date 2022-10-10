@@ -272,7 +272,7 @@ void init_setupResolvConf() {
 }
 
 int main(int argc, char * argv[]) {
-    if (getppid() != 1) {
+    if (!isJITEnabled() && getppid() != 1) {
         NSLog(@"parent pid is not launchd, calling ptrace(PT_TRACE_ME)");
         // Child process can call to PT_TRACE_ME
         // then both parent and child processes get CS_DEBUGGED
