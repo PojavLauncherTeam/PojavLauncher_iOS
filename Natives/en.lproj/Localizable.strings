@@ -18,6 +18,10 @@
 
 "launcher.menu.custom_controls" = "Custom controls";
 "launcher.menu.install_jar" = "Install .jar";
+"login.msa.error.xsts.krverify" = "Your account needs to be verified by your parents before you can continue.\nError code: 2148916236 or 2148916237.";
+"login.msa.error.xsts.underage" = "Your account needs to be linked to a parent account before you can continue.\nError code: 2148916238";
+
+"login.msa.notice.demomode" = "Could not find a Minecraft profile on this account. The account is now set to Demo mode. Did you buy Minecraft, or is there an active Xbox Game Pass subscription? Please configure your profile at https://minecraft.net/msaprofile to restore access to Online mode.";
 
 "News" = "News";
 "Settings" = "Settings";
@@ -29,3 +33,4 @@
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Enables automatic RAM adjuster";
 "preference.detail.allocated_memory" = "Controls how much memory is given to Minecraft";
+"preference.detail.debug_ipad_ui" = "Unlock iPad-exclusive UI (alert, keyboard, etc.) if enabled or iPhone UI if disabled.";
