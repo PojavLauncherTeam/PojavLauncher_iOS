@@ -63,7 +63,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 @property(nonatomic) ControlHandleView* resizeView;
 @property(nonatomic) NSString* currentFileName;
 @property(nonatomic) CGRect selectedPoint;
-@property UINavigationBar* navigationBar;
+@property(nonatomic) UINavigationBar* navigationBar;
 
 @end
 
@@ -101,6 +101,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     self.navigationBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44.0)];
     self.navigationBar.hidden = YES;
     self.navigationBar.items = @[navigationItem];
+    self.navigationBar.translucent = YES;
     [self.view addSubview:self.navigationBar];
 
     CGFloat buttonScale = [getPreference(@"button_scale") floatValue] / 100.0;

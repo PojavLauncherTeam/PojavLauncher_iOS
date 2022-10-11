@@ -2,6 +2,8 @@
 
 #import "GameSurfaceView.h"
 
+BOOL canAppendToLog;
+
 CGRect virtualMouseFrame;
 CGPoint lastVirtualMousePoint;
 
@@ -11,6 +13,22 @@ CGPoint lastVirtualMousePoint;
 @property UIImageView* mousePointerView;
 @property(nonatomic) UIPanGestureRecognizer* scrollPanGesture;
 
+@property(nonatomic) UIView* rootView;
+
 - (void)sendTouchPoint:(CGPoint)location withEvent:(int)event;
+
+// LogView category
+@property(nonatomic) UITableView* logTableView;
+@property(nonatomic) UIView* logOutputView;
+
+// Navigation category
+@property(nonatomic) NSArray *menuArray;
+@property(nonatomic) UITableView *menuView;
+
+@end
+
+@interface SurfaceViewController(LogView)
+
++ (void)appendToLog:(NSString *)line;
 
 @end

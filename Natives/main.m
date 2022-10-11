@@ -8,6 +8,7 @@
 #import "AppDelegate.h"
 #import "customcontrols/CustomControlsUtils.h"
 #import "LauncherPreferences.h"
+#import "SurfaceViewController.h"
 
 #include <libgen.h>
 #include <pthread.h>
@@ -185,6 +186,9 @@ void init_redirectStdio() {
         ssize_t rsize;
         char buf[2048];
         while((rsize = read(pfd[0], buf, sizeof(buf)-1)) > 0) {
+            if (rsize < 2048) {
+                buf[rsize] = '\0';
+            }
             // Filter out Session ID here
             int index;
             if (!filteredSessionID) {
@@ -195,6 +199,9 @@ void init_redirectStdio() {
                     rsize = strlen(buf);
                     filteredSessionID = true;
                 }
+            }
+            if (canAppendToLog) {
+                [SurfaceViewController appendToLog:@(buf)];
             }
             [file writeData:[NSData dataWithBytes:buf length:rsize]];
             [file synchronizeFile];

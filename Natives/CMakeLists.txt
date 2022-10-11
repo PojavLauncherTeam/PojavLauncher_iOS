@@ -126,8 +126,11 @@ add_executable(PojavLauncher
   LauncherSplitViewController.m
   LoginViewController.m
   MinecraftResourceUtils.m
-  SceneDelegate.m 
+  SceneDelegate.m
   SurfaceViewController.m
+  SurfaceViewController+LogView.m
+  SurfaceViewController+Navigation.m
+  TrackedTextField.m
   UpdateHistoryViewController.m
   egl_bridge.m
   input_bridge_v3.m
