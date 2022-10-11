@@ -10,8 +10,7 @@
     UIPanGestureRecognizer *menuPanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleRightEdge:)];
     menuPanGesture.delegate = self;
 
-    UIView *menuSwipeLineView = [[UIView alloc] initWithFrame:CGRectMake(11.0, self.view.frame.size.height/2 - 100.0, 
-8.0, 200.0)];
+    UIView *menuSwipeLineView = [[UIView alloc] initWithFrame:CGRectMake(11.0, self.view.frame.size.height/2 - 100.0, 8.0, 200.0)];
     menuSwipeLineView.backgroundColor = UIColor.whiteColor;
     menuSwipeLineView.layer.cornerRadius = 4;
     menuSwipeLineView.userInteractionEnabled = NO;
@@ -22,10 +21,10 @@
     [menuSwipeView addSubview:menuSwipeLineView];
     [self.rootView addSubview:menuSwipeView];
 
-    self.menuArray = @[@"game.menu.force_close", @"Settings", @"game.menu.log_output"];
+    self.menuArray = @[@"game.menu.force_close", @"game.menu.log_output", @"Settings"];
 
     self.menuView = [[UITableView alloc] initWithFrame:CGRectMake(self.view.frame.size.width + 30.0, 0, 
-self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
+        self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
 
     //menuView.backgroundColor = [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1];
     self.menuView.dataSource = self;
@@ -43,7 +42,7 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
     [self.surfaceView addGestureRecognizer:edgeGesture];
 }
 
-CGPoint lastCenterPoint;
+static CGPoint lastCenterPoint;
 - (void)handleRightEdge:(UIPanGestureRecognizer *)sender {
     if (lastCenterPoint.y == 0) {
         lastCenterPoint.x = self.rootView.center.x;
@@ -82,8 +81,7 @@ CGPoint lastCenterPoint;
         duration = MIN(0.4, duration);
         //(110 - MIN(100, fabs(velocity.x))) / 100
 
-        [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveEaseOut
- animations:^{
+        [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
             lastCenterPoint.x = centerX * scale;
             self.rootView.center = CGPointMake(lastCenterPoint.x, centerY);
             self.rootView.transform = CGAffineTransformScale(CGAffineTransformIdentity, scale, scale);
@@ -149,10 +147,10 @@ CGPoint lastCenterPoint;
             [self actionForceClose];
             break;
         case 1:
-            [self actionOpenPreferences];
+            [self performSelector:@selector(actionToggleLogOutput)];
             break;
         case 2:
-            [self performSelector:@selector(actionToggleLogOutput)];
+            [self actionOpenPreferences];
             break;
     }
 }
