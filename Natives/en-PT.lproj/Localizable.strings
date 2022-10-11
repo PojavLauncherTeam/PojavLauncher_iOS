@@ -4,6 +4,8 @@
 // The play button
 "Play" = "Sail";
 "Snapshot" = "Snapshot";
+"Old-beta" = "Ol'-beta";
+"Old-alpha" = "Ol'-alpha";
 
 "launcher.menu.custom_controls" = "custom trigger";
 
