@@ -1,4 +1,4 @@
-"game.menu.log_output" = "Yer' Diary";
+"game.menu.log_output" = "Crow's Nest";
 "game.menu.custom_controls" = "custom trigger";
 
 // The play button
@@ -12,3 +12,4 @@
 "News" = "News";
 "Settings" = "Settings";
 "preference.title.cosmetica" = "Cosmetica Mantles";
+"preference.title.auto_ram" = "RAM by magic";
