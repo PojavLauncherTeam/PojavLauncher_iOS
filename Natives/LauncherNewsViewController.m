@@ -18,6 +18,7 @@
     WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.frame configuration:webConfig];
     webView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     webView.navigationDelegate = self;
+    webView.opaque = NO;
     [webView loadRequest:request];
     [self.view addSubview:webView];
 }
