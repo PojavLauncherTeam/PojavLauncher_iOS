@@ -26,6 +26,9 @@
 "launcher.menu.custom_controls" = "Pasadyang mga kontrol";
 "launcher.menu.install_jar" = "Install .jar";
 
+"launcher.wait_jit.title" = "Naghihintay ng JIT";
+"launcher.wait_jit.message" = "Umaasa ang PojavLauncher sa Just-in-time na compilation para gumana ang Java sa maximum na performance.";
+
 "login.error.username.outOfRange" = "Dapat ang username ay may 3 na characters na hindi dapat lalampas sa 16 na characters";
 
 "login.alert.field.username" = "Username";
