@@ -26,6 +26,9 @@
 "launcher.menu.custom_controls" = "Custom controls";
 "launcher.menu.install_jar" = "Install .jar";
 
+"launcher.wait_jit.title" = "Waiting for JIT";
+"launcher.wait_jit.message" = "PojavLauncher relies on Just-in-time compilation for Java to work at maximum performance.";
+
 "login.error.username.outOfRange" = "Username must be at least 3 characters and maximum 16 characters";
 
 "login.alert.field.username" = "Username";

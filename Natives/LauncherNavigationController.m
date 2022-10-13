@@ -227,11 +227,13 @@ int versionSelectedAt = 0;
 
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url {
     if (controller.documentPickerMode == UIDocumentPickerModeImport) {
-        JavaGUIViewController *vc = [[JavaGUIViewController alloc] init];
-        vc.modalPresentationStyle = UIModalPresentationFullScreen;
-        vc.filepath = url.path;
-        NSLog(@"ModInstaller: launching %@", vc.filepath);
-        [self presentViewController:vc animated:YES completion:nil];
+        [self invokeAfterJITEnabled:^{
+            JavaGUIViewController *vc = [[JavaGUIViewController alloc] init];
+            vc.modalPresentationStyle = UIModalPresentationFullScreen;
+            vc.filepath = url.path;
+            NSLog(@"ModInstaller: launching %@", vc.filepath);
+            [self presentViewController:vc animated:YES completion:nil];
+        }];
     }
 }
 
@@ -258,7 +260,9 @@ int versionSelectedAt = 0;
             self.progressText.text = nil;
             self.progressViewMain.hidden = self.progressViewSub.hidden = YES;
             if (mainProgress != nil) {
-                UIKit_launchMinecraftSurfaceVC();
+                [self invokeAfterJITEnabled:^{
+                    UIKit_launchMinecraftSurfaceVC();
+                }];
             }
             return;
         }
@@ -266,6 +270,36 @@ int versionSelectedAt = 0;
     }];
 
     //callback_LauncherViewController_installMinecraft("1.12.2");
+}
+
+- (void)invokeAfterJITEnabled:(void(^)(void))handler {
+    if (isJITEnabled()) {
+        handler();
+        return;
+    }
+
+    CADisplayLink *displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(tickJIT)];
+
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"launcher.wait_jit.title", nil)
+        message:NSLocalizedString(@"launcher.wait_jit.message", nil)
+        preferredStyle:UIAlertControllerStyleAlert];
+/* TODO:
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^{
+        
+    }];
+    [alert addAction:cancel];
+*/
+    [self presentViewController:alert animated:YES completion:nil];
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        while (!isJITEnabled()) {
+            // Perform check for every second
+            sleep(1);
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [alert dismissViewControllerAnimated:YES completion:handler];
+        });
+    });
 }
 
 #pragma mark - UIPopoverPresentationControllerDelegate
