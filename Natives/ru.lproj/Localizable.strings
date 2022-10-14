@@ -26,6 +26,9 @@
 "launcher.menu.custom_controls" = "Пользовательское управление";
 "launcher.menu.install_jar" = "Установите .jar";
 
+"launcher.wait_jit.title" = "Ожидание JIT";
+"launcher.wait_jit.message" = "PojavLauncher полагается на работу JIT-компилятора Java для работы с максимальной производительностью.";
+
 "login.error.username.outOfRange" = "Имя пользователя не может быть короче 3 и длиннее 16 символов";
 
 "login.alert.field.username" = "Имя пользователя";
