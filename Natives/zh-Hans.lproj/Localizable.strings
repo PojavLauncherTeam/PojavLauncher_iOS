@@ -26,6 +26,9 @@
 "launcher.menu.custom_controls" = "自定义控制按键";
 "launcher.menu.install_jar" = "安装 .jar";
 
+"launcher.wait_jit.title" = "请等待应用获取到JIT(Just-in-time)权限";
+"launcher.wait_jit.message" = "PojavLauncher启动器必须要JIT(Just-in-time)权限才能使模拟器获得最佳体验";
+
 "login.error.username.outOfRange" = "用户名必须在 3-16 个字符以内";
 
 "login.alert.field.username" = "用户名";
