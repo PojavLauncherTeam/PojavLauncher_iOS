@@ -203,8 +203,8 @@ static AFURLSessionManager* manager;
             return [NSURL fileURLWithPath:jsonPath];
         } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
             if (error != nil) { // FIXME: correct?
-                NSString *errorStr = [NSString stringWithFormat:@"Failed to download %@: %@", versionURL, error.localizedDescription];
-                NSLog(@"[MCDL] Error: %@", errorStr);
+                NSString *errorStr = [NSString stringWithFormat:@"Failed to download %@: %@\nCall stack: %@", versionURL, error.localizedDescription, NSThread.callStackSymbols];
+                NSLog(@"[MCDL] Error: %@ %@", errorStr, NSThread.callStackSymbols);
                 showDialog(currentVC(), @"Error", errorStr);
                 callback(nil, nil, nil);
                 return;
@@ -292,7 +292,11 @@ static AFURLSessionManager* manager;
     // Add the client as a library
     NSMutableDictionary *client = [[NSMutableDictionary alloc] init];
     client[@"downloads"] = [[NSMutableDictionary alloc] init];
-    client[@"downloads"][@"artifact"] = json[@"downloads"][@"client"];
+    if (json[@"downloads"][@"client"] == nil) {
+        client[@"downloads"][@"artifact"] = [[NSMutableDictionary alloc] init];
+    } else {
+        client[@"downloads"][@"artifact"] = json[@"downloads"][@"client"];
+    }
     client[@"downloads"][@"artifact"][@"path"] = [NSString stringWithFormat:@"../versions/%@/%@.jar", json[@"id"], json[@"id"]];
     client[@"name"] = [NSString stringWithFormat:@"%@.jar", json[@"id"]];
     [json[@"libraries"] addObject:client];
@@ -354,8 +358,8 @@ static AFURLSessionManager* manager;
         } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
             if (error != nil) {
                 cancel = YES;
-                NSString *errorStr = [NSString stringWithFormat:@"Failed to download %@: %@", url, error.localizedDescription];
-                NSLog(@"[MCDL] Error: %@", errorStr);
+                NSString *errorStr = [NSString stringWithFormat:@"Failed to download %@: %@\nCall stack: %@", url, error.localizedDescription, NSThread.callStackSymbols];
+                NSLog(@"[MCDL] Error: %@ %@", errorStr, NSThread.callStackSymbols);
                 showDialog(currentVC(), @"Error", errorStr);
                 callback(nil, nil);
             } else if (![self checkSHA:sha1 forFile:path altName:nil]) {
@@ -441,8 +445,8 @@ static AFURLSessionManager* manager;
                     return;
                 }
                 jobsAvailable = -3;
-                NSString *errorStr = [NSString stringWithFormat:@"Failed to download %@: %@", url, error.localizedDescription];
-                NSLog(@"[MCDL] Error: %@", errorStr);
+                NSString *errorStr = [NSString stringWithFormat:@"Failed to download %@: %@\nCall stack: %@", url, error.localizedDescription, NSThread.callStackSymbols];
+                NSLog(@"[MCDL] Error: %@ %@", errorStr, NSThread.callStackSymbols);
                 showDialog(currentVC(), @"Error", errorStr);
                 callback(nil, nil);
             } else if (![self checkSHA:hash forFile:path altName:name]) {
