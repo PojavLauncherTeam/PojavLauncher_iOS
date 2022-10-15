@@ -24,6 +24,8 @@
     <!-- The following entitlements are required if sandbox is disabled -->
     <key>com.apple.private.security.storage.AppDataContainers</key>
     <true/>
+    <key>com.apple.private.security.storage.MobileDocuments</key>
+    <true/>
     <key>com.apple.security.iokit-user-client-class</key>
     <array>
         <string>IOSurfaceRootUserClient</string>
