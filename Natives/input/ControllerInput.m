@@ -31,11 +31,11 @@ BOOL leftShiftHeld;
     gameMap[@(GLFW_GAMEPAD_BUTTON_LEFT_BUMPER)] = @(SPECIALBTN_SCROLLUP);
     gameMap[@(GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER)] = @(SPECIALBTN_SCROLLDOWN);
 
-    gameMap[@(GLFW_GAMEPAD_AXIS_LEFT_TRIGGER)] = @(SPECIALBTN_MOUSESEC);
-    gameMap[@(GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER)] = @(SPECIALBTN_MOUSEPRI);
+    gameMap[@(GLFW_GAMEPAD_BUTTON_LEFT_TRIGGER)] = @(SPECIALBTN_MOUSESEC);
+    gameMap[@(GLFW_GAMEPAD_BUTTON_RIGHT_TRIGGER)] = @(SPECIALBTN_MOUSEPRI);
 
-    menuMap[@(GLFW_GAMEPAD_BUTTON_BACK)] = @(GLFW_KEY_TAB);
-    menuMap[@(GLFW_GAMEPAD_BUTTON_START)] = @(GLFW_KEY_ESCAPE);
+    gameMap[@(GLFW_GAMEPAD_BUTTON_BACK)] = @(GLFW_KEY_TAB);
+    gameMap[@(GLFW_GAMEPAD_BUTTON_START)] = @(GLFW_KEY_ESCAPE);
     //gameMap[@(GLFW_GAMEPAD_BUTTON_GUIDE)] = @(GLFW_KEY_UNKNOWN);
 
     gameMap[@(GLFW_GAMEPAD_BUTTON_A)] = @(GLFW_KEY_SPACE);
@@ -103,9 +103,10 @@ BOOL leftShiftHeld;
         case SPECIALBTN_SCROLLDOWN:
             CallbackBridge_nativeSendScroll(0, 1);
             break;
-        case GLFW_KEY_LEFT_SHIFT:
-            leftShiftHeld = pressed;
         default:
+            if (keycode == GLFW_KEY_LEFT_SHIFT) {
+                leftShiftHeld = pressed;
+            }
             CallbackBridge_nativeSendKey(keycode, 0, pressed, leftShiftHeld ? GLFW_MOD_SHIFT : 0);
             break;
     }
@@ -122,10 +123,10 @@ BOOL leftShiftHeld;
     };
 
     gamepad.leftTrigger.pressedChangedHandler = ^(GCControllerButtonInput *button, float value, BOOL pressed) {
-        [self sendKeyEvent:SPECIALBTN_MOUSESEC pressed:pressed];
+        [self sendKeyEvent:GLFW_GAMEPAD_BUTTON_LEFT_TRIGGER pressed:pressed];
     };
     gamepad.rightTrigger.pressedChangedHandler = ^(GCControllerButtonInput *button, float value, BOOL pressed) {
-        [self sendKeyEvent:SPECIALBTN_MOUSEPRI pressed:pressed];
+        [self sendKeyEvent:GLFW_GAMEPAD_BUTTON_RIGHT_TRIGGER pressed:pressed];
     };
 
     if (@available(iOS 13.0, *)) {
