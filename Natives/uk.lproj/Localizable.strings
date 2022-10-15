@@ -26,8 +26,8 @@
 "launcher.menu.custom_controls" = "Користувацьке керування";
 "launcher.menu.install_jar" = "Встановити .jar";
 
-"launcher.wait_jit.title" = "Очікую JIT";
-"launcher.wait_jit.message" = "PojavLauncher покладається на компіляцію Just-in-time для Java задля праці при максимальній продуктивності.";
+"launcher.wait_jit.title" = "Чекаю на JIT";
+"launcher.wait_jit.message" = "PojavLauncher покладається на компіляцію Just-in-time для Java задля роботи з максимальною швидкістю.";
 
 "login.error.username.outOfRange" = "Ім'я користувача має містити від 3 до 16 символів";
 
