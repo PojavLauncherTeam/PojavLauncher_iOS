@@ -4,6 +4,16 @@
 
 #include "../glfw_keycodes.h"
 
+// Left thumbstick directions
+#define DIRECTION_EAST 0
+#define DIRECTION_NORTH_EAST 1
+//#define DIRECTION_NORTH 2
+#define DIRECTION_NORTH_WEST 3
+//#define DIRECTION_WEST 4
+#define DIRECTION_SOUTH_WEST 5
+//#define DIRECTION_SOUTH 6
+#define DIRECTION_SOUTH_EAST 7
+
 CFAbsoluteTime lastFrameTime;
 CGFloat lastXValue; // lastHorizontalValue
 CGFloat lastYValue; // lastVerticalValue
@@ -168,30 +178,47 @@ BOOL leftShiftHeld;
     gamepad.dpad.right.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
         [self sendKeyEvent:GLFW_GAMEPAD_BUTTON_DPAD_RIGHT pressed:pressed];
     };
-    
+
     gamepad.leftThumbstick.valueChangedHandler = ^(GCControllerDirectionPad * _Nonnull dpad, float xValue, float yValue) {
         if (!isGrabbing) {
+            // Update virtual mouse position
             lastXValue = xValue;
             lastYValue = yValue;
+            return;
         }
+
+        static char lastLThumbDirection = -2;
+        char direction = -1;
+        if (xValue != 0 && yValue != 0) {
+            CGFloat degree = -atan2f(yValue, xValue) * (180.0 / M_PI);
+            direction = (int)((degree+22.5)/45.0) % 8;
+        }
+        if (lastLThumbDirection == direction) {
+            return;
+        }
+
+        // Update WASD states
+        [self sendKeyEvent:GLFW_KEY_W pressed:(
+            direction >= DIRECTION_NORTH_EAST &&
+            direction <= DIRECTION_NORTH_WEST)];
+        [self sendKeyEvent:GLFW_KEY_A pressed:(
+            direction >= DIRECTION_NORTH_WEST &&
+            direction <= DIRECTION_SOUTH_WEST)];
+        [self sendKeyEvent:GLFW_KEY_S pressed:(
+            direction >= DIRECTION_SOUTH_WEST &&
+            direction <= DIRECTION_SOUTH_EAST)];
+        [self sendKeyEvent:GLFW_KEY_D pressed:(
+            direction == DIRECTION_SOUTH_EAST ||
+            direction == DIRECTION_EAST ||
+            direction == DIRECTION_NORTH_EAST)];
+
+        lastLThumbDirection = direction;
     };
     gamepad.rightThumbstick.valueChangedHandler = ^(GCControllerDirectionPad * _Nonnull dpad, float xValue, float yValue) {
         if (isGrabbing) {
             lastXValue = xValue;
             lastYValue = yValue;
         }
-    };
-    gamepad.leftThumbstick.up.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
-        [self sendKeyEvent:GLFW_KEY_W pressed:pressed];
-    };
-    gamepad.leftThumbstick.left.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
-        [self sendKeyEvent:GLFW_KEY_A pressed:pressed];
-    };
-    gamepad.leftThumbstick.down.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
-        [self sendKeyEvent:GLFW_KEY_S pressed:pressed];
-    };
-    gamepad.leftThumbstick.right.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
-        [self sendKeyEvent:GLFW_KEY_D pressed:pressed];
     };
     if (@available(iOS 12.1, *)) {
         gamepad.leftThumbstickButton.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
@@ -247,10 +274,6 @@ BOOL leftShiftHeld;
     gamepad.dpad.left.pressedChangedHandler = nil;
     gamepad.dpad.right.pressedChangedHandler = nil;
     gamepad.leftThumbstick.valueChangedHandler = nil;
-    gamepad.rightThumbstick.up.pressedChangedHandler = nil;
-    gamepad.rightThumbstick.down.pressedChangedHandler = nil;
-    gamepad.rightThumbstick.left.pressedChangedHandler = nil;
-    gamepad.rightThumbstick.right.pressedChangedHandler = nil;
     gamepad.rightThumbstick.valueChangedHandler = nil;
     if (@available(iOS 12.1, *)) {
     gamepad.leftThumbstickButton.pressedChangedHandler = nil;
