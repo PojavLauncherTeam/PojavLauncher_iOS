@@ -30,10 +30,6 @@ BOOL leftShiftHeld;
 
     gameMap = [[NSMutableDictionary alloc] init];
 
-    gameMap[@(GLFW_KEY_W)] = @(GLFW_KEY_W);
-    gameMap[@(GLFW_KEY_A)] = @(GLFW_KEY_A);
-    gameMap[@(GLFW_KEY_S)] = @(GLFW_KEY_S);
-    gameMap[@(GLFW_KEY_D)] = @(GLFW_KEY_D);
     gameMap[@(SPECIALBTN_MOUSEPRI)] = @(SPECIALBTN_MOUSEPRI);
     gameMap[@(SPECIALBTN_MOUSEMID)] = @(SPECIALBTN_MOUSEMID);
     gameMap[@(SPECIALBTN_MOUSESEC)] = @(SPECIALBTN_MOUSESEC);
@@ -190,7 +186,10 @@ BOOL leftShiftHeld;
         static char lastLThumbDirection = -2;
         char direction = -1;
         if (xValue != 0 && yValue != 0) {
-            CGFloat degree = -atan2f(yValue, xValue) * (180.0 / M_PI);
+            CGFloat degree = atan2f(yValue, xValue) * (180.0 / M_PI);
+            if (degree < 0) {
+                degree += 360;
+            }
             direction = (int)((degree+22.5)/45.0) % 8;
         }
         if (lastLThumbDirection == direction) {
@@ -198,19 +197,24 @@ BOOL leftShiftHeld;
         }
 
         // Update WASD states
-        [self sendKeyEvent:GLFW_KEY_W pressed:(
+        int mod = leftShiftHeld ? GLFW_MOD_SHIFT : 0;
+        CallbackBridge_nativeSendKey(GLFW_KEY_W, 0,
             direction >= DIRECTION_NORTH_EAST &&
-            direction <= DIRECTION_NORTH_WEST)];
-        [self sendKeyEvent:GLFW_KEY_A pressed:(
+            direction <= DIRECTION_NORTH_WEST,
+            mod);
+        CallbackBridge_nativeSendKey(GLFW_KEY_A, 0,
             direction >= DIRECTION_NORTH_WEST &&
-            direction <= DIRECTION_SOUTH_WEST)];
-        [self sendKeyEvent:GLFW_KEY_S pressed:(
+            direction <= DIRECTION_SOUTH_WEST,
+            mod);
+        CallbackBridge_nativeSendKey(GLFW_KEY_S, 0,
             direction >= DIRECTION_SOUTH_WEST &&
-            direction <= DIRECTION_SOUTH_EAST)];
-        [self sendKeyEvent:GLFW_KEY_D pressed:(
+            direction <= DIRECTION_SOUTH_EAST,
+            mod);
+        CallbackBridge_nativeSendKey(GLFW_KEY_D, 0,
             direction == DIRECTION_SOUTH_EAST ||
             direction == DIRECTION_EAST ||
-            direction == DIRECTION_NORTH_EAST)];
+            direction == DIRECTION_NORTH_EAST,
+            mod);
 
         lastLThumbDirection = direction;
     };
