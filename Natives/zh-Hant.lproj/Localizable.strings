@@ -8,6 +8,8 @@
 "game.menu.log_output" = "日誌輸出";
 "game.menu.custom_controls" = "自訂控制鍵";
 
+"game.title.exit_code" = "遊戲以代碼%d退出";
+
 // The options button at the top-right corner on iOS 12
 "Options" = "選項";
 
