@@ -8,6 +8,8 @@
 "game.menu.log_output" = "Журнал";
 "game.menu.custom_controls" = "Користувацьке керування";
 
+"game.title.exit_code" = "Гра завершилась з кодом %d";
+
 // The options button at the top-right corner on iOS 12
 "Options" = "Опції";
 
