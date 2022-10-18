@@ -8,6 +8,8 @@
 "game.menu.log_output" = "Uscita";
 "game.menu.custom_controls" = "Controlli personalizzati";
 
+"game.title.exit_code" = "Il gioco si è chiuso con il codice %d";
+
 // The options button at the top-right corner on iOS 12
 "Options" = "Impostazioni";
 
@@ -25,6 +27,9 @@
 
 "launcher.menu.custom_controls" = "Controlli personalizzati";
 "launcher.menu.install_jar" = "Installa .jar";
+
+"launcher.wait_jit.title" = "In attesa di JIT";
+"launcher.wait_jit.message" = "PojavLauncher si basa sulla compilazione Just-in-time per Java per lavorare con prestazioni migliori.";
 
 "login.error.username.outOfRange" = "Il nome utente deve contenere tra i 3 e i 16 caratteri";
 
@@ -96,12 +101,62 @@
 "preference.title.confirm" = "Sei sicuro?";
 
 "preference.title.game_directory" = "Directory Minecraft";
+"preference.title.confirm.delete_game_directory" = "L'istanza %@ verrà eliminata per sempre e non può essere ripristinata.";
+"preference.multidir.add_directory" = "aggiungi game directory";
+
+"preference.title.check_sha" = "Controlla i file dopo il download";
+"preference.detail.check_sha" = "Questa opzione forza il launcher a controllare l'hash dei file se disponibile. Prevenendo download corrotti.";
 "preference.title.cosmetica" = "Mantelli Cosmetica";
+"preference.detail.cosmetica" = "Abilità i mantelli di Cosmetica (precedentemente Arc). Per ulteriori informazioni visita https://cosmetica.cc. Necessita di OptiFine";
+"preference.title.debug_logging" = "Logs di Debug";
+"preference.detail.debug_logging" = "Registra le impostazioni interne e le azioni su latestlog.txt. Questo aiuta gli sviluppatori a trovare problemi più facilmente, ma le prestazioni di Minecraft potrebbero risentirne a causa della scrittura dei registri.";
+
+"preference.title.reset_warnings" = "Ripristina gli avvisi";
+"preference.title.done.reset_warnings" = "Tutti gli avvisi sono stati resettati.";
+
+"preference.title.reset_settings" = "Resetta impostazioni";
+"preference.title.confirm.reset_settings" = "Questo rimuoverà tutte le tue preferenze personalizzate, incluse le dimensioni dei pulsanti, e gli argomenti Java.";
+"preference.title.done.reset_settings" = "Tutte le impostazioni predefinite sono state ripristinate.";
 
 "preference.title.renderer" = "Renderer";
+"preference.title.renderer.auto" = "Auto: gl4es o tinygl4angle";
+"preference.title.renderer.gl4es" = "gl4es 1.1.4 - exports OpenGL 2.1";
+"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - export OpenGL 3.2 (Profilo core, limitato)";
+"preference.title.renderer.zink" = "Zink (Mesa 21.0) - exports OpenGL 4.1";
+"preference.detail.renderer" = "Cambia il motore di rendering OpenGL in uso";
+
+"preference.title.resolution" = "Risoluzione (%)";
+"preference.detail.resolution" = "Permette di diminuire la risoluzione del gioco.";
 "preference.title.disable_gesture" = "Disattiva gestures";
+"preference.title.press_duration" = "Durata click-lungo (ms)";
 "preference.detail.press_duration" = "Cambia il tempo di attivazione per una pressione prolungata nel rompimento di un blocco e il drop di un item.";
+"preference.title.button_scale" = "Scala pulsante sullo schermo (%)";
+"preference.detail.button_scale" = "Aggiornali se i pulsanti sono troppo piccoli, di solito necessari per gli utenti iPad.";
+"preference.title.mouse_scale" = "Dimensioni mouse (%)";
+"preference.detail.mouse_scale" = "Cambia dimensioni mouse virtuale";
+"preference.title.mouse_speed" = "Velocità mouse (%)";
+"preference.detail.mouse_speed" = "Cambia la velocità del mouse via software";
+"preference.title.virtmouse_enable" = "Mouse virtuale";
+"preference.detail.virtmouse_enable" = "Abilita questa opzione per abilitare il mouse virtuale";
+"preference.title.slideable_hotbar" = "Hotbar scorrevole";
+"preference.detail.slideable_hotbar" = "Rendi la hotbar scorrevole come la rotellina del mouse";
+"preference.title.java_home" = "Usa Java 17 per Minecraft < 1.17";
+"preference.detail.java_home" = "Java 8 è usato per impostazione predefinita per quelle versioni. Abilita questa opzione per forzare l'uso di Java 17, tuttavia la compatibilità con modded non è garantita.";
 "preference.title.java_args" = "Impostazioni di avvio JVM";
+"preference.detail.java_args" = "Fa attenzione, se effettui modifiche senza saper quello che fai potresti crashare.";
+"preference.placeholder.java_args" = "Specifica argomenti...";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Attiva regolatore RAM automatico";
+"preference.warn.auto_ram" = "Disabilitare questa opzione su un dispositivo non jailbroken può creare instabilità. Procedere con cautela.";
+"preference.title.allocated_memory" = "Memoria allocata (MB)";
 "preference.detail.allocated_memory" = "Controlla quanta memoria dedicare a Minecraft";
+"preference.warn.allocated_memory" = "A causa delle limitazioni nel sistema operativo stesso, questa opzione può causare instabilità con questi valori e superiori. Procedere con cautela.";
+"preference.title.custom_env" = "Variabili ambientali";
+"preference.detail.custom_env" = "Questa opzione è in fase di sviluppo.";
+
+"preference.title.debug_ipad_ui" = "Unlock iPadOS UI";
+"preference.detail.debug_ipad_ui" = "Sblocca l'interfaccia utente iPad-Esclusiva (avviso, tastiera, ecc.) se abilitata opprue L''UI utente iPhone se disabilitata.";
+"preference.title.debug_show_layout_bounds" = "Mostra limiti layout";
+"preference.detail.debug_show_layout_bounds" = "Mostra misure clip, margini, bounds";
+"preference.title.debug_show_layout_overlap" = "Mostra sovrapposizione del layout";
+"preference.detail.debug_show_layout_overlap" = "Sovrapponi ad ogni visuale un colore trasparente per mostrare visuali sovrapposte.";
