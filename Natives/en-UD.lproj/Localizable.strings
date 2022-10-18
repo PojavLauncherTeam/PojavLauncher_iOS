@@ -4,20 +4,50 @@
 */
 
 "game.menu.force_close" = "ǝsoꞁɔ ǝɔɹoℲ";
+"game.menu.confirm.force_close" = "¿ǝsolɔ ǝɔɹoɟ oʇ ʇuɐʍ noʎ ǝɹns noʎ ǝɹ∀";
 "game.menu.log_output" = "ʇndʇno ᵷoꞀ";
 "game.menu.custom_controls" = "sꞁoɹʇuoɔ ɯoʇsnƆ";
+
+"game.title.exit_code" = "%d ǝpoɔ ɥʇᴉʍ pǝʇᴉxǝ ǝɯɐפ";
 
 // The options button at the top-right corner on iOS 12
 "Options" = "suoᴉʇdO";
 
 // The play button
 "Play" = "ʎɐꞁԀ";
+
+// Version categories
+"Installed" = "pǝllɐʇsuI";
 "Snapshot" = "ʇoɥsdɐuS";
+"Releases" = "sǝsɐǝlǝɹ";
 "Old-beta" = "ɐʇǝq-pꞁO";
 "Old-alpha" = "ɐɥdꞁɐ-pꞁO";
 
+"init.migrateDir" = "˙uoᴉʇɐɔol ʍǝu ǝɥʇ oʇ pǝʌoɯ uǝǝq sɐɥ ɐʇɐp ƃuᴉʇsᴉxǝ ɹnoʎ ɟo ll∀ ˙%@ ʍou sᴉ ʎɹoʇɔǝɹᴉp ɐʇɐp ɹǝɥɔunɐ˥ʌɐɾoԀ ǝɥ┴";
+
 "launcher.menu.custom_controls" = "sꞁoɹʇuoɔ ɯoʇsnƆ";
 "launcher.menu.install_jar" = "ɹɐɾ˙ ꞁꞁɐʇsuI";
+
+"launcher.wait_jit.title" = "┴Iſ ɹoɟ ƃuᴉʇᴉɐM";
+"launcher.wait_jit.message" = "˙ǝɔuɐɯɹoɟɹǝd ɯnɯᴉxɐɯ ʇɐ ʞɹoʍ oʇ ɐʌɐſ ɹoɟ uoᴉʇɐlᴉdɯoɔ ǝɯᴉʇ-uᴉ-ʇsnſ uo sǝᴉlǝɹ ɹǝɥɔunɐ˥ʌɐɾoԀ";
+
+"login.error.username.outOfRange" = "sɹǝʇɔɐɹɐɥɔ 9Ɩ ɯnɯᴉxɐɯ puɐ sɹǝʇɔɐɹɐɥɔ Ɛ ʇsɐǝl ʇɐ ǝq ʇsnɯ ǝɯɐuɹǝs∩";
+
+"login.alert.field.username" = "ǝɯɐuɹǝs∩";
+
+"login.jit.checking" = "┴Iſ ɹoɟ ƃuᴉʞɔǝɥƆ";
+"login.jit.enabled" = "pǝlqɐuǝ uǝǝq sɐɥ ┴Iſ";
+"login.jit.fail.JitStreamer" = "%@ :ɹoɹɹǝ ɹǝɯɐǝɹʇSʇᴉſ";
+"login.jit.found.JitStreamer" = "┴Iſ ƃuᴉlqɐuǝ 'ɹǝɯɐǝɹʇSʇᴉſ punoℲ";
+
+// Login buttons
+"Sign in" = "uᴉ uƃᴉS";
+"FAQ" = "Q∀Ⅎ";
+"Accounts" = "sʇunoɔɔ∀";
+"login.menu.sendlogs" = "sƃol ɹnoʎ puǝS";
+"login.menu.updates" = "sǝʇɐpdn ʇuǝɔǝɹ";
+
+"login.option.microsoft" = "ʇunoɔɔɐ ʇɟosoɹɔᴉW";
 
 "News" = "sʍǝN";
 "Settings" = "sᵷuᴉʇʇǝS";
