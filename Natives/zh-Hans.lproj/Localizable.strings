@@ -4,9 +4,11 @@
 */
 
 "game.menu.force_close" = "强制关闭";
-"game.menu.confirm.force_close" = "是否要强行停止?";
+"game.menu.confirm.force_close" = "确认强制关闭？";
 "game.menu.log_output" = "日志输出";
 "game.menu.custom_controls" = "自定义控制按键";
+
+"game.title.exit_code" = "游戏已崩溃，错误代码%d";
 
 // The options button at the top-right corner on iOS 12
 "Options" = "选项";
@@ -154,8 +156,8 @@
 "preference.title.custom_env" = "环境变量";
 "preference.detail.custom_env" = "此选项正在开发";
 
-"preference.title.debug_ipad_ui" = "使用IPad OS的用户界面";
-"preference.detail.debug_ipad_ui" = "开启后会使用IPad OS的专用UI界面";
+"preference.title.debug_ipad_ui" = "使用iPadOS用户界面";
+"preference.detail.debug_ipad_ui" = "开启后会使用IPadOS的专用UI界面";
 "preference.title.debug_show_layout_bounds" = "显示边界布局";
 "preference.detail.debug_show_layout_bounds" = "显示剪辑边界、边距";
 "preference.title.debug_show_layout_overlap" = "布局重叠显示";
