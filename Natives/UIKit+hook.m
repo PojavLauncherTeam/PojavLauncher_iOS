@@ -8,6 +8,7 @@ void swizzle(Class class, SEL originalAction, SEL swizzledAction) {
 
 __attribute__((constructor)) void hookConstructor(void) {
     swizzle(UIDevice.class, @selector(userInterfaceIdiom), @selector(hook_userInterfaceIdiom));
+    swizzle(UIResponder.class, @selector(becomeFirstResponder), @selector(hook_becomeFirstResponder));
     swizzle(UIToolbar.class, @selector(sizeThatFits:), @selector(hook_sizeThatFits:));
     swizzle(UIView.class, @selector(didMoveToSuperview), @selector(hook_didMoveToSuperview));
     swizzle(UIView.class, @selector(setFrame:), @selector(hook_setFrame:));
@@ -32,6 +33,24 @@ __attribute__((constructor)) void hookConstructor(void) {
     CGSize ret = [self hook_sizeThatFits:size];
     ret.height += 50;
     return ret;
+}
+
+@end
+
+@implementation UIResponder(hook)
+
+- (BOOL)hook_becomeFirstResponder {
+    // Workaround a weird bug: UIKit tries to present an accessibility UITextField
+    // for some reason, which could cause crash due to mismatched parent view controller
+    // UIViewControllerHierarchyInconsistency
+
+    @try {
+        return [self hook_becomeFirstResponder];
+    } @catch (NSException *e) {
+        NSLog(@"-[UITextInputUIResponderAccessibility becomeFirstResponder]: %@", e);
+    }
+
+    return NO;
 }
 
 @end
