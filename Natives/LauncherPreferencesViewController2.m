@@ -21,6 +21,10 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
 @implementation LauncherPreferencesViewController2
 
+- (NSString *)imageName {
+    return @"ic_menu_settings";
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

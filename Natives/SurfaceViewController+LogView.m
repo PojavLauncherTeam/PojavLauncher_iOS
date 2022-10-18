@@ -1,5 +1,7 @@
 #import "SurfaceViewController.h"
 
+static BOOL fatalErrorOccurred;
+
 extern UIWindow* currentWindow();
 
 @interface LogDelegate : NSObject
@@ -109,6 +111,16 @@ static int logCharPerLine;
     [self.logTableView reloadData];
 }
 
+- (void)actionShareLatestlog {
+    UINavigationBar *navigationBar = self.logOutputView.subviews[0];
+    NSString *latestlogPath = [NSString stringWithFormat:@"file://%s/latestlog.txt", getenv("POJAV_HOME")];
+    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[@"latestlog.txt",
+        [NSURL URLWithString:latestlogPath]] applicationActivities:nil];
+    activityVC.popoverPresentationController.sourceView = navigationBar;
+        activityVC.popoverPresentationController.sourceRect = navigationBar.bounds;
+    [self presentViewController:activityVC animated:YES completion:nil];
+}
+
 - (void)actionStartStopLogOutput {
     canAppendToLog = !canAppendToLog;
     UINavigationItem* item = ((UINavigationBar *)self.logOutputView.subviews[0]).items[0];
@@ -119,6 +131,11 @@ static int logCharPerLine;
 }
 
 - (void)actionToggleLogOutput {
+    if (fatalErrorOccurred) {
+        [self performSelector:@selector(actionForceClose)];
+        return;
+    }
+
     UIViewAnimationOptions opt = self.logOutputView.hidden ? UIViewAnimationOptionCurveEaseOut : UIViewAnimationOptionCurveEaseIn;
     [UIView transitionWithView:self.logOutputView duration:0.4 options:UIViewAnimationOptionCurveEaseOut animations:^(void){
         CGRect frame = self.logOutputView.frame;
@@ -131,6 +148,10 @@ static int logCharPerLine;
 }
 
 + (void)_appendToLog:(NSString *)line {
+    if (line.length == 0) {
+        return;
+    }
+
     SurfaceViewController *instance = (id)currentWindow().rootViewController;
 
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:logLines.count inSection:0];
@@ -146,9 +167,54 @@ static int logCharPerLine;
         atScrollPosition:UITableViewScrollPositionBottom animated:NO];
 }
 
-+ (void)appendToLog:(NSString *)line {
++ (void)appendToLog:(NSString *)string {
     dispatch_async(dispatch_get_main_queue(), ^(void){
-        [self _appendToLog:line];
+        NSArray *lines = [string componentsSeparatedByCharactersInSet:
+            NSCharacterSet.newlineCharacterSet];
+        for (NSString *line in lines) {
+            [self _appendToLog:line];
+        }
+    });
+}
+
++ (void)handleExitCode:(int)code {
+    dispatch_async(dispatch_get_main_queue(), ^(void){
+        SurfaceViewController *instance = (id)currentWindow().rootViewController;
+
+        if (instance.logOutputView.hidden) {
+            [instance actionToggleLogOutput];
+        }
+        // Cleanup navigation bar
+        UINavigationBar *navigationBar = instance.logOutputView.subviews[0];
+        navigationBar.topItem.title = [NSString stringWithFormat:
+            NSLocalizedString(@"game.title.exit_code", nil), code];
+        navigationBar.items[0].leftBarButtonItem = [[UIBarButtonItem alloc]
+            initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+            target:instance action:@selector(actionShareLatestlog)];
+        UIBarButtonItem *exitItem = navigationBar.items[0].rightBarButtonItems[0];
+        navigationBar.items[0].rightBarButtonItems = nil;
+        navigationBar.items[0].rightBarButtonItem = exitItem;
+
+        if (canAppendToLog) {
+            canAppendToLog = NO;
+            fatalErrorOccurred = YES;
+            return;
+        }
+        [instance actionClearLogOutput];
+        [self _appendToLog:@"... (latestlog.txt)"];
+        NSString *latestlogPath = [NSString stringWithFormat:@"%s/latestlog.txt", getenv("POJAV_HOME")];
+        NSString *linesStr = [NSString stringWithContentsOfFile:latestlogPath
+            encoding:NSUTF8StringEncoding error:nil];
+        NSArray *lines = [linesStr componentsSeparatedByCharactersInSet:
+            NSCharacterSet.newlineCharacterSet];
+
+        // Print last 100 lines from latestlog.txt
+        for (int i = MAX(lines.count-100, 0); i < lines.count; i++) {
+            
+[self _appendToLog:lines[i]];
+        }
+
+        fatalErrorOccurred = YES;
     });
 }
 

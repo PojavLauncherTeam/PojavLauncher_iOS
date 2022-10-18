@@ -1,8 +1,13 @@
 #import <Foundation/Foundation.h>
+#import "SurfaceViewController.h"
 
 #include "external/fishhook/fishhook.h"
 
+// used to handle exit() hook if != 0
+extern float resolutionScale;
+
 static void* (*orig_dlopen)(const char* path, int mode);
+static void (*orig_exit)(int code);
 static int (*orig_open)(const char *path, int oflag, ...);
 
 void* hooked_dlopen(const char* path, int mode) {
@@ -11,6 +16,16 @@ void* hooked_dlopen(const char* path, int mode) {
     }
 
     return orig_dlopen(path, mode);
+}
+
+void hooked_exit(int code) {
+    if (code == 0 || NSThread.isMainThread || !SurfaceViewController.isRunning) {
+        orig_exit(code);
+        return;
+    }
+
+    [SurfaceViewController handleExitCode:code];
+    sleep(INT_MAX);
 }
 
 int hooked_open(const char *path, int oflag, ...) {
@@ -31,5 +46,8 @@ void init_hookFunctions() {
         // hook dlopen to use our libawt_xawt
         rebind_symbols((struct rebinding[1]){{"dlopen", hooked_dlopen, (void *)&orig_dlopen}}, 1);
     }
-    rebind_symbols((struct rebinding[1]){{"open", hooked_open, (void *)&orig_open}}, 1);
+    rebind_symbols((struct rebinding[2]){
+        {"exit", hooked_exit, (void *)&orig_exit},
+        {"open", hooked_open, (void *)&orig_open}
+    }, 2);
 }

@@ -17,6 +17,8 @@ CGPoint lastVirtualMousePoint;
 
 - (void)sendTouchPoint:(CGPoint)location withEvent:(int)event;
 
++ (BOOL)isRunning;
+
 // LogView category
 @property(nonatomic) UITableView* logTableView;
 @property(nonatomic) UIView* logOutputView;
@@ -30,5 +32,6 @@ CGPoint lastVirtualMousePoint;
 @interface SurfaceViewController(LogView)
 
 + (void)appendToLog:(NSString *)line;
++ (void)handleExitCode:(int)code;
 
 @end

@@ -7,6 +7,10 @@
 
 @implementation LauncherNewsViewController
 
+- (NSString *)imageName {
+    return @"ic_menu_java";
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

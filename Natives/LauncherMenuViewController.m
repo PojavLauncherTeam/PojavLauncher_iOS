@@ -73,6 +73,9 @@
     }
 
     cell.textLabel.text = [self.options[indexPath.row] title];
+    cell.imageView.contentMode = UIViewContentModeCenter;
+    cell.imageView.image = [UIImage imageNamed:[self.options[indexPath.row]
+        performSelector:@selector(imageName)]];
     return cell;
 }
 

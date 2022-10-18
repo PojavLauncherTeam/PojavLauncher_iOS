@@ -46,7 +46,11 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_showError(JNIEnv* en
     (*env)->ReleaseStringUTFChars(env, title, title_c);
     (*env)->ReleaseStringUTFChars(env, message, message_c);
 
-    NSLog(@"Dialog shown from Java: %@: %@", title_o, message_o);
+    if (SurfaceViewController.isRunning) {
+        NSLog(@"%@\n%@", title_o, message_o);
+        [SurfaceViewController handleExitCode:1];
+        return;
+    }
 
 dispatch_async(dispatch_get_main_queue(), ^{
 

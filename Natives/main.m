@@ -329,14 +329,14 @@ int main(int argc, char * argv[]) {
     init_migrateToPlist("java_args", "overrideargs.txt");
 
     // If sandbox is disabled, W^X JIT can be enabled by PojavLauncher itself
-    if (getEntitlementValue(@"com.apple.private.security.no-sandbox")) {
+    if (!isJITEnabled() && getEntitlementValue(@"com.apple.private.security.no-sandbox")) {
         NSLog(@"[Pre-init] Sandbox is disabled, trying to enable JIT");
         int pid;
         int ret = posix_spawnp(&pid, argv[0], NULL, NULL, argv, environ);
         if (ret == 0) {
             // posix_spawn is successful, let's check if JIT is enabled
             int retries;
-            for (retries = 0; retries < 10; retries++) {
+            for (retries = 0; retries < 100; retries++) {
                 usleep(10000);
                 if (isJITEnabled()) {
                     NSLog(@"[Pre-init] JIT has heen enabled with PT_TRACE_ME");

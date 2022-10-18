@@ -843,4 +843,8 @@ int touchesMovedCount;
     [self touchesEndedGlobal:touches withEvent:event];
 }
 
++ (BOOL)isRunning {
+    return [currentWindow().rootViewController isKindOfClass:SurfaceViewController.class];
+}
+
 @end
