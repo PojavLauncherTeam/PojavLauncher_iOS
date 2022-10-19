@@ -8,6 +8,8 @@
 "game.menu.log_output" = "Wyjście danych";
 "game.menu.custom_controls" = "Sterowanie niestandardowe";
 
+"game.title.exit_code" = "Gra została zakończona z kodem %d";
+
 // The options button at the top-right corner on iOS 12
 "Options" = "Opcje";
 
@@ -25,6 +27,9 @@
 
 "launcher.menu.custom_controls" = "Sterowanie niestandardowe";
 "launcher.menu.install_jar" = "Zainstaluj .jar";
+
+"launcher.wait_jit.title" = "Czekam na JIT";
+"launcher.wait_jit.message" = "PojavLauncher opiera się na kompilacji Just-in-time, aby Java działała z maksymalną wydajnością.";
 
 "login.error.username.outOfRange" = "Nazwa użytkownika musi zawierać od 3 do 16 znaków";
 
@@ -85,6 +90,7 @@
 
 "preference.section.general" = "Ogólne ustawienia";
 "preference.section.video" = "Ustawienia grafiki";
+"preference.section.footer.video" = "Automatyczny renderer pozwala Minecraftowi zdecydować, którego renderera użyć. Zmniejszenie rozdzielczości zmniejsza obciążenie GPU, zapewniając lepszą wydajność.";
 "preference.section.control" = "Sterowanie";
 "preference.section.debug" = "Ustawienia debugowania interfejsu";
 "preference.section.footer.debug" = "Poza debugowaniem, te ustawienia mogą być przydatne dp ustawień sterowania. Może być wymagane ponowne uruchomienie programu, aby zmiany zostały wprowadzone.";
@@ -101,7 +107,9 @@
 "preference.title.check_sha" = "Sprawdź pliki po pobraniu";
 "preference.detail.check_sha" = "Ta opcja wymusza sprawdzanie sumy kontrolnej pliku, jeśli jest dostępna. Zapobiega to uszkodzeniom pobieranych plików.";
 "preference.title.cosmetica" = "Peleryny Cosmetica";
+"preference.detail.cosmetica" = "Włącz peleryny z Cosmetica (wcześniej Arc). Aby uzyskać więcej informacji, odwiedź stronę https://cosmetica.cc. Wymaga OptiFine";
 "preference.title.debug_logging" = "Rejestr debugowania";
+"preference.detail.debug_logging" = "Rejestruje ustawienia wewnętrzne i działania w lastlog.txt. Pomaga to programistom łatwiej znajdować problemy, ale Minecraft może działać wolniej, ponieważ logi będą zapisywane częściej.";
 
 "preference.title.reset_warnings" = "Wyzeruj wszystkie ostrzeżenia";
 "preference.title.done.reset_warnings" = "Wszystkie ostrzeżenia zostały wyzerowane.";
@@ -131,7 +139,9 @@
 "preference.title.virtmouse_enable" = "Wirtualna mysz";
 "preference.detail.virtmouse_enable" = "Aktywuj tę opcję, aby uruchamiać z włączoną wirtualną myszą";
 "preference.title.slideable_hotbar" = "Przesuwalny pasek narzędzi";
+"preference.detail.slideable_hotbar" = "Spraw, aby pasek skrótów był przesuwany jak kółko myszy";
 "preference.title.java_home" = "Użyj Java 17 dla Minecraft < 1.17";
+"preference.detail.java_home" = "W tych wersjach domyślnie używana jest Java 8. Włącz tę opcję, aby wymusić użycie Javy 17, jednak zgodność z modded nie jest gwarantowana.";
 "preference.title.java_args" = "Argumenty uruchomienia JVM";
 "preference.detail.java_args" = "Zachowaj ostrożność, ponieważ zmiany wprowadzone bez odpowiedniej wiedzy mogą doprowadzić do awarii gry.";
 "preference.placeholder.java_args" = "Określ argumenty...";
@@ -145,3 +155,8 @@
 "preference.detail.custom_env" = "Ta opcja jest w trakcie opracowania.";
 
 "preference.title.debug_ipad_ui" = "Odblokuj interfejs iPadOS";
+"preference.detail.debug_ipad_ui" = "Odblokuj interfejs użytkownika wyłącznie dla iPada (alarm, klawiatura itp.), jeśli jest włączony, lub interfejs iPhone'a, jeśli jest wyłączony.";
+"preference.title.debug_show_layout_bounds" = "Pokaż granice układu";
+"preference.detail.debug_show_layout_bounds" = "Pokaż granice klipów, marginesy";
+"preference.title.debug_show_layout_overlap" = "Pokaż nakładające się układy";
+"preference.detail.debug_show_layout_overlap" = "Nakładaj każdy widok przezroczystym kolorem, aby odsłonić nakładające się widoki.";
