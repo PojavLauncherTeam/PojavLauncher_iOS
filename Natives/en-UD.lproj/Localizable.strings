@@ -48,10 +48,51 @@
 "login.menu.updates" = "sǝʇɐpdn ʇuǝɔǝɹ";
 
 "login.option.microsoft" = "ʇunoɔɔɐ ʇɟosoɹɔᴉW";
+"login.option.demo" = "ʇunoɔɔɐ oɯǝp";
+"login.option.local" = "ʇunoɔɔɐ lɐɔo˥";
+
+"login.progress.title" = "uᴉ ƃuᴉƃƃo˥";
+
+"login.warn.title.ram_unjb" = "pǝlqɐuǝ sᴉ ɹǝpᴉls ʎɹoɯǝW";
+"login.warn.message.ram_unjb" = "˙llɐ ʇɐ ʎɐld oʇ ʎʇᴉlᴉqɐ ǝɥʇ ʞɐǝɹq ɹo ʎʇᴉlᴉqɐʇsuᴉ ǝɯɐƃ ǝsnɐɔ uɐɔ ƃuᴉʇʇǝs sᴉɥʇ ƃuᴉƃuɐɥɔ ʇɐɥʇ ǝɹɐʍɐ ǝq";
+
+"login.warn.title.a7" = "˙ǝɔᴉʌǝp sᴉɥʇ ɹoɟ ǝʇɐpdn ʇsɐl ǝɥʇ sᴉ sᴉɥ┴";
+"login.warn.message.a7" = "˙suoᴉʇɐʇᴉɯᴉl ǝɹɐʍʇɟos puɐ ǝɹɐʍpɹɐɥ oʇ ǝnp 'ǝɔᴉʌǝp sᴉɥʇ ʇɹoddns ʇou llᴉʍ ᄅ˙ᄅ ɹǝɥɔunɐ˥ʌɐɾoԀ";
+
+"login.warn.title.iosver" = "˙uoᴉsɹǝʌ SOᴉ sᴉɥʇ ɹoɟ ǝʇɐpdn ʇsɐl ǝɥʇ sᴉ sᴉɥ┴";
+"login.warn.message.iosver" = "˙sǝlpɹnɥ ʇuǝɯdolǝʌǝp puɐ sǝᴉɔuǝʇsᴉsuoɔuᴉ ǝɹnʇɐǝɟ oʇ ǝnp 'ƐƖ ɹo ᄅƖ SOᴉ ʇɹoddns ʇou llᴉʍ ɹǝɥɔunɐ˥ʌɐɾoԀ ɟo uoᴉsɹǝʌ ǝɹnʇnɟ ∀";
+
+"login.warn.title.2gb" = "˙W∀ɹ pǝʇᴉɯᴉl sɐɥ ǝɔᴉʌǝp ɹno⅄";
+"login.warn.message.2gb" = "˙ǝɔᴉʌǝp ɹnoʎ ɹoɟ uo ɹoʇɔǝlǝs ɔᴉʇɐɯoʇnɐ ǝɥʇ ƃuᴉʌɐǝl puǝɯɯoɔǝɹ ǝM ˙sʇuᴉɐɹʇsuoɔ ʎɹoɯǝɯ oʇuᴉ unɹ ʎɐɯ ʎɹoɯǝɯ ɟo qפƐ uɐɥʇ ssǝl ɥʇᴉʍ sǝɔᴉʌǝp";
+
+"login.warn.title.demomode" = "˙ɐʇǝq uᴉ sᴉ uoᴉʇdo sᴉɥ┴";
+"login.warn.message.demomode" = "˙ǝpoɯ ǝuᴉlɟɟo ɯoɹɟ uoᴉʇᴉsuɐɹʇ sᴉɥʇ ʇnoqɐ ǝɹoɯ uɹɐǝl oʇ ǝʇᴉsqǝʍ ɹno ǝǝS ˙suoᴉʇɔᴉɹʇsǝɹ ǝsǝɥʇ ǝɔɐld ʇou sǝop ɹǝɥɔunɐl lɐᴉɔᴉɟɟo ǝɥʇ sɐ 'ǝɯɐƃ llnɟ ǝɥʇ uᴉɐʇuoɔ suoᴉsɹǝʌ ɹǝplO ˙suoᴉsɹǝʌ ɹǝʍǝu puɐ Ɩ˙Ɛ˙Ɩ uᴉ pǝɔnpoɹʇuᴉ 'lɐᴉɹʇ uoᴉʇᴉpƎ ɐʌɐſ ǝɥʇ ʎɐld puɐ ǝɯɐƃ ǝɥʇ uʍo ʇou sǝop ʇɐɥʇ ʇunoɔɔɐ ʇɟosoɹɔᴉW ɐ oʇuᴉ uƃᴉs oʇ noʎ ʍollɐ llᴉʍ ǝpoɯ oɯǝp 'ǝpoɯ lɐɔol puɐ ǝuᴉlɟɟo oʇ ʇuǝɯǝɔɐldǝɹ ɐ s∀";
+
+"login.warn.title.localmode" = "˙ǝpoɯ lɐɔo˥ ʍou sᴉ ǝpoɯ ǝuᴉlɟɟO";
+"login.warn.message.localmode" = "˙uoᴉʇɐɯɹoɟuᴉ ǝɹoɯ ɹoɟ Q∀Ⅎ ǝɥʇ ǝǝS ˙ʇɟɐɹɔǝuᴉW ƃuᴉɹᴉnbɔɐ ɟo suɐǝɯ ɹǝɥʇo ɹo 'sʇunoɔɔɐ lɐɔol ɥʇᴉʍ sǝnssᴉ ɹoɟ pǝpᴉʌoɹd ǝq llᴉʍ ʇɹoddns oN ˙ʇunoɔɔɐ pᴉɐd ɐ ʇnoɥʇᴉʍ ʇɟɐɹɔǝuᴉW pɐoluʍop ɹǝƃuol ou uɐɔ noʎ ʇnq 'suoᴉsɹǝʌ pǝllɐʇsuᴉ ʎɐld oʇ ǝnuᴉʇuoɔ uɐɔ no⅄";
+
+"login.msa.error.xsts.noxboxacc" = "\nƐƐᄅ9Ɩ68ㄣƖᄅ :ǝpoɔ ɹoɹɹƎ ˙ǝlᴉɟoɹd xoqX uɐ ǝpɐɯ ǝʌɐɥ noʎ ʇɐɥʇ ǝɹns ǝʞɐɯ ǝsɐǝlԀ ˙ʇunoɔɔɐ ʇɟosoɹɔᴉW sᴉɥʇ ɹoɟ pǝɹǝʇsᴉƃǝɹ ʇou sᴉ ǝlᴉɟoɹd xoqX u∀";
+"login.msa.error.xsts.noxbox" = "\nϛƐᄅ9Ɩ68ㄣƖᄅ :ǝpoɔ ɹoɹɹƎ ˙ʎɹʇunoɔ ɹnoʎ uᴉ ǝlqɐlᴉɐʌɐun ʎlʇuǝɹɹnɔ sᴉ ǝʌᴉ˥ xoqX";
+"login.msa.error.xsts.krverify" = "\n˙ㄥƐᄅ9Ɩ68ㄣƖᄅ ɹo 9Ɛᄅ9Ɩ68ㄣƖᄅ :ǝpoɔ ɹoɹɹƎ ˙ǝnuᴉʇuoɔ ǝɹoɟǝq sʇuǝɹɐd ɹnoʎ ʎq pǝᴉɟᴉɹǝʌ ǝq oʇ spǝǝu ʇunoɔɔɐ ɹno⅄";
+"login.msa.error.xsts.underage" = "\n8Ɛᄅ9Ɩ68ㄣƖᄅ :ǝpoɔ ɹoɹɹƎ ˙ǝnuᴉʇuoɔ ǝɹoɟǝq ʇunoɔɔɐ ʇuǝɹɐd ɐ oʇ pǝʞuᴉl ǝq oʇ spǝǝu ʇunoɔɔɐ ɹno⅄";
+
+"login.msa.notice.demomode" = "˙ǝpoɯ ǝuᴉluO oʇ ǝɹoʇsǝɹ oʇ https://minecraft.net/msaprofle uᴉ ǝlᴉɟoɹd ɹnoʎ ǝɹnƃᴉɟuoɔ ǝsɐǝlԀ ¿uoᴉʇdᴉɹɔsqns ssɐԀǝɯɐפ xoqX ǝʌᴉʇɔɐ uɐ ǝɹǝɥʇ sᴉ ɹo 'ʇɟɐɹɔǝuᴉW ʎnq noʎ pᴉp ˙ǝpoɯ oɯǝp oʇ ʇǝs ʍou sᴉ ʇunoɔɔɐ ǝɥ┴ ˙ʇunoɔɔɐ sᴉɥʇ uo ǝlᴉɟoɹd ʇɟɐɹɔǝuᴉW ɐ puᴉɟ ʇou plnoƆ";
+
+"login.msa.progress.acquireAccessToken" = "uǝʞoʇ ssǝɔɔ∀ ǝɥʇ ƃuᴉɹᴉnbɔ∀ (ϛ/Ɩ)";
+"login.msa.progress.acquireXBLToken" = "uǝʞoʇ ǝʌᴉ˥ xoqX ǝɥʇ ƃuᴉɹᴉnbɔ∀ (ϛ/ᄅ)";
+"login.msa.progress.acquireXSTS" = "S┴SX ƃuᴉɹᴉnbɔ∀";
+"login.msa.progress.acquireXboxProfile" = "ǝlᴉɟoɹd xoqX ǝɥʇ ƃuᴉɹᴉnbɔ∀ (ϛ/Ɛ)";
+"login.msa.progress.acquireMCToken" = "uǝʞoʇ ʇɟɐɹɔǝuᴉW ǝɥʇ ƃuᴉɹᴉnbɔ∀ (ϛ/ㄣ)";
+"login.msa.progress.checkMCProfile" = "ǝlᴉɟoɹd ʇɟɐɹɔǝuᴉW ǝɥʇ ƃuᴉʞɔǝɥƆ (ϛ/ϛ)";
 
 "News" = "sʍǝN";
 "Settings" = "sᵷuᴉʇʇǝS";
+
+"preference.section.general" = "sƃuᴉʇʇǝS lɐɹǝuǝפ";
+"preference.section.video" = "sƃuᴉʇʇǝS oǝpᴉΛ";
+"preference.section.footer.video" = "˙ǝɔuɐɯɹoɟɹǝd ɹǝʇʇǝq ɹoɟ pɐolʞɹoʍ ∩Ԁפ sǝɔnpǝɹ uoᴉʇnlosǝɹ ƃuᴉsɐǝɹɔǝp ˙ǝsn oʇ ɹǝɹǝpuǝɹ ɥɔᴉɥʍ ǝpᴉɔǝp oʇ ʇɟɐɹɔǝuᴉW sʍollɐ ɹǝɹǝpuǝɹ oʇn∀";
 "preference.section.control" = "uoᴉʇɐzᴉɯoʇsnɔ ꞁoɹʇuoƆ";
+"preference.section.debug" = "sƃuᴉʇʇǝs ƃuᴉƃƃnqǝp I∩";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "sʞɐǝʍ⟘ ɐʌɐՐ";
 "preference.title.cosmetica" = "sǝdɐɔ ɐɔıʇǝɯsoɔ";
