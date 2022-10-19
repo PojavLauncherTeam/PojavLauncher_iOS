@@ -45,7 +45,7 @@ BOOL slideableHotbar;
 
 @property(nonatomic) UIView *ctrlView;
 
-@property(nonatomic) TrackedTextField *inputView;
+@property(nonatomic) TrackedTextField *inputTextField;
 @property(nonatomic) NSMutableDictionary* cc_dictionary;
 @property(nonatomic) NSMutableArray* swipeableButtons;
 @property(nonatomic) ControlButton* swipingButton;
@@ -163,16 +163,16 @@ BOOL slideableHotbar;
     self.mousePointerView.userInteractionEnabled = NO;
     [self.rootView addSubview:self.mousePointerView];
 
-    self.inputView = [[TrackedTextField alloc] initWithFrame:CGRectMake(0, -32.0, self.view.frame.size.width, 30.0)];
+    self.inputTextField = [[TrackedTextField alloc] initWithFrame:CGRectMake(0, -32.0, self.view.frame.size.width, 30.0)];
     if (@available(iOS 13.0, *)) {
-        self.inputView.backgroundColor = UIColor.secondarySystemBackgroundColor;
+        self.inputTextField.backgroundColor = UIColor.secondarySystemBackgroundColor;
     } else {
-        self.inputView.backgroundColor = UIColor.groupTableViewBackgroundColor;
+        self.inputTextField.backgroundColor = UIColor.groupTableViewBackgroundColor;
     }
-    self.inputView.delegate = self;
-    self.inputView.font = [UIFont fontWithName:@"Menlo-Regular" size:20];
-    self.inputView.clearsOnBeginEditing = YES;
-    self.inputView.textAlignment = NSTextAlignmentCenter;
+    self.inputTextField.delegate = self;
+    self.inputTextField.font = [UIFont fontWithName:@"Menlo-Regular" size:20];
+    self.inputTextField.clearsOnBeginEditing = YES;
+    self.inputTextField.textAlignment = NSTextAlignmentCenter;
 
     NSString *controlFilePath = [NSString stringWithFormat:@"%s/controlmap/%@", getenv("POJAV_HOME"), (NSString *)getPreference(@"default_ctrl")];
 
@@ -216,7 +216,7 @@ BOOL slideableHotbar;
         [ControllerInput registerControllerCallbacks:GCController.controllers.firstObject];
     }
 
-    [self.rootView addSubview:self.inputView];
+    [self.rootView addSubview:self.inputTextField];
 
 
     [self performSelector:@selector(initCategory_LogView)];
@@ -628,13 +628,13 @@ int currentVisibility = 1;
             switch (keycode) {
                 case SPECIALBTN_KEYBOARD:
                     if (held == 0) {
-                        if (self.inputView.isFirstResponder) {
-                            [self.inputView resignFirstResponder];
-                            self.inputView.alpha = 1.0f;
+                        if (self.inputTextField.isFirstResponder) {
+                            [self.inputTextField resignFirstResponder];
+                            self.inputTextField.alpha = 1.0f;
                         } else {
-                            [self.inputView becomeFirstResponder];
+                            [self.inputTextField becomeFirstResponder];
                             // Insert an undeletable space
-                            self.inputView.text = @" ";
+                            self.inputTextField.text = @" ";
                             inputTextLength = 0;
                         }
                     }

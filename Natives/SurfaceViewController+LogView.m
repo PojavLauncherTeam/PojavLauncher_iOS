@@ -85,6 +85,7 @@ static int logCharPerLine;
     UINavigationBar* navigationBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
     navigationBar.items = @[navigationItem];
     navigationBar.topItem.title = NSLocalizedString(@"game.menu.log_output", nil);
+    [navigationBar sizeToFit];
     [self.logOutputView addSubview:navigationBar];
     canAppendToLog = YES;
     [self actionStartStopLogOutput];
@@ -210,8 +211,7 @@ static int logCharPerLine;
 
         // Print last 100 lines from latestlog.txt
         for (int i = MAX(lines.count-100, 0); i < lines.count; i++) {
-            
-[self _appendToLog:lines[i]];
+            [self _appendToLog:lines[i]];
         }
 
         fatalErrorOccurred = YES;

@@ -118,7 +118,7 @@ extern bool isUseStackQueueCall;
     return range;
 }
 
-- (id) replaceRangeWithTextWithoutClosingTyping:(UITextRange *)range replacementText:(NSString *)text
+- (id)replaceRangeWithTextWithoutClosingTyping:(UITextRange *)range replacementText:(NSString *)text
 {
     int length = [super offsetFromPosition:range.start toPosition:range.end];
 

@@ -37,24 +37,6 @@ __attribute__((constructor)) void hookConstructor(void) {
 
 @end
 
-@implementation UIResponder(hook)
-
-- (BOOL)hook_becomeFirstResponder {
-    // Workaround a weird bug: UIKit tries to present an accessibility UITextField
-    // for some reason, which could cause crash due to mismatched parent view controller
-    // UIViewControllerHierarchyInconsistency
-
-    @try {
-        return [self hook_becomeFirstResponder];
-    } @catch (NSException *e) {
-        NSLog(@"-[UITextInputUIResponderAccessibility becomeFirstResponder]: %@", e);
-    }
-
-    return NO;
-}
-
-@end
-
 @implementation UITraitCollection(hook)
 
 - (UIUserInterfaceSizeClass)verticalSizeClass {
