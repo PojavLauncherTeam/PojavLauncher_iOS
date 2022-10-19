@@ -8,6 +8,8 @@
 "game.menu.log_output" = "Output ng log";
 "game.menu.custom_controls" = "Pasadyang mga kontrol";
 
+"game.title.exit_code" = "Lumabas ang laro na may code na %d";
+
 // The options button at the top-right corner on iOS 12
 "Options" = "Mga pilian";
 
