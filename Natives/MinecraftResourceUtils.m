@@ -199,7 +199,8 @@ static AFURLSessionManager* manager;
 
         NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull progress){
             callback([NSString stringWithFormat:@"Downloading %@.json", versionStr], mainProgress, progress);
-        } destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) { 
+        } destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+            [NSFileManager.defaultManager removeItemAtPath:jsonPath error:nil];
             return [NSURL fileURLWithPath:jsonPath];
         } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
             if (error != nil) { // FIXME: correct?
@@ -437,6 +438,7 @@ static AFURLSessionManager* manager;
         NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull progress){
             callback([NSString stringWithFormat:@"Downloading %@", name], progress);
         } destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+            [NSFileManager.defaultManager removeItemAtPath:path error:nil];
             return [NSURL fileURLWithPath:path];
         } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
             if (error != nil) {
