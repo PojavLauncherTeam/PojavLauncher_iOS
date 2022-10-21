@@ -43,7 +43,7 @@
 // Login buttons
 "Sign in" = "登入方式";
 "FAQ" = "常见问答（FAQ）";
-"Accounts" = "帐户";
+"Accounts" = "账户";
 
 "login.menu.about" = "关于 PojavLauncher";
 "login.menu.sendlogs" = "发送日志文件";
@@ -71,9 +71,9 @@
 "login.warn.message.demomode" = "演示模式作为离线和本地模式的替代，将允许你登录到一个尚未购买游戏的微软账户中游玩 1.3.1 及更新版本的试玩版本。因为官方启动器的一些特性，在较旧版本中会包含完整的游戏。详情请参阅我们的网站，了解更多关于离线模式的过渡。";
 
 "login.warn.title.localmode" = "离线模式现在是本地模式了。";
-"login.warn.message.localmode" = "您可以继续游玩已经下载的版本，但是如果没有正版账号，您将无法再下载其他版本。任何有关本地账号以及如何获取其他 Minecraft 版本的问题将不会得到任何解答。请参阅 FAQ 以获取更多信息。";
+"login.warn.message.localmode" = "您可以继续游玩已经下载的版本，但是如果没有正版账户，您将无法再下载其他版本。任何有关本地账户以及如何获取其他 Minecraft 版本的问题将不会得到任何解答。请参阅 FAQ 以获取更多信息。";
 
-"login.msa.error.xsts.noxboxacc" = "该微软账户尚未注册 Xbox 账号，请确认您已经创建了 Xbox 账号。\n错误代码：2148916233";
+"login.msa.error.xsts.noxboxacc" = "此微软账户没有注册 Xbox 账户。请确认您已注册了 Xbox 账户。\n错误代码：2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live 目前在您的国家/地区不可用。\n错误代码：2148916235";
 "login.msa.error.xsts.krverify" = "你的账户必须通过你父母同意方可通过验证。\n错误代码：2148916236 或 2148916237";
 "login.msa.error.xsts.underage" = "您的账户需要绑定家长账户才能进行下一步。\n错误代码：2148916238";
