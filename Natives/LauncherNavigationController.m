@@ -202,6 +202,9 @@ int versionSelectedAt = 0;
     } failure:^(NSURLSessionTask *operation, NSError *error) {
         NSLog(@"Warning: Error fetching version list: %@", error);
         self.buttonInstall.enabled = YES;
+        if (type == TYPE_INSTALLED) {
+            [self fetchLocalVersionList:self.versionList];
+        }
     }];
 }
 
