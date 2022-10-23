@@ -53,13 +53,13 @@
 "login.option.demo" = "演示账户";
 "login.option.local" = "本机账户(离线模式)";
 
-"login.progress.title" = "登陆中";
+"login.progress.title" = "登录中";
 
 "login.warn.title.ram_unjb" = "关闭自动分配内存风险通知";
 "login.warn.message.ram_unjb" = "关闭自动分配内存后可能导致游戏不稳定或完全不能进入游戏，这是因为IOS系统可用内存本来就小。我们推荐你更换更大运行内存的设备使用应用";
 
 "login.warn.title.a7" = "该设备存在一些问题";
-"login.warn.message.a7" = "你的设备不在支持PojavLauncher 2.2版本，这是因为你设备硬件限制";
+"login.warn.message.a7" = "由于硬件和软件限制，PojavLauncher 2.2 将不再支持此设备。";
 
 "login.warn.title.iosver" = "这是此 iOS 设备的最后一次更新。";
 "login.warn.message.iosver" = "PojavLauncher在未来某个版本更新后不在支持IOS14以下版本系统使用";
