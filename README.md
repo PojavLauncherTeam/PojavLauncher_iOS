@@ -19,7 +19,7 @@ This launcher is available on the Procursus repo, thanks to [@Diatrus](https://t
 
 ## Getting started with PojavLauncher
 
-The [PojavLauncher Website](https://pojav.ml) has extensive documentation on how to install, set up, and play! For those who wish to install quickly, here's the basics (on iOS 12 or later):
+The [PojavLauncher Website](https://pojavlauncherteam.github.io/INSTALL.html#ios) has extensive documentation on how to install, set up, and play! For those who wish to install quickly, here's the basics (on iOS 12 or later):
 
 ### Without jailbreak (sideload as IPA)
 Note: This is experimental, although game works smoothly, you should not set Render distance too much.
