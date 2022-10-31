@@ -104,10 +104,10 @@ BOOL leftShiftHeld;
             CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_RIGHT, pressed, leftShiftHeld ? GLFW_MOD_SHIFT : 0);
             break;
         case SPECIALBTN_SCROLLUP:
-            CallbackBridge_nativeSendScroll(0, pressed ? -1 : 0);
+            CallbackBridge_nativeSendScroll(0, pressed ? 1 : 0);
             break;
         case SPECIALBTN_SCROLLDOWN:
-            CallbackBridge_nativeSendScroll(0, pressed ? 1 : 0);
+            CallbackBridge_nativeSendScroll(0, pressed ? -1 : 0);
             break;
         default:
             if (keycode == GLFW_KEY_LEFT_SHIFT) {
