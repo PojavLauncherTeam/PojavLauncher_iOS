@@ -3,9 +3,6 @@
 
 #include "external/fishhook/fishhook.h"
 
-// used to handle exit() hook if != 0
-extern float resolutionScale;
-
 static void* (*orig_dlopen)(const char* path, int mode);
 static void (*orig_exit)(int code);
 static int (*orig_open)(const char *path, int oflag, ...);

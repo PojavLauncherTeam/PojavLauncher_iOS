@@ -84,13 +84,10 @@ BOOL slideableHotbar;
     }
     [displayLink addToRunLoop:NSRunLoop.currentRunLoop forMode:NSRunLoopCommonModes];
 
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    CGFloat screenScale = [[UIScreen mainScreen] scale];
+    CGFloat screenScale = UIScreen.mainScreen.scale;
 
     resolutionScale = ((NSNumber *)getPreference(@"resolution")).floatValue / 100.0;
 
-    physicalWidth = roundf(screenBounds.size.width * screenScale);
-    physicalHeight = roundf(screenBounds.size.height * screenScale);
     [self updateSavedResolution];
 
     self.rootView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width + 30.0, self.view.frame.size.height)];
@@ -156,8 +153,9 @@ BOOL slideableHotbar;
 
     // Virtual mouse
     virtualMouseEnabled = [getPreference(@"virtmouse_enable") boolValue];
-    virtualMouseFrame = CGRectMake(screenBounds.size.width / 2, screenBounds.size.height / 2, 18, 27);
+    virtualMouseFrame = CGRectMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2, 18, 27);
     self.mousePointerView = [[UIImageView alloc] initWithFrame:virtualMouseFrame];
+    self.mousePointerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin |UIViewAutoresizingFlexibleBottomMargin;
     self.mousePointerView.hidden = !virtualMouseEnabled;
     self.mousePointerView.image = [UIImage imageNamed:@"mouse_pointer.png"];
     self.mousePointerView.userInteractionEnabled = NO;
@@ -218,7 +216,6 @@ BOOL slideableHotbar;
 
     [self.rootView addSubview:self.inputTextField];
 
-
     [self performSelector:@selector(initCategory_LogView)];
 
     // [self setPreferredFramesPerSecond:1000];
@@ -256,27 +253,34 @@ BOOL slideableHotbar;
     virtualMouseEnabled = [getPreference(@"virtmouse_enable") boolValue];
     self.mousePointerView.hidden = isGrabbing || !virtualMouseEnabled;
 
-    CGRect screenBounds = UIScreen.mainScreen.bounds;
     CGFloat screenScale = UIScreen.mainScreen.scale;
 
     // Update virtual mouse scale
     CGFloat mouseScale = [getPreference(@"mouse_scale") floatValue] / 100.0;
-    virtualMouseFrame = CGRectMake(screenBounds.size.width / 2, screenBounds.size.height / 2, 18.0 * mouseScale, 27 * mouseScale);
+    virtualMouseFrame = CGRectMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2, 18.0 * mouseScale, 27 * mouseScale);
     self.mousePointerView.frame = virtualMouseFrame;
 
     self.longpressGesture.minimumPressDuration = [getPreference(@"press_duration") floatValue] / 1000.0;
 
-    self.ctrlView.frame = CGRectFromString(getPreference(@"control_safe_area"));
+    CGRect ctrlFrame = CGRectFromString(getPreference(@"control_safe_area"));
+    if ((ctrlFrame.size.width > ctrlFrame.size.height) != (self.view.frame.size.width > self.view.frame.size.height)) {
+        CGFloat tmpHeight = ctrlFrame.size.width;
+        ctrlFrame.size.width = ctrlFrame.size.height;
+        ctrlFrame.size.height = tmpHeight;
+    }
+    self.ctrlView.frame = ctrlFrame;
     [self loadCustomControls];
 
     // Update resolution
     resolutionScale = [getPreference(@"resolution") floatValue] / 100.0;
     self.surfaceView.layer.contentsScale = screenScale * resolutionScale;
     [self updateSavedResolution];
-    CallbackBridge_nativeSendScreenSize(windowWidth, windowHeight);
 }
 
 - (void)updateSavedResolution {
+    CGFloat screenScale = UIScreen.mainScreen.scale;
+    physicalWidth = roundf(self.view.frame.size.width * screenScale);
+    physicalHeight = roundf(self.view.frame.size.height * screenScale);
     windowWidth = roundf(physicalWidth * resolutionScale);
     windowHeight = roundf(physicalHeight * resolutionScale);
     // Resolution should not be odd
@@ -286,6 +290,7 @@ BOOL slideableHotbar;
     if ((windowHeight % 2) != 0) {
         --windowHeight;
     }
+    CallbackBridge_nativeSendScreenSize(windowWidth, windowHeight);
 }
 
 - (void)launchMinecraft {
@@ -347,6 +352,45 @@ BOOL slideableHotbar;
 
 - (BOOL)prefersHomeIndicatorAutoHidden {
     return YES;
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return YES;
+}
+/*
+- (void)viewDidLayoutSubviews {
+    if (self.ignoreLayoutSubviews) {
+        return;
+    }
+*/
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        self.rootView.bounds = CGRectMake(0, 0, size.width + 30.0, size.height);
+
+        CGRect frame = self.view.frame;
+        frame.size = size;
+        self.surfaceView.frame = frame;
+        self.inputTextField.frame = CGRectMake(0, -32.0, size.width, 30.0);
+        [self viewWillTransitionToSize_LogView:frame];
+        [self viewWillTransitionToSize_Navigation:frame];
+
+        CGRect ctrlFrame = CGRectFromString(getPreference(@"control_safe_area"));
+        if ((ctrlFrame.size.width > ctrlFrame.size.height) != (size.width > size.height)) {
+            CGFloat tmpHeight = ctrlFrame.size.width;
+            ctrlFrame.size.width = ctrlFrame.size.height;
+            ctrlFrame.size.height = tmpHeight;
+        }
+        self.ctrlView.frame = ctrlFrame;
+        for (UIView *view in self.ctrlView.subviews) {
+            if ([view isKindOfClass:[ControlButton class]]) {
+                [(ControlButton *)view update];
+            }
+        }
+    } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        [self updateSavedResolution];
+    }];
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 }
 
 #pragma mark - Input: send touch utilities

@@ -48,7 +48,7 @@ static NSMutableArray* logLines;
     alert.popoverPresentationController.sourceView = cell;
     alert.popoverPresentationController.sourceRect = cell.bounds;
     UIAlertAction *share = [UIAlertAction actionWithTitle:NSLocalizedString(NSLocalizedString(@"Share", nil), nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        UIView *navigationBar = vc.logOutputView.subviews[0];
+        UIView *navigationBar = vc.logOutputView.subviews[1];
         UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[line] applicationActivities:nil];
         activityVC.popoverPresentationController.sourceView = navigationBar;
         activityVC.popoverPresentationController.sourceRect = navigationBar.bounds;
@@ -86,15 +86,14 @@ static int logCharPerLine;
     navigationBar.items = @[navigationItem];
     navigationBar.topItem.title = NSLocalizedString(@"game.menu.log_output", nil);
     [navigationBar sizeToFit];
-    [self.logOutputView addSubview:navigationBar];
-    canAppendToLog = YES;
-    [self actionStartStopLogOutput];
+    navigationBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 
-    self.logTableView = [[UITableView alloc] initWithFrame:
-        CGRectMake(0, navigationBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - navigationBar.frame.size.height)];
+    self.logTableView = [[UITableView alloc] initWithFrame:self.view.frame];
     logDelegate = [[LogDelegate alloc] init];
     //self.logTableView.allowsSelection = NO;
+    self.logTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.logTableView.backgroundColor = UIColor.clearColor;
+    self.logTableView.contentInset = UIEdgeInsetsMake(navigationBar.frame.size.height, 0, 0, 0);
     self.logTableView.dataSource = logDelegate;
     self.logTableView.delegate = logDelegate;
     self.logTableView.layoutMargins = UIEdgeInsetsZero;
@@ -102,9 +101,11 @@ static int logCharPerLine;
     self.logTableView.separatorInset = UIEdgeInsetsZero;
     self.logTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.logOutputView addSubview:self.logTableView];
+    [self.logOutputView addSubview:navigationBar];
     [self.rootView addSubview:self.logOutputView];
 
-    //canAppendToLog = YES;
+    canAppendToLog = YES;
+    [self actionStartStopLogOutput];
 }
 
 - (void)actionClearLogOutput {
@@ -113,7 +114,7 @@ static int logCharPerLine;
 }
 
 - (void)actionShareLatestlog {
-    UINavigationBar *navigationBar = self.logOutputView.subviews[0];
+    UINavigationBar *navigationBar = self.logOutputView.subviews[1];
     NSString *latestlogPath = [NSString stringWithFormat:@"file://%s/latestlog.txt", getenv("POJAV_HOME")];
     UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[@"latestlog.txt",
         [NSURL URLWithString:latestlogPath]] applicationActivities:nil];
@@ -124,7 +125,7 @@ static int logCharPerLine;
 
 - (void)actionStartStopLogOutput {
     canAppendToLog = !canAppendToLog;
-    UINavigationItem* item = ((UINavigationBar *)self.logOutputView.subviews[0]).items[0];
+    UINavigationItem* item = ((UINavigationBar *)self.logOutputView.subviews[1]).items[0];
     item.leftBarButtonItem =
         [[UIBarButtonItem alloc] initWithBarButtonSystemItem:
             canAppendToLog ? UIBarButtonSystemItemPause : UIBarButtonSystemItemPlay
@@ -186,7 +187,7 @@ static int logCharPerLine;
             [instance actionToggleLogOutput];
         }
         // Cleanup navigation bar
-        UINavigationBar *navigationBar = instance.logOutputView.subviews[0];
+        UINavigationBar *navigationBar = instance.logOutputView.subviews[1];
         navigationBar.topItem.title = [NSString stringWithFormat:
             NSLocalizedString(@"game.title.exit_code", nil), code];
         navigationBar.items[0].leftBarButtonItem = [[UIBarButtonItem alloc]
@@ -216,6 +217,10 @@ static int logCharPerLine;
 
         fatalErrorOccurred = YES;
     });
+}
+
+- (void)viewWillTransitionToSize_LogView:(CGRect)frame {
+    self.logOutputView.frame = frame;
 }
 
 @end

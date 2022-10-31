@@ -27,7 +27,7 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_refreshAWTBuffer(JNI
 
 @implementation SurfaceView
 const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
-	return (const void *)rgbArray;
+    return (const void *)rgbArray;
 }
    
 - (void)displayLayer {
@@ -60,7 +60,9 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
 @interface JavaGUIViewController ()<UIGestureRecognizerDelegate, UIScrollViewDelegate> {
 }
 
-// - (void)method
+@property BOOL virtualMouseEnabled;
+@property CGRect virtualMouseFrame;
+@property UIImageView* mousePointerView;
 
 @end
 
@@ -74,7 +76,7 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
     [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
     [self setNeedsUpdateOfHomeIndicatorAutoHidden];
 
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    CGRect screenBounds = self.view.bounds;
     CGFloat screenScale = [[UIScreen mainScreen] scale];
 
     int width = (int) roundf(screenBounds.size.width);
@@ -85,6 +87,7 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
     windowHeight = roundf(height * screenScale * resolution);
 
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
+    scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     scrollView.delegate = self;
     scrollView.minimumZoomScale = 1;
     scrollView.maximumZoomScale = 5;
@@ -94,6 +97,18 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
     [scrollView addSubview:surfaceView];
 
     [self.view addSubview:scrollView];
+
+// TODO
+/*
+    self.virtualMouseEnabled = [getPreference(@"virtmouse_enable") boolValue];
+    scrollView.bounces = !self.virtualMouseEnabled;
+    self.virtualMouseFrame = CGRectMake(screenBounds.size.width / 2, screenBounds.size.height / 2, 18, 27);
+    self.mousePointerView = [[UIImageView alloc] initWithFrame:self.virtualMouseFrame];
+    self.mousePointerView.hidden = !self.virtualMouseEnabled;
+    self.mousePointerView.image = [UIImage imageNamed:@"mouse_pointer.png"];
+    self.mousePointerView.userInteractionEnabled = NO;
+    [self.view addSubview:self.mousePointerView];
+*/
 
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnClick:)];
@@ -152,6 +167,17 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
         );
     }
 }
+
+/*
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (scrollView.contentOffset.x == 0) {
+        
+    }
+    if (scrollView.contentOffset.y == 0) {
+        
+    }
+}
+*/
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
     return surfaceView;

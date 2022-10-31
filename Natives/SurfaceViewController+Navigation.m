@@ -1,21 +1,21 @@
 #import "LauncherPreferencesViewController2.h"
 #import "SurfaceViewController.h"
 
-@interface SurfaceViewController(Navigation)<UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate>
-
-@end
-
 @implementation SurfaceViewController(Navigation)
+
+static UIView *menuSwipeView;
 - (void)initCategory_Navigation {
     UIPanGestureRecognizer *menuPanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleRightEdge:)];
     menuPanGesture.delegate = self;
 
     UIView *menuSwipeLineView = [[UIView alloc] initWithFrame:CGRectMake(11.0, self.view.frame.size.height/2 - 100.0, 8.0, 200.0)];
+    menuSwipeLineView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     menuSwipeLineView.backgroundColor = UIColor.whiteColor;
     menuSwipeLineView.layer.cornerRadius = 4;
     menuSwipeLineView.userInteractionEnabled = NO;
 
     UIView *menuSwipeView = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width, 0, 30.0, self.view.frame.size.height)];
+    menuSwipeView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin;
     menuSwipeView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
     [menuSwipeView addGestureRecognizer:menuPanGesture];
     [menuSwipeView addSubview:menuSwipeLineView];
@@ -47,11 +47,6 @@ static CGPoint lastCenterPoint;
     if (lastCenterPoint.y == 0) {
         lastCenterPoint.x = self.rootView.center.x;
         lastCenterPoint.y = 1;
-
-        // Set the height to fit the content
-        CGRect menuFrame = self.menuView.frame;
-        menuFrame.size.height = MIN(self.view.frame.size.height, self.menuView.contentSize.height);
-        self.menuView.frame = menuFrame;
     }
 
     CGFloat centerX = self.rootView.bounds.size.width / 2;
@@ -66,7 +61,7 @@ static CGPoint lastCenterPoint;
         CGFloat scale = MAX(0.7, self.rootView.center.x / centerX);
         self.rootView.transform = CGAffineTransformScale(CGAffineTransformIdentity, scale, scale);
 
-        self.menuView.frame = CGRectMake(self.rootView.frame.size.width, self.rootView.frame.origin.y, self.menuView.frame.size.width,  self.menuView.frame.size.height);
+        self.menuView.frame = CGRectMake(self.rootView.frame.size.width, self.rootView.frame.origin.y, self.menuView.frame.size.width,  self.menuView.contentSize.height);
         // scale is in range of 0.7-1
         // 1.1 - scale produces in range of 0.4-0.1
         // result in transform scale range of 1-0.25
@@ -86,7 +81,7 @@ static CGPoint lastCenterPoint;
             self.rootView.center = CGPointMake(lastCenterPoint.x, centerY);
             self.rootView.transform = CGAffineTransformScale(CGAffineTransformIdentity, scale, scale);
             self.menuView.transform = CGAffineTransformScale(CGAffineTransformIdentity, (1.1-scale)*2.5, (1.1-scale)*2.5);
-            self.menuView.frame = CGRectMake(self.rootView.frame.size.width, self.rootView.frame.origin.y, self.menuView.frame.size.width, self.menuView.frame.size.height);
+            self.menuView.frame = CGRectMake(self.rootView.frame.size.width, self.rootView.frame.origin.y, self.menuView.frame.size.width, self.menuView.contentSize.height);
         } completion:^(BOOL finished) {
             self.menuView.hidden = scale == 1.0;
         }];
@@ -153,6 +148,17 @@ static CGPoint lastCenterPoint;
             [self actionOpenPreferences];
             break;
     }
+}
+
+- (void)viewWillTransitionToSize_Navigation:(CGRect)frame {
+    if (self.rootView.transform.a != 0) {
+        CGFloat centerX = self.rootView.bounds.size.width / 2;
+        CGFloat centerY = self.rootView.bounds.size.height / 2;
+        self.rootView.center = lastCenterPoint = CGPointMake(centerX * self.rootView.transform.a, centerY);
+    }
+
+    self.menuView.frame = CGRectMake(self.rootView.frame.size.width, self.rootView.frame.origin.y,
+        frame.size.width * 0.3 - 21.0, self.menuView.contentSize.height);
 }
 
 @end

@@ -60,6 +60,15 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>2</string>
+	<key>GCSupportsControllerUserInteraction</key>
+	<true/>
+	<key>GCSupportedGameControllers</key>
+	<array>
+		<dict>
+			<key>ProfileName</key>
+			<string>ExtendedGamepad</string>
+		 </dict>
+	</array>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>filza</string>
@@ -105,8 +114,6 @@
 		<string>arm64</string>
 		<string>metal</string>
 	</array>
-	<key>UIRequiresFullScreen</key>
-	<true/>
 	<key>UIStatusBarHidden</key>
 	<true/>
 	<key>UISupportedInterfaceOrientations</key>
@@ -116,11 +123,13 @@
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
+	<true/>
 	<key>UISupportsDocumentBrowser</key>
 	<true/>
 </dict>

@@ -34,4 +34,12 @@ CGPoint lastVirtualMousePoint;
 + (void)appendToLog:(NSString *)line;
 + (void)handleExitCode:(int)code;
 
+- (void)viewWillTransitionToSize_LogView:(CGRect)frame;
+
+@end
+
+@interface SurfaceViewController(Navigation)<UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate>
+
+- (void)viewWillTransitionToSize_Navigation:(CGRect)frame;
+
 @end

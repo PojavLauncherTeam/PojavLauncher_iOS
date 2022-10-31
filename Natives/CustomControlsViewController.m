@@ -82,6 +82,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     UIEdgeInsets insets = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets;
 
     self.ctrlView = [[ControlLayout alloc] initWithFrame:CGRectFromString(getPreference(@"control_safe_area"))];
+    self.ctrlView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleWidth;
     if (@available(iOS 13.0, *)) {
         self.ctrlView.layer.borderColor = UIColor.labelColor.CGColor;
     } else {
@@ -99,6 +100,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(actionMenuSafeAreaCancel)];
     navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(actionMenuSafeAreaDone)];
     self.navigationBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44.0)];
+    self.navigationBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.navigationBar.hidden = YES;
     self.navigationBar.items = @[navigationItem];
     self.navigationBar.translucent = YES;
@@ -203,6 +205,24 @@ NSMutableArray *keyCodeMap, *keyValueMap;
         [button addGestureRecognizer:[[UIPanGestureRecognizer alloc]
             initWithTarget:self action:@selector(onTouch:)]];
     });
+}
+
+- (void)viewDidLayoutSubviews {
+    CGRect ctrlFrame = CGRectFromString(getPreference(@"control_safe_area"));
+    if ((ctrlFrame.size.width > ctrlFrame.size.height) != (self.view.frame.size.width > self.view.frame.size.height)) {
+        CGFloat tmpHeight = ctrlFrame.size.width;
+        ctrlFrame.size.width = ctrlFrame.size.height;
+        ctrlFrame.size.height = tmpHeight;
+        self.ctrlView.frame = ctrlFrame;
+        setPreference(@"control_safe_area", NSStringFromCGRect(ctrlFrame));
+    }
+
+    // Update dynamic position for each view
+    for (UIView *view in self.ctrlView.subviews) {
+        if ([view isKindOfClass:[ControlButton class]]) {
+            [(ControlButton *)view update];
+        }
+    }
 }
 
 - (void)changeSafeAreaSelection:(UISegmentedControl *)sender {
@@ -516,7 +536,11 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 }
 
 - (BOOL)prefersHomeIndicatorAutoHidden {
-    return NO;
+    return YES;
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return YES;
 }
 
 - (void)onTouch:(UIPanGestureRecognizer *)sender {

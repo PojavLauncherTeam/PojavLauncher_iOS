@@ -175,6 +175,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     } else {
         allocmem = [getPreference(@"allocated_memory") intValue];
     }
+    NSLog(@"[JavaLauncher] Max RAM allocation is set to %d MB", allocmem);
 
     // "/Applications/PojavLauncher.app/libs/launcher.jar:/Applications/PojavLauncher.app/libs/ExagearApacheCommons.jar:/Applications/PojavLauncher.app/libs/gson-2.8.6.jar:/Applications/PojavLauncher.app/libs/jsr305.jar:/Applications/PojavLauncher.app/libs/lwjgl3-minecraft.jar";
 

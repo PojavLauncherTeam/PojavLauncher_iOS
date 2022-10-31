@@ -165,7 +165,7 @@ ADD_CALLBACK_WWIN(WindowPos);
 #undef ADD_CALLBACK_WWIN
 
 void sendData(int type, CGFloat i1, CGFloat i2, int i3, int i4) {
-    debugLog("Debug: Send data, jnienv.isNull=%d, bridgeClass.isNull=%d\n", runtimeJNIEnvPtr == NULL, inputBridgeClass_ANDROID == NULL);
+    //debugLog("Debug: Send data, jnienv.isNull=%d, bridgeClass.isNull=%d\n", runtimeJNIEnvPtr == NULL, inputBridgeClass_ANDROID == NULL);
     if (runtimeJNIEnvPtr == NULL) {
         (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &runtimeJNIEnvPtr, NULL);
     }
@@ -428,7 +428,6 @@ void CallbackBridge_nativeSendScreenSize(int width, int height) {
                 GLFW_invoke_FramebufferSize((void*) showingWindow, width, height);
             }
         }
-        
         if (GLFW_invoke_WindowSize) {
             if (isUseStackQueueCall) {
                 sendData(EVENT_TYPE_WINDOW_SIZE, width, height, 0, 0);

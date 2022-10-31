@@ -385,7 +385,12 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
         picker.delegate = weakSelf;
         picker.dataSource = weakSelf;
         [picker reloadAllComponents];
-        [picker selectRow:[item[@"pickKeys"] indexOfObject:getPreference(key)] inComponent:0 animated:NO];
+
+        NSInteger index = [item[@"pickKeys"] indexOfObject:getPreference(key)];
+        if (index != NSNotFound) {
+            [picker selectRow:index inComponent:0 animated:NO];
+        }
+
         UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, weakSelf.view.frame.size.width, 44.0)];
         UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:view action:@selector(resignFirstResponder)];

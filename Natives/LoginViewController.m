@@ -17,6 +17,9 @@
 #import "ios_uikit_bridge.h"
 #import "utils.h"
 
+#define AUTORESIZE_BTN UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin
+#define AUTORESIZE AUTORESIZE_BTN | UIViewAutoresizingFlexibleBottomMargin
+
 #define TYPE_SELECTACC 0
 #define TYPE_MICROSOFT 1
 #define TYPE_OFFLINE 2
@@ -38,16 +41,10 @@ extern NSMutableDictionary *prefDict;
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(msaLoginCallback:) name:@"MSALoginCallback" object:nil];
 
-    CGRect screenBounds = UIScreen.mainScreen.bounds;
+    CGFloat width = self.view.frame.size.width;
+    CGFloat height = self.view.frame.size.height; // - self.navigationController.navigationBar.frame.size.height;
+    CGFloat rawHeight = self.view.frame.size.height;
 
-    CGFloat width = screenBounds.size.width;
-    CGFloat height = screenBounds.size.height - self.navigationController.navigationBar.frame.size.height;
-    CGFloat rawHeight = screenBounds.size.height;
-
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
-    scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    [self.view addSubview:scrollView];
-    
     if(roundf([[NSProcessInfo processInfo] physicalMemory] / 1048576) < 1900 && [getPreference(@"unsupported_warn_counter") intValue] == 0) {
         UIAlertController *RAMAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"login.warn.title.a7", nil) message:NSLocalizedString(@"login.warn.message.a7", nil) preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleCancel handler:nil];
@@ -76,6 +73,7 @@ extern NSMutableDictionary *prefDict;
     UIImageView *logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"AppLogo"]];
     logoView.frame = CGRectMake(0, (rawHeight / 2) - 35, width, 70);
     [logoView setContentMode:UIViewContentModeScaleAspectFit];
+    logoView.autoresizingMask = AUTORESIZE;
     [self.view addSubview:logoView];
 
     NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
@@ -102,6 +100,7 @@ extern NSMutableDictionary *prefDict;
     UIButton *button_faq = [UIButton buttonWithType:UIButtonTypeSystem];
     setButtonPointerInteraction(button_faq);
     [button_faq setTitle:NSLocalizedString(@"FAQ", @"Frequently asked questions") forState:UIControlStateNormal];
+    button_faq.autoresizingMask = AUTORESIZE_BTN;
     button_faq.frame = CGRectMake(widthSplit2 - (((width - widthSplit * 2.0) / 2) / 2), (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
     if([date isEqualToString:@"06-29"] || [date isEqualToString:@"06-30"] || [date isEqualToString:@"07-01"]) {
         button_faq.backgroundColor = [UIColor colorWithRed:67/255.0 green:0/255.0 blue:8/255.0 alpha:1.0];
@@ -116,11 +115,12 @@ extern NSMutableDictionary *prefDict;
         [button_faq setTintColor:UIColor.whiteColor];
         [button_faq setImage:button_faq.imageView.image forState:UIControlStateNormal];
     }
-    [scrollView addSubview:button_faq];
+    [self.view addSubview:button_faq];
 
     UIButton *button_login = [UIButton buttonWithType:UIButtonTypeSystem];
     setButtonPointerInteraction(button_login);
     [button_login setTitle:NSLocalizedString(@"Sign in", nil) forState:UIControlStateNormal];
+    button_login.autoresizingMask = AUTORESIZE_BTN;
     button_login.frame = CGRectMake(button_faq.frame.origin.x - button_faq.frame.size.width - 20, (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
     if([date isEqualToString:@"06-29"] || [date isEqualToString:@"06-30"] || [date isEqualToString:@"07-01"]) {
         button_login.backgroundColor = [UIColor colorWithRed:67/255.0 green:0/255.0 blue:8/255.0 alpha:1.0];
@@ -147,11 +147,12 @@ extern NSMutableDictionary *prefDict;
         [button_login setTintColor:UIColor.whiteColor];
         [button_login setImage:button_login.imageView.image forState:UIControlStateNormal];
     }
-    [scrollView addSubview:button_login];
+    [self.view addSubview:button_login];
 
     UIButton *button_accounts = [UIButton buttonWithType:UIButtonTypeSystem];
     setButtonPointerInteraction(button_accounts);
     [button_accounts setTitle:NSLocalizedString(@"Accounts", nil) forState:UIControlStateNormal];
+    button_accounts.autoresizingMask = AUTORESIZE_BTN;
     button_accounts.frame = CGRectMake(button_faq.frame.origin.x + button_faq.frame.size.width + 20, (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
     if([date isEqualToString:@"06-29"] || [date isEqualToString:@"06-30"] || [date isEqualToString:@"07-01"]) {
         button_accounts.backgroundColor = [UIColor colorWithRed:67/255.0 green:0/255.0 blue:8/255.0 alpha:1.0];
@@ -166,7 +167,7 @@ extern NSMutableDictionary *prefDict;
         [button_accounts setTintColor:UIColor.whiteColor];
         [button_accounts setImage:button_accounts.imageView.image forState:UIControlStateNormal];
     }
-    [scrollView addSubview:button_accounts];
+    [self.view addSubview:button_accounts];
     
     if([date isEqualToString:@"06-29"] || [date isEqualToString:@"06-30"] || [date isEqualToString:@"07-01"]) {
         UILabel *technoNote = [[UILabel alloc] initWithFrame:CGRectMake(0, 15, width, 40.0)];
@@ -175,7 +176,7 @@ extern NSMutableDictionary *prefDict;
         technoNote.numberOfLines = 1;
         [technoNote setFont:[UIFont boldSystemFontOfSize:10]];
         technoNote.textAlignment = NSTextAlignmentCenter;
-        [scrollView addSubview:technoNote];
+        [self.view addSubview:technoNote];
     }
 
     if (!getEntitlementValue(@"dynamic-codesigning")) {
