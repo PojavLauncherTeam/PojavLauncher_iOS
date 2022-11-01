@@ -26,6 +26,9 @@
 "launcher.menu.custom_controls" = "Özel kontroller";
 "launcher.menu.install_jar" = ".jar kur";
 
+"launcher.wait_jit.title" = "JIT için bekleniyor";
+"launcher.wait_jit.message" = "PojavLauncher, Java'nın maksimum performansta çalışması için Just-in-time derlemeye dayanır.";
+
 "login.error.username.outOfRange" = "Kullanıcı adı en az 3 en fazla 16 karakter olmalıdır";
 
 "login.alert.field.username" = "Kullanıcı Adı";
