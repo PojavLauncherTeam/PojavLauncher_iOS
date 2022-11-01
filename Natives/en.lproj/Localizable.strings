@@ -25,6 +25,9 @@
 
 "News" = "News";
 "Settings" = "Settings";
+"preference.section.control" = "Control customization";
+//"preference.section.footer.control" = "";
+"preference.section.java" = "Java Tweaks";
 
 "preference.title.renderer" = "Renderer";
 "preference.title.disable_gesture" = "Disable gestures";
