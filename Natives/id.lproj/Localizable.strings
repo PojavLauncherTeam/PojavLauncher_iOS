@@ -8,6 +8,8 @@
 "game.menu.log_output" = "Catatan log";
 "game.menu.custom_controls" = "Kontrol kustom";
 
+"game.title.exit_code" = "Permainan keluar dengan kode %d";
+
 // The options button at the top-right corner on iOS 12
 "Options" = "Opsi";
 
@@ -25,6 +27,9 @@
 
 "launcher.menu.custom_controls" = "Kontrol kustom";
 "launcher.menu.install_jar" = "Install .jar";
+
+"launcher.wait_jit.title" = "Menunggu JIT";
+"launcher.wait_jit.message" = "PojavLauncher membutuhkan compilation Just-in-Time agar Java dapat bekerja dalam perfoma maksimal.";
 
 "login.error.username.outOfRange" = "Username harus mempunyai setidaknya 3 karakter dan maksimum 16 karakter";
 
@@ -89,6 +94,8 @@
 "preference.section.video" = "Peraturan Video";
 "preference.section.footer.video" = "Renderer otomatis memperbolehkan Minecraft untuk memilih renderer yang mana untuk dipake. Menurunkan resolusi akan menurunkan kerjaan GPU untuk perfoma lebih baik.";
 "preference.section.control" = "Kustomisasi kontrol";
+"preference.section.debug" = "Peraturan debugging UI";
+"preference.section.footer.debug" = "Selain debugging, peraturan-peraturan ini mungkin berguna untuk kontrol kustom. Anda mungkin butuh mengrestart peluncur agar perubahan berlaku.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Tweak Java";
 //"preference.section.footer.java" = "";
@@ -148,3 +155,10 @@
 "preference.warn.allocated_memory" = "Karena limitasi dari operating systemnya, opsi ini bisa membuat permainan tidak stabil dengan isi yang tinggi. Lanjut dengan perhatian.";
 "preference.title.custom_env" = "Variable environment";
 "preference.detail.custom_env" = "Opsi ini sedang dalam pembangunan.";
+
+"preference.title.debug_ipad_ui" = "Gunakan UI iPadOS";
+"preference.detail.debug_ipad_ui" = "Gunakan fitur-fitur ekslusif iPad (perhatian, keyboard, dll.) jika nyala atau iPhone UI jika mati.";
+"preference.title.debug_show_layout_bounds" = "Tampilkan batas tata letak";
+"preference.detail.debug_show_layout_bounds" = "Tampilkan batas klip, margin";
+"preference.title.debug_show_layout_overlap" = "Tampilkan layout yang overlapping";
+"preference.detail.debug_show_layout_overlap" = "Lapis semua view dengan sebuah warna transparen untuk mengungkap view yang overlapping.";
