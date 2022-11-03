@@ -344,6 +344,14 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     }
 */
 
+    // Cr4shed known issue: exit after crash dump,
+    // reset signal handler so that JVM can catch them
+    signal(SIGSEGV, SIG_DFL);
+    signal(SIGPIPE, SIG_DFL);
+    signal(SIGBUS, SIG_DFL);
+    signal(SIGILL, SIG_DFL);
+    signal(SIGFPE, SIG_DFL);
+
     return pJLI_Launch(++margc, margv,
                    0, NULL, // sizeof(const_jargs) / sizeof(char *), const_jargs,
                    0, NULL, // sizeof(const_appclasspath) / sizeof(char *), const_appclasspath,

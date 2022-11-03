@@ -101,7 +101,12 @@ static CGPoint lastCenterPoint;
             self.rootView.center = CGPointMake(self.rootView.bounds.size.width/-2, self.rootView.center.y);
             self.menuView.frame = CGRectMake(self.view.frame.size.width, 0, 0, 0);
         } completion:^(BOOL finished) {
-            exit(0);
+            if (fatalExitGroup == nil) {
+                exit(0);
+            } else {
+                dispatch_group_leave(fatalExitGroup);
+                fatalExitGroup = nil;
+            }
         }];
     }];
     [alert addAction:okAction];
@@ -158,7 +163,7 @@ static CGPoint lastCenterPoint;
     }
 
     self.menuView.frame = CGRectMake(self.rootView.frame.size.width, self.rootView.frame.origin.y,
-        frame.size.width * 0.3 - 21.0, self.menuView.contentSize.height);
+        frame.size.width*0.3 - 30.0*0.7, self.menuView.contentSize.height);
 }
 
 @end

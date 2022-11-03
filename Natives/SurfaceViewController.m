@@ -357,12 +357,7 @@ BOOL slideableHotbar;
 - (BOOL)prefersStatusBarHidden {
     return YES;
 }
-/*
-- (void)viewDidLayoutSubviews {
-    if (self.ignoreLayoutSubviews) {
-        return;
-    }
-*/
+
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
@@ -376,7 +371,11 @@ BOOL slideableHotbar;
         [self viewWillTransitionToSize_Navigation:frame];
 
         CGRect ctrlFrame = CGRectFromString(getPreference(@"control_safe_area"));
-        if ((ctrlFrame.size.width > ctrlFrame.size.height) != (size.width > size.height)) {
+        CGSize screenSize = UIScreen.mainScreen.bounds.size;
+        if (size.width < screenSize.width || size.height < screenSize.height) {
+            // TODO: safe area for windowed mode?
+            ctrlFrame.size = screenSize;
+        } else if ((ctrlFrame.size.width > ctrlFrame.size.height) != (size.width > size.height)) {
             CGFloat tmpHeight = ctrlFrame.size.width;
             ctrlFrame.size.width = ctrlFrame.size.height;
             ctrlFrame.size.height = tmpHeight;

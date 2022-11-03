@@ -4,6 +4,9 @@
 #import "ios_uikit_bridge.h"
 #import "utils.h"
 
+// SurfaceViewController
+extern dispatch_group_t fatalExitGroup;
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -53,6 +56,13 @@
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     CallbackBridge_setWindowAttrib(GLFW_FOCUSED, 0);
+}
+
+- (void)applicationWillTerminate:(UIApplication *)application {
+    if (fatalExitGroup != nil) {
+        dispatch_group_leave(fatalExitGroup);
+        fatalExitGroup = nil;
+    }
 }
 
 @end

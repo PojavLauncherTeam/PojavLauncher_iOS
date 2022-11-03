@@ -1,11 +1,35 @@
 #import <Foundation/Foundation.h>
 #import "SurfaceViewController.h"
+#import "utils.h"
 
 #include "external/fishhook/fishhook.h"
 
+void (*orig_abort)();
 static void* (*orig_dlopen)(const char* path, int mode);
 static void (*orig_exit)(int code);
 static int (*orig_open)(const char *path, int oflag, ...);
+
+void handle_fatal_exit(int code) {
+    if (NSThread.isMainThread || !SurfaceViewController.isRunning) {
+        return;
+    }
+
+    [SurfaceViewController handleExitCode:code];
+
+    if (fatalExitGroup != nil) {
+        // Likely other threads are crashing, put them to sleep
+        sleep(INT_MAX);
+    }
+    fatalExitGroup = dispatch_group_create();
+    dispatch_group_enter(fatalExitGroup);
+    dispatch_group_wait(fatalExitGroup, DISPATCH_TIME_FOREVER);
+}
+
+void hooked_abort() {
+    NSLog(@"abort() called");
+    handle_fatal_exit(SIGABRT);
+    orig_abort();
+}
 
 void* hooked_dlopen(const char* path, int mode) {
     if (path && [@(path) hasSuffix:@"/libawt_xawt.dylib"]) {
@@ -16,13 +40,18 @@ void* hooked_dlopen(const char* path, int mode) {
 }
 
 void hooked_exit(int code) {
-    if (code == 0 || NSThread.isMainThread || !SurfaceViewController.isRunning) {
+    NSLog(@"exit(%d) called", code);
+    if (code == 0) {
         orig_exit(code);
         return;
     }
+    handle_fatal_exit(code);
 
-    [SurfaceViewController handleExitCode:code];
-    sleep(INT_MAX);
+    if (runtimeJavaVMPtr != NULL) {
+        (*runtimeJavaVMPtr)->DestroyJavaVM(runtimeJavaVMPtr);
+    }
+
+    orig_exit(code);
 }
 
 int hooked_open(const char *path, int oflag, ...) {
@@ -43,8 +72,9 @@ void init_hookFunctions() {
         // hook dlopen to use our libawt_xawt
         rebind_symbols((struct rebinding[1]){{"dlopen", hooked_dlopen, (void *)&orig_dlopen}}, 1);
     }
-    rebind_symbols((struct rebinding[2]){
+    rebind_symbols((struct rebinding[3]){
+        {"abort", hooked_abort, (void *)&orig_abort},
         {"exit", hooked_exit, (void *)&orig_exit},
         {"open", hooked_open, (void *)&orig_open}
-    }, 2);
+    }, 3);
 }
