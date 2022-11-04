@@ -15,6 +15,15 @@
 "Snapshot" = "Snapshot";
 "Old-beta" = "Old-beta";
 "Old-alpha" = "Old-alpha";
+"Edit" = "Edit";
+"Remove" = "Remove";
+
+"custom_controls.button_edit.name" = "Name";
+"custom_controls.button_edit.size" = "Mida";
+"custom_controls.control_menu.exit" = "Exit";
+"custom_controls.control_menu.save" = "Save";
+"custom_controls.control_menu.load" = "Load";
+"custom_controls.control_menu.add_button" = "Add button";
 
 "launcher.menu.custom_controls" = "Custom controls";
 
