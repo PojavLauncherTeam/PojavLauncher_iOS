@@ -15,6 +15,21 @@
 "Snapshot" = "Снапшотлар";
 "Old-beta" = "Иске бета";
 "Old-alpha" = "Иске альфа";
+"Edit" = "Үзгәртергә";
+"Remove" = "Бетерергә";
+
+"custom_controls.button_edit.name" = "Исем";
+"custom_controls.button_edit.size" = "Зурлык";
+"custom_controls.button_edit.mapping" = "Төймәләр";
+"custom_controls.button_edit.bg_color" = "Фон төсе";
+"custom_controls.button_edit.stroke_color" = "Кыршау төсе";
+"custom_controls.button_edit.dynamic_position" = "Динамик позициясе";
+
+"custom_controls.button_menu.add_subbutton" = "Төймәчәне өстәү";
+"custom_controls.control_menu.exit" = "Чыгу";
+"custom_controls.control_menu.save" = "Сакларга";
+"custom_controls.control_menu.load" = "Йөкләргә";
+"custom_controls.control_menu.add_button" = "Төймәне булдырырга";
 
 "launcher.menu.custom_controls" = "Көйләнелгән идарә";
 "launcher.menu.install_jar" = ".jar-файлны урнату";
