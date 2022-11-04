@@ -22,6 +22,24 @@
 "Releases" = "sǝsɐǝlǝɹ";
 "Old-beta" = "ɐʇǝq-pꞁO";
 "Old-alpha" = "ɐɥdꞁɐ-pꞁO";
+"Edit" = "ʇᴉpƎ";
+"Remove" = "ǝʌoɯǝᴚ";
+
+"custom_controls.button_edit.name" = "ǝɯɐN";
+"custom_controls.button_edit.size" = "ǝzᴉS";
+"custom_controls.button_edit.mapping" = "ᵷuᴉddɐW";
+"custom_controls.button_edit.orientation" = "uoᴉʇɐʇuǝᴉɹO";
+"custom_controls.button_edit.toggleable" = "ǝꞁqɐǝꞁᵷᵷo⟘";
+"custom_controls.button_edit.swipeable" = "ǝꞁqɐǝdᴉʍS";
+"custom_controls.button_edit.bg_color" = "ɹoꞁoɔ punoɹᵷʞɔɐᗺ";
+"custom_controls.button_edit.stroke_color" = "ɹoꞁoɔ ǝʞoɹʇS";
+"custom_controls.button_edit.dynamic_position" = "uoᴉʇᴉsod ɔᴉɯɐuʎᗡ";
+
+"custom_controls.button_menu.add_subbutton" = "uoʇʇnq-qns pp∀";
+"custom_controls.control_menu.exit" = "ʇᴉxƎ";
+"custom_controls.control_menu.save" = "ǝʌɐS";
+"custom_controls.control_menu.load" = "pɐoꞀ";
+"custom_controls.control_menu.add_button" = "uoʇʇnq ppⱯ";
 
 "init.migrateDir" = "˙uoᴉʇɐɔol ʍǝu ǝɥʇ oʇ pǝʌoɯ uǝǝq sɐɥ ɐʇɐp ƃuᴉʇsᴉxǝ ɹnoʎ ɟo ll∀ ˙%@ ʍou sᴉ ʎɹoʇɔǝɹᴉp ɐʇɐp ɹǝɥɔunɐ˥ʌɐɾoԀ ǝɥ┴";
 
