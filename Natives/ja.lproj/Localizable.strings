@@ -15,6 +15,24 @@
 "Snapshot" = "スナップショット";
 "Old-beta" = "Beta 版";
 "Old-alpha" = "Alpha 版";
+"Edit" = "編集";
+"Remove" = "消去";
+
+"custom_controls.button_edit.name" = "名前";
+"custom_controls.button_edit.size" = "サイズ";
+"custom_controls.button_edit.mapping" = "割り当て";
+"custom_controls.button_edit.orientation" = "向き";
+"custom_controls.button_edit.toggleable" = "切り替え可能";
+"custom_controls.button_edit.swipeable" = "スワイプする";
+"custom_controls.button_edit.bg_color" = "背景色";
+"custom_controls.button_edit.stroke_color" = "線の色";
+"custom_controls.button_edit.dynamic_position" = "動的な位置";
+
+"custom_controls.button_menu.add_subbutton" = "サブボタンを追加";
+"custom_controls.control_menu.exit" = "閉じる";
+"custom_controls.control_menu.save" = "保存";
+"custom_controls.control_menu.load" = "読み込む";
+"custom_controls.control_menu.add_button" = "ボタンを追加";
 
 "launcher.menu.custom_controls" = "カスタムコントロール";
 "launcher.menu.install_jar" = ".jarをインストール";
