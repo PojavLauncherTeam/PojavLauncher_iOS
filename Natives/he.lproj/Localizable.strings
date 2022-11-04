@@ -15,6 +15,24 @@
 "Snapshot" = "סנאפשוט";
 "Old-beta" = "בטא: גרסה ישנה";
 "Old-alpha" = "אלפא: גרסה ישנה";
+"Edit" = "ערוך";
+"Remove" = "הסר";
+
+"custom_controls.button_edit.name" = "שם";
+"custom_controls.button_edit.size" = "גודל";
+"custom_controls.button_edit.mapping" = "מיפוי";
+"custom_controls.button_edit.orientation" = "כיוון";
+"custom_controls.button_edit.toggleable" = "מתג";
+"custom_controls.button_edit.swipeable" = "ניתן להחלקה";
+"custom_controls.button_edit.bg_color" = "צבע הרקע";
+"custom_controls.button_edit.stroke_color" = "צבע קו המתאר";
+"custom_controls.button_edit.dynamic_position" = "מיקום דינמי";
+
+"custom_controls.button_menu.add_subbutton" = "הוסף תת-כפתור";
+"custom_controls.control_menu.exit" = "צא";
+"custom_controls.control_menu.save" = "שמור";
+"custom_controls.control_menu.load" = "טען";
+"custom_controls.control_menu.add_button" = "הוסף כפתור";
 
 "launcher.menu.custom_controls" = "פקדים מותאמים אישית";
 "launcher.menu.install_jar" = "התקנת .jar";
