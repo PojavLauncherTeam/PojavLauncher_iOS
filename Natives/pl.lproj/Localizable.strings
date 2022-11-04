@@ -22,6 +22,24 @@
 "Releases" = "Wydania";
 "Old-beta" = "Dawna Beta";
 "Old-alpha" = "Dawna Alpha";
+"Edit" = "Edytuj";
+"Remove" = "Usuń";
+
+"custom_controls.button_edit.name" = "Nazwa";
+"custom_controls.button_edit.size" = "Rozmiar";
+"custom_controls.button_edit.mapping" = "Mapowanie";
+"custom_controls.button_edit.orientation" = "Orientacja";
+"custom_controls.button_edit.toggleable" = "Aktywowane";
+"custom_controls.button_edit.swipeable" = "Przesuwalny";
+"custom_controls.button_edit.bg_color" = "Kolor tła";
+"custom_controls.button_edit.stroke_color" = "Kolor obrysu";
+"custom_controls.button_edit.dynamic_position" = "Dynamiczna pozycja";
+
+"custom_controls.button_menu.add_subbutton" = "Dodaj przycisk podrzędny";
+"custom_controls.control_menu.exit" = "Wyjdź";
+"custom_controls.control_menu.save" = "Zapisz";
+"custom_controls.control_menu.load" = "Wczytaj";
+"custom_controls.control_menu.add_button" = "Dodaj przycisk";
 
 "init.migrateDir" = "Katalogiem danych PojavLauncher jest teraz %@. Wszystkie istniejące dane zostały przeniesione do nowej lokalizacji.";
 
