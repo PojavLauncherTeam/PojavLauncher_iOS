@@ -20,6 +20,24 @@
 "Releases" = "Versiones lanzadas";
 "Old-beta" = "Betas";
 "Old-alpha" = "Alphas";
+"Edit" = "Editar";
+"Remove" = "Eliminar";
+
+"custom_controls.button_edit.name" = "Nombre";
+"custom_controls.button_edit.size" = "Tamaño";
+"custom_controls.button_edit.mapping" = "Mapeado";
+"custom_controls.button_edit.orientation" = "Orientación";
+"custom_controls.button_edit.toggleable" = "Activable";
+"custom_controls.button_edit.swipeable" = "Deslizable";
+"custom_controls.button_edit.bg_color" = "Color de fondo";
+"custom_controls.button_edit.stroke_color" = "Color del trazo";
+"custom_controls.button_edit.dynamic_position" = "Posición dinámica";
+
+"custom_controls.button_menu.add_subbutton" = "Añadir sub-botón";
+"custom_controls.control_menu.exit" = "Salir";
+"custom_controls.control_menu.save" = "Guardar";
+"custom_controls.control_menu.load" = "Cargar";
+"custom_controls.control_menu.add_button" = "Añadir botón";
 
 "init.migrateDir" = "La carpeta de PojavLauncher ahora está en %@. Todos tus datos han sido movidos a esa nueva ubicación.";
 
