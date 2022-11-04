@@ -15,6 +15,24 @@
 "Snapshot" = "스냅숏";
 "Old-beta" = "Old-beta";
 "Old-alpha" = "Old-alpha";
+"Edit" = "수정";
+"Remove" = "제거";
+
+"custom_controls.button_edit.name" = "이름";
+"custom_controls.button_edit.size" = "크기";
+"custom_controls.button_edit.mapping" = "매핑";
+"custom_controls.button_edit.orientation" = "방향";
+"custom_controls.button_edit.toggleable" = "토글";
+"custom_controls.button_edit.swipeable" = "끌어당기기";
+"custom_controls.button_edit.bg_color" = "배경 색상";
+"custom_controls.button_edit.stroke_color" = "강조 색";
+"custom_controls.button_edit.dynamic_position" = "동적 위치";
+
+"custom_controls.button_menu.add_subbutton" = "부속 버튼 추가";
+"custom_controls.control_menu.exit" = "나가기";
+"custom_controls.control_menu.save" = "저장";
+"custom_controls.control_menu.load" = "불러오기";
+"custom_controls.control_menu.add_button" = "버튼 추가";
 
 "launcher.menu.custom_controls" = "사용자 지정 조작";
 "launcher.menu.install_jar" = ".jar 설치";
