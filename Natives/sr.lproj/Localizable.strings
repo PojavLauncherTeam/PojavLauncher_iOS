@@ -15,6 +15,23 @@
 "Snapshot" = "Снепшот";
 "Old-beta" = "Стари-Бета";
 "Old-alpha" = "Стари-Аlpha";
+"Edit" = "Измени";
+"Remove" = "Уклони";
+
+"custom_controls.button_edit.name" = "Име";
+"custom_controls.button_edit.size" = "Величина";
+"custom_controls.button_edit.mapping" = "Мапирање";
+"custom_controls.button_edit.orientation" = "Оријентација";
+"custom_controls.button_edit.toggleable" = "Тогелабле";
+"custom_controls.button_edit.bg_color" = "Боја позадине";
+"custom_controls.button_edit.stroke_color" = "Боја потеза";
+"custom_controls.button_edit.dynamic_position" = "Динамична позиција";
+
+"custom_controls.button_menu.add_subbutton" = "Додај суб-дугме";
+"custom_controls.control_menu.exit" = "Изађи";
+"custom_controls.control_menu.save" = "Сачувај";
+"custom_controls.control_menu.load" = "Учитај";
+"custom_controls.control_menu.add_button" = "Додај дугме";
 
 "launcher.menu.custom_controls" = "Прилагођене контроле";
 "launcher.menu.install_jar" = "Инсталирај .jar";
