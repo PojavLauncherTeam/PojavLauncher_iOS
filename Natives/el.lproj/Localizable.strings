@@ -15,6 +15,24 @@
 "Snapshot" = "Στιγμιότυπο";
 "Old-beta" = "Παλιά-Beta";
 "Old-alpha" = "Παλιά-alpha";
+"Edit" = "Επεξεργασία";
+"Remove" = "Αφαίρεσε";
+
+"custom_controls.button_edit.name" = "Όνομα";
+"custom_controls.button_edit.size" = "Μέγεθος";
+"custom_controls.button_edit.mapping" = "Χαρτογράφηση";
+"custom_controls.button_edit.orientation" = "Προσανατολισμός";
+"custom_controls.button_edit.toggleable" = "Εναλλασσόμενο";
+"custom_controls.button_edit.swipeable" = "Ευέλικτο";
+"custom_controls.button_edit.bg_color" = "Χρώμα φόντου";
+"custom_controls.button_edit.stroke_color" = "Χρώμα περιγράμματος";
+"custom_controls.button_edit.dynamic_position" = "Δυναμική θέση";
+
+"custom_controls.button_menu.add_subbutton" = "Προσθήκη κουμπιού";
+"custom_controls.control_menu.exit" = "Έξοδος";
+"custom_controls.control_menu.save" = "Αποθήκευση";
+"custom_controls.control_menu.load" = "Φόρτωση";
+"custom_controls.control_menu.add_button" = "Προσθήκη κουμπιού";
 
 "launcher.menu.custom_controls" = "Προσαρμοσμένα controls";
 
