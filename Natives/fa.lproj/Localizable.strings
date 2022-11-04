@@ -15,6 +15,24 @@
 "Snapshot" = "اسنپ‌شات";
 "Old-beta" = "بتای-قدیمی";
 "Old-alpha" = "آلفای-قدیمی";
+"Edit" = "ویرایش";
+"Remove" = "حذف";
+
+"custom_controls.button_edit.name" = "نام";
+"custom_controls.button_edit.size" = "اندازه";
+"custom_controls.button_edit.mapping" = "نقشه‌برداری";
+"custom_controls.button_edit.orientation" = "جهت";
+"custom_controls.button_edit.toggleable" = "حالت فعال/غیرفعال";
+"custom_controls.button_edit.swipeable" = "قابل سوایپ";
+"custom_controls.button_edit.bg_color" = "رنگ پس‌زمینه";
+"custom_controls.button_edit.stroke_color" = "رنگ حاشیه";
+"custom_controls.button_edit.dynamic_position" = "موقعیت شناور";
+
+"custom_controls.button_menu.add_subbutton" = "افزودن زیر-دکمه";
+"custom_controls.control_menu.exit" = "خروج";
+"custom_controls.control_menu.save" = "ذخیره";
+"custom_controls.control_menu.load" = "بارگذاری";
+"custom_controls.control_menu.add_button" = "اضافه کردن دکمه";
 
 "launcher.menu.custom_controls" = "کنترل‌های شخصی";
 "launcher.menu.install_jar" = "نصب .jar";
