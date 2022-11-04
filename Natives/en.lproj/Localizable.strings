@@ -22,6 +22,24 @@
 "Releases" = "Releases";
 "Old-beta" = "Old-beta";
 "Old-alpha" = "Old-alpha";
+"Edit" = "Edit";
+"Remove" = "Remove";
+
+"custom_controls.button_edit.name" = "Name";
+"custom_controls.button_edit.size" = "Size";
+"custom_controls.button_edit.mapping" = "Mapping";
+"custom_controls.button_edit.orientation" = "Orientation";
+"custom_controls.button_edit.toggleable" = "Toggleable";
+"custom_controls.button_edit.swipeable" = "Swipeable";
+"custom_controls.button_edit.bg_color" = "Background color";
+"custom_controls.button_edit.stroke_color" = "Stroke color";
+"custom_controls.button_edit.dynamic_position" = "Dynamic position";
+
+"custom_controls.button_menu.add_subbutton" = "Add sub-button";
+"custom_controls.control_menu.exit" = "Exit";
+"custom_controls.control_menu.save" = "Save";
+"custom_controls.control_menu.load" = "Load";
+"custom_controls.control_menu.add_button" = "Add button";
 
 "init.migrateDir" = "The PojavLauncher data directory is now %@. All of your existing data has been moved to the new location.";
 
