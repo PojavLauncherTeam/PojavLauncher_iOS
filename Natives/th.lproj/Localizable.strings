@@ -15,6 +15,16 @@
 "Snapshot" = "ภาพรวม";
 "Old-beta" = "เบตาเก่า";
 "Old-alpha" = "Old-alpha";
+"Edit" = "แก้ไข";
+"Remove" = "ถอดออก";
+
+"custom_controls.button_edit.name" = "ชื่อ";
+"custom_controls.button_edit.size" = "ขนาด";
+"custom_controls.button_edit.dynamic_position" = "ตำแหน่งพลวัต";
+"custom_controls.control_menu.exit" = "ออก";
+"custom_controls.control_menu.save" = "บันทึก";
+"custom_controls.control_menu.load" = "โหลด";
+"custom_controls.control_menu.add_button" = "เพิ่มปุ่ม";
 
 "launcher.menu.custom_controls" = "การควบคุมกำหนดเอง";
 
