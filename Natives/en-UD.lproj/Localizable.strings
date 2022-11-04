@@ -22,6 +22,9 @@
 "Releases" = "sǝsɐǝlǝɹ";
 "Old-beta" = "ɐʇǝq-pꞁO";
 "Old-alpha" = "ɐɥdꞁɐ-pꞁO";
+
+// Custom controls
+"Copy" = "ʎdoƆ";
 "Edit" = "ʇᴉpƎ";
 "Remove" = "ǝʌoɯǝᴚ";
 
@@ -30,6 +33,7 @@
 "custom_controls.button_edit.mapping" = "ᵷuᴉddɐW";
 "custom_controls.button_edit.orientation" = "uoᴉʇɐʇuǝᴉɹO";
 "custom_controls.button_edit.toggleable" = "ǝꞁqɐǝꞁᵷᵷo⟘";
+"custom_controls.button_edit.mouse_pass" = "ssɐd ǝsnoW";
 "custom_controls.button_edit.swipeable" = "ǝꞁqɐǝdᴉʍS";
 "custom_controls.button_edit.bg_color" = "ɹoꞁoɔ punoɹᵷʞɔɐᗺ";
 "custom_controls.button_edit.stroke_color" = "ɹoꞁoɔ ǝʞoɹʇS";
