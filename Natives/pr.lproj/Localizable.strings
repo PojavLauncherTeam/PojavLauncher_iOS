@@ -15,6 +15,24 @@
 "Snapshot" = "Пробныя версіи";
 "Old-beta" = "Старыя бета";
 "Old-alpha" = "Старыя альфа";
+"Edit" = "Править";
+"Remove" = "Удалить";
+
+"custom_controls.button_edit.name" = "Имя";
+"custom_controls.button_edit.size" = "Размѣръ";
+"custom_controls.button_edit.mapping" = "Кнопки";
+"custom_controls.button_edit.orientation" = "Положеніе";
+"custom_controls.button_edit.toggleable" = "Переключаемый";
+"custom_controls.button_edit.swipeable" = "Пролистываемый";
+"custom_controls.button_edit.bg_color" = "Цвѣтъ фона";
+"custom_controls.button_edit.stroke_color" = "Цвѣтъ обведенія";
+"custom_controls.button_edit.dynamic_position" = "Динамическая позиція";
+
+"custom_controls.button_menu.add_subbutton" = "Добавить подъ-кнопку";
+"custom_controls.control_menu.exit" = "Выйти";
+"custom_controls.control_menu.save" = "Сохранить";
+"custom_controls.control_menu.load" = "Загрузка";
+"custom_controls.control_menu.add_button" = "Добавить кнопку";
 
 "launcher.menu.custom_controls" = "Пользовательское управленіе";
 
