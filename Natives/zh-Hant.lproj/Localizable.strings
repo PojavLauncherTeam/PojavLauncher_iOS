@@ -22,6 +22,24 @@
 "Releases" = "發行";
 "Old-beta" = "遠古beta版";
 "Old-alpha" = "遠古alpha版";
+"Edit" = "修改";
+"Remove" = "移除";
+
+"custom_controls.button_edit.name" = "名稱";
+"custom_controls.button_edit.size" = "大小";
+"custom_controls.button_edit.mapping" = "對映";
+"custom_controls.button_edit.orientation" = "方向";
+"custom_controls.button_edit.toggleable" = "可切換";
+"custom_controls.button_edit.swipeable" = "可滑動";
+"custom_controls.button_edit.bg_color" = "背景顏色";
+"custom_controls.button_edit.stroke_color" = "邊框顏色";
+"custom_controls.button_edit.dynamic_position" = "動態位置";
+
+"custom_controls.button_menu.add_subbutton" = "添加子按鈕";
+"custom_controls.control_menu.exit" = "退出";
+"custom_controls.control_menu.save" = "儲存";
+"custom_controls.control_menu.load" = "載入";
+"custom_controls.control_menu.add_button" = "添加按鈕";
 
 "init.migrateDir" = "PojavLauncher數據資料夾現為%@。你的所有已有資料已被移動到新位置。";
 
