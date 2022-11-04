@@ -15,6 +15,24 @@
 "Snapshot" = "اللمحات (سنابشوت)";
 "Old-beta" = "نسخ بيتا قديمة";
 "Old-alpha" = "نسخ ألفا قديمة";
+"Edit" = "تعديل";
+"Remove" = "إزالة";
+
+"custom_controls.button_edit.name" = "الاسم";
+"custom_controls.button_edit.size" = "الحجم";
+"custom_controls.button_edit.mapping" = "تخطيط الأزرار";
+"custom_controls.button_edit.orientation" = "الإتجاة";
+"custom_controls.button_edit.toggleable" = "تبديلي";
+"custom_controls.button_edit.swipeable" = "قابل للسحب";
+"custom_controls.button_edit.bg_color" = "لون الخلفية";
+"custom_controls.button_edit.stroke_color" = "لون الخط";
+"custom_controls.button_edit.dynamic_position" = "الموضع الديناميكي";
+
+"custom_controls.button_menu.add_subbutton" = "إضافة زر فرعي";
+"custom_controls.control_menu.exit" = "خروج";
+"custom_controls.control_menu.save" = "حفظ";
+"custom_controls.control_menu.load" = "تحميل";
+"custom_controls.control_menu.add_button" = "إضافة زر";
 
 "launcher.menu.custom_controls" = "تخصيص التحكم";
 "launcher.menu.install_jar" = "تثبيت ملف .jar";
