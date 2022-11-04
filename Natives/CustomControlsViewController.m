@@ -81,14 +81,21 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     UIEdgeInsets insets = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets;
 
+    UILabel *guideLabel = [[UILabel alloc] initWithFrame:self.view.frame];
+    guideLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    guideLabel.numberOfLines = 0;
+    guideLabel.textAlignment = NSTextAlignmentCenter;
+    guideLabel.textColor = UIColor.whiteColor;
+    guideLabel.text = NSLocalizedString(@"custom_controls.hint", nil);
+    [self.view addSubview:guideLabel]; 
+
     self.ctrlView = [[ControlLayout alloc] initWithFrame:CGRectFromString(getPreference(@"control_safe_area"))];
-    self.ctrlView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleWidth;
     if (@available(iOS 13.0, *)) {
         self.ctrlView.layer.borderColor = UIColor.labelColor.CGColor;
     } else {
         self.ctrlView.layer.borderColor = UIColor.blackColor.CGColor;
     }
-    [self.view addSubview:self.ctrlView]; 
+    [self.view addSubview:self.ctrlView];
 
     // Prepare the navigation bar for safe area customization
     UINavigationItem *navigationItem = [[UINavigationItem alloc] init];
@@ -270,23 +277,23 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     UIMenuController *menuController = [UIMenuController sharedMenuController];
 
     if (![sender.view isKindOfClass:[ControlButton class]]) {
-        UIMenuItem *actionExit = [[UIMenuItem alloc] initWithTitle:@"Exit" action:@selector(actionMenuExit)];
-        UIMenuItem *actionSave = [[UIMenuItem alloc] initWithTitle:@"Save" action:@selector(actionMenuSave)];
-        UIMenuItem *actionLoad = [[UIMenuItem alloc] initWithTitle:@"Load" action:@selector(actionMenuLoad)];
-        UIMenuItem *actionSetDef = [[UIMenuItem alloc] initWithTitle:@"Select as default" action:@selector(actionMenuSetDef)];
-        UIMenuItem *actionSafeArea = [[UIMenuItem alloc] initWithTitle:@"Safe area" action:@selector(actionMenuSafeArea)];
-        UIMenuItem *actionAddButton = [[UIMenuItem alloc] initWithTitle:@"Add button" action:@selector(actionMenuAddButton)];
-        UIMenuItem *actionAddDrawer = [[UIMenuItem alloc] initWithTitle:@"Add drawer" action:@selector(actionMenuAddDrawer)];
+        UIMenuItem *actionExit = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"custom_controls.control_menu.exit", nil) action:@selector(actionMenuExit)];
+        UIMenuItem *actionSave = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"custom_controls.control_menu.save", nil) action:@selector(actionMenuSave)];
+        UIMenuItem *actionLoad = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"custom_controls.control_menu.load", nil) action:@selector(actionMenuLoad)];
+        UIMenuItem *actionSetDef = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"custom_controls.control_menu.make_default", nil) action:@selector(actionMenuSetDef)];
+        UIMenuItem *actionSafeArea = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"custom_controls.control_menu.safe_area", nil) action:@selector(actionMenuSafeArea)];
+        UIMenuItem *actionAddButton = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"custom_controls.control_menu.add_button", nil) action:@selector(actionMenuAddButton)];
+        UIMenuItem *actionAddDrawer = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"custom_controls.control_menu.add_drawer", nil) action:@selector(actionMenuAddDrawer)];
         [menuController setMenuItems:@[actionExit, actionSave, actionLoad, actionSetDef, actionSafeArea, actionAddButton, actionAddDrawer]];
 
         CGPoint point = [sender locationInView:sender.view];
         self.selectedPoint = CGRectMake(point.x, point.y, 1.0, 1.0);
     } else {
-        UIMenuItem *actionEdit = [[UIMenuItem alloc] initWithTitle:@"Edit" action:@selector(actionMenuBtnEdit)];
-        UIMenuItem *actionCopy = [[UIMenuItem alloc] initWithTitle:@"Copy" action:@selector(actionMenuBtnCopy)];
-        UIMenuItem *actionDelete = [[UIMenuItem alloc] initWithTitle:@"Remove" action:@selector(actionMenuBtnDelete)];
+        UIMenuItem *actionEdit = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Edit", nil) action:@selector(actionMenuBtnEdit)];
+        UIMenuItem *actionCopy = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Copy", nil) action:@selector(actionMenuBtnCopy)];
+        UIMenuItem *actionDelete = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Remove", nil) action:@selector(actionMenuBtnDelete)];
         if ([sender.view isKindOfClass:[ControlDrawer class]]) {
-            UIMenuItem *actionAddSubButton = [[UIMenuItem alloc] initWithTitle:@"Add sub-button" action:@selector(actionMenuAddSubButton)];
+            UIMenuItem *actionAddSubButton = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"custom_controls.button_menu.add_subbutton", nil) action:@selector(actionMenuAddSubButton)];
             [menuController setMenuItems:@[actionEdit, /* actionCopy, */ actionDelete, actionAddSubButton]];
         } else {
             [menuController setMenuItems:@[actionEdit, /* actionCopy, */ actionDelete]];
@@ -308,8 +315,8 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 }
 
 - (void)actionMenuSave {
-      UIAlertController *controller = [UIAlertController alertControllerWithTitle: @"Save"
-        message:[NSString stringWithFormat:@"File will be saved to %s/controlmap directory.", getenv("POJAV_HOME")]
+      UIAlertController *controller = [UIAlertController alertControllerWithTitle: NSLocalizedString(@"custom_controls.control_menu.save", nil)
+        message:[NSString stringWithFormat:NSLocalizedString(@"custom_controls.control_menu.save.hint", nil), getenv("POJAV_HOME")]
         preferredStyle:UIAlertControllerStyleAlert];
     [controller addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         textField.placeholder = @"Name";
@@ -317,29 +324,29 @@ NSMutableArray *keyCodeMap, *keyValueMap;
         textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         textField.borderStyle = UITextBorderStyleRoundedRect;
     }];
-    [controller addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         NSArray *textFields = controller.textFields;
         UITextField *field = textFields[0];
         if ([field.text isEqualToString:@"default"]) {
-            controller.message = @"Control name should not be \"default\" as it will be overriden.";
+            controller.message = NSLocalizedString(@"custom_controls.control_menu.save.error.default", nil);
             [self presentViewController:controller animated:YES completion:nil];
         } else {
             NSError *error;
             NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self.cc_dictionary options:NSJSONWritingPrettyPrinted error:&error];
             if (jsonData == nil) {
-                showDialog(self, @"Error while converting to JSON", error.localizedDescription);
+                showDialog(self, NSLocalizedString(@"custom_controls.control_menu.save.error.json", nil), error.localizedDescription);
                 return;
             }
             BOOL success = [jsonData writeToFile:[NSString stringWithFormat:@"%s/controlmap/%@.json", getenv("POJAV_HOME"), field.text] options:NSDataWritingAtomic error:&error];
             if (!success) {
-                showDialog(self, @"Error while saving file", error.localizedDescription);
+                showDialog(self, NSLocalizedString(@"custom_controls.control_menu.save.error.write", nil), error.localizedDescription);
                 return;
             }
 
             self.currentFileName = field.text;
         }
     }]];
-    [controller addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+    [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil]];
     [self presentViewController:controller animated:YES completion:nil];
 }
 
@@ -473,8 +480,8 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 
 - (void)actionMenuBtnDelete {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:((ControlButton *)self.currentGesture.view).currentTitle message:@"Are you sure to remove this button?"preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
-    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         self.resizeView.hidden = YES;
         ControlButton *button = (ControlButton *)self.currentGesture.view;
         if ([button isKindOfClass:[ControlSubButton class]]) {
@@ -752,17 +759,17 @@ CGFloat currentY;
 
 
     // Property: Name
-    UILabel *labelName = [self addLabel:@"Name"];
+    UILabel *labelName = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.name", nil)];
     self.editName = [[UITextField alloc] initWithFrame:CGRectMake(labelName.frame.size.width + 5.0, currentY, width - labelName.frame.size.width - 5.0, labelName.frame.size.height)];
     [self.editName addTarget:self.editName action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
-    self.editName.placeholder = @"Name";
+    self.editName.placeholder = NSLocalizedString(@"custom_controls.button_edit.name", nil);
     self.editName.text = self.targetButton.properties[@"name"];
     [self.scrollView addSubview:self.editName];
 
     if (![self.targetButton isKindOfClass:[ControlSubButton class]]) {
         // Property: Size
         currentY += labelName.frame.size.height + 12.0;
-        UILabel *labelSize = [self addLabel:@"Size"];
+        UILabel *labelSize = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.size", nil)];
         // width / 2.0 + (labelSize.frame.size.width + 4.0) / 2.0
         CGFloat editSizeWidthValue = (width - labelSize.frame.size.width) / 2 - labelSize.frame.size.height / 2;
         UILabel *labelSizeX = [[UILabel alloc] initWithFrame:CGRectMake(labelSize.frame.size.width + editSizeWidthValue, labelSize.frame.origin.y, labelSize.frame.size.height, labelSize.frame.size.height)];
@@ -788,7 +795,7 @@ CGFloat currentY;
     currentY += labelName.frame.size.height + 12.0;
     if (![self.targetButton isKindOfClass:[ControlDrawer class]]) {
         // Property: Mapping
-        UILabel *labelMapping = [self addLabel:@"Mapping"];
+        UILabel *labelMapping = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.mapping", nil)];
 
         self.editMapping = [[UITextView alloc] initWithFrame:CGRectMake(0,0,1,1)];
         self.editMapping.text = @"\n\n\n";
@@ -812,7 +819,7 @@ CGFloat currentY;
     } else {
         // Property: Orientation
         self.arrOrientation = @[@"DOWN", @"LEFT", @"UP", @"RIGHT", @"FREE"];
-        UILabel *labelOrientation = [self addLabel:@"Orientation"];
+        UILabel *labelOrientation = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.orientation", nil)];
         self.ctrlOrientation = [[UISegmentedControl alloc] initWithItems:self.arrOrientation];
         self.ctrlOrientation.frame = CGRectMake(labelOrientation.frame.size.width + 5.0, currentY - 5.0, width - labelOrientation.frame.size.width - 5.0, 30.0);
         self.ctrlOrientation.selectedSegmentIndex = [self.arrOrientation indexOfObject:
@@ -823,7 +830,7 @@ CGFloat currentY;
 
 
     // Property: Toggleable
-    UILabel *labelToggleable = [self addLabel:@"Toggleable"];
+    UILabel *labelToggleable = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.toggleable", nil)];
     self.switchToggleable = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currentY - 5.0, 50.0, 30)];
     [self.switchToggleable setOn:[self.targetButton.properties[@"isToggle"] boolValue] animated:NO];
     [self.scrollView addSubview:self.switchToggleable];
@@ -831,7 +838,7 @@ CGFloat currentY;
 
     // Property: Mouse pass
     currentY += labelName.frame.size.height + 12.0;
-    UILabel *labelMousePass = [self addLabel:@"Mouse pass"];
+    UILabel *labelMousePass = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.mouse_pass", nil)];
     self.switchMousePass = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currentY - 5.0, 50.0, 30)];
     [self.switchMousePass setOn:[self.targetButton.properties[@"passThruEnabled"] boolValue]];
     [self.scrollView addSubview:self.switchMousePass];
@@ -839,7 +846,7 @@ CGFloat currentY;
 
     // Property: Swipeable
     currentY += labelName.frame.size.height + 12.0;
-    UILabel *labelSwipeable = [self addLabel:@"Swipeable"];
+    UILabel *labelSwipeable = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.swipeable", nil)];
     self.switchSwipeable = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currentY - 5.0, 50.0, 30)];
     [self.switchSwipeable setOn:[self.targetButton.properties[@"isSwipeable"] boolValue]];
     [self.scrollView addSubview:self.switchSwipeable];
@@ -847,7 +854,7 @@ CGFloat currentY;
 
     // Property: Background color
     currentY += labelName.frame.size.height + 12.0;
-    UILabel *labelBGColor = [self addLabel:@"Background color"];
+    UILabel *labelBGColor = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.bg_color", nil)];
     if(@available(iOS 14.0, *)) {
         self.colorWellINTBackground = [[UIColorWell alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
         self.colorWellINTBackground.selectedColor = self.targetButton.backgroundColor;
@@ -868,7 +875,7 @@ CGFloat currentY;
 
     // Property: Stroke width
     currentY += labelName.frame.size.height + 12.0;
-    UILabel *labelStrokeWidth = [self addLabel:@"Stroke width (%)"];
+    UILabel *labelStrokeWidth = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.stroke_width", nil)];
     self.sliderStrokeWidth = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(labelStrokeWidth.frame.size.width + 5.0, currentY - 5.0, width - labelStrokeWidth.frame.size.width - 5.0, 30.0)];
     self.sliderStrokeWidth.continuous = YES;
     self.sliderStrokeWidth.maximumValue = 100;
@@ -880,7 +887,7 @@ CGFloat currentY;
 
     // Property: Stroke color
     currentY += labelName.frame.size.height + 12.0;
-    UILabel *labelStrokeColor = [self addLabel:@"Stroke color"];
+    UILabel *labelStrokeColor = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.stroke_color", nil)];
     if(@available(iOS 14.0, *)) {
         self.colorWellINTStroke = [[UIColorWell alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
         self.colorWellINTStroke.selectedColor = [[UIColor alloc] initWithCGColor:self.targetButton.layer.borderColor];
@@ -896,7 +903,7 @@ CGFloat currentY;
 
     // Property: Corner radius
     currentY += labelName.frame.size.height + 12.0;
-    UILabel *labelCornerRadius = [self addLabel:@"Corner radius (%)"];
+    UILabel *labelCornerRadius = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.corner_radius", nil)];
     self.sliderCornerRadius = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(labelCornerRadius.frame.size.width + 5.0, currentY - 5.0, width - labelCornerRadius.frame.size.width - 5.0, 30.0)];
     self.sliderCornerRadius.continuous = NO;
     self.sliderCornerRadius.maximumValue = 100;
@@ -908,7 +915,7 @@ CGFloat currentY;
 
     // Property: Button Opacity
     currentY += labelName.frame.size.height + 12.0;
-    UILabel *labelOpacity = [self addLabel:@"Button opacity"];
+    UILabel *labelOpacity = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.opacity", nil)];
     self.sliderOpacity = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(labelOpacity.frame.size.width + 5.0, currentY - 5.0, width - labelOpacity.frame.size.width - 5.0, 30.0)];
     self.sliderOpacity.continuous = NO;
     self.sliderOpacity.minimumValue = 1;
@@ -923,7 +930,7 @@ CGFloat currentY;
       [((ControlSubButton *)self.targetButton).parentDrawer.drawerData[@"orientation"] isEqualToString:@"FREE"]) {
         // Property: Dynamic position
         currentY += labelName.frame.size.height + 12.0; 
-        UILabel *labelDynamicPos = [self addLabel:@"Dynamic position"];
+        UILabel *labelDynamicPos = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.dynamic_position", nil)];
         self.switchDynamicPos = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currentY - 5.0, 50.0, 30)];
         self.switchDynamicPos.tag = TAG_SWITCH_DYNAMICPOS;
         [self.switchDynamicPos setOn:[self.targetButton.properties[@"isDynamicBtn"] boolValue] animated:NO];
@@ -933,7 +940,7 @@ CGFloat currentY;
 
         // Property: Dynamic X-axis
         currentY += labelName.frame.size.height + 12.0;
-        UILabel *labelDynamicX = [self addLabel:@"Dynamic X-axis"];
+        UILabel *labelDynamicX = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.dynamic_x", nil)];
         self.editDynamicX = [[UITextField alloc] initWithFrame:CGRectMake(labelDynamicX.frame.size.width + 5.0, currentY, width - labelDynamicX.frame.size.width - 5.0, labelDynamicX.frame.size.height)];
         [self.editDynamicX addTarget:self.editDynamicX action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
         self.editDynamicX.text = self.targetButton.properties[@"dynamicX"];
@@ -942,7 +949,7 @@ CGFloat currentY;
 
         // Property: Dynamic Y-axis
         currentY += labelName.frame.size.height + 12.0;
-        UILabel *labelDynamicY = [self addLabel:@"Dynamic Y-axis"];
+        UILabel *labelDynamicY = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.dynamic_y", nil)];
         self.editDynamicY = [[UITextField alloc] initWithFrame:CGRectMake(labelDynamicY.frame.size.width + 5.0, currentY, width - labelDynamicY.frame.size.width - 5.0, labelDynamicY.frame.size.height)];
         [self.editDynamicY addTarget:self.editDynamicY action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
         self.editDynamicY.text = self.targetButton.properties[@"dynamicY"];
