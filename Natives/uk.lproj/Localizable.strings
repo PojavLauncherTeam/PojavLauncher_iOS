@@ -22,6 +22,24 @@
 "Releases" = "Релізи";
 "Old-beta" = "Старі бета";
 "Old-alpha" = "Старі альфа";
+"Edit" = "Редагувати";
+"Remove" = "Вилучити";
+
+"custom_controls.button_edit.name" = "Ім'я";
+"custom_controls.button_edit.size" = "Розмір";
+"custom_controls.button_edit.mapping" = "Кнопки";
+"custom_controls.button_edit.orientation" = "Орієнтація";
+"custom_controls.button_edit.toggleable" = "Перемикач";
+"custom_controls.button_edit.swipeable" = "Перегортаємий";
+"custom_controls.button_edit.bg_color" = "Колір фону";
+"custom_controls.button_edit.stroke_color" = "Колір контуру";
+"custom_controls.button_edit.dynamic_position" = "Динамічне розташування";
+
+"custom_controls.button_menu.add_subbutton" = "Додати під-кнопку";
+"custom_controls.control_menu.exit" = "Вийти";
+"custom_controls.control_menu.save" = "Зберегти";
+"custom_controls.control_menu.load" = "Завантаження";
+"custom_controls.control_menu.add_button" = "Додати кнопку";
 
 "init.migrateDir" = "Каталог даних PojavLauncher тепер у %@. Усі ваші наявні дані було переміщено в нове місце.";
 
