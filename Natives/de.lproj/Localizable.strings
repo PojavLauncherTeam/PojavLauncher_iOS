@@ -20,6 +20,24 @@
 "Releases" = "Releases";
 "Old-beta" = "Old-Beta";
 "Old-alpha" = "Old-Alpha";
+"Edit" = "Bearbeiten";
+"Remove" = "Entfernen";
+
+"custom_controls.button_edit.name" = "Name";
+"custom_controls.button_edit.size" = "Größe";
+"custom_controls.button_edit.mapping" = "Zuordnung";
+"custom_controls.button_edit.orientation" = "Ausrichtung";
+"custom_controls.button_edit.toggleable" = "Umschaltbar";
+"custom_controls.button_edit.swipeable" = "Wischbar";
+"custom_controls.button_edit.bg_color" = "Hintergrundfarbe";
+"custom_controls.button_edit.stroke_color" = "Strichfarbe";
+"custom_controls.button_edit.dynamic_position" = "Dynamische Position";
+
+"custom_controls.button_menu.add_subbutton" = "Sub-Schaltfläche hinzufügen";
+"custom_controls.control_menu.exit" = "Beenden";
+"custom_controls.control_menu.save" = "Speichern";
+"custom_controls.control_menu.load" = "Laden";
+"custom_controls.control_menu.add_button" = "Taste hinzufügen";
 
 "init.migrateDir" = "Das PojavLauncher-Datenverzeichnis ist jetzt %@. Alle vorhandenen Daten wurden an den neuen Standort verschoben.";
 
