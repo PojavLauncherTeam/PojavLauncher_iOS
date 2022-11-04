@@ -15,6 +15,24 @@
 "Snapshot" = "Lansat pentru testare";
 "Old-beta" = "Beta-vechi";
 "Old-alpha" = "Alpha-vechi";
+"Edit" = "Editează";
+"Remove" = "Șterge";
+
+"custom_controls.button_edit.name" = "Nume";
+"custom_controls.button_edit.size" = "Dimensiune";
+"custom_controls.button_edit.mapping" = "Asocieri";
+"custom_controls.button_edit.orientation" = "Orientare";
+"custom_controls.button_edit.toggleable" = "Comutabil";
+"custom_controls.button_edit.swipeable" = "Glisabil";
+"custom_controls.button_edit.bg_color" = "Culoarea de fundal";
+"custom_controls.button_edit.stroke_color" = "Culoarea conturului";
+"custom_controls.button_edit.dynamic_position" = "Poziție dinamică";
+
+"custom_controls.button_menu.add_subbutton" = "Adaugă sub-buton";
+"custom_controls.control_menu.exit" = "Ieșire";
+"custom_controls.control_menu.save" = "Salvează";
+"custom_controls.control_menu.load" = "Incarcă";
+"custom_controls.control_menu.add_button" = "Adaugă buton";
 
 "launcher.menu.custom_controls" = "Controale personalizate";
 "launcher.menu.install_jar" = "Instalează .jar";
