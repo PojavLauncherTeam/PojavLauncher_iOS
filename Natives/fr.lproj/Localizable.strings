@@ -15,6 +15,24 @@
 "Snapshot" = "Snapshot";
 "Old-beta" = "Bêta";
 "Old-alpha" = "Alpha";
+"Edit" = "Modifier";
+"Remove" = "Supprimer";
+
+"custom_controls.button_edit.name" = "Nom";
+"custom_controls.button_edit.size" = "Taille";
+"custom_controls.button_edit.mapping" = "Mapping";
+"custom_controls.button_edit.orientation" = "Orientation";
+"custom_controls.button_edit.toggleable" = "Basculable";
+"custom_controls.button_edit.swipeable" = "Balayable";
+"custom_controls.button_edit.bg_color" = "Couleur d'arrière-plan";
+"custom_controls.button_edit.stroke_color" = "Couleur du contour";
+"custom_controls.button_edit.dynamic_position" = "Position dynamique";
+
+"custom_controls.button_menu.add_subbutton" = "Ajouter un sous-bouton";
+"custom_controls.control_menu.exit" = "Quitter";
+"custom_controls.control_menu.save" = "Sauvegarder";
+"custom_controls.control_menu.load" = "Charger";
+"custom_controls.control_menu.add_button" = "Ajouter un bouton";
 
 "launcher.menu.custom_controls" = "Contrôles personnalisés";
 "launcher.menu.install_jar" = "Installer le .jar";
