@@ -20,6 +20,24 @@
 "Releases" = "Sürümler";
 "Old-beta" = "Eski-beta";
 "Old-alpha" = "Eski-alfa";
+"Edit" = "Düzenle";
+"Remove" = "Kaldır";
+
+"custom_controls.button_edit.name" = "İsim";
+"custom_controls.button_edit.size" = "Boyut";
+"custom_controls.button_edit.mapping" = "Atama";
+"custom_controls.button_edit.orientation" = "Yön";
+"custom_controls.button_edit.toggleable" = "Değiştirilebilir";
+"custom_controls.button_edit.swipeable" = "Kaydırılabilir";
+"custom_controls.button_edit.bg_color" = "Arkaplan rengi";
+"custom_controls.button_edit.stroke_color" = "Vurgu rengi";
+"custom_controls.button_edit.dynamic_position" = "Dinamik pozisyon";
+
+"custom_controls.button_menu.add_subbutton" = "Yan-düğme ekle";
+"custom_controls.control_menu.exit" = "Çıkış";
+"custom_controls.control_menu.save" = "Kaydet";
+"custom_controls.control_menu.load" = "Yükle";
+"custom_controls.control_menu.add_button" = "Düğme ekle";
 
 "init.migrateDir" = "PojavLauncher veri dosyası artık %@. Önceden varolan bütün verilerin yeni konuma taşındı.";
 
