@@ -1,4 +1,6 @@
 
 // The options button at the top-right corner on iOS 12
 "Options" = "Asetukset";
+"custom_controls.control_menu.exit" = "Poistu";
+"custom_controls.control_menu.save" = "Tallenna";
 "Settings" = "Asetukset";
