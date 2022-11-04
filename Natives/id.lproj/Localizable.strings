@@ -22,6 +22,24 @@
 "Releases" = "Rilis";
 "Old-beta" = "Beta-lama";
 "Old-alpha" = "Alpha-lama";
+"Edit" = "Edit";
+"Remove" = "Hapus";
+
+"custom_controls.button_edit.name" = "Nama";
+"custom_controls.button_edit.size" = "Ukuran";
+"custom_controls.button_edit.mapping" = "Mapping";
+"custom_controls.button_edit.orientation" = "Orientasi";
+"custom_controls.button_edit.toggleable" = "Bisa dialihkan";
+"custom_controls.button_edit.swipeable" = "Bisa digesek";
+"custom_controls.button_edit.bg_color" = "Warna background";
+"custom_controls.button_edit.stroke_color" = "Warna garis";
+"custom_controls.button_edit.dynamic_position" = "Posisi dinamis";
+
+"custom_controls.button_menu.add_subbutton" = "Tambahkan tombol";
+"custom_controls.control_menu.exit" = "Keluar";
+"custom_controls.control_menu.save" = "Simpan";
+"custom_controls.control_menu.load" = "Memuat";
+"custom_controls.control_menu.add_button" = "Tambah tombol";
 
 "init.migrateDir" = "Data folder PojavLauncher sekarang di %@. Semua datamu yang ada telah dipindah ke lokasi baru tersebut.";
 
