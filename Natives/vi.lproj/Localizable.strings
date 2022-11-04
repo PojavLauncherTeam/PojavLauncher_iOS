@@ -20,6 +20,24 @@
 "Releases" = "Các bản phát hành";
 "Old-beta" = "Bản Beta cũ";
 "Old-alpha" = "Bản Alpha cũ";
+"Edit" = "Chỉnh sửa";
+"Remove" = "Loại bỏ";
+
+"custom_controls.button_edit.name" = "Tên";
+"custom_controls.button_edit.size" = "Kích thước";
+"custom_controls.button_edit.mapping" = "Sơ đồ phím";
+"custom_controls.button_edit.orientation" = "Hướng";
+"custom_controls.button_edit.toggleable" = "Chuyển đổi";
+"custom_controls.button_edit.swipeable" = "Có thể vuốt";
+"custom_controls.button_edit.bg_color" = "Màu nền";
+"custom_controls.button_edit.stroke_color" = "Màu viền phím";
+"custom_controls.button_edit.dynamic_position" = "Vị trí động";
+
+"custom_controls.button_menu.add_subbutton" = "Thêm phím phụ";
+"custom_controls.control_menu.exit" = "Thoát";
+"custom_controls.control_menu.save" = "Lưu";
+"custom_controls.control_menu.load" = "Tải";
+"custom_controls.control_menu.add_button" = "Thêm nút";
 
 "init.migrateDir" = "Đường dẫn dữ liệu của PojavLauncher bây giờ là %@. Tất cả dữ liệu đã có của bạn đã được chuyển đến địa chỉ mới.";
 
