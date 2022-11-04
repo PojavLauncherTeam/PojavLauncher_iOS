@@ -15,6 +15,17 @@
 "Snapshot" = "Snapshot";
 "Old-beta" = "Old-beta";
 "Old-alpha" = "Old-alpha";
+"Edit" = "Rediger";
+"Remove" = "Slett";
+
+"custom_controls.button_edit.name" = "Navn";
+"custom_controls.button_edit.size" = "Størrelse";
+"custom_controls.button_edit.toggleable" = "Byttbar";
+"custom_controls.button_edit.dynamic_position" = "Dynamisk posisjon";
+"custom_controls.control_menu.exit" = "Avslutt";
+"custom_controls.control_menu.save" = "Lagre";
+"custom_controls.control_menu.load" = "Last inn";
+"custom_controls.control_menu.add_button" = "Legg til knapp";
 
 "launcher.menu.custom_controls" = "Tilpassede kontroller";
 
