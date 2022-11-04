@@ -15,6 +15,24 @@
 "Snapshot" = "Naujinimai";
 "Old-beta" = "Beta";
 "Old-alpha" = "Alpha";
+"Edit" = "Redaguoti";
+"Remove" = "Pašalinti";
+
+"custom_controls.button_edit.name" = "Pavadinimas";
+"custom_controls.button_edit.size" = "Dydis";
+"custom_controls.button_edit.mapping" = "Mygtukų sąrašas";
+"custom_controls.button_edit.orientation" = "Orientacija";
+"custom_controls.button_edit.toggleable" = "Perjungiama";
+"custom_controls.button_edit.swipeable" = "Perbraukiamas";
+"custom_controls.button_edit.bg_color" = "Fono spalva";
+"custom_controls.button_edit.stroke_color" = "Linijos spalva";
+"custom_controls.button_edit.dynamic_position" = "Dinamiška pozicija";
+
+"custom_controls.button_menu.add_subbutton" = "Pridetį mygtukų spintos mygtuką";
+"custom_controls.control_menu.exit" = "Išeiti";
+"custom_controls.control_menu.save" = "Išsaugoti";
+"custom_controls.control_menu.load" = "Įjungti";
+"custom_controls.control_menu.add_button" = "Pridėti mygtuką";
 
 "launcher.menu.custom_controls" = "Kontrolės";
 "launcher.menu.install_jar" = "Instaliuoti .jar";
