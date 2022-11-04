@@ -22,6 +22,24 @@
 "Releases" = "Pagpapalabas";
 "Old-beta" = "Lumang-beta";
 "Old-alpha" = "Lumang-alpha";
+"Edit" = "I-Edit";
+"Remove" = "Tanggalin";
+
+"custom_controls.button_edit.name" = "Pangalan";
+"custom_controls.button_edit.size" = "Sukat";
+"custom_controls.button_edit.mapping" = "Pag mapa";
+"custom_controls.button_edit.orientation" = "Oryentasyon";
+"custom_controls.button_edit.toggleable" = "Nai-itoggle";
+"custom_controls.button_edit.swipeable" = "Pwede ma swipe";
+"custom_controls.button_edit.bg_color" = "Kulay ng likuran";
+"custom_controls.button_edit.stroke_color" = "Kulay ng stroke";
+"custom_controls.button_edit.dynamic_position" = "Dynamic na posisyon";
+
+"custom_controls.button_menu.add_subbutton" = "Lagyan ng sub-button";
+"custom_controls.control_menu.exit" = "Umalis";
+"custom_controls.control_menu.save" = "I-Save";
+"custom_controls.control_menu.load" = "Ikarga";
+"custom_controls.control_menu.add_button" = "Magdagdag ng pindutan";
 
 "init.migrateDir" = "Ang direktoryo ng data ng PojavLauncher ay %@ na ngayon. Ang lahat ng iyong umiiral na data ay inilipat sa bagong lokasyon.";
 
