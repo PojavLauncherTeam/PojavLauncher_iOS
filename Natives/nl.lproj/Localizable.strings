@@ -15,6 +15,17 @@
 "Snapshot" = "Snapshot";
 "Old-beta" = "Old-beta";
 "Old-alpha" = "Old-alpha";
+"Edit" = "Bewerken";
+"Remove" = "Verwijderen";
+
+"custom_controls.button_edit.name" = "Naam";
+"custom_controls.button_edit.size" = "Grootte";
+"custom_controls.button_edit.toggleable" = "Omschakelbaar";
+"custom_controls.button_edit.dynamic_position" = "Dynamische positie";
+"custom_controls.control_menu.exit" = "Afsluiten";
+"custom_controls.control_menu.save" = "Opslaan";
+"custom_controls.control_menu.load" = "Lading";
+"custom_controls.control_menu.add_button" = "Knop toevoegen";
 
 "launcher.menu.custom_controls" = "Aangepaste controles";
 
