@@ -33,6 +33,7 @@
 "custom_controls.button_edit.mapping" = "映射";
 "custom_controls.button_edit.orientation" = "方向";
 "custom_controls.button_edit.toggleable" = "可切换";
+"custom_controls.button_edit.mouse_pass" = "鼠标穿透";
 "custom_controls.button_edit.swipeable" = "可滑动的";
 "custom_controls.button_edit.bg_color" = "背景颜色";
 "custom_controls.button_edit.stroke_width" = "边框宽度 (%)";
