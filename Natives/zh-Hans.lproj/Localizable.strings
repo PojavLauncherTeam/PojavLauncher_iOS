@@ -22,6 +22,9 @@
 "Releases" = "正式版";
 "Old-beta" = "远古 beta 版";
 "Old-alpha" = "远古 alpha 版";
+
+// Custom controls
+"Copy" = "拷贝";
 "Edit" = "修改";
 "Remove" = "移除";
 
@@ -32,12 +35,18 @@
 "custom_controls.button_edit.toggleable" = "可切换";
 "custom_controls.button_edit.swipeable" = "可滑动的";
 "custom_controls.button_edit.bg_color" = "背景颜色";
+"custom_controls.button_edit.stroke_width" = "边框宽度 (%)";
 "custom_controls.button_edit.stroke_color" = "边框颜色";
+"custom_controls.button_edit.corner_radius" = "圆角半径 (%)";
+"custom_controls.button_edit.opacity" = "不透明度 (%)：";
 "custom_controls.button_edit.dynamic_position" = "动态位置";
+"custom_controls.button_edit.dynamic_x" = "动态 X 轴";
+"custom_controls.button_edit.dynamic_y" = "动态 Y 轴";
 
 "custom_controls.button_menu.add_subbutton" = "添加子按钮";
 "custom_controls.control_menu.exit" = "退出";
 "custom_controls.control_menu.save" = "保存";
+"custom_controls.control_menu.save.error.default" = "控件名称不能是“默认”，因为它会被覆盖。";
 "custom_controls.control_menu.load" = "加载";
 "custom_controls.control_menu.add_button" = "添加按键";
 
