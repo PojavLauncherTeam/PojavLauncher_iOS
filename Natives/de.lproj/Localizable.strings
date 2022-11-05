@@ -8,6 +8,8 @@
 "game.menu.log_output" = "Protokoll-Ausgabe";
 "game.menu.custom_controls" = "Benutzerdefinierte Steuerung";
 
+"game.title.exit_code" = "Das Spiel wurde mit dem Code %d beendet";
+
 // The options button at the top-right corner on iOS 12
 "Options" = "Optionen";
 
@@ -44,6 +46,7 @@
 "custom_controls.button_menu.add_subbutton" = "Sub-Schaltfläche hinzufügen";
 "custom_controls.control_menu.exit" = "Beenden";
 "custom_controls.control_menu.save" = "Speichern";
+"custom_controls.control_menu.save.error.default" = "Der Name der Steuerung kann nicht „default” sein, da es überschrieben werden würde.";
 "custom_controls.control_menu.save.error.json" = "JSON-Fehler";
 "custom_controls.control_menu.save.error.write" = "Fehler beim Speichern der Datei";
 "custom_controls.control_menu.load" = "Laden";
