@@ -48,8 +48,13 @@
 "custom_controls.control_menu.save" = "保存";
 "custom_controls.control_menu.save.error.default" = "控件名称不能是“默认”，因为它会被覆盖。";
 "custom_controls.control_menu.save.error.json" = "JSON 错误";
+"custom_controls.control_menu.save.error.write" = "存储文件时发生错误";
 "custom_controls.control_menu.load" = "加载";
+"custom_controls.control_menu.make_default" = "设为默认";
+"custom_controls.control_menu.safe_area" = "安全区";
 "custom_controls.control_menu.add_button" = "添加按键";
+"custom_controls.control_menu.add_drawer" = "添加组合框";
+"custom_controls.hint" = "长按屏幕上的任意位置以获取更多选项";
 
 "init.migrateDir" = "目前 PojavLauncher 数据目录为%@。所有的游戏资源已移动到最新目录。";
 
