@@ -22,6 +22,9 @@
 "Releases" = "Релизы";
 "Old-beta" = "Старые бета";
 "Old-alpha" = "Старые альфа";
+
+// Custom controls
+"Copy" = "Копировать";
 "Edit" = "Редактировать";
 "Remove" = "Удалить";
 
@@ -30,16 +33,29 @@
 "custom_controls.button_edit.mapping" = "Кнопки";
 "custom_controls.button_edit.orientation" = "Сторона разворота";
 "custom_controls.button_edit.toggleable" = "Переключаемый";
+"custom_controls.button_edit.mouse_pass" = "Пропускать касание в игру";
 "custom_controls.button_edit.swipeable" = "Пролистываемый";
 "custom_controls.button_edit.bg_color" = "Цвет фона";
+"custom_controls.button_edit.stroke_width" = "Контур (%)";
 "custom_controls.button_edit.stroke_color" = "Цвет обводки";
+"custom_controls.button_edit.corner_radius" = "Скругление (%)";
+"custom_controls.button_edit.opacity" = "Видимость (%)";
 "custom_controls.button_edit.dynamic_position" = "Динамическая позиция";
+"custom_controls.button_edit.dynamic_x" = "Привязка по оси X";
+"custom_controls.button_edit.dynamic_y" = "Привязка по оси Y";
 
 "custom_controls.button_menu.add_subbutton" = "Добавить под-кнопку";
 "custom_controls.control_menu.exit" = "Выйти";
 "custom_controls.control_menu.save" = "Сохранить";
+"custom_controls.control_menu.save.error.default" = "Название раскладки не может быть \"default\", иначе она будет перезаписана.";
+"custom_controls.control_menu.save.error.json" = "Ошибка формата";
+"custom_controls.control_menu.save.error.write" = "Ошибка сохранения файла";
 "custom_controls.control_menu.load" = "Загрузка";
+"custom_controls.control_menu.make_default" = "Сделать основной";
+"custom_controls.control_menu.safe_area" = "Безопасная область";
 "custom_controls.control_menu.add_button" = "Добавить кнопку";
+"custom_controls.control_menu.add_drawer" = "Добавить группу";
+"custom_controls.hint" = "Зажмите в свободном месте для дополнительных настроек";
 
 "init.migrateDir" = "Новое расположение PojavLauncher: %@. Все существующие данные также были перемещены.";
 
