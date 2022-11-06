@@ -42,6 +42,7 @@
 "preference.section.control" = "사용자 지정 조작";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java 기능";
+"preference.title.cosmetica" = "코스메티카 망토";
 
 "preference.title.renderer" = "렌더러";
 "preference.title.disable_gesture" = "제스쳐 비활성화";
