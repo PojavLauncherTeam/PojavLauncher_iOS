@@ -26,7 +26,9 @@
 // Custom controls
 "Copy" = "Копія";
 "Edit" = "Редагувати";
+"Move" = "Рухати";
 "Remove" = "Вилучити";
+"Resize" = "Зміна розміру";
 
 "custom_controls.button_edit.name" = "Ім'я";
 "custom_controls.button_edit.size" = "Розмір";
@@ -45,7 +47,9 @@
 "custom_controls.button_edit.dynamic_y" = "Динамічна вісь Y";
 
 "custom_controls.button_menu.add_subbutton" = "Додати під-кнопку";
+"custom_controls.control_menu.discard_changes" = "Відхилити зміни";
 "custom_controls.control_menu.exit" = "Вийти";
+"custom_controls.control_menu.exit.warn" = "Ви збираєтесь вийти без збережень.";
 "custom_controls.control_menu.save" = "Зберегти";
 "custom_controls.control_menu.save.error.default" = "Ім'я контролера не буде \"за замовчуванням\" бо воно буде перезаписано.";
 "custom_controls.control_menu.save.error.json" = "Помилка JSON";
