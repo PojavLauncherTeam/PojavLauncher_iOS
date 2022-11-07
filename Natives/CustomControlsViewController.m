@@ -18,49 +18,13 @@
 BOOL shouldDismissPopover = YES;
 NSMutableArray *keyCodeMap, *keyValueMap;
 
-@interface ControlHandleView : UIView
-@property ControlButton* target;
-@end
 @implementation ControlHandleView
-
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-    [super touchesMoved:touches withEvent:event];
-    UITouch *touch = touches.anyObject;
-    CGPoint currPoint = [touch locationInView:self];
-    CGPoint prevPoint = [touch previousLocationInView:self];
-
-    CGFloat deltaX = currPoint.x - prevPoint.x;
-    CGFloat deltaY = currPoint.y - prevPoint.y;
-    CGFloat width, height;
-
-    UIView *target = self.target;
-    if (target != nil) {
-        width = MAX(10, [self.target.properties[@"width"] floatValue] + deltaX);
-        height = MAX(10, [self.target.properties[@"height"] floatValue] + deltaY);
-        self.target.properties[@"width"] = @(width);
-        self.target.properties[@"height"] = @(height);
-        [self.target update];
-    } else {
-        target = self.superview.subviews[0];
-        CGRect targetFrame = target.frame;
-        width = targetFrame.size.width += deltaX;
-        height = targetFrame.size.height += deltaY;
-        target.frame = targetFrame;
-    }
-
-    CGRect selfFrame = self.frame;
-    selfFrame.origin.x += deltaX;
-    selfFrame.origin.y += deltaY;
-    self.frame = selfFrame;
-}
+// Nothing
 @end
 
 @interface CustomControlsViewController () <UIGestureRecognizerDelegate, UIPopoverPresentationControllerDelegate>{
 }
 
-@property(nonatomic, strong) NSMutableDictionary* cc_dictionary;
-@property(nonatomic) UIView* ctrlView;
-@property(nonatomic) ControlHandleView* resizeView;
 @property(nonatomic) NSString* currentFileName;
 @property(nonatomic) CGRect selectedPoint;
 @property(nonatomic) UINavigationBar* navigationBar;
@@ -120,6 +84,8 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     self.resizeView.layer.cornerRadius = self.resizeView.frame.size.width / 2;
     self.resizeView.clipsToBounds = YES;
     self.resizeView.hidden = YES;
+    [self.resizeView addGestureRecognizer:[[UIPanGestureRecognizer alloc]
+        initWithTarget:self action:@selector(onTouch:)]];
     [self.view addSubview:self.resizeView];
 
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panControlArea:)];
@@ -311,12 +277,16 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 }
 
 - (void)actionMenuExit {
+    if (self.undoManager.canUndo) {
+        [self actionMenuSaveWithExit:YES];
+        return;
+    }
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)actionMenuSave {
-      UIAlertController *controller = [UIAlertController alertControllerWithTitle: NSLocalizedString(@"custom_controls.control_menu.save", nil)
-        message:[NSString stringWithFormat:NSLocalizedString(@"custom_controls.control_menu.save.hint", nil), getenv("POJAV_HOME")]
+- (void)actionMenuSaveWithExit:(BOOL)exit {
+    UIAlertController *controller = [UIAlertController alertControllerWithTitle: NSLocalizedString(@"custom_controls.control_menu.save", nil)
+        message:exit?NSLocalizedString(@"custom_controls.control_menu.exit.warn", nil):@""
         preferredStyle:UIAlertControllerStyleAlert];
     [controller addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         textField.placeholder = @"Name";
@@ -343,11 +313,25 @@ NSMutableArray *keyCodeMap, *keyValueMap;
                 return;
             }
 
+            if (exit) {
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
+
             self.currentFileName = field.text;
+            [self.undoManager removeAllActions];
         }
     }]];
+    if (exit) {
+        [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"custom_controls.control_menu.discard_changes", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }]];
+    }
     [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil]];
     [self presentViewController:controller animated:YES completion:nil];
+}
+
+- (void)actionMenuSave {
+    [self actionMenuSaveWithExit:NO];
 }
 
 - (void)actionOpenFilePicker:(void (^)(NSString *name))handler {
@@ -422,13 +406,13 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     ControlButton *button;
     if (drawer == nil) {
         button = [ControlButton buttonWithProperties:dict];
-        [self.ctrlView addSubview:button];
+        [self doAddButton:button atIndex:@([self.cc_dictionary[@"mControlDataList"] count])];
         [button snapAndAlignX:self.selectedPoint.origin.x-25.0 Y:self.selectedPoint.origin.y-25.0];
         [button update];
-        [self.cc_dictionary[@"mControlDataList"] addObject:button.properties];
     } else {
-        button = [drawer addButtonProp:dict];
-        [self.ctrlView addSubview:button];
+        button = [ControlSubButton buttonWithProperties:dict];
+        ((ControlSubButton *)button).parentDrawer = drawer;
+        [self doAddButton:button atIndex:@(drawer.buttons.count)];
         [button snapAndAlignX:self.selectedPoint.origin.x-25.0 Y:self.selectedPoint.origin.y-25.0];
         [drawer syncButtons];
     }
@@ -458,10 +442,9 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     data[@"properties"] = properties;
     data[@"buttonProperties"] = [[NSMutableArray alloc] init];
     ControlDrawer *button = [ControlDrawer buttonWithData:data];
-    [self.ctrlView addSubview:button];
+    [self doAddButton:button atIndex:@([self.cc_dictionary[@"mDrawerDataList"] count])];
     [button snapAndAlignX:self.selectedPoint.origin.x-25.0 Y:self.selectedPoint.origin.y-25.0];
     [button update];
-    [self.cc_dictionary[@"mDrawerDataList"] addObject:button.drawerData];
 
     [button addGestureRecognizer:[[UITapGestureRecognizer alloc]
         initWithTarget:self action:@selector(showControlPopover:)]];
@@ -479,25 +462,13 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 }
 
 - (void)actionMenuBtnDelete {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:((ControlButton *)self.currentGesture.view).currentTitle message:@"Are you sure to remove this button?"preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:((ControlButton *)self.currentGesture.view).currentTitle message:NSLocalizedString(@"custom_controls.button_menu.remove", nil) preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
     UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        int index;
         self.resizeView.hidden = YES;
         ControlButton *button = (ControlButton *)self.currentGesture.view;
-        if ([button isKindOfClass:[ControlSubButton class]]) {
-            [((ControlSubButton *)button).parentDrawer.buttons removeObject:button];
-            [((ControlSubButton *)button).parentDrawer.drawerData[@"buttonProperties"] removeObject:button.properties];
-            [((ControlSubButton *)button).parentDrawer syncButtons];
-        } else if ([button isKindOfClass:[ControlDrawer class]]) {
-            for (ControlSubButton *subButton in ((ControlDrawer *)button).buttons) {
-                [subButton removeFromSuperview];
-            }
-            [self.cc_dictionary[@"mDrawerDataList"] removeObject:((ControlDrawer *)button).drawerData];
-        } else {
-            [self.cc_dictionary[@"mControlDataList"] removeObject:button.properties];
-        }
-        [button removeFromSuperview];
-        
+        [self doRemoveButton:button];
     }];
     [alert addAction:cancel];
     [alert addAction:ok];
@@ -550,24 +521,92 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     return YES;
 }
 
+- (void)onTouchAreaHandleView:(UIPanGestureRecognizer *)sender {
+    if (sender.state != UIGestureRecognizerStateChanged) return;
+    CGPoint translation = [sender translationInView:sender.view];
+
+    // Perform safe area resize
+    CGRect targetFrame = self.ctrlView.frame;
+    targetFrame.size.width += translation.x;
+    targetFrame.size.height += translation.y;
+    self.ctrlView.frame = targetFrame;
+
+    // Keep track of handle view location
+    targetFrame = self.resizeView.frame;
+    targetFrame.origin.x = CGRectGetMaxX(self.ctrlView.frame) - targetFrame.size.width;
+    targetFrame.origin.y = CGRectGetMaxY(self.ctrlView.frame) - targetFrame.size.height;
+    self.resizeView.frame = targetFrame;
+
+    [sender setTranslation:CGPointZero inView:sender.view];
+}
+
+- (void)onTouchButtonHandleView:(UIPanGestureRecognizer *)sender {
+    static CGRect origButtonRect;
+
+    CGPoint translation = [sender translationInView:sender.view];
+    CGFloat width, height;
+
+    switch (sender.state) {
+        case UIGestureRecognizerStateBegan: {
+            // Save old button frame
+            origButtonRect = self.resizeView.target.frame;
+        } break;
+        case UIGestureRecognizerStateChanged: {
+            // Perform button resize
+            width = MAX(10, [self.resizeView.target.properties[@"width"] floatValue] + translation.x);
+            height = MAX(10, [self.resizeView.target.properties[@"height"] floatValue] + translation.y);
+            self.resizeView.target.properties[@"width"] = @(width);
+            self.resizeView.target.properties[@"height"] = @(height);
+            [self.resizeView.target update];
+            [sender setTranslation:CGPointZero inView:sender.view];
+
+            // Keep track of handle view location
+            self.resizeView.frame = CGRectMake(CGRectGetMaxX(self.resizeView.target.frame), CGRectGetMaxY(self.resizeView.target.frame),
+                self.resizeView.frame.size.width, self.resizeView.frame.size.height);
+        } break;
+        case UIGestureRecognizerStateCancelled:
+        case UIGestureRecognizerStateEnded: {
+            [self doMoveOrResizeButton:self.resizeView.target from:origButtonRect to:self.resizeView.target.frame];
+        } break;
+        default: break;
+    }
+}
+
 - (void)onTouch:(UIPanGestureRecognizer *)sender {
+    static CGRect origButtonRect;
+
+    if ([sender.view isKindOfClass:ControlHandleView.class]) {
+        if (self.resizeView.target == nil) {
+            [self onTouchAreaHandleView:sender];
+        } else {
+            [self onTouchButtonHandleView:sender];
+        }
+        return;
+    }
+
     CGPoint translation = [sender translationInView:sender.view];
 
     ControlButton *button = (ControlButton *)sender.view;
     if ([button.properties[@"isDynamicBtn"] boolValue]) return;
-    else if ([button isKindOfClass:[ControlSubButton class]] &&
+    else if ([button isKindOfClass:ControlSubButton.class] &&
         ![((ControlSubButton *)button).parentDrawer.drawerData[@"orientation"] isEqualToString:@"FREE"]) return;
 
     switch (sender.state) {
         case UIGestureRecognizerStateBegan: {
+            origButtonRect = button.frame;
             [self setButtonMenuVisibleForView:nil];
             self.resizeView.hidden = NO;
+            self.resizeView.target = button;
         } break;
         case UIGestureRecognizerStateChanged: {
             //button.center = CGPointMake(button.center.x + translation.x, button.center.y + translation.y);
             [button snapAndAlignX:clamp(button.frame.origin.x+translation.x, 0, self.ctrlView.frame.size.width - button.frame.size.width) Y:clamp(button.frame.origin.y+translation.y, 0, self.ctrlView.frame.size.height - button.frame.size.height)];
             [sender setTranslation:CGPointZero inView:button];
             self.resizeView.frame = CGRectMake(CGRectGetMaxX(button.frame), CGRectGetMaxY(button.frame), self.resizeView.frame.size.width, self.resizeView.frame.size.height);
+        } break;
+        case UIGestureRecognizerStateCancelled:
+        case UIGestureRecognizerStateEnded: {
+            [self doMoveOrResizeButton:button from:origButtonRect to:button.frame];
         } break;
         default: break;
     }
@@ -591,11 +630,12 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 #pragma mark - Keycode table init
 - (void)initKeyCodeMap {
 #define addkey(key) \
-  [keyCodeMap addObject:@(#key)]; \
-  [keyValueMap addObject:@(GLFW_KEY_##key)];
+    [keyCodeMap addObject:@(#key)]; \
+    [keyValueMap addObject:@(GLFW_KEY_##key)];
 #define addspec(key) \
-  [keyCodeMap addObject:@(#key)]; \
-  [keyValueMap addObject:@(key)];
+    [keyCodeMap addObject:@(#key)]; \
+    [keyValueMap addObject:@(key)];
+
     keyCodeMap = [[NSMutableArray alloc] init];
     keyValueMap = [[NSMutableArray alloc] init];
     addspec(SPECIALBTN_SCROLLDOWN)
@@ -612,14 +652,20 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     addkey(ESCAPE)
 
     // 0-9 keys
-    addkey(0) addkey(1) addkey(2) addkey(3) addkey(4) addkey(5) addkey(6) addkey(7) addkey(8) addkey(9)
+    addkey(0) addkey(1) addkey(2) addkey(3) addkey(4)
+    addkey(5) addkey(6) addkey(7) addkey(8) addkey(9)
     //addkey(POUND)
 
     // Arrow keys
     addkey(DPAD_UP) addkey(DPAD_DOWN) addkey(DPAD_LEFT) addkey(DPAD_RIGHT)
 
     // A-Z keys
-    addkey(A) addkey(B) addkey(C) addkey(D) addkey(E) addkey(F) addkey(G) addkey(H) addkey(I) addkey(J) addkey(K) addkey(L) addkey(M) addkey(N) addkey(O) addkey(P) addkey(Q) addkey(R) addkey(S) addkey(T) addkey(U) addkey(V) addkey(W) addkey(X) addkey(Y) addkey(Z)
+    addkey(A) addkey(B) addkey(C) addkey(D) addkey(E)
+    addkey(F) addkey(G) addkey(H) addkey(I) addkey(J)
+    addkey(K) addkey(L) addkey(M) addkey(N) addkey(O)
+    addkey(P) addkey(Q) addkey(R) addkey(S) addkey(T)
+    addkey(U) addkey(V) addkey(W) addkey(X) addkey(Y)
+    addkey(Z)
 
     addkey(COMMA)
     addkey(PERIOD)
@@ -658,12 +704,23 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     addkey(INSERT)
 
     // Fn keys
-    addkey(F1) addkey(F2) addkey(F3) addkey(F4) addkey(F5) addkey(F6) addkey(F7) addkey(F8) addkey(F9) addkey(F10) addkey(F11) addkey(F12)
+    addkey(F1) addkey(F2) addkey(F3) addkey(F4)
+    addkey(F5) addkey(F6) addkey(F7) addkey(F8)
+    addkey(F9) addkey(F10) addkey(F11) addkey(F12)
 
     // Num keys
     addkey(NUM_LOCK)
-    addkey(NUMPAD_0) addkey(NUMPAD_1) addkey(NUMPAD_2) addkey(NUMPAD_3) addkey(NUMPAD_4) addkey(NUMPAD_5) addkey(NUMPAD_6) addkey(NUMPAD_7) addkey(NUMPAD_8) addkey(NUMPAD_9)
-    addkey(NUMPAD_DECIMAL) addkey(NUMPAD_DIVIDE) addkey(NUMPAD_MULTIPLY) addkey(NUMPAD_SUBTRACT) addkey(NUMPAD_ADD) addkey(NUMPAD_ENTER) addkey(NUMPAD_EQUAL)
+    addkey(NUMPAD_0)
+    addkey(NUMPAD_1) addkey(NUMPAD_2) addkey(NUMPAD_3)
+    addkey(NUMPAD_4) addkey(NUMPAD_5) addkey(NUMPAD_6)
+    addkey(NUMPAD_7) addkey(NUMPAD_8) addkey(NUMPAD_9)
+    addkey(NUMPAD_DECIMAL)
+    addkey(NUMPAD_DIVIDE)
+    addkey(NUMPAD_MULTIPLY)
+    addkey(NUMPAD_SUBTRACT)
+    addkey(NUMPAD_ADD)
+    addkey(NUMPAD_ENTER)
+    addkey(NUMPAD_EQUAL)
 
     //addkey(APOSTROPHE)
     //addkey(WORLD_1) addkey(WORLD_2)
@@ -1056,6 +1113,8 @@ CGFloat currentY;
 }
 
 - (void)actionEditFinish {
+    NSMutableDictionary *oldProperties = self.targetButton.properties.mutableCopy;
+
     self.targetButton.properties[@"name"] = self.editName.text;
     self.targetButton.properties[@"width"]  = @([self.editSizeWidth.text floatValue]);
     self.targetButton.properties[@"height"] = @([self.editSizeHeight.text floatValue]);
@@ -1083,17 +1142,22 @@ CGFloat currentY;
     self.targetButton.properties[@"opacity"] = @(self.sliderOpacity.value / 100.0);
     self.targetButton.properties[@"isDynamicBtn"] = @(self.switchDynamicPos.isOn);
 
-    NSString *oldDynamicX = self.targetButton.properties[@"dynamicX"];
-    NSString *oldDynamicY = self.targetButton.properties[@"dynamicY"];
     self.targetButton.properties[@"dynamicX"] = self.editDynamicX.text;
     self.targetButton.properties[@"dynamicY"] = self.editDynamicY.text;
 
+    NSMutableDictionary *newProperties = self.targetButton.properties.mutableCopy;
+
+    for (NSString *key in oldProperties) {
+        if ([oldProperties[key] isEqual:newProperties[key]]) {
+            [newProperties removeObjectForKey:key];
+        }
+    }
+
     @try {
-        [self.targetButton update];
+        [(CustomControlsViewController *)self.presentingViewController
+            doUpdateButton:self.targetButton from:oldProperties to:newProperties];
         [self actionEditCancel];
     } @catch (NSException *exception) {
-        self.targetButton.properties[@"dynamicX"] = oldDynamicX;
-        self.targetButton.properties[@"dynamicY"] = oldDynamicY;
         showDialog(self, @"Error processing dynamic position", exception.reason);
     }
 }

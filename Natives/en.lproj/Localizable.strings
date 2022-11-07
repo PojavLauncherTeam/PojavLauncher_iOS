@@ -26,7 +26,9 @@
 // Custom controls
 "Copy" = "Copy";
 "Edit" = "Edit";
+"Move" = "Move";
 "Remove" = "Remove";
+"Resize" = "Resize";
 
 "custom_controls.button_edit.name" = "Name";
 "custom_controls.button_edit.size" = "Size";
@@ -45,7 +47,9 @@
 "custom_controls.button_edit.dynamic_y" = "Dynamic Y-axis";
 
 "custom_controls.button_menu.add_subbutton" = "Add sub-button";
+"custom_controls.control_menu.discard_changes" = "Discard changes";
 "custom_controls.control_menu.exit" = "Exit";
+"custom_controls.control_menu.exit.warn" = "You are about to exit without saving changes.";
 "custom_controls.control_menu.save" = "Save";
 "custom_controls.control_menu.save.error.default" = "Control name can not be \"default\" as it will be overwritten.";
 "custom_controls.control_menu.save.error.json" = "JSON error";

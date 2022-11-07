@@ -12,7 +12,6 @@
 @property(nonatomic, assign) BOOL areButtonsVisible;
 
 + (id)buttonWithData:(NSMutableDictionary *)drawerData;
-- (ControlSubButton *)addButtonProp:(NSMutableDictionary *)properties;
 - (ControlSubButton *)addButton:(ControlSubButton *)button;
 - (void)restoreButtonVisibility;
 - (void)syncButtons;

@@ -18,11 +18,6 @@
     return instance;
 }
 
-- (ControlSubButton *)addButtonProp:(NSMutableDictionary *)prop {
-    [self.drawerData[@"buttonProperties"] addObject:prop];
-    return [self addButton:[ControlSubButton buttonWithProperties:prop]];
-}
-
 - (ControlSubButton *)addButton:(ControlSubButton *)button {
     [self.buttons addObject:button];
     button.parentDrawer = self;

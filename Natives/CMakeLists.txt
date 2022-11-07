@@ -113,6 +113,7 @@ add_executable(PojavLauncher
   AccountListViewController.m
   AppDelegate.m
   CustomControlsViewController.m
+  CustomControlsViewController+UndoManager.m
   FileListViewController.m
   GameSurfaceView.m
   JavaGUIViewController.m
