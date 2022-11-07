@@ -27,6 +27,7 @@
 
 #define CS_PLATFORM_BINARY 0x4000000
 #define PT_TRACE_ME 0
+#define PT_DETACH 11 
 int ptrace(int, pid_t, caddr_t, int);
 #define fm NSFileManager.defaultManager
 extern char** environ;
@@ -285,7 +286,6 @@ int main(int argc, char * argv[]) {
         // then both parent and child processes get CS_DEBUGGED
         int ret = ptrace(PT_TRACE_ME, 0, 0, 0);
         return ret;
-        // FIXME: how to kill the child process?
     }
 
     if (pJLI_Launch) {
@@ -334,17 +334,15 @@ int main(int argc, char * argv[]) {
         int pid;
         int ret = posix_spawnp(&pid, argv[0], NULL, NULL, argv, environ);
         if (ret == 0) {
-            // posix_spawn is successful, let's check if JIT is enabled
-            int retries;
-            for (retries = 0; retries < 100; retries++) {
-                usleep(10000);
-                if (isJITEnabled()) {
-                    NSLog(@"[Pre-init] JIT has heen enabled with PT_TRACE_ME");
-                    retries = -1;
-                    break;
-                }
-            }
-            if (retries != -1) {
+            // Cleanup child process
+            waitpid(pid, NULL, WUNTRACED);
+            ptrace(PT_DETACH, pid, NULL, 0);
+            kill(pid, SIGTERM);
+            wait(NULL);
+
+            if (isJITEnabled()) {
+                NSLog(@"[Pre-init] JIT has heen enabled with PT_TRACE_ME");
+            } else {
                 NSLog(@"[Pre-init] Failed to enable JIT: unknown reason");
             }
         } else {
