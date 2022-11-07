@@ -48,6 +48,10 @@ class Sync {
 	/** The time to sleep/yield until the next frame */
 	private static long nextFrame = 0;
 
+	/** The time since last frame **/
+	private static long lastFrameTime = 0;
+	private static long lastDelay = 0;
+
 	/** whether the initialisation code has run */
 	private static boolean initialised = false;
 
@@ -67,6 +71,38 @@ class Sync {
 	public static void sync(int fps) {
 		if (fps <= 0)
 			return;
+
+		preciseSync(fps);
+	}
+
+	/** Fast, more cpu friendly way of syncing, although can be off the mark at times */
+	private static void fastSync(int fps){
+		if (!initialised){
+			initialised = true;
+			lastFrameTime = getTime();
+		}
+
+		// Dumbass implementation I guess
+		long currentFrameTime = getTime();
+		long deltaMs = (currentFrameTime - lastFrameTime)/1000000;
+		long deltaFrame = 1000/fps;
+		if(deltaMs < deltaFrame){  // skip the Thread sleep if the opportunity is available
+			try {
+				Thread.sleep(Math.min((deltaFrame - deltaMs) + lastDelay, deltaFrame));
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			lastDelay = 0;
+		}else{
+			// Store how late the device is I guess
+			lastDelay = deltaMs - deltaFrame;
+		}
+
+		lastFrameTime = getTime();
+	}
+
+	/** Precise, more cpu intensive way of syncing */
+	private static void preciseSync(int fps){
 		if (!initialised)
 			initialise();
 
@@ -76,7 +112,7 @@ class Sync {
 			for (long t0 = getTime(), t1; (nextFrame - t0) > sleepDurations.avg(); t0 = t1) {
 				Thread.sleep(1);
 				sleepDurations.add((t1 = getTime()) - t0); // update average
-															// sleep time
+				// sleep time
 			}
 
 			// slowly dampen sleep average if too high to avoid yielding too
@@ -88,7 +124,7 @@ class Sync {
 			for (long t0 = getTime(), t1; (nextFrame - t0) > yieldDurations.avg(); t0 = t1) {
 				Thread.yield();
 				yieldDurations.add((t1 = getTime()) - t0); // update average
-															// yield time
+				// yield time
 			}
 		} catch (InterruptedException e) {
 
@@ -111,27 +147,6 @@ class Sync {
 		yieldDurations.init((int) (-(getTime() - getTime()) * 1.333));
 
 		nextFrame = getTime();
-
-		String osName = System.getProperty("os.name");
-
-		if (osName.startsWith("Win")) {
-			// On windows the sleep functions can be highly inaccurate by
-			// over 10ms making in unusable. However it can be forced to
-			// be a bit more accurate by running a separate sleeping daemon
-			// thread.
-			Thread timerAccuracyThread = new Thread(new Runnable() {
-				public void run() {
-					try {
-						Thread.sleep(Long.MAX_VALUE);
-					} catch (Exception e) {
-					}
-				}
-			});
-
-			timerAccuracyThread.setName("LWJGL Timer");
-			timerAccuracyThread.setDaemon(true);
-			timerAccuracyThread.start();
-		}
 	}
 
 	/**

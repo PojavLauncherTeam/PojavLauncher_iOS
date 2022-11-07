@@ -1,8 +1,8 @@
 #import "authenticator/BaseAuthenticator.h"
 #import "AccountListViewController.h"
 #import "LauncherMenuViewController.h"
+#import "LauncherNewsViewController.h"
 #import "LauncherPreferencesViewController2.h"
-#import "LauncherViewController.h"
 #import "UIButton+AFNetworking.h"
 #import "UIImageView+AFNetworking.h"
 
@@ -19,10 +19,10 @@
 
     // View controllers are put into an array to keep its state
     self.options = @[
-        [[LauncherViewController alloc] init],
+        [[LauncherNewsViewController alloc] init],
         [[LauncherPreferencesViewController2 alloc] init]
     ];
-    self.options[0].title = @"PojavLauncher";
+    self.options[0].title = NSLocalizedString(@"News", nil);
     self.options[1].title = NSLocalizedString(@"Settings", nil);
     //@[@"News", @"Development Console", @"Crash logs"];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -73,6 +73,9 @@
     }
 
     cell.textLabel.text = [self.options[indexPath.row] title];
+    cell.imageView.contentMode = UIViewContentModeCenter;
+    cell.imageView.image = [UIImage imageNamed:[self.options[indexPath.row]
+        performSelector:@selector(imageName)]];
     return cell;
 }
 

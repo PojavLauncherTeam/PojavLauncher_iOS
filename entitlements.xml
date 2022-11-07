@@ -19,5 +19,9 @@
     <true/>
     <key>dynamic-codesigning</key>
     <true/>
+
+    <!-- Give ability to change Jetsam task limit by itself -->
+    <key>com.apple.private.memorystatus</key>
+    <true/>
 </dict>
 </plist>

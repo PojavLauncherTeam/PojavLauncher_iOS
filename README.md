@@ -1,5 +1,6 @@
 # PojavLauncher
 [![Development build](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/actions/workflows/development.yml/badge.svg?branch=main)](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/actions/workflows/development.yml)
+[![Crowdin](https://badges.crowdin.net/pojavlauncher/localized.svg)](https://crowdin.com/project/pojavlauncher)
 [![Discord](https://img.shields.io/discord/724163890803638273.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/x5pxnANzbX)
 [![Reddit](https://img.shields.io/badge/dynamic/json.svg?label=r/PojavLauncher%20member%20count&query=$.data.subscribers&url=https://www.reddit.com/r/PojavLauncher/about.json)](https://reddit.com/r/PojavLauncher)
 
@@ -7,24 +8,25 @@
 - The official Twitter for PojavLauncher is [@PLaunchTeam](https://twitter.com/PLaunchTeam). Any others (most notably @PojavLauncher) are fake, please report them to Twitter's moderation team.
 
 ## Introduction
-PojavLauncher is a Minecraft: Java Edition launcher for Android and iOS based on [Boardwalk](https://github.com/zhuowei/Boardwalk).
-This launcher can launch most of available Minecraft versions (up to latest 1.19, including Combat Test versions).
-1.17+ support is available as of v2.0, or with the workarounds described on our [website](https://pojav.ml).
-Modding via Forge and Fabric are also supported.
-Older versions of Forge and Fabric can be used with OpenJDK 8.
-This repository contains source code for iOS/iPadOS platform.
-For Android platform, check out [PojavLauncher repository](https://github.com/PojavLauncherTeam/PojavLauncher).
+- PojavLauncher is a Minecraft: Java Edition launcher for Android and iOS based on [Boardwalk](https://github.com/zhuowei/Boardwalk).
+- This launcher can launch most of available Minecraft versions (up to latest 1.19.2, including Combat Test versions).
+- Modding via Forge and Fabric are also supported.
+- Older versions of Forge and Fabric can be used with OpenJDK 8.
+- This repository contains source code for iOS/iPadOS platform.
+- For Android platform, check out [PojavLauncher repository](https://github.com/PojavLauncherTeam/PojavLauncher).
 
 This launcher is available on the Procursus repo, thanks to [@Diatrus](https://twitter.com/Diatrus), and Doregon's Repository, thanks to [@crystall1ndev](https://twitter.com/crystall1nedev)
 
 ## Getting started with PojavLauncher
 
-The [PojavLauncher Website](https://pojav.ml) has extensive documentation on how to install, set up, and play! For those who wish to install quickly, here's the basics (on iOS 12 or later):
+The [PojavLauncher Website](https://pojavlauncherteam.github.io/INSTALL.html#ios) has extensive documentation on how to install, set up, and play! For those who wish to install quickly, here's the basics (on iOS 12 or later):
 
 ### Without jailbreak (sideload as IPA)
 Note: This is experimental, although game works smoothly, you should not set Render distance too much.
 
-1. Install [AltStore](https://altstore.io). Others will also work.
+1. Setup the sideload app
+- For iOS 14.0-15.5beta4 on compatible devices, [TrollStore](https://github.com/opa334/TrollStore) is recommended to keep PojavLauncher permanently signed and have JIT enabled by itself.
+- Otherwise, install [AltStore](https://altstore.io). Others will also work.
 2. Download an IPA build of PojavLauncher in the Actions tab.
 3. Open the downloaded IPA in the sideload app to install.
 4. For enabling JIT, choose one of these:

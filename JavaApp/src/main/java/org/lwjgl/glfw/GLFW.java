@@ -998,6 +998,7 @@ public class GLFW
     
     public static void glfwSetWindowSize(long window, int width, int height) {
         try {
+            internalChangeMonitorSize(width, height);
             internalGetWindow(window).width = width;
             internalGetWindow(window).height = height;
             System.out.println("GLFW: Set size for window " + window + ", width=" + width + ", height=" + height);
@@ -1090,8 +1091,7 @@ public class GLFW
                         break;
                     case CallbackBridge.EVENT_TYPE_FRAMEBUFFER_SIZE:
                     case CallbackBridge.EVENT_TYPE_WINDOW_SIZE:
-                        internalChangeMonitorSize((int)dataArr[1], (int)dataArr[2]);
-                        glfwSetWindowSize(ptr, Tools.mGLFWWindowWidth, Tools.mGLFWWindowHeight);
+                        glfwSetWindowSize(ptr, (int)dataArr[1], (int)dataArr[2]);
                         if ((int)dataArr[0] == CallbackBridge.EVENT_TYPE_FRAMEBUFFER_SIZE && mGLFWFramebufferSizeCallback != null) {
                             mGLFWFramebufferSizeCallback.invoke(ptr, Tools.mGLFWWindowWidth, Tools.mGLFWWindowHeight);
                         } else if ((int)dataArr[0] == CallbackBridge.EVENT_TYPE_WINDOW_SIZE && mGLFWWindowSizeCallback != null) {

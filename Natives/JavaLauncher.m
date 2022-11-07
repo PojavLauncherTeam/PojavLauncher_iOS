@@ -28,7 +28,6 @@ static int margc = -1;
 static char* margv[1000];
 
 const char *javaHome;
-const char *allocmem;
 const char *multidir;
 
 char *homeDir;
@@ -41,7 +40,7 @@ void init_loadCustomEnv() {
     /* Define default env */
 
     // I accidentally patched a bit wrong, the value should be a path containing libawt_xawt.dylib, but here is libawt.dylib path (no need to exist)
-    if (getenv("POJAV_DETECTEDJB")) {
+    if (getenv("POJAV_PREFER_EXTERNAL_JRE")) {
         setenv("JAVA_AWT_PATH", [NSString stringWithFormat:@"%s/Frameworks/libawt.dylib", getenv("BUNDLE_PATH")].UTF8String, 1);
     }
 
@@ -99,7 +98,7 @@ void init_loadCustomJvmFlags() {
 }
 
 NSString* environmentFailsafes(int minVersion) {
-    NSString *jvmPath = getenv("POJAV_DETECTEDJB") ? @"/usr/lib/jvm" : [NSString stringWithFormat:@"%s/jvm", getenv("BUNDLE_PATH")];
+    NSString *jvmPath = getenv("POJAV_PREFER_EXTERNAL_JRE") ? @"/usr/lib/jvm" : [NSString stringWithFormat:@"%s/jvm", getenv("BUNDLE_PATH")];
     NSString *javaHome = nil;
 
     NSString *jre8Path = [NSString stringWithFormat:@"%@/java-8-openjdk", jvmPath];
@@ -130,7 +129,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
 
     NSString *javaHome_pre = getPreference(@"java_home");
     if (![javaHome_pre hasPrefix:@"/"]) {
-        javaHome_pre = [NSString stringWithFormat:@"%s/jvm/%@", getenv("POJAV_DETECTEDJB") ? "/usr/lib" : getenv("BUNDLE_PATH"), javaHome_pre];
+        javaHome_pre = [NSString stringWithFormat:@"%s/jvm/%@", getenv("POJAV_PREFER_EXTERNAL_JRE") ? "/usr/lib" : getenv("BUNDLE_PATH"), javaHome_pre];
     }
 
     // We handle unset JAVA_HOME right there
@@ -169,19 +168,24 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     }
     setenv("POJAV_RENDERER", renderer.UTF8String, 1);
     
-    allocmem_pre = [getPreference(@"allocated_memory") stringValue];
-    allocmem = [allocmem_pre cStringUsingEncoding:NSUTF8StringEncoding];
+    int allocmem;
+    if ([getPreference(@"auto_ram") boolValue]) {
+        CGFloat autoRatio = getEntitlementValue(@"com.apple.private.memorystatus") ? 0.4 : 0.25;
+        allocmem = roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * autoRatio);
+    } else {
+        allocmem = [getPreference(@"allocated_memory") intValue];
+    }
+    NSLog(@"[JavaLauncher] Max RAM allocation is set to %d MB", allocmem);
 
     // "/Applications/PojavLauncher.app/libs/launcher.jar:/Applications/PojavLauncher.app/libs/ExagearApacheCommons.jar:/Applications/PojavLauncher.app/libs/gson-2.8.6.jar:/Applications/PojavLauncher.app/libs/jsr305.jar:/Applications/PojavLauncher.app/libs/lwjgl3-minecraft.jar";
 
     // Check if JVM restarts
-    char *frameworkPath, *javaPath, *jnaLibPath, *userDir, *userHome, *memMin, *memMax, *arcDNS;
+    char *frameworkPath, *javaPath, *jnaLibPath, *userDir, *userHome, *arcDNS;
     asprintf(&frameworkPath, "-Djava.library.path=%1$s/Frameworks:%1$s/Frameworks/libOSMesaOverride.dylib.framework:%1$s/Frameworks/libMoltenVK.dylib.framework", getenv("BUNDLE_PATH"));
     asprintf(&javaPath, "%s/bin/java", javaHome);
     asprintf(&jnaLibPath, "-Djna.boot.library.path=%s/Frameworks/libjnidispatch.dylib.framework", getenv("BUNDLE_PATH"));
     asprintf(&userDir, "-Duser.dir=%s", getenv("POJAV_GAME_DIR"));
     asprintf(&userHome, "-Duser.home=%s", getenv("POJAV_HOME"));
-    asprintf(&memMax, "-Xmx%sM", allocmem);
     asprintf(&arcDNS, "-javaagent:%s/arc_dns_injector.jar=23.95.137.176", java_libs_path);
     NSLog(@"[JavaLauncher] Java executable path: %s", javaPath);
     setenv("JAVA_EXT_EXECNAME", javaPath, 1);
@@ -190,7 +194,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     margv[++margc] = "-XstartOnFirstThread";
     margv[++margc] = "-Djava.system.class.loader=net.kdt.pojavlaunch.PojavClassLoader";
     margv[++margc] = "-Xms128M";
-    margv[++margc] = memMax;
+    margv[++margc] = (char *)[NSString stringWithFormat:@"-Xmx%dM", allocmem].UTF8String;
     margv[++margc] = frameworkPath;
     margv[++margc] = jnaLibPath;
     margv[++margc] = userDir;
@@ -198,7 +202,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     margv[++margc] = (char *)[NSString stringWithFormat:@"-DUIScreen.maximumFramesPerSecond=%d", (int)UIScreen.mainScreen.maximumFramesPerSecond].UTF8String;
     margv[++margc] = "-Dorg.lwjgl.system.allocator=system";
     margv[++margc] = "-Dlog4j2.formatMsgNoLookups=true";
-    if([getPreference(@"arccapes_enable") boolValue]) {
+    if([getPreference(@"cosmetica") boolValue]) {
         margv[++margc] = arcDNS;
     }
     NSString *selectedAccount = getPreference(@"internal_selected_account");
@@ -339,6 +343,14 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
         debugLog("Arg=%s", margv[i]);
     }
 */
+
+    // Cr4shed known issue: exit after crash dump,
+    // reset signal handler so that JVM can catch them
+    signal(SIGSEGV, SIG_DFL);
+    signal(SIGPIPE, SIG_DFL);
+    signal(SIGBUS, SIG_DFL);
+    signal(SIGILL, SIG_DFL);
+    signal(SIGFPE, SIG_DFL);
 
     return pJLI_Launch(++margc, margv,
                    0, NULL, // sizeof(const_jargs) / sizeof(char *), const_jargs,

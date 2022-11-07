@@ -82,12 +82,6 @@ public class Display {
 
         mode = desktopDisplayMode = new DisplayMode(monitorWidth, monitorHeight, monitorBitPerPixel, monitorRefreshRate);
         LWJGLUtil.log("Initial mode: " + desktopDisplayMode);
-
-        // additional code workaround not called yet!
-        LWJGLUtil.log("Calling Display.create()");
-        try {
-            create();
-        } catch (LWJGLException e) {throw new RuntimeException(e);}
     }
     
     public static void setSwapInterval(int value) {
@@ -342,6 +336,7 @@ public class Display {
                 latestWidth = width;
                 latestHeight = height;
 
+                //System.out.println("Window size callback");
                 if(parent != null) parent.setSize(width, height);
             }
         };
@@ -419,7 +414,7 @@ public class Display {
         Display.drawable = drawable;
         context = org.lwjgl.opengl.GLContext.createFromCurrent();
 
-        glfwSwapInterval(0);
+        //glfwSwapInterval(0);
         glfwShowWindow(Window.handle);
 
         Mouse.create();
@@ -767,6 +762,7 @@ public class Display {
 
     public static void setVSyncEnabled(boolean sync) {
         vsyncEnabled = sync;
+        glfwSwapInterval(vsyncEnabled ? 1 : 0);
     }
 
     public static long getWindow() {
@@ -857,7 +853,7 @@ public class Display {
 
     public static void setDisplayMode(DisplayMode dm) throws LWJGLException {
         mode = dm;
-        GLFW.glfwSetWindowSize(Window.handle, dm.getWidth(), dm.getHeight());
+        if(isCreated) GLFW.glfwSetWindowSize(Window.handle, dm.getWidth(), dm.getHeight());
     }
 
     public static DisplayMode getDisplayMode() {
@@ -1029,6 +1025,10 @@ public class Display {
         }
     }
 
+    public static void setDisplayConfiguration(float gamma, float brightness, float contrast) throws LWJGLException {
+        // ignore call, this is required for a1.1.1
+    }
+
     public static java.lang.String getAdapter() {
         // TODO
         return "GeNotSupportedAdapter";
@@ -1047,8 +1047,9 @@ public class Display {
      *            - the desired frame rate, in frames per second
      */
     public static void sync(int fps) {
-        if (vsyncEnabled)
-            Sync.sync(fps);
+        /*if (vsyncEnabled)
+            Sync.sync(60);
+        else*/ Sync.sync(fps);
     }
 
     public static Drawable getDrawable() {

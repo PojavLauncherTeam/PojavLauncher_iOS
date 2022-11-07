@@ -1,8 +1,13 @@
 #import <GameController/GameController.h>
+#import <objc/runtime.h>
 
 #import "authenticator/BaseAuthenticator.h"
 #import "customcontrols/ControlButton.h"
 #import "customcontrols/ControlDrawer.h"
+// Incomplete
+#ifdef INTERNAL_VIRTUAL_JOYSTICK
+#import "customcontrols/ControlJoystick.h"
+#endif
 #import "customcontrols/ControlLayout.h"
 #import "customcontrols/ControlSubButton.h"
 #import "customcontrols/CustomControlsUtils.h"
@@ -12,22 +17,21 @@
 
 #import "JavaLauncher.h"
 #import "LauncherPreferences.h"
-#import "LauncherPreferencesViewController2.h"
 #import "MinecraftResourceUtils.h"
 #import "SurfaceViewController.h"
+#import "TrackedTextField.h"
 
 #import "ios_uikit_bridge.h"
 
 #include "glfw_keycodes.h"
 #include "utils.h"
 
+int memorystatus_control(uint32_t command, int32_t pid, uint32_t flags, void *buffer, size_t buffersize);
+#define MEMORYSTATUS_CMD_SET_JETSAM_TASK_LIMIT        6
+
 // Debugging only
-// #define DEBUG_VISIBLE_TEXT_FIELD
 // #define DEBUG_VISIBLE_TOUCH
 
-#ifdef DEBUG_VISIBLE_TEXT_FIELD
-UILabel *inputLengthView;
-#endif
 int inputTextLength;
 
 int currentHotbarSlot = -1;
@@ -36,167 +40,25 @@ BOOL slideableHotbar;
 // TODO: key modifiers impl
 
 
-// There are private functions that we are unable to find public replacements
-// (Both are found by placing breakpoints)
-@interface UITextField(private)
-- (NSRange)insertFilteredText:(NSString *)text;
-- (id) replaceRangeWithTextWithoutClosingTyping:(UITextRange *)range replacementText:(NSString *)text;
-@end
-
-
-#pragma mark Class TrackedTextField
-@interface TrackedTextField : UITextField
-@property int lastTextPos;
-@property CGFloat lastPointX;
-@end
-
-@implementation TrackedTextField
-
-- (void)sendMultiBackspaces:(int)times {
-    for (int i = 0; i < times; i++) {
-        CallbackBridge_nativeSendKey(GLFW_KEY_BACKSPACE, 0, 1, 0);
-        CallbackBridge_nativeSendKey(GLFW_KEY_BACKSPACE, 0, 0, 0);
-    }
+@interface SurfaceViewController ()<UITextFieldDelegate, UIPointerInteractionDelegate, UIGestureRecognizerDelegate> {
 }
 
-- (void)sendText:(NSString *)text {
-    for (int i = 0; i < text.length; i++) {
-        // Directly convert unichar to jchar since both are in UTF-16 encoding.
-        jchar theChar = (jchar) [text characterAtIndex:i];
-        if (isUseStackQueueCall) {
-            CallbackBridge_nativeSendCharMods(theChar, 0);
-        } else {
-            CallbackBridge_nativeSendChar(theChar);
-        }
-#ifdef DEBUG_VISIBLE_TEXT_FIELD
-        inputLengthView.text = [NSString stringWithFormat:@"length=%lu", self.text.length];
-#endif
-    }
-}
+@property(nonatomic) UIView *ctrlView;
 
-- (void)beginFloatingCursorAtPoint:(CGPoint)point {
-    [super beginFloatingCursorAtPoint:point];
-    self.lastPointX = point.x;
-}
+@property(nonatomic) TrackedTextField *inputTextField;
+@property(nonatomic) NSMutableDictionary* cc_dictionary;
+@property(nonatomic) NSMutableArray* swipeableButtons;
+@property(nonatomic) ControlButton* swipingButton;
+@property(nonatomic) UITouch *primaryTouch, *hotbarTouch;
 
-// Handle cursor movement in the empty space
-- (void)updateFloatingCursorAtPoint:(CGPoint)point {
-    [super updateFloatingCursorAtPoint:point];
+@property(nonatomic) UILongPressGestureRecognizer* longpressGesture;
 
-    if (self.lastPointX == 0 || (self.lastTextPos > 0 && self.lastTextPos < self.text.length)) {
-        // This is handled in -[TrackedTextField closestPositionToPoint:]
-        return;
-    }
+@property(nonatomic) id mouseConnectCallback, mouseDisconnectCallback;
+@property(nonatomic) id controllerConnectCallback, controllerDisconnectCallback;
 
-#ifdef DEBUG_VISIBLE_TEXT_FIELD
-    inputLengthView.text = [NSString stringWithFormat:@"updateFloatingCursorAtPoint lastPointX=%f, lastTextPos=%d\n", self.lastPointX, self.lastTextPos];
-#endif
-
-    CGFloat diff = point.x - self.lastPointX;
-    if (ABS(diff) < 8) {
-        return;
-    }
-    self.lastPointX = point.x;
-
-    int key = (diff > 0) ? GLFW_KEY_DPAD_RIGHT : GLFW_KEY_DPAD_LEFT;
-    CallbackBridge_nativeSendKey(key, 0, 1, 0);
-    CallbackBridge_nativeSendKey(key, 0, 0, 0);
-}
-
-- (void)endFloatingCursor {
-    [super endFloatingCursor];
-    self.lastPointX = 0;
-}
-
-- (UITextPosition *)closestPositionToPoint:(CGPoint)point {
-    // Handle cursor movement between characters
-    UITextPosition *position = [super closestPositionToPoint:point];
-    int start = [self offsetFromPosition:self.beginningOfDocument toPosition:position];
-    if (start - self.lastTextPos != 0) {
-        int key = (start - self.lastTextPos > 0) ? GLFW_KEY_DPAD_RIGHT : GLFW_KEY_DPAD_LEFT;
-        CallbackBridge_nativeSendKey(key, 0, 1, 0);
-        CallbackBridge_nativeSendKey(key, 0, 0, 0);
-    }
-    self.lastTextPos = start;
-    return position;
-}
-
-- (void)deleteBackward {
-    if (self.text.length > 1) {
-        // Keep the first character (a space)
-        [super deleteBackward];
-    } else {
-        self.text = @" ";
-    }
-    self.lastTextPos = [super offsetFromPosition:self.beginningOfDocument toPosition:self.selectedTextRange.start];
-
-    [self sendMultiBackspaces:1];
-}
-
-- (BOOL)hasText {
-    self.lastTextPos = MAX(self.lastTextPos, 1);
-    return YES;
-}
-
-// Old name: insertText
-- (NSRange)insertFilteredText:(NSString *)text {
-    int cursorPos = [super offsetFromPosition:self.beginningOfDocument toPosition:self.selectedTextRange.start];
-
-    // This also makes sure that lastTextPos != cursorPos (text should never be empty)
-    if (self.lastTextPos - cursorPos == text.length) {
-        // Handle text markup by first deleting N amount of characters equal to the replaced text
-        [self sendMultiBackspaces:text.length];
-    }
-    // What else is done by past-autocomplete (insert a space after autocompletion)
-    // See -[TrackedTextField replaceRangeWithTextWithoutClosingTyping:replacementText:]
-
-    self.lastTextPos = cursorPos + text.length;
-
-    [self sendText:text];
-
-    NSRange range = [super insertFilteredText:text];
-    return range;
-}
-
-- (id) replaceRangeWithTextWithoutClosingTyping:(UITextRange *)range replacementText:(NSString *)text
-{
-    int length = [super offsetFromPosition:range.start toPosition:range.end];
-
-    // Delete the range of needs for autocompletion
-    [self sendMultiBackspaces:length];
-
-    // Insert the autocompleted text
-    [self sendText:text];
-
-    return [super replaceRangeWithTextWithoutClosingTyping:range replacementText:text];
-}
-
-@end
-
-
-#pragma mark Class SurfaceViewController
-@interface SurfaceViewController ()<UITextFieldDelegate, UIPointerInteractionDelegate, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate> {
-}
-
-@property NSArray *menuArray;
-@property UITableView *menuView;
-
-@property UIView *ctrlView, *rootView;
-
-@property TrackedTextField *inputView;
-@property(nonatomic, strong) NSMutableDictionary* cc_dictionary;
-@property(nonatomic, strong) NSMutableArray* swipeableButtons;
-@property ControlButton* swipingButton;
-@property UITouch *primaryTouch, *hotbarTouch;
-
-@property UIView *logOutputView;
-
-@property id mouseConnectCallback, mouseDisconnectCallback;
-@property id controllerConnectCallback, controllerDisconnectCallback;
-
-@property CGFloat mouseSpeed;
-@property CGRect clickRange;
-@property BOOL shouldTriggerClick;
+@property(nonatomic) CGFloat mouseSpeed;
+@property(nonatomic) CGRect clickRange;
+@property(nonatomic) BOOL shouldTriggerClick;
 
 @end
 
@@ -214,64 +76,37 @@ BOOL slideableHotbar;
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
     [self setNeedsUpdateOfHomeIndicatorAutoHidden];
-    [self.navigationItem setHidesBackButton:YES animated:YES];
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
 
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    CGFloat screenScale = [[UIScreen mainScreen] scale];
+    // Perform Gamepad joystick ticking, while also controlling frame rate?
+    CADisplayLink *displayLink = [CADisplayLink displayLinkWithTarget:ControllerInput.class selector:@selector(tick)];
+    if (@available(iOS 15.0, *)) {
+        displayLink.preferredFrameRateRange = CAFrameRateRangeMake(60, 120, 120);
+    }
+    [displayLink addToRunLoop:NSRunLoop.currentRunLoop forMode:NSRunLoopCommonModes];
+
+    CGFloat screenScale = UIScreen.mainScreen.scale;
 
     resolutionScale = ((NSNumber *)getPreference(@"resolution")).floatValue / 100.0;
 
-    savedWidth = roundf(screenBounds.size.width * screenScale * resolutionScale);
-    savedHeight = roundf(screenBounds.size.height * screenScale * resolutionScale);
+    [self updateSavedResolution];
 
     self.rootView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width + 30.0, self.view.frame.size.height)];
     [self.view addSubview:self.rootView];
 
     self.ctrlView = [[ControlLayout alloc] initWithFrame:CGRectFromString(getPreference(@"control_safe_area"))];
 
-    // Side menu
-    UIScreenEdgePanGestureRecognizer *edgeGesture = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handleRightEdge:)];
-    edgeGesture.edges = UIRectEdgeRight;
-    edgeGesture.delegate = self;
-
-    UIPanGestureRecognizer *menuPanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleRightEdge:)];
-    menuPanGesture.delegate = self;
-
-    UIView *menuSwipeLineView = [[UIView alloc] initWithFrame:CGRectMake(11.0, self.view.frame.size.height/2 - 100.0, 
-8.0, 200.0)];
-    menuSwipeLineView.backgroundColor = UIColor.whiteColor;
-    menuSwipeLineView.layer.cornerRadius = 4;
-    menuSwipeLineView.userInteractionEnabled = NO;
-
-    UIView *menuSwipeView = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width, 0, 30.0, self.view.frame.size.height)];
-    menuSwipeView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
-    [menuSwipeView addGestureRecognizer:menuPanGesture];
-    [menuSwipeView addSubview:menuSwipeLineView];
-    [self.rootView addSubview:menuSwipeView];
-
-    self.menuArray = @[@"game.menu.force_close", @"Settings" /*, @"game.menu.log_output" */];
-
-    self.menuView = [[UITableView alloc] initWithFrame:CGRectMake(self.view.frame.size.width + 30.0, 0, 
-self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
-
-    //menuView.backgroundColor = [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1];
-    self.menuView.dataSource = self;
-    self.menuView.delegate = self;
-    self.menuView.layer.cornerRadius = 12;
-    self.menuView.scrollEnabled = NO;
-    self.menuView.separatorInset = UIEdgeInsetsZero;
-    [self.view addSubview:self.menuView];
-
+    [self performSelector:@selector(initCategory_Navigation)];
 
     self.surfaceView = [[GameSurfaceView alloc] initWithFrame:self.view.frame];
     self.surfaceView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
     self.surfaceView.multipleTouchEnabled = YES;
     self.surfaceView.layer.contentsScale = screenScale * resolutionScale;
     self.surfaceView.layer.magnificationFilter = self.surfaceView.layer.minificationFilter = kCAFilterNearest;
-    [self.surfaceView addGestureRecognizer:edgeGesture];
+
     [self.rootView addSubview:self.surfaceView];
     [self.rootView addSubview:self.ctrlView];
+
+    [self performSelector:@selector(setupCategory_Navigation)];
 
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnClick:)];
@@ -297,12 +132,12 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
         [self.surfaceView addGestureRecognizer:hoverGesture];
     }
 
-    UILongPressGestureRecognizer *longpressGesture = [[UILongPressGestureRecognizer alloc]
+    self.longpressGesture = [[UILongPressGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnLongpress:)];
-    longpressGesture.allowedTouchTypes = @[@(UITouchTypeDirect)];
-    longpressGesture.cancelsTouchesInView = NO;
-    longpressGesture.delegate = self;
-    [self.surfaceView addGestureRecognizer:longpressGesture];
+    self.longpressGesture.allowedTouchTypes = @[@(UITouchTypeDirect)];
+    self.longpressGesture.cancelsTouchesInView = NO;
+    self.longpressGesture.delegate = self;
+    [self.surfaceView addGestureRecognizer:self.longpressGesture];
 
     self.scrollPanGesture = [[UIPanGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnTouchesScroll:)];
@@ -318,29 +153,24 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
 
     // Virtual mouse
     virtualMouseEnabled = [getPreference(@"virtmouse_enable") boolValue];
-    virtualMouseFrame = CGRectMake(screenBounds.size.width / 2, screenBounds.size.height / 2, 18, 27);
+    virtualMouseFrame = CGRectMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2, 18, 27);
     self.mousePointerView = [[UIImageView alloc] initWithFrame:virtualMouseFrame];
+    self.mousePointerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin |UIViewAutoresizingFlexibleBottomMargin;
     self.mousePointerView.hidden = !virtualMouseEnabled;
     self.mousePointerView.image = [UIImage imageNamed:@"mouse_pointer.png"];
     self.mousePointerView.userInteractionEnabled = NO;
     [self.rootView addSubview:self.mousePointerView];
 
-    self.inputView = [[TrackedTextField alloc] initWithFrame:CGRectMake(0, -32.0, self.view.frame.size.width, 30.0)];
-#ifdef DEBUG_VISIBLE_TEXT_FIELD
-    inputLengthView = [[UILabel alloc] initWithFrame:CGRectMake(0, -62.0, self.view.frame.size.width, 30.0)];
-    inputLengthView.text = @"length=?";
-    inputLengthView.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.6f];
-    [self.rootView addSubview:inputLengthView];
-#endif
+    self.inputTextField = [[TrackedTextField alloc] initWithFrame:CGRectMake(0, -32.0, self.view.frame.size.width, 30.0)];
     if (@available(iOS 13.0, *)) {
-        self.inputView.backgroundColor = UIColor.secondarySystemBackgroundColor;
+        self.inputTextField.backgroundColor = UIColor.secondarySystemBackgroundColor;
     } else {
-        self.inputView.backgroundColor = UIColor.groupTableViewBackgroundColor;
+        self.inputTextField.backgroundColor = UIColor.groupTableViewBackgroundColor;
     }
-    self.inputView.delegate = self;
-    self.inputView.font = [UIFont fontWithName:@"Menlo-Regular" size:20];
-    self.inputView.clearsOnBeginEditing = YES;
-    self.inputView.textAlignment = NSTextAlignmentCenter;
+    self.inputTextField.delegate = self;
+    self.inputTextField.font = [UIFont fontWithName:@"Menlo-Regular" size:20];
+    self.inputTextField.clearsOnBeginEditing = YES;
+    self.inputTextField.textAlignment = NSTextAlignmentCenter;
 
     NSString *controlFilePath = [NSString stringWithFormat:@"%s/controlmap/%@", getenv("POJAV_HOME"), (NSString *)getPreference(@"default_ctrl")];
 
@@ -351,7 +181,7 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
         self.mouseConnectCallback = [[NSNotificationCenter defaultCenter] addObserverForName:GCMouseDidConnectNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
             NSLog(@"Input: Mouse connected!");
             GCMouse* mouse = note.object;
-            [self registerMouseCallbacks: mouse];
+            [self registerMouseCallbacks:mouse];
             [self setNeedsUpdateOfPrefersPointerLocked];
         }];
         self.mouseDisconnectCallback = [[NSNotificationCenter defaultCenter] addObserverForName:GCMouseDidDisconnectNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
@@ -384,25 +214,36 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
         [ControllerInput registerControllerCallbacks:GCController.controllers.firstObject];
     }
 
-    [self.rootView addSubview:self.inputView];
+    [self.rootView addSubview:self.inputTextField];
 
-/*
-    self.logOutputView = [[UIView alloc] initWithFrame:self.view.frame];
-    self.logOutputView.hidden = YES;
-    [self.rootView addSubview:self.logOutputView];
-
-    UINavigationBar *logNavbar = [[UINavigationBar alloc] init];
-    [logNavbar
-    NSLog(@"NavBar %@", logNavbar);
-    //logNavbar.title = NSLocalizedString(self.menuArray[1], nil);
-    [logNavbar sizeToFit];
-    [self.logOutputView addSubview:logNavbar];
-*/
+    [self performSelector:@selector(initCategory_LogView)];
 
     // [self setPreferredFramesPerSecond:1000];
+    [self updateJetsamControl];
     [self updatePreferenceChanges];
     [self executebtn_special_togglebtn:0];
+
+#ifdef INTERNAL_VIRTUAL_JOYSTICK
+    // just for testing
+    ControlJoystick *joystick = ControlJoystick.buttonWithDefaultProperties;
+    [self.ctrlView addSubview:joystick];
+    [joystick update];
+#endif
+
     [self launchMinecraft];
+}
+
+- (void)updateJetsamControl {
+    if (!getEntitlementValue(@"com.apple.private.memorystatus")) {
+        return;
+    }
+    // More 1024MB is necessary for other memory regions (native, Java GC, etc.)
+    int limit = [getPreference(@"allocated_memory") intValue] + 1024;
+    if (memorystatus_control(MEMORYSTATUS_CMD_SET_JETSAM_TASK_LIMIT, getpid(), limit, NULL, 0) == -1) {
+        NSLog(@"Failed to set Jetsam task limit: error: %s", strerror(errno));
+    } else {
+        NSLog(@"Successfully set Jetsam task limit");
+    }
 }
 
 - (void)updatePreferenceChanges {
@@ -412,27 +253,44 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
     virtualMouseEnabled = [getPreference(@"virtmouse_enable") boolValue];
     self.mousePointerView.hidden = isGrabbing || !virtualMouseEnabled;
 
-    CGRect screenBounds = UIScreen.mainScreen.bounds;
     CGFloat screenScale = UIScreen.mainScreen.scale;
 
     // Update virtual mouse scale
     CGFloat mouseScale = [getPreference(@"mouse_scale") floatValue] / 100.0;
-    virtualMouseFrame = CGRectMake(screenBounds.size.width / 2, screenBounds.size.height / 2, 18.0 * mouseScale, 27 * mouseScale);
+    virtualMouseFrame = CGRectMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2, 18.0 * mouseScale, 27 * mouseScale);
     self.mousePointerView.frame = virtualMouseFrame;
 
-    // May break anytime lol, current: edge, tap, doubleTap, hover, longPress, scrollPan
-    UILongPressGestureRecognizer *longpressGesture = self.surfaceView.gestureRecognizers[4];
-    longpressGesture.minimumPressDuration = [getPreference(@"press_duration") floatValue] / 1000.0;
+    self.longpressGesture.minimumPressDuration = [getPreference(@"press_duration") floatValue] / 1000.0;
 
-    self.ctrlView.frame = CGRectFromString(getPreference(@"control_safe_area"));
+    CGRect ctrlFrame = CGRectFromString(getPreference(@"control_safe_area"));
+    if ((ctrlFrame.size.width > ctrlFrame.size.height) != (self.view.frame.size.width > self.view.frame.size.height)) {
+        CGFloat tmpHeight = ctrlFrame.size.width;
+        ctrlFrame.size.width = ctrlFrame.size.height;
+        ctrlFrame.size.height = tmpHeight;
+    }
+    self.ctrlView.frame = ctrlFrame;
     [self loadCustomControls];
 
     // Update resolution
     resolutionScale = [getPreference(@"resolution") floatValue] / 100.0;
     self.surfaceView.layer.contentsScale = screenScale * resolutionScale;
-    savedWidth = roundf(screenBounds.size.width * screenScale * resolutionScale);
-    savedHeight = roundf(screenBounds.size.height * screenScale * resolutionScale);
-    CallbackBridge_nativeSendScreenSize(savedWidth, savedHeight);
+    [self updateSavedResolution];
+}
+
+- (void)updateSavedResolution {
+    CGFloat screenScale = UIScreen.mainScreen.scale;
+    physicalWidth = roundf(self.view.frame.size.width * screenScale);
+    physicalHeight = roundf(self.view.frame.size.height * screenScale);
+    windowWidth = roundf(physicalWidth * resolutionScale);
+    windowHeight = roundf(physicalHeight * resolutionScale);
+    // Resolution should not be odd
+    if ((windowWidth % 2) != 0) {
+        --windowWidth;
+    }
+    if ((windowHeight % 2) != 0) {
+        --windowHeight;
+    }
+    CallbackBridge_nativeSendScreenSize(windowWidth, windowHeight);
 }
 
 - (void)launchMinecraft {
@@ -442,7 +300,7 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
             launchJVM(
                 BaseAuthenticator.current.authData[@"username"],
                 json,
-                savedWidth, savedHeight,
+                windowWidth, windowHeight,
                 [json[@"javaVersion"][@"majorVersion"] intValue]
             );
         }];
@@ -496,134 +354,49 @@ self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
     return YES;
 }
 
-#pragma mark - Menu functions
-
-CGPoint lastCenterPoint;
-- (void)handleRightEdge:(UIPanGestureRecognizer *)sender {
-    if (lastCenterPoint.y == 0) {
-        lastCenterPoint.x = self.rootView.center.x;
-        lastCenterPoint.y = 1;
-
-        // Set the height to fit the content
-        CGRect menuFrame = self.menuView.frame;
-        menuFrame.size.height = MIN(self.view.frame.size.height, self.menuView.contentSize.height);
-        self.menuView.frame = menuFrame;
-    }
-
-    CGFloat centerX = self.rootView.bounds.size.width / 2;
-    CGFloat centerY = self.rootView.bounds.size.height / 2;
-
-    CGPoint translation = [sender translationInView:sender.view];
-
-    if (sender.state == UIGestureRecognizerStateBegan) {
-        self.menuView.hidden = NO;
-    } else if (sender.state == UIGestureRecognizerStateChanged) {
-        self.rootView.center = CGPointMake(lastCenterPoint.x + translation.x/2, centerY + translation.y/10.0);
-        CGFloat scale = MAX(0.7, self.rootView.center.x / centerX);
-        self.rootView.transform = CGAffineTransformScale(CGAffineTransformIdentity, scale, scale);
-
-        self.menuView.frame = CGRectMake(self.rootView.frame.size.width, self.rootView.frame.origin.y, self.menuView.frame.size.width,  self.menuView.frame.size.height);
-        // scale is in range of 0.7-1
-        // 1.1 - scale produces in range of 0.4-0.1
-        // result in transform scale range of 1-0.25
-        self.menuView.transform = CGAffineTransformScale(CGAffineTransformIdentity, (1.1-scale)*2.5, (1.1-scale)*2.5);
-    } else {
-        CGPoint velocity = [sender velocityInView:sender.view];
-        CGFloat scale = (velocity.x >= 0) ? 1 : 0.7;
-
-        // calculate duration to produce smooth movement
-        // FIXME: any better way?
-        CGFloat duration = fabs(self.rootView.center.x - centerX * scale) / centerX + 0.1;
-        duration = MIN(0.4, duration);
-        //(110 - MIN(100, fabs(velocity.x))) / 100
-
-        [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveEaseOut
- animations:^{
-            lastCenterPoint.x = centerX * scale;
-            self.rootView.center = CGPointMake(lastCenterPoint.x, centerY);
-            self.rootView.transform = CGAffineTransformScale(CGAffineTransformIdentity, scale, scale);
-            self.menuView.transform = CGAffineTransformScale(CGAffineTransformIdentity, (1.1-scale)*2.5, (1.1-scale)*2.5);
-            self.menuView.frame = CGRectMake(self.rootView.frame.size.width, self.rootView.frame.origin.y, self.menuView.frame.size.width, self.menuView.frame.size.height);
-        } completion:^(BOOL finished) {
-            self.menuView.hidden = scale == 1.0;
-        }];
-    }
+- (BOOL)prefersStatusBarHidden {
+    return YES;
 }
 
-- (void)actionForceClose {
-    UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil
-        message:NSLocalizedString(@"game.menu.confirm.force_close", nil)
-        preferredStyle:UIAlertControllerStyleAlert];
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        self.rootView.bounds = CGRectMake(0, 0, size.width + 30.0, size.height);
 
-    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleDefault handler:nil];
-    [alert addAction:cancelAction];
+        CGRect frame = self.view.frame;
+        frame.size = size;
+        self.surfaceView.frame = frame;
+        self.inputTextField.frame = CGRectMake(0, -32.0, size.width, 30.0);
+        [self viewWillTransitionToSize_LogView:frame];
+        [self viewWillTransitionToSize_Navigation:frame];
 
-    UIAlertAction* okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
-        [UIView animateWithDuration:0.4 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-            self.rootView.center = CGPointMake(self.rootView.bounds.size.width/-2, self.rootView.center.y);
-            self.menuView.frame = CGRectMake(self.view.frame.size.width, 0, 0, 0);
-        } completion:^(BOOL finished) {
-            exit(0);
-        }];
+        CGRect ctrlFrame = CGRectFromString(getPreference(@"control_safe_area"));
+        CGSize screenSize = UIScreen.mainScreen.bounds.size;
+        if (size.width < screenSize.width || size.height < screenSize.height) {
+            // TODO: safe area for windowed mode?
+            ctrlFrame.size = screenSize;
+        } else if ((ctrlFrame.size.width > ctrlFrame.size.height) != (size.width > size.height)) {
+            CGFloat tmpHeight = ctrlFrame.size.width;
+            ctrlFrame.size.width = ctrlFrame.size.height;
+            ctrlFrame.size.height = tmpHeight;
+        }
+        self.ctrlView.frame = ctrlFrame;
+        for (UIView *view in self.ctrlView.subviews) {
+            if ([view isKindOfClass:[ControlButton class]]) {
+                [(ControlButton *)view update];
+            }
+        }
+    } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        [self updateSavedResolution];
     }];
-    [alert addAction:okAction];
-
-    [self presentViewController:alert animated:YES completion:nil];
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 }
-
-- (void)actionOpenPreferences {
-    LauncherPreferencesViewController2 *vc = [[LauncherPreferencesViewController2 alloc] init];
-    [self presentViewController:vc animated:YES completion:nil];
-}
-
-- (void)actionToggleLogOutput {
-    self.logOutputView.hidden = !self.logOutputView.hidden;
-    // TODO impl log enable/disable
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.menuArray.count;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
-    }
-    if (@available(iOS 13.0, *)) {
-        cell.backgroundColor = UIColor.systemFillColor;
-    } else {
-        cell.backgroundColor = UIColor.groupTableViewBackgroundColor;
-    }
-
-    cell.textLabel.text = NSLocalizedString(self.menuArray[indexPath.row], nil);
-
-    return cell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    switch (indexPath.row) {
-        case 0:
-            [self actionForceClose];
-            break;
-        case 1:
-            [self actionOpenPreferences];
-            break;
-        case 2:
-            [self actionToggleLogOutput];
-            break;
-    }
-}
-
 
 #pragma mark - Input: send touch utilities
 
 - (BOOL)isTouchInactive:(UITouch *)touch {
     return touch == nil || touch.phase == UITouchPhaseEnded || touch.phase == UITouchPhaseCancelled;
 }
-
 
 - (void)sendTouchPoint:(CGPoint)location withEvent:(int)event
 {
@@ -775,10 +548,12 @@ CGPoint lastCenterPoint;
         if (currentHotbarSlot == -1) {
             inputTextLength = 0;
 
-            CallbackBridge_nativeSendMouseButton(
-                isGrabbing == JNI_TRUE ? GLFW_MOUSE_BUTTON_RIGHT : GLFW_MOUSE_BUTTON_LEFT, 1, 0);
-            CallbackBridge_nativeSendMouseButton(
-                isGrabbing == JNI_TRUE ? GLFW_MOUSE_BUTTON_RIGHT : GLFW_MOUSE_BUTTON_LEFT, 0, 0);
+            CallbackBridge_nativeSendMouseButton(isGrabbing == JNI_TRUE ?
+                GLFW_MOUSE_BUTTON_RIGHT : GLFW_MOUSE_BUTTON_LEFT, 1, 0);
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 33 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
+                CallbackBridge_nativeSendMouseButton(isGrabbing == JNI_TRUE ?
+                    GLFW_MOUSE_BUTTON_RIGHT : GLFW_MOUSE_BUTTON_LEFT, 0, 0);
+            });
         } else {
             CallbackBridge_nativeSendKey(currentHotbarSlot, 0, 1, 0);
             CallbackBridge_nativeSendKey(currentHotbarSlot, 0, 0, 0);
@@ -790,7 +565,7 @@ CGPoint lastCenterPoint;
     if (sender.state == UIGestureRecognizerStateRecognized && isGrabbing) {
         CGFloat screenScale = [[UIScreen mainScreen] scale];
         CGPoint point = [sender locationInView:self.rootView];
-        int hotbarSlot = callback_SurfaceViewController_touchHotbar(point.x * screenScale * resolutionScale, point.y * screenScale * resolutionScale);
+        int hotbarSlot = callback_SurfaceViewController_touchHotbar(point.x * screenScale, point.y * screenScale);
         if (hotbarSlot != -1 && currentHotbarSlot == hotbarSlot) {
             CallbackBridge_nativeSendKey(GLFW_KEY_F, 0, 1, 0);
             CallbackBridge_nativeSendKey(GLFW_KEY_F, 0, 0, 0);
@@ -799,37 +574,35 @@ CGPoint lastCenterPoint;
 }
 
 - (void)surfaceOnHover:(UIHoverGestureRecognizer *)sender API_AVAILABLE(ios(13.0)) {
-    if (@available(iOS 13.0, *)) {
-        if (@available(iOS 14.0, *)) {
-            if (isGrabbing) return;
-        }
-        CGPoint point = [sender locationInView:self.rootView];
-        // NSLog(@"Mouse move!!");
-        // NSLog(@"Mouse pos = %f, %f", point.x, point.y);
-        switch (sender.state) {
-            case UIGestureRecognizerStateBegan:
-                [self sendTouchPoint:point withEvent:ACTION_DOWN];
-                break;
-            case UIGestureRecognizerStateChanged:
-                [self sendTouchPoint:point withEvent:ACTION_MOVE];
-                break;
-            case UIGestureRecognizerStateEnded:
-            case UIGestureRecognizerStateCancelled:
-                [self sendTouchPoint:point withEvent:ACTION_UP];
-                break;
-            default:
-                // point = CGPointMake(-1, -1);
-                break;
-        }
+    if (@available(iOS 14.0, *)) {
+        if (isGrabbing) return;
+    }
+    CGPoint point = [sender locationInView:self.rootView];
+    // NSLog(@"Mouse move!!");
+    // NSLog(@"Mouse pos = %f, %f", point.x, point.y);
+    switch (sender.state) {
+        case UIGestureRecognizerStateBegan:
+            [self sendTouchPoint:point withEvent:ACTION_DOWN];
+            break;
+        case UIGestureRecognizerStateChanged:
+            [self sendTouchPoint:point withEvent:ACTION_MOVE];
+            break;
+        case UIGestureRecognizerStateEnded:
+        case UIGestureRecognizerStateCancelled:
+            [self sendTouchPoint:point withEvent:ACTION_UP];
+            break;
+        default:
+            // point = CGPointMake(-1, -1);
+            break;
     }
 }
 
 -(void)surfaceOnLongpress:(UILongPressGestureRecognizer *)sender
 {
     if (!slideableHotbar) {
-        CGFloat screenScale = [[UIScreen mainScreen] scale];
         CGPoint location = [sender locationInView:self.rootView];
-        currentHotbarSlot = callback_SurfaceViewController_touchHotbar(location.x * screenScale * resolutionScale, location.y * screenScale * resolutionScale);
+        CGFloat screenScale = UIScreen.mainScreen.scale;
+        currentHotbarSlot = callback_SurfaceViewController_touchHotbar(location.x * screenScale, location.y * screenScale);
     }
     if (sender.state == UIGestureRecognizerStateBegan) {
         self.shouldTriggerClick = NO;
@@ -864,19 +637,16 @@ CallbackBridge_nativeSendKey(GLFW_KEY_Q, 0, 0, 0);
         sender.state == UIGestureRecognizerStateEnded) {
         CGPoint velocity = [sender velocityInView:self.rootView];
         if (velocity.x != 0.0f || velocity.y != 0.0f) {
-            CallbackBridge_nativeSendScroll((CGFloat) (velocity.x/10.0), (CGFloat) (velocity.y/10.0));
+            CallbackBridge_nativeSendScroll(velocity.x/100.0, velocity.y/100.0);
         }
     }
 }
 
-// FIXME: incomplete
 - (UIPointerRegion *)pointerInteraction:(UIPointerInteraction *)interaction regionForRequest:(UIPointerRegionRequest *)request defaultRegion:(UIPointerRegion *)defaultRegion API_AVAILABLE(ios(13.4)) API_AVAILABLE(ios(13.4)) API_AVAILABLE(ios(13.4)){
-    NSLog(@"regionForRequest called");
     return nil;
 }
 
 - (UIPointerStyle *)pointerInteraction:(UIPointerInteraction *)interaction styleForRegion:(UIPointerRegion *)region  API_AVAILABLE(ios(13.4)){
-    NSLog(@"styleForRegion called");
     return [UIPointerStyle hiddenPointerStyle];
 }
 
@@ -901,13 +671,13 @@ int currentVisibility = 1;
             switch (keycode) {
                 case SPECIALBTN_KEYBOARD:
                     if (held == 0) {
-                        if (self.inputView.isFirstResponder) {
-                            [self.inputView resignFirstResponder];
-                            self.inputView.alpha = 1.0f;
+                        if (self.inputTextField.isFirstResponder) {
+                            [self.inputTextField resignFirstResponder];
+                            self.inputTextField.alpha = 1.0f;
                         } else {
-                            [self.inputView becomeFirstResponder];
+                            [self.inputTextField becomeFirstResponder];
                             // Insert an undeletable space
-                            self.inputView.text = @" ";
+                            self.inputTextField.text = @" ";
                             inputTextLength = 0;
                         }
                     }
@@ -975,11 +745,11 @@ CallbackBridge_nativeSendKey(keycode, 0, held, 0);
 
 - (void)executebtn_swipe:(UIPanGestureRecognizer *)sender
 {
-    CGPoint location = [sender locationInView:self.rootView];
     if (sender.state == UIGestureRecognizerStateCancelled || sender.state == UIGestureRecognizerStateEnded) {
         [self executebtn_up:self.swipingButton isOutside:NO];
         return;
     }
+    CGPoint location = [sender locationInView:self.ctrlView];
     for (ControlButton *button in self.swipeableButtons) {
         if (CGRectContainsPoint(button.frame, location) && (ControlButton *)self.swipingButton != button) {
             [self executebtn_up:self.swipingButton isOutside:NO];
@@ -1038,10 +808,6 @@ CallbackBridge_nativeSendKey(keycode, 0, held, 0);
                 }
             }
         }
-
-#ifndef DEBUG_VISIBLE_TEXT_FIELD
-        self.inputView.hidden = currentVisibility;
-#endif
     }
 }
 
@@ -1080,7 +846,7 @@ int touchesMovedCount;
 
     for (UITouch *touch in touches) {
         if (@available(iOS 14.0, *)) { // 13.4
-            if (touch.type == UITouchTypeIndirectPointer) {
+            if (isGrabbing && touch.type == UITouchTypeIndirectPointer) {
                 continue; // handle this in a different place
             }
         }
@@ -1118,6 +884,10 @@ int touchesMovedCount;
 {
     [super touchesCancelled:touches withEvent:event];
     [self touchesEndedGlobal:touches withEvent:event];
+}
+
++ (BOOL)isRunning {
+    return [currentWindow().rootViewController isKindOfClass:SurfaceViewController.class];
 }
 
 @end

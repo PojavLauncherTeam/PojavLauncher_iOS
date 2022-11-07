@@ -17,6 +17,9 @@
 #import "ios_uikit_bridge.h"
 #import "utils.h"
 
+#define AUTORESIZE_BTN UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin
+#define AUTORESIZE AUTORESIZE_BTN | UIViewAutoresizingFlexibleBottomMargin
+
 #define TYPE_SELECTACC 0
 #define TYPE_MICROSOFT 1
 #define TYPE_OFFLINE 2
@@ -24,15 +27,11 @@
 extern NSMutableDictionary *prefDict;
 
 #pragma mark - LoginViewController
-@interface LoginViewController () <ASWebAuthenticationPresentationContextProviding>{
-}
-@property (nonatomic, strong) ASWebAuthenticationSession *authVC;
-@property (nonatomic, strong) UIActivityViewController *activityViewController;
+@interface LoginViewController () <ASWebAuthenticationPresentationContextProviding> {}
+@property(nonatomic) ASWebAuthenticationSession *authVC;
 @end
 
 @implementation LoginViewController
-@synthesize authVC;
-@synthesize activityViewController;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -42,34 +41,25 @@ extern NSMutableDictionary *prefDict;
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(msaLoginCallback:) name:@"MSALoginCallback" object:nil];
 
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    CGFloat width = self.view.frame.size.width;
+    CGFloat height = self.view.frame.size.height; // - self.navigationController.navigationBar.frame.size.height;
+    CGFloat rawHeight = self.view.frame.size.height;
 
-    int width = (int) roundf(screenBounds.size.width);
-    int height = (int) roundf(screenBounds.size.height) - self.navigationController.navigationBar.frame.size.height;
-    int rawHeight = (int) roundf(screenBounds.size.height);
-
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
-    scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    [self.view addSubview:scrollView];
-
-    if(getenv("POJAV_DETECTEDJB")) {
-        if(strcmp(getenv("POJAV_DETECTEDJB"), "Other") == 0 && [getPreference(@"jb_warn") boolValue] == YES) {
-            UIAlertController *jbAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"login.warn.title.otherjb", nil) message:NSLocalizedString(@"login.warn.message.otherjb", nil) preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleCancel handler:nil];
-            [self presentViewController:jbAlert animated:YES completion:nil];
-            [jbAlert addAction:ok];
-            setPreference(@"jb_warn", @NO);
-        }
-    }
-
-    if(strncmp(getenv("POJAV_DETECTEDHW"), "iPhone6,", 9) == 0 || strncmp(getenv("POJAV_DETECTEDHW"), "iPad4,", 9) == 0) {
-        UIAlertController *jbAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"login.warn.title.a7", nil) message:NSLocalizedString(@"login.warn.message.a7", nil) preferredStyle:UIAlertControllerStyleAlert];
+    if(roundf([[NSProcessInfo processInfo] physicalMemory] / 1048576) < 1900 && [getPreference(@"unsupported_warn_counter") intValue] == 0) {
+        UIAlertController *RAMAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"login.warn.title.a7", nil) message:NSLocalizedString(@"login.warn.message.a7", nil) preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleCancel handler:nil];
-        [self presentViewController:jbAlert animated:YES completion:nil];
-        [jbAlert addAction:ok];
+        [self presentViewController:RAMAlert animated:YES completion:nil];
+        [RAMAlert addAction:ok];
     }
     
-    if(!getenv("POJAV_DETECTEDJB") && [getPreference(@"ram_unjb_warn") boolValue] == YES && [getPreference(@"ram_unjb_enable") boolValue] == YES) {
+    int launchNum = [getPreference(@"unsupported_warn_counter") intValue];
+    if(launchNum > 0) {
+        setPreference(@"unsupported_warn_counter", @(launchNum - 1));
+    } else {
+        setPreference(@"unsupported_warn_counter", @(30));
+    }
+    
+    if(!getenv("POJAV_DETECTEDJB") && [getPreference(@"ram_unjb_warn") boolValue] == YES && [getPreference(@"auto_ram") boolValue] == NO) {
         UIAlertController *ramalert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"login.warn.title.ram_unjb", nil) message:NSLocalizedString(@"login.warn.message.ram_unjb", nil) preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleCancel handler:nil];
         [self presentViewController:ramalert animated:YES completion:nil];
@@ -83,6 +73,7 @@ extern NSMutableDictionary *prefDict;
     UIImageView *logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"AppLogo"]];
     logoView.frame = CGRectMake(0, (rawHeight / 2) - 35, width, 70);
     [logoView setContentMode:UIViewContentModeScaleAspectFit];
+    logoView.autoresizingMask = AUTORESIZE;
     [self.view addSubview:logoView];
 
     NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
@@ -106,12 +97,10 @@ extern NSMutableDictionary *prefDict;
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"login.menu.about", nil) style:UIBarButtonItemStyleDone target:self action:@selector(aboutLauncher)];
     }
 
-    UIButton *button_faq = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    if(@available (iOS 13.0, *)) {
-        [button_faq setTitle:@"  FAQ" forState:UIControlStateNormal];
-    } else {
-        [button_faq setTitle:@"FAQ" forState:UIControlStateNormal];
-    }
+    UIButton *button_faq = [UIButton buttonWithType:UIButtonTypeSystem];
+    setButtonPointerInteraction(button_faq);
+    [button_faq setTitle:NSLocalizedString(@"FAQ", @"Frequently asked questions") forState:UIControlStateNormal];
+    button_faq.autoresizingMask = AUTORESIZE_BTN;
     button_faq.frame = CGRectMake(widthSplit2 - (((width - widthSplit * 2.0) / 2) / 2), (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
     if([date isEqualToString:@"06-29"] || [date isEqualToString:@"06-30"] || [date isEqualToString:@"07-01"]) {
         button_faq.backgroundColor = [UIColor colorWithRed:67/255.0 green:0/255.0 blue:8/255.0 alpha:1.0];
@@ -126,14 +115,12 @@ extern NSMutableDictionary *prefDict;
         [button_faq setTintColor:UIColor.whiteColor];
         [button_faq setImage:button_faq.imageView.image forState:UIControlStateNormal];
     }
-    [scrollView addSubview:button_faq];
+    [self.view addSubview:button_faq];
 
-    UIButton *button_login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    if(@available (iOS 13.0, *)) {
-        [button_login setTitle:@"  Sign In" forState:UIControlStateNormal];
-    } else {
-        [button_login setTitle:@"Sign In" forState:UIControlStateNormal];
-    }
+    UIButton *button_login = [UIButton buttonWithType:UIButtonTypeSystem];
+    setButtonPointerInteraction(button_login);
+    [button_login setTitle:NSLocalizedString(@"Sign in", nil) forState:UIControlStateNormal];
+    button_login.autoresizingMask = AUTORESIZE_BTN;
     button_login.frame = CGRectMake(button_faq.frame.origin.x - button_faq.frame.size.width - 20, (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
     if([date isEqualToString:@"06-29"] || [date isEqualToString:@"06-30"] || [date isEqualToString:@"07-01"]) {
         button_login.backgroundColor = [UIColor colorWithRed:67/255.0 green:0/255.0 blue:8/255.0 alpha:1.0];
@@ -160,14 +147,12 @@ extern NSMutableDictionary *prefDict;
         [button_login setTintColor:UIColor.whiteColor];
         [button_login setImage:button_login.imageView.image forState:UIControlStateNormal];
     }
-    [scrollView addSubview:button_login];
+    [self.view addSubview:button_login];
 
-    UIButton *button_accounts = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    if(@available (iOS 13.0, *)) {
-        [button_accounts setTitle:@"  Accounts" forState:UIControlStateNormal];
-    } else {
-        [button_accounts setTitle:@"Accounts" forState:UIControlStateNormal];
-    }
+    UIButton *button_accounts = [UIButton buttonWithType:UIButtonTypeSystem];
+    setButtonPointerInteraction(button_accounts);
+    [button_accounts setTitle:NSLocalizedString(@"Accounts", nil) forState:UIControlStateNormal];
+    button_accounts.autoresizingMask = AUTORESIZE_BTN;
     button_accounts.frame = CGRectMake(button_faq.frame.origin.x + button_faq.frame.size.width + 20, (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
     if([date isEqualToString:@"06-29"] || [date isEqualToString:@"06-30"] || [date isEqualToString:@"07-01"]) {
         button_accounts.backgroundColor = [UIColor colorWithRed:67/255.0 green:0/255.0 blue:8/255.0 alpha:1.0];
@@ -182,7 +167,7 @@ extern NSMutableDictionary *prefDict;
         [button_accounts setTintColor:UIColor.whiteColor];
         [button_accounts setImage:button_accounts.imageView.image forState:UIControlStateNormal];
     }
-    [scrollView addSubview:button_accounts];
+    [self.view addSubview:button_accounts];
     
     if([date isEqualToString:@"06-29"] || [date isEqualToString:@"06-30"] || [date isEqualToString:@"07-01"]) {
         UILabel *technoNote = [[UILabel alloc] initWithFrame:CGRectMake(0, 15, width, 40.0)];
@@ -191,7 +176,7 @@ extern NSMutableDictionary *prefDict;
         technoNote.numberOfLines = 1;
         [technoNote setFont:[UIFont boldSystemFontOfSize:10]];
         technoNote.textAlignment = NSTextAlignmentCenter;
-        [scrollView addSubview:technoNote];
+        [self.view addSubview:technoNote];
     }
 
     if (!getEntitlementValue(@"dynamic-codesigning")) {
@@ -283,7 +268,7 @@ extern NSMutableDictionary *prefDict;
 - (void)loginMicrosoft {
     NSURL *url = [NSURL URLWithString:@"https://login.live.com/oauth20_authorize.srf?client_id=00000000402b5328&response_type=code&scope=service%3A%3Auser.auth.xboxlive.com%3A%3AMBI_SSL&redirect_url=https%3A%2F%2Flogin.live.com%2Foauth20_desktop.srf"];
 
-    authVC =
+    self.authVC =
         [[ASWebAuthenticationSession alloc] initWithURL:url
         callbackURLScheme:@"ms-xal-00000000402b5328"
         completionHandler:^(NSURL * _Nullable callbackURL,
@@ -312,11 +297,11 @@ extern NSMutableDictionary *prefDict;
         }];
 
     if (@available(iOS 13.0, *)) {
-        authVC.prefersEphemeralWebBrowserSession = YES;
-        authVC.presentationContextProvider = self;
+        self.authVC.prefersEphemeralWebBrowserSession = YES;
+        self.authVC.presentationContextProvider = self;
     }
 
-    if ([authVC start] == NO) {
+    if ([self.authVC start] == NO) {
         showDialog(self, NSLocalizedString(@"Error", nil), @"Unable to open Safari");
     }
 }
@@ -332,7 +317,7 @@ extern NSMutableDictionary *prefDict;
         [offlineAlert addAction:cancel];
         setPreference(@"local_warn", @NO);
     } else {
-        UIAlertController *controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"login.alert.title", nil) message:NSLocalizedString(@"login.option.local", nil) preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Sign in", nil) message:NSLocalizedString(@"login.option.local", nil) preferredStyle:UIAlertControllerStyleAlert];
         [controller addTextFieldWithConfigurationHandler:^(UITextField *textField) {
             textField.placeholder = NSLocalizedString(@"login.alert.field.username", nil);
             textField.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -449,7 +434,8 @@ extern NSMutableDictionary *prefDict;
 {
     NSString *latestlogPath = [NSString stringWithFormat:@"file://%s/latestlog.old.txt", getenv("POJAV_HOME")];
     NSLog(@"Path is %@", latestlogPath);
-    activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[@"latestlog.txt", [NSURL URLWithString:latestlogPath]] applicationActivities:nil];
+    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[@"latestlog.txt", [NSURL URLWithString:latestlogPath]] applicationActivities:nil];
+    activityViewController.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItems[0];
 
     [self presentViewController:activityViewController animated:YES completion:nil];
 }

@@ -18,7 +18,7 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_refreshAWTBuffer(JNI
     }
 
     int *tmpArray = (*env)->GetIntArrayElements(env, jreRgbArray, 0);
-    memcpy(rgbArray, tmpArray, savedWidth * savedHeight * 4);
+    memcpy(rgbArray, tmpArray, windowWidth * windowHeight * 4);
     (*env)->ReleaseIntArrayElements(env, jreRgbArray, tmpArray, JNI_ABORT);
     dispatch_async(dispatch_get_main_queue(), ^{
         [surfaceView displayLayer];
@@ -27,12 +27,12 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_refreshAWTBuffer(JNI
 
 @implementation SurfaceView
 const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
-	return (const void *)rgbArray;
+    return (const void *)rgbArray;
 }
    
 - (void)displayLayer {
-    CGDataProviderRef bitmapProvider = CGDataProviderCreateDirect(NULL, savedWidth * savedHeight * 4, &callbacks);
-    CGImageRef bitmap = CGImageCreate(savedWidth, savedHeight, 8, 32, 4 * savedWidth, colorSpace, kCGImageAlphaFirst | kCGBitmapByteOrder32Little, bitmapProvider, NULL, FALSE, kCGRenderingIntentDefault);     
+    CGDataProviderRef bitmapProvider = CGDataProviderCreateDirect(NULL, windowWidth * windowHeight * 4, &callbacks);
+    CGImageRef bitmap = CGImageCreate(windowWidth, windowHeight, 8, 32, 4 * windowWidth, colorSpace, kCGImageAlphaFirst | kCGBitmapByteOrder32Little, bitmapProvider, NULL, FALSE, kCGRenderingIntentDefault);     
 
     self.layer.contents = (__bridge id) bitmap;
     CGImageRelease(bitmap);
@@ -60,7 +60,9 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
 @interface JavaGUIViewController ()<UIGestureRecognizerDelegate, UIScrollViewDelegate> {
 }
 
-// - (void)method
+@property BOOL virtualMouseEnabled;
+@property CGRect virtualMouseFrame;
+@property UIImageView* mousePointerView;
 
 @end
 
@@ -74,17 +76,18 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
     [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
     [self setNeedsUpdateOfHomeIndicatorAutoHidden];
 
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    CGRect screenBounds = self.view.bounds;
     CGFloat screenScale = [[UIScreen mainScreen] scale];
 
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height);
     float resolution = [getPreference(@"resolution") floatValue] / 100.0;
 
-    savedWidth = roundf(width * screenScale * resolution);
-    savedHeight = roundf(height * screenScale * resolution);
+    windowWidth = roundf(width * screenScale * resolution);
+    windowHeight = roundf(height * screenScale * resolution);
 
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
+    scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     scrollView.delegate = self;
     scrollView.minimumZoomScale = 1;
     scrollView.maximumZoomScale = 5;
@@ -95,6 +98,18 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
 
     [self.view addSubview:scrollView];
 
+// TODO
+/*
+    self.virtualMouseEnabled = [getPreference(@"virtmouse_enable") boolValue];
+    scrollView.bounces = !self.virtualMouseEnabled;
+    self.virtualMouseFrame = CGRectMake(screenBounds.size.width / 2, screenBounds.size.height / 2, 18, 27);
+    self.mousePointerView = [[UIImageView alloc] initWithFrame:self.virtualMouseFrame];
+    self.mousePointerView.hidden = !self.virtualMouseEnabled;
+    self.mousePointerView.image = [UIImage imageNamed:@"mouse_pointer.png"];
+    self.mousePointerView.userInteractionEnabled = NO;
+    [self.view addSubview:self.mousePointerView];
+*/
+
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnClick:)];
     tapGesture.delegate = self;
@@ -103,10 +118,10 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
     tapGesture.cancelsTouchesInView = NO;
     [surfaceView addGestureRecognizer:tapGesture];
 
-    rgbArray = calloc(4, (size_t) (savedWidth * savedHeight));
+    rgbArray = calloc(4, (size_t) (windowWidth * windowHeight));
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        launchJVM(nil, self.filepath, savedWidth * resolutionScale, savedHeight * resolutionScale, 8);
+        launchJVM(nil, self.filepath, windowWidth, windowHeight, 8);
     });
 }
 
@@ -152,6 +167,17 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
         );
     }
 }
+
+/*
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (scrollView.contentOffset.x == 0) {
+        
+    }
+    if (scrollView.contentOffset.y == 0) {
+        
+    }
+}
+*/
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
     return surfaceView;

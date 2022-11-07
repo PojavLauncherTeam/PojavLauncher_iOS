@@ -226,11 +226,11 @@ jboolean pojavInit_OpenGL() {
     NSString *renderer = @(getenv("POJAV_RENDERER"));
     JNI_LWJGL_changeRenderer(renderer.UTF8String);
     BOOL isAuto = [renderer isEqualToString:@"auto"];
-    if ([renderer isEqualToString:@"libOSMesa.8.dylib"]) {
+    /* if ([renderer isEqualToString:@"libOSMesa.8.dylib"]) {
         config_renderer = RENDERER_VIRGL;
         setenv("GALLIUM_DRIVER", "virpipe", 1);
         loadSymbolsVirGL();
-    } else if (isAuto || [renderer isEqualToString:@ RENDERER_NAME_GL4ES]) {
+    } else */ if (isAuto || [renderer isEqualToString:@ RENDERER_NAME_GL4ES]) {
         config_renderer = RENDERER_MTL_ANGLE;
         setenv("POJAV_RENDERER", RENDERER_NAME_GL4ES, 1);
         loadSymbols();
@@ -348,9 +348,9 @@ jboolean pojavInit_OpenGL() {
             return JNI_FALSE;
         }
         
-        NSLog(@"OSMDroid: width=%i;height=%i, reserving %i bytes for frame buffer", savedWidth, savedHeight,
-             savedWidth * 4 * savedHeight);
-        gbuffer = malloc(savedWidth * 4 * savedHeight+1);
+        NSLog(@"OSMDroid: width=%i;height=%i, reserving %i bytes for frame buffer", windowWidth, windowHeight,
+             windowWidth * 4 * windowHeight);
+        gbuffer = malloc(windowWidth * 4 * windowHeight+1);
         if (gbuffer) {
             NSLog(@"OSMDroid: created frame buffer");
             return JNI_TRUE;
@@ -470,9 +470,9 @@ void pojavMakeCurrent(void* window) {
 
     if (config_renderer == RENDERER_VK_ZINK || config_renderer == RENDERER_VIRGL) {
             NSLog(@"OSMDroid: making current");
-            OSMesaMakeCurrent_p((OSMesaContext)window,gbuffer,GL_UNSIGNED_BYTE,savedWidth,savedHeight);
+            OSMesaMakeCurrent_p((OSMesaContext)window,gbuffer,GL_UNSIGNED_BYTE,windowWidth,windowHeight);
             if (config_renderer == RENDERER_VK_ZINK) {
-                OSMesaPixelStore_p(OSMESA_ROW_LENGTH,savedWidth);
+                OSMesaPixelStore_p(OSMESA_ROW_LENGTH,windowWidth);
                 OSMesaPixelStore_p(OSMESA_Y_UP,0);
             }
 
@@ -539,7 +539,7 @@ Java_org_lwjgl_opengl_GL_getGraphicsBufferAddr(JNIEnv *env, jobject thiz) {
 JNIEXPORT jintArray JNICALL
 Java_org_lwjgl_opengl_GL_getNativeWidthHeight(JNIEnv *env, jobject thiz) {
     jintArray ret = (*env)->NewIntArray(env,2);
-    jint arr[] = {savedWidth, savedHeight};
+    jint arr[] = {windowWidth, windowHeight};
     (*env)->SetIntArrayRegion(env,ret,0,2,arr);
     return ret;
 }

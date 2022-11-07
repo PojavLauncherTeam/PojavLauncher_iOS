@@ -2,14 +2,45 @@
 
 #import "GameSurfaceView.h"
 
+BOOL canAppendToLog;
+dispatch_group_t fatalExitGroup;
+
 CGRect virtualMouseFrame;
 CGPoint lastVirtualMousePoint;
 
-
 @interface SurfaceViewController : UIViewController
 
-@property(nonatomic, strong) GameSurfaceView* surfaceView;
+@property(nonatomic) GameSurfaceView* surfaceView;
 @property UIImageView* mousePointerView;
-@property UIPanGestureRecognizer* scrollPanGesture;
+@property(nonatomic) UIPanGestureRecognizer* scrollPanGesture;
+
+@property(nonatomic) UIView* rootView;
+
+- (void)sendTouchPoint:(CGPoint)location withEvent:(int)event;
+
++ (BOOL)isRunning;
+
+// LogView category
+@property(nonatomic) UITableView* logTableView;
+@property(nonatomic) UIView* logOutputView;
+
+// Navigation category
+@property(nonatomic) NSArray *menuArray;
+@property(nonatomic) UITableView *menuView;
+
+@end
+
+@interface SurfaceViewController(LogView)
+
++ (void)appendToLog:(NSString *)line;
++ (void)handleExitCode:(int)code;
+
+- (void)viewWillTransitionToSize_LogView:(CGRect)frame;
+
+@end
+
+@interface SurfaceViewController(Navigation)<UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate>
+
+- (void)viewWillTransitionToSize_Navigation:(CGRect)frame;
 
 @end

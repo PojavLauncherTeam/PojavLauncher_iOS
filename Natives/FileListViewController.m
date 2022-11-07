@@ -3,7 +3,7 @@
 @interface FileListViewController () {
 }
 
-@property(nonatomic, strong) NSMutableArray *fileList;
+@property(nonatomic) NSMutableArray *fileList;
 
 @end
 

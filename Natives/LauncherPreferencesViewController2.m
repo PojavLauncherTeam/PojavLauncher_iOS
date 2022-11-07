@@ -12,14 +12,18 @@
 typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
 @interface LauncherPreferencesViewController2()<UIPickerViewDataSource, UIPickerViewDelegate> {}
-@property NSArray<NSString*>* prefSections;
-@property NSArray<NSArray<NSDictionary*>*>* prefContents;
-@property BOOL prefDetailVisible;
+@property(nonatomic) NSArray<NSString*>* prefSections;
+@property(nonatomic) NSArray<NSArray<NSDictionary*>*>* prefContents;
+@property(nonatomic) BOOL prefDetailVisible;
 
 @property CreateView typeButton, typeChildPane, typePickField, typeTextField, typeSlider, typeSwitch;
 @end
 
 @implementation LauncherPreferencesViewController2
+
+- (NSString *)imageName {
+    return @"ic_menu_settings";
+}
 
 - (void)viewDidLoad
 {
@@ -41,7 +45,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
         return self.navigationController != nil;
     };
 
-    self.prefSections = @[@"general", @"video", @"control", @"java"];
+    self.prefSections = @[@"general", @"video", @"control", @"java", @"debug"];
 
     self.prefContents = @[
         @[
@@ -51,14 +55,6 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"type": self.typeChildPane,
                 @"enableCondition": whenNotInGame,
                 @"class": LauncherPrefGameDirViewController.class,
-            },
-            @{@"key": @"home_symlink",
-                @"hasDetail": @YES,
-                @"icon": @"link",
-                @"type": self.typeSwitch,
-                @"enableCondition": ^BOOL(){
-                    return getenv("POJAV_DETECTEDJB") != NULL && whenNotInGame();
-                }
             },
             @{@"key": @"check_sha",
                 @"hasDetail": @YES,
@@ -188,11 +184,9 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"hasDetail": @YES,
                 @"icon": @"slider.horizontal.3",
                 @"type": self.typeSwitch,
-                @"enableCondition": ^BOOL(){
-                    return getenv("POJAV_DETECTEDJB") == NULL && whenNotInGame();
-                },
+                @"enableCondition": whenNotInGame,
                 @"warnCondition": ^BOOL(){
-                    return getenv("POJAV_DETECTEDJB") == NULL && whenNotInGame();
+                    return getenv("POJAV_DETECTEDJB") == NULL;
                 },
                 @"warnKey": @"auto_ram_warn",
                 @"requestReload": @YES
@@ -201,8 +195,8 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"hasDetail": @YES,
                 @"icon": @"memorychip",
                 @"type": self.typeSlider,
-                @"min": @(NSProcessInfo.processInfo.physicalMemory / 1048576 * 0.25),
-                @"max": @(NSProcessInfo.processInfo.physicalMemory / 1048576 * 0.85),
+                @"min": @(250),
+                @"max": @((NSProcessInfo.processInfo.physicalMemory / 1048576) * 0.85),
                 @"enableCondition": ^BOOL(){
                     return ![getPreference(@"auto_ram") boolValue] && whenNotInGame();
                 },
@@ -210,6 +204,28 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                     return view.value >= NSProcessInfo.processInfo.physicalMemory / 1048576 * 0.37;
                 },
                 @"warnKey": @"mem_warn"
+            }
+        ], @[
+            @{@"key": @"debug_ipad_ui",
+                @"hasDetail": @YES,
+                @"icon": @"ipad",
+                @"type": self.typeSwitch,
+                @"enableCondition": whenNotInGame
+            },
+            @{@"key": @"debug_show_layout_bounds",
+                @"hasDetail": @YES,
+                @"icon": @"square.dashed",
+                @"type": self.typeSwitch,
+                @"enableCondition": whenNotInGame,
+                @"requestReload": @YES
+            },
+            @{@"key": @"debug_show_layout_overlap",
+                @"hasDetail": @YES,
+                @"icon": @"square.on.square",
+                @"type": self.typeSwitch,
+                @"enableCondition": ^BOOL(){
+                    return [getPreference(@"debug_show_layout_bounds") boolValue] && whenNotInGame();
+                }
             }
         ]
     ];
@@ -239,9 +255,10 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
 }
 
-- (void)dismissViewController {
-    [self.presentingViewController performSelector:@selector(updatePreferenceChanges)];
-    [self dismissViewControllerAnimated:YES completion:nil];
+- (void)viewWillDisappear:(BOOL)animated {
+    if (self.navigationController == nil) {
+        [self.presentingViewController performSelector:@selector(updatePreferenceChanges)];
+    }
 }
 
 - (void)toggleDetailVisibility {
@@ -253,17 +270,6 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return self.prefSections.count;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (section != 0 || self.navigationController != nil) {
-        return nil;
-    }
-
-    UIButton *doneButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [doneButton setTitle:NSLocalizedString(@"Done", nil) forState:UIControlStateNormal];
-    [doneButton addTarget:self action:@selector(dismissViewController) forControlEvents:UIControlEventTouchUpInside];
-    return doneButton;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -379,7 +385,12 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
         picker.delegate = weakSelf;
         picker.dataSource = weakSelf;
         [picker reloadAllComponents];
-        [picker selectRow:[item[@"pickKeys"] indexOfObject:getPreference(key)] inComponent:0 animated:NO];
+
+        NSInteger index = [item[@"pickKeys"] indexOfObject:getPreference(key)];
+        if (index != NSNotFound) {
+            [picker selectRow:index inComponent:0 animated:NO];
+        }
+
         UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, weakSelf.view.frame.size.width, 44.0)];
         UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:view action:@selector(resignFirstResponder)];

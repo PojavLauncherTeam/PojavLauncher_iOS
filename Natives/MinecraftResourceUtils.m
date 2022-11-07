@@ -2,8 +2,8 @@
 
 #import "authenticator/BaseAuthenticator.h"
 #import "AFNetworking.h"
+#import "LauncherNavigationController.h"
 #import "LauncherPreferences.h"
-#import "LauncherViewController.h"
 #import "MinecraftResourceUtils.h"
 #import "ios_uikit_bridge.h"
 #import "utils.h"
@@ -199,12 +199,13 @@ static AFURLSessionManager* manager;
 
         NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull progress){
             callback([NSString stringWithFormat:@"Downloading %@.json", versionStr], mainProgress, progress);
-        } destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) { 
+        } destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+            [NSFileManager.defaultManager removeItemAtPath:jsonPath error:nil];
             return [NSURL fileURLWithPath:jsonPath];
         } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
             if (error != nil) { // FIXME: correct?
-                NSString *errorStr = [NSString stringWithFormat:@"Failed to download %@: %@", versionURL, error.localizedDescription];
-                NSLog(@"[MCDL] Error: %@", errorStr);
+                NSString *errorStr = [NSString stringWithFormat:@"Failed to download %@: %@\nCall stack: %@", versionURL, error.localizedDescription, NSThread.callStackSymbols];
+                NSLog(@"[MCDL] Error: %@ %@", errorStr, NSThread.callStackSymbols);
                 showDialog(currentVC(), @"Error", errorStr);
                 callback(nil, nil, nil);
                 return;
@@ -283,6 +284,7 @@ static AFURLSessionManager* manager;
         library[@"skip"] = @(
             // Exclude platform-dependant libraries
             library[@"downloads"][@"classifiers"] != nil ||
+            library[@"natives"] != nil ||
             // Exclude LWJGL libraries
             [library[@"name"] hasPrefix:@"org.lwjgl"]
         );
@@ -291,7 +293,11 @@ static AFURLSessionManager* manager;
     // Add the client as a library
     NSMutableDictionary *client = [[NSMutableDictionary alloc] init];
     client[@"downloads"] = [[NSMutableDictionary alloc] init];
-    client[@"downloads"][@"artifact"] = json[@"downloads"][@"client"];
+    if (json[@"downloads"][@"client"] == nil) {
+        client[@"downloads"][@"artifact"] = [[NSMutableDictionary alloc] init];
+    } else {
+        client[@"downloads"][@"artifact"] = json[@"downloads"][@"client"];
+    }
     client[@"downloads"][@"artifact"][@"path"] = [NSString stringWithFormat:@"../versions/%@/%@.jar", json[@"id"], json[@"id"]];
     client[@"name"] = [NSString stringWithFormat:@"%@.jar", json[@"id"]];
     [json[@"libraries"] addObject:client];
@@ -353,8 +359,8 @@ static AFURLSessionManager* manager;
         } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
             if (error != nil) {
                 cancel = YES;
-                NSString *errorStr = [NSString stringWithFormat:@"Failed to download %@: %@", url, error.localizedDescription];
-                NSLog(@"[MCDL] Error: %@", errorStr);
+                NSString *errorStr = [NSString stringWithFormat:@"Failed to download %@: %@\nCall stack: %@", url, error.localizedDescription, NSThread.callStackSymbols];
+                NSLog(@"[MCDL] Error: %@ %@", errorStr, NSThread.callStackSymbols);
                 showDialog(currentVC(), @"Error", errorStr);
                 callback(nil, nil);
             } else if (![self checkSHA:sha1 forFile:path altName:nil]) {
@@ -379,12 +385,15 @@ static AFURLSessionManager* manager;
 
     dispatch_group_t group = dispatch_group_create();
     int downloadIndex = -1;
-    __block int jobsAvailable = 20;
+    __block int jobsAvailable = 10;
     for (NSString *name in assets[@"objects"]) {
         if (jobsAvailable < 0) {
             break;
         } else if (jobsAvailable == 0) {
-            dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+            //dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+            while (jobsAvailable == 0) {
+                usleep(50000);
+            }
         }
 
         NSString *hash = assets[@"objects"][name][@"hash"];
@@ -429,6 +438,7 @@ static AFURLSessionManager* manager;
         NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull progress){
             callback([NSString stringWithFormat:@"Downloading %@", name], progress);
         } destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+            [NSFileManager.defaultManager removeItemAtPath:path error:nil];
             return [NSURL fileURLWithPath:path];
         } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
             if (error != nil) {
@@ -437,8 +447,8 @@ static AFURLSessionManager* manager;
                     return;
                 }
                 jobsAvailable = -3;
-                NSString *errorStr = [NSString stringWithFormat:@"Failed to download %@: %@", url, error.localizedDescription];
-                NSLog(@"[MCDL] Error: %@", errorStr);
+                NSString *errorStr = [NSString stringWithFormat:@"Failed to download %@: %@\nCall stack: %@", url, error.localizedDescription, NSThread.callStackSymbols];
+                NSLog(@"[MCDL] Error: %@ %@", errorStr, NSThread.callStackSymbols);
                 showDialog(currentVC(), @"Error", errorStr);
                 callback(nil, nil);
             } else if (![self checkSHA:hash forFile:path altName:name]) {

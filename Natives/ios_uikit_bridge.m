@@ -2,8 +2,8 @@
 #import "AppDelegate.h"
 #import "SceneDelegate.h"
 #import "LoginViewController.h"
+#import "LauncherNavigationController.h"
 #import "LauncherPreferences.h"
-#import "LauncherViewController.h"
 #import "SurfaceViewController.h"
 
 #include "ios_uikit_bridge.h"
@@ -26,7 +26,7 @@ void internal_showDialog(UIViewController *viewController, NSString* title, NSSt
         message:message
         preferredStyle:UIAlertControllerStyleAlert];
     //text.dataDetectorTypes = UIDataDetectorTypeLink;
-    UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+    UIAlertAction* okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDefault handler:nil];
     [alert addAction:okAction];
 
     [currentVC() presentViewController:alert animated:YES completion:nil];
@@ -46,7 +46,11 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_showError(JNIEnv* en
     (*env)->ReleaseStringUTFChars(env, title, title_c);
     (*env)->ReleaseStringUTFChars(env, message, message_c);
 
-    NSLog(@"Dialog shown from Java: %@: %@", title_o, message_o);
+    if (SurfaceViewController.isRunning) {
+        NSLog(@"%@\n%@", title_o, message_o);
+        [SurfaceViewController handleExitCode:1];
+        return;
+    }
 
 dispatch_async(dispatch_get_main_queue(), ^{
 

@@ -1,10 +1,11 @@
+#import "LauncherNavigationController.h"
 #import "LauncherPreferences.h"
 #import "LauncherPrefGameDirViewController.h"
 #import "TOInsetGroupedTableView.h"
 #import "ios_uikit_bridge.h"
 
 @interface LauncherPrefGameDirViewController ()<UITextFieldDelegate>
-@property NSMutableArray *array;
+@property(nonatomic) NSMutableArray *array;
 @end
 
 @implementation LauncherPrefGameDirViewController
@@ -40,6 +41,7 @@
     NSString *lasmPath = [NSString stringWithFormat:@"%s/Library/Application Support/minecraft", getenv("POJAV_HOME")];
     [NSFileManager.defaultManager removeItemAtPath:lasmPath error:nil];
     [NSFileManager.defaultManager createSymbolicLinkAtPath:lasmPath withDestinationPath:multidirPath error:nil];
+    [(LauncherNavigationController *)self.navigationController reloadVersionList:[getPreference(@"selected_version_type") intValue]];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -53,25 +55,19 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
- 
-        if (indexPath.row == 0) {
-            cell.textLabel.text = self.array[indexPath.row];
-        } else {
-            view = [[UITextField alloc] initWithFrame:CGRectMake(20, 10, (cell.bounds.size.width-40)/2, cell.bounds.size.height-20)];
-            [view addTarget:view action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
-            view.autocorrectionType = UITextAutocorrectionTypeNo;
-            view.autocapitalizationType = UITextAutocapitalizationTypeNone;
-            view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-            view.delegate = self;
-            view.returnKeyType = UIReturnKeyDone;
-            [cell.contentView addSubview:view];
-        }
+        view = [[UITextField alloc] initWithFrame:CGRectMake(20, 10, (cell.bounds.size.width-40)/2, cell.bounds.size.height-20)];
+        [view addTarget:view action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
+        view.autocorrectionType = UITextAutocorrectionTypeNo;
+        view.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        view.delegate = self;
+        view.returnKeyType = UIReturnKeyDone;
+        view.userInteractionEnabled = indexPath.row != 0;
+        [cell.contentView addSubview:view];
     }
-    if (indexPath.row > 0) {
-        view = cell.contentView.subviews.lastObject;
-        view.placeholder = self.array[indexPath.row];
-        view.text = self.array[indexPath.row];
-    }
+    view = cell.contentView.subviews.lastObject;
+    view.placeholder = self.array[indexPath.row];
+    view.text = self.array[indexPath.row];
 
     if ([getPreference(@"game_directory") isEqualToString:self.array[indexPath.row]]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -109,29 +105,98 @@ viewForFooterInSection:(NSInteger)section
     }
 }
 
-- (UIContextMenuConfiguration *)tableView:(UITableView *)tableView contextMenuConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath point:(CGPoint)point API_AVAILABLE(ios(13.0))
+/*
+- (UIContextMenuConfiguration *)contextMenuInteraction:(UIContextMenuInteraction *)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-    // You can't delete or rename the default instance, though there will be a reset action (TODO)
-    if (indexPath.row == 0) {
-        return nil;
-    }
+    return [UIContextMenuConfiguration configurationWithIdentifier:nil previewProvider:nil actionProvider:^UIMenu * _Nullable(NSArray<UIMenuElement *> * _Nonnull suggestedActions) {
+        return [UIMenu menuWithTitle:self.array[indexPath.row] children:@[files, filza, santander]];
+    }];
+}
+*/
 
+- (id)createOpenScheme:(NSString *)scheme at:(NSString *)directory {
     if (@available(iOS 13.0, *)) {
-        UIAction *delete = [UIAction actionWithTitle:@"Delete" image:[UIImage systemImageNamed:@"trash"] identifier:@"deleteAction" handler:^(__kindof UIAction * _Nonnull action) {
-            [self actionDeleteAtIndexPath:indexPath];
-        }];
-        delete.attributes = UIMenuElementAttributesDestructive;
-
-        UIAction *rename = [UIAction actionWithTitle:@"Rename" image:[UIImage systemImageNamed:@"pencil"] identifier:@"editAction" handler:^(__kindof UIAction * _Nonnull action) {
-            UITableViewCell *view = [self.tableView cellForRowAtIndexPath:indexPath];
-            [view.contentView.subviews.lastObject becomeFirstResponder];
-        }];
-
-        return [UIContextMenuConfiguration configurationWithIdentifier:nil previewProvider:nil actionProvider:^UIMenu * _Nullable(NSArray<UIMenuElement *> * _Nonnull suggestedActions) {
-            return [UIMenu menuWithTitle:self.array[indexPath.row] children:@[delete, rename]];
-        }];
+        return ^(UIAction *action) {
+            [UIApplication.sharedApplication
+                openURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@://%@", scheme, directory]]
+                options:@{} completionHandler:nil];
+        };
     }
     return nil;
+}
+
+- (UIContextMenuConfiguration *)tableView:(UITableView *)tableView contextMenuConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath point:(CGPoint)point API_AVAILABLE(ios(13.0))
+{
+    // suppress warning
+    if (@available(iOS 13.0, *)) {}
+    else return nil;
+
+    NSArray *menuItems;
+    NSMutableArray *openItems = [[NSMutableArray alloc] init];
+
+    NSString *directory = [NSString stringWithFormat:@"%s/instances/%@", getenv("POJAV_HOME"), self.array[indexPath.row]];
+    if ([UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:@"shareddocuments://"]]) {
+        [openItems addObject:[UIAction
+            actionWithTitle:@"Files"
+            image:nil
+            identifier:nil
+            handler:[self createOpenScheme:@"shareddocuments" at:directory]]];
+    }
+    if ([UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:@"filza://"]]) {
+        [openItems addObject:[UIAction
+            actionWithTitle:@"Filza"
+            image:nil
+            identifier:nil
+            handler:[self createOpenScheme:@"filza" at:directory]]];
+    }
+    if ([UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:@"santander://"]]) {
+        [openItems addObject:[UIAction
+            actionWithTitle:@"Santander"
+            image:nil
+            identifier:nil
+            handler:[self createOpenScheme:@"santander" at:directory]]];
+    }
+    UIMenu *open = [UIMenu
+        menuWithTitle:@""
+        image:nil
+        identifier:nil
+        options:UIMenuOptionsDisplayInline
+        children:openItems];
+
+    if (indexPath.row == 0) {
+        // You can't delete or rename the default instance, though there will be a reset action (TODO)
+        menuItems = @[open];
+    } else {
+        UIAction *rename = [UIAction
+            actionWithTitle:NSLocalizedString(@"Rename", nil)
+            image:[UIImage systemImageNamed:@"pencil"]
+            identifier:nil
+            handler:^(UIAction *action) {
+                UITableViewCell *view = [self.tableView cellForRowAtIndexPath:indexPath];
+                [view.contentView.subviews.lastObject becomeFirstResponder];
+            }
+        ];
+
+        UIAction *delete = [UIAction
+            actionWithTitle:NSLocalizedString(@"Delete", nil)
+            image:[UIImage systemImageNamed:@"trash"]
+            identifier:nil
+            handler:^(UIAction *action) {
+                [self actionDeleteAtIndexPath:indexPath];
+            }
+        ];
+        delete.attributes = UIMenuElementAttributesDestructive;
+
+        menuItems = @[open, rename, delete];
+    }
+
+    return [UIContextMenuConfiguration
+        configurationWithIdentifier:nil
+        previewProvider:nil
+        actionProvider:^UIMenu *(NSArray<UIMenuElement *> *suggestedActions) {
+            return [UIMenu menuWithTitle:self.array[indexPath.row] children:menuItems];
+        }
+    ];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath

@@ -4,6 +4,20 @@
 
 #include "../glfw_keycodes.h"
 
+// Left thumbstick directions
+#define DIRECTION_EAST 0
+#define DIRECTION_NORTH_EAST 1
+//#define DIRECTION_NORTH 2
+#define DIRECTION_NORTH_WEST 3
+//#define DIRECTION_WEST 4
+#define DIRECTION_SOUTH_WEST 5
+//#define DIRECTION_SOUTH 6
+#define DIRECTION_SOUTH_EAST 7
+
+CFAbsoluteTime lastFrameTime;
+CGFloat lastXValue; // lastHorizontalValue
+CGFloat lastYValue; // lastVerticalValue
+
 @implementation ControllerInput
 
 NSMutableDictionary *gameMap, *menuMap;
@@ -16,10 +30,6 @@ BOOL leftShiftHeld;
 
     gameMap = [[NSMutableDictionary alloc] init];
 
-    gameMap[@(GLFW_KEY_W)] = @(GLFW_KEY_W);
-    gameMap[@(GLFW_KEY_A)] = @(GLFW_KEY_A);
-    gameMap[@(GLFW_KEY_S)] = @(GLFW_KEY_S);
-    gameMap[@(GLFW_KEY_D)] = @(GLFW_KEY_D);
     gameMap[@(SPECIALBTN_MOUSEPRI)] = @(SPECIALBTN_MOUSEPRI);
     gameMap[@(SPECIALBTN_MOUSEMID)] = @(SPECIALBTN_MOUSEMID);
     gameMap[@(SPECIALBTN_MOUSESEC)] = @(SPECIALBTN_MOUSESEC);
@@ -27,11 +37,11 @@ BOOL leftShiftHeld;
     gameMap[@(GLFW_GAMEPAD_BUTTON_LEFT_BUMPER)] = @(SPECIALBTN_SCROLLUP);
     gameMap[@(GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER)] = @(SPECIALBTN_SCROLLDOWN);
 
-    gameMap[@(GLFW_GAMEPAD_AXIS_LEFT_TRIGGER)] = @(SPECIALBTN_MOUSESEC);
-    gameMap[@(GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER)] = @(SPECIALBTN_MOUSEPRI);
+    gameMap[@(GLFW_GAMEPAD_BUTTON_LEFT_TRIGGER)] = @(SPECIALBTN_MOUSESEC);
+    gameMap[@(GLFW_GAMEPAD_BUTTON_RIGHT_TRIGGER)] = @(SPECIALBTN_MOUSEPRI);
 
-    menuMap[@(GLFW_GAMEPAD_BUTTON_BACK)] = @(GLFW_KEY_TAB);
-    menuMap[@(GLFW_GAMEPAD_BUTTON_START)] = @(GLFW_KEY_ESCAPE);
+    gameMap[@(GLFW_GAMEPAD_BUTTON_BACK)] = @(GLFW_KEY_TAB);
+    gameMap[@(GLFW_GAMEPAD_BUTTON_START)] = @(GLFW_KEY_ESCAPE);
     //gameMap[@(GLFW_GAMEPAD_BUTTON_GUIDE)] = @(GLFW_KEY_UNKNOWN);
 
     gameMap[@(GLFW_GAMEPAD_BUTTON_A)] = @(GLFW_KEY_SPACE);
@@ -94,14 +104,15 @@ BOOL leftShiftHeld;
             CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_RIGHT, pressed, leftShiftHeld ? GLFW_MOD_SHIFT : 0);
             break;
         case SPECIALBTN_SCROLLUP:
-            CallbackBridge_nativeSendScroll(0, -1);
+            CallbackBridge_nativeSendScroll(0, pressed ? 1 : 0);
             break;
         case SPECIALBTN_SCROLLDOWN:
-            CallbackBridge_nativeSendScroll(0, 1);
+            CallbackBridge_nativeSendScroll(0, pressed ? -1 : 0);
             break;
-        case GLFW_KEY_LEFT_SHIFT:
-            leftShiftHeld = pressed;
         default:
+            if (keycode == GLFW_KEY_LEFT_SHIFT) {
+                leftShiftHeld = pressed;
+            }
             CallbackBridge_nativeSendKey(keycode, 0, pressed, leftShiftHeld ? GLFW_MOD_SHIFT : 0);
             break;
     }
@@ -118,10 +129,10 @@ BOOL leftShiftHeld;
     };
 
     gamepad.leftTrigger.pressedChangedHandler = ^(GCControllerButtonInput *button, float value, BOOL pressed) {
-        [self sendKeyEvent:SPECIALBTN_MOUSESEC pressed:pressed];
+        [self sendKeyEvent:GLFW_GAMEPAD_BUTTON_LEFT_TRIGGER pressed:pressed];
     };
     gamepad.rightTrigger.pressedChangedHandler = ^(GCControllerButtonInput *button, float value, BOOL pressed) {
-        [self sendKeyEvent:SPECIALBTN_MOUSEPRI pressed:pressed];
+        [self sendKeyEvent:GLFW_GAMEPAD_BUTTON_RIGHT_TRIGGER pressed:pressed];
     };
 
     if (@available(iOS 13.0, *)) {
@@ -163,34 +174,55 @@ BOOL leftShiftHeld;
     gamepad.dpad.right.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
         [self sendKeyEvent:GLFW_GAMEPAD_BUTTON_DPAD_RIGHT pressed:pressed];
     };
-    
+
     gamepad.leftThumbstick.valueChangedHandler = ^(GCControllerDirectionPad * _Nonnull dpad, float xValue, float yValue) {
-        if (isGrabbing) {
+        if (!isGrabbing) {
+            // Update virtual mouse position
+            lastXValue = xValue;
+            lastYValue = yValue;
             return;
         }
 
-        UIImageView *pointerView = [(id)currentWindow().rootViewController mousePointerView];
-        virtualMouseFrame.origin.x += xValue;
-        virtualMouseFrame.origin.y += yValue;
-        pointerView.frame = virtualMouseFrame;
+        static char lastLThumbDirection = -2;
+        char direction = -1;
+        if (xValue != 0 && yValue != 0) {
+            CGFloat degree = atan2f(yValue, xValue) * (180.0 / M_PI);
+            if (degree < 0) {
+                degree += 360;
+            }
+            direction = (int)((degree+22.5)/45.0) % 8;
+        }
+        if (lastLThumbDirection == direction) {
+            return;
+        }
+
+        // Update WASD states
+        int mod = leftShiftHeld ? GLFW_MOD_SHIFT : 0;
+        CallbackBridge_nativeSendKey(GLFW_KEY_W, 0,
+            direction >= DIRECTION_NORTH_EAST &&
+            direction <= DIRECTION_NORTH_WEST,
+            mod);
+        CallbackBridge_nativeSendKey(GLFW_KEY_A, 0,
+            direction >= DIRECTION_NORTH_WEST &&
+            direction <= DIRECTION_SOUTH_WEST,
+            mod);
+        CallbackBridge_nativeSendKey(GLFW_KEY_S, 0,
+            direction >= DIRECTION_SOUTH_WEST &&
+            direction <= DIRECTION_SOUTH_EAST,
+            mod);
+        CallbackBridge_nativeSendKey(GLFW_KEY_D, 0,
+            direction == DIRECTION_SOUTH_EAST ||
+            direction == DIRECTION_EAST ||
+            direction == DIRECTION_NORTH_EAST,
+            mod);
+
+        lastLThumbDirection = direction;
     };
     gamepad.rightThumbstick.valueChangedHandler = ^(GCControllerDirectionPad * _Nonnull dpad, float xValue, float yValue) {
-        if (!isGrabbing) {
-            return;
+        if (isGrabbing) {
+            lastXValue = xValue;
+            lastYValue = yValue;
         }
-
-        dpad.up.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
-            [self sendKeyEvent:GLFW_KEY_W pressed:pressed];
-        };
-        dpad.left.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
-            [self sendKeyEvent:GLFW_KEY_A pressed:pressed];
-        };
-        dpad.down.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
-            [self sendKeyEvent:GLFW_KEY_S pressed:pressed];
-        };
-        dpad.right.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
-            [self sendKeyEvent:GLFW_KEY_D pressed:pressed];
-        };
     };
     if (@available(iOS 12.1, *)) {
         gamepad.leftThumbstickButton.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
@@ -200,6 +232,28 @@ BOOL leftShiftHeld;
             [self sendKeyEvent:GLFW_GAMEPAD_BUTTON_RIGHT_THUMB pressed:pressed];
         };
     }
+}
+
+/**
+ * Send the new mouse position, computing the delta
+ */
++ (void)tick {
+    // There isn't a convenient way to get ns, use ms at this point
+    CGFloat frameTime = CACurrentMediaTime();
+    // GameController automatically performs deadzone calculations
+    // so we just take the raw input
+    if (lastFrameTime != 0 && (lastXValue != 0 || lastYValue != 0)) {
+        CGFloat acceleration = MathUtils_dist(0, 0, lastXValue, lastYValue); // magnitude
+        CGFloat deltaX = lastXValue * acceleration * 18;
+        CGFloat deltaY = -lastYValue * acceleration * 18;
+        CGFloat deltaTimeScale = (frameTime - lastFrameTime) / 0.016666666; // Scale of 1 = 60Hz
+        deltaX *= deltaTimeScale;
+        deltaY *= deltaTimeScale;
+
+        SurfaceViewController *vc = (id)(currentWindow().rootViewController);
+        [vc sendTouchPoint:CGPointMake(deltaX, deltaY) withEvent:ACTION_MOVE_MOTION];
+    }
+    lastFrameTime = frameTime;
 }
 
 + (void)unregisterControllerCallbacks:(GCController *)controller {
@@ -224,10 +278,6 @@ BOOL leftShiftHeld;
     gamepad.dpad.left.pressedChangedHandler = nil;
     gamepad.dpad.right.pressedChangedHandler = nil;
     gamepad.leftThumbstick.valueChangedHandler = nil;
-    gamepad.rightThumbstick.up.pressedChangedHandler = nil;
-    gamepad.rightThumbstick.down.pressedChangedHandler = nil;
-    gamepad.rightThumbstick.left.pressedChangedHandler = nil;
-    gamepad.rightThumbstick.right.pressedChangedHandler = nil;
     gamepad.rightThumbstick.valueChangedHandler = nil;
     if (@available(iOS 12.1, *)) {
     gamepad.leftThumbstickButton.pressedChangedHandler = nil;

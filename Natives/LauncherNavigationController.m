@@ -1,14 +1,16 @@
 #import "AFNetworking.h"
 #import "CustomControlsViewController.h"
 #import "JavaGUIViewController.h"
+#import "LauncherNavigationController.h"
 #import "LauncherPreferences.h"
-#import "LauncherViewController.h"
 #import "MinecraftResourceUtils.h"
 #import "ios_uikit_bridge.h"
 
 #include "utils.h"
 
-@interface LauncherViewController () <UIDocumentPickerDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDelegate> {
+#define AUTORESIZE_MASKS UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin
+
+@interface LauncherNavigationController () <UIDocumentPickerDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDelegate> {
 }
 
 @property NSMutableArray* versionList;
@@ -16,7 +18,7 @@
 
 @end
 
-@implementation LauncherViewController
+@implementation LauncherNavigationController
 
 UIPickerView* versionPickerView;
 UITextField* versionTextField;
@@ -25,32 +27,16 @@ int versionSelectedAt = 0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
-    [self setNeedsUpdateOfHomeIndicatorAutoHidden];
 
-    CGRect screenBounds = self.view.frame;
+    CGFloat splitWidth = self.toolbar.frame.size.width / 3;
 
-    int width = (int) roundf(screenBounds.size.width);
-    int height = (int) roundf(screenBounds.size.height) - self.navigationController.navigationBar.frame.size.height;
-
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
-    [self.view addSubview:scrollView];
-    scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-
-    UILabel *versionTextView = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 4.0, 0.0, 0.0)];
-    versionTextView.text = @"Minecraft version: ";
-    versionTextView.numberOfLines = 0;
-    [versionTextView sizeToFit];
-    [scrollView addSubview:versionTextView];
-
-    versionTextField = [[UITextField alloc] initWithFrame:CGRectMake(versionTextView.bounds.size.width + 4.0, 4.0, width - versionTextView.bounds.size.width - 8.0, height - 58.0)];
+    versionTextField = [[UITextField alloc] initWithFrame:CGRectMake(0, 4, splitWidth, self.toolbar.frame.size.height/2 - 4)];
     [versionTextField addTarget:versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
+    versionTextField.autoresizingMask = AUTORESIZE_MASKS;
     versionTextField.placeholder = @"Specify version...";
     versionTextField.text = (NSString *) getPreference(@"selected_version");
-    versionTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
-    versionTextField.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-
+    versionTextField.textAlignment = NSTextAlignmentCenter;
 
     self.versionList = [[NSMutableArray alloc] init];
     versionPickerView = [[UIPickerView alloc] init];
@@ -58,7 +44,7 @@ int versionSelectedAt = 0;
     versionPickerView.dataSource = self;
     UIToolbar *versionPickToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
 
-    UISegmentedControl *versionTypeControl = [[UISegmentedControl alloc]    initWithItems:@[
+    UISegmentedControl *versionTypeControl = [[UISegmentedControl alloc] initWithItems:@[
         NSLocalizedString(@"Installed", nil),
         NSLocalizedString(@"Releases", nil),
         NSLocalizedString(@"Snapshot", nil),
@@ -67,53 +53,59 @@ int versionSelectedAt = 0;
     ]];
     versionTypeControl.selectedSegmentIndex = [getPreference(@"selected_version_type") intValue];
     [versionTypeControl addTarget:self action:@selector(changeVersionType:) forControlEvents:UIControlEventValueChanged];
+    [self reloadVersionList:versionTypeControl.selectedSegmentIndex];
+
     UIBarButtonItem *versionTypeItem = [[UIBarButtonItem alloc] initWithCustomView:versionTypeControl];
     UIBarButtonItem *versionFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     UIBarButtonItem *versionDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(versionClosePicker)];
     versionPickToolbar.items = @[versionTypeItem, versionFlexibleSpace, versionDoneButton];
-
     versionTextField.inputAccessoryView = versionPickToolbar;
     versionTextField.inputView = versionPickerView;
 
-    [scrollView addSubview:versionTextField];
+    [self.toolbar addSubview:versionTextField];
 
-    if (@available(iOS 14.0, *)) {
-        // use UIMenu
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage systemImageNamed:@"ellipsis.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStyleDone target:self action:@selector(displayOptions:)];
-        UIAction *option1 = [UIAction actionWithTitle:@"Launch a mod installer" image:[[UIImage systemImageNamed:@"internaldrive"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-            handler:^(__kindof UIAction * _Nonnull action) {[self enterModInstaller:self.navigationItem.rightBarButtonItem];}];
-        UIAction *option2 = [UIAction actionWithTitle:@"Custom controls" image:[[UIImage systemImageNamed:@"dpad.right.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-            handler:^(__kindof UIAction * _Nonnull action) {[self enterCustomControls];}];
-        UIMenu *menu = [UIMenu menuWithTitle:@"" image:nil identifier:nil
-            options:UIMenuOptionsDisplayInline children:@[option1, option2]];
-        self.navigationItem.rightBarButtonItem.action = nil;
-        self.navigationItem.rightBarButtonItem.primaryAction = nil;
-        self.navigationItem.rightBarButtonItem.menu = menu;
-    } else {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Options" style:UIBarButtonItemStyleDone target:self action:@selector(displayOptions:)];
-    }
+    self.progressViewMain = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 0, self.toolbar.frame.size.width, 4.0)];
+    self.progressViewSub = [[UIProgressView alloc] initWithFrame:CGRectMake(0, self.toolbar.frame.size.height - 4.0, self.toolbar.frame.size.width, 4.0)];
+    self.progressViewMain.autoresizingMask = self.progressViewSub.autoresizingMask = AUTORESIZE_MASKS;
+    self.progressViewMain.hidden = self.progressViewSub.hidden = YES;
+    [self.toolbar addSubview:self.progressViewMain];
+    [self.toolbar addSubview:self.progressViewSub];
 
-    self.progressViewMain = [[UIProgressView alloc] initWithFrame:CGRectMake(4.0, height - 58.0, width - 8.0, 6.0)];
-    self.progressViewSub = [[UIProgressView alloc] initWithFrame:CGRectMake(4.0, height - 58.0, width - 8.0, 6.0)];
-    self.progressViewMain.alpha = 0.6;
-    self.progressViewSub.alpha = 0.4;
-    [scrollView addSubview:self.progressViewSub];
-    [scrollView addSubview:self.progressViewMain];
-
-    self.buttonInstall = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    self.buttonInstall = [UIButton buttonWithType:UIButtonTypeSystem];
+    setButtonPointerInteraction(self.buttonInstall);
     self.buttonInstall.enabled = NO;
-    [self.buttonInstall setTitle:@"Play" forState:UIControlStateNormal];
-    self.buttonInstall.frame = CGRectMake(10.0, height - 54.0, 100.0, 50.0);
+    [self.buttonInstall setTitle:NSLocalizedString(@"Play", nil) forState:UIControlStateNormal];
+    self.buttonInstall.autoresizingMask = AUTORESIZE_MASKS;
+    self.buttonInstall.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
+    self.buttonInstall.layer.cornerRadius = 5;
+    self.buttonInstall.frame = CGRectMake(splitWidth, 6.0, splitWidth, self.toolbar.frame.size.height - 12.0);
+    self.buttonInstall.tintColor = UIColor.whiteColor;
     [self.buttonInstall addTarget:self action:@selector(launchMinecraft:) forControlEvents:UIControlEventTouchUpInside];
-    [scrollView addSubview:self.buttonInstall];
-    
-    self.progressText = [[UILabel alloc] initWithFrame:CGRectMake(120.0, height - 54.0, width - 124.0, 50.0)];
-    [scrollView addSubview:self.progressText];
-}
+    [self.toolbar addSubview:self.buttonInstall];
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [self reloadVersionList:[getPreference(@"selected_version_type") intValue]];
+    UIButton *buttonCustomControls = [UIButton buttonWithType:UIButtonTypeSystem];
+    setButtonPointerInteraction(buttonCustomControls);
+    [buttonCustomControls setTitle:NSLocalizedString(@"launcher.menu.custom_controls", nil) forState:UIControlStateNormal];
+    buttonCustomControls.autoresizingMask = AUTORESIZE_MASKS;
+    buttonCustomControls.frame = CGRectMake(0, self.toolbar.frame.size.height/2, splitWidth, self.toolbar.frame.size.height/2);
+    [buttonCustomControls addTarget:self action:@selector(enterCustomControls) forControlEvents:UIControlEventTouchUpInside];
+    [self.toolbar addSubview:buttonCustomControls];
+
+    UIButton *buttonInstallJar = [UIButton buttonWithType:UIButtonTypeSystem];
+    setButtonPointerInteraction(buttonInstallJar);
+    [buttonInstallJar setTitle:NSLocalizedString(@"launcher.menu.install_jar", nil) forState:UIControlStateNormal];
+    buttonInstallJar.autoresizingMask = AUTORESIZE_MASKS;
+    buttonInstallJar.frame = CGRectMake(splitWidth*2, self.toolbar.frame.size.height/2, splitWidth, self.toolbar.frame.size.height/2);
+    [buttonInstallJar addTarget:self action:@selector(enterModInstaller) forControlEvents:UIControlEventTouchUpInside];
+    [self.toolbar addSubview:buttonInstallJar];
+
+    self.progressText = [[UILabel alloc] initWithFrame:CGRectMake(0, 4, self.toolbar.frame.size.width, 20)];
+    self.progressText.adjustsFontSizeToFitWidth = YES;
+    self.progressText.autoresizingMask = AUTORESIZE_MASKS;
+    self.progressText.font = [self.progressText.font fontWithSize:16];
+    self.progressText.textAlignment = NSTextAlignmentCenter;
+    self.progressText.userInteractionEnabled = NO;
+    [self.toolbar addSubview:self.progressText];
 }
 
 - (BOOL)isVersionInstalled:(NSString *)versionId
@@ -155,6 +147,8 @@ int versionSelectedAt = 0;
 
 - (void)reloadVersionList:(int)type
 {
+    self.buttonInstall.enabled = NO;
+
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     [manager GET:@"https://piston-meta.mojang.com/mc/game/version_manifest_v2.json" parameters:nil headers:nil progress:^(NSProgress * _Nonnull progress) {
         self.progressViewMain.progress = progress.fractionCompleted;
@@ -208,6 +202,9 @@ int versionSelectedAt = 0;
     } failure:^(NSURLSessionTask *operation, NSError *error) {
         NSLog(@"Warning: Error fetching version list: %@", error);
         self.buttonInstall.enabled = YES;
+        if (type == TYPE_INSTALLED) {
+            [self fetchLocalVersionList:self.versionList];
+        }
     }];
 }
 
@@ -216,59 +213,30 @@ int versionSelectedAt = 0;
     [self reloadVersionList:sender.selectedSegmentIndex];
 }
 
-#pragma mark - Button click events
-- (void)displayOptions:(UIBarButtonItem*)sender {
-    if (@available(iOS 14.0, *)) {
-        // use UIMenu
-    } else {
-        // use UIAlertController
-        UIAlertController *fullAlert = [UIAlertController alertControllerWithTitle:@"Options" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
-        UIAlertAction *option1 = [UIAlertAction actionWithTitle:@"Launch a mod installer" style:UIAlertActionStyleDefault
-            handler:^(UIAlertAction * _Nonnull action) {[self enterModInstaller:self.navigationItem.rightBarButtonItem];}];
-        UIAlertAction *option2 = [UIAlertAction actionWithTitle:@"Custom controls" style:UIAlertActionStyleDefault
-            handler:^(UIAlertAction * _Nonnull action) {[self enterCustomControls];}];
-        fullAlert.popoverPresentationController.barButtonItem = sender;
-        [self presentViewController:fullAlert animated:YES completion:nil];
-        [fullAlert addAction:option1];
-        [fullAlert addAction:option2];
-    }
-}
-
+#pragma mark - Options
 - (void)enterCustomControls {
-    if (![getPreference(@"customctrl_warn") boolValue]) {
-        CustomControlsViewController *vc = [[CustomControlsViewController alloc] init];
-        vc.modalPresentationStyle = UIModalPresentationOverFullScreen;
-        [self presentViewController:vc animated:YES completion:nil];
-        return;
-    }
-    setPreference(@"customctrl_warn", @(NO));
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Warning" message:@"This option is unfinished, some might be incomplete or missing." preferredStyle:UIAlertControllerStyleActionSheet];
-    if (alert.popoverPresentationController != nil) {
-        alert.popoverPresentationController.sourceView = self.view;
-        alert.popoverPresentationController.sourceRect = CGRectMake(self.view.frame.size.width-10.0, 0, 10, 10);
-    }
-    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        [self enterCustomControls];
-    }];
-    [self presentViewController:alert animated:YES completion:nil];
-    [alert addAction:ok];
+    CustomControlsViewController *vc = [[CustomControlsViewController alloc] init];
+    vc.modalPresentationStyle = UIModalPresentationOverFullScreen;
+    [currentVC() presentViewController:vc animated:YES completion:nil];
 }
 
-- (void)enterModInstaller:(UIBarButtonItem*)sender {
+- (void)enterModInstaller {
     UIDocumentPickerViewController *documentPicker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:@[@"com.sun.java-archive"]
             inMode:UIDocumentPickerModeImport];
     documentPicker.delegate = self;
     documentPicker.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self presentViewController:documentPicker animated:YES completion:nil];
+    [currentVC() presentViewController:documentPicker animated:YES completion:nil];
 }
 
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url {
     if (controller.documentPickerMode == UIDocumentPickerModeImport) {
-        JavaGUIViewController *vc = [[JavaGUIViewController alloc] init];
-        vc.modalPresentationStyle = UIModalPresentationFullScreen;
-        vc.filepath = url.path;
-        NSLog(@"ModInstaller: launching %@", vc.filepath);
-        [self presentViewController:vc animated:YES completion:nil];
+        [self invokeAfterJITEnabled:^{
+            JavaGUIViewController *vc = [[JavaGUIViewController alloc] init];
+            vc.modalPresentationStyle = UIModalPresentationFullScreen;
+            vc.filepath = url.path;
+            NSLog(@"ModInstaller: launching %@", vc.filepath);
+            [self presentViewController:vc animated:YES completion:nil];
+        }];
     }
 }
 
@@ -277,7 +245,9 @@ int versionSelectedAt = 0;
         return;
     }
 
+    sender.alpha = 0.5;
     sender.enabled = NO;
+    self.progressViewMain.hidden = self.progressViewSub.hidden = NO;
 
     NSObject *object = [self.versionList objectAtIndex:[versionPickerView selectedRowInComponent:0]];
 
@@ -288,9 +258,14 @@ int versionSelectedAt = 0;
         self.progressViewMain.observedProgress = mainProgress;
         self.progressViewSub.observedProgress = progress;
         if (stage == nil) {
+            sender.alpha = 1;
             sender.enabled = YES;
+            self.progressText.text = nil;
+            self.progressViewMain.hidden = self.progressViewSub.hidden = YES;
             if (mainProgress != nil) {
-                UIKit_launchMinecraftSurfaceVC();
+                [self invokeAfterJITEnabled:^{
+                    UIKit_launchMinecraftSurfaceVC();
+                }];
             }
             return;
         }
@@ -298,6 +273,36 @@ int versionSelectedAt = 0;
     }];
 
     //callback_LauncherViewController_installMinecraft("1.12.2");
+}
+
+- (void)invokeAfterJITEnabled:(void(^)(void))handler {
+    if (isJITEnabled()) {
+        handler();
+        return;
+    }
+
+    CADisplayLink *displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(tickJIT)];
+
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"launcher.wait_jit.title", nil)
+        message:NSLocalizedString(@"launcher.wait_jit.message", nil)
+        preferredStyle:UIAlertControllerStyleAlert];
+/* TODO:
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^{
+        
+    }];
+    [alert addAction:cancel];
+*/
+    [self presentViewController:alert animated:YES completion:nil];
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        while (!isJITEnabled()) {
+            // Perform check for every second
+            sleep(1);
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [alert dismissViewControllerAnimated:YES completion:handler];
+        });
+    });
 }
 
 #pragma mark - UIPopoverPresentationControllerDelegate
@@ -341,10 +346,6 @@ int versionSelectedAt = 0;
 #pragma mark - View controller UI mode
 - (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
     return UIRectEdgeBottom;
-}
-
-- (BOOL)prefersHomeIndicatorAutoHidden {
-    return NO;
 }
 
 @end

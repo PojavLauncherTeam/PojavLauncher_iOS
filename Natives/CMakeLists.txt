@@ -24,6 +24,7 @@ include_directories(
 # For cacio support library
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -rpath @loader_path -rpath @executable_path/jvm/java-8-openjdk/lib -rpath /usr/lib/jvm/java-8-openjdk/lib")
 
+add_definitions(-DCONFIG_BRANCH="${CONFIG_BRANCH}")
 add_definitions(-DCONFIG_COMMIT="${CONFIG_COMMIT}")
 add_definitions(-DCONFIG_RELEASE=${CONFIG_RELEASE})
 
@@ -90,6 +91,7 @@ add_executable(PojavLauncher
   log.m
   JavaLauncher.m
   external/fishhook/fishhook.c
+  UIKit+hook.m
 
   authenticator/BaseAuthenticator.m
   authenticator/LocalAuthenticator.m
@@ -116,15 +118,19 @@ add_executable(PojavLauncher
   JavaGUIViewController.m
   LauncherFAQViewController.m
   LauncherMenuViewController.m
+  LauncherNavigationController.m
+  LauncherNewsViewController.m
   LauncherPreferences.m
   LauncherPreferencesViewController2.m
   LauncherPrefGameDirViewController.m
   LauncherSplitViewController.m
-  LauncherViewController.m
   LoginViewController.m
   MinecraftResourceUtils.m
-  SceneDelegate.m 
+  SceneDelegate.m
   SurfaceViewController.m
+  SurfaceViewController+LogView.m
+  SurfaceViewController+Navigation.m
+  TrackedTextField.m
   UpdateHistoryViewController.m
   egl_bridge.m
   input_bridge_v3.m

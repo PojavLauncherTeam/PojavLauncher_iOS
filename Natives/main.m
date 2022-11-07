@@ -1,12 +1,14 @@
 #import <mach-o/dyld.h>
 #import <mach/mach.h>
 #import <mach/mach_host.h>
+#import <spawn.h>
 #import <sys/sysctl.h>
 #import <UIKit/UIKit.h>
 
 #import "AppDelegate.h"
 #import "customcontrols/CustomControlsUtils.h"
 #import "LauncherPreferences.h"
+#import "SurfaceViewController.h"
 
 #include <libgen.h>
 #include <pthread.h>
@@ -24,18 +26,10 @@
 #include "codesign.h"
 
 #define CS_PLATFORM_BINARY 0x4000000
-
-#if CONFIG_RELEASE == 1
-# define CONFIG_TYPE "release"
-#else
-# define CONFIG_TYPE "debug"
-#endif
-
-#ifndef CONFIG_COMMIT
-# define CONFIG_COMMIT unspecified
-#endif
-
+#define PT_TRACE_ME 0
+int ptrace(int, pid_t, caddr_t, int);
 #define fm NSFileManager.defaultManager
+extern char** environ;
 
 void printEntitlementAvailability(NSString *key) {
     NSLog(@"[Pre-Init] - %@: %@", key, getEntitlementValue(key) ? @"YES" : @"NO");
@@ -112,38 +106,38 @@ void init_logDeviceAndVer(char *argument) {
     const char *deviceSoftware = [[[UIDevice currentDevice] systemVersion] cStringUsingEncoding:NSUTF8StringEncoding];
     
     // PojavLauncher version
-    regLog("[Pre-Init] PojavLauncher version: %s - %s", CONFIG_TYPE, CONFIG_COMMIT);
+    regLog("[Pre-Init] PojavLauncher version: %s, branch: %s, commit: %s", CONFIG_TYPE, CONFIG_BRANCH, CONFIG_COMMIT);
 
     setenv("POJAV_DETECTEDHW", deviceHardware, 1);
     setenv("POJAV_DETECTEDSW", deviceSoftware, 1);
     
-    if (getenv("POJAV_DETECTEDJB")) {
-        regLog("[Pre-Init] %s with iOS %s (Jailbroken)", deviceHardware, deviceSoftware);
-    } else {
-        regLog("[Pre-Init] %s with iOS %s (Unjailbroken)", deviceHardware, deviceSoftware);
+    NSString *tsPath = [NSString stringWithFormat:@"%s/../_TrollStore", getenv("BUNDLE_PATH")];
+    const char *type = "Unjailbroken";
+    if ([fm fileExistsAtPath:tsPath]) {
+        type = "TrollStore";
+    } else if (getenv("POJAV_DETECTEDJB")) {
+        type = "Jailbroken";
+    }
+    regLog("[Pre-Init] %s with iOS %s (%s)", deviceHardware, deviceSoftware, type);
+    
+    NSString *jvmPath = [NSString stringWithFormat:@"%s/jvm", getenv("BUNDLE_PATH")];
+    if (![fm fileExistsAtPath:jvmPath]) {
+        setenv("POJAV_PREFER_EXTERNAL_JRE", "1", 1);
     }
     
     regLog("[Pre-init] Entitlements availability:");
     printEntitlementAvailability(@"com.apple.developer.kernel.extended-virtual-addressing");
     printEntitlementAvailability(@"com.apple.developer.kernel.increased-memory-limit");
+    printEntitlementAvailability(@"com.apple.private.security.no-sandbox");
     printEntitlementAvailability(@"dynamic-codesigning");
 }
 
 void init_migrateDirIfNecessary() {
-    // TODO: Rewrite to migrate from /usr/share -> new Docs in 2.2
-    NSString *completeFile = @"/var/mobile/Documents/.pojavlauncher/migration_complete";
-    NSString *oldDir = @"/var/mobile/Documents/.pojavlauncher";
-    if ([fm fileExistsAtPath:oldDir] && ![fm fileExistsAtPath:completeFile]) {
-        NSString *newDir = @"/usr/share/pojavlauncher";
-        if (@available(iOS 15, *)) {
-            newDir = @"/private/preboot/procursus/usr/share/pojavlauncher";
-        }
-
+    NSString *oldDir = @"/usr/share/pojavlauncher";
+    if ([fm fileExistsAtPath:oldDir]) {
+        NSString *newDir = [NSString stringWithFormat:@"%s/Documents", getenv("HOME")];
         [fm moveItemAtPath:oldDir toPath:newDir error:nil];
-        [fm createSymbolicLinkAtPath:oldDir withDestinationPath:newDir error:nil];
-
-        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"init.migrateDir", nil), newDir];
-        [message writeToFile:completeFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
+        [fm removeItemAtPath:oldDir error:nil];
     }
 }
 
@@ -192,6 +186,9 @@ void init_redirectStdio() {
         ssize_t rsize;
         char buf[2048];
         while((rsize = read(pfd[0], buf, sizeof(buf)-1)) > 0) {
+            if (rsize < 2048) {
+                buf[rsize] = '\0';
+            }
             // Filter out Session ID here
             int index;
             if (!filteredSessionID) {
@@ -202,6 +199,9 @@ void init_redirectStdio() {
                     rsize = strlen(buf);
                     filteredSessionID = true;
                 }
+            }
+            if (canAppendToLog) {
+                [SurfaceViewController appendToLog:@(buf)];
             }
             [file writeData:[NSData dataWithBytes:buf length:rsize]];
             [file synchronizeFile];
@@ -279,6 +279,15 @@ void init_setupResolvConf() {
 }
 
 int main(int argc, char * argv[]) {
+    if (!isJITEnabled() && getppid() != 1) {
+        NSLog(@"parent pid is not launchd, calling ptrace(PT_TRACE_ME)");
+        // Child process can call to PT_TRACE_ME
+        // then both parent and child processes get CS_DEBUGGED
+        int ret = ptrace(PT_TRACE_ME, 0, 0, 0);
+        return ret;
+        // FIXME: how to kill the child process?
+    }
+
     if (pJLI_Launch) {
         return pJLI_Launch(argc, argv,
                    0, NULL, // sizeof(const_jargs) / sizeof(char *), const_jargs,
@@ -297,21 +306,10 @@ int main(int argc, char * argv[]) {
     init_migrateDirIfNecessary();
 
     setenv("BUNDLE_PATH", dirname(argv[0]), 1);
-
-    if (getenv("POJAV_DETECTEDJB")) {
-        // TODO: Set to new Docs for both jben and unjben in 2.2
-        if (0 == access("/usr/share/pojavlauncher", F_OK)) {
-            // If /usr/share/pojavlauncher isnt already available
-            // this code will crash the app on launch
-            setenv("HOME", "/usr/share", 1);
-            setenv("OLD_POJAV_HOME", "/var/mobile/Documents/.pojavlauncher", 1);
-            setenv("POJAV_HOME", "/usr/share/pojavlauncher", 1);
-        } else {
-            setenv("POJAV_HOME", [NSString stringWithFormat:@"%s/Documents", getenv("HOME")].UTF8String, 1);
-        }
-    } else {
-        setenv("POJAV_HOME", [NSString stringWithFormat:@"%s/Documents", getenv("HOME")].UTF8String, 1);
-    }
+    setenv("HOME", [NSFileManager.defaultManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask]
+        .lastObject.path.stringByDeletingLastPathComponent.UTF8String, 1);
+    // WARNING: THIS DIRECTS TO /var/mobile/Documents IF INSTALLED WITH APPSYNC UNIFIED
+    setenv("POJAV_HOME", [NSString stringWithFormat:@"%s/Documents", getenv("HOME")].UTF8String, 1);
 
     [fm createDirectoryAtPath:@(getenv("POJAV_HOME")) withIntermediateDirectories:NO attributes:nil error:nil];
 
@@ -329,6 +327,30 @@ int main(int argc, char * argv[]) {
 
     init_migrateToPlist("selected_version", "config_ver.txt");
     init_migrateToPlist("java_args", "overrideargs.txt");
+
+    // If sandbox is disabled, W^X JIT can be enabled by PojavLauncher itself
+    if (!isJITEnabled() && getEntitlementValue(@"com.apple.private.security.no-sandbox")) {
+        NSLog(@"[Pre-init] Sandbox is disabled, trying to enable JIT");
+        int pid;
+        int ret = posix_spawnp(&pid, argv[0], NULL, NULL, argv, environ);
+        if (ret == 0) {
+            // posix_spawn is successful, let's check if JIT is enabled
+            int retries;
+            for (retries = 0; retries < 100; retries++) {
+                usleep(10000);
+                if (isJITEnabled()) {
+                    NSLog(@"[Pre-init] JIT has heen enabled with PT_TRACE_ME");
+                    retries = -1;
+                    break;
+                }
+            }
+            if (retries != -1) {
+                NSLog(@"[Pre-init] Failed to enable JIT: unknown reason");
+            }
+        } else {
+            NSLog(@"[Pre-init] Failed to enable JIT: posix_spawn() failed errno %d", errno);
+        }
+    }
 
     @autoreleasepool {
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));

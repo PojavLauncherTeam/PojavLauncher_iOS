@@ -5,6 +5,22 @@
 #include <stdbool.h>
 #include "jni.h"
 
+// Configuration macros
+#if CONFIG_RELEASE == 1
+# define CONFIG_TYPE "release"
+#else
+# define CONFIG_TYPE "debug"
+#endif
+
+#ifndef CONFIG_BRANCH
+# define CONFIG_BRANCH "unspecified"
+#endif
+
+#ifndef CONFIG_COMMIT
+# define CONFIG_COMMIT "unspecified"
+#endif
+
+// Control button actions
 #define ACTION_DOWN 0
 #define ACTION_UP 1
 #define ACTION_MOVE 2
@@ -14,6 +30,7 @@
 #define BUTTON2_DOWN_MASK 1 << 11 // mid btn
 #define BUTTON3_DOWN_MASK 1 << 12 // right btn
 
+// GLFW event types
 #define EVENT_TYPE_CHAR 1000
 #define EVENT_TYPE_CHAR_MODS 1001
 #define EVENT_TYPE_CURSOR_ENTER 1002
@@ -30,7 +47,7 @@
 
 #define RENDERER_NAME_GL4ES "libgl4es_114.dylib"
 #define RENDERER_NAME_MTL_ANGLE "libtinygl4angle.dylib"
-#define RENDERER_NAME_VK_ZINK "libOSMesa.8.dylib"
+#define RENDERER_NAME_VK_ZINK "libOSMesaOverride.dylib"
 
 #define SPECIALBTN_KEYBOARD -1
 #define SPECIALBTN_TOGGLECTRL -2
@@ -51,12 +68,13 @@ BOOL isJITEnabled();
 
 void* gbuffer; // OSMesa framebuffer
 long showingWindow;
-int savedWidth, savedHeight;
+int windowWidth, windowHeight;
+int physicalWidth, physicalHeight;
 bool isInputReady, isCursorEntered, isPrepareGrabPos, isUseStackQueueCall;
 jboolean isGrabbing;
 BOOL virtualMouseEnabled;
 
-static float resolutionScale = 1.0;
+float resolutionScale;
 BOOL isControlModifiable;
 
 // Init functions
@@ -76,6 +94,7 @@ CGFloat MathUtils_dist(CGFloat x1, CGFloat y1, CGFloat x2, CGFloat y2);
 CGFloat MathUtils_map(CGFloat x, CGFloat in_min, CGFloat in_max, CGFloat out_min, CGFloat out_max);
 CGFloat dpToPx(CGFloat dp);
 CGFloat pxToDp(CGFloat px);
+void setButtonPointerInteraction(UIButton *button);
 void setViewBackgroundColor(UIView* view);
 void _CGDataProviderReleaseBytePointerCallback(void *info,const void *pointer);
 

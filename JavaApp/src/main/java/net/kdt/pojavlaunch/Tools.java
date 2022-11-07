@@ -392,7 +392,7 @@ public final class Tools
         for (int i = 0; i < libraries.length; i++) {
             DependentLibrary libItem = libraries[i];
             if (libItem.name.startsWith("com.mojang:text2speech") ||
-                libItem.name.startsWith("net.java.jinput") ||
+                //libItem.name.startsWith("net.java.jinput") ||
                 libItem.name.startsWith("net.java.dev.jna:platform:") ||
                 libItem.name.startsWith("org.lwjgl") ||
                 libItem.name.startsWith("tv.twitch")) {

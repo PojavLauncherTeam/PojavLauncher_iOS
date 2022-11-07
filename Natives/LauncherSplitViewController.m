@@ -1,6 +1,6 @@
 #import "LauncherSplitViewController.h"
 #import "LauncherMenuViewController.h"
-#import "LauncherViewController.h"
+#import "LauncherNavigationController.h"
 #import "utils.h"
 
 @interface LauncherSplitViewController () {
@@ -12,12 +12,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    UIApplication.sharedApplication.idleTimerDisabled = YES;
     setViewBackgroundColor(self.view);
 
     //TODO: maximumPrimaryColumnWidth
 
     LauncherMenuViewController *masterVc = [[LauncherMenuViewController alloc] init];
-    UINavigationController *detailVc = [[UINavigationController alloc] init];
+    LauncherNavigationController *detailVc = [[LauncherNavigationController alloc] init];
+    detailVc.toolbarHidden = NO;
 
     self.presentsWithGesture = YES;
     self.preferredDisplayMode = UISplitViewControllerDisplayModeOneBesideSecondary;

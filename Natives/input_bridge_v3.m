@@ -10,6 +10,7 @@
  * - Implements glfwSetCursorPos() to handle grab camera pos correctly.
  */
 
+#import <SafariServices/SafariServices.h>
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 #import "SurfaceViewController.h"
@@ -48,6 +49,27 @@ jmethodID inputBridgeMethod_ANDROID;
 jclass uikitBridgeClass;
 jmethodID uikitBridgeTouchMethod;
 
+NSString* processPath(NSString* path) {
+    if ([path hasPrefix:@"file:"]) {
+        path = [path substringFromIndex:5].stringByRemovingPercentEncoding.stringByResolvingSymlinksInPath;
+    }
+
+    NSString *prefix = @"file";
+    if ([UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:@"shareddocuments://"]] &&
+      ![path hasPrefix:@"/usr"]) {
+        // Prefer opening in Files if containerized
+        prefix = @"shareddocuments";
+    } else if ([UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:@"filza://"]]) {
+        // Open in Filza if installed
+        prefix = @"filza";
+    } else if ([UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:@"santander://"]]) {
+        // Open in Santander if installed
+        prefix = @"santander";
+    }
+
+    return [NSString stringWithFormat:@"%@://%@", prefix, path];
+}
+
 /**
  * Hooked version of java.lang.UNIXProcess.forkAndExec()
  * which is used to handle the "open" command.
@@ -67,14 +89,13 @@ hooked_ProcessImpl_forkAndExec(JNIEnv *env, jobject process, jint mode, jbyteArr
 
     char *path = (char *)((*env)->GetByteArrayElements(env, argBlock, NULL));
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSString *realPath = @(path);
-        if ([realPath hasPrefix:@"file:"]) {
-            realPath = [realPath substringFromIndex:5].stringByRemovingPercentEncoding;
+        if ([@(path) hasPrefix:@"http"]) {
+            SFSafariViewController *vc = [[SFSafariViewController alloc] initWithURL:[NSURL URLWithString:@(path)]];
+            [currentWindow().rootViewController presentViewController:vc animated:YES completion:nil];
+            dispatch_group_leave(group);
+            return;
         }
-        if (![realPath hasPrefix:@"http"]) {
-            realPath = [NSString stringWithFormat:@"filza:/%@", realPath.stringByResolvingSymlinksInPath];
-        }
-
+        NSString *realPath = processPath(@(path));
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:realPath] options:@{} completionHandler:^(BOOL success) {
             if (success) {
                 NSLog(@"Opened \"%@\"", realPath);
@@ -144,7 +165,7 @@ ADD_CALLBACK_WWIN(WindowPos);
 #undef ADD_CALLBACK_WWIN
 
 void sendData(int type, CGFloat i1, CGFloat i2, int i3, int i4) {
-    debugLog("Debug: Send data, jnienv.isNull=%d, bridgeClass.isNull=%d\n", runtimeJNIEnvPtr == NULL, inputBridgeClass_ANDROID == NULL);
+    //debugLog("Debug: Send data, jnienv.isNull=%d, bridgeClass.isNull=%d\n", runtimeJNIEnvPtr == NULL, inputBridgeClass_ANDROID == NULL);
     if (runtimeJNIEnvPtr == NULL) {
         (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &runtimeJNIEnvPtr, NULL);
     }
@@ -231,13 +252,14 @@ int callback_SurfaceViewController_touchHotbar(CGFloat x, CGFloat y) {
         return -1;
     }
 
-    int barHeight = mcscale(40); // 20
-    int barWidth = mcscale(360); // 180
-    int barX = (savedWidth / 2) - (barWidth / 2);
-    int barY = savedHeight - barHeight;
-    if (x < barX || x >= barX + barWidth || y < barY || y >= barY + barHeight) {
-        return -1;
-    }
+    int barHeight = mcscale(20);
+    int barY = physicalHeight - barHeight;
+    if (y < barY) return -1;
+
+    int barWidth = mcscale(180);
+    int barX = (physicalWidth / 2) - (barWidth / 2);
+    if (x < barX || x >= barX + barWidth) return -1;
+
     return hotbarKeys[(int) MathUtils_map(x, barX, barX + barWidth, 0, 9)];
 }
 
@@ -251,7 +273,7 @@ JNIEXPORT jstring JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeClipboard(JNI
 }
 
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetInputReady(JNIEnv* env, jclass clazz, jboolean inputReady) {
-    debugLog("Debug: Changing input state, isReady=%d, isUseStackQueueCall=%d\n", inputReady, isUseStackQueueCall);
+    //debugLog("Debug: Changing input state, isReady=%d, isUseStackQueueCall=%d\n", inputReady, isUseStackQueueCall);
     isInputReady = inputReady;
 
     return isUseStackQueueCall;
@@ -395,8 +417,8 @@ void CallbackBridge_nativeSendMouseButton(int button, int action, int mods) {
 }
 
 void CallbackBridge_nativeSendScreenSize(int width, int height) {
-    savedWidth = width;
-    savedHeight = height;
+    windowWidth = width;
+    windowHeight = height;
     
     if (isInputReady) {
         if (GLFW_invoke_FramebufferSize) {
@@ -406,7 +428,6 @@ void CallbackBridge_nativeSendScreenSize(int width, int height) {
                 GLFW_invoke_FramebufferSize((void*) showingWindow, width, height);
             }
         }
-        
         if (GLFW_invoke_WindowSize) {
             if (isUseStackQueueCall) {
                 sendData(EVENT_TYPE_WINDOW_SIZE, width, height, 0, 0);
