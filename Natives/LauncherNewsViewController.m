@@ -14,9 +14,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    // TODO: replace temp changelog
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"https://khanhduytran0.github.io/PojavLauncher/changelog.ios.html"]];
+    
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"https://pojavlauncherteam.github.io/changelogs/IOS.html"]];
 
     WKWebViewConfiguration *webConfig = [[WKWebViewConfiguration alloc] init];
     WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.frame configuration:webConfig];
