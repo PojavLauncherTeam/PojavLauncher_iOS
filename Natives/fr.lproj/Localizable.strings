@@ -4,18 +4,28 @@
 */
 
 "game.menu.force_close" = "Forcer la fermeture";
+"game.menu.confirm.force_close" = "Êtes-vous sûr de vouloir forcer l'arrêt ?";
 "game.menu.log_output" = "Sortie du journal";
 "game.menu.custom_controls" = "Contrôles personnalisés";
+
+"game.title.exit_code" = "Le jeu s'est arrêté avec le code %d";
 
 // The options button at the top-right corner on iOS 12
 "Options" = "Options";
 
 // The play button
 "Play" = "Jouer";
+
+// Version categories
+"Installed" = "Installés";
 "Snapshot" = "Snapshot";
 "Old-beta" = "Bêta";
 "Old-alpha" = "Alpha";
+
+// Custom controls
+"Copy" = "Copier";
 "Edit" = "Modifier";
+"Move" = "Déplacer";
 "Remove" = "Supprimer";
 
 "custom_controls.button_edit.name" = "Nom";
@@ -29,13 +39,38 @@
 "custom_controls.button_edit.dynamic_position" = "Position dynamique";
 
 "custom_controls.button_menu.add_subbutton" = "Ajouter un sous-bouton";
+"custom_controls.control_menu.discard_changes" = "Ignorer les modifications";
 "custom_controls.control_menu.exit" = "Quitter";
+"custom_controls.control_menu.exit.warn" = "Vous êtes sur le point de quitter sans enregistrer les modifications.";
 "custom_controls.control_menu.save" = "Sauvegarder";
+"custom_controls.control_menu.save.error.default" = "Le nom du contrôle ne peut pas être \"default\" car il sera remplacé.";
+"custom_controls.control_menu.save.error.json" = "Erreur JSON";
 "custom_controls.control_menu.load" = "Charger";
 "custom_controls.control_menu.add_button" = "Ajouter un bouton";
 
 "launcher.menu.custom_controls" = "Contrôles personnalisés";
 "launcher.menu.install_jar" = "Installer le .jar";
+
+"launcher.wait_jit.title" = "Attente du JIT";
+"launcher.wait_jit.message" = "PojavLauncher s'appuie sur la compilation Just-in-time pour que Java fonctionne avec des performances maximales.";
+
+"login.error.username.outOfRange" = "Le nom d'utilisateur doit comporter au moins 3 caractères et 16 caractères maximum";
+
+"login.alert.field.username" = "Nom d’utilisateur";
+
+"login.jit.checking" = "Recherche du JIT";
+"login.jit.enabled" = "Le JIT a été activé";
+"login.jit.fail.JitStreamer" = "Erreur JitStreamer: %@";
+"login.jit.found.JitStreamer" = "JitStreamer trouvé, activation du JIT";
+
+// Login buttons
+"Sign in" = "Se connecter";
+"FAQ" = "FAQ";
+"Accounts" = "Comptes";
+"login.menu.sendlogs" = "Envoyez vos logs";
+"login.menu.updates" = "Mises à jour récentes";
+
+"login.option.microsoft" = "Compte Microsoft";
 
 "News" = "Actualités";
 "Settings" = "Paramètres";
