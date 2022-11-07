@@ -26,7 +26,9 @@
 // Custom controls
 "Copy" = "复制";
 "Edit" = "修改";
+"Move" = "移动";
 "Remove" = "移除";
+"Resize" = "调整大小";
 
 "custom_controls.button_edit.name" = "名称";
 "custom_controls.button_edit.size" = "大小";
@@ -45,7 +47,9 @@
 "custom_controls.button_edit.dynamic_y" = "动态 Y 轴";
 
 "custom_controls.button_menu.add_subbutton" = "添加子按钮";
+"custom_controls.control_menu.discard_changes" = "放弃更改";
 "custom_controls.control_menu.exit" = "退出";
+"custom_controls.control_menu.exit.warn" = "您将会退出而不保存更改。";
 "custom_controls.control_menu.save" = "保存";
 "custom_controls.control_menu.save.error.default" = "控件名称不能是“默认”，因为它会被覆盖。";
 "custom_controls.control_menu.save.error.json" = "JSON文件错误";
