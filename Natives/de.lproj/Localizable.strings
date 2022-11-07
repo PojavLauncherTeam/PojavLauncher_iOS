@@ -26,7 +26,9 @@
 // Custom controls
 "Copy" = "Kopieren";
 "Edit" = "Bearbeiten";
+"Move" = "Verschieben";
 "Remove" = "Entfernen";
+"Resize" = "Größe ändern";
 
 "custom_controls.button_edit.name" = "Name";
 "custom_controls.button_edit.size" = "Größe";
@@ -45,7 +47,9 @@
 "custom_controls.button_edit.dynamic_y" = "Dynamische Y-Achse";
 
 "custom_controls.button_menu.add_subbutton" = "Sub-Schaltfläche hinzufügen";
+"custom_controls.control_menu.discard_changes" = "Änderungen verwerfen";
 "custom_controls.control_menu.exit" = "Beenden";
+"custom_controls.control_menu.exit.warn" = "Du bist dabei zu beenden ohne Änderungen zu speichern.";
 "custom_controls.control_menu.save" = "Speichern";
 "custom_controls.control_menu.save.error.default" = "Der Name der Steuerung kann nicht „default” sein, da es überschrieben werden würde.";
 "custom_controls.control_menu.save.error.json" = "JSON-Fehler";
