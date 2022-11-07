@@ -24,7 +24,7 @@
 "Old-alpha" = "远古 alpha 版";
 
 // Custom controls
-"Copy" = "拷贝";
+"Copy" = "复制";
 "Edit" = "修改";
 "Remove" = "移除";
 
@@ -48,8 +48,8 @@
 "custom_controls.control_menu.exit" = "退出";
 "custom_controls.control_menu.save" = "保存";
 "custom_controls.control_menu.save.error.default" = "控件名称不能是“默认”，因为它会被覆盖。";
-"custom_controls.control_menu.save.error.json" = "JSON 错误";
-"custom_controls.control_menu.save.error.write" = "存储文件时发生错误";
+"custom_controls.control_menu.save.error.json" = "JSON文件错误";
+"custom_controls.control_menu.save.error.write" = "保存按键布局时发生错误";
 "custom_controls.control_menu.load" = "加载";
 "custom_controls.control_menu.make_default" = "设为默认";
 "custom_controls.control_menu.safe_area" = "安全区";
@@ -62,8 +62,8 @@
 "launcher.menu.custom_controls" = "自定义控制按键";
 "launcher.menu.install_jar" = "安装 .jar";
 
-"launcher.wait_jit.title" = "等待 JIT 中";
-"launcher.wait_jit.message" = "PojavLauncher 启动器需要 Just-in-time 转译才能获得最佳体验";
+"launcher.wait_jit.title" = "请等待应用获取到JIT(Just-in-time)";
+"launcher.wait_jit.message" = "PojavLauncher启动器必须要JIT(Just-in-time)权限才能启动游戏";
 
 "login.error.username.outOfRange" = "用户名必须在 3-16 个字符以内";
 
@@ -157,7 +157,7 @@
 "preference.title.renderer" = "渲染器";
 "preference.title.renderer.auto" = "自动选择：gl4es 或 tinygl4angle";
 "preference.title.renderer.gl4es" = "gl4es 1.1.4 - OpenGL版本2.1";
-"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - 输出 OpenGL 3.2 (核心配置，存在限制)";
+"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - OpenGL版本3.2";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - OpenGL版本4.1(FPS不高)";
 "preference.detail.renderer" = "更改使用的 OpenGL 渲染器";
 
