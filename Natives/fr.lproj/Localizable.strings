@@ -195,5 +195,6 @@
 "preference.title.debug_ipad_ui" = "Déverrouiller l'interface utilisateur iPadOS";
 "preference.detail.debug_ipad_ui" = "Déverrouille l'interface utilisateur iPad (alerte, clavier, etc.) si activé ou l'interface utilisateur iPhone si désactivé.";
 "preference.title.debug_show_layout_bounds" = "Afficher les limites de la mise en page";
+"preference.detail.debug_show_layout_bounds" = "Afficher les limites, les marges de clip";
 "preference.title.debug_show_layout_overlap" = "Afficher le chevauchement de la mise en page";
 "preference.detail.debug_show_layout_overlap" = "Superposez chaque vue avec une couleur transparente pour révéler des vues qui se chevauchent.";
