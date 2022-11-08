@@ -21,7 +21,6 @@ This launcher is available on the Procursus repo, thanks to [@Diatrus](https://t
 
 The [PojavLauncher Website](https://pojavlauncherteam.github.io/INSTALL.html#ios) has extensive documentation on how to install, set up, and play! For those who wish to install quickly, here's the basics (on iOS 12 or later):
 
-### Without jailbreak (sideload as IPA)
 Note: This is experimental, although game works smoothly, you should not set Render distance too much.
 
 1. Setup the sideload app
@@ -31,25 +30,10 @@ Note: This is experimental, although game works smoothly, you should not set Ren
 3. Open the downloaded IPA in the sideload app to install.
 4. For enabling JIT, choose one of these:
  - Setup [JitStreamer](http://jitstreamer.com), then launch PojavLauncher. JIT will be automatically enabled on startup. This is the most convenient way.
+ - Be jailbroken (JIT will automatically be enabled)
+ - Install with TrollStore (JIT will automatically be enabled)
  - Launch PojavLauncher with `Enable JIT` option in AltStore. This requires the device to be plugged in the computer or have Wi-Fi syncing enabled.
  - Setup and use others such as [Jitterbug](https://github.com/osy/Jitterbug).
-
-### Procursus-bootstraps
-*Note: This is currently unavailable. Will be fixed soon! For the meantime, you can follow the same way as [below](#bingnerelucubratus-bootstraps)*.
-If you have Chimera, Taurine, Odyssey, or another jailbreak that comes with **libhooker**, this one's for you.
-
-1. Search for `pojavlauncher` with your favorite package manager.
-2. Install `PojavLauncher iOS`.
-
-### Bingner/Elucubratus bootstraps
-If you have unc0ver, checkra1n, or another jailbreak that comes with **Cydia Substrate** or **Substitute**, this one's for you. You can also use this if you have a libhooker jailbreak.
-
-1. Add `https://repository.crystall1ne.software` to your sources list.
-2. Search for `pojavlauncher` with your favorite package manager.
-3. Install the package you wish to have, according to your preference:
-   * `pojavlauncher.release` is the stable build. This one gets updated with new releases or tags on this repository, or when Procursus updated their copy.
-   * `pojavlauncher.development` is the latest commit on the `main` branch of this repository. It may have application breaking bugs, but also has more features.
-   * The rootless variants serve the same purpose, but only work with Procursus jailbreaks and iOS 15 (see our website for more information).
 
 ## Known issues
 * Some Forge versions may fail with `java.lang.reflect.InvocationTargetException`.
