@@ -26,7 +26,9 @@
 // Custom controls
 "Copy" = "Копировать";
 "Edit" = "Редактировать";
+"Move" = "Переместить";
 "Remove" = "Удалить";
+"Resize" = "Изменить размер";
 
 "custom_controls.button_edit.name" = "Имя";
 "custom_controls.button_edit.size" = "Размер";
@@ -45,7 +47,9 @@
 "custom_controls.button_edit.dynamic_y" = "Привязка по оси Y";
 
 "custom_controls.button_menu.add_subbutton" = "Добавить под-кнопку";
+"custom_controls.control_menu.discard_changes" = "Сбросить изменения";
 "custom_controls.control_menu.exit" = "Выйти";
+"custom_controls.control_menu.exit.warn" = "Вы собираетесь выйти без сохранения изменений.";
 "custom_controls.control_menu.save" = "Сохранить";
 "custom_controls.control_menu.save.error.default" = "Название раскладки не может быть \"default\", иначе она будет перезаписана.";
 "custom_controls.control_menu.save.error.json" = "Ошибка формата";
