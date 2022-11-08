@@ -27,6 +27,7 @@
 "Edit" = "Modifier";
 "Move" = "Déplacer";
 "Remove" = "Supprimer";
+"Resize" = "Redimensionner";
 
 "custom_controls.button_edit.name" = "Nom";
 "custom_controls.button_edit.size" = "Taille";
@@ -48,6 +49,8 @@
 "custom_controls.control_menu.load" = "Charger";
 "custom_controls.control_menu.make_default" = "Définir par défaut";
 "custom_controls.control_menu.add_button" = "Ajouter un bouton";
+
+"init.migrateDir" = "Le répertoire de données PojavLauncher est maintenant %@. Toutes vos données existantes ont été déplacées vers le nouvel emplacement.";
 
 "launcher.menu.custom_controls" = "Contrôles personnalisés";
 "launcher.menu.install_jar" = "Installer le .jar";
@@ -92,6 +95,9 @@
 "login.warn.title.demomode" = "Cette option est en bêta.";
 "login.warn.message.demomode" = "En remplacement du mode hors ligne et local, le mode démo vous permettra de vous connecter à un compte Microsoft qui ne possède pas le jeu et de jouer à l'essai de l'édition Java, introduit dans la version 1.3. Les versions plus anciennes contiennent le jeu complet puisque le lanceur officiel ne place pas ces restrictions. Consultez notre site pour en savoir plus sur cette transition du mode hors ligne.";
 
+"login.warn.title.localmode" = "Le mode hors-ligne est maintenant le mode local.";
+"login.msa.error.xsts.krverify" = "Votre compte doit être vérifié par vos parents avant de continuer.\nCode d'erreur : 2148916236 ou 2148916237.";
+
 "login.msa.progress.acquireAccessToken" = "(1/5) Acquisition du jeton d'accès";
 "login.msa.progress.acquireXBLToken" = "(2/5) Acquisition du jeton Xbox Live";
 "login.msa.progress.acquireXSTS" = "Acquisition de XSTS";
@@ -126,8 +132,14 @@
 "preference.title.done.reset_warnings" = "Tous les avertissements ont été réinitialisés.";
 
 "preference.title.reset_settings" = "Réinitialiser tous les paramètres";
+"preference.title.confirm.reset_settings" = "Ceci supprimera toutes vos préférences personnalisées, y compris la résolution, la taille des boutons et les arguments Java.";
+"preference.title.done.reset_settings" = "Tous les paramètres par défaut ont été restaurés.";
 
 "preference.title.renderer" = "Moteur de rendu";
+"preference.title.renderer.auto" = "Auto: gl4es ou tinygl4angle";
+"preference.title.renderer.gl4es" = "gl4es 1.1.4 - exporte OpenGL 2.1";
+"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - exporte OpenGL 3.2 (Profil de base, Limité)";
+"preference.title.renderer.zink" = "Zink (Mesa 21.0) - exporte OpenGL 4.1";
 "preference.detail.renderer" = "Changer le moteur de rendu OpenGL à utiliser";
 
 "preference.title.resolution" = "Résolution (%)";
