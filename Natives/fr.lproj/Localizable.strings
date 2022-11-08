@@ -49,6 +49,7 @@
 "custom_controls.control_menu.load" = "Charger";
 "custom_controls.control_menu.make_default" = "Définir par défaut";
 "custom_controls.control_menu.add_button" = "Ajouter un bouton";
+"custom_controls.hint" = "Appuyez longuement n'importe où sur l'écran pour plus d'options";
 
 "init.migrateDir" = "Le répertoire de données PojavLauncher est maintenant %@. Toutes vos données existantes ont été déplacées vers le nouvel emplacement.";
 
@@ -117,7 +118,7 @@
 
 "preference.title.confirm" = "Êtes-vous sûr ?";
 
-"preference.title.game_directory" = "Répertoire de Minecraft";
+"preference.title.game_directory" = "Répertoire de jeu Minecraft";
 "preference.title.confirm.delete_game_directory" = "L'instance %@ sera définitivement supprimée et ne pourra pas être restaurée.";
 "preference.multidir.add_directory" = "Ajouter un répertoire de jeu";
 
