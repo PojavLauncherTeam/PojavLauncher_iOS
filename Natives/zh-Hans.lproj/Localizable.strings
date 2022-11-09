@@ -52,7 +52,7 @@
 "custom_controls.control_menu.exit.warn" = "您将会退出而不保存更改。";
 "custom_controls.control_menu.save" = "保存";
 "custom_controls.control_menu.save.error.default" = "控件名称不能是“默认”，因为它会被覆盖。";
-"custom_controls.control_menu.save.error.json" = "JSON文件错误";
+"custom_controls.control_menu.save.error.json" = "JSON 文件错误";
 "custom_controls.control_menu.save.error.write" = "保存按键布局时发生错误";
 "custom_controls.control_menu.load" = "加载";
 "custom_controls.control_menu.make_default" = "设为默认";
