@@ -105,7 +105,7 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
     self.virtualMouseFrame = CGRectMake(screenBounds.size.width / 2, screenBounds.size.height / 2, 18, 27);
     self.mousePointerView = [[UIImageView alloc] initWithFrame:self.virtualMouseFrame];
     self.mousePointerView.hidden = !self.virtualMouseEnabled;
-    self.mousePointerView.image = [UIImage imageNamed:@"mouse_pointer.png"];
+    self.mousePointerView.image = [UIImage imageNamed:@"MousePointer"];
     self.mousePointerView.userInteractionEnabled = NO;
     [self.view addSubview:self.mousePointerView];
 */

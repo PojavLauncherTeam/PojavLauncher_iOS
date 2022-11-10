@@ -1,4 +1,4 @@
-#import "LauncherPreferencesViewController2.h"
+#import "LauncherPreferencesViewController.h"
 #import "SurfaceViewController.h"
 
 @implementation SurfaceViewController(Navigation)
@@ -115,7 +115,7 @@ static CGPoint lastCenterPoint;
 }
 
 - (void)actionOpenPreferences {
-    LauncherPreferencesViewController2 *vc = [[LauncherPreferencesViewController2 alloc] init];
+    LauncherPreferencesViewController *vc = [[LauncherPreferencesViewController alloc] init];
     [self presentViewController:vc animated:YES completion:nil];
 }
 

@@ -3,7 +3,7 @@
 
 #import "DBNumberedSlider.h"
 #import "LauncherPreferences.h"
-#import "LauncherPreferencesViewController2.h"
+#import "LauncherPreferencesViewController.h"
 #import "LauncherPrefGameDirViewController.h"
 #import "TOInsetGroupedTableView.h"
 
@@ -11,7 +11,7 @@
 
 typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
-@interface LauncherPreferencesViewController2()<UIPickerViewDataSource, UIPickerViewDelegate> {}
+@interface LauncherPreferencesViewController()<UIPickerViewDataSource, UIPickerViewDelegate> {}
 @property(nonatomic) NSArray<NSString*>* prefSections;
 @property(nonatomic) NSArray<NSArray<NSDictionary*>*>* prefContents;
 @property(nonatomic) BOOL prefDetailVisible;
@@ -19,10 +19,10 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 @property CreateView typeButton, typeChildPane, typePickField, typeTextField, typeSlider, typeSwitch;
 @end
 
-@implementation LauncherPreferencesViewController2
+@implementation LauncherPreferencesViewController
 
 - (NSString *)imageName {
-    return @"ic_menu_settings";
+    return @"Menu";
 }
 
 - (void)viewDidLoad
@@ -347,7 +347,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 #pragma mark initViewCreation, showAlert, checkWarn
 
 - (void)initViewCreation {
-    __weak LauncherPreferencesViewController2 *weakSelf = self;
+    __weak LauncherPreferencesViewController *weakSelf = self;
 
     self.typeButton = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
         BOOL destructive = [item[@"destructive"] boolValue];

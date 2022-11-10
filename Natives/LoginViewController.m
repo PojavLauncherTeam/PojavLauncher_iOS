@@ -6,12 +6,10 @@
 #import "authenticator/BaseAuthenticator.h"
 
 #import "AppDelegate.h"
-#import "AboutLauncherViewController.h"
 #import "AccountListViewController.h"
 #import "LauncherFAQViewController.h"
 #import "LauncherSplitViewController.h"
 #import "LoginViewController.h"
-#import "UpdateHistoryViewController.h"
 
 #import "LauncherPreferences.h"
 #import "ios_uikit_bridge.h"
@@ -69,59 +67,36 @@ extern NSMutableDictionary *prefDict;
 
     CGFloat widthSplit = width / 4.0;
     CGFloat widthSplit2 = width / 2.0;
-
-    UIImageView *logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"AppLogo"]];
-    logoView.frame = CGRectMake(0, (rawHeight / 2) - 35, width, 70);
+    
+    UIImageView *logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"AppLogo-Vector"]];
+    logoView.frame = CGRectMake(0, (rawHeight / 2) - 125, width, 250);
     [logoView setContentMode:UIViewContentModeScaleAspectFit];
     logoView.autoresizingMask = AUTORESIZE;
     [self.view addSubview:logoView];
+
+    UIImageView *workMarkView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"AppLogo"]];
+    workMarkView.frame = CGRectMake(0, (rawHeight / 2) - 35, width, 70);
+    [workMarkView setContentMode:UIViewContentModeScaleAspectFit];
+    workMarkView.autoresizingMask = AUTORESIZE;
+    [self.view addSubview:workMarkView];
 
     NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"MM-dd"];
     NSString* date = [dateFormatter stringFromDate:[NSDate date]];
     
-    if(@available(iOS 14.0, *)) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage systemImageNamed:@"info.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStyleDone target:self action:@selector(aboutLauncher)];
-        UIAction *option1 = [UIAction actionWithTitle:NSLocalizedString(@"login.menu.about", nil) image:[[UIImage systemImageNamed:@"eyes.inverse"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self aboutLauncher];}];
-        UIAction *option2 = [UIAction actionWithTitle:NSLocalizedString(@"login.menu.sendlogs", nil) image:[[UIImage systemImageNamed:@"square.and.arrow.up"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self latestLogShare];}];
-        UIAction *option3 = [UIAction actionWithTitle:NSLocalizedString(@"login.menu.updates", nil) image:[[UIImage systemImageNamed:@"arrow.triangle.2.circlepath.circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] identifier:nil
-                             handler:^(__kindof UIAction * _Nonnull action) {[self updateHistory];}];
-        UIMenu *menu = [UIMenu menuWithTitle:@"" image:nil identifier:nil
-                        options:UIMenuOptionsDisplayInline children:@[option1, option2, option3]];
-        self.navigationItem.rightBarButtonItem.action = nil;
-        self.navigationItem.rightBarButtonItem.primaryAction = nil;
-        self.navigationItem.rightBarButtonItem.menu = menu;
+    if(@available(iOS 13.0, *)) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage systemImageNamed:@"square.and.arrow.up"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStyleDone target:self action:@selector(latestLogShare)];
     } else {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"login.menu.about", nil) style:UIBarButtonItemStyleDone target:self action:@selector(aboutLauncher)];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"login.menu.sendlogs", nil) style:UIBarButtonItemStyleDone target:self action:@selector(aboutLauncher)];
     }
 
-    UIButton *button_faq = [UIButton buttonWithType:UIButtonTypeSystem];
-    setButtonPointerInteraction(button_faq);
-    [button_faq setTitle:NSLocalizedString(@"FAQ", @"Frequently asked questions") forState:UIControlStateNormal];
-    button_faq.autoresizingMask = AUTORESIZE_BTN;
-    button_faq.frame = CGRectMake(widthSplit2 - (((width - widthSplit * 2.0) / 2) / 2), (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
-    if([date isEqualToString:@"06-29"] || [date isEqualToString:@"06-30"] || [date isEqualToString:@"07-01"]) {
-        button_faq.backgroundColor = [UIColor colorWithRed:67/255.0 green:0/255.0 blue:8/255.0 alpha:1.0];
-    } else {
-        button_faq.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
-    }
-    button_faq.layer.cornerRadius = 5;
-    [button_faq setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [button_faq addTarget:self action:@selector(showFAQ) forControlEvents:UIControlEventTouchUpInside];
-    if(@available (iOS 13.0, *)) {
-        button_faq.imageView.image = [[UIImage systemImageNamed:@"doc.text"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        [button_faq setTintColor:UIColor.whiteColor];
-        [button_faq setImage:button_faq.imageView.image forState:UIControlStateNormal];
-    }
-    [self.view addSubview:button_faq];
-
+    CGRect frame = CGRectMake(widthSplit2 - (((width - widthSplit * 2.0) / 2) / 2), (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
+    
     UIButton *button_login = [UIButton buttonWithType:UIButtonTypeSystem];
     setButtonPointerInteraction(button_login);
     [button_login setTitle:NSLocalizedString(@"Sign in", nil) forState:UIControlStateNormal];
     button_login.autoresizingMask = AUTORESIZE_BTN;
-    button_login.frame = CGRectMake(button_faq.frame.origin.x - button_faq.frame.size.width - 20, (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
+    button_login.frame = CGRectMake(frame.origin.x - frame.size.width - 20, (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
     if([date isEqualToString:@"06-29"] || [date isEqualToString:@"06-30"] || [date isEqualToString:@"07-01"]) {
         button_login.backgroundColor = [UIColor colorWithRed:67/255.0 green:0/255.0 blue:8/255.0 alpha:1.0];
     } else {
@@ -153,7 +128,7 @@ extern NSMutableDictionary *prefDict;
     setButtonPointerInteraction(button_accounts);
     [button_accounts setTitle:NSLocalizedString(@"Accounts", nil) forState:UIControlStateNormal];
     button_accounts.autoresizingMask = AUTORESIZE_BTN;
-    button_accounts.frame = CGRectMake(button_faq.frame.origin.x + button_faq.frame.size.width + 20, (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
+    button_accounts.frame = CGRectMake(frame.origin.x + frame.size.width + 20, (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
     if([date isEqualToString:@"06-29"] || [date isEqualToString:@"06-30"] || [date isEqualToString:@"07-01"]) {
         button_accounts.backgroundColor = [UIColor colorWithRed:67/255.0 green:0/255.0 blue:8/255.0 alpha:1.0];
     } else {
@@ -418,18 +393,6 @@ extern NSMutableDictionary *prefDict;
     }];
 }
 
-- (void)aboutLauncher
-{
-    AboutLauncherViewController *vc = [[AboutLauncherViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
-- (void)showFAQ
-{
-    LauncherFAQViewController *vc = [[LauncherFAQViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
 -(void)latestLogShare
 {
     NSString *latestlogPath = [NSString stringWithFormat:@"file://%s/latestlog.old.txt", getenv("POJAV_HOME")];
@@ -438,11 +401,6 @@ extern NSMutableDictionary *prefDict;
     activityViewController.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItems[0];
 
     [self presentViewController:activityViewController animated:YES completion:nil];
-}
-
-- (void)updateHistory {
-    UpdateHistoryViewController *vc = [[UpdateHistoryViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)setPopoverProperties:(UIPopoverPresentationController *)controller sender:(UIButton *)sender {

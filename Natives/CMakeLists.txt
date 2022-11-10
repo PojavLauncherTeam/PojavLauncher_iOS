@@ -109,7 +109,6 @@ add_executable(PojavLauncher
   input/ControllerInput.m
   input/KeyboardInput.m
 
-  AboutLauncherViewController.m
   AccountListViewController.m
   AppDelegate.m
   CustomControlsViewController.m
@@ -122,7 +121,7 @@ add_executable(PojavLauncher
   LauncherNavigationController.m
   LauncherNewsViewController.m
   LauncherPreferences.m
-  LauncherPreferencesViewController2.m
+  LauncherPreferencesViewController.m
   LauncherPrefGameDirViewController.m
   LauncherSplitViewController.m
   LoginViewController.m
@@ -132,7 +131,6 @@ add_executable(PojavLauncher
   SurfaceViewController+LogView.m
   SurfaceViewController+Navigation.m
   TrackedTextField.m
-  UpdateHistoryViewController.m
   egl_bridge.m
   input_bridge_v3.m
   ios_uikit_bridge.m

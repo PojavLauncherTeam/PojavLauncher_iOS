@@ -2,7 +2,7 @@
 #import "AccountListViewController.h"
 #import "LauncherMenuViewController.h"
 #import "LauncherNewsViewController.h"
-#import "LauncherPreferencesViewController2.h"
+#import "LauncherPreferencesViewController.h"
 #import "UIButton+AFNetworking.h"
 #import "UIImageView+AFNetworking.h"
 
@@ -20,7 +20,7 @@
     // View controllers are put into an array to keep its state
     self.options = @[
         [[LauncherNewsViewController alloc] init],
-        [[LauncherPreferencesViewController2 alloc] init]
+        [[LauncherPreferencesViewController alloc] init]
     ];
     self.options[0].title = NSLocalizedString(@"News", nil);
     self.options[1].title = NSLocalizedString(@"Settings", nil);
@@ -133,7 +133,7 @@
     [(UIButton *)self.navigationItem.titleView setAttributedTitle:title forState:UIControlStateNormal];
 
     NSURL *url = [NSURL URLWithString:[selected[@"profilePicURL"] stringByReplacingOccurrencesOfString:@"\\/" withString:@"/"]];
-    UIImage *placeholder = [UIImage imageNamed:@"default_account_pfp"];
+    UIImage *placeholder = [UIImage imageNamed:@"DefaultAccount"];
     [(UIButton *)self.navigationItem.titleView setImageForState:UIControlStateNormal withURL:url placeholderImage:placeholder];
     [((UIButton *)self.navigationItem.titleView).imageView setImageWithURL:url placeholderImage:placeholder];
 }
