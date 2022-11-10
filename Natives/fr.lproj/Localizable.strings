@@ -19,7 +19,7 @@
 // Version categories
 "Installed" = "Installés";
 "Snapshot" = "Snapshot";
-"Releases" = "Versions officielles";
+"Releases" = "Versions publiques";
 "Old-beta" = "Bêta";
 "Old-alpha" = "Alpha";
 
@@ -82,7 +82,7 @@
 "Sign in" = "Se connecter";
 "FAQ" = "FAQ";
 "Accounts" = "Comptes";
-"login.menu.sendlogs" = "Envoyez vos logs";
+"login.menu.sendlogs" = "Envoyez vos journaux";
 "login.menu.updates" = "Mises à jour récentes";
 
 "login.option.microsoft" = "Compte Microsoft";
@@ -147,7 +147,7 @@
 "preference.title.cosmetica" = "Capes Cosmetica";
 "preference.detail.cosmetica" = "Activer les capes Cosmetica (anciennement Arc). Pour plus d'informations, veuillez visiter https://cosmetica.cc. Nécessite OptiFine";
 "preference.title.debug_logging" = "Journaux de débogage";
-"preference.detail.debug_logging" = "Enregistre les paramètres internes et les actions sur latestlog.txt. Cela aide les développeurs à trouver des problèmes plus facilement, mais Minecraft peut s'exécuter plus lentement car les logs seront écrits plus souvent.";
+"preference.detail.debug_logging" = "Journalise les paramètres internes et les actions sur latestlog.txt. Cela aide les développeurs à trouver des problèmes plus facilement, mais Minecraft peut s'exécuter plus lentement puisque les journaux seront écrits plus souvent.";
 
 "preference.title.reset_warnings" = "Réinitialiser tous les avertissements";
 "preference.title.done.reset_warnings" = "Tous les avertissements ont été réinitialisés.";
