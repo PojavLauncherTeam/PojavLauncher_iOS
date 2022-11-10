@@ -118,7 +118,7 @@
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Acquisition du jeton d'accès";
 "login.msa.progress.acquireXBLToken" = "(2/5) Acquisition du jeton Xbox Live";
-"login.msa.progress.acquireXSTS" = "Acquisition de XSTS";
+"login.msa.progress.acquireXSTS" = "Acquisition du XSTS";
 "login.msa.progress.acquireXboxProfile" = "(3/5) Acquisition du profil Xbox";
 "login.msa.progress.acquireMCToken" = "(4/5) Acquisition du jeton Minecraft";
 "login.msa.progress.checkMCProfile" = "(5/5) Vérification du profil Minecraft";
