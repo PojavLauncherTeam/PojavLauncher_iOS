@@ -22,24 +22,44 @@
 "Releases" = "Releases";
 "Old-beta" = "Old-beta";
 "Old-alpha" = "Old-alpha";
+
+// Custom controls
+"Copy" = "Copy";
 "Edit" = "Edit";
+"Move" = "Move";
 "Remove" = "Remove";
+"Resize" = "Resize";
 
 "custom_controls.button_edit.name" = "Name";
 "custom_controls.button_edit.size" = "Size";
 "custom_controls.button_edit.mapping" = "Mapping";
 "custom_controls.button_edit.orientation" = "Orientation";
 "custom_controls.button_edit.toggleable" = "Toggleable";
+"custom_controls.button_edit.mouse_pass" = "Mouse pass";
 "custom_controls.button_edit.swipeable" = "Swipeable";
 "custom_controls.button_edit.bg_color" = "Background color";
+"custom_controls.button_edit.stroke_width" = "Stroke width (%)";
 "custom_controls.button_edit.stroke_color" = "Stroke color";
+"custom_controls.button_edit.corner_radius" = "Corner radius (%)";
+"custom_controls.button_edit.opacity" = "Opacity (%)";
 "custom_controls.button_edit.dynamic_position" = "Dynamic position";
+"custom_controls.button_edit.dynamic_x" = "Dynamic X-axis";
+"custom_controls.button_edit.dynamic_y" = "Dynamic Y-axis";
 
 "custom_controls.button_menu.add_subbutton" = "Add sub-button";
+"custom_controls.control_menu.discard_changes" = "Discard changes";
 "custom_controls.control_menu.exit" = "Exit";
+"custom_controls.control_menu.exit.warn" = "You are about to exit without saving changes.";
 "custom_controls.control_menu.save" = "Save";
+"custom_controls.control_menu.save.error.default" = "Control name can not be \"default\" as it will be overwritten.";
+"custom_controls.control_menu.save.error.json" = "JSON error";
+"custom_controls.control_menu.save.error.write" = "Error saving file";
 "custom_controls.control_menu.load" = "Load";
+"custom_controls.control_menu.make_default" = "Make default";
+"custom_controls.control_menu.safe_area" = "Safe area";
 "custom_controls.control_menu.add_button" = "Add button";
+"custom_controls.control_menu.add_drawer" = "Add drawer";
+"custom_controls.hint" = "Long-press anywhere on screen for more options";
 
 "init.migrateDir" = "The PojavLauncher data directory is now %@. All of your existing data has been moved to the new location.";
 
@@ -120,13 +140,61 @@
 
 "preference.title.game_directory" = "Minecraft game directory";
 "preference.title.confirm.delete_game_directory" = "The instance %@ will be deleted forever and cannot be restored.";
+"preference.multidir.add_directory" = "add game directory";
+
+"preference.title.check_sha" = "Check files after downloading";
+"preference.detail.check_sha" = "This option forces launcher to check the file hash if it's available. Prevents broken downloads.";
 "preference.title.cosmetica" = "Cosmetica Capes";
+"preference.detail.cosmetica" = "Enable capes from Cosmetica (previously Arc). For more information please visit https://cosmetica.cc. Requires OptiFine";
+"preference.title.debug_logging" = "Debug logging";
+"preference.detail.debug_logging" = "Logs internal settings and actions to latestlog.txt. This helps the developers find issues easier, but Minecraft may run slower as the logs will be written to more often.";
+
+"preference.title.reset_warnings" = "Reset all warnings";
+"preference.title.done.reset_warnings" = "All warnings have been reset.";
+
+"preference.title.reset_settings" = "Reset all settings";
+"preference.title.confirm.reset_settings" = "This will remove all of your custom preferences, including resolution, button size, and Java arguments.";
+"preference.title.done.reset_settings" = "All of the default settings have been restored.";
 
 "preference.title.renderer" = "Renderer";
+"preference.title.renderer.auto" = "Auto: gl4es or tinygl4angle";
+"preference.title.renderer.gl4es" = "gl4es 1.1.4 - exports OpenGL 2.1";
+"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - exports OpenGL 3.2 (Core Profile, limited)";
+"preference.title.renderer.zink" = "Zink (Mesa 21.0) - exports OpenGL 4.1";
+"preference.detail.renderer" = "Change the OpenGL render engine to use";
+
+"preference.title.resolution" = "Resolution (%)";
+"preference.detail.resolution" = "Allows you to decrease the game resolution.";
 "preference.title.disable_gesture" = "Disable gestures";
+"preference.title.press_duration" = "Long-press duration (ms)";
 "preference.detail.press_duration" = "Trigger press duration for destroying blocks and dropping items.";
+"preference.title.button_scale" = "On-screen button scale (%)";
+"preference.detail.button_scale" = "Upscale them if buttons are too small, usually needed for iPad users.";
+"preference.title.mouse_scale" = "Mouse scaling (%)";
+"preference.detail.mouse_scale" = "Change the size of the virtual mouse";
+"preference.title.mouse_speed" = "Mouse speed (%)";
+"preference.detail.mouse_speed" = "Change the speed of the virtual mouse";
+"preference.title.virtmouse_enable" = "Virtual mouse";
+"preference.detail.virtmouse_enable" = "Enable this option to start with virtual mouse on";
+"preference.title.slideable_hotbar" = "Slideable hotbar";
+"preference.detail.slideable_hotbar" = "Make the hotbar slideable like the mouse wheel";
+"preference.title.java_home" = "Use Java 17 for Minecraft < 1.17";
+"preference.detail.java_home" = "Java 8 is used by default for those versions. Enable this option to force use Java 17, however compatibility with modded is not guaranteed.";
 "preference.title.java_args" = "JVM Launch arguments";
+"preference.detail.java_args" = "Be careful, this can make the game crash if modified without any prior knowledge.";
+"preference.placeholder.java_args" = "Specify arguments...";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Enables automatic RAM adjuster";
+"preference.warn.auto_ram" = "Disabling this option on an unjailbroken device can create instability if altered. Proceed with caution.";
+"preference.title.allocated_memory" = "Memory allocation (MB)";
 "preference.detail.allocated_memory" = "Controls how much memory is given to Minecraft";
+"preference.warn.allocated_memory" = "Due to limitations in the operating system itself, this option may cause instability at this and higher values. Proceed with caution.";
+"preference.title.custom_env" = "Environment variables";
+"preference.detail.custom_env" = "This option is under construction.";
+
+"preference.title.debug_ipad_ui" = "Unlock iPadOS UI";
 "preference.detail.debug_ipad_ui" = "Unlock iPad-exclusive UI (alert, keyboard, etc.) if enabled or iPhone UI if disabled.";
+"preference.title.debug_show_layout_bounds" = "Show layout bounds";
+"preference.detail.debug_show_layout_bounds" = "Show clip bounds, margins";
+"preference.title.debug_show_layout_overlap" = "Show layout overlapping";
+"preference.detail.debug_show_layout_overlap" = "Overlay every view with a transparent color to reveal overlapping views.";
