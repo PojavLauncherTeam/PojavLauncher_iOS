@@ -55,7 +55,7 @@
 "custom_controls.control_menu.save.error.json" = "JSON 文件错误";
 "custom_controls.control_menu.save.error.write" = "保存按键布局时发生错误";
 "custom_controls.control_menu.load" = "加载";
-"custom_controls.control_menu.make_default" = "设为默认";
+"custom_controls.control_menu.make_default" = "默认按键布局...";
 "custom_controls.control_menu.safe_area" = "安全区";
 "custom_controls.control_menu.add_button" = "添加按键";
 "custom_controls.control_menu.add_drawer" = "添加组合框";
