@@ -45,7 +45,6 @@
 
 "preference.title.renderer" = "Vykresľovač";
 "preference.title.disable_gesture" = "Zakázať gestá";
-"preference.detail.press_duration" = "Zmeňte čas pre rozbitie bloku a vyhodenie itemu.";
 "preference.title.java_args" = "JVM spúšťacie argumenty";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Automaticky bude meniť množstvo RAM";
