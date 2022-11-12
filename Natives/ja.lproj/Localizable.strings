@@ -46,7 +46,6 @@
 
 "preference.title.renderer" = "レンダラー";
 "preference.title.disable_gesture" = "ジェスチャーの無効化";
-"preference.detail.press_duration" = "長押しでブロックを破壊したりアイテムを捨てたりできますが、タッチし始めてから長押しと判定するまでの時間を変更します。";
 "preference.title.java_args" = "JVM 起動引数";
 "preference.title.auto_ram" = "自動RAM調整";
 "preference.detail.auto_ram" = "メモリの自動調整を有効にする";
