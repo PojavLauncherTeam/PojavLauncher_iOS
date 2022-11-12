@@ -69,8 +69,6 @@
 "launcher.wait_jit.title" = "┴Iſ ɹoɟ ƃuᴉʇᴉɐM";
 "launcher.wait_jit.message" = "˙ǝɔuɐɯɹoɟɹǝd ɯnɯᴉxɐɯ ʇɐ ʞɹoʍ oʇ ɐʌɐſ ɹoɟ uoᴉʇɐlᴉdɯoɔ ǝɯᴉʇ-uᴉ-ʇsnſ uo sǝᴉlǝɹ ɹǝɥɔunɐ˥ʌɐɾoԀ";
 
-"login.error.username.outOfRange" = "sɹǝʇɔɐɹɐɥɔ 9Ɩ ɯnɯᴉxɐɯ puɐ sɹǝʇɔɐɹɐɥɔ Ɛ ʇsɐǝl ʇɐ ǝq ʇsnɯ ǝɯɐuɹǝs∩";
-
 "login.alert.field.username" = "ǝɯɐuɹǝs∩";
 
 "login.jit.checking" = "┴Iſ ɹoɟ ƃuᴉʞɔǝɥƆ";
@@ -111,10 +109,6 @@
 
 "login.msa.error.xsts.noxboxacc" = "\nƐƐᄅ9Ɩ68ㄣƖᄅ :ǝpoɔ ɹoɹɹƎ ˙ǝlᴉɟoɹd xoqX uɐ ǝpɐɯ ǝʌɐɥ noʎ ʇɐɥʇ ǝɹns ǝʞɐɯ ǝsɐǝlԀ ˙ʇunoɔɔɐ ʇɟosoɹɔᴉW sᴉɥʇ ɹoɟ pǝɹǝʇsᴉƃǝɹ ʇou sᴉ ǝlᴉɟoɹd xoqX u∀";
 "login.msa.error.xsts.noxbox" = "\nϛƐᄅ9Ɩ68ㄣƖᄅ :ǝpoɔ ɹoɹɹƎ ˙ʎɹʇunoɔ ɹnoʎ uᴉ ǝlqɐlᴉɐʌɐun ʎlʇuǝɹɹnɔ sᴉ ǝʌᴉ˥ xoqX";
-"login.msa.error.xsts.krverify" = "\n˙ㄥƐᄅ9Ɩ68ㄣƖᄅ ɹo 9Ɛᄅ9Ɩ68ㄣƖᄅ :ǝpoɔ ɹoɹɹƎ ˙ǝnuᴉʇuoɔ ǝɹoɟǝq sʇuǝɹɐd ɹnoʎ ʎq pǝᴉɟᴉɹǝʌ ǝq oʇ spǝǝu ʇunoɔɔɐ ɹno⅄";
-"login.msa.error.xsts.underage" = "\n8Ɛᄅ9Ɩ68ㄣƖᄅ :ǝpoɔ ɹoɹɹƎ ˙ǝnuᴉʇuoɔ ǝɹoɟǝq ʇunoɔɔɐ ʇuǝɹɐd ɐ oʇ pǝʞuᴉl ǝq oʇ spǝǝu ʇunoɔɔɐ ɹno⅄";
-
-"login.msa.notice.demomode" = "˙ǝpoɯ ǝuᴉluO oʇ ǝɹoʇsǝɹ oʇ https://minecraft.net/msaprofle uᴉ ǝlᴉɟoɹd ɹnoʎ ǝɹnƃᴉɟuoɔ ǝsɐǝlԀ ¿uoᴉʇdᴉɹɔsqns ssɐԀǝɯɐפ xoqX ǝʌᴉʇɔɐ uɐ ǝɹǝɥʇ sᴉ ɹo 'ʇɟɐɹɔǝuᴉW ʎnq noʎ pᴉp ˙ǝpoɯ oɯǝp oʇ ʇǝs ʍou sᴉ ʇunoɔɔɐ ǝɥ┴ ˙ʇunoɔɔɐ sᴉɥʇ uo ǝlᴉɟoɹd ʇɟɐɹɔǝuᴉW ɐ puᴉɟ ʇou plnoƆ";
 
 "login.msa.progress.acquireAccessToken" = "uǝʞoʇ ssǝɔɔ∀ ǝɥʇ ƃuᴉɹᴉnbɔ∀ (ϛ/Ɩ)";
 "login.msa.progress.acquireXBLToken" = "uǝʞoʇ ǝʌᴉ˥ xoqX ǝɥʇ ƃuᴉɹᴉnbɔ∀ (ϛ/ᄅ)";
@@ -167,7 +161,6 @@
 "preference.detail.resolution" = "˙uoᴉʇnlosǝɹ ǝɯɐƃ ǝɥʇ ǝsɐǝɹɔǝp oʇ noʎ sʍoll∀";
 "preference.title.disable_gesture" = "sǝɹnʇsǝᵷ ǝꞁqɐsᴉᗡ";
 "preference.title.press_duration" = "(sɯ) uoᴉʇɐɹnp ssǝɹd-ƃuo˥";
-"preference.detail.press_duration" = "˙ɯǝʇᴉ doɹp puɐ ʞɔoꞁq ʎoɹʇsǝp uᴉ ssǝɹd ᵷuoꞁ ɹoɟ ǝɯᴉʇ ɹǝᵷᵷᴉɹʇ ǝᵷuɐɥƆ";
 "preference.title.button_scale" = "(%) ǝlɐɔs uoʇʇnq uǝǝɹɔs-uO";
 "preference.detail.button_scale" = "˙sɹǝsn pɐԀᴉ ɹoɟ pǝpǝǝu ʎllɐnsn 'llɐɯs ooʇ ǝɹɐ suoʇʇnq ɟᴉ ɯǝɥʇ ǝlɐɔsd∩";
 "preference.title.mouse_scale" = "(%) ƃuᴉlɐɔs ǝsnoW";
@@ -193,7 +186,6 @@
 "preference.detail.custom_env" = "˙uoᴉʇɔnɹʇsuoɔ ɹǝpun sᴉ uoᴉʇdo sᴉɥ┴";
 
 "preference.title.debug_ipad_ui" = "I∩ SOpɐԀᴉ ʞɔolu∩";
-"preference.detail.debug_ipad_ui" = "˙pǝlqɐsᴉp ɟᴉ I∩ ǝuoɥԀᴉ ɹo pǝlqɐuǝ ɟᴉ (˙ɔʇǝ 'pɹɐoqʎǝʞ 'ʇɹǝlɐ) I∩ ǝʌᴉsnlxǝ-pɐԀᴉ ʞɔolu∩";
 "preference.title.debug_show_layout_bounds" = "spunoq ʇnoʎɐl ʍoɥS";
 "preference.detail.debug_show_layout_bounds" = "suᴉƃɹɐɯ 'spunoq dᴉlɔ ʍoɥS";
 "preference.title.debug_show_layout_overlap" = "ƃuᴉddɐlɹǝʌo ʇnoʎɐl ʍoɥS";
