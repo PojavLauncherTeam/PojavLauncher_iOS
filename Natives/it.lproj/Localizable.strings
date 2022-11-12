@@ -49,8 +49,6 @@
 "launcher.wait_jit.title" = "In attesa di JIT";
 "launcher.wait_jit.message" = "PojavLauncher si basa sulla compilazione Just-in-time per Java per lavorare con prestazioni migliori.";
 
-"login.error.username.outOfRange" = "Il nome utente deve contenere tra i 3 e i 16 caratteri";
-
 "login.alert.field.username" = "Nome utente";
 
 "login.jit.checking" = "Controllando JIT";
@@ -91,10 +89,6 @@
 
 "login.msa.error.xsts.noxboxacc" = "Un profilo Xbox non è registrato per questo account Microsoft. Assicurati di aver creato un profilo Xbox.\nCodice di errore: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live non è attualmente disponibile nel tuo paese.\nCodice di errore: 2148916235";
-"login.msa.error.xsts.krverify" = "Il tuo account deve essere verificato dai tuoi genitori prima di continuare.\nCodice di errore: 2148916236 o 2148916237.";
-"login.msa.error.xsts.underage" = "Il tuo account deve essere collegato ad un account genitore prima di continuare.\nCodice di errore: 2148916238";
-
-"login.msa.notice.demomode" = "Impossibile trovare un profilo Minecraft su questo account. L'account è ora impostato in modalità Demo. Hai acquistato Minecraft, o hai un abbonamento Xbox GamePass attivo? Configura il tuo profilo in https://minecraft.net/msaprofle per ripristinare la modalità Online.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Acquisendo il token d'accesso";
 "login.msa.progress.acquireXBLToken" = "(2/5) Acquisendo il token Xbox live d'accesso";
@@ -147,7 +141,6 @@
 "preference.detail.resolution" = "Permette di diminuire la risoluzione del gioco.";
 "preference.title.disable_gesture" = "Disattiva gestures";
 "preference.title.press_duration" = "Durata click-lungo (ms)";
-"preference.detail.press_duration" = "Cambia il tempo di attivazione per una pressione prolungata nel rompimento di un blocco e il drop di un item.";
 "preference.title.button_scale" = "Scala pulsante sullo schermo (%)";
 "preference.detail.button_scale" = "Aggiornali se i pulsanti sono troppo piccoli, di solito necessari per gli utenti iPad.";
 "preference.title.mouse_scale" = "Dimensioni mouse (%)";
@@ -173,7 +166,6 @@
 "preference.detail.custom_env" = "Questa opzione è in fase di sviluppo.";
 
 "preference.title.debug_ipad_ui" = "Unlock iPadOS UI";
-"preference.detail.debug_ipad_ui" = "Sblocca l'interfaccia utente iPad-Esclusiva (avviso, tastiera, ecc.) se abilitata opprue L''UI utente iPhone se disabilitata.";
 "preference.title.debug_show_layout_bounds" = "Mostra limiti layout";
 "preference.detail.debug_show_layout_bounds" = "Mostra misure clip, margini, bounds";
 "preference.title.debug_show_layout_overlap" = "Mostra sovrapposizione del layout";
