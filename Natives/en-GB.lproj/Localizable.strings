@@ -34,7 +34,6 @@
 
 "preference.title.renderer" = "Renderer";
 "preference.title.disable_gesture" = "Disable gestures";
-"preference.detail.press_duration" = "Change trigger time for long press in destroy block and drop item.";
 "preference.title.java_args" = "JVM Launch arguments";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Enables automatic RAM adjuster";
