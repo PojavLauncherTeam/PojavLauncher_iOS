@@ -41,7 +41,6 @@
 
 "preference.title.renderer" = "Απόδοση";
 "preference.title.disable_gesture" = "Απενεργοποίηση χειρονομιών";
-"preference.detail.press_duration" = "Αλλαγή χρόνου ενεργοποίησης για παρατεταμένο πάτημα σε μπλοκ και απόθεση αντικειμένου.";
 "preference.title.java_args" = "JVM Εντολές εκκίνησης";
 "preference.title.auto_ram" = "Αυτόματη RAM";
 "preference.detail.auto_ram" = "Ενεργοποιεί τον αυτόματο ρυθμιστή RAM";
