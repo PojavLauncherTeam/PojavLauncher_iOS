@@ -47,8 +47,6 @@
 "launcher.wait_jit.title" = "JIT için bekleniyor";
 "launcher.wait_jit.message" = "PojavLauncher, Java'nın maksimum performansta çalışması için Just-in-time derlemeye dayanır.";
 
-"login.error.username.outOfRange" = "Kullanıcı adı en az 3 en fazla 16 karakter olmalıdır";
-
 "login.alert.field.username" = "Kullanıcı Adı";
 
 "login.jit.checking" = "JIT tespit ediliyor";
@@ -60,8 +58,6 @@
 "Sign in" = "Giriş yap";
 "FAQ" = "SSS";
 "Accounts" = "Hesaplar";
-
-"login.menu.about" = "PojavLauncher hakkında";
 "login.menu.sendlogs" = "Kayıt günlüğünüzü gönderin";
 "login.menu.updates" = "Son güncellemeler";
 
@@ -91,10 +87,6 @@
 
 "login.msa.error.xsts.noxboxacc" = "Bu Microsoft hesabı için bir Xbox profili kayıt olmamış. Lütfen bir Xbox profili oluşturduğunuza emin olun.\nHata kodu: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live şu anlık ülkenizde mevcuz değil.\nHata kodu: 2148916235";
-"login.msa.error.xsts.krverify" = "Devam etmeden önce hesabınız veliniz tarafından doğrulanmalıdır.\nHata kodu: 2148916236 veya 2148916237.";
-"login.msa.error.xsts.underage" = "Devam etmeden önce hesabınız bir veli hesabına bağlanmalıdır.\nHata kodu: 2148916238";
-
-"login.msa.notice.demomode" = "Bu hesapta Minecraft profili bulunamadı. Hesap artık Demo modu olarak ayarlandı. Minecraft'ı satın aldınız mı, ya da etkin olan bir Xbox Game pass üyeliğiniz mi var? Çevrimiçi moda geçmek için lütfen https://minecraft.net/msaprofile'da hesabınızı ayarlayın.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Access token'ı elde ediniliyor";
 "login.msa.progress.acquireXBLToken" = "(2/5) Xbox Live Token'ı elde ediliyor";
@@ -147,7 +139,6 @@
 "preference.detail.resolution" = "Oyun çözünürlüğünü düşürmenizi sağlar.";
 "preference.title.disable_gesture" = "İşaretleri devre dışı bırak";
 "preference.title.press_duration" = "Uzun-basma süresi (ms)";
-"preference.detail.press_duration" = "Blok kırma ve eşya bırakma için ne kadar süre basman gerektiğini değiştir.";
 "preference.title.button_scale" = "Ekran üstü tuş ölçeği (%)";
 "preference.detail.button_scale" = "Düğmeler çok küçükse yukarı ölçekleyin, genellikle iPad kullanıcıları tarafından ihtiyaç duyulur.";
 "preference.title.mouse_scale" = "Fare ölçeği (%)";
@@ -173,7 +164,6 @@
 "preference.detail.custom_env" = "Bu seçenek yapım aşamasında.";
 
 "preference.title.debug_ipad_ui" = "iPadOS UI'ını aç";
-"preference.detail.debug_ipad_ui" = "iPad'e özel UI'ı açar (uyarı, klavye vb...) Eğer etkinleştirilirse iPhone UI'ı devre dışı bırakılır.";
 "preference.title.debug_show_layout_bounds" = "Düzen sınırlarını göster";
 "preference.detail.debug_show_layout_bounds" = "Klip sınırlarını, kenar boşluklarını göster";
 "preference.title.debug_show_layout_overlap" = "Düzenin üst üste geçmesini göster";
