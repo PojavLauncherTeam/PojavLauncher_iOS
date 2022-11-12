@@ -46,7 +46,6 @@
 
 "preference.title.renderer" = "Randator";
 "preference.title.disable_gesture" = "Dezactivează gesturi";
-"preference.detail.press_duration" = "Modifică timpul de declanșare pentru apăsarea lungă a butonului de distrugere a blocului și de aruncare a obiectului.";
 "preference.title.java_args" = "Argumente de lansare JVM";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Activează ajustarea automată RAM";
