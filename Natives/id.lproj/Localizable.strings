@@ -49,8 +49,6 @@
 "launcher.wait_jit.title" = "Menunggu JIT";
 "launcher.wait_jit.message" = "PojavLauncher membutuhkan compilation Just-in-Time agar Java dapat bekerja dalam perfoma maksimal.";
 
-"login.error.username.outOfRange" = "Username harus mempunyai setidaknya 3 karakter dan maksimum 16 karakter";
-
 "login.alert.field.username" = "Username";
 
 "login.jit.checking" = "Memeriksa JIT";
@@ -62,8 +60,6 @@
 "Sign in" = "Masuk";
 "FAQ" = "FAQ";
 "Accounts" = "Akun";
-
-"login.menu.about" = "Tentang PojavLauncher";
 "login.menu.sendlogs" = "Kirim log-log kamu";
 "login.menu.updates" = "Update terbaru";
 
@@ -93,10 +89,6 @@
 
 "login.msa.error.xsts.noxboxacc" = "Tidak ada profil Xbox yang terdaftar di akun Microsoft ini. Mohon memastikan bahwa anda telag membuat sebuah profil Xbox.\nKode error: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live sekarang sedang tidak ada di negata anda.\nKode error: 2148916235";
-"login.msa.error.xsts.krverify" = "Akun anda butuh verifikasi dari orang tua sebelum bisa lanjut.\nKode error: 2148916236 atau 2148916237.";
-"login.msa.error.xsts.underage" = "Akun anda butuh tautan ke sebuah akun orang tua sebelum lanjut.\nKode error: 2148916238";
-
-"login.msa.notice.demomode" = "Tidak dapat menemukan profil Minecraft di akun ini. Akun ini sekarang disetel ke mode demo. Apakah anda telah membeli Minecraft, atau ada subskripsi Xbox GamePass yang aktif? Mohon konfigurasi profil anda di https://minecraft.net/msaprofle untuk mengembalikan mode online.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Mendapatkan token akses";
 "login.msa.progress.acquireXBLToken" = "(2/5) Mendapatkan token Xbox Live";
@@ -149,7 +141,6 @@
 "preference.detail.resolution" = "Memperbolehkan anda untuk menunrunkan resolusi permainan.";
 "preference.title.disable_gesture" = "Matikan gestures";
 "preference.title.press_duration" = "Durasi pencet-lama (ms)";
-"preference.detail.press_duration" = "Ganti waktu trigger setelah melakukan pencetan dengan ditahan untuk menghancurkan dan menjatuhkan item.";
 "preference.title.button_scale" = "Skala tombol dilayar (%)";
 "preference.detail.button_scale" = "Naikkan skala mereka jika tombol terlalu kecil, biasanya dibutuhkan oleh pengguna iPad.";
 "preference.title.mouse_scale" = "Skala mouse (%)";
@@ -175,7 +166,6 @@
 "preference.detail.custom_env" = "Opsi ini sedang dalam pembangunan.";
 
 "preference.title.debug_ipad_ui" = "Gunakan UI iPadOS";
-"preference.detail.debug_ipad_ui" = "Gunakan fitur-fitur ekslusif iPad (perhatian, keyboard, dll.) jika nyala atau iPhone UI jika mati.";
 "preference.title.debug_show_layout_bounds" = "Tampilkan batas tata letak";
 "preference.detail.debug_show_layout_bounds" = "Tampilkan batas klip, margin";
 "preference.title.debug_show_layout_overlap" = "Tampilkan layout yang overlapping";
