@@ -46,8 +46,6 @@
 "launcher.menu.custom_controls" = "自訂控制鍵";
 "launcher.menu.install_jar" = "安裝 .jar";
 
-"login.error.username.outOfRange" = "用戶名必須是在3至16個字元之間。";
-
 "login.alert.field.username" = "用戶名";
 
 "login.jit.checking" = "正在檢查即時編譯";
@@ -59,8 +57,6 @@
 "Sign in" = "登入";
 "FAQ" = "常見問題";
 "Accounts" = "帳戶";
-
-"login.menu.about" = "關於 PojavLauncher";
 "login.menu.sendlogs" = "發送你的日誌";
 "login.menu.updates" = "最近更新";
 
@@ -90,10 +86,6 @@
 
 "login.msa.error.xsts.noxboxacc" = "這個微軟帳戶沒有註冊的Xbox用戶檔案。請確定你已經註冊Xbox用戶檔案。\n錯誤代碼：2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live不適用於你的國家。\n錯誤代碼：2148916235";
-"login.msa.error.xsts.krverify" = "你的帳戶必須由你的家長認證，方可繼續。\n錯誤代碼：2148916236或2148916237。";
-"login.msa.error.xsts.underage" = "你的帳戶必須要連結到一個家長帳戶，方可繼續。\n錯誤代碼：2148916238";
-
-"login.msa.notice.demomode" = "在帳戶中找不到我的世界用戶檔案。這個帳戶已設為示範模式。你是否購買了我的世界，或有已啟用的Xbox Game Pass訂閱？請到 https://minecraft.net/msaprofle 設置你的用戶檔案以回復線上模式。";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) 正在取得取用金鑰";
 "login.msa.progress.acquireXBLToken" = "(2/5) 正在取得Xbox Live金鑰";
@@ -146,7 +138,6 @@
 "preference.detail.resolution" = "允許你降低遊戲的解像度。";
 "preference.title.disable_gesture" = "停用手勢";
 "preference.title.press_duration" = "長按時間（毫秒）";
-"preference.detail.press_duration" = "修改長按摧毀方塊、丟棄物品的觸發時長。";
 "preference.title.button_scale" = "螢幕按鈕比例（%）";
 "preference.detail.button_scale" = "如果按鈕太小的話，就增加比例，iPad用戶通常都需要這個選項。";
 "preference.title.mouse_scale" = "滑鼠比例（%）";
@@ -172,7 +163,6 @@
 "preference.detail.custom_env" = "這個選項仍在建築中。";
 
 "preference.title.debug_ipad_ui" = "解鎖iPadOS用戶介面";
-"preference.detail.debug_ipad_ui" = "當啟動時或當iPhone用戶介面被禁用時，解鎖iPad專屬用戶介面（提示、鍵盤等）";
 "preference.title.debug_show_layout_bounds" = "顯示佈局界線";
 "preference.detail.debug_show_layout_bounds" = "顯示剪輯範圍、邊界";
 "preference.title.debug_show_layout_overlap" = "顯示重複的佈局";
