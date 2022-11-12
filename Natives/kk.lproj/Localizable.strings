@@ -33,7 +33,6 @@
 "Settings" = "Баптау";
 
 "preference.title.renderer" = "Рендерер";
-"preference.detail.press_duration" = "Блок сындыру мен зат лақтыру үшін басып ұстау ұзықтығын өзгерту.";
 "preference.title.java_args" = "JVM қосу аргументі";
 "preference.title.auto_ram" = "Авто ОЕСҚ";
 "preference.detail.auto_ram" = "Автоматты түрде ОЕСҚ-ны басқарады";
