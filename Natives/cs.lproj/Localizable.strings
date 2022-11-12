@@ -44,8 +44,6 @@
 "launcher.menu.custom_controls" = "Vlastní ovládací prvky";
 "launcher.menu.install_jar" = "Instalovat .jar";
 
-"login.error.username.outOfRange" = "Uživatelské jméno musí být dlouhé alespoň 3 znaky a nanejvýš 16 znaků";
-
 "login.alert.field.username" = "Uživatelské jméno";
 
 "login.jit.checking" = "Kontrolování JIT";
@@ -57,8 +55,6 @@
 "Sign in" = "Přihlásit se";
 "FAQ" = "FAQ";
 "Accounts" = "Účty";
-
-"login.menu.about" = "O PojavLauncheru";
 "login.menu.sendlogs" = "Odeslat záznamy";
 "login.menu.updates" = "Nedávné aktualizace";
 
@@ -88,10 +84,6 @@
 
 "login.msa.error.xsts.noxboxacc" = "Xboxový profil není registrován pro tento Microsoft účet. Prosím ujisti se zdali máš vytvořený Xbox účet.\nKód chyby: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live není právě teď k dostupný ve tvé zemi.\nKód chyby: 2148916235";
-"login.msa.error.xsts.krverify" = "Tvůj účet musí být ověřen tvými rodiči před pokračováním. \nKód chyby: 2148916236 či 2148916237.";
-"login.msa.error.xsts.underage" = "Tvůj účet musí být propojen s účtem rodiče před pokračováním.\nKód chyby: 2148916238";
-
-"login.msa.notice.demomode" = "Nebylo možno nalézt profil Minecraftu na tomto účtu. Ten účet je teď nastaven na Demo režim. Koupil sis Minecraft, či máš aktivní předplatné Xbox GamePass? Prosím nakonfiguruj si svůj profil na https://minecraft.net/msaprofle pro obnovení Onlinového režimu.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Získávání Přístupového tokenu";
 "login.msa.progress.acquireXBLToken" = "(2/5) Získávání Xbox Live tokenu";
@@ -142,7 +134,6 @@
 "preference.detail.resolution" = "Umožňuje ti snížit rozlišení hry.";
 "preference.title.disable_gesture" = "Vypnout gesta";
 "preference.title.press_duration" = "Trvání dlouhého stisku (ms)";
-"preference.detail.press_duration" = "Změň čas pro rozbití bloku a vyhození itemu.";
 "preference.title.button_scale" = "Měřítko tlačítka na obrazovce (%)";
 "preference.detail.button_scale" = "Zvětšit tlačítka jsou-li příliš malá, obvyklé potřebné pro uživatele iPadů.";
 "preference.title.mouse_scale" = "Škálování myši (%)";
