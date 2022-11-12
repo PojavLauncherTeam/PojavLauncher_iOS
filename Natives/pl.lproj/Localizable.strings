@@ -49,8 +49,6 @@
 "launcher.wait_jit.title" = "Czekam na JIT";
 "launcher.wait_jit.message" = "PojavLauncher opiera się na kompilacji Just-in-time, aby Java działała z maksymalną wydajnością.";
 
-"login.error.username.outOfRange" = "Nazwa użytkownika musi zawierać od 3 do 16 znaków";
-
 "login.alert.field.username" = "Nazwa użytkownika";
 
 "login.jit.checking" = "Sprawdzanie JIT";
@@ -91,10 +89,6 @@
 
 "login.msa.error.xsts.noxboxacc" = "Profil Xbox nie został zarejestrowany dla tego Konta Microsoft. Upewnij się, że profil Xbox został utworzony.\nKod błędu: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live nie jest obecnie dostępne w Twoim kraju.\nKod błędu: 2148916235";
-"login.msa.error.xsts.krverify" = "Twoje konto musi zostać zweryfikowane przez Twoich rodziców przed kontynuowaniem.\nKod błędu: 2148916236 lub 2148916237.";
-"login.msa.error.xsts.underage" = "Twoje konto musi zostać połączone z kontem rodzica przed kontynuowaniem.\nKod błędu: 2148916238";
-
-"login.msa.notice.demomode" = "Nie można znaleźć profilu Minecraft na tym koncie. Konto jest teraz ustawione na Tryb demo. Czy Minecraft został zakupiony lub posiadasz aktywną subskrypcję Xbox Game Pass? Skonfiguruj swój profil na https://minecraft.net/msaprofle, aby powrócić do Trybu online.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Wczytywanie klucza dostępu";
 "login.msa.progress.acquireXBLToken" = "(2/5) Wczytywanie klucza Xbox Live";
@@ -147,7 +141,6 @@
 "preference.detail.resolution" = "Umożliwia zmniejszenie rozdzielczości gry.";
 "preference.title.disable_gesture" = "Wyłącz gesty";
 "preference.title.press_duration" = "Czas długiego naciśnięcia (ms)";
-"preference.detail.press_duration" = "Zmień czas wywołania akcji długiego naciśnięcia dla niszczenia bloków i wyrzucania przedmiotów.";
 "preference.title.button_scale" = "Skala przycisków ekranowych (%)";
 "preference.detail.button_scale" = "Zwiększ skalę, jeśli przyciski są zbyt małe, zazwyczaj tak jest w przypadku iPad'ów.";
 "preference.title.mouse_scale" = "Skalowanie myszy (%)";
@@ -173,7 +166,6 @@
 "preference.detail.custom_env" = "Ta opcja jest w trakcie opracowania.";
 
 "preference.title.debug_ipad_ui" = "Odblokuj interfejs iPadOS";
-"preference.detail.debug_ipad_ui" = "Odblokuj interfejs użytkownika wyłącznie dla iPada (alarm, klawiatura itp.), jeśli jest włączony, lub interfejs iPhone'a, jeśli jest wyłączony.";
 "preference.title.debug_show_layout_bounds" = "Pokaż granice układu";
 "preference.detail.debug_show_layout_bounds" = "Pokaż granice klipów, marginesy";
 "preference.title.debug_show_layout_overlap" = "Pokaż nakładające się układy";
