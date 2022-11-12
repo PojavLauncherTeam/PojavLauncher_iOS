@@ -69,7 +69,7 @@
 "launcher.wait_jit.title" = "Wartet auf JIT";
 "launcher.wait_jit.message" = "PojavLauncher setzt auf Java's Just-in-time-Kompilierung, um mit maximaler Leistung zu arbeiten.";
 
-"login.error.username.outOfRange" = "Benutzername muss mindestens 3 und maximal 32 Zeichen lang sein";
+"login.error.username.outOfRange" = "Benutzername muss mindestens 3 und maximal 16 Zeichen lang sein";
 
 "login.alert.field.username" = "Benutzername";
 
@@ -82,8 +82,6 @@
 "Sign in" = "Anmelden";
 "FAQ" = "FAQ";
 "Accounts" = "Konten";
-
-"login.menu.about" = "Über PojavLauncher";
 "login.menu.sendlogs" = "Fehlerprotokolle senden";
 "login.menu.updates" = "Neueste Updates";
 
@@ -116,7 +114,7 @@
 "login.msa.error.xsts.krverify" = "Dein Konto muss von deinen Eltern verifiziert werden bevor du fortfährst.\nFehlercode: 2148916236 oder 2148916237.";
 "login.msa.error.xsts.underage" = "Dein Konto muss mit einem Eltern-Konto verknüpft werden.\nFehlercode: 2148916238";
 
-"login.msa.notice.demomode" = "Es konnte kein Minecraft-Profil auf diesem Konto gefunden werden. Das Konto ist jetzt auf Demo-Modus gesetzt. Hast du Minecraft gekauft oder gibt es ein aktives Xbox GamePass Abonnement? Bitte konfiguriere dein Profil auf https://minecraft.net/msaprofle um den Online-Modus wiederherzustellen.";
+"login.msa.notice.demomode" = "Es konnte kein Minecraft-Profil auf diesem Konto gefunden werden. Das Konto ist jetzt auf Demo-Modus gesetzt. Hast du Minecraft gekauft oder gibt es ein aktives Xbox-Game-Pass-Abonnement? Bitte konfiguriere dein Profil auf https://minecraft.net/msaprofile um den Zugriff zum Online-Modus wiederherzustellen.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Erhalte Zugangs-Token";
 "login.msa.progress.acquireXBLToken" = "(2/5) Erhalte Xbox-Live-Token";
@@ -169,7 +167,7 @@
 "preference.detail.resolution" = "Ermöglicht es dir die Spielauflösung zu verringern.";
 "preference.title.disable_gesture" = "Gesten deaktivieren";
 "preference.title.press_duration" = "Dauer eines langen Touch (ms)";
-"preference.detail.press_duration" = "Ändere die Auslösezeit für langes Drücken beim Zerstören des Blocks und Ablegen des Gegenstandes.";
+"preference.detail.press_duration" = "Auslösedauer um Blöcke zu zerstören und Items zu droppen.";
 "preference.title.button_scale" = "Schalflächengröße (%)";
 "preference.detail.button_scale" = "Erhöhe den Wert, wenn die Schaltflächen zu klein sind; Normalerweise für iPad-Nutzer notwendig.";
 "preference.title.mouse_scale" = "Maus-Größe (%)";
