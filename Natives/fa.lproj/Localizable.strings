@@ -42,7 +42,6 @@
 
 "preference.title.renderer" = "رندر کننده";
 "preference.title.disable_gesture" = "غیرفعال کردن حسگر ها";
-"preference.detail.press_duration" = "تغییر زمان برای فعال شدن فشردن طولانی جهت کَندَن بلاک و دراپ کردن آیتم.";
 "preference.title.java_args" = "آرگومان‌های جاوا در هنگام لانچ";
 "preference.title.auto_ram" = "رم اتوماتیک";
 "preference.detail.auto_ram" = "تنظیم‌کننده اتوماتیک رم را فعال می‌کند";
