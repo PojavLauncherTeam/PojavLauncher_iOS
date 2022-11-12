@@ -46,7 +46,6 @@
 
 "preference.title.renderer" = "Vaizdo generatorius";
 "preference.title.disable_gesture" = "Išjungti gestus";
-"preference.detail.press_duration" = "Pakeisti veikimo laiką po palaikymo panaikinti ir išmesti daiktą.";
 "preference.title.java_args" = "JVM Paleidimo argumentai";
 "preference.title.auto_ram" = "Automatiškas RAM";
 "preference.detail.auto_ram" = "Įjungia automatišką RAM keitėją";
