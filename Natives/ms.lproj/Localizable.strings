@@ -54,7 +54,6 @@
 
 "preference.title.renderer" = "Renderer";
 "preference.title.disable_gesture" = "Nyahdayakan gerak isyarat";
-"preference.detail.press_duration" = "Tukar masa cetusan untuk tekanan lama dalam penghancuran blok dan pelemparan item.";
 "preference.title.java_args" = "JVM Launch arguments";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Membenarkan pelaras RAM automatik";
