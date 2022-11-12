@@ -8,6 +8,8 @@
 "game.menu.log_output" = "Registro de salida";
 "game.menu.custom_controls" = "Controles personalizados";
 
+"game.title.exit_code" = "El juego se cerró con el código %d";
+
 // The options button at the top-right corner on iOS 12
 "Options" = "Opciones";
 
@@ -47,16 +49,22 @@
 "custom_controls.control_menu.exit" = "Salir";
 "custom_controls.control_menu.exit.warn" = "Estás a punto de salir sin guardas los cambios.";
 "custom_controls.control_menu.save" = "Guardar";
+"custom_controls.control_menu.save.error.default" = "Los controles no pueden llamarse \"default\" ya que serán sobrescritos.";
 "custom_controls.control_menu.save.error.json" = "Error JSON";
+"custom_controls.control_menu.save.error.write" = "Error al guardar el archivo";
 "custom_controls.control_menu.load" = "Cargar";
+"custom_controls.control_menu.make_default" = "Establecer por defecto";
+"custom_controls.control_menu.safe_area" = "Área segura";
 "custom_controls.control_menu.add_button" = "Añadir botón";
+"custom_controls.control_menu.add_drawer" = "Añadir Cajón";
+"custom_controls.hint" = "Mantenga pulsado en cualquier lugar de la pantalla para más opciones";
 
 "init.migrateDir" = "La carpeta de PojavLauncher ahora está en %@. Todos tus datos han sido movidos a esa nueva ubicación.";
 
 "launcher.menu.custom_controls" = "Controles personalizados";
 "launcher.menu.install_jar" = "Instalar .jar";
 
-"login.error.username.outOfRange" = "Nombre de usuario debe tener al menos entre 3 y 16 caracteres";
+"launcher.wait_jit.title" = "Esperando por JIT";
 
 "login.alert.field.username" = "Nombre de usuario";
 
@@ -69,8 +77,6 @@
 "Sign in" = "Iniciar sesión";
 "FAQ" = "Preguntas frecuentes (FAQ)";
 "Accounts" = "Cuentas";
-
-"login.menu.about" = "Acerca de PojavLauncher";
 "login.menu.sendlogs" = "Envía tus logs";
 "login.menu.updates" = "Actualizaciones recientes";
 
@@ -100,10 +106,6 @@
 
 "login.msa.error.xsts.noxboxacc" = "Esta cuenta de Microsoft no poseé un perfil de Xbox. Por favor, asegúrate de haber creado un perfil de Xbox en esta cuenta.\nCódigo de error: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live no está disponible actualmente en tu país.\nCódigo de error: 2148916235";
-"login.msa.error.xsts.krverify" = "Tu cuenta debe ser verificada por tus padres antes de continuar.\nCódigo de error: 2148916236 o 2148916237.";
-"login.msa.error.xsts.underage" = "Tu cuenta debe de estar vinculada a una cuenta de padre antes de continuar.\nCódigo de error: 2148916238";
-
-"login.msa.notice.demomode" = "No se pudo encontrar un perfil de Minecraft en esta cuenta. Esta cuenta ahora está configurada en modo demo. ¿Has comprado el juego?, ¿Hay una subscripción de Gamepass aquí? Por favor, configura tu perfil en https://minecraft.net/msaprofle para restaurar el modo online.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Adquiriendo el token de acceso";
 "login.msa.progress.acquireXBLToken" = "(2/5) Adquiriendo el token de Xbox Live";
@@ -155,7 +157,6 @@
 "preference.detail.resolution" = "Permite reducir la resolución del juego.";
 "preference.title.disable_gesture" = "Desactivar gestos";
 "preference.title.press_duration" = "Duración para pulsado largo (ms)";
-"preference.detail.press_duration" = "Cambia el tiempo de activación durante una pulsación larga en destruir bloques y soltar objetos.";
 "preference.title.button_scale" = "Escala de botones en pantalla (%)";
 "preference.detail.button_scale" = "Sube de tamaño a los botones si resultan ser muy pequeños, es usualmente necesario para usuarios de iPad.";
 "preference.title.mouse_scale" = "Tamaño del ratón (%)";
