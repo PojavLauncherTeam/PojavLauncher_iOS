@@ -45,7 +45,6 @@
 
 "preference.title.renderer" = "רינדור";
 "preference.title.disable_gesture" = "השבת מחוות";
-"preference.detail.press_duration" = "שנה את הזמן ללחיצה ארוכה בעת שבירת בלוקים וזריקת חפצים.";
 "preference.title.java_args" = "פרמטרים להפעלת JVM";
 "preference.title.auto_ram" = "זיכרון אוטומטי";
 "preference.detail.auto_ram" = "מפעיל התאמת RAM אוטומטית";
