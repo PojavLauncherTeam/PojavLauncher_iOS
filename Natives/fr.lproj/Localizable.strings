@@ -69,8 +69,6 @@
 "launcher.wait_jit.title" = "Attente du JIT";
 "launcher.wait_jit.message" = "PojavLauncher s'appuie sur la compilation Just-in-time pour que Java fonctionne avec des performances maximales.";
 
-"login.error.username.outOfRange" = "Le nom d'utilisateur doit comporter au moins 3 caractères et 16 caractères maximum";
-
 "login.alert.field.username" = "Nom d’utilisateur";
 
 "login.jit.checking" = "Recherche du JIT";
@@ -111,10 +109,6 @@
 
 "login.msa.error.xsts.noxboxacc" = "Un profil Xbox n'est pas enregistré pour ce compte Microsoft. Veuillez vous assurer que vous avez créé un profil Xbox.\nCode d'erreur : 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live est actuellement indisponible dans votre pays.\nCode d'erreur: 2148916235";
-"login.msa.error.xsts.krverify" = "Votre compte doit être vérifié par vos parents avant de continuer.\nCode d'erreur : 2148916236 ou 2148916237.";
-"login.msa.error.xsts.underage" = "Votre compte doit être lié à un compte parent avant de continuer.\nCode d'erreur: 2148916238";
-
-"login.msa.notice.demomode" = "Impossible de trouver un profil Minecraft sur ce compte. Le compte est maintenant en mode démo. Avez-vous acheté Minecraft, ou existe-t-il un abonnement Xbox GamePass actif ? Veuillez configurer votre profil sur https://minecraft.net/msaprofle pour restaurer en mode en ligne.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Acquisition du jeton d'accès";
 "login.msa.progress.acquireXBLToken" = "(2/5) Acquisition du jeton Xbox Live";
@@ -167,7 +161,6 @@
 "preference.detail.resolution" = "Vous permet de diminuer la résolution du jeu.";
 "preference.title.disable_gesture" = "Désactiver les gestes";
 "preference.title.press_duration" = "Durée d'un appui long (ms)";
-"preference.detail.press_duration" = "Changez le temps de déclenchement pendant un appui long durant la destruction de bloc et lâcher l'objet.";
 "preference.title.button_scale" = "Échelle des boutons à l'écran (%)";
 "preference.detail.button_scale" = "Agrandissez-les si les boutons sont trop petits, généralement nécessaires pour les utilisateurs d'iPad.";
 "preference.title.mouse_scale" = "Échelle de la souris (%)";
@@ -193,7 +186,6 @@
 "preference.detail.custom_env" = "Cette option est en cours de construction.";
 
 "preference.title.debug_ipad_ui" = "Déverrouiller l'interface utilisateur iPadOS";
-"preference.detail.debug_ipad_ui" = "Déverrouille l'interface utilisateur iPad (alerte, clavier, etc.) si activé ou l'interface utilisateur iPhone si désactivé.";
 "preference.title.debug_show_layout_bounds" = "Afficher les limites de la mise en page";
 "preference.detail.debug_show_layout_bounds" = "Afficher les limites, les marges de clip";
 "preference.title.debug_show_layout_overlap" = "Afficher le chevauchement de la mise en page";
