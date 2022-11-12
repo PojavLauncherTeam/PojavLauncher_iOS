@@ -69,8 +69,6 @@
 "launcher.wait_jit.title" = "Waiting for JIT";
 "launcher.wait_jit.message" = "PojavLauncher relies on Just-in-time compilation for Java to work at maximum performance.";
 
-"login.error.username.outOfRange" = "Username must be at least 3 characters and a maximum of 16 characters";
-
 "login.alert.field.username" = "Username";
 
 "login.jit.checking" = "Checking for JIT";
@@ -111,10 +109,6 @@
 
 "login.msa.error.xsts.noxboxacc" = "An Xbox profile is not registered for this Microsoft account. Please make sure that you have made an Xbox profile.\nError code: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live is currently unavailable in your country.\nError code: 2148916235";
-"login.msa.error.xsts.krverify" = "Your account needs to be verified by your parents before you can continue.\nError code: 2148916236 or 2148916237.";
-"login.msa.error.xsts.underage" = "Your account needs to be linked to a parent account before you can continue.\nError code: 2148916238";
-
-"login.msa.notice.demomode" = "Could not find a Minecraft profile on this account. The account is now set to Demo mode. Did you buy Minecraft, or is there an active Xbox Game Pass subscription? Please configure your profile at https://minecraft.net/msaprofile to restore access to Online mode.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Acquiring the Access token";
 "login.msa.progress.acquireXBLToken" = "(2/5) Acquiring the Xbox Live token";
@@ -167,7 +161,6 @@
 "preference.detail.resolution" = "Allows you to decrease the game resolution.";
 "preference.title.disable_gesture" = "Disable gestures";
 "preference.title.press_duration" = "Long-press duration (ms)";
-"preference.detail.press_duration" = "Trigger press duration for destroying blocks and dropping items.";
 "preference.title.button_scale" = "On-screen button scale (%)";
 "preference.detail.button_scale" = "Upscale them if buttons are too small, usually needed for iPad users.";
 "preference.title.mouse_scale" = "Mouse scaling (%)";
@@ -193,7 +186,6 @@
 "preference.detail.custom_env" = "This option is under construction.";
 
 "preference.title.debug_ipad_ui" = "Unlock iPadOS UI";
-"preference.detail.debug_ipad_ui" = "Unlock iPad-exclusive UI (alert, keyboard, etc.) if enabled or iPhone UI if disabled.";
 "preference.title.debug_show_layout_bounds" = "Show layout bounds";
 "preference.detail.debug_show_layout_bounds" = "Show clip bounds, margins";
 "preference.title.debug_show_layout_overlap" = "Show layout overlapping";
