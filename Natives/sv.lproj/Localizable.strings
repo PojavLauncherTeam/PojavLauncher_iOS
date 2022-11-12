@@ -1,0 +1,25 @@
+/* 
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "Tvingad avslutning";
+"game.menu.log_output" = "Logga utdata";
+"game.menu.custom_controls" = "Anpassade kontroller";
+
+// The options button at the top-right corner on iOS 12
+"Options" = "Alternativ";
+
+// The play button
+"Play" = "Spela";
+"custom_controls.button_edit.swipeable" = "Svepbar";
+"custom_controls.button_edit.dynamic_position" = "Dynamisk position";
+"custom_controls.control_menu.exit" = "Avsluta";
+"custom_controls.control_menu.add_button" = "Lägg till knapp";
+
+"launcher.menu.custom_controls" = "Anpassade kontroller";
+
+"News" = "Nyheter";
+"Settings" = "Inställningar";
+"preference.title.disable_gesture" = "Inaktivera gester";
+"preference.detail.allocated_memory" = "Kontrollerar hur mycket minne som ges till Minecraft";

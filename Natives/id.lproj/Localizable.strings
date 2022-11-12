@@ -1,0 +1,182 @@
+/* 
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "Tutup secara paksa";
+"game.menu.confirm.force_close" = "Apakah anda yakin mau menutup secara paksa?";
+"game.menu.log_output" = "Catatan log";
+"game.menu.custom_controls" = "Kontrol kustom";
+
+"game.title.exit_code" = "Permainan keluar dengan kode %d";
+
+// The options button at the top-right corner on iOS 12
+"Options" = "Opsi";
+
+// The play button
+"Play" = "Main";
+
+// Version categories
+"Installed" = "Terpasang";
+"Snapshot" = "Snapshot";
+"Releases" = "Rilis";
+"Old-beta" = "Beta-lama";
+"Old-alpha" = "Alpha-lama";
+"Edit" = "Edit";
+"Remove" = "Hapus";
+
+"custom_controls.button_edit.name" = "Nama";
+"custom_controls.button_edit.size" = "Ukuran";
+"custom_controls.button_edit.mapping" = "Mapping";
+"custom_controls.button_edit.orientation" = "Orientasi";
+"custom_controls.button_edit.toggleable" = "Bisa dialihkan";
+"custom_controls.button_edit.swipeable" = "Bisa digesek";
+"custom_controls.button_edit.bg_color" = "Warna background";
+"custom_controls.button_edit.stroke_color" = "Warna garis";
+"custom_controls.button_edit.dynamic_position" = "Posisi dinamis";
+
+"custom_controls.button_menu.add_subbutton" = "Tambahkan tombol";
+"custom_controls.control_menu.exit" = "Keluar";
+"custom_controls.control_menu.save" = "Simpan";
+"custom_controls.control_menu.load" = "Memuat";
+"custom_controls.control_menu.add_button" = "Tambah tombol";
+
+"init.migrateDir" = "Data folder PojavLauncher sekarang di %@. Semua datamu yang ada telah dipindah ke lokasi baru tersebut.";
+
+"launcher.menu.custom_controls" = "Kontrol kustom";
+"launcher.menu.install_jar" = "Install .jar";
+
+"launcher.wait_jit.title" = "Menunggu JIT";
+"launcher.wait_jit.message" = "PojavLauncher membutuhkan compilation Just-in-Time agar Java dapat bekerja dalam perfoma maksimal.";
+
+"login.error.username.outOfRange" = "Username harus mempunyai setidaknya 3 karakter dan maksimum 16 karakter";
+
+"login.alert.field.username" = "Username";
+
+"login.jit.checking" = "Memeriksa JIT";
+"login.jit.enabled" = "JIT telah dinyalakan";
+"login.jit.fail.JitStreamer" = "JitStreamer error: %@";
+"login.jit.found.JitStreamer" = "Ditemukan JitStreamer, menyalakan JIT";
+
+// Login buttons
+"Sign in" = "Masuk";
+"FAQ" = "FAQ";
+"Accounts" = "Akun";
+
+"login.menu.about" = "Tentang PojavLauncher";
+"login.menu.sendlogs" = "Kirim log-log kamu";
+"login.menu.updates" = "Update terbaru";
+
+"login.option.microsoft" = "Akun Microsoft";
+"login.option.demo" = "Akun Demo";
+"login.option.local" = "Akun lokal";
+
+"login.progress.title" = "Sedang masuk";
+
+"login.warn.title.ram_unjb" = "Slider memory nyala";
+"login.warn.message.ram_unjb" = "Ketahuilah bahwa mengganti peraturan ini bisa berefek game menjadi tidak stabil atau jadi tidak bisa dimainkan sama sekali.";
+
+"login.warn.title.a7" = "Ini pembaruan terakhir buat perangkat ini.";
+"login.warn.message.a7" = "PojavLauncher 2.2 tidak akan mendukung perangkat ini, dikarenakan limitasi hardware dan software.";
+
+"login.warn.title.iosver" = "Ini pembaruan terakhir untuk versi iOS ini.";
+"login.warn.message.iosver" = "Versi masa depan PojavLauncher tidak akan mendukung iOS 12 atau 13, karena fitur yang tidak konsisten dan kesulitan pengembangan.";
+
+"login.warn.title.2gb" = "Perangkat anda mempunyai RAM terbatas.";
+"login.warn.message.2gb" = "Perangkat dengan memory rendah dari 3 GB akan terkenda kendala memory. Kami menyarankan membiarkan selektor otomatis menyala untuk perangkat anda.";
+
+"login.warn.title.demomode" = "Opsi ini berada dalam beta.";
+"login.warn.message.demomode" = "Sebagai pengganti offline dan mode lokal, mode demo akan memperbolehkan anda masuk ke akun Microsoft yang tidak mempunyai permainannya dan main versi Java Edition Trial, diadakan sejak versi 1.3.1 dan seterusnya. Versi lebih lama mempunyai permainan penuhnya, karena peluncur resmi tidak memberlakukan restriksi ini. Lihat website kita untuk dapat mempelajari lebih lanjut tentang transisi dari mode offline.";
+
+"login.warn.title.localmode" = "Mode offline sekarang menjadi mode lokal.";
+"login.warn.message.localmode" = "Anda bisa tetap memainkan versi yang telah dipasang, tetapi anda tidak akan bisa mengunduh Minectaft tanpa sebuah akun bayaran. Tidak akan ada dukungan atau bantuan tentang masalah dengan akun local, atau cara lain mendapatkan Minecraft. Lihat FAQ untuk informasi selanjutnya.";
+
+"login.msa.error.xsts.noxboxacc" = "Tidak ada profil Xbox yang terdaftar di akun Microsoft ini. Mohon memastikan bahwa anda telag membuat sebuah profil Xbox.\nKode error: 2148916233";
+"login.msa.error.xsts.noxbox" = "Xbox Live sekarang sedang tidak ada di negata anda.\nKode error: 2148916235";
+"login.msa.error.xsts.krverify" = "Akun anda butuh verifikasi dari orang tua sebelum bisa lanjut.\nKode error: 2148916236 atau 2148916237.";
+"login.msa.error.xsts.underage" = "Akun anda butuh tautan ke sebuah akun orang tua sebelum lanjut.\nKode error: 2148916238";
+
+"login.msa.notice.demomode" = "Tidak dapat menemukan profil Minecraft di akun ini. Akun ini sekarang disetel ke mode demo. Apakah anda telah membeli Minecraft, atau ada subskripsi Xbox GamePass yang aktif? Mohon konfigurasi profil anda di https://minecraft.net/msaprofle untuk mengembalikan mode online.";
+
+"login.msa.progress.acquireAccessToken" = "(1/5) Mendapatkan token akses";
+"login.msa.progress.acquireXBLToken" = "(2/5) Mendapatkan token Xbox Live";
+"login.msa.progress.acquireXSTS" = "Mendapatkan XSTS";
+"login.msa.progress.acquireXboxProfile" = "(3/5) Mendapatkan profil Xbox";
+"login.msa.progress.acquireMCToken" = "(4/5) Mendapatkan token Minecraft";
+"login.msa.progress.checkMCProfile" = "(5/5) Memeriksa profil Minecraft";
+
+"News" = "Berita";
+"Settings" = "Pengaturan";
+
+"preference.section.general" = "Peraturan Umum";
+"preference.section.video" = "Peraturan Video";
+"preference.section.footer.video" = "Renderer otomatis memperbolehkan Minecraft untuk memilih renderer yang mana untuk dipake. Menurunkan resolusi akan menurunkan kerjaan GPU untuk perfoma lebih baik.";
+"preference.section.control" = "Kustomisasi kontrol";
+"preference.section.debug" = "Peraturan debugging UI";
+"preference.section.footer.debug" = "Selain debugging, peraturan-peraturan ini mungkin berguna untuk kontrol kustom. Anda mungkin butuh mengrestart peluncur agar perubahan berlaku.";
+//"preference.section.footer.control" = "";
+"preference.section.java" = "Tweak Java";
+//"preference.section.footer.java" = "";
+
+"preference.title.confirm" = "Apakah anda yakin?";
+
+"preference.title.game_directory" = "Direktori permainan Minecraft";
+"preference.title.confirm.delete_game_directory" = "Instansi %@ akan dihapus selamanya dan tidak dapat dikembalikan.";
+"preference.multidir.add_directory" = "Tambah direktori permainan";
+
+"preference.title.check_sha" = "Periksa berkas setelah mengunduh";
+"preference.detail.check_sha" = "Opsi ini memaksa peluncur untuk memeriksa hash berkas jika ada. Mencegah pengunduhan rusak.";
+"preference.title.cosmetica" = "Capes Cosmetica";
+"preference.detail.cosmetica" = "Nyalakan cape dari Cosmetica (sebelumnya Arc). Untuk informasi lebih lanjut mohon kunjungi https://cosmetica.cc. Membutuhkan OptiFine";
+"preference.title.debug_logging" = "Logging debug";
+"preference.detail.debug_logging" = "Mencatat peraturan-peraturan dalam dan aksi ke latestlog.txt. Ini membantu pengembang untuk mencari masalah lebih mudah, tetapi Minecragt kemungkinan akan berjalan lebih lambat karena logs akan lebih sering dicatat.";
+
+"preference.title.reset_warnings" = "Reset semua peringatan";
+"preference.title.done.reset_warnings" = "Semua peringatan telah direset.";
+
+"preference.title.reset_settings" = "Reset semua peraturan";
+"preference.title.confirm.reset_settings" = "Ini akan menghapus semua peraturan yang telah kamu ubah, termasuk resolusi, besar tombol, dan argument Java.";
+"preference.title.done.reset_settings" = "Semua peraturan bawaan telah dipulihkan.";
+
+"preference.title.renderer" = "Renderer";
+"preference.title.renderer.auto" = "Otomatis: gl4es atau tinygl4angle";
+"preference.title.renderer.gl4es" = "gl4es 1.1.4 - mengekspor OpenGL 2.1";
+"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - mengekspor OpenGL 3.3 (Profil Core, terlimitasi)";
+"preference.title.renderer.zink" = "Zink (Mesa 21.0) - mengekspor OpenGL 4.1";
+"preference.detail.renderer" = "Ganti mesin render OpenGL yang dipake";
+
+"preference.title.resolution" = "Resolusi (%)";
+"preference.detail.resolution" = "Memperbolehkan anda untuk menunrunkan resolusi permainan.";
+"preference.title.disable_gesture" = "Matikan gestures";
+"preference.title.press_duration" = "Durasi pencet-lama (ms)";
+"preference.detail.press_duration" = "Ganti waktu trigger setelah melakukan pencetan dengan ditahan untuk menghancurkan dan menjatuhkan item.";
+"preference.title.button_scale" = "Skala tombol dilayar (%)";
+"preference.detail.button_scale" = "Naikkan skala mereka jika tombol terlalu kecil, biasanya dibutuhkan oleh pengguna iPad.";
+"preference.title.mouse_scale" = "Skala mouse (%)";
+"preference.detail.mouse_scale" = "Ubah ukuran mouse virtual";
+"preference.title.mouse_speed" = "Kecepatan mouse (%)";
+"preference.detail.mouse_speed" = "Ubah kecepatan mouse virtual";
+"preference.title.virtmouse_enable" = "Mouse virtual";
+"preference.detail.virtmouse_enable" = "Nyalakan opsi ini untuk memulai dengan mouse virtual nyala";
+"preference.title.slideable_hotbar" = "Hotbar bisa digeser";
+"preference.detail.slideable_hotbar" = "Buat hotbar bisa digeser seperti mouse wheel";
+"preference.title.java_home" = "Gunakan Java 17 untuk Minecraft < 1.17";
+"preference.detail.java_home" = "Java 8 digunakan secara bawaan untuk versi-versi tersebut. Nyalakan opsi ini untuk memaksa menggunakan Java 17, tetapi kompabilitas tidak dapat dipastikan.";
+"preference.title.java_args" = "Argumen peluncuran JVM";
+"preference.detail.java_args" = "Hati-hati, ini bisa membuat permainannya berhenti tiba-tiba jika dimodifikasi tanpa pengetahuan sebelumnya.";
+"preference.placeholder.java_args" = "Sebutkan argument...";
+"preference.title.auto_ram" = "RAM otomatis";
+"preference.detail.auto_ram" = "Mengaktifkan pengatur RAM otomatis";
+"preference.warn.auto_ram" = "Mematikan opsi ini di perangkat tidak dijailbreak bisa berefek membuat permainan tidak stabil jika diubah. Lanjut dengan perhatian.";
+"preference.title.allocated_memory" = "Alokasi memory (MB)";
+"preference.detail.allocated_memory" = "Mengkontrol berapa banyak memori yang diberikan ke Minecraft";
+"preference.warn.allocated_memory" = "Karena limitasi dari operating systemnya, opsi ini bisa membuat permainan tidak stabil dengan isi yang tinggi. Lanjut dengan perhatian.";
+"preference.title.custom_env" = "Variable environment";
+"preference.detail.custom_env" = "Opsi ini sedang dalam pembangunan.";
+
+"preference.title.debug_ipad_ui" = "Gunakan UI iPadOS";
+"preference.detail.debug_ipad_ui" = "Gunakan fitur-fitur ekslusif iPad (perhatian, keyboard, dll.) jika nyala atau iPhone UI jika mati.";
+"preference.title.debug_show_layout_bounds" = "Tampilkan batas tata letak";
+"preference.detail.debug_show_layout_bounds" = "Tampilkan batas klip, margin";
+"preference.title.debug_show_layout_overlap" = "Tampilkan layout yang overlapping";
+"preference.detail.debug_show_layout_overlap" = "Lapis semua view dengan sebuah warna transparen untuk mengungkap view yang overlapping.";

@@ -1,0 +1,23 @@
+"game.menu.log_output" = "Журнал";
+
+// The options button at the top-right corner on iOS 12
+"Options" = "Опциялар";
+
+// The play button
+"Play" = "Уйнарға";
+"Snapshot" = "Снапшотттар";
+"Old-beta" = "Иҫке беталар";
+"Old-alpha" = "Иҫке альфалар";
+"Edit" = "Үҙгәртергә";
+"Remove" = "Юйырға";
+
+"custom_controls.button_edit.name" = "Исем";
+"custom_controls.control_menu.exit" = "Сығырға";
+"custom_controls.control_menu.save" = "Һаҡларға";
+"custom_controls.control_menu.load" = "Йөкләү";
+"custom_controls.control_menu.add_button" = "Төймәне булдырырға";
+
+"News" = "Яңылыҡтар";
+"Settings" = "Көйләүҙәр";
+
+"preference.title.renderer" = "Рендерер";

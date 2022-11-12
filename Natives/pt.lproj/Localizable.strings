@@ -1,0 +1,53 @@
+/* 
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "Forçar encerramento";
+"game.menu.log_output" = "Registro de saída";
+"game.menu.custom_controls" = "Controlos personalizados";
+
+// The options button at the top-right corner on iOS 12
+"Options" = "Opções";
+
+// The play button
+"Play" = "Jogar";
+"Snapshot" = "Snapshot";
+"Old-beta" = "Beta antiga";
+"Old-alpha" = "Alpha antiga";
+"Edit" = "Editar";
+"Remove" = "Remover";
+
+"custom_controls.button_edit.name" = "Nome";
+"custom_controls.button_edit.size" = "Tamanho";
+"custom_controls.button_edit.mapping" = "Mapeamento";
+"custom_controls.button_edit.orientation" = "Orientação";
+"custom_controls.button_edit.toggleable" = "Alternável";
+"custom_controls.button_edit.swipeable" = "Deslizável";
+"custom_controls.button_edit.bg_color" = "Cor do fundo";
+"custom_controls.button_edit.stroke_color" = "Cor do traçado";
+"custom_controls.button_edit.dynamic_position" = "Posição dinâmica";
+
+"custom_controls.button_menu.add_subbutton" = "Adicionar sub-botão";
+"custom_controls.control_menu.exit" = "Sair";
+"custom_controls.control_menu.save" = "Guardar";
+"custom_controls.control_menu.load" = "Carregar";
+"custom_controls.control_menu.add_button" = "Adicionar botão";
+
+"launcher.menu.custom_controls" = "Controlos personalizados";
+"launcher.menu.install_jar" = "Instalar .jar";
+
+"News" = "Notícias";
+"Settings" = "Definições";
+"preference.section.control" = "Customização dos controlos";
+//"preference.section.footer.control" = "";
+"preference.section.java" = "Ajustes do Java";
+"preference.title.cosmetica" = "Capas da 'Comestica'";
+
+"preference.title.renderer" = "Renderizador";
+"preference.title.disable_gesture" = "Desativar gestos";
+"preference.detail.press_duration" = "Alterar o tempo de ativação de um toque longo entre destruir um bloco e soltar itens.";
+"preference.title.java_args" = "Argumentos JVM";
+"preference.title.auto_ram" = "RAM automática";
+"preference.detail.auto_ram" = "Ativa o ajuste automático de RAM";
+"preference.detail.allocated_memory" = "Controla quanta memória é dada ao Minecraft";

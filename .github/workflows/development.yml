@@ -1,7 +1,13 @@
 name: Development build
 
 on:
-  [push, workflow_dispatch]
+  pull_request:
+    branches-ignore:
+      - 'l10n_main'
+  push:
+    branches-ignore:
+      - 'l10n_main'
+  workflow_dispatch:
 
 jobs:
   build:

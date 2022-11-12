@@ -1,0 +1,180 @@
+/* 
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "Kapatmaya zorla";
+"game.menu.confirm.force_close" = "Zorla kapatmak istediğinize emin misiniz?";
+"game.menu.log_output" = "Konsol çıktısı";
+"game.menu.custom_controls" = "Özel kontroller";
+
+// The options button at the top-right corner on iOS 12
+"Options" = "Ayarlar";
+
+// The play button
+"Play" = "Oyna";
+
+// Version categories
+"Installed" = "Kuruldu";
+"Snapshot" = "Test sürümleri";
+"Releases" = "Sürümler";
+"Old-beta" = "Eski-beta";
+"Old-alpha" = "Eski-alfa";
+"Edit" = "Düzenle";
+"Remove" = "Kaldır";
+
+"custom_controls.button_edit.name" = "İsim";
+"custom_controls.button_edit.size" = "Boyut";
+"custom_controls.button_edit.mapping" = "Atama";
+"custom_controls.button_edit.orientation" = "Yön";
+"custom_controls.button_edit.toggleable" = "Değiştirilebilir";
+"custom_controls.button_edit.swipeable" = "Kaydırılabilir";
+"custom_controls.button_edit.bg_color" = "Arkaplan rengi";
+"custom_controls.button_edit.stroke_color" = "Vurgu rengi";
+"custom_controls.button_edit.dynamic_position" = "Dinamik pozisyon";
+
+"custom_controls.button_menu.add_subbutton" = "Yan-düğme ekle";
+"custom_controls.control_menu.exit" = "Çıkış";
+"custom_controls.control_menu.save" = "Kaydet";
+"custom_controls.control_menu.load" = "Yükle";
+"custom_controls.control_menu.add_button" = "Düğme ekle";
+
+"init.migrateDir" = "PojavLauncher veri dosyası artık %@. Önceden varolan bütün verilerin yeni konuma taşındı.";
+
+"launcher.menu.custom_controls" = "Özel kontroller";
+"launcher.menu.install_jar" = ".jar kur";
+
+"launcher.wait_jit.title" = "JIT için bekleniyor";
+"launcher.wait_jit.message" = "PojavLauncher, Java'nın maksimum performansta çalışması için Just-in-time derlemeye dayanır.";
+
+"login.error.username.outOfRange" = "Kullanıcı adı en az 3 en fazla 16 karakter olmalıdır";
+
+"login.alert.field.username" = "Kullanıcı Adı";
+
+"login.jit.checking" = "JIT tespit ediliyor";
+"login.jit.enabled" = "JIT etkinleştirildi";
+"login.jit.fail.JitStreamer" = "JIT streamer hatası: %@";
+"login.jit.found.JitStreamer" = "JITStreamer bulundu, JIT etkinleştiriliyor";
+
+// Login buttons
+"Sign in" = "Giriş yap";
+"FAQ" = "SSS";
+"Accounts" = "Hesaplar";
+
+"login.menu.about" = "PojavLauncher hakkında";
+"login.menu.sendlogs" = "Kayıt günlüğünüzü gönderin";
+"login.menu.updates" = "Son güncellemeler";
+
+"login.option.microsoft" = "Microsoft hesabı";
+"login.option.demo" = "Demo hesabı";
+"login.option.local" = "Yerel hesap";
+
+"login.progress.title" = "Oturum açılıyor";
+
+"login.warn.title.ram_unjb" = "Hafıza kaydırıcısı etkinleştirildi";
+"login.warn.message.ram_unjb" = "Bu ayarı değiştirmenin oyunda kararsızlığa neden olabileceğini veya oyunu tamamen bozabileceğini unutmayın.";
+
+"login.warn.title.a7" = "Bu güncelleme bu cihaz için son güncellemedir.";
+"login.warn.message.a7" = "PojavLauncher 2.2 bu cihazı donanımsal ve yazılımsal kısıtlamalar nedeniyle desteklemeyecektir.";
+
+"login.warn.title.iosver" = "Bu güncelleme bu iOS sürümü için son güncellemedir.";
+"login.warn.message.iosver" = "PojavLauncher'ın gelecekteki bir sürümü özellik tutarsızlıkları ve geliştirme engelleri nedeniyle iOS 12 veya 13'ü desteklemeyecektir.";
+
+"login.warn.title.2gb" = "Cihazınız kısıtlı RAM'e sahip.";
+"login.warn.message.2gb" = "3GB bellekten az olan cihazlar bellek kısıtlamasıyla karşılaşabilirler. Cihazınız için otomatik seçiciyi açık bırakmanızı tavsiye ederiz.";
+
+"login.warn.title.demomode" = "Bu seçenek betada.";
+"login.warn.message.demomode" = "Çevrimdışı ve yerel mod yerine olan demo modu oyuna sahip olmayan bir Microsoft hesabına giriş yapabilmenizi sağlayacak ve 1.3.1 ve daha yeni sürümlerde tanıtılan Java Edition denemesini oynamanızı sağlayacak. Asıl başlatıcı yeni sürümlerdeki engelleri koymadığı için daha önceki sürümler bütün oyunu kapsıyor. Çevrimdışı modundan olan bu geçiş hakkında daha fazla bilgi öğrenmek için web sitemize bakın.";
+
+"login.warn.title.localmode" = "Çevrimdışı mod artık yerel mod.";
+"login.warn.message.localmode" = "Kurulu sürümleri oynamaya devam edebilirsiniz, fakat ücreti ödenmiş Minecraft hesabı olmadan Minecraft'ı indiremezsiniz. Yerel hesaplardaki sorunlar veya Minecraft'ı edinmenin diğer yollarına hiçbir şekilde destek verilmeyecektir. Daha fazla bilgi için lütfen SSS'yi inceleyin.";
+
+"login.msa.error.xsts.noxboxacc" = "Bu Microsoft hesabı için bir Xbox profili kayıt olmamış. Lütfen bir Xbox profili oluşturduğunuza emin olun.\nHata kodu: 2148916233";
+"login.msa.error.xsts.noxbox" = "Xbox Live şu anlık ülkenizde mevcuz değil.\nHata kodu: 2148916235";
+"login.msa.error.xsts.krverify" = "Devam etmeden önce hesabınız veliniz tarafından doğrulanmalıdır.\nHata kodu: 2148916236 veya 2148916237.";
+"login.msa.error.xsts.underage" = "Devam etmeden önce hesabınız bir veli hesabına bağlanmalıdır.\nHata kodu: 2148916238";
+
+"login.msa.notice.demomode" = "Bu hesapta Minecraft profili bulunamadı. Hesap artık Demo modu olarak ayarlandı. Minecraft'ı satın aldınız mı, ya da etkin olan bir Xbox Game pass üyeliğiniz mi var? Çevrimiçi moda geçmek için lütfen https://minecraft.net/msaprofile'da hesabınızı ayarlayın.";
+
+"login.msa.progress.acquireAccessToken" = "(1/5) Access token'ı elde ediniliyor";
+"login.msa.progress.acquireXBLToken" = "(2/5) Xbox Live Token'ı elde ediliyor";
+"login.msa.progress.acquireXSTS" = "XSTS elde ediliyor";
+"login.msa.progress.acquireXboxProfile" = "(3/5) Xbox profili elde ediliyor";
+"login.msa.progress.acquireMCToken" = "(4/5) Minecraft Token'ı elde ediliyor";
+"login.msa.progress.checkMCProfile" = "(5/5) Minecraft hesabına bakılıyor";
+
+"News" = "Haberler";
+"Settings" = "Ayarlar";
+
+"preference.section.general" = "Genel Ayarlar";
+"preference.section.video" = "Video Ayarları";
+"preference.section.footer.video" = "Oto renderer Minecraft'ın hangi renderer'ı kullanacağını belirlemesini sağlar. Çözünürlüğü düşürmek daha iyi performans için GPU'nun is yükünü azaltır.";
+"preference.section.control" = "Kontrol özelleştirmesi";
+"preference.section.debug" = "UI hata ayıklama seçenekleri";
+"preference.section.footer.debug" = "Hata ayıklamanın yanı sıra, bu seçenekler özel kontrollerde de yardımcı olabilir. Değişikliklerin yürürlüğe girmesi için başlatıcıyı tekrar başlatmanız gerekebilir.";
+//"preference.section.footer.control" = "";
+"preference.section.java" = "Java Ayarlamaları";
+//"preference.section.footer.java" = "";
+
+"preference.title.confirm" = "Emin misiniz?";
+
+"preference.title.game_directory" = "Minecraft oyun dizini";
+"preference.title.confirm.delete_game_directory" = "Kurulum %@ sonsuza dek silinecek ve geri getirilemeyecek.";
+"preference.multidir.add_directory" = "oyun dizini ekle";
+
+"preference.title.check_sha" = "Dosyaları indirdikten sonra kontrol et";
+"preference.detail.check_sha" = "Bu seçenek başlatıcıyı eğer varsa dosya hash'ini kontrol etmeye zorlar. Bozuk indirmeleri engeller.";
+"preference.title.cosmetica" = "Cosmetica Pelerinleri";
+"preference.detail.cosmetica" = "Cosmetica'nın pelerinlerini etkinleştir (önceden Arc). Daha fazla bilgi için lütfen https://cosmetica.cc'yi ziyaret edin. OptiFine gerektirir";
+"preference.title.debug_logging" = "Hata ayıklama kaydı tutma";
+"preference.detail.debug_logging" = "İç seçenekleri ve eylemleri latestlog.txt'ye kaydeder. Bu geliştiricilerin sorunu daha kolay bulmasını sağlar, fakat çok sık kayıt edileceği için Minecraft daha yavaş çalışabilir.";
+
+"preference.title.reset_warnings" = "Tüm uyarıları sıfırla";
+"preference.title.done.reset_warnings" = "Tüm uyarılar sıfırlandı.";
+
+"preference.title.reset_settings" = "Tüm ayarları sıfırla";
+"preference.title.confirm.reset_settings" = "Bu, çözünürlük, düğme boyutu ve Java değişkenleri dahil tüm özel tercihlerinizi kaldıracaktır.";
+"preference.title.done.reset_settings" = "Varsayılan seçeneklerin hepsi eski haline getirildi.";
+
+"preference.title.renderer" = "İşleyici";
+"preference.title.renderer.auto" = "Oto: gl4es ya da tinygl4angle";
+"preference.title.renderer.gl4es" = "gl4es 1.1.4 - OpenGL 2.1 çıkarır";
+"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - OpenGL 3.2 (Çekirdek profili, kısıtlı) çıkarır";
+"preference.title.renderer.zink" = "Zonk (Mesa 21.0) - OpenGL 4.1 çıkarır";
+"preference.detail.renderer" = "Kullanmak için OpenGL işleyici motorunu değiştir";
+
+"preference.title.resolution" = "Çözünürlük (%)";
+"preference.detail.resolution" = "Oyun çözünürlüğünü düşürmenizi sağlar.";
+"preference.title.disable_gesture" = "İşaretleri devre dışı bırak";
+"preference.title.press_duration" = "Uzun-basma süresi (ms)";
+"preference.detail.press_duration" = "Blok kırma ve eşya bırakma için ne kadar süre basman gerektiğini değiştir.";
+"preference.title.button_scale" = "Ekran üstü tuş ölçeği (%)";
+"preference.detail.button_scale" = "Düğmeler çok küçükse yukarı ölçekleyin, genellikle iPad kullanıcıları tarafından ihtiyaç duyulur.";
+"preference.title.mouse_scale" = "Fare ölçeği (%)";
+"preference.detail.mouse_scale" = "Sanal farenin boyutunu ayarlar";
+"preference.title.mouse_speed" = "Fare hızı (%)";
+"preference.detail.mouse_speed" = "Sanal farenin hızını ayarlar";
+"preference.title.virtmouse_enable" = "Sanal Fare";
+"preference.detail.virtmouse_enable" = "Sanal fare açık olarak başlamak için bu seçeneği etkinleştirin";
+"preference.title.slideable_hotbar" = "Kaydırılabilir hotbar";
+"preference.detail.slideable_hotbar" = "Hotbar'ın fare tekerleğindeki gibi kaydırılabilmesini sağlar";
+"preference.title.java_home" = "Minecraft 1.17 < için Java 17 kullan";
+"preference.detail.java_home" = "O sürümler için Java 8 varsayılan olarak kullanılır. Java 17'yi zorla kullanmak için bu seçeneği etkinleştir, ancak modlu ile uyumluluk garanti değildir.";
+"preference.title.java_args" = "JVM Başlatıcı değişkenleri";
+"preference.detail.java_args" = "Dikkatli olun, eğer bilgisizce değiştirilirse oyunun çökmesine sebep olabilir.";
+"preference.placeholder.java_args" = "Değişkenleri belirt...";
+"preference.title.auto_ram" = "Otomatik BELLEK";
+"preference.detail.auto_ram" = "Otomatik bellek ayarlayıcısını etkinleştirir";
+"preference.warn.auto_ram" = "Bu seçeneği jailbreak'lenmemiş bir cihazda devre dışı bırakmak dengesizlik oluşturabilir. Önlemle devam edin.";
+"preference.title.allocated_memory" = "Bellek ayırımı (MB)";
+"preference.detail.allocated_memory" = "Minecraft'a ne kadar bellek verileceğini kontrol eder";
+"preference.warn.allocated_memory" = "İşletim sisteminin kendisindeki kısıtlamalar nedeniyle bu seçenek bunda veya daha yüksek değerlerde dengesizliğe sebep olabilir. Önlem ile devam edin.";
+"preference.title.custom_env" = "Ortam değişkenleri";
+"preference.detail.custom_env" = "Bu seçenek yapım aşamasında.";
+
+"preference.title.debug_ipad_ui" = "iPadOS UI'ını aç";
+"preference.detail.debug_ipad_ui" = "iPad'e özel UI'ı açar (uyarı, klavye vb...) Eğer etkinleştirilirse iPhone UI'ı devre dışı bırakılır.";
+"preference.title.debug_show_layout_bounds" = "Düzen sınırlarını göster";
+"preference.detail.debug_show_layout_bounds" = "Klip sınırlarını, kenar boşluklarını göster";
+"preference.title.debug_show_layout_overlap" = "Düzenin üst üste geçmesini göster";
+"preference.detail.debug_show_layout_overlap" = "Üst üste kalan her yeri görebilmek için her düzeni saydam renkle donat.";

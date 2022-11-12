@@ -1,0 +1,169 @@
+/* 
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "Đóng chương trình";
+"game.menu.confirm.force_close" = "Bạn có chắc muốn bắt buộc thoát?";
+"game.menu.log_output" = "Nhật ký ra ";
+"game.menu.custom_controls" = "Tùy chỉnh điều khiển";
+
+// The options button at the top-right corner on iOS 12
+"Options" = "Tùy chọn";
+
+// The play button
+"Play" = "Chơi";
+
+// Version categories
+"Installed" = "Đã cài đặt";
+"Snapshot" = "Snapshot";
+"Releases" = "Các bản phát hành";
+"Old-beta" = "Bản Beta cũ";
+"Old-alpha" = "Bản Alpha cũ";
+"Edit" = "Chỉnh sửa";
+"Remove" = "Loại bỏ";
+
+"custom_controls.button_edit.name" = "Tên";
+"custom_controls.button_edit.size" = "Kích thước";
+"custom_controls.button_edit.mapping" = "Sơ đồ phím";
+"custom_controls.button_edit.orientation" = "Hướng";
+"custom_controls.button_edit.toggleable" = "Chuyển đổi";
+"custom_controls.button_edit.swipeable" = "Có thể vuốt";
+"custom_controls.button_edit.bg_color" = "Màu nền";
+"custom_controls.button_edit.stroke_color" = "Màu viền phím";
+"custom_controls.button_edit.dynamic_position" = "Vị trí động";
+
+"custom_controls.button_menu.add_subbutton" = "Thêm phím phụ";
+"custom_controls.control_menu.exit" = "Thoát";
+"custom_controls.control_menu.save" = "Lưu";
+"custom_controls.control_menu.load" = "Tải";
+"custom_controls.control_menu.add_button" = "Thêm nút";
+
+"init.migrateDir" = "Đường dẫn dữ liệu của PojavLauncher bây giờ là %@. Tất cả dữ liệu đã có của bạn đã được chuyển đến địa chỉ mới.";
+
+"launcher.menu.custom_controls" = "Tùy chỉnh điều khiển";
+"launcher.menu.install_jar" = "Cài đặt tệp .jar";
+
+"login.error.username.outOfRange" = "Tên người dùng phải có từ 3 đến 16 kí tự";
+
+"login.alert.field.username" = "Tên người dùng";
+
+"login.jit.checking" = "Kiểm tra cho JIT";
+"login.jit.enabled" = "JIT đã được bật";
+"login.jit.fail.JitStreamer" = "Lỗi JITStreamer: %@";
+"login.jit.found.JitStreamer" = "Đã tìm thấy JITStreamer, đang bật JIT";
+
+// Login buttons
+"Sign in" = "Đăng nhập";
+"FAQ" = "Câu hỏi thường gặp";
+"Accounts" = "Tài khoản";
+"login.menu.sendlogs" = "Gửi nhật kí của bạn";
+"login.menu.updates" = "Cập nhật gần đây";
+
+"login.option.microsoft" = "Tài khoản Microsoft";
+"login.option.demo" = "Tài khoản thử nghiệm";
+"login.option.local" = "Tài khoản nội bộ";
+
+"login.progress.title" = "Đang đăng nhập";
+
+"login.warn.title.ram_unjb" = "Thanh trượt bộ nhớ được bật";
+"login.warn.message.ram_unjb" = "Chú ý rằng thay đổi cài đặt này có thể dẫn đến việc trò chơi bị mất ổn định hoặc không thể chơi được.";
+
+"login.warn.title.a7" = "Đây là cập nhật cuối cùng cho thiết bị này.";
+"login.warn.message.a7" = "PojavLauncher 2.2 sẽ không còn được hỗ trợ cho thiết bị này, do giới hạn của phần cứng lẫn phần mềm.";
+
+"login.warn.title.iosver" = "Đây là cập nhật cuối cùng cho phiên bản iOS này.";
+"login.warn.message.iosver" = "Những phiên bản tương lai của PojavLauncher sẽ không còn hỗ trợ iOS 12 hoặc 13, do sự không nhất quán về tính năng và những trở ngại về phát triển.";
+
+"login.warn.title.2gb" = "Thiết bị của bạn có lượng RAM giới hạn.";
+"login.warn.message.2gb" = "Thiết bị có bộ nhớ nhỏ hơn 3GB có thể gặp phải các hạn chế về bộ nhớ. Chúng tôi khuyên bạn nên để bộ chọn lọc tự động cho thiết bị của bạn.";
+
+"login.warn.title.demomode" = "Tùy chọn này đang được thử nghiệm.";
+"login.warn.message.demomode" = "Chế độ chơi thử sẽ thay thế các chế độ ngoại tuyến và nội bộ. Nó cho phép bạn đăng nhập bằng tài khoản Microsoft chưa mua trò chơi và chơi bản chơi thử, được thêm vào từ phiên bản 1.3.1. Các phiên bản cũ hơn vẫn có bản đầy đủ, vì trình khởi chạy chính thức không đặt bất kì giới hạn nào. Xem trang web của chúng tôi để biết thêm về sự chuyển dời từ chế độ ngoại tuyến.";
+
+"login.warn.title.localmode" = "Chế độ ngoại tuyến bây giờ là Chế độ nội bộ.";
+"login.warn.message.localmode" = "Bạn có thể tiếp tục chơi những phiên bản đã được cài đặt, nhưng không thể tải Minecraft mà không có một tài khoản trả phí. Bạn sẽ không được nhận hỗ trợ về những sự cố liên quan đến tài khoản nội bộ, hoặc các cách tải về Minecraft miễn phí khác. Xem \"Câu hỏi thường gặp\" để biết thêm thông tin.";
+
+"login.msa.error.xsts.noxboxacc" = "Chưa có một hồ sơ Xbox được đăng kí cho tài khoản Microsoft này. Hãy chắc chắn rằng bạn đã tạo một hồ sơ.\nMã lỗi: 2148916233";
+"login.msa.error.xsts.noxbox" = "Xbox Live không khả dụng ở quốc gia của bạn.\nMã lỗi: 2148916235";
+"login.msa.error.xsts.krverify" = "Tài khoản của bạn cần được xác nhận bởi phụ huynh.\nMã lỗi: 2148916236 hoặc 2148916237.";
+"login.msa.error.xsts.underage" = "Tài khoản của bạn cần được liên kết tới một tài khoản phụ huynh.\nMã lỗi: 2148916238";
+
+"login.msa.notice.demomode" = "Không thể tìm thấy hồ sơ Minecraft trên tài khoản này. Hiện tại tài khoản này đã được chuyển sang chế độ chơi thử. Có thể bạn chưa mua Minecraft, hoặc gói Xbox GamePass của bạn đã hết hạn. Hãy cài đặt hồ sơ của bạn tại https://minecraft.net/msaprofle để chơi bản đầy đủ.";
+
+"login.msa.progress.acquireAccessToken" = "(1/5) Đang nhận Khoá truy cập";
+"login.msa.progress.acquireXBLToken" = "(2/5) Đang nhận Khoá Xbox Live";
+"login.msa.progress.acquireXSTS" = "Đang nhận XSTS";
+"login.msa.progress.acquireXboxProfile" = "(3/5) Đang nhận Hồ sơ Xbox";
+"login.msa.progress.acquireMCToken" = "(4/5) Đang nhận Khoá Minecraft";
+"login.msa.progress.checkMCProfile" = "(5/5) Kiểm tra hồ sơ Minecraft";
+
+"News" = "Tin tức";
+"Settings" = "Thiết lập";
+
+"preference.section.general" = "Cài đặt chung";
+"preference.section.video" = "Cài đặt hình ảnh";
+"preference.section.footer.video" = "Trình kết xuất tự động cho phép Minecraft quyết định sẽ sử dụng trình kết xuất nào. Giảm độ phân giải sẽ giảm hoạt động cho GPU, giúp tăng hiệu năng.";
+"preference.section.control" = "Tuỳ chỉnh bộ điều khiển";
+//"preference.section.footer.control" = "";
+"preference.section.java" = "Điều chỉnh Java";
+//"preference.section.footer.java" = "";
+
+"preference.title.confirm" = "Bạn có chắc không?";
+
+"preference.title.game_directory" = "Thư mục dữ liệu Minecraft";
+"preference.title.confirm.delete_game_directory" = "Thư mục %@ sẽ bị xoá vĩnh viễn và không thể phục hồi.";
+"preference.multidir.add_directory" = "Thêm thư mục trò chơi";
+
+"preference.title.check_sha" = "Kiểm tra các tệp sau khi tải";
+"preference.detail.check_sha" = "Cài đặt này buộc trình khởi chạy kiểm tra hàm băm của thư viện nếu nó có sẵn. Ngăn chặn tải xuống bị hỏng.";
+"preference.title.cosmetica" = "Áo choàng Cosmetica";
+"preference.detail.cosmetica" = "Sử dụng áo choàng từ dịch vụ Cosmetica (trước đây là Arc). Để biết thêm thông tin, truy cập https://cosmetica.cc. Yêu cầu có OptiFine";
+"preference.title.debug_logging" = "Ghi lại thông tin gỡ lỗi";
+"preference.detail.debug_logging" = "Ghi lại những cài đặt và hoạt động vào tệp latestlog.txt. Nó có thể giúp các nhà phát triển phát hiện ra lỗi dễ dàng hơn, nhưng Minecraft có thể chạy chậm hơn vì nhật kí được ghi lại thường xuyên hơn.";
+
+"preference.title.reset_warnings" = "Đặt lại tất cả cảnh báo";
+"preference.title.done.reset_warnings" = "Tất cả các cảnh báo đã được đặt lại.";
+
+"preference.title.reset_settings" = "Đặt lại tất cả cài đặt";
+"preference.title.confirm.reset_settings" = "Điều này sẽ đặt lại tất cả các tùy chọn của bạn, báo gồm độ phân giải, kích thước nút, và các chỉ số chạy Java.";
+"preference.title.done.reset_settings" = "Tất cả các thiết lập đã được đặt lại.";
+
+"preference.title.renderer" = "Trình kết xuất";
+"preference.title.renderer.auto" = "Tự động: gl4es hoặc tinygl4angle";
+"preference.title.renderer.gl4es" = "gl4es 1.1.4 - xuất ra OpenGL 2.1";
+"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - xuất ra OpenGL 3.2 (Core Profile, bị giới hạn)";
+"preference.title.renderer.zink" = "Zink (Mesa 21.0) - xuất ra OpenGL 4.1";
+"preference.detail.renderer" = "Thay đổi kết xuất OpenGL được sử dụng";
+
+"preference.title.resolution" = "Độ phân giải (%)";
+"preference.detail.resolution" = "Cho phép thay đổi độ phân giải trò chơi.";
+"preference.title.disable_gesture" = "Tắt cử chỉ";
+"preference.title.press_duration" = "Độ dài nhấn giữ (ms)";
+"preference.detail.press_duration" = "Thay đổi thời gian nhấn giữ để kích hoạt khi phá huỷ khối và thả vật phẩm.";
+"preference.title.button_scale" = "Độ rộng nút trên màn hình (%)";
+"preference.detail.button_scale" = "Tăng lên nếu nút quá nhỏ, đặc biệt với người dùng iPad.";
+"preference.title.mouse_scale" = "Độ lớn của chuột (%)";
+"preference.detail.mouse_scale" = "Đổi kích thước chuột ảo";
+"preference.title.mouse_speed" = "Tốc độ chuột (%)";
+"preference.detail.mouse_speed" = "Chỉnh tốc độ của chuột ảo";
+"preference.title.virtmouse_enable" = "Chuột ảo";
+"preference.detail.virtmouse_enable" = "Bật tùy chọn này để khởi động trò chơi với chuột ảo được bật sẵn";
+"preference.title.slideable_hotbar" = "Thanh vật phẩm có thể trượt";
+"preference.detail.slideable_hotbar" = "Làm thanh vật phẩm có thể trượt, hoạt động như cuộn nút giữa chuột";
+"preference.title.java_home" = "Sử dụng Java 17 cho Minecraft < 1.17";
+"preference.detail.java_home" = "Mặc định, Java 8 được sử dụng cho các phiên bản này. Sử dụng tùy chọn này có thể làm mất tính tương thích với các trình khởi động mod.";
+"preference.title.java_args" = "Các chỉ số chạy JVM";
+"preference.detail.java_args" = "Cẩn thận, trò chơi có thể bị hỏng nếu sửa đổi mà không có kiến thức.";
+"preference.placeholder.java_args" = "Nhập các chỉ số...";
+"preference.title.auto_ram" = "RAM tự động";
+"preference.detail.auto_ram" = "Bật tự động điều chỉnh RAM";
+"preference.warn.auto_ram" = "Tắt tùy chọn này trên thiết bị chưa được jailbreak có thể gây ra sự thiếu ổn định. Chú ý khi tiếp tục.";
+"preference.title.allocated_memory" = "Phân bổ bộ nhớ (MB)";
+"preference.detail.allocated_memory" = "Điều chỉnh số lượng bộ nhớ được cung cấp cho Minecraft";
+"preference.warn.allocated_memory" = "Do những giới hạn của hệ điều hành, tùy chọn này có thể gây ra sự cố với mức phân bổ này hoặc cao hơn. Chú ý khi tiếp tục.";
+"preference.title.custom_env" = "Các chỉ số môi trường";
+"preference.detail.custom_env" = "Tùy chọn này đang được hoàn thiện.";
+
+"preference.title.debug_ipad_ui" = "Mở khóa giao diện iPadOS";
+"preference.detail.debug_ipad_ui" = "Mở khóa giao diện người dùng mở rộng cho iPad (thông báo, bàn phím,..) nếu được bật hoặc giao diện iPhone bị tắt.";

@@ -1,0 +1,34 @@
+/* 
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "บังคับปิด";
+"game.menu.log_output" = "ประวัติที่บันทึกไว้";
+"game.menu.custom_controls" = "การควบคุมกำหนดเอง";
+
+// The options button at the top-right corner on iOS 12
+"Options" = "ตัวเลือก";
+
+// The play button
+"Play" = "เล่น";
+"Snapshot" = "ภาพรวม";
+"Old-beta" = "เบตาเก่า";
+"Old-alpha" = "Old-alpha";
+"Edit" = "แก้ไข";
+"Remove" = "ถอดออก";
+
+"custom_controls.button_edit.name" = "ชื่อ";
+"custom_controls.button_edit.size" = "ขนาด";
+"custom_controls.button_edit.dynamic_position" = "ตำแหน่งพลวัต";
+"custom_controls.control_menu.exit" = "ออก";
+"custom_controls.control_menu.save" = "บันทึก";
+"custom_controls.control_menu.load" = "โหลด";
+"custom_controls.control_menu.add_button" = "เพิ่มปุ่ม";
+
+"launcher.menu.custom_controls" = "การควบคุมกำหนดเอง";
+
+"News" = "ข่าวสาร";
+"Settings" = "การตั้งค่า";
+"preference.title.auto_ram" = "RAM อัตโนมัติ";
+"preference.detail.auto_ram" = "เปิดใช้งานตัวปรับ RAM อัตโนมัติ";

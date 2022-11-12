@@ -1,0 +1,51 @@
+/* 
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "Force close";
+"game.menu.log_output" = "tree input";
+"game.menu.custom_controls" = "Custom controls";
+
+// The options button at the top-right corner on iOS 12
+"Options" = "Opshuns";
+
+// The play button
+"Play" = "Pulay";
+"Snapshot" = "Snapshot";
+"Old-beta" = "Old-beat";
+"Old-alpha" = "Old-alaf";
+"Edit" = "Edit";
+"Remove" = "Remoev";
+
+"custom_controls.button_edit.name" = "Naym";
+"custom_controls.button_edit.size" = "Siez";
+"custom_controls.button_edit.mapping" = "Mappin’";
+"custom_controls.button_edit.orientation" = "Direksion";
+"custom_controls.button_edit.toggleable" = "Toggleabel";
+"custom_controls.button_edit.swipeable" = "Scratchable";
+"custom_controls.button_edit.bg_color" = "Bakground colour";
+"custom_controls.button_edit.stroke_color" = "Strok colour";
+"custom_controls.button_edit.dynamic_position" = "Movin’ pozision";
+
+"custom_controls.button_menu.add_subbutton" = "Add b’low-buton";
+"custom_controls.control_menu.exit" = "Exit";
+"custom_controls.control_menu.save" = "Saev";
+"custom_controls.control_menu.load" = "Load";
+"custom_controls.control_menu.add_button" = "Add button";
+
+"launcher.menu.custom_controls" = "Custom controls";
+"launcher.menu.install_jar" = "Install .jar";
+
+"News" = "Newz";
+"Settings" = "Settinz";
+//"preference.section.footer.control" = "";
+"preference.section.java" = "Java Tweakz";
+
+"preference.title.renderer" = "Renderer";
+"preference.title.disable_gesture" = "Disabel gesturez";
+"preference.detail.press_duration" = "Change triggr tiem 4 long pres in destroy block an drop item.";
+"preference.title.java_args" = "CCz’UM L’unch argumentz";
+"preference.title.auto_ram" = "Auto RAM";
+"preference.detail.auto_ram" = "Enablez automatic RAM adjustah";
+"preference.detail.allocated_memory" = "Controls how mutch RAM iz given 2 Minecraft";

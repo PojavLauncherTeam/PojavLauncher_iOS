@@ -1,0 +1,53 @@
+/* 
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "強制終了";
+"game.menu.log_output" = "ログ";
+"game.menu.custom_controls" = "カスタムコントロール";
+
+// The options button at the top-right corner on iOS 12
+"Options" = "設定";
+
+// The play button
+"Play" = "プレイ";
+"Snapshot" = "スナップショット";
+"Old-beta" = "Beta 版";
+"Old-alpha" = "Alpha 版";
+"Edit" = "編集";
+"Remove" = "消去";
+
+"custom_controls.button_edit.name" = "名前";
+"custom_controls.button_edit.size" = "サイズ";
+"custom_controls.button_edit.mapping" = "割り当て";
+"custom_controls.button_edit.orientation" = "向き";
+"custom_controls.button_edit.toggleable" = "切り替え可能";
+"custom_controls.button_edit.swipeable" = "スワイプする";
+"custom_controls.button_edit.bg_color" = "背景色";
+"custom_controls.button_edit.stroke_color" = "線の色";
+"custom_controls.button_edit.dynamic_position" = "動的な位置";
+
+"custom_controls.button_menu.add_subbutton" = "サブボタンを追加";
+"custom_controls.control_menu.exit" = "閉じる";
+"custom_controls.control_menu.save" = "保存";
+"custom_controls.control_menu.load" = "読み込む";
+"custom_controls.control_menu.add_button" = "ボタンを追加";
+
+"launcher.menu.custom_controls" = "カスタムコントロール";
+"launcher.menu.install_jar" = ".jarをインストール";
+
+"News" = "ニュース";
+"Settings" = "設定";
+"preference.section.control" = "制御のカスタマイズ";
+//"preference.section.footer.control" = "";
+"preference.section.java" = "Java の調整";
+"preference.title.cosmetica" = "コスメチカ・ケープズ";
+
+"preference.title.renderer" = "レンダラー";
+"preference.title.disable_gesture" = "ジェスチャーの無効化";
+"preference.detail.press_duration" = "長押しでブロックを破壊したりアイテムを捨てたりできますが、タッチし始めてから長押しと判定するまでの時間を変更します。";
+"preference.title.java_args" = "JVM 起動引数";
+"preference.title.auto_ram" = "自動RAM調整";
+"preference.detail.auto_ram" = "メモリの自動調整を有効にする";
+"preference.detail.allocated_memory" = "Minecraftに与えられるメモリの量を制御します";

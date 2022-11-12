@@ -1,0 +1,21 @@
+"game.menu.log_output" = "Crow's Nest";
+"game.menu.custom_controls" = "custom trigger";
+
+// The play button
+"Play" = "Sail";
+"Snapshot" = "Snapshot";
+"Old-beta" = "Ol'-beta";
+"Old-alpha" = "Ol'-alpha";
+
+"custom_controls.button_edit.name" = "Title on yer forhead";
+"custom_controls.control_menu.exit" = "True Story";
+"custom_controls.control_menu.add_button" = "Add buttn";
+
+"launcher.menu.custom_controls" = "custom trigger";
+
+"login.menu.about" = "'bout PojavLauncher";
+
+"News" = "News";
+"Settings" = "Settings";
+"preference.title.cosmetica" = "Cosmetica Mantles";
+"preference.title.auto_ram" = "RAM by magic";

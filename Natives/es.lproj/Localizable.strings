@@ -1,0 +1,181 @@
+/* 
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "Forzar el cierre";
+"game.menu.confirm.force_close" = "¿Estás seguro de que quieres forzar el cierre?";
+"game.menu.log_output" = "Registro de salida";
+"game.menu.custom_controls" = "Controles personalizados";
+
+// The options button at the top-right corner on iOS 12
+"Options" = "Opciones";
+
+// The play button
+"Play" = "Jugar";
+
+// Version categories
+"Installed" = "Instalada";
+"Snapshot" = "Snapshots";
+"Releases" = "Versiones lanzadas";
+"Old-beta" = "Betas";
+"Old-alpha" = "Alphas";
+
+// Custom controls
+"Copy" = "Copiar";
+"Edit" = "Editar";
+"Move" = "Mover";
+"Remove" = "Eliminar";
+"Resize" = "Cambiar tamaño";
+
+"custom_controls.button_edit.name" = "Nombre";
+"custom_controls.button_edit.size" = "Tamaño";
+"custom_controls.button_edit.mapping" = "Mapeado";
+"custom_controls.button_edit.orientation" = "Orientación";
+"custom_controls.button_edit.toggleable" = "Activable";
+"custom_controls.button_edit.swipeable" = "Deslizable";
+"custom_controls.button_edit.bg_color" = "Color de fondo";
+"custom_controls.button_edit.stroke_color" = "Color del trazo";
+"custom_controls.button_edit.corner_radius" = "Radio de las esquinas (%)";
+"custom_controls.button_edit.opacity" = "Opacidad (%)";
+"custom_controls.button_edit.dynamic_position" = "Posición dinámica";
+"custom_controls.button_edit.dynamic_x" = "Eje X dinámico";
+"custom_controls.button_edit.dynamic_y" = "Eje Y dinámico";
+
+"custom_controls.button_menu.add_subbutton" = "Añadir sub-botón";
+"custom_controls.control_menu.discard_changes" = "Descartar cambios";
+"custom_controls.control_menu.exit" = "Salir";
+"custom_controls.control_menu.exit.warn" = "Estás a punto de salir sin guardas los cambios.";
+"custom_controls.control_menu.save" = "Guardar";
+"custom_controls.control_menu.save.error.json" = "Error JSON";
+"custom_controls.control_menu.load" = "Cargar";
+"custom_controls.control_menu.add_button" = "Añadir botón";
+
+"init.migrateDir" = "La carpeta de PojavLauncher ahora está en %@. Todos tus datos han sido movidos a esa nueva ubicación.";
+
+"launcher.menu.custom_controls" = "Controles personalizados";
+"launcher.menu.install_jar" = "Instalar .jar";
+
+"login.error.username.outOfRange" = "Nombre de usuario debe tener al menos entre 3 y 16 caracteres";
+
+"login.alert.field.username" = "Nombre de usuario";
+
+"login.jit.checking" = "Buscando JIT";
+"login.jit.enabled" = "JIT ha sido habilitado";
+"login.jit.fail.JitStreamer" = "JitStreamer error: %@";
+"login.jit.found.JitStreamer" = "JitStreamer encontrado, habilitando JIT";
+
+// Login buttons
+"Sign in" = "Iniciar sesión";
+"FAQ" = "Preguntas frecuentes (FAQ)";
+"Accounts" = "Cuentas";
+
+"login.menu.about" = "Acerca de PojavLauncher";
+"login.menu.sendlogs" = "Envía tus logs";
+"login.menu.updates" = "Actualizaciones recientes";
+
+"login.option.microsoft" = "Cuenta de Microsoft";
+"login.option.demo" = "Cuenta demo";
+"login.option.local" = "Cuenta local";
+
+"login.progress.title" = "Iniciando sesión";
+
+"login.warn.title.ram_unjb" = "Slider de memoria habilitado";
+"login.warn.message.ram_unjb" = "Ten en cuenta que al cambiar esta opción es posible que cause inestabilidades en el juego o la incapacidad para jugar.";
+
+"login.warn.title.a7" = "Esta es la última actualización para este dispositivo.";
+"login.warn.message.a7" = "PojavLauncher 2.2 no soportará este dispositivo debido a las limitaciones de hardware y software.";
+
+"login.warn.title.iosver" = "Esta es la última actualización para esta versión de iOS.";
+"login.warn.message.iosver" = "Una futura versión de PojavLauncher no tendrá soporte para iOS 12 o 13, debido a inconsistencias de características y obstáculos en el desarrollo.";
+
+"login.warn.title.2gb" = "Tu dispositivo tiene RAM limitada.";
+"login.warn.message.2gb" = "Dispositivos con menos de 3GB de memoria pueden tener restricciones. Recomendamos dejar al selector automático encendido para tu dispositivo.";
+
+"login.warn.title.demomode" = "Esta opción esta en beta.";
+"login.warn.message.demomode" = "Como reemplazo del modo offline y el modo local, el modo demo te permitirá iniciar sesión en una cuenta de Microsoft que no tenga el juego para jugar a las trials de Java Edition, introducido en la versión 1.3.1 y versiones nuevas. Versiones anteriores a estas tienen acceso al juego entero, porque el launcher oficial no contiene estas restricciones. Ve a nuestro sitio web para saber más sobre esta transición de el modo offline.";
+
+"login.warn.title.localmode" = "El modo offline ahora es el modo local.";
+"login.warn.message.localmode" = "Puedes seguir jugando a versiones ya instaladas, pero ya no puedes descargar Minecraft sin una cuenta de paga. No habrá soporte a casos con las cuentas locales u otros medios para adquirir Minecraft consulte a las Preguntas frecuentes (FAQ) para más información.";
+
+"login.msa.error.xsts.noxboxacc" = "Esta cuenta de Microsoft no poseé un perfil de Xbox. Por favor, asegúrate de haber creado un perfil de Xbox en esta cuenta.\nCódigo de error: 2148916233";
+"login.msa.error.xsts.noxbox" = "Xbox Live no está disponible actualmente en tu país.\nCódigo de error: 2148916235";
+"login.msa.error.xsts.krverify" = "Tu cuenta debe ser verificada por tus padres antes de continuar.\nCódigo de error: 2148916236 o 2148916237.";
+"login.msa.error.xsts.underage" = "Tu cuenta debe de estar vinculada a una cuenta de padre antes de continuar.\nCódigo de error: 2148916238";
+
+"login.msa.notice.demomode" = "No se pudo encontrar un perfil de Minecraft en esta cuenta. Esta cuenta ahora está configurada en modo demo. ¿Has comprado el juego?, ¿Hay una subscripción de Gamepass aquí? Por favor, configura tu perfil en https://minecraft.net/msaprofle para restaurar el modo online.";
+
+"login.msa.progress.acquireAccessToken" = "(1/5) Adquiriendo el token de acceso";
+"login.msa.progress.acquireXBLToken" = "(2/5) Adquiriendo el token de Xbox Live";
+"login.msa.progress.acquireXSTS" = "Adquiriendo XSTS";
+"login.msa.progress.acquireXboxProfile" = "(3/5) Adquiriendo perfil de Xbox";
+"login.msa.progress.acquireMCToken" = "(4/5) Adquiriendo token de Minecraft";
+"login.msa.progress.checkMCProfile" = "(5/5) Comprobando el perfil de Minecraft";
+
+"News" = "Noticias";
+"Settings" = "Ajustes";
+
+"preference.section.general" = "Configuración general";
+"preference.section.video" = "Configuración de Vídeo";
+"preference.section.footer.video" = "El auto renderizador le permite a Minecraft decidir cuál renderizador usar. Reduciendo la resolución reduce la carga del GPU para un mejor rendimiento.";
+"preference.section.control" = "Personalización del control";
+"preference.section.footer.debug" = "Aparte de el debugging, estas opciones pueden ser útiles para los controles personalizados. Es posible que tengas que reiniciar el launcher para que los cambios tengan efecto.";
+//"preference.section.footer.control" = "";
+"preference.section.java" = "Ajustes de Java";
+//"preference.section.footer.java" = "";
+
+"preference.title.confirm" = "¿Estás seguro?";
+
+"preference.title.game_directory" = "Carpeta de Minecraft";
+"preference.title.confirm.delete_game_directory" = "La instancia %@ va a ser borrada para siempre y nunca podrá ser restaurada.";
+"preference.multidir.add_directory" = "Añadir Ubicación de carpeta del juego";
+
+"preference.title.check_sha" = "Comprobar archivos después de descargar";
+"preference.detail.check_sha" = "Está opción fuerza al launcher a verificar si el archivo hash está disponible. Previene falta de archivos y corrupciones.";
+"preference.title.cosmetica" = "Capas de Comestica";
+"preference.detail.cosmetica" = "Activar capas de Comestica (anteriormente Arc.) Para más información, por favor ve a https://cosmetica.cc. (Requiere OptiFine)";
+"preference.title.debug_logging" = "Registro de depuración";
+"preference.detail.debug_logging" = "Registra las configuraciones y acciones internas en latestlog.txt. Esto ayuda a los desarrolladores a encontrar problemas más fácilmente, pero es posible que el juego sea más lento, ya que los registros serán escritos con más frecuencia.";
+
+"preference.title.reset_warnings" = "Reiniciar todas las advertencias";
+"preference.title.done.reset_warnings" = "Todas las advertencias han sido reiniciadas.";
+
+"preference.title.reset_settings" = "Reiniciar todas las configuraciones";
+"preference.title.confirm.reset_settings" = "Esto va a remover todas tus configuraciones, incluyendo resolución, tamaño de botones y argumentos de Java.";
+"preference.title.done.reset_settings" = "Todas las configuraciones predeterminadas han sido restauradas.";
+
+"preference.title.renderer" = "Renderizador";
+"preference.title.renderer.auto" = "Auto: gl4es o tinygl4angle";
+"preference.title.renderer.gl4es" = "gl4es 1.1.4 - exporta a OpenGL 2.1";
+"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - exporta a OpenGL 3.2 (Core Profile, limitado)";
+"preference.title.renderer.zink" = "Zink (Mesa 21.0) - exporta a OpenGL 4.1";
+"preference.detail.renderer" = "Cambiar el motor de renderizado para que OpenGL utilicé";
+
+"preference.title.resolution" = "Resolución (%)";
+"preference.detail.resolution" = "Permite reducir la resolución del juego.";
+"preference.title.disable_gesture" = "Desactivar gestos";
+"preference.title.press_duration" = "Duración para pulsado largo (ms)";
+"preference.detail.press_duration" = "Cambia el tiempo de activación durante una pulsación larga en destruir bloques y soltar objetos.";
+"preference.title.button_scale" = "Escala de botones en pantalla (%)";
+"preference.detail.button_scale" = "Sube de tamaño a los botones si resultan ser muy pequeños, es usualmente necesario para usuarios de iPad.";
+"preference.title.mouse_scale" = "Tamaño del ratón (%)";
+"preference.detail.mouse_scale" = "Cambiar velocidad del ratón virtual";
+"preference.title.mouse_speed" = "Velocidad del ratón (%)";
+"preference.detail.mouse_speed" = "Cambiar velocidad del ratón virtual";
+"preference.title.virtmouse_enable" = "Ratón virtual";
+"preference.detail.virtmouse_enable" = "Habilita está opcion para empezar con el ratón virtual encendido";
+"preference.title.slideable_hotbar" = "Hotbar deslizable";
+"preference.detail.slideable_hotbar" = "Permite deslizarse en el hotbar como la rueda del ratón";
+"preference.title.java_home" = "Usar Java 17 para Minecraft < 1.17";
+"preference.detail.java_home" = "Java 8 es utilizado por defecto para esas versiones. Activa está opción para forzar el uso de Java 17. Sin embargo, la compatibilidad con el modeado no está garantizada.";
+"preference.title.java_args" = "JRE Argumentos de lanzamiento";
+"preference.detail.java_args" = "Ten cuidado, esto puede hacer que el juego crashee si es modificado sin ningún conocimiento previo.";
+"preference.placeholder.java_args" = "Especifica argumentos...";
+"preference.title.auto_ram" = "Auto RAM";
+"preference.detail.auto_ram" = "Habilita el ajuste automático de RAM";
+"preference.warn.auto_ram" = "Deshabilitar esta opción para un dispositivo sin JailBreak puede crear inestabilidad si es alterada. Procede con cuidado.";
+"preference.title.allocated_memory" = "Cantidad de memoria (MB)";
+"preference.detail.allocated_memory" = "Controla cuánta memoria se le da a Minecraft";
+"preference.warn.allocated_memory" = "Debido a limitaciones con el sistema operativo en sí, esta opción puede causar inestabilidad en esta y mayores cantidades. Procede con cuidado.";
+"preference.title.custom_env" = "Variables de entorno";
+"preference.detail.custom_env" = "Está opción está en desarrollo.";

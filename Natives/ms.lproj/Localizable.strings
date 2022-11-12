@@ -1,0 +1,61 @@
+/* 
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "Paksa tutup";
+"game.menu.log_output" = "Log output";
+"game.menu.custom_controls" = "Kawalan custom";
+
+// The options button at the top-right corner on iOS 12
+"Options" = "Pilihan";
+
+// The play button
+"Play" = "Main";
+"Snapshot" = "Petikan";
+"Old-beta" = "Beta-lama";
+"Old-alpha" = "Alfa-lama";
+"Edit" = "Sunting";
+"Remove" = "Hapus";
+
+"custom_controls.button_edit.name" = "Nama";
+"custom_controls.button_edit.size" = "Saiz";
+"custom_controls.button_edit.orientation" = "Orientasi";
+"custom_controls.button_edit.toggleable" = "Boleh Ditukar";
+"custom_controls.button_edit.bg_color" = "Warna Latar Belakang";
+"custom_controls.button_edit.dynamic_position" = "Posisi Dinamik";
+"custom_controls.control_menu.exit" = "Keluar";
+"custom_controls.control_menu.save" = "Simpan";
+"custom_controls.control_menu.load" = "Memuat";
+"custom_controls.control_menu.add_button" = "Tambah butang";
+
+"launcher.menu.custom_controls" = "Kawalan custom";
+"launcher.menu.install_jar" = "Pasang .jar";
+"login.warn.message.ram_unjb" = "Harap maklum bahawa menukar tetapan ini boleh menyebabkan ketidakstabilan permainan atau merosakkan keupayaan untuk bermain sama sekali.";
+
+"News" = "Berita";
+"Settings" = "Tetapan";
+
+"preference.section.general" = "Tetapan Umum";
+"preference.section.video" = "Tetapan Video";
+"preference.section.debug" = "Tetapan UI Penyahpepijat";
+"preference.section.footer.debug" = "Selain daripada nyahpepijat, tetapan ini mungkin berguna untuk kawalan tersuai. Anda mungkin perlu memulakan semula pelancar untuk perubahan berkuat kuasa.";
+//"preference.section.footer.java" = "";
+
+"preference.title.confirm" = "Adakah anda pasti?";
+
+"preference.title.game_directory" = "Direktori permainan Minecraft";
+"preference.title.cosmetica" = "Mantel Cosmetica";
+"preference.detail.debug_logging" = "Mengelog tetapan dan tindakan dalaman ke latestlog.txt. Ini membantu pembangun mencari isu dengan lebih mudah, tetapi Minecraft mungkin berjalan lebih perlahan kerana log akan ditulis dengan lebih kerap.";
+
+"preference.title.reset_settings" = "Tetapkan semula semua tetapan";
+"preference.title.confirm.reset_settings" = "Ini akan mengalih keluar semua pilihan tersuai anda, termasuk resolusi, saiz butang dan argumen Java.";
+"preference.title.done.reset_settings" = "Semua tetapan lalai telah dipulihkan.";
+
+"preference.title.renderer" = "Renderer";
+"preference.title.disable_gesture" = "Nyahdayakan gerak isyarat";
+"preference.detail.press_duration" = "Tukar masa cetusan untuk tekanan lama dalam penghancuran blok dan pelemparan item.";
+"preference.title.java_args" = "JVM Launch arguments";
+"preference.title.auto_ram" = "Auto RAM";
+"preference.detail.auto_ram" = "Membenarkan pelaras RAM automatik";
+"preference.detail.allocated_memory" = "Mengawal berapa banyak memori yang diberikan kepada Minecraft";

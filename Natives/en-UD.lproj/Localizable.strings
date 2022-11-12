@@ -1,0 +1,200 @@
+/* 
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "ǝsoꞁɔ ǝɔɹoℲ";
+"game.menu.confirm.force_close" = "¿ǝsolɔ ǝɔɹoɟ oʇ ʇuɐʍ noʎ ǝɹns noʎ ǝɹ∀";
+"game.menu.log_output" = "ʇndʇno ᵷoꞀ";
+"game.menu.custom_controls" = "sꞁoɹʇuoɔ ɯoʇsnƆ";
+
+"game.title.exit_code" = "%d ǝpoɔ ɥʇᴉʍ pǝʇᴉxǝ ǝɯɐפ";
+
+// The options button at the top-right corner on iOS 12
+"Options" = "suoᴉʇdO";
+
+// The play button
+"Play" = "ʎɐꞁԀ";
+
+// Version categories
+"Installed" = "pǝllɐʇsuI";
+"Snapshot" = "ʇoɥsdɐuS";
+"Releases" = "sǝsɐǝlǝɹ";
+"Old-beta" = "ɐʇǝq-pꞁO";
+"Old-alpha" = "ɐɥdꞁɐ-pꞁO";
+
+// Custom controls
+"Copy" = "ʎdoƆ";
+"Edit" = "ʇᴉpƎ";
+"Move" = "ǝʌoW";
+"Remove" = "ǝʌoɯǝᴚ";
+"Resize" = "ǝzᴉsǝɹ";
+
+"custom_controls.button_edit.name" = "ǝɯɐN";
+"custom_controls.button_edit.size" = "ǝzᴉS";
+"custom_controls.button_edit.mapping" = "ᵷuᴉddɐW";
+"custom_controls.button_edit.orientation" = "uoᴉʇɐʇuǝᴉɹO";
+"custom_controls.button_edit.toggleable" = "ǝꞁqɐǝꞁᵷᵷo⟘";
+"custom_controls.button_edit.mouse_pass" = "ssɐd ǝsnoW";
+"custom_controls.button_edit.swipeable" = "ǝꞁqɐǝdᴉʍS";
+"custom_controls.button_edit.bg_color" = "ɹoꞁoɔ punoɹᵷʞɔɐᗺ";
+"custom_controls.button_edit.stroke_width" = "(%) ɥʇpᴉʍ ǝʞoɹʇS";
+"custom_controls.button_edit.stroke_color" = "ɹoꞁoɔ ǝʞoɹʇS";
+"custom_controls.button_edit.corner_radius" = "(%) snᴉpɐɹ ɹǝuɹoƆ";
+"custom_controls.button_edit.opacity" = "(%) ʎʇᴉɔɐdO";
+"custom_controls.button_edit.dynamic_position" = "uoᴉʇᴉsod ɔᴉɯɐuʎᗡ";
+"custom_controls.button_edit.dynamic_x" = "sᴉxɐ-X ɔᴉɯɐuʎp";
+"custom_controls.button_edit.dynamic_y" = "sᴉxɐ-⅄ ɔᴉɯɐuʎp";
+
+"custom_controls.button_menu.add_subbutton" = "uoʇʇnq-qns pp∀";
+"custom_controls.control_menu.discard_changes" = "sǝƃuɐɥɔ pɹɐɔsᴉp";
+"custom_controls.control_menu.exit" = "ʇᴉxƎ";
+"custom_controls.control_menu.exit.warn" = "˙sǝƃuɐɥɔ ƃuᴉʌɐs ʇnoɥʇᴉʍ ʇᴉxǝ oʇ ʇnoqɐ ǝɹɐ no⅄";
+"custom_controls.control_menu.save" = "ǝʌɐS";
+"custom_controls.control_menu.save.error.default" = "˙uǝʇʇᴉɹʍɹǝʌo ǝq llᴉʍ ʇᴉ sɐ ,,ʇlnɐɟǝp,, ǝq ʇou uɐɔ ǝɯɐu loɹʇuoƆ";
+"custom_controls.control_menu.save.error.json" = "ɹoɹɹǝ NOSſ";
+"custom_controls.control_menu.save.error.write" = "ǝlᴉɟ ƃuᴉʌɐs ɹoɹɹƎ";
+"custom_controls.control_menu.load" = "pɐoꞀ";
+"custom_controls.control_menu.make_default" = "ʇlnɐɟǝp ǝʞɐW";
+"custom_controls.control_menu.safe_area" = "ɐǝɹɐ ǝɟɐS";
+"custom_controls.control_menu.add_button" = "uoʇʇnq ppⱯ";
+"custom_controls.control_menu.add_drawer" = "ɹǝʍɐɹp pp∀";
+"custom_controls.hint" = "suoᴉʇdo ǝɹoɯ ɹoɟ uǝǝɹɔs uo ǝɹǝɥʍʎuɐ ssǝɹd-ƃuo˥";
+
+"init.migrateDir" = "˙uoᴉʇɐɔol ʍǝu ǝɥʇ oʇ pǝʌoɯ uǝǝq sɐɥ ɐʇɐp ƃuᴉʇsᴉxǝ ɹnoʎ ɟo ll∀ ˙%@ ʍou sᴉ ʎɹoʇɔǝɹᴉp ɐʇɐp ɹǝɥɔunɐ˥ʌɐɾoԀ ǝɥ┴";
+
+"launcher.menu.custom_controls" = "sꞁoɹʇuoɔ ɯoʇsnƆ";
+"launcher.menu.install_jar" = "ɹɐɾ˙ ꞁꞁɐʇsuI";
+
+"launcher.wait_jit.title" = "┴Iſ ɹoɟ ƃuᴉʇᴉɐM";
+"launcher.wait_jit.message" = "˙ǝɔuɐɯɹoɟɹǝd ɯnɯᴉxɐɯ ʇɐ ʞɹoʍ oʇ ɐʌɐſ ɹoɟ uoᴉʇɐlᴉdɯoɔ ǝɯᴉʇ-uᴉ-ʇsnſ uo sǝᴉlǝɹ ɹǝɥɔunɐ˥ʌɐɾoԀ";
+
+"login.error.username.outOfRange" = "sɹǝʇɔɐɹɐɥɔ 9Ɩ ɯnɯᴉxɐɯ puɐ sɹǝʇɔɐɹɐɥɔ Ɛ ʇsɐǝl ʇɐ ǝq ʇsnɯ ǝɯɐuɹǝs∩";
+
+"login.alert.field.username" = "ǝɯɐuɹǝs∩";
+
+"login.jit.checking" = "┴Iſ ɹoɟ ƃuᴉʞɔǝɥƆ";
+"login.jit.enabled" = "pǝlqɐuǝ uǝǝq sɐɥ ┴Iſ";
+"login.jit.fail.JitStreamer" = "%@ :ɹoɹɹǝ ɹǝɯɐǝɹʇSʇᴉſ";
+"login.jit.found.JitStreamer" = "┴Iſ ƃuᴉlqɐuǝ 'ɹǝɯɐǝɹʇSʇᴉſ punoℲ";
+
+// Login buttons
+"Sign in" = "uᴉ uƃᴉS";
+"FAQ" = "Q∀Ⅎ";
+"Accounts" = "sʇunoɔɔ∀";
+"login.menu.sendlogs" = "sƃol ɹnoʎ puǝS";
+"login.menu.updates" = "sǝʇɐpdn ʇuǝɔǝɹ";
+
+"login.option.microsoft" = "ʇunoɔɔɐ ʇɟosoɹɔᴉW";
+"login.option.demo" = "ʇunoɔɔɐ oɯǝp";
+"login.option.local" = "ʇunoɔɔɐ lɐɔo˥";
+
+"login.progress.title" = "uᴉ ƃuᴉƃƃo˥";
+
+"login.warn.title.ram_unjb" = "pǝlqɐuǝ sᴉ ɹǝpᴉls ʎɹoɯǝW";
+"login.warn.message.ram_unjb" = "˙llɐ ʇɐ ʎɐld oʇ ʎʇᴉlᴉqɐ ǝɥʇ ʞɐǝɹq ɹo ʎʇᴉlᴉqɐʇsuᴉ ǝɯɐƃ ǝsnɐɔ uɐɔ ƃuᴉʇʇǝs sᴉɥʇ ƃuᴉƃuɐɥɔ ʇɐɥʇ ǝɹɐʍɐ ǝq";
+
+"login.warn.title.a7" = "˙ǝɔᴉʌǝp sᴉɥʇ ɹoɟ ǝʇɐpdn ʇsɐl ǝɥʇ sᴉ sᴉɥ┴";
+"login.warn.message.a7" = "˙suoᴉʇɐʇᴉɯᴉl ǝɹɐʍʇɟos puɐ ǝɹɐʍpɹɐɥ oʇ ǝnp 'ǝɔᴉʌǝp sᴉɥʇ ʇɹoddns ʇou llᴉʍ ᄅ˙ᄅ ɹǝɥɔunɐ˥ʌɐɾoԀ";
+
+"login.warn.title.iosver" = "˙uoᴉsɹǝʌ SOᴉ sᴉɥʇ ɹoɟ ǝʇɐpdn ʇsɐl ǝɥʇ sᴉ sᴉɥ┴";
+"login.warn.message.iosver" = "˙sǝlpɹnɥ ʇuǝɯdolǝʌǝp puɐ sǝᴉɔuǝʇsᴉsuoɔuᴉ ǝɹnʇɐǝɟ oʇ ǝnp 'ƐƖ ɹo ᄅƖ SOᴉ ʇɹoddns ʇou llᴉʍ ɹǝɥɔunɐ˥ʌɐɾoԀ ɟo uoᴉsɹǝʌ ǝɹnʇnɟ ∀";
+
+"login.warn.title.2gb" = "˙W∀ɹ pǝʇᴉɯᴉl sɐɥ ǝɔᴉʌǝp ɹno⅄";
+"login.warn.message.2gb" = "˙ǝɔᴉʌǝp ɹnoʎ ɹoɟ uo ɹoʇɔǝlǝs ɔᴉʇɐɯoʇnɐ ǝɥʇ ƃuᴉʌɐǝl puǝɯɯoɔǝɹ ǝM ˙sʇuᴉɐɹʇsuoɔ ʎɹoɯǝɯ oʇuᴉ unɹ ʎɐɯ ʎɹoɯǝɯ ɟo qפƐ uɐɥʇ ssǝl ɥʇᴉʍ sǝɔᴉʌǝp";
+
+"login.warn.title.demomode" = "˙ɐʇǝq uᴉ sᴉ uoᴉʇdo sᴉɥ┴";
+"login.warn.message.demomode" = "˙ǝpoɯ ǝuᴉlɟɟo ɯoɹɟ uoᴉʇᴉsuɐɹʇ sᴉɥʇ ʇnoqɐ ǝɹoɯ uɹɐǝl oʇ ǝʇᴉsqǝʍ ɹno ǝǝS ˙suoᴉʇɔᴉɹʇsǝɹ ǝsǝɥʇ ǝɔɐld ʇou sǝop ɹǝɥɔunɐl lɐᴉɔᴉɟɟo ǝɥʇ sɐ 'ǝɯɐƃ llnɟ ǝɥʇ uᴉɐʇuoɔ suoᴉsɹǝʌ ɹǝplO ˙suoᴉsɹǝʌ ɹǝʍǝu puɐ Ɩ˙Ɛ˙Ɩ uᴉ pǝɔnpoɹʇuᴉ 'lɐᴉɹʇ uoᴉʇᴉpƎ ɐʌɐſ ǝɥʇ ʎɐld puɐ ǝɯɐƃ ǝɥʇ uʍo ʇou sǝop ʇɐɥʇ ʇunoɔɔɐ ʇɟosoɹɔᴉW ɐ oʇuᴉ uƃᴉs oʇ noʎ ʍollɐ llᴉʍ ǝpoɯ oɯǝp 'ǝpoɯ lɐɔol puɐ ǝuᴉlɟɟo oʇ ʇuǝɯǝɔɐldǝɹ ɐ s∀";
+
+"login.warn.title.localmode" = "˙ǝpoɯ lɐɔo˥ ʍou sᴉ ǝpoɯ ǝuᴉlɟɟO";
+"login.warn.message.localmode" = "˙uoᴉʇɐɯɹoɟuᴉ ǝɹoɯ ɹoɟ Q∀Ⅎ ǝɥʇ ǝǝS ˙ʇɟɐɹɔǝuᴉW ƃuᴉɹᴉnbɔɐ ɟo suɐǝɯ ɹǝɥʇo ɹo 'sʇunoɔɔɐ lɐɔol ɥʇᴉʍ sǝnssᴉ ɹoɟ pǝpᴉʌoɹd ǝq llᴉʍ ʇɹoddns oN ˙ʇunoɔɔɐ pᴉɐd ɐ ʇnoɥʇᴉʍ ʇɟɐɹɔǝuᴉW pɐoluʍop ɹǝƃuol ou uɐɔ noʎ ʇnq 'suoᴉsɹǝʌ pǝllɐʇsuᴉ ʎɐld oʇ ǝnuᴉʇuoɔ uɐɔ no⅄";
+
+"login.msa.error.xsts.noxboxacc" = "\nƐƐᄅ9Ɩ68ㄣƖᄅ :ǝpoɔ ɹoɹɹƎ ˙ǝlᴉɟoɹd xoqX uɐ ǝpɐɯ ǝʌɐɥ noʎ ʇɐɥʇ ǝɹns ǝʞɐɯ ǝsɐǝlԀ ˙ʇunoɔɔɐ ʇɟosoɹɔᴉW sᴉɥʇ ɹoɟ pǝɹǝʇsᴉƃǝɹ ʇou sᴉ ǝlᴉɟoɹd xoqX u∀";
+"login.msa.error.xsts.noxbox" = "\nϛƐᄅ9Ɩ68ㄣƖᄅ :ǝpoɔ ɹoɹɹƎ ˙ʎɹʇunoɔ ɹnoʎ uᴉ ǝlqɐlᴉɐʌɐun ʎlʇuǝɹɹnɔ sᴉ ǝʌᴉ˥ xoqX";
+"login.msa.error.xsts.krverify" = "\n˙ㄥƐᄅ9Ɩ68ㄣƖᄅ ɹo 9Ɛᄅ9Ɩ68ㄣƖᄅ :ǝpoɔ ɹoɹɹƎ ˙ǝnuᴉʇuoɔ ǝɹoɟǝq sʇuǝɹɐd ɹnoʎ ʎq pǝᴉɟᴉɹǝʌ ǝq oʇ spǝǝu ʇunoɔɔɐ ɹno⅄";
+"login.msa.error.xsts.underage" = "\n8Ɛᄅ9Ɩ68ㄣƖᄅ :ǝpoɔ ɹoɹɹƎ ˙ǝnuᴉʇuoɔ ǝɹoɟǝq ʇunoɔɔɐ ʇuǝɹɐd ɐ oʇ pǝʞuᴉl ǝq oʇ spǝǝu ʇunoɔɔɐ ɹno⅄";
+
+"login.msa.notice.demomode" = "˙ǝpoɯ ǝuᴉluO oʇ ǝɹoʇsǝɹ oʇ https://minecraft.net/msaprofle uᴉ ǝlᴉɟoɹd ɹnoʎ ǝɹnƃᴉɟuoɔ ǝsɐǝlԀ ¿uoᴉʇdᴉɹɔsqns ssɐԀǝɯɐפ xoqX ǝʌᴉʇɔɐ uɐ ǝɹǝɥʇ sᴉ ɹo 'ʇɟɐɹɔǝuᴉW ʎnq noʎ pᴉp ˙ǝpoɯ oɯǝp oʇ ʇǝs ʍou sᴉ ʇunoɔɔɐ ǝɥ┴ ˙ʇunoɔɔɐ sᴉɥʇ uo ǝlᴉɟoɹd ʇɟɐɹɔǝuᴉW ɐ puᴉɟ ʇou plnoƆ";
+
+"login.msa.progress.acquireAccessToken" = "uǝʞoʇ ssǝɔɔ∀ ǝɥʇ ƃuᴉɹᴉnbɔ∀ (ϛ/Ɩ)";
+"login.msa.progress.acquireXBLToken" = "uǝʞoʇ ǝʌᴉ˥ xoqX ǝɥʇ ƃuᴉɹᴉnbɔ∀ (ϛ/ᄅ)";
+"login.msa.progress.acquireXSTS" = "S┴SX ƃuᴉɹᴉnbɔ∀";
+"login.msa.progress.acquireXboxProfile" = "ǝlᴉɟoɹd xoqX ǝɥʇ ƃuᴉɹᴉnbɔ∀ (ϛ/Ɛ)";
+"login.msa.progress.acquireMCToken" = "uǝʞoʇ ʇɟɐɹɔǝuᴉW ǝɥʇ ƃuᴉɹᴉnbɔ∀ (ϛ/ㄣ)";
+"login.msa.progress.checkMCProfile" = "ǝlᴉɟoɹd ʇɟɐɹɔǝuᴉW ǝɥʇ ƃuᴉʞɔǝɥƆ (ϛ/ϛ)";
+
+"News" = "sʍǝN";
+"Settings" = "sᵷuᴉʇʇǝS";
+
+"preference.section.general" = "sƃuᴉʇʇǝS lɐɹǝuǝפ";
+"preference.section.video" = "sƃuᴉʇʇǝS oǝpᴉΛ";
+"preference.section.footer.video" = "˙ǝɔuɐɯɹoɟɹǝd ɹǝʇʇǝq ɹoɟ pɐolʞɹoʍ ∩Ԁפ sǝɔnpǝɹ uoᴉʇnlosǝɹ ƃuᴉsɐǝɹɔǝp ˙ǝsn oʇ ɹǝɹǝpuǝɹ ɥɔᴉɥʍ ǝpᴉɔǝp oʇ ʇɟɐɹɔǝuᴉW sʍollɐ ɹǝɹǝpuǝɹ oʇn∀";
+"preference.section.control" = "uoᴉʇɐzᴉɯoʇsnɔ ꞁoɹʇuoƆ";
+"preference.section.debug" = "sƃuᴉʇʇǝs ƃuᴉƃƃnqǝp I∩";
+"preference.section.footer.debug" = "˙ʇɔǝɟɟǝ ǝʞɐʇ oʇ sǝƃuɐɥɔ ɹoɟ ɹǝɥɔunɐl ǝɥʇ ʇɹɐʇsǝɹ oʇ pǝǝu ʎɐɯ no⅄ ˙sloɹʇuoɔ ɯoʇsnɔ ɹoɟ lnɟǝsn ǝq ʎɐɯ sƃuᴉʇʇǝs ǝsǝɥʇ 'ƃuᴉƃƃnqǝp ɯoɹɟ ǝpᴉs∀";
+//"preference.section.footer.control" = "";
+"preference.section.java" = "sʞɐǝʍ⟘ ɐʌɐՐ";
+//"preference.section.footer.java" = "";
+
+"preference.title.confirm" = "¿ǝɹns noʎ ǝɹ∀";
+
+"preference.title.game_directory" = "ʎɹoʇɔǝɹᴉp ǝɯɐƃ ʇɟɐɹɔǝuᴉW";
+"preference.title.confirm.delete_game_directory" = "˙pǝɹoʇsǝɹ ǝq ʇouuɐɔ puɐ ɹǝʌǝɹoɟ pǝʇǝlǝp ǝq llᴉʍ %@ ǝɔuɐʇsuᴉ ǝɥ┴";
+"preference.multidir.add_directory" = "ʎɹoʇɔǝɹᴉp ǝɯɐƃ ppɐ";
+
+"preference.title.check_sha" = "ƃuᴉpɐoluʍop ɹǝʇɟɐ sǝlᴉɟ ʞɔǝɥƆ";
+"preference.detail.check_sha" = "˙spɐoluʍop uǝʞoɹq sʇuǝʌǝɹԀ ˙ǝlqɐlᴉɐʌɐ s,ʇᴉ ɟᴉ ɥsɐɥ ǝlᴉɟ ǝɥʇ ʞɔǝɥɔ oʇ ɹǝɥɔunɐl sǝɔɹoɟ uoᴉʇdo sᴉɥ┴";
+"preference.title.cosmetica" = "sǝdɐɔ ɐɔıʇǝɯsoɔ";
+"preference.detail.cosmetica" = "ǝuᴉℲᴉʇdO sǝɹᴉnbǝɹ ˙https://cosmetica.cc ʇᴉsᴉʌ ǝsɐǝld uoᴉʇɐɯɹoɟuᴉ ǝɹoɯ ɹoℲ ˙(ɔɹ∀ ʎlsnoᴉʌǝɹd) ɐɔᴉʇǝɯsoƆ ɯoɹɟ sǝdɐɔ ǝlqɐuƎ";
+"preference.title.debug_logging" = "ƃuᴉƃƃol ƃnqǝp";
+"preference.detail.debug_logging" = "˙uǝʇɟo ǝɹoɯ oʇ uǝʇʇᴉɹʍ ǝq llᴉʍ sƃol ǝɥʇ sɐ ɹǝʍols unɹ ʎɐɯ ʇɟɐɹɔǝuᴉW ʇnq 'ɹǝᴉsɐǝ sǝnssᴉ puᴉɟ sɹǝdolǝʌǝp ǝɥʇ sdlǝɥ sᴉɥ┴ ˙ʇxʇ˙ƃolʇsǝʇɐl oʇ suoᴉʇɔɐ puɐ sƃuᴉʇʇǝs lɐuɹǝʇuᴉ sƃo˥";
+
+"preference.title.reset_warnings" = "sƃuᴉuɹɐʍ llɐ ʇǝsǝɹ";
+"preference.title.done.reset_warnings" = "˙ʇǝsǝɹ uǝǝq ǝʌɐɥ sƃuᴉuɹɐʍ ll∀";
+
+"preference.title.reset_settings" = "sƃuᴉʇʇǝs llɐ ʇǝsǝɹ";
+"preference.title.confirm.reset_settings" = "˙sʇuǝɯnƃɹɐ ɐʌɐſ puɐ 'ǝzᴉs uoʇʇnq 'uoᴉʇnlosǝɹ ƃuᴉpnlɔuᴉ 'sǝɔuǝɹǝɟǝɹd ɯoʇsnɔ ɹnoʎ ɟo llɐ ǝʌoɯǝɹ llᴉʍ sᴉɥ┴";
+"preference.title.done.reset_settings" = "˙pǝɹoʇsǝɹ uǝǝq ǝʌɐɥ sƃuᴉʇʇǝs ʇlnɐɟǝp ǝɥʇ ɟo ll∀";
+
+"preference.title.renderer" = "ɹǝɹǝpuǝᴚ";
+"preference.title.renderer.auto" = "ǝlƃuɐㄣlƃʎuᴉʇ ɹo sǝㄣlƃ :oʇn∀";
+"preference.title.renderer.gl4es" = "Ɩ˙ᄅ ˥פuǝdO sʇɹodxǝ - ㄣ˙Ɩ˙Ɩ sǝㄣlƃ";
+"preference.title.renderer.tinygl4angle" = "(pǝʇᴉɯᴉl 'ǝlᴉɟoɹԀ ǝɹoƆ) ᄅ˙Ɛ ˥פuǝdO sʇɹodxǝ - (+ㄥƖ˙Ɩ) ǝlƃuɐㄣlƃʎuᴉʇ";
+"preference.title.renderer.zink" = "Ɩ˙ㄣ ˥פuǝdO sʇɹodxǝ - (0˙Ɩᄅ ɐsǝW) ʞuᴉZ";
+"preference.detail.renderer" = "ǝsn oʇ ǝuᴉƃuǝ ɹǝpuǝɹ ˥פuǝdO ǝɥʇ ǝƃuɐɥƆ";
+
+"preference.title.resolution" = "(%) uoᴉʇnlosǝɹ";
+"preference.detail.resolution" = "˙uoᴉʇnlosǝɹ ǝɯɐƃ ǝɥʇ ǝsɐǝɹɔǝp oʇ noʎ sʍoll∀";
+"preference.title.disable_gesture" = "sǝɹnʇsǝᵷ ǝꞁqɐsᴉᗡ";
+"preference.title.press_duration" = "(sɯ) uoᴉʇɐɹnp ssǝɹd-ƃuo˥";
+"preference.detail.press_duration" = "˙ɯǝʇᴉ doɹp puɐ ʞɔoꞁq ʎoɹʇsǝp uᴉ ssǝɹd ᵷuoꞁ ɹoɟ ǝɯᴉʇ ɹǝᵷᵷᴉɹʇ ǝᵷuɐɥƆ";
+"preference.title.button_scale" = "(%) ǝlɐɔs uoʇʇnq uǝǝɹɔs-uO";
+"preference.detail.button_scale" = "˙sɹǝsn pɐԀᴉ ɹoɟ pǝpǝǝu ʎllɐnsn 'llɐɯs ooʇ ǝɹɐ suoʇʇnq ɟᴉ ɯǝɥʇ ǝlɐɔsd∩";
+"preference.title.mouse_scale" = "(%) ƃuᴉlɐɔs ǝsnoW";
+"preference.detail.mouse_scale" = "ǝsnoɯ lɐnʇɹᴉʌ ǝɥʇ ɟo ǝzᴉs ǝɥʇ ǝƃuɐɥƆ";
+"preference.title.mouse_speed" = "(%) pǝǝds ǝsnoW";
+"preference.detail.mouse_speed" = "ǝsnoɯ lɐnʇɹᴉʌ ǝɥʇ ɟo pǝǝds ǝɥʇ ǝƃuɐɥƆ";
+"preference.title.virtmouse_enable" = "ǝsnoɯ lɐnʇɹᴉΛ";
+"preference.detail.virtmouse_enable" = "uo ǝsnoɯ lɐnʇɹᴉʌ ɥʇᴉʍ ʇɹɐʇs oʇ uoᴉʇdo sᴉɥʇ ǝlqɐuƎ";
+"preference.title.slideable_hotbar" = "ɹɐqʇoɥ ǝlqɐǝpᴉlS";
+"preference.detail.slideable_hotbar" = "lǝǝɥʍ ǝsnoɯ ǝɥʇ ǝʞᴉl ǝlqɐǝpᴉls ɹɐqʇoɥ ǝɥʇ ǝʞɐW";
+"preference.title.java_home" = "ㄥƖ˙Ɩ > ʇɟɐɹɔǝuᴉW ɹoɟ ㄥƖ ɐʌɐſ ǝs∩";
+"preference.detail.java_home" = "˙pǝǝʇuɐɹɐnƃ ʇou sᴉ pǝppoɯ ɥʇᴉʍ ʎʇᴉlᴉqᴉʇɐdɯoɔ ɹǝʌǝʍoɥ 'ㄥƖ ɐʌɐſ ǝsn ǝɔɹoɟ oʇ uoᴉʇdo sᴉɥʇ ǝlqɐuƎ ˙suoᴉsɹǝʌ ǝsoɥʇ ɹoɟ ʇlnɐɟǝp ʎq pǝsn sᴉ 8 ɐʌɐſ";
+"preference.title.java_args" = "sʇuǝɯnᵷɹɐ ɥɔunɐꞀ WɅՐ";
+"preference.detail.java_args" = "˙ǝƃpǝlʍouʞ ɹoᴉɹd ʎuɐ ʇnoɥʇᴉʍ pǝᴉɟᴉpoɯ ɟᴉ ɥsɐɹɔ ǝɯɐƃ ǝɥʇ ǝʞɐɯ uɐɔ sᴉɥʇ 'lnɟǝɹɐɔ ǝq";
+"preference.placeholder.java_args" = "˙˙˙sʇuǝɯnƃɹɐ ʎɟᴉɔǝdS";
+"preference.title.auto_ram" = "WⱯᴚ oʇnⱯ";
+"preference.detail.auto_ram" = "ɹǝʇsnɾpɐ WⱯᴚ ɔᴉʇɐɯoʇnɐ sǝꞁqɐuƎ";
+"preference.warn.auto_ram" = "˙uoᴉʇnɐɔ ɥʇᴉʍ pǝǝɔoɹԀ ˙pǝɹǝʇlɐ ɟᴉ ʎʇᴉlᴉqɐʇsuᴉ ǝʇɐǝɹɔ uɐɔ ǝɔᴉʌǝp uǝʞoɹqlᴉɐɾun uɐ uo uoᴉʇdo sᴉɥʇ ƃuᴉlqɐsᴉp";
+"preference.title.allocated_memory" = "(qW) uoᴉʇɐɔollɐ ʎɹoɯǝW";
+"preference.detail.allocated_memory" = "ʇɟɐɹɔǝuᴉW oʇ uǝʌᴉᵷ sᴉ ʎɹoɯǝɯ ɥɔnɯ ʍoɥ sꞁoɹʇuoƆ";
+"preference.warn.allocated_memory" = "˙uoᴉʇnɐɔ ɥʇᴉʍ pǝǝɔoɹԀ ˙sǝnlɐʌ ɹǝɥƃᴉɥ puɐ sᴉɥʇ ʇɐ ʎʇᴉlᴉqɐʇsuᴉ ǝsnɐɔ ʎɐɯ uoᴉʇdo sᴉɥʇ 'ɟlǝsʇᴉ ɯǝʇsʎs ƃuᴉʇɐɹǝdo ǝɥʇ uᴉ suoᴉʇɐʇᴉɯᴉl oʇ ǝnp";
+"preference.title.custom_env" = "sǝlqɐᴉɹɐʌ ʇuǝɯuoɹᴉʌuƎ";
+"preference.detail.custom_env" = "˙uoᴉʇɔnɹʇsuoɔ ɹǝpun sᴉ uoᴉʇdo sᴉɥ┴";
+
+"preference.title.debug_ipad_ui" = "I∩ SOpɐԀᴉ ʞɔolu∩";
+"preference.detail.debug_ipad_ui" = "˙pǝlqɐsᴉp ɟᴉ I∩ ǝuoɥԀᴉ ɹo pǝlqɐuǝ ɟᴉ (˙ɔʇǝ 'pɹɐoqʎǝʞ 'ʇɹǝlɐ) I∩ ǝʌᴉsnlxǝ-pɐԀᴉ ʞɔolu∩";
+"preference.title.debug_show_layout_bounds" = "spunoq ʇnoʎɐl ʍoɥS";
+"preference.detail.debug_show_layout_bounds" = "suᴉƃɹɐɯ 'spunoq dᴉlɔ ʍoɥS";
+"preference.title.debug_show_layout_overlap" = "ƃuᴉddɐlɹǝʌo ʇnoʎɐl ʍoɥS";
+"preference.detail.debug_show_layout_overlap" = "˙sʍǝᴉʌ ƃuᴉddɐlɹǝʌo lɐǝʌǝɹ oʇ ɹoloɔ ʇuǝɹɐdsuɐɹʇ ɐ ɥʇᴉʍ ʍǝᴉʌ ʎɹǝʌǝ ʎɐlɹǝʌO";
