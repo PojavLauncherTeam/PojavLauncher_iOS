@@ -8,6 +8,8 @@
 "game.menu.log_output" = "Záznam výstupu";
 "game.menu.custom_controls" = "Vlastní ovládací prvky";
 
+"game.title.exit_code" = "Hra skončila s kódem %d";
+
 // The options button at the top-right corner on iOS 12
 "Options" = "Možnosti";
 
@@ -20,24 +22,43 @@
 "Releases" = "Vydání";
 "Old-beta" = "Stará beta";
 "Old-alpha" = "Stará alfa";
+
+// Custom controls
+"Copy" = "Kopírovat";
 "Edit" = "Editovat";
+"Move" = "Pohnout";
 "Remove" = "Odstranit";
+"Resize" = "Změnit velikost";
 
 "custom_controls.button_edit.name" = "Název";
 "custom_controls.button_edit.size" = "Velikost";
 "custom_controls.button_edit.mapping" = "Mapování";
 "custom_controls.button_edit.orientation" = "Orientace";
 "custom_controls.button_edit.toggleable" = "Přepnutelné";
+"custom_controls.button_edit.mouse_pass" = "Průchod myši";
 "custom_controls.button_edit.swipeable" = "Povolit přejíždění";
 "custom_controls.button_edit.bg_color" = "Barva pozadí";
+"custom_controls.button_edit.stroke_width" = "Šířka obrysu (%)";
 "custom_controls.button_edit.stroke_color" = "Barva obrysu";
+"custom_controls.button_edit.corner_radius" = "Poloměr rohu (%)";
+"custom_controls.button_edit.opacity" = "Průhlednost (%)";
 "custom_controls.button_edit.dynamic_position" = "Dynamická pozice";
+"custom_controls.button_edit.dynamic_x" = "Dynamická osa X";
+"custom_controls.button_edit.dynamic_y" = "Dynamická osa Y";
 
 "custom_controls.button_menu.add_subbutton" = "Přidat podtlačítko";
+"custom_controls.control_menu.discard_changes" = "Zahodit změny";
 "custom_controls.control_menu.exit" = "Odejít";
+"custom_controls.control_menu.exit.warn" = "Chystáš se ukončit bez uložení změn.";
 "custom_controls.control_menu.save" = "Uložit";
+"custom_controls.control_menu.save.error.default" = "Název ovládání nemůže být \"default\", neboť by byl přepsán.";
+"custom_controls.control_menu.save.error.json" = "Chyba JSONu";
+"custom_controls.control_menu.save.error.write" = "Chyba ukládání souboru";
 "custom_controls.control_menu.load" = "Načíst";
+"custom_controls.control_menu.make_default" = "Nastavit výchozím";
+"custom_controls.control_menu.safe_area" = "Bezpečná oblast";
 "custom_controls.control_menu.add_button" = "Přidat tlačítko";
+"custom_controls.control_menu.add_drawer" = "Přidat šuplík";
 
 "init.migrateDir" = "Složka dat PojavLauncheru je nyní %@. Všechna tvá data byla přesunuta do nového umístění.";
 
