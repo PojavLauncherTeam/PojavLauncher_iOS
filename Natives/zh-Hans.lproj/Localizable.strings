@@ -148,7 +148,6 @@
 "preference.detail.cosmetica" = "启用来自 Cosmetica（原 Arc ）的披风。欲了解更多信息，请访问 https://arcapes.com。需要 OptiFine。";
 "preference.title.debug_logging" = "调试日志";
 "preference.detail.debug_logging" = "完整的记录启动器的各种活动事件到latestlog.txt文件内,有助于开发者更容易的发现错误。但Minecraft游戏内FPS可能会降低(频繁的记录日志内容会使得CPU负载变高)";
-
 "preference.title.reset_warnings" = "重置所有警告";
 "preference.title.done.reset_warnings" = "带有“警告”的设置选项已被恢复默认状态";
 
