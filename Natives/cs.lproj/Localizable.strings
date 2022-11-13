@@ -59,11 +59,17 @@
 "custom_controls.control_menu.safe_area" = "Bezpečná oblast";
 "custom_controls.control_menu.add_button" = "Přidat tlačítko";
 "custom_controls.control_menu.add_drawer" = "Přidat šuplík";
+"custom_controls.hint" = "Pro více možností dlouze podrž kdekoli na obrazovce";
 
 "init.migrateDir" = "Složka dat PojavLauncheru je nyní %@. Všechna tvá data byla přesunuta do nového umístění.";
 
 "launcher.menu.custom_controls" = "Vlastní ovládací prvky";
 "launcher.menu.install_jar" = "Instalovat .jar";
+
+"launcher.wait_jit.title" = "Čekání na JIT";
+"launcher.wait_jit.message" = "PojavLauncher závisí na kompilaci Just-in-time, aby Java fungovala maximální rychlostí.";
+
+"login.error.username.outOfRange" = "Uživatelské jméno musí být dlouhé alespoň 3 znaky a nanejvýše 16 znaků";
 
 "login.alert.field.username" = "Uživatelské jméno";
 
@@ -105,6 +111,10 @@
 
 "login.msa.error.xsts.noxboxacc" = "Xboxový profil není registrován pro tento Microsoft účet. Prosím ujisti se zdali máš vytvořený Xbox účet.\nKód chyby: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live není právě teď k dostupný ve tvé zemi.\nKód chyby: 2148916235";
+"login.msa.error.xsts.krverify" = "Tvůj účet musí být ověřen tvými rodiči před tím než budeš pokračovat. \nKód chyby: 2148916236 či 2148916237.";
+"login.msa.error.xsts.underage" = "Tvůj účet musí být propojen s účtem rodiče před pokračováním.\nKód chyby: 2148916238";
+
+"login.msa.notice.demomode" = "Nebylo možno nalézt profil Minecraftu na tomto účtu. Ten účet je teď nastaven na Demo režim. Koupil/a sis Minecraft, či máš aktivní předplatné Xbox GamePass? Prosím nakonfiguruj si svůj profil na https://minecraft.net/msaprofile pro obnovení přístupu k Onlinovému režimu.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Získávání Přístupového tokenu";
 "login.msa.progress.acquireXBLToken" = "(2/5) Získávání Xbox Live tokenu";
@@ -120,6 +130,8 @@
 "preference.section.video" = "Nastavení obrazu";
 "preference.section.footer.video" = "Automatický vykreslovač dovolí Minecraftu rozhodnout který vykreslovač používat. Zmenšováním rozlišení sníží zatížení GPU pro lepší výkon.";
 "preference.section.control" = "Přizpůsobení ovládání";
+"preference.section.debug" = "Nastavení ladění UI";
+"preference.section.footer.debug" = "Kromě ladění mohou být tato nastavení užitečná pro vlastní ovládání. Možná budete muset restartovat spouštěč aby se změny projevily.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Vyladění Javy";
 //"preference.section.footer.java" = "";
@@ -155,6 +167,7 @@
 "preference.detail.resolution" = "Umožňuje ti snížit rozlišení hry.";
 "preference.title.disable_gesture" = "Vypnout gesta";
 "preference.title.press_duration" = "Trvání dlouhého stisku (ms)";
+"preference.detail.press_duration" = "Délka trvání dlouhého držení ke zničení bloků a vyhazování itemů.";
 "preference.title.button_scale" = "Měřítko tlačítka na obrazovce (%)";
 "preference.detail.button_scale" = "Zvětšit tlačítka jsou-li příliš malá, obvyklé potřebné pro uživatele iPadů.";
 "preference.title.mouse_scale" = "Škálování myši (%)";
@@ -178,3 +191,10 @@
 "preference.warn.allocated_memory" = "Tato možnost může způsobit nestabilitu při této a vyšších hodnotách, kvůli limitacím v operačním systému. Pokračuj s opatrností.";
 "preference.title.custom_env" = "Proměnné prostředí";
 "preference.detail.custom_env" = "Tato možnost je ve vývoji.";
+
+"preference.title.debug_ipad_ui" = "Odemknout iPadOS UI";
+"preference.detail.debug_ipad_ui" = "Odemknout UI pro iPady (upozornění, klávesnice, atd.) zapnuto-li, či iPhone UI vypnuto-li.";
+"preference.title.debug_show_layout_bounds" = "Zobrazit ohraničení rozložení";
+"preference.detail.debug_show_layout_bounds" = "Zobrazit překrývající se hranice a mezery";
+"preference.title.debug_show_layout_overlap" = "Zobrazit překrývající se rozložení";
+"preference.detail.debug_show_layout_overlap" = "Překrýt každé zobrazení průhlednou barvou pro odhalení překrývajících se zobrazení.";
