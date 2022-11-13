@@ -122,7 +122,6 @@
 "preference.detail.cosmetica" = "Nyalakan cape dari Cosmetica (sebelumnya Arc). Untuk informasi lebih lanjut mohon kunjungi https://cosmetica.cc. Membutuhkan OptiFine";
 "preference.title.debug_logging" = "Logging debug";
 "preference.detail.debug_logging" = "Mencatat peraturan-peraturan dalam dan aksi ke latestlog.txt. Ini membantu pengembang untuk mencari masalah lebih mudah, tetapi Minecragt kemungkinan akan berjalan lebih lambat karena logs akan lebih sering dicatat.";
-
 "preference.title.reset_warnings" = "Reset semua peringatan";
 "preference.title.done.reset_warnings" = "Semua peringatan telah direset.";
 
