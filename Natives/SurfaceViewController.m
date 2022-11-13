@@ -56,6 +56,7 @@ BOOL slideableHotbar;
 @property(nonatomic) id mouseConnectCallback, mouseDisconnectCallback;
 @property(nonatomic) id controllerConnectCallback, controllerDisconnectCallback;
 
+@property(nonatomic) CGFloat screenScale;
 @property(nonatomic) CGFloat mouseSpeed;
 @property(nonatomic) CGRect clickRange;
 @property(nonatomic) BOOL shouldTriggerClick;
@@ -86,8 +87,6 @@ BOOL slideableHotbar;
 
     CGFloat screenScale = UIScreen.mainScreen.scale;
 
-    resolutionScale = ((NSNumber *)getPreference(@"resolution")).floatValue / 100.0;
-
     [self updateSavedResolution];
 
     self.rootView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width + 30.0, self.view.frame.size.height)];
@@ -98,12 +97,15 @@ BOOL slideableHotbar;
     [self performSelector:@selector(initCategory_Navigation)];
 
     self.surfaceView = [[GameSurfaceView alloc] initWithFrame:self.view.frame];
-    self.surfaceView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
-    self.surfaceView.multipleTouchEnabled = YES;
     self.surfaceView.layer.contentsScale = screenScale * resolutionScale;
     self.surfaceView.layer.magnificationFilter = self.surfaceView.layer.minificationFilter = kCAFilterNearest;
 
-    [self.rootView addSubview:self.surfaceView];
+    self.touchView = [[UIView alloc] initWithFrame:self.view.frame];
+    self.touchView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
+    self.touchView.multipleTouchEnabled = YES;
+    [self.touchView addSubview:self.surfaceView];
+
+    [self.rootView addSubview:self.touchView];
     [self.rootView addSubview:self.ctrlView];
 
     [self performSelector:@selector(setupCategory_Navigation)];
@@ -115,7 +117,7 @@ BOOL slideableHotbar;
     tapGesture.numberOfTapsRequired = 1;
     tapGesture.numberOfTouchesRequired = 1;
     tapGesture.cancelsTouchesInView = NO;
-    [self.surfaceView addGestureRecognizer:tapGesture];
+    [self.touchView addGestureRecognizer:tapGesture];
 
     UITapGestureRecognizer *doubleTapGesture = [[UITapGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnDoubleClick:)];
@@ -124,12 +126,12 @@ BOOL slideableHotbar;
     doubleTapGesture.numberOfTapsRequired = 2;
     doubleTapGesture.numberOfTouchesRequired = 1;
     doubleTapGesture.cancelsTouchesInView = NO;
-    [self.surfaceView addGestureRecognizer:doubleTapGesture];
+    [self.touchView addGestureRecognizer:doubleTapGesture];
 
     if (@available(iOS 13.0, *)) {
         UIHoverGestureRecognizer *hoverGesture = [[UIHoverGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnHover:)];
-        [self.surfaceView addGestureRecognizer:hoverGesture];
+        [self.touchView addGestureRecognizer:hoverGesture];
     }
 
     self.longpressGesture = [[UILongPressGestureRecognizer alloc]
@@ -137,7 +139,7 @@ BOOL slideableHotbar;
     self.longpressGesture.allowedTouchTypes = @[@(UITouchTypeDirect)];
     self.longpressGesture.cancelsTouchesInView = NO;
     self.longpressGesture.delegate = self;
-    [self.surfaceView addGestureRecognizer:self.longpressGesture];
+    [self.touchView addGestureRecognizer:self.longpressGesture];
 
     self.scrollPanGesture = [[UIPanGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnTouchesScroll:)];
@@ -145,10 +147,10 @@ BOOL slideableHotbar;
     self.scrollPanGesture.delegate = self;
     self.scrollPanGesture.minimumNumberOfTouches = 2;
     self.scrollPanGesture.maximumNumberOfTouches = 2;
-    [self.surfaceView addGestureRecognizer:self.scrollPanGesture];
+    [self.touchView addGestureRecognizer:self.scrollPanGesture];
 
     if (@available(iOS 13.4, *)) {
-        [self.surfaceView addInteraction:[[UIPointerInteraction alloc] initWithDelegate:self]];
+        [self.touchView addInteraction:[[UIPointerInteraction alloc] initWithDelegate:self]];
     }
 
     // Virtual mouse
@@ -159,7 +161,7 @@ BOOL slideableHotbar;
     self.mousePointerView.hidden = !virtualMouseEnabled;
     self.mousePointerView.image = [UIImage imageNamed:@"MousePointer"];
     self.mousePointerView.userInteractionEnabled = NO;
-    [self.rootView addSubview:self.mousePointerView];
+    [self.touchView addSubview:self.mousePointerView];
 
     self.inputTextField = [[TrackedTextField alloc] initWithFrame:CGRectMake(0, -32.0, self.view.frame.size.width, 30.0)];
     if (@available(iOS 13.0, *)) {
@@ -183,6 +185,7 @@ BOOL slideableHotbar;
             GCMouse* mouse = note.object;
             [self registerMouseCallbacks:mouse];
             [self setNeedsUpdateOfPrefersPointerLocked];
+            self.mousePointerView.hidden = NO;
         }];
         self.mouseDisconnectCallback = [[NSNotificationCenter defaultCenter] addObserverForName:GCMouseDidDisconnectNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
             NSLog(@"Input: Mouse disconnected!");
@@ -204,6 +207,7 @@ BOOL slideableHotbar;
         GCController* controller = note.object;
         [ControllerInput initKeycodeTable];
         [ControllerInput registerControllerCallbacks:controller];
+        self.mousePointerView.hidden = NO;
     }];
     self.controllerDisconnectCallback = [[NSNotificationCenter defaultCenter] addObserverForName:GCControllerDidDisconnectNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
         NSLog(@"Input: Controller disconnected!");
@@ -230,6 +234,12 @@ BOOL slideableHotbar;
     [joystick update];
 #endif
 
+    if (@available(iOS 13.0, *)) {
+        if (UIApplication.sharedApplication.connectedScenes.count > 1) {
+            [self switchToExternalDisplay];
+        }
+    }
+
     [self launchMinecraft];
 }
 
@@ -253,8 +263,6 @@ BOOL slideableHotbar;
     virtualMouseEnabled = [getPreference(@"virtmouse_enable") boolValue];
     self.mousePointerView.hidden = isGrabbing || !virtualMouseEnabled;
 
-    CGFloat screenScale = UIScreen.mainScreen.scale;
-
     // Update virtual mouse scale
     CGFloat mouseScale = [getPreference(@"mouse_scale") floatValue] / 100.0;
     virtualMouseFrame = CGRectMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2, 18.0 * mouseScale, 27 * mouseScale);
@@ -272,15 +280,30 @@ BOOL slideableHotbar;
     [self loadCustomControls];
 
     // Update resolution
-    resolutionScale = [getPreference(@"resolution") floatValue] / 100.0;
-    self.surfaceView.layer.contentsScale = screenScale * resolutionScale;
     [self updateSavedResolution];
 }
 
 - (void)updateSavedResolution {
-    CGFloat screenScale = UIScreen.mainScreen.scale;
-    physicalWidth = roundf(self.view.frame.size.width * screenScale);
-    physicalHeight = roundf(self.view.frame.size.height * screenScale);
+    if (@available(iOS 13.0, *)) {
+        for (UIWindowScene *scene in UIApplication.sharedApplication.connectedScenes.allObjects) {
+            self.screenScale = scene.screen.scale;
+            if (scene.session.role != UIWindowSceneSessionRoleApplication) {
+                break;
+            }
+        }
+    } else {
+        self.screenScale = UIScreen.mainScreen.scale;
+    }
+
+    if (self.surfaceView.superview != nil) {
+        self.surfaceView.frame = self.surfaceView.superview.frame;
+    }
+
+    resolutionScale = [getPreference(@"resolution") floatValue] / 100.0;
+    self.surfaceView.layer.contentsScale = self.screenScale * resolutionScale;
+
+    physicalWidth = roundf(self.surfaceView.frame.size.width * self.screenScale);
+    physicalHeight = roundf(self.surfaceView.frame.size.height * self.screenScale);
     windowWidth = roundf(physicalWidth * resolutionScale);
     windowHeight = roundf(physicalHeight * resolutionScale);
     // Resolution should not be odd
@@ -365,7 +388,7 @@ BOOL slideableHotbar;
 
         CGRect frame = self.view.frame;
         frame.size = size;
-        self.surfaceView.frame = frame;
+        self.touchView.frame = frame;
         self.inputTextField.frame = CGRectMake(0, -32.0, size.width, 30.0);
         [self viewWillTransitionToSize_LogView:frame];
         [self viewWillTransitionToSize_Navigation:frame];
@@ -400,7 +423,7 @@ BOOL slideableHotbar;
 
 - (void)sendTouchPoint:(CGPoint)location withEvent:(int)event
 {
-    CGFloat screenScale = [[UIScreen mainScreen] scale];
+    CGFloat screenScale = self.screenScale;
     if (!isGrabbing) {
         screenScale *= resolutionScale;
         if (virtualMouseEnabled) {
@@ -412,8 +435,8 @@ BOOL slideableHotbar;
                 virtualMouseFrame.origin.x += location.x * self.mouseSpeed;
                 virtualMouseFrame.origin.y += location.y * self.mouseSpeed;
             }
-            virtualMouseFrame.origin.x = clamp(virtualMouseFrame.origin.x, 0, self.view.frame.size.width);
-            virtualMouseFrame.origin.y = clamp(virtualMouseFrame.origin.y, 0, self.view.frame.size.height);
+            virtualMouseFrame.origin.x = clamp(virtualMouseFrame.origin.x, 0, self.surfaceView.frame.size.width);
+            virtualMouseFrame.origin.y = clamp(virtualMouseFrame.origin.y, 0, self.surfaceView.frame.size.height);
             lastVirtualMousePoint = location;
             self.mousePointerView.frame = virtualMouseFrame;
             callback_SurfaceViewController_onTouch(event, virtualMouseFrame.origin.x * screenScale, virtualMouseFrame.origin.y * screenScale);
@@ -513,14 +536,13 @@ BOOL slideableHotbar;
 }
 
 - (BOOL)prefersPointerLocked {
-    return isGrabbing;
+    return YES;
 }
 
 - (void)registerMouseCallbacks:(GCMouse *)mouse API_AVAILABLE(ios(14.0)) {
     NSLog(@"Input: Got mouse %@", mouse);
     mouse.mouseInput.mouseMovedHandler = ^(GCMouseInput * _Nonnull mouse, float deltaX, float deltaY) {
-        if (!isGrabbing) return;
-        [self sendTouchPoint:CGPointMake(deltaX / 2.5, -deltaY / 2.5) withEvent:ACTION_MOVE_MOTION];
+        [self sendTouchPoint:CGPointMake(deltaX * 2.0 / 3.0, -deltaY * 2.0 / 3.0) withEvent:ACTION_MOVE_MOTION];
     };
 
     mouse.mouseInput.leftButton.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {

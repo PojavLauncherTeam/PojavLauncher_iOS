@@ -112,11 +112,7 @@ void UIKit_launchMinecraftSurfaceVC() {
     setPreference(@"internal_selected_account", BaseAuthenticator.current.authData[@"username"]);
     setPreference(@"internal_useStackQueue", @(isUseStackQueueCall ? YES : NO));
     dispatch_async(dispatch_get_main_queue(), ^{
-        id delegate = UIApplication.sharedApplication.delegate;
-        if (@available(iOS 13.0, *)) {
-            delegate = UIApplication.sharedApplication.connectedScenes.anyObject.delegate;
-        }
-        UIWindow *window = [delegate window];
+        UIWindow *window = currentWindow();
         [UIView animateWithDuration:0.2 animations:^{
             window.alpha = 0;
         } completion:^(BOOL b){

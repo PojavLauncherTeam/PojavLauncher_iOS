@@ -126,7 +126,9 @@ add_executable(PojavLauncher
   LoginViewController.m
   MinecraftResourceUtils.m
   SceneDelegate.m
+  SceneExternalDelegate.m
   SurfaceViewController.m
+  SurfaceViewController+ExternalDisplay.m
   SurfaceViewController+LogView.m
   SurfaceViewController+Navigation.m
   TrackedTextField.m

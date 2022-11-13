@@ -8,6 +8,8 @@
 "game.menu.log_output" = "Log output";
 "game.menu.custom_controls" = "Custom controls";
 
+"game.note.airplay" = "Minecraft is being displayed in AirPlay mirrored display";
+
 "game.title.exit_code" = "Game exited with code %d";
 
 // The options button at the top-right corner on iOS 12

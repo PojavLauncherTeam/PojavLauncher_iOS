@@ -82,6 +82,7 @@ void init_hookFunctions();
 void init_setupMultiDir();
 
 UIWindow* currentWindow();
+UIWindow* currentWindowInScene(BOOL external);
 UIViewController* currentVC();
 
 NSMutableDictionary* parseJSONFromFile(NSString *path);

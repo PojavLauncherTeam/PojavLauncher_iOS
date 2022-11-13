@@ -120,12 +120,21 @@ const NSString *cornerLayerKey = @"cornerLayer";
 }
 @end
 
-UIWindow* currentWindow() {
+UIWindow* currentWindowInScene(BOOL external) {
     id delegate = UIApplication.sharedApplication.delegate;
     if (@available(iOS 13.0, *)) {
-        delegate = UIApplication.sharedApplication.connectedScenes.anyObject.delegate;
+        for (UIScene *scene in UIApplication.sharedApplication.connectedScenes.allObjects) {
+            delegate = scene.delegate;
+            if (external != (scene.session.role == UIWindowSceneSessionRoleApplication)) {
+                break;
+            }
+        }
     }
     return [delegate window];
+}
+
+UIWindow* currentWindow() {
+    return currentWindowInScene(0);
 }
 
 UIViewController* currentVC() {

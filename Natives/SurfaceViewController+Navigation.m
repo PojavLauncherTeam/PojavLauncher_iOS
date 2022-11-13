@@ -39,7 +39,7 @@ static UIView *menuSwipeView;
     UIScreenEdgePanGestureRecognizer *edgeGesture = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handleRightEdge:)];
     edgeGesture.edges = UIRectEdgeRight;
     edgeGesture.delegate = self;
-    [self.surfaceView addGestureRecognizer:edgeGesture];
+    [self.touchView addGestureRecognizer:edgeGesture];
 }
 
 static CGPoint lastCenterPoint;
