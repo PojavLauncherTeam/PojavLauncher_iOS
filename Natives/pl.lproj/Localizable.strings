@@ -122,7 +122,6 @@
 "preference.detail.cosmetica" = "Włącz peleryny z Cosmetica (wcześniej Arc). Aby uzyskać więcej informacji, odwiedź stronę https://cosmetica.cc. Wymaga OptiFine";
 "preference.title.debug_logging" = "Rejestr debugowania";
 "preference.detail.debug_logging" = "Rejestruje ustawienia wewnętrzne i działania w lastlog.txt. Pomaga to programistom łatwiej znajdować problemy, ale Minecraft może działać wolniej, ponieważ logi będą zapisywane częściej.";
-
 "preference.title.reset_warnings" = "Wyzeruj wszystkie ostrzeżenia";
 "preference.title.done.reset_warnings" = "Wszystkie ostrzeżenia zostały wyzerowane.";
 
