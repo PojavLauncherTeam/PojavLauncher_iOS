@@ -142,7 +142,6 @@
 "preference.detail.cosmetica" = "Activer les capes Cosmetica (anciennement Arc). Pour plus d'informations, veuillez visiter https://cosmetica.cc. Nécessite OptiFine";
 "preference.title.debug_logging" = "Journaux de débogage";
 "preference.detail.debug_logging" = "Journalise les paramètres internes et les actions sur latestlog.txt. Cela aide les développeurs à trouver des problèmes plus facilement, mais Minecraft peut s'exécuter plus lentement puisque les journaux seront écrits plus souvent.";
-
 "preference.title.reset_warnings" = "Réinitialiser tous les avertissements";
 "preference.title.done.reset_warnings" = "Tous les avertissements ont été réinitialisés.";
 
