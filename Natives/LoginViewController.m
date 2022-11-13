@@ -13,6 +13,7 @@
 #import "LauncherPreferences.h"
 #import "ios_uikit_bridge.h"
 #import "utils.h"
+#import "log.h"
 
 #define AUTORESIZE_BTN UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin
 #define AUTORESIZE AUTORESIZE_BTN | UIViewAutoresizingFlexibleBottomMargin
@@ -357,8 +358,9 @@ extern NSMutableDictionary *prefDict;
     [self displayProgress:NSLocalizedString(@"login.jit.checking", nil)];
 
     // TODO: customizable address
-    NSString *address = @"69.69.0.1";
-
+    NSString *address = getPreference(@"jitstreamer_server");
+    debugLog("JitStreamer server is %s, attempting to connect...", [address cStringUsingEncoding:NSUTF8StringEncoding]);
+    
     AFHTTPSessionManager *manager = AFHTTPSessionManager.manager;
     manager.requestSerializer.timeoutInterval = 10;
     manager.responseSerializer = AFHTTPResponseSerializer.serializer;

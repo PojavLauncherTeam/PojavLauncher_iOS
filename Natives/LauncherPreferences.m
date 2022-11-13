@@ -125,6 +125,7 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(envPrefDict, @"game_directory", @"default");
     setDefaultValueForPref(envPrefDict, @"java_args", @"");
     setDefaultValueForPref(envPrefDict, @"allocated_memory", [NSNumber numberWithFloat:roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.25)]);
+    setDefaultValueForPref(envPrefDict, @"jitstreamer_server", @"69.69.0.1");
     setDefaultValueForPref(prefDict, @"debug_logging", @(CONFIG_RELEASE != 1));
     setDefaultValueForPref(prefDict, @"cosmetica", @YES);
     setDefaultValueForPref(envPrefDict, @"java_home", @"java-8-openjdk");

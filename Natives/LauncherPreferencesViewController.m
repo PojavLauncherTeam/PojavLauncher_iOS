@@ -73,6 +73,12 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"icon": @"doc.badge.gearshape",
                 @"type": self.typeSwitch
             },
+            @{@"key": @"jitstreamer_server",
+                @"hasDetail": @YES,
+                @"icon": @"doc.badge.gearshape",
+                @"type": self.typeTextField,
+                @"enableCondition": whenNotInGame
+            },
             @{@"key": @"reset_warnings",
                 @"icon": @"exclamationmark.triangle",
                 @"type": self.typeButton,
@@ -206,6 +212,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"warnKey": @"mem_warn"
             }
         ], @[
+            // Debug settings - only recommended for developer use
             @{@"key": @"debug_ipad_ui",
                 @"hasDetail": @YES,
                 @"icon": @"ipad",
