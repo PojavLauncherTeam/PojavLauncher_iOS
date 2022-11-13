@@ -142,7 +142,6 @@
 "preference.detail.cosmetica" = "Enable capes from Cosmetica (previously Arc). For more information please visit https://cosmetica.cc. Requires OptiFine";
 "preference.title.debug_logging" = "Debug logging";
 "preference.detail.debug_logging" = "Logs internal settings and actions to latestlog.txt. This helps the developers find issues easier, but Minecraft may run slower as the logs will be written to more often.";
-
 "preference.title.reset_warnings" = "Reset all warnings";
 "preference.title.done.reset_warnings" = "All warnings have been reset.";
 
