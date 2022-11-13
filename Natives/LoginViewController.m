@@ -7,7 +7,6 @@
 
 #import "AppDelegate.h"
 #import "AccountListViewController.h"
-#import "LauncherFAQViewController.h"
 #import "LauncherSplitViewController.h"
 #import "LoginViewController.h"
 
@@ -84,11 +83,13 @@ extern NSMutableDictionary *prefDict;
     [dateFormatter setDateFormat:@"MM-dd"];
     NSString* date = [dateFormatter stringFromDate:[NSDate date]];
     
-    if(@available(iOS 13.0, *)) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage systemImageNamed:@"square.and.arrow.up"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStyleDone target:self action:@selector(latestLogShare)];
-    } else {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"login.menu.sendlogs", nil) style:UIBarButtonItemStyleDone target:self action:@selector(aboutLauncher)];
-    }
+    self.navigationItem.rightBarButtonItems = @[
+        [[UIBarButtonItem alloc]
+            initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+            target:self action:@selector(latestLogShare)],
+        // There's no better way to put both title+icon for both iOS 12 and 13+, so do this
+        [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"login.menu.sendlogs", nil) style:UIBarButtonItemStyleDone target:self action:@selector(latestLogShare)]
+    ];
 
     CGRect frame = CGRectMake(widthSplit2 - (((width - widthSplit * 2.0) / 2) / 2), (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
     
