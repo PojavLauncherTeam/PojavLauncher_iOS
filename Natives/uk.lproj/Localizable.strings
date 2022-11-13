@@ -69,6 +69,8 @@
 "launcher.wait_jit.title" = "Чекаю на JIT";
 "launcher.wait_jit.message" = "PojavLauncher покладається на компіляцію Just-in-time для Java задля роботи з максимальною швидкістю.";
 
+"login.error.username.outOfRange" = "Ім'я користувача повинно бути не менше 3 символів і не більше 16";
+
 "login.alert.field.username" = "Ім'я користувача";
 
 "login.jit.checking" = "Перевірка JIT";
@@ -109,6 +111,10 @@
 
 "login.msa.error.xsts.noxboxacc" = "Профіль Xbox Live не зареєстровано для цього облікового запису Microsoft. Будь ласка, переконайтеся, що ви точно робили профіль Xbox.\nКод помилки: 2148916233";
 "login.msa.error.xsts.noxbox" = "Наразі Xbox Live недоступний у вашій країні. \nКод помилки: 2148916235";
+"login.msa.error.xsts.krverify" = "Ваш обліковий запис має бути перевірено батьками, перш ніж ви зможете продовжити.\nКод помилки: 2148916236 або 2148916237.";
+"login.msa.error.xsts.underage" = "Ваш обліковий запис повинен бути пов'язаним з батьківським обліковим записом, перш ніж ви зможете продовжити.\nКод помилки: 2148916238";
+
+"login.msa.notice.demomode" = "Не вдалося знайти профіль Minecraft на цьому акаунті. Акаунт тепер установлено на демо-режим. Ви придбали Minecraft, або маєте активну підписку на Xbox Game Pass? Будь ласка налаштуйте свій профіль на https://minecraft.net/msaprofile для відновлення доступу до онлайн-режиму.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Приймається токен доступу";
 "login.msa.progress.acquireXBLToken" = "(2/5) Приймається токен Xbox Live";
@@ -161,6 +167,7 @@
 "preference.detail.resolution" = "Дозволяє вам зменшити роздільну здатність гри.";
 "preference.title.disable_gesture" = "Вимкнути жести";
 "preference.title.press_duration" = "Тривалість тривалого натискання (мс)";
+"preference.detail.press_duration" = "Тривалість натискання для знищення блоків і скидання речей.";
 "preference.title.button_scale" = "Шкала екранних кнопок (%)";
 "preference.detail.button_scale" = "Якщо кнопки завеликі, вони зазвичай потрібні для користувачів iPad.";
 "preference.title.mouse_scale" = "Масштабування курсору (%)";
