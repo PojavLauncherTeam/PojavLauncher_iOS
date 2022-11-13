@@ -69,6 +69,8 @@
 "launcher.wait_jit.title" = "Ожидание JIT";
 "launcher.wait_jit.message" = "PojavLauncher полагается на работу JIT-компилятора Java для работы с максимальной производительностью.";
 
+"login.error.username.outOfRange" = "Имя пользователя не должно быть короче 3 и длиннее 16 символов";
+
 "login.alert.field.username" = "Имя пользователя";
 
 "login.jit.checking" = "Проверка JIT...";
@@ -109,6 +111,10 @@
 
 "login.msa.error.xsts.noxboxacc" = "Профиль Xbox не зарегистрирован для этой учётной записи. Пожалуйста, убедитесь, что вы создавали профиль Xbox.\nКод ошибки: 2148916233";
 "login.msa.error.xsts.noxbox" = "В настоящее время сервисы Xbox Live недоступны в вашей стране.\nКод ошибки: 2148916235";
+"login.msa.error.xsts.krverify" = "Для продолжения вашей учётной записи требуется подтверждение родителей.\nКод ошибки: 2148916236 или 2148916237.";
+"login.msa.error.xsts.underage" = "Для продолжения вашу учётную запись необходимо связать с учётной записью родителей.\nКод ошибки: 2148916238";
+
+"login.msa.notice.demomode" = "Профиль Minecraft не обнаружен в данной учётной записи, активирован демо-режим. Если у вас есть лицензия Minecraft или активная подписка Xbox GamePass, то для восстановления обычного режима настройте свой профиль здесь: https://minecraft.net/msaprofile";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Получение токена доступа...";
 "login.msa.progress.acquireXBLToken" = "(2/5) Получение токена Xbox Live...";
@@ -161,6 +167,7 @@
 "preference.detail.resolution" = "Можно уменьшить разрешение игры в целях быстродействия.";
 "preference.title.disable_gesture" = "Отключение жестов";
 "preference.title.press_duration" = "Длительность нажатия (мс)";
+"preference.detail.press_duration" = "Длительность удерживания для разрушения блоков и выбрасывания предметов.";
 "preference.title.button_scale" = "Размер кнопок (%)";
 "preference.detail.button_scale" = "Подстроить кнопки под размер экрана. Особенно полезно для пользователей iPad.";
 "preference.title.mouse_scale" = "Размер указателя (%)";
@@ -186,6 +193,7 @@
 "preference.detail.custom_env" = "Функция всё ещё в разработке.";
 
 "preference.title.debug_ipad_ui" = "Разблокировать интерфейс iPadOS";
+"preference.detail.debug_ipad_ui" = "Разблокировать уникальные для iPad элементы интерфейса (предупреждение, клавиатура и пр.) или оставить интерфейс iPhone.";
 "preference.title.debug_show_layout_bounds" = "Показывать границы элементов";
 "preference.detail.debug_show_layout_bounds" = "Показать границы и отступы";
 "preference.title.debug_show_layout_overlap" = "Показывать наложение элементов";
