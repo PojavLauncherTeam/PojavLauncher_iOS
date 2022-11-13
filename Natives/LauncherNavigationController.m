@@ -14,7 +14,6 @@
 }
 
 @property NSMutableArray* versionList;
-// - (void)method
 
 @end
 

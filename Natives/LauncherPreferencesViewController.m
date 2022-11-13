@@ -380,11 +380,6 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.detailTextLabel.text = getPreference(key);
-
-        NSInteger index = [item[@"pickKeys"] indexOfObject:getPreference(key)];
-        if (index != NSNotFound) {
-            //[picker selectRow:index inComponent:0 animated:NO];
-        }
     };
 
     self.typeSlider = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {

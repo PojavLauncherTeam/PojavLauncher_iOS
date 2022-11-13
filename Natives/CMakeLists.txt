@@ -116,7 +116,6 @@ add_executable(PojavLauncher
   FileListViewController.m
   GameSurfaceView.m
   JavaGUIViewController.m
-  LauncherFAQViewController.m
   LauncherMenuViewController.m
   LauncherNavigationController.m
   LauncherNewsViewController.m

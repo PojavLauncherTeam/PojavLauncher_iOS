@@ -88,7 +88,10 @@ extern NSMutableDictionary *prefDict;
             initWithBarButtonSystemItem:UIBarButtonSystemItemAction
             target:self action:@selector(latestLogShare)],
         // There's no better way to put both title+icon for both iOS 12 and 13+, so do this
-        [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"login.menu.sendlogs", nil) style:UIBarButtonItemStyleDone target:self action:@selector(latestLogShare)]
+        [[UIBarButtonItem alloc]
+            initWithTitle:NSLocalizedString(@"login.menu.sendlogs", nil)
+            style:UIBarButtonItemStyleDone
+            target:self action:@selector(latestLogShare)]
     ];
 
     CGRect frame = CGRectMake(widthSplit2 - (((width - widthSplit * 2.0) / 2) / 2), (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
