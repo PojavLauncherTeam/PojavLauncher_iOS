@@ -75,7 +75,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             },
             @{@"key": @"jitstreamer_server",
                 @"hasDetail": @YES,
-                @"icon": @"doc.badge.gearshape",
+                @"icon": @"hare",
                 @"type": self.typeTextField,
                 @"enableCondition": whenNotInGame
             },
