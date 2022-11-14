@@ -15,8 +15,6 @@
 - This repository contains source code for iOS/iPadOS platform.
 - For Android platform, check out [PojavLauncher repository](https://github.com/PojavLauncherTeam/PojavLauncher).
 
-This launcher is available on the Procursus repo, thanks to [@Diatrus](https://twitter.com/Diatrus), and Doregon's Repository, thanks to [@crystall1ndev](https://twitter.com/crystall1nedev)
-
 ## Getting started with PojavLauncher
 
 The [PojavLauncher Website](https://pojavlauncherteam.github.io/INSTALL.html#ios) has extensive documentation on how to install, set up, and play! For those who wish to install quickly, here's the basics (on iOS 12 or later):
