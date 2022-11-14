@@ -129,9 +129,13 @@ BOOL slideableHotbar;
     [self.touchView addGestureRecognizer:doubleTapGesture];
 
     if (@available(iOS 13.0, *)) {
-        UIHoverGestureRecognizer *hoverGesture = [[UIHoverGestureRecognizer alloc]
-        initWithTarget:self action:@selector(surfaceOnHover:)];
-        [self.touchView addGestureRecognizer:hoverGesture];
+        if (@available(iOS 14.0, *)) {
+            // Hover is handled in GCMouse callback
+        } else {
+            UIHoverGestureRecognizer *hoverGesture = [[UIHoverGestureRecognizer alloc]
+            initWithTarget:self action:@selector(surfaceOnHover:)];
+            [self.touchView addGestureRecognizer:hoverGesture];
+        }
     }
 
     self.longpressGesture = [[UILongPressGestureRecognizer alloc]
@@ -184,8 +188,8 @@ BOOL slideableHotbar;
             NSLog(@"Input: Mouse connected!");
             GCMouse* mouse = note.object;
             [self registerMouseCallbacks:mouse];
-            [self setNeedsUpdateOfPrefersPointerLocked];
-            self.mousePointerView.hidden = NO;
+            self.mousePointerView.hidden = isGrabbing;
+            virtualMouseEnabled = YES;
         }];
         self.mouseDisconnectCallback = [[NSNotificationCenter defaultCenter] addObserverForName:GCMouseDidDisconnectNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
             NSLog(@"Input: Mouse disconnected!");
@@ -194,7 +198,6 @@ BOOL slideableHotbar;
             mouse.mouseInput.leftButton.pressedChangedHandler = nil;
             mouse.mouseInput.middleButton.pressedChangedHandler = nil;
             mouse.mouseInput.rightButton.pressedChangedHandler = nil;
-            [self setNeedsUpdateOfPrefersPointerLocked];
         }];
         if (GCMouse.current != nil) {
             [self registerMouseCallbacks: GCMouse.current];
@@ -207,7 +210,8 @@ BOOL slideableHotbar;
         GCController* controller = note.object;
         [ControllerInput initKeycodeTable];
         [ControllerInput registerControllerCallbacks:controller];
-        self.mousePointerView.hidden = NO;
+        self.mousePointerView.hidden = isGrabbing;
+        virtualMouseEnabled = YES;
     }];
     self.controllerDisconnectCallback = [[NSNotificationCenter defaultCenter] addObserverForName:GCControllerDidDisconnectNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
         NSLog(@"Input: Controller disconnected!");
@@ -536,19 +540,28 @@ BOOL slideableHotbar;
 }
 
 - (BOOL)prefersPointerLocked {
-    return YES;
+    return GCMouse.mice.count > 0;
 }
 
 - (void)registerMouseCallbacks:(GCMouse *)mouse API_AVAILABLE(ios(14.0)) {
     NSLog(@"Input: Got mouse %@", mouse);
     mouse.mouseInput.mouseMovedHandler = ^(GCMouseInput * _Nonnull mouse, float deltaX, float deltaY) {
+        if (!self.view.window.windowScene.pointerLockState.locked) {
+            return;
+        }
         [self sendTouchPoint:CGPointMake(deltaX * 2.0 / 3.0, -deltaY * 2.0 / 3.0) withEvent:ACTION_MOVE_MOTION];
     };
 
     mouse.mouseInput.leftButton.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
+        if (!self.view.window.windowScene.pointerLockState.locked) {
+            return;
+        }
         CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_LEFT, pressed, 0);
     };
     mouse.mouseInput.middleButton.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
+        if (!self.view.window.windowScene.pointerLockState.locked) {
+            return;
+        }
         CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_MIDDLE, pressed, 0);
     };
     mouse.mouseInput.rightButton.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
@@ -559,7 +572,7 @@ BOOL slideableHotbar;
         CallbackBridge_nativeSendScroll(value, 0);
     };
     mouse.mouseInput.scroll.yAxis.valueChangedHandler = ^(GCControllerAxisInput * _Nonnull axis, float value) {
-        CallbackBridge_nativeSendScroll(0, value);
+        CallbackBridge_nativeSendScroll(0, -value);
     };
 }
 
@@ -868,7 +881,7 @@ int touchesMovedCount;
 
     for (UITouch *touch in touches) {
         if (@available(iOS 14.0, *)) { // 13.4
-            if (isGrabbing && touch.type == UITouchTypeIndirectPointer) {
+            if (touch.type == UITouchTypeIndirectPointer) {
                 continue; // handle this in a different place
             }
         }
