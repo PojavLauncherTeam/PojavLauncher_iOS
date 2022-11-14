@@ -466,7 +466,6 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:((ControlButton *)self.currentGesture.view).currentTitle message:NSLocalizedString(@"custom_controls.button_menu.remove", nil) preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
     UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        int index;
         self.resizeView.hidden = YES;
         ControlButton *button = (ControlButton *)self.currentGesture.view;
         [self doRemoveButton:button];

@@ -96,6 +96,15 @@
 					<string>SceneDelegate</string>
 				</dict>
 			</array>
+			<key>UIWindowSceneSessionRoleExternalDisplay</key>
+			<array>
+				<dict>
+					<key>UISceneConfigurationName</key>
+					<string>External Display Configuration</string>
+					<key>UISceneDelegateClassName</key>
+					<string>SceneExternalDelegate</string>
+				</dict>
+			</array>
 		</dict>
 	</dict>
 	<key>UIApplicationSupportsIndirectInputEvents</key>

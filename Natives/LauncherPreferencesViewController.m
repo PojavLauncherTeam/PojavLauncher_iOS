@@ -11,7 +11,7 @@
 
 typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
-@interface LauncherPreferencesViewController()<UIPickerViewDataSource, UIPickerViewDelegate> {}
+@interface LauncherPreferencesViewController(){}
 @property(nonatomic) NSArray<NSString*>* prefSections;
 @property(nonatomic) NSArray<NSArray<NSDictionary*>*>* prefContents;
 @property(nonatomic) BOOL prefDetailVisible;
@@ -22,7 +22,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 @implementation LauncherPreferencesViewController
 
 - (NSString *)imageName {
-    return @"Menu";
+    return @"MenuSettings";
 }
 
 - (void)viewDidLoad
@@ -72,6 +72,12 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"hasDetail": @YES,
                 @"icon": @"doc.badge.gearshape",
                 @"type": self.typeSwitch
+            },
+            @{@"key": @"jitstreamer_server",
+                @"hasDetail": @YES,
+                @"icon": @"doc.badge.gearshape",
+                @"type": self.typeTextField,
+                @"enableCondition": whenNotInGame
             },
             @{@"key": @"reset_warnings",
                 @"icon": @"exclamationmark.triangle",
@@ -206,6 +212,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"warnKey": @"mem_warn"
             }
         ], @[
+            // Debug settings - only recommended for developer use
             @{@"key": @"debug_ipad_ui",
                 @"hasDetail": @YES,
                 @"icon": @"ipad",
@@ -293,7 +300,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
     NSString *cellID;
     UITableViewCellStyle cellStyle;
-    if (item[@"type"] == self.typeChildPane) {
+    if (item[@"type"] == self.typeChildPane || item[@"type"] == self.typePickField) {
         cellID = @"cellValue1";
         cellStyle = UITableViewCellStyleValue1;
     } else {
@@ -331,7 +338,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     cell.textLabel.text = NSLocalizedString(([NSString stringWithFormat:@"preference.title.%@", key]), nil);
     if ([item[@"hasDetail"] boolValue] && self.prefDetailVisible) {
         cell.detailTextLabel.text = NSLocalizedString(([NSString stringWithFormat:@"preference.detail.%@", key]), nil);
-    } else if (createView != self.typeChildPane) {
+    } else if (cellStyle != UITableViewCellStyleValue1) {
         cell.detailTextLabel.text = nil;
     }
 
@@ -377,26 +384,9 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     };
 
     self.typePickField = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
-        weakSelf.typeTextField(cell, key, item);
-        UITextField *view = (UITextField *)cell.accessoryView;
-        UIPickerView *picker = [[UIPickerView alloc] init];
-        objc_setAssociatedObject(picker, @"item", item, OBJC_ASSOCIATION_ASSIGN);
-        objc_setAssociatedObject(picker, @"view", cell.accessoryView, OBJC_ASSOCIATION_ASSIGN);
-        picker.delegate = weakSelf;
-        picker.dataSource = weakSelf;
-        [picker reloadAllComponents];
-
-        NSInteger index = [item[@"pickKeys"] indexOfObject:getPreference(key)];
-        if (index != NSNotFound) {
-            [picker selectRow:index inComponent:0 animated:NO];
-        }
-
-        UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, weakSelf.view.frame.size.width, 44.0)];
-        UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:view action:@selector(resignFirstResponder)];
-        toolbar.items = @[flexibleSpace, doneButton];
-        view.inputAccessoryView = toolbar;
-        view.inputView = picker;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.detailTextLabel.text = getPreference(key);
     };
 
     self.typeSlider = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
@@ -451,37 +441,6 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     }
 }
 
-#pragma mark - UIPickerView
-
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    NSDictionary *item = objc_getAssociatedObject(pickerView, @"item");
-    UITextField *view = objc_getAssociatedObject(pickerView, @"view");
-
-    // If there is key, use it
-    if (item[@"pickKeys"] != nil) {
-        view.text = item[@"pickKeys"][row];
-    } else {
-        view.text = item[@"pickList"][row];
-    }
-
-    // Save the preference
-    [self textFieldDidEndEditing:view];
-}
-
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)thePickerView {
-    return 1;
-}
-
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    NSDictionary *item = objc_getAssociatedObject(pickerView, @"item");
-    return [item[@"pickList"] count];
-}
-
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    NSDictionary *item = objc_getAssociatedObject(pickerView, @"item");
-    return item[@"pickList"][row];
-}
-
 #pragma mark Control event handlers
 
 - (void)sliderMoved:(DBNumberedSlider *)sender {
@@ -522,6 +481,8 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
         [self tableView:tableView invokeActionWithPromptAtIndexPath:indexPath];
     } else if (item[@"type"] == self.typeChildPane) {
         [self tableView:tableView openChildPaneAtIndexPath:indexPath];
+    } else if (item[@"type"] == self.typePickField) {
+        [self tableView:tableView openPickerAtIndexPath:indexPath];
     }
 }
 
@@ -531,6 +492,50 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     NSDictionary *item = self.prefContents[indexPath.section][indexPath.row];
     UIViewController *vc = [[item[@"class"] alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)tableView:(UITableView *)tableView openPickerAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    NSDictionary *item = self.prefContents[indexPath.section][indexPath.row];
+    NSArray *pickKeys = item[@"pickKeys"];
+    NSArray *pickList = item[@"pickList"];
+/*
+    if (@available(iOS 14.0, *)) {
+        NSMutableArray *menuItems = [[NSMutableArray alloc] init];
+        for (int i = 0; i < pickList.count; i++) {
+            [menuItems addObject:[UIAction
+                actionWithTitle:pickList[i]
+                image:nil
+                identifier:nil
+                handler:^(UIAction *action) {
+                    cell.detailTextLabel.text = pickKeys[i];
+                    setPreference(item[@"key"], pickKeys[i]);
+                }]];
+        }
+        // FIXME: how to set menu for cell?
+        cell.menu = [UIMenu menuWithTitle:cell.textLabel.text children:menuItems];
+        return;
+    }
+*/
+    UIAlertController *picker = [UIAlertController alertControllerWithTitle:cell.textLabel.text message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
+    for (int i = 0; i < pickList.count; i++) {
+        UIAlertAction *action = [UIAlertAction actionWithTitle:pickList[i] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            cell.detailTextLabel.text = pickKeys[i];
+            setPreference(item[@"key"], pickKeys[i]);
+        }];
+        [picker addAction:action];
+        
+    }
+
+    UILabel *labels = [UILabel appearanceWhenContainedInInstancesOfClasses:@[UIAlertController.class]];
+    labels.numberOfLines = 2;
+    picker.popoverPresentationController.sourceView = cell;
+    picker.popoverPresentationController.sourceRect = cell.bounds;
+
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
+    [picker addAction:cancel];
+
+    [self presentViewController:picker animated:YES completion:nil];
 }
 
 - (void)tableView:(UITableView *)tableView invokeActionWithPromptAtIndexPath:(NSIndexPath *)indexPath {
