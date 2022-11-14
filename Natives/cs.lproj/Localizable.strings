@@ -8,6 +8,8 @@
 "game.menu.log_output" = "Záznam výstupu";
 "game.menu.custom_controls" = "Vlastní ovládací prvky";
 
+"game.note.airplay" = "Minecraft se v AirPlay zrcadleném displeji zobrazuje";
+
 "game.title.exit_code" = "Hra skončila s kódem %d";
 
 // The options button at the top-right corner on iOS 12
@@ -148,6 +150,8 @@
 "preference.detail.cosmetica" = "Zapne kápě z Cosmeticy (dřiv Arc), vyžadujíc OptiFine. Pro více informací navštivte https://cosmetica.cc";
 "preference.title.debug_logging" = "Zaznamenávání ladění";
 "preference.detail.debug_logging" = "Zaznamenává interní nastavení a akce do latestlog.txt. Toto dovoluje vývojářům nalézt problémy dřiv, ale záznamy budou častěji zapisovány, díky čemuž Minecraft může běžet pomaleji.";
+"preference.title.jitstreamer_server" = "IP adresa serveru JitStreameru";
+"preference.detail.jitstreamer_server" = "Umožňuje zadat vlastní IP adresu JitStreameru, například pro samohostěné instance. Tato možnost může být nechána nezměněná používáte-li výchozí servery JitStreameru.";
 "preference.title.reset_warnings" = "Smazat všechna varování";
 "preference.title.done.reset_warnings" = "Všechna varování byla smazána.";
 
