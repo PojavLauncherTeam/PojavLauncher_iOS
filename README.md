@@ -77,6 +77,7 @@ PojavLauncher is amazing, and surprisingly stable, and it wouldn't be this way w
 - [Java Native Access](https://github.com/java-native-access/jna): [Apache 2.0 License](https://github.com/java-native-access/jna/blob/master/LICENSE).
 - [shaderc](https://github.com/google/shaderc) (used by mods that uses Vulkan for rendering): [Apache 2.0 License](https://github.com/google/shaderc/blob/main/LICENSE).
 - [TOInsetGroupedTableView](https://github.com/TimOliver/TOInsetGroupedTableView): [MIT License](https://github.com/TimOliver/TOInsetGroupedTableView/blob/master/LICENSE).
+- [AltKit](https://github.com/rileytestut/AltKit)
 - Thanks to [MCHeads](https://mc-heads.net) for providing Minecraft avatars.
 
 ## Special thanks to MacStadium!

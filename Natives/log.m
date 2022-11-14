@@ -20,6 +20,6 @@ void debugLog(const char *message,...)
         static BOOL debugLog_warned = NO;
         if (debugLog_warned) return;
         debugLog_warned = YES;
-        NSLog(@"WARNING!!! DEBUG LOG DISABLED");
+        NSLog(@"Debug log not enabled.");
     }
 }

@@ -4,6 +4,7 @@
 #import "AFNetworking.h"
 #import <AuthenticationServices/AuthenticationServices.h>
 #import "authenticator/BaseAuthenticator.h"
+#import "ALTServerConnection.h"
 
 #import "AppDelegate.h"
 #import "AccountListViewController.h"
@@ -163,7 +164,7 @@ extern NSMutableDictionary *prefDict;
         if (isJITEnabled()) {
             self.title = NSLocalizedString(@"login.jit.enabled", nil);
         } else { 
-            [self enableJITWithJitStreamer];
+            [self enableJITWithAltJIT];
         }
     }
 }
@@ -353,6 +354,30 @@ extern NSMutableDictionary *prefDict;
     [self presentViewController:vc animated:YES completion:nil];
 }
 
+- (void)enableJITWithAltJIT
+{
+    [ALTServerManager.sharedManager startDiscovering];
+    [ALTServerManager.sharedManager autoconnectWithCompletionHandler:^(ALTServerConnection *connection, NSError *error) {
+        if (error) {
+            NSLog(@"[AltKit] Could not auto-connect to server. %@", error);
+            [self enableJITWithJitStreamer];
+            return;
+        }
+        [connection enableUnsignedCodeExecutionWithCompletionHandler:^(BOOL success, NSError *error) {
+            if (success) {
+                NSLog(@"[AltKit] Successfully enabled JIT compilation!");
+                [ALTServerManager.sharedManager stopDiscovering];
+                self.title = NSLocalizedString(@"login.jit.enabled", nil);
+            } else {
+                NSLog(@"[AltKit] Could not enable JIT compilation. %@", error);
+                [self enableJITWithJitStreamer];
+                showDialog(self, NSLocalizedString(@"Error", nil), error.description);
+            }
+            [connection disconnect];
+        }];
+    }];
+}
+
 - (void)enableJITWithJitStreamer
 {
     [self displayProgress:NSLocalizedString(@"login.jit.checking", nil)];
@@ -387,7 +412,6 @@ extern NSMutableDictionary *prefDict;
             } else {
                 self.title = [NSString stringWithFormat:NSLocalizedString(@"login.jit.fail.JitStreamer", nil), responseDict[@"message"]];
                 showDialog(self, NSLocalizedString(@"Error", nil), responseDict[@"message"]);
-                // TODO: [self enableJITWithAltJIT];
             }
         };
         [manager POST:[NSString stringWithFormat:@"http://%@/attach/%d/", address, getpid()] parameters:nil headers:nil progress:nil success:handleResponse failure:handleResponse];
