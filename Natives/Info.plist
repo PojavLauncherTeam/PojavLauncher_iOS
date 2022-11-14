@@ -82,7 +82,7 @@
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 	<key>MinimumOSVersion</key>
-	<string>12.0</string>
+	<string>12.2</string>
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_altserver._tcp</string>
