@@ -4,6 +4,7 @@
 #import "AFNetworking.h"
 #import <AuthenticationServices/AuthenticationServices.h>
 #import "authenticator/BaseAuthenticator.h"
+#import "ALTServerConnection.h"
 
 #import "AppDelegate.h"
 #import "AccountListViewController.h"
@@ -353,6 +354,33 @@ extern NSMutableDictionary *prefDict;
     [self presentViewController:vc animated:YES completion:nil];
 }
 
+- (void)enableJITWithAltJIT
+{
+    self.title = NSLocalizedString(@"login.jit.start.AltKit", nil);
+    [ALTServerManager.sharedManager startDiscovering];
+    [ALTServerManager.sharedManager autoconnectWithCompletionHandler:^(ALTServerConnection *connection, NSError *error) {
+        if (error) {
+            NSLog(@"[AltKit] Could not auto-connect to server. %@", error);
+            self.title = NSLocalizedString(@"login.jit.fail.AltKit", nil);
+            return;
+        }
+        [connection enableUnsignedCodeExecutionWithCompletionHandler:^(BOOL success, NSError *error) {
+            if (success) {
+                NSLog(@"[AltKit] Successfully enabled JIT compilation!"); 
+                [ALTServerManager.sharedManager stopDiscovering];
+                self.title = NSLocalizedString(@"login.jit.enabled", nil);
+                self.navigationItem.leftBarButtonItem = nil;
+            } else {
+                NSLog(@"[AltKit] Could not enable JIT compilation. %@", error);
+                self.title = NSLocalizedString(@"login.jit.fail.AltKit", nil);
+                self.navigationItem.leftBarButtonItem = nil;
+                showDialog(self, NSLocalizedString(@"Error", nil), error.description);
+            }
+            [connection disconnect];
+        }];
+    }];
+}
+
 - (void)enableJITWithJitStreamer
 {
     [self displayProgress:NSLocalizedString(@"login.jit.checking", nil)];
@@ -384,18 +412,17 @@ extern NSMutableDictionary *prefDict;
             }
             if ([responseDict[@"success"] boolValue]) {
                 self.title = NSLocalizedString(@"login.jit.enabled", nil);
+                self.navigationItem.leftBarButtonItem = nil;
             } else {
                 self.title = [NSString stringWithFormat:NSLocalizedString(@"login.jit.fail.JitStreamer", nil), responseDict[@"message"]];
+                self.navigationItem.leftBarButtonItem = nil;
                 showDialog(self, NSLocalizedString(@"Error", nil), responseDict[@"message"]);
-                // TODO: [self enableJITWithAltJIT];
+                [self enableJITWithAltJIT];
             }
         };
         [manager POST:[NSString stringWithFormat:@"http://%@/attach/%d/", address, getpid()] parameters:nil headers:nil progress:nil success:handleResponse failure:handleResponse];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        self.title = @"";
-        self.navigationItem.leftBarButtonItem = nil;
-        //showDialog(self, @"Error", [NSString stringWithFormat:@"%@", error]);
-        // TODO: [self enableJITWithAltJIT];
+        [self enableJITWithAltJIT];
     }];
 }
 

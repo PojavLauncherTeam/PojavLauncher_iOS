@@ -18,6 +18,7 @@ include_directories(
   "external/TOInsetGroupedTableView/TOInsetGroupedTableView"
   "external/fishhook"
   "external/mesa"
+  "external/AltKit"
   "external/Apple"
 )
 
@@ -146,7 +147,9 @@ endif()
 target_link_libraries(PojavLauncher
   "-F'${CMAKE_CURRENT_LIST_DIR}/build'"
   "-F'${CMAKE_CURRENT_LIST_DIR}/resources/Frameworks'"
+  "-framework AltKit"
   "-framework AuthenticationServices"
+  "-framework CAltKit"
   "-framework CoreGraphics"
   "-framework CoreServices"
   "-framework GameController"
