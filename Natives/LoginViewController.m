@@ -356,21 +356,22 @@ extern NSMutableDictionary *prefDict;
 
 - (void)enableJITWithAltJIT
 {
+    self.title = NSLocalizedString(@"login.jit.start.AltKit", nil);
     [ALTServerManager.sharedManager startDiscovering];
     [ALTServerManager.sharedManager autoconnectWithCompletionHandler:^(ALTServerConnection *connection, NSError *error) {
         if (error) {
             NSLog(@"[AltKit] Could not auto-connect to server. %@", error);
-            [self enableJITWithJitStreamer];
+            self.title = NSLocalizedString(@"login.jit.fail.AltKit", nil);
             return;
         }
         [connection enableUnsignedCodeExecutionWithCompletionHandler:^(BOOL success, NSError *error) {
             if (success) {
-                NSLog(@"[AltKit] Successfully enabled JIT compilation!");
+                NSLog(@"[AltKit] Successfully enabled JIT compilation!"); 
                 [ALTServerManager.sharedManager stopDiscovering];
                 self.title = NSLocalizedString(@"login.jit.enabled", nil);
             } else {
                 NSLog(@"[AltKit] Could not enable JIT compilation. %@", error);
-                [self enableJITWithJitStreamer];
+                self.title = NSLocalizedString(@"login.jit.fail.AltKit", nil);
                 showDialog(self, NSLocalizedString(@"Error", nil), error.description);
             }
             [connection disconnect];
