@@ -164,7 +164,7 @@ extern NSMutableDictionary *prefDict;
         if (isJITEnabled()) {
             self.title = NSLocalizedString(@"login.jit.enabled", nil);
         } else { 
-            [self enableJITWithAltJIT];
+            [self enableJITWithJitStreamer];
         }
     }
 }
@@ -369,9 +369,11 @@ extern NSMutableDictionary *prefDict;
                 NSLog(@"[AltKit] Successfully enabled JIT compilation!"); 
                 [ALTServerManager.sharedManager stopDiscovering];
                 self.title = NSLocalizedString(@"login.jit.enabled", nil);
+                self.navigationItem.leftBarButtonItem = nil;
             } else {
                 NSLog(@"[AltKit] Could not enable JIT compilation. %@", error);
                 self.title = NSLocalizedString(@"login.jit.fail.AltKit", nil);
+                self.navigationItem.leftBarButtonItem = nil;
                 showDialog(self, NSLocalizedString(@"Error", nil), error.description);
             }
             [connection disconnect];
@@ -410,17 +412,17 @@ extern NSMutableDictionary *prefDict;
             }
             if ([responseDict[@"success"] boolValue]) {
                 self.title = NSLocalizedString(@"login.jit.enabled", nil);
+                self.navigationItem.leftBarButtonItem = nil;
             } else {
                 self.title = [NSString stringWithFormat:NSLocalizedString(@"login.jit.fail.JitStreamer", nil), responseDict[@"message"]];
+                self.navigationItem.leftBarButtonItem = nil;
                 showDialog(self, NSLocalizedString(@"Error", nil), responseDict[@"message"]);
+                [self enableJITWithAltJIT];
             }
         };
         [manager POST:[NSString stringWithFormat:@"http://%@/attach/%d/", address, getpid()] parameters:nil headers:nil progress:nil success:handleResponse failure:handleResponse];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        self.title = @"";
-        self.navigationItem.leftBarButtonItem = nil;
-        //showDialog(self, @"Error", [NSString stringWithFormat:@"%@", error]);
-        // TODO: [self enableJITWithAltJIT];
+        [self enableJITWithAltJIT];
     }];
 }
 
