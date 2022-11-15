@@ -8,7 +8,7 @@
 "game.menu.log_output" = "日志输出";
 "game.menu.custom_controls" = "自定义控制按键";
 
-"game.note.airplay" = "Minecraft正在通过隔空播放(AirPlay)到其他设备显示";
+"game.note.airplay" = "Minecraft 正在通过隔空播放（AirPlay）到其他设备显示";
 
 "game.title.exit_code" = "游戏以代码 %d 退出";
 
@@ -51,7 +51,7 @@
 "custom_controls.button_menu.add_subbutton" = "添加子按钮";
 "custom_controls.control_menu.discard_changes" = "放弃更改";
 "custom_controls.control_menu.exit" = "退出";
-"custom_controls.control_menu.exit.warn" = "您将会退出而不保存更改。";
+"custom_controls.control_menu.exit.warn" = "您将会退出且不保存更改。";
 "custom_controls.control_menu.save" = "保存";
 "custom_controls.control_menu.save.error.default" = "控件名称不能是“default”，因为它是不可更改的。";
 "custom_controls.control_menu.save.error.json" = "JSON 文件错误";
@@ -71,7 +71,7 @@
 "launcher.wait_jit.title" = "请等待应用获取到JIT(Just-in-time)";
 "launcher.wait_jit.message" = "PojavLauncher启动器必须要JIT(Just-in-time)权限才能启动游戏";
 
-"login.error.username.outOfRange" = "用户名必须是3-16个字符以内";
+"login.error.username.outOfRange" = "用户名必须在 3-16 个字符以内";
 
 "login.alert.field.username" = "用户名";
 
@@ -115,10 +115,10 @@
 
 "login.msa.error.xsts.noxboxacc" = "此微软账户没有注册 Xbox 配置文件。请确认您已拥有 Xbox 配置文件。\n错误代码：2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live 目前在您的国家/地区不可用。\n错误代码：2148916235";
-"login.msa.error.xsts.krverify" = "你的账户必须通过你父母同意方可通过验证(错误代码2148916236或2148916237)";
+"login.msa.error.xsts.krverify" = "您的账户必须通过你父母同意方可通过验证。\n错误代码：2148916236 或 2148916237";
 "login.msa.error.xsts.underage" = "您的账户需要绑定家长账户才能进行下一步。\n错误代码：2148916238";
 
-"login.msa.notice.demomode" = "看到这条消息说明你目前账户内可能未购买正版Minecraft(因为我们无法在你账户内找到描述文件)。检查你是否购买了正版Minecraft(或者你的XGP是否有到期?)";
+"login.msa.notice.demomode" = "在此账户上找不到 Minecraft 配置文件。该账户现在已设置为演示模式。请问您是否购买了 Minecraft，或是否订阅了 Xbox Game Pass？请在 https://minecraft.net/msaprofile 中配置您的个人资料以恢复到在线模式。";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) 请求访问令牌";
 "login.msa.progress.acquireXBLToken" = "(2/5) 请求 Xbox Live 令牌";
@@ -152,8 +152,8 @@
 "preference.detail.cosmetica" = "启用来自 Cosmetica（原 Arc ）的披风。欲了解更多信息，请访问 https://arcapes.com。需要 OptiFine。";
 "preference.title.debug_logging" = "调试日志";
 "preference.detail.debug_logging" = "完整的记录启动器的各种活动事件到latestlog.txt文件内,有助于开发者更容易的发现错误。但Minecraft游戏内FPS可能会降低(频繁的记录日志内容会使得CPU负载变高)";
-"preference.title.jitstreamer_server" = "JitStreamer的服务器地址";
-"preference.detail.jitstreamer_server" = "该选项将自定义获取JIT权限地址的JitStreamer服务器，若你不知道如何修改请勿修改，当然也可以保持默认地址";
+"preference.title.jitstreamer_server" = "JitStreamer 的 IP 地址";
+"preference.detail.jitstreamer_server" = "该选项将自定义获取 JIT 权限地址的 JitStreamer 服务器，若你不知道如何修改请勿修改，当然也可以保持默认地址";
 "preference.title.reset_warnings" = "重置所有警告";
 "preference.title.done.reset_warnings" = "带有“警告”的设置选项已被恢复默认状态";
 
@@ -172,7 +172,7 @@
 "preference.detail.resolution" = "降低分辨率可能会提升FPS。默认分辨率为屏幕的分辨率";
 "preference.title.disable_gesture" = "禁用手势";
 "preference.title.press_duration" = "长按延迟（毫秒）";
-"preference.detail.press_duration" = "修改长按摧毁方块、丢弃物品的触发时长";
+"preference.detail.press_duration" = "修改长按摧毁方块、丢弃物品的触发时长。";
 "preference.title.button_scale" = "屏幕按钮缩放 (%)";
 "preference.detail.button_scale" = "如果按钮过小则放大按钮，通常平板用户需要更改此选项。";
 "preference.title.mouse_scale" = "鼠标缩放 (%)";
@@ -198,7 +198,7 @@
 "preference.detail.custom_env" = "此选项正在开发";
 
 "preference.title.debug_ipad_ui" = "使用iPadOS用户界面";
-"preference.detail.debug_ipad_ui" = "开启后会使用IPad OS的专用UI";
+"preference.detail.debug_ipad_ui" = "开启后会使用 iPad OS 的专用 UI，否则使用 iPhone UI。";
 "preference.title.debug_show_layout_bounds" = "显示边界布局";
 "preference.detail.debug_show_layout_bounds" = "显示剪辑边界、边距";
 "preference.title.debug_show_layout_overlap" = "布局重叠显示";
