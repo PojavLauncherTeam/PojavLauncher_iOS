@@ -77,6 +77,8 @@
 "login.jit.enabled" = "JIT 权限已启用";
 "login.jit.fail.JitStreamer" = "JitStreamer 错误：%@";
 "login.jit.found.JitStreamer" = "检测到 JitStreamer，正在开启 JIT 权限";
+"login.jit.start.AltKit" = "尝试使用 AltJIT";
+"login.jit.fail.AltKit" = "AltKit 错误：%@";
 
 // Login buttons
 "Sign in" = "登入方式";
