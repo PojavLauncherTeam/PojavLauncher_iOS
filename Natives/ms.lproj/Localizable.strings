@@ -20,6 +20,7 @@
 
 "custom_controls.button_edit.name" = "Nama";
 "custom_controls.button_edit.size" = "Saiz";
+"custom_controls.button_edit.mapping" = "Pemetaan";
 "custom_controls.button_edit.orientation" = "Orientasi";
 "custom_controls.button_edit.toggleable" = "Boleh Ditukar";
 "custom_controls.button_edit.bg_color" = "Warna Latar Belakang";
