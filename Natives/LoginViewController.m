@@ -151,7 +151,7 @@ extern NSMutableDictionary *prefDict;
     [self.view addSubview:button_accounts];
     
     if([date isEqualToString:@"06-29"] || [date isEqualToString:@"06-30"] || [date isEqualToString:@"07-01"]) {
-        UILabel *technoNote = [[UILabel alloc] initWithFrame:CGRectMake(0, 15, width, 40.0)];
+        UILabel *technoNote = [[UILabel alloc] initWithFrame:CGRectMake(0, height - 60, width, 40.0)];
         technoNote.text = @"Technoblade never dies!";
         technoNote.lineBreakMode = NSLineBreakByWordWrapping;
         technoNote.numberOfLines = 1;
