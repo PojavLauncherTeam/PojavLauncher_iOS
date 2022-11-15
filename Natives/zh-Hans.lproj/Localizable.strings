@@ -8,6 +8,8 @@
 "game.menu.log_output" = "日志输出";
 "game.menu.custom_controls" = "自定义控制按键";
 
+"game.note.airplay" = "Minecraft正在通过隔空播放(AirPlay)到其他设备显示";
+
 "game.title.exit_code" = "游戏以代码 %d 退出";
 
 // The options button at the top-right corner on iOS 12
@@ -55,7 +57,7 @@
 "custom_controls.control_menu.save.error.json" = "JSON 文件错误";
 "custom_controls.control_menu.save.error.write" = "保存按键布局时发生错误";
 "custom_controls.control_menu.load" = "加载";
-"custom_controls.control_menu.make_default" = "默认按键布局...";
+"custom_controls.control_menu.make_default" = "设置游戏默认的按键布局";
 "custom_controls.control_menu.safe_area" = "安全区";
 "custom_controls.control_menu.add_button" = "添加按键";
 "custom_controls.control_menu.add_drawer" = "添加组合框";
@@ -150,6 +152,8 @@
 "preference.detail.cosmetica" = "启用来自 Cosmetica（原 Arc ）的披风。欲了解更多信息，请访问 https://arcapes.com。需要 OptiFine。";
 "preference.title.debug_logging" = "调试日志";
 "preference.detail.debug_logging" = "完整的记录启动器的各种活动事件到latestlog.txt文件内,有助于开发者更容易的发现错误。但Minecraft游戏内FPS可能会降低(频繁的记录日志内容会使得CPU负载变高)";
+"preference.title.jitstreamer_server" = "JitStreamer的服务器地址";
+"preference.detail.jitstreamer_server" = "该选项将自定义获取JIT权限地址的JitStreamer服务器，若你不知道如何修改请勿修改，当然也可以保持默认地址";
 "preference.title.reset_warnings" = "重置所有警告";
 "preference.title.done.reset_warnings" = "带有“警告”的设置选项已被恢复默认状态";
 
