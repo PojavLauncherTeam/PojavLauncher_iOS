@@ -188,6 +188,7 @@ BOOL slideableHotbar;
             NSLog(@"Input: Mouse connected!");
             GCMouse* mouse = note.object;
             [self registerMouseCallbacks:mouse];
+            [self setNeedsUpdateOfPrefersPointerLocked];
             self.mousePointerView.hidden = isGrabbing;
             virtualMouseEnabled = YES;
         }];
