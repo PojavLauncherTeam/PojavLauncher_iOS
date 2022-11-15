@@ -79,6 +79,7 @@
 "login.jit.enabled" = "JIT wurde aktiviert";
 "login.jit.fail.JitStreamer" = "JitStreamer-Fehler: %@";
 "login.jit.found.JitStreamer" = "JitStreamer gefunden, JIT wird aktivieren";
+"login.jit.start.AltKit" = "Versuche AltJIT zu benutzen";
 "login.jit.fail.AltKit" = "AltKit-Fehler: %@";
 
 // Login buttons
