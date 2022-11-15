@@ -79,6 +79,8 @@
 "login.jit.enabled" = "JIT активирован";
 "login.jit.fail.JitStreamer" = "Ошибка JitStreamer: %@";
 "login.jit.found.JitStreamer" = "Обнаружен JitStreamer, активация JIT...";
+"login.jit.start.AltKit" = "Попытка запуска AltJIT";
+"login.jit.fail.AltKit" = "Ошибка AltKit: %@";
 
 // Login buttons
 "Sign in" = "Войти";
