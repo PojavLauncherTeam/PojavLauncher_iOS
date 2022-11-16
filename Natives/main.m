@@ -104,7 +104,7 @@ void init_logDeviceAndVer(char *argument) {
     struct utsname systemInfo;
     uname(&systemInfo);
     const char *deviceHardware = systemInfo.machine;
-    const char *deviceSoftware = [[UIDevice currentDevice] systemVersion].UTF8String];
+    const char *deviceSoftware = [[UIDevice currentDevice] systemVersion.UTF8String];
     
     // PojavLauncher version
     regLog("[Pre-Init] PojavLauncher version: %s, branch: %s, commit: %s", CONFIG_TYPE, CONFIG_BRANCH, CONFIG_COMMIT);
