@@ -387,7 +387,7 @@ extern NSMutableDictionary *prefDict;
 
     // TODO: customizable address
     NSString *address = getPreference(@"jitstreamer_server");
-    debugLog("JitStreamer server is %s, attempting to connect...", address.UTF8String]);
+    debugLog("JitStreamer server is %s, attempting to connect...", address.UTF8String);
     
     AFHTTPSessionManager *manager = AFHTTPSessionManager.manager;
     manager.requestSerializer.timeoutInterval = 10;
