@@ -196,7 +196,6 @@
 "preference.warn.allocated_memory" = "Через обмеження у самій операційній системі, цей параметр може викликати нестабільність в цих і вищих значеннях. Будьте обережні.";
 "preference.title.custom_env" = "Змінні середовища";
 "preference.detail.custom_env" = "Ця опція у процесі розробки.";
-
 "preference.title.debug_ipad_ui" = "Розблокувати інтерфейс iPadOS";
 "preference.detail.debug_ipad_ui" = "Розблокуйте ексклюзивний інтерфейс iPad (тривоги, клавіатури тощо.) якщо ввімкнено або якщо інтерфейс iPhone вимкнено.";
 "preference.title.debug_show_layout_bounds" = "Показувати межі об'єктів";
