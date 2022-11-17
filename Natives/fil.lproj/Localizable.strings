@@ -163,7 +163,6 @@
 "preference.warn.allocated_memory" = "Dahil sa mga limitasyon sa mismong operating system, ang opsyong ito ay maaaring magdulot ng kawalang-tatag dito at mas mataas na halaga. Magpatuloy nang may pag-iingat.";
 "preference.title.custom_env" = "Variables ng environment";
 "preference.detail.custom_env" = "Ang pagpipiliang ito ay nasa ilalim ng pagtatayo.";
-
 "preference.title.debug_ipad_ui" = "I-unlock ang iPadOS UI";
 "preference.title.debug_show_layout_bounds" = "Ipakita ang mga hangganan ng layout";
 "preference.detail.debug_show_layout_bounds" = "Ipakita ang mga hangganan ng clip, mga margin";
