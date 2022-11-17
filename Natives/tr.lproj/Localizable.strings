@@ -161,7 +161,6 @@
 "preference.warn.allocated_memory" = "İşletim sisteminin kendisindeki kısıtlamalar nedeniyle bu seçenek bunda veya daha yüksek değerlerde dengesizliğe sebep olabilir. Önlem ile devam edin.";
 "preference.title.custom_env" = "Ortam değişkenleri";
 "preference.detail.custom_env" = "Bu seçenek yapım aşamasında.";
-
 "preference.title.debug_ipad_ui" = "iPadOS UI'ını aç";
 "preference.title.debug_show_layout_bounds" = "Düzen sınırlarını göster";
 "preference.detail.debug_show_layout_bounds" = "Klip sınırlarını, kenar boşluklarını göster";
