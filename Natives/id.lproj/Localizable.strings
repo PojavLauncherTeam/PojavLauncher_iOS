@@ -163,7 +163,6 @@
 "preference.warn.allocated_memory" = "Karena limitasi dari operating systemnya, opsi ini bisa membuat permainan tidak stabil dengan isi yang tinggi. Lanjut dengan perhatian.";
 "preference.title.custom_env" = "Variable environment";
 "preference.detail.custom_env" = "Opsi ini sedang dalam pembangunan.";
-
 "preference.title.debug_ipad_ui" = "Gunakan UI iPadOS";
 "preference.title.debug_show_layout_bounds" = "Tampilkan batas tata letak";
 "preference.detail.debug_show_layout_bounds" = "Tampilkan batas klip, margin";
