@@ -70,7 +70,7 @@ void* gbuffer; // OSMesa framebuffer
 long showingWindow;
 int windowWidth, windowHeight;
 int physicalWidth, physicalHeight;
-bool isInputReady, isCursorEntered, isPrepareGrabPos, isUseStackQueueCall;
+BOOL isInputReady, isCursorEntered, isPrepareGrabPos, isUseStackQueueCall;
 jboolean isGrabbing;
 BOOL virtualMouseEnabled;
 

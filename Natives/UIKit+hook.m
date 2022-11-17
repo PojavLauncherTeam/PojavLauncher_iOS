@@ -39,6 +39,10 @@ __attribute__((constructor)) void hookConstructor(void) {
 
 @implementation UITraitCollection(hook)
 
+- (UIUserInterfaceSizeClass)horizontalSizeClass {
+    return UIUserInterfaceSizeClassRegular;
+}
+
 - (UIUserInterfaceSizeClass)verticalSizeClass {
     return UIUserInterfaceSizeClassRegular;
 }
