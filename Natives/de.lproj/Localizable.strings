@@ -196,7 +196,6 @@
 "preference.warn.allocated_memory" = "Aufgrund von Einschränkungen des Betriebssystems kann diese Option zu Instabilität bei diesem und höheren Werten führen. Sei vorsichtig.";
 "preference.title.custom_env" = "Umgebungsvariablen";
 "preference.detail.custom_env" = "Diese Einstellung ist in Bearbeitung.";
-
 "preference.title.debug_ipad_ui" = "Aktiviere das iPadOS UI";
 "preference.detail.debug_ipad_ui" = "Aktiviert iPad-exklusives UI (Meldungen, Tastatur, usw.), wenn an, oder aktiviert iPhone UI, wenn aus.";
 "preference.title.debug_show_layout_bounds" = "Layoutgrenzen einblenden";
