@@ -7,7 +7,7 @@
 #import "LauncherPrefGameDirViewController.h"
 #import "TOInsetGroupedTableView.h"
 
-#include "utils.h"
+#import "utils.h"
 
 typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
@@ -112,10 +112,10 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                     @ RENDERER_NAME_VK_ZINK
                 ],
                 @"pickList": @[
-                    NSLocalizedString(@"preference.title.renderer.auto", nil),
-                    NSLocalizedString(@"preference.title.renderer.gl4es", nil),
-                    NSLocalizedString(@"preference.title.renderer.tinygl4angle", nil),
-                    NSLocalizedString(@"preference.title.renderer.zink", nil)
+                    localize(@"preference.title.renderer.auto", nil),
+                    localize(@"preference.title.renderer.gl4es", nil),
+                    localize(@"preference.title.renderer.tinygl4angle", nil),
+                    localize(@"preference.title.renderer.zink", nil)
                 ]
             },
             @{@"key": @"resolution",
@@ -213,6 +213,12 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             }
         ], @[
             // Debug settings - only recommended for developer use
+            @{@"key": @"debug_skip_wait_jit",
+                @"hasDetail": @YES,
+                @"icon": @"forward",
+                @"type": self.typeSwitch,
+                @"enableCondition": whenNotInGame
+            },
             @{@"key": @"debug_ipad_ui",
                 @"hasDetail": @YES,
                 @"icon": @"ipad",
@@ -241,7 +247,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     if (@available(iOS 13.0, *)) {
         helpButton = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"questionmark.circle"] style:UIBarButtonItemStyleDone target:self action:@selector(toggleDetailVisibility)];
     } else {
-        helpButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Help", nil) style:UIBarButtonItemStyleDone target:self action:@selector(toggleDetailVisibility)];
+        helpButton = [[UIBarButtonItem alloc] initWithTitle:localize(@"Help", nil) style:UIBarButtonItemStyleDone target:self action:@selector(toggleDetailVisibility)];
     }
     self.navigationItem.rightBarButtonItems = @[helpButton];
 }
@@ -280,7 +286,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return NSLocalizedString(([NSString stringWithFormat:@"preference.section.%@", self.prefSections[section]]), nil);
+    return localize(([NSString stringWithFormat:@"preference.section.%@", self.prefSections[section]]), nil);
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
@@ -335,9 +341,9 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
         cell.imageView.tintColor = destructive ? UIColor.systemRedColor : nil;
         cell.imageView.image = [UIImage systemImageNamed:item[@"icon"]];
     }
-    cell.textLabel.text = NSLocalizedString(([NSString stringWithFormat:@"preference.title.%@", key]), nil);
+    cell.textLabel.text = localize(([NSString stringWithFormat:@"preference.title.%@", key]), nil);
     if ([item[@"hasDetail"] boolValue] && self.prefDetailVisible) {
-        cell.detailTextLabel.text = NSLocalizedString(([NSString stringWithFormat:@"preference.detail.%@", key]), nil);
+        cell.detailTextLabel.text = localize(([NSString stringWithFormat:@"preference.detail.%@", key]), nil);
     } else if (cellStyle != UITableViewCellStyleValue1) {
         cell.detailTextLabel.text = nil;
     }
@@ -375,7 +381,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
         view.autocapitalizationType = UITextAutocapitalizationTypeNone;
         view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
         view.delegate = weakSelf;
-        view.placeholder = NSLocalizedString(([NSString stringWithFormat:@"preference.placeholder.%@", key]), nil);
+        view.placeholder = localize(([NSString stringWithFormat:@"preference.placeholder.%@", key]), nil);
         view.returnKeyType = UIReturnKeyDone;
         view.text = getPreference(key);
         view.textAlignment = NSTextAlignmentRight;
@@ -417,7 +423,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
     alert.popoverPresentationController.sourceView = view;
     alert.popoverPresentationController.sourceRect = view.bounds;
-    UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *ok = [UIAlertAction actionWithTitle:localize(@"OK", nil) style:UIAlertActionStyleCancel handler:nil];
     [alert addAction:ok];
     [self presentViewController:alert animated:YES completion:nil];
 }
@@ -436,8 +442,8 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             setPreference(warnKey, @NO);
         }
 
-        NSString *message = NSLocalizedString(([NSString stringWithFormat:@"preference.warn.%@", key]), nil);
-        [self showAlertOnView:view title:NSLocalizedString(@"Warning", nil) message:message];
+        NSString *message = localize(([NSString stringWithFormat:@"preference.warn.%@", key]), nil);
+        [self showAlertOnView:view title:localize(@"Warning", nil) message:message];
     }
 }
 
@@ -532,7 +538,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     picker.popoverPresentationController.sourceView = cell;
     picker.popoverPresentationController.sourceRect = cell.bounds;
 
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:localize(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
     [picker addAction:cancel];
 
     [self presentViewController:picker animated:YES completion:nil];
@@ -545,15 +551,15 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
     if ([item[@"showConfirmPrompt"] boolValue]) {
         BOOL destructive = [item[@"destructive"] boolValue];
-        NSString *title = NSLocalizedString(@"preference.title.confirm", nil);
-        NSString *message = NSLocalizedString(([NSString stringWithFormat:@"preference.title.confirm.%@", key]), nil);
+        NSString *title = localize(@"preference.title.confirm", nil);
+        NSString *message = localize(([NSString stringWithFormat:@"preference.title.confirm.%@", key]), nil);
         UIAlertController *confirmAlert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
         confirmAlert.popoverPresentationController.sourceView = view;
         confirmAlert.popoverPresentationController.sourceRect = view.bounds;
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:destructive?UIAlertActionStyleDestructive:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:localize(@"OK", nil) style:destructive?UIAlertActionStyleDestructive:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [self tableView:tableView invokeActionAtIndexPath:indexPath];
         }];
-        UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:localize(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
         [confirmAlert addAction:cancel];
         [confirmAlert addAction:ok];
         [self presentViewController:confirmAlert animated:YES completion:nil];
@@ -572,8 +578,8 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     }
 
     UIView *view = [self.tableView cellForRowAtIndexPath:indexPath];
-    NSString *title = NSLocalizedString(([NSString stringWithFormat:@"preference.title.done.%@", key]), nil);
-    //NSString *message = NSLocalizedString(([NSString stringWithFormat:@"preference.message.done.%@", key]), nil);
+    NSString *title = localize(([NSString stringWithFormat:@"preference.title.done.%@", key]), nil);
+    //NSString *message = localize(([NSString stringWithFormat:@"preference.message.done.%@", key]), nil);
     [self showAlertOnView:view title:title message:nil];
 }
 

@@ -51,6 +51,21 @@ NSError* saveJSONToFile(NSDictionary *dict, NSString *path) {
     return nil;
 }
 
+NSString* localize(NSString* key, NSString* comment) {
+    NSString *value = NSLocalizedString(key, nil);
+    if (![NSLocale.preferredLanguages[0] isEqualToString:@"en"] && [value isEqualToString:key]) {
+        NSString* path = [NSBundle.mainBundle pathForResource:@"en" ofType:@"lproj"];
+        NSBundle* languageBundle = [NSBundle bundleWithPath:path];
+        value = [languageBundle localizedStringForKey:key value:nil table:nil];
+
+        if ([value isEqualToString:key]) {
+            value = [[NSBundle bundleWithIdentifier:@"com.apple.UIKit"] localizedStringForKey:key value:nil table:nil];
+        }
+    }
+
+    return value;
+}
+
 CGFloat MathUtils_dist(CGFloat x1, CGFloat y1, CGFloat x2, CGFloat y2) {
     const CGFloat x = (x2 - x1);
     const CGFloat y = (y2 - y1);

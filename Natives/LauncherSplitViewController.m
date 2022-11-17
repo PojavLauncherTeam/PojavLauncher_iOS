@@ -13,23 +13,13 @@
     [super viewDidLoad];
     UIApplication.sharedApplication.idleTimerDisabled = YES;
     setViewBackgroundColor(self.view);
+
     self.delegate = self;
+    [self changeDisplayModeForSize:self.view.frame.size];
 
     LauncherMenuViewController *masterVc = [[LauncherMenuViewController alloc] init];
     LauncherNavigationController *detailVc = [[LauncherNavigationController alloc] init];
     detailVc.toolbarHidden = NO;
-
-    BOOL isPortrait = self.view.frame.size.height > self.view.frame.size.width;
-    self.preferredDisplayMode = isPortrait ?
-        UISplitViewControllerDisplayModeOneOverSecondary :
-        UISplitViewControllerDisplayModeOneBesideSecondary;
-    if (@available(iOS 14.0, tvOS 14.0, *)) {
-        self.preferredSplitBehavior = isPortrait ?
-            UISplitViewControllerSplitBehaviorOverlay :
-            UISplitViewControllerSplitBehaviorTile;
-    }
-
-    self.presentsWithGesture = YES;
 
     self.viewControllers = @[[[UINavigationController alloc] initWithRootViewController:masterVc], detailVc];
 }
@@ -45,12 +35,18 @@
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    [self changeDisplayModeForSize:size];
+}
 
-    self.preferredDisplayMode = size.height > size.width ?
-        UISplitViewControllerDisplayModeOneOverSecondary :
-        UISplitViewControllerDisplayModeOneBesideSecondary;
+- (void)changeDisplayModeForSize:(CGSize)size {
+    BOOL isPortrait = size.height > size.width;
+    if (self.preferredDisplayMode == 0 || self.displayMode != UISplitViewControllerDisplayModeSecondaryOnly) {
+        self.preferredDisplayMode = isPortrait ?
+            UISplitViewControllerDisplayModeOneOverSecondary :
+            UISplitViewControllerDisplayModeOneBesideSecondary;
+    }
     if (@available(iOS 14.0, tvOS 14.0, *)) {
-        self.preferredSplitBehavior = size.height > size.width ?
+        self.preferredSplitBehavior = isPortrait ?
             UISplitViewControllerSplitBehaviorOverlay :
             UISplitViewControllerSplitBehaviorTile;
     }

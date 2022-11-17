@@ -344,7 +344,7 @@ BOOL slideableHotbar;
 
     self.cc_dictionary = parseJSONFromFile(controlFilePath);
     if (self.cc_dictionary[@"error"] != nil) {
-        showDialog(self, NSLocalizedString(@"Error", nil), [NSString stringWithFormat:@"Could not open %@: %@", controlFilePath, [self.cc_dictionary[@"error"] localizedDescription]]);
+        showDialog(self, localize(@"Error", nil), [NSString stringWithFormat:@"Could not open %@: %@", controlFilePath, [self.cc_dictionary[@"error"] localizedDescription]]);
         return;
     }
 
@@ -398,6 +398,7 @@ BOOL slideableHotbar;
         [self viewWillTransitionToSize_LogView:frame];
         [self viewWillTransitionToSize_Navigation:frame];
 
+        // Update custom controls button position
         CGRect ctrlFrame = CGRectFromString(getPreference(@"control_safe_area"));
         CGSize screenSize = UIScreen.mainScreen.bounds.size;
         if (size.width < screenSize.width || size.height < screenSize.height) {
@@ -415,7 +416,7 @@ BOOL slideableHotbar;
             }
         }
     } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-        [self updateSavedResolution];
+        virtualMouseFrame = self.mousePointerView.frame;
     }];
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 }

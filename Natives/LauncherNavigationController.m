@@ -44,11 +44,11 @@ int versionSelectedAt = 0;
     UIToolbar *versionPickToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
 
     UISegmentedControl *versionTypeControl = [[UISegmentedControl alloc] initWithItems:@[
-        NSLocalizedString(@"Installed", nil),
-        NSLocalizedString(@"Releases", nil),
-        NSLocalizedString(@"Snapshot", nil),
-        NSLocalizedString(@"Old-beta", nil),
-        NSLocalizedString(@"Old-alpha", nil)
+        localize(@"Installed", nil),
+        localize(@"Releases", nil),
+        localize(@"Snapshot", nil),
+        localize(@"Old-beta", nil),
+        localize(@"Old-alpha", nil)
     ]];
     versionTypeControl.selectedSegmentIndex = [getPreference(@"selected_version_type") intValue];
     [versionTypeControl addTarget:self action:@selector(changeVersionType:) forControlEvents:UIControlEventValueChanged];
@@ -73,7 +73,7 @@ int versionSelectedAt = 0;
     self.buttonInstall = [UIButton buttonWithType:UIButtonTypeSystem];
     setButtonPointerInteraction(self.buttonInstall);
     self.buttonInstall.enabled = NO;
-    [self.buttonInstall setTitle:NSLocalizedString(@"Play", nil) forState:UIControlStateNormal];
+    [self.buttonInstall setTitle:localize(@"Play", nil) forState:UIControlStateNormal];
     self.buttonInstall.autoresizingMask = AUTORESIZE_MASKS;
     self.buttonInstall.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
     self.buttonInstall.layer.cornerRadius = 5;
@@ -84,7 +84,7 @@ int versionSelectedAt = 0;
 
     UIButton *buttonCustomControls = [UIButton buttonWithType:UIButtonTypeSystem];
     setButtonPointerInteraction(buttonCustomControls);
-    [buttonCustomControls setTitle:NSLocalizedString(@"launcher.menu.custom_controls", nil) forState:UIControlStateNormal];
+    [buttonCustomControls setTitle:localize(@"launcher.menu.custom_controls", nil) forState:UIControlStateNormal];
     buttonCustomControls.autoresizingMask = AUTORESIZE_MASKS;
     buttonCustomControls.frame = CGRectMake(0, self.toolbar.frame.size.height/2, splitWidth, self.toolbar.frame.size.height/2);
     [buttonCustomControls addTarget:self action:@selector(enterCustomControls) forControlEvents:UIControlEventTouchUpInside];
@@ -92,7 +92,7 @@ int versionSelectedAt = 0;
 
     UIButton *buttonInstallJar = [UIButton buttonWithType:UIButtonTypeSystem];
     setButtonPointerInteraction(buttonInstallJar);
-    [buttonInstallJar setTitle:NSLocalizedString(@"launcher.menu.install_jar", nil) forState:UIControlStateNormal];
+    [buttonInstallJar setTitle:localize(@"launcher.menu.install_jar", nil) forState:UIControlStateNormal];
     buttonInstallJar.autoresizingMask = AUTORESIZE_MASKS;
     buttonInstallJar.frame = CGRectMake(splitWidth*2, self.toolbar.frame.size.height/2, splitWidth, self.toolbar.frame.size.height/2);
     [buttonInstallJar addTarget:self action:@selector(enterModInstaller) forControlEvents:UIControlEventTouchUpInside];
@@ -278,15 +278,19 @@ int versionSelectedAt = 0;
     if (isJITEnabled()) {
         handler();
         return;
+    } else if ([getPreference(@"debug_skip_wait_jit") boolValue]) {
+        NSLog(@"Debug option skipped waiting for JIT. Java might not work.");
+        handler();
+        return;
     }
 
     CADisplayLink *displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(tickJIT)];
 
-    UIAlertController* alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"launcher.wait_jit.title", nil)
-        message:NSLocalizedString(@"launcher.wait_jit.message", nil)
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:localize(@"launcher.wait_jit.title", nil)
+        message:localize(@"launcher.wait_jit.message", nil)
         preferredStyle:UIAlertControllerStyleAlert];
 /* TODO:
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^{
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:localize(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^{
         
     }];
     [alert addAction:cancel];

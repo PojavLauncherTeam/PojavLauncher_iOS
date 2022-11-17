@@ -85,6 +85,7 @@ UIWindow* currentWindow();
 UIWindow* currentWindowInScene(BOOL external);
 UIViewController* currentVC();
 
+NSString* localize(NSString* key, NSString* comment);
 NSMutableDictionary* parseJSONFromFile(NSString *path);
 NSError* saveJSONToFile(NSDictionary *dict, NSString *path);
 

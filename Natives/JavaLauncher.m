@@ -114,7 +114,7 @@ NSString* environmentFailsafes(int minVersion) {
     }
 
     if (javaHome == nil) {
-        showDialog(currentVC(), NSLocalizedString(@"Error", nil), [NSString stringWithFormat:@"Minecraft %@ requires Java %d in order to run. Please install it first.", getPreference(@"selected_version"), minVersion]);
+        showDialog(currentVC(), localize(@"Error", nil), [NSString stringWithFormat:@"Minecraft %@ requires Java %d in order to run. Please install it first.", getPreference(@"selected_version"), minVersion]);
     }
 
     return javaHome;

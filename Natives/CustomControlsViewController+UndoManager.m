@@ -1,6 +1,7 @@
 #import "CustomControlsViewController.h"
 #import "customcontrols/ControlDrawer.h"
 #import "customcontrols/ControlLayout.h"
+#import "utils.h"
 
 @implementation CustomControlsViewController(UndoManager)
 
@@ -8,7 +9,7 @@
     NSUndoManager *undo = self.undoManager;
 
     if ([button isKindOfClass:[ControlSubButton class]]) {
-        undo.actionName = NSLocalizedString(@"custom_controls.button_menu.add_subbutton", nil);
+        undo.actionName = localize(@"custom_controls.button_menu.add_subbutton", nil);
 
         [self.ctrlView addSubview:button];
         ControlDrawer *drawer = ((ControlSubButton *)button).parentDrawer;
@@ -16,7 +17,7 @@
         [drawer.drawerData[@"buttonProperties"] insertObject:button.properties atIndex:index.intValue];
         [drawer syncButtons];
     } else if ([button isKindOfClass:[ControlDrawer class]]) {
-        undo.actionName = NSLocalizedString(@"custom_controls.control_menu.add_drawer", nil);
+        undo.actionName = localize(@"custom_controls.control_menu.add_drawer", nil);
 
         for (ControlSubButton *subButton in ((ControlDrawer *)button).buttons) {
             [self.ctrlView addSubview:subButton];
@@ -24,14 +25,14 @@
         [self.cc_dictionary[@"mDrawerDataList"] insertObject:((ControlDrawer *)button).drawerData atIndex:index.intValue];
         [self.ctrlView addSubview:button];
     } else {
-        undo.actionName = NSLocalizedString(@"custom_controls.control_menu.add_button", nil);
+        undo.actionName = localize(@"custom_controls.control_menu.add_button", nil);
         [self.cc_dictionary[@"mControlDataList"] insertObject:button.properties atIndex:index.intValue];
         [self.ctrlView addSubview:button];
     }
 
     [[undo prepareWithInvocationTarget:self] doRemoveButton:button];
     if (undo.isUndoing) {
-        undo.actionName = NSLocalizedString(@"Remove", nil);
+        undo.actionName = localize(@"Remove", nil);
     }
 }
 
@@ -58,14 +59,14 @@
     NSUndoManager *undo = self.undoManager;
     [[undo prepareWithInvocationTarget:self] undoRemoveButton:button atIndex:index];
     if (!undo.isUndoing) {
-        undo.actionName = NSLocalizedString(@"Remove", nil);
+        undo.actionName = localize(@"Remove", nil);
     }
 }
 
 - (void)undoRemoveButton:(ControlButton *)button atIndex:(NSNumber *)index {
     NSUndoManager *undo = self.undoManager;
     if (!undo.isUndoing) {
-        undo.actionName = NSLocalizedString(@"Remove", nil);
+        undo.actionName = localize(@"Remove", nil);
     }
     [self doAddButton:button atIndex:index];
 }
@@ -76,9 +77,9 @@
     [[undo prepareWithInvocationTarget:self] doMoveOrResizeButton:button from:to to:from];
     if (!undo.isUndoing) {
         if (CGSizeEqualToSize(from.size, to.size)) {
-            undo.actionName = NSLocalizedString(@"Move", nil);
+            undo.actionName = localize(@"Move", nil);
         } else {
-            undo.actionName = NSLocalizedString(@"Resize", nil);
+            undo.actionName = localize(@"Resize", nil);
         }
     }
 
@@ -94,7 +95,7 @@
     NSUndoManager *undo = self.undoManager;
     [[undo prepareWithInvocationTarget:self] doUpdateButton:button from:to to:from];
     if (!undo.isUndoing) {
-        undo.actionName = NSLocalizedString(@"Edit", nil);
+        undo.actionName = localize(@"Edit", nil);
     }
 
     for (NSString *key in to) {

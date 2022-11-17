@@ -139,6 +139,7 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(prefDict, @"unsupported_warn_counter", @(0));
 
     // Debug settings
+    setDefaultValueForPref(debugPrefDict, @"debug_skip_wait_jit", @NO);
     setDefaultValueForPref(debugPrefDict, @"debug_ipad_ui", @(UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad));
     setDefaultValueForPref(debugPrefDict, @"debug_show_layout_bounds", @NO);
     setDefaultValueForPref(debugPrefDict, @"debug_show_layout_overlap", @NO);

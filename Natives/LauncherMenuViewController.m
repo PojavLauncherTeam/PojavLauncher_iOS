@@ -5,6 +5,7 @@
 #import "LauncherPreferencesViewController.h"
 #import "UIButton+AFNetworking.h"
 #import "UIImageView+AFNetworking.h"
+#import "utils.h"
 
 @interface LauncherMenuViewController () {
 }
@@ -22,8 +23,8 @@
         [[LauncherNewsViewController alloc] init],
         [[LauncherPreferencesViewController alloc] init]
     ];
-    self.options[0].title = NSLocalizedString(@"News", nil);
-    self.options[1].title = NSLocalizedString(@"Settings", nil);
+    self.options[0].title = localize(@"News", nil);
+    self.options[1].title = localize(@"Settings", nil);
     //@[@"News", @"Development Console", @"Crash logs"];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
@@ -46,6 +47,9 @@
 
     [self updateAccountInfo];
     [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+
+    // Put a close button, as iOS does not have a dedicated back button
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"❌" style:UIBarButtonItemStyleDone target:self.splitViewController action:@selector(dismissViewController)];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -90,9 +94,6 @@
         selected.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
         selected.navigationItem.leftItemsSupplementBackButton = true;
     }
-
-    // Put a close button, as iOS does not have a dedicated back button
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"❌" style:UIBarButtonItemStyleDone target:self.splitViewController action:@selector(dismissViewController)];
 }
 
 - (void)selectAccount:(UIButton *)sender {
@@ -120,9 +121,9 @@
     id subtitle;
     if (isDemo) {
         // Remove the prefix "Demo."
-        subtitle = NSLocalizedString(@"login.option.demo", nil);
+        subtitle = localize(@"login.option.demo", nil);
     } else if (selected[@"xboxGamertag"] == nil) {
-        subtitle = NSLocalizedString(@"login.option.local", nil);
+        subtitle = localize(@"login.option.local", nil);
     } else {
         // Display the Xbox gamertag for online accounts
         subtitle = selected[@"xboxGamertag"];
