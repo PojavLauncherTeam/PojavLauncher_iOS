@@ -194,7 +194,6 @@
 "preference.warn.allocated_memory" = "Tato možnost může způsobit nestabilitu při této a vyšších hodnotách, kvůli limitacím v operačním systému. Pokračuj s opatrností.";
 "preference.title.custom_env" = "Proměnné prostředí";
 "preference.detail.custom_env" = "Tato možnost je ve vývoji.";
-
 "preference.title.debug_ipad_ui" = "Odemknout iPadOS UI";
 "preference.detail.debug_ipad_ui" = "Odemknout UI pro iPady (upozornění, klávesnice, atd.) zapnuto-li, či iPhone UI vypnuto-li.";
 "preference.title.debug_show_layout_bounds" = "Zobrazit ohraničení rozložení";
