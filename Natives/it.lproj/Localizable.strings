@@ -163,7 +163,6 @@
 "preference.warn.allocated_memory" = "A causa delle limitazioni nel sistema operativo stesso, questa opzione può causare instabilità con questi valori e superiori. Procedere con cautela.";
 "preference.title.custom_env" = "Variabili ambientali";
 "preference.detail.custom_env" = "Questa opzione è in fase di sviluppo.";
-
 "preference.title.debug_ipad_ui" = "Unlock iPadOS UI";
 "preference.title.debug_show_layout_bounds" = "Mostra limiti layout";
 "preference.detail.debug_show_layout_bounds" = "Mostra misure clip, margini, bounds";
