@@ -196,7 +196,6 @@
 "preference.warn.allocated_memory" = "Due to limitations in the operating system itself, this option may cause instability at this and higher values. Proceed with caution.";
 "preference.title.custom_env" = "Environment variables";
 "preference.detail.custom_env" = "This option is under construction.";
-
 "preference.title.debug_ipad_ui" = "Unlock iPadOS UI";
 "preference.detail.debug_ipad_ui" = "Unlock iPad-exclusive UI (alert, keyboard, etc.) if enabled or iPhone UI if disabled.";
 "preference.title.debug_show_layout_bounds" = "Show layout bounds";
