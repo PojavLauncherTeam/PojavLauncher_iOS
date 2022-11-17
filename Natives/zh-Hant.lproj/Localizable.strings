@@ -194,7 +194,6 @@
 "preference.warn.allocated_memory" = "由於系統限制，在這個數值或以上時，這個選項可能會導致不穩定。";
 "preference.title.custom_env" = "環境變量";
 "preference.detail.custom_env" = "這個選項仍在建築中。";
-
 "preference.title.debug_ipad_ui" = "解鎖iPadOS用戶介面";
 "preference.detail.debug_ipad_ui" = "當啟動時或當iPhone用戶介面被禁用時，解鎖iPad專屬用戶介面（提示、鍵盤等）";
 "preference.title.debug_show_layout_bounds" = "顯示佈局界線";
