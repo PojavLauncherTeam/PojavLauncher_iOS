@@ -156,5 +156,4 @@
 "preference.warn.allocated_memory" = "Do những giới hạn của hệ điều hành, tùy chọn này có thể gây ra sự cố với mức phân bổ này hoặc cao hơn. Chú ý khi tiếp tục.";
 "preference.title.custom_env" = "Các chỉ số môi trường";
 "preference.detail.custom_env" = "Tùy chọn này đang được hoàn thiện.";
-
 "preference.title.debug_ipad_ui" = "Mở khóa giao diện iPadOS";
