@@ -407,6 +407,7 @@ extern NSMutableDictionary *prefDict;
                 NSLog(@"Error?: %@", responseDict);
                 NSData *errorData = ((NSError *)response).userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
                 responseDict = [NSJSONSerialization JSONObjectWithData:errorData options:0 error:nil];
+                [self enableJITWithAltJIT];
             } else {
                 responseDict = response;
             }
