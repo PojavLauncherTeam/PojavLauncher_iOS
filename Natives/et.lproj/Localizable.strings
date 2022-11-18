@@ -1,9 +1,55 @@
+/* 
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "Sundsulge";
+"game.menu.log_output" = "Logiväljund";
+"game.menu.custom_controls" = "Kohandatud juhtnupud";
 
 // The play button
 "Play" = "Mängi";
+
+// Custom controls
+"Copy" = "Kopeeri";
+"Edit" = "Muuda";
+"Move" = "Liiguta";
+
+"custom_controls.button_edit.name" = "Nimi";
 "custom_controls.button_edit.size" = "Suurus";
 "custom_controls.button_edit.mapping" = "Kaardistamine";
+"custom_controls.button_edit.orientation" = "Orientatsioon";
+"custom_controls.button_edit.toggleable" = "Lülitatav";
+"custom_controls.button_edit.swipeable" = "Viibatav";
+"custom_controls.control_menu.discard_changes" = "Tühista muudatused";
+"custom_controls.control_menu.exit" = "Välju";
+"custom_controls.control_menu.save" = "Salvesta";
+"custom_controls.control_menu.load" = "Laadi";
+"custom_controls.control_menu.make_default" = "Määra vaikeväärtuseks";
+"custom_controls.control_menu.safe_area" = "Turvaala";
+"custom_controls.control_menu.add_drawer" = "Lisa sahtel";
+
+"launcher.menu.custom_controls" = "Kohandatud juhtnupud";
+"launcher.menu.install_jar" = "Paigalda .jar";
+"FAQ" = "KKK";
 
 "News" = "Uudised";
+"preference.section.footer.video" = "Automaatne renderdaja lubab Minecraftil valida, millist renderdajat kasutada. Eraldusvõime vähendamine vähendab graafikamootori tööd, andes parema jõudluse.";
+"preference.section.control" = "Juhtnuppude kohandamine";
+//"preference.section.footer.control" = "";
+"preference.section.java" = "Java trikid";
+"preference.title.cosmetica" = "Cosmetica keebid";
 
 "preference.title.renderer" = "Renderdaja";
+"preference.title.renderer.auto" = "Autom.: gl4es või tinygl4angle";
+"preference.title.renderer.gl4es" = "gl4es 1.1.4 - väljastab OpenGL 2.1";
+"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - väljastab OpenGL 3.2 (Core Profile, piiratud)";
+"preference.title.renderer.zink" = "Zink (Mesa 21.0) - väljastab OpenGL 4.1";
+"preference.detail.renderer" = "Vaheta kasutatavat OpenGL renderdusmootorit";
+
+"preference.title.resolution" = "Eraldusvõime (%)";
+"preference.title.disable_gesture" = "Keela viiped";
+"preference.title.virtmouse_enable" = "Virtuaalne hiir";
+"preference.title.auto_ram" = "Automaatne RAM";
+"preference.title.allocated_memory" = "Mälueraldus (MB)";
+"preference.detail.allocated_memory" = "Juhib, kui palju mälu Minecraftile antakse";
