@@ -8,6 +8,8 @@
 "game.menu.log_output" = "Wyjście danych";
 "game.menu.custom_controls" = "Sterowanie niestandardowe";
 
+"game.note.airplay" = "Minecraft jest wyświetlany na ekranie lustrzanym AirPlay";
+
 "game.title.exit_code" = "Gra została zakończona z kodem %d";
 
 // The options button at the top-right corner on iOS 12
@@ -22,24 +24,44 @@
 "Releases" = "Wydania";
 "Old-beta" = "Dawna Beta";
 "Old-alpha" = "Dawna Alpha";
+
+// Custom controls
+"Copy" = "Kopiuj";
 "Edit" = "Edytuj";
+"Move" = "Przenieś";
 "Remove" = "Usuń";
+"Resize" = "Zmień rozmiar";
 
 "custom_controls.button_edit.name" = "Nazwa";
 "custom_controls.button_edit.size" = "Rozmiar";
 "custom_controls.button_edit.mapping" = "Mapowanie";
 "custom_controls.button_edit.orientation" = "Orientacja";
 "custom_controls.button_edit.toggleable" = "Aktywowane";
+"custom_controls.button_edit.mouse_pass" = "Przejście myszy";
 "custom_controls.button_edit.swipeable" = "Przesuwalny";
 "custom_controls.button_edit.bg_color" = "Kolor tła";
+"custom_controls.button_edit.stroke_width" = "Szerokość obrysu (%)";
 "custom_controls.button_edit.stroke_color" = "Kolor obrysu";
+"custom_controls.button_edit.corner_radius" = "Zaokrąglenie narożników (%)";
+"custom_controls.button_edit.opacity" = "Przezroczystość (%)";
 "custom_controls.button_edit.dynamic_position" = "Dynamiczna pozycja";
+"custom_controls.button_edit.dynamic_x" = "Dynamiczna oś X";
+"custom_controls.button_edit.dynamic_y" = "Dynamiczna oś Y";
 
 "custom_controls.button_menu.add_subbutton" = "Dodaj przycisk podrzędny";
+"custom_controls.control_menu.discard_changes" = "Odrzuć zmiany";
 "custom_controls.control_menu.exit" = "Wyjdź";
+"custom_controls.control_menu.exit.warn" = "Zamierzasz wyjść bez zapisywania zmian.";
 "custom_controls.control_menu.save" = "Zapisz";
+"custom_controls.control_menu.save.error.default" = "Nazwa kontrolna nie może być \"default\", ponieważ zostanie nadpisana.";
+"custom_controls.control_menu.save.error.json" = "Błąd JSON";
+"custom_controls.control_menu.save.error.write" = "Błąd zapisu pliku";
 "custom_controls.control_menu.load" = "Wczytaj";
+"custom_controls.control_menu.make_default" = "Ustaw jako domyślne";
+"custom_controls.control_menu.safe_area" = "Bezpieczna Strefa";
 "custom_controls.control_menu.add_button" = "Dodaj przycisk";
+"custom_controls.control_menu.add_drawer" = "Dodaj listę";
+"custom_controls.hint" = "Naciśnij i przytrzymaj gdziekolwiek na ekranie, aby uzyskać więcej opcji";
 
 "init.migrateDir" = "Katalogiem danych PojavLauncher jest teraz %@. Wszystkie istniejące dane zostały przeniesione do nowej lokalizacji.";
 
@@ -49,12 +71,16 @@
 "launcher.wait_jit.title" = "Czekam na JIT";
 "launcher.wait_jit.message" = "PojavLauncher opiera się na kompilacji Just-in-time, aby Java działała z maksymalną wydajnością.";
 
+"login.error.username.outOfRange" = "Nazwa użytkownika musi zawierać od 3 do 16 znaków";
+
 "login.alert.field.username" = "Nazwa użytkownika";
 
 "login.jit.checking" = "Sprawdzanie JIT";
 "login.jit.enabled" = "JIT zostało włączone";
 "login.jit.fail.JitStreamer" = "Błąd JitStreamer: %@";
 "login.jit.found.JitStreamer" = "Znaleziono JitStreamer, włączanie JIT";
+"login.jit.start.AltKit" = "Próba użycia AltJIT";
+"login.jit.fail.AltKit" = "Błąd AltKit: %@";
 
 // Login buttons
 "Sign in" = "Zaloguj";
@@ -89,6 +115,10 @@
 
 "login.msa.error.xsts.noxboxacc" = "Profil Xbox nie został zarejestrowany dla tego Konta Microsoft. Upewnij się, że profil Xbox został utworzony.\nKod błędu: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live nie jest obecnie dostępne w Twoim kraju.\nKod błędu: 2148916235";
+"login.msa.error.xsts.krverify" = "Twoje konto musi zostać zweryfikowane przez Twoich rodziców przed kontynuowaniem.\nKod błędu: 2148916236 lub 2148916237.";
+"login.msa.error.xsts.underage" = "Twoje konto musi zostać połączone z kontem rodzica przed kontynuowaniem.\nKod błędu: 2148916238";
+
+"login.msa.notice.demomode" = "Nie można znaleźć profilu Minecraft na tym koncie. Konto jest teraz ustawione na Tryb demo. Czy Minecraft został zakupiony lub posiadasz aktywną subskrypcję Xbox Game Pass? Skonfiguruj swój profil na https://minecraft.net/msaprofile, aby powrócić do Trybu online.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Wczytywanie klucza dostępu";
 "login.msa.progress.acquireXBLToken" = "(2/5) Wczytywanie klucza Xbox Live";
@@ -122,6 +152,8 @@
 "preference.detail.cosmetica" = "Włącz peleryny z Cosmetica (wcześniej Arc). Aby uzyskać więcej informacji, odwiedź stronę https://cosmetica.cc. Wymaga OptiFine";
 "preference.title.debug_logging" = "Rejestr debugowania";
 "preference.detail.debug_logging" = "Rejestruje ustawienia wewnętrzne i działania w lastlog.txt. Pomaga to programistom łatwiej znajdować problemy, ale Minecraft może działać wolniej, ponieważ logi będą zapisywane częściej.";
+"preference.title.jitstreamer_server" = "Adres IP serwera JitStreamer";
+"preference.detail.jitstreamer_server" = "Pozwala na zmianę na niestandardowy adres IP serwera JitStreamer, np. dla instancji hostowanych przez siebie. Ta opcja może pozostać sama jeśli używasz domyślnych serwerów JitStreamer.";
 "preference.title.reset_warnings" = "Wyzeruj wszystkie ostrzeżenia";
 "preference.title.done.reset_warnings" = "Wszystkie ostrzeżenia zostały wyzerowane.";
 
@@ -140,6 +172,7 @@
 "preference.detail.resolution" = "Umożliwia zmniejszenie rozdzielczości gry.";
 "preference.title.disable_gesture" = "Wyłącz gesty";
 "preference.title.press_duration" = "Czas długiego naciśnięcia (ms)";
+"preference.detail.press_duration" = "Zmieniaj czas trwania prasy dla niszczenia bloków i upuszczania przedmiotów.";
 "preference.title.button_scale" = "Skala przycisków ekranowych (%)";
 "preference.detail.button_scale" = "Zwiększ skalę, jeśli przyciski są zbyt małe, zazwyczaj tak jest w przypadku iPad'ów.";
 "preference.title.mouse_scale" = "Skalowanie myszy (%)";
@@ -163,7 +196,11 @@
 "preference.warn.allocated_memory" = "Ze względu na ograniczenia samego systemu operacyjnego, ta opcja może powodować niestabilność przy tej i wyższych wartościach. Zachowaj ostrożność.";
 "preference.title.custom_env" = "Zmienne środowiskowe";
 "preference.detail.custom_env" = "Ta opcja jest w trakcie opracowania.";
+
+"preference.title.debug_skip_wait_jit" = "Pomiń okno dialogowe \"Oczekiwanie na JIT\"";
+"preference.detail.debug_skip_wait_jit" = "To nie pozwala na uruchamianie bez JIT, zamiast tego pomija kontrolę debugera, ponieważ sprawdzenie nie powiodło się na niektórych więzieniach.";
 "preference.title.debug_ipad_ui" = "Odblokuj interfejs iPadOS";
+"preference.detail.debug_ipad_ui" = "Odblokuj interfejs użytkownika wyłącznie dla iPada (alarm, klawiatura itp.), jeśli jest włączony, lub interfejs iPhone'a, jeśli jest wyłączony.";
 "preference.title.debug_show_layout_bounds" = "Pokaż granice układu";
 "preference.detail.debug_show_layout_bounds" = "Pokaż granice klipów, marginesy";
 "preference.title.debug_show_layout_overlap" = "Pokaż nakładające się układy";
