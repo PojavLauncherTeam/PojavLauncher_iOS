@@ -2,5 +2,8 @@
 // The play button
 "Play" = "Mängi";
 "custom_controls.button_edit.size" = "Suurus";
+"custom_controls.button_edit.mapping" = "Kaardistamine";
 
 "News" = "Uudised";
+
+"preference.title.renderer" = "Renderdaja";
