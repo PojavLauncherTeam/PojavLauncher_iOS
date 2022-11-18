@@ -1,3 +1,6 @@
 
 // The play button
 "Play" = "Mängi";
+"custom_controls.button_edit.size" = "Suurus";
+
+"News" = "Uudised";
