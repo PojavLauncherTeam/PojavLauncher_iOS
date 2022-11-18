@@ -196,6 +196,9 @@
 "preference.warn.allocated_memory" = "Из-за ограничений операционной системы может вызвать нестабильность при этом и более высоких значениях. Используйте с осторожностью.";
 "preference.title.custom_env" = "Переменные среды";
 "preference.detail.custom_env" = "Функция всё ещё в разработке.";
+
+"preference.title.debug_skip_wait_jit" = "Пропускать этап ожидания JIT";
+"preference.detail.debug_skip_wait_jit" = "Без JIT это запускать игру не позволит, однако исправит ошибку запуска на некоторых устройствах с jailbreak за счёт пропуска проверки отладчика.";
 "preference.title.debug_ipad_ui" = "Разблокировать интерфейс iPadOS";
 "preference.detail.debug_ipad_ui" = "Разблокировать уникальные для iPad элементы интерфейса (предупреждение, клавиатура и пр.) или оставить интерфейс iPhone.";
 "preference.title.debug_show_layout_bounds" = "Показывать границы элементов";
