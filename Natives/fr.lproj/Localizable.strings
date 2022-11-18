@@ -196,6 +196,9 @@
 "preference.warn.allocated_memory" = "En raison de limitations dans le système d'exploitation lui-même, cette option peut causer de l'instabilité à ce niveau et des valeurs plus élevées. Procédez avec prudence.";
 "preference.title.custom_env" = "Variables d'environnement";
 "preference.detail.custom_env" = "Cette option est en cours de construction.";
+
+"preference.title.debug_skip_wait_jit" = "Passer l'alerte \"Attente du JIT\"";
+"preference.detail.debug_skip_wait_jit" = "Cela ne vous permet pas de démarrer sans JIT, à la place, cela saute la vérification du débogueur, car la vérification échoue sur certains jailbreaks.";
 "preference.title.debug_ipad_ui" = "Déverrouiller l'interface utilisateur iPadOS";
 "preference.detail.debug_ipad_ui" = "Déverrouille l'interface utilisateur iPad (alerte, clavier, etc.) si activé ou l'interface utilisateur iPhone si désactivé.";
 "preference.title.debug_show_layout_bounds" = "Afficher les limites de la mise en page";
