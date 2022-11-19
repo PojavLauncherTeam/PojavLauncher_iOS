@@ -7,13 +7,20 @@
 "game.menu.log_output" = "Logiväljund";
 "game.menu.custom_controls" = "Kohandatud juhtnupud";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "Valikud";
+
 // The play button
 "Play" = "Mängi";
+"Snapshot" = "Katsetus";
+"Old-beta" = "Vana beeta";
+"Old-alpha" = "Vana alfa";
 
 // Custom controls
 "Copy" = "Kopeeri";
 "Edit" = "Muuda";
 "Move" = "Liiguta";
+"Remove" = "Eemalda";
 
 "custom_controls.button_edit.name" = "Nimi";
 "custom_controls.button_edit.size" = "Suurus";
@@ -27,6 +34,7 @@
 "custom_controls.control_menu.load" = "Laadi";
 "custom_controls.control_menu.make_default" = "Määra vaikeväärtuseks";
 "custom_controls.control_menu.safe_area" = "Turvaala";
+"custom_controls.control_menu.add_button" = "Lisa nupp";
 "custom_controls.control_menu.add_drawer" = "Lisa sahtel";
 
 "launcher.menu.custom_controls" = "Kohandatud juhtnupud";
@@ -34,6 +42,7 @@
 "FAQ" = "KKK";
 
 "News" = "Uudised";
+"Settings" = "Seaded";
 "preference.section.footer.video" = "Automaatne renderdaja lubab Minecraftil valida, millist renderdajat kasutada. Eraldusvõime vähendamine vähendab graafikamootori tööd, andes parema jõudluse.";
 "preference.section.control" = "Juhtnuppude kohandamine";
 //"preference.section.footer.control" = "";
