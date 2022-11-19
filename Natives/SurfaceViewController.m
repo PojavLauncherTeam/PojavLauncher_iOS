@@ -415,6 +415,9 @@ BOOL slideableHotbar;
                 [(ControlButton *)view update];
             }
         }
+
+        // Update game resolution
+        [self updateSavedResolution];
     } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
         virtualMouseFrame = self.mousePointerView.frame;
     }];
