@@ -79,6 +79,8 @@
 "login.jit.enabled" = "JIT byl zapnut";
 "login.jit.fail.JitStreamer" = "Chyba JitStreameru: %@";
 "login.jit.found.JitStreamer" = "Nalezen JitStreamer, povoluji JIT";
+"login.jit.start.AltKit" = "Pokoušení užití AltJITu";
+"login.jit.fail.AltKit" = "Chyba AltKitu: %@";
 
 // Login buttons
 "Sign in" = "Přihlásit se";
@@ -194,6 +196,9 @@
 "preference.warn.allocated_memory" = "Tato možnost může způsobit nestabilitu při této a vyšších hodnotách, kvůli limitacím v operačním systému. Pokračuj s opatrností.";
 "preference.title.custom_env" = "Proměnné prostředí";
 "preference.detail.custom_env" = "Tato možnost je ve vývoji.";
+
+"preference.title.debug_skip_wait_jit" = "Přeskočit dialog \"Čekání na JIT\"";
+"preference.detail.debug_skip_wait_jit" = "Toto vám neumožní spustit bez JITu, ale přeskočí ladící kontrolu, neboť ta kontrola chybuje na určitých jailbreacích.";
 "preference.title.debug_ipad_ui" = "Odemknout iPadOS UI";
 "preference.detail.debug_ipad_ui" = "Odemknout UI pro iPady (upozornění, klávesnice, atd.) zapnuto-li, či iPhone UI vypnuto-li.";
 "preference.title.debug_show_layout_bounds" = "Zobrazit ohraničení rozložení";
