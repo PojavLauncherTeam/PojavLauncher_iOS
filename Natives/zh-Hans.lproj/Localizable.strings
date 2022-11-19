@@ -198,6 +198,7 @@
 "preference.detail.custom_env" = "此选项正在开发";
 
 "preference.title.debug_skip_wait_jit" = "跳过获取\"JIT(Just-in-time)\"请求";
+"preference.detail.debug_skip_wait_jit" = "跳过JIT权限检查直接启动游戏";
 "preference.title.debug_ipad_ui" = "使用iPadOS用户界面";
 "preference.detail.debug_ipad_ui" = "开启后会使用 iPad OS 的专用 UI，否则使用 iPhone UI。";
 "preference.title.debug_show_layout_bounds" = "显示边界布局";
