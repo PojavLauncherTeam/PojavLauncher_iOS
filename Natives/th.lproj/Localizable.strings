@@ -20,6 +20,8 @@
 
 "custom_controls.button_edit.name" = "ชื่อ";
 "custom_controls.button_edit.size" = "ขนาด";
+"custom_controls.button_edit.mapping" = "Mapping";
+"custom_controls.button_edit.toggleable" = "Toggleable";
 "custom_controls.button_edit.dynamic_position" = "ตำแหน่งพลวัต";
 "custom_controls.control_menu.exit" = "ออก";
 "custom_controls.control_menu.save" = "บันทึก";
@@ -30,5 +32,8 @@
 
 "News" = "ข่าวสาร";
 "Settings" = "การตั้งค่า";
+
+"preference.title.renderer" = "การแสดงผล";
+"preference.title.java_args" = "JVM Launch arguments";
 "preference.title.auto_ram" = "RAM อัตโนมัติ";
 "preference.detail.auto_ram" = "เปิดใช้งานตัวปรับ RAM อัตโนมัติ";
