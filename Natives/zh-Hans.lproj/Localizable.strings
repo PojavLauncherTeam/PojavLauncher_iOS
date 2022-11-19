@@ -10,7 +10,7 @@
 
 "game.note.airplay" = "Minecraft 正在通过隔空播放（AirPlay）到其他设备显示";
 
-"game.title.exit_code" = "游戏以代码 %d 退出";
+"game.title.exit_code" = "游戏非正常退出,错误代码%d";
 
 // The options button at the top-right corner on iOS 12
 "Options" = "选项";
@@ -196,6 +196,8 @@
 "preference.warn.allocated_memory" = "由于系统的限制,可能会导致游戏不稳定";
 "preference.title.custom_env" = "环境变量";
 "preference.detail.custom_env" = "此选项正在开发";
+
+"preference.title.debug_skip_wait_jit" = "跳过获取\"JIT(Just-in-time)\"请求";
 "preference.title.debug_ipad_ui" = "使用iPadOS用户界面";
 "preference.detail.debug_ipad_ui" = "开启后会使用 iPad OS 的专用 UI，否则使用 iPhone UI。";
 "preference.title.debug_show_layout_bounds" = "显示边界布局";
