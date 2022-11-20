@@ -21,7 +21,6 @@
 "custom_controls.button_edit.name" = "Атауы";
 "custom_controls.button_edit.size" = "Көлемі";
 "custom_controls.button_edit.toggleable" = "Ауысқыш";
-"custom_controls.button_edit.dynamic_position" = "Динамикалық позиция";
 "custom_controls.control_menu.exit" = "Шығу";
 "custom_controls.control_menu.save" = "Сақтау";
 "custom_controls.control_menu.load" = "Жүктеу";
