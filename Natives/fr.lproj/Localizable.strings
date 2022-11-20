@@ -44,9 +44,6 @@
 "custom_controls.button_edit.stroke_color" = "Couleur du contour";
 "custom_controls.button_edit.corner_radius" = "Rayon des coins (%)";
 "custom_controls.button_edit.opacity" = "Opacité (%)";
-"custom_controls.button_edit.dynamic_position" = "Position dynamique";
-"custom_controls.button_edit.dynamic_x" = "Axe X dynamique";
-"custom_controls.button_edit.dynamic_y" = "Axe Y dynamique";
 
 "custom_controls.button_menu.add_subbutton" = "Ajouter un sous-bouton";
 "custom_controls.control_menu.discard_changes" = "Ignorer les modifications";
