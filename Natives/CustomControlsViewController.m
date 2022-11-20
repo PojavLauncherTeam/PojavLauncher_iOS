@@ -770,25 +770,30 @@ CGFloat currentY;
     self.oldProperties = self.targetButton.properties.mutableCopy;
     currentY = 6.0;
 
-    CGFloat x = self.view.frame.size.width/5.0;
-    CGFloat y = self.view.frame.size.height/10.0;
     CGFloat shortest = MIN(self.view.frame.size.width, self.view.frame.size.height);
-    CGFloat tempW = MIN(self.view.frame.size.width - x * 2.0, shortest);
-    CGFloat tempH = MIN(self.view.frame.size.height - y * 2.0, shortest);
-    self.view.frame = CGRectMake(x, y, MAX(tempW, tempH), MIN(tempW, tempH));
+    CGFloat tempW = MIN(self.view.frame.size.width * 0.75, shortest);
+    CGFloat tempH = MIN(self.view.frame.size.height * 0.6, shortest);
 
-    UIVisualEffectView *blurView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight]];
+    UIBlurEffectStyle blurStyle;
+    UIVisualEffectView *blurView;
     if (@available(iOS 13.0, *)) {
-        blurView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleSystemMaterial];
+        blurStyle = UIBlurEffectStyleSystemMaterial;
+    } else {
+        blurStyle = UIBlurEffectStyleExtraLight;
     }
-    blurView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height); 
+    blurView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:blurStyle]];
+    blurView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    blurView.frame = CGRectMake(
+        (self.view.frame.size.width - MAX(tempW, tempH))/2,
+        (self.view.frame.size.height - MIN(tempW, tempH))/2,
+        MAX(tempW, tempH), MIN(tempW, tempH));
     blurView.layer.cornerRadius = 10.0;
     blurView.clipsToBounds = YES;
     [self.view addSubview:blurView];
 
     UIBarButtonItem *btnFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
 
-    UIToolbar *popoverToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, 44.0)];
+    UIToolbar *popoverToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0,   blurView.frame.size.width, 44.0)];
     UIPanGestureRecognizer *dragVCGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(dragViewController:)];
     dragVCGesture.minimumNumberOfTouches = 1;
     dragVCGesture.maximumNumberOfTouches = 1;
@@ -799,23 +804,26 @@ CGFloat currentY;
     popoverToolbar.items = @[popoverCancelButton, btnFlexibleSpace, popoverDoneButton]; 
     [blurView.contentView addSubview:popoverToolbar];
 
-    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(5.0, popoverToolbar.frame.size.height, self.view.bounds.size.width - 10.0, self.view.bounds.size.height - popoverToolbar.frame.size.height)];
+    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(5.0, popoverToolbar.frame.size.height, blurView.frame.size.width - 10.0, blurView.frame.size.height - popoverToolbar.frame.size.height)];
+    self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     [blurView.contentView addSubview:self.scrollView];
 
-    UIToolbar *editPickToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, 44.0)];
+    UIToolbar *editPickToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, blurView.frame.size.width, 44.0)];
  
     UIBarButtonItem *editDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeTextField)];
     editPickToolbar.items = @[btnFlexibleSpace, editDoneButton];
 
-    CGFloat width = self.view.bounds.size.width - 10.0;
-    CGFloat height = self.view.bounds.size.height - 10.0;
+    CGFloat width = blurView.frame.size.width - 10.0;
+    CGFloat height = blurView.frame.size.height - 10.0;
 
 
     // Property: Name
     UILabel *labelName = [self addLabel:localize(@"custom_controls.button_edit.name", nil)];
     self.editName = [[UITextField alloc] initWithFrame:CGRectMake(labelName.frame.size.width + 5.0, currentY, width - labelName.frame.size.width - 5.0, labelName.frame.size.height)];
     [self.editName addTarget:self action:@selector(textFieldEditingChanged) forControlEvents:UIControlEventEditingChanged];
+    [self.editName addTarget:self.editName action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     self.editName.placeholder = localize(@"custom_controls.button_edit.name", nil);
+    self.editName.returnKeyType = UIReturnKeyDone;
     self.editName.text = self.targetButton.properties[@"name"];
     [self.scrollView addSubview:self.editName];
 
@@ -830,19 +838,21 @@ CGFloat currentY;
         [self.scrollView addSubview:labelSizeX];
         self.editSizeWidth = [[UITextField alloc] initWithFrame:CGRectMake(labelSize.frame.size.width, labelSize.frame.origin.y, editSizeWidthValue, labelSize.frame.size.height)];
         [self.editSizeWidth addTarget:self action:@selector(textFieldEditingChanged) forControlEvents:UIControlEventEditingChanged];
+        [self.editSizeWidth addTarget:self.editSizeWidth action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
         self.editSizeWidth.keyboardType = UIKeyboardTypeDecimalPad;
         self.editSizeWidth.placeholder = @"width";
+        self.editSizeWidth.returnKeyType = UIReturnKeyDone;
         self.editSizeWidth.text = [self.targetButton.properties[@"width"] stringValue];
         self.editSizeWidth.textAlignment = NSTextAlignmentCenter;
-        self.editSizeWidth.inputAccessoryView = editPickToolbar;
         [self.scrollView addSubview:self.editSizeWidth];
         self.editSizeHeight = [[UITextField alloc] initWithFrame:CGRectMake(labelSizeX.frame.origin.x + labelSizeX.frame.size.width, labelSize.frame.origin.y, editSizeWidthValue, labelSize.frame.size.height)];
         [self.editSizeHeight addTarget:self action:@selector(textFieldEditingChanged) forControlEvents:UIControlEventEditingChanged];
+        [self.editSizeHeight addTarget:self.editSizeHeight action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
         self.editSizeHeight.keyboardType = UIKeyboardTypeDecimalPad;
         self.editSizeHeight.placeholder = @"height";
+        self.editSizeHeight.returnKeyType = UIReturnKeyDone;
         self.editSizeHeight.text = [self.targetButton.properties[@"height"] stringValue];
         self.editSizeHeight.textAlignment = NSTextAlignmentCenter;
-        self.editSizeHeight.inputAccessoryView = editPickToolbar;
         [self.scrollView addSubview:self.editSizeHeight];
     }
 
@@ -993,11 +1003,10 @@ CGFloat currentY;
     static CGPoint lastPoint;
     CGPoint point = [sender translationInView:self.view];
     if (sender.state != UIGestureRecognizerStateBegan) {
-        CGRect rect = self.view.frame;
+        CGRect rect = self.view.subviews[0].frame;
         rect.origin.x = clamp(rect.origin.x - lastPoint.x + point.x, -self.view.frame.size.width/2, self.view.frame.size.width - sender.view.frame.size.width/2);
         rect.origin.y = clamp(rect.origin.y - lastPoint.y + point.y, 0, self.view.frame.size.height - sender.view.frame.size.height);
-        self.view.frame = rect;
-        NSLog(@"View bounds %@ frame %@", NSStringFromCGRect(self.view.bounds), NSStringFromCGRect(self.view.frame));
+        self.view.subviews[0].frame = rect;
     }
     lastPoint = point;
 }
