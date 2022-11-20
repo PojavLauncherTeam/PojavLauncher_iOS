@@ -33,7 +33,6 @@
 "custom_controls.button_edit.swipeable" = "Pwede ma swipe";
 "custom_controls.button_edit.bg_color" = "Kulay ng likuran";
 "custom_controls.button_edit.stroke_color" = "Kulay ng stroke";
-"custom_controls.button_edit.dynamic_position" = "Dynamic na posisyon";
 
 "custom_controls.button_menu.add_subbutton" = "Lagyan ng sub-button";
 "custom_controls.control_menu.exit" = "Umalis";
