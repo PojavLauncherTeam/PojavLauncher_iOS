@@ -44,9 +44,6 @@
 "custom_controls.button_edit.stroke_color" = "Barva obrysu";
 "custom_controls.button_edit.corner_radius" = "Poloměr rohu (%)";
 "custom_controls.button_edit.opacity" = "Průhlednost (%)";
-"custom_controls.button_edit.dynamic_position" = "Dynamická pozice";
-"custom_controls.button_edit.dynamic_x" = "Dynamická osa X";
-"custom_controls.button_edit.dynamic_y" = "Dynamická osa Y";
 
 "custom_controls.button_menu.add_subbutton" = "Přidat podtlačítko";
 "custom_controls.control_menu.discard_changes" = "Zahodit změny";
