@@ -44,9 +44,6 @@
 "custom_controls.button_edit.stroke_color" = "Kolor obrysu";
 "custom_controls.button_edit.corner_radius" = "Zaokrąglenie narożników (%)";
 "custom_controls.button_edit.opacity" = "Przezroczystość (%)";
-"custom_controls.button_edit.dynamic_position" = "Dynamiczna pozycja";
-"custom_controls.button_edit.dynamic_x" = "Dynamiczna oś X";
-"custom_controls.button_edit.dynamic_y" = "Dynamiczna oś Y";
 
 "custom_controls.button_menu.add_subbutton" = "Dodaj przycisk podrzędny";
 "custom_controls.control_menu.discard_changes" = "Odrzuć zmiany";
