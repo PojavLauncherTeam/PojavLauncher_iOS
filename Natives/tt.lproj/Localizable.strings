@@ -23,7 +23,6 @@
 "custom_controls.button_edit.mapping" = "Төймәләр";
 "custom_controls.button_edit.bg_color" = "Фон төсе";
 "custom_controls.button_edit.stroke_color" = "Кыршау төсе";
-"custom_controls.button_edit.dynamic_position" = "Динамик позициясе";
 
 "custom_controls.button_menu.add_subbutton" = "Төймәчәне өстәү";
 "custom_controls.control_menu.exit" = "Чыгу";
