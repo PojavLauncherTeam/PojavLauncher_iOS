@@ -21,7 +21,6 @@
 "custom_controls.button_edit.name" = "Naam";
 "custom_controls.button_edit.size" = "Grootte";
 "custom_controls.button_edit.toggleable" = "Omschakelbaar";
-"custom_controls.button_edit.dynamic_position" = "Dynamische positie";
 "custom_controls.control_menu.exit" = "Afsluiten";
 "custom_controls.control_menu.save" = "Opslaan";
 "custom_controls.control_menu.load" = "Lading";
