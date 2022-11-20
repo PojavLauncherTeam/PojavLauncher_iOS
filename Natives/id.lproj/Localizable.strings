@@ -33,7 +33,6 @@
 "custom_controls.button_edit.swipeable" = "Bisa digesek";
 "custom_controls.button_edit.bg_color" = "Warna background";
 "custom_controls.button_edit.stroke_color" = "Warna garis";
-"custom_controls.button_edit.dynamic_position" = "Posisi dinamis";
 
 "custom_controls.button_menu.add_subbutton" = "Tambahkan tombol";
 "custom_controls.control_menu.exit" = "Keluar";
