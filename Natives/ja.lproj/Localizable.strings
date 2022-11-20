@@ -26,7 +26,6 @@
 "custom_controls.button_edit.swipeable" = "スワイプする";
 "custom_controls.button_edit.bg_color" = "背景色";
 "custom_controls.button_edit.stroke_color" = "線の色";
-"custom_controls.button_edit.dynamic_position" = "動的な位置";
 
 "custom_controls.button_menu.add_subbutton" = "サブボタンを追加";
 "custom_controls.control_menu.exit" = "閉じる";
