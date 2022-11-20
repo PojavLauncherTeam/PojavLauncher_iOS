@@ -26,7 +26,6 @@
 "custom_controls.button_edit.swipeable" = "Scratchable";
 "custom_controls.button_edit.bg_color" = "Bakground colour";
 "custom_controls.button_edit.stroke_color" = "Strok colour";
-"custom_controls.button_edit.dynamic_position" = "Movin’ pozision";
 
 "custom_controls.button_menu.add_subbutton" = "Add b’low-buton";
 "custom_controls.control_menu.exit" = "Exit";
