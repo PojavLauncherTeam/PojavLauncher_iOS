@@ -56,6 +56,7 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
                     callback(NO);
                     return;
                 }
+                self.authData[@"xuid"] = uhs;
                 [self acquireMinecraftToken:uhs xstsToken:xsts callback:callback];
             }];
         };

@@ -162,7 +162,7 @@ public final class Tools
         varArgMap.put("auth_access_token", profile.accessToken);
         varArgMap.put("auth_player_name", username);
         varArgMap.put("auth_uuid", profile.profileId);
-        // varArgMap.put("auth_xuid", profile.profileId); // TODO!!!
+        varArgMap.put("auth_xuid", profile.xuid);
         varArgMap.put("assets_root", Tools.ASSETS_PATH);
         varArgMap.put("assets_index_name", versionInfo.assets);
         varArgMap.put("clientid", profile.clientToken);
