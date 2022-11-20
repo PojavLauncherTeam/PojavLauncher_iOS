@@ -44,9 +44,6 @@
 "custom_controls.button_edit.stroke_color" = "Strichfarbe";
 "custom_controls.button_edit.corner_radius" = "Eckenradius (%)";
 "custom_controls.button_edit.opacity" = "Deckkraft (%)";
-"custom_controls.button_edit.dynamic_position" = "Dynamische Position";
-"custom_controls.button_edit.dynamic_x" = "Dynamische X-Achse";
-"custom_controls.button_edit.dynamic_y" = "Dynamische Y-Achse";
 
 "custom_controls.button_menu.add_subbutton" = "Sub-Schaltfläche hinzufügen";
 "custom_controls.control_menu.discard_changes" = "Änderungen verwerfen";
