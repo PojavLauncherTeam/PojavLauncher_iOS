@@ -44,9 +44,6 @@
 "custom_controls.button_edit.stroke_color" = "Колір контуру";
 "custom_controls.button_edit.corner_radius" = "Радіус округлення (%)";
 "custom_controls.button_edit.opacity" = "Невиразність (%)";
-"custom_controls.button_edit.dynamic_position" = "Динамічне розташування";
-"custom_controls.button_edit.dynamic_x" = "Динамічна вісь X";
-"custom_controls.button_edit.dynamic_y" = "Динамічна вісь Y";
 
 "custom_controls.button_menu.add_subbutton" = "Додати під-кнопку";
 "custom_controls.control_menu.discard_changes" = "Відхилити зміни";
