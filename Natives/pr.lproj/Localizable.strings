@@ -26,7 +26,6 @@
 "custom_controls.button_edit.swipeable" = "Пролистываемый";
 "custom_controls.button_edit.bg_color" = "Цвѣтъ фона";
 "custom_controls.button_edit.stroke_color" = "Цвѣтъ обведенія";
-"custom_controls.button_edit.dynamic_position" = "Динамическая позиція";
 
 "custom_controls.button_menu.add_subbutton" = "Добавить подъ-кнопку";
 "custom_controls.control_menu.exit" = "Выйти";
