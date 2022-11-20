@@ -31,7 +31,6 @@
 "custom_controls.button_edit.swipeable" = "Có thể vuốt";
 "custom_controls.button_edit.bg_color" = "Màu nền";
 "custom_controls.button_edit.stroke_color" = "Màu viền phím";
-"custom_controls.button_edit.dynamic_position" = "Vị trí động";
 
 "custom_controls.button_menu.add_subbutton" = "Thêm phím phụ";
 "custom_controls.control_menu.exit" = "Thoát";
