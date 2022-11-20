@@ -26,7 +26,6 @@
 "custom_controls.button_edit.swipeable" = "قابل سوایپ";
 "custom_controls.button_edit.bg_color" = "رنگ پس‌زمینه";
 "custom_controls.button_edit.stroke_color" = "رنگ حاشیه";
-"custom_controls.button_edit.dynamic_position" = "موقعیت شناور";
 
 "custom_controls.button_menu.add_subbutton" = "افزودن زیر-دکمه";
 "custom_controls.control_menu.exit" = "خروج";
