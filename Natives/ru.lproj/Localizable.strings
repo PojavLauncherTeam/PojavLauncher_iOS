@@ -44,9 +44,6 @@
 "custom_controls.button_edit.stroke_color" = "Цвет обводки";
 "custom_controls.button_edit.corner_radius" = "Скругление (%)";
 "custom_controls.button_edit.opacity" = "Видимость (%)";
-"custom_controls.button_edit.dynamic_position" = "Динамическая позиция";
-"custom_controls.button_edit.dynamic_x" = "Привязка по оси X";
-"custom_controls.button_edit.dynamic_y" = "Привязка по оси Y";
 
 "custom_controls.button_menu.add_subbutton" = "Добавить под-кнопку";
 "custom_controls.control_menu.discard_changes" = "Сбросить изменения";
