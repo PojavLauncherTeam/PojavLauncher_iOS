@@ -44,9 +44,6 @@
 "custom_controls.button_edit.stroke_color" = "边框颜色";
 "custom_controls.button_edit.corner_radius" = "圆角半径 (%)";
 "custom_controls.button_edit.opacity" = "不透明度 (%)：";
-"custom_controls.button_edit.dynamic_position" = "动态位置";
-"custom_controls.button_edit.dynamic_x" = "动态 X 轴";
-"custom_controls.button_edit.dynamic_y" = "动态 Y 轴";
 
 "custom_controls.button_menu.add_subbutton" = "添加子按钮";
 "custom_controls.control_menu.discard_changes" = "放弃更改";
