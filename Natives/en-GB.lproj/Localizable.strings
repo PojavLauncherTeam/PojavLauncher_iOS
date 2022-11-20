@@ -21,7 +21,6 @@
 "custom_controls.button_edit.name" = "Name";
 "custom_controls.button_edit.size" = "Size";
 "custom_controls.button_edit.toggleable" = "Toggleable";
-"custom_controls.button_edit.dynamic_position" = "Dynamic position";
 "custom_controls.control_menu.exit" = "Exit";
 "custom_controls.control_menu.save" = "Save";
 "custom_controls.control_menu.load" = "Load";
