@@ -26,7 +26,6 @@
 "custom_controls.button_edit.swipeable" = "قابل للسحب";
 "custom_controls.button_edit.bg_color" = "لون الخلفية";
 "custom_controls.button_edit.stroke_color" = "لون الخط";
-"custom_controls.button_edit.dynamic_position" = "الموضع الديناميكي";
 
 "custom_controls.button_menu.add_subbutton" = "إضافة زر فرعي";
 "custom_controls.control_menu.exit" = "خروج";
