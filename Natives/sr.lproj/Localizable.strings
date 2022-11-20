@@ -25,7 +25,6 @@
 "custom_controls.button_edit.toggleable" = "Тогелабле";
 "custom_controls.button_edit.bg_color" = "Боја позадине";
 "custom_controls.button_edit.stroke_color" = "Боја потеза";
-"custom_controls.button_edit.dynamic_position" = "Динамична позиција";
 
 "custom_controls.button_menu.add_subbutton" = "Додај суб-дугме";
 "custom_controls.control_menu.exit" = "Изађи";
