@@ -26,7 +26,6 @@
 "custom_controls.button_edit.swipeable" = "Glisabil";
 "custom_controls.button_edit.bg_color" = "Culoarea de fundal";
 "custom_controls.button_edit.stroke_color" = "Culoarea conturului";
-"custom_controls.button_edit.dynamic_position" = "Poziție dinamică";
 
 "custom_controls.button_menu.add_subbutton" = "Adaugă sub-buton";
 "custom_controls.control_menu.exit" = "Ieșire";
