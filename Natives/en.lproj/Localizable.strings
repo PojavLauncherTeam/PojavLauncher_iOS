@@ -44,9 +44,6 @@
 "custom_controls.button_edit.stroke_color" = "Stroke color";
 "custom_controls.button_edit.corner_radius" = "Corner radius (%)";
 "custom_controls.button_edit.opacity" = "Opacity (%)";
-"custom_controls.button_edit.dynamic_position" = "Dynamic position";
-"custom_controls.button_edit.dynamic_x" = "Dynamic X-axis";
-"custom_controls.button_edit.dynamic_y" = "Dynamic Y-axis";
 
 "custom_controls.button_menu.add_subbutton" = "Add sub-button";
 "custom_controls.control_menu.discard_changes" = "Discard changes";
