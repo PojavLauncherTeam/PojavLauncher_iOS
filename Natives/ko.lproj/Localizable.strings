@@ -26,7 +26,6 @@
 "custom_controls.button_edit.swipeable" = "끌어당기기";
 "custom_controls.button_edit.bg_color" = "배경 색상";
 "custom_controls.button_edit.stroke_color" = "강조 색";
-"custom_controls.button_edit.dynamic_position" = "동적 위치";
 
 "custom_controls.button_menu.add_subbutton" = "부속 버튼 추가";
 "custom_controls.control_menu.exit" = "나가기";
