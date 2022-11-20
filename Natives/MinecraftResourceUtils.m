@@ -41,7 +41,7 @@ static AFURLSessionManager* manager;
     // for now
     BOOL accessible = [BaseAuthenticator.current.authData[@"username"] hasPrefix:@"Demo."] || BaseAuthenticator.current.authData[@"xboxGamertag"] != nil;
     if (!accessible && show) {
-        showDialog(currentVC(), @"Error", @"Minecraft can't be legally installed when logged in with a local account. Please switch to an online account to continue.");
+        showDialog(currentVC(), localize(@"Error", nil), @"Minecraft can't be legally installed when logged in with a local account. Please switch to an online account to continue.");
     }
     return accessible;
 }
@@ -88,64 +88,41 @@ static AFURLSessionManager* manager;
     }
 }
 
-+ (NSMutableDictionary *)readFromFile:(NSString *)version sha:(NSString *)sha {
-    NSError *error;
-    NSString *path = [NSString stringWithFormat:@"%s/versions/%@/%@.json", getenv("POJAV_GAME_DIR"), version, version];
-    NSString *content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
-    if (error) {
-        NSLog(@"[MCDL] Error: couldn't read %@: %@", path, error.localizedDescription);
-        showDialog(currentVC(), @"Error", [NSString stringWithFormat:@"Could not read %@: %@", path, error.localizedDescription]);
-        return nil;
-    }
-
-    NSData* data = [content dataUsingEncoding:NSUTF8StringEncoding];
-    NSMutableDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
-    if (![self checkSHAIgnorePref:sha forFile:path altName:nil] && error) {
-        // If it gives an error, we check back SHA 
-        NSLog(@"[MCDL] Error: parsing %@: %@", path, error.localizedDescription);
-        showDialog(currentVC(), @"Error", [NSString stringWithFormat:@"Error parsing %@ (SHA mismatch, is file corrupted?): %@", path, error.localizedDescription]);
-    } else if (error) {
-        // This shouldn't happen
-        NSLog(@"[MCDL] Fatal Error: parsing %@ (SHA Passed): %@", path, error.localizedDescription);
-        abort();
-    }
-    return dict;
-}
-
 // Handle inheritsFrom
-+ (void)processVersion:(NSMutableDictionary *)json inheritsFrom:(id)object progress:(NSProgress *)mainProgress callback:(MDCallback)callback success:(void (^)(NSMutableDictionary *json))success {
-    [self downloadClientJson:object progress:mainProgress callback:callback success:^(NSMutableDictionary *inheritsFrom){
-        [self insertSafety:inheritsFrom from:json arr:@[
-            @"assetIndex", @"assets", @"id",
-            @"inheritsFrom",
-            @"mainClass", @"minecraftArguments",
-            @"optifineLib", @"releaseTime", @"time", @"type"
-        ]];
-        inheritsFrom[@"arguments"] = json[@"arguments"];
++ (void)processVersion:(NSMutableDictionary *)json inheritsFrom:(NSMutableDictionary *)inheritsFrom {
+    [self insertSafety:inheritsFrom from:json arr:@[
+        @"assetIndex", @"assets", @"id",
+        @"inheritsFrom",
+        @"mainClass", @"minecraftArguments",
+        @"optifineLib", @"releaseTime", @"time", @"type"
+    ]];
+    inheritsFrom[@"arguments"] = json[@"arguments"];
 
-        for (NSMutableDictionary *lib in json[@"libraries"]) {
-            NSString *libName = [lib[@"name"] substringToIndex:[lib[@"name"] rangeOfString:@":" options:NSBackwardsSearch].location];
-            int i;
-            for (i = 0; i < [inheritsFrom[@"libraries"] count]; i++) {
-                NSMutableDictionary *libAdded = inheritsFrom[@"libraries"][i];
-                NSString *libAddedName = [libAdded[@"name"] substringToIndex:[libAdded[@"name"] rangeOfString:@":" options:NSBackwardsSearch].location];
+    for (NSMutableDictionary *lib in json[@"libraries"]) {
+        NSString *libName = [lib[@"name"] substringToIndex:[lib[@"name"] rangeOfString:@":" options:NSBackwardsSearch].location];
+        int i;
+        for (i = 0; i < [inheritsFrom[@"libraries"] count]; i++) {
+            NSMutableDictionary *libAdded = inheritsFrom[@"libraries"][i];
+            NSString *libAddedName = [libAdded[@"name"] substringToIndex:[libAdded[@"name"] rangeOfString:@":" options:NSBackwardsSearch].location];
 
-                if ([libAdded[@"name"] hasPrefix:libName]) {
-                                //Log.d(APP_NAME, "Library " + libName + ": Replaced version " + 
-                                    //libName.substring(libName.lastIndexOf(":") + 1) + " with " +
-                                    //libAddedName.substring(libAddedName.lastIndexOf(":") + 1));
-                    inheritsFrom[@"libraries"][i] = lib;
-                    i = -1;
-                    break;
-                }
-            }
-
-            if (i != -1) {
-                [inheritsFrom[@"libraries"] addObject:lib];
+            if ([libAdded[@"name"] hasPrefix:libName]) {
+                inheritsFrom[@"libraries"][i] = lib;
+                i = -1;
+                break;
             }
         }
-                    
-        //inheritsFrom[@"inheritsFrom"] = nil;
+
+        if (i != -1) {
+            [inheritsFrom[@"libraries"] addObject:lib];
+        }
+    }
+
+    //inheritsFrom[@"inheritsFrom"] = nil;
+}
+
++ (void)processVersion:(NSMutableDictionary *)json inheritsFrom:(id)object progress:(NSProgress *)mainProgress callback:(MDCallback)callback success:(void (^)(NSMutableDictionary *json))success {
+    [self downloadClientJson:object progress:mainProgress callback:callback success:^(NSMutableDictionary *inheritsFrom){
+        [self processVersion:json inheritsFrom:inheritsFrom];
         [self downloadClientJson:inheritsFrom[@"assetIndex"] progress:mainProgress callback:callback success:^(NSMutableDictionary *assetJson){
             inheritsFrom[@"assetIndexObj"] = assetJson;
             success(inheritsFrom);
@@ -174,7 +151,7 @@ static AFURLSessionManager* manager;
         versionStr = [NSString stringWithFormat:@"assets/indexes/%@", versionStr];
         jsonPath = [NSString stringWithFormat:@"%s/%@.json", getenv("POJAV_GAME_DIR"), versionStr];
     } else {
-        jsonPath = [NSString stringWithFormat:@"%s/versions/%@/%@.json", getenv("POJAV_GAME_DIR"), versionStr, versionStr];
+        jsonPath = [NSString stringWithFormat:@"%1$s/versions/%2$@/%2$@.json", getenv("POJAV_GAME_DIR"), versionStr];
     }
 
     if (![self checkSHA:versionSHA forFile:jsonPath altName:nil]) {
@@ -189,7 +166,7 @@ static AFURLSessionManager* manager;
         if (error != nil) {
             NSString *errorStr = [NSString stringWithFormat:@"Failed to create directory %@: %@", verPath, error.localizedDescription];
             NSLog(@"[MCDL] Error: %@", errorStr);
-            showDialog(currentVC(), @"Error", errorStr);
+            showDialog(currentVC(), localize(@"Error", nil), errorStr);
             callback(nil, nil, nil);
             return;
         }
@@ -206,14 +183,14 @@ static AFURLSessionManager* manager;
             if (error != nil) { // FIXME: correct?
                 NSString *errorStr = [NSString stringWithFormat:@"Failed to download %@: %@\nCall stack: %@", versionURL, error.localizedDescription, NSThread.callStackSymbols];
                 NSLog(@"[MCDL] Error: %@ %@", errorStr, NSThread.callStackSymbols);
-                showDialog(currentVC(), @"Error", errorStr);
+                showDialog(currentVC(), localize(@"Error", nil), errorStr);
                 callback(nil, nil, nil);
                 return;
             } else {
                 // A version from the offical server won't likely to have inheritsFrom, so return immediately
                 if (![self checkSHA:versionSHA forFile:jsonPath altName:nil]) {
                     // Abort when a downloaded file's SHA mismatches
-                    showDialog(currentVC(), @"Error", [NSString stringWithFormat:@"Failed to verify file %@: SHA1 mismatch", versionStr]);
+                    showDialog(currentVC(), localize(@"Error", nil), [NSString stringWithFormat:@"Failed to verify file %@: SHA1 mismatch", versionStr]);
                     callback(nil, nil, nil);
                     return;
                 }
@@ -263,8 +240,16 @@ static AFURLSessionManager* manager;
             return;
         }
 
+        // Try using local json
+        NSMutableDictionary *inheritsFromDict = parseJSONFromFile([NSString stringWithFormat:@"%1$s/versions/%2$@/%2$@.json", getenv("POJAV_GAME_DIR"), version]);
+        if (inheritsFromDict != nil) {
+            [self processVersion:json inheritsFrom:inheritsFromDict];
+            success(inheritsFromDict);
+            return;
+        }
+
         // If the inheritsFrom is not found, return an error
-        showDialog(currentVC(), @"Error", [NSString stringWithFormat:@"Could not find inheritsFrom=%@ for version %@", json[@"inheritsFrom"], versionStr]);
+        showDialog(currentVC(), localize(@"Error", nil), [NSString stringWithFormat:@"Could not find inheritsFrom=%@ for version %@", json[@"inheritsFrom"], versionStr]);
     }
 }
 
@@ -298,7 +283,7 @@ static AFURLSessionManager* manager;
     } else {
         client[@"downloads"][@"artifact"] = json[@"downloads"][@"client"];
     }
-    client[@"downloads"][@"artifact"][@"path"] = [NSString stringWithFormat:@"../versions/%@/%@.jar", json[@"id"], json[@"id"]];
+    client[@"downloads"][@"artifact"][@"path"] = [NSString stringWithFormat:@"../versions/%1$@/%1$@.jar", json[@"id"]];
     client[@"name"] = [NSString stringWithFormat:@"%@.jar", json[@"id"]];
     [json[@"libraries"] addObject:client];
 }
@@ -361,12 +346,12 @@ static AFURLSessionManager* manager;
                 cancel = YES;
                 NSString *errorStr = [NSString stringWithFormat:@"Failed to download %@: %@\nCall stack: %@", url, error.localizedDescription, NSThread.callStackSymbols];
                 NSLog(@"[MCDL] Error: %@ %@", errorStr, NSThread.callStackSymbols);
-                showDialog(currentVC(), @"Error", errorStr);
+                showDialog(currentVC(), localize(@"Error", nil), errorStr);
                 callback(nil, nil);
             } else if (![self checkSHA:sha1 forFile:path altName:nil]) {
                 // Abort when a downloaded file's SHA mismatches
                 cancel = YES;
-                showDialog(currentVC(), @"Error", [NSString stringWithFormat:@"Failed to verify file %@: SHA1 mismatch", path.lastPathComponent]);
+                showDialog(currentVC(), localize(@"Error", nil), [NSString stringWithFormat:@"Failed to verify file %@: SHA1 mismatch", path.lastPathComponent]);
                 callback(nil, nil);
             }
             dispatch_group_leave(group);
@@ -449,7 +434,7 @@ static AFURLSessionManager* manager;
                 jobsAvailable = -3;
                 NSString *errorStr = [NSString stringWithFormat:@"Failed to download %@: %@\nCall stack: %@", url, error.localizedDescription, NSThread.callStackSymbols];
                 NSLog(@"[MCDL] Error: %@ %@", errorStr, NSThread.callStackSymbols);
-                showDialog(currentVC(), @"Error", errorStr);
+                showDialog(currentVC(), localize(@"Error", nil), errorStr);
                 callback(nil, nil);
             } else if (![self checkSHA:hash forFile:path altName:name]) {
                 // Abort when a downloaded file's SHA mismatches
@@ -458,7 +443,7 @@ static AFURLSessionManager* manager;
                     return;
                 }
                 jobsAvailable = -2;
-                showDialog(currentVC(), @"Error", [NSString stringWithFormat:@"Failed to verify file %@: SHA1 mismatch", path.lastPathComponent]);
+                showDialog(currentVC(), localize(@"Error", nil), [NSString stringWithFormat:@"Failed to verify file %@: SHA1 mismatch", path.lastPathComponent]);
                 callback(nil, nil);
             }
             ++jobsAvailable;
@@ -551,7 +536,7 @@ static AFURLSessionManager* manager;
 
     if ([version isKindOfClass:NSString.class]){
         // Find in inheritsFrom
-        NSDictionary *versionDict = parseJSONFromFile([NSString stringWithFormat:@"%s/versions/%@/%@.json", getenv("POJAV_GAME_DIR"), version, version]);
+        NSDictionary *versionDict = parseJSONFromFile([NSString stringWithFormat:@"%1$s/versions/%2$@/%2$@.json", getenv("POJAV_GAME_DIR"), version]);
         NSAssert(versionDict != nil, @"version should not be null");
         if (versionDict[@"inheritsFrom"] == nil) {
             // How then?
