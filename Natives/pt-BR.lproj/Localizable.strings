@@ -26,7 +26,6 @@
 "custom_controls.button_edit.swipeable" = "Deslizável";
 "custom_controls.button_edit.bg_color" = "Cor de fundo";
 "custom_controls.button_edit.stroke_color" = "Cor do traçado";
-"custom_controls.button_edit.dynamic_position" = "Posição dinâmica";
 
 "custom_controls.button_menu.add_subbutton" = "Adicionar sub-botão";
 "custom_controls.control_menu.exit" = "Sair";
