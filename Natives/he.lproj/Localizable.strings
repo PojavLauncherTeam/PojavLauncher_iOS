@@ -26,7 +26,6 @@
 "custom_controls.button_edit.swipeable" = "ניתן להחלקה";
 "custom_controls.button_edit.bg_color" = "צבע הרקע";
 "custom_controls.button_edit.stroke_color" = "צבע קו המתאר";
-"custom_controls.button_edit.dynamic_position" = "מיקום דינמי";
 
 "custom_controls.button_menu.add_subbutton" = "הוסף תת-כפתור";
 "custom_controls.control_menu.exit" = "צא";
