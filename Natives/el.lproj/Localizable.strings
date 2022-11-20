@@ -26,7 +26,6 @@
 "custom_controls.button_edit.swipeable" = "Ευέλικτο";
 "custom_controls.button_edit.bg_color" = "Χρώμα φόντου";
 "custom_controls.button_edit.stroke_color" = "Χρώμα περιγράμματος";
-"custom_controls.button_edit.dynamic_position" = "Δυναμική θέση";
 
 "custom_controls.button_menu.add_subbutton" = "Προσθήκη κουμπιού";
 "custom_controls.control_menu.exit" = "Έξοδος";
