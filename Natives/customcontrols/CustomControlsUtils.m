@@ -23,7 +23,6 @@ NSMutableDictionary* createButton(NSString* name, int* keycodes, NSString* dynam
     dict[@"opacity"] = @(1);
     dict[@"cornerRadius"] = @(0);
     dict[@"bgColor"] = @(0x4d000000);
-    dict[@"isDynamicBtn"] = @(YES);
     return dict;
 }
 

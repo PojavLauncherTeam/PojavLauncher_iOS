@@ -12,7 +12,6 @@
     if (self.parentDrawer && ![self.parentDrawer.drawerData[@"orientation"] isEqualToString:@"FREE"]) {
         self.properties[@"width"] = self.parentDrawer.properties[@"width"];
         self.properties[@"height"] = self.parentDrawer.properties[@"height"];
-        self.properties[@"isDynamicBtn"] = @(NO);
     }
 }
 
