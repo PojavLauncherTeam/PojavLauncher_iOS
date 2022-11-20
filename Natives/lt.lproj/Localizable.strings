@@ -26,7 +26,6 @@
 "custom_controls.button_edit.swipeable" = "Perbraukiamas";
 "custom_controls.button_edit.bg_color" = "Fono spalva";
 "custom_controls.button_edit.stroke_color" = "Linijos spalva";
-"custom_controls.button_edit.dynamic_position" = "Dinamiška pozicija";
 
 "custom_controls.button_menu.add_subbutton" = "Pridetį mygtukų spintos mygtuką";
 "custom_controls.control_menu.exit" = "Išeiti";
