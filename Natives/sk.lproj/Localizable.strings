@@ -26,7 +26,6 @@
 "custom_controls.button_edit.swipeable" = "Posunovateľné";
 "custom_controls.button_edit.bg_color" = "Farba pozadia tlačidla";
 "custom_controls.button_edit.stroke_color" = "Farba obrysu tlačidla";
-"custom_controls.button_edit.dynamic_position" = "Dynamická pozície";
 
 "custom_controls.button_menu.add_subbutton" = "Pridať podtlačidlo";
 "custom_controls.control_menu.exit" = "Skončiť";
@@ -39,9 +38,9 @@
 
 "News" = "Novinky";
 "Settings" = "Nastavenie";
-"preference.section.control" = "Prispôsobenie ovládania";
+"preference.section.control" = "Ovládanie";
 //"preference.section.footer.control" = "";
-"preference.section.java" = "Vyladenie Javy";
+"preference.section.java" = "Nastavenia Javy";
 "preference.title.cosmetica" = "Cosmetica Capeky";
 
 "preference.title.renderer" = "Renderer";
