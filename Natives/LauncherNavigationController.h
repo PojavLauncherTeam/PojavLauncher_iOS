@@ -4,9 +4,9 @@ NSArray<NSDictionary *> *remoteVersionList;
 
 @interface LauncherNavigationController : UINavigationController
 
-@property UIProgressView *progressViewMain, *progressViewSub;
-@property UILabel* progressText;
-@property UIButton* buttonInstall;
+@property(nonatomic) UIProgressView *progressViewMain, *progressViewSub;
+@property(nonatomic) UILabel* progressText;
+@property(nonatomic) UIButton* buttonInstall;
 
 - (void)reloadVersionList:(int)type;
 

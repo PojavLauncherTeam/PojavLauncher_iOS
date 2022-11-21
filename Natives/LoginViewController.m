@@ -69,6 +69,9 @@ extern NSMutableDictionary *prefDict;
     CGFloat widthSplit = width / 4.0;
     CGFloat widthSplit2 = width / 2.0;
     
+    for (int i = 0; i < 5; i++) {
+        NSLog(@"%@", [UIImage imageNamed:@"AppLogo-Vector"]);
+    }
     UIImageView *logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"AppLogo-Vector"]];
     logoView.frame = CGRectMake(0, (rawHeight / 2) - 125, width, 250);
     [logoView setContentMode:UIViewContentModeScaleAspectFit];
@@ -84,17 +87,6 @@ extern NSMutableDictionary *prefDict;
     NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"MM-dd"];
     NSString* date = [dateFormatter stringFromDate:[NSDate date]];
-    
-    self.navigationItem.rightBarButtonItems = @[
-        [[UIBarButtonItem alloc]
-            initWithBarButtonSystemItem:UIBarButtonSystemItemAction
-            target:self action:@selector(latestLogShare)],
-        // There's no better way to put both title+icon for both iOS 12 and 13+, so do this
-        [[UIBarButtonItem alloc]
-            initWithTitle:localize(@"login.menu.sendlogs", nil)
-            style:UIBarButtonItemStyleDone
-            target:self action:@selector(latestLogShare)]
-    ];
 
     CGRect frame = CGRectMake(widthSplit2 - (((width - widthSplit * 2.0) / 2) / 2), (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
     
@@ -425,16 +417,6 @@ extern NSMutableDictionary *prefDict;
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         [self enableJITWithAltJIT];
     }];
-}
-
--(void)latestLogShare
-{
-    NSString *latestlogPath = [NSString stringWithFormat:@"file://%s/latestlog.old.txt", getenv("POJAV_HOME")];
-    NSLog(@"Path is %@", latestlogPath);
-    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[@"latestlog.txt", [NSURL URLWithString:latestlogPath]] applicationActivities:nil];
-    activityViewController.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItems[0];
-
-    [self presentViewController:activityViewController animated:YES completion:nil];
 }
 
 - (void)setPopoverProperties:(UIPopoverPresentationController *)controller sender:(UIButton *)sender {
