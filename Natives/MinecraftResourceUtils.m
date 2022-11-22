@@ -241,7 +241,7 @@ static AFURLSessionManager* manager;
         }
 
         // Try using local json
-        NSMutableDictionary *inheritsFromDict = parseJSONFromFile([NSString stringWithFormat:@"%1$s/versions/%2$@/%2$@.json", getenv("POJAV_GAME_DIR"), version]);
+        NSMutableDictionary *inheritsFromDict = parseJSONFromFile([NSString stringWithFormat:@"%1$s/versions/%2$@/%2$@.json", getenv("POJAV_GAME_DIR"), json[@"inheritsFrom"]]);
         if (inheritsFromDict != nil) {
             [self processVersion:json inheritsFrom:inheritsFromDict];
             success(inheritsFromDict);
