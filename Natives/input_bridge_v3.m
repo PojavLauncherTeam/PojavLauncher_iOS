@@ -381,20 +381,47 @@ void CallbackBridge_nativeSendCursorPos(CGFloat x, CGFloat y) {
     }
 }
 
+char getKeyModifiers(int key, int action) {
+    static char currMods;
+    char mod;
+    switch (key) {
+        case GLFW_KEY_LEFT_SHIFT:
+            mod = GLFW_MOD_SHIFT;
+            break;
+        case GLFW_KEY_LEFT_CONTROL:
+            mod = GLFW_MOD_CONTROL;
+            break;
+        case GLFW_KEY_LEFT_ALT:
+            mod = GLFW_MOD_ALT;
+            break;
+        case GLFW_KEY_CAPS_LOCK:
+            mod = GLFW_MOD_CAPS_LOCK;
+            break;
+        case GLFW_KEY_NUM_LOCK:
+            mod = GLFW_MOD_NUM_LOCK;
+            break;
+        default:
+            return currMods;
+    }
+    if (action) {
+        currMods |= mod;
+    } else {
+        currMods &= ~mod;
+    }
+    return currMods;
+}
+
 void CallbackBridge_nativeSendKey(int key, int scancode, int action, int mods) {
     if (GLFW_invoke_Key && isInputReady) {
+        if (mods == 0) {
+            mods = getKeyModifiers(key, action);
+        }
+
         if (isUseStackQueueCall) {
             sendData(EVENT_TYPE_KEY, key, scancode, action, mods);
         } else {
             GLFW_invoke_Key((void*) showingWindow, key, scancode, action, mods);
         }
-    }
-}
-
-void CallbackBridge_nativeSendKeycode(int keycode, char keychar, int scancode, int action, int mods) {
-    CallbackBridge_nativeSendKey(keycode, scancode, action, mods);
-    if (!CallbackBridge_nativeSendCharMods(keychar, mods)) {
-        CallbackBridge_nativeSendChar(keychar);
     }
 }
 
@@ -404,6 +431,10 @@ void CallbackBridge_nativeSendMouseButton(int button, int action, int mods) {
             // Notify to prepare set new grab pos
             isPrepareGrabPos = true;
         } else if (GLFW_invoke_MouseButton) {
+            if (mods == 0) {
+                mods = getKeyModifiers(key, action);
+            }
+
             if (isUseStackQueueCall) {
                 sendData(EVENT_TYPE_MOUSE_BUTTON, button, action, mods, 0);
             } else {
@@ -459,14 +490,6 @@ void CallbackBridge_nativeSendWindowPos(int x, int y) {
 
 JNIEXPORT void JNICALL Java_org_lwjgl_glfw_GLFW_nglfwSetShowingWindow(JNIEnv* env, jclass clazz, jlong window) {
     showingWindow = (long) window;
-}
-
-void CallbackBridge_sendKeycode(int keycode, jchar keychar, int scancode, int modifiers, BOOL isDown) {
-    if(keycode != 0)  CallbackBridge_nativeSendKey(keycode,scancode,isDown ? 1 : 0, modifiers);
-    if(isDown && keychar != '\0') {
-        CallbackBridge_nativeSendCharMods(keychar, modifiers);
-        CallbackBridge_nativeSendChar(keychar);
-    }
 }
 
 void CallbackBridge_setWindowAttrib(int attrib, int value) {

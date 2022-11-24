@@ -95,13 +95,13 @@ BOOL leftShiftHeld;
             }
             break;
         case SPECIALBTN_MOUSEPRI:
-            CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_LEFT, pressed, leftShiftHeld ? GLFW_MOD_SHIFT : 0);
+            CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_LEFT, pressed, 0);
             break;
         case SPECIALBTN_MOUSEMID:
-            CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_MIDDLE, pressed, leftShiftHeld ? GLFW_MOD_SHIFT : 0);
+            CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_MIDDLE, pressed, 0);
             break;
         case SPECIALBTN_MOUSESEC:
-            CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_RIGHT, pressed, leftShiftHeld ? GLFW_MOD_SHIFT : 0);
+            CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_RIGHT, pressed, 0);
             break;
         case SPECIALBTN_SCROLLUP:
             CallbackBridge_nativeSendScroll(0, pressed ? 1 : 0);
@@ -113,7 +113,7 @@ BOOL leftShiftHeld;
             if (keycode == GLFW_KEY_LEFT_SHIFT) {
                 leftShiftHeld = pressed;
             }
-            CallbackBridge_nativeSendKey(keycode, 0, pressed, leftShiftHeld ? GLFW_MOD_SHIFT : 0);
+            CallbackBridge_nativeSendKey(keycode, 0, pressed, 0);
             break;
     }
 }
@@ -197,24 +197,19 @@ BOOL leftShiftHeld;
         }
 
         // Update WASD states
-        int mod = leftShiftHeld ? GLFW_MOD_SHIFT : 0;
         CallbackBridge_nativeSendKey(GLFW_KEY_W, 0,
             direction >= DIRECTION_NORTH_EAST &&
-            direction <= DIRECTION_NORTH_WEST,
-            mod);
+            direction <= DIRECTION_NORTH_WEST, 0);
         CallbackBridge_nativeSendKey(GLFW_KEY_A, 0,
             direction >= DIRECTION_NORTH_WEST &&
-            direction <= DIRECTION_SOUTH_WEST,
-            mod);
+            direction <= DIRECTION_SOUTH_WEST, 0);
         CallbackBridge_nativeSendKey(GLFW_KEY_S, 0,
             direction >= DIRECTION_SOUTH_WEST &&
-            direction <= DIRECTION_SOUTH_EAST,
-            mod);
+            direction <= DIRECTION_SOUTH_EAST, 0);
         CallbackBridge_nativeSendKey(GLFW_KEY_D, 0,
             direction == DIRECTION_SOUTH_EAST ||
             direction == DIRECTION_EAST ||
-            direction == DIRECTION_NORTH_EAST,
-            mod);
+            direction == DIRECTION_NORTH_EAST, 0);
 
         lastLThumbDirection = direction;
     };
