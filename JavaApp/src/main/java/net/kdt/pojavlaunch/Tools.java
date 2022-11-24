@@ -196,14 +196,6 @@ public final class Tools
                 }
             }
         }
-        minecraftArgs.add("--width");
-        minecraftArgs.add(Integer.toString(mGLFWWindowWidth));
-        minecraftArgs.add("--height");
-        minecraftArgs.add(Integer.toString(mGLFWWindowHeight));
-        minecraftArgs.add("--fullscreenWidth");
-        minecraftArgs.add(Integer.toString(mGLFWWindowWidth));
-        minecraftArgs.add("--fullscreenHeight");
-        minecraftArgs.add(Integer.toString(mGLFWWindowHeight));
         String[] argsFromJson = JSONUtils.insertJSONValueList(
             splitAndFilterEmpty(
                 versionInfo.minecraftArguments == null ?
@@ -236,7 +228,6 @@ public final class Tools
                 strList.add(arg);
             }
         }
-        strList.add("--fullscreen");
         return strList.toArray(new String[0]);
     }
 
