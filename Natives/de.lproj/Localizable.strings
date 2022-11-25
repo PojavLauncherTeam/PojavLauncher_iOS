@@ -152,6 +152,11 @@
 "preference.title.jitstreamer_server" = "JitStreamer-Server-IP";
 "preference.detail.jitstreamer_server" = "Erlaubt es dir, auf eine benutzerdefinierte JitStreamer-Server-IP zu wechseln, wie zum Beispiel für selbst gehostete Instanzen. Diese Option kann ausgelassen werden, wenn du die Standard-JitStreamer-Server verwendest.";
 
+"preference.title.appicon" = "App-Icon festlegen";
+"preference.detail.appicon" = "Erlaubt es dir, zwischen verschiedenen Startbildschirm-Icons für PojavLauncher zu wählen.";
+"preference.title.appicon-default" = "Bekanntes PojavLauncher-Icon (Hell)";
+"preference.title.appicon-dark" = "Bekanntes PojavLauncher-Icon (Dunkel)";
+
 "preference.title.reset_warnings" = "Alle Warnungen zurücksetzen";
 "preference.title.done.reset_warnings" = "Alle Warnungen wurden zurückgesetzt.";
 
