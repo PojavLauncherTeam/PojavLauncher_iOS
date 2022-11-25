@@ -151,6 +151,7 @@
 "preference.detail.debug_logging" = "Logs internal settings and actions to latestlog.txt. This helps the developers find issues easier, but Minecraft may run slower as the logs will be written to more often.";
 "preference.title.jitstreamer_server" = "JitStreamer server IP";
 "preference.detail.jitstreamer_server" = "Allows you to change to a custom JitStreamer server IP, such as for self-hosted instances. This option can be left alone if you use the default JitStreamer servers.";
+
 "preference.title.reset_warnings" = "Reset all warnings";
 "preference.title.done.reset_warnings" = "All warnings have been reset.";
 
