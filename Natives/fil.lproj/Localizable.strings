@@ -121,6 +121,7 @@
 "preference.detail.cosmetica" = "Paganahin ang mga kapa mula sa Cosmetica (dating Arc). Para sa karagdagang impormasyon mangyaring bisitahin ang https://cosmetica.cc. Nangangailangan ng OptiFine";
 "preference.title.debug_logging" = "Pag-log sa pag-debug";
 "preference.detail.debug_logging" = "Nagla-log ng mga panloob na setting at pagkilos sa latestlog.txt. Nakakatulong ito sa mga developer na mas madaling mahanap ang mga isyu, ngunit ang Minecraft ay maaaring tumakbo nang mas mabagal dahil mas madalas na isusulat ang mga log.";
+
 "preference.title.reset_warnings" = "I-reset ang lahat ng mga babala";
 "preference.title.done.reset_warnings" = "Ang lahat ng mga babala ay na-reset.";
 
