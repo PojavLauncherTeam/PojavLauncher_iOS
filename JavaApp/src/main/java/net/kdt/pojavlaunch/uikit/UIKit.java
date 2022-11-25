@@ -23,7 +23,8 @@ public class UIKit {
             // trigger static init
             clazz.getField("isMacOS").get(null);
         } catch (Throwable e) {
-            e.printStackTrace();
+            System.out.println("Skipped patch_FlatLAF_setLinux");
+            //e.printStackTrace();
         }
         System.setProperty("os.name", osName);
     }

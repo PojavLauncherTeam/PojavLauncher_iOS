@@ -53,7 +53,7 @@
         }],
         [LauncherMenuCustomItem
             title:localize(@"login.menu.sendlogs", nil)
-            imageName:@"MenuSendLog" action:^{
+            imageName:@"square.and.arrow.up" action:^{
             [self restoreHighlightedSelection];
             NSString *latestlogPath = [NSString stringWithFormat:@"file://%s/latestlog.old.txt", getenv("POJAV_HOME")];
             NSLog(@"Path is %@", latestlogPath);
@@ -117,9 +117,17 @@
     }
 
     cell.textLabel.text = [self.options[indexPath.row] title];
-    cell.imageView.contentMode = UIViewContentModeCenter;
-    cell.imageView.image = [UIImage imageNamed:[self.options[indexPath.row]
-        performSelector:@selector(imageName)]];
+    //cell.imageView.contentMode = UIViewContentModeScaleToFill;
+    if (@available(iOS 13.0, *)) {
+        cell.imageView.image = [UIImage systemImageNamed:[self.options[indexPath.row]
+            performSelector:@selector(imageName)]];
+    }
+    if (cell.imageView.image == nil) {
+        cell.imageView.layer.magnificationFilter = kCAFilterNearest;
+        cell.imageView.layer.minificationFilter = kCAFilterNearest;
+        cell.imageView.image = [UIImage imageNamed:[self.options[indexPath.row]
+            performSelector:@selector(imageName)]];
+    }
     return cell;
 }
 

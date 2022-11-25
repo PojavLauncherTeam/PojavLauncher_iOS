@@ -1139,8 +1139,6 @@ CGFloat currentY;
 }
 
 - (void)closeTextField {
-    [self.editSizeWidth endEditing:YES];
-    [self.editSizeHeight endEditing:YES];
     [self.editMapping endEditing:YES];
 }
 

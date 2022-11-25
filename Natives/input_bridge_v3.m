@@ -432,7 +432,7 @@ void CallbackBridge_nativeSendMouseButton(int button, int action, int mods) {
             isPrepareGrabPos = true;
         } else if (GLFW_invoke_MouseButton) {
             if (mods == 0) {
-                mods = getKeyModifiers(key, action);
+                mods = getKeyModifiers(0, action);
             }
 
             if (isUseStackQueueCall) {
