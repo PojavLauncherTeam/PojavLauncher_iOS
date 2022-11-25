@@ -90,7 +90,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 ],
                 @"pickList": @[
                   localize(@"preference.title.appicon-default", nil),
-                  localize(@"preference.title.appicon-black", nil)
+                  localize(@"preference.title.appicon-dark", nil)
                 ]
             },
             @{@"key": @"reset_warnings",
