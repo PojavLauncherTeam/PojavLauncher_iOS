@@ -149,6 +149,7 @@
 "preference.detail.debug_logging" = "把內部設定和動作記錄到lateslog.txt。這能幫助開發者更容易地找到問題，但由於日誌寫入的次數會增多，我的世界的運行速度可能會減慢。";
 "preference.title.jitstreamer_server" = "JitStreamer伺服器地址";
 "preference.detail.jitstreamer_server" = "這個選項允許你設定一個自定義JitStreamer IP地址，例如一個自托管的伺服器。如果你使用預設的JitStreamer伺服器，你可以忽略這個選項。";
+
 "preference.title.reset_warnings" = "重設所有警告";
 "preference.title.done.reset_warnings" = "所有警告已被重設。";
 
