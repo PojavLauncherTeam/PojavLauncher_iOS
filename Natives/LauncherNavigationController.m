@@ -350,4 +350,9 @@
     return UIRectEdgeBottom;
 }
 
+- (BOOL)prefersHomeIndicatorAutoHidden {
+    return YES;
+}
+
+
 @end

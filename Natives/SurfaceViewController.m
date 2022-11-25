@@ -379,10 +379,6 @@ BOOL slideableHotbar;
     return UIRectEdgeBottom | UIRectEdgeRight;
 }
 
-- (BOOL)prefersHomeIndicatorAutoHidden {
-    return YES;
-}
-
 - (BOOL)prefersStatusBarHidden {
     return YES;
 }
