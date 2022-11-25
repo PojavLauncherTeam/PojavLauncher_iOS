@@ -101,7 +101,6 @@ BOOL slideableHotbar;
     self.surfaceView.layer.magnificationFilter = self.surfaceView.layer.minificationFilter = kCAFilterNearest;
 
     self.touchView = [[UIView alloc] initWithFrame:self.view.frame];
-    self.touchView = [[UIView alloc] initWithFrame:CGRectFromString(getPreference(@"control_safe_area"))];
     self.touchView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
     self.touchView.multipleTouchEnabled = YES;
     [self.touchView addSubview:self.surfaceView];
@@ -660,8 +659,7 @@ BOOL slideableHotbar;
             if (currentHotbarSlot == -1) {
                 CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_LEFT, 0, 0);
             } else {
-                
-CallbackBridge_nativeSendKey(GLFW_KEY_Q, 0, 0, 0);
+                CallbackBridge_nativeSendKey(GLFW_KEY_Q, 0, 0, 0);
             }
         }
     }
@@ -764,8 +762,7 @@ int currentVisibility = 1;
             // there's no key id 0, but we accidentally used -1 as a special key id, so we had to do that
             // if (keycode == 0) { keycode = -1; }
             // at the moment, send unknown keycode does nothing, may even cause performance issue, so ignore it
-            
-CallbackBridge_nativeSendKey(keycode, 0, held, 0);
+            CallbackBridge_nativeSendKey(keycode, 0, held, 0);
         }
     }
 }
