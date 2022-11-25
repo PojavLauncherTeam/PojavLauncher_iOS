@@ -96,13 +96,13 @@ BOOL slideableHotbar;
 
     [self performSelector:@selector(initCategory_Navigation)];
 
-    self.surfaceView = [[GameSurfaceView alloc] initWithFrame:self.view.frame];
-    self.surfaceView.layer.contentsScale = screenScale * resolutionScale;
-    self.surfaceView.layer.magnificationFilter = self.surfaceView.layer.minificationFilter = kCAFilterNearest;
-
-    self.touchView = [[UIView alloc] initWithFrame:self.view.frame];
+    self.touchView = [[UIView alloc] initWithFrame:CGRectFromString(getPreference(@"control_safe_area"))];
     self.touchView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
     self.touchView.multipleTouchEnabled = YES;
+    
+    self.surfaceView = [[GameSurfaceView alloc] initWithFrame:self.touchView.frame];
+    self.surfaceView.layer.contentsScale = screenScale * resolutionScale;
+    self.surfaceView.layer.magnificationFilter = self.surfaceView.layer.minificationFilter = kCAFilterNearest;
     [self.touchView addSubview:self.surfaceView];
 
     [self.rootView addSubview:self.touchView];

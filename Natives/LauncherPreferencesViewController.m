@@ -79,6 +79,20 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"type": self.typeTextField,
                 @"enableCondition": whenNotInGame
             },
+            @{@"key": @"appicon",
+                @"hasDetail": @YES,
+                @"icon": @"paintbrush",
+                @"type": self.typePickField,
+                @"enableCondition": whenNotInGame,
+                @"pickKeys": @[
+                  @"AppIcon-Light",
+                  @"AppIcon-Dark"
+                ],
+                @"pickList": @[
+                  localize(@"preference.title.appicon-default", nil),
+                  localize(@"preference.title.appicon-black", nil)
+                ]
+            },
             @{@"key": @"reset_warnings",
                 @"icon": @"exclamationmark.triangle",
                 @"type": self.typeButton,
@@ -528,6 +542,19 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
         UIAlertAction *action = [UIAlertAction actionWithTitle:pickList[i] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             cell.detailTextLabel.text = pickKeys[i];
             setPreference(item[@"key"], pickKeys[i]);
+            if([item[@"key"] isEqualToString:@"appicon"]) {
+                NSString* iconName;
+                if([pickKeys[i] isEqualToString:@"AppIcon-Light"]) {
+                    iconName = nil;
+                } else {
+                    iconName = pickKeys[i];
+                }
+                if ([[UIApplication sharedApplication] respondsToSelector:@selector(supportsAlternateIcons)] && [[UIApplication sharedApplication] supportsAlternateIcons]) {
+                    [[UIApplication sharedApplication] setAlternateIconName:iconName completionHandler:^(NSError * _Nullable error) {
+                        NSLog(@"Error: %@", error);
+                    }];
+                }
+            }
         }];
         [picker addAction:action];
         
