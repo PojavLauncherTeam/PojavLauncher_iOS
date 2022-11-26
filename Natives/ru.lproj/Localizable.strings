@@ -154,6 +154,8 @@
 
 "preference.title.appicon" = "Выбрать иконку приложения";
 "preference.detail.appicon" = "Позволяет выбрать одну из нескольких иконок PojavLauncher для главного экрана.";
+"preference.title.appicon-default" = "Обычный светлый PojavLauncher";
+"preference.title.appicon-dark" = "Обычный тёмный PojavLauncher";
 
 "preference.title.reset_warnings" = "Сбросить все предупреждения";
 "preference.title.done.reset_warnings" = "Все предупреждения были сброшены.";
