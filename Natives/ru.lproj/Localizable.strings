@@ -152,6 +152,9 @@
 "preference.title.jitstreamer_server" = "IP сервера JitStreamer";
 "preference.detail.jitstreamer_server" = "Позволяет настроить пользовательский IP сервера JitStreamer, например, для своих установок. Оставьте нетронутым для использования обычных серверов JitStreamer.";
 
+"preference.title.appicon" = "Выбрать иконку приложения";
+"preference.detail.appicon" = "Позволяет выбрать одну из нескольких иконок PojavLauncher для главного экрана.";
+
 "preference.title.reset_warnings" = "Сбросить все предупреждения";
 "preference.title.done.reset_warnings" = "Все предупреждения были сброшены.";
 
