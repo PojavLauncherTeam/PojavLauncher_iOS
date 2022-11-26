@@ -152,6 +152,11 @@
 "preference.title.jitstreamer_server" = "JitStreamer 的 IP 地址";
 "preference.detail.jitstreamer_server" = "该选项将自定义获取 JIT 权限地址的 JitStreamer 服务器，若你不知道如何修改请勿修改，当然也可以保持默认地址";
 
+"preference.title.appicon" = "设置应用图标";
+"preference.detail.appicon" = "允许您为 PojavLauncher 选择不同的主屏幕图标。";
+"preference.title.appicon-default" = "Familiar PojavLauncher 浅色";
+"preference.title.appicon-dark" = "Familiar PojavLauncher 深色";
+
 "preference.title.reset_warnings" = "重置所有警告";
 "preference.title.done.reset_warnings" = "带有“警告”的设置选项已被恢复默认状态";
 
