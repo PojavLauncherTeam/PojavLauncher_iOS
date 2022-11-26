@@ -152,6 +152,11 @@
 "preference.title.jitstreamer_server" = "JitStreamer IP сервер";
 "preference.detail.jitstreamer_server" = "Дозволяє вам змінити на користувацькі IP сервера JitStreamer, наприклад як для екземплярів свого хостингу. Цей параметр може бути у спокої, якщо ви використовуєте стандартні сервери JitStreamer.";
 
+"preference.title.appicon" = "Встановити іконку додатка";
+"preference.detail.appicon" = "Дозволяє обрати різні значки основного екрана для PojavLauncher.";
+"preference.title.appicon-default" = "Знайоме світле PojavLauncher";
+"preference.title.appicon-dark" = "Знайоме темне PojavLauncher";
+
 "preference.title.reset_warnings" = "Стерти всі попередження";
 "preference.title.done.reset_warnings" = "Всі попередження стерті.";
 
