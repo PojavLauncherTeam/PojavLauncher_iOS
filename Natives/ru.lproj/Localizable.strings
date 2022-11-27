@@ -8,6 +8,8 @@
 "game.menu.log_output" = "Журнал";
 "game.menu.custom_controls" = "Пользовательское управление";
 
+"game.note.airplay" = "Minecraft дублируется на экран AirPlay";
+
 "game.title.exit_code" = "Произошёл сбой игры с кодом %d";
 
 // The options button at the top-right corner on iOS 12
@@ -42,9 +44,6 @@
 "custom_controls.button_edit.stroke_color" = "Цвет обводки";
 "custom_controls.button_edit.corner_radius" = "Скругление (%)";
 "custom_controls.button_edit.opacity" = "Видимость (%)";
-"custom_controls.button_edit.dynamic_position" = "Динамическая позиция";
-"custom_controls.button_edit.dynamic_x" = "Привязка по оси X";
-"custom_controls.button_edit.dynamic_y" = "Привязка по оси Y";
 
 "custom_controls.button_menu.add_subbutton" = "Добавить под-кнопку";
 "custom_controls.control_menu.discard_changes" = "Сбросить изменения";
@@ -69,7 +68,7 @@
 "launcher.wait_jit.title" = "Ожидание JIT";
 "launcher.wait_jit.message" = "PojavLauncher полагается на работу JIT-компилятора Java для работы с максимальной производительностью.";
 
-"login.error.username.outOfRange" = "Имя пользователя не может быть короче 3 и длиннее 16 символов";
+"login.error.username.outOfRange" = "Имя пользователя не должно быть короче 3 и длиннее 16 символов";
 
 "login.alert.field.username" = "Имя пользователя";
 
@@ -77,13 +76,13 @@
 "login.jit.enabled" = "JIT активирован";
 "login.jit.fail.JitStreamer" = "Ошибка JitStreamer: %@";
 "login.jit.found.JitStreamer" = "Обнаружен JitStreamer, активация JIT...";
+"login.jit.start.AltKit" = "Попытка запуска AltJIT";
+"login.jit.fail.AltKit" = "Ошибка AltKit: %@";
 
 // Login buttons
 "Sign in" = "Войти";
 "FAQ" = "ЧаВо";
 "Accounts" = "Учётные записи";
-
-"login.menu.about" = "О PojavLauncher";
 "login.menu.sendlogs" = "Отправить журнал";
 "login.menu.updates" = "Последние обновления";
 
@@ -116,7 +115,7 @@
 "login.msa.error.xsts.krverify" = "Для продолжения вашей учётной записи требуется подтверждение родителей.\nКод ошибки: 2148916236 или 2148916237.";
 "login.msa.error.xsts.underage" = "Для продолжения вашу учётную запись необходимо связать с учётной записью родителей.\nКод ошибки: 2148916238";
 
-"login.msa.notice.demomode" = "Профиль Minecraft не обнаружен в данной учётной записи, активирован демо-режим. Если у вас есть лицензия Minecraft или активная подписка Xbox GamePass, то для восстановления обычного режима настройте свой профиль здесь: https://minecraft.net/msaprofle";
+"login.msa.notice.demomode" = "Профиль Minecraft не обнаружен в данной учётной записи, активирован демо-режим. Если у вас есть лицензия Minecraft или активная подписка Xbox GamePass, то для восстановления обычного режима настройте свой профиль здесь: https://minecraft.net/msaprofile";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Получение токена доступа...";
 "login.msa.progress.acquireXBLToken" = "(2/5) Получение токена Xbox Live...";
@@ -150,6 +149,13 @@
 "preference.detail.cosmetica" = "Плащи Cosmetica (ранее Arc). Да получения дополнительной информации посетите https://cosmetica.cc. Требуется Optifine.";
 "preference.title.debug_logging" = "Отладочные записи";
 "preference.detail.debug_logging" = "Включить запись внутренних настроек и действий в latestlog.txt. Может облегчить нахождение ошибок продвинутым пользователям, однако это немного замедлит запуск Minecraft, поскольку журнал будет записываться значительно чаще.";
+"preference.title.jitstreamer_server" = "IP сервера JitStreamer";
+"preference.detail.jitstreamer_server" = "Позволяет настроить пользовательский IP сервера JitStreamer, например, для своих установок. Оставьте нетронутым для использования обычных серверов JitStreamer.";
+
+"preference.title.appicon" = "Выбрать иконку приложения";
+"preference.detail.appicon" = "Позволяет выбрать одну из нескольких иконок PojavLauncher для главного экрана.";
+"preference.title.appicon-default" = "Обычный светлый PojavLauncher";
+"preference.title.appicon-dark" = "Обычный тёмный PojavLauncher";
 
 "preference.title.reset_warnings" = "Сбросить все предупреждения";
 "preference.title.done.reset_warnings" = "Все предупреждения были сброшены.";
@@ -169,7 +175,7 @@
 "preference.detail.resolution" = "Можно уменьшить разрешение игры в целях быстродействия.";
 "preference.title.disable_gesture" = "Отключение жестов";
 "preference.title.press_duration" = "Длительность нажатия (мс)";
-"preference.detail.press_duration" = "Изменяет длительность долгого нажатия для ломания блоков и выбрасывания предметов.";
+"preference.detail.press_duration" = "Длительность удерживания для разрушения блоков и выбрасывания предметов.";
 "preference.title.button_scale" = "Размер кнопок (%)";
 "preference.detail.button_scale" = "Подстроить кнопки под размер экрана. Особенно полезно для пользователей iPad.";
 "preference.title.mouse_scale" = "Размер указателя (%)";
@@ -194,6 +200,8 @@
 "preference.title.custom_env" = "Переменные среды";
 "preference.detail.custom_env" = "Функция всё ещё в разработке.";
 
+"preference.title.debug_skip_wait_jit" = "Пропускать этап ожидания JIT";
+"preference.detail.debug_skip_wait_jit" = "Без JIT это запускать игру не позволит, однако исправит ошибку запуска на некоторых устройствах с jailbreak за счёт пропуска проверки отладчика.";
 "preference.title.debug_ipad_ui" = "Разблокировать интерфейс iPadOS";
 "preference.detail.debug_ipad_ui" = "Разблокировать уникальные для iPad элементы интерфейса (предупреждение, клавиатура и пр.) или оставить интерфейс iPhone.";
 "preference.title.debug_show_layout_bounds" = "Показывать границы элементов";

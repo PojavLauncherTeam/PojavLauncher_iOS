@@ -13,7 +13,6 @@
 // The play button
 "Play" = "Spela";
 "custom_controls.button_edit.swipeable" = "Svepbar";
-"custom_controls.button_edit.dynamic_position" = "Dynamisk position";
 "custom_controls.control_menu.exit" = "Avsluta";
 "custom_controls.control_menu.add_button" = "Lägg till knapp";
 

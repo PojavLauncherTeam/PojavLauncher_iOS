@@ -8,6 +8,8 @@
 "game.menu.log_output" = "日誌輸出";
 "game.menu.custom_controls" = "自訂控制鍵";
 
+"game.note.airplay" = "我的世界正在AirPlay鏡像顯示器中顯示";
+
 "game.title.exit_code" = "遊戲以代碼%d退出";
 
 // The options button at the top-right corner on iOS 12
@@ -22,29 +24,49 @@
 "Releases" = "發行";
 "Old-beta" = "遠古beta版";
 "Old-alpha" = "遠古alpha版";
+
+// Custom controls
+"Copy" = "複製";
 "Edit" = "修改";
+"Move" = "移動";
 "Remove" = "移除";
+"Resize" = "調整大小";
 
 "custom_controls.button_edit.name" = "名稱";
 "custom_controls.button_edit.size" = "大小";
 "custom_controls.button_edit.mapping" = "對映";
 "custom_controls.button_edit.orientation" = "方向";
 "custom_controls.button_edit.toggleable" = "可切換";
+"custom_controls.button_edit.mouse_pass" = "滑鼠傳入";
 "custom_controls.button_edit.swipeable" = "可滑動";
 "custom_controls.button_edit.bg_color" = "背景顏色";
+"custom_controls.button_edit.stroke_width" = "邊框寬度 (px)：";
 "custom_controls.button_edit.stroke_color" = "邊框顏色";
-"custom_controls.button_edit.dynamic_position" = "動態位置";
+"custom_controls.button_edit.corner_radius" = "圓角半徑 (%)";
+"custom_controls.button_edit.opacity" = "不透明度（%）";
 
 "custom_controls.button_menu.add_subbutton" = "添加子按鈕";
+"custom_controls.control_menu.discard_changes" = "放棄變更";
 "custom_controls.control_menu.exit" = "退出";
+"custom_controls.control_menu.exit.warn" = "你將要在尚未儲存更改的情況下退出";
 "custom_controls.control_menu.save" = "儲存";
+"custom_controls.control_menu.save.error.default" = "控制鍵的名稱不能為「default」，因為它會被覆寫。";
+"custom_controls.control_menu.save.error.json" = "JSON 錯誤";
+"custom_controls.control_menu.save.error.write" = "儲存檔案時發生錯誤";
 "custom_controls.control_menu.load" = "載入";
+"custom_controls.control_menu.make_default" = "設為預設植";
+"custom_controls.control_menu.safe_area" = "安全區";
 "custom_controls.control_menu.add_button" = "添加按鈕";
+"custom_controls.control_menu.add_drawer" = "增加清單";
+"custom_controls.hint" = "長按螢幕上的任何位置以顯示更多選項";
 
 "init.migrateDir" = "PojavLauncher數據資料夾現為%@。你的所有已有資料已被移動到新位置。";
 
 "launcher.menu.custom_controls" = "自訂控制鍵";
 "launcher.menu.install_jar" = "安裝 .jar";
+
+"launcher.wait_jit.title" = "正在等待JIT";
+"launcher.wait_jit.message" = "PojavLauncher依賴即時編譯令Java以最大性能執行。";
 
 "login.error.username.outOfRange" = "用戶名必須是在3至16個字元之間。";
 
@@ -59,8 +81,6 @@
 "Sign in" = "登入";
 "FAQ" = "常見問題";
 "Accounts" = "帳戶";
-
-"login.menu.about" = "關於 PojavLauncher";
 "login.menu.sendlogs" = "發送你的日誌";
 "login.menu.updates" = "最近更新";
 
@@ -93,7 +113,7 @@
 "login.msa.error.xsts.krverify" = "你的帳戶必須由你的家長認證，方可繼續。\n錯誤代碼：2148916236或2148916237。";
 "login.msa.error.xsts.underage" = "你的帳戶必須要連結到一個家長帳戶，方可繼續。\n錯誤代碼：2148916238";
 
-"login.msa.notice.demomode" = "在帳戶中找不到我的世界用戶檔案。這個帳戶已設為示範模式。你是否購買了我的世界，或有已啟用的Xbox Game Pass訂閱？請到 https://minecraft.net/msaprofle 設置你的用戶檔案以回復線上模式。";
+"login.msa.notice.demomode" = "在帳戶中找不到我的世界用戶檔案。這個帳戶已設為示範模式。你是否購買了我的世界，或有已啟用的Xbox Game Pass訂閱？請到 https://minecraft.net/msaprofile 設置你的用戶檔案以回復線上模式。";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) 正在取得取用金鑰";
 "login.msa.progress.acquireXBLToken" = "(2/5) 正在取得Xbox Live金鑰";
@@ -127,6 +147,8 @@
 "preference.detail.cosmetica" = "啟用來自Cosmetica（先前是Arc）的披風。要查看更多資訊請到 https://cosmetica.cc 。需要OptiFine。";
 "preference.title.debug_logging" = "除錯日誌";
 "preference.detail.debug_logging" = "把內部設定和動作記錄到lateslog.txt。這能幫助開發者更容易地找到問題，但由於日誌寫入的次數會增多，我的世界的運行速度可能會減慢。";
+"preference.title.jitstreamer_server" = "JitStreamer伺服器地址";
+"preference.detail.jitstreamer_server" = "這個選項允許你設定一個自定義JitStreamer IP地址，例如一個自托管的伺服器。如果你使用預設的JitStreamer伺服器，你可以忽略這個選項。";
 
 "preference.title.reset_warnings" = "重設所有警告";
 "preference.title.done.reset_warnings" = "所有警告已被重設。";
@@ -146,7 +168,7 @@
 "preference.detail.resolution" = "允許你降低遊戲的解像度。";
 "preference.title.disable_gesture" = "停用手勢";
 "preference.title.press_duration" = "長按時間（毫秒）";
-"preference.detail.press_duration" = "修改長按摧毀方塊、丟棄物品的觸發時長。";
+"preference.detail.press_duration" = "觸發破壞方塊及釋出物件的按壓時間。";
 "preference.title.button_scale" = "螢幕按鈕比例（%）";
 "preference.detail.button_scale" = "如果按鈕太小的話，就增加比例，iPad用戶通常都需要這個選項。";
 "preference.title.mouse_scale" = "滑鼠比例（%）";
@@ -170,7 +192,6 @@
 "preference.warn.allocated_memory" = "由於系統限制，在這個數值或以上時，這個選項可能會導致不穩定。";
 "preference.title.custom_env" = "環境變量";
 "preference.detail.custom_env" = "這個選項仍在建築中。";
-
 "preference.title.debug_ipad_ui" = "解鎖iPadOS用戶介面";
 "preference.detail.debug_ipad_ui" = "當啟動時或當iPhone用戶介面被禁用時，解鎖iPad專屬用戶介面（提示、鍵盤等）";
 "preference.title.debug_show_layout_bounds" = "顯示佈局界線";

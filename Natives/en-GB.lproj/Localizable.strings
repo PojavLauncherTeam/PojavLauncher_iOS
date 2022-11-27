@@ -21,7 +21,6 @@
 "custom_controls.button_edit.name" = "Name";
 "custom_controls.button_edit.size" = "Size";
 "custom_controls.button_edit.toggleable" = "Toggleable";
-"custom_controls.button_edit.dynamic_position" = "Dynamic position";
 "custom_controls.control_menu.exit" = "Exit";
 "custom_controls.control_menu.save" = "Save";
 "custom_controls.control_menu.load" = "Load";
@@ -34,7 +33,6 @@
 
 "preference.title.renderer" = "Renderer";
 "preference.title.disable_gesture" = "Disable gestures";
-"preference.detail.press_duration" = "Change trigger time for long press in destroy block and drop item.";
 "preference.title.java_args" = "JVM Launch arguments";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Enables automatic RAM adjuster";

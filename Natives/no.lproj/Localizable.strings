@@ -21,7 +21,6 @@
 "custom_controls.button_edit.name" = "Navn";
 "custom_controls.button_edit.size" = "Størrelse";
 "custom_controls.button_edit.toggleable" = "Byttbar";
-"custom_controls.button_edit.dynamic_position" = "Dynamisk posisjon";
 "custom_controls.control_menu.exit" = "Avslutt";
 "custom_controls.control_menu.save" = "Lagre";
 "custom_controls.control_menu.load" = "Last inn";
@@ -34,7 +33,6 @@
 
 "preference.title.renderer" = "Gjengir";
 "preference.title.disable_gesture" = "Deaktiver gester";
-"preference.detail.press_duration" = "Endre utløsertid for langt trykk i ødelegge blokk og slipp-gjenstand.";
 "preference.title.java_args" = "JVM Launch Arguments";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Aktiverer automatisk RAM-justering";

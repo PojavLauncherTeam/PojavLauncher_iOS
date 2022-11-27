@@ -26,7 +26,6 @@
 "custom_controls.button_edit.swipeable" = "Scratchable";
 "custom_controls.button_edit.bg_color" = "Bakground colour";
 "custom_controls.button_edit.stroke_color" = "Strok colour";
-"custom_controls.button_edit.dynamic_position" = "Movin’ pozision";
 
 "custom_controls.button_menu.add_subbutton" = "Add b’low-buton";
 "custom_controls.control_menu.exit" = "Exit";
@@ -44,7 +43,6 @@
 
 "preference.title.renderer" = "Renderer";
 "preference.title.disable_gesture" = "Disabel gesturez";
-"preference.detail.press_duration" = "Change triggr tiem 4 long pres in destroy block an drop item.";
 "preference.title.java_args" = "CCz’UM L’unch argumentz";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Enablez automatic RAM adjustah";

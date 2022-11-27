@@ -31,7 +31,6 @@
 "custom_controls.button_edit.swipeable" = "Có thể vuốt";
 "custom_controls.button_edit.bg_color" = "Màu nền";
 "custom_controls.button_edit.stroke_color" = "Màu viền phím";
-"custom_controls.button_edit.dynamic_position" = "Vị trí động";
 
 "custom_controls.button_menu.add_subbutton" = "Thêm phím phụ";
 "custom_controls.control_menu.exit" = "Thoát";
@@ -43,8 +42,6 @@
 
 "launcher.menu.custom_controls" = "Tùy chỉnh điều khiển";
 "launcher.menu.install_jar" = "Cài đặt tệp .jar";
-
-"login.error.username.outOfRange" = "Tên người dùng phải có từ 3 đến 16 kí tự";
 
 "login.alert.field.username" = "Tên người dùng";
 
@@ -86,10 +83,6 @@
 
 "login.msa.error.xsts.noxboxacc" = "Chưa có một hồ sơ Xbox được đăng kí cho tài khoản Microsoft này. Hãy chắc chắn rằng bạn đã tạo một hồ sơ.\nMã lỗi: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live không khả dụng ở quốc gia của bạn.\nMã lỗi: 2148916235";
-"login.msa.error.xsts.krverify" = "Tài khoản của bạn cần được xác nhận bởi phụ huynh.\nMã lỗi: 2148916236 hoặc 2148916237.";
-"login.msa.error.xsts.underage" = "Tài khoản của bạn cần được liên kết tới một tài khoản phụ huynh.\nMã lỗi: 2148916238";
-
-"login.msa.notice.demomode" = "Không thể tìm thấy hồ sơ Minecraft trên tài khoản này. Hiện tại tài khoản này đã được chuyển sang chế độ chơi thử. Có thể bạn chưa mua Minecraft, hoặc gói Xbox GamePass của bạn đã hết hạn. Hãy cài đặt hồ sơ của bạn tại https://minecraft.net/msaprofle để chơi bản đầy đủ.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Đang nhận Khoá truy cập";
 "login.msa.progress.acquireXBLToken" = "(2/5) Đang nhận Khoá Xbox Live";
@@ -140,7 +133,6 @@
 "preference.detail.resolution" = "Cho phép thay đổi độ phân giải trò chơi.";
 "preference.title.disable_gesture" = "Tắt cử chỉ";
 "preference.title.press_duration" = "Độ dài nhấn giữ (ms)";
-"preference.detail.press_duration" = "Thay đổi thời gian nhấn giữ để kích hoạt khi phá huỷ khối và thả vật phẩm.";
 "preference.title.button_scale" = "Độ rộng nút trên màn hình (%)";
 "preference.detail.button_scale" = "Tăng lên nếu nút quá nhỏ, đặc biệt với người dùng iPad.";
 "preference.title.mouse_scale" = "Độ lớn của chuột (%)";
@@ -164,6 +156,4 @@
 "preference.warn.allocated_memory" = "Do những giới hạn của hệ điều hành, tùy chọn này có thể gây ra sự cố với mức phân bổ này hoặc cao hơn. Chú ý khi tiếp tục.";
 "preference.title.custom_env" = "Các chỉ số môi trường";
 "preference.detail.custom_env" = "Tùy chọn này đang được hoàn thiện.";
-
 "preference.title.debug_ipad_ui" = "Mở khóa giao diện iPadOS";
-"preference.detail.debug_ipad_ui" = "Mở khóa giao diện người dùng mở rộng cho iPad (thông báo, bàn phím,..) nếu được bật hoặc giao diện iPhone bị tắt.";

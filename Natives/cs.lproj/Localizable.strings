@@ -8,6 +8,10 @@
 "game.menu.log_output" = "Záznam výstupu";
 "game.menu.custom_controls" = "Vlastní ovládací prvky";
 
+"game.note.airplay" = "Minecraft se v AirPlay zrcadleném displeji zobrazuje";
+
+"game.title.exit_code" = "Hra skončila s kódem %d";
+
 // The options button at the top-right corner on iOS 12
 "Options" = "Možnosti";
 
@@ -20,31 +24,51 @@
 "Releases" = "Vydání";
 "Old-beta" = "Stará beta";
 "Old-alpha" = "Stará alfa";
+
+// Custom controls
+"Copy" = "Kopírovat";
 "Edit" = "Editovat";
+"Move" = "Pohnout";
 "Remove" = "Odstranit";
+"Resize" = "Změnit velikost";
 
 "custom_controls.button_edit.name" = "Název";
 "custom_controls.button_edit.size" = "Velikost";
 "custom_controls.button_edit.mapping" = "Mapování";
 "custom_controls.button_edit.orientation" = "Orientace";
 "custom_controls.button_edit.toggleable" = "Přepnutelné";
+"custom_controls.button_edit.mouse_pass" = "Průchod myši";
 "custom_controls.button_edit.swipeable" = "Povolit přejíždění";
 "custom_controls.button_edit.bg_color" = "Barva pozadí";
+"custom_controls.button_edit.stroke_width" = "Šířka obrysu (%)";
 "custom_controls.button_edit.stroke_color" = "Barva obrysu";
-"custom_controls.button_edit.dynamic_position" = "Dynamická pozice";
+"custom_controls.button_edit.corner_radius" = "Poloměr rohu (%)";
+"custom_controls.button_edit.opacity" = "Průhlednost (%)";
 
 "custom_controls.button_menu.add_subbutton" = "Přidat podtlačítko";
+"custom_controls.control_menu.discard_changes" = "Zahodit změny";
 "custom_controls.control_menu.exit" = "Odejít";
+"custom_controls.control_menu.exit.warn" = "Chystáš se ukončit bez uložení změn.";
 "custom_controls.control_menu.save" = "Uložit";
+"custom_controls.control_menu.save.error.default" = "Název ovládání nemůže být \"default\", neboť by byl přepsán.";
+"custom_controls.control_menu.save.error.json" = "Chyba JSONu";
+"custom_controls.control_menu.save.error.write" = "Chyba ukládání souboru";
 "custom_controls.control_menu.load" = "Načíst";
+"custom_controls.control_menu.make_default" = "Nastavit výchozím";
+"custom_controls.control_menu.safe_area" = "Bezpečná oblast";
 "custom_controls.control_menu.add_button" = "Přidat tlačítko";
+"custom_controls.control_menu.add_drawer" = "Přidat šuplík";
+"custom_controls.hint" = "Pro více možností dlouze podrž kdekoli na obrazovce";
 
 "init.migrateDir" = "Složka dat PojavLauncheru je nyní %@. Všechna tvá data byla přesunuta do nového umístění.";
 
 "launcher.menu.custom_controls" = "Vlastní ovládací prvky";
 "launcher.menu.install_jar" = "Instalovat .jar";
 
-"login.error.username.outOfRange" = "Uživatelské jméno musí být dlouhé alespoň 3 znaky a nanejvýš 16 znaků";
+"launcher.wait_jit.title" = "Čekání na JIT";
+"launcher.wait_jit.message" = "PojavLauncher závisí na kompilaci Just-in-time, aby Java fungovala maximální rychlostí.";
+
+"login.error.username.outOfRange" = "Uživatelské jméno musí být dlouhé alespoň 3 znaky a nanejvýše 16 znaků";
 
 "login.alert.field.username" = "Uživatelské jméno";
 
@@ -52,13 +76,13 @@
 "login.jit.enabled" = "JIT byl zapnut";
 "login.jit.fail.JitStreamer" = "Chyba JitStreameru: %@";
 "login.jit.found.JitStreamer" = "Nalezen JitStreamer, povoluji JIT";
+"login.jit.start.AltKit" = "Pokoušení užití AltJITu";
+"login.jit.fail.AltKit" = "Chyba AltKitu: %@";
 
 // Login buttons
 "Sign in" = "Přihlásit se";
 "FAQ" = "FAQ";
 "Accounts" = "Účty";
-
-"login.menu.about" = "O PojavLauncheru";
 "login.menu.sendlogs" = "Odeslat záznamy";
 "login.menu.updates" = "Nedávné aktualizace";
 
@@ -88,10 +112,10 @@
 
 "login.msa.error.xsts.noxboxacc" = "Xboxový profil není registrován pro tento Microsoft účet. Prosím ujisti se zdali máš vytvořený Xbox účet.\nKód chyby: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live není právě teď k dostupný ve tvé zemi.\nKód chyby: 2148916235";
-"login.msa.error.xsts.krverify" = "Tvůj účet musí být ověřen tvými rodiči před pokračováním. \nKód chyby: 2148916236 či 2148916237.";
+"login.msa.error.xsts.krverify" = "Tvůj účet musí být ověřen tvými rodiči před tím než budeš pokračovat. \nKód chyby: 2148916236 či 2148916237.";
 "login.msa.error.xsts.underage" = "Tvůj účet musí být propojen s účtem rodiče před pokračováním.\nKód chyby: 2148916238";
 
-"login.msa.notice.demomode" = "Nebylo možno nalézt profil Minecraftu na tomto účtu. Ten účet je teď nastaven na Demo režim. Koupil sis Minecraft, či máš aktivní předplatné Xbox GamePass? Prosím nakonfiguruj si svůj profil na https://minecraft.net/msaprofle pro obnovení Onlinového režimu.";
+"login.msa.notice.demomode" = "Nebylo možno nalézt profil Minecraftu na tomto účtu. Ten účet je teď nastaven na Demo režim. Koupil/a sis Minecraft, či máš aktivní předplatné Xbox GamePass? Prosím nakonfiguruj si svůj profil na https://minecraft.net/msaprofile pro obnovení přístupu k Onlinovému režimu.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Získávání Přístupového tokenu";
 "login.msa.progress.acquireXBLToken" = "(2/5) Získávání Xbox Live tokenu";
@@ -107,6 +131,8 @@
 "preference.section.video" = "Nastavení obrazu";
 "preference.section.footer.video" = "Automatický vykreslovač dovolí Minecraftu rozhodnout který vykreslovač používat. Zmenšováním rozlišení sníží zatížení GPU pro lepší výkon.";
 "preference.section.control" = "Přizpůsobení ovládání";
+"preference.section.debug" = "Nastavení ladění UI";
+"preference.section.footer.debug" = "Kromě ladění mohou být tato nastavení užitečná pro vlastní ovládání. Možná budete muset restartovat spouštěč aby se změny projevily.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Vyladění Javy";
 //"preference.section.footer.java" = "";
@@ -123,6 +149,8 @@
 "preference.detail.cosmetica" = "Zapne kápě z Cosmeticy (dřiv Arc), vyžadujíc OptiFine. Pro více informací navštivte https://cosmetica.cc";
 "preference.title.debug_logging" = "Zaznamenávání ladění";
 "preference.detail.debug_logging" = "Zaznamenává interní nastavení a akce do latestlog.txt. Toto dovoluje vývojářům nalézt problémy dřiv, ale záznamy budou častěji zapisovány, díky čemuž Minecraft může běžet pomaleji.";
+"preference.title.jitstreamer_server" = "IP adresa serveru JitStreameru";
+"preference.detail.jitstreamer_server" = "Umožňuje zadat vlastní IP adresu JitStreameru, například pro samohostěné instance. Tato možnost může být nechána nezměněná používáte-li výchozí servery JitStreameru.";
 
 "preference.title.reset_warnings" = "Smazat všechna varování";
 "preference.title.done.reset_warnings" = "Všechna varování byla smazána.";
@@ -142,7 +170,7 @@
 "preference.detail.resolution" = "Umožňuje ti snížit rozlišení hry.";
 "preference.title.disable_gesture" = "Vypnout gesta";
 "preference.title.press_duration" = "Trvání dlouhého stisku (ms)";
-"preference.detail.press_duration" = "Změň čas pro rozbití bloku a vyhození itemu.";
+"preference.detail.press_duration" = "Délka trvání dlouhého držení ke zničení bloků a vyhazování itemů.";
 "preference.title.button_scale" = "Měřítko tlačítka na obrazovce (%)";
 "preference.detail.button_scale" = "Zvětšit tlačítka jsou-li příliš malá, obvyklé potřebné pro uživatele iPadů.";
 "preference.title.mouse_scale" = "Škálování myši (%)";
@@ -166,3 +194,12 @@
 "preference.warn.allocated_memory" = "Tato možnost může způsobit nestabilitu při této a vyšších hodnotách, kvůli limitacím v operačním systému. Pokračuj s opatrností.";
 "preference.title.custom_env" = "Proměnné prostředí";
 "preference.detail.custom_env" = "Tato možnost je ve vývoji.";
+
+"preference.title.debug_skip_wait_jit" = "Přeskočit dialog \"Čekání na JIT\"";
+"preference.detail.debug_skip_wait_jit" = "Toto vám neumožní spustit bez JITu, ale přeskočí ladící kontrolu, neboť ta kontrola chybuje na určitých jailbreacích.";
+"preference.title.debug_ipad_ui" = "Odemknout iPadOS UI";
+"preference.detail.debug_ipad_ui" = "Odemknout UI pro iPady (upozornění, klávesnice, atd.) zapnuto-li, či iPhone UI vypnuto-li.";
+"preference.title.debug_show_layout_bounds" = "Zobrazit ohraničení rozložení";
+"preference.detail.debug_show_layout_bounds" = "Zobrazit překrývající se hranice a mezery";
+"preference.title.debug_show_layout_overlap" = "Zobrazit překrývající se rozložení";
+"preference.detail.debug_show_layout_overlap" = "Překrýt každé zobrazení průhlednou barvou pro odhalení překrývajících se zobrazení.";

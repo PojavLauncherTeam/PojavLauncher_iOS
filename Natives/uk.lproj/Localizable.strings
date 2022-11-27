@@ -8,6 +8,8 @@
 "game.menu.log_output" = "Журнал";
 "game.menu.custom_controls" = "Користувацьке керування";
 
+"game.note.airplay" = "Minecraft показується в дзеркальному дисплеї AirPlay";
+
 "game.title.exit_code" = "Гра завершилась з кодом %d";
 
 // The options button at the top-right corner on iOS 12
@@ -42,9 +44,6 @@
 "custom_controls.button_edit.stroke_color" = "Колір контуру";
 "custom_controls.button_edit.corner_radius" = "Радіус округлення (%)";
 "custom_controls.button_edit.opacity" = "Невиразність (%)";
-"custom_controls.button_edit.dynamic_position" = "Динамічне розташування";
-"custom_controls.button_edit.dynamic_x" = "Динамічна вісь X";
-"custom_controls.button_edit.dynamic_y" = "Динамічна вісь Y";
 
 "custom_controls.button_menu.add_subbutton" = "Додати під-кнопку";
 "custom_controls.control_menu.discard_changes" = "Відхилити зміни";
@@ -69,7 +68,7 @@
 "launcher.wait_jit.title" = "Чекаю на JIT";
 "launcher.wait_jit.message" = "PojavLauncher покладається на компіляцію Just-in-time для Java задля роботи з максимальною швидкістю.";
 
-"login.error.username.outOfRange" = "Ім'я користувача має містити від 3 до 16 символів";
+"login.error.username.outOfRange" = "Ім'я користувача повинно бути не менше 3 символів і не більше 16";
 
 "login.alert.field.username" = "Ім'я користувача";
 
@@ -77,13 +76,13 @@
 "login.jit.enabled" = "JIT було увімкнено";
 "login.jit.fail.JitStreamer" = "Помилка JitStreamer: %@";
 "login.jit.found.JitStreamer" = "Знайдено JitStreamer, увімкнення JIT";
+"login.jit.start.AltKit" = "Спроба використовувати AltJIT";
+"login.jit.fail.AltKit" = "Помилка AltKit: %@";
 
 // Login buttons
 "Sign in" = "Увійти";
 "FAQ" = "ЧаПи";
 "Accounts" = "Облікові записи";
-
-"login.menu.about" = "Про PojavLauncher";
 "login.menu.sendlogs" = "Надіслати ваші звіти";
 "login.menu.updates" = "Нещодавні оновлення";
 
@@ -113,10 +112,10 @@
 
 "login.msa.error.xsts.noxboxacc" = "Профіль Xbox Live не зареєстровано для цього облікового запису Microsoft. Будь ласка, переконайтеся, що ви точно робили профіль Xbox.\nКод помилки: 2148916233";
 "login.msa.error.xsts.noxbox" = "Наразі Xbox Live недоступний у вашій країні. \nКод помилки: 2148916235";
-"login.msa.error.xsts.krverify" = "Ваш обліковий запис має бути підтверджено батьками/опікунами, перш ніж продовжити.\nКод помилки: 2148916236 або 2148916237.";
-"login.msa.error.xsts.underage" = "Ваш обліковий запис повинен бути прив’язаний з батьківським обліковим записом, перш ніж продовжити.\nКод помилки: 2148916238";
+"login.msa.error.xsts.krverify" = "Ваш обліковий запис має бути перевірено батьками, перш ніж ви зможете продовжити.\nКод помилки: 2148916236 або 2148916237.";
+"login.msa.error.xsts.underage" = "Ваш обліковий запис повинен бути пов'язаним з батьківським обліковим записом, перш ніж ви зможете продовжити.\nКод помилки: 2148916238";
 
-"login.msa.notice.demomode" = "Не вдалося знайти профіль Minecraft на цьому обліковому записі. Запис тепер установлено на демо-режим. Ви придбали Minecraft, або активну передплату на Xbox GamePass підписку? Будь ласка, налаштуйте свій профіль на https://minecraft.net/msaprofle для відновлення онлайн режиму.";
+"login.msa.notice.demomode" = "Не вдалося знайти профіль Minecraft на цьому акаунті. Акаунт тепер установлено на демо-режим. Ви придбали Minecraft, або маєте активну підписку на Xbox Game Pass? Будь ласка налаштуйте свій профіль на https://minecraft.net/msaprofile для відновлення доступу до онлайн-режиму.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Приймається токен доступу";
 "login.msa.progress.acquireXBLToken" = "(2/5) Приймається токен Xbox Live";
@@ -150,6 +149,13 @@
 "preference.detail.cosmetica" = "Включає плащі від Cosmetica (раніше Arc). Для більш детальної інформації, будь ласка, відвідайте https://cosmetica.cc. Потребує OptiFine";
 "preference.title.debug_logging" = "Запис помилок";
 "preference.detail.debug_logging" = "Записує внутрішні налаштування і дії на latestlog.txt. Це допомагає розробникам швидше знаходити проблеми, але Minecraft може працювати повільніше, оскільки журнали пишуться часто.";
+"preference.title.jitstreamer_server" = "JitStreamer IP сервер";
+"preference.detail.jitstreamer_server" = "Дозволяє вам змінити на користувацькі IP сервера JitStreamer, наприклад як для екземплярів свого хостингу. Цей параметр може бути у спокої, якщо ви використовуєте стандартні сервери JitStreamer.";
+
+"preference.title.appicon" = "Встановити іконку додатка";
+"preference.detail.appicon" = "Дозволяє обрати різні значки основного екрана для PojavLauncher.";
+"preference.title.appicon-default" = "Знайоме світле PojavLauncher";
+"preference.title.appicon-dark" = "Знайоме темне PojavLauncher";
 
 "preference.title.reset_warnings" = "Стерти всі попередження";
 "preference.title.done.reset_warnings" = "Всі попередження стерті.";
@@ -169,7 +175,7 @@
 "preference.detail.resolution" = "Дозволяє вам зменшити роздільну здатність гри.";
 "preference.title.disable_gesture" = "Вимкнути жести";
 "preference.title.press_duration" = "Тривалість тривалого натискання (мс)";
-"preference.detail.press_duration" = "Змінити тривалість довгого натискання для ламання блоків і викидання предметів.";
+"preference.detail.press_duration" = "Тривалість натискання для знищення блоків і скидання речей.";
 "preference.title.button_scale" = "Шкала екранних кнопок (%)";
 "preference.detail.button_scale" = "Якщо кнопки завеликі, вони зазвичай потрібні для користувачів iPad.";
 "preference.title.mouse_scale" = "Масштабування курсору (%)";
@@ -194,8 +200,10 @@
 "preference.title.custom_env" = "Змінні середовища";
 "preference.detail.custom_env" = "Ця опція у процесі розробки.";
 
+"preference.title.debug_skip_wait_jit" = "Пропустити «Очікування JIT»";
+"preference.detail.debug_skip_wait_jit" = "Це не дозволяє запускати без JIT, натомість це пропускає перевірку налагоджувача, оскільки перевірка не вдається під час певних джейлбрейків.";
 "preference.title.debug_ipad_ui" = "Розблокувати інтерфейс iPadOS";
-"preference.detail.debug_ipad_ui" = "Розблокуйте інтерфейс iPad-exlusive (попередження, клавіатура тощо), якщо він вимкнений або увімкнений iPhone інтерфейс, якщо вимкнено.";
+"preference.detail.debug_ipad_ui" = "Розблокуйте ексклюзивний інтерфейс iPad (тривоги, клавіатури тощо.) якщо ввімкнено або якщо інтерфейс iPhone вимкнено.";
 "preference.title.debug_show_layout_bounds" = "Показувати межі об'єктів";
 "preference.detail.debug_show_layout_bounds" = "Показувати межі обрізування, поля і т. д.";
 "preference.title.debug_show_layout_overlap" = "Показати накладання макета";

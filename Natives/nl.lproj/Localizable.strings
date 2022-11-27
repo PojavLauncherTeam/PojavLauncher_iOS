@@ -21,7 +21,6 @@
 "custom_controls.button_edit.name" = "Naam";
 "custom_controls.button_edit.size" = "Grootte";
 "custom_controls.button_edit.toggleable" = "Omschakelbaar";
-"custom_controls.button_edit.dynamic_position" = "Dynamische positie";
 "custom_controls.control_menu.exit" = "Afsluiten";
 "custom_controls.control_menu.save" = "Opslaan";
 "custom_controls.control_menu.load" = "Lading";
@@ -34,7 +33,6 @@
 
 "preference.title.renderer" = "Renderer";
 "preference.title.disable_gesture" = "Gebaren uitschakelen";
-"preference.detail.press_duration" = "Verander de triggertijd voor lang indrukken van vernietig blok en laten vallen.";
 "preference.title.java_args" = "JVM Launch argumenten";
 "preference.title.auto_ram" = "Automatische RAM";
 "preference.detail.auto_ram" = "Schakel in de automatische RAM aanpasser in";

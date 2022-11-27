@@ -8,6 +8,8 @@
 "game.menu.log_output" = "Sortie du journal";
 "game.menu.custom_controls" = "Contrôles personnalisés";
 
+"game.note.airplay" = "Minecraft s'affiche sur l'écran en miroir AirPlay";
+
 "game.title.exit_code" = "Le jeu s'est arrêté avec le code %d";
 
 // The options button at the top-right corner on iOS 12
@@ -42,9 +44,6 @@
 "custom_controls.button_edit.stroke_color" = "Couleur du contour";
 "custom_controls.button_edit.corner_radius" = "Rayon des coins (%)";
 "custom_controls.button_edit.opacity" = "Opacité (%)";
-"custom_controls.button_edit.dynamic_position" = "Position dynamique";
-"custom_controls.button_edit.dynamic_x" = "Axe X dynamique";
-"custom_controls.button_edit.dynamic_y" = "Axe Y dynamique";
 
 "custom_controls.button_menu.add_subbutton" = "Ajouter un sous-bouton";
 "custom_controls.control_menu.discard_changes" = "Ignorer les modifications";
@@ -77,6 +76,8 @@
 "login.jit.enabled" = "Le JIT a été activé";
 "login.jit.fail.JitStreamer" = "Erreur JitStreamer: %@";
 "login.jit.found.JitStreamer" = "JitStreamer trouvé, activation du JIT";
+"login.jit.start.AltKit" = "Tentative d'utilisation de AltJIT";
+"login.jit.fail.AltKit" = "Erreur AltKit: %@";
 
 // Login buttons
 "Sign in" = "Se connecter";
@@ -111,10 +112,10 @@
 
 "login.msa.error.xsts.noxboxacc" = "Un profil Xbox n'est pas enregistré pour ce compte Microsoft. Veuillez vous assurer que vous avez créé un profil Xbox.\nCode d'erreur : 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live est actuellement indisponible dans votre pays.\nCode d'erreur: 2148916235";
-"login.msa.error.xsts.krverify" = "Votre compte doit être vérifié par vos parents avant de continuer.\nCode d'erreur : 2148916236 ou 2148916237.";
-"login.msa.error.xsts.underage" = "Votre compte doit être lié à un compte parent avant de continuer.\nCode d'erreur: 2148916238";
+"login.msa.error.xsts.krverify" = "Votre compte doit être vérifié par vos parents avant de pouvoir continuer.\nCode d'erreur : 2148916236 ou 2148916237.";
+"login.msa.error.xsts.underage" = "Votre compte doit être lié à un compte parent avant de pouvoir continuer.\nCode d'erreur: 2148916238";
 
-"login.msa.notice.demomode" = "Impossible de trouver un profil Minecraft sur ce compte. Le compte est maintenant en mode démo. Avez-vous acheté Minecraft, ou existe-t-il un abonnement Xbox GamePass actif ? Veuillez configurer votre profil sur https://minecraft.net/msaprofle pour restaurer en mode en ligne.";
+"login.msa.notice.demomode" = "Impossible de trouver un profil Minecraft sur ce compte. Le compte est maintenant en mode démo. Avez-vous acheté Minecraft, ou existe-t-il un abonnement Xbox Game Pass actif ? Veuillez configurer votre profil sur https://minecraft.net/msaprofle pour restaurer l'accès du mode en ligne.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Acquisition du jeton d'accès";
 "login.msa.progress.acquireXBLToken" = "(2/5) Acquisition du jeton Xbox Live";
@@ -148,6 +149,8 @@
 "preference.detail.cosmetica" = "Activer les capes Cosmetica (anciennement Arc). Pour plus d'informations, veuillez visiter https://cosmetica.cc. Nécessite OptiFine";
 "preference.title.debug_logging" = "Journaux de débogage";
 "preference.detail.debug_logging" = "Journalise les paramètres internes et les actions sur latestlog.txt. Cela aide les développeurs à trouver des problèmes plus facilement, mais Minecraft peut s'exécuter plus lentement puisque les journaux seront écrits plus souvent.";
+"preference.title.jitstreamer_server" = "IP du serveur JitStreamer";
+"preference.detail.jitstreamer_server" = "Vous permet de passer à une adresse IP personnalisée du serveur JitStreamer, par exemple pour les instances auto-hébergées. Cette option peut être laissée si vous utilisez les serveurs JitStreamer par défaut.";
 
 "preference.title.reset_warnings" = "Réinitialiser tous les avertissements";
 "preference.title.done.reset_warnings" = "Tous les avertissements ont été réinitialisés.";
@@ -167,7 +170,7 @@
 "preference.detail.resolution" = "Vous permet de diminuer la résolution du jeu.";
 "preference.title.disable_gesture" = "Désactiver les gestes";
 "preference.title.press_duration" = "Durée d'un appui long (ms)";
-"preference.detail.press_duration" = "Changez le temps de déclenchement pendant un appui long durant la destruction de bloc et lâcher l'objet.";
+"preference.detail.press_duration" = "Déclenche le bouton pour détruire des blocs et jeter des objets.";
 "preference.title.button_scale" = "Échelle des boutons à l'écran (%)";
 "preference.detail.button_scale" = "Agrandissez-les si les boutons sont trop petits, généralement nécessaires pour les utilisateurs d'iPad.";
 "preference.title.mouse_scale" = "Échelle de la souris (%)";
@@ -192,6 +195,8 @@
 "preference.title.custom_env" = "Variables d'environnement";
 "preference.detail.custom_env" = "Cette option est en cours de construction.";
 
+"preference.title.debug_skip_wait_jit" = "Passer l'alerte \"Attente du JIT\"";
+"preference.detail.debug_skip_wait_jit" = "Cela ne vous permet pas de démarrer sans JIT, à la place, cela saute la vérification du débogueur, car la vérification échoue sur certains jailbreaks.";
 "preference.title.debug_ipad_ui" = "Déverrouiller l'interface utilisateur iPadOS";
 "preference.detail.debug_ipad_ui" = "Déverrouille l'interface utilisateur iPad (alerte, clavier, etc.) si activé ou l'interface utilisateur iPhone si désactivé.";
 "preference.title.debug_show_layout_bounds" = "Afficher les limites de la mise en page";

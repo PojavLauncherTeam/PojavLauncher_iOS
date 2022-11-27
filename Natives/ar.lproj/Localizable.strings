@@ -26,7 +26,6 @@
 "custom_controls.button_edit.swipeable" = "قابل للسحب";
 "custom_controls.button_edit.bg_color" = "لون الخلفية";
 "custom_controls.button_edit.stroke_color" = "لون الخط";
-"custom_controls.button_edit.dynamic_position" = "الموضع الديناميكي";
 
 "custom_controls.button_menu.add_subbutton" = "إضافة زر فرعي";
 "custom_controls.control_menu.exit" = "خروج";
@@ -46,7 +45,6 @@
 
 "preference.title.renderer" = "العارض";
 "preference.title.disable_gesture" = "تعطيل الإيماءات";
-"preference.detail.press_duration" = "تغيير وقت التشغيل للضغط المطول في كتلة التحطيم وإسقاط الموارد.";
 "preference.title.java_args" = "حجج إطلاق JVM";
 "preference.title.auto_ram" = "ذاكرة الوصول العشوائية التلقائية";
 "preference.detail.auto_ram" = "تمكين  ذاكرة الوصول العشوائي التلقائي";

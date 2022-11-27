@@ -26,7 +26,6 @@
 "custom_controls.button_edit.swipeable" = "끌어당기기";
 "custom_controls.button_edit.bg_color" = "배경 색상";
 "custom_controls.button_edit.stroke_color" = "강조 색";
-"custom_controls.button_edit.dynamic_position" = "동적 위치";
 
 "custom_controls.button_menu.add_subbutton" = "부속 버튼 추가";
 "custom_controls.control_menu.exit" = "나가기";
@@ -46,7 +45,6 @@
 
 "preference.title.renderer" = "렌더러";
 "preference.title.disable_gesture" = "제스쳐 비활성화";
-"preference.detail.press_duration" = "블록 파괴와 아이템 던지기 등의 동작을 위한 길게 누르기 시간 변경";
 "preference.title.java_args" = "JVM 시작 스크립트";
 "preference.title.auto_ram" = "자동 RAM 할당";
 "preference.detail.auto_ram" = "자동 RAM 할당 활성화하기";

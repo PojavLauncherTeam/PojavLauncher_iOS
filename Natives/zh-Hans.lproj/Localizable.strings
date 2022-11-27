@@ -8,7 +8,9 @@
 "game.menu.log_output" = "日志输出";
 "game.menu.custom_controls" = "自定义控制按键";
 
-"game.title.exit_code" = "游戏以代码 %d 退出";
+"game.note.airplay" = "Minecraft 正在通过隔空播放（AirPlay）到其他设备显示";
+
+"game.title.exit_code" = "游戏非正常退出，错误代码%d";
 
 // The options button at the top-right corner on iOS 12
 "Options" = "选项";
@@ -42,23 +44,20 @@
 "custom_controls.button_edit.stroke_color" = "边框颜色";
 "custom_controls.button_edit.corner_radius" = "圆角半径 (%)";
 "custom_controls.button_edit.opacity" = "不透明度 (%)：";
-"custom_controls.button_edit.dynamic_position" = "动态位置";
-"custom_controls.button_edit.dynamic_x" = "动态 X 轴";
-"custom_controls.button_edit.dynamic_y" = "动态 Y 轴";
 
 "custom_controls.button_menu.add_subbutton" = "添加子按钮";
-"custom_controls.control_menu.discard_changes" = "放弃更改";
+"custom_controls.control_menu.discard_changes" = "取消更改";
 "custom_controls.control_menu.exit" = "退出";
-"custom_controls.control_menu.exit.warn" = "您将会退出而不保存更改。";
+"custom_controls.control_menu.exit.warn" = "您将会退出且不保存任何更改。";
 "custom_controls.control_menu.save" = "保存";
 "custom_controls.control_menu.save.error.default" = "控件名称不能是“default”，因为它是不可更改的。";
 "custom_controls.control_menu.save.error.json" = "JSON 文件错误";
 "custom_controls.control_menu.save.error.write" = "保存按键布局时发生错误";
 "custom_controls.control_menu.load" = "加载";
-"custom_controls.control_menu.make_default" = "默认按键布局...";
+"custom_controls.control_menu.make_default" = "设置游戏默认的按键布局";
 "custom_controls.control_menu.safe_area" = "安全区";
 "custom_controls.control_menu.add_button" = "添加按键";
-"custom_controls.control_menu.add_drawer" = "添加组合框";
+"custom_controls.control_menu.add_drawer" = "添加组合键";
 "custom_controls.hint" = "长按屏幕上的任意位置以获取更多选项";
 
 "init.migrateDir" = "目前 PojavLauncher 数据目录为%@。所有的游戏资源已移动到最新目录。";
@@ -67,7 +66,7 @@
 "launcher.menu.install_jar" = "安装 .jar";
 
 "launcher.wait_jit.title" = "请等待应用获取到JIT(Just-in-time)";
-"launcher.wait_jit.message" = "PojavLauncher启动器必须要JIT(Just-in-time)权限才能启动游戏";
+"launcher.wait_jit.message" = "PojavLauncher启动器必须要JIT (Just-in-time) 权限才能启动游戏";
 
 "login.error.username.outOfRange" = "用户名必须在 3-16 个字符以内";
 
@@ -77,13 +76,13 @@
 "login.jit.enabled" = "JIT 权限已启用";
 "login.jit.fail.JitStreamer" = "JitStreamer 错误：%@";
 "login.jit.found.JitStreamer" = "检测到 JitStreamer，正在开启 JIT 权限";
+"login.jit.start.AltKit" = "尝试使用 AltJIT";
+"login.jit.fail.AltKit" = "AltKit 错误：%@";
 
 // Login buttons
-"Sign in" = "登入方式";
+"Sign in" = "登录";
 "FAQ" = "常见问答（FAQ）";
 "Accounts" = "账户";
-
-"login.menu.about" = "关于 PojavLauncher";
 "login.menu.sendlogs" = "发送日志文件";
 "login.menu.updates" = "启动器更新日志";
 
@@ -113,10 +112,10 @@
 
 "login.msa.error.xsts.noxboxacc" = "此微软账户没有注册 Xbox 配置文件。请确认您已拥有 Xbox 配置文件。\n错误代码：2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live 目前在您的国家/地区不可用。\n错误代码：2148916235";
-"login.msa.error.xsts.krverify" = "你的账户必须通过你父母同意方可通过验证。\n错误代码：2148916236 或 2148916237";
+"login.msa.error.xsts.krverify" = "您的账户必须通过你父母同意方可通过验证。\n错误代码：2148916236 或 2148916237";
 "login.msa.error.xsts.underage" = "您的账户需要绑定家长账户才能进行下一步。\n错误代码：2148916238";
 
-"login.msa.notice.demomode" = "在此账户上找不到 Minecraft 配置文件。该账户现在已设置为演示模式。请问 您是否购买了 Minecraft，或是否订阅了 Xbox GamePass ？请在 https://minecraft.net/msaprofle 中配置您的个人资料以恢复到在线模式。";
+"login.msa.notice.demomode" = "在此账户上找不到 Minecraft 配置文件。该账户现在已设置为演示模式。请问您是否购买了 Minecraft，或是否订阅了 Xbox Game Pass？请在 https://minecraft.net/msaprofile 中配置您的个人资料以恢复到在线模式。";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) 请求访问令牌";
 "login.msa.progress.acquireXBLToken" = "(2/5) 请求 Xbox Live 令牌";
@@ -125,10 +124,10 @@
 "login.msa.progress.acquireMCToken" = "(4/5) 请求 Minecraft 令牌";
 "login.msa.progress.checkMCProfile" = "(5/5) 检查 Minecraft 配置文件";
 
-"News" = "资讯";
+"News" = "新闻";
 "Settings" = "设置";
 
-"preference.section.general" = "常规设置";
+"preference.section.general" = "启动器基础设置";
 "preference.section.video" = "视频设置";
 "preference.section.footer.video" = "使用自动选择的渲染器将根据游戏版本选择最佳渲染器启动游戏，降低分辨率可以使得 GPU 负载变低从而提升性能。";
 "preference.section.control" = "自定义控制";
@@ -150,6 +149,13 @@
 "preference.detail.cosmetica" = "启用来自 Cosmetica（原 Arc ）的披风。欲了解更多信息，请访问 https://arcapes.com。需要 OptiFine。";
 "preference.title.debug_logging" = "调试日志";
 "preference.detail.debug_logging" = "完整的记录启动器的各种活动事件到latestlog.txt文件内,有助于开发者更容易的发现错误。但Minecraft游戏内FPS可能会降低(频繁的记录日志内容会使得CPU负载变高)";
+"preference.title.jitstreamer_server" = "JitStreamer的服务器地址";
+"preference.detail.jitstreamer_server" = "该选项将自定义获取 JIT 权限地址的 JitStreamer 服务器，若你不知道如何修改请勿修改，当然也可以保持默认地址";
+
+"preference.title.appicon" = "设置应用应用图标风格";
+"preference.detail.appicon" = "允许您为 PojavLauncher 选择不同的主屏幕图标。";
+"preference.title.appicon-default" = "设置PojavLauncher图标为白色(默认)";
+"preference.title.appicon-dark" = "设置PojavLauncher图标为黑色(夜间)";
 
 "preference.title.reset_warnings" = "重置所有警告";
 "preference.title.done.reset_warnings" = "带有“警告”的设置选项已被恢复默认状态";
@@ -159,7 +165,7 @@
 "preference.title.done.reset_settings" = "已重置所有设置";
 
 "preference.title.renderer" = "渲染器";
-"preference.title.renderer.auto" = "自动选择：gl4es 或 tinygl4angle";
+"preference.title.renderer.auto" = "根据游戏版本自动选择：gl4es或tinygl4angle";
 "preference.title.renderer.gl4es" = "gl4es 1.1.4 - OpenGL版本2.1";
 "preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - OpenGL版本3.2";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - OpenGL版本4.1(FPS不高)";
@@ -169,7 +175,7 @@
 "preference.detail.resolution" = "降低分辨率可能会提升FPS。默认分辨率为屏幕的分辨率";
 "preference.title.disable_gesture" = "禁用手势";
 "preference.title.press_duration" = "长按延迟（毫秒）";
-"preference.detail.press_duration" = "修改长按摧毁方块、丢弃物品的触发时长";
+"preference.detail.press_duration" = "修改长按摧毁方块、丢弃物品的触发时长。";
 "preference.title.button_scale" = "屏幕按钮缩放 (%)";
 "preference.detail.button_scale" = "如果按钮过小则放大按钮，通常平板用户需要更改此选项。";
 "preference.title.mouse_scale" = "鼠标缩放 (%)";
@@ -194,8 +200,10 @@
 "preference.title.custom_env" = "环境变量";
 "preference.detail.custom_env" = "此选项正在开发";
 
+"preference.title.debug_skip_wait_jit" = "跳过获取\"JIT(Just-in-time)\"请求";
+"preference.detail.debug_skip_wait_jit" = "这并不是让您在没有 JIT 的情况下启动，而是跳过调试检查，因为在越狱设备上会检查失败。";
 "preference.title.debug_ipad_ui" = "使用iPadOS用户界面";
-"preference.detail.debug_ipad_ui" = "开启后会使用IPadOS的专用UI界面";
+"preference.detail.debug_ipad_ui" = "开启后会使用 iPad OS 的专用 UI，否则使用 iPhone UI。";
 "preference.title.debug_show_layout_bounds" = "显示边界布局";
 "preference.detail.debug_show_layout_bounds" = "显示剪辑边界、边距";
 "preference.title.debug_show_layout_overlap" = "布局重叠显示";

@@ -25,7 +25,6 @@
 "custom_controls.button_edit.toggleable" = "Тогелабле";
 "custom_controls.button_edit.bg_color" = "Боја позадине";
 "custom_controls.button_edit.stroke_color" = "Боја потеза";
-"custom_controls.button_edit.dynamic_position" = "Динамична позиција";
 
 "custom_controls.button_menu.add_subbutton" = "Додај суб-дугме";
 "custom_controls.control_menu.exit" = "Изађи";
@@ -41,7 +40,6 @@
 
 "preference.title.renderer" = "Рендерер";
 "preference.title.disable_gesture" = "Искључи покрете";
-"preference.detail.press_duration" = "Промените време за дуготрајни притисак за уништавање блока и испуштању предмета.";
 "preference.title.java_args" = "ЈВМ Покретање аргументи";
 "preference.title.auto_ram" = "Аутпматски RAM";
 "preference.detail.auto_ram" = "Укључије аутомстски подешавање RAM-а";

@@ -33,7 +33,6 @@
 "custom_controls.button_edit.swipeable" = "Pwede ma swipe";
 "custom_controls.button_edit.bg_color" = "Kulay ng likuran";
 "custom_controls.button_edit.stroke_color" = "Kulay ng stroke";
-"custom_controls.button_edit.dynamic_position" = "Dynamic na posisyon";
 
 "custom_controls.button_menu.add_subbutton" = "Lagyan ng sub-button";
 "custom_controls.control_menu.exit" = "Umalis";
@@ -49,8 +48,6 @@
 "launcher.wait_jit.title" = "Naghihintay ng JIT";
 "launcher.wait_jit.message" = "Umaasa ang PojavLauncher sa Just-in-time na compilation para gumana ang Java sa maximum na performance.";
 
-"login.error.username.outOfRange" = "Dapat ang username ay may 3 na characters na hindi dapat lalampas sa 16 na characters";
-
 "login.alert.field.username" = "Username";
 
 "login.jit.checking" = "Nagche-check para sa JIT";
@@ -62,8 +59,6 @@
 "Sign in" = "Mag-Sign in";
 "FAQ" = "Mga Madalas na Katanungan";
 "Accounts" = "Mga Accounts";
-
-"login.menu.about" = "Tungkol sa PojavLauncher";
 "login.menu.sendlogs" = "I-send ang iyong logs";
 "login.menu.updates" = "Recent updates";
 
@@ -93,10 +88,6 @@
 
 "login.msa.error.xsts.noxboxacc" = "Ang isang Xbox profile ay hindi nakarehistro para sa Microsoft account na ito. Pakitiyak na nakagawa ka ng Xbox profile.\nError code: 2148916233";
 "login.msa.error.xsts.noxbox" = "Kasalukuyang hindi available ang Xbox Live sa iyong bansa.\nError code: 2148916235";
-"login.msa.error.xsts.krverify" = "Kailangang ma-verify ng iyong mga magulang ang iyong account bago magpatuloy.\nError code: 2148916236 o 2148916237.";
-"login.msa.error.xsts.underage" = "Kailangang ma-link ang iyong account sa isang account ng magulang bago magpatuloy.\nError code: 2148916238";
-
-"login.msa.notice.demomode" = "Hindi makahanap ng profile sa Minecraft sa account na ito. Ang account ay nakatakda na ngayon sa Demo mode. Bumili ka ba ng Minecraft, o mayroon bang aktibong subscription sa Xbox GamePass? Mangyaring i-configure ang iyong profile sa https://minecraft.net/msaprofle upang maibalik sa Online mode.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Pagkuha ng Access token";
 "login.msa.progress.acquireXBLToken" = "(2/5) Pagkuha ng Xbox Live token";
@@ -149,7 +140,6 @@
 "preference.detail.resolution" = "Binibigyang-daan kang bawasan ang resolution ng laro.";
 "preference.title.disable_gesture" = "Paganahin ang mga galaw";
 "preference.title.press_duration" = "Tagal ng pagpindot nang long-press (ms)";
-"preference.detail.press_duration" = "Baguhin ang oras ng pag-trigger para sa mahabang pindutin sa destroy block at drop item.";
 "preference.title.button_scale" = "Sukat ng button sa screen (%)";
 "preference.detail.button_scale" = "Palakihin ang mga ito kung masyadong maliit ang mga button, kadalasang kailangan para sa mga user ng iPad.";
 "preference.title.mouse_scale" = "Pag-scale ng mouse (%)";
@@ -173,9 +163,7 @@
 "preference.warn.allocated_memory" = "Dahil sa mga limitasyon sa mismong operating system, ang opsyong ito ay maaaring magdulot ng kawalang-tatag dito at mas mataas na halaga. Magpatuloy nang may pag-iingat.";
 "preference.title.custom_env" = "Variables ng environment";
 "preference.detail.custom_env" = "Ang pagpipiliang ito ay nasa ilalim ng pagtatayo.";
-
 "preference.title.debug_ipad_ui" = "I-unlock ang iPadOS UI";
-"preference.detail.debug_ipad_ui" = "I-unlock ang iPad-exlusive na UI (alerto, keyboard, atbp.) kung pinagana o iPhone UI kung naka-disable.";
 "preference.title.debug_show_layout_bounds" = "Ipakita ang mga hangganan ng layout";
 "preference.detail.debug_show_layout_bounds" = "Ipakita ang mga hangganan ng clip, mga margin";
 "preference.title.debug_show_layout_overlap" = "Ipakita ang layout na magkakapatong";

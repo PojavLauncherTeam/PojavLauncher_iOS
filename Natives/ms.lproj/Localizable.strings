@@ -20,10 +20,10 @@
 
 "custom_controls.button_edit.name" = "Nama";
 "custom_controls.button_edit.size" = "Saiz";
+"custom_controls.button_edit.mapping" = "Pemetaan";
 "custom_controls.button_edit.orientation" = "Orientasi";
 "custom_controls.button_edit.toggleable" = "Boleh Ditukar";
 "custom_controls.button_edit.bg_color" = "Warna Latar Belakang";
-"custom_controls.button_edit.dynamic_position" = "Posisi Dinamik";
 "custom_controls.control_menu.exit" = "Keluar";
 "custom_controls.control_menu.save" = "Simpan";
 "custom_controls.control_menu.load" = "Memuat";
@@ -54,7 +54,6 @@
 
 "preference.title.renderer" = "Renderer";
 "preference.title.disable_gesture" = "Nyahdayakan gerak isyarat";
-"preference.detail.press_duration" = "Tukar masa cetusan untuk tekanan lama dalam penghancuran blok dan pelemparan item.";
 "preference.title.java_args" = "JVM Launch arguments";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Membenarkan pelaras RAM automatik";

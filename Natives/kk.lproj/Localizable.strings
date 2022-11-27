@@ -21,7 +21,6 @@
 "custom_controls.button_edit.name" = "Атауы";
 "custom_controls.button_edit.size" = "Көлемі";
 "custom_controls.button_edit.toggleable" = "Ауысқыш";
-"custom_controls.button_edit.dynamic_position" = "Динамикалық позиция";
 "custom_controls.control_menu.exit" = "Шығу";
 "custom_controls.control_menu.save" = "Сақтау";
 "custom_controls.control_menu.load" = "Жүктеу";
@@ -33,7 +32,6 @@
 "Settings" = "Баптау";
 
 "preference.title.renderer" = "Рендерер";
-"preference.detail.press_duration" = "Блок сындыру мен зат лақтыру үшін басып ұстау ұзықтығын өзгерту.";
 "preference.title.java_args" = "JVM қосу аргументі";
 "preference.title.auto_ram" = "Авто ОЕСҚ";
 "preference.detail.auto_ram" = "Автоматты түрде ОЕСҚ-ны басқарады";

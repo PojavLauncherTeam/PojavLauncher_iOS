@@ -20,13 +20,12 @@
 
 "custom_controls.button_edit.name" = "Názov";
 "custom_controls.button_edit.size" = "Veľkosť";
-"custom_controls.button_edit.mapping" = "Mapovanie";
+"custom_controls.button_edit.mapping" = "Priradenie ku klávese (bind)";
 "custom_controls.button_edit.orientation" = "Orientácia";
-"custom_controls.button_edit.toggleable" = "Prepnuteľný";
+"custom_controls.button_edit.toggleable" = "Prepnuteľné (toggle) - po ťuknutí klávesa ostane stlačená";
 "custom_controls.button_edit.swipeable" = "Posunovateľné";
-"custom_controls.button_edit.bg_color" = "Farba pozadia";
-"custom_controls.button_edit.stroke_color" = "Farba obrysu";
-"custom_controls.button_edit.dynamic_position" = "Dynamická pozície";
+"custom_controls.button_edit.bg_color" = "Farba pozadia tlačidla";
+"custom_controls.button_edit.stroke_color" = "Farba obrysu tlačidla";
 
 "custom_controls.button_menu.add_subbutton" = "Pridať podtlačidlo";
 "custom_controls.control_menu.exit" = "Skončiť";
@@ -39,14 +38,14 @@
 
 "News" = "Novinky";
 "Settings" = "Nastavenie";
-"preference.section.control" = "Prispôsobenie ovládania";
+"preference.section.control" = "Ovládanie";
 //"preference.section.footer.control" = "";
-"preference.section.java" = "Vyladenie Javy";
+"preference.section.java" = "Nastavenia Javy";
+"preference.title.cosmetica" = "Cosmetica Capeky";
 
-"preference.title.renderer" = "Vykresľovač";
+"preference.title.renderer" = "Renderer";
 "preference.title.disable_gesture" = "Zakázať gestá";
-"preference.detail.press_duration" = "Zmeňte čas pre rozbitie bloku a vyhodenie itemu.";
-"preference.title.java_args" = "JVM spúšťacie argumenty";
+"preference.title.java_args" = "Spúštacie argumenty pre JVM";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Automaticky bude meniť množstvo RAM";
 "preference.detail.allocated_memory" = "Určite, koľko pamäti bude mať Minecraft";

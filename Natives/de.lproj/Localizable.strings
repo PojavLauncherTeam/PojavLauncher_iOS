@@ -8,6 +8,8 @@
 "game.menu.log_output" = "Protokoll-Ausgabe";
 "game.menu.custom_controls" = "Benutzerdefinierte Steuerung";
 
+"game.note.airplay" = "Minecraft wird in AirPlay-gespiegelter Anzeige angezeigt";
+
 "game.title.exit_code" = "Das Spiel wurde mit dem Code %d beendet";
 
 // The options button at the top-right corner on iOS 12
@@ -42,9 +44,6 @@
 "custom_controls.button_edit.stroke_color" = "Strichfarbe";
 "custom_controls.button_edit.corner_radius" = "Eckenradius (%)";
 "custom_controls.button_edit.opacity" = "Deckkraft (%)";
-"custom_controls.button_edit.dynamic_position" = "Dynamische Position";
-"custom_controls.button_edit.dynamic_x" = "Dynamische X-Achse";
-"custom_controls.button_edit.dynamic_y" = "Dynamische Y-Achse";
 
 "custom_controls.button_menu.add_subbutton" = "Sub-Schaltfläche hinzufügen";
 "custom_controls.control_menu.discard_changes" = "Änderungen verwerfen";
@@ -69,7 +68,7 @@
 "launcher.wait_jit.title" = "Wartet auf JIT";
 "launcher.wait_jit.message" = "PojavLauncher setzt auf Java's Just-in-time-Kompilierung, um mit maximaler Leistung zu arbeiten.";
 
-"login.error.username.outOfRange" = "Benutzername muss mindestens 3 und maximal 32 Zeichen lang sein";
+"login.error.username.outOfRange" = "Benutzername muss mindestens 3 und maximal 16 Zeichen lang sein";
 
 "login.alert.field.username" = "Benutzername";
 
@@ -77,13 +76,13 @@
 "login.jit.enabled" = "JIT wurde aktiviert";
 "login.jit.fail.JitStreamer" = "JitStreamer-Fehler: %@";
 "login.jit.found.JitStreamer" = "JitStreamer gefunden, JIT wird aktivieren";
+"login.jit.start.AltKit" = "Versuche AltJIT zu benutzen";
+"login.jit.fail.AltKit" = "AltKit-Fehler: %@";
 
 // Login buttons
 "Sign in" = "Anmelden";
 "FAQ" = "FAQ";
 "Accounts" = "Konten";
-
-"login.menu.about" = "Über PojavLauncher";
 "login.menu.sendlogs" = "Fehlerprotokolle senden";
 "login.menu.updates" = "Neueste Updates";
 
@@ -116,7 +115,7 @@
 "login.msa.error.xsts.krverify" = "Dein Konto muss von deinen Eltern verifiziert werden bevor du fortfährst.\nFehlercode: 2148916236 oder 2148916237.";
 "login.msa.error.xsts.underage" = "Dein Konto muss mit einem Eltern-Konto verknüpft werden.\nFehlercode: 2148916238";
 
-"login.msa.notice.demomode" = "Es konnte kein Minecraft-Profil auf diesem Konto gefunden werden. Das Konto ist jetzt auf Demo-Modus gesetzt. Hast du Minecraft gekauft oder gibt es ein aktives Xbox GamePass Abonnement? Bitte konfiguriere dein Profil auf https://minecraft.net/msaprofle um den Online-Modus wiederherzustellen.";
+"login.msa.notice.demomode" = "Es konnte kein Minecraft-Profil auf diesem Konto gefunden werden. Das Konto ist jetzt auf Demo-Modus gesetzt. Hast du Minecraft gekauft oder gibt es ein aktives Xbox-Game-Pass-Abonnement? Bitte konfiguriere dein Profil auf https://minecraft.net/msaprofile um den Zugriff zum Online-Modus wiederherzustellen.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Erhalte Zugangs-Token";
 "login.msa.progress.acquireXBLToken" = "(2/5) Erhalte Xbox-Live-Token";
@@ -150,6 +149,13 @@
 "preference.detail.cosmetica" = "Aktiviert Umhänge von Cosmetica (früher Arc). Für weitere Informationen bitte https://cosmetica.cc besuchen. OptiFine wird benötigt";
 "preference.title.debug_logging" = "Debug-Protokolle";
 "preference.detail.debug_logging" = "Protokolliert interne Einstellungen und Aktionen an latestlog.txt. Dies hilft den Entwicklern Probleme leichter zu finden, kann aber Minecraft langsamer laufen lassen, da die Protokolle öfter geschrieben werden.";
+"preference.title.jitstreamer_server" = "JitStreamer-Server-IP";
+"preference.detail.jitstreamer_server" = "Erlaubt es dir, auf eine benutzerdefinierte JitStreamer-Server-IP zu wechseln, wie zum Beispiel für selbst gehostete Instanzen. Diese Option kann ausgelassen werden, wenn du die Standard-JitStreamer-Server verwendest.";
+
+"preference.title.appicon" = "App-Icon festlegen";
+"preference.detail.appicon" = "Erlaubt es dir, zwischen verschiedenen Startbildschirm-Icons für PojavLauncher zu wählen.";
+"preference.title.appicon-default" = "Bekanntes PojavLauncher-Icon (Hell)";
+"preference.title.appicon-dark" = "Bekanntes PojavLauncher-Icon (Dunkel)";
 
 "preference.title.reset_warnings" = "Alle Warnungen zurücksetzen";
 "preference.title.done.reset_warnings" = "Alle Warnungen wurden zurückgesetzt.";
@@ -169,7 +175,7 @@
 "preference.detail.resolution" = "Ermöglicht es dir die Spielauflösung zu verringern.";
 "preference.title.disable_gesture" = "Gesten deaktivieren";
 "preference.title.press_duration" = "Dauer eines langen Touch (ms)";
-"preference.detail.press_duration" = "Ändere die Auslösezeit für langes Drücken beim Zerstören des Blocks und Ablegen des Gegenstandes.";
+"preference.detail.press_duration" = "Auslösedauer um Blöcke zu zerstören und Items zu droppen.";
 "preference.title.button_scale" = "Schalflächengröße (%)";
 "preference.detail.button_scale" = "Erhöhe den Wert, wenn die Schaltflächen zu klein sind; Normalerweise für iPad-Nutzer notwendig.";
 "preference.title.mouse_scale" = "Maus-Größe (%)";
@@ -194,6 +200,8 @@
 "preference.title.custom_env" = "Umgebungsvariablen";
 "preference.detail.custom_env" = "Diese Einstellung ist in Bearbeitung.";
 
+"preference.title.debug_skip_wait_jit" = "Überspringe den \"Warten auf JIT\"-Dialog";
+"preference.detail.debug_skip_wait_jit" = "Dies ermöglicht es dir nicht, ohne JIT zu starten. Stattdessen wird die Debuggerprüfung übersprungen, da die Überprüfung bei bestimmten Jailbreaks fehlschlägt.";
 "preference.title.debug_ipad_ui" = "Aktiviere das iPadOS UI";
 "preference.detail.debug_ipad_ui" = "Aktiviert iPad-exklusives UI (Meldungen, Tastatur, usw.), wenn an, oder aktiviert iPhone UI, wenn aus.";
 "preference.title.debug_show_layout_bounds" = "Layoutgrenzen einblenden";
