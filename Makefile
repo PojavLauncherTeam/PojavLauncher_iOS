@@ -98,7 +98,8 @@ PACKAGING  =  \
 	cp -r $(OUTPUTDIR)/PojavLauncher.app Applications/PojavLauncher.app; \
 	cp $(SOURCEDIR)/DEBIAN/control.$(1) DEBIAN/control; \
 	cp $(SOURCEDIR)/DEBIAN/postinst DEBIAN/postinst; \
-	ldid -S$(SOURCEDIR)/entitlements.xml Applications/PojavLauncher.app; \
+	ldid -S Applications/PojavLauncher.app; \
+	ldid -S$(SOURCEDIR)/entitlements.xml Applications/PojavLauncher.app/PojavLauncher; \
 	cd $(OUTPUTDIR); \
 	fakeroot dpkg-deb -Zxz -b $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)_$(VERSION)_iphoneos-arm; \
 	mkdir -p $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)-rootless_$(VERSION)_iphoneos-arm64; \
@@ -115,7 +116,8 @@ PACKAGING  =  \
 	cp -r $(OUTPUTDIR)/PojavLauncher.app $(IOS15PREF)/Applications/PojavLauncher.app; \
 	cp -r $(SOURCEDIR)/DEBIAN/control.$(1)-rootless DEBIAN/control; \
 	cp $(SOURCEDIR)/DEBIAN/postinst DEBIAN/postinst; \
-	ldid -S$(SOURCEDIR)/entitlements.xml $(IOS15PREF)/Applications/PojavLauncher.app; \
+	ldid -S $(IOS15PREF)/Applications/PojavLauncher.app; \
+	ldid -S$(SOURCEDIR)/entitlements.xml $(IOS15PREF)/Applications/PojavLauncher.app/PojavLauncher; \
 	cd $(OUTPUTDIR); \
 	fakeroot dpkg-deb -Zxz -b $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)-rootless_$(VERSION)_iphoneos-arm64
 
@@ -292,7 +294,40 @@ extras:
 	fi
 	@echo 'Building PojavLauncher $(VERSION) - EXTRAS - End'
 
-deb: native java extras
+jre:
+	@mkdir -p $(SOURCEDIR)/depends; \
+	cd $(SOURCEDIR)/depends; \
+	if [ ! -f "java-8-openjdk" ] && [ ! -f "$(ls ../jre8-*.tar.xz)" ]; then \
+		if [ "$(RUNNER)" != "1" ]; then \
+			wget 'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre8-40df388/jre8-arm64-20220811-release.tar.xz' -q --show-progress; \
+		fi; \
+		mkdir java-8-openjdk && cd java-8-openjdk; \
+		tar xvf ../jre8-*.tar.xz; \
+		rm ../jre8-*.tar.xz; \
+	fi; \
+	cd $(SOURCEDIR)/depends; \
+	if [ ! -f "java-17-openjdk" ] && [ ! -f "$(ls ../jre17-*.tar.xz)" ]; then \
+		if [ "$(RUNNER)" != "1" ]; then \
+			wget 'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre17-ca01427/jre17-arm64-20220817-release.tar.xz' -q --show-progress; \
+		fi; \
+		mkdir java-17-openjdk && cd java-17-openjdk; \
+		tar xvf ../jre17-*.tar.xz; \
+		rm ../jre17-*.tar.xz; \
+	fi; \
+	cd ..; \
+	mkdir -p $(OUTPUTDIR); \
+	cd $(OUTPUTDIR); \
+	$(call DIRCHECK,$(OUTPUTDIR)/Payload); \
+	cp -R $(POJAV_BUNDLE_DIR) $(OUTPUTDIR)/Payload; \
+	$(call DIRCHECK,$(OUTPUTDIR)/Payload/PojavLauncher.app/jvm); \
+	cp -R $(POJAV_JRE8_DIR) $(OUTPUTDIR)/Payload/PojavLauncher.app/jvm/; \
+	cp -R $(POJAV_JRE17_DIR) $(OUTPUTDIR)/Payload/PojavLauncher.app/jvm/; \
+	rm -rf $(OUTPUTDIR)/Payload/PojavLauncher.app/jvm/*/{bin,include,jre,lib/{ct.sym,libjsig.dylib,src.zip,tools.jar}}; \
+	cp $(OUTPUTDIR)/Payload/PojavLauncher.app/Frameworks/libawt_xawt.dylib $(OUTPUTDIR)/Payload/PojavLauncher.app/jvm/java-17-openjdk/lib/; \
+	cp $(OUTPUTDIR)/Payload/PojavLauncher.app/Frameworks/libawt_xawt.dylib $(OUTPUTDIR)/Payload/PojavLauncher.app/jvm/java-8-openjdk/lib/; \
+	rm $(OUTPUTDIR)/Payload/PojavLauncher.app/Frameworks/libawt_*.dylib; \
+
+deb: native java extras jre
 	@echo 'Building PojavLauncher $(VERSION) - DEB - Start'
 	@if [ '$(IOS)' = '1' ]; then \
 		mkdir -p $(WORKINGDIR)/PojavLauncher.app/{Frameworks,Base.lproj}; \
@@ -328,38 +363,6 @@ dsym: deb
 
 ipa: dsym
 	echo 'Building PojavLauncher $(VERSION) - IPA - Start'
-	@mkdir -p $(SOURCEDIR)/depends; \
-	cd $(SOURCEDIR)/depends; \
-	if [ ! -f "java-8-openjdk/bin/java" ] && [ ! -f "$(ls ../jre8-*.tar.xz)" ]; then \
-		if [ "$(RUNNER)" != "1" ]; then \
-			wget 'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre8-40df388/jre8-arm64-20220811-release.tar.xz' -q --show-progress; \
-		fi; \
-		mkdir java-8-openjdk && cd java-8-openjdk; \
-		tar xvf ../jre8-*.tar.xz; \
-		rm ../jre8-*.tar.xz; \
-	fi; \
-	cd $(SOURCEDIR)/depends; \
-	if [ ! -f "java-17-openjdk/bin/java" ] && [ ! -f "$(ls ../jre17-*.tar.xz)" ]; then \
-		if [ "$(RUNNER)" != "1" ]; then \
-			wget 'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre17-ca01427/jre17-arm64-20220817-release.tar.xz' -q --show-progress; \
-		fi; \
-		mkdir java-17-openjdk && cd java-17-openjdk; \
-		tar xvf ../jre17-*.tar.xz; \
-		rm ../jre17-*.tar.xz; \
-	fi; \
-	cd ..; \
-	mkdir -p $(OUTPUTDIR); \
-	cd $(OUTPUTDIR); \
-	$(call DIRCHECK,$(OUTPUTDIR)/Payload); \
-	cp -R $(POJAV_BUNDLE_DIR) $(OUTPUTDIR)/Payload; \
-	$(call DIRCHECK,$(OUTPUTDIR)/Payload/PojavLauncher.app/jvm); \
-	cp -R $(POJAV_JRE8_DIR) $(OUTPUTDIR)/Payload/PojavLauncher.app/jvm/; \
-	cp -R $(POJAV_JRE17_DIR) $(OUTPUTDIR)/Payload/PojavLauncher.app/jvm/; \
-	rm -rf $(OUTPUTDIR)/Payload/PojavLauncher.app/jvm/*/{bin,include,jre,lib/{ct.sym,libjsig.dylib,src.zip,tools.jar}}; \
-	cp $(OUTPUTDIR)/Payload/PojavLauncher.app/Frameworks/libawt_xawt.dylib $(OUTPUTDIR)/Payload/PojavLauncher.app/jvm/java-17-openjdk/lib/; \
-	cp $(OUTPUTDIR)/Payload/PojavLauncher.app/Frameworks/libawt_xawt.dylib $(OUTPUTDIR)/Payload/PojavLauncher.app/jvm/java-8-openjdk/lib/; \
-	rm $(OUTPUTDIR)/Payload/PojavLauncher.app/Frameworks/libawt_*.dylib; \
-	ldid -S$(SOURCEDIR)/entitlements_ipa.xml $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher; \
 	rm -f $(OUTPUTDIR)/*.ipa; \
 	cd $(OUTPUTDIR); \
 	chmod -R 755 Payload; \

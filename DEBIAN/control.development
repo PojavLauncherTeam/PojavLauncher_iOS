@@ -4,7 +4,7 @@ Maintainer: PojavLauncherTeam <https://discord.gg/6RpEJda>
 Author: DuyKhanhTran
 Architecture: iphoneos-arm
 Version: 2.1
-Depends: openjdk-8-jre | openjdk-16-jre | openjdk-8-jdk | openjdk-16-jdk, firmware (>= 12.0), firmware (<< 15.0)
+Depends: firmware (>= 12.0), firmware (<< 15.0)
 Conflicts: pojavlauncher-dev, pojavlauncher-zink, pojavlauncher, net.kdt.pojavlauncher.release, net.kdt.pojavlauncher.release-rootless, net.kdt.pojavlauncher.development-rootless
 Replaces: pojavlauncher-dev, pojavlauncher
 Section: Games
