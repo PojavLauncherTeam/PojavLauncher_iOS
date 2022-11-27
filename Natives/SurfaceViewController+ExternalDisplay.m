@@ -13,7 +13,7 @@
     noteLabel.numberOfLines = 0;
     noteLabel.textAlignment = NSTextAlignmentCenter;
     noteLabel.textColor = UIColor.whiteColor;
-    noteLabel.text = NSLocalizedString(@"game.note.airplay", nil);
+    noteLabel.text = localize(@"game.note.airplay", nil);
     [self.touchView addSubview:noteLabel]; 
 
     UIWindow *secondWindow = currentWindowInScene(1);

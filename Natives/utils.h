@@ -70,7 +70,7 @@ void* gbuffer; // OSMesa framebuffer
 long showingWindow;
 int windowWidth, windowHeight;
 int physicalWidth, physicalHeight;
-bool isInputReady, isCursorEntered, isPrepareGrabPos, isUseStackQueueCall;
+BOOL isInputReady, isCursorEntered, isPrepareGrabPos, isUseStackQueueCall;
 jboolean isGrabbing;
 BOOL virtualMouseEnabled;
 
@@ -85,6 +85,7 @@ UIWindow* currentWindow();
 UIWindow* currentWindowInScene(BOOL external);
 UIViewController* currentVC();
 
+NSString* localize(NSString* key, NSString* comment);
 NSMutableDictionary* parseJSONFromFile(NSString *path);
 NSError* saveJSONToFile(NSDictionary *dict, NSString *path);
 
@@ -113,7 +114,6 @@ BOOL CallbackBridge_nativeSendChar(jchar codepoint /* jint codepoint */);
 BOOL CallbackBridge_nativeSendCharMods(jchar codepoint, int mods);
 void CallbackBridge_nativeSendCursorPos(CGFloat x, CGFloat y);
 void CallbackBridge_nativeSendKey(int key, int scancode, int action, int mods);
-void CallbackBridge_nativeSendKeycode(int keycode, char keychar, int scancode, int action, int mods);
 void CallbackBridge_nativeSendMouseButton(int button, int action, int mods);
 void CallbackBridge_nativeSendScreenSize(int width, int height);
 void CallbackBridge_nativeSendScroll(CGFloat xoffset, CGFloat yoffset);

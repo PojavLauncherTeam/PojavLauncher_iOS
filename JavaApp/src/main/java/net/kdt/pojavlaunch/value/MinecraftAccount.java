@@ -9,8 +9,7 @@ public class MinecraftAccount
     public String clientToken = "0"; // clientID: refresh and invalidate
     public String profileId = "00000000-0000-0000-0000-000000000000"; // authenticate UUID
     public String username = "Steve";
-    public String selectedVersion = "1.7.10";
-    public String msaRefreshToken = "0";
+    public String xuid;
     
     public String save(String outPath) throws IOException {
         Tools.write(outPath, Tools.GLOBAL_GSON.toJson(this));
@@ -35,10 +34,8 @@ public class MinecraftAccount
             acc.profileId = "0";
         } if (acc.username == null) {
             acc.username = "0";
-        } if (acc.selectedVersion == null) {
-            acc.selectedVersion = "1.7.10";
-        } if (acc.msaRefreshToken == null) {
-            acc.msaRefreshToken = "0";
+        } if (acc.xuid == null) {
+            acc.xuid = "0";
         }
         return acc;
     }

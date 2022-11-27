@@ -8,7 +8,7 @@
 @implementation LauncherNewsViewController
 
 - (NSString *)imageName {
-    return @"MenuJava";
+    return @"MenuNews";
 }
 
 - (void)viewDidLoad

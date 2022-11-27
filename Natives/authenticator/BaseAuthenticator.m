@@ -21,7 +21,7 @@ static BaseAuthenticator *current = nil;
 + (id)loadSavedName:(NSString *)name {
     NSMutableDictionary *authData = parseJSONFromFile([NSString stringWithFormat:@"%s/accounts/%@.json", getenv("POJAV_HOME"), name]);
     if (authData[@"error"] != nil) {
-        showDialog(currentVC(), NSLocalizedString(@"Error", nil), ((NSError *)authData[@"error"]).localizedDescription);
+        showDialog(currentVC(), localize(@"Error", nil), ((NSError *)authData[@"error"]).localizedDescription);
         return nil;
     }
     if ([authData[@"accessToken"] length] < 5) {

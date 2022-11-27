@@ -5,11 +5,24 @@
 #import "LauncherPreferencesViewController.h"
 #import "UIButton+AFNetworking.h"
 #import "UIImageView+AFNetworking.h"
+#import "utils.h"
 
-@interface LauncherMenuViewController () {
+@implementation LauncherMenuCustomItem
+
++ (LauncherMenuCustomItem *)title:(NSString *)title imageName:(NSString *)imageName action:(id)action {
+    LauncherMenuCustomItem *item = [[LauncherMenuCustomItem alloc] init];
+    item.title = title;
+    item.imageName = imageName;
+    item.action = action;
+    return item;
 }
 
-@property NSArray<UIViewController*> *options;
+@end
+
+@interface LauncherMenuViewController()
+@property(nonatomic) NSArray<UIViewController*> *options;
+@property(nonatomic) UIButton *accountButton;
+@property(nonatomic) UIBarButtonItem *accountBtnItem;
 @end
 
 @implementation LauncherMenuViewController
@@ -17,40 +30,71 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    UIImageView *titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"AppLogo"]];
+    [titleView setContentMode:UIViewContentModeScaleAspectFit];
+    self.navigationItem.titleView = titleView;
+    [titleView sizeToFit];
+
     // View controllers are put into an array to keep its state
     self.options = @[
         [[LauncherNewsViewController alloc] init],
-        [[LauncherPreferencesViewController alloc] init]
-    ];
-    self.options[0].title = NSLocalizedString(@"News", nil);
-    self.options[1].title = NSLocalizedString(@"Settings", nil);
-    //@[@"News", @"Development Console", @"Crash logs"];
+        [[LauncherPreferencesViewController alloc] init],
+        [LauncherMenuCustomItem
+            title:localize(@"launcher.menu.custom_controls", nil)
+            imageName:@"MenuCustomControls" action:^{
+            [self restoreHighlightedSelection];
+            [self.splitViewController.viewControllers[1] performSelector:@selector(enterCustomControls)];
+        }],
+        [LauncherMenuCustomItem
+            title:localize(@"launcher.menu.install_jar", nil)
+            imageName:@"MenuInstallJar" action:^{
+            [self restoreHighlightedSelection];
+            [self.splitViewController.viewControllers[1] performSelector:@selector(enterModInstaller)];
+        }],
+        [LauncherMenuCustomItem
+            title:localize(@"login.menu.sendlogs", nil)
+            imageName:@"square.and.arrow.up" action:^{
+            [self restoreHighlightedSelection];
+            NSString *latestlogPath = [NSString stringWithFormat:@"file://%s/latestlog.old.txt", getenv("POJAV_HOME")];
+            NSLog(@"Path is %@", latestlogPath);
+            UIActivityViewController *activityVC = [[UIActivityViewController alloc]
+                initWithActivityItems:@[@"latestlog.txt", [NSURL URLWithString:latestlogPath]]
+                applicationActivities:nil];
+            activityVC.popoverPresentationController.sourceView = titleView;
+            activityVC.popoverPresentationController.sourceRect = titleView.bounds;
+
+            [self presentViewController:activityVC animated:YES completion:nil];
+        }]
+    ]; 
+    self.options[0].title = localize(@"News", nil);
+    self.options[1].title = localize(@"Settings", nil);
+
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
-    UIButton *titleButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [titleButton addTarget:self action:@selector(selectAccount:) forControlEvents:UIControlEventTouchUpInside];
-    titleButton.frame = self.navigationController.navigationBar.frame;
-    titleButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    if (@available(iOS 14.0, tvOS 14.0, *)) {
-        // On iOS 14+, a special button is displayed to toggle the visibility of the master view controller.
-        // It creates a bit more offset while in the process of swipe/animation. Therefore the left inset
-        // has to be increased a bit for this button.
-        titleButton.contentEdgeInsets = UIEdgeInsetsMake(4, 4, 4, 8);
-    } else {
-        titleButton.contentEdgeInsets = UIEdgeInsetsMake(4, 0, 4, 8);
-    } 
-    titleButton.titleEdgeInsets = UIEdgeInsetsMake(0, 4, 0, -4);
-    titleButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    titleButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    self.navigationItem.titleView = titleButton;
+    // Setup the account button
+    self.accountButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.accountButton addTarget:self action:@selector(selectAccount:) forControlEvents:UIControlEventTouchUpInside];
+    self.accountButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+
+    self.accountButton.titleEdgeInsets = UIEdgeInsetsMake(0, 4, 0, -4);
+    self.accountButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    self.accountButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    self.accountBtnItem = [[UIBarButtonItem alloc] initWithCustomView:self.accountButton];
 
     [self updateAccountInfo];
+
     [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+
+    // Put a close button, as iOS does not have a dedicated back button
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"❌" style:UIBarButtonItemStyleDone target:self.splitViewController action:@selector(dismissViewController)];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self restoreHighlightedSelection];
+}
 
+- (void)restoreHighlightedSelection {
     // workaround while investigating for issue
     if (self.splitViewController.viewControllers.count < 2) return;
 
@@ -73,26 +117,37 @@
     }
 
     cell.textLabel.text = [self.options[indexPath.row] title];
-    cell.imageView.contentMode = UIViewContentModeCenter;
-    cell.imageView.image = [UIImage imageNamed:[self.options[indexPath.row]
-        performSelector:@selector(imageName)]];
+    //cell.imageView.contentMode = UIViewContentModeScaleToFill;
+    if (@available(iOS 13.0, *)) {
+        cell.imageView.image = [UIImage systemImageNamed:[self.options[indexPath.row]
+            performSelector:@selector(imageName)]];
+    }
+    if (cell.imageView.image == nil) {
+        cell.imageView.layer.magnificationFilter = kCAFilterNearest;
+        cell.imageView.layer.minificationFilter = kCAFilterNearest;
+        cell.imageView.image = [UIImage imageNamed:[self.options[indexPath.row]
+            performSelector:@selector(imageName)]];
+    }
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UIViewController *selected = self.options[indexPath.row];
-    [self.splitViewController.viewControllers[1] setViewControllers:@[selected] animated:NO]; //YES?
+    if ([selected isKindOfClass:UIViewController.class]) {
+        [self.splitViewController.viewControllers[1] setViewControllers:@[selected] animated:NO]; //YES?
 
-    if (@available(iOS 14.0, tvOS 14.0, *)) {
-        // It is unnecessary to put the toggle button as it is automated on iOS 14+
-    } else {
-        selected.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
+
+        if (@available(iOS 14.0, tvOS 14.0, *)) {
+            selected.navigationItem.leftBarButtonItem = self.accountBtnItem;
+            // It is unnecessary to put the toggle button as it is automated on iOS 14+
+            return;
+        }
+        selected.navigationItem.leftBarButtonItems = @[self.splitViewController.displayModeButtonItem, self.accountBtnItem];
         selected.navigationItem.leftItemsSupplementBackButton = true;
+    } else {
+        ((LauncherMenuCustomItem *)selected).action();
     }
-
-    // Put a close button, as iOS does not have a dedicated back button
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"❌" style:UIBarButtonItemStyleDone target:self.splitViewController action:@selector(dismissViewController)];
 }
 
 - (void)selectAccount:(UIButton *)sender {
@@ -120,9 +175,9 @@
     id subtitle;
     if (isDemo) {
         // Remove the prefix "Demo."
-        subtitle = NSLocalizedString(@"login.option.demo", nil);
+        subtitle = localize(@"login.option.demo", nil);
     } else if (selected[@"xboxGamertag"] == nil) {
-        subtitle = NSLocalizedString(@"login.option.local", nil);
+        subtitle = localize(@"login.option.local", nil);
     } else {
         // Display the Xbox gamertag for online accounts
         subtitle = selected[@"xboxGamertag"];
@@ -130,12 +185,13 @@
     subtitle = [[NSAttributedString alloc] initWithString:subtitle attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12]}];
     [title appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n" attributes:nil]];
     [title appendAttributedString:subtitle];
-    [(UIButton *)self.navigationItem.titleView setAttributedTitle:title forState:UIControlStateNormal];
+    [self.accountButton setAttributedTitle:title forState:UIControlStateNormal];
 
     NSURL *url = [NSURL URLWithString:[selected[@"profilePicURL"] stringByReplacingOccurrencesOfString:@"\\/" withString:@"/"]];
     UIImage *placeholder = [UIImage imageNamed:@"DefaultAccount"];
-    [(UIButton *)self.navigationItem.titleView setImageForState:UIControlStateNormal withURL:url placeholderImage:placeholder];
-    [((UIButton *)self.navigationItem.titleView).imageView setImageWithURL:url placeholderImage:placeholder];
+    [self.accountButton setImageForState:UIControlStateNormal withURL:url placeholderImage:placeholder];
+    [self.accountButton.imageView setImageWithURL:url placeholderImage:placeholder];
+    [self.accountButton sizeToFit];
 }
 
 @end

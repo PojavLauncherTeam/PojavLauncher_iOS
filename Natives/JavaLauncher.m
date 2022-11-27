@@ -114,7 +114,7 @@ NSString* environmentFailsafes(int minVersion) {
     }
 
     if (javaHome == nil) {
-        showDialog(currentVC(), NSLocalizedString(@"Error", nil), [NSString stringWithFormat:@"Minecraft %@ requires Java %d in order to run. Please install it first.", getPreference(@"selected_version"), minVersion]);
+        showDialog(currentVC(), localize(@"Error", nil), [NSString stringWithFormat:@"Minecraft %@ requires Java %d in order to run. Please install it first.", getPreference(@"selected_version"), minVersion]);
     }
 
     return javaHome;
@@ -222,12 +222,12 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     sprintf(libjlipath16, "%s/lib/libjli.dylib", javaHome);
     setenv("INTERNAL_JLI_PATH", libjlipath16, 1);
     BOOL isJava8;
-    void* libjli = dlopen(libjlipath16, RTLD_LAZY | RTLD_GLOBAL);
+    void* libjli = dlopen(libjlipath16, RTLD_GLOBAL);
     isJava8 = libjli == NULL;
     if (!libjli) {
         debugLog("[Init] Can't load %s (%s), trying %s", libjlipath16, dlerror(), libjlipath8);
         setenv("INTERNAL_JLI_PATH", libjlipath8, 1);
-        libjli = dlopen(libjlipath8, RTLD_LAZY | RTLD_GLOBAL);
+        libjli = dlopen(libjlipath8, RTLD_GLOBAL);
         if (!libjli) {
             debugLog("[Init] JLI lib = NULL: %s", dlerror());
             return -1;

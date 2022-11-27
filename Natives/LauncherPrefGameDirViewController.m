@@ -3,6 +3,7 @@
 #import "LauncherPrefGameDirViewController.h"
 #import "TOInsetGroupedTableView.h"
 #import "ios_uikit_bridge.h"
+#import "utils.h"
 
 @interface LauncherPrefGameDirViewController ()<UITextFieldDelegate>
 @property(nonatomic) NSMutableArray *array;
@@ -13,7 +14,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self setTitle:NSLocalizedString(@"preference.title.game_directory", nil)];
+    [self setTitle:localize(@"preference.title.game_directory", nil)];
 
     self.array = [[NSMutableArray alloc] init];
     [self.array addObject:@"default"];
@@ -87,7 +88,7 @@ viewForFooterInSection:(NSInteger)section
     view.autocorrectionType = UITextAutocorrectionTypeNo;
     view.autocapitalizationType = UITextAutocapitalizationTypeNone;
     view.delegate = self;
-    view.placeholder = NSLocalizedString(@"preference.multidir.add_directory", nil);
+    view.placeholder = localize(@"preference.multidir.add_directory", nil);
     view.returnKeyType = UIReturnKeyDone;
     return view;
 }
@@ -168,7 +169,7 @@ viewForFooterInSection:(NSInteger)section
         menuItems = @[open];
     } else {
         UIAction *rename = [UIAction
-            actionWithTitle:NSLocalizedString(@"Rename", nil)
+            actionWithTitle:localize(@"Rename", nil)
             image:[UIImage systemImageNamed:@"pencil"]
             identifier:nil
             handler:^(UIAction *action) {
@@ -178,7 +179,7 @@ viewForFooterInSection:(NSInteger)section
         ];
 
         UIAction *delete = [UIAction
-            actionWithTitle:NSLocalizedString(@"Delete", nil)
+            actionWithTitle:localize(@"Delete", nil)
             image:[UIImage systemImageNamed:@"trash"]
             identifier:nil
             handler:^(UIAction *action) {
@@ -219,12 +220,12 @@ viewForFooterInSection:(NSInteger)section
 - (void)actionDeleteAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *view = [self.tableView cellForRowAtIndexPath:indexPath];
-    NSString *title = NSLocalizedString(@"preference.title.confirm", nil);
-    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"preference.title.confirm.delete_game_directory", nil), self.array[indexPath.row]];
+    NSString *title = localize(@"preference.title.confirm", nil);
+    NSString *message = [NSString stringWithFormat:localize(@"preference.title.confirm.delete_game_directory", nil), self.array[indexPath.row]];
     UIAlertController *confirmAlert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
     confirmAlert.popoverPresentationController.sourceView = view;
     confirmAlert.popoverPresentationController.sourceRect = view.bounds;
-    UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *ok = [UIAlertAction actionWithTitle:localize(@"OK", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
         NSString *directory = [NSString stringWithFormat:@"%s/instances/%@", getenv("POJAV_HOME"), self.array[indexPath.row]];
         NSError *error;
         if([NSFileManager.defaultManager removeItemAtPath:directory error:&error]) {
@@ -235,10 +236,10 @@ viewForFooterInSection:(NSInteger)section
             [self.array removeObjectAtIndex:indexPath.row];
             [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade]; 
         } else {
-            showDialog(self, NSLocalizedString(@"Error", nil), error.localizedDescription);
+            showDialog(self, localize(@"Error", nil), error.localizedDescription);
         }
     }];
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:localize(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
     [confirmAlert addAction:cancel];
     [confirmAlert addAction:ok];
     [self presentViewController:confirmAlert animated:YES completion:nil];
@@ -288,7 +289,7 @@ viewForFooterInSection:(NSInteger)section
         if (!isFooterView) {
             sender.text = sender.placeholder;
         }
-        showDialog(self, NSLocalizedString(@"Error", nil), error.localizedDescription);
+        showDialog(self, localize(@"Error", nil), error.localizedDescription);
     }
 }
 

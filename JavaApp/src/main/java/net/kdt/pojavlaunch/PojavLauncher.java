@@ -60,6 +60,7 @@ public class PojavLauncher {
         String[] size = args[2].split("x");
 
         MCOptionUtils.load();
+        MCOptionUtils.set("fullscreen", "false");
         MCOptionUtils.set("overrideWidth", size[0]);
         MCOptionUtils.set("overrideHeight", size[1]);
         MCOptionUtils.save();

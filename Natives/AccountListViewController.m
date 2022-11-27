@@ -63,9 +63,9 @@
     if ([selected[@"username"] hasPrefix:@"Demo."]) {
         // Remove the prefix "Demo."
         cell.textLabel.text = [selected[@"username"] substringFromIndex:5];
-        cell.detailTextLabel.text = NSLocalizedString(@"login.option.demo", nil);
+        cell.detailTextLabel.text = localize(@"login.option.demo", nil);
     } else if (selected[@"xboxGamertag"] == nil) {
-        cell.detailTextLabel.text = NSLocalizedString(@"login.option.local", nil);
+        cell.detailTextLabel.text = localize(@"login.option.local", nil);
     } else {
         // Display the Xbox gamertag for online accounts
         cell.detailTextLabel.text = selected[@"xboxGamertag"];

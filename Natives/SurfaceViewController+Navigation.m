@@ -1,5 +1,6 @@
 #import "LauncherPreferencesViewController.h"
 #import "SurfaceViewController.h"
+#import "utils.h"
 
 @implementation SurfaceViewController(Navigation)
 
@@ -90,13 +91,13 @@ static CGPoint lastCenterPoint;
 
 - (void)actionForceClose {
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil
-        message:NSLocalizedString(@"game.menu.confirm.force_close", nil)
+        message:localize(@"game.menu.confirm.force_close", nil)
         preferredStyle:UIAlertControllerStyleAlert];
 
-    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleDefault handler:nil];
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:localize(@"Cancel", nil) style:UIAlertActionStyleDefault handler:nil];
     [alert addAction:cancelAction];
 
-    UIAlertAction* okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+    UIAlertAction* okAction = [UIAlertAction actionWithTitle:localize(@"OK", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
         [UIView animateWithDuration:0.4 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
             self.rootView.center = CGPointMake(self.rootView.bounds.size.width/-2, self.rootView.center.y);
             self.menuView.frame = CGRectMake(self.view.frame.size.width, 0, 0, 0);
@@ -135,7 +136,7 @@ static CGPoint lastCenterPoint;
         cell.backgroundColor = UIColor.groupTableViewBackgroundColor;
     }
 
-    cell.textLabel.text = NSLocalizedString(self.menuArray[indexPath.row], nil);
+    cell.textLabel.text = localize(self.menuArray[indexPath.row], nil);
 
     return cell;
 }

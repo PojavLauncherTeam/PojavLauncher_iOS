@@ -162,7 +162,7 @@ public final class Tools
         varArgMap.put("auth_access_token", profile.accessToken);
         varArgMap.put("auth_player_name", username);
         varArgMap.put("auth_uuid", profile.profileId);
-        // varArgMap.put("auth_xuid", profile.profileId); // TODO!!!
+        varArgMap.put("auth_xuid", profile.xuid);
         varArgMap.put("assets_root", Tools.ASSETS_PATH);
         varArgMap.put("assets_index_name", versionInfo.assets);
         varArgMap.put("clientid", profile.clientToken);
@@ -196,14 +196,6 @@ public final class Tools
                 }
             }
         }
-        minecraftArgs.add("--width");
-        minecraftArgs.add(Integer.toString(mGLFWWindowWidth));
-        minecraftArgs.add("--height");
-        minecraftArgs.add(Integer.toString(mGLFWWindowHeight));
-        minecraftArgs.add("--fullscreenWidth");
-        minecraftArgs.add(Integer.toString(mGLFWWindowWidth));
-        minecraftArgs.add("--fullscreenHeight");
-        minecraftArgs.add(Integer.toString(mGLFWWindowHeight));
         String[] argsFromJson = JSONUtils.insertJSONValueList(
             splitAndFilterEmpty(
                 versionInfo.minecraftArguments == null ?
@@ -236,7 +228,6 @@ public final class Tools
                 strList.add(arg);
             }
         }
-        strList.add("--fullscreen");
         return strList.toArray(new String[0]);
     }
 

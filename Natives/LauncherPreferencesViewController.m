@@ -7,12 +7,13 @@
 #import "LauncherPrefGameDirViewController.h"
 #import "TOInsetGroupedTableView.h"
 
-#include "utils.h"
+#import "utils.h"
 
 typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
 @interface LauncherPreferencesViewController(){}
 @property(nonatomic) NSArray<NSString*>* prefSections;
+@property(nonatomic) NSMutableArray<NSNumber*>* prefSectionsVisibility;
 @property(nonatomic) NSArray<NSArray<NSDictionary*>*>* prefContents;
 @property(nonatomic) BOOL prefDetailVisible;
 
@@ -35,7 +36,6 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
     self.tableView = [[TOInsetGroupedTableView alloc] init];
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
-    self.tableView.sectionHeaderHeight = 50;
 
     if (self.navigationController == nil) {
         self.tableView.alpha = 0.9;
@@ -46,10 +46,15 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     };
 
     self.prefSections = @[@"general", @"video", @"control", @"java", @"debug"];
+    self.prefSectionsVisibility = [[NSMutableArray alloc] initWithCapacity:self.prefSections.count];
+    for (int i = 0; i < self.prefSections.count; i++) {
+        [self.prefSectionsVisibility addObject:@NO];
+    }
 
     self.prefContents = @[
         @[
         // General settings
+            @{@"icon": @"cube"},
             @{@"key": @"game_directory",
                 @"icon": @"folder",
                 @"type": self.typeChildPane,
@@ -75,9 +80,23 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             },
             @{@"key": @"jitstreamer_server",
                 @"hasDetail": @YES,
-                @"icon": @"doc.badge.gearshape",
+                @"icon": @"hare",
                 @"type": self.typeTextField,
                 @"enableCondition": whenNotInGame
+            },
+            @{@"key": @"appicon",
+                @"hasDetail": @YES,
+                @"icon": @"paintbrush",
+                @"type": self.typePickField,
+                @"enableCondition": whenNotInGame,
+                @"pickKeys": @[
+                  @"AppIcon-Light",
+                  @"AppIcon-Dark"
+                ],
+                @"pickList": @[
+                  localize(@"preference.title.appicon-default", nil),
+                  localize(@"preference.title.appicon-dark", nil)
+                ]
             },
             @{@"key": @"reset_warnings",
                 @"icon": @"exclamationmark.triangle",
@@ -101,6 +120,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             },
         ], @[
         // Video and renderer settings
+            @{@"icon": @"video"},
             @{@"key": @"renderer",
                 @"icon": @"cpu",
                 @"type": self.typePickField,
@@ -112,10 +132,10 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                     @ RENDERER_NAME_VK_ZINK
                 ],
                 @"pickList": @[
-                    NSLocalizedString(@"preference.title.renderer.auto", nil),
-                    NSLocalizedString(@"preference.title.renderer.gl4es", nil),
-                    NSLocalizedString(@"preference.title.renderer.tinygl4angle", nil),
-                    NSLocalizedString(@"preference.title.renderer.zink", nil)
+                    localize(@"preference.title.renderer.auto", nil),
+                    localize(@"preference.title.renderer.gl4es", nil),
+                    localize(@"preference.title.renderer.tinygl4angle", nil),
+                    localize(@"preference.title.renderer.zink", nil)
                 ]
             },
             @{@"key": @"resolution",
@@ -132,6 +152,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"type": self.typeSwitch
             },
         */
+            @{@"icon": @"gamecontroller"},
             @{@"key": @"press_duration",
                 @"hasDetail": @YES,
                 @"icon": @"timer",
@@ -172,6 +193,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             }
         ], @[
         // Java tweaks
+            @{@"icon": @"sparkles"},
             @{@"key": @"java_home", // Use Java 17 for Minecraft < 1.17
                 @"hasDetail": @YES,
                 @"icon": @"cube",
@@ -213,6 +235,13 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             }
         ], @[
             // Debug settings - only recommended for developer use
+            @{@"icon": @"ladybug"},
+            @{@"key": @"debug_skip_wait_jit",
+                @"hasDetail": @YES,
+                @"icon": @"forward",
+                @"type": self.typeSwitch,
+                @"enableCondition": whenNotInGame
+            },
             @{@"key": @"debug_ipad_ui",
                 @"hasDetail": @YES,
                 @"icon": @"ipad",
@@ -241,7 +270,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     if (@available(iOS 13.0, *)) {
         helpButton = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"questionmark.circle"] style:UIBarButtonItemStyleDone target:self action:@selector(toggleDetailVisibility)];
     } else {
-        helpButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Help", nil) style:UIBarButtonItemStyleDone target:self action:@selector(toggleDetailVisibility)];
+        helpButton = [[UIBarButtonItem alloc] initWithTitle:localize(@"Help", nil) style:UIBarButtonItemStyleDone target:self action:@selector(toggleDetailVisibility)];
     }
     self.navigationItem.rightBarButtonItems = @[helpButton];
 }
@@ -253,6 +282,9 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     // FIXME: any cheaper operations?
     NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
     for (int section = 0; section < self.prefContents.count; section++) {
+        if (!self.prefSectionsVisibility[section].boolValue) {
+            continue;
+        }
         for (int row = 0; row < self.prefContents[section].count; row++) {
             if (self.prefContents[section][row][@"type"] == self.typeChildPane) {
                 [indexPaths addObject:[NSIndexPath indexPathForRow:row inSection:section]];
@@ -279,10 +311,6 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     return self.prefSections.count;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return NSLocalizedString(([NSString stringWithFormat:@"preference.section.%@", self.prefSections[section]]), nil);
-}
-
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
     NSString *footer = NSLocalizedStringWithDefaultValue(([NSString stringWithFormat:@"preference.section.footer.%@", self.prefSections[section]]), @"Localizable", NSBundle.mainBundle, @" ", nil);
     if ([footer isEqualToString:@" "]) {
@@ -292,7 +320,10 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.prefContents[section].count;
+    if (self.prefSectionsVisibility[section].boolValue) {
+        return self.prefContents[section].count;
+    }
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -322,11 +353,18 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     cell.detailTextLabel.text = nil;
 
     NSString *key = item[@"key"];
-    CreateView createView = item[@"type"];
-    createView(cell, key, item);
-    if (cell.accessoryView) {
-        objc_setAssociatedObject(cell.accessoryView, @"key", key, OBJC_ASSOCIATION_ASSIGN);
-        objc_setAssociatedObject(cell.accessoryView, @"item", item, OBJC_ASSOCIATION_ASSIGN);
+    if (indexPath.row == 0) {
+        key = self.prefSections[indexPath.section];
+        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        cell.textLabel.text = localize(([NSString stringWithFormat:@"preference.section.%@", key]), nil);
+    } else {
+        CreateView createView = item[@"type"];
+        createView(cell, key, item);
+        if (cell.accessoryView) {
+            objc_setAssociatedObject(cell.accessoryView, @"key", key, OBJC_ASSOCIATION_ASSIGN);
+            objc_setAssociatedObject(cell.accessoryView, @"item", item, OBJC_ASSOCIATION_ASSIGN);
+        }
+        cell.textLabel.text = localize(([NSString stringWithFormat:@"preference.title.%@", key]), nil);
     }
 
     // Set general properties
@@ -335,9 +373,8 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
         cell.imageView.tintColor = destructive ? UIColor.systemRedColor : nil;
         cell.imageView.image = [UIImage systemImageNamed:item[@"icon"]];
     }
-    cell.textLabel.text = NSLocalizedString(([NSString stringWithFormat:@"preference.title.%@", key]), nil);
     if ([item[@"hasDetail"] boolValue] && self.prefDetailVisible) {
-        cell.detailTextLabel.text = NSLocalizedString(([NSString stringWithFormat:@"preference.detail.%@", key]), nil);
+        cell.detailTextLabel.text = localize(([NSString stringWithFormat:@"preference.detail.%@", key]), nil);
     } else if (cellStyle != UITableViewCellStyleValue1) {
         cell.detailTextLabel.text = nil;
     }
@@ -375,7 +412,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
         view.autocapitalizationType = UITextAutocapitalizationTypeNone;
         view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
         view.delegate = weakSelf;
-        view.placeholder = NSLocalizedString(([NSString stringWithFormat:@"preference.placeholder.%@", key]), nil);
+        view.placeholder = localize(([NSString stringWithFormat:@"preference.placeholder.%@", key]), nil);
         view.returnKeyType = UIReturnKeyDone;
         view.text = getPreference(key);
         view.textAlignment = NSTextAlignmentRight;
@@ -417,7 +454,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
     alert.popoverPresentationController.sourceView = view;
     alert.popoverPresentationController.sourceRect = view.bounds;
-    UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *ok = [UIAlertAction actionWithTitle:localize(@"OK", nil) style:UIAlertActionStyleCancel handler:nil];
     [alert addAction:ok];
     [self presentViewController:alert animated:YES completion:nil];
 }
@@ -436,8 +473,8 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             setPreference(warnKey, @NO);
         }
 
-        NSString *message = NSLocalizedString(([NSString stringWithFormat:@"preference.warn.%@", key]), nil);
-        [self showAlertOnView:view title:NSLocalizedString(@"Warning", nil) message:message];
+        NSString *message = localize(([NSString stringWithFormat:@"preference.warn.%@", key]), nil);
+        [self showAlertOnView:view title:localize(@"Warning", nil) message:message];
     }
 }
 
@@ -474,6 +511,11 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    if (indexPath.row == 0) {
+        self.prefSectionsVisibility[indexPath.section] = @(![self.prefSectionsVisibility[indexPath.section] boolValue]);
+        [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationFade];
+        return;
+    }
 
     NSDictionary *item = self.prefContents[indexPath.section][indexPath.row];
 
@@ -522,6 +564,19 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
         UIAlertAction *action = [UIAlertAction actionWithTitle:pickList[i] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             cell.detailTextLabel.text = pickKeys[i];
             setPreference(item[@"key"], pickKeys[i]);
+            if([item[@"key"] isEqualToString:@"appicon"]) {
+                NSString* iconName;
+                if([pickKeys[i] isEqualToString:@"AppIcon-Light"]) {
+                    iconName = nil;
+                } else {
+                    iconName = pickKeys[i];
+                }
+                if ([[UIApplication sharedApplication] respondsToSelector:@selector(supportsAlternateIcons)] && [[UIApplication sharedApplication] supportsAlternateIcons]) {
+                    [[UIApplication sharedApplication] setAlternateIconName:iconName completionHandler:^(NSError * _Nullable error) {
+                        NSLog(@"Error: %@", error);
+                    }];
+                }
+            }
         }];
         [picker addAction:action];
         
@@ -532,7 +587,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     picker.popoverPresentationController.sourceView = cell;
     picker.popoverPresentationController.sourceRect = cell.bounds;
 
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:localize(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
     [picker addAction:cancel];
 
     [self presentViewController:picker animated:YES completion:nil];
@@ -545,15 +600,15 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
     if ([item[@"showConfirmPrompt"] boolValue]) {
         BOOL destructive = [item[@"destructive"] boolValue];
-        NSString *title = NSLocalizedString(@"preference.title.confirm", nil);
-        NSString *message = NSLocalizedString(([NSString stringWithFormat:@"preference.title.confirm.%@", key]), nil);
+        NSString *title = localize(@"preference.title.confirm", nil);
+        NSString *message = localize(([NSString stringWithFormat:@"preference.title.confirm.%@", key]), nil);
         UIAlertController *confirmAlert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
         confirmAlert.popoverPresentationController.sourceView = view;
         confirmAlert.popoverPresentationController.sourceRect = view.bounds;
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:destructive?UIAlertActionStyleDestructive:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:localize(@"OK", nil) style:destructive?UIAlertActionStyleDestructive:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [self tableView:tableView invokeActionAtIndexPath:indexPath];
         }];
-        UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:localize(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
         [confirmAlert addAction:cancel];
         [confirmAlert addAction:ok];
         [self presentViewController:confirmAlert animated:YES completion:nil];
@@ -572,8 +627,8 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     }
 
     UIView *view = [self.tableView cellForRowAtIndexPath:indexPath];
-    NSString *title = NSLocalizedString(([NSString stringWithFormat:@"preference.title.done.%@", key]), nil);
-    //NSString *message = NSLocalizedString(([NSString stringWithFormat:@"preference.message.done.%@", key]), nil);
+    NSString *title = localize(([NSString stringWithFormat:@"preference.title.done.%@", key]), nil);
+    //NSString *message = localize(([NSString stringWithFormat:@"preference.message.done.%@", key]), nil);
     [self showAlertOnView:view title:title message:nil];
 }
 

@@ -1,4 +1,5 @@
 #import "SurfaceViewController.h"
+#import "utils.h"
 
 static BOOL fatalErrorOccurred;
 
@@ -47,14 +48,14 @@ static NSMutableArray* logLines;
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:line preferredStyle:UIAlertControllerStyleActionSheet];
     alert.popoverPresentationController.sourceView = cell;
     alert.popoverPresentationController.sourceRect = cell.bounds;
-    UIAlertAction *share = [UIAlertAction actionWithTitle:NSLocalizedString(NSLocalizedString(@"Share", nil), nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *share = [UIAlertAction actionWithTitle:localize(localize(@"Share", nil), nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         UIView *navigationBar = vc.logOutputView.subviews[1];
         UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[line] applicationActivities:nil];
         activityVC.popoverPresentationController.sourceView = navigationBar;
         activityVC.popoverPresentationController.sourceRect = navigationBar.bounds;
         [vc presentViewController:activityVC animated:YES completion:nil];
     }];
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:localize(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
     [alert addAction:share];
     [alert addAction:cancel];
     [vc presentViewController:alert animated:YES completion:nil];
@@ -84,7 +85,7 @@ static int logCharPerLine;
     ];
     UINavigationBar* navigationBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
     navigationBar.items = @[navigationItem];
-    navigationBar.topItem.title = NSLocalizedString(@"game.menu.log_output", nil);
+    navigationBar.topItem.title = localize(@"game.menu.log_output", nil);
     [navigationBar sizeToFit];
     navigationBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 
@@ -189,7 +190,7 @@ static int logCharPerLine;
         // Cleanup navigation bar
         UINavigationBar *navigationBar = instance.logOutputView.subviews[1];
         navigationBar.topItem.title = [NSString stringWithFormat:
-            NSLocalizedString(@"game.title.exit_code", nil), code];
+            localize(@"game.title.exit_code", nil), code];
         navigationBar.items[0].leftBarButtonItem = [[UIBarButtonItem alloc]
             initWithBarButtonSystemItem:UIBarButtonSystemItemAction
             target:instance action:@selector(actionShareLatestlog)];

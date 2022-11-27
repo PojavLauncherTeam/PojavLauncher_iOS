@@ -95,7 +95,7 @@ BOOL slideableHotbar;
     self.ctrlView = [[ControlLayout alloc] initWithFrame:CGRectFromString(getPreference(@"control_safe_area"))];
 
     [self performSelector:@selector(initCategory_Navigation)];
-
+    
     self.surfaceView = [[GameSurfaceView alloc] initWithFrame:self.view.frame];
     self.surfaceView.layer.contentsScale = screenScale * resolutionScale;
     self.surfaceView.layer.magnificationFilter = self.surfaceView.layer.minificationFilter = kCAFilterNearest;
@@ -188,6 +188,7 @@ BOOL slideableHotbar;
             NSLog(@"Input: Mouse connected!");
             GCMouse* mouse = note.object;
             [self registerMouseCallbacks:mouse];
+            [self setNeedsUpdateOfPrefersPointerLocked];
             self.mousePointerView.hidden = isGrabbing;
             virtualMouseEnabled = YES;
         }];
@@ -343,7 +344,7 @@ BOOL slideableHotbar;
 
     self.cc_dictionary = parseJSONFromFile(controlFilePath);
     if (self.cc_dictionary[@"error"] != nil) {
-        showDialog(self, NSLocalizedString(@"Error", nil), [NSString stringWithFormat:@"Could not open %@: %@", controlFilePath, [self.cc_dictionary[@"error"] localizedDescription]]);
+        showDialog(self, localize(@"Error", nil), [NSString stringWithFormat:@"Could not open %@: %@", controlFilePath, [self.cc_dictionary[@"error"] localizedDescription]]);
         return;
     }
 
@@ -377,10 +378,6 @@ BOOL slideableHotbar;
     return UIRectEdgeBottom | UIRectEdgeRight;
 }
 
-- (BOOL)prefersHomeIndicatorAutoHidden {
-    return YES;
-}
-
 - (BOOL)prefersStatusBarHidden {
     return YES;
 }
@@ -397,6 +394,7 @@ BOOL slideableHotbar;
         [self viewWillTransitionToSize_LogView:frame];
         [self viewWillTransitionToSize_Navigation:frame];
 
+        // Update custom controls button position
         CGRect ctrlFrame = CGRectFromString(getPreference(@"control_safe_area"));
         CGSize screenSize = UIScreen.mainScreen.bounds.size;
         if (size.width < screenSize.width || size.height < screenSize.height) {
@@ -413,8 +411,11 @@ BOOL slideableHotbar;
                 [(ControlButton *)view update];
             }
         }
-    } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+
+        // Update game resolution
         [self updateSavedResolution];
+    } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        virtualMouseFrame = self.mousePointerView.frame;
     }];
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 }
@@ -658,8 +659,7 @@ BOOL slideableHotbar;
             if (currentHotbarSlot == -1) {
                 CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_LEFT, 0, 0);
             } else {
-                
-CallbackBridge_nativeSendKey(GLFW_KEY_Q, 0, 0, 0);
+                CallbackBridge_nativeSendKey(GLFW_KEY_Q, 0, 0, 0);
             }
         }
     }
@@ -762,8 +762,7 @@ int currentVisibility = 1;
             // there's no key id 0, but we accidentally used -1 as a special key id, so we had to do that
             // if (keycode == 0) { keycode = -1; }
             // at the moment, send unknown keycode does nothing, may even cause performance issue, so ignore it
-            
-CallbackBridge_nativeSendKey(keycode, 0, held, 0);
+            CallbackBridge_nativeSendKey(keycode, 0, held, 0);
         }
     }
 }

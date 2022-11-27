@@ -15,8 +15,6 @@
 - This repository contains source code for iOS/iPadOS platform.
 - For Android platform, check out [PojavLauncher repository](https://github.com/PojavLauncherTeam/PojavLauncher).
 
-This launcher is available on the Procursus repo, thanks to [@Diatrus](https://twitter.com/Diatrus), and Doregon's Repository, thanks to [@crystall1ndev](https://twitter.com/crystall1nedev)
-
 ## Getting started with PojavLauncher
 
 The [PojavLauncher Website](https://pojavlauncherteam.github.io/INSTALL.html#ios) has extensive documentation on how to install, set up, and play! For those who wish to install quickly, here's the basics (on iOS 12 or later):
@@ -77,6 +75,7 @@ PojavLauncher is amazing, and surprisingly stable, and it wouldn't be this way w
 - [Java Native Access](https://github.com/java-native-access/jna): [Apache 2.0 License](https://github.com/java-native-access/jna/blob/master/LICENSE).
 - [shaderc](https://github.com/google/shaderc) (used by mods that uses Vulkan for rendering): [Apache 2.0 License](https://github.com/google/shaderc/blob/main/LICENSE).
 - [TOInsetGroupedTableView](https://github.com/TimOliver/TOInsetGroupedTableView): [MIT License](https://github.com/TimOliver/TOInsetGroupedTableView/blob/master/LICENSE).
+- [AltKit](https://github.com/rileytestut/AltKit)
 - Thanks to [MCHeads](https://mc-heads.net) for providing Minecraft avatars.
 
 ## Special thanks to MacStadium!

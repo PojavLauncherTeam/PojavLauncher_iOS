@@ -4,6 +4,7 @@
 #import "AFNetworking.h"
 #import <AuthenticationServices/AuthenticationServices.h>
 #import "authenticator/BaseAuthenticator.h"
+#import "ALTServerConnection.h"
 
 #import "AppDelegate.h"
 #import "AccountListViewController.h"
@@ -44,8 +45,8 @@ extern NSMutableDictionary *prefDict;
     CGFloat rawHeight = self.view.frame.size.height;
 
     if(roundf([[NSProcessInfo processInfo] physicalMemory] / 1048576) < 1900 && [getPreference(@"unsupported_warn_counter") intValue] == 0) {
-        UIAlertController *RAMAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"login.warn.title.a7", nil) message:NSLocalizedString(@"login.warn.message.a7", nil) preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleCancel handler:nil];
+        UIAlertController *RAMAlert = [UIAlertController alertControllerWithTitle:localize(@"login.warn.title.a7", nil) message:localize(@"login.warn.message.a7", nil) preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:localize(@"OK", nil) style:UIAlertActionStyleCancel handler:nil];
         [self presentViewController:RAMAlert animated:YES completion:nil];
         [RAMAlert addAction:ok];
     }
@@ -58,8 +59,8 @@ extern NSMutableDictionary *prefDict;
     }
     
     if(!getenv("POJAV_DETECTEDJB") && [getPreference(@"ram_unjb_warn") boolValue] == YES && [getPreference(@"auto_ram") boolValue] == NO) {
-        UIAlertController *ramalert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"login.warn.title.ram_unjb", nil) message:NSLocalizedString(@"login.warn.message.ram_unjb", nil) preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleCancel handler:nil];
+        UIAlertController *ramalert = [UIAlertController alertControllerWithTitle:localize(@"login.warn.title.ram_unjb", nil) message:localize(@"login.warn.message.ram_unjb", nil) preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:localize(@"OK", nil) style:UIAlertActionStyleCancel handler:nil];
         [self presentViewController:ramalert animated:YES completion:nil];
         [ramalert addAction:ok];
         setPreference(@"ram_unjb_warn", @NO);
@@ -68,6 +69,9 @@ extern NSMutableDictionary *prefDict;
     CGFloat widthSplit = width / 4.0;
     CGFloat widthSplit2 = width / 2.0;
     
+    for (int i = 0; i < 5; i++) {
+        NSLog(@"%@", [UIImage imageNamed:@"AppLogo-Vector"]);
+    }
     UIImageView *logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"AppLogo-Vector"]];
     logoView.frame = CGRectMake(0, (rawHeight / 2) - 125, width, 250);
     [logoView setContentMode:UIViewContentModeScaleAspectFit];
@@ -83,23 +87,12 @@ extern NSMutableDictionary *prefDict;
     NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"MM-dd"];
     NSString* date = [dateFormatter stringFromDate:[NSDate date]];
-    
-    self.navigationItem.rightBarButtonItems = @[
-        [[UIBarButtonItem alloc]
-            initWithBarButtonSystemItem:UIBarButtonSystemItemAction
-            target:self action:@selector(latestLogShare)],
-        // There's no better way to put both title+icon for both iOS 12 and 13+, so do this
-        [[UIBarButtonItem alloc]
-            initWithTitle:NSLocalizedString(@"login.menu.sendlogs", nil)
-            style:UIBarButtonItemStyleDone
-            target:self action:@selector(latestLogShare)]
-    ];
 
     CGRect frame = CGRectMake(widthSplit2 - (((width - widthSplit * 2.0) / 2) / 2), (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
     
     UIButton *button_login = [UIButton buttonWithType:UIButtonTypeSystem];
     setButtonPointerInteraction(button_login);
-    [button_login setTitle:NSLocalizedString(@"Sign in", nil) forState:UIControlStateNormal];
+    [button_login setTitle:localize(@"Sign in", nil) forState:UIControlStateNormal];
     button_login.autoresizingMask = AUTORESIZE_BTN;
     button_login.frame = CGRectMake(frame.origin.x - frame.size.width - 20, (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
     if([date isEqualToString:@"06-29"] || [date isEqualToString:@"06-30"] || [date isEqualToString:@"07-01"]) {
@@ -111,11 +104,11 @@ extern NSMutableDictionary *prefDict;
     [button_login setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button_login addTarget:self action:@selector(accountType:) forControlEvents:UIControlEventTouchUpInside];
     if(@available (iOS 14.0, *)) {
-        UIAction *option1 = [UIAction actionWithTitle:NSLocalizedString(@"login.option.microsoft", nil) image:nil identifier:nil
+        UIAction *option1 = [UIAction actionWithTitle:localize(@"login.option.microsoft", nil) image:nil identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self loginMicrosoft];}];
-        UIAction *option3 = [UIAction actionWithTitle:NSLocalizedString(@"login.option.demo", nil) image:nil identifier:nil
+        UIAction *option3 = [UIAction actionWithTitle:localize(@"login.option.demo", nil) image:nil identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self loginDemo:button_login];}];
-        UIAction *option4 = [UIAction actionWithTitle:NSLocalizedString(@"login.option.local", nil) image:nil identifier:nil
+        UIAction *option4 = [UIAction actionWithTitle:localize(@"login.option.local", nil) image:nil identifier:nil
                              handler:^(__kindof UIAction * _Nonnull action) {[self loginOffline:button_login];}];
         UIMenu *menu = [UIMenu menuWithTitle:@"" image:nil identifier:nil
                         options:UIMenuOptionsDisplayInline children:@[option4, option3, option1]];
@@ -131,7 +124,7 @@ extern NSMutableDictionary *prefDict;
 
     UIButton *button_accounts = [UIButton buttonWithType:UIButtonTypeSystem];
     setButtonPointerInteraction(button_accounts);
-    [button_accounts setTitle:NSLocalizedString(@"Accounts", nil) forState:UIControlStateNormal];
+    [button_accounts setTitle:localize(@"Accounts", nil) forState:UIControlStateNormal];
     button_accounts.autoresizingMask = AUTORESIZE_BTN;
     button_accounts.frame = CGRectMake(frame.origin.x + frame.size.width + 20, (height - 80.0), (width - widthSplit * 2.0) / 2, 40.0);
     if([date isEqualToString:@"06-29"] || [date isEqualToString:@"06-30"] || [date isEqualToString:@"07-01"]) {
@@ -150,7 +143,7 @@ extern NSMutableDictionary *prefDict;
     [self.view addSubview:button_accounts];
     
     if([date isEqualToString:@"06-29"] || [date isEqualToString:@"06-30"] || [date isEqualToString:@"07-01"]) {
-        UILabel *technoNote = [[UILabel alloc] initWithFrame:CGRectMake(0, 15, width, 40.0)];
+        UILabel *technoNote = [[UILabel alloc] initWithFrame:CGRectMake(0, height - 60, width, 40.0)];
         technoNote.text = @"Technoblade never dies!";
         technoNote.lineBreakMode = NSLineBreakByWordWrapping;
         technoNote.numberOfLines = 1;
@@ -161,7 +154,7 @@ extern NSMutableDictionary *prefDict;
 
     if (!getEntitlementValue(@"dynamic-codesigning")) {
         if (isJITEnabled()) {
-            self.title = NSLocalizedString(@"login.jit.enabled", nil);
+            self.title = localize(@"login.jit.enabled", nil);
         } else { 
             [self enableJITWithJitStreamer];
         }
@@ -186,10 +179,10 @@ extern NSMutableDictionary *prefDict;
         // UIMenu
     } else {
         UIAlertController *fullAlert = [UIAlertController alertControllerWithTitle:@"Let's get you signed in." message:@"What account do you use to log into Minecraft?" preferredStyle:UIAlertControllerStyleActionSheet];
-        UIAlertAction *microsoft = [UIAlertAction actionWithTitle:NSLocalizedString(@"login.option.microsoft", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginMicrosoft];}];
-        UIAlertAction *offline = [UIAlertAction actionWithTitle:NSLocalizedString(@"login.option.local", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginOffline:sender];}];
-        UIAlertAction *demo = [UIAlertAction actionWithTitle:NSLocalizedString(@"login.option.demo", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginDemo:sender];}];
-        UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(NSLocalizedString(@"Cancel", nil), nil) style:UIAlertActionStyleCancel handler:nil];
+        UIAlertAction *microsoft = [UIAlertAction actionWithTitle:localize(@"login.option.microsoft", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginMicrosoft];}];
+        UIAlertAction *offline = [UIAlertAction actionWithTitle:localize(@"login.option.local", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginOffline:sender];}];
+        UIAlertAction *demo = [UIAlertAction actionWithTitle:localize(@"login.option.demo", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginDemo:sender];}];
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:localize(localize(@"Cancel", nil), nil) style:UIAlertActionStyleCancel handler:nil];
         [self setPopoverProperties:fullAlert.popoverPresentationController sender:sender];
         [self presentViewController:fullAlert animated:YES completion:nil];
         [fullAlert addAction:microsoft];
@@ -221,7 +214,7 @@ extern NSMutableDictionary *prefDict;
     if (auth == nil) return;
 
     if (type != TYPE_OFFLINE && !shouldDismiss) {
-        [self displayProgress:NSLocalizedString(@"login.progress.title", nil)];
+        [self displayProgress:localize(@"login.progress.title", nil)];
     }
 
     id callback = ^(BOOL success) {
@@ -266,12 +259,12 @@ extern NSMutableDictionary *prefDict;
                         NSString *outError = [components[1]
                             stringByReplacingOccurrencesOfString:@"&error_description=" withString:@": "];
                         outError = [outError stringByRemovingPercentEncoding];
-                        showDialog(self, NSLocalizedString(@"Error", nil), outError);
+                        showDialog(self, localize(@"Error", nil), outError);
                     }
                 }
             } else {
                 if (error.code != ASWebAuthenticationSessionErrorCodeCanceledLogin) {
-                    showDialog(self, NSLocalizedString(@"Error", nil), error.localizedDescription);
+                    showDialog(self, localize(@"Error", nil), error.localizedDescription);
                 }
             }
         }];
@@ -282,48 +275,48 @@ extern NSMutableDictionary *prefDict;
     }
 
     if ([self.authVC start] == NO) {
-        showDialog(self, NSLocalizedString(@"Error", nil), @"Unable to open Safari");
+        showDialog(self, localize(@"Error", nil), @"Unable to open Safari");
     }
 }
 
 - (void)loginOffline:(UIButton *)sender {
     if ([getPreference(@"local_warn") boolValue] == YES) {
-        UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"login.warn.title.localmode", nil) message:NSLocalizedString(@"login.warn.message.localmode", nil) preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:localize(@"login.warn.title.localmode", nil) message:localize(@"login.warn.message.localmode", nil) preferredStyle:UIAlertControllerStyleActionSheet];
         [self setPopoverProperties:offlineAlert.popoverPresentationController sender:sender];
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginOffline:sender];}];
-        UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self accountType:sender];}];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:localize(@"OK", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginOffline:sender];}];
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:localize(@"Cancel", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self accountType:sender];}];
         [self presentViewController:offlineAlert animated:YES completion:nil];
         [offlineAlert addAction:ok];
         [offlineAlert addAction:cancel];
         setPreference(@"local_warn", @NO);
     } else {
-        UIAlertController *controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Sign in", nil) message:NSLocalizedString(@"login.option.local", nil) preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *controller = [UIAlertController alertControllerWithTitle:localize(@"Sign in", nil) message:localize(@"login.option.local", nil) preferredStyle:UIAlertControllerStyleAlert];
         [controller addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.placeholder = NSLocalizedString(@"login.alert.field.username", nil);
+            textField.placeholder = localize(@"login.alert.field.username", nil);
             textField.clearButtonMode = UITextFieldViewModeWhileEditing;
             textField.borderStyle = UITextBorderStyleRoundedRect;
         }];
-        [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [controller addAction:[UIAlertAction actionWithTitle:localize(@"OK", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             NSArray *textFields = controller.textFields;
             UITextField *usernameField = textFields[0];
             if (usernameField.text.length < 3 || usernameField.text.length > 16) {
-                controller.message = NSLocalizedString(@"login.error.username.outOfRange", nil);
+                controller.message = localize(@"login.error.username.outOfRange", nil);
                 [self presentViewController:controller animated:YES completion:nil];
             } else {
                 [self loginAccountInput:TYPE_OFFLINE data:usernameField.text];
             }
         }]];
-        [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil]];
+        [controller addAction:[UIAlertAction actionWithTitle:localize(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil]];
         [self presentViewController:controller animated:YES completion:nil];
     }
 }
 
 - (void)loginDemo:(UIButton *)sender {
     if ([getPreference(@"demo_warn") boolValue] == YES) {
-        UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"login.warn.title.demomode", nil) message:NSLocalizedString(@"login.warn.message.demomode", nil) preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertController *offlineAlert = [UIAlertController alertControllerWithTitle:localize(@"login.warn.title.demomode", nil) message:localize(@"login.warn.message.demomode", nil) preferredStyle:UIAlertControllerStyleActionSheet];
         [self setPopoverProperties:offlineAlert.popoverPresentationController sender:sender];
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginMicrosoft];}];
-        UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self accountType:sender];}];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:localize(@"OK", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self loginMicrosoft];}];
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:localize(@"Cancel", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self accountType:sender];}];
         [self presentViewController:offlineAlert animated:YES completion:nil];
         [offlineAlert addAction:ok];
         [offlineAlert addAction:cancel];
@@ -353,13 +346,40 @@ extern NSMutableDictionary *prefDict;
     [self presentViewController:vc animated:YES completion:nil];
 }
 
+- (void)enableJITWithAltJIT
+{
+    self.title = localize(@"login.jit.start.AltKit", nil);
+    [ALTServerManager.sharedManager startDiscovering];
+    [ALTServerManager.sharedManager autoconnectWithCompletionHandler:^(ALTServerConnection *connection, NSError *error) {
+        if (error) {
+            NSLog(@"[AltKit] Could not auto-connect to server. %@", error);
+            self.title = localize(@"login.jit.fail.AltKit", nil);
+            return;
+        }
+        [connection enableUnsignedCodeExecutionWithCompletionHandler:^(BOOL success, NSError *error) {
+            if (success) {
+                NSLog(@"[AltKit] Successfully enabled JIT compilation!"); 
+                [ALTServerManager.sharedManager stopDiscovering];
+                self.title = localize(@"login.jit.enabled", nil);
+                self.navigationItem.leftBarButtonItem = nil;
+            } else {
+                NSLog(@"[AltKit] Could not enable JIT compilation. %@", error);
+                self.title = localize(@"login.jit.fail.AltKit", nil);
+                self.navigationItem.leftBarButtonItem = nil;
+                showDialog(self, localize(@"Error", nil), error.description);
+            }
+            [connection disconnect];
+        }];
+    }];
+}
+
 - (void)enableJITWithJitStreamer
 {
-    [self displayProgress:NSLocalizedString(@"login.jit.checking", nil)];
+    [self displayProgress:localize(@"login.jit.checking", nil)];
 
     // TODO: customizable address
     NSString *address = getPreference(@"jitstreamer_server");
-    debugLog("JitStreamer server is %s, attempting to connect...", [address cStringUsingEncoding:NSUTF8StringEncoding]);
+    debugLog("JitStreamer server is %s, attempting to connect...", address.UTF8String);
     
     AFHTTPSessionManager *manager = AFHTTPSessionManager.manager;
     manager.requestSerializer.timeoutInterval = 10;
@@ -368,7 +388,7 @@ extern NSMutableDictionary *prefDict;
     [manager GET:[NSString stringWithFormat:@"http://%@/version", address] parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask *task, NSData *response) {
         NSString *version = [[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding];
         NSLog(@"Found JitStreamer %@", version);
-        self.title = NSLocalizedString(@"login.jit.found.JitStreamer", nil);
+        self.title = localize(@"login.jit.found.JitStreamer", nil);
         manager.requestSerializer.timeoutInterval = 0;
         manager.responseSerializer = AFJSONResponseSerializer.serializer;
         void(^handleResponse)(NSURLSessionDataTask *task, id response) = ^void(NSURLSessionDataTask *task, id response){
@@ -379,34 +399,24 @@ extern NSMutableDictionary *prefDict;
                 NSLog(@"Error?: %@", responseDict);
                 NSData *errorData = ((NSError *)response).userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
                 responseDict = [NSJSONSerialization JSONObjectWithData:errorData options:0 error:nil];
+                [self enableJITWithAltJIT];
             } else {
                 responseDict = response;
             }
             if ([responseDict[@"success"] boolValue]) {
-                self.title = NSLocalizedString(@"login.jit.enabled", nil);
+                self.title = localize(@"login.jit.enabled", nil);
+                self.navigationItem.leftBarButtonItem = nil;
             } else {
-                self.title = [NSString stringWithFormat:NSLocalizedString(@"login.jit.fail.JitStreamer", nil), responseDict[@"message"]];
-                showDialog(self, NSLocalizedString(@"Error", nil), responseDict[@"message"]);
-                // TODO: [self enableJITWithAltJIT];
+                self.title = [NSString stringWithFormat:localize(@"login.jit.fail.JitStreamer", nil), responseDict[@"message"]];
+                self.navigationItem.leftBarButtonItem = nil;
+                showDialog(self, localize(@"Error", nil), responseDict[@"message"]);
+                [self enableJITWithAltJIT];
             }
         };
         [manager POST:[NSString stringWithFormat:@"http://%@/attach/%d/", address, getpid()] parameters:nil headers:nil progress:nil success:handleResponse failure:handleResponse];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        self.title = @"";
-        self.navigationItem.leftBarButtonItem = nil;
-        //showDialog(self, @"Error", [NSString stringWithFormat:@"%@", error]);
-        // TODO: [self enableJITWithAltJIT];
+        [self enableJITWithAltJIT];
     }];
-}
-
--(void)latestLogShare
-{
-    NSString *latestlogPath = [NSString stringWithFormat:@"file://%s/latestlog.old.txt", getenv("POJAV_HOME")];
-    NSLog(@"Path is %@", latestlogPath);
-    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[@"latestlog.txt", [NSURL URLWithString:latestlogPath]] applicationActivities:nil];
-    activityViewController.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItems[0];
-
-    [self presentViewController:activityViewController animated:YES completion:nil];
 }
 
 - (void)setPopoverProperties:(UIPopoverPresentationController *)controller sender:(UIButton *)sender {

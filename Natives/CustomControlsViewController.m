@@ -51,7 +51,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     guideLabel.numberOfLines = 0;
     guideLabel.textAlignment = NSTextAlignmentCenter;
     guideLabel.textColor = UIColor.whiteColor;
-    guideLabel.text = NSLocalizedString(@"custom_controls.hint", nil);
+    guideLabel.text = localize(@"custom_controls.hint", nil);
     [self.view addSubview:guideLabel]; 
 
     self.ctrlView = [[ControlLayout alloc] initWithFrame:CGRectFromString(getPreference(@"control_safe_area"))];
@@ -244,23 +244,23 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     UIMenuController *menuController = [UIMenuController sharedMenuController];
 
     if (![sender.view isKindOfClass:[ControlButton class]]) {
-        UIMenuItem *actionExit = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"custom_controls.control_menu.exit", nil) action:@selector(actionMenuExit)];
-        UIMenuItem *actionSave = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"custom_controls.control_menu.save", nil) action:@selector(actionMenuSave)];
-        UIMenuItem *actionLoad = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"custom_controls.control_menu.load", nil) action:@selector(actionMenuLoad)];
-        UIMenuItem *actionSetDef = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"custom_controls.control_menu.make_default", nil) action:@selector(actionMenuSetDef)];
-        UIMenuItem *actionSafeArea = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"custom_controls.control_menu.safe_area", nil) action:@selector(actionMenuSafeArea)];
-        UIMenuItem *actionAddButton = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"custom_controls.control_menu.add_button", nil) action:@selector(actionMenuAddButton)];
-        UIMenuItem *actionAddDrawer = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"custom_controls.control_menu.add_drawer", nil) action:@selector(actionMenuAddDrawer)];
+        UIMenuItem *actionExit = [[UIMenuItem alloc] initWithTitle:localize(@"custom_controls.control_menu.exit", nil) action:@selector(actionMenuExit)];
+        UIMenuItem *actionSave = [[UIMenuItem alloc] initWithTitle:localize(@"custom_controls.control_menu.save", nil) action:@selector(actionMenuSave)];
+        UIMenuItem *actionLoad = [[UIMenuItem alloc] initWithTitle:localize(@"custom_controls.control_menu.load", nil) action:@selector(actionMenuLoad)];
+        UIMenuItem *actionSetDef = [[UIMenuItem alloc] initWithTitle:localize(@"custom_controls.control_menu.make_default", nil) action:@selector(actionMenuSetDef)];
+        UIMenuItem *actionSafeArea = [[UIMenuItem alloc] initWithTitle:localize(@"custom_controls.control_menu.safe_area", nil) action:@selector(actionMenuSafeArea)];
+        UIMenuItem *actionAddButton = [[UIMenuItem alloc] initWithTitle:localize(@"custom_controls.control_menu.add_button", nil) action:@selector(actionMenuAddButton)];
+        UIMenuItem *actionAddDrawer = [[UIMenuItem alloc] initWithTitle:localize(@"custom_controls.control_menu.add_drawer", nil) action:@selector(actionMenuAddDrawer)];
         [menuController setMenuItems:@[actionExit, actionSave, actionLoad, actionSetDef, actionSafeArea, actionAddButton, actionAddDrawer]];
 
         CGPoint point = [sender locationInView:sender.view];
         self.selectedPoint = CGRectMake(point.x, point.y, 1.0, 1.0);
     } else {
-        UIMenuItem *actionEdit = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Edit", nil) action:@selector(actionMenuBtnEdit)];
-        UIMenuItem *actionCopy = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Copy", nil) action:@selector(actionMenuBtnCopy)];
-        UIMenuItem *actionDelete = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Remove", nil) action:@selector(actionMenuBtnDelete)];
+        UIMenuItem *actionEdit = [[UIMenuItem alloc] initWithTitle:localize(@"Edit", nil) action:@selector(actionMenuBtnEdit)];
+        UIMenuItem *actionCopy = [[UIMenuItem alloc] initWithTitle:localize(@"Copy", nil) action:@selector(actionMenuBtnCopy)];
+        UIMenuItem *actionDelete = [[UIMenuItem alloc] initWithTitle:localize(@"Remove", nil) action:@selector(actionMenuBtnDelete)];
         if ([sender.view isKindOfClass:[ControlDrawer class]]) {
-            UIMenuItem *actionAddSubButton = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"custom_controls.button_menu.add_subbutton", nil) action:@selector(actionMenuAddSubButton)];
+            UIMenuItem *actionAddSubButton = [[UIMenuItem alloc] initWithTitle:localize(@"custom_controls.button_menu.add_subbutton", nil) action:@selector(actionMenuAddSubButton)];
             [menuController setMenuItems:@[actionEdit, /* actionCopy, */ actionDelete, actionAddSubButton]];
         } else {
             [menuController setMenuItems:@[actionEdit, /* actionCopy, */ actionDelete]];
@@ -286,8 +286,8 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 }
 
 - (void)actionMenuSaveWithExit:(BOOL)exit {
-    UIAlertController *controller = [UIAlertController alertControllerWithTitle: NSLocalizedString(@"custom_controls.control_menu.save", nil)
-        message:exit?NSLocalizedString(@"custom_controls.control_menu.exit.warn", nil):@""
+    UIAlertController *controller = [UIAlertController alertControllerWithTitle: localize(@"custom_controls.control_menu.save", nil)
+        message:exit?localize(@"custom_controls.control_menu.exit.warn", nil):@""
         preferredStyle:UIAlertControllerStyleAlert];
     [controller addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         textField.placeholder = @"Name";
@@ -295,22 +295,22 @@ NSMutableArray *keyCodeMap, *keyValueMap;
         textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         textField.borderStyle = UITextBorderStyleRoundedRect;
     }];
-    [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    [controller addAction:[UIAlertAction actionWithTitle:localize(@"OK", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         NSArray *textFields = controller.textFields;
         UITextField *field = textFields[0];
         if ([field.text isEqualToString:@"default"]) {
-            controller.message = NSLocalizedString(@"custom_controls.control_menu.save.error.default", nil);
+            controller.message = localize(@"custom_controls.control_menu.save.error.default", nil);
             [self presentViewController:controller animated:YES completion:nil];
         } else {
             NSError *error;
             NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self.cc_dictionary options:NSJSONWritingPrettyPrinted error:&error];
             if (jsonData == nil) {
-                showDialog(self, NSLocalizedString(@"custom_controls.control_menu.save.error.json", nil), error.localizedDescription);
+                showDialog(self, localize(@"custom_controls.control_menu.save.error.json", nil), error.localizedDescription);
                 return;
             }
             BOOL success = [jsonData writeToFile:[NSString stringWithFormat:@"%s/controlmap/%@.json", getenv("POJAV_HOME"), field.text] options:NSDataWritingAtomic error:&error];
             if (!success) {
-                showDialog(self, NSLocalizedString(@"custom_controls.control_menu.save.error.write", nil), error.localizedDescription);
+                showDialog(self, localize(@"custom_controls.control_menu.save.error.write", nil), error.localizedDescription);
                 return;
             }
 
@@ -323,11 +323,11 @@ NSMutableArray *keyCodeMap, *keyValueMap;
         }
     }]];
     if (exit) {
-        [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"custom_controls.control_menu.discard_changes", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+        [controller addAction:[UIAlertAction actionWithTitle:localize(@"custom_controls.control_menu.discard_changes", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
             [self dismissViewControllerAnimated:YES completion:nil];
         }]];
     }
-    [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil]];
+    [controller addAction:[UIAlertAction actionWithTitle:localize(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil]];
     [self presentViewController:controller animated:YES completion:nil];
 }
 
@@ -463,16 +463,9 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 }
 
 - (void)actionMenuBtnDelete {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:((ControlButton *)self.currentGesture.view).currentTitle message:NSLocalizedString(@"custom_controls.button_menu.remove", nil) preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
-    UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        self.resizeView.hidden = YES;
-        ControlButton *button = (ControlButton *)self.currentGesture.view;
-        [self doRemoveButton:button];
-    }];
-    [alert addAction:cancel];
-    [alert addAction:ok];
-    [self presentViewController:alert animated:YES completion:nil];
+    self.resizeView.hidden = YES;
+    ControlButton *button = (ControlButton *)self.currentGesture.view;
+    [self doRemoveButton:button];
 }
 
 - (void)actionMenuBtnEdit {
@@ -587,8 +580,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     CGPoint translation = [sender translationInView:sender.view];
 
     ControlButton *button = (ControlButton *)sender.view;
-    if ([button.properties[@"isDynamicBtn"] boolValue]) return;
-    else if ([button isKindOfClass:ControlSubButton.class] &&
+    if ([button isKindOfClass:ControlSubButton.class] &&
         ![((ControlSubButton *)button).parentDrawer.drawerData[@"orientation"] isEqualToString:@"FREE"]) return;
 
     switch (sender.state) {
@@ -747,14 +739,15 @@ CGFloat currentY;
 }
 
 @property(nonatomic) NSArray* arrOrientation;
+@property(nonatomic) NSMutableDictionary* oldProperties;
 
 @property UITextField *activeField;
 @property(nonatomic) UIScrollView* scrollView;
-@property(nonatomic) UITextField *editName, *editSizeWidth, *editSizeHeight, *editDynamicX, *editDynamicY;
+@property(nonatomic) UITextField *editName, *editSizeWidth, *editSizeHeight;
 @property(nonatomic) UITextView* editMapping;
 @property(nonatomic) UIPickerView* pickerMapping;
 @property(nonatomic) UISegmentedControl* ctrlOrientation;
-@property(nonatomic) UISwitch *switchToggleable, *switchMousePass, *switchSwipeable, *switchDynamicPos;
+@property(nonatomic) UISwitch *switchToggleable, *switchMousePass, *switchSwipeable;
 @property(nonatomic) UIColorWell API_AVAILABLE(ios(14.0)) *colorWellINTBackground, *colorWellINTStroke;
 @property(nonatomic) HBColorWell *colorWellEXTBackground, *colorWellEXTStroke;
 @property(nonatomic) DBNumberedSlider *sliderStrokeWidth, *sliderCornerRadius, *sliderOpacity;
@@ -774,25 +767,33 @@ CGFloat currentY;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self registerForKeyboardNotifications];
+    self.oldProperties = self.targetButton.properties.mutableCopy;
     currentY = 6.0;
 
-    CGFloat x = self.view.frame.size.width/5.0;
-    CGFloat y = self.view.frame.size.height/10.0;
-    self.view.bounds = CGRectMake(-x, -y, self.view.frame.size.width - x * 2.0, self.view.frame.size.height - y * 2.0);
+    CGFloat shortest = MIN(self.view.frame.size.width, self.view.frame.size.height);
+    CGFloat tempW = MIN(self.view.frame.size.width * 0.75, shortest);
+    CGFloat tempH = MIN(self.view.frame.size.height * 0.6, shortest);
 
-    UIVisualEffectView *blurView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight]];
+    UIBlurEffectStyle blurStyle;
+    UIVisualEffectView *blurView;
     if (@available(iOS 13.0, *)) {
-        blurView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleSystemMaterial];
+        blurStyle = UIBlurEffectStyleSystemMaterial;
+    } else {
+        blurStyle = UIBlurEffectStyleExtraLight;
     }
-    blurView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height); 
+    blurView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:blurStyle]];
+    blurView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    blurView.frame = CGRectMake(
+        (self.view.frame.size.width - MAX(tempW, tempH))/2,
+        (self.view.frame.size.height - MIN(tempW, tempH))/2,
+        MAX(tempW, tempH), MIN(tempW, tempH));
     blurView.layer.cornerRadius = 10.0;
     blurView.clipsToBounds = YES;
     [self.view addSubview:blurView];
 
     UIBarButtonItem *btnFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
 
-    UIToolbar *popoverToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, 44.0)];
+    UIToolbar *popoverToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0,   blurView.frame.size.width, 44.0)];
     UIPanGestureRecognizer *dragVCGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(dragViewController:)];
     dragVCGesture.minimumNumberOfTouches = 1;
     dragVCGesture.maximumNumberOfTouches = 1;
@@ -803,48 +804,55 @@ CGFloat currentY;
     popoverToolbar.items = @[popoverCancelButton, btnFlexibleSpace, popoverDoneButton]; 
     [blurView.contentView addSubview:popoverToolbar];
 
-    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(5.0, popoverToolbar.frame.size.height, self.view.bounds.size.width - 10.0, self.view.bounds.size.height - popoverToolbar.frame.size.height)];
+    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(5.0, popoverToolbar.frame.size.height, blurView.frame.size.width - 10.0, blurView.frame.size.height - popoverToolbar.frame.size.height)];
+    self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     [blurView.contentView addSubview:self.scrollView];
 
-    UIToolbar *editPickToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, 44.0)];
+    UIToolbar *editPickToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, blurView.frame.size.width, 44.0)];
  
     UIBarButtonItem *editDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeTextField)];
     editPickToolbar.items = @[btnFlexibleSpace, editDoneButton];
 
-    CGFloat width = self.view.bounds.size.width - 10.0;
-    CGFloat height = self.view.bounds.size.height - 10.0;
+    CGFloat width = blurView.frame.size.width - 10.0;
+    CGFloat height = blurView.frame.size.height - 10.0;
 
 
     // Property: Name
-    UILabel *labelName = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.name", nil)];
+    UILabel *labelName = [self addLabel:localize(@"custom_controls.button_edit.name", nil)];
     self.editName = [[UITextField alloc] initWithFrame:CGRectMake(labelName.frame.size.width + 5.0, currentY, width - labelName.frame.size.width - 5.0, labelName.frame.size.height)];
+    [self.editName addTarget:self action:@selector(textFieldEditingChanged) forControlEvents:UIControlEventEditingChanged];
     [self.editName addTarget:self.editName action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
-    self.editName.placeholder = NSLocalizedString(@"custom_controls.button_edit.name", nil);
+    self.editName.placeholder = localize(@"custom_controls.button_edit.name", nil);
+    self.editName.returnKeyType = UIReturnKeyDone;
     self.editName.text = self.targetButton.properties[@"name"];
     [self.scrollView addSubview:self.editName];
 
     if (![self.targetButton isKindOfClass:[ControlSubButton class]]) {
         // Property: Size
         currentY += labelName.frame.size.height + 12.0;
-        UILabel *labelSize = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.size", nil)];
+        UILabel *labelSize = [self addLabel:localize(@"custom_controls.button_edit.size", nil)];
         // width / 2.0 + (labelSize.frame.size.width + 4.0) / 2.0
         CGFloat editSizeWidthValue = (width - labelSize.frame.size.width) / 2 - labelSize.frame.size.height / 2;
         UILabel *labelSizeX = [[UILabel alloc] initWithFrame:CGRectMake(labelSize.frame.size.width + editSizeWidthValue, labelSize.frame.origin.y, labelSize.frame.size.height, labelSize.frame.size.height)];
         labelSizeX.text = @"x";
         [self.scrollView addSubview:labelSizeX];
         self.editSizeWidth = [[UITextField alloc] initWithFrame:CGRectMake(labelSize.frame.size.width, labelSize.frame.origin.y, editSizeWidthValue, labelSize.frame.size.height)];
+        [self.editSizeWidth addTarget:self action:@selector(textFieldEditingChanged) forControlEvents:UIControlEventEditingChanged];
+        [self.editSizeWidth addTarget:self.editSizeWidth action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
         self.editSizeWidth.keyboardType = UIKeyboardTypeDecimalPad;
         self.editSizeWidth.placeholder = @"width";
+        self.editSizeWidth.returnKeyType = UIReturnKeyDone;
         self.editSizeWidth.text = [self.targetButton.properties[@"width"] stringValue];
         self.editSizeWidth.textAlignment = NSTextAlignmentCenter;
-        self.editSizeWidth.inputAccessoryView = editPickToolbar;
         [self.scrollView addSubview:self.editSizeWidth];
         self.editSizeHeight = [[UITextField alloc] initWithFrame:CGRectMake(labelSizeX.frame.origin.x + labelSizeX.frame.size.width, labelSize.frame.origin.y, editSizeWidthValue, labelSize.frame.size.height)];
+        [self.editSizeHeight addTarget:self action:@selector(textFieldEditingChanged) forControlEvents:UIControlEventEditingChanged];
+        [self.editSizeHeight addTarget:self.editSizeHeight action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
         self.editSizeHeight.keyboardType = UIKeyboardTypeDecimalPad;
         self.editSizeHeight.placeholder = @"height";
+        self.editSizeHeight.returnKeyType = UIReturnKeyDone;
         self.editSizeHeight.text = [self.targetButton.properties[@"height"] stringValue];
         self.editSizeHeight.textAlignment = NSTextAlignmentCenter;
-        self.editSizeHeight.inputAccessoryView = editPickToolbar;
         [self.scrollView addSubview:self.editSizeHeight];
     }
 
@@ -852,7 +860,7 @@ CGFloat currentY;
     currentY += labelName.frame.size.height + 12.0;
     if (![self.targetButton isKindOfClass:[ControlDrawer class]]) {
         // Property: Mapping
-        UILabel *labelMapping = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.mapping", nil)];
+        UILabel *labelMapping = [self addLabel:localize(@"custom_controls.button_edit.mapping", nil)];
 
         self.editMapping = [[UITextView alloc] initWithFrame:CGRectMake(0,0,1,1)];
         self.editMapping.text = @"\n\n\n";
@@ -876,8 +884,9 @@ CGFloat currentY;
     } else {
         // Property: Orientation
         self.arrOrientation = @[@"DOWN", @"LEFT", @"UP", @"RIGHT", @"FREE"];
-        UILabel *labelOrientation = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.orientation", nil)];
+        UILabel *labelOrientation = [self addLabel:localize(@"custom_controls.button_edit.orientation", nil)];
         self.ctrlOrientation = [[UISegmentedControl alloc] initWithItems:self.arrOrientation];
+        [self.ctrlOrientation addTarget:self action:@selector(orientationValueChanged) forControlEvents:UIControlEventValueChanged];
         self.ctrlOrientation.frame = CGRectMake(labelOrientation.frame.size.width + 5.0, currentY - 5.0, width - labelOrientation.frame.size.width - 5.0, 30.0);
         self.ctrlOrientation.selectedSegmentIndex = [self.arrOrientation indexOfObject:
             ((ControlDrawer *)self.targetButton).drawerData[@"orientation"]];
@@ -887,7 +896,7 @@ CGFloat currentY;
 
 
     // Property: Toggleable
-    UILabel *labelToggleable = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.toggleable", nil)];
+    UILabel *labelToggleable = [self addLabel:localize(@"custom_controls.button_edit.toggleable", nil)];
     self.switchToggleable = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currentY - 5.0, 50.0, 30)];
     [self.switchToggleable setOn:[self.targetButton.properties[@"isToggle"] boolValue] animated:NO];
     [self.scrollView addSubview:self.switchToggleable];
@@ -895,7 +904,7 @@ CGFloat currentY;
 
     // Property: Mouse pass
     currentY += labelName.frame.size.height + 12.0;
-    UILabel *labelMousePass = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.mouse_pass", nil)];
+    UILabel *labelMousePass = [self addLabel:localize(@"custom_controls.button_edit.mouse_pass", nil)];
     self.switchMousePass = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currentY - 5.0, 50.0, 30)];
     [self.switchMousePass setOn:[self.targetButton.properties[@"passThruEnabled"] boolValue]];
     [self.scrollView addSubview:self.switchMousePass];
@@ -903,7 +912,7 @@ CGFloat currentY;
 
     // Property: Swipeable
     currentY += labelName.frame.size.height + 12.0;
-    UILabel *labelSwipeable = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.swipeable", nil)];
+    UILabel *labelSwipeable = [self addLabel:localize(@"custom_controls.button_edit.swipeable", nil)];
     self.switchSwipeable = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currentY - 5.0, 50.0, 30)];
     [self.switchSwipeable setOn:[self.targetButton.properties[@"isSwipeable"] boolValue]];
     [self.scrollView addSubview:self.switchSwipeable];
@@ -911,9 +920,10 @@ CGFloat currentY;
 
     // Property: Background color
     currentY += labelName.frame.size.height + 12.0;
-    UILabel *labelBGColor = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.bg_color", nil)];
+    UILabel *labelBGColor = [self addLabel:localize(@"custom_controls.button_edit.bg_color", nil)];
     if(@available(iOS 14.0, *)) {
         self.colorWellINTBackground = [[UIColorWell alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
+        [self.colorWellINTBackground addTarget:self action:@selector(colorWellChanged) forControlEvents:UIControlEventValueChanged];
         self.colorWellINTBackground.selectedColor = self.targetButton.backgroundColor;
         [self.scrollView addSubview:self.colorWellINTBackground];
     } else {
@@ -932,7 +942,7 @@ CGFloat currentY;
 
     // Property: Stroke width
     currentY += labelName.frame.size.height + 12.0;
-    UILabel *labelStrokeWidth = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.stroke_width", nil)];
+    UILabel *labelStrokeWidth = [self addLabel:localize(@"custom_controls.button_edit.stroke_width", nil)];
     self.sliderStrokeWidth = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(labelStrokeWidth.frame.size.width + 5.0, currentY - 5.0, width - labelStrokeWidth.frame.size.width - 5.0, 30.0)];
     self.sliderStrokeWidth.continuous = YES;
     self.sliderStrokeWidth.maximumValue = 100;
@@ -944,11 +954,12 @@ CGFloat currentY;
 
     // Property: Stroke color
     currentY += labelName.frame.size.height + 12.0;
-    UILabel *labelStrokeColor = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.stroke_color", nil)];
+    UILabel *labelStrokeColor = [self addLabel:localize(@"custom_controls.button_edit.stroke_color", nil)];
     if(@available(iOS 14.0, *)) {
         self.colorWellINTStroke = [[UIColorWell alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
+        [self.colorWellINTStroke addTarget:self action:@selector(colorWellChanged) forControlEvents:UIControlEventValueChanged];
         self.colorWellINTStroke.selectedColor = [[UIColor alloc] initWithCGColor:self.targetButton.layer.borderColor];
-        self.colorWellINTStroke.supportsAlpha = NO;
+        [self.scrollView addSubview:self.colorWellINTStroke];
     } else {
         self.colorWellEXTStroke = [[NSClassFromString(@"HBColorWell") alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
         self.colorWellEXTStroke.color = [[UIColor alloc] initWithCGColor:self.targetButton.layer.borderColor];
@@ -960,9 +971,9 @@ CGFloat currentY;
 
     // Property: Corner radius
     currentY += labelName.frame.size.height + 12.0;
-    UILabel *labelCornerRadius = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.corner_radius", nil)];
+    UILabel *labelCornerRadius = [self addLabel:localize(@"custom_controls.button_edit.corner_radius", nil)];
     self.sliderCornerRadius = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(labelCornerRadius.frame.size.width + 5.0, currentY - 5.0, width - labelCornerRadius.frame.size.width - 5.0, 30.0)];
-    self.sliderCornerRadius.continuous = NO;
+    self.sliderCornerRadius.continuous = YES;
     self.sliderCornerRadius.maximumValue = 100;
     self.sliderCornerRadius.tag = TAG_SLIDER_CORNERRADIUS;
     self.sliderCornerRadius.value = [self.targetButton.properties[@"cornerRadius"] intValue];
@@ -972,47 +983,15 @@ CGFloat currentY;
 
     // Property: Button Opacity
     currentY += labelName.frame.size.height + 12.0;
-    UILabel *labelOpacity = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.opacity", nil)];
+    UILabel *labelOpacity = [self addLabel:localize(@"custom_controls.button_edit.opacity", nil)];
     self.sliderOpacity = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(labelOpacity.frame.size.width + 5.0, currentY - 5.0, width - labelOpacity.frame.size.width - 5.0, 30.0)];
-    self.sliderOpacity.continuous = NO;
+    self.sliderOpacity.continuous = YES;
     self.sliderOpacity.minimumValue = 1;
     self.sliderOpacity.maximumValue = 100;
     self.sliderOpacity.tag = TAG_SLIDER_OPACITY;
     self.sliderOpacity.value = [self.targetButton.properties[@"opacity"] floatValue] * 100.0;
     [self.sliderOpacity addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
     [self.scrollView addSubview:self.sliderOpacity];
-
-
-    if (![self.targetButton isKindOfClass:[ControlSubButton class]] ||
-      [((ControlSubButton *)self.targetButton).parentDrawer.drawerData[@"orientation"] isEqualToString:@"FREE"]) {
-        // Property: Dynamic position
-        currentY += labelName.frame.size.height + 12.0; 
-        UILabel *labelDynamicPos = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.dynamic_position", nil)];
-        self.switchDynamicPos = [[UISwitch alloc] initWithFrame:CGRectMake(width - 62.0, currentY - 5.0, 50.0, 30)];
-        self.switchDynamicPos.tag = TAG_SWITCH_DYNAMICPOS;
-        [self.switchDynamicPos setOn:[self.targetButton.properties[@"isDynamicBtn"] boolValue] animated:NO];
-        [self.switchDynamicPos addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
-        [self.scrollView addSubview:self.switchDynamicPos];
-
-
-        // Property: Dynamic X-axis
-        currentY += labelName.frame.size.height + 12.0;
-        UILabel *labelDynamicX = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.dynamic_x", nil)];
-        self.editDynamicX = [[UITextField alloc] initWithFrame:CGRectMake(labelDynamicX.frame.size.width + 5.0, currentY, width - labelDynamicX.frame.size.width - 5.0, labelDynamicX.frame.size.height)];
-        [self.editDynamicX addTarget:self.editDynamicX action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
-        self.editDynamicX.text = self.targetButton.properties[@"dynamicX"];
-        [self.scrollView addSubview:self.editDynamicX];
-
-
-        // Property: Dynamic Y-axis
-        currentY += labelName.frame.size.height + 12.0;
-        UILabel *labelDynamicY = [self addLabel:NSLocalizedString(@"custom_controls.button_edit.dynamic_y", nil)];
-        self.editDynamicY = [[UITextField alloc] initWithFrame:CGRectMake(labelDynamicY.frame.size.width + 5.0, currentY, width - labelDynamicY.frame.size.width - 5.0, labelDynamicY.frame.size.height)];
-        [self.editDynamicY addTarget:self.editDynamicY action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
-        self.editDynamicY.text = self.targetButton.properties[@"dynamicY"];
-        [self.scrollView addSubview:self.editDynamicY];
-        self.editDynamicX.enabled = self.editDynamicY.enabled = self.switchDynamicPos.isOn;
-    }
 
 
     currentY += labelName.frame.size.height + 12.0;
@@ -1024,10 +1003,10 @@ CGFloat currentY;
     static CGPoint lastPoint;
     CGPoint point = [sender translationInView:self.view];
     if (sender.state != UIGestureRecognizerStateBegan) {
-        CGRect rect = self.view.bounds;
-        rect.origin.x = clamp(rect.origin.x + lastPoint.x - point.x, sender.view.frame.size.width - self.view.frame.size.width, 0);
-        rect.origin.y = clamp(rect.origin.y + lastPoint.y - point.y, sender.view.frame.size.height - self.view.frame.size.height, 0);
-        self.view.bounds = rect;
+        CGRect rect = self.view.subviews[0].frame;
+        rect.origin.x = clamp(rect.origin.x - lastPoint.x + point.x, -self.view.frame.size.width/2, self.view.frame.size.width - sender.view.frame.size.width/2);
+        rect.origin.y = clamp(rect.origin.y - lastPoint.y + point.y, 0, self.view.frame.size.height - sender.view.frame.size.height);
+        self.view.subviews[0].frame = rect;
     }
     lastPoint = point;
 }
@@ -1044,7 +1023,7 @@ CGFloat currentY;
         vc.configuration.supportsAlpha = YES;
     } else if (sender == self.colorWellEXTStroke) {
         vc.configuration.title = @"Stroke color";
-        vc.configuration.supportsAlpha = NO;
+        vc.configuration.supportsAlpha = YES;
     } else {
         NSLog(@"Unknown color well: %@", sender);
         abort();
@@ -1052,114 +1031,69 @@ CGFloat currentY;
     [self presentViewController:vc animated:YES completion:nil];
 }
 
-// HBColorPickerDelegate
+// iOS 14 color well
+- (void)colorWellChanged {
+    if(@available(iOS 14.0, *)) {
+        self.targetButton.properties[@"bgColor"] = @(convertUIColor2ARGB(self.colorWellINTBackground.selectedColor));
+        self.targetButton.properties[@"strokeColor"] = @(convertUIColor2ARGB(self.colorWellINTStroke.selectedColor));
+    }
+    [self.targetButton update];
+}
+
+// HBColorPickerDelegate (iOS 12-13 color well)
 - (void)colorPicker:(HBColorPickerViewController *)picker didSelectColor:(UIColor *)color {
     if ([picker.configuration.title isEqualToString:@"Background color"]) {
         self.colorWellEXTBackground.color = color;
+        self.targetButton.properties[@"bgColor"] = @(convertUIColor2ARGB(self.colorWellEXTBackground.color));
     } else if ([picker.configuration.title isEqualToString:@"Stroke color"]) {
         self.colorWellEXTStroke.color = color;
+        self.targetButton.properties[@"strokeColor"] = @(convertUIColor2ARGB(self.colorWellEXTStroke.color));
     } else {
         NSLog(@"Unknown color well: %@", picker.configuration.title);
         abort();
     }
+    [self.targetButton update];
 }
 
-#pragma mark - Keyboard observer functions
-- (void)registerForKeyboardNotifications
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self
-            selector:@selector(keyboardWasShown:)
-            name:UIKeyboardDidShowNotification object:nil];
- 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-             selector:@selector(keyboardWillBeHidden:)
-             name:UIKeyboardWillHideNotification object:nil];
- 
-}
- 
-- (void)keyboardWasShown:(NSNotification*)aNotification
-{
-    NSDictionary* info = [aNotification userInfo];
-    CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
-    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
-    self.scrollView.contentInset = contentInsets;
-    self.scrollView.scrollIndicatorInsets = contentInsets;
-    CGRect aRect = self.view.bounds;
-    aRect.size.height = self.view.frame.size.height - kbSize.height;
-    if (!CGRectContainsPoint(aRect, self.activeField.frame.origin) ) {
-        [self.scrollView scrollRectToVisible:self.activeField.frame animated:YES];
-    }
-}
-
-- (void)keyboardWillBeHidden:(NSNotification*)aNotification
-{
-    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-    self.scrollView.contentInset = contentInsets;
-    self.scrollView.scrollIndicatorInsets = contentInsets;
-}
-
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
-    self.activeField = textField;
-}
-
- - (void)textFieldDidEndEditing:(UITextField *)textField {
-    self.activeField = nil;
+ - (void)textFieldEditingChanged {
+    self.targetButton.properties[@"name"] = self.editName.text;
+    self.targetButton.properties[@"width"]  = @([self.editSizeWidth.text floatValue]);
+    self.targetButton.properties[@"height"] = @([self.editSizeHeight.text floatValue]);
+    [self.targetButton update];
 }
 
 #pragma mark - Control editor
 - (void)actionEditCancel {
+    self.targetButton.properties = self.oldProperties;
+    [self.targetButton update];
     shouldDismissPopover = YES;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)actionEditFinish {
-    NSMutableDictionary *oldProperties = self.targetButton.properties.mutableCopy;
-
-    self.targetButton.properties[@"name"] = self.editName.text;
-    self.targetButton.properties[@"width"]  = @([self.editSizeWidth.text floatValue]);
-    self.targetButton.properties[@"height"] = @([self.editSizeHeight.text floatValue]);
-    if (![self.targetButton isKindOfClass:[ControlDrawer class]]) {
-        for (int i = 0; i < 4; i++) {
-            self.targetButton.properties[@"keycodes"][i] = keyValueMap[[self.pickerMapping selectedRowInComponent:i]];
-        }
-    } else {
-        ((ControlDrawer *)self.targetButton).drawerData[@"orientation"] =
-            self.arrOrientation[self.ctrlOrientation.selectedSegmentIndex];
-        [(ControlDrawer *)self.targetButton syncButtons];
-    }
     self.targetButton.properties[@"isToggle"] = @(self.switchToggleable.isOn);
     self.targetButton.properties[@"passThruEnabled"] = @(self.switchMousePass.isOn);
     self.targetButton.properties[@"isSwipeable"] = @(self.switchSwipeable.isOn);
-    if(@available(iOS 14.0, *)) {
-        self.targetButton.properties[@"bgColor"] = @(convertUIColor2ARGB(self.colorWellINTBackground.selectedColor));
-        self.targetButton.properties[@"strokeColor"] = @(convertUIColor2RGB(self.colorWellINTStroke.selectedColor));
-    } else {
-        self.targetButton.properties[@"bgColor"] = @(convertUIColor2ARGB(self.colorWellEXTBackground.color));
-        self.targetButton.properties[@"strokeColor"] = @(convertUIColor2RGB(self.colorWellEXTStroke.color));
-    }
-    self.targetButton.properties[@"strokeWidth"] = @((NSInteger) self.sliderStrokeWidth.value);
-    self.targetButton.properties[@"cornerRadius"] = @((NSInteger) self.sliderCornerRadius.value);
-    self.targetButton.properties[@"opacity"] = @(self.sliderOpacity.value / 100.0);
-    self.targetButton.properties[@"isDynamicBtn"] = @(self.switchDynamicPos.isOn);
-
-    self.targetButton.properties[@"dynamicX"] = self.editDynamicX.text;
-    self.targetButton.properties[@"dynamicY"] = self.editDynamicY.text;
 
     NSMutableDictionary *newProperties = self.targetButton.properties.mutableCopy;
 
-    for (NSString *key in oldProperties) {
-        if ([oldProperties[key] isEqual:newProperties[key]]) {
+    for (NSString *key in self.oldProperties) {
+        if ([self.oldProperties[key] isEqual:newProperties[key]]) {
             [newProperties removeObjectForKey:key];
         }
     }
 
-    @try {
-        [(CustomControlsViewController *)self.presentingViewController
-            doUpdateButton:self.targetButton from:oldProperties to:newProperties];
-        [self actionEditCancel];
-    } @catch (NSException *exception) {
-        showDialog(self, @"Error processing dynamic position", exception.reason);
-    }
+    [(CustomControlsViewController *)self.presentingViewController
+        doUpdateButton:self.targetButton from:self.oldProperties to:newProperties];
+    self.oldProperties = nil;
+    shouldDismissPopover = YES;
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)orientationValueChanged {
+    ((ControlDrawer *)self.targetButton).drawerData[@"orientation"] =
+        self.arrOrientation[self.ctrlOrientation.selectedSegmentIndex];
+    [(ControlDrawer *)self.targetButton syncButtons];
 }
 
 - (void)sliderValueChanged:(DBNumberedSlider *)sender {
@@ -1170,25 +1104,26 @@ CGFloat currentY;
         } else {
             self.colorWellEXTStroke.enabled = sender.value != 0;
         }
+        self.targetButton.properties[@"strokeWidth"] = @((NSInteger) self.sliderStrokeWidth.value);
+    } else {
+        self.targetButton.properties[@"cornerRadius"] = @((NSInteger) self.sliderCornerRadius.value);
+        self.targetButton.properties[@"opacity"] = @(self.sliderOpacity.value / 100.0);
     }
-}
-
-- (void)switchValueChanged:(UISwitch *)sender {
-    if (sender.tag == TAG_SWITCH_DYNAMICPOS) {
-        self.editDynamicX.enabled = self.editDynamicY.enabled = self.switchDynamicPos.isOn;
-    }
+    [self.targetButton update];
 }
 
 #pragma mark - UIPickerView stuff
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    //versionTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
-    //setPreference(@"selected_version", versionTextField.text);
     self.editMapping.text = [NSString stringWithFormat:@"1: %@\n2: %@\n3: %@\n4: %@",
       keyCodeMap[[pickerView selectedRowInComponent:0]],
       keyCodeMap[[pickerView selectedRowInComponent:1]],
       keyCodeMap[[pickerView selectedRowInComponent:2]],
       keyCodeMap[[pickerView selectedRowInComponent:3]]
     ];
+
+    for (int i = 0; i < 4; i++) {
+        self.targetButton.properties[@"keycodes"][i] = keyValueMap[[self.pickerMapping selectedRowInComponent:i]];
+    }
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)thePickerView {
@@ -1204,8 +1139,6 @@ CGFloat currentY;
 }
 
 - (void)closeTextField {
-    [self.editSizeWidth endEditing:YES];
-    [self.editSizeHeight endEditing:YES];
     [self.editMapping endEditing:YES];
 }
 
