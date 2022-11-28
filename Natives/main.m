@@ -107,7 +107,9 @@ void init_logDeviceAndVer(char *argument) {
     const char *deviceSoftware = [[UIDevice currentDevice] systemVersion].UTF8String;
     
     // PojavLauncher version
-    regLog("[Pre-Init] PojavLauncher version: %s, branch: %s, commit: %s", CONFIG_TYPE, CONFIG_BRANCH, CONFIG_COMMIT);
+    regLog("[Pre-Init] PojavLauncher version: %s-%s, branch: %s, commit: %s",
+        [NSBundle.mainBundle.infoDictionary[@"CFBundleShortVersionString"] UTF8String],
+        CONFIG_TYPE, CONFIG_BRANCH, CONFIG_COMMIT);
 
     setenv("POJAV_DETECTEDHW", deviceHardware, 1);
     setenv("POJAV_DETECTEDSW", deviceSoftware, 1);

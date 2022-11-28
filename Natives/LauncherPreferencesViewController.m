@@ -312,6 +312,12 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+    if (section == 0) { // Add to general section
+        return [NSString stringWithFormat:@"PojavLauncher %@-%s (%s/%s)",
+            NSBundle.mainBundle.infoDictionary[@"CFBundleShortVersionString"],
+            CONFIG_TYPE, CONFIG_BRANCH, CONFIG_COMMIT];
+    }
+
     NSString *footer = NSLocalizedStringWithDefaultValue(([NSString stringWithFormat:@"preference.section.footer.%@", self.prefSections[section]]), @"Localizable", NSBundle.mainBundle, @" ", nil);
     if ([footer isEqualToString:@" "]) {
         return nil;
