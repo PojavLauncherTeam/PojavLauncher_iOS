@@ -88,7 +88,18 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"hasDetail": @YES,
                 @"icon": @"paintbrush",
                 @"type": self.typePickField,
-                @"enableCondition": whenNotInGame,
+                @"enableCondition": ^BOOL(){
+                    return UIApplication.sharedApplication.supportsAlternateIcons;
+                },
+                @"action": ^void(NSString *iconName) {
+                    if ([iconName isEqualToString:@"AppIcon-Light"]) {
+                        iconName = nil;
+                    }
+                    [UIApplication.sharedApplication setAlternateIconName:iconName completionHandler:^(NSError * _Nullable error) {
+                        if (error == nil) return;
+                        NSLog(@"Error: %@", error);
+                    }];
+                },
                 @"pickKeys": @[
                   @"AppIcon-Light",
                   @"AppIcon-Dark"
@@ -379,10 +390,11 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
         cell.imageView.tintColor = destructive ? UIColor.systemRedColor : nil;
         cell.imageView.image = [UIImage systemImageNamed:item[@"icon"]];
     }
-    if ([item[@"hasDetail"] boolValue] && self.prefDetailVisible) {
-        cell.detailTextLabel.text = localize(([NSString stringWithFormat:@"preference.detail.%@", key]), nil);
-    } else if (cellStyle != UITableViewCellStyleValue1) {
+    if (cellStyle != UITableViewCellStyleValue1) {
         cell.detailTextLabel.text = nil;
+        if ([item[@"hasDetail"] boolValue] && self.prefDetailVisible) {
+            cell.detailTextLabel.text = localize(([NSString stringWithFormat:@"preference.detail.%@", key]), nil);
+        }
     }
 
     // Check if one has enable condition and call if it does
@@ -565,27 +577,21 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
         return;
     }
 */
-    UIAlertController *picker = [UIAlertController alertControllerWithTitle:cell.textLabel.text message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
+    NSString *message = @"";
+    if ([item[@"hasDetail"] boolValue]) {
+        message = localize(([NSString stringWithFormat:@"preference.detail.%@", item[@"key"]]), nil);
+    }
+    UIAlertController *picker = [UIAlertController alertControllerWithTitle:cell.textLabel.text message:message preferredStyle:UIAlertControllerStyleActionSheet];
     for (int i = 0; i < pickList.count; i++) {
         UIAlertAction *action = [UIAlertAction actionWithTitle:pickList[i] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             cell.detailTextLabel.text = pickKeys[i];
             setPreference(item[@"key"], pickKeys[i]);
-            if([item[@"key"] isEqualToString:@"appicon"]) {
-                NSString* iconName;
-                if([pickKeys[i] isEqualToString:@"AppIcon-Light"]) {
-                    iconName = nil;
-                } else {
-                    iconName = pickKeys[i];
-                }
-                if ([[UIApplication sharedApplication] respondsToSelector:@selector(supportsAlternateIcons)] && [[UIApplication sharedApplication] supportsAlternateIcons]) {
-                    [[UIApplication sharedApplication] setAlternateIconName:iconName completionHandler:^(NSError * _Nullable error) {
-                        NSLog(@"Error: %@", error);
-                    }];
-                }
+            void(^invokeAction)(NSString *) = item[@"action"];
+            if (invokeAction) {
+                invokeAction(pickKeys[i]);
             }
         }];
         [picker addAction:action];
-        
     }
 
     UILabel *labels = [UILabel appearanceWhenContainedInInstancesOfClasses:@[UIAlertController.class]];
