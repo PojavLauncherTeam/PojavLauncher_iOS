@@ -166,7 +166,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             @{@"icon": @"gamecontroller"},
             @{@"key": @"press_duration",
                 @"hasDetail": @YES,
-                @"icon": @"timer",
+                @"icon": @"cursorarrow.click.badge.clock",
                 @"type": self.typeSlider,
                 @"min": @(100),
                 @"max": @(1000)
@@ -187,7 +187,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             },
             @{@"key": @"mouse_speed",
                 @"hasDetail": @YES,
-                @"icon": @"arrow.left.and.right",
+                @"icon": @"cursorarrow.motionlines",
                 @"type": self.typeSlider,
                 @"min": @(25),
                 @"max": @(300)
@@ -252,6 +252,14 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"icon": @"forward",
                 @"type": self.typeSwitch,
                 @"enableCondition": whenNotInGame
+            },
+            @{@"key": @"debug_hide_home_indicator",
+                @"hasDetail": @YES,
+                @"icon": @"iphone.and.arrow.forward",
+                @"type": self.typeSwitch,
+                @"enableCondition": ^BOOL(){
+                    return self.presentingViewController.view.safeAreaInsets.bottom > 0;
+                }
             },
             @{@"key": @"debug_ipad_ui",
                 @"hasDetail": @YES,

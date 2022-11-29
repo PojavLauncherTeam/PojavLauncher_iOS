@@ -507,7 +507,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 }
 
 - (BOOL)prefersHomeIndicatorAutoHidden {
-    return YES;
+    return [getPreference(@"debug_hide_home_indicator") boolValue];
 }
 
 - (BOOL)prefersStatusBarHidden {

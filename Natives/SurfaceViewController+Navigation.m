@@ -1,3 +1,4 @@
+#import "LauncherPreferences.h"
 #import "LauncherPreferencesViewController.h"
 #import "SurfaceViewController.h"
 #import "utils.h"
@@ -30,6 +31,7 @@ static UIView *menuSwipeView;
     //menuView.backgroundColor = [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1];
     self.menuView.dataSource = self;
     self.menuView.delegate = self;
+    self.menuView.hidden = YES;
     self.menuView.layer.cornerRadius = 12;
     self.menuView.scrollEnabled = NO;
     self.menuView.separatorInset = UIEdgeInsetsZero;
@@ -85,6 +87,9 @@ static CGPoint lastCenterPoint;
             self.menuView.frame = CGRectMake(self.rootView.frame.size.width, self.rootView.frame.origin.y, self.menuView.frame.size.width, self.menuView.contentSize.height);
         } completion:^(BOOL finished) {
             self.menuView.hidden = scale == 1.0;
+            [self setNeedsUpdateOfHomeIndicatorAutoHidden];
+            [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
+            [self setNeedsStatusBarAppearanceUpdate];
         }];
     }
 }
@@ -118,6 +123,22 @@ static CGPoint lastCenterPoint;
 - (void)actionOpenPreferences {
     LauncherPreferencesViewController *vc = [[LauncherPreferencesViewController alloc] init];
     [self presentViewController:vc animated:YES completion:nil];
+}
+
+- (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
+    if (!self.menuView.hidden) {
+        return 0;
+    }
+    return UIRectEdgeBottom | UIRectEdgeRight;
+}
+
+- (BOOL)prefersHomeIndicatorAutoHidden {
+    return self.menuView.hidden &&
+        [getPreference(@"debug_hide_home_indicator") boolValue];
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return self.menuView.hidden;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

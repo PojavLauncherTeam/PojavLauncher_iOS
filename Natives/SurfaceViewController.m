@@ -374,14 +374,6 @@ BOOL slideableHotbar;
     self.cc_dictionary[@"scaledAt"] = @(savedScale);
 }
 
-- (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
-    return UIRectEdgeBottom | UIRectEdgeRight;
-}
-
-- (BOOL)prefersStatusBarHidden {
-    return YES;
-}
-
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
