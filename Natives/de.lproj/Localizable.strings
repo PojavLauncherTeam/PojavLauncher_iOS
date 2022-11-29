@@ -204,6 +204,8 @@
 "preference.detail.debug_skip_wait_jit" = "Dies ermöglicht es dir nicht, ohne JIT zu starten. Stattdessen wird die Debuggerprüfung übersprungen, da die Überprüfung bei bestimmten Jailbreaks fehlschlägt.";
 "preference.title.debug_ipad_ui" = "Aktiviere das iPadOS UI";
 "preference.detail.debug_ipad_ui" = "Aktiviert iPad-exklusives UI (Meldungen, Tastatur, usw.), wenn an, oder aktiviert iPhone UI, wenn aus.";
+"preference.title.debug_hide_home_indicator" = "Home-Indikator ausblenden";
+"preference.detail.debug_hide_home_indicator" = "Dadurch wird die Sperre des Home-Indikators deaktiviert. Du musst den Guided-Access verwenden, um den Home-Indikator gleichzeitig auszublenden und zu sperren.";
 "preference.title.debug_show_layout_bounds" = "Layoutgrenzen einblenden";
 "preference.detail.debug_show_layout_bounds" = "Zuschnittbegrenzungen, Ränder anzeigen";
 "preference.title.debug_show_layout_overlap" = "Layoutüberlappungen anzeigen";
