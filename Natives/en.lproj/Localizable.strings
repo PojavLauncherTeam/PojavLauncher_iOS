@@ -152,11 +152,6 @@
 "preference.title.jitstreamer_server" = "JitStreamer server IP";
 "preference.detail.jitstreamer_server" = "Allows you to change to a custom JitStreamer server IP, such as for self-hosted instances. This option can be left alone if you use the default JitStreamer servers.";
 
-"preference.title.appicon" = "Set app icon";
-"preference.detail.appicon" = "Allows you to choose between different Home Screen icons for PojavLauncher.";
-"preference.title.appicon-default" = "Familiar PojavLauncher light";
-"preference.title.appicon-dark" = "Familiar PojavLauncher dark";
-
 "preference.title.reset_warnings" = "Reset all warnings";
 "preference.title.done.reset_warnings" = "All warnings have been reset.";
 
@@ -199,9 +194,6 @@
 "preference.warn.allocated_memory" = "Due to limitations in the operating system itself, this option may cause instability at this and higher values. Proceed with caution.";
 "preference.title.custom_env" = "Environment variables";
 "preference.detail.custom_env" = "This option is under construction.";
-
-"preference.title.debug_skip_wait_jit" = "Skip \"Waiting for JIT\" dialog";
-"preference.detail.debug_skip_wait_jit" = "This does not allow you to launch without JIT, instead this skips debugger check, because check fails on certain jailbreaks.";
 "preference.title.debug_ipad_ui" = "Unlock iPadOS UI";
 "preference.detail.debug_ipad_ui" = "Unlock iPad-exclusive UI (alert, keyboard, etc.) if enabled or iPhone UI if disabled.";
 "preference.title.debug_show_layout_bounds" = "Show layout bounds";
