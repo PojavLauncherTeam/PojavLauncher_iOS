@@ -67,3 +67,5 @@
 "preference.title.auto_ram" = "Automaatne RAM";
 "preference.title.allocated_memory" = "Mälueraldus (MB)";
 "preference.detail.allocated_memory" = "Juhib, kui palju mälu Minecraftile antakse";
+"preference.title.debug_hide_home_indicator" = "Peida koduindikaator";
+"preference.detail.debug_hide_home_indicator" = "See keelab koduindikaatori lukustamise. Koduindikaatori samal ajal peitmiseks ja lukustamiseks pead kasutama Guided Access'i.";
