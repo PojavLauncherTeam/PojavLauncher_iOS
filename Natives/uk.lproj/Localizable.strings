@@ -205,6 +205,7 @@
 "preference.title.debug_ipad_ui" = "Розблокувати інтерфейс iPadOS";
 "preference.detail.debug_ipad_ui" = "Розблокуйте ексклюзивний інтерфейс iPad (тривоги, клавіатури тощо.) якщо ввімкнено або якщо інтерфейс iPhone вимкнено.";
 "preference.title.debug_hide_home_indicator" = "Сховати кнопку \"Додому\"";
+"preference.detail.debug_hide_home_indicator" = "Це вимкне блокування кнопки \"Додому\". Ви повинні використовувати Guided Access, щоб ховати та блокувати кнопку \"Додому\" за один раз.";
 "preference.title.debug_show_layout_bounds" = "Показувати межі об'єктів";
 "preference.detail.debug_show_layout_bounds" = "Показувати межі обрізування, поля і т. д.";
 "preference.title.debug_show_layout_overlap" = "Показати накладання макета";
