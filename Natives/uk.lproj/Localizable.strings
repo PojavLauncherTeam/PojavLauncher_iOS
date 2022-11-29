@@ -204,6 +204,7 @@
 "preference.detail.debug_skip_wait_jit" = "Це не дозволяє запускати без JIT, натомість це пропускає перевірку налагоджувача, оскільки перевірка не вдається під час певних джейлбрейків.";
 "preference.title.debug_ipad_ui" = "Розблокувати інтерфейс iPadOS";
 "preference.detail.debug_ipad_ui" = "Розблокуйте ексклюзивний інтерфейс iPad (тривоги, клавіатури тощо.) якщо ввімкнено або якщо інтерфейс iPhone вимкнено.";
+"preference.title.debug_hide_home_indicator" = "Сховати кнопку \"Додому\"";
 "preference.title.debug_show_layout_bounds" = "Показувати межі об'єктів";
 "preference.detail.debug_show_layout_bounds" = "Показувати межі обрізування, поля і т. д.";
 "preference.title.debug_show_layout_overlap" = "Показати накладання макета";
