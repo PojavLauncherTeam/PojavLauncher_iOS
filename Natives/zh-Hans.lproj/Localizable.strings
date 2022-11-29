@@ -204,6 +204,7 @@
 "preference.detail.debug_skip_wait_jit" = "这并不是让您在没有 JIT 的情况下启动，而是跳过调试检查，因为在越狱设备上会检查失败。";
 "preference.title.debug_ipad_ui" = "使用iPadOS用户界面";
 "preference.detail.debug_ipad_ui" = "开启后会使用 iPad OS 的专用 UI，否则使用 iPhone UI。";
+"preference.title.debug_hide_home_indicator" = "隐藏主屏幕指示键";
 "preference.title.debug_show_layout_bounds" = "显示边界布局";
 "preference.detail.debug_show_layout_bounds" = "显示剪辑边界、边距";
 "preference.title.debug_show_layout_overlap" = "布局重叠显示";
