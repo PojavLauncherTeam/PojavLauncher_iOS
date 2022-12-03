@@ -4,7 +4,7 @@
 */
 
 "game.menu.force_close" = "Vynutit zavření";
-"game.menu.confirm.force_close" = "Jsi si jist zdali chceš vynutit ukončení?";
+"game.menu.confirm.force_close" = "Jste si jisti zdali chcete vynutit ukončení?";
 "game.menu.log_output" = "Záznam výstupu";
 "game.menu.custom_controls" = "Vlastní ovládací prvky";
 
@@ -153,6 +153,9 @@
 "preference.detail.jitstreamer_server" = "Umožňuje zadat vlastní IP adresu JitStreameru, například pro samohostěné instance. Tato možnost může být nechána nezměněná používáte-li výchozí servery JitStreameru.";
 
 "preference.title.appicon" = "Nastaviti ikonu aplikace";
+"preference.detail.appicon" = "Umožnǔje vybrat mezi různými ikonami plochy PojavLauncheru.";
+"preference.title.appicon-default" = "Známá PojavLauncher světlá";
+"preference.title.appicon-dark" = "Známá PojavLauncher tmavá";
 
 "preference.title.reset_warnings" = "Smazat všechna varování";
 "preference.title.done.reset_warnings" = "Všechna varování byla smazána.";
@@ -201,6 +204,8 @@
 "preference.detail.debug_skip_wait_jit" = "Toto vám neumožní spustit bez JITu, ale přeskočí ladící kontrolu, neboť ta kontrola chybuje na určitých jailbreacích.";
 "preference.title.debug_ipad_ui" = "Odemknout iPadOS UI";
 "preference.detail.debug_ipad_ui" = "Odemknout UI pro iPady (upozornění, klávesnice, atd.) zapnuto-li, či iPhone UI vypnuto-li.";
+"preference.title.debug_hide_home_indicator" = "Skrýti indikátor domovu";
+"preference.detail.debug_hide_home_indicator" = "Toto vypne zamykání domovského indikátoru. Budete muset použít Guided Acces ke skrytí a zamčení domovského indikátoru najednou.";
 "preference.title.debug_show_layout_bounds" = "Zobrazit ohraničení rozložení";
 "preference.detail.debug_show_layout_bounds" = "Zobrazit překrývající se hranice a mezery";
 "preference.title.debug_show_layout_overlap" = "Zobrazit překrývající se rozložení";
