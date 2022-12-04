@@ -56,17 +56,10 @@
 "login.jit.found.JitStreamer" = "Trovato JitStreamer, attivando JIT";
 
 // Login buttons
-"Sign in" = "Accedi";
-"FAQ" = "FAQ";
-"Accounts" = "Accounts";
 "login.menu.sendlogs" = "Invia i logs";
-"login.menu.updates" = "Aggiornamenti recenti";
-
+"login.option.select" = "Seleziona account";
 "login.option.microsoft" = "Account Microsoft";
-"login.option.demo" = "Account demo";
 "login.option.local" = "Account locale";
-
-"login.progress.title" = "Accesso in corso";
 
 "login.warn.title.ram_unjb" = "Memory slider attivo";
 "login.warn.message.ram_unjb" = "Sii consapevole che cambiando questa impostazione si potrebbero causare instabilità o rendere in-giocabile il gioco.";
@@ -79,8 +72,6 @@
 
 "login.warn.title.2gb" = "Il tuo dispositivo ha poca RAM.";
 "login.warn.message.2gb" = "I dispositivi con meno di 3GB di memoria possono avere limiti di memoria. Si consiglia di lasciare la dimensione automatica per il dispositivo.";
-
-"login.warn.title.demomode" = "Questa opzione è in beta.";
 "login.warn.message.demomode" = "In sostituzione di modalità offline e locale, la modalità demo vi permetterà di accedere ad un account Microsoft che non possiede il gioco e giocare la prova Java Edition, introdotto successivamente alla 1.3. Le versioni più vecchie contengono il gioco completo, poiché il launcher ufficiale non pone queste restrizioni. Visita il nostro sito web per saperne di più su questa transizione dalla modalità offline.";
 
 "login.warn.title.localmode" = "La modalità offline è ora modalità locale.";
