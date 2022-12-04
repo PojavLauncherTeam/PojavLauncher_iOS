@@ -80,17 +80,12 @@
 "login.jit.fail.AltKit" = "AltKit-Fehler: %@";
 
 // Login buttons
-"Sign in" = "Anmelden";
-"FAQ" = "FAQ";
-"Accounts" = "Konten";
 "login.menu.sendlogs" = "Fehlerprotokolle senden";
-"login.menu.updates" = "Neueste Updates";
 
+"login.option.add" = "Konto hinzufügen";
+"login.option.select" = "Konto auswählen";
 "login.option.microsoft" = "Microsoft-Konto";
-"login.option.demo" = "Demo-Konto";
 "login.option.local" = "Lokales Konto";
-
-"login.progress.title" = "Anmeldung läuft";
 
 "login.warn.title.ram_unjb" = "RAM-Regler ist aktiviert";
 "login.warn.message.ram_unjb" = "Sei dir darüber bewusst, dass Änderung dieser Einstellung die Stabilität des Spiels oder das Starten des Spiels komplett beeinträchtigt kann.";
@@ -103,8 +98,6 @@
 
 "login.warn.title.2gb" = "Ihr Gerät hat begrenzten Arbeitsspeicher.";
 "login.warn.message.2gb" = "Geräte mit weniger als 3 GB Arbeitsspeicher können auf Speicherbeschränkungen stoßen. Wir empfehlen den automatischen Selektor für Ihr Gerät einzuschalten.";
-
-"login.warn.title.demomode" = "Diese Einstellung ist in Beta.";
 "login.warn.message.demomode" = "Als Ersatz für den Offline- und Lokalmodus, erlaubt der Demo-Modus, sich mit einem Microsoft-Konto einzuloggen, welches das Spiel nicht besitzt. Somit kann die Testversion von Minecraft gespielt werden, die in Version 1.3 eingeführt wurde. Ältere Versionen können in der Vollversion gespielt werden, da bei ihnen der offizielle Launcher auch keine Einschränlungen setzt. Auf unserer Website findet man mehr Informationen zu diesem Übergang vom Offline-Modus.";
 
 "login.warn.title.localmode" = "Der Offline-Modus ist jetzt der Lokale Modus.";
@@ -114,8 +107,6 @@
 "login.msa.error.xsts.noxbox" = "Xbox Live ist derzeit in deinem Land nicht verfügbar.\nFehlercode: 2148916235";
 "login.msa.error.xsts.krverify" = "Dein Konto muss von deinen Eltern verifiziert werden bevor du fortfährst.\nFehlercode: 2148916236 oder 2148916237.";
 "login.msa.error.xsts.underage" = "Dein Konto muss mit einem Eltern-Konto verknüpft werden.\nFehlercode: 2148916238";
-
-"login.msa.notice.demomode" = "Es konnte kein Minecraft-Profil auf diesem Konto gefunden werden. Das Konto ist jetzt auf Demo-Modus gesetzt. Hast du Minecraft gekauft oder gibt es ein aktives Xbox-Game-Pass-Abonnement? Bitte konfiguriere dein Profil auf https://minecraft.net/msaprofile um den Zugriff zum Online-Modus wiederherzustellen.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Erhalte Zugangs-Token";
 "login.msa.progress.acquireXBLToken" = "(2/5) Erhalte Xbox-Live-Token";
