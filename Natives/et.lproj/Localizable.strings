@@ -39,7 +39,9 @@
 
 "launcher.menu.custom_controls" = "Kohandatud juhtnupud";
 "launcher.menu.install_jar" = "Paigalda .jar";
-"FAQ" = "KKK";
+
+"login.option.add" = "Lisa konto";
+"login.option.select" = "Vali konto";
 
 "News" = "Uudised";
 "Settings" = "Seaded";
