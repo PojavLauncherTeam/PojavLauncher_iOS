@@ -98,6 +98,8 @@
 
 "login.warn.title.2gb" = "Ihr Gerät hat begrenzten Arbeitsspeicher.";
 "login.warn.message.2gb" = "Geräte mit weniger als 3 GB Arbeitsspeicher können auf Speicherbeschränkungen stoßen. Wir empfehlen den automatischen Selektor für Ihr Gerät einzuschalten.";
+
+"login.warn.title.demomode" = "Dein Konto ist im Demo-Modus";
 "login.warn.message.demomode" = "Als Ersatz für den Offline- und Lokalmodus, erlaubt der Demo-Modus, sich mit einem Microsoft-Konto einzuloggen, welches das Spiel nicht besitzt. Somit kann die Testversion von Minecraft gespielt werden, die in Version 1.3 eingeführt wurde. Ältere Versionen können in der Vollversion gespielt werden, da bei ihnen der offizielle Launcher auch keine Einschränlungen setzt. Auf unserer Website findet man mehr Informationen zu diesem Übergang vom Offline-Modus.";
 
 "login.warn.title.localmode" = "Der Offline-Modus ist jetzt der Lokale Modus.";
