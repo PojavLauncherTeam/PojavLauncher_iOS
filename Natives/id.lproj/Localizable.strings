@@ -56,17 +56,10 @@
 "login.jit.found.JitStreamer" = "Ditemukan JitStreamer, menyalakan JIT";
 
 // Login buttons
-"Sign in" = "Masuk";
-"FAQ" = "FAQ";
-"Accounts" = "Akun";
 "login.menu.sendlogs" = "Kirim log-log kamu";
-"login.menu.updates" = "Update terbaru";
-
+"login.option.select" = "Pilih akun";
 "login.option.microsoft" = "Akun Microsoft";
-"login.option.demo" = "Akun Demo";
 "login.option.local" = "Akun lokal";
-
-"login.progress.title" = "Sedang masuk";
 
 "login.warn.title.ram_unjb" = "Slider memory nyala";
 "login.warn.message.ram_unjb" = "Ketahuilah bahwa mengganti peraturan ini bisa berefek game menjadi tidak stabil atau jadi tidak bisa dimainkan sama sekali.";
@@ -79,8 +72,6 @@
 
 "login.warn.title.2gb" = "Perangkat anda mempunyai RAM terbatas.";
 "login.warn.message.2gb" = "Perangkat dengan memory rendah dari 3 GB akan terkenda kendala memory. Kami menyarankan membiarkan selektor otomatis menyala untuk perangkat anda.";
-
-"login.warn.title.demomode" = "Opsi ini berada dalam beta.";
 "login.warn.message.demomode" = "Sebagai pengganti offline dan mode lokal, mode demo akan memperbolehkan anda masuk ke akun Microsoft yang tidak mempunyai permainannya dan main versi Java Edition Trial, diadakan sejak versi 1.3.1 dan seterusnya. Versi lebih lama mempunyai permainan penuhnya, karena peluncur resmi tidak memberlakukan restriksi ini. Lihat website kita untuk dapat mempelajari lebih lanjut tentang transisi dari mode offline.";
 
 "login.warn.title.localmode" = "Mode offline sekarang menjadi mode lokal.";
