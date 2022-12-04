@@ -4,4 +4,5 @@
 "Options" = "Asetukset";
 "custom_controls.control_menu.exit" = "Poistu";
 "custom_controls.control_menu.save" = "Tallenna";
+"login.option.select" = "Valitse tili";
 "Settings" = "Asetukset";
