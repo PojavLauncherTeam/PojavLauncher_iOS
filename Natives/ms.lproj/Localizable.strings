@@ -31,6 +31,7 @@
 
 "launcher.menu.custom_controls" = "Kawalan custom";
 "launcher.menu.install_jar" = "Pasang .jar";
+"login.option.select" = "Pilih akaun";
 "login.warn.message.ram_unjb" = "Harap maklum bahawa menukar tetapan ini boleh menyebabkan ketidakstabilan permainan atau merosakkan keupayaan untuk bermain sama sekali.";
 
 "News" = "Berita";
