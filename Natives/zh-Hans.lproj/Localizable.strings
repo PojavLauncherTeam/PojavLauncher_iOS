@@ -80,17 +80,12 @@
 "login.jit.fail.AltKit" = "AltKit 错误：%@";
 
 // Login buttons
-"Sign in" = "登录";
-"FAQ" = "常见问答（FAQ）";
-"Accounts" = "账户";
 "login.menu.sendlogs" = "发送日志文件";
-"login.menu.updates" = "启动器更新日志";
 
+"login.option.add" = "添加账号";
+"login.option.select" = "选择账户";
 "login.option.microsoft" = "微软账户";
-"login.option.demo" = "演示账户";
 "login.option.local" = "本机账户(离线模式)";
-
-"login.progress.title" = "登录中";
 
 "login.warn.title.ram_unjb" = "关闭自动分配内存风险通知";
 "login.warn.message.ram_unjb" = "关闭自动分配内存后可能导致游戏不稳定或完全不能进入游戏，这是因为IOS系统可用内存本来就小。我们推荐你更换更大运行内存的设备使用应用";
@@ -103,8 +98,6 @@
 
 "login.warn.title.2gb" = "您的设备内存分配存在限制";
 "login.warn.message.2gb" = "由于苹果设备总运行内存实在太小，你的运行内存少于3GB会出现这样的弹窗提醒。因为我们建议你开启自动分配内存而不是手动分配。";
-
-"login.warn.title.demomode" = "该选项处于测试阶段。";
 "login.warn.message.demomode" = "演示模式作为离线和本地模式的替代，将允许你登录到一个尚未购买游戏的微软账户中游玩 1.3.1 及更新版本的试玩版本。因为官方启动器的一些特性，在较旧版本中会包含完整的游戏。详情请参阅我们的网站，了解更多关于离线模式的过渡。";
 
 "login.warn.title.localmode" = "离线模式现在是本地模式了。";
@@ -114,8 +107,6 @@
 "login.msa.error.xsts.noxbox" = "Xbox Live 目前在您的国家/地区不可用。\n错误代码：2148916235";
 "login.msa.error.xsts.krverify" = "您的账户必须通过你父母同意方可通过验证。\n错误代码：2148916236 或 2148916237";
 "login.msa.error.xsts.underage" = "您的账户需要绑定家长账户才能进行下一步。\n错误代码：2148916238";
-
-"login.msa.notice.demomode" = "在此账户上找不到 Minecraft 配置文件。该账户现在已设置为演示模式。请问您是否购买了 Minecraft，或是否订阅了 Xbox Game Pass？请在 https://minecraft.net/msaprofile 中配置您的个人资料以恢复到在线模式。";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) 请求访问令牌";
 "login.msa.progress.acquireXBLToken" = "(2/5) 请求 Xbox Live 令牌";
