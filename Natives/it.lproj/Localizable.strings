@@ -113,6 +113,8 @@
 "preference.title.debug_logging" = "Logs di Debug";
 "preference.detail.debug_logging" = "Registra le impostazioni interne e le azioni su latestlog.txt. Questo aiuta gli sviluppatori a trovare problemi più facilmente, ma le prestazioni di Minecraft potrebbero risentirne a causa della scrittura dei registri.";
 
+"preference.title.appicon" = "Cambia icona app";
+
 "preference.title.reset_warnings" = "Ripristina gli avvisi";
 "preference.title.done.reset_warnings" = "Tutti gli avvisi sono stati resettati.";
 
