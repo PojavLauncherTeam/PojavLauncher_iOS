@@ -80,17 +80,12 @@
 "login.jit.fail.AltKit" = "%@ :ɹoɹɹǝ ʇᴉʞʇl∀";
 
 // Login buttons
-"Sign in" = "uᴉ uƃᴉS";
-"FAQ" = "Q∀Ⅎ";
-"Accounts" = "sʇunoɔɔ∀";
 "login.menu.sendlogs" = "sƃol ɹnoʎ puǝS";
-"login.menu.updates" = "sǝʇɐpdn ʇuǝɔǝɹ";
 
+"login.option.add" = "ʇunoɔɔɐ pp∀";
+"login.option.select" = "ʇunoɔɔɐ ʇɔǝꞁǝS";
 "login.option.microsoft" = "ʇunoɔɔɐ ʇɟosoɹɔᴉW";
-"login.option.demo" = "ʇunoɔɔɐ oɯǝp";
 "login.option.local" = "ʇunoɔɔɐ lɐɔo˥";
-
-"login.progress.title" = "uᴉ ƃuᴉƃƃo˥";
 
 "login.warn.title.ram_unjb" = "pǝlqɐuǝ sᴉ ɹǝpᴉls ʎɹoɯǝW";
 "login.warn.message.ram_unjb" = "˙llɐ ʇɐ ʎɐld oʇ ʎʇᴉlᴉqɐ ǝɥʇ ʞɐǝɹq ɹo ʎʇᴉlᴉqɐʇsuᴉ ǝɯɐƃ ǝsnɐɔ uɐɔ ƃuᴉʇʇǝs sᴉɥʇ ƃuᴉƃuɐɥɔ ʇɐɥʇ ǝɹɐʍɐ ǝq";
@@ -103,8 +98,6 @@
 
 "login.warn.title.2gb" = "˙W∀ɹ pǝʇᴉɯᴉl sɐɥ ǝɔᴉʌǝp ɹno⅄";
 "login.warn.message.2gb" = "˙ǝɔᴉʌǝp ɹnoʎ ɹoɟ uo ɹoʇɔǝlǝs ɔᴉʇɐɯoʇnɐ ǝɥʇ ƃuᴉʌɐǝl puǝɯɯoɔǝɹ ǝM ˙sʇuᴉɐɹʇsuoɔ ʎɹoɯǝɯ oʇuᴉ unɹ ʎɐɯ ʎɹoɯǝɯ ɟo qפƐ uɐɥʇ ssǝl ɥʇᴉʍ sǝɔᴉʌǝp";
-
-"login.warn.title.demomode" = "˙ɐʇǝq uᴉ sᴉ uoᴉʇdo sᴉɥ┴";
 "login.warn.message.demomode" = "˙ǝpoɯ ǝuᴉlɟɟo ɯoɹɟ uoᴉʇᴉsuɐɹʇ sᴉɥʇ ʇnoqɐ ǝɹoɯ uɹɐǝl oʇ ǝʇᴉsqǝʍ ɹno ǝǝS ˙suoᴉʇɔᴉɹʇsǝɹ ǝsǝɥʇ ǝɔɐld ʇou sǝop ɹǝɥɔunɐl lɐᴉɔᴉɟɟo ǝɥʇ sɐ 'ǝɯɐƃ llnɟ ǝɥʇ uᴉɐʇuoɔ suoᴉsɹǝʌ ɹǝplO ˙suoᴉsɹǝʌ ɹǝʍǝu puɐ Ɩ˙Ɛ˙Ɩ uᴉ pǝɔnpoɹʇuᴉ 'lɐᴉɹʇ uoᴉʇᴉpƎ ɐʌɐſ ǝɥʇ ʎɐld puɐ ǝɯɐƃ ǝɥʇ uʍo ʇou sǝop ʇɐɥʇ ʇunoɔɔɐ ʇɟosoɹɔᴉW ɐ oʇuᴉ uƃᴉs oʇ noʎ ʍollɐ llᴉʍ ǝpoɯ oɯǝp 'ǝpoɯ lɐɔol puɐ ǝuᴉlɟɟo oʇ ʇuǝɯǝɔɐldǝɹ ɐ s∀";
 
 "login.warn.title.localmode" = "˙ǝpoɯ lɐɔo˥ ʍou sᴉ ǝpoɯ ǝuᴉlɟɟO";
@@ -114,8 +107,6 @@
 "login.msa.error.xsts.noxbox" = "\nϛƐᄅ9Ɩ68ㄣƖᄅ :ǝpoɔ ɹoɹɹƎ ˙ʎɹʇunoɔ ɹnoʎ uᴉ ǝlqɐlᴉɐʌɐun ʎlʇuǝɹɹnɔ sᴉ ǝʌᴉ˥ xoqX";
 "login.msa.error.xsts.krverify" = "˙ㄥƐᄅ9Ɩ68ㄣƖᄅ ɹo 9Ɛᄅ9Ɩ68ㄣƖᄅ :ǝpoɔ ɹoɹɹƎ\n˙ǝnuᴉʇuoɔ uɐɔ noʎ ǝɹoɟǝq sʇuǝɹɐd ɹnoʎ ʎq pǝᴉɟᴉɹǝʌ ǝq oʇ spǝǝu ʇunoɔɔɐ ɹno⅄";
 "login.msa.error.xsts.underage" = "8Ɛᄅ9Ɩ68ㄣƖᄅ :ǝpoɔ ɹoɹɹƎ\n˙ǝnuᴉʇuoɔ uɐɔ noʎ ǝɹoɟǝq ʇunoɔɔɐ ʇuǝɹɐd ɐ oʇ pǝʞuᴉl ǝq oʇ spǝǝu ʇunoɔɔɐ ɹno⅄";
-
-"login.msa.notice.demomode" = "˙ǝpoɯ ǝuᴉluO oʇ ssǝɔɔɐ ǝɹoʇsǝɹ oʇ https://minecraft.net/msaprofile ʇɐ ǝlᴉɟoɹd ɹnoʎ ǝɹnƃᴉɟuoɔ ǝsɐǝlԀ ¿uoᴉʇdᴉɹɔsqns ssɐԀ ǝɯɐפ xoqX ǝʌᴉʇɔɐ uɐ ǝɹǝɥʇ sᴉ ɹo 'ʇɟɐɹɔǝuᴉW ʎnq noʎ pᴉp ˙ǝpoɯ oɯǝp oʇ ʇǝs ʍou sᴉ ʇunoɔɔɐ ǝɥ┴ ˙ʇunoɔɔɐ sᴉɥʇ uo ǝlᴉɟoɹd ʇɟɐɹɔǝuᴉW ɐ puᴉɟ ʇou plnoƆ";
 
 "login.msa.progress.acquireAccessToken" = "uǝʞoʇ ssǝɔɔ∀ ǝɥʇ ƃuᴉɹᴉnbɔ∀ (ϛ/Ɩ)";
 "login.msa.progress.acquireXBLToken" = "uǝʞoʇ ǝʌᴉ˥ xoqX ǝɥʇ ƃuᴉɹᴉnbɔ∀ (ϛ/ᄅ)";
