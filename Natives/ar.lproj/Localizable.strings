@@ -35,6 +35,7 @@
 
 "launcher.menu.custom_controls" = "تخصيص التحكم";
 "launcher.menu.install_jar" = "تثبيت ملف .jar";
+"login.option.select" = "اختر الحساب";
 
 "News" = "الأخبار";
 "Settings" = "الاعدادات";
