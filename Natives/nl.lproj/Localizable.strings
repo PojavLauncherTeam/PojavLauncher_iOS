@@ -27,6 +27,7 @@
 "custom_controls.control_menu.add_button" = "Knop toevoegen";
 
 "launcher.menu.custom_controls" = "Aangepaste controles";
+"login.option.select" = "Selecteer account";
 
 "News" = "Nieuws";
 "Settings" = "Instellingen";
