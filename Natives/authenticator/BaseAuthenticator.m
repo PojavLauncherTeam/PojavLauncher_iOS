@@ -9,7 +9,7 @@ static BaseAuthenticator *current = nil;
 
 + (id)current {
     if (current == nil) {
-        [self loadSavedName:getPreference(@"internal_selected_account")];
+        [self loadSavedName:getPreference(@"selected_account")];
     }
     return current;
 }
@@ -21,7 +21,10 @@ static BaseAuthenticator *current = nil;
 + (id)loadSavedName:(NSString *)name {
     NSMutableDictionary *authData = parseJSONFromFile([NSString stringWithFormat:@"%s/accounts/%@.json", getenv("POJAV_HOME"), name]);
     if (authData[@"error"] != nil) {
-        showDialog(currentVC(), localize(@"Error", nil), ((NSError *)authData[@"error"]).localizedDescription);
+        NSError *error = ((NSError *)authData[@"error"]);
+        if (error.code != NSFileReadNoSuchFileError) {
+            showDialog(currentVC(), localize(@"Error", nil), error.localizedDescription);
+        }
         return nil;
     }
     if ([authData[@"accessToken"] length] < 5) {
@@ -43,10 +46,10 @@ static BaseAuthenticator *current = nil;
     return [self initWithData:data];
 }
 
-- (void)loginWithCallback:(void (^)(BOOL success))callback {
+- (void)loginWithCallback:(Callback)callback {
 }
 
-- (void)refreshTokenWithCallback:(void (^)(BOOL success))callback {
+- (void)refreshTokenWithCallback:(Callback)callback {
 }
 
 - (BOOL)saveChanges {

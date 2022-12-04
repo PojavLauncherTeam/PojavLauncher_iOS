@@ -1,9 +1,9 @@
 #import "authenticator/BaseAuthenticator.h"
 #import "AppDelegate.h"
 #import "SceneDelegate.h"
-#import "LoginViewController.h"
 #import "LauncherNavigationController.h"
 #import "LauncherPreferences.h"
+#import "LauncherSplitViewController.h"
 #import "SurfaceViewController.h"
 
 #include "ios_uikit_bridge.h"
@@ -109,7 +109,7 @@ jstring UIKit_accessClipboard(JNIEnv* env, jint action, jstring copySrc) {
 void UIKit_launchMinecraftSurfaceVC() {
     // Leave this pref, might be useful later for launching with Quick Actions/Shortcuts/URL Scheme
     //setPreference(@"internal_launch_on_boot", getPreference(@"restart_before_launch"));
-    setPreference(@"internal_selected_account", BaseAuthenticator.current.authData[@"username"]);
+    setPreference(@"selected_account", BaseAuthenticator.current.authData[@"username"]);
     setPreference(@"internal_useStackQueue", @(isUseStackQueueCall ? YES : NO));
     dispatch_async(dispatch_get_main_queue(), ^{
         UIWindow *window = currentWindow();
@@ -128,7 +128,10 @@ void launchInitialViewController(UIWindow *window) {
     if ([getPreference(@"internal_launch_on_boot") boolValue]) {
         window.rootViewController = [[SurfaceViewController alloc] init];
     } else {
-        LoginViewController *vc = [[LoginViewController alloc] init];
-        window.rootViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+        if (@available(iOS 14.0, tvOS 14.0, *)) {
+            window.rootViewController = [[LauncherSplitViewController alloc] initWithStyle:UISplitViewControllerStyleDoubleColumn];
+        } else {
+            window.rootViewController = [[LauncherSplitViewController alloc] init];
+        }
     }
 }

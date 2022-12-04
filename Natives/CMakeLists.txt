@@ -124,7 +124,6 @@ add_executable(PojavLauncher
   LauncherPreferencesViewController.m
   LauncherPrefGameDirViewController.m
   LauncherSplitViewController.m
-  LoginViewController.m
   MinecraftResourceUtils.m
   SceneDelegate.m
   SceneExternalDelegate.m

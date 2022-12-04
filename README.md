@@ -22,7 +22,7 @@ The [PojavLauncher Website](https://pojavlauncherteam.github.io/INSTALL.html#ios
 Note: This is experimental, although game works smoothly, you should not set Render distance too much.
 
 1. Setup the sideload app
-- For iOS 14.0-15.5beta4 on compatible devices, [TrollStore](https://github.com/opa334/TrollStore) is recommended to keep PojavLauncher permanently signed and have JIT enabled by itself.
+- For iOS 14.0-15.5beta4, [TrollStore](https://github.com/opa334/TrollStore) is recommended to keep PojavLauncher permanently signed and have JIT enabled by itself.
 - Otherwise, install [AltStore](https://altstore.io). Others will also work.
 2. Download an IPA build of PojavLauncher in the Actions tab.
 3. Open the downloaded IPA in the sideload app to install.

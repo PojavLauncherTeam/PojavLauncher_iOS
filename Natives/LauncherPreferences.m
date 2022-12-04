@@ -116,6 +116,7 @@ void loadPreferences(BOOL reset) {
     // set default value
     setDefaultValueForPref(envPrefDict, @"resolution", @(100));
     setDefaultValueForPref(prefDict, @"button_scale", @(100));
+    setDefaultValueForPref(prefDict, @"selected_account", @"");
     setDefaultValueForPref(prefDict, @"selected_version", @"1.7.10");
     setDefaultValueForPref(prefDict, @"selected_version_type", @(0));
     setDefaultValueForPref(envPrefDict, @"press_duration", @(400));
@@ -177,17 +178,4 @@ CGRect getDefaultSafeArea() {
         defaultSafeArea.size.height = height;
     }
     return defaultSafeArea;
-}
-
-CFTypeRef SecTaskCopyValueForEntitlement(void* task, NSString* entitlement, CFErrorRef  _Nullable *error);
-void* SecTaskCreateFromSelf(CFAllocatorRef allocator);
-BOOL getEntitlementValue(NSString *key) {
-    void *secTask = SecTaskCreateFromSelf(NULL);
-    CFTypeRef value = SecTaskCopyValueForEntitlement(SecTaskCreateFromSelf(NULL), key, nil);
-    if (value != nil) {
-        CFRelease(value);
-    }
-    CFRelease(secTask);
-
-    return value != nil && [(__bridge id)value boolValue];
 }

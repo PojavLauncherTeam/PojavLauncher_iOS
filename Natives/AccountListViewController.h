@@ -4,6 +4,6 @@
 
 
 @property (nonatomic, copy) void (^whenDelete)(NSString* name);
-@property(nonatomic, copy) void (^whenItemSelected)(NSString* name);
+@property(nonatomic, copy) void (^whenItemSelected)();
 
 @end

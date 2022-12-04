@@ -1,5 +1,4 @@
 #import "SceneDelegate.h"
-#import "LoginViewController.h"
 #import "ios_uikit_bridge.h"
 #import "utils.h"
 
@@ -57,13 +56,6 @@
     // Use this method to save data, release shared resources, and store enough scene-specific state information
     // to restore the scene back to its current state.
     CallbackBridge_setWindowAttrib(GLFW_VISIBLE, 0);
-}
-
-- (void)scene:(UIScene *)scene openURLContexts:(nonnull NSSet<UIOpenURLContext *> *)URLContexts
-API_AVAILABLE(ios(13.0)){
-    NSURL *url = [[URLContexts allObjects] firstObject].URL;
-    NSDictionary *data = [NSDictionary dictionaryWithObject:url forKey:@"url"];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"MSALoginCallback" object:self userInfo:data];
 }
 
 @end

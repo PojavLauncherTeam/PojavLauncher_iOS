@@ -417,6 +417,7 @@ static AFURLSessionManager* manager;
         NSError *err;
         [NSFileManager.defaultManager createDirectoryAtPath:path.stringByDeletingLastPathComponent withIntermediateDirectories:YES attributes:nil error:&err];
         //NSLog(@"path %@ err %@", path, err);
+        usleep(50000); // avoid overloading queue
         callback([NSString stringWithFormat:@"Downloading %@", name], nil);
         NSString *url = [NSString stringWithFormat:@"https://resources.download.minecraft.net/%@", pathname];
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
