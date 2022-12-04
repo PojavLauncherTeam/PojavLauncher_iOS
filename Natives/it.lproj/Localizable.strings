@@ -4,9 +4,11 @@
 */
 
 "game.menu.force_close" = "Chiusura forzata";
-"game.menu.confirm.force_close" = "Sicuro di chiudere forzatamente?";
+"game.menu.confirm.force_close" = "Sicuro di voler chiudere forzatamente?";
 "game.menu.log_output" = "Uscita";
 "game.menu.custom_controls" = "Controlli personalizzati";
+
+"game.note.airplay" = "Minecraft sta venendo visualizzato nel display duplicato AirPlay";
 
 "game.title.exit_code" = "Il gioco si è chiuso con il codice %d";
 
@@ -22,8 +24,13 @@
 "Releases" = "Releases";
 "Old-beta" = "Vecchie-beta";
 "Old-alpha" = "Vecchie-alpha";
+
+// Custom controls
+"Copy" = "Copia";
 "Edit" = "Modifica";
+"Move" = "Sposta";
 "Remove" = "Rimuovi";
+"Resize" = "Ridimensiona";
 
 "custom_controls.button_edit.name" = "Nome";
 "custom_controls.button_edit.size" = "Dimensione";
@@ -35,10 +42,15 @@
 "custom_controls.button_edit.stroke_color" = "Colore tratto";
 
 "custom_controls.button_menu.add_subbutton" = "Aggiungi sub-pulsante";
+"custom_controls.control_menu.discard_changes" = "Annulla modifiche";
 "custom_controls.control_menu.exit" = "Esci";
+"custom_controls.control_menu.exit.warn" = "Stai per uscire senza salvare le modifiche.";
 "custom_controls.control_menu.save" = "Salva";
+"custom_controls.control_menu.save.error.default" = "Il nome dei controlli non può essere \"default\" in quanto verrà sovrascritto.";
 "custom_controls.control_menu.load" = "Carica";
+"custom_controls.control_menu.make_default" = "Rendi predefinito";
 "custom_controls.control_menu.add_button" = "Aggiungi pulsante";
+"custom_controls.hint" = "Tieni premuto ovunque sullo schermo per più opzioni";
 
 "init.migrateDir" = "La nuova cartella di PojavLauncher è %@. Tutti i tuoi dati esistenti sono stati spostati.";
 
@@ -114,6 +126,7 @@
 "preference.detail.debug_logging" = "Registra le impostazioni interne e le azioni su latestlog.txt. Questo aiuta gli sviluppatori a trovare problemi più facilmente, ma le prestazioni di Minecraft potrebbero risentirne a causa della scrittura dei registri.";
 
 "preference.title.appicon" = "Cambia icona app";
+"preference.detail.appicon" = "Ti consente di scegliere icone diverse di PojavLauncher sulla Schermata Home.";
 
 "preference.title.reset_warnings" = "Ripristina gli avvisi";
 "preference.title.done.reset_warnings" = "Tutti gli avvisi sono stati resettati.";
@@ -156,7 +169,13 @@
 "preference.warn.allocated_memory" = "A causa delle limitazioni nel sistema operativo stesso, questa opzione può causare instabilità con questi valori e superiori. Procedere con cautela.";
 "preference.title.custom_env" = "Variabili ambientali";
 "preference.detail.custom_env" = "Questa opzione è in fase di sviluppo.";
+
+"preference.title.debug_skip_wait_jit" = "Salta l'avviso \"In attesa di JIT\"";
+"preference.detail.debug_skip_wait_jit" = "Questo non consente di avviare senza JIT, ti consente di saltare il controllo del debugger perché questo controllo fallisce su alcuni jailbreak.";
 "preference.title.debug_ipad_ui" = "Unlock iPadOS UI";
+"preference.detail.debug_ipad_ui" = "Utilizza la UI esclusiva di iPad (avvisi, tastiera, etc.) se abilitato o la UI di iPhone se disabilitato.";
+"preference.title.debug_hide_home_indicator" = "Nascondi barra home";
+"preference.detail.debug_hide_home_indicator" = "Questo disabiliterà il blocco della barra home. Dovrai utilizzare Accesso Guidato per nascondere e bloccare la barra home simultaneamente.";
 "preference.title.debug_show_layout_bounds" = "Mostra limiti layout";
 "preference.detail.debug_show_layout_bounds" = "Mostra misure clip, margini, bounds";
 "preference.title.debug_show_layout_overlap" = "Mostra sovrapposizione del layout";
