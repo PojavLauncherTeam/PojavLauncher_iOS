@@ -54,17 +54,10 @@
 "login.jit.found.JitStreamer" = "JITStreamer bulundu, JIT etkinleştiriliyor";
 
 // Login buttons
-"Sign in" = "Giriş yap";
-"FAQ" = "SSS";
-"Accounts" = "Hesaplar";
 "login.menu.sendlogs" = "Kayıt günlüğünüzü gönderin";
-"login.menu.updates" = "Son güncellemeler";
-
+"login.option.select" = "Hesap seçin";
 "login.option.microsoft" = "Microsoft hesabı";
-"login.option.demo" = "Demo hesabı";
 "login.option.local" = "Yerel hesap";
-
-"login.progress.title" = "Oturum açılıyor";
 
 "login.warn.title.ram_unjb" = "Hafıza kaydırıcısı etkinleştirildi";
 "login.warn.message.ram_unjb" = "Bu ayarı değiştirmenin oyunda kararsızlığa neden olabileceğini veya oyunu tamamen bozabileceğini unutmayın.";
@@ -77,8 +70,6 @@
 
 "login.warn.title.2gb" = "Cihazınız kısıtlı RAM'e sahip.";
 "login.warn.message.2gb" = "3GB bellekten az olan cihazlar bellek kısıtlamasıyla karşılaşabilirler. Cihazınız için otomatik seçiciyi açık bırakmanızı tavsiye ederiz.";
-
-"login.warn.title.demomode" = "Bu seçenek betada.";
 "login.warn.message.demomode" = "Çevrimdışı ve yerel mod yerine olan demo modu oyuna sahip olmayan bir Microsoft hesabına giriş yapabilmenizi sağlayacak ve 1.3.1 ve daha yeni sürümlerde tanıtılan Java Edition denemesini oynamanızı sağlayacak. Asıl başlatıcı yeni sürümlerdeki engelleri koymadığı için daha önceki sürümler bütün oyunu kapsıyor. Çevrimdışı modundan olan bu geçiş hakkında daha fazla bilgi öğrenmek için web sitemize bakın.";
 
 "login.warn.title.localmode" = "Çevrimdışı mod artık yerel mod.";
