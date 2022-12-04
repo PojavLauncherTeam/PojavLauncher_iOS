@@ -78,17 +78,10 @@
 "login.jit.found.JitStreamer" = "找到JitStreamer，正在啟動即時編譯。";
 
 // Login buttons
-"Sign in" = "登入";
-"FAQ" = "常見問題";
-"Accounts" = "帳戶";
 "login.menu.sendlogs" = "發送你的日誌";
-"login.menu.updates" = "最近更新";
-
+"login.option.select" = "選擇帳號";
 "login.option.microsoft" = "微軟帳戶";
-"login.option.demo" = "示範帳戶";
 "login.option.local" = "本地帳戶";
-
-"login.progress.title" = "正在登入";
 
 "login.warn.title.ram_unjb" = "已啟動記憶體搖桿";
 "login.warn.message.ram_unjb" = "請注意，更改這個設定可能會導致遊戲不穩定，或導致完全無法遊玩。";
@@ -101,8 +94,6 @@
 
 "login.warn.title.2gb" = "你的裝置的記憶體有限。";
 "login.warn.message.2gb" = "記憶體容量少於3GB的裝置可能會遇到記憶體限制。我們建議你保持自動記憶體選擇器在啟動狀態。";
-
-"login.warn.title.demomode" = "這個選項為測試版。";
 "login.warn.message.demomode" = "作為離線和本地模式的代替，示範模式會允許你用一個不擁有遊戲的微軟帳戶來登入，並遊玩在版本1.3.1引入的Java版試玩版。由於官方的啟動器沒有加入限制，更舊的版本將含有完整的遊戲。要了解更多關於從離線模式過渡到示範模式的資訊，請瀏覽我們的網頁。";
 
 "login.warn.title.localmode" = "離線模式現為本地模式。";
@@ -112,8 +103,6 @@
 "login.msa.error.xsts.noxbox" = "Xbox Live不適用於你的國家。\n錯誤代碼：2148916235";
 "login.msa.error.xsts.krverify" = "你的帳戶必須由你的家長認證，方可繼續。\n錯誤代碼：2148916236或2148916237。";
 "login.msa.error.xsts.underage" = "你的帳戶必須要連結到一個家長帳戶，方可繼續。\n錯誤代碼：2148916238";
-
-"login.msa.notice.demomode" = "在帳戶中找不到我的世界用戶檔案。這個帳戶已設為示範模式。你是否購買了我的世界，或有已啟用的Xbox Game Pass訂閱？請到 https://minecraft.net/msaprofile 設置你的用戶檔案以回復線上模式。";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) 正在取得取用金鑰";
 "login.msa.progress.acquireXBLToken" = "(2/5) 正在取得Xbox Live金鑰";
