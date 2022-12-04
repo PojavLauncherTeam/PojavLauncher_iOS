@@ -35,6 +35,7 @@
 
 "launcher.menu.custom_controls" = "פקדים מותאמים אישית";
 "launcher.menu.install_jar" = "התקנת .jar";
+"login.option.select" = "בחר חשבון";
 
 "News" = "חדשות";
 "Settings" = "הגדרות";
