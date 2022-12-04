@@ -80,17 +80,10 @@
 "login.jit.fail.AltKit" = "AltKit error: %@";
 
 // Login buttons
-"Sign in" = "Sign in";
-"FAQ" = "FAQ";
-"Accounts" = "Accounts";
 "login.menu.sendlogs" = "Send your logs";
-"login.menu.updates" = "Recent updates";
-
+"login.option.select" = "Select account";
 "login.option.microsoft" = "Microsoft account";
-"login.option.demo" = "Demo account";
 "login.option.local" = "Local account";
-
-"login.progress.title" = "Logging in";
 
 "login.warn.title.ram_unjb" = "Memory slider is enabled";
 "login.warn.message.ram_unjb" = "Be aware that changing this setting can cause game instability or break the ability to play at all.";
@@ -103,8 +96,6 @@
 
 "login.warn.title.2gb" = "Your device has limited RAM.";
 "login.warn.message.2gb" = "Devices with less than 3GB of memory may run into memory constraints. We recommend leaving the automatic selector on for your device.";
-
-"login.warn.title.demomode" = "This option is in beta.";
 "login.warn.message.demomode" = "As a replacement to offline and local mode, demo mode will allow you to sign into a Microsoft account that does not own the game and play the Java Edition trial, introduced in 1.3.1 and newer versions. Older versions contain the full game, as the official launcher does not place these restrictions. See our website to learn more about this transition from offline mode.";
 
 "login.warn.title.localmode" = "Offline mode is now Local mode.";
@@ -114,8 +105,6 @@
 "login.msa.error.xsts.noxbox" = "Xbox Live is currently unavailable in your country.\nError code: 2148916235";
 "login.msa.error.xsts.krverify" = "Your account needs to be verified by your parents before you can continue.\nError code: 2148916236 or 2148916237.";
 "login.msa.error.xsts.underage" = "Your account needs to be linked to a parent account before you can continue.\nError code: 2148916238";
-
-"login.msa.notice.demomode" = "Could not find a Minecraft profile on this account. The account is now set to Demo mode. Did you buy Minecraft, or is there an active Xbox Game Pass subscription? Please configure your profile at https://minecraft.net/msaprofile to restore access to Online mode.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Acquiring the Access token";
 "login.msa.progress.acquireXBLToken" = "(2/5) Acquiring the Xbox Live token";
