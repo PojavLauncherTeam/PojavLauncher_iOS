@@ -56,17 +56,10 @@
 "login.jit.found.JitStreamer" = "Found JitStreamer, enabling JIT";
 
 // Login buttons
-"Sign in" = "Mag-Sign in";
-"FAQ" = "Mga Madalas na Katanungan";
-"Accounts" = "Mga Accounts";
 "login.menu.sendlogs" = "I-send ang iyong logs";
-"login.menu.updates" = "Recent updates";
-
+"login.option.select" = "Piliin ng account";
 "login.option.microsoft" = "Microsoft account";
-"login.option.demo" = "Demo na account";
 "login.option.local" = "Lokal na account";
-
-"login.progress.title" = "Logging in";
 
 "login.warn.title.ram_unjb" = "Enabled ang Memory slider";
 "login.warn.message.ram_unjb" = "Magkaroon ng kamalayan na ang pagbabago sa setting na ito ay maaaring magdulot ng kawalang-tatag ng laro o masira ang kakayahang maglaro.";
@@ -79,8 +72,6 @@
 
 "login.warn.title.2gb" = "Limitado ang RAM ng iyong device.";
 "login.warn.message.2gb" = "Ang mga device na may mas mababa sa 3GB ng memorya ay maaaring magkaroon ng mga hadlang sa memorya. Inirerekomenda namin na iwanang naka-on ang awtomatikong tagapili para sa iyong device.";
-
-"login.warn.title.demomode" = "Ang opsyon na ito ay nasa \"beta\".";
 "login.warn.message.demomode" = "Bilang kapalit sa offline at lokal na mode, magbibigay-daan sa iyo ang demo mode na mag-sign in sa isang Microsoft account na hindi nagmamay-ari ng laro at laruin ang pagsubok ng Java Edition, na ipinakilala sa 1.3.1 at mas bagong mga bersyon.";
 
 "login.warn.title.localmode" = "Ang offline mode ngayon nay' Local mode.";
