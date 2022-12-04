@@ -80,17 +80,10 @@
 "login.jit.fail.AltKit" = "Erreur AltKit: %@";
 
 // Login buttons
-"Sign in" = "Se connecter";
-"FAQ" = "FAQ";
-"Accounts" = "Comptes";
 "login.menu.sendlogs" = "Envoyez vos journaux";
-"login.menu.updates" = "Mises à jour récentes";
-
+"login.option.select" = "Choisir un compte";
 "login.option.microsoft" = "Compte Microsoft";
-"login.option.demo" = "Compte de démo";
 "login.option.local" = "Compte local";
-
-"login.progress.title" = "Connexion";
 
 "login.warn.title.ram_unjb" = "Le curseur de la mémoire est activé";
 "login.warn.message.ram_unjb" = "Sachez que modifier ce paramètre peut causer une instabilité du jeu ou casser totalement la possibilité de jouer.";
@@ -103,8 +96,6 @@
 
 "login.warn.title.2gb" = "Votre appareil a une mémoire RAM limitée.";
 "login.warn.message.2gb" = "Les appareils avec moins de 3 GO de mémoire peuvent rencontrer des problèmes de mémoire. Nous vous recommandons de laisser le sélecteur automatique activé pour votre appareil.";
-
-"login.warn.title.demomode" = "Cette option est en bêta.";
 "login.warn.message.demomode" = "En remplacement du mode hors ligne et local, le mode démo vous permettra de vous connecter à un compte Microsoft qui ne possède pas le jeu et de jouer à l'essai de l'édition Java, introduit dans la version 1.3. Les versions plus anciennes contiennent le jeu complet puisque le launcher officiel ne place pas ces restrictions. Consultez notre site pour en savoir plus sur cette transition du mode hors ligne.";
 
 "login.warn.title.localmode" = "Le mode hors-ligne est maintenant le mode local.";
@@ -114,8 +105,6 @@
 "login.msa.error.xsts.noxbox" = "Xbox Live est actuellement indisponible dans votre pays.\nCode d'erreur: 2148916235";
 "login.msa.error.xsts.krverify" = "Votre compte doit être vérifié par vos parents avant de pouvoir continuer.\nCode d'erreur : 2148916236 ou 2148916237.";
 "login.msa.error.xsts.underage" = "Votre compte doit être lié à un compte parent avant de pouvoir continuer.\nCode d'erreur: 2148916238";
-
-"login.msa.notice.demomode" = "Impossible de trouver un profil Minecraft sur ce compte. Le compte est maintenant en mode démo. Avez-vous acheté Minecraft, ou existe-t-il un abonnement Xbox Game Pass actif ? Veuillez configurer votre profil sur https://minecraft.net/msaprofle pour restaurer l'accès du mode en ligne.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Acquisition du jeton d'accès";
 "login.msa.progress.acquireXBLToken" = "(2/5) Acquisition du jeton Xbox Live";
