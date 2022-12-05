@@ -38,24 +38,15 @@ Note: This is experimental, although game works smoothly, you should not set Ren
 * The game will be prone to JetsamEvents.
 
 ## Contributors
-PojavLauncher is amazing, and surprisingly stable, and it wouldn't be this way without the following people that helped and contribute to the project!
+PojavLauncher is amazing, and surprisingly stable, and it wouldn't be this way without the commmunity that helped and contribute to the project! Some notable names:
 
 @khanhduytran0 - Lead iOS port developer  
 @crystall1nedev - Lead iOS port developer  
-@artdeell - Lead developer  
-@LegacyGamerHD - Lead developer  
-@zhouwei - Original Boardwalk code  
-@Mathius-Boulay - Developer   
-@jkcoxson - JitStreamer author   
-@Diatrus - PojavLauncher hosting on Procursus  
-@Syjalo  
-@pedrosouzabrasil  
-@notfoundname  
-@buzybox11  
-@RealEthanPlayzDev  
-@HongyiMC  
-@thecoder08  
-@genericrandom64  
+@artdeell
+@Mathius-Boulay
+@zhouwei
+@jkcoxson   
+@Diatrus 
 
 ## Third party components and their licenses
 - [Caciocavallo](https://github.com/PojavLauncherTeam/caciocavallo): [GNU GPLv2 License](https://github.com/PojavLauncherTeam/caciocavallo/blob/master/LICENSE).
