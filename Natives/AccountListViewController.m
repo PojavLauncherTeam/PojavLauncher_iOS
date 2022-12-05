@@ -214,6 +214,9 @@
             [self addActivityIndicatorTo:sender];
             NSArray *components = [urlString componentsSeparatedByString:@"/auth/?code="];
             id callback = ^(NSString* status, BOOL success) {
+                if ([status isEqualToString:@"DEMO"] && success) {
+                    showDialog(self, localize(@"login.warn.title.demomode", nil), localize(@"login.warn.message.demomode", nil));
+                }
                 [self callbackMicrosoftAuth:status success:success forCell:sender];
             };
             [[[MicrosoftAuthenticator alloc] initWithInput:components[1]] loginWithCallback:callback];

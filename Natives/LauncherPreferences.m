@@ -84,7 +84,6 @@ void fillDefaultWarningDict() {
     setDefaultValueForPref(warnPrefDict, @"local_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"mem_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"java_warn", @YES);
-    setDefaultValueForPref(warnPrefDict, @"demo_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"jb_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"int_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"auto_ram_warn", @YES);

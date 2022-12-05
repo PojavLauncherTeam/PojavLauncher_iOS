@@ -194,8 +194,8 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
             self.authData[@"profileId"] = @"00000000-0000-0000-0000-000000000000";
             self.authData[@"username"] = [NSString stringWithFormat:@"Demo.%@", self.authData[@"xboxGamertag"]];
 
-            showDialog(currentVC(), localize(@"login.warn.title.demomode", nil), localize(@"login.warn.message.demomode", nil));
-            callback(nil, [super saveChanges]);
+            callback(@"DEMO", [super saveChanges]);
+            callback(nil, YES);
             return;
         }
 
