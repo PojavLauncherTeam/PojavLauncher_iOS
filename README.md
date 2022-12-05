@@ -44,7 +44,7 @@ PojavLauncher is amazing, and surprisingly stable, and it wouldn't be this way w
 @crystall1nedev - Lead iOS port developer  
 @artdeell  
 @Mathius-Boulay  
-@zhouwei  
+@zhuowei  
 @jkcoxson   
 @Diatrus 
 
