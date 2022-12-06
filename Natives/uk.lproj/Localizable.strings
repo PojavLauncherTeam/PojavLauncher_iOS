@@ -156,9 +156,7 @@
 "preference.title.done.reset_settings" = "Всі стандартні налаштування були відновлені.";
 
 "preference.title.renderer" = "Візуалізатор";
-"preference.title.renderer.auto" = "Авто: gl4es чи tinygl4angle";
 "preference.title.renderer.gl4es" = "Gl4es 1.1.4 - експортує OpenGL 2.1";
-"preference.title.renderer.tinygl4angle" = "Tinygl4angle (1.17+) - експортує OpenGL 3.2 (Базовий профіль, обмежений)";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - експортує OpenGL 4.1";
 "preference.detail.renderer" = "Зміни двигун візуалізації OpenGL для використання";
 
