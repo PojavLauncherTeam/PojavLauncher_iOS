@@ -147,9 +147,7 @@
 "preference.title.done.reset_settings" = "所有的預設設定已被回復。";
 
 "preference.title.renderer" = "渲染器";
-"preference.title.renderer.auto" = "自動：gl4es或tinygl4angle";
 "preference.title.renderer.gl4es" = "gl4es 1.1.4 － 輸出OpenGL 2.1";
-"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) － 輸出OpenGL 3.2（核心數據，帶有限制）";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) － 輸出OpenGL 4.1";
 "preference.detail.renderer" = "改變要使用的OpenGL渲染引擎";
 
