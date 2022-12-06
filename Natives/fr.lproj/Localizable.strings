@@ -154,9 +154,7 @@
 "preference.title.done.reset_settings" = "Tous les paramètres par défaut ont été restaurés.";
 
 "preference.title.renderer" = "Moteur de rendu";
-"preference.title.renderer.auto" = "Auto: gl4es ou tinygl4angle";
 "preference.title.renderer.gl4es" = "gl4es 1.1.4 - exporte OpenGL 2.1";
-"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - exporte OpenGL 3.2 (Profil de base, Limité)";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - exporte OpenGL 4.1";
 "preference.detail.renderer" = "Changer le moteur de rendu OpenGL à utiliser";
 
