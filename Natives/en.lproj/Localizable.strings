@@ -58,6 +58,7 @@
 "custom_controls.control_menu.safe_area" = "Safe area";
 "custom_controls.control_menu.add_button" = "Add button";
 "custom_controls.control_menu.add_drawer" = "Add drawer";
+"custom_controls.error.incompatible" = "This control version (code %d) is not implemented in this launcher build.";
 "custom_controls.hint" = "Long-press anywhere on screen for more options";
 
 "init.migrateDir" = "The PojavLauncher data directory is now %@. All of your existing data has been moved to the new location.";

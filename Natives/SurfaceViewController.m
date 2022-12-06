@@ -43,8 +43,6 @@ BOOL slideableHotbar;
 @interface SurfaceViewController ()<UITextFieldDelegate, UIPointerInteractionDelegate, UIGestureRecognizerDelegate> {
 }
 
-@property(nonatomic) UIView *ctrlView;
-
 @property(nonatomic) TrackedTextField *inputTextField;
 @property(nonatomic) NSMutableDictionary* cc_dictionary;
 @property(nonatomic) NSMutableArray* swipeableButtons;

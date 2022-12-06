@@ -10,6 +10,7 @@ CGPoint lastVirtualMousePoint;
 
 @interface SurfaceViewController : UIViewController
 
+@property(nonatomic) UIView *ctrlView;
 @property(nonatomic) GameSurfaceView* surfaceView;
 @property(nonatomic) UIView *touchView;
 @property UIImageView* mousePointerView;
