@@ -121,7 +121,10 @@ void init_logDeviceAndVer(char *argument) {
     } else if (getenv("POJAV_DETECTEDJB")) {
         type = "Jailbroken";
     }
-    regLog("[Pre-Init] %s with iOS %s (%s)", deviceHardware, deviceSoftware, type);
+    
+    setenv("POJAV_DETECTEDINST", type, 1);
+    
+    regLog("[Pre-Init] %s with iOS %s (%s)", getenv("POJAV_DETECTEDHW"), getenv("POJAV_DETECTEDSW"), getenv("POJAV_DETECTEDINST"));
     
     NSString *jvmPath = [NSString stringWithFormat:@"%s/jvm", getenv("BUNDLE_PATH")];
     if (![fm fileExistsAtPath:jvmPath]) {
