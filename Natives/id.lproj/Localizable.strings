@@ -121,9 +121,7 @@
 "preference.title.done.reset_settings" = "Semua peraturan bawaan telah dipulihkan.";
 
 "preference.title.renderer" = "Renderer";
-"preference.title.renderer.auto" = "Otomatis: gl4es atau tinygl4angle";
 "preference.title.renderer.gl4es" = "gl4es 1.1.4 - mengekspor OpenGL 2.1";
-"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - mengekspor OpenGL 3.3 (Profil Core, terlimitasi)";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - mengekspor OpenGL 4.1";
 "preference.detail.renderer" = "Ganti mesin render OpenGL yang dipake";
 
