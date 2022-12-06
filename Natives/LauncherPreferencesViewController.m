@@ -145,7 +145,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"pickList": @[
                     localize(@"preference.title.renderer.auto", nil),
                     localize(@"preference.title.renderer.gl4es", nil),
-                    localize(@"preference.title.renderer.tinygl4angle", nil),
+                    localize(@"preference.title.renderer.angle", nil),
                     localize(@"preference.title.renderer.zink", nil)
                 ]
             },
