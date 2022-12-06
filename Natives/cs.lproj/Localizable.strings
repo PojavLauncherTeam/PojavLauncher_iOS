@@ -58,6 +58,7 @@
 "custom_controls.control_menu.safe_area" = "Bezpečná oblast";
 "custom_controls.control_menu.add_button" = "Přidat tlačítko";
 "custom_controls.control_menu.add_drawer" = "Přidat šuplík";
+"custom_controls.error.incompatible" = "Tato verze ovládání (kód %d) v tomto sestavení spouštěče není implementována.";
 "custom_controls.hint" = "Pro více možností dlouze podrž kdekoli na obrazovce";
 
 "init.migrateDir" = "Složka dat PojavLauncheru je nyní %@. Všechna tvá data byla přesunuta do nového umístění.";
@@ -98,6 +99,8 @@
 
 "login.warn.title.2gb" = "Tvé zařízení má omezenou RAM.";
 "login.warn.message.2gb" = "Zařízení s méně než 3GB paměti mohou narazit na pamětová omezení. Doporučujeme nechat automatický selektor zapnutý pro tvé zařízení.";
+
+"login.warn.title.demomode" = "Váš účet demo je";
 "login.warn.message.demomode" = "Jako náhrada za offline a místní režim, demo režim povolí přihlášení do Microsoft účtu, jenž hru nevlastní, a hrát zkušební verzi Java edice, přidanou v 1.3.1 a novějších verzích. Starší verze obsahují plnou hru, majíce ji i v oficiálním spouštěči, jenž nemá pro ně omezení. Viz naši webovou stránku pro více informací o této změně z offline režimu.";
 
 "login.warn.title.localmode" = "Offline režim je nyní Místní režim.";
