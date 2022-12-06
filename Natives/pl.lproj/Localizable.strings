@@ -151,9 +151,7 @@
 "preference.title.done.reset_settings" = "Wszystkie ustawienia zostały wyzerowane.";
 
 "preference.title.renderer" = "Silnik renderujący";
-"preference.title.renderer.auto" = "Automatycznie: gl4es lub tinygl4angle";
 "preference.title.renderer.gl4es" = "gl4es 1.1.4 - eksportuje OpenGL 2.1";
-"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - eksportuje OpenGL 3.2 (Podstawowy profil, ograniczone)";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - eksportuje OpenGL 4.1";
 "preference.detail.renderer" = "Zmień używany silnik renderujący OpenGL";
 
