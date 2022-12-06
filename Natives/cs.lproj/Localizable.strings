@@ -156,9 +156,7 @@
 "preference.title.done.reset_settings" = "Všechna výchozí nastavení byla obnovena.";
 
 "preference.title.renderer" = "Vykreslovač";
-"preference.title.renderer.auto" = "Automaticky: gl4es či tinygl4angle";
 "preference.title.renderer.gl4es" = "gl4es 1.1.4 - exportuje OpenGL 2.1";
-"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - exportuje OpenGL 3.2 (Jádrový Profil, omezen)";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - exportuje OpenGL 4.1";
 "preference.detail.renderer" = "Změnit OpenGL vykreslovací systém k užívání";
 
