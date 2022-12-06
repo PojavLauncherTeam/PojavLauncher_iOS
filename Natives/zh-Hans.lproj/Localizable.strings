@@ -158,9 +158,7 @@
 "preference.title.done.reset_settings" = "已重置所有设置";
 
 "preference.title.renderer" = "渲染器";
-"preference.title.renderer.auto" = "根据游戏版本自动选择：gl4es或tinygl4angle";
 "preference.title.renderer.gl4es" = "gl4es 1.1.4 - OpenGL版本2.1";
-"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - OpenGL版本3.2";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - OpenGL版本4.1(FPS不高)";
 "preference.detail.renderer" = "更改使用的 OpenGL 渲染器";
 
