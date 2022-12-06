@@ -58,6 +58,7 @@
 "custom_controls.control_menu.safe_area" = "Sicherer Bereich";
 "custom_controls.control_menu.add_button" = "Taste hinzufügen";
 "custom_controls.control_menu.add_drawer" = "Gruppe hinzufügen";
+"custom_controls.error.incompatible" = "Diese Steuerungsversion (Code %d) ist in dieser Launcher-Version nicht implementiert.";
 "custom_controls.hint" = "Drücke irgendwo auf dem Bildschirm für weitere Optionen";
 
 "init.migrateDir" = "Das PojavLauncher-Datenverzeichnis ist jetzt %@. Alle vorhandenen Daten wurden an den neuen Standort verschoben.";
@@ -158,7 +159,9 @@
 "preference.title.done.reset_settings" = "Alle Standard-Einstellungen wurden wiederhergestellt.";
 
 "preference.title.renderer" = "Renderer";
+"preference.title.renderer.auto" = "Auto: gl4es or ANGLE";
 "preference.title.renderer.gl4es" = "gl4es 1.1.4 - gibt OpenGL 2.1 aus";
+"preference.title.renderer.angle" = "ANGLE (1.17+) - gibt OpenGL 3.2 (Kernprofil, begrenzt) aus";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - gibt OpenGL 4.1 aus";
 "preference.detail.renderer" = "Ändern Sie die OpenGL-Rendering-Engine";
 
@@ -195,6 +198,8 @@
 "preference.detail.debug_skip_wait_jit" = "Dies ermöglicht es dir nicht, ohne JIT zu starten. Stattdessen wird die Debuggerprüfung übersprungen, da die Überprüfung bei bestimmten Jailbreaks fehlschlägt.";
 "preference.title.debug_ipad_ui" = "Aktiviere das iPadOS UI";
 "preference.detail.debug_ipad_ui" = "Aktiviert iPad-exklusives UI (Meldungen, Tastatur, usw.), wenn an, oder aktiviert iPhone UI, wenn aus.";
+"preference.title.debug_auto_correction" = "Auto-Korrektur";
+"preference.detail.debug_auto_correction" = "Aktiviere die Auto-Korrektur bei der Eingabe von Text im Spiel.";
 "preference.title.debug_hide_home_indicator" = "Home-Indikator ausblenden";
 "preference.detail.debug_hide_home_indicator" = "Dadurch wird die Sperre des Home-Indikators deaktiviert. Du musst den Guided-Access verwenden, um den Home-Indikator gleichzeitig auszublenden und zu sperren.";
 "preference.title.debug_show_layout_bounds" = "Layoutgrenzen einblenden";
