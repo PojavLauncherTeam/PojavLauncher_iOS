@@ -267,6 +267,11 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"type": self.typeSwitch,
                 @"enableCondition": whenNotInGame
             },
+            @{@"key": @"debug_auto_correction",
+                @"hasDetail": @YES,
+                @"icon": @"textformat.abc.dottedunderline",
+                @"type": self.typeSwitch
+            },
             @{@"key": @"debug_show_layout_bounds",
                 @"hasDetail": @YES,
                 @"icon": @"square.dashed",
@@ -314,6 +319,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
     if (self.navigationController == nil) {
         [self.presentingViewController performSelector:@selector(updatePreferenceChanges)];
     }
