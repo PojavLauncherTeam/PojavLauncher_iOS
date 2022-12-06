@@ -119,9 +119,7 @@
 "preference.title.done.reset_settings" = "Varsayılan seçeneklerin hepsi eski haline getirildi.";
 
 "preference.title.renderer" = "İşleyici";
-"preference.title.renderer.auto" = "Oto: gl4es ya da tinygl4angle";
 "preference.title.renderer.gl4es" = "gl4es 1.1.4 - OpenGL 2.1 çıkarır";
-"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - OpenGL 3.2 (Çekirdek profili, kısıtlı) çıkarır";
 "preference.title.renderer.zink" = "Zonk (Mesa 21.0) - OpenGL 4.1 çıkarır";
 "preference.detail.renderer" = "Kullanmak için OpenGL işleyici motorunu değiştir";
 
