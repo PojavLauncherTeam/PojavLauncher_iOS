@@ -159,7 +159,9 @@
 "preference.title.done.reset_settings" = "Všechna výchozí nastavení byla obnovena.";
 
 "preference.title.renderer" = "Vykreslovač";
+"preference.title.renderer.auto" = "Automaticky: gl4es či ANGLE";
 "preference.title.renderer.gl4es" = "gl4es 1.1.4 - exportuje OpenGL 2.1";
+"preference.title.renderer.angle" = "ANGLE (1.17+) - exportuje OpenGL 3.2 (Jádrový Profil, omezen)";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - exportuje OpenGL 4.1";
 "preference.detail.renderer" = "Změnit OpenGL vykreslovací systém k užívání";
 
@@ -196,6 +198,8 @@
 "preference.detail.debug_skip_wait_jit" = "Toto vám neumožní spustit bez JITu, ale přeskočí ladící kontrolu, neboť ta kontrola chybuje na určitých jailbreacích.";
 "preference.title.debug_ipad_ui" = "Odemknout iPadOS UI";
 "preference.detail.debug_ipad_ui" = "Odemknout UI pro iPady (upozornění, klávesnice, atd.) zapnuto-li, či iPhone UI vypnuto-li.";
+"preference.title.debug_auto_correction" = "Samooprava";
+"preference.detail.debug_auto_correction" = "Zapnout samoopravu ve hře při psaní.";
 "preference.title.debug_hide_home_indicator" = "Skrýti indikátor domovu";
 "preference.detail.debug_hide_home_indicator" = "Toto vypne zamykání domovského indikátoru. Budete muset použít Guided Acces ke skrytí a zamčení domovského indikátoru najednou.";
 "preference.title.debug_show_layout_bounds" = "Zobrazit ohraničení rozložení";
