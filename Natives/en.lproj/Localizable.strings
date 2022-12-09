@@ -58,6 +58,7 @@
 "custom_controls.control_menu.safe_area" = "Safe area";
 "custom_controls.control_menu.add_button" = "Add button";
 "custom_controls.control_menu.add_drawer" = "Add drawer";
+"custom_controls.error.incompatible" = "This control version (code %d) is not implemented in this launcher build.";
 "custom_controls.hint" = "Long-press anywhere on screen for more options";
 
 "init.migrateDir" = "The PojavLauncher data directory is now %@. All of your existing data has been moved to the new location.";
@@ -96,6 +97,8 @@
 
 "login.warn.title.2gb" = "Your device has limited RAM.";
 "login.warn.message.2gb" = "Devices with less than 3GB of memory may run into memory constraints. We recommend leaving the automatic selector on for your device.";
+
+"login.warn.title.demomode" = "Your account is Demo";
 "login.warn.message.demomode" = "As a replacement to offline and local mode, demo mode will allow you to sign into a Microsoft account that does not own the game and play the Java Edition trial, introduced in 1.3.1 and newer versions. Older versions contain the full game, as the official launcher does not place these restrictions. See our website to learn more about this transition from offline mode.";
 
 "login.warn.title.localmode" = "Offline mode is now Local mode.";
@@ -141,6 +144,11 @@
 "preference.title.jitstreamer_server" = "JitStreamer server IP";
 "preference.detail.jitstreamer_server" = "Allows you to change to a custom JitStreamer server IP, such as for self-hosted instances. This option can be left alone if you use the default JitStreamer servers.";
 
+"preference.title.appicon" = "Set app icon";
+"preference.detail.appicon" = "Allows you to choose between different Home Screen icons for PojavLauncher.";
+"preference.title.appicon-default" = "Familiar PojavLauncher light";
+"preference.title.appicon-dark" = "Familiar PojavLauncher dark";
+
 "preference.title.reset_warnings" = "Reset all warnings";
 "preference.title.done.reset_warnings" = "All warnings have been reset.";
 
@@ -149,7 +157,9 @@
 "preference.title.done.reset_settings" = "All of the default settings have been restored.";
 
 "preference.title.renderer" = "Renderer";
+"preference.title.renderer.auto" = "Auto: gl4es or ANGLE";
 "preference.title.renderer.gl4es" = "gl4es 1.1.4 - exports OpenGL 2.1";
+"preference.title.renderer.angle" = "ANGLE (1.17+) - exports OpenGL 3.2 (Core Profile, limited)";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - exports OpenGL 4.1";
 "preference.detail.renderer" = "Change the OpenGL render engine to use";
 
@@ -181,8 +191,15 @@
 "preference.warn.allocated_memory" = "Due to limitations in the operating system itself, this option may cause instability at this and higher values. Proceed with caution.";
 "preference.title.custom_env" = "Environment variables";
 "preference.detail.custom_env" = "This option is under construction.";
+
+"preference.title.debug_skip_wait_jit" = "Skip \"Waiting for JIT\" dialog";
+"preference.detail.debug_skip_wait_jit" = "This does not allow you to launch without JIT, instead this skips debugger check, because check fails on certain jailbreaks.";
 "preference.title.debug_ipad_ui" = "Unlock iPadOS UI";
 "preference.detail.debug_ipad_ui" = "Unlock iPad-exclusive UI (alert, keyboard, etc.) if enabled or iPhone UI if disabled.";
+"preference.title.debug_auto_correction" = "Auto correction";
+"preference.detail.debug_auto_correction" = "Enable auto correction when typing text in game.";
+"preference.title.debug_hide_home_indicator" = "Hide home indicator";
+"preference.detail.debug_hide_home_indicator" = "This will disable home indicator locking. You will need to use Guided Access to hide and lock home indicator at the same time.";
 "preference.title.debug_show_layout_bounds" = "Show layout bounds";
 "preference.detail.debug_show_layout_bounds" = "Show clip bounds, margins";
 "preference.title.debug_show_layout_overlap" = "Show layout overlapping";
