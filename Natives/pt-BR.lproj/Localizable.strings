@@ -145,8 +145,11 @@
 
 "preference.title.debug_skip_wait_jit" = "Ignorar caixa de diálogo \"Aguardando JIT\"";
 "preference.title.debug_ipad_ui" = "Desbloquear iPadOS UI";
+"preference.detail.debug_ipad_ui" = "Desbloqueie a interface de usuário exclusiva do iPad (alerta, teclado, etc.) se habilitada ou iPhone UI se estiver desativado.";
 "preference.title.debug_auto_correction" = "Auto correção";
+"preference.detail.debug_auto_correction" = "Habilitar correção automática ao digitar texto no jogo.";
 "preference.title.debug_hide_home_indicator" = "Ocultar indicador principal";
+"preference.detail.debug_hide_home_indicator" = "Isto desativará o indicador de casa de bloqueio. Você precisará usar o Acesso Orientado para ocultar e bloquear o indicador de casa ao mesmo tempo.";
 "preference.title.debug_show_layout_bounds" = "Mostrar limites de layout";
 "preference.detail.debug_show_layout_bounds" = "Mostrar limites e margens do clipe";
 "preference.title.debug_show_layout_overlap" = "Mostrar sobreposição de layout";
