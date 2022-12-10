@@ -34,6 +34,7 @@
 "custom_controls.control_menu.add_button" = "Προσθήκη κουμπιού";
 
 "launcher.menu.custom_controls" = "Προσαρμοσμένα controls";
+"login.option.select" = "Επιλέξτε λογαριασμό";
 
 "News" = "Νέα";
 "Settings" = "Ρυθμίσεις";

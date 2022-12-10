@@ -35,6 +35,7 @@
 
 "launcher.menu.custom_controls" = "사용자 지정 조작";
 "launcher.menu.install_jar" = ".jar 설치";
+"login.option.select" = "계정 선택";
 
 "News" = "소식";
 "Settings" = "설정";

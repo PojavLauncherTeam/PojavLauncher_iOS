@@ -27,6 +27,7 @@
 "custom_controls.control_menu.add_button" = "Add button";
 
 "launcher.menu.custom_controls" = "Custom controls";
+"login.option.select" = "Select account";
 
 "News" = "News";
 "Settings" = "Settings";

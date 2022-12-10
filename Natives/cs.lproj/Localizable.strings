@@ -4,7 +4,7 @@
 */
 
 "game.menu.force_close" = "Vynutit zavření";
-"game.menu.confirm.force_close" = "Jsi si jist zdali chceš vynutit ukončení?";
+"game.menu.confirm.force_close" = "Jste si jisti zdali chcete vynutit ukončení?";
 "game.menu.log_output" = "Záznam výstupu";
 "game.menu.custom_controls" = "Vlastní ovládací prvky";
 
@@ -58,6 +58,7 @@
 "custom_controls.control_menu.safe_area" = "Bezpečná oblast";
 "custom_controls.control_menu.add_button" = "Přidat tlačítko";
 "custom_controls.control_menu.add_drawer" = "Přidat šuplík";
+"custom_controls.error.incompatible" = "Tato verze ovládání (kód %d) v tomto sestavení spouštěče není implementována.";
 "custom_controls.hint" = "Pro více možností dlouze podrž kdekoli na obrazovce";
 
 "init.migrateDir" = "Složka dat PojavLauncheru je nyní %@. Všechna tvá data byla přesunuta do nového umístění.";
@@ -80,17 +81,12 @@
 "login.jit.fail.AltKit" = "Chyba AltKitu: %@";
 
 // Login buttons
-"Sign in" = "Přihlásit se";
-"FAQ" = "FAQ";
-"Accounts" = "Účty";
 "login.menu.sendlogs" = "Odeslat záznamy";
-"login.menu.updates" = "Nedávné aktualizace";
 
+"login.option.add" = "Přidat účet";
+"login.option.select" = "Vybrat účet";
 "login.option.microsoft" = "Účet Microsoft";
-"login.option.demo" = "Demo účet";
 "login.option.local" = "Místní účet";
-
-"login.progress.title" = "Přihlašování";
 
 "login.warn.title.ram_unjb" = "Posuvník paměti je povolen";
 "login.warn.message.ram_unjb" = "Uvědomte si, že měnění tohoto nastavení může způsobit nestabilitu hry či rozbít schopnost hrát vůbec.";
@@ -104,7 +100,7 @@
 "login.warn.title.2gb" = "Tvé zařízení má omezenou RAM.";
 "login.warn.message.2gb" = "Zařízení s méně než 3GB paměti mohou narazit na pamětová omezení. Doporučujeme nechat automatický selektor zapnutý pro tvé zařízení.";
 
-"login.warn.title.demomode" = "Tato možnost je v betě.";
+"login.warn.title.demomode" = "Váš účet demo je";
 "login.warn.message.demomode" = "Jako náhrada za offline a místní režim, demo režim povolí přihlášení do Microsoft účtu, jenž hru nevlastní, a hrát zkušební verzi Java edice, přidanou v 1.3.1 a novějších verzích. Starší verze obsahují plnou hru, majíce ji i v oficiálním spouštěči, jenž nemá pro ně omezení. Viz naši webovou stránku pro více informací o této změně z offline režimu.";
 
 "login.warn.title.localmode" = "Offline režim je nyní Místní režim.";
@@ -114,8 +110,6 @@
 "login.msa.error.xsts.noxbox" = "Xbox Live není právě teď k dostupný ve tvé zemi.\nKód chyby: 2148916235";
 "login.msa.error.xsts.krverify" = "Tvůj účet musí být ověřen tvými rodiči před tím než budeš pokračovat. \nKód chyby: 2148916236 či 2148916237.";
 "login.msa.error.xsts.underage" = "Tvůj účet musí být propojen s účtem rodiče před pokračováním.\nKód chyby: 2148916238";
-
-"login.msa.notice.demomode" = "Nebylo možno nalézt profil Minecraftu na tomto účtu. Ten účet je teď nastaven na Demo režim. Koupil/a sis Minecraft, či máš aktivní předplatné Xbox GamePass? Prosím nakonfiguruj si svůj profil na https://minecraft.net/msaprofile pro obnovení přístupu k Onlinovému režimu.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Získávání Přístupového tokenu";
 "login.msa.progress.acquireXBLToken" = "(2/5) Získávání Xbox Live tokenu";
@@ -152,6 +146,11 @@
 "preference.title.jitstreamer_server" = "IP adresa serveru JitStreameru";
 "preference.detail.jitstreamer_server" = "Umožňuje zadat vlastní IP adresu JitStreameru, například pro samohostěné instance. Tato možnost může být nechána nezměněná používáte-li výchozí servery JitStreameru.";
 
+"preference.title.appicon" = "Nastaviti ikonu aplikace";
+"preference.detail.appicon" = "Umožnǔje vybrat mezi různými ikonami plochy PojavLauncheru.";
+"preference.title.appicon-default" = "Známá PojavLauncher světlá";
+"preference.title.appicon-dark" = "Známá PojavLauncher tmavá";
+
 "preference.title.reset_warnings" = "Smazat všechna varování";
 "preference.title.done.reset_warnings" = "Všechna varování byla smazána.";
 
@@ -160,9 +159,9 @@
 "preference.title.done.reset_settings" = "Všechna výchozí nastavení byla obnovena.";
 
 "preference.title.renderer" = "Vykreslovač";
-"preference.title.renderer.auto" = "Automaticky: gl4es či tinygl4angle";
+"preference.title.renderer.auto" = "Automaticky: gl4es či ANGLE";
 "preference.title.renderer.gl4es" = "gl4es 1.1.4 - exportuje OpenGL 2.1";
-"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - exportuje OpenGL 3.2 (Jádrový Profil, omezen)";
+"preference.title.renderer.angle" = "ANGLE (1.17+) - exportuje OpenGL 3.2 (Jádrový Profil, omezen)";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - exportuje OpenGL 4.1";
 "preference.detail.renderer" = "Změnit OpenGL vykreslovací systém k užívání";
 
@@ -199,6 +198,10 @@
 "preference.detail.debug_skip_wait_jit" = "Toto vám neumožní spustit bez JITu, ale přeskočí ladící kontrolu, neboť ta kontrola chybuje na určitých jailbreacích.";
 "preference.title.debug_ipad_ui" = "Odemknout iPadOS UI";
 "preference.detail.debug_ipad_ui" = "Odemknout UI pro iPady (upozornění, klávesnice, atd.) zapnuto-li, či iPhone UI vypnuto-li.";
+"preference.title.debug_auto_correction" = "Samooprava";
+"preference.detail.debug_auto_correction" = "Zapnout samoopravu ve hře při psaní.";
+"preference.title.debug_hide_home_indicator" = "Skrýti indikátor domovu";
+"preference.detail.debug_hide_home_indicator" = "Toto vypne zamykání domovského indikátoru. Budete muset použít Guided Acces ke skrytí a zamčení domovského indikátoru najednou.";
 "preference.title.debug_show_layout_bounds" = "Zobrazit ohraničení rozložení";
 "preference.detail.debug_show_layout_bounds" = "Zobrazit překrývající se hranice a mezery";
 "preference.title.debug_show_layout_overlap" = "Zobrazit překrývající se rozložení";

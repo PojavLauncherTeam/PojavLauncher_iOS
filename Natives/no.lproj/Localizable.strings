@@ -27,6 +27,7 @@
 "custom_controls.control_menu.add_button" = "Legg til knapp";
 
 "launcher.menu.custom_controls" = "Tilpassede kontroller";
+"login.option.select" = "Velg konto";
 
 "News" = "Nyheter";
 "Settings" = "Innstillinger";

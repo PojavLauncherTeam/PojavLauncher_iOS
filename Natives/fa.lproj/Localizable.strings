@@ -35,6 +35,7 @@
 
 "launcher.menu.custom_controls" = "کنترل‌های شخصی";
 "launcher.menu.install_jar" = "نصب .jar";
+"login.option.select" = "انتخاب اکانت";
 
 "News" = "اخبار";
 "Settings" = "تنظیمات";

@@ -35,6 +35,7 @@
 
 "launcher.menu.custom_controls" = "カスタムコントロール";
 "launcher.menu.install_jar" = ".jarをインストール";
+"login.option.select" = "アカウントを選択";
 
 "News" = "ニュース";
 "Settings" = "設定";
