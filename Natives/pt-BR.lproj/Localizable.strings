@@ -64,6 +64,7 @@
 "login.jit.checking" = "Verificando o JIT";
 "login.jit.enabled" = "O JIT foi ativado";
 "login.jit.fail.JitStreamer" = "Erro no JitStreamer: %@";
+"login.jit.start.AltKit" = "Tentativa de usar AltJIT";
 "login.jit.fail.AltKit" = "Erro no Altkit: %@";
 
 // Login buttons
@@ -76,8 +77,18 @@
 
 "login.warn.title.ram_unjb" = "Slider de memória está ativado";
 
+"login.warn.title.2gb" = "Seu dispositivo tem RAM limitado.";
+
 "login.warn.title.demomode" = "Sua conta é Demonstrativa";
+
+"login.warn.title.localmode" = "O modo off-line agora é o modo local.";
+
+"login.msa.progress.acquireAccessToken" = "(1/5) Adquirindo o token de acesso";
+"login.msa.progress.acquireXBLToken" = "(2/5) Adquirindo o token do Xbox Live";
 "login.msa.progress.acquireXSTS" = "Adquirindo XSTS";
+"login.msa.progress.acquireXboxProfile" = "(3/5) Adquirindo o perfil do Xbox";
+"login.msa.progress.acquireMCToken" = "(4/5) Adquirir o token do Minecraft";
+"login.msa.progress.checkMCProfile" = "(5/5) Verificando o perfil de Minecraft";
 
 "News" = "Notícias";
 "Settings" = "Configurações";
@@ -93,16 +104,50 @@
 "preference.title.confirm" = "Você tem certeza?";
 
 "preference.title.game_directory" = "Diretório de jogo Minecraft";
+"preference.multidir.add_directory" = "Adicionar diretório do jogo";
+
+"preference.title.check_sha" = "Verifique os arquivos após o download";
 "preference.title.cosmetica" = "Capas da Cosmetica";
 "preference.title.debug_logging" = "Log de depuração";
+"preference.title.jitstreamer_server" = "IP do servidor JitStreamer";
 
 "preference.title.appicon" = "Definir ícone do aplicativo";
+"preference.title.appicon-default" = "Luz familiar de PojavLauncher";
+"preference.title.appicon-dark" = "PojavLauncher familiar escuro";
+
+"preference.title.reset_warnings" = "Redefinir todos os avisos";
+"preference.title.done.reset_warnings" = "Todas as advertências foram redefinidas.";
+
+"preference.title.reset_settings" = "Redefinir todas as configurações";
 
 "preference.title.renderer" = "Renderizador";
+"preference.title.renderer.auto" = "Auto: gl4es ou ANGLE";
+"preference.title.renderer.gl4es" = "gl4es 1.1.4 - exports OpenGL 2.1";
+
+"preference.title.resolution" = "Resolução (%)";
 "preference.title.disable_gesture" = "Desativar gestos";
+"preference.title.press_duration" = "Duração de pressionamento longo (ms)";
+"preference.title.button_scale" = "Escala dos botões virtuais (%)";
+"preference.title.mouse_scale" = "Escala do mouse (%)";
+"preference.detail.mouse_scale" = "Alterar o tamanho do mouse virtual";
+"preference.title.mouse_speed" = "Velocidade do mouse (%)";
+"preference.title.virtmouse_enable" = "Mouse virtual";
+"preference.title.slideable_hotbar" = "Hotbar deslizante";
+"preference.title.java_home" = "Use Java 17 para o Minecraft < 1.17";
 "preference.title.java_args" = "Argumentos JVM";
 "preference.placeholder.java_args" = "Especifique os argumentos...";
 "preference.title.auto_ram" = "RAM automática";
 "preference.detail.auto_ram" = "Ativa o ajuste automático de RAM";
+"preference.title.allocated_memory" = "Alocação de memória (MB)";
 "preference.detail.allocated_memory" = "Controla o quanto de RAM será usado pelo Minecraft";
+"preference.title.custom_env" = "Variáveis ambientais";
+"preference.detail.custom_env" = "Esta opção está em construção.";
+
+"preference.title.debug_skip_wait_jit" = "Ignorar caixa de diálogo \"Aguardando JIT\"";
+"preference.title.debug_ipad_ui" = "Desbloquear iPadOS UI";
+"preference.title.debug_auto_correction" = "Auto correção";
+"preference.title.debug_hide_home_indicator" = "Ocultar indicador principal";
+"preference.title.debug_show_layout_bounds" = "Mostrar limites de layout";
+"preference.detail.debug_show_layout_bounds" = "Mostrar limites e margens do clipe";
+"preference.title.debug_show_layout_overlap" = "Mostrar sobreposição de layout";
 "preference.detail.debug_show_layout_overlap" = "Sobreponha cada exibições com cores transparentes para revelar visões de sobreposição.";
