@@ -125,7 +125,7 @@
 "preference.section.video" = "视频设置";
 "preference.section.footer.video" = "使用自动选择的渲染器将根据游戏版本选择最佳渲染器启动游戏，降低分辨率可以使得 GPU 负载变低从而提升性能。";
 "preference.section.control" = "自定义控制";
-"preference.section.debug" = "UI 调试设置";
+"preference.section.debug" = "界面调试设置";
 "preference.section.footer.debug" = "除了调试外，这些设置可能对自定义控件有用。您可能需要重新启动启动器才能使更改生效。";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java 调整";
@@ -196,8 +196,8 @@
 
 "preference.title.debug_skip_wait_jit" = "跳过获取\"JIT(Just-in-time)\"请求";
 "preference.detail.debug_skip_wait_jit" = "这并不是让您在没有 JIT 的情况下启动，而是跳过调试检查，因为在越狱设备上会检查失败。";
-"preference.title.debug_ipad_ui" = "使用 iPadOS UI";
-"preference.detail.debug_ipad_ui" = "开启后会使用 iPad OS 的专用 UI，否则使用 iPhone UI。";
+"preference.title.debug_ipad_ui" = "使用 iPadOS 界面";
+"preference.detail.debug_ipad_ui" = "开启后会使用 iPad OS 的专用界面，否则使用 iPhone 的界面。";
 "preference.title.debug_auto_correction" = "自动校正";
 "preference.detail.debug_auto_correction" = "在游戏中输入文本时启用自动校正。";
 "preference.title.debug_hide_home_indicator" = "隐藏主屏幕指示键";
