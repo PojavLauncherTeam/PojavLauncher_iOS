@@ -35,6 +35,8 @@
 
 "launcher.menu.custom_controls" = "Controles personalizados";
 "launcher.menu.install_jar" = "Instalar .jar";
+
+"login.option.add" = "Adicionar conta";
 "login.option.select" = "Selecionar conta";
 
 "News" = "Notícias";
