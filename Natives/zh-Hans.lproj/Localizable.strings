@@ -58,6 +58,7 @@
 "custom_controls.control_menu.safe_area" = "安全区";
 "custom_controls.control_menu.add_button" = "添加按键";
 "custom_controls.control_menu.add_drawer" = "添加组合键";
+"custom_controls.error.incompatible" = "此控件版本（代码 %d）在当前启动器版本中尚未实现。";
 "custom_controls.hint" = "长按屏幕上的任意位置以获取更多选项";
 
 "init.migrateDir" = "目前 PojavLauncher 数据目录为%@。所有的游戏资源已移动到最新目录。";
@@ -158,7 +159,9 @@
 "preference.title.done.reset_settings" = "已重置所有设置";
 
 "preference.title.renderer" = "渲染器";
+"preference.title.renderer.auto" = "自动：gl4es 或 ANGLE";
 "preference.title.renderer.gl4es" = "gl4es 1.1.4 - OpenGL版本2.1";
+"preference.title.renderer.angle" = "ANGLE (1.17+) - exports OpenGL 3.2（核心配置，有限）";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - OpenGL版本4.1(FPS不高)";
 "preference.detail.renderer" = "更改使用的 OpenGL 渲染器";
 
@@ -195,6 +198,8 @@
 "preference.detail.debug_skip_wait_jit" = "这并不是让您在没有 JIT 的情况下启动，而是跳过调试检查，因为在越狱设备上会检查失败。";
 "preference.title.debug_ipad_ui" = "使用 iPadOS UI";
 "preference.detail.debug_ipad_ui" = "开启后会使用 iPad OS 的专用 UI，否则使用 iPhone UI。";
+"preference.title.debug_auto_correction" = "自动校正";
+"preference.detail.debug_auto_correction" = "在游戏中输入文本时启用自动校正。";
 "preference.title.debug_hide_home_indicator" = "隐藏主屏幕指示键";
 "preference.detail.debug_hide_home_indicator" = "此选项将会禁用主屏幕指示键锁定，你将会需要启用引导式访问来同时隐藏和锁定主屏幕指示键。";
 "preference.title.debug_show_layout_bounds" = "显示边界布局";
