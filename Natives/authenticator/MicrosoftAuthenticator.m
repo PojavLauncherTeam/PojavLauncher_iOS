@@ -8,7 +8,7 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
 @implementation MicrosoftAuthenticator
 
 - (void)acquireAccessToken:(NSString *)authcode refresh:(BOOL)refresh callback:(Callback)callback {
-    currentVC().title = localize(@"login.msa.progress.acquireAccessToken", nil);
+    callback(localize(@"login.msa.progress.acquireAccessToken", nil), YES);
 
     NSDictionary *data = @{
         @"client_id": @"00000000402b5328",
@@ -23,14 +23,18 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
         self.authData[@"msaRefreshToken"] = response[@"refresh_token"];
         [self acquireXBLToken:response[@"access_token"] callback:callback];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        callback(NO);
-        NSLog(@"[MSA] Error: %@", error);
-        showDialog(currentVC(), @"Error", error.localizedDescription);
+        if (error.code == NSURLErrorDataNotAllowed) {
+            // The account token is expired and offline
+            self.authData[@"accessToken"] = @"offline";
+            callback(nil, YES);
+        } else {
+            callback(error.localizedDescription, NO);
+        }
     }];
 }
 
 - (void)acquireXBLToken:(NSString *)accessToken callback:(Callback)callback {
-    currentVC().title = localize(@"login.msa.progress.acquireXBLToken", nil);
+    callback(localize(@"login.msa.progress.acquireXBLToken", nil), YES);
 
     NSDictionary *data = @{
         @"Properties": @{
@@ -45,39 +49,37 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
     AFHTTPSessionManager *manager = AFHTTPSessionManager.manager;
     manager.requestSerializer = AFJSONRequestSerializer.serializer;
     [manager POST:@"https://user.auth.xboxlive.com/user/authenticate" parameters:data headers:nil progress:nil success:^(NSURLSessionDataTask *task, NSDictionary *response) {
-        Callback innerCallback = ^(BOOL success) {
+        Callback innerCallback = ^(NSString* status, BOOL success) {
             if (success == NO) {
-                callback(NO);
+                callback(status, NO);
                 return;
             }
             // Obtain XSTS for authenticating to Minecraft
-            [self acquireXSTSFor:@"rp://api.minecraftservices.com/" token:response[@"Token"] callback:^(NSString *xsts, NSString *uhs){
+            [self acquireXSTSFor:@"rp://api.minecraftservices.com/" token:response[@"Token"] xstsCallback:^(NSString *xsts, NSString *uhs){
                 if (xsts == nil) {
-                    callback(NO);
+                    callback(nil, NO);
                     return;
                 }
                 self.authData[@"xuid"] = uhs;
                 [self acquireMinecraftToken:uhs xstsToken:xsts callback:callback];
-            }];
+            } callback:callback];
         };
 
         // Obtain XSTS for getting the Xbox gamertag
-        [self acquireXSTSFor:@"http://xboxlive.com" token:response[@"Token"] callback:^(NSString *xsts, NSString *uhs){
+        [self acquireXSTSFor:@"http://xboxlive.com" token:response[@"Token"] xstsCallback:^(NSString *xsts, NSString *uhs){
             if (xsts == nil) {
-                callback(NO);
+                callback(nil, NO);
                 return;
             }
             [self acquireXboxProfile:uhs xstsToken:xsts callback:innerCallback];
-        }];
+        } callback:callback];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        callback(NO);
-        NSLog(@"[MSA] Error: %@", error);
-        showDialog(currentVC(), @"Error", error.localizedDescription);
+        callback(error.localizedDescription, NO);
     }];
 }
 
-- (void)acquireXSTSFor:(NSString *)replyingParty token:(NSString *)xblToken callback:(XSTSCallback)callback {
-    currentVC().title = localize(@"login.msa.progress.acquireXSTS", nil);
+- (void)acquireXSTSFor:(NSString *)replyingParty token:(NSString *)xblToken xstsCallback:(XSTSCallback)xstsCallback callback:(Callback)callback {
+    callback(localize(@"login.msa.progress.acquireXSTS", nil), YES);
 
     NSDictionary *data = @{
        @"Properties": @{
@@ -94,12 +96,15 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
     manager.requestSerializer = AFJSONRequestSerializer.serializer;
     [manager POST:@"https://xsts.auth.xboxlive.com/xsts/authorize" parameters:data headers:nil progress:nil success:^(NSURLSessionDataTask *task, NSDictionary *response) {
         NSString *uhs = response[@"DisplayClaims"][@"xui"][0][@"uhs"];
-        callback(response[@"Token"], uhs);
+        xstsCallback(response[@"Token"], uhs);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        callback(nil, nil);
         NSString *errorString;
         NSData *errorData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
-        NSDictionary *errorDict = [NSJSONSerialization JSONObjectWithData: errorData options:kNilOptions error:nil];
+        if (errorData == nil) {
+            callback(error.localizedDescription, NO);
+            return;
+        }
+        NSDictionary *errorDict = [NSJSONSerialization JSONObjectWithData:errorData options:kNilOptions error:nil];
         switch ((int)([errorDict[@"XErr"] longValue]-2148916230l)) {
             case 3:
                 errorString = @"login.msa.error.xsts.noxboxacc";
@@ -118,14 +123,13 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
                 errorString = [NSString stringWithFormat:@"%@\n\nUnknown XErr code, response:\n%@", error.localizedDescription, errorDict];
                 break;
         }
-        NSLog(@"[MSA] Error: %@", errorString);
-        showDialog(currentVC(), localize(@"Error", nil), localize(errorString, nil));
+        callback(localize(errorString, nil), NO);
     }];
 }
 
 
 - (void)acquireXboxProfile:(NSString *)xblUhs xstsToken:(NSString *)xblXsts callback:(Callback)callback {
-    currentVC().title = localize(@"login.msa.progress.acquireXboxProfile", nil);
+    callback(localize(@"login.msa.progress.acquireXboxProfile", nil), YES);
 
     NSDictionary *headers = @{
         @"x-xbl-contract-version": @"2",
@@ -136,16 +140,14 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
     [manager GET:@"https://profile.xboxlive.com/users/me/profile/settings?settings=PublicGamerpic,Gamertag" parameters:nil headers:headers progress:nil success:^(NSURLSessionDataTask *task, NSDictionary *response) {
         self.authData[@"profilePicURL"] = [NSString stringWithFormat:@"%@&h=120&w=120", response[@"profileUsers"][0][@"settings"][0][@"value"]];
         self.authData[@"xboxGamertag"] = response[@"profileUsers"][0][@"settings"][1][@"value"];
-        callback(YES);
+        callback(nil, YES);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        callback(NO);
-        NSLog(@"[MSA] Error: %@", error);
-        showDialog(currentVC(), @"Error", error.localizedDescription);
+        callback(error.localizedDescription, NO);
     }];
 }
 
 - (void)acquireMinecraftToken:(NSString *)xblUhs xstsToken:(NSString *)xblXsts callback:(Callback)callback {
-    currentVC().title = localize(@"login.msa.progress.acquireMCToken", nil);
+    callback(localize(@"login.msa.progress.acquireMCToken", nil), YES);
 
     NSDictionary *data = @{
         @"identityToken": [NSString stringWithFormat:@"XBL3.0 x=%@;%@", xblUhs, xblXsts]
@@ -157,16 +159,14 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
         self.authData[@"accessToken"] = response[@"access_token"];
         [self checkMCProfile:response[@"access_token"] callback:callback];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        callback(NO);
-        NSLog(@"[MSA] Error: %@", error);
-        showDialog(currentVC(), @"Error", error.localizedDescription);
+        callback(error.localizedDescription, NO);
     }];
 }
 
 - (void)checkMCProfile:(NSString *)mcAccessToken callback:(Callback)callback {
     self.authData[@"expiresAt"] = @((long)[NSDate.date timeIntervalSince1970] + 86400);
 
-    currentVC().title = localize(@"login.msa.progress.checkMCProfile", nil);
+    callback(localize(@"login.msa.progress.checkMCProfile", nil), YES);
 
     NSDictionary *headers = @{
         @"Authorization": [NSString stringWithFormat:@"Bearer %@", mcAccessToken]
@@ -185,7 +185,7 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
         self.authData[@"profilePicURL"] = [NSString stringWithFormat:@"https://mc-heads.net/head/%@/120", self.authData[@"profileId"]];
         self.authData[@"oldusername"] = self.authData[@"username"];
         self.authData[@"username"] = response[@"name"];
-        callback([super saveChanges]);
+        callback(nil, [super saveChanges]);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSData *errorData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
         NSDictionary *errorDict = [NSJSONSerialization JSONObjectWithData: errorData options:kNilOptions error:nil];
@@ -194,14 +194,12 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
             self.authData[@"profileId"] = @"00000000-0000-0000-0000-000000000000";
             self.authData[@"username"] = [NSString stringWithFormat:@"Demo.%@", self.authData[@"xboxGamertag"]];
 
-            showDialog(currentVC(), localize(@"Notice", nil), localize(@"login.msa.notice.demomode", nil));
-            callback([super saveChanges]);
+            callback(@"DEMO", [super saveChanges]);
+            callback(nil, YES);
             return;
         }
 
-        callback(NO);
-        NSLog(@"[MSA] Error: %@", errorDict);
-        showDialog(currentVC(), @"Error", [[NSString alloc] initWithData:errorData encoding:NSUTF8StringEncoding]);
+        callback([[NSString alloc] initWithData:errorData encoding:NSUTF8StringEncoding], NO);
     }];
 }
 
@@ -213,7 +211,7 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
     if ([NSDate.date timeIntervalSince1970] > [self.authData[@"expiresAt"] longValue]) {
         [self acquireAccessToken:self.authData[@"msaRefreshToken"] refresh:YES callback:callback];
     } else {
-        callback(YES);
+        callback(nil, YES);
     }
 }
 

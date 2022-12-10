@@ -22,7 +22,7 @@ The [PojavLauncher Website](https://pojavlauncherteam.github.io/INSTALL.html#ios
 Note: This is experimental, although game works smoothly, you should not set Render distance too much.
 
 1. Setup the sideload app
-- For iOS 14.0-15.5beta4 on compatible devices, [TrollStore](https://github.com/opa334/TrollStore) is recommended to keep PojavLauncher permanently signed and have JIT enabled by itself.
+- For iOS 14.0-15.5beta4, [TrollStore](https://github.com/opa334/TrollStore) is recommended to keep PojavLauncher permanently signed and have JIT enabled by itself.
 - Otherwise, install [AltStore](https://altstore.io). Others will also work.
 2. Download an IPA build of PojavLauncher in the Actions tab.
 3. Open the downloaded IPA in the sideload app to install.
@@ -38,24 +38,15 @@ Note: This is experimental, although game works smoothly, you should not set Ren
 * The game will be prone to JetsamEvents.
 
 ## Contributors
-PojavLauncher is amazing, and surprisingly stable, and it wouldn't be this way without the following people that helped and contribute to the project!
+PojavLauncher is amazing, and surprisingly stable, and it wouldn't be this way without the commmunity that helped and contribute to the project! Some notable names:
 
 @khanhduytran0 - Lead iOS port developer  
 @crystall1nedev - Lead iOS port developer  
-@artdeell - Lead developer  
-@LegacyGamerHD - Lead developer  
-@zhouwei - Original Boardwalk code  
-@Mathius-Boulay - Developer   
-@jkcoxson - JitStreamer author   
-@Diatrus - PojavLauncher hosting on Procursus  
-@Syjalo  
-@pedrosouzabrasil  
-@notfoundname  
-@buzybox11  
-@RealEthanPlayzDev  
-@HongyiMC  
-@thecoder08  
-@genericrandom64  
+@artdeell  
+@Mathius-Boulay  
+@zhuowei  
+@jkcoxson   
+@Diatrus 
 
 ## Third party components and their licenses
 - [Caciocavallo](https://github.com/PojavLauncherTeam/caciocavallo): [GNU GPLv2 License](https://github.com/PojavLauncherTeam/caciocavallo/blob/master/LICENSE).
@@ -66,7 +57,7 @@ PojavLauncher is amazing, and surprisingly stable, and it wouldn't be this way w
 - [Mesa 3D Graphics Library](https://gitlab.freedesktop.org/mesa/mesa): [MIT License](https://docs.mesa3d.org/license.html).
 - [MetalANGLE](https://github.com/kakashidinho/metalangle) by @kakashidinho and ANGLE team: [BSD 2.0 License](https://github.com/kakashidinho/metalangle/blob/master/LICENSE).
 - [MoltenVK](https://github.com/KhronosGroup/MoltenVK): [Apache 2.0 License](https://github.com/KhronosGroup/MoltenVK/blob/master/LICENSE).
-- [OpenJDK 16](https://www.ios-repo-updates.com/repository/procursus/package/openjdk-16-jre) ported to iOS by @Diatrus: [GNU GPLv2 License](https://openjdk.java.net/legal/gplv2+ce.html).
+- [Azul Zulu JDK](https://www.azul.com/downloads/?package=jdk): [GNU GPLv2 License](https://openjdk.java.net/legal/gplv2+ce.html).
 - [LWJGL3](https://github.com/PojavLauncherTeam/lwjgl3): [BSD-3 License](https://github.com/LWJGL/lwjgl3/blob/master/LICENSE.md).
 - [LWJGLX](https://github.com/PojavLauncherTeam/lwjglx) (LWJGL2 API compatibility layer for LWJGL3): unknown license.
 - [Alderis](https://github.com/hbang/Alderis) (color picker for iOS < 14): [Apache 2.0 License](https://github.com/hbang/Alderis/blob/master/LICENSE.md).

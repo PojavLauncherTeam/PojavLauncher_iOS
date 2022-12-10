@@ -145,7 +145,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"pickList": @[
                     localize(@"preference.title.renderer.auto", nil),
                     localize(@"preference.title.renderer.gl4es", nil),
-                    localize(@"preference.title.renderer.tinygl4angle", nil),
+                    localize(@"preference.title.renderer.angle", nil),
                     localize(@"preference.title.renderer.zink", nil)
                 ]
             },
@@ -166,7 +166,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             @{@"icon": @"gamecontroller"},
             @{@"key": @"press_duration",
                 @"hasDetail": @YES,
-                @"icon": @"timer",
+                @"icon": @"cursorarrow.click.badge.clock",
                 @"type": self.typeSlider,
                 @"min": @(100),
                 @"max": @(1000)
@@ -187,7 +187,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             },
             @{@"key": @"mouse_speed",
                 @"hasDetail": @YES,
-                @"icon": @"arrow.left.and.right",
+                @"icon": @"cursorarrow.motionlines",
                 @"type": self.typeSlider,
                 @"min": @(25),
                 @"max": @(300)
@@ -253,11 +253,24 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"type": self.typeSwitch,
                 @"enableCondition": whenNotInGame
             },
+            @{@"key": @"debug_hide_home_indicator",
+                @"hasDetail": @YES,
+                @"icon": @"iphone.and.arrow.forward",
+                @"type": self.typeSwitch,
+                @"enableCondition": ^BOOL(){
+                    return self.presentingViewController.view.safeAreaInsets.bottom > 0;
+                }
+            },
             @{@"key": @"debug_ipad_ui",
                 @"hasDetail": @YES,
                 @"icon": @"ipad",
                 @"type": self.typeSwitch,
                 @"enableCondition": whenNotInGame
+            },
+            @{@"key": @"debug_auto_correction",
+                @"hasDetail": @YES,
+                @"icon": @"textformat.abc.dottedunderline",
+                @"type": self.typeSwitch
             },
             @{@"key": @"debug_show_layout_bounds",
                 @"hasDetail": @YES,
@@ -306,6 +319,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
     if (self.navigationController == nil) {
         [self.presentingViewController performSelector:@selector(updatePreferenceChanges)];
     }
@@ -324,9 +338,9 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
     if (section == 0) { // Add to general section
-        return [NSString stringWithFormat:@"PojavLauncher %@-%s (%s/%s)",
+        return [NSString stringWithFormat:@"PojavLauncher %@-%s (%s/%s)\niOS %s on %s (%s)",
             NSBundle.mainBundle.infoDictionary[@"CFBundleShortVersionString"],
-            CONFIG_TYPE, CONFIG_BRANCH, CONFIG_COMMIT];
+            CONFIG_TYPE, CONFIG_BRANCH, CONFIG_COMMIT, getenv("POJAV_DETECTEDSW"), getenv("POJAV_DETECTEDHW"), getenv("POJAV_DETECTEDINST")];
     }
 
     NSString *footer = NSLocalizedStringWithDefaultValue(([NSString stringWithFormat:@"preference.section.footer.%@", self.prefSections[section]]), @"Localizable", NSBundle.mainBundle, @" ", nil);

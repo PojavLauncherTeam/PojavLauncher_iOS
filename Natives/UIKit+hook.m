@@ -26,17 +26,6 @@ __attribute__((constructor)) void hookConstructor(void) {
 
 @end
 
-@implementation UIToolbar(hook)
-
-- (CGSize)hook_sizeThatFits:(CGSize)size {
-    // Make the toolbar taller
-    CGSize ret = [self hook_sizeThatFits:size];
-    ret.height += 50;
-    return ret;
-}
-
-@end
-
 @implementation UITraitCollection(hook)
 
 - (UIUserInterfaceSizeClass)horizontalSizeClass {

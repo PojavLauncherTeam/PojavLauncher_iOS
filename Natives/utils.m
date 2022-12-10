@@ -7,7 +7,19 @@
 #include "log.h"
 #include "utils.h"
 
-BOOL getEntitlementValue(NSString *key);
+CFTypeRef SecTaskCopyValueForEntitlement(void* task, NSString* entitlement, CFErrorRef  _Nullable *error);
+void* SecTaskCreateFromSelf(CFAllocatorRef allocator);
+
+BOOL getEntitlementValue(NSString *key) {
+    void *secTask = SecTaskCreateFromSelf(NULL);
+    CFTypeRef value = SecTaskCopyValueForEntitlement(SecTaskCreateFromSelf(NULL), key, nil);
+    if (value != nil) {
+        CFRelease(value);
+    }
+    CFRelease(secTask);
+
+    return value != nil && [(__bridge id)value boolValue];
+}
 
 BOOL isJITEnabled() {
     if (getEntitlementValue(@"dynamic-codesigning")) {

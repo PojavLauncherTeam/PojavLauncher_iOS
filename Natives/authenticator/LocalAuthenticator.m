@@ -6,12 +6,12 @@
     self.authData[@"oldusername"] = self.authData[@"username"] = self.authData[@"input"];       
     self.authData[@"accessToken"] = @"0";
     self.authData[@"profileId"] = @"00000000-0000-0000-0000-000000000000";
-    callback([super saveChanges]);
+    callback(nil, [super saveChanges]);
 }
 
 - (void)refreshTokenWithCallback:(Callback)callback {
     // Nothing to do
-    callback(YES);
+    callback(nil, YES);
 }
 
 @end

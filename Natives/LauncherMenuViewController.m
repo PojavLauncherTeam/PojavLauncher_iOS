@@ -1,10 +1,16 @@
+#import <SafariServices/SafariServices.h>
+
 #import "authenticator/BaseAuthenticator.h"
 #import "AccountListViewController.h"
+#import "AFNetworking.h"
+#import "ALTServerConnection.h"
 #import "LauncherMenuViewController.h"
 #import "LauncherNewsViewController.h"
+#import "LauncherPreferences.h"
 #import "LauncherPreferencesViewController.h"
 #import "UIButton+AFNetworking.h"
 #import "UIImageView+AFNetworking.h"
+#import "ios_uikit_bridge.h"
 #import "utils.h"
 
 @implementation LauncherMenuCustomItem
@@ -20,9 +26,10 @@
 @end
 
 @interface LauncherMenuViewController()
-@property(nonatomic) NSArray<UIViewController*> *options;
+@property(nonatomic) NSMutableArray<UIViewController*> *options;
 @property(nonatomic) UIButton *accountButton;
 @property(nonatomic) UIBarButtonItem *accountBtnItem;
+@property(nonatomic) UILabel *statusLabel;
 @end
 
 @implementation LauncherMenuViewController
@@ -65,11 +72,42 @@
 
             [self presentViewController:activityVC animated:YES completion:nil];
         }]
-    ]; 
+    ].mutableCopy;
     self.options[0].title = localize(@"News", nil);
     self.options[1].title = localize(@"Settings", nil);
 
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"MM-dd";
+    NSString* date = [dateFormatter stringFromDate:NSDate.date];
+    if([date isEqualToString:@"06-29"] || [date isEqualToString:@"06-30"] || [date isEqualToString:@"07-01"]) {
+        [self.options addObject:(id)[LauncherMenuCustomItem
+            title:@"Technoblade never dies!"
+            imageName:@"" action:^{
+            SFSafariViewController *vc = [[SFSafariViewController alloc] initWithURL:[NSURL URLWithString:@"https://youtu.be/DPMluEVUqS0"]];
+            [self presentViewController:vc animated:YES completion:nil];
+        }]];
+    }
+
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+
+    self.navigationController.toolbarHidden = NO;
+    UIActivityIndicatorViewStyle indicatorStyle;
+    if (@available(iOS 13.0, *)) {
+        indicatorStyle = UIActivityIndicatorViewStyleMedium;
+    } else {
+        indicatorStyle = UIActivityIndicatorViewStyleGray;
+    } 
+    UIActivityIndicatorView *toolbarIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:indicatorStyle];
+    [toolbarIndicator startAnimating];
+    self.toolbarItems = @[
+        [[UIBarButtonItem alloc] initWithCustomView:toolbarIndicator],
+        [[UIBarButtonItem alloc] init]
+    ];
+    if (@available(iOS 13.0, *)) {
+        self.toolbarItems[1].tintColor = UIColor.labelColor;
+    } else {
+        self.toolbarItems[1].tintColor = UIColor.blackColor;
+    }
 
     // Setup the account button
     self.accountButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -85,8 +123,14 @@
 
     [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
 
-    // Put a close button, as iOS does not have a dedicated back button
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"❌" style:UIBarButtonItemStyleDone target:self.splitViewController action:@selector(dismissViewController)];
+    if (!getEntitlementValue(@"dynamic-codesigning")) {
+        if (isJITEnabled()) {
+            [self displayProgress:localize(@"login.jit.enabled", nil)];
+            [self displayProgress:nil];
+        } else {
+            [self enableJITWithJitStreamer];
+        }
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -137,7 +181,6 @@
     if ([selected isKindOfClass:UIViewController.class]) {
         [self.splitViewController.viewControllers[1] setViewControllers:@[selected] animated:NO]; //YES?
 
-
         if (@available(iOS 14.0, tvOS 14.0, *)) {
             selected.navigationItem.leftBarButtonItem = self.accountBtnItem;
             // It is unnecessary to put the toggle button as it is automated on iOS 14+
@@ -152,10 +195,20 @@
 
 - (void)selectAccount:(UIButton *)sender {
     AccountListViewController *vc = [[AccountListViewController alloc] init];
-    vc.whenItemSelected = ^void(NSString* name) {
-        // TODO: perform token refreshing
-        [BaseAuthenticator loadSavedName:name];
+    vc.whenDelete = ^void(NSString* name) {
+        if ([name isEqualToString:getPreference(@"selected_account")]) {
+            BaseAuthenticator.current = nil;
+            setPreference(@"selected_account", @"");
+            [self updateAccountInfo];
+        }
+    };
+    vc.whenItemSelected = ^void() {
+        setPreference(@"selected_account", BaseAuthenticator.current.authData[@"username"]);
         [self updateAccountInfo];
+        if (sender != self.accountButton) {
+            // Called from the play button, so call back to continue
+            [sender sendActionsForControlEvents:UIControlEventTouchUpInside];
+        }
     };
     vc.modalPresentationStyle = UIModalPresentationPopover;
     vc.preferredContentSize = CGSizeMake(350, 250);
@@ -170,6 +223,14 @@
 
 - (void)updateAccountInfo {
     NSDictionary *selected = BaseAuthenticator.current.authData;
+
+    if (selected == nil) {
+        [self.accountButton setAttributedTitle:[[NSAttributedString alloc] initWithString:localize(@"login.option.select", nil)] forState:UIControlStateNormal];
+        [self.accountButton setImage:[UIImage imageNamed:@"DefaultAccount"] forState:UIControlStateNormal];
+        [self.accountButton sizeToFit];
+        return;
+    }
+
     BOOL isDemo = [selected[@"username"] hasPrefix:@"Demo."];
     NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:[selected[@"username"] substringFromIndex:(isDemo?5:0)]];
     id subtitle;
@@ -192,6 +253,85 @@
     [self.accountButton setImageForState:UIControlStateNormal withURL:url placeholderImage:placeholder];
     [self.accountButton.imageView setImageWithURL:url placeholderImage:placeholder];
     [self.accountButton sizeToFit];
+}
+
+- (void)displayProgress:(NSString *)status {
+    if (status == nil) {
+        [(UIActivityIndicatorView *)self.toolbarItems[0].customView stopAnimating];
+        return;
+    }
+    self.toolbarItems[1].title = status;
+}
+
+- (void)enableJITWithAltJIT
+{
+    [self displayProgress:localize(@"login.jit.start.AltKit", nil)];
+    [ALTServerManager.sharedManager startDiscovering];
+    [ALTServerManager.sharedManager autoconnectWithCompletionHandler:^(ALTServerConnection *connection, NSError *error) {
+        if (error) {
+            NSLog(@"[AltKit] Could not auto-connect to server. %@", error);
+            [self displayProgress:localize(@"login.jit.fail.AltKit", nil)];
+            [self displayProgress:nil];
+            return;
+        }
+        [connection enableUnsignedCodeExecutionWithCompletionHandler:^(BOOL success, NSError *error) {
+            if (success) {
+                NSLog(@"[AltKit] Successfully enabled JIT compilation!");
+                [ALTServerManager.sharedManager stopDiscovering];
+                [self displayProgress:localize(@"login.jit.enabled", nil)];
+                [self displayProgress:nil];
+            } else {
+                NSLog(@"[AltKit] Could not enable JIT compilation. %@", error);
+                [self displayProgress:localize(@"login.jit.fail.AltKit", nil)];
+                [self displayProgress:nil];
+                showDialog(self, localize(@"Error", nil), error.description);
+            }
+            [connection disconnect];
+        }];
+    }];
+}
+
+- (void)enableJITWithJitStreamer
+{
+    [self displayProgress:localize(@"login.jit.checking", nil)];
+
+    // TODO: customizable address
+    NSString *address = getPreference(@"jitstreamer_server");
+    NSLog(@"JitStreamer server is %@, attempting to connect...", address);
+
+    AFHTTPSessionManager *manager = AFHTTPSessionManager.manager;
+    manager.requestSerializer.timeoutInterval = 10;
+    manager.responseSerializer = AFHTTPResponseSerializer.serializer;
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain", nil];
+    [manager GET:[NSString stringWithFormat:@"http://%@/version", address] parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask *task, NSData *response) {
+        NSString *version = [[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding];
+        NSLog(@"Found JitStreamer %@", version);
+        [self displayProgress:localize(@"login.jit.found.JitStreamer", nil)];
+        manager.requestSerializer.timeoutInterval = 0;
+        manager.responseSerializer = AFJSONResponseSerializer.serializer;
+        void(^handleResponse)(NSURLSessionDataTask *task, id response) = ^void(NSURLSessionDataTask *task, id response){
+            NSDictionary *responseDict;
+            // FIXME: successful response may fail due to serialization issues
+            if ([response isKindOfClass:NSError.class]) {
+                NSLog(@"Error?: %@", responseDict);
+                NSData *errorData = ((NSError *)response).userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+                responseDict = [NSJSONSerialization JSONObjectWithData:errorData options:0 error:nil];
+            } else {
+                responseDict = response;
+            }
+            if ([responseDict[@"success"] boolValue]) {
+                [self displayProgress:localize(@"login.jit.enabled", nil)];
+                [self displayProgress:nil];
+            } else {
+                [self displayProgress:[NSString stringWithFormat:localize(@"login.jit.fail.JitStreamer", nil), responseDict[@"message"]]];
+                showDialog(self, localize(@"Error", nil), responseDict[@"message"]);
+                [self enableJITWithAltJIT];
+            }
+        };
+        [manager POST:[NSString stringWithFormat:@"http://%@/attach/%d/", address, getpid()] parameters:nil headers:nil progress:nil success:handleResponse failure:handleResponse];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [self enableJITWithAltJIT];
+    }];
 }
 
 @end

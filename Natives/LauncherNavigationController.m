@@ -1,3 +1,4 @@
+#import "authenticator/BaseAuthenticator.h"
 #import "AFNetworking.h"
 #import "CustomControlsViewController.h"
 #import "JavaGUIViewController.h"
@@ -29,10 +30,13 @@
     [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
 
 
-    self.versionTextField = [[UITextField alloc] initWithFrame:CGRectMake(0, 4, self.toolbar.frame.size.width, self.toolbar.frame.size.height/2 - 4)];
+    self.versionTextField = [[UITextField alloc] initWithFrame:CGRectMake(0, 4, self.toolbar.frame.size.width * 0.8, self.toolbar.frame.size.height - 8)];
     [self.versionTextField addTarget:self.versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     self.versionTextField.autoresizingMask = AUTORESIZE_MASKS;
     self.versionTextField.placeholder = @"Specify version...";
+    self.versionTextField.rightView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SpinnerArrow"]];
+    self.versionTextField.rightView.frame = CGRectMake(0, 0, self.versionTextField.frame.size.height * 0.9, self.versionTextField.frame.size.height * 0.9);
+    self.versionTextField.rightViewMode = UITextFieldViewModeAlways;
     self.versionTextField.text = (NSString *) getPreference(@"selected_version");
     self.versionTextField.textAlignment = NSTextAlignmentCenter;
 
@@ -62,8 +66,8 @@
 
     [self.toolbar addSubview:self.versionTextField];
 
-    self.progressViewMain = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 0, self.toolbar.frame.size.width, 4.0)];
-    self.progressViewSub = [[UIProgressView alloc] initWithFrame:CGRectMake(0, self.toolbar.frame.size.height - 4.0, self.toolbar.frame.size.width, 4.0)];
+    self.progressViewMain = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 0, self.toolbar.frame.size.width, 4)];
+    self.progressViewSub = [[UIProgressView alloc] initWithFrame:CGRectMake(0, self.toolbar.frame.size.height - 4, self.toolbar.frame.size.width, 4)];
     self.progressViewMain.autoresizingMask = self.progressViewSub.autoresizingMask = AUTORESIZE_MASKS;
     self.progressViewMain.hidden = self.progressViewSub.hidden = YES;
     [self.toolbar addSubview:self.progressViewMain];
@@ -76,18 +80,32 @@
     self.buttonInstall.autoresizingMask = AUTORESIZE_MASKS;
     self.buttonInstall.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
     self.buttonInstall.layer.cornerRadius = 5;
-    self.buttonInstall.frame = CGRectMake(6.0, self.toolbar.frame.size.height/2, self.toolbar.frame.size.width - 12.0, (self.toolbar.frame.size.height - 12.0)/2);
+    self.buttonInstall.frame = CGRectMake(self.toolbar.frame.size.width * 0.8, 4, self.toolbar.frame.size.width * 0.2, self.toolbar.frame.size.height - 8);
     self.buttonInstall.tintColor = UIColor.whiteColor;
     [self.buttonInstall addTarget:self action:@selector(launchMinecraft:) forControlEvents:UIControlEventTouchUpInside];
     [self.toolbar addSubview:self.buttonInstall];
 
-    self.progressText = [[UILabel alloc] initWithFrame:self.buttonInstall.frame];
+    self.progressText = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.toolbar.frame.size.width, self.toolbar.frame.size.height)];
     self.progressText.adjustsFontSizeToFitWidth = YES;
     self.progressText.autoresizingMask = AUTORESIZE_MASKS;
     self.progressText.font = [self.progressText.font fontWithSize:16];
     self.progressText.textAlignment = NSTextAlignmentCenter;
     self.progressText.userInteractionEnabled = NO;
     [self.toolbar addSubview:self.progressText];
+
+    if ([BaseAuthenticator.current isKindOfClass:MicrosoftAuthenticator.class]) {
+        // Perform token refreshment on startup
+        [self setInteractionEnabled:NO];
+        id callback = ^(NSString* status, BOOL success) {
+            self.progressText.text = status;
+            if (status == nil) {
+                [self setInteractionEnabled:YES];
+            } else if (!success) {
+                showDialog(self, localize(@"Error", nil), status);
+            }
+        };
+        [BaseAuthenticator.current refreshTokenWithCallback:callback];
+    }
 }
 
 - (BOOL)isVersionInstalled:(NSString *)versionId
@@ -223,14 +241,9 @@
 }
 
 - (void)setInteractionEnabled:(BOOL)enabled {
-    // Obtain LauncherMenu's navigation item
-    UINavigationItem *item = [(UINavigationController *)self.splitViewController.viewControllers[0]
-        viewControllers][0].navigationItem;
-    ((UIButton *)item.titleView).enabled = enabled;
-    item.rightBarButtonItem.enabled = enabled;
-
     for (UIControl *view in self.toolbar.subviews) {
         if ([view isKindOfClass:UIControl.class]) {
+            view.alpha = enabled ? 1 : 0.2;
             view.enabled = enabled;
         }
     }
@@ -240,6 +253,14 @@
 
 - (void)launchMinecraft:(UIButton *)sender {
     if (!self.versionTextField.hasText) {
+        return;
+    }
+
+    if (BaseAuthenticator.current == nil) {
+        // Present the account selector if none selected
+        UIViewController *view = [(UINavigationController *)self.splitViewController.viewControllers[0]
+        viewControllers][0];
+        [view performSelector:@selector(selectAccount:) withObject:sender];
         return;
     }
 

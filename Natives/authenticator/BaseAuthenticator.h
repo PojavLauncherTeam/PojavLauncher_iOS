@@ -1,6 +1,6 @@
 #import "Foundation/Foundation.h"
 
-typedef void(^Callback)(BOOL);
+typedef void(^Callback)(NSString* status, BOOL success);
 
 @interface BaseAuthenticator : NSObject
 

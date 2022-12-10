@@ -32,6 +32,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 @end
 
 @implementation CustomControlsViewController
+#define isInGame [self.presentingViewController respondsToSelector:@selector(loadCustomControls)]
 
 - (void)viewDidLoad
 {
@@ -104,6 +105,14 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     self.currentFileName = [getPreference(@"default_ctrl") stringByDeletingPathExtension];
     [self initKeyCodeMap];
     [self loadControlFile:[NSString stringWithFormat:@"%s/controlmap/%@", getenv("POJAV_HOME"), getPreference(@"default_ctrl")]];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    if (isInGame) {
+        isControlModifiable = NO;
+        [self.presentingViewController performSelector:@selector(loadCustomControls)];
+    }
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)sender shouldReceiveTouch:(UITouch *)touch {
@@ -282,7 +291,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
         [self actionMenuSaveWithExit:YES];
         return;
     }
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:!isInGame completion:nil];
 }
 
 - (void)actionMenuSaveWithExit:(BOOL)exit {
@@ -298,33 +307,28 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     [controller addAction:[UIAlertAction actionWithTitle:localize(@"OK", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         NSArray *textFields = controller.textFields;
         UITextField *field = textFields[0];
-        if ([field.text isEqualToString:@"default"]) {
-            controller.message = localize(@"custom_controls.control_menu.save.error.default", nil);
-            [self presentViewController:controller animated:YES completion:nil];
-        } else {
-            NSError *error;
-            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self.cc_dictionary options:NSJSONWritingPrettyPrinted error:&error];
-            if (jsonData == nil) {
-                showDialog(self, localize(@"custom_controls.control_menu.save.error.json", nil), error.localizedDescription);
-                return;
-            }
-            BOOL success = [jsonData writeToFile:[NSString stringWithFormat:@"%s/controlmap/%@.json", getenv("POJAV_HOME"), field.text] options:NSDataWritingAtomic error:&error];
-            if (!success) {
-                showDialog(self, localize(@"custom_controls.control_menu.save.error.write", nil), error.localizedDescription);
-                return;
-            }
-
-            if (exit) {
-                [self dismissViewControllerAnimated:YES completion:nil];
-            }
-
-            self.currentFileName = field.text;
-            [self.undoManager removeAllActions];
+        NSError *error;
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self.cc_dictionary options:NSJSONWritingPrettyPrinted error:&error];
+        if (jsonData == nil) {
+            showDialog(self, localize(@"custom_controls.control_menu.save.error.json", nil), error.localizedDescription);
+            return;
         }
+        BOOL success = [jsonData writeToFile:[NSString stringWithFormat:@"%s/controlmap/%@.json", getenv("POJAV_HOME"), field.text] options:NSDataWritingAtomic error:&error];
+        if (!success) {
+            showDialog(self, localize(@"custom_controls.control_menu.save.error.write", nil), error.localizedDescription);
+            return;
+        }
+
+        if (exit) {
+            [self dismissViewControllerAnimated:!isInGame completion:nil];
+        }
+
+        self.currentFileName = field.text;
+        [self.undoManager removeAllActions];
     }]];
     if (exit) {
         [controller addAction:[UIAlertAction actionWithTitle:localize(@"custom_controls.control_menu.discard_changes", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-            [self dismissViewControllerAnimated:YES completion:nil];
+            [self dismissViewControllerAnimated:!isInGame completion:nil];
         }]];
     }
     [controller addAction:[UIAlertAction actionWithTitle:localize(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil]];
@@ -507,7 +511,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 }
 
 - (BOOL)prefersHomeIndicatorAutoHidden {
-    return YES;
+    return [getPreference(@"debug_hide_home_indicator") boolValue];
 }
 
 - (BOOL)prefersStatusBarHidden {

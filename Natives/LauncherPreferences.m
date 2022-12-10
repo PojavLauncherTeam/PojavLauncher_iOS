@@ -84,7 +84,6 @@ void fillDefaultWarningDict() {
     setDefaultValueForPref(warnPrefDict, @"local_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"mem_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"java_warn", @YES);
-    setDefaultValueForPref(warnPrefDict, @"demo_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"jb_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"int_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"auto_ram_warn", @YES);
@@ -116,6 +115,7 @@ void loadPreferences(BOOL reset) {
     // set default value
     setDefaultValueForPref(envPrefDict, @"resolution", @(100));
     setDefaultValueForPref(prefDict, @"button_scale", @(100));
+    setDefaultValueForPref(prefDict, @"selected_account", @"");
     setDefaultValueForPref(prefDict, @"selected_version", @"1.7.10");
     setDefaultValueForPref(prefDict, @"selected_version_type", @(0));
     setDefaultValueForPref(envPrefDict, @"press_duration", @(400));
@@ -141,7 +141,9 @@ void loadPreferences(BOOL reset) {
 
     // Debug settings
     setDefaultValueForPref(debugPrefDict, @"debug_skip_wait_jit", @NO);
+    setDefaultValueForPref(debugPrefDict, @"debug_hide_home_indicator", @NO);
     setDefaultValueForPref(debugPrefDict, @"debug_ipad_ui", @(UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad));
+    setDefaultValueForPref(debugPrefDict, @"debug_auto_correction", @YES);
     setDefaultValueForPref(debugPrefDict, @"debug_show_layout_bounds", @NO);
     setDefaultValueForPref(debugPrefDict, @"debug_show_layout_overlap", @NO);
 
@@ -176,17 +178,4 @@ CGRect getDefaultSafeArea() {
         defaultSafeArea.size.height = height;
     }
     return defaultSafeArea;
-}
-
-CFTypeRef SecTaskCopyValueForEntitlement(void* task, NSString* entitlement, CFErrorRef  _Nullable *error);
-void* SecTaskCreateFromSelf(CFAllocatorRef allocator);
-BOOL getEntitlementValue(NSString *key) {
-    void *secTask = SecTaskCreateFromSelf(NULL);
-    CFTypeRef value = SecTaskCopyValueForEntitlement(SecTaskCreateFromSelf(NULL), key, nil);
-    if (value != nil) {
-        CFRelease(value);
-    }
-    CFRelease(secTask);
-
-    return value != nil && [(__bridge id)value boolValue];
 }
