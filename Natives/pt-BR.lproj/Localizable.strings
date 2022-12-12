@@ -4,8 +4,11 @@
 */
 
 "game.menu.force_close" = "Forçar encerramento";
+"game.menu.confirm.force_close" = "Tem certeza que deseja forçar o encerramento?";
 "game.menu.log_output" = "Registro de saída";
 "game.menu.custom_controls" = "Controles personalizados";
+
+"game.note.airplay" = "Minecraft está sendo exibido na visão espelhada do AirPlay";
 
 "game.title.exit_code" = "Jogo terminado com código %d";
 
@@ -45,6 +48,7 @@
 "custom_controls.button_menu.add_subbutton" = "Adicionar sub-botão";
 "custom_controls.control_menu.discard_changes" = "Descartar alterações";
 "custom_controls.control_menu.exit" = "Sair";
+"custom_controls.control_menu.exit.warn" = "Você está prestes a sair sem salvar as alterações.";
 "custom_controls.control_menu.save" = "Salvar";
 "custom_controls.control_menu.save.error.json" = "erro JSON";
 "custom_controls.control_menu.save.error.write" = "Erro ao salvar arquivo";
@@ -53,6 +57,8 @@
 "custom_controls.control_menu.safe_area" = "Área segura";
 "custom_controls.control_menu.add_button" = "Adicionar botão";
 "custom_controls.control_menu.add_drawer" = "Adicionar gaveta";
+
+"init.migrateDir" = "O diretório de dados do PojavLauncher agora é %@. Todos os dados existentes foram movidos para a nova localização.";
 
 "launcher.menu.custom_controls" = "Controles personalizados";
 "launcher.menu.install_jar" = "Instalar .jar";
@@ -77,11 +83,16 @@
 
 "login.warn.title.ram_unjb" = "Slider de memória está ativado";
 
+"login.warn.title.a7" = "Esta é a última atualização deste dispositivo.";
+
+"login.warn.title.iosver" = "Esta é a última atualização para esta versão iOS.";
+
 "login.warn.title.2gb" = "Seu dispositivo tem RAM limitado.";
 
 "login.warn.title.demomode" = "Sua conta é Demonstrativa";
 
 "login.warn.title.localmode" = "O modo off-line agora é o modo local.";
+"login.msa.error.xsts.krverify" = "Sua conta precisa ser verificada por seus pais antes de continuar.\nCódigo de erro: 2148916236 ou 2148916237.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Adquirindo o token de acesso";
 "login.msa.progress.acquireXBLToken" = "(2/5) Adquirindo o token do Xbox Live";
@@ -97,6 +108,7 @@
 "preference.section.video" = "Configurações de Vídeo";
 "preference.section.control" = "Personalização dos controles";
 "preference.section.debug" = "Configurações da depuração do UI";
+"preference.section.footer.debug" = "Além da depuração, essas configurações podem ser úteis para controles personalizados. Pode ser necessário reiniciar o launcher para que as alterações tenham efeito.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Ajustes do Java";
 //"preference.section.footer.java" = "";
@@ -119,6 +131,7 @@
 "preference.title.done.reset_warnings" = "Todas as advertências foram redefinidas.";
 
 "preference.title.reset_settings" = "Redefinir todas as configurações";
+"preference.title.done.reset_settings" = "Todas as configurações padrão foram restauradas.";
 
 "preference.title.renderer" = "Renderizador";
 "preference.title.renderer.auto" = "Auto: gl4es ou ANGLE";
