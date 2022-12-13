@@ -58,7 +58,7 @@ jobs:
           password: ${{ secrets.ELLIE_MINI_SECRET }}
         run: |
           export NOSTDIN=1 SUDOPASS=$password RUNNER=1
-          gmake -j$(sysctl -n hw.ncpu) package
+          gmake -j$(sysctl -n hw.ncpu) dsym
 
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v2
