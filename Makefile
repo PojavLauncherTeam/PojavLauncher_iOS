@@ -230,10 +230,10 @@ package: native java jre
 
 dsym: package
 	@echo '[PojavLauncher v$(VERSION)] dsym - start'
-	@cd $(OUTPUTDIR) && dsymutil --arch arm64 $(OUTPUTDIR)/PojavLauncher.app/PojavLauncher
+	@cd $(OUTPUTDIR) && dsymutil --arch arm64 $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher
 	@rm -rf $(OUTPUTDIR)/PojavLauncher.dSYM
-	@mv $(OUTPUTDIR)/PojavLauncher.app/PojavLauncher.dSYM $(OUTPUTDIR)/PojavLauncher.dSYM
-	@rm -rf $(OUTPUTDIR)/PojavLauncher.app
+	@mv $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher.dSYM $(OUTPUTDIR)/PojavLauncher.dSYM
+	@rm -rf $(OUTPUTDIR)/Payload
 	@echo '[PojavLauncher v$(VERSION)] dsym - end'
 	
 deploy:
