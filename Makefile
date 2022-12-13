@@ -235,7 +235,7 @@ package: native java jre
 dsym: package
 	@echo '[PojavLauncher v$(VERSION)] dsym - start'
 	@cd $(OUTPUTDIR); \
-	@if [ '$(NOSTDIN)' = '1' ]; then \
+	if [ '$(NOSTDIN)' = '1' ]; then \
 		echo '$(SUDOPASS)' | sudo -S dsymutil --arch arm64 $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher; \
 		echo '$(SUDOPASS)' | sudo -S rm -rf $(OUTPUTDIR)/PojavLauncher.dSYM; \
 		echo '$(SUDOPASS)' | sudo -S mv $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher.dSYM $(OUTPUTDIR)/PojavLauncher.dSYM; \
