@@ -58,20 +58,7 @@ jobs:
           password: ${{ secrets.ELLIE_MINI_SECRET }}
         run: |
           export NOSTDIN=1 SUDOPASS=$password RUNNER=1
-          export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
-          gmake -j$(sysctl -n hw.ncpu) ipa
-
-      - name: Upload regular artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: net.kdt.pojavlauncher.development_iphoneos-arm.deb
-          path: artifacts/net.kdt.pojavlauncher.*_iphoneos-arm.deb
-
-      - name: Upload rootless artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: net.kdt.pojavlauncher.development-rootless_iphoneos-arm.deb
-          path: artifacts/net.kdt.pojavlauncher.*_iphoneos-arm64.deb
+          gmake -j$(sysctl -n hw.ncpu) package
 
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v2
