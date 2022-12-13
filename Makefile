@@ -204,7 +204,7 @@ jre:
 	cp $(WORKINGDIR)/libawt_xawt.dylib $(WORKINGDIR)/PojavLauncher.app/jvm/java-8-openjdk/lib/; \
 	echo '[PojavLauncher v$(VERSION)] jre - end'
 
-package: native java extras jre
+package: native java jre
 	@echo '[PojavLauncher v$(VERSION)] package - start'
 	$(call DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs)
 	$(call DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs_caciocavallo)
