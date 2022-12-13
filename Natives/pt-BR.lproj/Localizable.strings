@@ -50,6 +50,7 @@
 "custom_controls.control_menu.exit" = "Sair";
 "custom_controls.control_menu.exit.warn" = "Você está prestes a sair sem salvar as alterações.";
 "custom_controls.control_menu.save" = "Salvar";
+"custom_controls.control_menu.save.error.default" = "O nome do controle não pode ser \"padrão\", pois será substituído.";
 "custom_controls.control_menu.save.error.json" = "erro JSON";
 "custom_controls.control_menu.save.error.write" = "Erro ao salvar arquivo";
 "custom_controls.control_menu.load" = "Carregar";
@@ -57,6 +58,8 @@
 "custom_controls.control_menu.safe_area" = "Área segura";
 "custom_controls.control_menu.add_button" = "Adicionar botão";
 "custom_controls.control_menu.add_drawer" = "Adicionar gaveta";
+"custom_controls.error.incompatible" = "Esta versão de controle (código %d) não está implementada nesta compilação do inicializador.";
+"custom_controls.hint" = "Pressione e segure em qualquer lugar na tela para mais opções";
 
 "init.migrateDir" = "O diretório de dados do PojavLauncher agora é %@. Todos os dados existentes foram movidos para a nova localização.";
 
@@ -136,14 +139,19 @@
 "preference.title.renderer" = "Renderizador";
 "preference.title.renderer.auto" = "Auto: gl4es ou ANGLE";
 "preference.title.renderer.gl4es" = "gl4es 1.1.4 - exports OpenGL 2.1";
+"preference.title.renderer.angle" = "ANGLE (1.17+) - exporta OpenGL 3.2 (Perfil de navegação, limitado)";
+"preference.title.renderer.zink" = "Zink (Mesa 21.0) - exports OpenGL 4.1";
+"preference.detail.renderer" = "Alterar o mecanismo de renderização OpenGL para usar";
 
 "preference.title.resolution" = "Resolução (%)";
+"preference.detail.resolution" = "Permite que você diminua a resolução do jogo.";
 "preference.title.disable_gesture" = "Desativar gestos";
 "preference.title.press_duration" = "Duração de pressionamento longo (ms)";
 "preference.title.button_scale" = "Escala dos botões virtuais (%)";
 "preference.title.mouse_scale" = "Escala do mouse (%)";
 "preference.detail.mouse_scale" = "Alterar o tamanho do mouse virtual";
 "preference.title.mouse_speed" = "Velocidade do mouse (%)";
+"preference.detail.mouse_speed" = "Alterar a velocidade do mouse virtual";
 "preference.title.virtmouse_enable" = "Mouse virtual";
 "preference.title.slideable_hotbar" = "Hotbar deslizante";
 "preference.title.java_home" = "Use Java 17 para o Minecraft < 1.17";
