@@ -28,6 +28,7 @@
 "custom_controls.control_menu.add_button" = "เพิ่มปุ่ม";
 
 "launcher.menu.custom_controls" = "การควบคุมกำหนดเอง";
+"login.option.select" = "เลือกบัญชี";
 
 "News" = "ข่าวสาร";
 "Settings" = "การตั้งค่า";

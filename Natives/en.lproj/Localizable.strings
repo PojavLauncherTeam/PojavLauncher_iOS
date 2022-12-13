@@ -58,6 +58,7 @@
 "custom_controls.control_menu.safe_area" = "Safe area";
 "custom_controls.control_menu.add_button" = "Add button";
 "custom_controls.control_menu.add_drawer" = "Add drawer";
+"custom_controls.error.incompatible" = "This control version (code %d) is not implemented in this launcher build.";
 "custom_controls.hint" = "Long-press anywhere on screen for more options";
 
 "init.migrateDir" = "The PojavLauncher data directory is now %@. All of your existing data has been moved to the new location.";
@@ -158,9 +159,9 @@
 "preference.title.done.reset_settings" = "All of the default settings have been restored.";
 
 "preference.title.renderer" = "Renderer";
-"preference.title.renderer.auto" = "Auto: gl4es or tinygl4angle";
+"preference.title.renderer.auto" = "Auto: gl4es or ANGLE";
 "preference.title.renderer.gl4es" = "gl4es 1.1.4 - exports OpenGL 2.1";
-"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - exports OpenGL 3.2 (Core Profile, limited)";
+"preference.title.renderer.angle" = "ANGLE (1.17+) - exports OpenGL 3.2 (Core Profile, limited)";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - exports OpenGL 4.1";
 "preference.detail.renderer" = "Change the OpenGL render engine to use";
 
@@ -197,6 +198,8 @@
 "preference.detail.debug_skip_wait_jit" = "This does not allow you to launch without JIT, instead this skips debugger check, because check fails on certain jailbreaks.";
 "preference.title.debug_ipad_ui" = "Unlock iPadOS UI";
 "preference.detail.debug_ipad_ui" = "Unlock iPad-exclusive UI (alert, keyboard, etc.) if enabled or iPhone UI if disabled.";
+"preference.title.debug_auto_correction" = "Auto correction";
+"preference.detail.debug_auto_correction" = "Enable auto correction when typing text in game.";
 "preference.title.debug_hide_home_indicator" = "Hide home indicator";
 "preference.detail.debug_hide_home_indicator" = "This will disable home indicator locking. You will need to use Guided Access to hide and lock home indicator at the same time.";
 "preference.title.debug_show_layout_bounds" = "Show layout bounds";

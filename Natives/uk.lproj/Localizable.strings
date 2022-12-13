@@ -80,17 +80,12 @@
 "login.jit.fail.AltKit" = "Помилка AltKit: %@";
 
 // Login buttons
-"Sign in" = "Увійти";
-"FAQ" = "ЧаПи";
-"Accounts" = "Облікові записи";
 "login.menu.sendlogs" = "Надіслати ваші звіти";
-"login.menu.updates" = "Нещодавні оновлення";
 
+"login.option.add" = "Додати обл. запис";
+"login.option.select" = "Виберіть обліковий запис";
 "login.option.microsoft" = "Обліковий запис Microsoft";
-"login.option.demo" = "Тимчасовий запис";
 "login.option.local" = "Локальний профіль";
-
-"login.progress.title" = "Триває вхід";
 
 "login.warn.title.ram_unjb" = "Повзунок пам'яті увімкнено";
 "login.warn.message.ram_unjb" = "Майте на увазі, що зміна цього налаштування може призвести до нестабільности гри чи руйнування її взагалі.";
@@ -103,8 +98,6 @@
 
 "login.warn.title.2gb" = "Пристрій має обмеження оперативної пам'яті.";
 "login.warn.message.2gb" = "Пристрої, що мають менше ніж 3 ГБ пам'яті, можуть наштовхуватися на обмеження пам'яті. Ми рекомендуємо залишити автоматичний вибір для пристрою.";
-
-"login.warn.title.demomode" = "Ця опція знаходиться в бета-версії.";
 "login.warn.message.demomode" = "Як заміна в офлайн та локальний режимах, демо-режим дозволить вам увійти в обліковий запис Microsoft, який не володіє грою та грати в пробну версію Java Видання, введено в 1.3.1 і більш нових версій. Старіші версії містять повну версію гри, оскільки офіційний лаунчер не веде ці обмеження. Відвідайте наш веб-сайт, щоб дізнатися більше про цей перехід з автономного режиму.";
 
 "login.warn.title.localmode" = "Офлайн режим тепер локальний режим.";
@@ -114,8 +107,6 @@
 "login.msa.error.xsts.noxbox" = "Наразі Xbox Live недоступний у вашій країні. \nКод помилки: 2148916235";
 "login.msa.error.xsts.krverify" = "Ваш обліковий запис має бути перевірено батьками, перш ніж ви зможете продовжити.\nКод помилки: 2148916236 або 2148916237.";
 "login.msa.error.xsts.underage" = "Ваш обліковий запис повинен бути пов'язаним з батьківським обліковим записом, перш ніж ви зможете продовжити.\nКод помилки: 2148916238";
-
-"login.msa.notice.demomode" = "Не вдалося знайти профіль Minecraft на цьому акаунті. Акаунт тепер установлено на демо-режим. Ви придбали Minecraft, або маєте активну підписку на Xbox Game Pass? Будь ласка налаштуйте свій профіль на https://minecraft.net/msaprofile для відновлення доступу до онлайн-режиму.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Приймається токен доступу";
 "login.msa.progress.acquireXBLToken" = "(2/5) Приймається токен Xbox Live";
@@ -165,9 +156,7 @@
 "preference.title.done.reset_settings" = "Всі стандартні налаштування були відновлені.";
 
 "preference.title.renderer" = "Візуалізатор";
-"preference.title.renderer.auto" = "Авто: gl4es чи tinygl4angle";
 "preference.title.renderer.gl4es" = "Gl4es 1.1.4 - експортує OpenGL 2.1";
-"preference.title.renderer.tinygl4angle" = "Tinygl4angle (1.17+) - експортує OpenGL 3.2 (Базовий профіль, обмежений)";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - експортує OpenGL 4.1";
 "preference.detail.renderer" = "Зміни двигун візуалізації OpenGL для використання";
 
@@ -204,6 +193,8 @@
 "preference.detail.debug_skip_wait_jit" = "Це не дозволяє запускати без JIT, натомість це пропускає перевірку налагоджувача, оскільки перевірка не вдається під час певних джейлбрейків.";
 "preference.title.debug_ipad_ui" = "Розблокувати інтерфейс iPadOS";
 "preference.detail.debug_ipad_ui" = "Розблокуйте ексклюзивний інтерфейс iPad (тривоги, клавіатури тощо.) якщо ввімкнено або якщо інтерфейс iPhone вимкнено.";
+"preference.title.debug_hide_home_indicator" = "Сховати кнопку \"Додому\"";
+"preference.detail.debug_hide_home_indicator" = "Це вимкне блокування кнопки \"Додому\". Ви повинні використовувати Guided Access, щоб ховати та блокувати кнопку \"Додому\" за один раз.";
 "preference.title.debug_show_layout_bounds" = "Показувати межі об'єктів";
 "preference.detail.debug_show_layout_bounds" = "Показувати межі обрізування, поля і т. д.";
 "preference.title.debug_show_layout_overlap" = "Показати накладання макета";

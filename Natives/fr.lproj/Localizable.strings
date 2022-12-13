@@ -58,6 +58,7 @@
 "custom_controls.control_menu.safe_area" = "Zone de sécurité";
 "custom_controls.control_menu.add_button" = "Ajouter un bouton";
 "custom_controls.control_menu.add_drawer" = "Ajouter un tiroir";
+"custom_controls.error.incompatible" = "Cette version de contrôle (code %d) n'est pas implémentée dans cette version du launcher.";
 "custom_controls.hint" = "Appuyez longuement n'importe où sur l'écran pour plus d'options";
 
 "init.migrateDir" = "Le répertoire de données PojavLauncher est maintenant %@. Toutes vos données existantes ont été déplacées vers le nouvel emplacement.";
@@ -80,17 +81,10 @@
 "login.jit.fail.AltKit" = "Erreur AltKit: %@";
 
 // Login buttons
-"Sign in" = "Se connecter";
-"FAQ" = "FAQ";
-"Accounts" = "Comptes";
 "login.menu.sendlogs" = "Envoyez vos journaux";
-"login.menu.updates" = "Mises à jour récentes";
-
+"login.option.select" = "Choisir un compte";
 "login.option.microsoft" = "Compte Microsoft";
-"login.option.demo" = "Compte de démo";
 "login.option.local" = "Compte local";
-
-"login.progress.title" = "Connexion";
 
 "login.warn.title.ram_unjb" = "Le curseur de la mémoire est activé";
 "login.warn.message.ram_unjb" = "Sachez que modifier ce paramètre peut causer une instabilité du jeu ou casser totalement la possibilité de jouer.";
@@ -104,7 +98,7 @@
 "login.warn.title.2gb" = "Votre appareil a une mémoire RAM limitée.";
 "login.warn.message.2gb" = "Les appareils avec moins de 3 GO de mémoire peuvent rencontrer des problèmes de mémoire. Nous vous recommandons de laisser le sélecteur automatique activé pour votre appareil.";
 
-"login.warn.title.demomode" = "Cette option est en bêta.";
+"login.warn.title.demomode" = "Votre compte est une démo";
 "login.warn.message.demomode" = "En remplacement du mode hors ligne et local, le mode démo vous permettra de vous connecter à un compte Microsoft qui ne possède pas le jeu et de jouer à l'essai de l'édition Java, introduit dans la version 1.3. Les versions plus anciennes contiennent le jeu complet puisque le launcher officiel ne place pas ces restrictions. Consultez notre site pour en savoir plus sur cette transition du mode hors ligne.";
 
 "login.warn.title.localmode" = "Le mode hors-ligne est maintenant le mode local.";
@@ -114,8 +108,6 @@
 "login.msa.error.xsts.noxbox" = "Xbox Live est actuellement indisponible dans votre pays.\nCode d'erreur: 2148916235";
 "login.msa.error.xsts.krverify" = "Votre compte doit être vérifié par vos parents avant de pouvoir continuer.\nCode d'erreur : 2148916236 ou 2148916237.";
 "login.msa.error.xsts.underage" = "Votre compte doit être lié à un compte parent avant de pouvoir continuer.\nCode d'erreur: 2148916238";
-
-"login.msa.notice.demomode" = "Impossible de trouver un profil Minecraft sur ce compte. Le compte est maintenant en mode démo. Avez-vous acheté Minecraft, ou existe-t-il un abonnement Xbox Game Pass actif ? Veuillez configurer votre profil sur https://minecraft.net/msaprofle pour restaurer l'accès du mode en ligne.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Acquisition du jeton d'accès";
 "login.msa.progress.acquireXBLToken" = "(2/5) Acquisition du jeton Xbox Live";
@@ -152,6 +144,11 @@
 "preference.title.jitstreamer_server" = "IP du serveur JitStreamer";
 "preference.detail.jitstreamer_server" = "Vous permet de passer à une adresse IP personnalisée du serveur JitStreamer, par exemple pour les instances auto-hébergées. Cette option peut être laissée si vous utilisez les serveurs JitStreamer par défaut.";
 
+"preference.title.appicon" = "Définir l'icône de l'app";
+"preference.detail.appicon" = "Vous permet de choisir entre différentes icônes d'écran d'accueil pour PojavLauncher.";
+"preference.title.appicon-default" = "PojavLauncher clair familier";
+"preference.title.appicon-dark" = "PojavLauncher sombre familier";
+
 "preference.title.reset_warnings" = "Réinitialiser tous les avertissements";
 "preference.title.done.reset_warnings" = "Tous les avertissements ont été réinitialisés.";
 
@@ -160,9 +157,9 @@
 "preference.title.done.reset_settings" = "Tous les paramètres par défaut ont été restaurés.";
 
 "preference.title.renderer" = "Moteur de rendu";
-"preference.title.renderer.auto" = "Auto: gl4es ou tinygl4angle";
+"preference.title.renderer.auto" = "Auto: gl4es ou ANGLE";
 "preference.title.renderer.gl4es" = "gl4es 1.1.4 - exporte OpenGL 2.1";
-"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - exporte OpenGL 3.2 (Profil de base, Limité)";
+"preference.title.renderer.angle" = "ANGLE (1.17+) - exporte OpenGL 3.2 (Profil de base, Limité)";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - exporte OpenGL 4.1";
 "preference.detail.renderer" = "Changer le moteur de rendu OpenGL à utiliser";
 
@@ -179,7 +176,7 @@
 "preference.detail.mouse_speed" = "Change la vitesse de la souris virtuelle";
 "preference.title.virtmouse_enable" = "Souris virtuelle";
 "preference.detail.virtmouse_enable" = "Activez cette option pour démarrer avec la souris virtuelle activée";
-"preference.title.slideable_hotbar" = "Barre d'action glissante";
+"preference.title.slideable_hotbar" = "Barre d'action glissable";
 "preference.detail.slideable_hotbar" = "Rend la barre d'action glissante comme la molette de la souris";
 "preference.title.java_home" = "Utiliser Java 17 pour Minecraft < 1.17";
 "preference.detail.java_home" = "Java 8 est utilisé par défaut pour ces versions. Activez cette option pour forcer l'utilisation de Java 17, seulement la compatibilité avec le moddé n'est pas garantie.";
@@ -199,6 +196,10 @@
 "preference.detail.debug_skip_wait_jit" = "Cela ne vous permet pas de démarrer sans JIT, à la place, cela saute la vérification du débogueur, car la vérification échoue sur certains jailbreaks.";
 "preference.title.debug_ipad_ui" = "Déverrouiller l'interface utilisateur iPadOS";
 "preference.detail.debug_ipad_ui" = "Déverrouille l'interface utilisateur iPad (alerte, clavier, etc.) si activé ou l'interface utilisateur iPhone si désactivé.";
+"preference.title.debug_auto_correction" = "Auto correction";
+"preference.detail.debug_auto_correction" = "Active la correction automatique lorsque vous écrivez dans le jeu.";
+"preference.title.debug_hide_home_indicator" = "Cacher l'indicateur d'accueil";
+"preference.detail.debug_hide_home_indicator" = "Ceci désactivera le verrouillage de l'indicateur d'accueil. Vous devrez utiliser un accès guidé pour masquer et verrouiller l'indicateur d'accueil en même temps.";
 "preference.title.debug_show_layout_bounds" = "Afficher les limites de la mise en page";
 "preference.detail.debug_show_layout_bounds" = "Afficher les limites, les marges de clip";
 "preference.title.debug_show_layout_overlap" = "Afficher le chevauchement de la mise en page";

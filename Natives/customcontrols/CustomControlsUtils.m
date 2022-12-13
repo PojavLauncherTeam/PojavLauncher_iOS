@@ -151,13 +151,18 @@ BOOL convertLayoutIfNecessary(NSMutableDictionary* dict) {
         case 4:
             break;
         default:
-            showDialog(currentVC(), @"Error parsing JSON", [NSString stringWithFormat:@"Incompatible control version code %d. This control version was not implemented in this launcher build.", version]);
+            showDialog(currentVC(), localize(@"custom_controls.control_menu.save.error.json", nil), [NSString stringWithFormat:localize(@"custom_controls.error.imcompatible", nil), version]);
             return NO;
     }
     return YES;
 }
 
 void generateAndSaveDefaultControl() {
+    NSString *defaultPath = [NSString stringWithFormat:@"%s/controlmap/default.json", getenv("POJAV_HOME")];
+    if ([NSFileManager.defaultManager fileExistsAtPath:defaultPath]) {
+        return;
+    }
+
     // Generate a v2.4 control
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     dict[@"version"] = @(4);
@@ -285,8 +290,7 @@ void generateAndSaveDefaultControl() {
         @"${bottom} - ${margin}",
         BTN_RECT
     )];
-    NSOutputStream *os = [[NSOutputStream alloc] initToFileAtPath:
-        [NSString stringWithFormat:@"%s/controlmap/default.json", getenv("POJAV_HOME")] append:NO];
+    NSOutputStream *os = [[NSOutputStream alloc] initToFileAtPath:defaultPath append:NO];
     [os open];
     [NSJSONSerialization writeJSONObject:dict toStream:os options:NSJSONWritingPrettyPrinted error:nil];
     [os close];

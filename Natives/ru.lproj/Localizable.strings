@@ -58,6 +58,7 @@
 "custom_controls.control_menu.safe_area" = "Безопасная область";
 "custom_controls.control_menu.add_button" = "Добавить кнопку";
 "custom_controls.control_menu.add_drawer" = "Добавить группу";
+"custom_controls.error.incompatible" = "Эта версия раскладки (код %d) не поддерживается в используемой сборке лаунчера.";
 "custom_controls.hint" = "Зажмите в свободном месте для дополнительных настроек";
 
 "init.migrateDir" = "Новое расположение PojavLauncher: %@. Все существующие данные также были перемещены.";
@@ -80,17 +81,12 @@
 "login.jit.fail.AltKit" = "Ошибка AltKit: %@";
 
 // Login buttons
-"Sign in" = "Войти";
-"FAQ" = "ЧаВо";
-"Accounts" = "Учётные записи";
 "login.menu.sendlogs" = "Отправить журнал";
-"login.menu.updates" = "Последние обновления";
 
+"login.option.add" = "Добавить учётную запись";
+"login.option.select" = "Учётные записи";
 "login.option.microsoft" = "Учётная запись Microsoft";
-"login.option.demo" = "Демонстрационный режим";
 "login.option.local" = "Локальная учётная запись";
-
-"login.progress.title" = "Выполняется вход...";
 
 "login.warn.title.ram_unjb" = "Ползунок памяти включён";
 "login.warn.message.ram_unjb" = "Учтите, что изменение этой настройки может привести к нестабильности или невозможности играть в принципе.";
@@ -104,7 +100,7 @@
 "login.warn.title.2gb" = "Ваше устройство ограничено по ОЗУ.";
 "login.warn.message.2gb" = "Устройства, имеющие менее 2ГБ ОЗУ, могут столкнуться с недостатком памяти. Для вашего устройства рекомендуется оставить автоматический выбор.";
 
-"login.warn.title.demomode" = "Эта функция всё ещё тестируется.";
+"login.warn.title.demomode" = "Демонстрационный режим";
 "login.warn.message.demomode" = "В качестве замены локальному и офлайн-режиму, демонстрационный режим позволяет использовать учётную запись Microsoft для пробной игры в Java Edition 1.3.1 и выше без необходимости покупать лицензию. Более старые версии не содержат проверки лицензии и полностью доступны в любом режиме, поскольку официальный лаунчер не накладывает на них ограничений. Более подробно об этом можно узнать на нашем сайте.";
 
 "login.warn.title.localmode" = "Офлайн-режим теперь называется \"Локальный режим\".";
@@ -114,8 +110,6 @@
 "login.msa.error.xsts.noxbox" = "В настоящее время сервисы Xbox Live недоступны в вашей стране.\nКод ошибки: 2148916235";
 "login.msa.error.xsts.krverify" = "Для продолжения вашей учётной записи требуется подтверждение родителей.\nКод ошибки: 2148916236 или 2148916237.";
 "login.msa.error.xsts.underage" = "Для продолжения вашу учётную запись необходимо связать с учётной записью родителей.\nКод ошибки: 2148916238";
-
-"login.msa.notice.demomode" = "Профиль Minecraft не обнаружен в данной учётной записи, активирован демо-режим. Если у вас есть лицензия Minecraft или активная подписка Xbox GamePass, то для восстановления обычного режима настройте свой профиль здесь: https://minecraft.net/msaprofile";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Получение токена доступа...";
 "login.msa.progress.acquireXBLToken" = "(2/5) Получение токена Xbox Live...";
@@ -165,9 +159,9 @@
 "preference.title.done.reset_settings" = "Все настройки сброшены до значений по умолчанию.";
 
 "preference.title.renderer" = "Визуализатор";
-"preference.title.renderer.auto" = "Авто: gl4es или tinygl4angle";
+"preference.title.renderer.auto" = "Авто: gl4es или ANGLE";
 "preference.title.renderer.gl4es" = "gl4es 1.1.4 — обеспечивает OpenGL 2.1";
-"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) — обеспечивает OpenGL 3.2 (ограниченно, Core Profile)";
+"preference.title.renderer.angle" = "ANGLE (1.17+) — обеспечивает OpenGL 3.2 (ограниченно, Core Profile)";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) — обеспечивает OpenGL 4.1";
 "preference.detail.renderer" = "Выберите используемую графическую реализацию OpenGL";
 
@@ -204,6 +198,9 @@
 "preference.detail.debug_skip_wait_jit" = "Без JIT это запускать игру не позволит, однако исправит ошибку запуска на некоторых устройствах с jailbreak за счёт пропуска проверки отладчика.";
 "preference.title.debug_ipad_ui" = "Разблокировать интерфейс iPadOS";
 "preference.detail.debug_ipad_ui" = "Разблокировать уникальные для iPad элементы интерфейса (предупреждение, клавиатура и пр.) или оставить интерфейс iPhone.";
+"preference.title.debug_auto_correction" = "Автокоррекция";
+"preference.detail.debug_auto_correction" = "Включить автокоррекцию при наборе текста в игре.";
+"preference.title.debug_hide_home_indicator" = "Скрыть индикатор навигации";
 "preference.title.debug_show_layout_bounds" = "Показывать границы элементов";
 "preference.detail.debug_show_layout_bounds" = "Показать границы и отступы";
 "preference.title.debug_show_layout_overlap" = "Показывать наложение элементов";

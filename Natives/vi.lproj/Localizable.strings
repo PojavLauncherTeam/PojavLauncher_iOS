@@ -51,17 +51,10 @@
 "login.jit.found.JitStreamer" = "Đã tìm thấy JITStreamer, đang bật JIT";
 
 // Login buttons
-"Sign in" = "Đăng nhập";
-"FAQ" = "Câu hỏi thường gặp";
-"Accounts" = "Tài khoản";
 "login.menu.sendlogs" = "Gửi nhật kí của bạn";
-"login.menu.updates" = "Cập nhật gần đây";
-
+"login.option.select" = "Chọn tài khoản";
 "login.option.microsoft" = "Tài khoản Microsoft";
-"login.option.demo" = "Tài khoản thử nghiệm";
 "login.option.local" = "Tài khoản nội bộ";
-
-"login.progress.title" = "Đang đăng nhập";
 
 "login.warn.title.ram_unjb" = "Thanh trượt bộ nhớ được bật";
 "login.warn.message.ram_unjb" = "Chú ý rằng thay đổi cài đặt này có thể dẫn đến việc trò chơi bị mất ổn định hoặc không thể chơi được.";
@@ -74,8 +67,6 @@
 
 "login.warn.title.2gb" = "Thiết bị của bạn có lượng RAM giới hạn.";
 "login.warn.message.2gb" = "Thiết bị có bộ nhớ nhỏ hơn 3GB có thể gặp phải các hạn chế về bộ nhớ. Chúng tôi khuyên bạn nên để bộ chọn lọc tự động cho thiết bị của bạn.";
-
-"login.warn.title.demomode" = "Tùy chọn này đang được thử nghiệm.";
 "login.warn.message.demomode" = "Chế độ chơi thử sẽ thay thế các chế độ ngoại tuyến và nội bộ. Nó cho phép bạn đăng nhập bằng tài khoản Microsoft chưa mua trò chơi và chơi bản chơi thử, được thêm vào từ phiên bản 1.3.1. Các phiên bản cũ hơn vẫn có bản đầy đủ, vì trình khởi chạy chính thức không đặt bất kì giới hạn nào. Xem trang web của chúng tôi để biết thêm về sự chuyển dời từ chế độ ngoại tuyến.";
 
 "login.warn.title.localmode" = "Chế độ ngoại tuyến bây giờ là Chế độ nội bộ.";
@@ -123,9 +114,7 @@
 "preference.title.done.reset_settings" = "Tất cả các thiết lập đã được đặt lại.";
 
 "preference.title.renderer" = "Trình kết xuất";
-"preference.title.renderer.auto" = "Tự động: gl4es hoặc tinygl4angle";
 "preference.title.renderer.gl4es" = "gl4es 1.1.4 - xuất ra OpenGL 2.1";
-"preference.title.renderer.tinygl4angle" = "tinygl4angle (1.17+) - xuất ra OpenGL 3.2 (Core Profile, bị giới hạn)";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - xuất ra OpenGL 4.1";
 "preference.detail.renderer" = "Thay đổi kết xuất OpenGL được sử dụng";
 

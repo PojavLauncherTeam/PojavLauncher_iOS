@@ -1,3 +1,4 @@
+#import "CustomControlsViewController.h"
 #import "LauncherPreferences.h"
 #import "LauncherPreferencesViewController.h"
 #import "SurfaceViewController.h"
@@ -23,7 +24,7 @@ static UIView *menuSwipeView;
     [menuSwipeView addSubview:menuSwipeLineView];
     [self.rootView addSubview:menuSwipeView];
 
-    self.menuArray = @[@"game.menu.force_close", @"game.menu.log_output", @"Settings"];
+    self.menuArray = @[@"game.menu.force_close", @"game.menu.log_output", @"game.menu.custom_controls", @"Settings"];
 
     self.menuView = [[UITableView alloc] initWithFrame:CGRectMake(self.view.frame.size.width + 30.0, 0, 
         self.view.frame.size.width * 0.3 - 36.0 * 0.7, self.view.frame.size.height)];
@@ -46,6 +47,23 @@ static UIView *menuSwipeView;
 }
 
 static CGPoint lastCenterPoint;
+- (void)animateMenuScale:(CGFloat)scale duration:(CGFloat)duration {
+    CGFloat centerX = self.rootView.bounds.size.width / 2;
+    CGFloat centerY = self.rootView.bounds.size.height / 2;
+    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        lastCenterPoint.x = centerX * scale;
+        self.rootView.center = CGPointMake(lastCenterPoint.x, centerY);
+        self.rootView.transform = CGAffineTransformScale(CGAffineTransformIdentity, scale, scale);
+        self.menuView.transform = CGAffineTransformScale(CGAffineTransformIdentity, (1.1-scale)*2.5, (1.1-scale)*2.5);
+        self.menuView.frame = CGRectMake(self.rootView.frame.size.width, self.rootView.frame.origin.y, self.menuView.frame.size.width, self.menuView.contentSize.height);
+    } completion:^(BOOL finished) {
+        self.menuView.hidden = scale == 1.0;
+        [self setNeedsUpdateOfHomeIndicatorAutoHidden];
+        [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
+        [self setNeedsStatusBarAppearanceUpdate];
+    }];
+}
+
 - (void)handleRightEdge:(UIPanGestureRecognizer *)sender {
     if (lastCenterPoint.y == 0) {
         lastCenterPoint.x = self.rootView.center.x;
@@ -79,18 +97,7 @@ static CGPoint lastCenterPoint;
         duration = MIN(0.4, duration);
         //(110 - MIN(100, fabs(velocity.x))) / 100
 
-        [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-            lastCenterPoint.x = centerX * scale;
-            self.rootView.center = CGPointMake(lastCenterPoint.x, centerY);
-            self.rootView.transform = CGAffineTransformScale(CGAffineTransformIdentity, scale, scale);
-            self.menuView.transform = CGAffineTransformScale(CGAffineTransformIdentity, (1.1-scale)*2.5, (1.1-scale)*2.5);
-            self.menuView.frame = CGRectMake(self.rootView.frame.size.width, self.rootView.frame.origin.y, self.menuView.frame.size.width, self.menuView.contentSize.height);
-        } completion:^(BOOL finished) {
-            self.menuView.hidden = scale == 1.0;
-            [self setNeedsUpdateOfHomeIndicatorAutoHidden];
-            [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
-            [self setNeedsStatusBarAppearanceUpdate];
-        }];
+        [self animateMenuScale:scale duration:duration];
     }
 }
 
@@ -118,6 +125,14 @@ static CGPoint lastCenterPoint;
     [alert addAction:okAction];
 
     [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)actionOpenCustomControls {
+    [self animateMenuScale:1 duration:0.5];
+    [self.ctrlView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    CustomControlsViewController *vc = [[CustomControlsViewController alloc] init];
+    vc.modalPresentationStyle = UIModalPresentationOverFullScreen;
+    [self presentViewController:vc animated:NO completion:nil];
 }
 
 - (void)actionOpenPreferences {
@@ -172,6 +187,9 @@ static CGPoint lastCenterPoint;
             [self performSelector:@selector(actionToggleLogOutput)];
             break;
         case 2:
+            [self actionOpenCustomControls];
+            break;
+        case 3:
             [self actionOpenPreferences];
             break;
     }

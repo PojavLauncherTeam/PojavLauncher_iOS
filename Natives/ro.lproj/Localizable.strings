@@ -35,6 +35,7 @@
 
 "launcher.menu.custom_controls" = "Controale personalizate";
 "launcher.menu.install_jar" = "Instalează .jar";
+"login.option.select" = "Selectează contul";
 
 "News" = "Știri";
 "Settings" = "Setări";

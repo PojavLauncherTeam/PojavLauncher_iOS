@@ -32,6 +32,7 @@
 
 "launcher.menu.custom_controls" = "Көйләнелгән идарә";
 "launcher.menu.install_jar" = ".jar-файлны урнату";
+"login.option.select" = "Аккаунтлар";
 
 "News" = "Яңалыклар";
 "Settings" = "Көйләүләр";

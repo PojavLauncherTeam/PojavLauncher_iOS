@@ -43,8 +43,6 @@ BOOL slideableHotbar;
 @interface SurfaceViewController ()<UITextFieldDelegate, UIPointerInteractionDelegate, UIGestureRecognizerDelegate> {
 }
 
-@property(nonatomic) UIView *ctrlView;
-
 @property(nonatomic) TrackedTextField *inputTextField;
 @property(nonatomic) NSMutableDictionary* cc_dictionary;
 @property(nonatomic) NSMutableArray* swipeableButtons;
@@ -262,6 +260,13 @@ BOOL slideableHotbar;
 }
 
 - (void)updatePreferenceChanges {
+    // Update UITextField auto correction
+    if ([getPreference(@"debug_auto_correction") boolValue]) {
+        self.inputTextField.autocorrectionType = UITextAutocorrectionTypeDefault;
+    } else {
+        self.inputTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+    }
+
     self.mouseSpeed = [getPreference(@"mouse_speed") floatValue] / 100.0;
     slideableHotbar = [getPreference(@"slideable_hotbar") boolValue];
 

@@ -4,19 +4,31 @@
 */
 
 "game.menu.force_close" = "فرض الإغلاق";
+"game.menu.confirm.force_close" = "هل أنت متأكد من أنك تريد الإغلاق؟";
 "game.menu.log_output" = "سجل الإخراج";
 "game.menu.custom_controls" = "تخصيص التحكم";
+
+"game.title.exit_code" = "توقفت العملية برمز الخروج %d";
 
 // The options button at the top-right corner on iOS 12
 "Options" = "الخيارات";
 
 // The play button
 "Play" = "إبدأ اللعب";
+
+// Version categories
+"Installed" = "مثبت";
 "Snapshot" = "اللمحات (سنابشوت)";
+"Releases" = "الإصدارات";
 "Old-beta" = "نسخ بيتا قديمة";
 "Old-alpha" = "نسخ ألفا قديمة";
+
+// Custom controls
+"Copy" = "نسخ";
 "Edit" = "تعديل";
+"Move" = "نقل";
 "Remove" = "إزالة";
+"Resize" = "تغییر الحجم";
 
 "custom_controls.button_edit.name" = "الاسم";
 "custom_controls.button_edit.size" = "الحجم";
@@ -25,7 +37,9 @@
 "custom_controls.button_edit.toggleable" = "تبديلي";
 "custom_controls.button_edit.swipeable" = "قابل للسحب";
 "custom_controls.button_edit.bg_color" = "لون الخلفية";
+"custom_controls.button_edit.stroke_width" = "عرض الخط (%)";
 "custom_controls.button_edit.stroke_color" = "لون الخط";
+"custom_controls.button_edit.corner_radius" = "تقوس الزاوية (%)";
 
 "custom_controls.button_menu.add_subbutton" = "إضافة زر فرعي";
 "custom_controls.control_menu.exit" = "خروج";
@@ -35,6 +49,7 @@
 
 "launcher.menu.custom_controls" = "تخصيص التحكم";
 "launcher.menu.install_jar" = "تثبيت ملف .jar";
+"login.option.select" = "اختر الحساب";
 
 "News" = "الأخبار";
 "Settings" = "الاعدادات";
