@@ -31,7 +31,6 @@ IOS         := 0
 SDKPATH     ?= $(shell xcrun --sdk iphoneos --show-sdk-path)
 BOOTJDK     ?= $(shell /usr/libexec/java_home -v 1.8)
 $(warning Building on macOS.)
-endif
 else
 IOS         := 1
 SDKPATH     ?= /usr/share/SDKs/iPhoneOS.sdk
