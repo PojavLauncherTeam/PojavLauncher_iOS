@@ -7,7 +7,7 @@ OUTPUTDIR   := $(SOURCEDIR)/artifacts
 WORKINGDIR  := $(SOURCEDIR)/Natives/build
 DETECTPLAT  := $(shell uname -s)
 DETECTARCH  := $(shell uname -m)
-VERSION     := 2.2 # Need to look into automatic changing later
+VERSION     := 2.2
 BRANCH      := $(shell git branch --show-current)
 COMMIT      := $(shell git log --oneline | sed '2,10000000d' | cut -b 1-7)
 
