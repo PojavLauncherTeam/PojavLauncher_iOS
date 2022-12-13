@@ -29,7 +29,7 @@ ifeq ($(DETECTPLAT),Darwin)
 ifeq ($(shell sw_vers -productName),macOS)
 IOS         := 0
 SDKPATH     ?= $(shell xcrun --sdk iphoneos --show-sdk-path)
-BOOTJDK     ?= $(shell /usr/libexec/java_home -v 1.8)
+BOOTJDK     ?= $(shell /usr/libexec/java_home -v 1.8)/bin
 $(warning Building on macOS.)
 else
 IOS         := 1
