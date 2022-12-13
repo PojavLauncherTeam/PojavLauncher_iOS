@@ -224,28 +224,51 @@ package: native java jre
 	$(call DIRCHECK,Payload); \
 	mv PojavLauncher.app Payload/; \
 	chmod -R 755 Payload; \
-	sudo chown -R 501:501 Payload; \
+	if [ '$(NOSTDIN)' = '1' ]; then \
+		echo '$(SUDOPASS)' | sudo -S chown -R 501:501 Payload; \
+	else \
+		sudo chown -R 501:501 Payload; \
+	fi; \
 	zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher-$(VERSION).ipa Payload/*
 	@echo '[PojavLauncher v$(VERSION)] package - end'
 
 dsym: package
 	@echo '[PojavLauncher v$(VERSION)] dsym - start'
-	@cd $(OUTPUTDIR) && dsymutil --arch arm64 $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher
-	@rm -rf $(OUTPUTDIR)/PojavLauncher.dSYM
-	@mv $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher.dSYM $(OUTPUTDIR)/PojavLauncher.dSYM
-	@rm -rf $(OUTPUTDIR)/Payload
+	@cd $(OUTPUTDIR); \
+	@if [ '$(NOSTDIN)' = '1' ]; then \
+		echo '$(SUDOPASS)' | sudo -S dsymutil --arch arm64 $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher; \
+		echo '$(SUDOPASS)' | sudo -S rm -rf $(OUTPUTDIR)/PojavLauncher.dSYM; \
+		echo '$(SUDOPASS)' | sudo -S mv $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher.dSYM $(OUTPUTDIR)/PojavLauncher.dSYM; \
+		echo '$(SUDOPASS)' | sudo -S rm -rf $(OUTPUTDIR)/Payload; \
+	else \
+		sudo dsymutil --arch arm64 $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher; \
+		sudo rm -rf $(OUTPUTDIR)/PojavLauncher.dSYM; \
+		sudo mv $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher.dSYM $(OUTPUTDIR)/PojavLauncher.dSYM; \
+		sudo rm -rf $(OUTPUTDIR)/Payload; \
+	fi
 	@echo '[PojavLauncher v$(VERSION)] dsym - end'
 	
 deploy:
 	@echo '[PojavLauncher v$(VERSION)] deploy - start'
-	ldid -S$(SOURCEDIR)/entitlements.xml $(WORKINGDIR)/PojavLauncher.app/PojavLauncher; \
-	sudo rm -rf /Applications/PojavLauncher.app/Frameworks/libOSMesaOverride.dylib.framework; \
-	sudo mv $(WORKINGDIR)/*.dylib /Applications/PojavLauncher.app/Frameworks/; \
-	sudo mv $(WORKINGDIR)/*.framework /Applications/PojavLauncher.app/Frameworks/; \
-	sudo mv $(WORKINGDIR)/PojavLauncher.app/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher; \
-	sudo mv $(SOURCEDIR)/JavaApp/local_out/*.jar /Applications/PojavLauncher.app/libs/; \
-	cd /Applications/PojavLauncher.app/Frameworks; \
-	sudo chown -R 501:501 /Applications/PojavLauncher.app/*
+	@ldid -S$(SOURCEDIR)/entitlements.xml $(WORKINGDIR)/PojavLauncher.app/PojavLauncher; \
+	if [ '$(NOSTDIN)' = '1' ]; then \
+		echo '$(SUDOPASS)' | sudo -S rm -rf /Applications/PojavLauncher.app/Frameworks/libOSMesaOverride.dylib.framework; \
+		echo '$(SUDOPASS)' | sudo -S mv $(WORKINGDIR)/*.dylib /Applications/PojavLauncher.app/Frameworks/; \
+		echo '$(SUDOPASS)' | sudo -S mv $(WORKINGDIR)/*.framework /Applications/PojavLauncher.app/Frameworks/; \
+		echo '$(SUDOPASS)' | sudo -S mv $(WORKINGDIR)/PojavLauncher.app/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher; \
+		echo '$(SUDOPASS)' | sudo -S mv $(SOURCEDIR)/JavaApp/local_out/*.jar /Applications/PojavLauncher.app/libs/; \
+		cd /Applications/PojavLauncher.app/Frameworks; \
+		echo '$(SUDOPASS)' | sudo -S chown -R 501:501 /Applications/PojavLauncher.app/*; \
+	else \
+		sudo rm -rf /Applications/PojavLauncher.app/Frameworks/libOSMesaOverride.dylib.framework; \
+		sudo mv $(WORKINGDIR)/*.dylib /Applications/PojavLauncher.app/Frameworks/; \
+		sudo mv $(WORKINGDIR)/*.framework /Applications/PojavLauncher.app/Frameworks/; \
+		sudo mv $(WORKINGDIR)/PojavLauncher.app/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher; \
+		sudo mv $(SOURCEDIR)/JavaApp/local_out/*.jar /Applications/PojavLauncher.app/libs/; \
+		cd /Applications/PojavLauncher.app/Frameworks; \
+		sudo chown -R 501:501 /Applications/PojavLauncher.app/*; \
+	fi; \
+	
 	@echo '[PojavLauncher v$(VERSION)] deploy - end'
 
 clean:
