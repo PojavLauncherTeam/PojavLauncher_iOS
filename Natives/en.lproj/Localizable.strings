@@ -82,8 +82,6 @@
 
 // Login buttons
 "login.menu.sendlogs" = "Send your logs";
-
-"login.option.add" = "Add account";
 "login.option.select" = "Select account";
 "login.option.microsoft" = "Microsoft account";
 "login.option.local" = "Local account";
@@ -167,6 +165,7 @@
 
 "preference.title.resolution" = "Resolution (%)";
 "preference.detail.resolution" = "Allows you to decrease the game resolution.";
+
 "preference.title.disable_gesture" = "Disable gestures";
 "preference.title.press_duration" = "Long-press duration (ms)";
 "preference.detail.press_duration" = "Trigger press duration for destroying blocks and dropping items.";
