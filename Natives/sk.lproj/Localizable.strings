@@ -47,6 +47,7 @@
 "preference.title.cosmetica" = "Cosmetica Capeky";
 
 "preference.title.renderer" = "Renderer";
+
 "preference.title.disable_gesture" = "Zakázať gestá";
 "preference.title.java_args" = "Spúštacie argumenty pre JVM";
 "preference.title.auto_ram" = "Auto RAM";
