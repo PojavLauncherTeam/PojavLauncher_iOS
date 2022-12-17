@@ -161,6 +161,22 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"min": @(25),
                 @"max": @(150)
             },
+            @{@"key": @"fullscreen_airplay",
+                @"hasDetail": @YES,
+                @"icon": @"airplayvideo",
+                @"type": self.typeSwitch,
+                @"action": ^(BOOL enabled){
+                    if (self.navigationController != nil) return;
+                    if (@available(iOS 13.0, *)) {
+                        if (UIApplication.sharedApplication.connectedScenes.count < 2) return;
+                    }
+                    if (enabled) {
+                        [self.presentingViewController performSelector:@selector(switchToExternalDisplay)];
+                    } else {
+                        [self.presentingViewController performSelector:@selector(switchToInternalDisplay)];
+                    }
+                }
+            }
         ], @[
         // Control settings
         /*
@@ -282,7 +298,10 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"icon": @"square.dashed",
                 @"type": self.typeSwitch,
                 @"enableCondition": whenNotInGame,
-                @"requestReload": @YES
+                @"requestReload": @YES,
+                @"action": ^(BOOL enabled){
+                    debugBoundsEnabled = enabled;
+                }
             },
             @{@"key": @"debug_show_layout_overlap",
                 @"hasDetail": @YES,

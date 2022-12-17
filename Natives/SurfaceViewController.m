@@ -244,7 +244,8 @@ BOOL slideableHotbar;
 #endif
 
     if (@available(iOS 13.0, *)) {
-        if (UIApplication.sharedApplication.connectedScenes.count > 1) {
+        if (UIApplication.sharedApplication.connectedScenes.count > 1 &&
+            [getPreference(@"fullscreen_airplay") boolValue]) {
             [self switchToExternalDisplay];
         }
     }

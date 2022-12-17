@@ -2,6 +2,7 @@
 #import <objc/runtime.h>
 #import "LauncherPreferences.h"
 #import "UIKit+hook.h"
+#import "utils.h"
 
 void swizzle(Class class, SEL originalAction, SEL swizzledAction) {
     method_exchangeImplementations(class_getInstanceMethod(class, originalAction), class_getInstanceMethod(class, swizzledAction));
@@ -18,6 +19,7 @@ void init_hookUIKitConstructor(void) {
 
     if (realUIIdiom == UIUserInterfaceIdiomTV) {
         if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+            // If you are about to test iPadOS idiom on tvOS, there's no better way for this
             class_setSuperclass(NSClassFromString(@"UITableConstants_Pad"), NSClassFromString(@"UITableConstants_TV"));
         }
         swizzle(UINavigationController.class, @selector(toolbar), @selector(hook_toolbar));
@@ -108,7 +110,7 @@ const NSString *cornerLayerKey = @"cornerLayer";
 }
 
 - (void)hook_didMoveToSuperview {
-    if ([getPreference(@"debug_show_layout_bounds") boolValue]) {
+    if (debugBoundsEnabled) {
         self.layer.borderWidth = 1;
         self.layer.borderColor = UIColor.redColor.CGColor;
         if (self.layer.sublayers.count == 0) {
