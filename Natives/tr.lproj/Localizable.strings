@@ -168,6 +168,7 @@ Bu seçenek varsayılan JitStreamer sunucusunu kullanıyorsanız olduğu gibi b�
 
 "preference.title.resolution" = "Çözünürlük (%)";
 "preference.detail.resolution" = "Oyun çözünürlüğünü düşürmenizi sağlar.";
+
 "preference.title.disable_gesture" = "İşaretleri devre dışı bırak";
 "preference.title.press_duration" = "Uzun-basma süresi (ms)";
 "preference.detail.press_duration" = "Blok kırmak ve eşya bırakmak için tetiklenen basma süresi.";
