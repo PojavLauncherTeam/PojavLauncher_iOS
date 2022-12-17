@@ -16,8 +16,6 @@
 
 #include "glfw_keycodes.h"
 #include "osmesa_internal.h"
-
-#include "log.h"
 #include "utils.h"
 // region OSMESA internals
 
@@ -102,7 +100,7 @@ void JNI_LWJGL_changeRenderer(const char* value_c) {
 }
 
 void pojavTerminate() {
-    debugLog("EGLBridge: Terminating");
+    NSDebugLog(@"EGLBridge: Terminating");
 
     switch (config_renderer) {
         case RENDERER_MTL_ANGLE: {
@@ -247,7 +245,7 @@ jboolean pojavInit_OpenGL() {
         if (potatoBridge.eglDisplay == EGL_NO_DISPLAY) {
             potatoBridge.eglDisplay = eglGetPlatformDisplay_p(EGL_PLATFORM_ANGLE_ANGLE, (void *)EGL_DEFAULT_DISPLAY, NULL);
             if (potatoBridge.eglDisplay == EGL_NO_DISPLAY) {
-                debugLog("EGLBridge: Error eglGetDefaultDisplay() failed: 0x%x", eglGetError_p());
+                NSDebugLog(@"EGLBridge: Error eglGetDefaultDisplay() failed: 0x%x", eglGetError_p());
                 return JNI_FALSE;
             }
         }
@@ -256,7 +254,7 @@ jboolean pojavInit_OpenGL() {
         // FIXME: gl4es has to be pre-loaded if it is going to be used later,
         // or glCheckFramebufferStatus will return an error
         void *renderer_handle = dlopen(getenv("POJAV_RENDERER"), RTLD_GLOBAL);
-        debugLog("%s=%p, error=%s", getenv("POJAV_RENDERER"), renderer_handle, dlerror());
+        NSDebugLog(@"%s=%p, error=%s", getenv("POJAV_RENDERER"), renderer_handle, dlerror());
 
         // Set back to the previous value
         setenv("POJAV_RENDERER", renderer.UTF8String, 1);
@@ -264,11 +262,11 @@ jboolean pojavInit_OpenGL() {
             JNI_LWJGL_changeRenderer(RENDERER_NAME_GL4ES);
         }
 
-        debugLog("EGLBridge: Initializing");
+        NSDebugLog(@"EGLBridge: Initializing");
         // printf("EGLBridge: ANativeWindow pointer = %p\n", potatoBridge.androidWindow);
         //(*env)->ThrowNew(env,(*env)->FindClass(env,"java/lang/Exception"),"Trace exception");
         if (!eglInitialize_p(potatoBridge.eglDisplay, NULL, NULL)) {
-            debugLog("EGLBridge: Error eglInitialize() failed: 0x%x", eglGetError_p());
+            NSDebugLog(@"EGLBridge: Error eglInitialize() failed: 0x%x", eglGetError_p());
             return JNI_FALSE;
         }
 
@@ -287,7 +285,7 @@ jboolean pojavInit_OpenGL() {
         EGLint vid;
 
         if (!eglChooseConfig_p(potatoBridge.eglDisplay, attribs, &config, 1, &num_configs)) {
-            debugLog("EGLBridge: Error couldn't get an EGL visual config: 0x%x", eglGetError_p());
+            NSDebugLog(@"EGLBridge: Error couldn't get an EGL visual config: 0x%x", eglGetError_p());
             return JNI_FALSE;
         }
 
@@ -302,7 +300,7 @@ jboolean pojavInit_OpenGL() {
         //ANativeWindow_setBuffersGeometry(potatoBridge.androidWindow, 0, 0, vid);
 
         if (!eglBindAPI_p(EGL_OPENGL_API)) {
-            debugLog("EGLBridge: Failed to bind EGL_OPENGL_API, falling back to EGL_OPENGL_ES_API, error=0x%x", eglGetError_p());
+            NSDebugLog(@"EGLBridge: Failed to bind EGL_OPENGL_API, falling back to EGL_OPENGL_ES_API, error=0x%x", eglGetError_p());
             eglBindAPI_p(EGL_OPENGL_ES_API);
         }
 
@@ -310,14 +308,14 @@ jboolean pojavInit_OpenGL() {
         //NSLog(@"Layer %@", ((SurfaceViewController *)currentWindow().rootViewController).surfaceView.layer);
 
         if (!potatoBridge.eglSurface) {
-            debugLog("EGLBridge: Error eglCreateWindowSurface failed: 0x%x", eglGetError_p());
+            NSDebugLog(@"EGLBridge: Error eglCreateWindowSurface failed: 0x%x", eglGetError_p());
             //(*env)->ThrowNew(env,(*env)->FindClass(env,"java/lang/Exception"),"Trace exception");
             return JNI_FALSE;
         }
 
-        debugLog("EGLBridge: Initialized!");
-        debugLog("EGLBridge: ThreadID=%d", gettid());
-        debugLog("EGLBridge: EGLDisplay=%p, EGLSurface=%p",
+        NSDebugLog(@"EGLBridge: Initialized!");
+        NSDebugLog(@"EGLBridge: ThreadID=%d", gettid());
+        NSDebugLog(@"EGLBridge: EGLDisplay=%p, EGLSurface=%p",
 /* window==0 ? EGL_NO_CONTEXT : */
                potatoBridge.eglDisplay,
                potatoBridge.eglSurface
@@ -427,14 +425,14 @@ void* egl_make_current(void* window) {
     );
 
     if (success == EGL_FALSE) {
-        debugLog("EGLBridge: Error: eglMakeCurrent() failed: 0x%x", eglGetError_p());
+        NSDebugLog(@"EGLBridge: Error: eglMakeCurrent() failed: 0x%x", eglGetError_p());
     } else {
-        debugLog("EGLBridge: eglMakeCurrent() succeed!");
+        NSDebugLog(@"EGLBridge: eglMakeCurrent() succeed!");
     }
 
     if (config_renderer == RENDERER_VIRGL) {
-        debugLog("VirGL: vtest_main = %p", vtest_main_p);
-        debugLog("VirGL: Calling VTest server's main function");
+        NSDebugLog(@"VirGL: vtest_main = %p", vtest_main_p);
+        NSDebugLog(@"VirGL: Calling VTest server's main function");
         vtest_main_p(3, (const char*[]){"vtest", "--no-loop-or-fork", "--use-gles", NULL, NULL});
     }
 
@@ -449,9 +447,9 @@ void pojavMakeCurrent(void* window) {
     
     if (config_renderer == RENDERER_MTL_ANGLE) {
             EGLContext *currCtx = eglGetCurrentContext_p();
-            debugLog("EGLBridge: Comparing: thr=%d, this=%p, curr=%p", gettid(), window, currCtx);
+            NSDebugLog(@"EGLBridge: Comparing: thr=%d, this=%p, curr=%p", gettid(), window, currCtx);
             if (currCtx == NULL || window == 0) {
-                debugLog("EGLBridge: Making current on window %p on thread %d", window, gettid());
+                NSDebugLog(@"EGLBridge: Making current on window %p on thread %d", window, gettid());
                 egl_make_current((void *)window);
 
                 // Test
@@ -459,7 +457,7 @@ void pojavMakeCurrent(void* window) {
                 glClearColor(0.4f, 0.4f, 0.4f, 1.0f);
                 glClear(GL_COLOR_BUFFER_BIT);
                 eglSwapBuffers(potatoBridge.eglDisplay, potatoBridge.eglSurface);
-                debugLog("First frame error: 0x%x", eglGetError());
+                NSDebugLog(@"First frame error: 0x%x", eglGetError());
 #endif
                 return;
             } else {
@@ -476,9 +474,9 @@ void pojavMakeCurrent(void* window) {
                 OSMesaPixelStore_p(OSMESA_Y_UP,0);
             }
 
-            debugLog("OSMDroid: vendor: %s",glGetString_p(GL_VENDOR));
-            debugLog("OSMDroid: renderer: %s",glGetString_p(GL_RENDERER));
-            debugLog("OSMDroid: extensions: %s",glGetString_p(GL_EXTENSIONS));
+            NSDebugLog(@"OSMDroid: vendor: %s",glGetString_p(GL_VENDOR));
+            NSDebugLog(@"OSMDroid: renderer: %s",glGetString_p(GL_RENDERER));
+            NSDebugLog(@"OSMDroid: extensions: %s",glGetString_p(GL_EXTENSIONS));
             glClear_p(GL_COLOR_BUFFER_BIT);
             glClearColor_p(0.4f, 0.4f, 0.4f, 1.0f);
             pojavSwapBuffers();
@@ -502,19 +500,19 @@ void* pojavCreateContext(void* contextSrc) {
             };
             EGLContext* ctx = eglCreateContext_p(potatoBridge.eglDisplay, config, contextSrc, ctx_attribs);
             if (!ctx) {
-                debugLog("EGLBridge: Failed to create context: 0x%x, returning previous one.", eglGetError_p());
+                NSDebugLog(@"EGLBridge: Failed to create context: 0x%x, returning previous one.", eglGetError_p());
                 return potatoBridge.eglContext;
             }
             potatoBridge.eglContext = ctx;
-            debugLog("EGLBridge: Created CTX pointer = %p (source = %p)", ctx, contextSrc);
+            NSDebugLog(@"EGLBridge: Created CTX pointer = %p (source = %p)", ctx, contextSrc);
             //(*env)->ThrowNew(env,(*env)->FindClass(env,"java/lang/Exception"),"Trace exception");
             return (void *)ctx;
     }
 
     if (config_renderer == RENDERER_VK_ZINK || config_renderer == RENDERER_VIRGL) {
-            debugLog("OSMDroid: generating context");
+            NSDebugLog(@"OSMDroid: generating context");
             void* ctx = OSMesaCreateContext_p(OSMESA_RGBA,contextSrc);
-            debugLog("OSMDroid: context=%p",ctx);
+            NSDebugLog(@"OSMDroid: context=%p",ctx);
             return ctx;
     }
 
@@ -528,7 +526,7 @@ JNIEXPORT void JNICALL Java_org_lwjgl_opengl_GL_nativeRegalMakeCurrent(JNIEnv *e
     //assert(RegalMakeCurrent);
     //RegalMakeCurrent(potatoBridge.eglContext);
 
-    regLog("Regal removed");
+    NSLog(@"Regal removed");
     abort();
 }
 
@@ -552,7 +550,7 @@ void pojavSwapInterval(int interval) {
         } break;
 
         case RENDERER_VK_ZINK: {
-            debugLog("eglSwapInterval: NOT IMPLEMENTED YET!");
+            NSDebugLog(@"eglSwapInterval: NOT IMPLEMENTED YET!");
             // Nothing to do here
         } break;
     }

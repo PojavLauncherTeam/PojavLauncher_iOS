@@ -58,6 +58,9 @@
 #define SPECIALBTN_SCROLLUP -7
 #define SPECIALBTN_SCROLLDOWN -8
 
+#define NSDebugLog(...) if (debugLogEnabled) { NSLog(__VA_ARGS__); }
+static BOOL debugLogEnabled;
+
 JavaVM* runtimeJavaVMPtr;
 JNIEnv* runtimeJNIEnvPtr;
 //__weak UIViewController *viewController;
@@ -79,11 +82,13 @@ BOOL isControlModifiable;
 
 // Init functions
 void init_hookFunctions();
+void init_hookUIKitConstructor();
 void init_setupMultiDir();
 
 UIWindow* currentWindow();
 UIWindow* currentWindowInScene(BOOL external);
 UIViewController* currentVC();
+void openLink(UIViewController* sender, NSURL* link);
 
 NSString* localize(NSString* key, NSString* comment);
 NSMutableDictionary* parseJSONFromFile(NSString *path);

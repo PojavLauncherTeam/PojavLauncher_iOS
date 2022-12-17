@@ -1,6 +1,6 @@
-#import <SafariServices/SafariServices.h>
 #import <WebKit/WebKit.h>
 #import "LauncherNewsViewController.h"
+#import "utils.h"
 
 @interface LauncherNewsViewController()<WKNavigationDelegate>
 @end
@@ -64,8 +64,7 @@ UIEdgeInsets insets;
 decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction 
 decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
      if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
-        SFSafariViewController *vc = [[SFSafariViewController alloc] initWithURL:navigationAction.request.URL];
-        [self presentViewController:vc animated:YES completion:nil];
+        openLink(self, navigationAction.request.URL);
         decisionHandler(WKNavigationActionPolicyCancel);
         return;
     }

@@ -20,6 +20,7 @@
 #import "MinecraftResourceUtils.h"
 #import "SurfaceViewController.h"
 #import "TrackedTextField.h"
+#import "UIKit+hook.h"
 
 #import "ios_uikit_bridge.h"
 
@@ -73,12 +74,15 @@ BOOL slideableHotbar;
     setPreference(@"internal_useStackQueue", nil);
 
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
-    [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
-    [self setNeedsUpdateOfHomeIndicatorAutoHidden];
+    BOOL isTVOS = realUIIdiom == UIUserInterfaceIdiomTV;
+    if (!isTVOS) {
+        [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
+        [self setNeedsUpdateOfHomeIndicatorAutoHidden];
+    }
 
     // Perform Gamepad joystick ticking, while also controlling frame rate?
     CADisplayLink *displayLink = [CADisplayLink displayLinkWithTarget:ControllerInput.class selector:@selector(tick)];
-    if (@available(iOS 15.0, *)) {
+    if (@available(iOS 15.0, tvOS 15.0, *)) {
         displayLink.preferredFrameRateRange = CAFrameRateRangeMake(60, 120, 120);
     }
     [displayLink addToRunLoop:NSRunLoop.currentRunLoop forMode:NSRunLoopCommonModes];
@@ -152,7 +156,9 @@ BOOL slideableHotbar;
     [self.touchView addGestureRecognizer:self.scrollPanGesture];
 
     if (@available(iOS 13.4, *)) {
-        [self.touchView addInteraction:[[UIPointerInteraction alloc] initWithDelegate:self]];
+        if (!isTVOS) {
+            [self.touchView addInteraction:[[UIPointerInteraction alloc] initWithDelegate:self]];
+        }
     }
 
     // Virtual mouse

@@ -1,4 +1,3 @@
-#include <assert.h>
 #include <dirent.h>
 #include <dlfcn.h>
 #include <errno.h>
@@ -10,7 +9,6 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include "log.h"
 #include "utils.h"
 
 #import "ios_uikit_bridge.h"
@@ -19,22 +17,10 @@
 
 #define fm NSFileManager.defaultManager
 
-static char java_libs_path[2048];
-static char args_path[2048];
-
 extern char **environ;
 
 static int margc = -1;
-static char* margv[1000];
-
-const char *javaHome;
-const char *multidir;
-
-char *homeDir;
-
-NSString *renderer;
-NSString *allocmem_pre;
-NSString *multidir_pre;
+static const char* margv[1000];
 
 void init_loadCustomEnv() {
     /* Define default env */
@@ -54,27 +40,27 @@ void init_loadCustomEnv() {
     setenv("HACK_IGNORE_START_ON_FIRST_THREAD", "1", 1);
 
     /* Load custom env */
-    FILE *envFile = fopen([NSString stringWithFormat:@"%s/custom_env.txt", getenv("POJAV_HOME")].UTF8String, "r");
+    NSString *envFile = [NSString stringWithFormat:@"%s/custom_env.txt", getenv("POJAV_HOME")];
+    NSString *linesStr = [NSString stringWithContentsOfFile:envFile
+        encoding:NSUTF8StringEncoding error:nil];
+    if (linesStr == nil) return;
+    NSLog(@"[Pre-init] Reading custom environment variables (custom_env.txt)");
 
-    regLog("[Pre-init] Reading custom environment variables (custom_env.txt), opened=%d\n", envFile != NULL);
+    NSArray *lines = [linesStr componentsSeparatedByCharactersInSet:
+        NSCharacterSet.newlineCharacterSet];
 
-    if (envFile) {
-        char *line = NULL;
-        size_t len = 0;
-        ssize_t read;
-        while ((read = getline(&line, &len, envFile)) != -1) {
-            if (line[0] == '#' || line[0] == '\n') continue;
-            if (line[read-1] == '\n') {
-                line[read-1] = '\0';
-            }
-            if (strchr(line, '=') != NULL) {
-                regLog("[Pre-init] Added custom env: %s", line);
-                setenv(strtok(line, "="), strtok(NULL, "="), 1);
-            } else {
-                regLog("[Pre-init] Warning: skipped empty value custom env: %s", line);
-            }
+    for (NSString *line in lines) {
+        if (line.length == 0 || [line hasPrefix:@"#"]) {
+            return;
+        } else if (![line containsString:@"="]) {
+            NSLog(@"[Pre-init] Warning: skipped empty value custom env: %@", line);
+            return;
         }
-        fclose(envFile);
+        NSRange range = [line rangeOfString:@"="];
+        NSString *key = [line substringToIndex:range.location];
+        NSString *value = [line substringFromIndex:range.location+range.length];
+        setenv(key.UTF8String, value.UTF8String, 1);
+        NSLog(@"[Pre-init] Added custom env: %@", line);
     }
 }
 
@@ -88,9 +74,9 @@ void init_loadCustomJvmFlags() {
         ++margc;
         if (isFirstArg) {
             isFirstArg = NO;
-            margv[margc] = (char *) [jvmarg UTF8String];
+            margv[margc] = jvmarg.UTF8String;
         } else {
-            margv[margc] = (char *) [[@"-" stringByAppendingString:jvmarg] UTF8String];
+            margv[margc] = [@"-" stringByAppendingString:jvmarg].UTF8String;
         }
 
         NSLog(@"[JavaLauncher] Added custom JVM flag: %s", margv[margc]);
@@ -121,11 +107,11 @@ NSString* environmentFailsafes(int minVersion) {
 }
 
 int launchJVM(NSString *username, id launchTarget, int width, int height, int minVersion) {
-    sprintf((char*) java_libs_path, "%s/libs", getenv("BUNDLE_PATH"));
-
     init_loadCustomEnv();
 
-    regLog("[JavaLauncher] Beginning JVM launch\n");
+    NSString *librariesPath = [NSString stringWithFormat:@"%s/libs", getenv("BUNDLE_PATH")];
+
+    NSLog(@"[JavaLauncher] Beginning JVM launch");
 
     NSString *javaHome_pre = getPreference(@"java_home");
     if (![javaHome_pre hasPrefix:@"/"]) {
@@ -155,10 +141,9 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
         return 1;
     }
 
-    javaHome = javaHome_pre.UTF8String;
-    setenv("JAVA_HOME", javaHome, 1);
+    setenv("JAVA_HOME", javaHome_pre.UTF8String, 1);
 
-    renderer = getPreference(@"renderer");
+    NSString *renderer = getPreference(@"renderer");
     if (renderer.length == 0) {
         renderer = @"auto";
         setPreference(@"renderer", renderer);
@@ -177,37 +162,30 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     }
     NSLog(@"[JavaLauncher] Max RAM allocation is set to %d MB", allocmem);
 
-    // "/Applications/PojavLauncher.app/libs/launcher.jar:/Applications/PojavLauncher.app/libs/ExagearApacheCommons.jar:/Applications/PojavLauncher.app/libs/gson-2.8.6.jar:/Applications/PojavLauncher.app/libs/jsr305.jar:/Applications/PojavLauncher.app/libs/lwjgl3-minecraft.jar";
-
-    // Check if JVM restarts
-    char *frameworkPath, *javaPath, *jnaLibPath, *userDir, *userHome, *arcDNS;
-    asprintf(&frameworkPath, "-Djava.library.path=%1$s/Frameworks:%1$s/Frameworks/libOSMesaOverride.dylib.framework:%1$s/Frameworks/libMoltenVK.dylib.framework", getenv("BUNDLE_PATH"));
-    asprintf(&javaPath, "%s/bin/java", javaHome);
-    asprintf(&jnaLibPath, "-Djna.boot.library.path=%s/Frameworks/libjnidispatch.dylib.framework", getenv("BUNDLE_PATH"));
-    asprintf(&userDir, "-Duser.dir=%s", getenv("POJAV_GAME_DIR"));
-    asprintf(&userHome, "-Duser.home=%s", getenv("POJAV_HOME"));
-    asprintf(&arcDNS, "-javaagent:%s/arc_dns_injector.jar=23.95.137.176", java_libs_path);
-    NSLog(@"[JavaLauncher] Java executable path: %s", javaPath);
-    setenv("JAVA_EXT_EXECNAME", javaPath, 1);
-
-    margv[++margc] = javaPath;
+    margv[++margc] = [NSString stringWithFormat:@"%@/bin/java", javaHome_pre].UTF8String;
     margv[++margc] = "-XstartOnFirstThread";
     margv[++margc] = "-Djava.system.class.loader=net.kdt.pojavlaunch.PojavClassLoader";
     margv[++margc] = "-Xms128M";
-    margv[++margc] = (char *)[NSString stringWithFormat:@"-Xmx%dM", allocmem].UTF8String;
-    margv[++margc] = frameworkPath;
-    margv[++margc] = jnaLibPath;
-    margv[++margc] = userDir;
-    margv[++margc] = userHome;
-    margv[++margc] = (char *)[NSString stringWithFormat:@"-DUIScreen.maximumFramesPerSecond=%d", (int)UIScreen.mainScreen.maximumFramesPerSecond].UTF8String;
+    margv[++margc] = [NSString stringWithFormat:@"-Xmx%dM", allocmem].UTF8String;
+    margv[++margc] = [NSString stringWithFormat:@
+        "-Djava.library.path=%1$s/Frameworks:"
+        "%1$s/Frameworks/libOSMesaOverride.dylib.framework:"
+        "%1$s/Frameworks/libMoltenVK.dylib.framework",
+        getenv("BUNDLE_PATH")].UTF8String;
+    margv[++margc] = [NSString stringWithFormat:@
+        "-Djna.boot.library.path=%s/Frameworks/libjnidispatch.dylib.framework",
+        getenv("BUNDLE_PATH")].UTF8String;
+    margv[++margc] = [NSString stringWithFormat:@"-Duser.dir=%s", getenv("POJAV_GAME_DIR")].UTF8String;
+    margv[++margc] = [NSString stringWithFormat:@"-Duser.home=%s", getenv("POJAV_HOME")].UTF8String;
+    margv[++margc] = [NSString stringWithFormat:@"-DUIScreen.maximumFramesPerSecond=%d", (int)UIScreen.mainScreen.maximumFramesPerSecond].UTF8String;
     margv[++margc] = "-Dorg.lwjgl.system.allocator=system";
     margv[++margc] = "-Dlog4j2.formatMsgNoLookups=true";
     if([getPreference(@"cosmetica") boolValue]) {
-        margv[++margc] = arcDNS;
+        margv[++margc] = [NSString stringWithFormat:@"-javaagent:%@/arc_dns_injector.jar=23.95.137.176", librariesPath].UTF8String;
     }
     NSString *selectedAccount = getPreference(@"internal_selected_account");
     if (selectedAccount != nil) {
-        margv[++margc] = (char *) [NSString stringWithFormat:@"-Dpojav.selectedAccount=%@", selectedAccount].UTF8String;
+        margv[++margc] = [NSString stringWithFormat:@"-Dpojav.selectedAccount=%@", selectedAccount].UTF8String;
     }
 
     // Setup Caciocavallo
@@ -215,21 +193,22 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     margv[++margc] = "-Dcacio.font.fontmanager=sun.awt.X11FontManager";
     margv[++margc] = "-Dcacio.font.fontscaler=sun.font.FreetypeFontScaler";
 
+    // Disable Forge 1.16.x early progress window
+    margv[++margc] = "-Dfml.earlyprogresswindow=false";
+
     // Load java
-    char libjlipath8[2048]; // java 8
-    char libjlipath16[2048]; // java 16+ (?)
-    sprintf(libjlipath8, "%s/lib/jli/libjli.dylib", javaHome);
-    sprintf(libjlipath16, "%s/lib/libjli.dylib", javaHome);
-    setenv("INTERNAL_JLI_PATH", libjlipath16, 1);
+    NSString *libjlipath8 = [NSString stringWithFormat:@"%@/lib/jli/libjli.dylib", javaHome_pre]; // java 8
+    NSString *libjlipath11 = [NSString stringWithFormat:@"%@/lib/libjli.dylib", javaHome_pre]; // java 11+
+    setenv("INTERNAL_JLI_PATH", libjlipath11.UTF8String, 1);
     BOOL isJava8;
-    void* libjli = dlopen(libjlipath16, RTLD_GLOBAL);
+    void* libjli = dlopen(libjlipath11.UTF8String, RTLD_GLOBAL);
     isJava8 = libjli == NULL;
     if (!libjli) {
-        debugLog("[Init] Can't load %s (%s), trying %s", libjlipath16, dlerror(), libjlipath8);
-        setenv("INTERNAL_JLI_PATH", libjlipath8, 1);
-        libjli = dlopen(libjlipath8, RTLD_GLOBAL);
+        NSDebugLog(@"[Init] Can't load %@ (%s), trying %@", libjlipath11, dlerror(), libjlipath8);
+        setenv("INTERNAL_JLI_PATH", libjlipath8.UTF8String, 1);
+        libjli = dlopen(libjlipath8.UTF8String, RTLD_GLOBAL);
         if (!libjli) {
-            debugLog("[Init] JLI lib = NULL: %s", dlerror());
+            NSLog(@"[Init] JLI lib = NULL: %s", dlerror());
             return -1;
         }
 
@@ -238,13 +217,14 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
         margv[++margc] = "-Dawt.toolkit=net.java.openjdk.cacio.ctc.CTCToolkit";
         margv[++margc] = "-Djava.awt.graphicsenv=net.java.openjdk.cacio.ctc.CTCGraphicsEnvironment";
     } else {
-        // Required by Cosmetica to inject DNS
+        // Required by Arc to inject DNS
         margv[++margc] = "--add-opens=java.base/java.net=ALL-UNNAMED";
 
         // Setup Caciocavallo
         margv[++margc] = "-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel";
         margv[++margc] = "-Dawt.toolkit=com.github.caciocavallosilano.cacio.ctc.CTCToolkit";
         margv[++margc] = "-Djava.awt.graphicsenv=com.github.caciocavallosilano.cacio.ctc.CTCGraphicsEnvironment";
+
         // Required by Caciocavallo17 to access internal API
         margv[++margc] = "--add-exports=java.desktop/java.awt=ALL-UNNAMED";
         margv[++margc] = "--add-exports=java.desktop/java.awt.peer=ALL-UNNAMED";
@@ -275,27 +255,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
             cacio_classpath = [NSString stringWithFormat:@"%@:%@/%@", cacio_classpath, cacio_libs_path, file];
         }
     }
-    margv[++margc] = (char *)cacio_classpath.UTF8String;
-    
-/*
-    char cacio_libs_path[2048];
-    char cacio_classpath[8192];
-    sprintf((char*) cacio_libs_path, "%s/libs_caciocavallo", getenv("BUNDLE_PATH"));
-    cplen = sprintf(cacio_classpath, "-Xbootclasspath/p");
-    d = opendir(cacio_libs_path);
-    int skip = 2;
-    if (d) {
-        while ((dir = readdir(d)) != NULL) {
-            if (skip > 0) {
-                --skip;
-                continue;
-            }
-            cplen += sprintf(cacio_classpath + cplen, ":%s/%s", cacio_libs_path, dir->d_name);
-        }
-        closedir(d);
-    }
-    margv[++margc] = cacio_classpath;
-*/
+    margv[++margc] = cacio_classpath.UTF8String;
 
     if (!getEntitlementValue(@"com.apple.developer.kernel.extended-virtual-addressing")) {
         // In jailed environment, where extended virtual addressing entitlement isn't
@@ -306,43 +266,37 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
 
     if ([launchTarget isKindOfClass:NSDictionary.class]) {
         for (NSString *arg in launchTarget[@"arguments"][@"jvm_processed"]) {
-            margv[++margc] = (char *)arg.UTF8String;
+            margv[++margc] = arg.UTF8String;
         }
     }
 
     init_loadCustomJvmFlags();
-    regLog("[Init] Found JLI lib");
+    NSLog(@"[Init] Found JLI lib");
 
     margv[++margc] = "-cp";
-    margv[++margc] = (char *)[NSString stringWithFormat:@"%s/*", java_libs_path].UTF8String;
+    margv[++margc] = [NSString stringWithFormat:@"%@/*", librariesPath].UTF8String;
     margv[++margc] = "net.kdt.pojavlaunch.PojavLauncher";
 
     if (username == nil) {
         margv[++margc] = ".LaunchJAR";
     } else {
-        margv[++margc] = (char *)username.UTF8String;
+        margv[++margc] = username.UTF8String;
     }
     if ([launchTarget isKindOfClass:NSDictionary.class]) {
-        margv[++margc] = (char *)[launchTarget[@"id"] UTF8String];
+        margv[++margc] = [launchTarget[@"id"] UTF8String];
     } else {
-        margv[++margc] = (char *)[launchTarget UTF8String];
+        margv[++margc] = [launchTarget UTF8String];
     }
-    margv[++margc] = (char *)[NSString stringWithFormat:@"%dx%d", width, height].UTF8String;
+    margv[++margc] = [NSString stringWithFormat:@"%dx%d", width, height].UTF8String;
 
     pJLI_Launch = (JLI_Launch_func *)dlsym(libjli, "JLI_Launch");
           
     if (NULL == pJLI_Launch) {
-        regLog("[Init] JLI_Launch = NULL");
+        NSLog(@"[Init] JLI_Launch = NULL");
         return -2;
     }
 
-    regLog("[Init] Calling JLI_Launch");
-
-/*
-    for (int i = 0; i < margc; i++) {
-        debugLog("Arg=%s", margv[i]);
-    }
-*/
+    NSLog(@"[Init] Calling JLI_Launch");
 
     // Cr4shed known issue: exit after crash dump,
     // reset signal handler so that JVM can catch them
@@ -355,7 +309,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     return pJLI_Launch(++margc, margv,
                    0, NULL, // sizeof(const_jargs) / sizeof(char *), const_jargs,
                    0, NULL, // sizeof(const_appclasspath) / sizeof(char *), const_appclasspath,
-                   // PojavLancher: fixme: are these wrong?
+                   // These values are ignoree in Java 17, so keep it anyways
                    "1.8.0-internal",
                    "1.8",
 

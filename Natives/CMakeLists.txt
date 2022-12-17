@@ -89,7 +89,6 @@ add_executable(PojavLauncher
 
   main.m
   main_hook.m
-  log.m
   JavaLauncher.m
   external/fishhook/fishhook.c
   UIKit+hook.m
@@ -135,7 +134,6 @@ add_executable(PojavLauncher
   egl_bridge.m
   input_bridge_v3.m
   ios_uikit_bridge.m
-  log.m
   utils.m
 )
 
@@ -150,10 +148,10 @@ target_link_libraries(PojavLauncher
   "-framework AuthenticationServices"
   "-framework CAltKit"
   "-framework CoreGraphics"
+  "-framework CoreImage"
   "-framework CoreServices"
   "-framework GameController"
   "-framework QuartzCore"
-  "-framework SafariServices"
   "-framework Security"
   "-framework SystemConfiguration"
   "-framework UIKit"
