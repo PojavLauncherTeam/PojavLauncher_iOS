@@ -4,11 +4,11 @@
 */
 
 "game.menu.force_close" = "Vynutit zavření";
-"game.menu.confirm.force_close" = "Jste si jisti zdali chcete vynutit ukončení?";
+"game.menu.confirm.force_close" = "Jste si jist/a zdali chcete vynutit ukončení?";
 "game.menu.log_output" = "Záznam výstupu";
 "game.menu.custom_controls" = "Vlastní ovládací prvky";
 
-"game.note.airplay" = "Minecraft se v AirPlay zrcadleném displeji zobrazuje";
+"game.note.airplay" = "Minecraft se zobrazuje ve zrcadleném displeji AirPlay";
 
 "game.title.exit_code" = "Hra skončila s kódem %d";
 
@@ -167,6 +167,9 @@
 
 "preference.title.resolution" = "Rozlišení (%)";
 "preference.detail.resolution" = "Umožňuje ti snížit rozlišení hry.";
+
+"preference.title.fullscreen_airplay" = "AirPlay celé obrazovky";
+"preference.detail.fullscreen_airplay" = "Umožňuje zobrazovat okno hry na celé obrazovce na externím displeji bez zrcadlení všeho na obrazovce.";
 
 "preference.title.disable_gesture" = "Vypnout gesta";
 "preference.title.press_duration" = "Trvání dlouhého stisku (ms)";
