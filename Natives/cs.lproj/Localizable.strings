@@ -167,6 +167,7 @@
 
 "preference.title.resolution" = "Rozlišení (%)";
 "preference.detail.resolution" = "Umožňuje ti snížit rozlišení hry.";
+
 "preference.title.disable_gesture" = "Vypnout gesta";
 "preference.title.press_duration" = "Trvání dlouhého stisku (ms)";
 "preference.detail.press_duration" = "Délka trvání dlouhého držení ke zničení bloků a vyhazování itemů.";
