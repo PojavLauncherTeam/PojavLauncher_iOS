@@ -162,6 +162,7 @@
 
 "preference.title.resolution" = "Роздільна здатність відео (%)";
 "preference.detail.resolution" = "Дозволяє вам зменшити роздільну здатність гри.";
+
 "preference.title.disable_gesture" = "Вимкнути жести";
 "preference.title.press_duration" = "Тривалість тривалого натискання (мс)";
 "preference.detail.press_duration" = "Тривалість натискання для знищення блоків і скидання речей.";
