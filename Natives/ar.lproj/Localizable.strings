@@ -59,6 +59,7 @@
 "preference.title.cosmetica" = "Cosmetica Capes";
 
 "preference.title.renderer" = "العارض";
+
 "preference.title.disable_gesture" = "تعطيل الإيماءات";
 "preference.title.java_args" = "حجج إطلاق JVM";
 "preference.title.auto_ram" = "ذاكرة الوصول العشوائية التلقائية";
