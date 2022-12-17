@@ -48,26 +48,26 @@
 "custom_controls.button_menu.add_subbutton" = "Přidat podtlačítko";
 "custom_controls.control_menu.discard_changes" = "Zahodit změny";
 "custom_controls.control_menu.exit" = "Odejít";
-"custom_controls.control_menu.exit.warn" = "Chystáš se ukončit bez uložení změn.";
+"custom_controls.control_menu.exit.warn" = "Chystáte se ukončit bez uložení změn.";
 "custom_controls.control_menu.save" = "Uložit";
 "custom_controls.control_menu.save.error.default" = "Název ovládání nemůže být \"default\", neboť by byl přepsán.";
 "custom_controls.control_menu.save.error.json" = "Chyba JSONu";
 "custom_controls.control_menu.save.error.write" = "Chyba ukládání souboru";
 "custom_controls.control_menu.load" = "Načíst";
-"custom_controls.control_menu.make_default" = "Nastavit výchozím";
+"custom_controls.control_menu.make_default" = "Nastavit výchozí";
 "custom_controls.control_menu.safe_area" = "Bezpečná oblast";
 "custom_controls.control_menu.add_button" = "Přidat tlačítko";
 "custom_controls.control_menu.add_drawer" = "Přidat šuplík";
 "custom_controls.error.incompatible" = "Tato verze ovládání (kód %d) v tomto sestavení spouštěče není implementována.";
-"custom_controls.hint" = "Pro více možností dlouze podrž kdekoli na obrazovce";
+"custom_controls.hint" = "Pro více možností dlouze podržte kdekoli na obrazovce";
 
-"init.migrateDir" = "Složka dat PojavLauncheru je nyní %@. Všechna tvá data byla přesunuta do nového umístění.";
+"init.migrateDir" = "Složka dat PojavLauncheru je nyní %@. Všechna vaše data byla přesunuta do nového umístění.";
 
 "launcher.menu.custom_controls" = "Vlastní ovládací prvky";
 "launcher.menu.install_jar" = "Instalovat .jar";
 
-"launcher.wait_jit.title" = "Čekání na JIT";
-"launcher.wait_jit.message" = "PojavLauncher závisí na kompilaci Just-in-time, aby Java fungovala maximální rychlostí.";
+"launcher.wait_jit.title" = "Čekám na JIT";
+"launcher.wait_jit.message" = "PojavLauncher potřebuje kompilaci Just-in-time, aby Java mohla fungovat maximální rychlostí.";
 
 "login.error.username.outOfRange" = "Uživatelské jméno musí být dlouhé alespoň 3 znaky a nanejvýše 16 znaků";
 
