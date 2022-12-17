@@ -31,17 +31,19 @@ Note: This is experimental, although game works smoothly, you should not set Ren
 #### Development build
 - Download an IPA build of PojavLauncher in the [Actions tab](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/actions).
 - Open the downloaded IPA in the sideload app to install.
-### For enabling JIT, choose one of these:
+### Enabling JIT
 | Application         | AltStore | SideStore | TrollStore | JitStreamer | Jitterbug          | Jailbroken |
-|———————|-———|————|————|-————|———————|————|
+|---------------------|----------|-----------|------------|-------------|--------------------|------------|
 | Requires ext-device | Yes      | No        | No         | No          | If VPN unavailable | No         |
 | Requires Wi-Fi      | Yes      | Yes       | No         | Yes         | Yes                | No         |
-| Auto enabled        | Yes      | No        | Yes        | Yes         | No                 | Yes        |
+| Auto enabled        | Yes(*)   | No        | Yes        | Yes         | No                 | Yes        |
 | Minimum iOS version | 12.2     | 14.0      | 14.0       | 14.0        | 14.0               | Any        |
+
+(*) AltServer running in local network is required.
 
 ## Known issues
 * Some Forge versions may fail with `java.lang.reflect.InvocationTargetException`.
-* The game will be prone to JetsamEvents.
+* The game will be prone to JetsamEvents. More specifically, random crashes might occurs if allocating too much resources.
 
 ## Contributors
 PojavLauncher is amazing, and surprisingly stable, and it wouldn't be this way without the commmunity that helped and contribute to the project! Some notable names:
