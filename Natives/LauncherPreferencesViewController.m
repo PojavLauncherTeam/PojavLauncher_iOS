@@ -110,9 +110,17 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                   @"AppIcon-Dark"
                 ],
                 @"pickList": @[
-                  localize(@"preference.title.appicon-default", nil),
-                  localize(@"preference.title.appicon-dark", nil)
+                    localize(@"preference.title.appicon-default", nil),
+                    localize(@"preference.title.appicon-dark", nil)
                 ]
+            },
+            @{@"key": @"hidden_sidebar",
+                @"hasDetail": @YES,
+                @"icon": @"sidebar.leading",
+                @"type": self.typeSwitch,
+                @"enableCondition": ^(BOOL enabled){
+                    return (UIDevice.currentDevice.systemVersion.floatValue >= 14) && whenNotInGame();
+                }
             },
             @{@"key": @"reset_warnings",
                 @"icon": @"exclamationmark.triangle",

@@ -139,7 +139,8 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(prefDict, @"check_sha", @YES);
     setDefaultValueForPref(prefDict, @"auto_ram", @(!getEntitlementValue(@"com.apple.private.memorystatus")));
     setDefaultValueForPref(prefDict, @"unsupported_warn_counter", @(0));
-
+    setDefaultValueForPref(prefDict, @"hidden_siderbar", @NO);
+    
     // Debug settings
     setDefaultValueForPref(debugPrefDict, @"debug_skip_wait_jit", @NO);
     setDefaultValueForPref(debugPrefDict, @"debug_hide_home_indicator", @NO);
