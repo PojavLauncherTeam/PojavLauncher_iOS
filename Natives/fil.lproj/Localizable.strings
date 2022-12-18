@@ -127,7 +127,6 @@
 
 "preference.title.resolution" = "Resolusyon (%)";
 "preference.detail.resolution" = "Binibigyang-daan kang bawasan ang resolution ng laro.";
-
 "preference.title.disable_gesture" = "Paganahin ang mga galaw";
 "preference.title.press_duration" = "Tagal ng pagpindot nang long-press (ms)";
 "preference.title.button_scale" = "Sukat ng button sa screen (%)";
