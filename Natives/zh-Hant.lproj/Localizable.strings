@@ -153,7 +153,6 @@
 
 "preference.title.resolution" = "解像度（%）";
 "preference.detail.resolution" = "允許你降低遊戲的解像度。";
-
 "preference.title.disable_gesture" = "停用手勢";
 "preference.title.press_duration" = "長按時間（毫秒）";
 "preference.detail.press_duration" = "觸發破壞方塊及釋出物件的按壓時間。";
