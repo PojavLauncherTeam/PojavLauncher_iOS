@@ -3,7 +3,7 @@ Name: PojavLauncher iOS (Development) Rootless
 Maintainer: PojavLauncherTeam <https://discord.gg/6RpEJda>
 Author: DuyKhanhTran
 Architecture: iphoneos-arm64
-Version: 2.1
+Version: 2.1.1
 Depends: firmware (>= 15.0)
 Conflicts: pojavlauncher-dev, pojavlauncher-zink, pojavlauncher, net.kdt.pojavlauncher.release, net.kdt.pojavlauncher.release-rootless, net.kdt.pojavlauncher.development
 Replaces: pojavlauncher-dev, pojavlauncher

@@ -1,6 +1,8 @@
 #import <SafariServices/SafariServices.h>
 #import <WebKit/WebKit.h>
 #import "LauncherNewsViewController.h"
+#import "LauncherPreferences.h"
+#import "utils.h"
 
 @interface LauncherNewsViewController()<WKNavigationDelegate>
 @end
@@ -36,6 +38,28 @@ UIEdgeInsets insets;
     [webView.scrollView setShowsHorizontalScrollIndicator:NO];
     [webView loadRequest:request];
     [self.view addSubview:webView];
+    
+    if(roundf([[NSProcessInfo processInfo] physicalMemory] / 1048576) < 1900 && [getPreference(@"unsupported_warn_counter") intValue] == 0) {
+        UIAlertController *RAMAlert = [UIAlertController alertControllerWithTitle:localize(@"login.warn.title.a7", nil) message:localize(@"login.warn.message.a7", nil) preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:localize(@"OK", nil) style:UIAlertActionStyleCancel handler:nil];
+        [self presentViewController:RAMAlert animated:YES completion:nil];
+        [RAMAlert addAction:ok];
+    }
+    
+    int launchNum = [getPreference(@"unsupported_warn_counter") intValue];
+    if(launchNum > 0) {
+        setPreference(@"unsupported_warn_counter", @(launchNum - 1));
+    } else {
+        setPreference(@"unsupported_warn_counter", @(30));
+    }
+
+    if(!getenv("POJAV_DETECTEDJB") && [getPreference(@"ram_unjb_warn") boolValue] == YES && [getPreference(@"auto_ram") boolValue] == NO) {
+        UIAlertController *ramalert = [UIAlertController alertControllerWithTitle:localize(@"login.warn.title.ram_unjb", nil) message:localize(@"login.warn.message.ram_unjb", nil) preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:localize(@"OK", nil) style:UIAlertActionStyleCancel handler:nil];
+        [self presentViewController:ramalert animated:YES completion:nil];
+        [ramalert addAction:ok];
+        setPreference(@"ram_unjb_warn", @NO);
+    }
 }
 
 
