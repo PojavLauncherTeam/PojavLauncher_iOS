@@ -78,8 +78,6 @@
 
 // Login buttons
 "login.menu.sendlogs" = "Envie seus registros";
-
-"login.option.add" = "Adicionar conta";
 "login.option.select" = "Selecionar conta";
 "login.option.microsoft" = "Conta Microsoft";
 "login.option.local" = "Conta local";
@@ -145,7 +143,6 @@
 
 "preference.title.resolution" = "Resolução (%)";
 "preference.detail.resolution" = "Permite que você diminua a resolução do jogo.";
-
 "preference.title.disable_gesture" = "Desativar gestos";
 "preference.title.press_duration" = "Duração de pressionamento longo (ms)";
 "preference.title.button_scale" = "Escala dos botões virtuais (%)";
