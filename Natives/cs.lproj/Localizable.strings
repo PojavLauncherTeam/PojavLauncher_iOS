@@ -82,8 +82,6 @@
 
 // Login buttons
 "login.menu.sendlogs" = "Odeslat záznamy";
-
-"login.option.add" = "Přidat účet";
 "login.option.select" = "Vybrat účet";
 "login.option.microsoft" = "Účet Microsoft";
 "login.option.local" = "Místní účet";
@@ -170,7 +168,6 @@
 
 "preference.title.fullscreen_airplay" = "AirPlay celé obrazovky";
 "preference.detail.fullscreen_airplay" = "Umožňuje zobrazovat okno hry na celé obrazovce na externím displeji bez zrcadlení všeho na obrazovce.";
-
 "preference.title.disable_gesture" = "Vypnout gesta";
 "preference.title.press_duration" = "Trvání dlouhého stisku (ms)";
 "preference.detail.press_duration" = "Délka trvání dlouhého držení ke zničení bloků a vyhazování itemů.";
