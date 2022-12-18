@@ -64,9 +64,6 @@
 "login.warn.title.ram_unjb" = "Slider memory nyala";
 "login.warn.message.ram_unjb" = "Ketahuilah bahwa mengganti peraturan ini bisa berefek game menjadi tidak stabil atau jadi tidak bisa dimainkan sama sekali.";
 
-"login.warn.title.a7" = "Ini pembaruan terakhir buat perangkat ini.";
-"login.warn.message.a7" = "PojavLauncher 2.2 tidak akan mendukung perangkat ini, dikarenakan limitasi hardware dan software.";
-
 "login.warn.title.iosver" = "Ini pembaruan terakhir untuk versi iOS ini.";
 "login.warn.message.iosver" = "Versi masa depan PojavLauncher tidak akan mendukung iOS 12 atau 13, karena fitur yang tidak konsisten dan kesulitan pengembangan.";
 
