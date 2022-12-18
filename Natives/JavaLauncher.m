@@ -214,7 +214,10 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     margv[++margc] = "-Djava.awt.headless=false";
     margv[++margc] = "-Dcacio.font.fontmanager=sun.awt.X11FontManager";
     margv[++margc] = "-Dcacio.font.fontscaler=sun.font.FreetypeFontScaler";
-
+    
+    // Disable Forge 1.16.x early progress window
+    margv[++margc] = "-Dfml.earlyprogresswindow=false";
+    
     // Load java
     char libjlipath8[2048]; // java 8
     char libjlipath16[2048]; // java 16+ (?)
