@@ -44,7 +44,6 @@
 "preference.section.java" = "התאמות ל- Java";
 
 "preference.title.renderer" = "רינדור";
-
 "preference.title.disable_gesture" = "השבת מחוות";
 "preference.title.java_args" = "פרמטרים להפעלת JVM";
 "preference.title.auto_ram" = "זיכרון אוטומטי";
