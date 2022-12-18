@@ -116,7 +116,7 @@ endif
 #  native  - Builds the Objective-C code.
 #  java    - Builds the Java code.
 #  jre     - Download iOS JRE and/or unpack it for use.
-#  extras  - Builds the Assets and Storyboard.
+#  assets  - Builds the Assets.
 #  package - Builds the application package.
 #  deploy  - runs native and java + installs to jailbroken device.
 #  dsym    - Generates debug symbol files
@@ -204,7 +204,17 @@ jre:
 	cp $(WORKINGDIR)/libawt_xawt.dylib $(WORKINGDIR)/PojavLauncher.app/jvm/java-8-openjdk/lib/; \
 	echo '[PojavLauncher v$(VERSION)] jre - end'
 
-package: native java jre
+assets:
+ 	@echo '[PojavLauncher v$(VERSION)] assets - start'
+ 	@if [ '$(IOS)' = '0' ]; then \
+ 		mkdir -p $(WORKINGDIR)/PojavLauncher.app/Base.lproj; \
+ 		xcrun actool $(SOURCEDIR)/Natives/Assets.xcassets --compile $(SOURCEDIR)/Natives/resources --platform iphoneos --minimum-deployment-target 12.0 --app-icon AppIcon-Light --alternate-app-icon AppIcon-Dark --output-partial-info-plist /dev/null || exit 1; \
+ 	elif [ '$(IOS)' = '1' ]; then \
+ 		echo 'Due to the required tools not being available, you cannot compile the extras for PojavLauncher with an iOS device.'; \
+ 	fi
+ 	@echo '[PojavLauncher v$(VERSION)] assets - end'
+
+package: native java jre assets
 	@echo '[PojavLauncher v$(VERSION)] package - start'
 	$(call DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs)
 	$(call DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs_caciocavallo)
@@ -294,6 +304,7 @@ help:
 	@echo '    make native                         Builds the native app'
 	@echo '    make java                           Builds the Java app'
 	@echo '    make jre                            Downloads/unpacks the iOS JREs'
+	@echo '    make assets                         Compiles Assets.xcassets'
 	@echo '    make package                        Builds ipa of PojavLauncher'
 	@echo '    make deploy                         Copies files to local iDevice'
 	@echo '    make dsym                           Generate debug symbol files'
