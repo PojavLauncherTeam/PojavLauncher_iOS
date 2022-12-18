@@ -89,9 +89,6 @@
 "login.warn.title.ram_unjb" = "Hafıza kaydırıcısı etkinleştirildi";
 "login.warn.message.ram_unjb" = "Bu ayarı değiştirmenin oyunda kararsızlığa neden olabileceğini veya oyunu tamamen bozabileceğini unutmayın.";
 
-"login.warn.title.a7" = "Bu güncelleme bu cihaz için son güncellemedir.";
-"login.warn.message.a7" = "PojavLauncher 2.2 bu cihazı donanımsal ve yazılımsal kısıtlamalar nedeniyle desteklemeyecektir.";
-
 "login.warn.title.iosver" = "Bu güncelleme bu iOS sürümü için son güncellemedir.";
 "login.warn.message.iosver" = "PojavLauncher'ın gelecekteki bir sürümü özellik tutarsızlıkları ve geliştirme engelleri nedeniyle iOS 12 veya 13'ü desteklemeyecektir.";
 
