@@ -140,7 +140,6 @@
 "preference.detail.debug_logging" = "完整的记录启动器的各种活动事件到latestlog.txt文件内,有助于开发者更容易的发现错误。但Minecraft游戏内FPS可能会降低(频繁的记录日志内容会使得CPU负载变高)";
 "preference.title.jitstreamer_server" = "JitStreamer的服务器地址";
 "preference.detail.jitstreamer_server" = "该选项将自定义获取 JIT 权限地址的 JitStreamer 服务器，若你不知道如何修改请勿修改，当然也可以保持默认地址";
-
 "preference.title.appicon" = "设置应用应用图标风格";
 "preference.detail.appicon" = "允许您为 PojavLauncher 选择不同的主屏幕图标。";
 "preference.title.appicon-default" = "设置 PojavLauncher 图标为浅色";
