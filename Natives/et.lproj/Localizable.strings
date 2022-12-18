@@ -48,7 +48,6 @@
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java trikid";
 "preference.title.cosmetica" = "Cosmetica keebid";
-
 "preference.title.appicon" = "Määra rakenduse ikoon";
 "preference.detail.appicon" = "Võimaldab valida PojavLauncheri erinevate kodukuvaikoonide vahel.";
 "preference.title.appicon-default" = "Tuttav PojavLauncher hele";
