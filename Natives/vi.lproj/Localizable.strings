@@ -59,9 +59,6 @@
 "login.warn.title.ram_unjb" = "Thanh trượt bộ nhớ được bật";
 "login.warn.message.ram_unjb" = "Chú ý rằng thay đổi cài đặt này có thể dẫn đến việc trò chơi bị mất ổn định hoặc không thể chơi được.";
 
-"login.warn.title.a7" = "Đây là cập nhật cuối cùng cho thiết bị này.";
-"login.warn.message.a7" = "PojavLauncher 2.2 sẽ không còn được hỗ trợ cho thiết bị này, do giới hạn của phần cứng lẫn phần mềm.";
-
 "login.warn.title.iosver" = "Đây là cập nhật cuối cùng cho phiên bản iOS này.";
 "login.warn.message.iosver" = "Những phiên bản tương lai của PojavLauncher sẽ không còn hỗ trợ iOS 12 hoặc 13, do sự không nhất quán về tính năng và những trở ngại về phát triển.";
 
