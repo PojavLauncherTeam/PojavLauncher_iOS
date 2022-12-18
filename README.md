@@ -37,9 +37,10 @@ Note: This is experimental, although game works smoothly, you should not set Ren
 | Requires ext-device | Yes      | No        | No         | No          | If VPN unavailable | No         |
 | Requires Wi-Fi      | Yes      | Yes       | No         | Yes         | Yes                | No         |
 | Auto enabled        | Yes(*)   | No        | Yes        | Yes         | No                 | Yes        |
-| Minimum iOS version | 12.2     | 14.0      | 14.0       | 14.0        | 14.0               | Any        |
+| Minimum iOS version | 12.2(+)  | 14.0      | 14.0       | 14.0        | 14.0               | 12.2(+)    |
 
-(*) AltServer running in local network is required.
+(*) AltServer running in local network is required.  
+(+) iOS 12 and 13 will not be supported in a future PojavLauncher release.
 
 ## Known issues
 * Some Forge versions may fail with `java.lang.reflect.InvocationTargetException`.
