@@ -39,8 +39,6 @@
 
 "launcher.menu.custom_controls" = "Kohandatud juhtnupud";
 "launcher.menu.install_jar" = "Paigalda .jar";
-
-"login.option.add" = "Lisa konto";
 "login.option.select" = "Vali konto";
 
 "News" = "Uudised";
@@ -66,7 +64,6 @@
 "preference.title.resolution" = "Eraldusvõime (%)";
 
 "preference.title.fullscreen_airplay" = "Täisekraanis AirPlay";
-
 "preference.title.disable_gesture" = "Keela viiped";
 "preference.title.virtmouse_enable" = "Virtuaalne hiir";
 "preference.title.auto_ram" = "Automaatne RAM";
