@@ -141,7 +141,6 @@
 "preference.title.jitstreamer_server" = "JitStreamer sunucu IP'si";
 "preference.detail.jitstreamer_server" = "Özel bir Jit Streamer suncu IP'sine geçmenizi sağlar, kendi kendini barındıran kurulumlar için gibi.
 Bu seçenek varsayılan JitStreamer sunucusunu kullanıyorsanız olduğu gibi bırakılabilir.";
-
 "preference.title.appicon" = "Uygulama simgesini ayarla";
 "preference.detail.appicon" = "PojavLauncher için farklı Ana Ekran simgeleri arasında seçim yapmanızı sağlar.";
 "preference.title.appicon-default" = "Göze aşina PojavLauncher açık";
