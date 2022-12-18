@@ -127,7 +127,6 @@
 
 "preference.title.resolution" = "Resolusi (%)";
 "preference.detail.resolution" = "Memperbolehkan anda untuk menunrunkan resolusi permainan.";
-
 "preference.title.disable_gesture" = "Matikan gestures";
 "preference.title.press_duration" = "Durasi pencet-lama (ms)";
 "preference.title.button_scale" = "Skala tombol dilayar (%)";
