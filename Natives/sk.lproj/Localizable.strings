@@ -35,8 +35,6 @@
 
 "launcher.menu.custom_controls" = "Vlastné ovládacie prvky";
 "launcher.menu.install_jar" = "Inštalovať .jar";
-
-"login.option.add" = "Pridať účet";
 "login.option.select" = "Vybrať účet";
 
 "News" = "Novinky";
@@ -47,7 +45,6 @@
 "preference.title.cosmetica" = "Cosmetica Capeky";
 
 "preference.title.renderer" = "Renderer";
-
 "preference.title.disable_gesture" = "Zakázať gestá";
 "preference.title.java_args" = "Spúštacie argumenty pre JVM";
 "preference.title.auto_ram" = "Auto RAM";
