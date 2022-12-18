@@ -140,7 +140,6 @@
 "preference.detail.debug_logging" = "Journalise les paramètres internes et les actions sur latestlog.txt. Cela aide les développeurs à trouver des problèmes plus facilement, mais Minecraft peut s'exécuter plus lentement puisque les journaux seront écrits plus souvent.";
 "preference.title.jitstreamer_server" = "IP du serveur JitStreamer";
 "preference.detail.jitstreamer_server" = "Vous permet de passer à une adresse IP personnalisée du serveur JitStreamer, par exemple pour les instances auto-hébergées. Cette option peut être laissée si vous utilisez les serveurs JitStreamer par défaut.";
-
 "preference.title.appicon" = "Définir l'icône de l'app";
 "preference.detail.appicon" = "Vous permet de choisir entre différentes icônes d'écran d'accueil pour PojavLauncher.";
 "preference.title.appicon-default" = "PojavLauncher clair familier";
