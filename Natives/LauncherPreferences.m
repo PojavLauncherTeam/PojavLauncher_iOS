@@ -124,7 +124,7 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(envPrefDict, @"default_ctrl", @"default.json");
     setDefaultValueForPref(envPrefDict, @"game_directory", @"default");
     setDefaultValueForPref(envPrefDict, @"java_args", @"");
-    setDefaultValueForPref(envPrefDict, @"allocated_memory", [NSNumber numberWithFloat:roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * 0.25)]);
+    setDefaultValueForPref(envPrefDict, @"allocated_memory", [NSNumber numberWithFloat:roundf((NSProcessInfo.processInfo.physicalMemory / 1048576) * 0.25)]);
     setDefaultValueForPref(envPrefDict, @"jitstreamer_server", @"69.69.0.1");
     setDefaultValueForPref(prefDict, @"appicon", @"AppIcon-Light");
     setDefaultValueForPref(prefDict, @"debug_logging", @(CONFIG_RELEASE != 1));
@@ -133,7 +133,7 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(envPrefDict, @"renderer", @"auto");
     setDefaultValueForPref(envPrefDict, @"fullscreen_airplay", @YES);
     fillDefaultWarningDict();
-    setDefaultValueForPref(prefDict, @"a7_allow", @NO);
+    setDefaultValueForPref(prefDict, @"force_unsupported_launch", @NO);
     setDefaultValueForPref(prefDict, @"slideable_hotbar", @NO);
     setDefaultValueForPref(prefDict, @"virtmouse_enable", @NO);
     setDefaultValueForPref(prefDict, @"check_sha", @YES);

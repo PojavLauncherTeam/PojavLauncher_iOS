@@ -156,7 +156,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     int allocmem;
     if ([getPreference(@"auto_ram") boolValue]) {
         CGFloat autoRatio = getEntitlementValue(@"com.apple.private.memorystatus") ? 0.4 : 0.25;
-        allocmem = roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * autoRatio);
+        allocmem = roundf((NSProcessInfo.processInfo.physicalMemory / 1048576) * autoRatio);
     } else {
         allocmem = [getPreference(@"allocated_memory") intValue];
     }
