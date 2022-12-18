@@ -81,8 +81,6 @@
 
 // Login buttons
 "login.menu.sendlogs" = "sƃol ɹnoʎ puǝS";
-
-"login.option.add" = "ʇunoɔɔɐ pp∀";
 "login.option.select" = "ʇunoɔɔɐ ʇɔǝꞁǝS";
 "login.option.microsoft" = "ʇunoɔɔɐ ʇɟosoɹɔᴉW";
 "login.option.local" = "ʇunoɔɔɐ lɐɔo˥";
@@ -162,7 +160,6 @@
 
 "preference.title.resolution" = "(%) uoᴉʇnlosǝɹ";
 "preference.detail.resolution" = "˙uoᴉʇnlosǝɹ ǝɯɐƃ ǝɥʇ ǝsɐǝɹɔǝp oʇ noʎ sʍoll∀";
-
 "preference.title.disable_gesture" = "sǝɹnʇsǝᵷ ǝꞁqɐsᴉᗡ";
 "preference.title.press_duration" = "(sɯ) uoᴉʇɐɹnp ssǝɹd-ƃuo˥";
 "preference.detail.press_duration" = "˙sɯǝʇᴉ ƃuᴉddoɹp puɐ sʞɔolq ƃuᴉʎoɹʇsǝp ɹoɟ uoᴉʇɐɹnp ssǝɹd ɹǝƃƃᴉɹ┴";
