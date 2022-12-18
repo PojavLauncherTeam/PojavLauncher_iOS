@@ -86,9 +86,6 @@
 "login.warn.title.ram_unjb" = "已啟動記憶體搖桿";
 "login.warn.message.ram_unjb" = "請注意，更改這個設定可能會導致遊戲不穩定，或導致完全無法遊玩。";
 
-"login.warn.title.a7" = "這是對於這個裝置的最後更新。";
-"login.warn.message.a7" = "由於軟體和硬體限制，PojavLauncher 2.2將不再支援此裝置。";
-
 "login.warn.title.iosver" = "這是對於這個iOS版本的最後一次更新。";
 "login.warn.message.iosver" = "由於功能上不一致和開發困難，未來版本的PojavLauncher將不會支持iOS 12或13。";
 
