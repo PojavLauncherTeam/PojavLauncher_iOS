@@ -82,8 +82,6 @@
 
 // Login buttons
 "login.menu.sendlogs" = "Отправить журнал";
-
-"login.option.add" = "Добавить учётную запись";
 "login.option.select" = "Учётные записи";
 "login.option.microsoft" = "Учётная запись Microsoft";
 "login.option.local" = "Локальная учётная запись";
@@ -170,7 +168,6 @@
 
 "preference.title.fullscreen_airplay" = "Полноэкранный AirPlay";
 "preference.detail.fullscreen_airplay" = "Транслировать на внешний монитор только окно игры во весь экран вместо отображения всего, что происходит на устройстве.";
-
 "preference.title.disable_gesture" = "Отключение жестов";
 "preference.title.press_duration" = "Длительность нажатия (мс)";
 "preference.detail.press_duration" = "Длительность удерживания для разрушения блоков и выбрасывания предметов.";
