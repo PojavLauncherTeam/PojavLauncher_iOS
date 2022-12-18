@@ -3,7 +3,7 @@
 #include <Foundation/Foundation.h>
 #include "jni.h"
 
-typedef jint JLI_Launch_func(int argc, char ** argv, /* main argc, argc */
+typedef jint JLI_Launch_func(int argc, const char ** argv, /* main argc, argc */
         int jargc, const char** jargv,          /* java args */
         int appclassc, const char** appclassv,  /* app classpath */
         const char* fullversion,                /* full version defined */

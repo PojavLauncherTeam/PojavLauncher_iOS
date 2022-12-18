@@ -1,29 +1,83 @@
 #import <UIKit/UIKit.h>
 #import <objc/runtime.h>
 #import "LauncherPreferences.h"
+#import "UIKit+hook.h"
+#import "utils.h"
 
 void swizzle(Class class, SEL originalAction, SEL swizzledAction) {
     method_exchangeImplementations(class_getInstanceMethod(class, originalAction), class_getInstanceMethod(class, swizzledAction));
 }
 
-__attribute__((constructor)) void hookConstructor(void) {
+void swizzleClass(Class class, SEL originalAction, SEL swizzledAction) {
+    method_exchangeImplementations(class_getClassMethod(class, originalAction), class_getClassMethod(class, swizzledAction));
+}
+
+void init_hookUIKitConstructor(void) {
     swizzle(UIDevice.class, @selector(userInterfaceIdiom), @selector(hook_userInterfaceIdiom));
-    swizzle(UIResponder.class, @selector(becomeFirstResponder), @selector(hook_becomeFirstResponder));
-    swizzle(UIToolbar.class, @selector(sizeThatFits:), @selector(hook_sizeThatFits:));
     swizzle(UIView.class, @selector(didMoveToSuperview), @selector(hook_didMoveToSuperview));
     swizzle(UIView.class, @selector(setFrame:), @selector(hook_setFrame:));
+
+    if (realUIIdiom == UIUserInterfaceIdiomTV) {
+        if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+            // If you are about to test iPadOS idiom on tvOS, there's no better way for this
+            class_setSuperclass(NSClassFromString(@"UITableConstants_Pad"), NSClassFromString(@"UITableConstants_TV"));
+        }
+        swizzle(UINavigationController.class, @selector(toolbar), @selector(hook_toolbar));
+        swizzle(UINavigationController.class, @selector(setToolbar:), @selector(hook_setToolbar:));
+        swizzleClass(UISwitch.class, @selector(visualElementForTraitCollection:), @selector(hook_visualElementForTraitCollection:));
+   }
 }
 
 @implementation UIDevice(hook)
 
 - (UIUserInterfaceIdiom)hook_userInterfaceIdiom {
-    id value = getPreference(@"debug_ipad_ui");
-    if (value == nil) {
+    if ([getPreference(@"debug_ipad_ui") boolValue]) {
+        return UIUserInterfaceIdiomPad;
+    } else if (self.hook_userInterfaceIdiom == UIUserInterfaceIdiomTV) {
         return self.hook_userInterfaceIdiom;
+    } else {
+        return UIUserInterfaceIdiomPhone;
     }
-    return [value boolValue] ? UIUserInterfaceIdiomPad : UIUserInterfaceIdiomPhone;
 }
 
+@end
+
+// Patch: unimplemented get/set UIToolbar functions on tvOS
+@implementation UINavigationController(hook)
+const NSString *toolbarKey = @"toolbar";
+
+- (UIToolbar *)hook_toolbar {
+    UIToolbar *toolbar = objc_getAssociatedObject(self, &toolbarKey);
+    if (toolbar == nil) {
+        toolbar = [[UIToolbar alloc] initWithFrame:
+            CGRectMake(self.view.bounds.origin.x, self.view.bounds.size.height - 100,
+            self.view.bounds.size.width, 100)];
+        toolbar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
+        if (@available(iOS 13.0, *)) {
+            toolbar.backgroundColor = UIColor.systemBackgroundColor;
+        }
+        objc_setAssociatedObject(self, &toolbarKey, toolbar, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        [self performSelector:@selector(_configureToolbar)];
+    }
+    return toolbar;
+}
+
+- (void)hook_setToolbar:(UIToolbar *)toolbar {
+    objc_setAssociatedObject(self, &toolbarKey, toolbar, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+@end
+
+// Patch: UISwitch crashes if platform == tvOS
+@implementation UISwitch(hook)
++ (id)hook_visualElementForTraitCollection:(UITraitCollection *)collection {
+    if (collection.userInterfaceIdiom == UIUserInterfaceIdiomTV) {
+        UITraitCollection *override = [UITraitCollection traitCollectionWithUserInterfaceIdiom:UIUserInterfaceIdiomPad];
+        UITraitCollection *new = [UITraitCollection traitCollectionWithTraitsFromCollections:@[collection, override]];
+        return [self hook_visualElementForTraitCollection:new];
+    }
+    return [self hook_visualElementForTraitCollection:collection];
+}
 @end
 
 @implementation UITraitCollection(hook)
@@ -56,7 +110,7 @@ const NSString *cornerLayerKey = @"cornerLayer";
 }
 
 - (void)hook_didMoveToSuperview {
-    if ([getPreference(@"debug_show_layout_bounds") boolValue]) {
+    if (debugBoundsEnabled) {
         self.layer.borderWidth = 1;
         self.layer.borderColor = UIColor.redColor.CGColor;
         if (self.layer.sublayers.count == 0) {

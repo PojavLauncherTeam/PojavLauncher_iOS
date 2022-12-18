@@ -1,5 +1,3 @@
-#import <SafariServices/SafariServices.h>
-
 #import "authenticator/BaseAuthenticator.h"
 #import "AccountListViewController.h"
 #import "AFNetworking.h"
@@ -10,8 +8,11 @@
 #import "LauncherPreferencesViewController.h"
 #import "UIButton+AFNetworking.h"
 #import "UIImageView+AFNetworking.h"
+#import "UIKit+hook.h"
 #import "ios_uikit_bridge.h"
 #import "utils.h"
+
+#include <dlfcn.h>
 
 @implementation LauncherMenuCustomItem
 
@@ -43,38 +44,47 @@
     [titleView sizeToFit];
 
     // View controllers are put into an array to keep its state
-    self.options = @[
-        [[LauncherNewsViewController alloc] init],
-        [[LauncherPreferencesViewController alloc] init],
-        [LauncherMenuCustomItem
+    self.options = NSMutableArray.new;
+    [self.options addObject:LauncherNewsViewController.new];
+    self.options[0].title = localize(@"News", nil);
+    [self.options addObject:LauncherPreferencesViewController.new];
+    self.options[1].title = localize(@"Settings", nil);
+    if (realUIIdiom != UIUserInterfaceIdiomTV) {
+        [self.options addObject:(id)[LauncherMenuCustomItem
             title:localize(@"launcher.menu.custom_controls", nil)
             imageName:@"MenuCustomControls" action:^{
-            [self restoreHighlightedSelection];
             [self.splitViewController.viewControllers[1] performSelector:@selector(enterCustomControls)];
-        }],
-        [LauncherMenuCustomItem
+        }]];
+    }
+    [self.options addObject:
+        (id)[LauncherMenuCustomItem
             title:localize(@"launcher.menu.install_jar", nil)
             imageName:@"MenuInstallJar" action:^{
-            [self restoreHighlightedSelection];
             [self.splitViewController.viewControllers[1] performSelector:@selector(enterModInstaller)];
-        }],
-        [LauncherMenuCustomItem
+        }]];
+
+    [self.options addObject:
+        (id)[LauncherMenuCustomItem
             title:localize(@"login.menu.sendlogs", nil)
             imageName:@"square.and.arrow.up" action:^{
-            [self restoreHighlightedSelection];
             NSString *latestlogPath = [NSString stringWithFormat:@"file://%s/latestlog.old.txt", getenv("POJAV_HOME")];
             NSLog(@"Path is %@", latestlogPath);
-            UIActivityViewController *activityVC = [[UIActivityViewController alloc]
-                initWithActivityItems:@[@"latestlog.txt", [NSURL URLWithString:latestlogPath]]
-                applicationActivities:nil];
+            UIActivityViewController *activityVC;
+            if (realUIIdiom != UIUserInterfaceIdiomTV) {
+                activityVC = [[UIActivityViewController alloc]
+                    initWithActivityItems:@[@"latestlog.txt", [NSURL URLWithString:latestlogPath]]
+                    applicationActivities:nil];
+            } else {
+                dlopen("/System/Library/PrivateFrameworks/SharingUI.framework/SharingUI", RTLD_GLOBAL);
+                activityVC =
+                    [[NSClassFromString(@"SFAirDropSharingViewControllerTV") alloc]
+                    performSelector:@selector(initWithSharingItems:)
+                    withObject:@[[NSURL URLWithString:latestlogPath]]];
+            }
             activityVC.popoverPresentationController.sourceView = titleView;
             activityVC.popoverPresentationController.sourceRect = titleView.bounds;
-
             [self presentViewController:activityVC animated:YES completion:nil];
-        }]
-    ].mutableCopy;
-    self.options[0].title = localize(@"News", nil);
-    self.options[1].title = localize(@"Settings", nil);
+        }]];
 
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.dateFormat = @"MM-dd";
@@ -83,8 +93,7 @@
         [self.options addObject:(id)[LauncherMenuCustomItem
             title:@"Technoblade never dies!"
             imageName:@"" action:^{
-            SFSafariViewController *vc = [[SFSafariViewController alloc] initWithURL:[NSURL URLWithString:@"https://youtu.be/DPMluEVUqS0"]];
-            [self presentViewController:vc animated:YES completion:nil];
+            openLink(self, [NSURL URLWithString:@"https://youtu.be/DPMluEVUqS0"]);
         }]];
     }
 
@@ -111,7 +120,7 @@
 
     // Setup the account button
     self.accountButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.accountButton addTarget:self action:@selector(selectAccount:) forControlEvents:UIControlEventTouchUpInside];
+    [self.accountButton addTarget:self action:@selector(selectAccount:) forControlEvents:UIControlEventPrimaryActionTriggered];
     self.accountButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 
     self.accountButton.titleEdgeInsets = UIEdgeInsetsMake(0, 4, 0, -4);
@@ -189,6 +198,7 @@
         selected.navigationItem.leftBarButtonItems = @[self.splitViewController.displayModeButtonItem, self.accountBtnItem];
         selected.navigationItem.leftItemsSupplementBackButton = true;
     } else {
+        [self restoreHighlightedSelection];
         ((LauncherMenuCustomItem *)selected).action();
     }
 }
@@ -207,7 +217,7 @@
         [self updateAccountInfo];
         if (sender != self.accountButton) {
             // Called from the play button, so call back to continue
-            [sender sendActionsForControlEvents:UIControlEventTouchUpInside];
+            [sender sendActionsForControlEvents:UIControlEventPrimaryActionTriggered];
         }
     };
     vc.modalPresentationStyle = UIModalPresentationPopover;
@@ -313,7 +323,7 @@
             NSDictionary *responseDict;
             // FIXME: successful response may fail due to serialization issues
             if ([response isKindOfClass:NSError.class]) {
-                NSLog(@"Error?: %@", responseDict);
+                NSDebugLog(@"Error?: %@", responseDict);
                 NSData *errorData = ((NSError *)response).userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
                 responseDict = [NSJSONSerialization JSONObjectWithData:errorData options:0 error:nil];
             } else {

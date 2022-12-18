@@ -10,7 +10,6 @@
  * - Implements glfwSetCursorPos() to handle grab camera pos correctly.
  */
 
-#import <SafariServices/SafariServices.h>
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 #import "SurfaceViewController.h"
@@ -23,7 +22,6 @@
 #include "jni.h"
 #include "glfw_keycodes.h"
 #include "ios_uikit_bridge.h"
-#include "log.h"
 #include "utils.h"
 
 #include "JavaLauncher.h"
@@ -90,8 +88,7 @@ hooked_ProcessImpl_forkAndExec(JNIEnv *env, jobject process, jint mode, jbyteArr
     char *path = (char *)((*env)->GetByteArrayElements(env, argBlock, NULL));
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([@(path) hasPrefix:@"http"]) {
-            SFSafariViewController *vc = [[SFSafariViewController alloc] initWithURL:[NSURL URLWithString:@(path)]];
-            [currentWindow().rootViewController presentViewController:vc animated:YES completion:nil];
+            openLink(currentWindow().rootViewController, [NSURL URLWithString:@(path)]);
             dispatch_group_leave(group);
             return;
         }
@@ -165,7 +162,7 @@ ADD_CALLBACK_WWIN(WindowPos);
 #undef ADD_CALLBACK_WWIN
 
 void sendData(int type, CGFloat i1, CGFloat i2, int i3, int i4) {
-    //debugLog("Debug: Send data, jnienv.isNull=%d, bridgeClass.isNull=%d\n", runtimeJNIEnvPtr == NULL, inputBridgeClass_ANDROID == NULL);
+    //NSDebugLog(@"Debug: Send data, jnienv.isNull=%d, bridgeClass.isNull=%d\n", runtimeJNIEnvPtr == NULL, inputBridgeClass_ANDROID == NULL);
     if (runtimeJNIEnvPtr == NULL) {
         (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &runtimeJNIEnvPtr, NULL);
     }
@@ -199,7 +196,7 @@ void closeGLFWWindow() {
 
 /*
 void callback_SurfaceViewController_launchMinecraft(int width, int height) {
-    debugLog("Received SurfaceViewController callback, width=%d, height=%d\n", width, height);
+    NSDebugLog(@"Received SurfaceViewController callback, width=%d, height=%d\n", width, height);
 
     // Because UI init after JVM init, this should not be null
     assert(runtimeJNIEnvPtr != NULL);
@@ -268,12 +265,12 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_updateMCGuiScale(JNI
 }
 
 JNIEXPORT jstring JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeClipboard(JNIEnv* env, jclass clazz, jint action, jstring copySrc) {
-    debugLog("Debug: Clipboard access is going on\n");
+    NSDebugLog(@"Debug: Clipboard access is going on\n");
     return UIKit_accessClipboard(env, action, copySrc);
 }
 
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetInputReady(JNIEnv* env, jclass clazz, jboolean inputReady) {
-    //debugLog("Debug: Changing input state, isReady=%d, isUseStackQueueCall=%d\n", inputReady, isUseStackQueueCall);
+    //NSDebugLog(@"Debug: Changing input state, isReady=%d, isUseStackQueueCall=%d\n", inputReady, isUseStackQueueCall);
     isInputReady = inputReady;
 
     return isUseStackQueueCall;

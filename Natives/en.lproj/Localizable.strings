@@ -166,6 +166,8 @@
 "preference.title.resolution" = "Resolution (%)";
 "preference.detail.resolution" = "Allows you to decrease the game resolution.";
 
+"preference.title.fullscreen_airplay" = "Fullscreen AirPlay";
+"preference.detail.fullscreen_airplay" = "Allows presenting fullscreen game window on the external display rather than mirroring everything on screen.";
 "preference.title.disable_gesture" = "Disable gestures";
 "preference.title.press_duration" = "Long-press duration (ms)";
 "preference.detail.press_duration" = "Trigger press duration for destroying blocks and dropping items.";

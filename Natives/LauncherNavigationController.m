@@ -27,8 +27,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
 
+    if ([self respondsToSelector:@selector(setNeedsUpdateOfScreenEdgesDeferringSystemGestures)]) {
+        [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
+    }
 
     self.versionTextField = [[UITextField alloc] initWithFrame:CGRectMake(0, 4, self.toolbar.frame.size.width * 0.8, self.toolbar.frame.size.height - 8)];
     [self.versionTextField addTarget:self.versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
@@ -82,7 +84,7 @@
     self.buttonInstall.layer.cornerRadius = 5;
     self.buttonInstall.frame = CGRectMake(self.toolbar.frame.size.width * 0.8, 4, self.toolbar.frame.size.width * 0.2, self.toolbar.frame.size.height - 8);
     self.buttonInstall.tintColor = UIColor.whiteColor;
-    [self.buttonInstall addTarget:self action:@selector(launchMinecraft:) forControlEvents:UIControlEventTouchUpInside];
+    [self.buttonInstall addTarget:self action:@selector(launchMinecraft:) forControlEvents:UIControlEventPrimaryActionTriggered];
     [self.toolbar addSubview:self.buttonInstall];
 
     self.progressText = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.toolbar.frame.size.width, self.toolbar.frame.size.height)];
