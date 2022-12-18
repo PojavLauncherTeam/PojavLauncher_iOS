@@ -1,10 +1,11 @@
+#import <SafariServices/SafariServices.h>
+
 #include "jni.h"
 #include <dlfcn.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "log.h"
 #include "utils.h"
 
 CFTypeRef SecTaskCopyValueForEntitlement(void* task, NSString* entitlement, CFErrorRef  _Nullable *error);
@@ -29,6 +30,37 @@ BOOL isJITEnabled() {
     int flags;
     csops(getpid(), 0, &flags, sizeof(flags));
     return (flags & CS_DEBUGGED) != 0;
+}
+
+void openLink(UIViewController* sender, NSURL* link) {
+    void *framework = dlopen("/System/Library/Frameworks/SafariServices.framework/SafariServices", RTLD_GLOBAL);
+    if (framework == nil) {
+        NSData *data = [link.absoluteString dataUsingEncoding:NSUTF8StringEncoding];
+        CIFilter *filter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
+        [filter setValue:data forKey:@"inputMessage"];
+        UIImage *image = [UIImage imageWithCIImage:filter.outputImage scale:1.0 orientation:UIImageOrientationUp];
+        UIGraphicsBeginImageContextWithOptions(CGSizeMake(300, 300), NO, 0.0);
+        CGRect frame = CGRectMake(0, 0, 300, 300);
+        [image drawInRect:frame];
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:frame];
+        imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil
+            message:link.absoluteString
+            preferredStyle:UIAlertControllerStyleAlert];
+
+        UIViewController *vc = UIViewController.new;
+        vc.view = imageView;
+        [alert setValue:vc forKey:@"contentViewController"];
+
+        UIAlertAction* doneAction = [UIAlertAction actionWithTitle:localize(@"Done", nil) style:UIAlertActionStyleCancel handler:nil];
+        [alert addAction:doneAction];
+        [sender presentViewController:alert animated:YES completion:nil];
+    } else {
+        SFSafariViewController *vc = [[NSClassFromString(@"SFSafariViewController ") alloc] initWithURL:link];
+        [sender presentViewController:vc animated:YES completion:nil];
+    }
 }
 
 NSMutableDictionary* parseJSONFromFile(NSString *path) {

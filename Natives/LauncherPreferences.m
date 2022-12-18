@@ -131,6 +131,7 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(prefDict, @"cosmetica", @YES);
     setDefaultValueForPref(envPrefDict, @"java_home", @"java-8-openjdk");
     setDefaultValueForPref(envPrefDict, @"renderer", @"auto");
+    setDefaultValueForPref(envPrefDict, @"fullscreen_airplay", @YES);
     fillDefaultWarningDict();
     setDefaultValueForPref(prefDict, @"a7_allow", @NO);
     setDefaultValueForPref(prefDict, @"slideable_hotbar", @NO);

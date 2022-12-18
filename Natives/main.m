@@ -21,7 +21,6 @@
 #include <sys/utsname.h>
 #include <unistd.h>
 #include "JavaLauncher.h"
-#include "log.h"
 #include "utils.h"
 #include "codesign.h"
 
@@ -107,7 +106,7 @@ void init_logDeviceAndVer(char *argument) {
     const char *deviceSoftware = [[UIDevice currentDevice] systemVersion].UTF8String;
     
     // PojavLauncher version
-    regLog("[Pre-Init] PojavLauncher version: %s-%s, branch: %s, commit: %s",
+    NSLog(@"[Pre-Init] PojavLauncher version: %s-%s, branch: %s, commit: %s",
         [NSBundle.mainBundle.infoDictionary[@"CFBundleShortVersionString"] UTF8String],
         CONFIG_TYPE, CONFIG_BRANCH, CONFIG_COMMIT);
 
@@ -124,14 +123,14 @@ void init_logDeviceAndVer(char *argument) {
     
     setenv("POJAV_DETECTEDINST", type, 1);
     
-    regLog("[Pre-Init] %s with iOS %s (%s)", getenv("POJAV_DETECTEDHW"), getenv("POJAV_DETECTEDSW"), getenv("POJAV_DETECTEDINST"));
+    NSLog(@"[Pre-Init] %s with iOS %s (%s)", getenv("POJAV_DETECTEDHW"), getenv("POJAV_DETECTEDSW"), getenv("POJAV_DETECTEDINST"));
     
     NSString *jvmPath = [NSString stringWithFormat:@"%s/jvm", getenv("BUNDLE_PATH")];
     if (![fm fileExistsAtPath:jvmPath]) {
         setenv("POJAV_PREFER_EXTERNAL_JRE", "1", 1);
     }
     
-    regLog("[Pre-init] Entitlements availability:");
+    NSLog(@"[Pre-init] Entitlements availability:");
     printEntitlementAvailability(@"com.apple.developer.kernel.extended-virtual-addressing");
     printEntitlementAvailability(@"com.apple.developer.kernel.increased-memory-limit");
     printEntitlementAvailability(@"com.apple.private.security.no-sandbox");
@@ -162,7 +161,7 @@ void init_migrateToPlist(char* prefKey, char* filename) {
 }
 
 void init_redirectStdio() {
-    regLog("[Pre-init] Starting logging STDIO to latestlog.txt\n");
+    NSLog(@"[Pre-init] Starting logging STDIO to latestlog.txt\n");
 
     NSString *currName = [@(getenv("POJAV_HOME")) stringByAppendingPathComponent:@"latestlog.txt"];
     NSString *oldName = [@(getenv("POJAV_HOME")) stringByAppendingPathComponent:@"latestlog.old.txt"];
@@ -264,7 +263,7 @@ void init_setupMultiDir() {
 
     if (0 == access("/var/mobile/Documents/minecraft", F_OK)) {
         [fm moveItemAtPath:@"/var/mobile/Documents/minecraft" toPath:multidir error:nil];
-        regLog("[Pre-init] Migrated old minecraft folder to new location.");
+        NSLog(@"[Pre-init] Migrated old minecraft folder to new location.");
     }
 
     if (0 == access("/var/mobile/Documents/Library", F_OK)) {
@@ -284,17 +283,9 @@ void init_setupResolvConf() {
     }
 }
 
-int main(int argc, char * argv[]) {
-    if (!isJITEnabled() && getppid() != 1) {
-        NSLog(@"parent pid is not launchd, calling ptrace(PT_TRACE_ME)");
-        // Child process can call to PT_TRACE_ME
-        // then both parent and child processes get CS_DEBUGGED
-        int ret = ptrace(PT_TRACE_ME, 0, 0, 0);
-        return ret;
-    }
-
+int main(int argc, char *argv[]) {
     if (pJLI_Launch) {
-        return pJLI_Launch(argc, argv,
+        return pJLI_Launch(argc, (const char **)argv,
                    0, NULL, // sizeof(const_jargs) / sizeof(char *), const_jargs,
                    0, NULL, // sizeof(const_appclasspath) / sizeof(char *), const_appclasspath,
                    // PojavLancher: fixme: are these wrong?
@@ -306,6 +297,14 @@ int main(int argc, char * argv[]) {
                    JNI_TRUE, JNI_FALSE, JNI_TRUE);
     }
 
+    if (!isJITEnabled() && argc == 2) {
+        NSLog(@"calling ptrace(PT_TRACE_ME)");
+        // Child process can call to PT_TRACE_ME
+        // then both parent and child processes get CS_DEBUGGED
+        int ret = ptrace(PT_TRACE_ME, 0, 0, 0);
+        return ret;
+    }
+
     init_checkForJailbreak();
     
     init_migrateDirIfNecessary();
@@ -314,7 +313,11 @@ int main(int argc, char * argv[]) {
     setenv("HOME", [NSFileManager.defaultManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask]
         .lastObject.path.stringByDeletingLastPathComponent.UTF8String, 1);
     // WARNING: THIS DIRECTS TO /var/mobile/Documents IF INSTALLED WITH APPSYNC UNIFIED
-    setenv("POJAV_HOME", [NSString stringWithFormat:@"%s/Documents", getenv("HOME")].UTF8String, 1);
+    if ([@(getenv("HOME")) isEqualToString:@"/var/mobile"]) {
+        setenv("POJAV_HOME", "/var/mobile/Documents/PojavLauncher", 1);
+    } else {
+        setenv("POJAV_HOME", [NSString stringWithFormat:@"%s/Documents", getenv("HOME")].UTF8String, 1);
+    }
 
     [fm createDirectoryAtPath:@(getenv("POJAV_HOME")) withIntermediateDirectories:NO attributes:nil error:nil];
 
@@ -324,6 +327,9 @@ int main(int argc, char * argv[]) {
     init_hookFunctions();
 
     loadPreferences(NO);
+    debugLogEnabled = [getPreference(@"debug_logging") boolValue];
+    NSLog(@"Debug log enabled: %@", debugLogEnabled ? @"YES" : @"NO");
+
     init_setupResolvConf();
     init_setupMultiDir();
     init_setupLauncherProfiles();
@@ -333,11 +339,13 @@ int main(int argc, char * argv[]) {
     init_migrateToPlist("selected_version", "config_ver.txt");
     init_migrateToPlist("java_args", "overrideargs.txt");
 
+    init_hookUIKitConstructor();
+
     // If sandbox is disabled, W^X JIT can be enabled by PojavLauncher itself
     if (!isJITEnabled() && getEntitlementValue(@"com.apple.private.security.no-sandbox")) {
-        NSLog(@"[Pre-init] Sandbox is disabled, trying to enable JIT");
+        NSLog(@"[Pre-init] no-sandbox: YES, trying to enable JIT");
         int pid;
-        int ret = posix_spawnp(&pid, argv[0], NULL, NULL, argv, environ);
+        int ret = posix_spawnp(&pid, argv[0], NULL, NULL, (char *[]){argv[0], "", NULL}, environ);
         if (ret == 0) {
             // Cleanup child process
             waitpid(pid, NULL, WUNTRACED);
@@ -346,7 +354,7 @@ int main(int argc, char * argv[]) {
             wait(NULL);
 
             if (isJITEnabled()) {
-                NSLog(@"[Pre-init] JIT has heen enabled with PT_TRACE_ME");
+                NSLog(@"[Pre-init] JIT has been enabled with PT_TRACE_ME");
             } else {
                 NSLog(@"[Pre-init] Failed to enable JIT: unknown reason");
             }

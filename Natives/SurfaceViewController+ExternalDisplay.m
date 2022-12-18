@@ -21,7 +21,7 @@
     [secondWindow.rootViewController.view addSubview:self.surfaceView]; 
     [secondWindow.rootViewController.view addSubview:self.mousePointerView];
 
-    [secondWindow makeKeyAndVisible];
+    secondWindow.hidden = NO;
     [self updateSavedResolution];
 }
 
@@ -30,7 +30,7 @@
     [self.mousePointerView removeFromSuperview];
 
     UIWindow *secondWindow = currentWindowInScene(1);
-    [secondWindow resignKeyWindow];
+    secondWindow.hidden = YES;
 
     [self.touchView.subviews[0] removeFromSuperview];
     [self.touchView addSubview:self.surfaceView]; 

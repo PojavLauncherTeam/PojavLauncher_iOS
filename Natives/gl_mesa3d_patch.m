@@ -11,10 +11,10 @@ GLAPI void GLAPIENTRY glDrawArrays(GLenum mode, GLint first, GLsizei count) {
         glDrawArrays_p = dlsym(RTLD_NEXT, "glDrawArrays");
     }
 
-    // debugLog("func=%p, next=%p", glDrawArrays, glDrawArrays_real);
-    // debugLog("glDrawArrays mode=%p", mode);
+    // NSDebugLog(@"func=%p, next=%p", glDrawArrays, glDrawArrays_real);
+    // NSDebugLog(@"glDrawArrays mode=%p", mode);
     if (mode == GL_TRIANGLE_FAN) {
-        // debugLog("ERROR: GL_TRIANGLE_FAN unsupported!");
+        // NSDebugLog(@"ERROR: GL_TRIANGLE_FAN unsupported!");
         
         // this is wrong but idk how to deal with it yet...
         // minecraft stills works with this for unknown reason

@@ -21,21 +21,29 @@ The [PojavLauncher Website](https://pojavlauncherteam.github.io/INSTALL.html#ios
 
 Note: This is experimental, although game works smoothly, you should not set Render distance too much.
 
-1. Setup the sideload app
+### Setup the sideload app
 - For iOS 14.0-15.5beta4, [TrollStore](https://github.com/opa334/TrollStore) is recommended to keep PojavLauncher permanently signed and have JIT enabled by itself.
-- Otherwise, install [AltStore](https://altstore.io). Others will also work.
-2. Download an IPA build of PojavLauncher in the Actions tab.
-3. Open the downloaded IPA in the sideload app to install.
-4. For enabling JIT, choose one of these:
- - Setup [JitStreamer](http://jitstreamer.com), then launch PojavLauncher. JIT will be automatically enabled on startup. This is the most convenient way.
- - Be jailbroken (JIT will automatically be enabled)
- - Install with TrollStore (JIT will automatically be enabled)
- - Launch PojavLauncher with `Enable JIT` option in AltStore. This requires the device to be plugged in the computer or have Wi-Fi syncing enabled.
- - Setup and use others such as [Jitterbug](https://github.com/osy/Jitterbug).
+- Otherwise, install [AltStore](https://altstore.io) or [SideStore](https://github.com/SideStore/SideStore). Others will also work.
+### Installing PojavLauncher
+#### Relesse build (AltStore/SideStore trusted source)
+- Add `PojavLauncher Repository` from Trusted Sources
+- Tap `FREE` to begin installing.
+#### Development build
+- Download an IPA build of PojavLauncher in the [Actions tab](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/actions).
+- Open the downloaded IPA in the sideload app to install.
+### Enabling JIT
+| Application         | AltStore | SideStore | TrollStore | JitStreamer | Jitterbug          | Jailbroken |
+|---------------------|----------|-----------|------------|-------------|--------------------|------------|
+| Requires ext-device | Yes      | No        | No         | No          | If VPN unavailable | No         |
+| Requires Wi-Fi      | Yes      | Yes       | No         | Yes         | Yes                | No         |
+| Auto enabled        | Yes(*)   | No        | Yes        | Yes         | No                 | Yes        |
+| Minimum iOS version | 12.2     | 14.0      | 14.0       | 14.0        | 14.0               | Any        |
+
+(*) AltServer running in local network is required.
 
 ## Known issues
 * Some Forge versions may fail with `java.lang.reflect.InvocationTargetException`.
-* The game will be prone to JetsamEvents.
+* The game will be prone to JetsamEvents. More specifically, random crashes might occurs if allocating too much resources.
 
 ## Contributors
 PojavLauncher is amazing, and surprisingly stable, and it wouldn't be this way without the commmunity that helped and contribute to the project! Some notable names:

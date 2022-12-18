@@ -1,6 +1,6 @@
-#import <SafariServices/SafariServices.h>
 #import <WebKit/WebKit.h>
 #import "LauncherNewsViewController.h"
+#import "utils.h"
 
 @interface LauncherNewsViewController()<WKNavigationDelegate>
 @end
@@ -29,7 +29,6 @@ UIEdgeInsets insets;
     webView.opaque = NO;
     [self adjustWebViewForSize:size];
     webView.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-    webView.scrollView.delegate = self;
     NSString *javascript = @"var meta = document.createElement('meta');meta.setAttribute('name', 'viewport');meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');document.getElementsByTagName('head')[0].appendChild(meta);";
     WKUserScript *nozoom = [[WKUserScript alloc] initWithSource:javascript injectionTime:WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:YES];
     [webView.configuration.userContentController addUserScript:nozoom];
@@ -64,8 +63,7 @@ UIEdgeInsets insets;
 decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction 
 decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
      if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
-        SFSafariViewController *vc = [[SFSafariViewController alloc] initWithURL:navigationAction.request.URL];
-        [self presentViewController:vc animated:YES completion:nil];
+        openLink(self, navigationAction.request.URL);
         decisionHandler(WKNavigationActionPolicyCancel);
         return;
     }

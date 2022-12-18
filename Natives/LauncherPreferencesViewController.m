@@ -6,6 +6,7 @@
 #import "LauncherPreferencesViewController.h"
 #import "LauncherPrefGameDirViewController.h"
 #import "TOInsetGroupedTableView.h"
+#import "UIKit+hook.h"
 
 #import "utils.h"
 
@@ -76,7 +77,11 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             @{@"key": @"debug_logging",
                 @"hasDetail": @YES,
                 @"icon": @"doc.badge.gearshape",
-                @"type": self.typeSwitch
+                @"type": self.typeSwitch,
+                @"action": ^(BOOL enabled){
+                    debugLogEnabled = enabled;
+                    NSLog(@"Debug log enabled: %@", enabled ? @"YES" : @"NO");
+                }
             },
             @{@"key": @"jitstreamer_server",
                 @"hasDetail": @YES,
@@ -156,6 +161,22 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"min": @(25),
                 @"max": @(150)
             },
+            @{@"key": @"fullscreen_airplay",
+                @"hasDetail": @YES,
+                @"icon": @"airplayvideo",
+                @"type": self.typeSwitch,
+                @"action": ^(BOOL enabled){
+                    if (self.navigationController != nil) return;
+                    if (@available(iOS 13.0, *)) {
+                        if (UIApplication.sharedApplication.connectedScenes.count < 2) return;
+                    }
+                    if (enabled) {
+                        [self.presentingViewController performSelector:@selector(switchToExternalDisplay)];
+                    } else {
+                        [self.presentingViewController performSelector:@selector(switchToInternalDisplay)];
+                    }
+                }
+            }
         ], @[
         // Control settings
         /*
@@ -277,7 +298,10 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"icon": @"square.dashed",
                 @"type": self.typeSwitch,
                 @"enableCondition": whenNotInGame,
-                @"requestReload": @YES
+                @"requestReload": @YES,
+                @"action": ^(BOOL enabled){
+                    debugBoundsEnabled = enabled;
+                }
             },
             @{@"key": @"debug_show_layout_overlap",
                 @"hasDetail": @YES,
@@ -533,6 +557,11 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
         setPreference(key, @(sender.isOn));
     }
 
+    void(^invokeAction)(BOOL) = item[@"action"];
+    if (invokeAction) {
+        invokeAction(sender.isOn);
+    }
+
     // Some settings may affect the availability of other settings
     // In this case, a switch may request to reload to apply user interaction change
     if ([item[@"requestReload"] boolValue]) {
@@ -553,10 +582,23 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
     if (item[@"type"] == self.typeButton) {
         [self tableView:tableView invokeActionWithPromptAtIndexPath:indexPath];
+        return;
     } else if (item[@"type"] == self.typeChildPane) {
         [self tableView:tableView openChildPaneAtIndexPath:indexPath];
+        return;
     } else if (item[@"type"] == self.typePickField) {
         [self tableView:tableView openPickerAtIndexPath:indexPath];
+        return;
+    } else if (realUIIdiom != UIUserInterfaceIdiomTV) {
+        return;
+    }
+
+    // userInterfaceIdiom = tvOS
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (item[@"type"] == self.typeSwitch) {
+        UISwitch *view = (id)cell.accessoryView;
+        view.on = !view.isOn;
+        [view sendActionsForControlEvents:UIControlEventValueChanged];
     }
 }
 
