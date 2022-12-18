@@ -89,9 +89,6 @@
 "login.warn.title.ram_unjb" = "Posuvník paměti je povolen";
 "login.warn.message.ram_unjb" = "Uvědomte si, že měnění tohoto nastavení může způsobit nestabilitu hry či rozbít schopnost hrát vůbec.";
 
-"login.warn.title.a7" = "Toto je poslední aktualizace pro toto zařízení.";
-"login.warn.message.a7" = "PojavLauncher 2.2 nebude podporovat toto zařízení, kvůli hardwarovým a softwarovým omezením.";
-
 "login.warn.title.iosver" = "Poslední aktualizace pro tuto verzi iOSu je tato.";
 "login.warn.message.iosver" = "Budoucí verze PojavLauncheru nebude podporovat iOS 12 a 13, kvůli funkčním nekonzistencím a překážkám vývoje.";
 
