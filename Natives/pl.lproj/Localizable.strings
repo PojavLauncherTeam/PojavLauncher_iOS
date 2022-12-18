@@ -88,9 +88,6 @@
 "login.warn.title.ram_unjb" = "Suwak pamięci jest włączony";
 "login.warn.message.ram_unjb" = "Pamiętaj, że zmiana tego ustawienia może spowodować niestabilność gry lub całkowicie uniemożliwić grę.";
 
-"login.warn.title.a7" = "To jest ostatnia aktualizacja dla tego urządzenia.";
-"login.warn.message.a7" = "PojavLauncher 2.2 nie będzie obsługiwany na Twoim urządzeniu ze względu na wymagania sprzętowe.";
-
 "login.warn.title.iosver" = "To jest ostatnia aktualizacja dla tej wersji iOS.";
 "login.warn.message.iosver" = "Przyszłe wersje PojavLauncher nie będą obsługiwać iOS 12 lub 13 ze względu na niespójności funkcji oraz przeszkody w rozwoju programu.";
 
