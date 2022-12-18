@@ -165,6 +165,7 @@
 
 "preference.title.resolution" = "Résolution (%)";
 "preference.detail.resolution" = "Vous permet de diminuer la résolution du jeu.";
+
 "preference.title.disable_gesture" = "Désactiver les gestes";
 "preference.title.press_duration" = "Durée d'un appui long (ms)";
 "preference.detail.press_duration" = "Déclenche le bouton pour détruire des blocs et jeter des objets.";

@@ -54,6 +54,7 @@
 "preference.title.done.reset_settings" = "Semua tetapan lalai telah dipulihkan.";
 
 "preference.title.renderer" = "Renderer";
+
 "preference.title.disable_gesture" = "Nyahdayakan gerak isyarat";
 "preference.title.java_args" = "JVM Launch arguments";
 "preference.title.auto_ram" = "Auto RAM";

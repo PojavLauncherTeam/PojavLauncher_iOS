@@ -45,6 +45,7 @@
 "preference.title.cosmetica" = "코스메티카 망토";
 
 "preference.title.renderer" = "렌더러";
+
 "preference.title.disable_gesture" = "제스쳐 비활성화";
 "preference.title.java_args" = "JVM 시작 스크립트";
 "preference.title.auto_ram" = "자동 RAM 할당";

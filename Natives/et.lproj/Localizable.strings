@@ -64,6 +64,9 @@
 "preference.detail.renderer" = "Vaheta kasutatavat OpenGL renderdusmootorit";
 
 "preference.title.resolution" = "Eraldusvõime (%)";
+
+"preference.title.fullscreen_airplay" = "Täisekraanis AirPlay";
+
 "preference.title.disable_gesture" = "Keela viiped";
 "preference.title.virtmouse_enable" = "Virtuaalne hiir";
 "preference.title.auto_ram" = "Automaatne RAM";

@@ -167,6 +167,10 @@
 
 "preference.title.resolution" = "Auflösung (%)";
 "preference.detail.resolution" = "Ermöglicht es dir die Spielauflösung zu verringern.";
+
+"preference.title.fullscreen_airplay" = "Vollbild-AirPlay";
+"preference.detail.fullscreen_airplay" = "Ermöglicht es dir nur das Spielfenster auf ein externes Display zu spiegeln, anstatt den ganzen Bildschirm zu spiegeln.";
+
 "preference.title.disable_gesture" = "Gesten deaktivieren";
 "preference.title.press_duration" = "Dauer eines langen Touch (ms)";
 "preference.detail.press_duration" = "Auslösedauer um Blöcke zu zerstören und Items zu droppen.";

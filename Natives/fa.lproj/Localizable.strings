@@ -41,6 +41,7 @@
 "Settings" = "تنظیمات";
 
 "preference.title.renderer" = "رندر کننده";
+
 "preference.title.disable_gesture" = "غیرفعال کردن حسگر ها";
 "preference.title.java_args" = "آرگومان‌های جاوا در هنگام لانچ";
 "preference.title.auto_ram" = "رم اتوماتیک";

@@ -120,6 +120,7 @@
 
 "preference.title.resolution" = "Độ phân giải (%)";
 "preference.detail.resolution" = "Cho phép thay đổi độ phân giải trò chơi.";
+
 "preference.title.disable_gesture" = "Tắt cử chỉ";
 "preference.title.press_duration" = "Độ dài nhấn giữ (ms)";
 "preference.title.button_scale" = "Độ rộng nút trên màn hình (%)";

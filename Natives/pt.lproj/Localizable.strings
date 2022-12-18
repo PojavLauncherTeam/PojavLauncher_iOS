@@ -45,6 +45,7 @@
 "preference.title.cosmetica" = "Capas da 'Comestica'";
 
 "preference.title.renderer" = "Renderizador";
+
 "preference.title.disable_gesture" = "Desativar gestos";
 "preference.title.java_args" = "Argumentos JVM";
 "preference.title.auto_ram" = "RAM automática";

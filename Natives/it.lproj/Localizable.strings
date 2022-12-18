@@ -142,6 +142,7 @@
 
 "preference.title.resolution" = "Risoluzione (%)";
 "preference.detail.resolution" = "Permette di diminuire la risoluzione del gioco.";
+
 "preference.title.disable_gesture" = "Disattiva gestures";
 "preference.title.press_duration" = "Durata click-lungo (ms)";
 "preference.title.button_scale" = "Scala pulsante sullo schermo (%)";

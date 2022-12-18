@@ -4,8 +4,11 @@
 */
 
 "game.menu.force_close" = "Forçar encerramento";
+"game.menu.confirm.force_close" = "Tem certeza que deseja forçar o encerramento?";
 "game.menu.log_output" = "Registro de saída";
 "game.menu.custom_controls" = "Controles personalizados";
+
+"game.note.airplay" = "Minecraft está sendo exibido na visão espelhada do AirPlay";
 
 "game.title.exit_code" = "Jogo terminado com código %d";
 
@@ -45,7 +48,9 @@
 "custom_controls.button_menu.add_subbutton" = "Adicionar sub-botão";
 "custom_controls.control_menu.discard_changes" = "Descartar alterações";
 "custom_controls.control_menu.exit" = "Sair";
+"custom_controls.control_menu.exit.warn" = "Você está prestes a sair sem salvar as alterações.";
 "custom_controls.control_menu.save" = "Salvar";
+"custom_controls.control_menu.save.error.default" = "O nome do controle não pode ser \"padrão\", pois será substituído.";
 "custom_controls.control_menu.save.error.json" = "erro JSON";
 "custom_controls.control_menu.save.error.write" = "Erro ao salvar arquivo";
 "custom_controls.control_menu.load" = "Carregar";
@@ -53,6 +58,10 @@
 "custom_controls.control_menu.safe_area" = "Área segura";
 "custom_controls.control_menu.add_button" = "Adicionar botão";
 "custom_controls.control_menu.add_drawer" = "Adicionar gaveta";
+"custom_controls.error.incompatible" = "Esta versão de controle (código %d) não está implementada nesta compilação do inicializador.";
+"custom_controls.hint" = "Pressione e segure em qualquer lugar na tela para mais opções";
+
+"init.migrateDir" = "O diretório de dados do PojavLauncher agora é %@. Todos os dados existentes foram movidos para a nova localização.";
 
 "launcher.menu.custom_controls" = "Controles personalizados";
 "launcher.menu.install_jar" = "Instalar .jar";
@@ -64,6 +73,7 @@
 "login.jit.checking" = "Verificando o JIT";
 "login.jit.enabled" = "O JIT foi ativado";
 "login.jit.fail.JitStreamer" = "Erro no JitStreamer: %@";
+"login.jit.start.AltKit" = "Tentativa de usar AltJIT";
 "login.jit.fail.AltKit" = "Erro no Altkit: %@";
 
 // Login buttons
@@ -76,8 +86,23 @@
 
 "login.warn.title.ram_unjb" = "Slider de memória está ativado";
 
+"login.warn.title.a7" = "Esta é a última atualização deste dispositivo.";
+
+"login.warn.title.iosver" = "Esta é a última atualização para esta versão iOS.";
+
+"login.warn.title.2gb" = "Seu dispositivo tem RAM limitado.";
+
 "login.warn.title.demomode" = "Sua conta é Demonstrativa";
+
+"login.warn.title.localmode" = "O modo off-line agora é o modo local.";
+"login.msa.error.xsts.krverify" = "Sua conta precisa ser verificada por seus pais antes de continuar.\nCódigo de erro: 2148916236 ou 2148916237.";
+
+"login.msa.progress.acquireAccessToken" = "(1/5) Adquirindo o token de acesso";
+"login.msa.progress.acquireXBLToken" = "(2/5) Adquirindo o token do Xbox Live";
 "login.msa.progress.acquireXSTS" = "Adquirindo XSTS";
+"login.msa.progress.acquireXboxProfile" = "(3/5) Adquirindo o perfil do Xbox";
+"login.msa.progress.acquireMCToken" = "(4/5) Adquirir o token do Minecraft";
+"login.msa.progress.checkMCProfile" = "(5/5) Verificando o perfil de Minecraft";
 
 "News" = "Notícias";
 "Settings" = "Configurações";
@@ -86,6 +111,7 @@
 "preference.section.video" = "Configurações de Vídeo";
 "preference.section.control" = "Personalização dos controles";
 "preference.section.debug" = "Configurações da depuração do UI";
+"preference.section.footer.debug" = "Além da depuração, essas configurações podem ser úteis para controles personalizados. Pode ser necessário reiniciar o launcher para que as alterações tenham efeito.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Ajustes do Java";
 //"preference.section.footer.java" = "";
@@ -93,16 +119,60 @@
 "preference.title.confirm" = "Você tem certeza?";
 
 "preference.title.game_directory" = "Diretório de jogo Minecraft";
+"preference.multidir.add_directory" = "Adicionar diretório do jogo";
+
+"preference.title.check_sha" = "Verifique os arquivos após o download";
 "preference.title.cosmetica" = "Capas da Cosmetica";
 "preference.title.debug_logging" = "Log de depuração";
+"preference.title.jitstreamer_server" = "IP do servidor JitStreamer";
 
 "preference.title.appicon" = "Definir ícone do aplicativo";
+"preference.title.appicon-default" = "Luz familiar de PojavLauncher";
+"preference.title.appicon-dark" = "PojavLauncher familiar escuro";
+
+"preference.title.reset_warnings" = "Redefinir todos os avisos";
+"preference.title.done.reset_warnings" = "Todas as advertências foram redefinidas.";
+
+"preference.title.reset_settings" = "Redefinir todas as configurações";
+"preference.title.done.reset_settings" = "Todas as configurações padrão foram restauradas.";
 
 "preference.title.renderer" = "Renderizador";
+"preference.title.renderer.auto" = "Auto: gl4es ou ANGLE";
+"preference.title.renderer.gl4es" = "gl4es 1.1.4 - exports OpenGL 2.1";
+"preference.title.renderer.angle" = "ANGLE (1.17+) - exporta OpenGL 3.2 (Perfil de navegação, limitado)";
+"preference.title.renderer.zink" = "Zink (Mesa 21.0) - exports OpenGL 4.1";
+"preference.detail.renderer" = "Alterar o mecanismo de renderização OpenGL para usar";
+
+"preference.title.resolution" = "Resolução (%)";
+"preference.detail.resolution" = "Permite que você diminua a resolução do jogo.";
+
 "preference.title.disable_gesture" = "Desativar gestos";
+"preference.title.press_duration" = "Duração de pressionamento longo (ms)";
+"preference.title.button_scale" = "Escala dos botões virtuais (%)";
+"preference.title.mouse_scale" = "Escala do mouse (%)";
+"preference.detail.mouse_scale" = "Alterar o tamanho do mouse virtual";
+"preference.title.mouse_speed" = "Velocidade do mouse (%)";
+"preference.detail.mouse_speed" = "Alterar a velocidade do mouse virtual";
+"preference.title.virtmouse_enable" = "Mouse virtual";
+"preference.title.slideable_hotbar" = "Hotbar deslizante";
+"preference.title.java_home" = "Use Java 17 para o Minecraft < 1.17";
 "preference.title.java_args" = "Argumentos JVM";
 "preference.placeholder.java_args" = "Especifique os argumentos...";
 "preference.title.auto_ram" = "RAM automática";
 "preference.detail.auto_ram" = "Ativa o ajuste automático de RAM";
+"preference.title.allocated_memory" = "Alocação de memória (MB)";
 "preference.detail.allocated_memory" = "Controla o quanto de RAM será usado pelo Minecraft";
+"preference.title.custom_env" = "Variáveis ambientais";
+"preference.detail.custom_env" = "Esta opção está em construção.";
+
+"preference.title.debug_skip_wait_jit" = "Ignorar caixa de diálogo \"Aguardando JIT\"";
+"preference.title.debug_ipad_ui" = "Desbloquear iPadOS UI";
+"preference.detail.debug_ipad_ui" = "Desbloqueie a interface de usuário exclusiva do iPad (alerta, teclado, etc.) se habilitada ou iPhone UI se estiver desativado.";
+"preference.title.debug_auto_correction" = "Auto correção";
+"preference.detail.debug_auto_correction" = "Habilitar correção automática ao digitar texto no jogo.";
+"preference.title.debug_hide_home_indicator" = "Ocultar indicador principal";
+"preference.detail.debug_hide_home_indicator" = "Isto desativará o indicador de casa de bloqueio. Você precisará usar o Acesso Orientado para ocultar e bloquear o indicador de casa ao mesmo tempo.";
+"preference.title.debug_show_layout_bounds" = "Mostrar limites de layout";
+"preference.detail.debug_show_layout_bounds" = "Mostrar limites e margens do clipe";
+"preference.title.debug_show_layout_overlap" = "Mostrar sobreposição de layout";
 "preference.detail.debug_show_layout_overlap" = "Sobreponha cada exibições com cores transparentes para revelar visões de sobreposição.";
