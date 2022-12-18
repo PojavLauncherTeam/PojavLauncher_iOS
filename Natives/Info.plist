@@ -85,6 +85,8 @@
 	<string>2.1</string>
 	<key>GCSupportsControllerUserInteraction</key>
 	<true/>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
 	<key>GCSupportedGameControllers</key>
 	<array>
 		<dict>

@@ -219,6 +219,7 @@ package: native java jre assets
 	$(call DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs)
 	$(call DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs_caciocavallo)
 	$(call DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs_caciocavallo17)
+	@cp -R $(SOURCEDIR)/Natives/en.lproj/LaunchScreen.storyboardc $(WORKINGDIR)/PojavLauncher.app/Base.lproj/ || exit 1
 	@cp -R $(SOURCEDIR)/Natives/resources/* $(WORKINGDIR)/PojavLauncher.app/ || exit 1
 	@cp $(WORKINGDIR)/*.dylib $(WORKINGDIR)/PojavLauncher.app/Frameworks/ || exit 1
 	@cp -R $(WORKINGDIR)/*.framework $(WORKINGDIR)/PojavLauncher.app/Frameworks/ || exit 1
