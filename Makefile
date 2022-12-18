@@ -7,10 +7,9 @@ OUTPUTDIR   := $(SOURCEDIR)/artifacts
 WORKINGDIR  := $(SOURCEDIR)/Natives/build
 DETECTPLAT  := $(shell uname -s)
 DETECTARCH  := $(shell uname -m)
-VERSION     := $(shell cat $(SOURCEDIR)/DEBIAN/control.development | grep Version | cut -b 10-60)
+VERSION     := 2.2
 BRANCH      := $(shell git branch --show-current)
 COMMIT      := $(shell git log --oneline | sed '2,10000000d' | cut -b 1-7)
-IOS15PREF   := private/preboot/procursus
 
 # Release vs Debug
 RELEASE ?= 0
@@ -30,32 +29,19 @@ ifeq ($(DETECTPLAT),Darwin)
 ifeq ($(shell sw_vers -productName),macOS)
 IOS         := 0
 SDKPATH     ?= $(shell xcrun --sdk iphoneos --show-sdk-path)
-BOOTJDK     ?= /usr/bin
-ifneq (,$(findstring arm,DETECTARCH))
-SYSARCH     := arm
-$(warning Building on an Apple-Silicon Mac.)
-else ifneq (,$(findstring 86,$(DETECTARCH)))
-SYSARCH     := x86_64
-$(warning Building on an Intel or AMD-based Mac.)
-endif
-ifdef DEVICE_IP
-DEVICE_PORT ?= 22
-endif
+BOOTJDK     ?= $(shell /usr/libexec/java_home -v 1.8)/bin
+$(warning Building on macOS.)
 else
 IOS         := 1
 SDKPATH     ?= /usr/share/SDKs/iPhoneOS.sdk
 BOOTJDK     ?= /usr/lib/jvm/java-8-openjdk/bin
-SYSARCH     := arm
-DEVICE_IP   ?= 127.0.0.1
-DEVICE_PORT ?= 22
-$(warning Building on a jailbroken iOS device.)
+$(warning Building on iOS.)
 endif
 else ifeq ($(DETECTPLAT),Linux)
-$(warning Building on Linux. Note that all targets may not compile or require external components.)
 IOS         := 0
 # SDKPATH presence is checked later
 BOOTJDK     ?= /usr/bin
-SYSARCH     := $(shell uname -m)
+$(warning Building on Linux. Note that all targets may not compile or require external components.)
 else
 $(error This platform is not currently supported for building PojavLauncher.)
 endif
@@ -76,86 +62,12 @@ INFOPLIST  =  \
 		plutil -value $(2) -key $(1) $(3); \
 	fi
 
-# Function to use for packaging
-PACKAGING  =  \
-	ldid -S $(OUTPUTDIR)/PojavLauncher.app; \
-	ldid -S$(SOURCEDIR)/entitlements.xml $(OUTPUTDIR)/PojavLauncher.app/PojavLauncher; \
-	mkdir -p $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)_$(VERSION)_iphoneos-arm; \
-	cd $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)_$(VERSION)_iphoneos-arm; \
-	mkdir -p {DEBIAN,Applications,usr/share/pojavlauncher/{accounts,instances/default,Library/{Application\ Support,Caches}}}; \
-	cd usr/share/pojavlauncher; \
-	ln -sf ../../instances/default Library/Application\ Support/minecraft; \
-	cd $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)_$(VERSION)_iphoneos-arm; \
-	if [ '$(NOSTDIN)' = '1' ]; then \
-		echo '$(SUDOPASS)' | sudo -S chown -R 501:501 usr/share/pojavlauncher; \
-	else \
-		sudo chown -R 501:501 usr/share/pojavlauncher; \
-	fi; \
-	cp -r $(OUTPUTDIR)/PojavLauncher.app Applications/PojavLauncher.app; \
-	cp $(SOURCEDIR)/DEBIAN/control.$(1) DEBIAN/control; \
-	cp $(SOURCEDIR)/DEBIAN/postinst DEBIAN/postinst; \
-	cd $(OUTPUTDIR); \
-	fakeroot dpkg-deb -Zxz -b $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)_$(VERSION)_iphoneos-arm; \
-	mkdir -p $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)-rootless_$(VERSION)_iphoneos-arm64; \
-	cd $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)-rootless_$(VERSION)_iphoneos-arm64; \
-	mkdir -p {DEBIAN,$(IOS15PREF)/{Applications,usr/share/pojavlauncher/{accounts,instances/default,Library/{Application\ Support,Caches}}}}; \
-	cd $(IOS15PREF)/usr/share/pojavlauncher; \
-	ln -sf ../../instances/default Library/Application\ Support/minecraft; \
-	cd $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)-rootless_$(VERSION)_iphoneos-arm64; \
-	if [ '$(NOSTDIN)' = '1' ]; then \
-		echo '$(SUDOPASS)' | sudo -S chown -R 501:501 $(IOS15PREF)/usr/share/pojavlauncher; \
-	else \
-		sudo chown -R 501:501 $(IOS15PREF)/usr/share/pojavlauncher; \
-	fi; \
-	cp -r $(OUTPUTDIR)/PojavLauncher.app $(IOS15PREF)/Applications/PojavLauncher.app; \
-	cp -r $(SOURCEDIR)/DEBIAN/control.$(1)-rootless DEBIAN/control; \
-	cp $(SOURCEDIR)/DEBIAN/postinst DEBIAN/postinst; \
-	cd $(OUTPUTDIR); \
-	fakeroot dpkg-deb -Zxz -b $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)-rootless_$(VERSION)_iphoneos-arm64
-
 # Function to check directories
 DIRCHECK   = \
 	if [ ! -d '$(1)' ]; then \
 		mkdir $(1); \
 	else \
 		sudo rm -rf $(1)/*; \
-	fi
-
-# Function to copy + install
-INSTALL    = \
-	echo 'Please note that this may not work properly. If it doesn'\''t work for you, you can manually extract the .deb in /var/tmp/net.kdt.pojavlauncher.$(1)_$(VERSION)_$(2).deb with dpkg or Filza.'; \
-	if [ '$(4)' = '0' ]; then \
-		scp -P $(DEVICE_PORT) $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)_$(VERSION)_$(2).deb root@$(DEVICE_IP):/var/tmp/net.kdt.pojavlauncher.$(1)_$(VERSION)_$(2).deb; \
-		ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t "dpkg -i /var/tmp/net.kdt.pojavlauncher.$(1)_$(VERSION)_$(2).deb; uicache -p $(3)/Applications/PojavLauncher.app"; \
-	else \
-		sudo dpkg -i $(OUTPUTDIR)/net.kdt.pojavlauncher.$(1)_$(VERSION)_$(2).deb; uicache -p $(3)/Applications/PojavLauncher.app; \
-	fi
-
-# Function to copy + deploy
-DEPLOY     = \
-	ldid -S$(SOURCEDIR)/entitlements.xml $(WORKINGDIR)/PojavLauncher.app/PojavLauncher; \
-	if [ '$(2)' = '0' ]; then \
-		scp -r -P $(DEVICE_PORT) -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" \
-			$(WORKINGDIR)/*.framework \
-			$(WORKINGDIR)/*.dylib \
-			$(WORKINGDIR)/PojavLauncher.app/PojavLauncher \
-			$(SOURCEDIR)/JavaApp/local_out/*.jar \
-			root@$(DEVICE_IP):/var/tmp/; \
-		ssh root@$(DEVICE_IP) -p $(DEVICE_PORT) -t " \
-			mv /var/tmp/*.dylib $(1)/Applications/PojavLauncher.app/Frameworks/ && \
-			mv /var/tmp/*.framework $(1)/Applications/PojavLauncher.app/Frameworks/ && \
-			mv /var/tmp/PojavLauncher $(1)/Applications/PojavLauncher.app/PojavLauncher && \
-			mv /var/tmp/*.jar $(1)/Applications/PojavLauncher.app/libs/ && \
-			cd $(1)/Applications/PojavLauncher.app/Frameworks && \
-			chown -R 501:501 $(1)/Applications/PojavLauncher.app/*"; \
-	else \
-		sudo rm -rf $(1)/Applications/PojavLauncher.app/Frameworks/libOSMesaOverride.dylib.framework; \
-		sudo mv $(WORKINGDIR)/*.dylib $(1)/Applications/PojavLauncher.app/Frameworks/; \
-		sudo mv $(WORKINGDIR)/*.framework $(1)/Applications/PojavLauncher.app/Frameworks/; \
-		sudo mv $(WORKINGDIR)/PojavLauncher.app/PojavLauncher $(1)/Applications/PojavLauncher.app/PojavLauncher; \
-		sudo mv $(SOURCEDIR)/JavaApp/local_out/*.jar $(1)/Applications/PojavLauncher.app/libs/; \
-		cd $(1)/Applications/PojavLauncher.app/Frameworks; \
-		sudo chown -R 501:501 $(1)/Applications/PojavLauncher.app/*; \
 	fi
 
 # Make sure everything is already available for use. Error if they require something
@@ -175,14 +87,6 @@ endif
 
 ifneq ($(call DEPCHECK,ldid),1)
 $(error You need to install ldid)
-endif
-
-ifneq ($(call DEPCHECK,fakeroot -v),1)
-$(error You need to install fakeroot)
-endif
-
-ifneq ($(call DEPCHECK,dpkg-deb --version),1)
-$(error You need to install dpkg-dev)
 endif
 
 ifeq ($(DETECTPLAT),Linux)
@@ -211,14 +115,13 @@ endif
 #  check   - Makes sure that all variables are correct.
 #  native  - Builds the Objective-C code.
 #  java    - Builds the Java code.
+#  jre     - Download iOS JRE and/or unpack it for use.
 #  extras  - Builds the Assets and Storyboard.
-#  deb     - Builds the Debian package. Will be removed in 2.2.
-#  ipa     - Builds the application package.
-#  install - runs deb + installs to jailbroken device. Will be removed in 2.2.
-#  deploy  - runs native and java + installs to jailbroken device. Will be removed in 2.2.
+#  package - Builds the application package.
+#  deploy  - runs native and java + installs to jailbroken device.
 #  dsym    - Generates debug symbol files
 
-all: clean native java extras deb dsym ipa
+all: clean native java jre extras package dsym
 
 check:
 	@printf '\nDumping all Makefile variables.\n'
@@ -234,17 +137,13 @@ check:
 	@printf 'BRANCH               - $(BRANCH)\n'
 	@printf 'COMMIT               - $(COMMIT)\n'
 	@printf 'RELEASE              - $(RELEASE)\n'
-	@printf 'IOS15PREF            - $(IOS15PREF)\n'
 	@printf 'IOS                  - $(IOS)\n'
-	@printf 'SYSARCH              - $(SYSARCH)\n'
 	@printf 'POJAV_BUNDLE_DIR     - $(POJAV_BUNDLE_DIR)\n'
 	@printf 'POJAV_JRE_DIR        - $(POJAV_JRE_DIR)\n'
-	@printf 'DEVICE_IP            - $(DEVICE_IP)\n'
-	@printf 'DEVICE_PORT          - $(DEVICE_PORT)\n'
 	@printf '\nVerify that all of the variables are correct.\n'
 	
 native:
-	@echo 'Building PojavLauncher $(VERSION) - NATIVES - Start'
+	@echo '[PojavLauncher v$(VERSION)] native - start'
 	@mkdir -p $(WORKINGDIR)
 	@cd $(WORKINGDIR) && cmake . \
 		-DCMAKE_BUILD_TYPE=$(CMAKE_BUILD_TYPE) \
@@ -253,7 +152,7 @@ native:
 		-DCMAKE_SYSTEM_PROCESSOR=aarch64 \
 		-DCMAKE_OSX_SYSROOT="$(SDKPATH)" \
 		-DCMAKE_OSX_ARCHITECTURES=arm64 \
-		-DCMAKE_C_FLAGS="-arch arm64 -miphoneos-version-min=12.0" \
+		-DCMAKE_C_FLAGS="-arch arm64 -miphoneos-version-min=12.2" \
 		-DCONFIG_BRANCH="$(BRANCH)" \
 		-DCONFIG_COMMIT="$(COMMIT)" \
 		-DCONFIG_RELEASE=$(RELEASE) \
@@ -262,10 +161,10 @@ native:
 	@cmake --build $(WORKINGDIR) --config $(CMAKE_BUILD_TYPE) -j$(JOBS)
 	@# --target awt_headless awt_xawt libOSMesaOverride.dylib tinygl4angle PojavLauncher
 	@rm $(WORKINGDIR)/libawt_headless.dylib
-	@echo 'Building PojavLauncher $(VERSION) - NATIVES - End'
+	@echo '[PojavLauncher v$(VERSION)] native - end'
 
 java:
-	@echo 'Building PojavLauncher $(VERSION) - JAVA - Start'
+	@echo '[PojavLauncher v$(VERSION)] java - start'
 	@cd $(SOURCEDIR)/JavaApp; \
 	mkdir -p local_out/classes; \
 	$(BOOTJDK)/javac -cp "libs/*:libs_caciocavallo/*" -d local_out/classes $$(find src -type f -name "*.java" -print) -XDignore.symbol.file || exit 1; \
@@ -273,20 +172,10 @@ java:
 	$(BOOTJDK)/jar -cf ../launcher.jar android com net || exit 1; \
 	cp $(SOURCEDIR)/JavaApp/libs/lwjgl3-minecraft.jar ../lwjgl3-minecraft.jar || exit 1; \
 	$(BOOTJDK)/jar -uf ../lwjgl3-minecraft.jar org || exit 1;
-	@echo 'Building PojavLauncher $(VERSION) - JAVA - End'
-
-extras:
-	@echo 'Building PojavLauncher $(VERSION) - EXTRA - Start'
-	@if [ '$(IOS)' = '0' ]; then \
-		mkdir -p $(WORKINGDIR)/PojavLauncher.app/Base.lproj; \
-		xcrun actool $(SOURCEDIR)/Natives/Assets.xcassets --compile $(SOURCEDIR)/Natives/resources --platform iphoneos --minimum-deployment-target 12.0 --app-icon AppIcon-Light --alternate-app-icon AppIcon-Dark --output-partial-info-plist /dev/null || exit 1; \
-		ibtool --compile $(WORKINGDIR)/PojavLauncher.app/Base.lproj/LaunchScreen.storyboardc $(SOURCEDIR)/Natives/en.lproj/LaunchScreen.storyboard || exit 1; \
-	elif [ '$(IOS)' = '1' ]; then \
-		echo 'Due to the required tools not being available, you cannot compile the extras for PojavLauncher with an iOS device.'; \
-	fi
-	@echo 'Building PojavLauncher $(VERSION) - EXTRAS - End'
+	@echo '[PojavLauncher v$(VERSION)] java - end'
 
 jre:
+	@echo '[PojavLauncher v$(VERSION)] jre - start'
 	@mkdir -p $(SOURCEDIR)/depends; \
 	cd $(SOURCEDIR)/depends; \
 	if [ ! -f "java-8-openjdk/release" ] && [ ! -f "$(ls jre8-*.tar.xz)" ]; then \
@@ -313,15 +202,10 @@ jre:
 	cp -R $(POJAV_JRE17_DIR) $(WORKINGDIR)/PojavLauncher.app/jvm/; \
 	cp $(WORKINGDIR)/libawt_xawt.dylib $(WORKINGDIR)/PojavLauncher.app/jvm/java-17-openjdk/lib/; \
 	cp $(WORKINGDIR)/libawt_xawt.dylib $(WORKINGDIR)/PojavLauncher.app/jvm/java-8-openjdk/lib/; \
+	echo '[PojavLauncher v$(VERSION)] jre - end'
 
-deb: native java extras jre
-	@echo 'Building PojavLauncher $(VERSION) - DEB - Start'
-	@if [ '$(IOS)' = '1' ]; then \
-		mkdir -p $(WORKINGDIR)/PojavLauncher.app/{Frameworks,Base.lproj}; \
-		cp -R $(SOURCEDIR)/Natives/en.lproj/*.storyboardc $(WORKINGDIR)/PojavLauncher.app/Base.lproj/ || exit 1; \
-		cp -R $(SOURCEDIR)/Natives/Info.plist $(WORKINGDIR)/PojavLauncher.app/Info.plist || exit 1;\
-		cp -R $(SOURCEDIR)/Natives/PkgInfo $(WORKINGDIR)/PojavLauncher.app/PkgInfo || exit 1; \
-	fi
+package: native java jre
+	@echo '[PojavLauncher v$(VERSION)] package - start'
 	$(call DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs)
 	$(call DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs_caciocavallo)
 	$(call DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs_caciocavallo17)
@@ -334,70 +218,61 @@ deb: native java extras jre
 	@cp -R $(SOURCEDIR)/Natives/*.lproj $(WORKINGDIR)/PojavLauncher.app/ || exit 1
 	$(call DIRCHECK,$(OUTPUTDIR))
 	@cp -R $(WORKINGDIR)/PojavLauncher.app $(OUTPUTDIR)
-	@if [ '$(RELEASE)' = '1' ]; then \
-		$(call PACKAGING,release); \
-	else \
-		$(call PACKAGING,development); \
-	fi
-	@echo 'Building PojavLauncher $(VERSION) - DEB - End'
-
-dsym: deb
-	@echo 'Building PojavLauncher $(VERSION) - DSYM - Start'
-	@cd $(OUTPUTDIR) && dsymutil --arch arm64 $(OUTPUTDIR)/PojavLauncher.app/PojavLauncher
-	@rm -rf $(OUTPUTDIR)/PojavLauncher.dSYM
-	@mv $(OUTPUTDIR)/PojavLauncher.app/PojavLauncher.dSYM $(OUTPUTDIR)/PojavLauncher.dSYM
-	@echo 'Building PojavLauncher $(VERSION) - DSYM - Start'
-
-ipa: dsym
-	echo 'Building PojavLauncher $(VERSION) - IPA - Start'
+	ldid -S$(SOURCEDIR)/entitlements.xml $(OUTPUTDIR)/PojavLauncher.app/PojavLauncher; \
 	rm -f $(OUTPUTDIR)/*.ipa; \
 	cd $(OUTPUTDIR); \
 	$(call DIRCHECK,Payload); \
 	mv PojavLauncher.app Payload/; \
 	chmod -R 755 Payload; \
-	sudo chown -R 501:501 Payload; \
+	if [ '$(NOSTDIN)' = '1' ]; then \
+		echo '$(SUDOPASS)' | sudo -S chown -R 501:501 Payload; \
+	else \
+		sudo chown -R 501:501 Payload; \
+	fi; \
 	zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher-$(VERSION).ipa Payload/*
-	@echo 'Building PojavLauncher $(VERSION) - IPA - End'
+	@echo '[PojavLauncher v$(VERSION)] package - end'
 
-install: deb
-	@echo 'Building PojavLauncher $(VERSION) - INSTALL - Start'
-	@if [ '$(DEVICE_IP)' != '' ]; then \
-		if [ '$(RELEASE)' = '1' ]; then \
-			if [ '$(ROOTLESS)' = '1' ]; then \
-				$(call INSTALL,release-rootless,iphoneos-arm64,$(IOS15PREF)); \
-			else \
-				$(call INSTALL,release,iphoneos-arm); \
-			fi; \
-		else \
-			if [ '$(ROOTLESS)' = '1' ]; then \
-				$(call INSTALL,development-rootless,iphoneos-arm64,$(IOS15PREF)); \
-			else \
-				$(call INSTALL,development,iphoneos-arm); \
-			fi; \
-		fi; \
+dsym: package
+	@echo '[PojavLauncher v$(VERSION)] dsym - start'
+	@cd $(OUTPUTDIR); \
+	if [ '$(NOSTDIN)' = '1' ]; then \
+		echo '$(SUDOPASS)' | sudo -S dsymutil --arch arm64 $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher; \
+		echo '$(SUDOPASS)' | sudo -S rm -rf $(OUTPUTDIR)/PojavLauncher.dSYM; \
+		echo '$(SUDOPASS)' | sudo -S mv $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher.dSYM $(OUTPUTDIR)/PojavLauncher.dSYM; \
+		echo '$(SUDOPASS)' | sudo -S rm -rf $(OUTPUTDIR)/Payload; \
 	else \
-		echo 'You need to run '\''export DEVICE_IP=<your iOS device IP>'\'' to use make install.'; \
-		echo 'If you specified a different port for your device to listen for SSH connections, you need to run '\''export DEVICE_PORT=<your port>'\'' as well.'; \
+		sudo dsymutil --arch arm64 $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher; \
+		sudo rm -rf $(OUTPUTDIR)/PojavLauncher.dSYM; \
+		sudo mv $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher.dSYM $(OUTPUTDIR)/PojavLauncher.dSYM; \
+		sudo rm -rf $(OUTPUTDIR)/Payload; \
 	fi
-	@echo 'Building PojavLauncher $(VERSION) - INSTALL - End'
-
-# deb
+	@echo '[PojavLauncher v$(VERSION)] dsym - end'
+	
 deploy:
-	@echo 'Building PojavLauncher $(VERSION) - DEPLOY - Start'
-	@if [ '$(DEVICE_IP)' != '' ]; then \
-		if [ '$(ROOTLESS)' = '1' ]; then \
-			$(call DEPLOY,$(IOS15PREF),$(IOS)); \
-		else \
-			$(call DEPLOY,'/',$(IOS)); \
-		fi; \
+	@echo '[PojavLauncher v$(VERSION)] deploy - start'
+	@ldid -S$(SOURCEDIR)/entitlements.xml $(WORKINGDIR)/PojavLauncher.app/PojavLauncher; \
+	if [ '$(NOSTDIN)' = '1' ]; then \
+		echo '$(SUDOPASS)' | sudo -S rm -rf /Applications/PojavLauncher.app/Frameworks/libOSMesaOverride.dylib.framework; \
+		echo '$(SUDOPASS)' | sudo -S mv $(WORKINGDIR)/*.dylib /Applications/PojavLauncher.app/Frameworks/; \
+		echo '$(SUDOPASS)' | sudo -S mv $(WORKINGDIR)/*.framework /Applications/PojavLauncher.app/Frameworks/; \
+		echo '$(SUDOPASS)' | sudo -S mv $(WORKINGDIR)/PojavLauncher.app/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher; \
+		echo '$(SUDOPASS)' | sudo -S mv $(SOURCEDIR)/JavaApp/local_out/*.jar /Applications/PojavLauncher.app/libs/; \
+		cd /Applications/PojavLauncher.app/Frameworks; \
+		echo '$(SUDOPASS)' | sudo -S chown -R 501:501 /Applications/PojavLauncher.app/*; \
 	else \
-		echo 'You need to run '\''export DEVICE_IP=<your iOS device IP>'\'' to use make deploy.'; \
-		echo 'If you specified a different port for your device to listen for SSH connections, you need to run '\''export DEVICE_PORT=<your port>'\'' as well.'; \
-	fi;
-	@echo 'Building PojavLauncher $(VERSION) - DEPLOY - End'
+		sudo rm -rf /Applications/PojavLauncher.app/Frameworks/libOSMesaOverride.dylib.framework; \
+		sudo mv $(WORKINGDIR)/*.dylib /Applications/PojavLauncher.app/Frameworks/; \
+		sudo mv $(WORKINGDIR)/*.framework /Applications/PojavLauncher.app/Frameworks/; \
+		sudo mv $(WORKINGDIR)/PojavLauncher.app/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher; \
+		sudo mv $(SOURCEDIR)/JavaApp/local_out/*.jar /Applications/PojavLauncher.app/libs/; \
+		cd /Applications/PojavLauncher.app/Frameworks; \
+		sudo chown -R 501:501 /Applications/PojavLauncher.app/*; \
+	fi; \
+	
+	@echo '[PojavLauncher v$(VERSION)] deploy - end'
 
 clean:
-	@echo 'Building PojavLauncher $(VERSION) - CLEAN - Start'
+	@echo '[PojavLauncher v$(VERSION)] clean - start'
 	@if [ '$(NOSTDIN)' = '1' ]; then \
 		echo '$(SUDOPASS)' | sudo -S rm -rf $(WORKINGDIR); \
 		echo '$(SUDOPASS)' | sudo -S rm -rf JavaApp/build; \
@@ -407,21 +282,22 @@ clean:
 		sudo rm -rf JavaApp/build; \
 		sudo rm -rf $(OUTPUTDIR); \
 	fi
-	@echo 'Building PojavLauncher $(VERSION) - CLEAN - End'
+	@echo '[PojavLauncher v$(VERSION)] clean - end'
 
 help:
 	@echo 'Makefile to compile PojavLauncher'
 	@echo ''
 	@echo 'Usage:'
 	@echo '    make                                Makes everything under all'
+	@echo '    make help                           Displays this message'
 	@echo '    make all                            Builds the entire app'
 	@echo '    make native                         Builds the native app'
 	@echo '    make java                           Builds the Java app'
-	@echo '    make deb      (DEPRECATED)          Builds deb of PojavLauncher'
-	@echo '    make ipa                            Builds ipa of PojavLauncher'
-	@echo '    make install  (DEPRECATED)          Copy package to local iDevice'
-	@echo '    make deploy   (DEPRECATED)          Copy package to local iDevice'
+	@echo '    make jre                            Downloads/unpacks the iOS JREs'
+	@echo '    make package                        Builds ipa of PojavLauncher'
+	@echo '    make deploy                         Copies files to local iDevice'
 	@echo '    make dsym                           Generate debug symbol files'
 	@echo '    make clean                          Cleans build directories'
+	@echo '    make check                          Dump all variables for checking'
 
-.PHONY: all clean native java extras deb ipa install deploy dsym
+.PHONY: all clean check native java jre package dsym deploy 
