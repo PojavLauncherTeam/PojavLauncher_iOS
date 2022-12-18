@@ -33,7 +33,6 @@
 "Settings" = "Settings";
 
 "preference.title.renderer" = "Renderer";
-
 "preference.title.disable_gesture" = "Disable gestures";
 "preference.title.java_args" = "JVM Launch arguments";
 "preference.title.auto_ram" = "Auto RAM";
