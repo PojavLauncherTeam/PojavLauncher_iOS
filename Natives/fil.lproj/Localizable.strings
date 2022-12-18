@@ -64,9 +64,6 @@
 "login.warn.title.ram_unjb" = "Enabled ang Memory slider";
 "login.warn.message.ram_unjb" = "Magkaroon ng kamalayan na ang pagbabago sa setting na ito ay maaaring magdulot ng kawalang-tatag ng laro o masira ang kakayahang maglaro.";
 
-"login.warn.title.a7" = "Ito ang huling update para sa device na ito.";
-"login.warn.message.a7" = "Hindi susuportahan ng PojavLauncher 2.2 ang device na ito, dahil sa mga limitasyon ng hardware at software.";
-
 "login.warn.title.iosver" = "Ito ang huling update para sa bersyon ng iOS na ito.";
 "login.warn.message.iosver" = "Hindi susuportahan ng isang hinaharap na bersyon ng PojavLauncher ang iOS 12 o 13, dahil sa mga hindi pagkakapare-pareho ng tampok at mga hadlang sa pag-unlad.";
 
