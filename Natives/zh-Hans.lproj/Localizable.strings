@@ -82,8 +82,6 @@
 
 // Login buttons
 "login.menu.sendlogs" = "发送日志文件";
-
-"login.option.add" = "添加账号";
 "login.option.select" = "选择账户";
 "login.option.microsoft" = "微软账户";
 "login.option.local" = "本机账户(离线模式)";
@@ -167,7 +165,6 @@
 
 "preference.title.resolution" = "分辨率缩放 (%)";
 "preference.detail.resolution" = "降低分辨率可能会提升FPS。默认分辨率为屏幕的分辨率";
-
 "preference.title.disable_gesture" = "禁用手势";
 "preference.title.press_duration" = "长按延迟（毫秒）";
 "preference.detail.press_duration" = "修改长按摧毁方块、丢弃物品的触发时长。";
