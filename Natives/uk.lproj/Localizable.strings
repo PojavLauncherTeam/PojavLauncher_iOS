@@ -137,7 +137,6 @@
 "preference.detail.debug_logging" = "Записує внутрішні налаштування і дії на latestlog.txt. Це допомагає розробникам швидше знаходити проблеми, але Minecraft може працювати повільніше, оскільки журнали пишуться часто.";
 "preference.title.jitstreamer_server" = "JitStreamer IP сервер";
 "preference.detail.jitstreamer_server" = "Дозволяє вам змінити на користувацькі IP сервера JitStreamer, наприклад як для екземплярів свого хостингу. Цей параметр може бути у спокої, якщо ви використовуєте стандартні сервери JitStreamer.";
-
 "preference.title.appicon" = "Встановити іконку додатка";
 "preference.detail.appicon" = "Дозволяє обрати різні значки основного екрана для PojavLauncher.";
 "preference.title.appicon-default" = "Знайоме світле PojavLauncher";
