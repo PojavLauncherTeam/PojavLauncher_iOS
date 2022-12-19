@@ -146,6 +146,8 @@
 "preference.detail.appicon" = "Erlaubt es dir, zwischen verschiedenen Startbildschirm-Icons für PojavLauncher zu wählen.";
 "preference.title.appicon-default" = "Bekanntes PojavLauncher-Icon (Hell)";
 "preference.title.appicon-dark" = "Bekanntes PojavLauncher-Icon (Dunkel)";
+"preference.title.hidden_sidebar" = "Hauptmenü-Sidebar standardmäßig ausblenden";
+"preference.detail.hidden_sidebar" = "Ermöglicht es dir, die Sidebar im Hauptmenü standardmäßig und beim Drehen auf iOS 14+ auszublenden.";
 
 "preference.title.reset_warnings" = "Alle Warnungen zurücksetzen";
 "preference.title.done.reset_warnings" = "Alle Warnungen wurden zurückgesetzt.";
