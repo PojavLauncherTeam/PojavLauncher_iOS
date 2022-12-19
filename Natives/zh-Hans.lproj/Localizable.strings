@@ -89,6 +89,8 @@
 "login.warn.title.ram_unjb" = "关闭自动分配内存风险通知";
 "login.warn.message.ram_unjb" = "关闭自动分配内存后可能导致游戏不稳定或完全不能进入游戏，这是因为IOS系统可用内存本来就小。我们推荐你更换更大运行内存的设备使用应用";
 
+"login.warn.title.a7" = "此设备不支持 PojavLauncher 2.2。";
+
 "login.warn.title.iosver" = "这是此 iOS 设备的最后一次更新。";
 "login.warn.message.iosver" = "PojavLauncher在未来某个版本更新后不在支持IOS14以下版本系统使用";
 
@@ -144,6 +146,8 @@
 "preference.detail.appicon" = "允许您为 PojavLauncher 选择不同的主屏幕图标。";
 "preference.title.appicon-default" = "设置 PojavLauncher 图标为浅色";
 "preference.title.appicon-dark" = "设置 PojavLauncher 图标为深色";
+"preference.title.hidden_sidebar" = "默认隐藏主菜单侧边栏";
+"preference.detail.hidden_sidebar" = "允许您在 iOS 14 及更高版本中默认或旋转中隐藏主菜单上的侧边栏。";
 
 "preference.title.reset_warnings" = "重置所有警告";
 "preference.title.done.reset_warnings" = "带有“警告”的设置选项已被恢复默认状态";
@@ -161,6 +165,9 @@
 
 "preference.title.resolution" = "分辨率缩放 (%)";
 "preference.detail.resolution" = "降低分辨率可能会提升FPS。默认分辨率为屏幕的分辨率";
+
+"preference.title.fullscreen_airplay" = "全屏 AirPlay";
+"preference.detail.fullscreen_airplay" = "允许在外部显示器上全屏显示游戏，而不是直接镜像显示。";
 "preference.title.disable_gesture" = "禁用手势";
 "preference.title.press_duration" = "长按延迟（毫秒）";
 "preference.detail.press_duration" = "修改长按摧毁方块、丢弃物品的触发时长。";
