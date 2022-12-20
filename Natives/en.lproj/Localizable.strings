@@ -89,6 +89,8 @@
 "login.warn.title.ram_unjb" = "Memory slider is enabled";
 "login.warn.message.ram_unjb" = "Be aware that changing this setting can cause game instability or break the ability to play at all.";
 
+"login.warn.title.a7" = "PojavLauncher 2.2 is not supported on this device.";
+
 "login.warn.title.iosver" = "This is the last update for this iOS version.";
 "login.warn.message.iosver" = "A future version of PojavLauncher will not support iOS 12 or 13, due to feature inconsistencies and development hurdles.";
 
@@ -144,6 +146,8 @@
 "preference.detail.appicon" = "Allows you to choose between different Home Screen icons for PojavLauncher.";
 "preference.title.appicon-default" = "Familiar PojavLauncher light";
 "preference.title.appicon-dark" = "Familiar PojavLauncher dark";
+"preference.title.hidden_sidebar" = "Hide main menu sidebar by default";
+"preference.detail.hidden_sidebar" = "Allows you to hide the sidebar on the main menu by default and when rotating on iOS 14 and newer.";
 
 "preference.title.reset_warnings" = "Reset all warnings";
 "preference.title.done.reset_warnings" = "All warnings have been reset.";
@@ -161,6 +165,9 @@
 
 "preference.title.resolution" = "Resolution (%)";
 "preference.detail.resolution" = "Allows you to decrease the game resolution.";
+
+"preference.title.fullscreen_airplay" = "Fullscreen AirPlay";
+"preference.detail.fullscreen_airplay" = "Allows presenting fullscreen game window on the external display rather than mirroring everything on screen.";
 "preference.title.disable_gesture" = "Disable gestures";
 "preference.title.press_duration" = "Long-press duration (ms)";
 "preference.detail.press_duration" = "Trigger press duration for destroying blocks and dropping items.";
