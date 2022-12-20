@@ -46,7 +46,7 @@ extern NSMutableDictionary *prefDict;
     BOOL isPortrait = size.height > size.width;
     if (@available(iOS 14.0, tvOS 14.0, *)) {
         if (self.preferredDisplayMode == 0 || self.displayMode != UISplitViewControllerDisplayModeSecondaryOnly) {
-            if([getPreference(@"hidden_sidebar") boolValue]) {
+            if([getPreference(@"hidden_sidebar") boolValue] == NO) {
                 self.preferredDisplayMode = isPortrait ?
                 UISplitViewControllerDisplayModeOneOverSecondary :
                 UISplitViewControllerDisplayModeOneBesideSecondary;
