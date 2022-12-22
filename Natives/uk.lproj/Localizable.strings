@@ -58,6 +58,7 @@
 "custom_controls.control_menu.safe_area" = "Безпечна зона";
 "custom_controls.control_menu.add_button" = "Додати кнопку";
 "custom_controls.control_menu.add_drawer" = "Додати елемент";
+"custom_controls.error.incompatible" = "Ця версія керування (код %d) не реалізована в збірці лаунчера.";
 "custom_controls.hint" = "Утримуйте будь-де для додаткових опцій";
 
 "init.migrateDir" = "Каталог даних PojavLauncher тепер у %@. Усі ваші наявні дані було переміщено в нове місце.";
@@ -88,11 +89,15 @@
 "login.warn.title.ram_unjb" = "Повзунок пам'яті увімкнено";
 "login.warn.message.ram_unjb" = "Майте на увазі, що зміна цього налаштування може призвести до нестабільности гри чи руйнування її взагалі.";
 
+"login.warn.title.a7" = "На жаль, PojavLauncher 2.2 не підтримується на вашому пристрої.";
+
 "login.warn.title.iosver" = "Це останнє оновлення для цієї версії iOS.";
 "login.warn.message.iosver" = "Майбутня версія PojavLauncher не підтримуватиме перешкоди для роботи iOS 12 чи 13, внаслідок невідповідності та обмеження розробки.";
 
 "login.warn.title.2gb" = "Пристрій має обмеження оперативної пам'яті.";
 "login.warn.message.2gb" = "Пристрої, що мають менше ніж 3 ГБ пам'яті, можуть наштовхуватися на обмеження пам'яті. Ми рекомендуємо залишити автоматичний вибір для пристрою.";
+
+"login.warn.title.demomode" = "Ваш акаунт демонстраційний";
 "login.warn.message.demomode" = "Як заміна в офлайн та локальний режимах, демо-режим дозволить вам увійти в обліковий запис Microsoft, який не володіє грою та грати в пробну версію Java Видання, введено в 1.3.1 і більш нових версій. Старіші версії містять повну версію гри, оскільки офіційний лаунчер не веде ці обмеження. Відвідайте наш веб-сайт, щоб дізнатися більше про цей перехід з автономного режиму.";
 
 "login.warn.title.localmode" = "Офлайн режим тепер локальний режим.";
@@ -141,6 +146,8 @@
 "preference.detail.appicon" = "Дозволяє обрати різні значки основного екрана для PojavLauncher.";
 "preference.title.appicon-default" = "Знайоме світле PojavLauncher";
 "preference.title.appicon-dark" = "Знайоме темне PojavLauncher";
+"preference.title.hidden_sidebar" = "Сховати основну панель меню за замовчуванням";
+"preference.detail.hidden_sidebar" = "Дозволяє сховати бічну панель в головному меню за замовчуванням і при обертанні на iOS 14 і новіше.";
 
 "preference.title.reset_warnings" = "Стерти всі попередження";
 "preference.title.done.reset_warnings" = "Всі попередження стерті.";
@@ -150,12 +157,17 @@
 "preference.title.done.reset_settings" = "Всі стандартні налаштування були відновлені.";
 
 "preference.title.renderer" = "Візуалізатор";
+"preference.title.renderer.auto" = "Авто: gl4 або ANGLE";
 "preference.title.renderer.gl4es" = "Gl4es 1.1.4 - експортує OpenGL 2.1";
+"preference.title.renderer.angle" = "ANGLE (1.17+) - експортує OpenGL 3.2 (Базовий профіль, обмежений)";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - експортує OpenGL 4.1";
 "preference.detail.renderer" = "Зміни двигун візуалізації OpenGL для використання";
 
 "preference.title.resolution" = "Роздільна здатність відео (%)";
 "preference.detail.resolution" = "Дозволяє вам зменшити роздільну здатність гри.";
+
+"preference.title.fullscreen_airplay" = "Повноекранний AirPlay";
+"preference.detail.fullscreen_airplay" = "Дозволяє презентувати повноекранне вікно гри на зовнішньому дисплеї, а не віддзеркалювати все, що є на екрані.";
 "preference.title.disable_gesture" = "Вимкнути жести";
 "preference.title.press_duration" = "Тривалість тривалого натискання (мс)";
 "preference.detail.press_duration" = "Тривалість натискання для знищення блоків і скидання речей.";
@@ -187,6 +199,8 @@
 "preference.detail.debug_skip_wait_jit" = "Це не дозволяє запускати без JIT, натомість це пропускає перевірку налагоджувача, оскільки перевірка не вдається під час певних джейлбрейків.";
 "preference.title.debug_ipad_ui" = "Розблокувати інтерфейс iPadOS";
 "preference.detail.debug_ipad_ui" = "Розблокуйте ексклюзивний інтерфейс iPad (тривоги, клавіатури тощо.) якщо ввімкнено або якщо інтерфейс iPhone вимкнено.";
+"preference.title.debug_auto_correction" = "Автовиправлення";
+"preference.detail.debug_auto_correction" = "Увімкнути автоматичне виправлення при введенні тексту у грі.";
 "preference.title.debug_hide_home_indicator" = "Сховати кнопку \"Додому\"";
 "preference.detail.debug_hide_home_indicator" = "Це вимкне блокування кнопки \"Додому\". Ви повинні використовувати Guided Access, щоб ховати та блокувати кнопку \"Додому\" за один раз.";
 "preference.title.debug_show_layout_bounds" = "Показувати межі об'єктів";
