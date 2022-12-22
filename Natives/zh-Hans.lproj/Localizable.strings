@@ -84,7 +84,7 @@
 "login.menu.sendlogs" = "发送日志文件";
 "login.option.select" = "选择账户";
 "login.option.microsoft" = "微软账户";
-"login.option.local" = "本机账户(离线模式)";
+"login.option.local" = "本机账户(不支持在线下载游戏)";
 
 "login.warn.title.ram_unjb" = "关闭自动分配内存风险通知";
 "login.warn.message.ram_unjb" = "关闭自动分配内存后可能导致游戏不稳定或完全不能进入游戏，这是因为IOS系统可用内存本来就小。我们推荐你更换更大运行内存的设备使用应用";
