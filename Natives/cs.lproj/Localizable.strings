@@ -89,6 +89,8 @@
 "login.warn.title.ram_unjb" = "Posuvník paměti je povolen";
 "login.warn.message.ram_unjb" = "Uvědomte si, že měnění tohoto nastavení může způsobit nestabilitu hry či rozbít schopnost hrát vůbec.";
 
+"login.warn.title.a7" = "Toto zařízení nepodporuje PojavLauncher 2.2.";
+
 "login.warn.title.iosver" = "Poslední aktualizace pro tuto verzi iOSu je tato.";
 "login.warn.message.iosver" = "Budoucí verze PojavLauncheru nebude podporovat iOS 12 a 13, kvůli funkčním nekonzistencím a překážkám vývoje.";
 
@@ -144,6 +146,8 @@
 "preference.detail.appicon" = "Umožnǔje vybrat mezi různými ikonami plochy PojavLauncheru.";
 "preference.title.appicon-default" = "Známá PojavLauncher světlá";
 "preference.title.appicon-dark" = "Známá PojavLauncher tmavá";
+"preference.title.hidden_sidebar" = "Skrývat hlavní postranní menu ze začátku";
+"preference.detail.hidden_sidebar" = "Umožňuje skrývat hlavní postranní panel ve hlavním menu ve výchozím nastavení při otáčení v iOSe 14 a novějších.";
 
 "preference.title.reset_warnings" = "Smazat všechna varování";
 "preference.title.done.reset_warnings" = "Všechna varování byla smazána.";
