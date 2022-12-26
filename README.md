@@ -25,7 +25,7 @@ Note: This is experimental, although game works smoothly, you should not set Ren
 - For iOS 14.0-15.5beta4, [TrollStore](https://github.com/opa334/TrollStore) is recommended to keep PojavLauncher permanently signed and have JIT enabled by itself.
 - Otherwise, install [AltStore](https://altstore.io) or [SideStore](https://github.com/SideStore/SideStore). Others will also work.
 ### Installing PojavLauncher
-#### Relesse build (AltStore/SideStore trusted source)
+#### Release build (AltStore/SideStore trusted source)
 - Add `PojavLauncher Repository` from Trusted Sources
 - Tap `FREE` to begin installing.
 #### Development build
