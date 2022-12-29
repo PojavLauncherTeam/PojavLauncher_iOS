@@ -217,7 +217,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
         margv[++margc] = "-Dawt.toolkit=net.java.openjdk.cacio.ctc.CTCToolkit";
         margv[++margc] = "-Djava.awt.graphicsenv=net.java.openjdk.cacio.ctc.CTCGraphicsEnvironment";
     } else {
-        // Required by Arc to inject DNS
+        // Required by Cosmetica to inject DNS
         margv[++margc] = "--add-opens=java.base/java.net=ALL-UNNAMED";
 
         // Setup Caciocavallo

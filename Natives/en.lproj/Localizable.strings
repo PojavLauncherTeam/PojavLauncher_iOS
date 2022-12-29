@@ -82,7 +82,9 @@
 
 // Login buttons
 "login.menu.sendlogs" = "Send your logs";
+"login.option.add" = "Add account";
 "login.option.select" = "Select account";
+"login.option.demo" = "Demo account";
 "login.option.microsoft" = "Microsoft account";
 "login.option.local" = "Local account";
 

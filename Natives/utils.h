@@ -59,7 +59,7 @@
 #define SPECIALBTN_SCROLLDOWN -8
 
 #define NSDebugLog(...) if (debugLogEnabled) { NSLog(__VA_ARGS__); }
-static BOOL debugBoundsEnabled, debugLogEnabled;
+BOOL debugBoundsEnabled, debugLogEnabled;
 
 JavaVM* runtimeJavaVMPtr;
 JNIEnv* runtimeJNIEnvPtr;

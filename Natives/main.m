@@ -327,6 +327,7 @@ int main(int argc, char *argv[]) {
     init_hookFunctions();
 
     loadPreferences(NO);
+    debugBoundsEnabled = [getPreference(@"debug_show_layout_bounds") boolValue];
     debugLogEnabled = [getPreference(@"debug_logging") boolValue];
     NSLog(@"Debug log enabled: %@", debugLogEnabled ? @"YES" : @"NO");
 
