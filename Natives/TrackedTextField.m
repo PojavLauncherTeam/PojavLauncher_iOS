@@ -26,6 +26,12 @@ extern bool isUseStackQueueCall;
     }
 }
 
+// workaround pasted text not being caught
+- (void)paste:(id)sender {
+    [super paste:sender];
+    [self sendText:UIPasteboard.generalPasteboard.string];
+}
+
 - (void)sendText:(NSString *)text {
     for (int i = 0; i < text.length; i++) {
         // Directly convert unichar to jchar since both are in UTF-16 encoding.
