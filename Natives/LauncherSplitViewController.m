@@ -51,7 +51,7 @@ extern NSMutableDictionary *prefDict;
                 UISplitViewControllerDisplayModeOneOverSecondary :
                 UISplitViewControllerDisplayModeOneBesideSecondary;
             } else {
-                self.preferredDisplayMode = UISplitViewControllerDisplayModeOneOverSecondary;
+                self.preferredDisplayMode = UISplitViewControllerDisplayModeSecondaryOnly;
             }
         }
         self.preferredSplitBehavior = isPortrait ?
