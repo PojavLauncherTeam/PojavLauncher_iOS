@@ -81,7 +81,7 @@ public class UIKit {
         PojavClassLoader loader = (PojavClassLoader) ClassLoader.getSystemClassLoader();
         loader.addURL(new File(filepath).toURI().toURL());
 
-        // LabyMod Installer uses FlatLAF which has some macOS-specific codes, so we make it thinks it's running on Linux.
+        // LabyMod Installer uses FlatLAF which has some macOS-specific codes, so we make it think it's running on Linux.
         patch_FlatLAF_setLinux();
 
         Class<?> clazz = loader.loadClass(mainClass);
