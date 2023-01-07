@@ -298,7 +298,9 @@
     remoteVersionList = nil;
 
     if (isJITEnabled()) {
-        handler();
+        dispatch_async(dispatch_get_main_queue(), ^{
+            handler();
+        });
         return;
     } else if ([getPreference(@"debug_skip_wait_jit") boolValue]) {
         NSLog(@"Debug option skipped waiting for JIT. Java might not work.");
