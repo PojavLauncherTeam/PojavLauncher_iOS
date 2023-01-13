@@ -30,6 +30,9 @@ void init_loadCustomEnv() {
         setenv("JAVA_AWT_PATH", [NSString stringWithFormat:@"%s/Frameworks/libawt.dylib", getenv("BUNDLE_PATH")].UTF8String, 1);
     }
 
+    // Silent Caciocavallo NPE error in locating Android-only lib
+    setenv("LD_LIBRARY_PATH", "", 1);
+
     // Disable overloaded functions hack for Minecraft 1.17+
     setenv("LIBGL_NOINTOVLHACK", "1", 1);
 

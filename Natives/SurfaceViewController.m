@@ -192,7 +192,6 @@ BOOL slideableHotbar;
             NSLog(@"Input: Mouse connected!");
             GCMouse* mouse = note.object;
             [self registerMouseCallbacks:mouse];
-            [self setNeedsUpdateOfPrefersPointerLocked];
             self.mousePointerView.hidden = isGrabbing;
             virtualMouseEnabled = YES;
         }];
@@ -251,6 +250,13 @@ BOOL slideableHotbar;
     }
 
     [self launchMinecraft];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    if (@available(iOS 14.0, *)) {
+        [self setNeedsUpdateOfPrefersPointerLocked];
+    }
 }
 
 - (void)updateJetsamControl {
@@ -579,6 +585,8 @@ BOOL slideableHotbar;
     mouse.mouseInput.scroll.yAxis.valueChangedHandler = ^(GCControllerAxisInput * _Nonnull axis, float value) {
         CallbackBridge_nativeSendScroll(0, -value);
     };
+
+    [self setNeedsUpdateOfPrefersPointerLocked];
 }
 
 - (void)surfaceOnClick:(UITapGestureRecognizer *)sender {

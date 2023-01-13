@@ -71,7 +71,7 @@ public final class Tools
     public static final String CTRLMAP_PATH = DIR_GAME_NEW + "/controlmap";
     public static final String CTRLDEF_FILE = DIR_GAME_NEW + "/controlmap/default.json";
     
-    public static final String LIBNAME_OPTIFINE = "optifine:OptiFine";
+    public static final String NATIVE_LIB_DIR = DIR_BUNDLE + "/Frameworks";
 
     volatile public static int mGLFWWindowWidth, mGLFWWindowHeight;
 
@@ -172,6 +172,7 @@ public final class Tools
         varArgMap.put("user_type", "msa");
         varArgMap.put("version_name", versionName);
         varArgMap.put("version_type", versionInfo.type);
+        varArgMap.put("natives_directory", Tools.NATIVE_LIB_DIR);
 
         List<String> minecraftArgs = new ArrayList<String>();
         if (versionInfo.arguments != null) {

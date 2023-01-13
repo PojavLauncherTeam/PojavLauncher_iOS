@@ -268,9 +268,9 @@
 - (void)displayProgress:(NSString *)status {
     if (status == nil) {
         [(UIActivityIndicatorView *)self.toolbarItems[0].customView stopAnimating];
-        return;
+    } else {
+        self.toolbarItems[1].title = status;
     }
-    self.toolbarItems[1].title = status;
 }
 
 - (void)enableJITWithAltJIT
