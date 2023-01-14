@@ -23,7 +23,8 @@ Note: This is experimental, although game works smoothly, you should not set Ren
 
 ### Setup the sideload app
 - For iOS 14.0-15.5beta4, [TrollStore](https://github.com/opa334/TrollStore) is recommended to keep PojavLauncher permanently signed and have JIT enabled by itself.
-- Otherwise, install [AltStore](https://altstore.io) or [SideStore](https://github.com/SideStore/SideStore). Others will also work.
+- Otherwise, install [AltStore](https://altstore.io) or [SideStore](https://github.com/SideStore/SideStore).
+- Other sideloading methods using distribution certificate (without registering UDID) are unsupported as JIT (requires `get-task-allow` entitlement for debugger) is prohibited for distribution.
 ### Installing PojavLauncher
 #### Release build (AltStore/SideStore trusted source)
 - Add `PojavLauncher Repository` from Trusted Sources
