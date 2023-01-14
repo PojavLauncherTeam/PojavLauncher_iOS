@@ -180,6 +180,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
         getenv("BUNDLE_PATH")].UTF8String;
     margv[++margc] = [NSString stringWithFormat:@"-Duser.dir=%s", getenv("POJAV_GAME_DIR")].UTF8String;
     margv[++margc] = [NSString stringWithFormat:@"-Duser.home=%s", getenv("POJAV_HOME")].UTF8String;
+    margv[++margc] = [NSString stringWithFormat:@"-Duser.timezone=%@", NSTimeZone.localTimeZone.name].UTF8String;
     margv[++margc] = [NSString stringWithFormat:@"-DUIScreen.maximumFramesPerSecond=%d", (int)UIScreen.mainScreen.maximumFramesPerSecond].UTF8String;
     margv[++margc] = "-Dorg.lwjgl.system.allocator=system";
     margv[++margc] = "-Dlog4j2.formatMsgNoLookups=true";
