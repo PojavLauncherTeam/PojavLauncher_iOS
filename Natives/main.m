@@ -314,7 +314,6 @@ int main(int argc, char * argv[]) {
     setenv("HOME", [NSFileManager.defaultManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask]
         .lastObject.path.stringByDeletingLastPathComponent.UTF8String, 1);
     if(strcmp(getenv("HOME"), "/var/mobile") == 0) {
-        [fm createDirectoryAtPath:@"/var/mobile/Documents/PojavLauncher withIntermediateDirectories:NO attributes:nil error:nil];
         setenv("POJAV_HOME", [NSString stringWithFormat:@"%s/Documents/PojavLauncher", getenv("HOME")].UTF8String, 1);
     } else {
         setenv("POJAV_HOME", [NSString stringWithFormat:@"%s/Documents", getenv("HOME")].UTF8String, 1);
