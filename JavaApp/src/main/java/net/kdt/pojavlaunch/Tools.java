@@ -420,11 +420,6 @@ public final class Tools
     public static JMinecraftVersionList.Version getVersionInfo(String versionName) {
         try {
             JMinecraftVersionList.Version customVer = Tools.GLOBAL_GSON.fromJson(read(DIR_HOME_VERSION + "/" + versionName + "/" + versionName + ".json"), JMinecraftVersionList.Version.class);
-            for (DependentLibrary lib : customVer.libraries) {
-                if (lib.name.startsWith(LIBNAME_OPTIFINE)) {
-                    customVer.optifineLib = lib;
-                }
-            }
             if (customVer.inheritsFrom == null || customVer.inheritsFrom.equals(customVer.id)) {
                 return customVer;
             } else {
@@ -434,7 +429,7 @@ public final class Tools
                 insertSafety(inheritsVer, customVer,
                              "assetIndex", "assets", "id",
                              "mainClass", "minecraftArguments",
-                             "optifineLib", "releaseTime", "time", "type"
+                             "releaseTime", "time", "type"
                              );
 
                 List<DependentLibrary> libList = new ArrayList<DependentLibrary>(Arrays.asList(inheritsVer.libraries));
@@ -455,7 +450,7 @@ public final class Tools
                             }
                         }
 
-                        if (libName != null) libList.add(lib);
+                        if (libName != null) libList.add(0, lib);
                     }
                 } finally {
                     inheritsVer.libraries = libList.toArray(new DependentLibrary[0]);
