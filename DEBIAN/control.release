@@ -4,12 +4,11 @@ Maintainer: PojavLauncherTeam <https://discord.gg/6RpEJda>
 Author: DuyKhanhTran
 Architecture: iphoneos-arm
 Version: 2.1.2
-Depends: firmware (>= 12.0), firmware (<< 15.0)
+Depends: firmware (>= 12.2), firmware (<< 15.0)
 Conflicts: pojavlauncher-dev, pojavlauncher-zink, pojavlauncher, net.kdt.pojavlauncher.release-rootless, net.kdt.pojavlauncher.development, net.kdt.pojavlauncher.development-rootless
 Replaces: pojavlauncher, pojavlauncher-dev
 Section: Games
 Priority: optional
 Homepage: https://github.com/PojavLauncherTeam/PojavLauncher_iOS
 Description: Minecraft: Java Edition launcher for iOS, based on PojavLauncher Android.
-Icon: https://repository.crystall1ne.software/images/pojavlauncher_icon.png
-SileoDepiction: https://repository.crystall1ne.software/depictions/natives/net.kdt.pojavlauncher.release.json
+Icon: https://github.com/PojavLauncherTeam/PojavLauncher_iOS/raw/main/Natives/Assets.xcassets/AppIcon-Dark.appiconset/AppIcon-Dark_1024x1024.png

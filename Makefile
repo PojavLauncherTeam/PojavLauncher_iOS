@@ -10,7 +10,7 @@ DETECTARCH  := $(shell uname -m)
 VERSION     := $(shell cat $(SOURCEDIR)/DEBIAN/control.development | grep Version | cut -b 10-60)
 BRANCH      := $(shell git branch --show-current)
 COMMIT      := $(shell git log --oneline | sed '2,10000000d' | cut -b 1-7)
-IOS15PREF   := private/preboot/procursus
+IOS15PREF   := var/jb
 
 # Release vs Debug
 RELEASE ?= 0

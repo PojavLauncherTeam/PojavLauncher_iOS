@@ -11,5 +11,4 @@ Section: Games
 Priority: optional
 Homepage: https://github.com/PojavLauncherTeam/PojavLauncher_iOS
 Description: Minecraft: Java Edition launcher for iOS, based on PojavLauncher Android.
-Icon: https://repository.crystall1ne.software/images/pojavlauncher_icon.png
-SileoDepiction: https://repository.crystall1ne.software/depictions/natives/net.kdt.pojavlauncher.development-rootless.json
+Icon: https://github.com/PojavLauncherTeam/PojavLauncher_iOS/raw/main/Natives/Assets.xcassets/AppIcon-Dark.appiconset/AppIcon-Dark_1024x1024.png
