@@ -285,6 +285,7 @@ static AFURLSessionManager* manager;
             library[@"name"] = @"net.java.dev.jna:jna:5.8.0";
             library[@"downloads"][@"artifact"][@"path"] = @"net/java/dev/jna/jna/5.8.0/jna-5.8.0.jar";
             library[@"downloads"][@"artifact"][@"url"] = @"https://libraries.minecraft.net/net/java/dev/jna/jna/5.8.0/jna-5.8.0.jar";
+            library[@"downloads"][@"artifact"][@"sha1"] = @"3551d8d827e54858214107541d3aff9c615cb615";
         }
     }
 

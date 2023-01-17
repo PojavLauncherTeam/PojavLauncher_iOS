@@ -55,7 +55,7 @@ extern NSMutableDictionary *prefDict;
         UISplitViewControllerSplitBehaviorTile;
     } else {
         if (self.preferredDisplayMode == 0 || self.displayMode != UISplitViewControllerDisplayModeSecondaryOnly) {
-            self.preferredDisplayMode = UISplitViewControllerDisplayModeOneOverSecondary;
+            self.preferredDisplayMode = UISplitViewControllerDisplayModeSecondaryOnly;
         }
     }
 }
