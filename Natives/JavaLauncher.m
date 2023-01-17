@@ -11,6 +11,8 @@
 
 #include "utils.h"
 
+#import <AVFoundation/AVFoundation.h>
+
 #import "ios_uikit_bridge.h"
 #import "JavaLauncher.h"
 #import "LauncherPreferences.h"
@@ -292,6 +294,13 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
         margv[++margc] = [launchTarget UTF8String];
     }
     margv[++margc] = [NSString stringWithFormat:@"%dx%d", width, height].UTF8String;
+    
+    // TODO: Add preference toggle 
+    NSError *sessionError = nil;
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionMixWithOthers error:&sessionError];
+    [[AVAudioSession sharedInstance] setActive:YES error:&sessionError];
+    [[AVAudioSession sharedInstance] setDelegate:self];
+    
 
     pJLI_Launch = (JLI_Launch_func *)dlsym(libjli, "JLI_Launch");
           
