@@ -146,6 +146,7 @@ target_link_libraries(PojavLauncher
   "-F'${CMAKE_CURRENT_LIST_DIR}/resources/Frameworks'"
   "-framework AltKit"
   "-framework AuthenticationServices"
+  "-framework AVFoundation"
   "-framework CAltKit"
   "-framework CoreGraphics"
   "-framework CoreImage"
