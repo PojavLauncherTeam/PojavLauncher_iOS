@@ -299,7 +299,6 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     NSError *sessionError = nil;
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionMixWithOthers error:&sessionError];
     [[AVAudioSession sharedInstance] setActive:YES error:&sessionError];
-    [[AVAudioSession sharedInstance] setDelegate:self];
     
 
     pJLI_Launch = (JLI_Launch_func *)dlsym(libjli, "JLI_Launch");
