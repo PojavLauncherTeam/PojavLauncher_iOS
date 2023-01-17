@@ -199,6 +199,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     margv[++margc] = jnaLibPath;
     margv[++margc] = userDir;
     margv[++margc] = userHome;
+    margv[++margc] = [NSString stringWithFormat:@"-Duser.timezone=%@", NSTimeZone.localTimeZone.name].UTF8String;
     margv[++margc] = (char *)[NSString stringWithFormat:@"-DUIScreen.maximumFramesPerSecond=%d", (int)UIScreen.mainScreen.maximumFramesPerSecond].UTF8String;
     margv[++margc] = "-Dorg.lwjgl.system.allocator=system";
     margv[++margc] = "-Dlog4j2.formatMsgNoLookups=true";
