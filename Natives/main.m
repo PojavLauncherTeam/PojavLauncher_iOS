@@ -313,8 +313,11 @@ int main(int argc, char * argv[]) {
     setenv("BUNDLE_PATH", dirname(argv[0]), 1);
     setenv("HOME", [NSFileManager.defaultManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask]
         .lastObject.path.stringByDeletingLastPathComponent.UTF8String, 1);
-    // WARNING: THIS DIRECTS TO /var/mobile/Documents IF INSTALLED WITH APPSYNC UNIFIED
-    setenv("POJAV_HOME", [NSString stringWithFormat:@"%s/Documents", getenv("HOME")].UTF8String, 1);
+    if(strcmp(getenv("HOME"), "/var/mobile") == 0) {
+        setenv("POJAV_HOME", [NSString stringWithFormat:@"%s/Documents/PojavLauncher", getenv("HOME")].UTF8String, 1);
+    } else {
+        setenv("POJAV_HOME", [NSString stringWithFormat:@"%s/Documents", getenv("HOME")].UTF8String, 1);
+    }
 
     [fm createDirectoryAtPath:@(getenv("POJAV_HOME")) withIntermediateDirectories:NO attributes:nil error:nil];
 
