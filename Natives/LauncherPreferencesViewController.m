@@ -60,7 +60,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"icon": @"folder",
                 @"type": self.typeChildPane,
                 @"enableCondition": ^BOOL(){
-                    whenNotInGame && !getenv("DEMO_LOCK");
+                    return whenNotInGame && !getenv("DEMO_LOCK");
                 },
                 @"class": LauncherPrefGameDirViewController.class,
             },
