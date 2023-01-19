@@ -185,6 +185,9 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
         self.authData[@"profilePicURL"] = [NSString stringWithFormat:@"https://mc-heads.net/head/%@/120", self.authData[@"profileId"]];
         self.authData[@"oldusername"] = self.authData[@"username"];
         self.authData[@"username"] = response[@"name"];
+        if(getenv("DEMO_LOCK")) {
+            unsetenv("DEMO_LOCK");
+        }
         setenv("POJAV_GAME_DIR", [NSString stringWithFormat:@"%s/Library/Application Support/minecraft", getenv("POJAV_HOME")].UTF8String, 1);
         callback(nil, [super saveChanges]);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
