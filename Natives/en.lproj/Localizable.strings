@@ -149,7 +149,7 @@
 "preference.title.appicon-default" = "Familiar PojavLauncher light";
 "preference.title.appicon-dark" = "Familiar PojavLauncher dark";
 "preference.title.hidden_sidebar" = "Hide main menu sidebar by default";
-"preference.detail.hidden_sidebar" = "Allows you to hide the sidebar on the main menu by default and when rotating on iOS 14 and newer.";
+"preference.detail.hidden_sidebar" = "Allows you to hide the sidebar on the main menu by default and when rotating.";
 
 "preference.title.reset_warnings" = "Reset all warnings";
 "preference.title.done.reset_warnings" = "All warnings have been reset.";

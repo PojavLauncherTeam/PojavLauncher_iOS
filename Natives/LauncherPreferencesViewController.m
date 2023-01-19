@@ -118,9 +118,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"hasDetail": @YES,
                 @"icon": @"sidebar.leading",
                 @"type": self.typeSwitch,
-                @"enableCondition": ^(BOOL enabled){
-                    return (UIDevice.currentDevice.systemVersion.floatValue >= 14) && whenNotInGame();
-                }
+                @"enableCondition": whenNotInGame
             },
             @{@"key": @"reset_warnings",
                 @"icon": @"exclamationmark.triangle",

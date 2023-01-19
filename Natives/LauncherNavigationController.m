@@ -66,14 +66,25 @@
     self.versionTextField.inputAccessoryView = versionPickToolbar;
     self.versionTextField.inputView = self.versionPickerView;
 
-    [self.toolbar addSubview:self.versionTextField];
+    UIView *targetToolbar;
+    if (@available(iOS 14.0, *)) {
+        // Use the real toolbar
+        targetToolbar = self.toolbar;
+    } else { // iOS 13.x and 12.x
+        // Workaround user interaction issue by using a fake toolbar
+        targetToolbar = [[UIView alloc] initWithFrame:self.toolbar.frame];
+        targetToolbar.autoresizingMask = self.toolbar.autoresizingMask;
+        [self.view addSubview:targetToolbar];
+    }
+
+    [targetToolbar addSubview:self.versionTextField];
 
     self.progressViewMain = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 0, self.toolbar.frame.size.width, 4)];
     self.progressViewSub = [[UIProgressView alloc] initWithFrame:CGRectMake(0, self.toolbar.frame.size.height - 4, self.toolbar.frame.size.width, 4)];
     self.progressViewMain.autoresizingMask = self.progressViewSub.autoresizingMask = AUTORESIZE_MASKS;
     self.progressViewMain.hidden = self.progressViewSub.hidden = YES;
-    [self.toolbar addSubview:self.progressViewMain];
-    [self.toolbar addSubview:self.progressViewSub];
+    [targetToolbar addSubview:self.progressViewMain];
+    [targetToolbar addSubview:self.progressViewSub];
 
     self.buttonInstall = [UIButton buttonWithType:UIButtonTypeSystem];
     setButtonPointerInteraction(self.buttonInstall);
@@ -84,7 +95,7 @@
     self.buttonInstall.frame = CGRectMake(self.toolbar.frame.size.width * 0.8, 4, self.toolbar.frame.size.width * 0.2, self.toolbar.frame.size.height - 8);
     self.buttonInstall.tintColor = UIColor.whiteColor;
     [self.buttonInstall addTarget:self action:@selector(launchMinecraft:) forControlEvents:UIControlEventPrimaryActionTriggered];
-    [self.toolbar addSubview:self.buttonInstall];
+    [targetToolbar addSubview:self.buttonInstall];
 
     self.progressText = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.toolbar.frame.size.width, self.toolbar.frame.size.height)];
     self.progressText.adjustsFontSizeToFitWidth = YES;
@@ -92,7 +103,7 @@
     self.progressText.font = [self.progressText.font fontWithSize:16];
     self.progressText.textAlignment = NSTextAlignmentCenter;
     self.progressText.userInteractionEnabled = NO;
-    [self.toolbar addSubview:self.progressText];
+    [targetToolbar addSubview:self.progressText];
 
     if ([BaseAuthenticator.current isKindOfClass:MicrosoftAuthenticator.class]) {
         // Perform token refreshment on startup

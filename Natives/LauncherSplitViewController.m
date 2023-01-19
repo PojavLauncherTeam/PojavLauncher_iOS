@@ -29,7 +29,7 @@ extern NSMutableDictionary *prefDict;
 }
 
 - (void)splitViewController:(UISplitViewController *)svc willChangeToDisplayMode:(UISplitViewControllerDisplayMode)displayMode {
-    if (self.preferredDisplayMode != displayMode) {
+    if (self.preferredDisplayMode != displayMode && self.displayMode != UISplitViewControllerDisplayModeSecondaryOnly) {
         dispatch_async(dispatch_get_main_queue(), ^{
             self.preferredDisplayMode = UISplitViewControllerDisplayModeSecondaryOnly;
         });
@@ -44,23 +44,19 @@ extern NSMutableDictionary *prefDict;
 
 - (void)changeDisplayModeForSize:(CGSize)size {
     BOOL isPortrait = size.height > size.width;
-    if (@available(iOS 14.0, tvOS 14.0, *)) {
-        if (self.preferredDisplayMode == 0 || self.displayMode != UISplitViewControllerDisplayModeSecondaryOnly) {
-            if([getPreference(@"hidden_sidebar") boolValue] == NO) {
-                self.preferredDisplayMode = isPortrait ?
+    if (self.preferredDisplayMode == 0 || self.displayMode != UISplitViewControllerDisplayModeSecondaryOnly) {
+        if([getPreference(@"hidden_sidebar") boolValue] == NO) {
+            self.preferredDisplayMode = isPortrait ?
                 UISplitViewControllerDisplayModeOneOverSecondary :
                 UISplitViewControllerDisplayModeOneBesideSecondary;
-            } else {
-                self.preferredDisplayMode = UISplitViewControllerDisplayModeSecondaryOnly;
-            }
+        } else {
+            self.preferredDisplayMode = UISplitViewControllerDisplayModeSecondaryOnly;
         }
+    }
+    if (@available(iOS 14.0, tvOS 14.0, *)) {
         self.preferredSplitBehavior = isPortrait ?
-        UISplitViewControllerSplitBehaviorOverlay :
-        UISplitViewControllerSplitBehaviorTile;
-    } else {
-        if (self.preferredDisplayMode == 0 || self.displayMode != UISplitViewControllerDisplayModeSecondaryOnly) {
-            self.preferredDisplayMode = UISplitViewControllerDisplayModeOneOverSecondary;
-        }
+            UISplitViewControllerSplitBehaviorOverlay :
+            UISplitViewControllerSplitBehaviorTile;
     }
 }
 
