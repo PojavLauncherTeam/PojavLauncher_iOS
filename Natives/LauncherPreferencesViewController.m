@@ -59,7 +59,9 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             @{@"key": @"game_directory",
                 @"icon": @"folder",
                 @"type": self.typeChildPane,
-                @"enableCondition": whenNotInGame,
+                @"enableCondition": ^BOOL(){
+                    whenNotInGame && !getenv("DEMO_LOCK");
+                },
                 @"class": LauncherPrefGameDirViewController.class,
             },
             @{@"key": @"check_sha",
