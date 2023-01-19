@@ -130,7 +130,7 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
     scrollView.delegate = self;
     scrollView.minimumZoomScale = 1;
     scrollView.maximumZoomScale = 5;
-    scrollView.scrollEnabled = NO;
+    scrollView.scrollEnabled = YES; // will be NO later for virtual mouse/touch
     scrollView.zoomScale = 1;
 
     surfaceView = [[SurfaceView alloc] initWithFrame:self.view.frame];
