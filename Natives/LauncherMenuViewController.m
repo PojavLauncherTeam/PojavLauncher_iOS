@@ -2,6 +2,7 @@
 #import "AccountListViewController.h"
 #import "AFNetworking.h"
 #import "ALTServerConnection.h"
+#import "LauncherNavigationController.h"
 #import "LauncherMenuViewController.h"
 #import "LauncherNewsViewController.h"
 #import "LauncherPreferences.h"
@@ -258,7 +259,7 @@
     }
 
     [(LauncherNavigationController *)self.navigationController reloadVersionList:[getPreference(@"selected_version_type") intValue]];
-    
+
     subtitle = [[NSAttributedString alloc] initWithString:subtitle attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12]}];
     [title appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n" attributes:nil]];
     [title appendAttributedString:subtitle];
