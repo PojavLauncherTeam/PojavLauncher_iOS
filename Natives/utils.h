@@ -20,6 +20,9 @@
 # define CONFIG_COMMIT "unspecified"
 #endif
 
+// Remove date + time from NSLog, unneeded
+#define NSLog(...) {}
+
 // Control button actions
 #define ACTION_DOWN 0
 #define ACTION_UP 1
