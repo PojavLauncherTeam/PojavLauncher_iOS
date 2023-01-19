@@ -21,7 +21,7 @@
 #endif
 
 // Remove date + time from NSLog, unneeded
-#define NSLog(...) {}
+#define NSLog(x...) {}
 
 // Control button actions
 #define ACTION_DOWN 0
@@ -96,6 +96,7 @@ void openLink(UIViewController* sender, NSURL* link);
 NSString* localize(NSString* key, NSString* comment);
 NSMutableDictionary* parseJSONFromFile(NSString *path);
 NSError* saveJSONToFile(NSDictionary *dict, NSString *path);
+void customNSLog(const char *file, int lineNumber, const char *functionName, NSString *format, ...);
 
 static inline CGFloat clamp(CGFloat x, CGFloat lower, CGFloat upper) {
     return fmin(upper, fmax(x, lower));
