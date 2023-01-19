@@ -185,6 +185,7 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
         self.authData[@"profilePicURL"] = [NSString stringWithFormat:@"https://mc-heads.net/head/%@/120", self.authData[@"profileId"]];
         self.authData[@"oldusername"] = self.authData[@"username"];
         self.authData[@"username"] = response[@"name"];
+        setenv("DEMO_LOCK", "0", 1);
         callback(nil, [super saveChanges]);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSData *errorData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
@@ -193,7 +194,7 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
             // If there is no profile, use the Xbox gamertag as username with Demo mode
             self.authData[@"profileId"] = @"00000000-0000-0000-0000-000000000000";
             self.authData[@"username"] = [NSString stringWithFormat:@"Demo.%@", self.authData[@"xboxGamertag"]];
-
+            setenv("DEMO_LOCK", "1", 1);
             callback(@"DEMO", [super saveChanges]);
             callback(nil, YES);
             return;

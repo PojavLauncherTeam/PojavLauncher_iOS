@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-#define deviceid_dict  @{ \
+#define deviceid_dict @{ \
     @"iPhone8,1" : @"iPhone 6s", \
     @"iPhone8,2" : @"iPhone 6s Plus", \
     @"iPhone8,4" : @"iPhone SE (1st generation)", \

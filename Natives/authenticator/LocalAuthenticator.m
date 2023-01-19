@@ -6,6 +6,7 @@
     self.authData[@"oldusername"] = self.authData[@"username"] = self.authData[@"input"];       
     self.authData[@"accessToken"] = @"0";
     self.authData[@"profileId"] = @"00000000-0000-0000-0000-000000000000";
+    setenv("DEMO_LOCK", "0", 1);
     callback(nil, [super saveChanges]);
 }
 
