@@ -261,7 +261,8 @@
         setenv("POJAV_GAME_DIR", [NSString stringWithFormat:@"%s/Library/Application Support/minecraft", getenv("POJAV_HOME")].UTF8String, 1);
     }
 
-    [(LauncherNavigationController *)self.navigationController reloadVersionList:[getPreference(@"selected_version_type") intValue]];
+    LauncherNavigationController *mainNav = [[LauncherNavigationController alloc] init];
+    [mainNav reloadVersionList:[getPreference(@"selected_version_type") intValue]];
 
     subtitle = [[NSAttributedString alloc] initWithString:subtitle attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12]}];
     [title appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n" attributes:nil]];
