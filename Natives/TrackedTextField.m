@@ -138,6 +138,18 @@ extern bool isUseStackQueueCall;
 }
 
 // Handle multistage text input
+// for iOS 12.x
+- (void)setMarkedText:(NSString *)markedText selectedRange:(NSRange)selectedRange {
+    // Delete the marked range
+    NSInteger markedLength = [self offsetFromPosition:self.markedTextRange.start toPosition:self.markedTextRange.end];
+    [self sendMultiBackspaces:markedLength];
+
+    [super setMarkedText:markedText selectedRange:selectedRange];
+
+    // Insert the new text
+    [self sendText:markedText];
+}
+// for iOS 13+
 - (void)setAttributedMarkedText:(NSAttributedString *)markedText selectedRange:(NSRange)selectedRange {
     // Delete the marked range
     NSInteger markedLength = [self offsetFromPosition:self.markedTextRange.start toPosition:self.markedTextRange.end];
