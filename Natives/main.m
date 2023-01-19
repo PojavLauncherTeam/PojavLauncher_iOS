@@ -148,10 +148,11 @@ void init_logDeviceAndVer(char *argument) {
 void init_migrateDirIfNecessary() {
     NSString *oldDir = @"/usr/share/pojavlauncher";
     if ([fm fileExistsAtPath:oldDir]) {
+        NSString *newDir = @"";
         if ([@(getenv("HOME")) isEqualToString:@"/var/mobile"]) {
-            NSString *newDir = [NSString stringWithFormat:@"%s/Documents/PojavLauncher", getenv("HOME")];
+            newDir = [NSString stringWithFormat:@"%s/Documents/PojavLauncher", getenv("HOME")];
         } else {
-            NSString *newDir = [NSString stringWithFormat:@"%s/Documents", getenv("HOME")];
+            newDir = [NSString stringWithFormat:@"%s/Documents", getenv("HOME")];
         }
         [fm moveItemAtPath:oldDir toPath:newDir error:nil];
         [fm removeItemAtPath:oldDir error:nil];
