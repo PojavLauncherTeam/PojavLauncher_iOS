@@ -222,7 +222,6 @@ package: native java jre assets
 	@cp -R $(SOURCEDIR)/Natives/en.lproj/LaunchScreen.storyboardc $(WORKINGDIR)/PojavLauncher.app/Base.lproj/ || exit 1
 	@cp -R $(SOURCEDIR)/Natives/resources/* $(WORKINGDIR)/PojavLauncher.app/ || exit 1
 	@cp $(WORKINGDIR)/*.dylib $(WORKINGDIR)/PojavLauncher.app/Frameworks/ || exit 1
-	@cp -R $(WORKINGDIR)/*.framework $(WORKINGDIR)/PojavLauncher.app/Frameworks/ || exit 1
 	@cp -R $(SOURCEDIR)/JavaApp/libs/* $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
 	@cp $(SOURCEDIR)/JavaApp/local_out/*.jar $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
 	@cp -R $(SOURCEDIR)/JavaApp/libs_caciocavallo* $(WORKINGDIR)/PojavLauncher.app/ || exit 1
@@ -263,17 +262,13 @@ deploy:
 	@echo '[PojavLauncher v$(VERSION)] deploy - start'
 	@ldid -S$(SOURCEDIR)/entitlements.xml $(WORKINGDIR)/PojavLauncher.app/PojavLauncher; \
 	if [ '$(NOSTDIN)' = '1' ]; then \
-		echo '$(SUDOPASS)' | sudo -S rm -rf /Applications/PojavLauncher.app/Frameworks/libOSMesaOverride.dylib.framework; \
 		echo '$(SUDOPASS)' | sudo -S mv $(WORKINGDIR)/*.dylib /Applications/PojavLauncher.app/Frameworks/; \
-		echo '$(SUDOPASS)' | sudo -S mv $(WORKINGDIR)/*.framework /Applications/PojavLauncher.app/Frameworks/; \
 		echo '$(SUDOPASS)' | sudo -S mv $(WORKINGDIR)/PojavLauncher.app/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher; \
 		echo '$(SUDOPASS)' | sudo -S mv $(SOURCEDIR)/JavaApp/local_out/*.jar /Applications/PojavLauncher.app/libs/; \
 		cd /Applications/PojavLauncher.app/Frameworks; \
 		echo '$(SUDOPASS)' | sudo -S chown -R 501:501 /Applications/PojavLauncher.app/*; \
 	else \
-		sudo rm -rf /Applications/PojavLauncher.app/Frameworks/libOSMesaOverride.dylib.framework; \
 		sudo mv $(WORKINGDIR)/*.dylib /Applications/PojavLauncher.app/Frameworks/; \
-		sudo mv $(WORKINGDIR)/*.framework /Applications/PojavLauncher.app/Frameworks/; \
 		sudo mv $(WORKINGDIR)/PojavLauncher.app/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher; \
 		sudo mv $(SOURCEDIR)/JavaApp/local_out/*.jar /Applications/PojavLauncher.app/libs/; \
 		cd /Applications/PojavLauncher.app/Frameworks; \

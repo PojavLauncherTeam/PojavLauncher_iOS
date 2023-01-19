@@ -6,9 +6,6 @@
 #include "../glfw_keycodes.h"
 #include "../utils.h"
 
-#define BTN_RECT 80.0, 30.0
-#define BTN_SQUARE 50.0, 50.0
-
 NSMutableDictionary* createButton(NSString* name, int* keycodes, NSString* dynamicX, NSString* dynamicY, CGFloat width, CGFloat height) {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     dict[@"name"] = name;
@@ -305,10 +302,9 @@ void generateAndSaveDefaultControl() {
 */
 }
 
-void loadControlObject(UIView* targetView, NSMutableDictionary* controlDictionary, void(^walkToButton)(ControlButton* button)) {
+void loadControlObject(UIView* targetView, NSMutableDictionary* controlDictionary) {
     NSMutableString *errorString = [[NSMutableString alloc] init];
 
-    current_control_object = controlDictionary;
     if (convertLayoutIfNecessary(controlDictionary)) {
         NSMutableArray *controlDataList = controlDictionary[@"mControlDataList"];
         setPreference(@"internal_current_button_scale", controlDictionary[@"scaledAt"]);
@@ -316,7 +312,6 @@ void loadControlObject(UIView* targetView, NSMutableDictionary* controlDictionar
             //APPLY_SCALE(buttonDict[@"strokeWidth"]);
             @try {
                 ControlButton *button = [ControlButton buttonWithProperties:buttonDict];
-                walkToButton(button);
                 [targetView addSubview:button];
                 [button update];
             } @catch (NSException *exception) {
@@ -334,14 +329,12 @@ void loadControlObject(UIView* targetView, NSMutableDictionary* controlDictionar
                 [errorString appendFormat:@"%@: %@\n", drawerData[@"name"], exception.reason];
             }
             if (isControlModifiable) drawer.areButtonsVisible = YES;
-            walkToButton(drawer);
             [targetView addSubview:drawer];
             //NSLog(@"DBG Added drawer=%@", drawer);
 
             for (NSMutableDictionary *subButton in drawerData[@"buttonProperties"]) {
                 ControlSubButton *subView = [ControlSubButton buttonWithProperties:subButton];
                 [drawer addButton:subView];
-                walkToButton(subView);
                 [targetView addSubview:subView];
             }
             [drawer syncButtons];

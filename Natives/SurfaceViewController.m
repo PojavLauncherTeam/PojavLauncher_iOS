@@ -8,7 +8,6 @@
 #ifdef INTERNAL_VIRTUAL_JOYSTICK
 #import "customcontrols/ControlJoystick.h"
 #endif
-#import "customcontrols/ControlLayout.h"
 #import "customcontrols/ControlSubButton.h"
 #import "customcontrols/CustomControlsUtils.h"
 
@@ -45,7 +44,6 @@ BOOL slideableHotbar;
 }
 
 @property(nonatomic) TrackedTextField *inputTextField;
-@property(nonatomic) NSMutableDictionary* cc_dictionary;
 @property(nonatomic) NSMutableArray* swipeableButtons;
 @property(nonatomic) ControlButton* swipingButton;
 @property(nonatomic) UITouch *primaryTouch, *hotbarTouch;
@@ -181,6 +179,15 @@ BOOL slideableHotbar;
     self.inputTextField.font = [UIFont fontWithName:@"Menlo-Regular" size:20];
     self.inputTextField.clearsOnBeginEditing = YES;
     self.inputTextField.textAlignment = NSTextAlignmentCenter;
+    self.inputTextField.sendChar = ^(jchar keychar){
+        CallbackBridge_nativeSendChar(keychar);
+    };
+    self.inputTextField.sendCharMods = ^(jchar keychar, int mods){
+        CallbackBridge_nativeSendCharMods(keychar, mods);
+    };
+    self.inputTextField.sendKey = ^(int key, int scancode, int action, int mods) {
+        CallbackBridge_nativeSendKey(key, scancode, action, mods);
+    };
 
     NSString *controlFilePath = [NSString stringWithFormat:@"%s/controlmap/%@", getenv("POJAV_HOME"), (NSString *)getPreference(@"default_ctrl")];
 
@@ -194,6 +201,7 @@ BOOL slideableHotbar;
             [self registerMouseCallbacks:mouse];
             self.mousePointerView.hidden = isGrabbing;
             virtualMouseEnabled = YES;
+            [self setNeedsUpdateOfPrefersPointerLocked];
         }];
         self.mouseDisconnectCallback = [[NSNotificationCenter defaultCenter] addObserverForName:GCMouseDidDisconnectNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
             NSLog(@"Input: Mouse disconnected!");
@@ -202,6 +210,7 @@ BOOL slideableHotbar;
             mouse.mouseInput.leftButton.pressedChangedHandler = nil;
             mouse.mouseInput.middleButton.pressedChangedHandler = nil;
             mouse.mouseInput.rightButton.pressedChangedHandler = nil;
+            [self setNeedsUpdateOfPrefersPointerLocked];
         }];
         if (GCMouse.current != nil) {
             [self registerMouseCallbacks: GCMouse.current];
@@ -354,21 +363,9 @@ BOOL slideableHotbar;
 }
 
 - (void)loadCustomControls {
-    [self.ctrlView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self.swipeableButtons removeAllObjects];
-    [self.cc_dictionary removeAllObjects];
-
-    NSString *controlFilePath = [NSString stringWithFormat:@"%s/controlmap/%@", getenv("POJAV_HOME"), (NSString *)getPreference(@"default_ctrl")];
-
-    self.cc_dictionary = parseJSONFromFile(controlFilePath);
-    if (self.cc_dictionary[@"error"] != nil) {
-        showDialog(self, localize(@"Error", nil), [NSString stringWithFormat:@"Could not open %@: %@", controlFilePath, [self.cc_dictionary[@"error"] localizedDescription]]);
-        return;
-    }
-
-    CGFloat currentScale = [self.cc_dictionary[@"scaledAt"] floatValue];
-    CGFloat savedScale = [getPreference(@"button_scale") floatValue];
-    loadControlObject(self.ctrlView, self.cc_dictionary, ^void(ControlButton* button) {
+    [self.ctrlView loadControlFile:getPreference(@"default_ctrl")];
+    for (ControlButton *button in self.ctrlView.subviews) {
         BOOL isSwipeable = [button.properties[@"isSwipeable"] boolValue];
 
         button.canBeHidden = YES;
@@ -387,9 +384,7 @@ BOOL slideableHotbar;
             [button addGestureRecognizer:panRecognizerButton];
             [self.swipeableButtons addObject:button];
         }
-    });
-
-    self.cc_dictionary[@"scaledAt"] = @(savedScale);
+    }
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
@@ -416,11 +411,7 @@ BOOL slideableHotbar;
             ctrlFrame.size.height = tmpHeight;
         }
         self.ctrlView.frame = ctrlFrame;
-        for (UIView *view in self.ctrlView.subviews) {
-            if ([view isKindOfClass:[ControlButton class]]) {
-                [(ControlButton *)view update];
-            }
-        }
+        [self.ctrlView.subviews makeObjectsPerformSelector:@selector(update)];
 
         // Update game resolution
         [self updateSavedResolution];
@@ -585,8 +576,6 @@ BOOL slideableHotbar;
     mouse.mouseInput.scroll.yAxis.valueChangedHandler = ^(GCControllerAxisInput * _Nonnull axis, float value) {
         CallbackBridge_nativeSendScroll(0, -value);
     };
-
-    [self setNeedsUpdateOfPrefersPointerLocked];
 }
 
 - (void)surfaceOnClick:(UITapGestureRecognizer *)sender {
@@ -709,11 +698,10 @@ BOOL slideableHotbar;
 #pragma mark - On-screen button functions
 
 int currentVisibility = 1;
-- (void)executebtn:(UIButton *)sender withAction:(int)action {
-    ControlButton *button = (ControlButton *)sender;
+- (void)executebtn:(ControlButton *)sender withAction:(int)action {
     int held = action == ACTION_DOWN;
     for (int i = 0; i < 4; i++) {
-        int keycode = ((NSNumber *)button.properties[@"keycodes"][i]).intValue;
+        int keycode = ((NSNumber *)sender.properties[@"keycodes"][i]).intValue;
         if (keycode < 0) {
             switch (keycode) {
                 case SPECIALBTN_KEYBOARD:
@@ -767,7 +755,7 @@ int currentVisibility = 1;
                     break;
 
                 default:
-                    NSLog(@"Warning: button %@ sent unknown special keycode: %d", button.titleLabel.text, keycode);
+                    NSLog(@"Warning: button %@ sent unknown special keycode: %d", sender.titleLabel.text, keycode);
                     break;
             }
         } else if (keycode > 0) {

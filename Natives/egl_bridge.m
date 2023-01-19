@@ -171,7 +171,7 @@ void loadSymbols() {
     char fileName[2048];
     switch (config_renderer) {
         case RENDERER_VK_ZINK:
-            sprintf((char *)fileName, "%s/Frameworks/%s.framework/%s", getenv("BUNDLE_PATH"), getenv("POJAV_RENDERER"), getenv("POJAV_RENDERER"));
+            sprintf((char *)fileName, "%s/Frameworks/%s", getenv("BUNDLE_PATH"), getenv("POJAV_RENDERER"));
             break;
         case RENDERER_MTL_ANGLE:
             sprintf((char *)fileName, "%s/Frameworks/MetalANGLE.framework/MetalANGLE", getenv("BUNDLE_PATH"));
@@ -201,7 +201,7 @@ void loadSymbolsVirGL() {
     config_renderer = RENDERER_VIRGL;
 
     char fileName[2048];
-    sprintf((char *)fileName, "%s/Frameworks/libvirgl_test_server.dylib.framework/libvirgl_test_server.dylib", getenv("BUNDLE_PATH"));
+    sprintf((char *)fileName, "%s/Frameworks/libvirgl_test_server.dylib", getenv("BUNDLE_PATH"));
     void *handle = dlopen(fileName, RTLD_LAZY);
     NSLog(@"VirGL: libvirgl_test_server = %p", handle);
     if (!handle) {
@@ -376,6 +376,8 @@ void pojavSetWindowHint(int hint, int value) {
                 NSLog(@"GLFW: Unimplemented API 0x%x", value);
                 abort();
         }
+    } else if (hint == GLFW_OPENGL_PROFILE || hint == GLFW_CONTEXT_VERSION_MAJOR) {
+        pojavInit_OpenGL();
     } else if (strcmp(getenv("POJAV_RENDERER"), "auto")==0 && hint == GLFW_CONTEXT_VERSION_MAJOR && value >= 3) {
         // Free unused gl4es library
         void *renderer_handle = dlopen(RENDERER_NAME_GL4ES, RTLD_GLOBAL);

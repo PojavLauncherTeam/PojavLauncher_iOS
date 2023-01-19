@@ -7,7 +7,6 @@
 #import "ios_uikit_bridge.h"
 
 #import "customcontrols/ControlDrawer.h"
-#import "customcontrols/ControlLayout.h"
 #import "customcontrols/CustomControlsUtils.h"
 
 #include <dlfcn.h>
@@ -104,7 +103,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     [self.ctrlView addGestureRecognizer:longpressGesture];
     self.currentFileName = [getPreference(@"default_ctrl") stringByDeletingPathExtension];
     [self initKeyCodeMap];
-    [self loadControlFile:[NSString stringWithFormat:@"%s/controlmap/%@", getenv("POJAV_HOME"), getPreference(@"default_ctrl")]];
+    [self loadControlFile:getPreference(@"default_ctrl")];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -172,22 +171,14 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     sender.scale = 1.0;
 }
 
-- (void)loadControlFile:(NSString *)controlFilePath {
-    for (UIView *view in self.ctrlView.subviews) {
-        if ([view isKindOfClass:[ControlButton class]]) {
-            [view removeFromSuperview];
-        }
-    }
-
-    self.cc_dictionary = parseJSONFromFile(controlFilePath);
-    if (self.cc_dictionary == nil) return;
-
-    loadControlObject(self.ctrlView, self.cc_dictionary, ^void(ControlButton* button) {
+- (void)loadControlFile:(NSString *)file {
+    [self.ctrlView loadControlFile:file];
+    for (ControlButton *button in self.ctrlView.subviews) {
         [button addGestureRecognizer:[[UITapGestureRecognizer alloc]
             initWithTarget:self action:@selector(showControlPopover:)]];
         [button addGestureRecognizer:[[UIPanGestureRecognizer alloc]
             initWithTarget:self action:@selector(onTouch:)]];
-    });
+    }
 }
 
 - (void)viewDidLayoutSubviews {
@@ -308,7 +299,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
         NSArray *textFields = controller.textFields;
         UITextField *field = textFields[0];
         NSError *error;
-        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self.cc_dictionary options:NSJSONWritingPrettyPrinted error:&error];
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self.ctrlView.layoutDictionary options:NSJSONWritingPrettyPrinted error:&error];
         if (jsonData == nil) {
             showDialog(self, localize(@"custom_controls.control_menu.save.error.json", nil), error.localizedDescription);
             return;
@@ -357,15 +348,16 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 - (void)actionMenuLoad {
     [self actionOpenFilePicker:^void(NSString* name) {
         self.currentFileName = name;
-        [self loadControlFile:[NSString stringWithFormat:@"%s/controlmap/%@.json", getenv("POJAV_HOME"), name]];
+        [self loadControlFile:[NSString stringWithFormat:@"%@.json", name]];
     }];
 }
 
 - (void)actionMenuSetDef {
     [self actionOpenFilePicker:^void(NSString* name) {
         self.currentFileName = name;
-        [self loadControlFile:[NSString stringWithFormat:@"%s/controlmap/%@.json", getenv("POJAV_HOME"), name]];
-        setPreference(@"default_ctrl", [NSString stringWithFormat:@"%@.json", name]);
+        name = [NSString stringWithFormat:@"%@.json", name];
+        [self loadControlFile:name];
+        setPreference(@"default_ctrl", name);
     }];
 }
 
@@ -411,7 +403,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     ControlButton *button;
     if (drawer == nil) {
         button = [ControlButton buttonWithProperties:dict];
-        [self doAddButton:button atIndex:@([self.cc_dictionary[@"mControlDataList"] count])];
+        [self doAddButton:button atIndex:@([self.ctrlView.layoutDictionary[@"mControlDataList"] count])];
         [button snapAndAlignX:self.selectedPoint.origin.x-25.0 Y:self.selectedPoint.origin.y-25.0];
         [button update];
     } else {
@@ -447,7 +439,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     data[@"properties"] = properties;
     data[@"buttonProperties"] = [[NSMutableArray alloc] init];
     ControlDrawer *button = [ControlDrawer buttonWithData:data];
-    [self doAddButton:button atIndex:@([self.cc_dictionary[@"mDrawerDataList"] count])];
+    [self doAddButton:button atIndex:@([self.ctrlView.layoutDictionary[@"mDrawerDataList"] count])];
     [button snapAndAlignX:self.selectedPoint.origin.x-25.0 Y:self.selectedPoint.origin.y-25.0];
     [button update];
 

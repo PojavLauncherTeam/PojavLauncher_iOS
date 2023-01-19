@@ -12,8 +12,8 @@
 }
 
 @property BOOL canBeHidden, isToggleOn;
-@property(nonatomic, strong) NSMutableDictionary* properties;
-@property UIColor* savedBackgroundColor;
+@property(nonatomic) NSMutableDictionary* properties;
+@property(nonatomic) UIColor* savedBackgroundColor;
 
 + (id)buttonWithProperties:(NSMutableDictionary *)propArray;
 

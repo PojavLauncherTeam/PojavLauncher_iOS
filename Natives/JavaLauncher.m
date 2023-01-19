@@ -172,14 +172,8 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     margv[++margc] = "-Djava.system.class.loader=net.kdt.pojavlaunch.PojavClassLoader";
     margv[++margc] = "-Xms128M";
     margv[++margc] = [NSString stringWithFormat:@"-Xmx%dM", allocmem].UTF8String;
-    margv[++margc] = [NSString stringWithFormat:@
-        "-Djava.library.path=%1$s/Frameworks:"
-        "%1$s/Frameworks/libOSMesaOverride.dylib.framework:"
-        "%1$s/Frameworks/libMoltenVK.dylib.framework",
-        getenv("BUNDLE_PATH")].UTF8String;
-    margv[++margc] = [NSString stringWithFormat:@
-        "-Djna.boot.library.path=%s/Frameworks/libjnidispatch.dylib.framework",
-        getenv("BUNDLE_PATH")].UTF8String;
+    margv[++margc] = [NSString stringWithFormat:@"-Djava.library.path=%1$s/Frameworks", getenv("BUNDLE_PATH")].UTF8String;
+    margv[++margc] = [NSString stringWithFormat:@"-Djna.boot.library.path=%s/Frameworks", getenv("BUNDLE_PATH")].UTF8String;
     margv[++margc] = [NSString stringWithFormat:@"-Duser.dir=%s", getenv("POJAV_GAME_DIR")].UTF8String;
     margv[++margc] = [NSString stringWithFormat:@"-Duser.home=%s", getenv("POJAV_HOME")].UTF8String;
     margv[++margc] = [NSString stringWithFormat:@"-Duser.timezone=%@", NSTimeZone.localTimeZone.name].UTF8String;
