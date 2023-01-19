@@ -247,12 +247,18 @@
     if (isDemo) {
         // Remove the prefix "Demo."
         subtitle = localize(@"login.option.demo", nil);
+        setenv("POJAV_GAME_DIR", [NSString stringWithFormat:@"%s/.demo", getenv("POJAV_HOME")].UTF8String, 1);
     } else if (selected[@"xboxGamertag"] == nil) {
         subtitle = localize(@"login.option.local", nil);
+        setenv("POJAV_GAME_DIR", [NSString stringWithFormat:@"%s/Library/Application Support/minecraft", getenv("POJAV_HOME")].UTF8String, 1);
     } else {
         // Display the Xbox gamertag for online accounts
         subtitle = selected[@"xboxGamertag"];
+        setenv("POJAV_GAME_DIR", [NSString stringWithFormat:@"%s/Library/Application Support/minecraft", getenv("POJAV_HOME")].UTF8String, 1);
     }
+
+    [(LauncherNavigationController *)self.navigationController reloadVersionList:[getPreference(@"selected_version_type") intValue]];
+    
     subtitle = [[NSAttributedString alloc] initWithString:subtitle attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12]}];
     [title appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n" attributes:nil]];
     [title appendAttributedString:subtitle];
