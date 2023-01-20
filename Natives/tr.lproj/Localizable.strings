@@ -82,17 +82,12 @@
 
 // Login buttons
 "login.menu.sendlogs" = "Kayıt günlüğünüzü gönderin";
-
-"login.option.add" = "Hesap Ekle";
 "login.option.select" = "Hesap seçin";
 "login.option.microsoft" = "Microsoft hesabı";
 "login.option.local" = "Yerel hesap";
 
 "login.warn.title.ram_unjb" = "Hafıza kaydırıcısı etkinleştirildi";
 "login.warn.message.ram_unjb" = "Bu ayarı değiştirmenin oyunda kararsızlığa neden olabileceğini veya oyunu tamamen bozabileceğini unutmayın.";
-
-"login.warn.title.a7" = "Bu güncelleme bu cihaz için son güncellemedir.";
-"login.warn.message.a7" = "PojavLauncher 2.2 bu cihazı donanımsal ve yazılımsal kısıtlamalar nedeniyle desteklemeyecektir.";
 
 "login.warn.title.iosver" = "Bu güncelleme bu iOS sürümü için son güncellemedir.";
 "login.warn.message.iosver" = "PojavLauncher'ın gelecekteki bir sürümü özellik tutarsızlıkları ve geliştirme engelleri nedeniyle iOS 12 veya 13'ü desteklemeyecektir.";
@@ -146,7 +141,6 @@
 "preference.title.jitstreamer_server" = "JitStreamer sunucu IP'si";
 "preference.detail.jitstreamer_server" = "Özel bir Jit Streamer suncu IP'sine geçmenizi sağlar, kendi kendini barındıran kurulumlar için gibi.
 Bu seçenek varsayılan JitStreamer sunucusunu kullanıyorsanız olduğu gibi bırakılabilir.";
-
 "preference.title.appicon" = "Uygulama simgesini ayarla";
 "preference.detail.appicon" = "PojavLauncher için farklı Ana Ekran simgeleri arasında seçim yapmanızı sağlar.";
 "preference.title.appicon-default" = "Göze aşina PojavLauncher açık";
@@ -168,7 +162,6 @@ Bu seçenek varsayılan JitStreamer sunucusunu kullanıyorsanız olduğu gibi b�
 
 "preference.title.resolution" = "Çözünürlük (%)";
 "preference.detail.resolution" = "Oyun çözünürlüğünü düşürmenizi sağlar.";
-
 "preference.title.disable_gesture" = "İşaretleri devre dışı bırak";
 "preference.title.press_duration" = "Uzun-basma süresi (ms)";
 "preference.detail.press_duration" = "Blok kırmak ve eşya bırakmak için tetiklenen basma süresi.";

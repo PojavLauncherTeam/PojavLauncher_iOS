@@ -82,8 +82,6 @@
 
 // Login buttons
 "login.menu.sendlogs" = "Odeslat záznamy";
-
-"login.option.add" = "Přidat účet";
 "login.option.select" = "Vybrat účet";
 "login.option.microsoft" = "Účet Microsoft";
 "login.option.local" = "Místní účet";
@@ -91,8 +89,7 @@
 "login.warn.title.ram_unjb" = "Posuvník paměti je povolen";
 "login.warn.message.ram_unjb" = "Uvědomte si, že měnění tohoto nastavení může způsobit nestabilitu hry či rozbít schopnost hrát vůbec.";
 
-"login.warn.title.a7" = "Toto je poslední aktualizace pro toto zařízení.";
-"login.warn.message.a7" = "PojavLauncher 2.2 nebude podporovat toto zařízení, kvůli hardwarovým a softwarovým omezením.";
+"login.warn.title.a7" = "Toto zařízení nepodporuje PojavLauncher 2.2.";
 
 "login.warn.title.iosver" = "Poslední aktualizace pro tuto verzi iOSu je tato.";
 "login.warn.message.iosver" = "Budoucí verze PojavLauncheru nebude podporovat iOS 12 a 13, kvůli funkčním nekonzistencím a překážkám vývoje.";
@@ -145,11 +142,12 @@
 "preference.detail.debug_logging" = "Zaznamenává interní nastavení a akce do latestlog.txt. Toto dovoluje vývojářům nalézt problémy dřiv, ale záznamy budou častěji zapisovány, díky čemuž Minecraft může běžet pomaleji.";
 "preference.title.jitstreamer_server" = "IP adresa serveru JitStreameru";
 "preference.detail.jitstreamer_server" = "Umožňuje zadat vlastní IP adresu JitStreameru, například pro samohostěné instance. Tato možnost může být nechána nezměněná používáte-li výchozí servery JitStreameru.";
-
 "preference.title.appicon" = "Nastaviti ikonu aplikace";
 "preference.detail.appicon" = "Umožnǔje vybrat mezi různými ikonami plochy PojavLauncheru.";
 "preference.title.appicon-default" = "Známá PojavLauncher světlá";
 "preference.title.appicon-dark" = "Známá PojavLauncher tmavá";
+"preference.title.hidden_sidebar" = "Skrývat hlavní postranní menu ze začátku";
+"preference.detail.hidden_sidebar" = "Umožňuje skrývat hlavní postranní panel ve hlavním menu ve výchozím nastavení při otáčení v iOSe 14 a novějších.";
 
 "preference.title.reset_warnings" = "Smazat všechna varování";
 "preference.title.done.reset_warnings" = "Všechna varování byla smazána.";
@@ -170,7 +168,6 @@
 
 "preference.title.fullscreen_airplay" = "AirPlay celé obrazovky";
 "preference.detail.fullscreen_airplay" = "Umožňuje zobrazovat okno hry na celé obrazovce na externím displeji bez zrcadlení všeho na obrazovce.";
-
 "preference.title.disable_gesture" = "Vypnout gesta";
 "preference.title.press_duration" = "Trvání dlouhého stisku (ms)";
 "preference.detail.press_duration" = "Délka trvání dlouhého držení ke zničení bloků a vyhazování itemů.";

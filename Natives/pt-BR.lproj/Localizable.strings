@@ -78,15 +78,11 @@
 
 // Login buttons
 "login.menu.sendlogs" = "Envie seus registros";
-
-"login.option.add" = "Adicionar conta";
 "login.option.select" = "Selecionar conta";
 "login.option.microsoft" = "Conta Microsoft";
 "login.option.local" = "Conta local";
 
 "login.warn.title.ram_unjb" = "Slider de memória está ativado";
-
-"login.warn.title.a7" = "Esta é a última atualização deste dispositivo.";
 
 "login.warn.title.iosver" = "Esta é a última atualização para esta versão iOS.";
 
@@ -125,7 +121,6 @@
 "preference.title.cosmetica" = "Capas da Cosmetica";
 "preference.title.debug_logging" = "Log de depuração";
 "preference.title.jitstreamer_server" = "IP do servidor JitStreamer";
-
 "preference.title.appicon" = "Definir ícone do aplicativo";
 "preference.title.appicon-default" = "Luz familiar de PojavLauncher";
 "preference.title.appicon-dark" = "PojavLauncher familiar escuro";
@@ -145,7 +140,6 @@
 
 "preference.title.resolution" = "Resolução (%)";
 "preference.detail.resolution" = "Permite que você diminua a resolução do jogo.";
-
 "preference.title.disable_gesture" = "Desativar gestos";
 "preference.title.press_duration" = "Duração de pressionamento longo (ms)";
 "preference.title.button_scale" = "Escala dos botões virtuais (%)";

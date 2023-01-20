@@ -82,8 +82,6 @@
 
 // Login buttons
 "login.menu.sendlogs" = "Fehlerprotokolle senden";
-
-"login.option.add" = "Konto hinzufügen";
 "login.option.select" = "Konto auswählen";
 "login.option.microsoft" = "Microsoft-Konto";
 "login.option.local" = "Lokales Konto";
@@ -91,8 +89,7 @@
 "login.warn.title.ram_unjb" = "RAM-Regler ist aktiviert";
 "login.warn.message.ram_unjb" = "Sei dir darüber bewusst, dass Änderung dieser Einstellung die Stabilität des Spiels oder das Starten des Spiels komplett beeinträchtigt kann.";
 
-"login.warn.title.a7" = "Dies ist das letzte Update für dieses Gerät.";
-"login.warn.message.a7" = "PojavLauncher 2.2 wird dieses Gerät aufgrund von Hard- und Software Einschränkungen nicht unterstützen.";
+"login.warn.title.a7" = "PojavLauncher 2.2 wird auf diesem Gerät nicht unterstützt.";
 
 "login.warn.title.iosver" = "Dies ist das letzte Update für diese iOS Version.";
 "login.warn.message.iosver" = "Eine zukünftige Version von PojavLauncher wird iOS 12 oder 13 aufgrund von Inkonsistenzen und Entwicklungshürden nicht unterstützen.";
@@ -145,11 +142,12 @@
 "preference.detail.debug_logging" = "Protokolliert interne Einstellungen und Aktionen an latestlog.txt. Dies hilft den Entwicklern Probleme leichter zu finden, kann aber Minecraft langsamer laufen lassen, da die Protokolle öfter geschrieben werden.";
 "preference.title.jitstreamer_server" = "JitStreamer-Server-IP";
 "preference.detail.jitstreamer_server" = "Erlaubt es dir, auf eine benutzerdefinierte JitStreamer-Server-IP zu wechseln, wie zum Beispiel für selbst gehostete Instanzen. Diese Option kann ausgelassen werden, wenn du die Standard-JitStreamer-Server verwendest.";
-
 "preference.title.appicon" = "App-Icon festlegen";
 "preference.detail.appicon" = "Erlaubt es dir, zwischen verschiedenen Startbildschirm-Icons für PojavLauncher zu wählen.";
 "preference.title.appicon-default" = "Bekanntes PojavLauncher-Icon (Hell)";
 "preference.title.appicon-dark" = "Bekanntes PojavLauncher-Icon (Dunkel)";
+"preference.title.hidden_sidebar" = "Hauptmenü-Sidebar standardmäßig ausblenden";
+"preference.detail.hidden_sidebar" = "Ermöglicht es dir, die Sidebar im Hauptmenü standardmäßig und beim Drehen auf iOS 14+ auszublenden.";
 
 "preference.title.reset_warnings" = "Alle Warnungen zurücksetzen";
 "preference.title.done.reset_warnings" = "Alle Warnungen wurden zurückgesetzt.";
@@ -170,7 +168,6 @@
 
 "preference.title.fullscreen_airplay" = "Vollbild-AirPlay";
 "preference.detail.fullscreen_airplay" = "Ermöglicht es dir nur das Spielfenster auf ein externes Display zu spiegeln, anstatt den ganzen Bildschirm zu spiegeln.";
-
 "preference.title.disable_gesture" = "Gesten deaktivieren";
 "preference.title.press_duration" = "Dauer eines langen Touch (ms)";
 "preference.detail.press_duration" = "Auslösedauer um Blöcke zu zerstören und Items zu droppen.";

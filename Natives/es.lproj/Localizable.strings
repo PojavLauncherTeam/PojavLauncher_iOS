@@ -79,9 +79,6 @@
 "login.warn.title.ram_unjb" = "Slider de memoria habilitado";
 "login.warn.message.ram_unjb" = "Ten en cuenta que al cambiar esta opción es posible que cause inestabilidades en el juego o la incapacidad para jugar.";
 
-"login.warn.title.a7" = "Esta es la última actualización para este dispositivo.";
-"login.warn.message.a7" = "PojavLauncher 2.2 no soportará este dispositivo debido a las limitaciones de hardware y software.";
-
 "login.warn.title.iosver" = "Esta es la última actualización para esta versión de iOS.";
 "login.warn.message.iosver" = "Una futura versión de PojavLauncher no tendrá soporte para iOS 12 o 13, debido a inconsistencias de características y obstáculos en el desarrollo.";
 
@@ -142,7 +139,6 @@
 
 "preference.title.resolution" = "Resolución (%)";
 "preference.detail.resolution" = "Permite reducir la resolución del juego.";
-
 "preference.title.disable_gesture" = "Desactivar gestos";
 "preference.title.press_duration" = "Duración para pulsado largo (ms)";
 "preference.title.button_scale" = "Escala de botones en pantalla (%)";

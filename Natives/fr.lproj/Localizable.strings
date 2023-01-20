@@ -89,8 +89,7 @@
 "login.warn.title.ram_unjb" = "Le curseur de la mémoire est activé";
 "login.warn.message.ram_unjb" = "Sachez que modifier ce paramètre peut causer une instabilité du jeu ou casser totalement la possibilité de jouer.";
 
-"login.warn.title.a7" = "Il s'agit de la dernière mise à jour pour cet appareil.";
-"login.warn.message.a7" = "PojavLauncher 2.2 ne prendra pas en charge cet appareil, en raison de limitations matérielles et logicielles.";
+"login.warn.title.a7" = "PojavLauncher 2.2 n'est pas supporté sur cet appareil.";
 
 "login.warn.title.iosver" = "Il s'agit de la dernière mise à jour pour cette version d'iOS.";
 "login.warn.message.iosver" = "Une future version de PojavLauncher ne prendra pas en charge iOS 12 ou 13, en raison d'incohérences des fonctionnalités et d'obstacles de développement.";
@@ -143,11 +142,12 @@
 "preference.detail.debug_logging" = "Journalise les paramètres internes et les actions sur latestlog.txt. Cela aide les développeurs à trouver des problèmes plus facilement, mais Minecraft peut s'exécuter plus lentement puisque les journaux seront écrits plus souvent.";
 "preference.title.jitstreamer_server" = "IP du serveur JitStreamer";
 "preference.detail.jitstreamer_server" = "Vous permet de passer à une adresse IP personnalisée du serveur JitStreamer, par exemple pour les instances auto-hébergées. Cette option peut être laissée si vous utilisez les serveurs JitStreamer par défaut.";
-
 "preference.title.appicon" = "Définir l'icône de l'app";
 "preference.detail.appicon" = "Vous permet de choisir entre différentes icônes d'écran d'accueil pour PojavLauncher.";
 "preference.title.appicon-default" = "PojavLauncher clair familier";
 "preference.title.appicon-dark" = "PojavLauncher sombre familier";
+"preference.title.hidden_sidebar" = "Masquer la barre latérale du menu principal par défaut";
+"preference.detail.hidden_sidebar" = "Vous permet de masquer la barre latérale dans le menu principal par défaut et lors de la rotation sur iOS 14 et plus récent.";
 
 "preference.title.reset_warnings" = "Réinitialiser tous les avertissements";
 "preference.title.done.reset_warnings" = "Tous les avertissements ont été réinitialisés.";
@@ -166,6 +166,8 @@
 "preference.title.resolution" = "Résolution (%)";
 "preference.detail.resolution" = "Vous permet de diminuer la résolution du jeu.";
 
+"preference.title.fullscreen_airplay" = "AirPlay en plein écran";
+"preference.detail.fullscreen_airplay" = "Permet d'afficher une fenêtre de jeu en plein écran sur l'écran externe plutôt que de tout copier sur l'écran.";
 "preference.title.disable_gesture" = "Désactiver les gestes";
 "preference.title.press_duration" = "Durée d'un appui long (ms)";
 "preference.detail.press_duration" = "Déclenche le bouton pour détruire des blocs et jeter des objets.";

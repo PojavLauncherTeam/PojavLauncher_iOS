@@ -76,9 +76,6 @@
 "login.warn.title.ram_unjb" = "Memory slider attivo";
 "login.warn.message.ram_unjb" = "Sii consapevole che cambiando questa impostazione si potrebbero causare instabilità o rendere in-giocabile il gioco.";
 
-"login.warn.title.a7" = "Questo è l'ultimo aggiornamento per questo dispositivo.";
-"login.warn.message.a7" = "PojavLauncher 2.2 non supporterà questo dispositivo, a causa delle limitazioni hardware e software.";
-
 "login.warn.title.iosver" = "Questo è l'ultimo aggiornamento per questa versione iOS.";
 "login.warn.message.iosver" = "Le versioni future di PojavLauncher non supporteranno iOS 12 o 13, a causa di incongruenze e difficoltà di sviluppo.";
 
@@ -124,7 +121,6 @@
 "preference.detail.cosmetica" = "Abilità i mantelli di Cosmetica (precedentemente Arc). Per ulteriori informazioni visita https://cosmetica.cc. Necessita di OptiFine";
 "preference.title.debug_logging" = "Logs di Debug";
 "preference.detail.debug_logging" = "Registra le impostazioni interne e le azioni su latestlog.txt. Questo aiuta gli sviluppatori a trovare problemi più facilmente, ma le prestazioni di Minecraft potrebbero risentirne a causa della scrittura dei registri.";
-
 "preference.title.appicon" = "Cambia icona app";
 "preference.detail.appicon" = "Ti consente di scegliere icone diverse di PojavLauncher sulla Schermata Home.";
 
@@ -142,7 +138,6 @@
 
 "preference.title.resolution" = "Risoluzione (%)";
 "preference.detail.resolution" = "Permette di diminuire la risoluzione del gioco.";
-
 "preference.title.disable_gesture" = "Disattiva gestures";
 "preference.title.press_duration" = "Durata click-lungo (ms)";
 "preference.title.button_scale" = "Scala pulsante sullo schermo (%)";

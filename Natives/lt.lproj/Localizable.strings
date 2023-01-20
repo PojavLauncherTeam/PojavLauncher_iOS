@@ -45,7 +45,6 @@
 "preference.title.cosmetica" = "\"Cosmetica\" apvalkalai";
 
 "preference.title.renderer" = "Vaizdo generatorius";
-
 "preference.title.disable_gesture" = "Išjungti gestus";
 "preference.title.java_args" = "JVM Paleidimo argumentai";
 "preference.title.auto_ram" = "Automatiškas RAM";

@@ -40,7 +40,6 @@
 "Settings" = "Ρυθμίσεις";
 
 "preference.title.renderer" = "Απόδοση";
-
 "preference.title.disable_gesture" = "Απενεργοποίηση χειρονομιών";
 "preference.title.java_args" = "JVM Εντολές εκκίνησης";
 "preference.title.auto_ram" = "Αυτόματη RAM";

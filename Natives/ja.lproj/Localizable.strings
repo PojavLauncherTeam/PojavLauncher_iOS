@@ -45,7 +45,6 @@
 "preference.title.cosmetica" = "コスメチカ・ケープズ";
 
 "preference.title.renderer" = "レンダラー";
-
 "preference.title.disable_gesture" = "ジェスチャーの無効化";
 "preference.title.java_args" = "JVM 起動引数";
 "preference.title.auto_ram" = "自動RAM調整";

@@ -40,7 +40,6 @@
 "Settings" = "Настройки";
 
 "preference.title.renderer" = "Визуализаторъ";
-
 "preference.title.disable_gesture" = "Отключеніе жестовъ";
 "preference.title.java_args" = "Аргументы запуска J.V.M.";
 "preference.title.auto_ram" = "Автоматическое выдѣленіе О.З.У.";

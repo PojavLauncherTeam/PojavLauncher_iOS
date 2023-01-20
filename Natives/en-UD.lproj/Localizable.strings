@@ -58,6 +58,7 @@
 "custom_controls.control_menu.safe_area" = "ɐǝɹɐ ǝɟɐS";
 "custom_controls.control_menu.add_button" = "uoʇʇnq ppⱯ";
 "custom_controls.control_menu.add_drawer" = "ɹǝʍɐɹp pp∀";
+"custom_controls.error.incompatible" = "˙plᴉnq ɹǝɥɔunɐl sᴉɥʇ uᴉ pǝʇuǝɯǝldɯᴉ ʇou sᴉ (%d ǝpoɔ) uoᴉsɹǝʌ loɹʇuoɔ sᴉɥ┴";
 "custom_controls.hint" = "suoᴉʇdo ǝɹoɯ ɹoɟ uǝǝɹɔs uo ǝɹǝɥʍʎuɐ ssǝɹd-ƃuo˥";
 
 "init.migrateDir" = "˙uoᴉʇɐɔol ʍǝu ǝɥʇ oʇ pǝʌoɯ uǝǝq sɐɥ ɐʇɐp ƃuᴉʇsᴉxǝ ɹnoʎ ɟo ll∀ ˙%@ ʍou sᴉ ʎɹoʇɔǝɹᴉp ɐʇɐp ɹǝɥɔunɐ˥ʌɐɾoԀ ǝɥ┴";
@@ -81,8 +82,6 @@
 
 // Login buttons
 "login.menu.sendlogs" = "sƃol ɹnoʎ puǝS";
-
-"login.option.add" = "ʇunoɔɔɐ pp∀";
 "login.option.select" = "ʇunoɔɔɐ ʇɔǝꞁǝS";
 "login.option.microsoft" = "ʇunoɔɔɐ ʇɟosoɹɔᴉW";
 "login.option.local" = "ʇunoɔɔɐ lɐɔo˥";
@@ -90,14 +89,15 @@
 "login.warn.title.ram_unjb" = "pǝlqɐuǝ sᴉ ɹǝpᴉls ʎɹoɯǝW";
 "login.warn.message.ram_unjb" = "˙llɐ ʇɐ ʎɐld oʇ ʎʇᴉlᴉqɐ ǝɥʇ ʞɐǝɹq ɹo ʎʇᴉlᴉqɐʇsuᴉ ǝɯɐƃ ǝsnɐɔ uɐɔ ƃuᴉʇʇǝs sᴉɥʇ ƃuᴉƃuɐɥɔ ʇɐɥʇ ǝɹɐʍɐ ǝq";
 
-"login.warn.title.a7" = "˙ǝɔᴉʌǝp sᴉɥʇ ɹoɟ ǝʇɐpdn ʇsɐl ǝɥʇ sᴉ sᴉɥ┴";
-"login.warn.message.a7" = "˙suoᴉʇɐʇᴉɯᴉl ǝɹɐʍʇɟos puɐ ǝɹɐʍpɹɐɥ oʇ ǝnp 'ǝɔᴉʌǝp sᴉɥʇ ʇɹoddns ʇou llᴉʍ ᄅ˙ᄅ ɹǝɥɔunɐ˥ʌɐɾoԀ";
+"login.warn.title.a7" = "˙ǝɔᴉʌǝp sᴉɥʇ uo pǝʇɹoddns ʇou sᴉ ᄅ˙ᄅ ɹǝɥɔunɐ˥ʌɐɾoԀ";
 
 "login.warn.title.iosver" = "˙uoᴉsɹǝʌ SOᴉ sᴉɥʇ ɹoɟ ǝʇɐpdn ʇsɐl ǝɥʇ sᴉ sᴉɥ┴";
 "login.warn.message.iosver" = "˙sǝlpɹnɥ ʇuǝɯdolǝʌǝp puɐ sǝᴉɔuǝʇsᴉsuoɔuᴉ ǝɹnʇɐǝɟ oʇ ǝnp 'ƐƖ ɹo ᄅƖ SOᴉ ʇɹoddns ʇou llᴉʍ ɹǝɥɔunɐ˥ʌɐɾoԀ ɟo uoᴉsɹǝʌ ǝɹnʇnɟ ∀";
 
 "login.warn.title.2gb" = "˙W∀ɹ pǝʇᴉɯᴉl sɐɥ ǝɔᴉʌǝp ɹno⅄";
 "login.warn.message.2gb" = "˙ǝɔᴉʌǝp ɹnoʎ ɹoɟ uo ɹoʇɔǝlǝs ɔᴉʇɐɯoʇnɐ ǝɥʇ ƃuᴉʌɐǝl puǝɯɯoɔǝɹ ǝM ˙sʇuᴉɐɹʇsuoɔ ʎɹoɯǝɯ oʇuᴉ unɹ ʎɐɯ ʎɹoɯǝɯ ɟo qפƐ uɐɥʇ ssǝl ɥʇᴉʍ sǝɔᴉʌǝp";
+
+"login.warn.title.demomode" = "oɯǝp sᴉ ʇunoɔɔɐ ɹno⅄";
 "login.warn.message.demomode" = "˙ǝpoɯ ǝuᴉlɟɟo ɯoɹɟ uoᴉʇᴉsuɐɹʇ sᴉɥʇ ʇnoqɐ ǝɹoɯ uɹɐǝl oʇ ǝʇᴉsqǝʍ ɹno ǝǝS ˙suoᴉʇɔᴉɹʇsǝɹ ǝsǝɥʇ ǝɔɐld ʇou sǝop ɹǝɥɔunɐl lɐᴉɔᴉɟɟo ǝɥʇ sɐ 'ǝɯɐƃ llnɟ ǝɥʇ uᴉɐʇuoɔ suoᴉsɹǝʌ ɹǝplO ˙suoᴉsɹǝʌ ɹǝʍǝu puɐ Ɩ˙Ɛ˙Ɩ uᴉ pǝɔnpoɹʇuᴉ 'lɐᴉɹʇ uoᴉʇᴉpƎ ɐʌɐſ ǝɥʇ ʎɐld puɐ ǝɯɐƃ ǝɥʇ uʍo ʇou sǝop ʇɐɥʇ ʇunoɔɔɐ ʇɟosoɹɔᴉW ɐ oʇuᴉ uƃᴉs oʇ noʎ ʍollɐ llᴉʍ ǝpoɯ oɯǝp 'ǝpoɯ lɐɔol puɐ ǝuᴉlɟɟo oʇ ʇuǝɯǝɔɐldǝɹ ɐ s∀";
 
 "login.warn.title.localmode" = "˙ǝpoɯ lɐɔo˥ ʍou sᴉ ǝpoɯ ǝuᴉlɟɟO";
@@ -142,11 +142,12 @@
 "preference.detail.debug_logging" = "˙uǝʇɟo ǝɹoɯ oʇ uǝʇʇᴉɹʍ ǝq llᴉʍ sƃol ǝɥʇ sɐ ɹǝʍols unɹ ʎɐɯ ʇɟɐɹɔǝuᴉW ʇnq 'ɹǝᴉsɐǝ sǝnssᴉ puᴉɟ sɹǝdolǝʌǝp ǝɥʇ sdlǝɥ sᴉɥ┴ ˙ʇxʇ˙ƃolʇsǝʇɐl oʇ suoᴉʇɔɐ puɐ sƃuᴉʇʇǝs lɐuɹǝʇuᴉ sƃo˥";
 "preference.title.jitstreamer_server" = "ԀI ɹǝʌɹǝs ɹǝɯɐǝɹʇSʇᴉſ";
 "preference.detail.jitstreamer_server" = "˙sɹǝʌɹǝs ɹǝɯɐǝɹʇSʇᴉſ ʇlnɐɟǝp ǝɥʇ ǝsn noʎ ɟᴉ ǝuolɐ ʇɟǝl ǝq uɐɔ uoᴉʇdo sᴉɥ┴ ˙sǝɔuɐʇsuᴉ pǝʇsoɥ-ɟlǝs ɹoɟ sɐ ɥɔns 'ԀI ɹǝʌɹǝs ɹǝɯɐǝɹʇSʇᴉſ ɯoʇsnɔ ɐ oʇ ǝƃuɐɥɔ oʇ noʎ sʍoll∀";
-
 "preference.title.appicon" = "uoɔᴉ ddɐ ʇǝS";
 "preference.detail.appicon" = "˙ɹǝɥɔunɐ˥ʌɐɾoԀ ɹoɟ suoɔᴉ uǝǝɹɔS ǝɯoH ʇuǝɹǝɟɟᴉp uǝǝʍʇǝq ǝsooɥɔ oʇ noʎ sʍoll∀";
 "preference.title.appicon-default" = "ʇɥƃᴉl ɹǝɥɔunɐ˥ʌɐɾoԀ ɹɐᴉlᴉɯɐℲ";
 "preference.title.appicon-dark" = "ʞɹɐp ɹǝɥɔunɐ˥ʌɐɾoԀ ɹɐᴉlᴉɯɐℲ";
+"preference.title.hidden_sidebar" = "ʇlnɐɟǝp ʎq ɹɐqǝpᴉs nuǝɯ uᴉɐɯ ǝpᴉH";
+"preference.detail.hidden_sidebar" = "˙ɹǝʍǝu puɐ ㄣƖ SOᴉ uo ƃuᴉʇɐʇoɹ uǝɥʍ puɐ ʇlnɐɟǝp ʎq nuǝɯ uᴉɐɯ ǝɥʇ uo ɹɐqǝpᴉs ǝɥʇ ǝpᴉɥ oʇ noʎ sʍoll∀";
 
 "preference.title.reset_warnings" = "sƃuᴉuɹɐʍ llɐ ʇǝsǝɹ";
 "preference.title.done.reset_warnings" = "˙ʇǝsǝɹ uǝǝq ǝʌɐɥ sƃuᴉuɹɐʍ ll∀";
@@ -156,13 +157,17 @@
 "preference.title.done.reset_settings" = "˙pǝɹoʇsǝɹ uǝǝq ǝʌɐɥ sƃuᴉʇʇǝs ʇlnɐɟǝp ǝɥʇ ɟo ll∀";
 
 "preference.title.renderer" = "ɹǝɹǝpuǝᴚ";
+"preference.title.renderer.auto" = "Ǝ˥פN∀ ɹo sǝㄣlƃ :oʇn∀";
 "preference.title.renderer.gl4es" = "Ɩ˙ᄅ ˥פuǝdO sʇɹodxǝ - ㄣ˙Ɩ˙Ɩ sǝㄣlƃ";
+"preference.title.renderer.angle" = "(pǝʇᴉɯᴉl 'ǝlᴉɟoɹԀ ǝɹoƆ) ᄅ˙Ɛ ˥פuǝdO sʇɹodxǝ - (+ㄥƖ˙Ɩ) Ǝ˥פN∀";
 "preference.title.renderer.zink" = "Ɩ˙ㄣ ˥פuǝdO sʇɹodxǝ - (0˙Ɩᄅ ɐsǝW) ʞuᴉZ";
 "preference.detail.renderer" = "ǝsn oʇ ǝuᴉƃuǝ ɹǝpuǝɹ ˥פuǝdO ǝɥʇ ǝƃuɐɥƆ";
 
 "preference.title.resolution" = "(%) uoᴉʇnlosǝɹ";
 "preference.detail.resolution" = "˙uoᴉʇnlosǝɹ ǝɯɐƃ ǝɥʇ ǝsɐǝɹɔǝp oʇ noʎ sʍoll∀";
 
+"preference.title.fullscreen_airplay" = "ʎɐlԀɹᴉ∀ uǝǝɹɔsllnℲ";
+"preference.detail.fullscreen_airplay" = "˙uǝǝɹɔs uo ƃuᴉɥʇʎɹǝʌǝ ƃuᴉɹoɹɹᴉɯ uɐɥʇ ɹǝɥʇɐɹ ʎɐldsᴉp lɐuɹǝʇxǝ ǝɥʇ uo ʍopuᴉʍ ǝɯɐƃ uǝǝɹɔsllnɟ ƃuᴉʇuǝsǝɹd sʍoll∀";
 "preference.title.disable_gesture" = "sǝɹnʇsǝᵷ ǝꞁqɐsᴉᗡ";
 "preference.title.press_duration" = "(sɯ) uoᴉʇɐɹnp ssǝɹd-ƃuo˥";
 "preference.detail.press_duration" = "˙sɯǝʇᴉ ƃuᴉddoɹp puɐ sʞɔolq ƃuᴉʎoɹʇsǝp ɹoɟ uoᴉʇɐɹnp ssǝɹd ɹǝƃƃᴉɹ┴";
@@ -194,6 +199,8 @@
 "preference.detail.debug_skip_wait_jit" = "˙sʞɐǝɹqlᴉɐɾ uᴉɐʇɹǝɔ uo slᴉɐɟ ʞɔǝɥɔ ǝsnɐɔǝq 'ʞɔǝɥɔ ɹǝƃƃnqǝp sdᴉʞs sᴉɥʇ pɐǝʇsuᴉ '┴Iſ ʇnoɥʇᴉʍ ɥɔunɐl oʇ noʎ ʍollɐ ʇou sǝop sᴉɥ┴";
 "preference.title.debug_ipad_ui" = "I∩ SOpɐԀᴉ ʞɔolu∩";
 "preference.detail.debug_ipad_ui" = "˙pǝlqɐsᴉp ɟᴉ I∩ ǝuoɥԀᴉ ɹo pǝlqɐuǝ ɟᴉ (˙ɔʇǝ 'pɹɐoqʎǝʞ 'ʇɹǝlɐ) I∩ ǝʌᴉsnlɔxǝ-pɐԀᴉ ʞɔolu∩";
+"preference.title.debug_auto_correction" = "uoᴉʇɔǝɹɹoɔ oʇn∀";
+"preference.detail.debug_auto_correction" = "˙ǝɯɐƃ uᴉ ʇxǝʇ ƃuᴉdʎʇ uǝɥʍ uoᴉʇɔǝɹɹoɔ oʇnɐ ǝlqɐuƎ";
 "preference.title.debug_hide_home_indicator" = "ɹoʇɐɔᴉpuᴉ ǝɯoɥ ǝpᴉH";
 "preference.detail.debug_hide_home_indicator" = "˙ǝɯᴉʇ ǝɯɐs ǝɥʇ ʇɐ ɹoʇɐɔᴉpuᴉ ǝɯoɥ ʞɔol puɐ ǝpᴉɥ oʇ ssǝɔɔ∀ pǝpᴉnפ ǝsn oʇ pǝǝu llᴉʍ no⅄ ˙ƃuᴉʞɔol ɹoʇɐɔᴉpuᴉ ǝɯoɥ ǝlqɐsᴉp llᴉʍ sᴉɥ┴";
 "preference.title.debug_show_layout_bounds" = "spunoq ʇnoʎɐl ʍoɥS";

@@ -39,8 +39,6 @@
 
 "launcher.menu.custom_controls" = "Kohandatud juhtnupud";
 "launcher.menu.install_jar" = "Paigalda .jar";
-
-"login.option.add" = "Lisa konto";
 "login.option.select" = "Vali konto";
 
 "News" = "Uudised";
@@ -50,7 +48,6 @@
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java trikid";
 "preference.title.cosmetica" = "Cosmetica keebid";
-
 "preference.title.appicon" = "Määra rakenduse ikoon";
 "preference.detail.appicon" = "Võimaldab valida PojavLauncheri erinevate kodukuvaikoonide vahel.";
 "preference.title.appicon-default" = "Tuttav PojavLauncher hele";
@@ -66,7 +63,6 @@
 "preference.title.resolution" = "Eraldusvõime (%)";
 
 "preference.title.fullscreen_airplay" = "Täisekraanis AirPlay";
-
 "preference.title.disable_gesture" = "Keela viiped";
 "preference.title.virtmouse_enable" = "Virtuaalne hiir";
 "preference.title.auto_ram" = "Automaatne RAM";
