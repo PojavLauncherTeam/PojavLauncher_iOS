@@ -376,8 +376,6 @@ void pojavSetWindowHint(int hint, int value) {
                 NSLog(@"GLFW: Unimplemented API 0x%x", value);
                 abort();
         }
-    } else if (hint == GLFW_OPENGL_PROFILE || hint == GLFW_CONTEXT_VERSION_MAJOR) {
-        pojavInit_OpenGL();
     } else if (strcmp(getenv("POJAV_RENDERER"), "auto")==0 && hint == GLFW_CONTEXT_VERSION_MAJOR && value >= 3) {
         // Free unused gl4es library
         void *renderer_handle = dlopen(RENDERER_NAME_GL4ES, RTLD_GLOBAL);
