@@ -336,6 +336,8 @@ jboolean pojavInit_OpenGL() {
             NSLog(@"OSMDroid: %s",dlerror());
             return JNI_FALSE;
         }
+        
+        return JNI_TRUE;
     }
     
     return JNI_FALSE;
@@ -453,7 +455,7 @@ void pojavMakeCurrent(void* window) {
 
     if (config_renderer == RENDERER_VK_ZINK || config_renderer == RENDERER_VIRGL) {
             NSLog(@"OSMDroid: making current");
-            OSMesaMakeCurrent_p((OSMesaContext)window,(__bridge void *)(((SurfaceViewController *)currentVC()).surfaceView.layer),GL_UNSIGNED_BYTE,savedWidth,savedHeight);
+            OSMesaMakeCurrent_p((OSMesaContext)window,(__bridge void *)(((SurfaceViewController *)currentVC()).surfaceView.layer),GL_UNSIGNED_BYTE,windowWidth,windowHeight);
 /*
             if (config_renderer == RENDERER_VK_ZINK) {
                 OSMesaPixelStore_p(OSMESA_ROW_LENGTH,windowWidth);

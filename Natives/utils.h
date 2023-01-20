@@ -50,7 +50,7 @@
 
 #define RENDERER_NAME_GL4ES "libgl4es_114.dylib"
 #define RENDERER_NAME_MTL_ANGLE "libtinygl4angle.dylib"
-#define RENDERER_NAME_VK_ZINK "libOSMesaOverride.dylib"
+#define RENDERER_NAME_VK_ZINK "libOSMesa.8.dylib"
 
 #define SPECIALBTN_KEYBOARD -1
 #define SPECIALBTN_TOGGLECTRL -2
@@ -72,7 +72,6 @@ JNIEnv* runtimeJNIEnvPtr;
 int csops(pid_t pid, unsigned int ops, void *useraddr, size_t usersize);
 BOOL isJITEnabled();
 
-void* gbuffer; // OSMesa framebuffer
 long showingWindow;
 int windowWidth, windowHeight;
 int physicalWidth, physicalHeight;
