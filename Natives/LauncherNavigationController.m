@@ -139,7 +139,6 @@
             BOOL shouldAdd = YES;
             for (NSObject *object in finalVersionList) {
                 if (![object isKindOfClass:[NSDictionary class]]) continue;
-                
                 NSDictionary *versionInfo = (NSDictionary *)object;
 
                 NSString *prevVersionId = [versionInfo valueForKey:@"id"];

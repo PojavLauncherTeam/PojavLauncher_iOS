@@ -185,10 +185,6 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
         self.authData[@"profilePicURL"] = [NSString stringWithFormat:@"https://mc-heads.net/head/%@/120", self.authData[@"profileId"]];
         self.authData[@"oldusername"] = self.authData[@"username"];
         self.authData[@"username"] = response[@"name"];
-        if(getenv("DEMO_LOCK")) {
-            unsetenv("DEMO_LOCK");
-        }
-        setenv("POJAV_GAME_DIR", [NSString stringWithFormat:@"%s/Library/Application Support/minecraft", getenv("POJAV_HOME")].UTF8String, 1);
         callback(nil, [super saveChanges]);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSData *errorData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
@@ -197,8 +193,7 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
             // If there is no profile, use the Xbox gamertag as username with Demo mode
             self.authData[@"profileId"] = @"00000000-0000-0000-0000-000000000000";
             self.authData[@"username"] = [NSString stringWithFormat:@"Demo.%@", self.authData[@"xboxGamertag"]];
-            setenv("DEMO_LOCK", "1", 1);
-            setenv("POJAV_GAME_DIR", [NSString stringWithFormat:@"%s/.demo", getenv("POJAV_HOME")].UTF8String, 1);
+
             callback(@"DEMO", [super saveChanges]);
             callback(nil, YES);
             return;

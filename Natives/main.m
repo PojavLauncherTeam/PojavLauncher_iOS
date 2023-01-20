@@ -33,7 +33,7 @@ int ptrace(int, pid_t, caddr_t, int);
 extern char** environ;
 
 void printEntitlementAvailability(NSString *key) {
-    NSLog(@"[Pre-Init] - %@: %@", key, getEntitlementValue(key) ? @"YES" : @"NO");
+    NSLog(@"* %@: %@", key, getEntitlementValue(key) ? @"YES" : @"NO");
 }
 
 bool init_checkForsubstrated() {
@@ -108,10 +108,10 @@ void init_logDeviceAndVer(char *argument) {
     // Hardware + Software
     struct utsname systemInfo;
     uname(&systemInfo);
-    NSString *deviceHardware = [NSString stringWithFormat:@"%s", systemInfo.machine];
+    NSString *deviceHardware = @(systemInfo.machine);
     const char *deviceSoftware = [[UIDevice currentDevice] systemVersion].UTF8String;
     
-    NSString *friendlyName = [deviceid_dict objectForKey:deviceHardware];
+    NSString *friendlyName = deviceid_dict [deviceHardware];
     if(friendlyName != nil) {
         setenv("POJAV_DETECTEDHW", friendlyName.UTF8String, 1);
     } else {
