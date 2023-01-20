@@ -158,6 +158,10 @@
 "preference.title.confirm.reset_settings" = "This will remove all of your custom preferences, including resolution, button size, and Java arguments.";
 "preference.title.done.reset_settings" = "All of the default settings have been restored.";
 
+"preference.title.erase_demo_data" = "Erase Demo game data";
+"preference.title.confirm.erase_demo_data" = "This will erase all Demo game versions and data used for Demo accounts.";
+"preference.title.done.erase_demo_data" = "All of the Demo game data has been erased.";
+
 "preference.title.renderer" = "Renderer";
 "preference.title.renderer.auto" = "Auto: gl4es or ANGLE";
 "preference.title.renderer.gl4es" = "gl4es 1.1.4 - exports OpenGL 2.1";
