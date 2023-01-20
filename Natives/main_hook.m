@@ -2,6 +2,7 @@
 #import "SurfaceViewController.h"
 #import "utils.h"
 
+#include <dlfcn.h>
 #include "external/fishhook/fishhook.h"
 
 void (*orig_abort)();
@@ -32,7 +33,14 @@ void hooked_abort() {
 }
 
 void* hooked_dlopen(const char* path, int mode) {
-    if (path && [@(path) hasSuffix:@"/libawt_xawt.dylib"]) {
+    // iOS 12 refuses to dlopen executables, so here we put a workaround
+    if (path == NULL || [@(path) hasSuffix:@"/PojavLauncher"]) {
+        return orig_dlopen(NULL, mode);
+    }
+
+    if (getenv("POJAV_PREFER_EXTERNAL_JRE") && [@(path) hasSuffix:@"/libawt_xawt.dylib"]) {
+        // In this environment, libawt_xawt is not available/X11 only.
+        // hook dlopen to use our libawt_xawt
         return orig_dlopen([NSString stringWithFormat:@"%s/Frameworks/libawt_xawt.dylib", getenv("BUNDLE_PATH")].UTF8String, mode);
     }
 
@@ -67,14 +75,10 @@ int hooked_open(const char *path, int oflag, ...) {
 }
 
 void init_hookFunctions() {
-    if (getenv("POJAV_PREFER_EXTERNAL_JRE")) {
-        // In this environment, libawt_xawt is not available/X11 only.
-        // hook dlopen to use our libawt_xawt
-        rebind_symbols((struct rebinding[1]){{"dlopen", hooked_dlopen, (void *)&orig_dlopen}}, 1);
-    }
-    rebind_symbols((struct rebinding[3]){
+    rebind_symbols((struct rebinding[4]){
         {"abort", hooked_abort, (void *)&orig_abort},
+        {"dlopen", hooked_dlopen, (void *)&orig_dlopen},
         {"exit", hooked_exit, (void *)&orig_exit},
         {"open", hooked_open, (void *)&orig_open}
-    }, 3);
+    }, 4);
 }

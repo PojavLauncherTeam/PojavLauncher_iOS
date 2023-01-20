@@ -228,6 +228,7 @@ package: native java jre assets
 	@cp -R $(SOURCEDIR)/Natives/*.lproj $(WORKINGDIR)/PojavLauncher.app/ || exit 1
 	$(call DIRCHECK,$(OUTPUTDIR))
 	@cp -R $(WORKINGDIR)/PojavLauncher.app $(OUTPUTDIR)
+	ldid -S $(OUTPUTDIR)/PojavLauncher.app; \
 	ldid -S$(SOURCEDIR)/entitlements.xml $(OUTPUTDIR)/PojavLauncher.app/PojavLauncher; \
 	rm -f $(OUTPUTDIR)/*.ipa; \
 	cd $(OUTPUTDIR); \
@@ -260,6 +261,7 @@ dsym: package
 	
 deploy:
 	@echo '[PojavLauncher v$(VERSION)] deploy - start'
+	@ldid -S $(WORKINGDIR)/PojavLauncher.app; \
 	@ldid -S$(SOURCEDIR)/entitlements.xml $(WORKINGDIR)/PojavLauncher.app/PojavLauncher; \
 	if [ '$(NOSTDIN)' = '1' ]; then \
 		echo '$(SUDOPASS)' | sudo -S mv $(WORKINGDIR)/*.dylib /Applications/PojavLauncher.app/Frameworks/; \

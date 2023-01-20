@@ -73,9 +73,9 @@ PojavLauncher is amazing, and surprisingly stable, and it wouldn't be this way w
 - [LWJGLX](https://github.com/PojavLauncherTeam/lwjglx) (LWJGL2 API compatibility layer for LWJGL3): unknown license.
 - [Alderis](https://github.com/hbang/Alderis) (color picker for iOS < 14): [Apache 2.0 License](https://github.com/hbang/Alderis/blob/master/LICENSE.md).
 - [DBNumberedSlider](https://github.com/khanhduytran0/DBNumberedSlider): [Apache 2.0 License](https://github.com/immago/DBNumberedSlider/blob/master/LICENSE)
-- [fishhook](https://github.com/khanhduytran0/fishhook) (jailed environment usage only): [BSD-3 License](https://github.com/facebook/fishhook/blob/main/LICENSE).
+- [fishhook](https://github.com/khanhduytran0/fishhook): [BSD-3 License](https://github.com/facebook/fishhook/blob/main/LICENSE).
 - [Java Native Access](https://github.com/java-native-access/jna): [Apache 2.0 License](https://github.com/java-native-access/jna/blob/master/LICENSE).
-- [shaderc](https://github.com/khanhduytran0/shaderc) (used by mods that uses Vulkan for rendering): [Apache 2.0 License](https://github.com/google/shaderc/blob/main/LICENSE).
+- [shaderc](https://github.com/khanhduytran0/shaderc) (used by Vulkan rendering mods): [Apache 2.0 License](https://github.com/google/shaderc/blob/main/LICENSE).
 - [TOInsetGroupedTableView](https://github.com/TimOliver/TOInsetGroupedTableView): [MIT License](https://github.com/TimOliver/TOInsetGroupedTableView/blob/master/LICENSE).
 - [AltKit](https://github.com/rileytestut/AltKit)
 - Thanks to [MCHeads](https://mc-heads.net) for providing Minecraft avatars.
