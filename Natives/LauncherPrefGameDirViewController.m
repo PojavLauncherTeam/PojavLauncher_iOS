@@ -42,7 +42,9 @@
     NSString *lasmPath = [NSString stringWithFormat:@"%s/Library/Application Support/minecraft", getenv("POJAV_HOME")];
     [NSFileManager.defaultManager removeItemAtPath:lasmPath error:nil];
     [NSFileManager.defaultManager createSymbolicLinkAtPath:lasmPath withDestinationPath:multidirPath error:nil];
-    [(LauncherNavigationController *)self.navigationController reloadVersionList:[getPreference(@"selected_version_type") intValue]];
+    if ([getPreference(@"selected_version_type") intValue] == 0) {
+        [(LauncherNavigationController *)self.navigationController reloadVersionList:0];
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

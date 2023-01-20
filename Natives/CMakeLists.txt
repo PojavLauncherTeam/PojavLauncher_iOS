@@ -50,16 +50,11 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -rpath @executable_path/Fr
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -rpath @executable_path/Frameworks -rpath @loader_path/Frameworks")
 
 
-find_library(OSMESA_LIB libOSMesa.8.dylib)
-
-add_library(libOSMesaOverride.dylib SHARED gl_mesa3d_patch.m)
-set_target_properties(libOSMesaOverride.dylib PROPERTIES
-    FRAMEWORK TRUE
-    MACOSX_FRAMEWORK_IDENTIFIER dylib.mesa3d.libOSMesaOverride
-)
-target_link_libraries(libOSMesaOverride.dylib
+add_library(OSMesaOverride SHARED gl_mesa3d_patch.m)
+target_link_libraries(OSMesaOverride
   "${GLOBAL_LDFLAGS}"
-  "${OSMESA_LIB}"
+  "-L${CMAKE_FRAMEWORK_PATH}"
+  "-lOSMesa.8"
 )
 
 
@@ -146,6 +141,7 @@ target_link_libraries(PojavLauncher
   "-F'${CMAKE_CURRENT_LIST_DIR}/resources/Frameworks'"
   "-framework AltKit"
   "-framework AuthenticationServices"
+  "-framework AVFoundation"
   "-framework CAltKit"
   "-framework CoreGraphics"
   "-framework CoreImage"

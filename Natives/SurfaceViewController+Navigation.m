@@ -129,7 +129,7 @@ static CGPoint lastCenterPoint;
 
 - (void)actionOpenCustomControls {
     [self animateMenuScale:1 duration:0.5];
-    [self.ctrlView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [self.ctrlView removeAllButtons];
     CustomControlsViewController *vc = [[CustomControlsViewController alloc] init];
     vc.modalPresentationStyle = UIModalPresentationOverFullScreen;
     [self presentViewController:vc animated:NO completion:nil];

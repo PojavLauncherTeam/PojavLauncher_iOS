@@ -70,10 +70,10 @@ int (*vtest_main_p) (int, const char*[]);
 void (*vtest_swap_buffers_p) (void);
 void* egl_make_current(void* window);
 
-#define RENDERER_VULKAN 0
 #define RENDERER_MTL_ANGLE 1
 #define RENDERER_VK_ZINK 2
 #define RENDERER_VIRGL 3
+#define RENDERER_VULKAN 4
 
 int config_renderer;
 
@@ -167,11 +167,11 @@ void dlsym_OSMesa(void* dl_handle) {
     glFinish_p = dlsym(dl_handle,"glFinish");
 }
 
-void loadSymbols() {
+void loadSymbols(int renderer) {
     char fileName[2048];
-    switch (config_renderer) {
+    switch (renderer) {
         case RENDERER_VK_ZINK:
-            sprintf((char *)fileName, "%s/Frameworks/%s.framework/%s", getenv("BUNDLE_PATH"), getenv("POJAV_RENDERER"), getenv("POJAV_RENDERER"));
+            sprintf((char *)fileName, "%s/Frameworks/%s", getenv("BUNDLE_PATH"), getenv("POJAV_RENDERER"));
             break;
         case RENDERER_MTL_ANGLE:
             sprintf((char *)fileName, "%s/Frameworks/MetalANGLE.framework/MetalANGLE", getenv("BUNDLE_PATH"));
@@ -183,7 +183,7 @@ void loadSymbols() {
         NSLog(@"DlLoader: unable to load: %s", dlerror());
         return;
     }
-    switch(config_renderer) {
+    switch(renderer) {
         case RENDERER_VK_ZINK:
             dlsym_OSMesa(dl_handle);
             break;
@@ -194,14 +194,11 @@ void loadSymbols() {
 }
 
 void loadSymbolsVirGL() {
-    config_renderer = RENDERER_MTL_ANGLE;
-    loadSymbols();
-    config_renderer = RENDERER_VK_ZINK;
-    loadSymbols();
-    config_renderer = RENDERER_VIRGL;
+    loadSymbols(RENDERER_MTL_ANGLE);
+    loadSymbols(RENDERER_VK_ZINK);
 
     char fileName[2048];
-    sprintf((char *)fileName, "%s/Frameworks/libvirgl_test_server.dylib.framework/libvirgl_test_server.dylib", getenv("BUNDLE_PATH"));
+    sprintf((char *)fileName, "%s/Frameworks/libvirgl_test_server.dylib", getenv("BUNDLE_PATH"));
     void *handle = dlopen(fileName, RTLD_LAZY);
     NSLog(@"VirGL: libvirgl_test_server = %p", handle);
     if (!handle) {
@@ -222,24 +219,24 @@ jboolean pojavInit_OpenGL() {
     if (config_renderer) return JNI_TRUE;
 
     NSString *renderer = @(getenv("POJAV_RENDERER"));
-    JNI_LWJGL_changeRenderer(renderer.UTF8String);
     BOOL isAuto = [renderer isEqualToString:@"auto"];
     /* if ([renderer isEqualToString:@"libOSMesa.8.dylib"]) {
         config_renderer = RENDERER_VIRGL;
         setenv("GALLIUM_DRIVER", "virpipe", 1);
         loadSymbolsVirGL();
     } else */ if (isAuto || [renderer isEqualToString:@ RENDERER_NAME_GL4ES]) {
+        // At this point, if renderer is still auto (unspecified major version), pick gl4es
         config_renderer = RENDERER_MTL_ANGLE;
-        setenv("POJAV_RENDERER", RENDERER_NAME_GL4ES, 1);
-        loadSymbols();
+        renderer = @ RENDERER_NAME_GL4ES;
+        setenv("POJAV_RENDERER", renderer.UTF8String, 1);
     } else if ([renderer isEqualToString:@ RENDERER_NAME_MTL_ANGLE]) {
         config_renderer = RENDERER_MTL_ANGLE;
-        loadSymbols();
     } else if ([renderer hasPrefix:@"libOSMesa"]) {
         config_renderer = RENDERER_VK_ZINK;
         setenv("GALLIUM_DRIVER","zink",1);
-        loadSymbols();
     }
+    JNI_LWJGL_changeRenderer(renderer.UTF8String);
+    loadSymbols(config_renderer);
 
     if (config_renderer == RENDERER_MTL_ANGLE || config_renderer == RENDERER_VIRGL) {
         if (potatoBridge.eglDisplay == EGL_NO_DISPLAY) {
@@ -250,21 +247,11 @@ jboolean pojavInit_OpenGL() {
             }
         }
 
-        // Pre-load the renderer library
-        // FIXME: gl4es has to be pre-loaded if it is going to be used later,
-        // or glCheckFramebufferStatus will return an error
-        void *renderer_handle = dlopen(getenv("POJAV_RENDERER"), RTLD_GLOBAL);
-        NSDebugLog(@"%s=%p, error=%s", getenv("POJAV_RENDERER"), renderer_handle, dlerror());
-
-        // Set back to the previous value
-        setenv("POJAV_RENDERER", renderer.UTF8String, 1);
-        if (isAuto) {
-            JNI_LWJGL_changeRenderer(RENDERER_NAME_GL4ES);
-        }
+        // Obtain the renderer library handle
+        void *renderer_handle = dlopen(renderer.UTF8String, RTLD_GLOBAL);
+        NSDebugLog(@"%s=%p, error=%s", renderer.UTF8String, renderer_handle, dlerror());
 
         NSDebugLog(@"EGLBridge: Initializing");
-        // printf("EGLBridge: ANativeWindow pointer = %p\n", potatoBridge.androidWindow);
-        //(*env)->ThrowNew(env,(*env)->FindClass(env,"java/lang/Exception"),"Trace exception");
         if (!eglInitialize_p(potatoBridge.eglDisplay, NULL, NULL)) {
             NSDebugLog(@"EGLBridge: Error eglInitialize() failed: 0x%x", eglGetError_p());
             return JNI_FALSE;
@@ -293,7 +280,7 @@ jboolean pojavInit_OpenGL() {
         assert(num_configs > 0);
 
         if (!eglGetConfigAttrib_p(potatoBridge.eglDisplay, config, EGL_NATIVE_VISUAL_ID, &vid)) {
-            NSLog(@"EGLBridge: Error eglGetConfigAttrib() failed: 0x%x", eglGetError_p());
+            NSDebugLog(@"EGLBridge: Error eglGetConfigAttrib() failed: 0x%x", eglGetError_p());
             return JNI_FALSE;
         }
 
@@ -370,18 +357,26 @@ void pojavSetWindowHint(int hint, int value) {
                 // pojavInit_Vulkan();
                 break;
             case GLFW_OPENGL_API:
-                pojavInit_OpenGL();
+                /* Nothing to do: initialization is called in pojavCreateContext */
+                // pojavInit_OpenGL();
                 break;
             default:
                 NSLog(@"GLFW: Unimplemented API 0x%x", value);
                 abort();
         }
-    } else if (strcmp(getenv("POJAV_RENDERER"), "auto")==0 && hint == GLFW_CONTEXT_VERSION_MAJOR && value >= 3) {
-        // Free unused gl4es library
-        void *renderer_handle = dlopen(RENDERER_NAME_GL4ES, RTLD_GLOBAL);
-        dlclose(renderer_handle);
-
-        JNI_LWJGL_changeRenderer(RENDERER_NAME_MTL_ANGLE);
+    } else if (strcmp(getenv("POJAV_RENDERER"), "auto")==0 && hint == GLFW_CONTEXT_VERSION_MAJOR) {
+        switch (value) {
+            case 1:
+            case 2:
+                setenv("POJAV_RENDERER", RENDERER_NAME_GL4ES, 1);
+                JNI_LWJGL_changeRenderer(RENDERER_NAME_GL4ES);
+                break;
+            // case 4: use Zink?
+            default:
+                setenv("POJAV_RENDERER", RENDERER_NAME_MTL_ANGLE, 1);
+                JNI_LWJGL_changeRenderer(RENDERER_NAME_MTL_ANGLE);
+                break;
+        }
     }
 }
 
@@ -483,12 +478,16 @@ void pojavMakeCurrent(void* window) {
             return;
     }
 
-    // should not reach here
-    NSLog(@"Error: Invalid renderer %d, aborting.", config_renderer);
-    abort();
+    if (window) {
+        // should not reach here
+        NSLog(@"Error: Invalid renderer %d, aborting.", config_renderer);
+        abort();
+    }
 }
 
 void* pojavCreateContext(void* contextSrc) {
+    pojavInit_OpenGL();
+
     if (config_renderer == RENDERER_VULKAN) {
         return (__bridge void *)(((SurfaceViewController *)currentWindow().rootViewController).surfaceView.layer);
     }

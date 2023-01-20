@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "customcontrols/ControlButton.h"
+#import "customcontrols/ControlLayout.h"
 
 @interface ControlHandleView : UIView
 @property(nonatomic, weak) ControlButton* target;
@@ -9,8 +10,7 @@
 
 @property(nonatomic) UIGestureRecognizer* currentGesture;
 
-@property(nonatomic) NSMutableDictionary* cc_dictionary;
-@property(nonatomic) UIView* ctrlView;
+@property(nonatomic) ControlLayout* ctrlView;
 @property(nonatomic) ControlHandleView* resizeView;
 
 - (void)initKeyCodeMap;

@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 
+#import "customcontrols/ControlLayout.h"
 #import "GameSurfaceView.h"
 
 BOOL canAppendToLog;
@@ -10,7 +11,7 @@ CGPoint lastVirtualMousePoint;
 
 @interface SurfaceViewController : UIViewController
 
-@property(nonatomic) UIView *ctrlView;
+@property(nonatomic) ControlLayout *ctrlView;
 @property(nonatomic) GameSurfaceView* surfaceView;
 @property(nonatomic) UIView *touchView;
 @property UIImageView* mousePointerView;

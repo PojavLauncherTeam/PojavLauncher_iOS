@@ -20,6 +20,9 @@
 # define CONFIG_COMMIT "unspecified"
 #endif
 
+// Remove date + time from NSLog, unneeded
+#define NSLog(args...) customNSLog(__FILE__,__LINE__,__PRETTY_FUNCTION__,args); 
+
 // Control button actions
 #define ACTION_DOWN 0
 #define ACTION_UP 1
@@ -59,7 +62,7 @@
 #define SPECIALBTN_SCROLLDOWN -8
 
 #define NSDebugLog(...) if (debugLogEnabled) { NSLog(__VA_ARGS__); }
-static BOOL debugBoundsEnabled, debugLogEnabled;
+BOOL debugBoundsEnabled, debugLogEnabled;
 
 JavaVM* runtimeJavaVMPtr;
 JNIEnv* runtimeJNIEnvPtr;
@@ -93,6 +96,7 @@ void openLink(UIViewController* sender, NSURL* link);
 NSString* localize(NSString* key, NSString* comment);
 NSMutableDictionary* parseJSONFromFile(NSString *path);
 NSError* saveJSONToFile(NSDictionary *dict, NSString *path);
+void customNSLog(const char *file, int lineNumber, const char *functionName, NSString *format, ...);
 
 static inline CGFloat clamp(CGFloat x, CGFloat lower, CGFloat upper) {
     return fmin(upper, fmax(x, lower));

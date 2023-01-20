@@ -23,6 +23,7 @@
 #include "JavaLauncher.h"
 #include "utils.h"
 #include "codesign.h"
+#include "deviceids.h"
 
 #define CS_PLATFORM_BINARY 0x4000000
 #define PT_TRACE_ME 0
@@ -32,7 +33,7 @@ int ptrace(int, pid_t, caddr_t, int);
 extern char** environ;
 
 void printEntitlementAvailability(NSString *key) {
-    NSLog(@"[Pre-Init] - %@: %@", key, getEntitlementValue(key) ? @"YES" : @"NO");
+    NSLog(@"* %@: %@", key, getEntitlementValue(key) ? @"YES" : @"NO");
 }
 
 bool init_checkForsubstrated() {
@@ -99,18 +100,25 @@ void init_checkForJailbreak() {
 }
 
 void init_logDeviceAndVer(char *argument) {
-    // Hardware + Software
-    struct utsname systemInfo;
-    uname(&systemInfo);
-    const char *deviceHardware = systemInfo.machine;
-    const char *deviceSoftware = [[UIDevice currentDevice] systemVersion].UTF8String;
-    
     // PojavLauncher version
     NSLog(@"[Pre-Init] PojavLauncher version: %s-%s, branch: %s, commit: %s",
         [NSBundle.mainBundle.infoDictionary[@"CFBundleShortVersionString"] UTF8String],
         CONFIG_TYPE, CONFIG_BRANCH, CONFIG_COMMIT);
 
-    setenv("POJAV_DETECTEDHW", deviceHardware, 1);
+    // Hardware + Software
+    struct utsname systemInfo;
+    uname(&systemInfo);
+    NSString *deviceHardware = @(systemInfo.machine);
+    const char *deviceSoftware = [[UIDevice currentDevice] systemVersion].UTF8String;
+    
+    NSString *friendlyName = deviceid_dict [deviceHardware];
+    if(friendlyName != nil) {
+        setenv("POJAV_DETECTEDHW", friendlyName.UTF8String, 1);
+    } else {
+        setenv("POJAV_DETECTEDHW", deviceHardware.UTF8String, 1);
+        NSLog(@"[Pre-Init] Device model not recognized. Use appledb.dev to identify it!");
+    }
+
     setenv("POJAV_DETECTEDSW", deviceSoftware, 1);
     
     NSString *tsPath = [NSString stringWithFormat:@"%s/../_TrollStore", getenv("BUNDLE_PATH")];
@@ -140,7 +148,12 @@ void init_logDeviceAndVer(char *argument) {
 void init_migrateDirIfNecessary() {
     NSString *oldDir = @"/usr/share/pojavlauncher";
     if ([fm fileExistsAtPath:oldDir]) {
-        NSString *newDir = [NSString stringWithFormat:@"%s/Documents", getenv("HOME")];
+        NSString *newDir = @"";
+        if ([@(getenv("HOME")) isEqualToString:@"/var/mobile"]) {
+            newDir = [NSString stringWithFormat:@"%s/Documents/PojavLauncher", getenv("HOME")];
+        } else {
+            newDir = [NSString stringWithFormat:@"%s/Documents", getenv("HOME")];
+        }
         [fm moveItemAtPath:oldDir toPath:newDir error:nil];
         [fm removeItemAtPath:oldDir error:nil];
     }
@@ -254,7 +267,9 @@ void init_setupMultiDir() {
 
     NSString *lasmPath = [NSString stringWithFormat:@"%s/Library/Application Support/minecraft", getenv("POJAV_HOME")]; //libr
     NSString *multidirPath = [NSString stringWithFormat:@"%s/instances/%@", getenv("POJAV_HOME"), multidir];
+    NSString *demoPath = [NSString stringWithFormat:@"%s/.demo", getenv("POJAV_HOME")];
 
+    [fm createDirectoryAtPath:demoPath withIntermediateDirectories:YES attributes:nil error:nil];
     [fm createDirectoryAtPath:multidirPath withIntermediateDirectories:YES attributes:nil error:nil];
     [fm removeItemAtPath:lasmPath error:nil];
     [fm createDirectoryAtPath:lasmPath.stringByDeletingLastPathComponent withIntermediateDirectories:YES attributes:nil error:nil];
@@ -327,6 +342,7 @@ int main(int argc, char *argv[]) {
     init_hookFunctions();
 
     loadPreferences(NO);
+    debugBoundsEnabled = [getPreference(@"debug_show_layout_bounds") boolValue];
     debugLogEnabled = [getPreference(@"debug_logging") boolValue];
     NSLog(@"Debug log enabled: %@", debugLogEnabled ? @"YES" : @"NO");
 

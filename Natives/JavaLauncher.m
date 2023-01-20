@@ -11,6 +11,8 @@
 
 #include "utils.h"
 
+#import <AVFoundation/AVFoundation.h>
+
 #import "ios_uikit_bridge.h"
 #import "JavaLauncher.h"
 #import "LauncherPreferences.h"
@@ -29,6 +31,9 @@ void init_loadCustomEnv() {
     if (getenv("POJAV_PREFER_EXTERNAL_JRE")) {
         setenv("JAVA_AWT_PATH", [NSString stringWithFormat:@"%s/Frameworks/libawt.dylib", getenv("BUNDLE_PATH")].UTF8String, 1);
     }
+
+    // Silent Caciocavallo NPE error in locating Android-only lib
+    setenv("LD_LIBRARY_PATH", "", 1);
 
     // Disable overloaded functions hack for Minecraft 1.17+
     setenv("LIBGL_NOINTOVLHACK", "1", 1);
@@ -156,7 +161,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     int allocmem;
     if ([getPreference(@"auto_ram") boolValue]) {
         CGFloat autoRatio = getEntitlementValue(@"com.apple.private.memorystatus") ? 0.4 : 0.25;
-        allocmem = roundf(([[NSProcessInfo processInfo] physicalMemory] / 1048576) * autoRatio);
+        allocmem = roundf((NSProcessInfo.processInfo.physicalMemory / 1048576) * autoRatio);
     } else {
         allocmem = [getPreference(@"allocated_memory") intValue];
     }
@@ -167,16 +172,11 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     margv[++margc] = "-Djava.system.class.loader=net.kdt.pojavlaunch.PojavClassLoader";
     margv[++margc] = "-Xms128M";
     margv[++margc] = [NSString stringWithFormat:@"-Xmx%dM", allocmem].UTF8String;
-    margv[++margc] = [NSString stringWithFormat:@
-        "-Djava.library.path=%1$s/Frameworks:"
-        "%1$s/Frameworks/libOSMesaOverride.dylib.framework:"
-        "%1$s/Frameworks/libMoltenVK.dylib.framework",
-        getenv("BUNDLE_PATH")].UTF8String;
-    margv[++margc] = [NSString stringWithFormat:@
-        "-Djna.boot.library.path=%s/Frameworks/libjnidispatch.dylib.framework",
-        getenv("BUNDLE_PATH")].UTF8String;
+    margv[++margc] = [NSString stringWithFormat:@"-Djava.library.path=%1$s/Frameworks", getenv("BUNDLE_PATH")].UTF8String;
+    margv[++margc] = [NSString stringWithFormat:@"-Djna.boot.library.path=%s/Frameworks", getenv("BUNDLE_PATH")].UTF8String;
     margv[++margc] = [NSString stringWithFormat:@"-Duser.dir=%s", getenv("POJAV_GAME_DIR")].UTF8String;
     margv[++margc] = [NSString stringWithFormat:@"-Duser.home=%s", getenv("POJAV_HOME")].UTF8String;
+    margv[++margc] = [NSString stringWithFormat:@"-Duser.timezone=%@", NSTimeZone.localTimeZone.name].UTF8String;
     margv[++margc] = [NSString stringWithFormat:@"-DUIScreen.maximumFramesPerSecond=%d", (int)UIScreen.mainScreen.maximumFramesPerSecond].UTF8String;
     margv[++margc] = "-Dorg.lwjgl.system.allocator=system";
     margv[++margc] = "-Dlog4j2.formatMsgNoLookups=true";
@@ -217,7 +217,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
         margv[++margc] = "-Dawt.toolkit=net.java.openjdk.cacio.ctc.CTCToolkit";
         margv[++margc] = "-Djava.awt.graphicsenv=net.java.openjdk.cacio.ctc.CTCGraphicsEnvironment";
     } else {
-        // Required by Arc to inject DNS
+        // Required by Cosmetica to inject DNS
         margv[++margc] = "--add-opens=java.base/java.net=ALL-UNNAMED";
 
         // Setup Caciocavallo
@@ -257,7 +257,8 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     }
     margv[++margc] = cacio_classpath.UTF8String;
 
-    if (!getEntitlementValue(@"com.apple.developer.kernel.extended-virtual-addressing")) {
+    if (UIDevice.currentDevice.systemVersion.floatValue < 14 ||
+        !getEntitlementValue(@"com.apple.developer.kernel.extended-virtual-addressing")) {
         // In jailed environment, where extended virtual addressing entitlement isn't
         // present (for free dev account), allocating compressed space fails.
         // FIXME: does extended VA allow allocating compressed class space?
@@ -288,6 +289,12 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
         margv[++margc] = [launchTarget UTF8String];
     }
     margv[++margc] = [NSString stringWithFormat:@"%dx%d", width, height].UTF8String;
+    
+    // TODO: Add preference toggle 
+    NSError *sessionError = nil;
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionMixWithOthers error:&sessionError];
+    [[AVAudioSession sharedInstance] setActive:YES error:&sessionError];
+    
 
     pJLI_Launch = (JLI_Launch_func *)dlsym(libjli, "JLI_Launch");
           

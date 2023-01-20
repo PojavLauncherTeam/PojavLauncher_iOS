@@ -2,6 +2,7 @@
 #import "AccountListViewController.h"
 #import "AFNetworking.h"
 #import "ALTServerConnection.h"
+#import "LauncherNavigationController.h"
 #import "LauncherMenuViewController.h"
 #import "LauncherNewsViewController.h"
 #import "LauncherPreferences.h"
@@ -35,6 +36,8 @@
 
 @implementation LauncherMenuViewController
 
+#define contentNavigationController ((LauncherNavigationController *)self.splitViewController.viewControllers[1])
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -53,14 +56,14 @@
         [self.options addObject:(id)[LauncherMenuCustomItem
             title:localize(@"launcher.menu.custom_controls", nil)
             imageName:@"MenuCustomControls" action:^{
-            [self.splitViewController.viewControllers[1] performSelector:@selector(enterCustomControls)];
+            [contentNavigationController performSelector:@selector(enterCustomControls)];
         }]];
     }
     [self.options addObject:
         (id)[LauncherMenuCustomItem
             title:localize(@"launcher.menu.install_jar", nil)
             imageName:@"MenuInstallJar" action:^{
-            [self.splitViewController.viewControllers[1] performSelector:@selector(enterModInstaller)];
+            [contentNavigationController performSelector:@selector(enterModInstaller)];
         }]];
 
     [self.options addObject:
@@ -152,7 +155,7 @@
     if (self.splitViewController.viewControllers.count < 2) return;
 
     // Restore the selected row when the view appears again
-    int index = [self.options indexOfObject:[self.splitViewController.viewControllers[1] viewControllers][0]];
+    int index = [self.options indexOfObject:[contentNavigationController viewControllers][0]];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
@@ -188,7 +191,7 @@
 {
     UIViewController *selected = self.options[indexPath.row];
     if ([selected isKindOfClass:UIViewController.class]) {
-        [self.splitViewController.viewControllers[1] setViewControllers:@[selected] animated:NO]; //YES?
+        [contentNavigationController setViewControllers:@[selected] animated:NO]; //YES?
 
         if (@available(iOS 14.0, tvOS 14.0, *)) {
             selected.navigationItem.leftBarButtonItem = self.accountBtnItem;
@@ -241,18 +244,26 @@
         return;
     }
 
+    // Remove the prefix "Demo." if there is
     BOOL isDemo = [selected[@"username"] hasPrefix:@"Demo."];
     NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:[selected[@"username"] substringFromIndex:(isDemo?5:0)]];
+
+    // Reset states
+    unsetenv("DEMO_LOCK");
+    setenv("POJAV_GAME_DIR", [NSString stringWithFormat:@"%s/Library/Application Support/minecraft", getenv("POJAV_HOME")].UTF8String, 1);
+
     id subtitle;
     if (isDemo) {
-        // Remove the prefix "Demo."
         subtitle = localize(@"login.option.demo", nil);
+        setenv("DEMO_LOCK", "1", 1);
+        setenv("POJAV_GAME_DIR", [NSString stringWithFormat:@"%s/.demo", getenv("POJAV_HOME")].UTF8String, 1);
     } else if (selected[@"xboxGamertag"] == nil) {
         subtitle = localize(@"login.option.local", nil);
     } else {
         // Display the Xbox gamertag for online accounts
         subtitle = selected[@"xboxGamertag"];
     }
+
     subtitle = [[NSAttributedString alloc] initWithString:subtitle attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12]}];
     [title appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n" attributes:nil]];
     [title appendAttributedString:subtitle];
@@ -263,14 +274,20 @@
     [self.accountButton setImageForState:UIControlStateNormal withURL:url placeholderImage:placeholder];
     [self.accountButton.imageView setImageWithURL:url placeholderImage:placeholder];
     [self.accountButton sizeToFit];
+
+    // Update the version list, only if the selected type is Installed
+    int selectedVersionType = [getPreference(@"selected_version_type") intValue];
+    if (selectedVersionType == 0) {
+        [contentNavigationController reloadVersionList:0];
+    }
 }
 
 - (void)displayProgress:(NSString *)status {
     if (status == nil) {
         [(UIActivityIndicatorView *)self.toolbarItems[0].customView stopAnimating];
-        return;
+    } else {
+        self.toolbarItems[1].title = status;
     }
-    self.toolbarItems[1].title = status;
 }
 
 - (void)enableJITWithAltJIT

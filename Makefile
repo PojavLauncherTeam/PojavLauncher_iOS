@@ -116,7 +116,7 @@ endif
 #  native  - Builds the Objective-C code.
 #  java    - Builds the Java code.
 #  jre     - Download iOS JRE and/or unpack it for use.
-#  extras  - Builds the Assets and Storyboard.
+#  assets  - Builds the Assets.
 #  package - Builds the application package.
 #  deploy  - runs native and java + installs to jailbroken device.
 #  dsym    - Generates debug symbol files
@@ -204,20 +204,31 @@ jre:
 	cp $(WORKINGDIR)/libawt_xawt.dylib $(WORKINGDIR)/PojavLauncher.app/jvm/java-8-openjdk/lib/; \
 	echo '[PojavLauncher v$(VERSION)] jre - end'
 
-package: native java jre
+assets:
+	@echo '[PojavLauncher v$(VERSION)] assets - start'
+	@if [ '$(IOS)' = '0' ]; then \
+		mkdir -p $(WORKINGDIR)/PojavLauncher.app/Base.lproj; \
+		xcrun actool $(SOURCEDIR)/Natives/Assets.xcassets --compile $(SOURCEDIR)/Natives/resources --platform iphoneos --minimum-deployment-target 12.0 --app-icon AppIcon-Light --alternate-app-icon AppIcon-Dark --output-partial-info-plist /dev/null || exit 1; \
+	elif [ '$(IOS)' = '1' ]; then \
+		echo 'Due to the required tools not being available, you cannot compile the extras for PojavLauncher with an iOS device.'; \
+	fi
+	@echo '[PojavLauncher v$(VERSION)] assets - end'
+
+package: native java jre assets
 	@echo '[PojavLauncher v$(VERSION)] package - start'
 	$(call DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs)
 	$(call DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs_caciocavallo)
 	$(call DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs_caciocavallo17)
+	@cp -R $(SOURCEDIR)/Natives/en.lproj/LaunchScreen.storyboardc $(WORKINGDIR)/PojavLauncher.app/Base.lproj/ || exit 1
 	@cp -R $(SOURCEDIR)/Natives/resources/* $(WORKINGDIR)/PojavLauncher.app/ || exit 1
 	@cp $(WORKINGDIR)/*.dylib $(WORKINGDIR)/PojavLauncher.app/Frameworks/ || exit 1
-	@cp -R $(WORKINGDIR)/*.framework $(WORKINGDIR)/PojavLauncher.app/Frameworks/ || exit 1
 	@cp -R $(SOURCEDIR)/JavaApp/libs/* $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
 	@cp $(SOURCEDIR)/JavaApp/local_out/*.jar $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
 	@cp -R $(SOURCEDIR)/JavaApp/libs_caciocavallo* $(WORKINGDIR)/PojavLauncher.app/ || exit 1
 	@cp -R $(SOURCEDIR)/Natives/*.lproj $(WORKINGDIR)/PojavLauncher.app/ || exit 1
 	$(call DIRCHECK,$(OUTPUTDIR))
 	@cp -R $(WORKINGDIR)/PojavLauncher.app $(OUTPUTDIR)
+	ldid -S $(OUTPUTDIR)/PojavLauncher.app; \
 	ldid -S$(SOURCEDIR)/entitlements.xml $(OUTPUTDIR)/PojavLauncher.app/PojavLauncher; \
 	rm -f $(OUTPUTDIR)/*.ipa; \
 	cd $(OUTPUTDIR); \
@@ -250,19 +261,16 @@ dsym: package
 	
 deploy:
 	@echo '[PojavLauncher v$(VERSION)] deploy - start'
+	@ldid -S $(WORKINGDIR)/PojavLauncher.app; \
 	@ldid -S$(SOURCEDIR)/entitlements.xml $(WORKINGDIR)/PojavLauncher.app/PojavLauncher; \
 	if [ '$(NOSTDIN)' = '1' ]; then \
-		echo '$(SUDOPASS)' | sudo -S rm -rf /Applications/PojavLauncher.app/Frameworks/libOSMesaOverride.dylib.framework; \
 		echo '$(SUDOPASS)' | sudo -S mv $(WORKINGDIR)/*.dylib /Applications/PojavLauncher.app/Frameworks/; \
-		echo '$(SUDOPASS)' | sudo -S mv $(WORKINGDIR)/*.framework /Applications/PojavLauncher.app/Frameworks/; \
 		echo '$(SUDOPASS)' | sudo -S mv $(WORKINGDIR)/PojavLauncher.app/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher; \
 		echo '$(SUDOPASS)' | sudo -S mv $(SOURCEDIR)/JavaApp/local_out/*.jar /Applications/PojavLauncher.app/libs/; \
 		cd /Applications/PojavLauncher.app/Frameworks; \
 		echo '$(SUDOPASS)' | sudo -S chown -R 501:501 /Applications/PojavLauncher.app/*; \
 	else \
-		sudo rm -rf /Applications/PojavLauncher.app/Frameworks/libOSMesaOverride.dylib.framework; \
 		sudo mv $(WORKINGDIR)/*.dylib /Applications/PojavLauncher.app/Frameworks/; \
-		sudo mv $(WORKINGDIR)/*.framework /Applications/PojavLauncher.app/Frameworks/; \
 		sudo mv $(WORKINGDIR)/PojavLauncher.app/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher; \
 		sudo mv $(SOURCEDIR)/JavaApp/local_out/*.jar /Applications/PojavLauncher.app/libs/; \
 		cd /Applications/PojavLauncher.app/Frameworks; \
@@ -294,6 +302,7 @@ help:
 	@echo '    make native                         Builds the native app'
 	@echo '    make java                           Builds the Java app'
 	@echo '    make jre                            Downloads/unpacks the iOS JREs'
+	@echo '    make assets                         Compiles Assets.xcassets'
 	@echo '    make package                        Builds ipa of PojavLauncher'
 	@echo '    make deploy                         Copies files to local iDevice'
 	@echo '    make dsym                           Generate debug symbol files'

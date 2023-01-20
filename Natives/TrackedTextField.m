@@ -21,19 +21,25 @@ extern bool isUseStackQueueCall;
 
 - (void)sendMultiBackspaces:(int)times {
     for (int i = 0; i < times; i++) {
-        CallbackBridge_nativeSendKey(GLFW_KEY_BACKSPACE, 0, 1, 0);
-        CallbackBridge_nativeSendKey(GLFW_KEY_BACKSPACE, 0, 0, 0);
+        self.sendKey(GLFW_KEY_BACKSPACE, 0, 1, 0);
+        self.sendKey(GLFW_KEY_BACKSPACE, 0, 0, 0);
     }
+}
+
+// workaround pasted text not being caught
+- (void)paste:(id)sender {
+    [super paste:sender];
+    [self sendText:UIPasteboard.generalPasteboard.string];
 }
 
 - (void)sendText:(NSString *)text {
     for (int i = 0; i < text.length; i++) {
         // Directly convert unichar to jchar since both are in UTF-16 encoding.
-        jchar theChar = (jchar) [text characterAtIndex:i];
-        if (isUseStackQueueCall) {
-            CallbackBridge_nativeSendCharMods(theChar, 0);
+        unichar theChar = [text characterAtIndex:i];
+        if (isUseStackQueueCall && self.sendCharMods != nil) {
+            self.sendCharMods(theChar, 0);
         } else {
-            CallbackBridge_nativeSendChar(theChar);
+            self.sendChar(theChar);
         }
     }
 }
@@ -59,8 +65,8 @@ extern bool isUseStackQueueCall;
     self.lastPointX = point.x;
 
     int key = (diff > 0) ? GLFW_KEY_DPAD_RIGHT : GLFW_KEY_DPAD_LEFT;
-    CallbackBridge_nativeSendKey(key, 0, 1, 0);
-    CallbackBridge_nativeSendKey(key, 0, 0, 0);
+    self.sendKey(key, 0, 1, 0);
+    self.sendKey(key, 0, 0, 0);
 }
 
 - (void)endFloatingCursor {
@@ -74,8 +80,8 @@ extern bool isUseStackQueueCall;
     int start = [self offsetFromPosition:self.beginningOfDocument toPosition:position];
     if (start - self.lastTextPos != 0) {
         int key = (start - self.lastTextPos > 0) ? GLFW_KEY_DPAD_RIGHT : GLFW_KEY_DPAD_LEFT;
-        CallbackBridge_nativeSendKey(key, 0, 1, 0);
-        CallbackBridge_nativeSendKey(key, 0, 0, 0);
+        self.sendKey(key, 0, 1, 0);
+        self.sendKey(key, 0, 0, 0);
     }
     self.lastTextPos = start;
     return position;
@@ -129,6 +135,30 @@ extern bool isUseStackQueueCall;
     [self sendText:text];
 
     return [super replaceRangeWithTextWithoutClosingTyping:range replacementText:text];
+}
+
+// Handle multistage text input
+// for iOS 12.x
+- (void)setMarkedText:(NSString *)markedText selectedRange:(NSRange)selectedRange {
+    // Delete the marked range
+    NSInteger markedLength = [self offsetFromPosition:self.markedTextRange.start toPosition:self.markedTextRange.end];
+    [self sendMultiBackspaces:markedLength];
+
+    [super setMarkedText:markedText selectedRange:selectedRange];
+
+    // Insert the new text
+    [self sendText:markedText];
+}
+// for iOS 13+
+- (void)setAttributedMarkedText:(NSAttributedString *)markedText selectedRange:(NSRange)selectedRange {
+    // Delete the marked range
+    NSInteger markedLength = [self offsetFromPosition:self.markedTextRange.start toPosition:self.markedTextRange.end];
+    [self sendMultiBackspaces:markedLength];
+
+    [super setAttributedMarkedText:markedText selectedRange:selectedRange];
+
+    // Insert the new text
+    [self sendText:markedText.string];
 }
 
 @end

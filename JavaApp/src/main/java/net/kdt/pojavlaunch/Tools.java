@@ -71,7 +71,7 @@ public final class Tools
     public static final String CTRLMAP_PATH = DIR_GAME_NEW + "/controlmap";
     public static final String CTRLDEF_FILE = DIR_GAME_NEW + "/controlmap/default.json";
     
-    public static final String LIBNAME_OPTIFINE = "optifine:OptiFine";
+    public static final String NATIVE_LIB_DIR = DIR_BUNDLE + "/Frameworks";
 
     volatile public static int mGLFWWindowWidth, mGLFWWindowHeight;
 
@@ -161,7 +161,7 @@ public final class Tools
         varArgMap.put("auth_session", profile.accessToken); // For legacy versions of MC
         varArgMap.put("auth_access_token", profile.accessToken);
         varArgMap.put("auth_player_name", username);
-        varArgMap.put("auth_uuid", profile.profileId);
+        varArgMap.put("auth_uuid", profile.profileId.replace("-", ""));
         varArgMap.put("auth_xuid", profile.xuid);
         varArgMap.put("assets_root", Tools.ASSETS_PATH);
         varArgMap.put("assets_index_name", versionInfo.assets);
@@ -172,6 +172,7 @@ public final class Tools
         varArgMap.put("user_type", "msa");
         varArgMap.put("version_name", versionName);
         varArgMap.put("version_type", versionInfo.type);
+        varArgMap.put("natives_directory", Tools.NATIVE_LIB_DIR);
 
         List<String> minecraftArgs = new ArrayList<String>();
         if (versionInfo.arguments != null) {
@@ -420,11 +421,6 @@ public final class Tools
     public static JMinecraftVersionList.Version getVersionInfo(String versionName) {
         try {
             JMinecraftVersionList.Version customVer = Tools.GLOBAL_GSON.fromJson(read(DIR_HOME_VERSION + "/" + versionName + "/" + versionName + ".json"), JMinecraftVersionList.Version.class);
-            for (DependentLibrary lib : customVer.libraries) {
-                if (lib.name.startsWith(LIBNAME_OPTIFINE)) {
-                    customVer.optifineLib = lib;
-                }
-            }
             if (customVer.inheritsFrom == null || customVer.inheritsFrom.equals(customVer.id)) {
                 return customVer;
             } else {
@@ -434,7 +430,7 @@ public final class Tools
                 insertSafety(inheritsVer, customVer,
                              "assetIndex", "assets", "id",
                              "mainClass", "minecraftArguments",
-                             "optifineLib", "releaseTime", "time", "type"
+                             "releaseTime", "time", "type"
                              );
 
                 List<DependentLibrary> libList = new ArrayList<DependentLibrary>(Arrays.asList(inheritsVer.libraries));
@@ -455,7 +451,7 @@ public final class Tools
                             }
                         }
 
-                        if (libName != null) libList.add(lib);
+                        if (libName != null) libList.add(0, lib);
                     }
                 } finally {
                     inheritsVer.libraries = libList.toArray(new DependentLibrary[0]);

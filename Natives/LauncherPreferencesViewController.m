@@ -2,12 +2,14 @@
 #import <objc/runtime.h>
 
 #import "DBNumberedSlider.h"
+#import "LauncherNavigationController.h"
 #import "LauncherPreferences.h"
 #import "LauncherPreferencesViewController.h"
 #import "LauncherPrefGameDirViewController.h"
 #import "TOInsetGroupedTableView.h"
 #import "UIKit+hook.h"
 
+#import "ios_uikit_bridge.h"
 #import "utils.h"
 
 typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
@@ -59,7 +61,9 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             @{@"key": @"game_directory",
                 @"icon": @"folder",
                 @"type": self.typeChildPane,
-                @"enableCondition": whenNotInGame,
+                @"enableCondition": ^BOOL(){
+                    return whenNotInGame() && !getenv("DEMO_LOCK");
+                },
                 @"class": LauncherPrefGameDirViewController.class,
             },
             @{@"key": @"check_sha",
@@ -102,7 +106,8 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                     }
                     [UIApplication.sharedApplication setAlternateIconName:iconName completionHandler:^(NSError * _Nullable error) {
                         if (error == nil) return;
-                        NSLog(@"Error: %@", error);
+                        NSLog(@"Error in appicon: %@", error);
+                        showDialog(self, localize(@"Error", nil), error.localizedDescription);
                     }];
                 },
                 @"pickKeys": @[
@@ -110,9 +115,15 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                   @"AppIcon-Dark"
                 ],
                 @"pickList": @[
-                  localize(@"preference.title.appicon-default", nil),
-                  localize(@"preference.title.appicon-dark", nil)
+                    localize(@"preference.title.appicon-default", nil),
+                    localize(@"preference.title.appicon-dark", nil)
                 ]
+            },
+            @{@"key": @"hidden_sidebar",
+                @"hasDetail": @YES,
+                @"icon": @"sidebar.leading",
+                @"type": self.typeSwitch,
+                @"enableCondition": whenNotInGame
             },
             @{@"key": @"reset_warnings",
                 @"icon": @"exclamationmark.triangle",
@@ -134,6 +145,31 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                     [self.tableView reloadData];
                 }
             },
+            @{@"key": @"erase_demo_data",
+                @"icon": @"trash",
+                @"type": self.typeButton,
+                @"enableCondition": ^BOOL(){
+                    NSString *demoPath = [NSString stringWithFormat:@"%s/.demo", getenv("POJAV_HOME")];
+                    int count = [NSFileManager.defaultManager contentsOfDirectoryAtPath:demoPath error:nil].count;
+                    return whenNotInGame() && count > 0;
+                },
+                @"showConfirmPrompt": @YES,
+                @"destructive": @YES,
+                @"action": ^void(){
+                    NSString *demoPath = [NSString stringWithFormat:@"%s/.demo", getenv("POJAV_HOME")];
+                    NSError *error;
+                    if([NSFileManager.defaultManager removeItemAtPath:demoPath error:&error]) {
+                        [NSFileManager.defaultManager createDirectoryAtPath:demoPath
+                            withIntermediateDirectories:YES attributes:nil error:nil];
+                        if ([getPreference(@"selected_version_type") intValue] == 0 && getenv("DEMO_LOCK")) {
+                            [(LauncherNavigationController *)self.navigationController reloadVersionList:0];
+                        }
+                    } else {
+                        NSLog(@"Error in erase_demo_data: %@", error);
+                        showDialog(self, localize(@"Error", nil), error.localizedDescription);
+                    }
+                }
+            }
         ], @[
         // Video and renderer settings
             @{@"icon": @"video"},

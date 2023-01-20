@@ -22,11 +22,11 @@
         for (ControlSubButton *subButton in ((ControlDrawer *)button).buttons) {
             [self.ctrlView addSubview:subButton];
         }
-        [self.cc_dictionary[@"mDrawerDataList"] insertObject:((ControlDrawer *)button).drawerData atIndex:index.intValue];
+        [self.ctrlView.layoutDictionary[@"mDrawerDataList"] insertObject:((ControlDrawer *)button).drawerData atIndex:index.intValue];
         [self.ctrlView addSubview:button];
     } else {
         undo.actionName = localize(@"custom_controls.control_menu.add_button", nil);
-        [self.cc_dictionary[@"mControlDataList"] insertObject:button.properties atIndex:index.intValue];
+        [self.ctrlView.layoutDictionary[@"mControlDataList"] insertObject:button.properties atIndex:index.intValue];
         [self.ctrlView addSubview:button];
     }
 
@@ -46,12 +46,12 @@
         [parent syncButtons];
     } else if ([button isKindOfClass:[ControlDrawer class]]) {
         ControlDrawer *drawer = (ControlDrawer *)button;
-        index = @([self.cc_dictionary[@"mDrawerDataList"] indexOfObject:drawer.drawerData]);
+        index = @([self.ctrlView.layoutDictionary[@"mDrawerDataList"] indexOfObject:drawer.drawerData]);
         [drawer.buttons makeObjectsPerformSelector:@selector(removeFromSuperview)];
-        [self.cc_dictionary[@"mDrawerDataList"] removeObject:drawer.drawerData];
+        [self.ctrlView.layoutDictionary[@"mDrawerDataList"] removeObject:drawer.drawerData];
     } else {
-        index = @([self.cc_dictionary[@"mControlDataList"] indexOfObject:button.properties]);
-        [self.cc_dictionary[@"mControlDataList"] removeObject:button.properties];
+        index = @([self.ctrlView.layoutDictionary[@"mControlDataList"] indexOfObject:button.properties]);
+        [self.ctrlView.layoutDictionary[@"mControlDataList"] removeObject:button.properties];
     }
     [button removeFromSuperview];
     self.resizeView.hidden = YES;

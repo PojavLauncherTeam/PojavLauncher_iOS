@@ -1,4 +1,5 @@
 #import "ControlButton.h"
+#import "ControlLayout.h"
 #import "CustomControlsUtils.h"
 #import "../LauncherPreferences.h"
 #import "../utils.h"
@@ -72,13 +73,12 @@
 }
 
 - (void)preProcessProperties {
-    CGFloat currentScale = [current_control_object[@"scaledAt"] floatValue];
+    CGFloat currentScale = [((ControlLayout *)self.superview).layoutDictionary[@"scaledAt"] floatValue];
     CGFloat savedScale = [getPreference(@"button_scale") floatValue];
     if (currentScale != savedScale) {
         self.properties[@"width"] = @([self.properties[@"width"] floatValue] * savedScale / currentScale);
         self.properties[@"height"] = @([self.properties[@"height"] floatValue] * savedScale / currentScale);
     }
-    //current_control_object[@"scaledAt"] = getPreference(@"button_scale");
 }
 
 - (NSString *)processFunctions:(NSString *)string {
@@ -150,6 +150,8 @@
 }
 
 - (void)update {
+    NSAssert(self.superview != nil, @"should not be nil");
+
     // net/kdt/pojavlaunch/customcontrols/ControlData.update()
     [self preProcessProperties];
 

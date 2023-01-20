@@ -110,6 +110,19 @@ NSString* localize(NSString* key, NSString* comment) {
     return value;
 }
 
+void customNSLog(const char *file, int lineNumber, const char *functionName, NSString *format, ...)
+{
+    va_list ap; 
+    va_start (ap, format);
+    if (![format hasSuffix: @"\n"])
+    {
+        format = [format stringByAppendingString: @"\n"];
+    }
+    NSString *body = [[NSString alloc] initWithFormat:format arguments:ap];
+    va_end (ap);
+    fprintf(stderr, "%s", [body UTF8String]);
+}
+
 CGFloat MathUtils_dist(CGFloat x1, CGFloat y1, CGFloat x2, CGFloat y2) {
     const CGFloat x = (x2 - x1);
     const CGFloat y = (y2 - y1);
@@ -151,3 +164,4 @@ void setViewBackgroundColor(UIView* view) {
         view.backgroundColor = UIColor.whiteColor;
     }
 }
+

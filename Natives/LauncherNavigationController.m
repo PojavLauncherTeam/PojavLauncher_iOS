@@ -66,18 +66,28 @@
     self.versionTextField.inputAccessoryView = versionPickToolbar;
     self.versionTextField.inputView = self.versionPickerView;
 
-    [self.toolbar addSubview:self.versionTextField];
+    UIView *targetToolbar;
+    if (@available(iOS 14.0, *)) {
+        // Use the real toolbar
+        targetToolbar = self.toolbar;
+    } else { // iOS 13.x and 12.x
+        // Workaround user interaction issue by using a fake toolbar
+        targetToolbar = [[UIView alloc] initWithFrame:self.toolbar.frame];
+        targetToolbar.autoresizingMask = self.toolbar.autoresizingMask;
+        [self.view addSubview:targetToolbar];
+    }
+
+    [targetToolbar addSubview:self.versionTextField];
 
     self.progressViewMain = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 0, self.toolbar.frame.size.width, 4)];
     self.progressViewSub = [[UIProgressView alloc] initWithFrame:CGRectMake(0, self.toolbar.frame.size.height - 4, self.toolbar.frame.size.width, 4)];
     self.progressViewMain.autoresizingMask = self.progressViewSub.autoresizingMask = AUTORESIZE_MASKS;
     self.progressViewMain.hidden = self.progressViewSub.hidden = YES;
-    [self.toolbar addSubview:self.progressViewMain];
-    [self.toolbar addSubview:self.progressViewSub];
+    [targetToolbar addSubview:self.progressViewMain];
+    [targetToolbar addSubview:self.progressViewSub];
 
     self.buttonInstall = [UIButton buttonWithType:UIButtonTypeSystem];
     setButtonPointerInteraction(self.buttonInstall);
-    self.buttonInstall.enabled = NO;
     [self.buttonInstall setTitle:localize(@"Play", nil) forState:UIControlStateNormal];
     self.buttonInstall.autoresizingMask = AUTORESIZE_MASKS;
     self.buttonInstall.backgroundColor = [UIColor colorWithRed:54/255.0 green:176/255.0 blue:48/255.0 alpha:1.0];
@@ -85,7 +95,7 @@
     self.buttonInstall.frame = CGRectMake(self.toolbar.frame.size.width * 0.8, 4, self.toolbar.frame.size.width * 0.2, self.toolbar.frame.size.height - 8);
     self.buttonInstall.tintColor = UIColor.whiteColor;
     [self.buttonInstall addTarget:self action:@selector(launchMinecraft:) forControlEvents:UIControlEventPrimaryActionTriggered];
-    [self.toolbar addSubview:self.buttonInstall];
+    [targetToolbar addSubview:self.buttonInstall];
 
     self.progressText = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.toolbar.frame.size.width, self.toolbar.frame.size.height)];
     self.progressText.adjustsFontSizeToFitWidth = YES;
@@ -93,7 +103,7 @@
     self.progressText.font = [self.progressText.font fontWithSize:16];
     self.progressText.textAlignment = NSTextAlignmentCenter;
     self.progressText.userInteractionEnabled = NO;
-    [self.toolbar addSubview:self.progressText];
+    [targetToolbar addSubview:self.progressText];
 
     if ([BaseAuthenticator.current isKindOfClass:MicrosoftAuthenticator.class]) {
         // Perform token refreshment on startup
@@ -129,7 +139,6 @@
             BOOL shouldAdd = YES;
             for (NSObject *object in finalVersionList) {
                 if (![object isKindOfClass:[NSDictionary class]]) continue;
-                
                 NSDictionary *versionInfo = (NSDictionary *)object;
 
                 NSString *prevVersionId = [versionInfo valueForKey:@"id"];
@@ -149,18 +158,45 @@
 
 - (void)reloadVersionList:(int)type
 {
+    __block NSObject *lastSelected = nil;
+    if (self.versionList.count > 0 && self.versionSelectedAt >= 0) {
+        lastSelected = self.versionList[self.versionSelectedAt];
+    }
+    [self.versionList removeAllObjects];
+
+    void(^reloadCompletion)(void) = ^{
+        [self.versionPickerView reloadAllComponents];
+
+        if (self.versionSelectedAt < 0 && lastSelected != nil) {
+            NSObject *nearest = [MinecraftResourceUtils findNearestVersion:lastSelected expectedType:type];
+            if (nearest != nil) {
+                self.versionSelectedAt = [self.versionList indexOfObject:nearest];
+            }
+        }
+        lastSelected = nil;
+
+        // Get back the currently selected in case none matching version found
+        self.versionSelectedAt = MIN(abs(self.versionSelectedAt), self.versionList.count - 1);
+
+        [self.versionPickerView selectRow:self.versionSelectedAt inComponent:0 animated:NO];
+        [self pickerView:self.versionPickerView didSelectRow:self.versionSelectedAt inComponent:0];
+
+        self.buttonInstall.enabled = YES;
+        self.progressViewMain.progress = 0;
+    };
+
+    if (type == TYPE_INSTALLED) {
+        [self fetchLocalVersionList:self.versionList];
+        reloadCompletion();
+        return;
+    }
+
     self.buttonInstall.enabled = NO;
 
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     [manager GET:@"https://piston-meta.mojang.com/mc/game/version_manifest_v2.json" parameters:nil headers:nil progress:^(NSProgress * _Nonnull progress) {
         self.progressViewMain.progress = progress.fractionCompleted;
     } success:^(NSURLSessionTask *task, NSDictionary *responseObject) {
-        NSObject *lastSelected = nil;
-        if (self.versionList.count > 0 && self.versionSelectedAt >= 0) {
-            lastSelected = self.versionList[self.versionSelectedAt];
-        }
-        [self.versionList removeAllObjects];
-
         remoteVersionList = responseObject[@"versions"];
         assert(remoteVersionList != nil);
         self.versionSelectedAt = -self.versionSelectedAt;
@@ -181,32 +217,10 @@
             }
         }
 
-        if (type == TYPE_INSTALLED) {
-            [self fetchLocalVersionList:self.versionList];
-        }
-
-        [self.versionPickerView reloadAllComponents];
-        if (self.versionSelectedAt < 0 && lastSelected != nil) {
-            NSObject *nearest = [MinecraftResourceUtils findNearestVersion:lastSelected expectedType:type];
-            if (nearest != nil) {
-                self.versionSelectedAt = [self.versionList indexOfObject:nearest];
-            }
-        }
-
-        // Get back the currently selected in case none matching version found
-        self.versionSelectedAt = MIN(abs(self.versionSelectedAt), self.versionList.count - 1);
-
-        [self.versionPickerView selectRow:self.versionSelectedAt inComponent:0 animated:NO];
-        [self pickerView:self.versionPickerView didSelectRow:self.versionSelectedAt inComponent:0];
-
-        self.buttonInstall.enabled = YES;
-        self.progressViewMain.progress = 0;
+        reloadCompletion();
     } failure:^(NSURLSessionTask *operation, NSError *error) {
-        NSLog(@"Warning: Error fetching version list: %@", error);
-        self.buttonInstall.enabled = YES;
-        if (type == TYPE_INSTALLED) {
-            [self fetchLocalVersionList:self.versionList];
-        }
+        NSLog(@"Warning: Unable to fetch version list: %@", error);
+        reloadCompletion();
     }];
 }
 
@@ -255,6 +269,7 @@
 
 - (void)launchMinecraft:(UIButton *)sender {
     if (!self.versionTextField.hasText) {
+        [self.versionTextField becomeFirstResponder];
         return;
     }
 
@@ -298,7 +313,9 @@
     remoteVersionList = nil;
 
     if (isJITEnabled()) {
-        handler();
+        dispatch_async(dispatch_get_main_queue(), ^{
+            handler();
+        });
         return;
     } else if ([getPreference(@"debug_skip_wait_jit") boolValue]) {
         NSLog(@"Debug option skipped waiting for JIT. Java might not work.");
