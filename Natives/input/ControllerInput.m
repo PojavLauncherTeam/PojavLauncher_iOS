@@ -13,6 +13,7 @@
 #define DIRECTION_SOUTH_WEST 5
 //#define DIRECTION_SOUTH 6
 #define DIRECTION_SOUTH_EAST 7
+#define MOUSE_MAX_ACCELERATION 2
 
 CFAbsoluteTime lastFrameTime;
 CGFloat lastXValue; // lastHorizontalValue
@@ -238,7 +239,10 @@ BOOL leftShiftHeld;
     // GameController automatically performs deadzone calculations
     // so we just take the raw input
     if (lastFrameTime != 0 && (lastXValue != 0 || lastYValue != 0)) {
-        CGFloat acceleration = MathUtils_dist(0, 0, lastXValue, lastYValue); // magnitude
+        CGFloat acceleration = pow(MathUtils_dist(0, 0, lastXValue, lastYValue), MOUSE_MAX_ACCELERATION); // magnitude
+        if (acceleration > 1) acceleration = 1;
+
+        // Compute delta since last tick time
         CGFloat deltaX = lastXValue * acceleration * 18;
         CGFloat deltaY = -lastYValue * acceleration * 18;
         CGFloat deltaTimeScale = (frameTime - lastFrameTime) / 0.016666666; // Scale of 1 = 60Hz
