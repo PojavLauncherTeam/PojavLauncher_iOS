@@ -181,7 +181,7 @@ static AFURLSessionManager* manager;
             return [NSURL fileURLWithPath:jsonPath];
         } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
             if (error != nil) { // FIXME: correct?
-                NSString *errorStr = [NSString stringWithFormat:@"Failed to download %@: %@\nCall stack: %@", versionURL, error.localizedDescription, NSThread.callStackSymbols];
+                NSString *errorStr = [NSString stringWithFormat:localize(@"launcher.mcl.error_download", NULL), versionURL, error.localizedDescription];
                 NSLog(@"[MCDL] Error: %@ %@", errorStr, NSThread.callStackSymbols);
                 showDialog(currentVC(), localize(@"Error", nil), errorStr);
                 callback(nil, nil, nil);
@@ -358,7 +358,7 @@ static AFURLSessionManager* manager;
         } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
             if (error != nil) {
                 cancel = YES;
-                NSString *errorStr = [NSString stringWithFormat:@"Failed to download %@: %@\nCall stack: %@", url, error.localizedDescription, NSThread.callStackSymbols];
+                NSString *errorStr = [NSString stringWithFormat:localize(@"launcher.mcl.error_download", NULL), url, error.localizedDescription];
                 NSLog(@"[MCDL] Error: %@ %@", errorStr, NSThread.callStackSymbols);
                 showDialog(currentVC(), localize(@"Error", nil), errorStr);
                 callback(nil, nil);
@@ -447,7 +447,7 @@ static AFURLSessionManager* manager;
                     return;
                 }
                 jobsAvailable = -3;
-                NSString *errorStr = [NSString stringWithFormat:@"Failed to download %@: %@\nCall stack: %@", url, error.localizedDescription, NSThread.callStackSymbols];
+                NSString *errorStr = [NSString stringWithFormat:localize(@"launcher.mcl.error_download", NULL), url, error.localizedDescription];
                 NSLog(@"[MCDL] Error: %@ %@", errorStr, NSThread.callStackSymbols);
                 showDialog(currentVC(), localize(@"Error", nil), errorStr);
                 callback(nil, nil);

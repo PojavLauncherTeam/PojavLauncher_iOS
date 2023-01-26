@@ -261,8 +261,8 @@ dsym: package
 	
 deploy:
 	@echo '[PojavLauncher v$(VERSION)] deploy - start'
-	@ldid -S $(WORKINGDIR)/PojavLauncher.app; \
-	@ldid -S$(SOURCEDIR)/entitlements.xml $(WORKINGDIR)/PojavLauncher.app/PojavLauncher; \
+	ldid -S $(WORKINGDIR)/PojavLauncher.app; \
+	ldid -S$(SOURCEDIR)/entitlements.xml $(WORKINGDIR)/PojavLauncher.app/PojavLauncher; \
 	if [ '$(NOSTDIN)' = '1' ]; then \
 		echo '$(SUDOPASS)' | sudo -S mv $(WORKINGDIR)/*.dylib /Applications/PojavLauncher.app/Frameworks/; \
 		echo '$(SUDOPASS)' | sudo -S mv $(WORKINGDIR)/PojavLauncher.app/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher; \
