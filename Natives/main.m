@@ -20,6 +20,7 @@
 #include <sys/types.h>
 #include <sys/utsname.h>
 #include <unistd.h>
+#include <dirent.h>
 #include "JavaLauncher.h"
 #include "utils.h"
 #include "codesign.h"
@@ -73,8 +74,9 @@ bool init_checkForsubstrated() {
 
 void init_checkForJailbreak() {
     bool jbDyld = false;
-    bool jbFlag = true;
+    bool jbFlag = false;
     bool jbProc = init_checkForsubstrated();
+    bool jbFile = false;
     
     int imageCount = _dyld_image_count();
     uint32_t flags = CS_PLATFORM_BINARY;
@@ -82,19 +84,21 @@ void init_checkForJailbreak() {
     for (int i=0; i < imageCount; i++) {
         if (strcmp(_dyld_get_image_name(i),"/usr/lib/pspawn_payload-stg2.dylib") == 0) {
             jbDyld = true;
-        } else {
-            jbDyld = false;
         }
     }
+
     if (csops(0, CS_OPS_STATUS, &flags, sizeof(flags)) != -1) {
-        if ((flags & CS_PLATFORM_BINARY) == 0) {
-            jbFlag = false;
-        } else {
+        if ((flags & CS_PLATFORM_BINARY) != 0) {
             jbFlag = true;
         }
     }
+
+    DIR *apps = opendir("/Applications");
+    if(apps != NULL) {
+        jbFile = true;
+    }
     
-    if (jbDyld || jbFlag || jbProc) {
+    if (jbDyld || jbFlag || jbProc || jbFile) {
         setenv("POJAV_DETECTEDJB", "1", 1);
     }
 }

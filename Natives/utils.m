@@ -23,7 +23,7 @@ BOOL getEntitlementValue(NSString *key) {
 }
 
 BOOL isJITEnabled() {
-    if (getEntitlementValue(@"dynamic-codesigning")) {
+    if (getEntitlementValue(@"dynamic-codesigning") || getenv("POJAV_DETECTEDJB")) {}
         return YES;
     }
 
