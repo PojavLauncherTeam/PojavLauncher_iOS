@@ -1,11 +1,11 @@
-# PojavLauncher iOS
+# PojavLauncher for iOS
 [![Development build](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/actions/workflows/development.yml/badge.svg?branch=main)](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/actions/workflows/development.yml)
 [![Crowdin](https://badges.crowdin.net/pojavlauncher/localized.svg)](https://crowdin.com/project/pojavlauncher)
 [![Discord](https://img.shields.io/discord/724163890803638273.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/x5pxnANzbX)
 [![Reddit](https://img.shields.io/badge/dynamic/json.svg?label=r/PojavLauncher%20member%20count&query=$.data.subscribers&url=https://www.reddit.com/r/PojavLauncher/about.json)](https://reddit.com/r/PojavLauncher)
 
 ## Introduction
-PojavLauncher is a Minecraft: Java Edition launcher for Android and iOS, based off of zhouwei's [Boardwalk](https://github.com/zhouwei/Boardwalk) project.
+PojavLauncher is a Minecraft: Java Edition launcher for Android, iOS, and tvOS, based off of zhouwei's [Boardwalk](https://github.com/zhouwei/Boardwalk) project.
 * Supports most versions of Minecraft: Java Edition, from the very first beta to the newest snapshots.
 * Supports Forge, Fabric, OptiFine, and Quilt to customize the experience with supported mods.
 * Includes customizable on-screen controls, keyboard and mouse, and game controller support.
@@ -13,8 +13,30 @@ PojavLauncher is a Minecraft: Java Edition launcher for Android and iOS, based o
 * Microsoft and demo mode support for logging into Minecraft.
 * ...and much more!
 
+This repository contains the code for our iOS, iPadOS, and tvOS port of PojavLauncher. Looking for [Android?](https://github.com/PojavLauncherTeam/PojavLauncher)
+
 ## Getting started with PojavLauncher
 The [PojavLauncher Website](https://pojavlauncherteam.github.io/INSTALL.html#ios) has extensive documentation on how to install, set up, and play! For those who wish to install quickly, here's the basics:
+
+### Requirements
+At the minimum, you'll need one of the following devices on iOS 12.2 or tvOS 14.0 and later:
+- iPhone 6s and later
+- iPad (5th generation) and later
+- iPad Air (2nd generation) and later
+- iPad mini (4th generation) and later
+- iPad Pro (all models)
+- iPod touch (7th generation)
+- Apple TV HD
+
+However, we recommend one of the following devices on iOS or tvOS 14.0 and later:
+- iPhone XS and later, excluding iPhone XR and iPhone SE (2nd generation)
+- iPad (10th generation) and later
+- iPad Air (4th generation) and later
+- iPad mini (6th generation) and later
+- iPad Pro (all models), excluding iPad Pro (9.7-inch)
+- Apple TV 4K (3rd generation)
+
+Apple TV support is currently in development.
 
 ### Setting up to sideload
 PojavLauncher can be sideloaded in many ways. Our recommended solution is to install [TrollStore](https://github.com/opa334/TrollStore) if your iOS version supports it. Installing with TrollStore allows you to permenantly sign the application, automatically enable JIT, and increase memory limits.
@@ -24,8 +46,6 @@ If you cannot, [AltStore](https://altstore.io) and [SideStore](https://sidestore
 - Signing services that do not use your UDID (and use distribution certificates) are not supported, as PojavLauncher requires capabilities they do not allow.
 - Only install sideloading software and PojavLauncher from trusted sources. We are not responsible for any harm caused by using unofficial software.
 - Jailbreaks also benefit from permenant signing, autoJIT, and increase memory limits, however we do not recommend them for regular use.
-
-We also recommend using a device with iOS 14 or later. Not all features are available on devices running earlier versions, and a future version of the launcher will remove support for them altogether.
 
 ### Installing PojavLauncher
 #### Release build (TrollStore)
