@@ -1,51 +1,56 @@
-# PojavLauncher
+# PojavLauncher iOS
 [![Development build](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/actions/workflows/development.yml/badge.svg?branch=main)](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/actions/workflows/development.yml)
 [![Crowdin](https://badges.crowdin.net/pojavlauncher/localized.svg)](https://crowdin.com/project/pojavlauncher)
 [![Discord](https://img.shields.io/discord/724163890803638273.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/x5pxnANzbX)
 [![Reddit](https://img.shields.io/badge/dynamic/json.svg?label=r/PojavLauncher%20member%20count&query=$.data.subscribers&url=https://www.reddit.com/r/PojavLauncher/about.json)](https://reddit.com/r/PojavLauncher)
 
-## Note
-- The official Twitter for PojavLauncher is [@PLaunchTeam](https://twitter.com/PLaunchTeam). Any others (most notably @PojavLauncher) are fake, please report them to Twitter's moderation team.
-
 ## Introduction
-- PojavLauncher is a Minecraft: Java Edition launcher for Android and iOS based on [Boardwalk](https://github.com/zhuowei/Boardwalk).
-- This launcher can launch most of available Minecraft versions (up to latest 1.19.x, including Combat Test versions).
-- Modding via Forge, Fabric, Quilt are also supported.
-- Older versions of Forge and Fabric can be used with OpenJDK 8.
-- This repository contains source code for iOS/iPadOS platform.
-- For Android platform, check out [PojavLauncher repository](https://github.com/PojavLauncherTeam/PojavLauncher).
+PojavLauncher is a Minecraft: Java Edition launcher for Android and iOS, based off of zhouwei's [Boardwalk](https://github.com/zhouwei/Boardwalk) project.
+* Supports most versions of Minecraft: Java Edition, from the very first beta to the newest snapshots.
+* Supports Forge, Fabric, OptiFine, and Quilt to customize the experience with supported mods.
+* Includes customizable on-screen controls, keyboard and mouse, and game controller support.
+* Optimized for jailbroken and TrollStore devices to enable better capabilities.
+* Microsoft and demo mode support for logging into Minecraft.
+* ...and much more!
 
 ## Getting started with PojavLauncher
+The [PojavLauncher Website](https://pojavlauncherteam.github.io/INSTALL.html#ios) has extensive documentation on how to install, set up, and play! For those who wish to install quickly, here's the basics:
 
-The [PojavLauncher Website](https://pojavlauncherteam.github.io/INSTALL.html#ios) has extensive documentation on how to install, set up, and play! For those who wish to install quickly, here's the basics (on iOS 12.2 or later):
+### Setting up to sideload
+PojavLauncher can be sideloaded in many ways. Our recommended solution is to install [TrollStore](https://github.com/opa334/TrollStore) if your iOS version supports it. Installing with TrollStore allows you to permenantly sign the application, automatically enable JIT, and increase memory limits.
 
-Note: This is experimental, although game works smoothly, you should not set Render distance too much.
+If you cannot, [AltStore](https://altstore.io) and [SideStore](https://sidestore.io) are your next best options.
+- SideStore requires iOS 14 and later.
+- Signing services that do not use your UDID (and use distribution certificates) are not supported, as PojavLauncher requires capabilities they do not allow.
+- Only install sideloading software and PojavLauncher from trusted sources. We are not responsible for any harm caused by using unofficial software.
+- Jailbreaks also benefit from permenant signing, autoJIT, and increase memory limits, however we do not recommend them for regular use.
 
-### Setup the sideload app
-- For iOS 14.0-15.5beta4, [TrollStore](https://github.com/opa334/TrollStore) is recommended to keep PojavLauncher permanently signed and have JIT enabled by itself.
-- Otherwise, install [AltStore](https://altstore.io) or [SideStore](https://github.com/SideStore/SideStore).
-- Other sideloading methods using distribution certificate (without registering UDID) are unsupported as JIT (requires `get-task-allow` entitlement for debugger) is prohibited for distribution.
+We also recommend using a device with iOS 14 or later. Not all features are available on devices running earlier versions, and a future version of the launcher will remove support for them altogether.
+
 ### Installing PojavLauncher
+#### Release build (TrollStore)
+1. Download an IPA of PojavLauncher in [Releases](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/releases).
+2. Open the package in TrollStore using the share menu.
+
 #### Release build (AltStore/SideStore trusted source)
-- Add `PojavLauncher Repository` from Trusted Sources
-- Tap `FREE` to begin installing.
-#### Development build
-- Download an IPA build of PojavLauncher in the [Actions tab](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/actions).
-- Open the downloaded IPA in the sideload app to install.
+1. Add `PojavLauncher Repository` from the Trusted Sources menu.
+2. Tap `FREE` to begin installing.
+
+#### Nightly builds
+*These builds can contain game-breaking bugs. Use with caution.*
+1. Download an IPA build of PojavLauncher in the [Actions tab](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/actions).
+2. Open the downloaded IPA in your sideloading app to install.
+
 ### Enabling JIT
+PojavLauncher makes use of **just-in-time compilation**, or JIT, to provide usable speeds for the end user. JIT is not supported on iOS without the application being debugged, so workarounds are required to enable it. You can use this chart to determine the best solution for you and your setup.
 | Application         | AltStore | SideStore | TrollStore | JitStreamer | Jitterbug          | Jailbroken |
 |---------------------|----------|-----------|------------|-------------|--------------------|------------|
 | Requires ext-device | Yes      | No        | No         | No          | If VPN unavailable | No         |
 | Requires Wi-Fi      | Yes      | Yes       | No         | Yes         | Yes                | No         |
 | Auto enabled        | Yes(*)   | No        | Yes        | Yes         | No                 | Yes        |
-| Minimum iOS version | 12.2(+)  | 14.0      | 14.0       | 14.0        | 14.0               | 12.2(+)    |
+| Minimum iOS version | 12.2  | 14.0      | 14.0       | 14.0        | 14.0               | 12.2    |
 
-(*) AltServer running in local network is required.  
-(+) iOS 12 and 13 will not be supported in a future PojavLauncher release.
-
-## Known issues
-* Some Forge versions may fail with `java.lang.reflect.InvocationTargetException`.
-* The game will be prone to JetsamEvents. More specifically, random crashes might occurs if allocating too much resources.
+(*) AltServer running in local network is required.
 
 ## Contributors
 PojavLauncher is amazing, and surprisingly stable, and it wouldn't be this way without the commmunity that helped and contribute to the project! Some notable names:
