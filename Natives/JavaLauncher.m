@@ -93,13 +93,10 @@ NSString* environmentFailsafes(int minVersion) {
     NSString *javaHome = nil;
 
     NSString *jre8Path = [NSString stringWithFormat:@"%@/java-8-openjdk", jvmPath];
-    NSString *jre16Path = [NSString stringWithFormat:@"%@/java-16-openjdk", jvmPath];
     NSString *jre17Path = [NSString stringWithFormat:@"%@/java-17-openjdk", jvmPath];
 
     if ([fm fileExistsAtPath:jre8Path] && minVersion <= 8) {
         javaHome = jre8Path;
-    } else if ([fm fileExistsAtPath:jre16Path] && minVersion <= 16) {
-        javaHome = jre16Path;
     } else if ([fm fileExistsAtPath:jre17Path] && minVersion <= 17) {
         javaHome = jre17Path;
     }
