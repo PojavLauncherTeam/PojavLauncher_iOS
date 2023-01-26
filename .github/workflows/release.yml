@@ -55,11 +55,17 @@ jobs:
           export NOSTDIN=1 SUDOPASS=$password RUNNER=1
           gmake -j$(sysctl -n hw.ncpu) dsym
 
-      - name: Upload IPA artifact
+      - name: Upload regular ipa
         uses: actions/upload-artifact@v2
         with:
           name: net.kdt.pojavlauncher.ipa
           path: artifacts/net.kdt.pojavlauncher-*.ipa
+
+      - name: Upload slimmed ipa
+        uses: actions/upload-artifact@v2
+        with:
+          name: net.kdt.pojavlauncher.slimmed.ipa
+          path: artifacts/net.kdt.pojavlauncher.slimmed-*.ipa
 
       - name: Upload PojavLauncher.dSYM
         uses: actions/upload-artifact@v2
