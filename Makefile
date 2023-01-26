@@ -240,8 +240,8 @@ package: native java jre assets
 	else \
 		sudo chown -R 501:501 Payload; \
 	fi; \
-	zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher-$(VERSION).ipa Payload/
-	zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher.slimmed-$(VERSION).ipa Payload/ --exclude='Payload/PojavLauncher.app/jvm/java-17-openjdk/*'
+	zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher-$(VERSION).ipa Payload
+	zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher.slimmed-$(VERSION).ipa Payload --exclude='Payload/PojavLauncher.app/jvm/java-17-openjdk/*'
 	@echo '[PojavLauncher v$(VERSION)] package - end'
 
 dsym: package
