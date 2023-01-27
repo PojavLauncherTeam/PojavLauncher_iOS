@@ -152,7 +152,7 @@ native:
 		-DCMAKE_SYSTEM_PROCESSOR=aarch64 \
 		-DCMAKE_OSX_SYSROOT="$(SDKPATH)" \
 		-DCMAKE_OSX_ARCHITECTURES=arm64 \
-		-DCMAKE_C_FLAGS="-arch arm64 -miphoneos-version-min=12.2" \
+		-DCMAKE_C_FLAGS="-arch arm64 -mappletvos-version-min=14.0" \
 		-DCONFIG_BRANCH="$(BRANCH)" \
 		-DCONFIG_COMMIT="$(COMMIT)" \
 		-DCONFIG_RELEASE=$(RELEASE) \
