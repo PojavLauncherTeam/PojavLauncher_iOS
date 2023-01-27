@@ -240,7 +240,8 @@ package: native java jre assets
 	else \
 		sudo chown -R 501:501 Payload; \
 	fi; \
-	zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher-$(VERSION).ipa Payload/*
+	zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher-$(VERSION).ipa Payload; \
+	zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher.slimmed-$(VERSION).ipa Payload --exclude='Payload/PojavLauncher.app/jvm/java-17-openjdk/*'
 	@echo '[PojavLauncher v$(VERSION)] package - end'
 
 dsym: package
@@ -250,12 +251,10 @@ dsym: package
 		echo '$(SUDOPASS)' | sudo -S dsymutil --arch arm64 $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher; \
 		echo '$(SUDOPASS)' | sudo -S rm -rf $(OUTPUTDIR)/PojavLauncher.dSYM; \
 		echo '$(SUDOPASS)' | sudo -S mv $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher.dSYM $(OUTPUTDIR)/PojavLauncher.dSYM; \
-		echo '$(SUDOPASS)' | sudo -S rm -rf $(OUTPUTDIR)/Payload; \
 	else \
 		sudo dsymutil --arch arm64 $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher; \
 		sudo rm -rf $(OUTPUTDIR)/PojavLauncher.dSYM; \
 		sudo mv $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher.dSYM $(OUTPUTDIR)/PojavLauncher.dSYM; \
-		sudo rm -rf $(OUTPUTDIR)/Payload; \
 	fi
 	@echo '[PojavLauncher v$(VERSION)] dsym - end'
 	

@@ -302,6 +302,14 @@ void init_setupResolvConf() {
     }
 }
 
+void init_setupSlimmed() {
+    NSString *ipajre = [NSString stringWithFormat:@"%@/jvm/java-17-openjdk", getenv("BUNDLE_PATH")];
+    NSString *sysjre = @"/usr/lib/jvm/java-17-openjdk";
+    if ((![fm fileExistsAtPath:ipajre]) && (![fm fileExistsAtPath:sysjre])) {
+        setenv("SLIMMED", "1", 1);
+    }
+}
+
 int main(int argc, char *argv[]) {
     if (pJLI_Launch) {
         return pJLI_Launch(argc, (const char **)argv,
@@ -325,6 +333,7 @@ int main(int argc, char *argv[]) {
     }
 
     init_checkForJailbreak();
+    init_setupSlimmed();
     
     init_migrateDirIfNecessary();
 
