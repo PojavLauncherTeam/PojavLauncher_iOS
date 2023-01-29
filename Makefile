@@ -89,6 +89,10 @@ ifneq ($(call DEPCHECK,ldid),1)
 $(error You need to install ldid)
 endif
 
+ifneq ($(call DEPCHECK,wget --version),1)
+$(error You need to install wget)
+endif
+
 ifeq ($(DETECTPLAT),Linux)
 ifneq ($(call DEPCHECK,lld),1)
 $(error You need to install lld)

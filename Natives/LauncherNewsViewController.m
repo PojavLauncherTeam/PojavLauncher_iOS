@@ -1,3 +1,4 @@
+#include <AVFoundation/AVAudioSession.h>
 #import <WebKit/WebKit.h>
 #import "LauncherNewsViewController.h"
 #import "LauncherPreferences.h"
@@ -39,6 +40,8 @@ UIEdgeInsets insets;
     [webView.scrollView setShowsHorizontalScrollIndicator:NO];
     [webView loadRequest:request];
     [self.view addSubview:webView];
+    
+    [self askForMicrophonePermission];
     
     if(roundf(NSProcessInfo.processInfo.physicalMemory / 1048576) < 1900 && ![getPreference(@"force_unsupported_launch") boolValue]) {
         UIAlertController *RAMAlert = [UIAlertController alertControllerWithTitle:localize(@"login.warn.title.a7", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
@@ -105,4 +108,25 @@ decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
     decisionHandler(WKNavigationActionPolicyAllow);
 }
 
+- (void)askForMicrophonePermission {
+    switch ([[AVAudioSession sharedInstance] recordPermission]) {
+        case AVAudioSessionRecordPermissionGranted:
+            setenv("POJAV_MIC_ALLOWED", "1", 1);
+            break;
+        case AVAudioSessionRecordPermissionDenied:
+            break;
+        case AVAudioSessionRecordPermissionUndetermined:
+            // This is the initial state before a user has made any choice
+            // You can use this spot to request permission here if you want
+            [[AVAudioSession sharedInstance]requestRecordPermission:^(BOOL granted) {
+                if(granted) {
+                    setenv("POJAV_MIC_ALLOWED", "1", 1);
+                }
+            }];
+            break;
+        default:
+            break;
+    }
+}
+    
 @end
