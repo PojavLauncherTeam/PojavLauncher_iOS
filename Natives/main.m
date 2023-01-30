@@ -303,7 +303,7 @@ void init_setupResolvConf() {
 }
 
 void init_setupSlimmed() {
-    NSString *ipajre = [NSString stringWithFormat:@"%@/jvm/java-17-openjdk", getenv("BUNDLE_PATH")];
+    NSString *ipajre = [NSString stringWithFormat:@"%s/jvm/java-17-openjdk", getenv("BUNDLE_PATH")];
     NSString *sysjre = @"/usr/lib/jvm/java-17-openjdk";
     if ((![fm fileExistsAtPath:ipajre]) && (![fm fileExistsAtPath:sysjre])) {
         setenv("SLIMMED", "1", 1);
