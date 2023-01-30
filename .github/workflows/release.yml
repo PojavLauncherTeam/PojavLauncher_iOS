@@ -51,6 +51,7 @@ jobs:
         env:
           password: ${{ secrets.ELLIE_MINI_SECRET }}
         run: |
+          export PATH=/opt/procursus/bin:/opt/homebrew/bin:$PATH
           export RELEASE=1
           export NOSTDIN=1 SUDOPASS=$password RUNNER=1
           gmake -j$(sysctl -n hw.ncpu) dsym
