@@ -268,7 +268,7 @@
 }
 
 - (void)launchMinecraft:(UIButton *)sender {
-    if (!self.versionTextField.hasText) {
+    if (!self.versionTextField.hasText || self.versionList.count == 0) {
         [self.versionTextField becomeFirstResponder];
         return;
     }
@@ -284,7 +284,7 @@
     sender.alpha = 0.5;
     [self setInteractionEnabled:NO];
 
-    NSObject *object = [self.versionList objectAtIndex:[self.versionPickerView selectedRowInComponent:0]];
+    NSObject *object = self.versionList[[self.versionPickerView selectedRowInComponent:0]];
 
     [MinecraftResourceUtils downloadVersion:object callback:^(NSString *stage, NSProgress *mainProgress, NSProgress *progress) {
         if (progress == nil && stage != nil) {
@@ -372,7 +372,8 @@
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    NSObject *object = [self.versionList objectAtIndex:row];
+    if (self.versionList.count <= row) return nil;
+    NSObject *object = self.versionList[row];
     if ([object isKindOfClass:[NSString class]]) {
         return (NSString*) object;
     } else {
