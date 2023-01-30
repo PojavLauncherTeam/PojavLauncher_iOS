@@ -312,7 +312,7 @@
 - (void)invokeAfterJITEnabled:(void(^)(void))handler {
     remoteVersionList = nil;
 
-    if (isJITEnabled()) {
+    if (isJITEnabled(false)) {
         dispatch_async(dispatch_get_main_queue(), ^{
             handler();
         });
@@ -337,7 +337,7 @@
     [self presentViewController:alert animated:YES completion:nil];
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        while (!isJITEnabled()) {
+        while (!isJITEnabled(false)) {
             // Perform check for every second
             sleep(1);
         }

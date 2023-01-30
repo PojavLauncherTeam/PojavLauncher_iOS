@@ -70,7 +70,7 @@ JNIEnv* runtimeJNIEnvPtr;
 
 #define CS_DEBUGGED 0x10000000
 int csops(pid_t pid, unsigned int ops, void *useraddr, size_t usersize);
-BOOL isJITEnabled();
+BOOL isJITEnabled(BOOL checkCSOps);
 
 void* gbuffer; // OSMesa framebuffer
 long showingWindow;

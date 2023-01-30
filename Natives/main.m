@@ -324,7 +324,7 @@ int main(int argc, char *argv[]) {
                    JNI_TRUE, JNI_FALSE, JNI_TRUE);
     }
 
-    if (!isJITEnabled() && argc == 2) {
+    if (!isJITEnabled(true) && argc == 2) {
         NSLog(@"calling ptrace(PT_TRACE_ME)");
         // Child process can call to PT_TRACE_ME
         // then both parent and child processes get CS_DEBUGGED
@@ -371,7 +371,7 @@ int main(int argc, char *argv[]) {
     init_hookUIKitConstructor();
 
     // If sandbox is disabled, W^X JIT can be enabled by PojavLauncher itself
-    if (!isJITEnabled() && getEntitlementValue(@"com.apple.private.security.no-sandbox")) {
+    if (!isJITEnabled(true) && getEntitlementValue(@"com.apple.private.security.no-sandbox")) {
         NSLog(@"[Pre-init] no-sandbox: YES, trying to enable JIT");
         int pid;
         int ret = posix_spawnp(&pid, argv[0], NULL, NULL, (char *[]){argv[0], "", NULL}, environ);
@@ -382,7 +382,7 @@ int main(int argc, char *argv[]) {
             kill(pid, SIGTERM);
             wait(NULL);
 
-            if (isJITEnabled()) {
+            if (isJITEnabled(true)) {
                 NSLog(@"[Pre-init] JIT has been enabled with PT_TRACE_ME");
             } else {
                 NSLog(@"[Pre-init] Failed to enable JIT: unknown reason");

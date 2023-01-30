@@ -22,8 +22,8 @@ BOOL getEntitlementValue(NSString *key) {
     return value != nil && [(__bridge id)value boolValue];
 }
 
-BOOL isJITEnabled() {
-    if (getEntitlementValue(@"dynamic-codesigning") || getenv("POJAV_DETECTEDJB")) {
+BOOL isJITEnabled(BOOL checkCSFlags) {
+    if (!checkCSFlags && (getEntitlementValue(@"dynamic-codesigning") || getenv("POJAV_DETECTEDJB"))) {
         return YES;
     }
 

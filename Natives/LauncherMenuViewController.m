@@ -136,7 +136,7 @@
     [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
 
     if (!getEntitlementValue(@"dynamic-codesigning")) {
-        if (isJITEnabled()) {
+        if (isJITEnabled(false)) {
             [self displayProgress:localize(@"login.jit.enabled", nil)];
             [self displayProgress:nil];
         } else {
