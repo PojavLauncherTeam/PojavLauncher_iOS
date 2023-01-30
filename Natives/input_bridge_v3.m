@@ -277,6 +277,7 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetInputRead
 }
 
 JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetGrabbing(JNIEnv* env, jclass clazz, jboolean grabbing, jfloat xset, jfloat yset) {
+    CallbackBridge_nativeSendScreenSize(windowWidth, windowHeight);
     isGrabbing = grabbing;
     if (isGrabbing == JNI_TRUE) {
         grabCursorX = xset; // savedWidth / 2;
