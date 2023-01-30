@@ -185,11 +185,13 @@
         self.progressViewMain.progress = 0;
     };
 
+/* TODO: fetch remote version list for downloading inheritsFrom
     if (type == TYPE_INSTALLED) {
         [self fetchLocalVersionList:self.versionList];
         reloadCompletion();
         return;
     }
+*/
 
     self.buttonInstall.enabled = NO;
 
