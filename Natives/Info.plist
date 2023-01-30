@@ -111,9 +111,9 @@
 		<string>_altserver._tcp</string>
 	</array>
 	<key>NSLocalNetworkUsageDescription</key>
-	<string>PojavLauncher uses the local network to find and communicate with AltServer and LAN servers.</string>
+	<string>NSLocalNetworkUsageDescription</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>PojavLauncher uses the microphone to enable support for voice chat mods.</string>
+	<string>NSMicrophoneUsageDescription</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

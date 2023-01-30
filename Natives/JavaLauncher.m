@@ -289,7 +289,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     
     // TODO: Add preference toggle 
     NSError *sessionError = nil;
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionMixWithOthers error:&sessionError];
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionMixWithOthers error:&sessionError];
     [[AVAudioSession sharedInstance] setActive:YES error:&sessionError];
     
 
