@@ -199,14 +199,9 @@
                 ([versionType isEqualToString:@"old_beta"] && type == TYPE_OLDBETA) ||
                 ([versionType isEqualToString:@"old_alpha"] && type == TYPE_OLDALPHA)) {
                 [self.versionList addObject:versionInfo];
-            } else if ([self isVersionInstalled:versionId] && type == TYPE_INSTALLED) {
-                // Replace the version string with the corresponding object for findNearest
-                [self.versionList removeObject:versionId];
-                [self.versionList addObject:versionInfo];
-            }
-
-            if ([self.versionTextField.text isEqualToString:versionId]) {
-                self.versionSelectedAt = self.versionList.count - 1;
+                if ([self.versionTextField.text isEqualToString:versionId]) {
+                    self.versionSelectedAt = self.versionList.count - 1;
+                }
             }
         }
 
