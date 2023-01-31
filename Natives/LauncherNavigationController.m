@@ -129,29 +129,16 @@
     return isDirectory;
 }
 
-- (void)fetchLocalVersionList:(NSMutableArray *)finalVersionList
+- (void)fetchLocalVersionList
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *versionPath = [NSString stringWithFormat:@"%s/versions/", getenv("POJAV_GAME_DIR")];
     NSArray *localVersionList = [fileManager contentsOfDirectoryAtPath:versionPath error:Nil];
     for (NSString *versionId in localVersionList) {
-        if ([self isVersionInstalled:versionId]) {
-            BOOL shouldAdd = YES;
-            for (NSObject *object in finalVersionList) {
-                if (![object isKindOfClass:[NSDictionary class]]) continue;
-                NSDictionary *versionInfo = (NSDictionary *)object;
-
-                NSString *prevVersionId = [versionInfo valueForKey:@"id"];
-                if ([versionId isEqualToString:prevVersionId]) {
-                    shouldAdd = NO;
-                }
-            }
-            if (shouldAdd && [MinecraftResourceUtils findVersion:versionId inList:self.versionList] == nil) {
-                [finalVersionList addObject:versionId];
-                if ([self.versionTextField.text isEqualToString:versionId]) {
-                    self.versionSelectedAt = finalVersionList.count - 1;
-                }
-            }
+        if (![self isVersionInstalled:versionId]) continue;
+        [self.versionList addObject:versionId];
+        if ([self.versionTextField.text isEqualToString:versionId]) {
+            self.versionSelectedAt = self.versionList.count - 1;
         }
     }
 }
@@ -185,13 +172,9 @@
         self.progressViewMain.progress = 0;
     };
 
-/* TODO: fetch remote version list for downloading inheritsFrom
     if (type == TYPE_INSTALLED) {
-        [self fetchLocalVersionList:self.versionList];
-        reloadCompletion();
-        return;
+        [self fetchLocalVersionList];
     }
-*/
 
     self.buttonInstall.enabled = NO;
 
@@ -203,19 +186,27 @@
         assert(remoteVersionList != nil);
         self.versionSelectedAt = -self.versionSelectedAt;
 
+        if (type == TYPE_INSTALLED) {
+            reloadCompletion();
+            return;
+        }
+
         for (NSDictionary *versionInfo in remoteVersionList) {
             NSString *versionId = versionInfo[@"id"];
             NSString *versionType = versionInfo[@"type"];
-            if (([self isVersionInstalled:versionId] && type == TYPE_INSTALLED) ||
-                ([versionType isEqualToString:@"release"] && type == TYPE_RELEASE) ||
+            if (([versionType isEqualToString:@"release"] && type == TYPE_RELEASE) ||
                 ([versionType isEqualToString:@"snapshot"] && type == TYPE_SNAPSHOT) ||
                 ([versionType isEqualToString:@"old_beta"] && type == TYPE_OLDBETA) ||
                 ([versionType isEqualToString:@"old_alpha"] && type == TYPE_OLDALPHA)) {
                 [self.versionList addObject:versionInfo];
+            } else if ([self isVersionInstalled:versionId] && type == TYPE_INSTALLED) {
+                // Replace the version string with the corresponding object for findNearest
+                [self.versionList removeObject:versionId];
+                [self.versionList addObject:versionInfo];
+            }
 
-                if ([self.versionTextField.text isEqualToString:versionId]) {
-                    self.versionSelectedAt = self.versionList.count - 1;
-                }
+            if ([self.versionTextField.text isEqualToString:versionId]) {
+                self.versionSelectedAt = self.versionList.count - 1;
             }
         }
 
