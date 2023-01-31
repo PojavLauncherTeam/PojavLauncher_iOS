@@ -272,12 +272,10 @@ JNIEXPORT jstring JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeClipboard(JNI
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetInputReady(JNIEnv* env, jclass clazz, jboolean inputReady) {
     //NSDebugLog(@"Debug: Changing input state, isReady=%d, isUseStackQueueCall=%d\n", inputReady, isUseStackQueueCall);
     isInputReady = inputReady;
-
     return isUseStackQueueCall;
 }
 
 JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetGrabbing(JNIEnv* env, jclass clazz, jboolean grabbing, jfloat xset, jfloat yset) {
-    CallbackBridge_nativeSendScreenSize(windowWidth, windowHeight);
     isGrabbing = grabbing;
     if (isGrabbing == JNI_TRUE) {
         grabCursorX = xset; // savedWidth / 2;
