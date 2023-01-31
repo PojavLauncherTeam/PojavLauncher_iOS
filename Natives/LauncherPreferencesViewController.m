@@ -9,6 +9,7 @@
 #import "TOInsetGroupedTableView.h"
 #import "UIKit+hook.h"
 
+#import "config.h"
 #import "ios_uikit_bridge.h"
 #import "utils.h"
 

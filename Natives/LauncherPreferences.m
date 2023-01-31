@@ -1,3 +1,4 @@
+#import "config.h"
 #import "LauncherPreferences.h"
 #import <CoreFoundation/CoreFoundation.h>
 

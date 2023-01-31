@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.6)
 project(PojavLauncher)
 
+configure_file(${CMAKE_CURRENT_LIST_DIR}/config.h.in ${CMAKE_CURRENT_LIST_DIR}/config.h)
+
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -target arm64-apple-ios -fcommon -fobjc-arc -ObjC -F'${CMAKE_OSX_SYSROOT}/System/Cryptexes/OS/System/Library/Frameworks'")
 set(CMAKE_C_FLAGS_DEBUG "-funwind-tables -g")
 
@@ -24,10 +26,6 @@ include_directories(
 
 # For cacio support library
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -rpath @loader_path -rpath @executable_path/jvm/java-8-openjdk/lib -rpath /usr/lib/jvm/java-8-openjdk/lib")
-
-add_definitions(-DCONFIG_BRANCH="${CONFIG_BRANCH}")
-add_definitions(-DCONFIG_COMMIT="${CONFIG_COMMIT}")
-add_definitions(-DCONFIG_RELEASE=${CONFIG_RELEASE})
 
 # EXT: stub library, delete after compile awt_xawt
 add_library(awt_headless SHARED

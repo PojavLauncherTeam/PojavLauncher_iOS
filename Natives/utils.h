@@ -5,21 +5,6 @@
 #include <stdbool.h>
 #include "jni.h"
 
-// Configuration macros
-#if CONFIG_RELEASE == 1
-# define CONFIG_TYPE "release"
-#else
-# define CONFIG_TYPE "debug"
-#endif
-
-#ifndef CONFIG_BRANCH
-# define CONFIG_BRANCH "unspecified"
-#endif
-
-#ifndef CONFIG_COMMIT
-# define CONFIG_COMMIT "unspecified"
-#endif
-
 // Remove date + time from NSLog, unneeded
 #define NSLog(args...) customNSLog(__FILE__,__LINE__,__PRETTY_FUNCTION__,args); 
 

@@ -9,6 +9,7 @@
 #import "customcontrols/CustomControlsUtils.h"
 #import "LauncherPreferences.h"
 #import "SurfaceViewController.h"
+#import "config.h"
 
 #include <libgen.h>
 #include <pthread.h>
