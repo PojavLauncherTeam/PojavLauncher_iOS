@@ -318,7 +318,9 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"icon": @"iphone.and.arrow.forward",
                 @"type": self.typeSwitch,
                 @"enableCondition": ^BOOL(){
-                    return self.presentingViewController.view.safeAreaInsets.bottom > 0;
+                    return
+                        self.splitViewController.view.safeAreaInsets.bottom > 0 ||
+                        self.view.safeAreaInsets.bottom > 0;
                 }
             },
             @{@"key": @"debug_ipad_ui",
