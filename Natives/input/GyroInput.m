@@ -9,7 +9,19 @@
 static CGFloat lastXValue, lastYValue, lastFrameTime;
 static CGFloat gyroSensitivity;
 static int gyroInvertX;
+static BOOL gyroSwapAxis;
 static CMMotionManager* cmInstance;
+
++ (void)updateOrientation {
+    UIInterfaceOrientation orientation;
+    if (@available(iOS 13.0, *)) {
+        orientation = UIApplication.sharedApplication.windows[0].windowScene.interfaceOrientation;
+    } else {
+        orientation = UIApplication.sharedApplication.statusBarOrientation;
+    }
+    gyroSwapAxis = UIInterfaceOrientationIsPortrait(orientation);
+    // FIXME: camera jumps upon rotating screen
+}
 
 + (void)updateSensitivity:(int)sensitivity invertXAxis:(BOOL)invertX {
     if (cmInstance == nil) {
@@ -18,14 +30,19 @@ static CMMotionManager* cmInstance;
     gyroSensitivity = sensitivity / 100.0;
     if (sensitivity > 0) {
         gyroInvertX = invertX ? 1 : -1;
-        [cmInstance startGyroUpdates];
+        [self updateOrientation];
+        [cmInstance startDeviceMotionUpdates];
     } else {
-        [cmInstance stopGyroUpdates];
+        lastXValue = lastYValue = lastFrameTime = 0;
+        [cmInstance stopDeviceMotionUpdates];
     }
 }
 
 + (void)tick {
-    if (!isGrabbing || gyroSensitivity == 0) return;
+    if (!isGrabbing || gyroSensitivity == 0) {
+        lastFrameTime = 0;
+        return;
+    }
 
     // Compute delta since last tick time
     CGFloat frameTime = CACurrentMediaTime();
@@ -36,8 +53,13 @@ static CMMotionManager* cmInstance;
     }
 
     // 100% sensitivity -> 1:1 ratio between real world and ingame camera
-    lastXValue = cmInstance.gyroData.rotationRate.x / (M_PI*360) * windowWidth * factor * gyroInvertX;
-    lastYValue = cmInstance.gyroData.rotationRate.y / (M_PI*180) * windowHeight * factor;
+    if (gyroSwapAxis) {
+        lastXValue = cmInstance.deviceMotion.rotationRate.y / (M_PI*180) * windowWidth * factor * gyroInvertX;
+        lastYValue = -cmInstance.deviceMotion.rotationRate.x / (M_PI*360) * windowHeight * factor;
+    } else {
+        lastXValue = cmInstance.deviceMotion.rotationRate.x / (M_PI*360) * windowWidth * factor * gyroInvertX;
+        lastYValue = cmInstance.deviceMotion.rotationRate.y / (M_PI*180) * windowHeight * factor;
+    }
 
     SurfaceViewController *vc = (id)(currentWindow().rootViewController);
     [vc sendTouchPoint:CGPointMake(lastXValue, lastYValue) withEvent:ACTION_MOVE_MOTION];

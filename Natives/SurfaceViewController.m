@@ -425,6 +425,7 @@ BOOL slideableHotbar;
 
         // Update game resolution
         [self updateSavedResolution];
+        [GyroInput updateOrientation];
     } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
         virtualMouseFrame = self.mousePointerView.frame;
     }];
@@ -460,21 +461,7 @@ BOOL slideableHotbar;
         }
         lastVirtualMousePoint = location;
     }
-
-    CGFloat x = location.x;
-    CGFloat y = location.y;
-    switch (event) {
-        case ACTION_DOWN:
-            lastVirtualMousePoint = location;
-            break;
-        case ACTION_MOVE:
-            event = ACTION_MOVE_MOTION;
-            x = location.x - lastVirtualMousePoint.x;
-            y = location.y - lastVirtualMousePoint.y;
-            lastVirtualMousePoint = location;
-            break;
-    }
-    callback_SurfaceViewController_onTouch(event, x * screenScale, y * screenScale);
+    callback_SurfaceViewController_onTouch(event, location.x * screenScale, location.y * screenScale);
 }
 
 #pragma mark - Input: on-surface functions
@@ -528,6 +515,12 @@ BOOL slideableHotbar;
 
         if (touchEvent == self.primaryTouch) {
             if ([self isTouchInactive:self.primaryTouch]) return; // FIXME: should be? ACTION_UP will never be sent
+            if (event == ACTION_MOVE) {
+                event = ACTION_MOVE_MOTION;
+                CGPoint prevLocationInView = [touchEvent previousLocationInView:self.rootView];
+                locationInView.x -= prevLocationInView.x;
+                locationInView.y -= prevLocationInView.y;
+            }
             [self sendTouchPoint:locationInView withEvent:event];
         }
     //}
