@@ -108,7 +108,7 @@
         indicatorStyle = UIActivityIndicatorViewStyleMedium;
     } else {
         indicatorStyle = UIActivityIndicatorViewStyleGray;
-    } 
+    }
     UIActivityIndicatorView *toolbarIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:indicatorStyle];
     [toolbarIndicator startAnimating];
     self.toolbarItems = @[
@@ -133,10 +133,7 @@
 
     [self updateAccountInfo];
 
-    dispatch_async(dispatch_get_main_queue(), ^(void){
-        [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-        [self restoreHighlightedSelection];
-    });
+    [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
 
     if (!getEntitlementValue(@"dynamic-codesigning")) {
         if (isJITEnabled(false)) {
@@ -155,7 +152,7 @@
 
 - (void)restoreHighlightedSelection {
     // workaround while investigating for issue
-    if (self.splitViewController.viewControllers.count < 2 || contentNavigationController.viewControllers.count == 0) return;
+    if (self.splitViewController.viewControllers.count < 2) return;
 
     // Restore the selected row when the view appears again
     int index = [self.options indexOfObject:[contentNavigationController viewControllers][0]];
