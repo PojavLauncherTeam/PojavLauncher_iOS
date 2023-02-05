@@ -122,6 +122,9 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(envPrefDict, @"press_duration", @(400));
     setDefaultValueForPref(envPrefDict, @"mouse_scale", @(100));
     setDefaultValueForPref(envPrefDict, @"mouse_speed", @(100));
+    setDefaultValueForPref(envPrefDict, @"gyroscope_enable", @NO);
+    setDefaultValueForPref(envPrefDict, @"gyroscope_invert_x_axis", @NO);
+    setDefaultValueForPref(envPrefDict, @"gyroscope_sensitivity", @(100));
     setDefaultValueForPref(envPrefDict, @"default_ctrl", @"default.json");
     setDefaultValueForPref(envPrefDict, @"game_directory", @"default");
     setDefaultValueForPref(envPrefDict, @"java_args", @"");

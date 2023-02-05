@@ -259,6 +259,32 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"hasDetail": @YES,
                 @"icon": @"slider.horizontal.below.rectangle",
                 @"type": self.typeSwitch
+            },
+            @{@"key": @"gyroscope_enable",
+                @"hasDetail": @YES,
+                @"icon": @"gyroscope",
+                @"type": self.typeSwitch,
+                @"enableCondition": ^BOOL(){
+                    return realUIIdiom != UIUserInterfaceIdiomTV;
+                }
+            },
+            @{@"key": @"gyroscope_invert_x_axis",
+                @"hasDetail": @YES,
+                @"icon": @"arrow.left.and.right",
+                @"type": self.typeSwitch,
+                @"enableCondition": ^BOOL(){
+                    return realUIIdiom != UIUserInterfaceIdiomTV;
+                }
+            },
+            @{@"key": @"gyroscope_sensitivity",
+                @"hasDetail": @YES,
+                @"icon": @"move.3d",
+                @"type": self.typeSlider,
+                @"min": @(50),
+                @"max": @(300),
+                @"enableCondition": ^BOOL(){
+                    return realUIIdiom != UIUserInterfaceIdiomTV;
+                }
             }
         ], @[
         // Java tweaks

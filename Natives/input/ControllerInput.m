@@ -245,7 +245,7 @@ BOOL leftShiftHeld;
         // Compute delta since last tick time
         CGFloat deltaX = lastXValue * acceleration * 18;
         CGFloat deltaY = -lastYValue * acceleration * 18;
-        CGFloat deltaTimeScale = (frameTime - lastFrameTime) / 0.016666666; // Scale of 1 = 60Hz
+        CGFloat deltaTimeScale = (frameTime - lastFrameTime) / (1.0/60.0); // Scale of 1 = 60Hz
         deltaX *= deltaTimeScale;
         deltaY *= deltaTimeScale;
 

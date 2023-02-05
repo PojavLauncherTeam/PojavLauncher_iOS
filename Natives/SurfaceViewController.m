@@ -12,6 +12,7 @@
 #import "customcontrols/CustomControlsUtils.h"
 
 #import "input/ControllerInput.h"
+#import "input/GyroInput.h"
 #import "input/KeyboardInput.h"
 
 #import "JavaLauncher.h"
@@ -79,7 +80,11 @@ BOOL slideableHotbar;
     }
 
     // Perform Gamepad joystick ticking, while also controlling frame rate?
-    CADisplayLink *displayLink = [CADisplayLink displayLinkWithTarget:ControllerInput.class selector:@selector(tick)];
+    id tickInput = ^{
+        [GyroInput tick];
+        [ControllerInput tick];
+    };
+    CADisplayLink *displayLink = [CADisplayLink displayLinkWithTarget:tickInput selector:@selector(invoke)];
     if (@available(iOS 15.0, tvOS 15.0, *)) {
         displayLink.preferredFrameRateRange = CAFrameRateRangeMake(60, 120, 120);
     }
@@ -289,6 +294,11 @@ BOOL slideableHotbar;
         self.inputTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     }
 
+    BOOL gyroEnabled = [getPreference(@"gyroscope_enable") boolValue];
+    BOOL gyroInvertX = [getPreference(@"gyroscope_invert_x_axis") boolValue];
+    int gyroSensitivity = [getPreference(@"gyroscope_sensitivity") intValue];
+    [GyroInput updateSensitivity:gyroEnabled?gyroSensitivity:0 invertXAxis:gyroInvertX];
+
     self.mouseSpeed = [getPreference(@"mouse_speed") floatValue] / 100.0;
     slideableHotbar = [getPreference(@"slideable_hotbar") boolValue];
 
@@ -450,7 +460,21 @@ BOOL slideableHotbar;
         }
         lastVirtualMousePoint = location;
     }
-    callback_SurfaceViewController_onTouch(event, location.x * screenScale, location.y * screenScale);
+
+    CGFloat x = location.x;
+    CGFloat y = location.y;
+    switch (event) {
+        case ACTION_DOWN:
+            lastVirtualMousePoint = location;
+            break;
+        case ACTION_MOVE:
+            event = ACTION_MOVE_MOTION;
+            x = location.x - lastVirtualMousePoint.x;
+            y = location.y - lastVirtualMousePoint.y;
+            lastVirtualMousePoint = location;
+            break;
+    }
+    callback_SurfaceViewController_onTouch(event, x * screenScale, y * screenScale);
 }
 
 #pragma mark - Input: on-surface functions

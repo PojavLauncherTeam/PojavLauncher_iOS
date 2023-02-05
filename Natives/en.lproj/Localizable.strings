@@ -189,6 +189,14 @@
 "preference.detail.virtmouse_enable" = "Enable this option to start with virtual mouse on";
 "preference.title.slideable_hotbar" = "Slideable hotbar";
 "preference.detail.slideable_hotbar" = "Make the hotbar slideable like the mouse wheel";
+
+"preference.title.gyroscope_enable" = "Enable gyroscope controls";
+"preference.detail.gyroscope_enable" = "Enabling this will allow you to turn in game by turning your device";
+"preference.title.gyroscope_invert_x_axis" = "Invert gyroscope left and right";
+"preference.detail.gyroscope_invert_x_axis" = "Inverts the X-axis of the gyroscope";
+"preference.title.gyroscope_sensitivity" = "Gyroscope controls sensitivity";
+"preference.detail.gyroscope_sensitivity" = "Adjust the sensitivity of gyroscope controls";
+
 "preference.title.java_home" = "Use Java 17 for Minecraft < 1.17";
 "preference.detail.java_home" = "Java 8 is used by default for those versions. Enable this option to force use Java 17, however compatibility with modded is not guaranteed.";
 "preference.title.java_args" = "JVM Launch arguments";

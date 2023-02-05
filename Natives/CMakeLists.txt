@@ -100,6 +100,7 @@ add_executable(PojavLauncher
   external/TOInsetGroupedTableView/TOInsetGroupedTableView/TOInsetGroupedTableView.m
 
   input/ControllerInput.m
+  input/GyroInput.m
   input/KeyboardInput.m
 
   AccountListViewController.m
@@ -143,6 +144,7 @@ target_link_libraries(PojavLauncher
   "-framework CAltKit"
   "-framework CoreGraphics"
   "-framework CoreImage"
+  "-framework CoreMotion"
   "-framework CoreServices"
   "-framework GameController"
   "-framework QuartzCore"
