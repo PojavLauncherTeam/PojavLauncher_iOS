@@ -128,10 +128,10 @@ void launchInitialViewController(UIWindow *window) {
     if ([getPreference(@"internal_launch_on_boot") boolValue]) {
         window.rootViewController = [[SurfaceViewController alloc] init];
     } else {
-        //if (@available(iOS 14.0, tvOS 14.0, *)) {
-        //    window.rootViewController = [[LauncherSplitViewController alloc] initWithStyle:UISplitViewControllerStyleDoubleColumn];
-        //} else {
+        if (@available(iOS 14.0, tvOS 14.0, *)) {
+            window.rootViewController = [[LauncherSplitViewController alloc] initWithStyle:UISplitViewControllerStyleDoubleColumn];
+        } else {
             window.rootViewController = [[LauncherSplitViewController alloc] init];
-        //}
+        }
     }
 }

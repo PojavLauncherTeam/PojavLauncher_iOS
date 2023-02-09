@@ -193,12 +193,11 @@
     if ([selected isKindOfClass:UIViewController.class]) {
         [contentNavigationController setViewControllers:@[selected] animated:NO]; //YES?
 
-        /*if (@available(iOS 14.0, tvOS 14.0, *)) {
+        if (@available(iOS 14.0, tvOS 14.0, *)) {
             selected.navigationItem.leftBarButtonItem = self.accountBtnItem;
             // It is unnecessary to put the toggle button as it is automated on iOS 14+
             return;
-        }*/
-        
+        }
         selected.navigationItem.leftBarButtonItems = @[self.splitViewController.displayModeButtonItem, self.accountBtnItem];
         selected.navigationItem.leftItemsSupplementBackButton = true;
     } else {
