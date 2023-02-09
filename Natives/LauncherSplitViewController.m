@@ -19,13 +19,13 @@ extern NSMutableDictionary *prefDict;
     setDefaultValueForPref(prefDict, @"control_safe_area", NSStringFromCGRect(getDefaultSafeArea()));
 
     self.delegate = self;
-    [self changeDisplayModeForSize:self.view.frame.size];
 
     LauncherMenuViewController *masterVc = [[LauncherMenuViewController alloc] init];
     LauncherNavigationController *detailVc = [[LauncherNavigationController alloc] init];
     detailVc.toolbarHidden = NO;
 
     self.viewControllers = @[[[UINavigationController alloc] initWithRootViewController:masterVc], detailVc];
+    [self changeDisplayModeForSize:self.view.frame.size];
 }
 
 - (void)splitViewController:(UISplitViewController *)svc willChangeToDisplayMode:(UISplitViewControllerDisplayMode)displayMode {
