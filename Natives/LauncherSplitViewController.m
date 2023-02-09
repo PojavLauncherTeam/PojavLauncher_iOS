@@ -53,11 +53,9 @@ extern NSMutableDictionary *prefDict;
             self.preferredDisplayMode = UISplitViewControllerDisplayModeSecondaryOnly;
         }
     }
-    if (@available(iOS 14.0, tvOS 14.0, *)) {
-        self.preferredSplitBehavior = isPortrait ?
-            UISplitViewControllerSplitBehaviorOverlay :
-            UISplitViewControllerSplitBehaviorTile;
-    }
+    /*if (@available(iOS 14.0, tvOS 14.0, *)) {
+        self.preferredSplitBehavior = UISplitViewControllerSplitBehaviorOverlay;
+    }*/
 }
 
 - (void)dismissViewController {
