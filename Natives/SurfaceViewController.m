@@ -588,7 +588,9 @@ BOOL slideableHotbar;
     };
 
     mouse.mouseInput.scroll.xAxis.valueChangedHandler = ^(GCControllerAxisInput * _Nonnull axis, float value) {
-        CallbackBridge_nativeSendScroll(value, 0);
+        // FIXME: some users having x scroll issue instead of y
+        //CallbackBridge_nativeSendScroll(value, 0);
+        CallbackBridge_nativeSendScroll(0, value);
     };
     mouse.mouseInput.scroll.yAxis.valueChangedHandler = ^(GCControllerAxisInput * _Nonnull axis, float value) {
         CallbackBridge_nativeSendScroll(0, -value);
