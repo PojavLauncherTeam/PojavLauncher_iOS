@@ -700,7 +700,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
         return;
     }
 */
-    NSString *message = @"";
+    NSString *message = nil;
     if ([item[@"hasDetail"] boolValue]) {
         message = localize(([NSString stringWithFormat:@"preference.detail.%@", item[@"key"]]), nil);
     }

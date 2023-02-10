@@ -1,5 +1,6 @@
 #import "config.h"
 #import "LauncherPreferences.h"
+#import "UIKit+hook.h"
 #import <CoreFoundation/CoreFoundation.h>
 
 NSMutableDictionary *prefDict;
