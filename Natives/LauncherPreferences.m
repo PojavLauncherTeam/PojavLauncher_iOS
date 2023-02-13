@@ -149,13 +149,20 @@ void loadPreferences(BOOL reset) {
     // Debug settings
     setDefaultValueForPref(debugPrefDict, @"debug_skip_wait_jit", @NO);
     setDefaultValueForPref(debugPrefDict, @"debug_hide_home_indicator", @NO);
-    setDefaultValueForPref(debugPrefDict, @"debug_ipad_ui", @(UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad));
+    setDefaultValueForPref(debugPrefDict, @"debug_ipad_ui", @(realUIIdiom != UIUserInterfaceIdiomTV));
     setDefaultValueForPref(debugPrefDict, @"debug_auto_correction", @YES);
     setDefaultValueForPref(debugPrefDict, @"debug_show_layout_bounds", @NO);
     setDefaultValueForPref(debugPrefDict, @"debug_show_layout_overlap", @NO);
 
     // Migrate some prefs
     setPreference(@"java_home", [getPreference(@"java_home") lastPathComponent]);
+
+    // Special handling for debug_ipados_ui workaround
+    if (realUIIdiom == UIUserInterfaceIdiomPhone &&
+        ![debugPrefDict[@"internal_workaround_ipad_ui_set"] boolValue]) {
+        debugPrefDict[@"internal_workaround_ipad_ui_set"] = @YES;
+        setPreference(@"debug_ipad_ui", @YES);
+    }
 
     prefDict[@"debugs"] = debugPrefDict;
     prefDict[@"env_vars"] = envPrefDict;

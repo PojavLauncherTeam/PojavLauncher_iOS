@@ -45,14 +45,18 @@ extern NSMutableDictionary *prefDict;
 - (void)changeDisplayModeForSize:(CGSize)size {
     BOOL isPortrait = size.height > size.width;
     if (self.preferredDisplayMode == 0 || self.displayMode != UISplitViewControllerDisplayModeSecondaryOnly) {
-        //if([getPreference(@"hidden_sidebar") boolValue] == NO) {
-            self.preferredDisplayMode = UISplitViewControllerDisplayModeOneOverSecondary;
-        /*} else {
+        if([getPreference(@"hidden_sidebar") boolValue] == NO) {
+            self.preferredDisplayMode = isPortrait ?
+                UISplitViewControllerDisplayModeOneOverSecondary :
+                UISplitViewControllerDisplayModeOneBesideSecondary;
+        } else {
             self.preferredDisplayMode = UISplitViewControllerDisplayModeSecondaryOnly;
-        }*/
+        }
     }
     if (@available(iOS 14.0, tvOS 14.0, *)) {
-        self.preferredSplitBehavior = UISplitViewControllerSplitBehaviorOverlay;
+        self.preferredSplitBehavior = isPortrait ?
+            UISplitViewControllerSplitBehaviorOverlay :
+            UISplitViewControllerSplitBehaviorTile;
     }
 }
 
