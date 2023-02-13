@@ -354,6 +354,7 @@ int main(int argc, char *argv[]) {
     init_logDeviceAndVer(argv[0]);
 
     init_hookFunctions();
+    init_hookUIKitConstructor();
 
     loadPreferences(NO);
     debugBoundsEnabled = [getPreference(@"debug_show_layout_bounds") boolValue];
@@ -368,8 +369,6 @@ int main(int argc, char *argv[]) {
 
     init_migrateToPlist("selected_version", "config_ver.txt");
     init_migrateToPlist("java_args", "overrideargs.txt");
-
-    init_hookUIKitConstructor();
 
     // If sandbox is disabled, W^X JIT can be enabled by PojavLauncher itself
     if (!isJITEnabled(true) && getEntitlementValue(@"com.apple.private.security.no-sandbox")) {
