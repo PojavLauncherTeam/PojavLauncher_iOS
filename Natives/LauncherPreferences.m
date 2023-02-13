@@ -149,7 +149,7 @@ void loadPreferences(BOOL reset) {
     // Debug settings
     setDefaultValueForPref(debugPrefDict, @"debug_skip_wait_jit", @NO);
     setDefaultValueForPref(debugPrefDict, @"debug_hide_home_indicator", @NO);
-    setDefaultValueForPref(debugPrefDict, @"debug_ipad_ui", @(realUIIdiom == UIUserInterfaceIdiomPhone));
+    setDefaultValueForPref(debugPrefDict, @"debug_ipad_ui", @(realUIIdiom != UIUserInterfaceIdiomTV));
     setDefaultValueForPref(debugPrefDict, @"debug_auto_correction", @YES);
     setDefaultValueForPref(debugPrefDict, @"debug_show_layout_bounds", @NO);
     setDefaultValueForPref(debugPrefDict, @"debug_show_layout_overlap", @NO);
