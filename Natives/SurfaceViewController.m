@@ -104,6 +104,7 @@ BOOL slideableHotbar;
     self.surfaceView = [[GameSurfaceView alloc] initWithFrame:self.view.frame];
     self.surfaceView.layer.contentsScale = screenScale * resolutionScale;
     self.surfaceView.layer.magnificationFilter = self.surfaceView.layer.minificationFilter = kCAFilterNearest;
+    self.surfaceView.multipleTouchEnabled = YES;
 
     self.touchView = [[UIView alloc] initWithFrame:self.view.frame];
     self.touchView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
