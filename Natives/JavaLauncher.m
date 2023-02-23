@@ -180,10 +180,10 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     if([getPreference(@"cosmetica") boolValue]) {
         margv[++margc] = [NSString stringWithFormat:@"-javaagent:%@/arc_dns_injector.jar=23.95.137.176", librariesPath].UTF8String;
     }
-    NSString *selectedAccount = getPreference(@"internal_selected_account");
-    if (selectedAccount != nil) {
-        margv[++margc] = [NSString stringWithFormat:@"-Dpojav.selectedAccount=%@", selectedAccount].UTF8String;
-    }
+
+    // Args for Spiral Knights
+    margv[++margc] = "-Dappdir=./spiral";
+    margv[++margc] = "-Dresource_dir=./spiral/rsrc";
 
     // Setup Caciocavallo
     margv[++margc] = "-Djava.awt.headless=false";

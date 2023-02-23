@@ -294,6 +294,7 @@ static AFURLSessionManager* manager;
     client[@"downloads"] = [[NSMutableDictionary alloc] init];
     if (json[@"downloads"][@"client"] == nil) {
         client[@"downloads"][@"artifact"] = [[NSMutableDictionary alloc] init];
+        client[@"skip"] = @YES;
     } else {
         client[@"downloads"][@"artifact"] = json[@"downloads"][@"client"];
     }
