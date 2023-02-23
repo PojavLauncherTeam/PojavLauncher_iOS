@@ -374,15 +374,18 @@ BOOL slideableHotbar;
 }
 
 - (void)loadCustomControls {
+    self.edgeGesture.enabled = YES;
     [self.swipeableButtons removeAllObjects];
     [self.ctrlView loadControlFile:getPreference(@"default_ctrl")];
     for (ControlButton *button in self.ctrlView.subviews) {
         BOOL isSwipeable = [button.properties[@"isSwipeable"] boolValue];
 
         button.canBeHidden = YES;
+        BOOL isMenuButton = NO;
         for (int i = 0; i < 4; i++) {
             int keycodeInt = [button.properties[@"keycodes"][i] intValue];
             button.canBeHidden &= keycodeInt != SPECIALBTN_TOGGLECTRL;
+            isMenuButton |= keycodeInt == SPECIALBTN_MENU;
         }
 
         [button addTarget:self action:@selector(executebtn_down:) forControlEvents:UIControlEventTouchDown];
@@ -394,6 +397,19 @@ BOOL slideableHotbar;
             panRecognizerButton.delegate = self;
             [button addGestureRecognizer:panRecognizerButton];
             [self.swipeableButtons addObject:button];
+        }
+
+        if (@available(iOS 14, *) && isMenuButton) {
+            NSMutableArray *items = [NSMutableArray new];
+            for (int i = 0; i < self.menuArray.count; i++) {
+                UIAction *item = [UIAction actionWithTitle:localize(self.menuArray[i], nil) image:nil identifier:nil
+                    handler:^(id action) {[self didSelectMenuItem:i];}];
+                [items addObject:item];
+            }
+            button.menu = [UIMenu menuWithTitle:@"" image:nil identifier:nil
+                options:UIMenuOptionsDisplayInline children:items];
+            button.showsMenuAsPrimaryAction = YES;
+            self.edgeGesture.enabled = NO;
         }
     }
 }
@@ -771,6 +787,12 @@ int currentVisibility = 1;
                         virtualMouseEnabled = !virtualMouseEnabled;
                         self.mousePointerView.hidden = !virtualMouseEnabled;
                         setPreference(@"virtmouse_enable", @(virtualMouseEnabled));
+                    }
+                    break;
+
+                case SPECIALBTN_MENU:
+                    if (!held) {
+                        [self actionOpenNavigationMenu];
                     }
                     break;
 

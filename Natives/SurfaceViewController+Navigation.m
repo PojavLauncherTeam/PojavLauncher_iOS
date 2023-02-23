@@ -40,10 +40,10 @@ static UIView *menuSwipeView;
 }
 
 - (void)setupCategory_Navigation {
-    UIScreenEdgePanGestureRecognizer *edgeGesture = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handleRightEdge:)];
-    edgeGesture.edges = UIRectEdgeRight;
-    edgeGesture.delegate = self;
-    [self.touchView addGestureRecognizer:edgeGesture];
+    self.edgeGesture = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handleRightEdge:)];
+    self.edgeGesture.edges = UIRectEdgeRight;
+    self.edgeGesture.delegate = self;
+    [self.touchView addGestureRecognizer:self.edgeGesture];
 }
 
 static CGPoint lastCenterPoint;
@@ -140,6 +140,14 @@ static CGPoint lastCenterPoint;
     [self presentViewController:vc animated:YES completion:nil];
 }
 
+- (void)actionOpenNavigationMenu {
+    if (@available(iOS 14, *)) {
+        // Use UIMenu
+    } else {
+        [self animateMenuScale:0.7 duration:0.3];
+    }
+}
+
 - (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
     if (!self.menuView.hidden) {
         return 0;
@@ -179,7 +187,11 @@ static CGPoint lastCenterPoint;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    switch (indexPath.row) {
+    [self didSelectMenuItem:indexPath.row];
+}
+
+- (void)didSelectMenuItem:(int)item {
+    switch (item) {
         case 0:
             [self actionForceClose];
             break;

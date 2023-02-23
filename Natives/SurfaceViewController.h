@@ -31,6 +31,7 @@ CGPoint lastVirtualMousePoint;
 // Navigation category
 @property(nonatomic) NSArray *menuArray;
 @property(nonatomic) UITableView *menuView;
+@property(nonatomic) UIScreenEdgePanGestureRecognizer* edgeGesture;
 
 @end
 
@@ -52,6 +53,8 @@ CGPoint lastVirtualMousePoint;
 
 @interface SurfaceViewController(Navigation)<UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate>
 
+- (void)actionOpenNavigationMenu;
+- (void)didSelectMenuItem:(int)item;
 - (void)viewWillTransitionToSize_Navigation:(CGRect)frame;
 
 @end

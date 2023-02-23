@@ -45,6 +45,7 @@
 #define SPECIALBTN_MOUSEMID -6
 #define SPECIALBTN_SCROLLUP -7
 #define SPECIALBTN_SCROLLDOWN -8
+#define SPECIALBTN_MENU -9
 
 #define NSDebugLog(...) if (debugLogEnabled) { NSLog(__VA_ARGS__); }
 BOOL debugBoundsEnabled, debugLogEnabled;

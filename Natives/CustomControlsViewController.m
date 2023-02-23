@@ -626,6 +626,7 @@ NSMutableArray *keyCodeMap, *keyValueMap;
 
     keyCodeMap = [[NSMutableArray alloc] init];
     keyValueMap = [[NSMutableArray alloc] init];
+    addspec(SPECIALBTN_MENU)
     addspec(SPECIALBTN_SCROLLDOWN)
     addspec(SPECIALBTN_SCROLLUP)
     addspec(SPECIALBTN_VIRTUALMOUSE)
