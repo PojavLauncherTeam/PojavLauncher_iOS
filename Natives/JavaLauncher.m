@@ -181,10 +181,6 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
         margv[++margc] = [NSString stringWithFormat:@"-javaagent:%@/arc_dns_injector.jar=23.95.137.176", librariesPath].UTF8String;
     }
 
-    // Args for Spiral Knights
-    margv[++margc] = "-Dappdir=./spiral";
-    margv[++margc] = "-Dresource_dir=./spiral/rsrc";
-
     // Setup Caciocavallo
     margv[++margc] = "-Djava.awt.headless=false";
     margv[++margc] = "-Dcacio.font.fontmanager=sun.awt.X11FontManager";

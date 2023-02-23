@@ -57,6 +57,10 @@ public class PojavLauncher {
     }
 
     public static void launchMinecraft(String[] args) throws Throwable {
+        // Args for Spiral Knights
+        System.setProperty("appdir", "./spiral");
+        System.setProperty("resource_dir", "./spiral/rsrc");
+
         String[] size = args[2].split("x");
 
         MCOptionUtils.load();
