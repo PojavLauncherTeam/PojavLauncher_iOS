@@ -6,9 +6,9 @@
 #include "external/fishhook/fishhook.h"
 
 void (*orig_abort)();
-static void* (*orig_dlopen)(const char* path, int mode);
-static void (*orig_exit)(int code);
-static int (*orig_open)(const char *path, int oflag, ...);
+void* (*orig_dlopen)(const char* path, int mode);
+void (*orig_exit)(int code);
+int (*orig_open)(const char *path, int oflag, ...);
 
 void handle_fatal_exit(int code) {
     if (NSThread.isMainThread || !SurfaceViewController.isRunning) {
@@ -75,10 +75,13 @@ int hooked_open(const char *path, int oflag, ...) {
 }
 
 void init_hookFunctions() {
+    void *orig_dlopen_local;
     rebind_symbols((struct rebinding[4]){
         {"abort", hooked_abort, (void *)&orig_abort},
-        {"dlopen", hooked_dlopen, (void *)&orig_dlopen},
+        {"dlopen", hooked_dlopen, (void *)&orig_dlopen_local},
         {"exit", hooked_exit, (void *)&orig_exit},
         {"open", hooked_open, (void *)&orig_open}
     }, 4);
+    // workaround weird pointer overwritten issue in jre 17.0.7
+    orig_dlopen = orig_dlopen_local;
 }
