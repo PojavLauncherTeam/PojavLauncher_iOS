@@ -56,10 +56,10 @@ void init_loadCustomEnv() {
 
     for (NSString *line in lines) {
         if (line.length == 0 || [line hasPrefix:@"#"]) {
-            return;
+            continue;
         } else if (![line containsString:@"="]) {
             NSLog(@"[Pre-init] Warning: skipped empty value custom env: %@", line);
-            return;
+            continue;
         }
         NSRange range = [line rangeOfString:@"="];
         NSString *key = [line substringToIndex:range.location];
