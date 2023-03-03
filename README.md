@@ -7,10 +7,10 @@
 ## Introduction
 PojavLauncher is a Minecraft: Java Edition launcher for Android, iOS, and tvOS, based off of zhouwei's [Boardwalk](https://github.com/zhouwei/Boardwalk) project.
 * Supports most versions of Minecraft: Java Edition, from the very first beta to the newest snapshots.
-* Supports Forge, Fabric, OptiFine, and Quilt to customize the experience with supported mods.
-* Includes customizable on-screen controls, keyboard and mouse, and game controller support.
+* Supports Forge, Fabric, OptiFine, and Quilt for you to customize the experience with supported mods.
+* Includes customizable on-screen controls, keyboard and mouse support, and game controller support.
 * Optimized for jailbroken and TrollStore devices to enable better capabilities.
-* Microsoft and demo mode support for logging into Minecraft.
+* Microsoft account and demo mode support for logging into Minecraft.
 * ...and much more!
 
 This repository contains the code for our iOS, iPadOS, and tvOS port of PojavLauncher. Looking for [Android?](https://github.com/PojavLauncherTeam/PojavLauncher)
@@ -36,6 +36,8 @@ However, we recommend one of the following devices on iOS or tvOS 14.0 and later
 - iPad Pro (all models), excluding iPad Pro (9.7-inch)
 - Apple TV 4K (3rd generation)
 
+Recommended devices provide a smoother and more enjoyable gameplay experience compared to other supported devices.
+
 Apple TV support is currently in development.
 
 ### Setting up to sideload
@@ -45,7 +47,7 @@ If you cannot, [AltStore](https://altstore.io) and [SideStore](https://sidestore
 - SideStore requires iOS 14 and later.
 - Signing services that do not use your UDID (and use distribution certificates) are not supported, as PojavLauncher requires capabilities they do not allow.
 - Only install sideloading software and PojavLauncher from trusted sources. We are not responsible for any harm caused by using unofficial software.
-- Jailbreaks also benefit from permenant signing, autoJIT, and increase memory limits, however we do not recommend them for regular use.
+- Jailbreaks also benefit from permenant signing, autoJIT, and increased memory limits, however we do not recommend them for regular use.
 
 ### Installing PojavLauncher
 #### Release build (TrollStore)
@@ -70,7 +72,7 @@ PojavLauncher makes use of **just-in-time compilation**, or JIT, to provide usab
 | Auto enabled        | Yes(*)   | No        | Yes        | Yes         | No                 | Yes        |
 | Minimum iOS version | 12.2  | 14.0      | 14.0       | 14.0        | 14.0               | 12.2    |
 
-(*) AltServer running in local network is required.
+(*) AltServer running on the local network is required.
 
 ## Contributors
 PojavLauncher is amazing, and surprisingly stable, and it wouldn't be this way without the commmunity that helped and contribute to the project! Some notable names:
