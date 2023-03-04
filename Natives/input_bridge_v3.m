@@ -5,9 +5,6 @@
  * - Active development
  * - Works with some bugs:
  *  + Modded versions gives broken stuff..
- *
- * TODO:
- * - Implements glfwSetCursorPos() to handle grab camera pos correctly.
  */
 
 #import <UIKit/UIKit.h>
@@ -18,6 +15,7 @@
 #include <dlfcn.h>
 #include <libgen.h>
 #include <stdlib.h>
+#include <stdatomic.h>
 
 #include "jni.h"
 #include "glfw_keycodes.h"
@@ -27,25 +25,6 @@
 #include "JavaLauncher.h"
 
 jint (*orig_ProcessImpl_forkAndExec)(JNIEnv *env, jobject process, jint mode, jbyteArray helperpath, jbyteArray prog, jbyteArray argBlock, jint argc, jbyteArray envBlock, jint envc, jbyteArray dir, jintArray std_fds, jboolean redirectErrorStream);
-
-typedef void GLFW_invoke_Char_func(void* window, unsigned int codepoint);
-typedef void GLFW_invoke_CharMods_func(void* window, unsigned int codepoint, int mods);
-typedef void GLFW_invoke_CursorEnter_func(void* window, int entered);
-typedef void GLFW_invoke_CursorPos_func(void* window, double xpos, double ypos);
-typedef void GLFW_invoke_FramebufferSize_func(void* window, int width, int height);
-typedef void GLFW_invoke_Key_func(void* window, int key, int scancode, int action, int mods);
-typedef void GLFW_invoke_MouseButton_func(void* window, int button, int action, int mods);
-typedef void GLFW_invoke_Scroll_func(void* window, double xoffset, double yoffset);
-typedef void GLFW_invoke_WindowSize_func(void* window, int width, int height);
-typedef void GLFW_invoke_WindowPos_func(void* window, int x, int y);
-
-CGFloat grabCursorX, grabCursorY, lastCursorX, lastCursorY;
-
-jclass inputBridgeClass_ANDROID;
-jmethodID inputBridgeMethod_ANDROID;
-
-jclass uikitBridgeClass;
-jmethodID uikitBridgeTouchMethod;
 
 NSString* processPath(NSString* path) {
     if ([path hasPrefix:@"file:"]) {
@@ -110,28 +89,38 @@ hooked_ProcessImpl_forkAndExec(JNIEnv *env, jobject process, jint mode, jbyteArr
     return 0;
 }
 
-void hookExec(JNIEnv *env) {
+void hookExec() {
     jclass cls;
     orig_ProcessImpl_forkAndExec = dlsym(RTLD_DEFAULT, "Java_java_lang_UNIXProcess_forkAndExec");
     if (!orig_ProcessImpl_forkAndExec) {
         orig_ProcessImpl_forkAndExec = dlsym(RTLD_DEFAULT, "Java_java_lang_ProcessImpl_forkAndExec");
-        cls = (*env)->FindClass(env, "java/lang/ProcessImpl");
+        cls = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "java/lang/ProcessImpl");
     } else {
-        cls = (*env)->FindClass(env, "java/lang/UNIXProcess");
+        cls = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "java/lang/UNIXProcess");
     }
     JNINativeMethod methods[] = {
         {"forkAndExec", "(I[B[B[BI[BI[B[IZ)I", (void *)&hooked_ProcessImpl_forkAndExec}
     };
-    (*env)->RegisterNatives(env, cls, methods, 1);
+    (*runtimeJNIEnvPtr)->RegisterNatives(runtimeJNIEnvPtr, cls, methods, 1);
 }
 
 // JNI_OnLoad
 jint JNI_OnLoad(JavaVM* vm, void* reserved) {
-    JNIEnv *env;
-    (*vm)->GetEnv(vm, (void **)&env, JNI_VERSION_1_4);
-    hookExec(env);
-
     runtimeJavaVMPtr = vm;
+    (*vm)->GetEnv(vm, (void**)&runtimeJNIEnvPtr, JNI_VERSION_1_4);
+    vmGlfwClass = (*runtimeJNIEnvPtr)->NewGlobalRef(runtimeJNIEnvPtr, (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "org/lwjgl/glfw/GLFW"));
+    method_glfwSetWindowAttrib = (*runtimeJNIEnvPtr)->GetStaticMethodID(runtimeJNIEnvPtr, vmGlfwClass, "glfwSetWindowAttrib", "(JII)V");
+    method_internalWindowSizeChanged = (*runtimeJNIEnvPtr)->GetStaticMethodID(runtimeJNIEnvPtr, vmGlfwClass, "internalWindowSizeChanged", "(JII)V");
+    jfieldID field_keyDownBuffer = (*runtimeJNIEnvPtr)->GetStaticFieldID(runtimeJNIEnvPtr, vmGlfwClass, "keyDownBuffer", "Ljava/nio/ByteBuffer;");
+    jobject keyDownBufferJ = (*runtimeJNIEnvPtr)->GetStaticObjectField(runtimeJNIEnvPtr, vmGlfwClass, field_keyDownBuffer);
+    keyDownBuffer = (*runtimeJNIEnvPtr)->GetDirectBufferAddress(runtimeJNIEnvPtr, keyDownBufferJ);
+
+    if (isUseStackQueueCall) {
+        sendData(EVENT_TYPE_WINDOW_SIZE, windowWidth, windowHeight, 0, 0);
+    }
+
+    hookExec();
+
     return JNI_VERSION_1_4;
 }
 
@@ -141,39 +130,102 @@ void JNI_OnUnload(JavaVM* vm, void* reserved) {
 }
 
 #define ADD_CALLBACK_WWIN(NAME) \
-GLFW_invoke_##NAME##_func* GLFW_invoke_##NAME; \
 JNIEXPORT jlong JNICALL Java_org_lwjgl_glfw_GLFW_nglfwSet##NAME##Callback(JNIEnv * env, jclass cls, jlong window, jlong callbackptr) { \
     void** oldCallback = (void**) &GLFW_invoke_##NAME; \
     GLFW_invoke_##NAME = (GLFW_invoke_##NAME##_func*) (uintptr_t) callbackptr; \
     return (jlong) (uintptr_t) *oldCallback; \
 }
 
-ADD_CALLBACK_WWIN(Char);
-ADD_CALLBACK_WWIN(CharMods);
-ADD_CALLBACK_WWIN(CursorEnter);
-ADD_CALLBACK_WWIN(CursorPos);
-ADD_CALLBACK_WWIN(FramebufferSize);
-ADD_CALLBACK_WWIN(Key);
-ADD_CALLBACK_WWIN(MouseButton);
-ADD_CALLBACK_WWIN(Scroll);
-ADD_CALLBACK_WWIN(WindowSize);
-ADD_CALLBACK_WWIN(WindowPos);
+ADD_CALLBACK_WWIN(Char)
+ADD_CALLBACK_WWIN(CharMods)
+ADD_CALLBACK_WWIN(CursorEnter)
+ADD_CALLBACK_WWIN(CursorPos)
+ADD_CALLBACK_WWIN(FramebufferSize)
+ADD_CALLBACK_WWIN(Key)
+ADD_CALLBACK_WWIN(MouseButton)
+ADD_CALLBACK_WWIN(Scroll)
+ADD_CALLBACK_WWIN(WindowSize)
 
 #undef ADD_CALLBACK_WWIN
 
-void sendData(int type, CGFloat i1, CGFloat i2, int i3, int i4) {
-    //NSDebugLog(@"Debug: Send data, jnienv.isNull=%d, bridgeClass.isNull=%d\n", runtimeJNIEnvPtr == NULL, inputBridgeClass_ANDROID == NULL);
-    if (runtimeJNIEnvPtr == NULL) {
-        (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &runtimeJNIEnvPtr, NULL);
+void handleFramebufferSizeJava(long window, int w, int h) {
+    (*runtimeJNIEnvPtr)->CallStaticVoidMethod(runtimeJNIEnvPtr, vmGlfwClass, method_internalWindowSizeChanged, (long)window, w, h);
+}
+
+void pojavPumpEvents(void* window) {
+    //__android_log_print(ANDROID_LOG_INFO, "input_bridge_v3", "pojavPumpevents %d", eventCounter);
+    size_t counter = atomic_load_explicit(&eventCounter, memory_order_acquire);
+    for(size_t i = 0; i < counter; i++) {
+        GLFWInputEvent event = events[i];
+        switch(event.type) {
+            case EVENT_TYPE_CHAR:
+                if(GLFW_invoke_Char) GLFW_invoke_Char(window, event.i1);
+                break;
+            case EVENT_TYPE_CHAR_MODS:
+                if(GLFW_invoke_CharMods) GLFW_invoke_CharMods(window, event.i1, event.i2);
+                break;
+            case EVENT_TYPE_KEY:
+                if(GLFW_invoke_Key) GLFW_invoke_Key(window, event.i1, event.i2, event.i3, event.i4);
+                break;
+            case EVENT_TYPE_MOUSE_BUTTON:
+                if(GLFW_invoke_MouseButton) GLFW_invoke_MouseButton(window, event.i1, event.i2, event.i3);
+                break;
+            case EVENT_TYPE_SCROLL:
+                if(GLFW_invoke_Scroll) GLFW_invoke_Scroll(window, event.i1, event.i2);
+                break;
+            case EVENT_TYPE_FRAMEBUFFER_SIZE:
+                handleFramebufferSizeJava(showingWindow, event.i1, event.i2);
+                if(GLFW_invoke_FramebufferSize) GLFW_invoke_FramebufferSize(window, event.i1, event.i2);
+                break;
+            case EVENT_TYPE_WINDOW_SIZE:
+                handleFramebufferSizeJava(showingWindow, event.i1, event.i2);
+                if(GLFW_invoke_WindowSize) GLFW_invoke_WindowSize(window, event.i1, event.i2);
+                break;
+        }
     }
-    if(inputBridgeClass_ANDROID == NULL) return;
-    (*runtimeJNIEnvPtr)->CallStaticVoidMethod(
-        runtimeJNIEnvPtr,
-        inputBridgeClass_ANDROID,
-        inputBridgeMethod_ANDROID,
-        type,
-        (jfloat)i1, (jfloat)i2, i3, i4
-    );
+    if((cLastX != cursorX || cLastY != cursorY) && GLFW_invoke_CursorPos) {
+        cLastX = cursorX;
+        cLastY = cursorY;
+        GLFW_invoke_CursorPos(window, cursorX, cursorY);
+    }
+    atomic_store_explicit(&eventCounter, counter, memory_order_release);
+}
+void pojavRewindEvents() {
+    atomic_store_explicit(&eventCounter, 0, memory_order_release);
+}
+
+JNIEXPORT void JNICALL
+Java_org_lwjgl_glfw_GLFW_nglfwGetCursorPos(JNIEnv *env, jclass clazz, jlong window, jobject xpos,
+                                          jobject ypos) {
+    *(double*)(*env)->GetDirectBufferAddress(env, xpos) = cursorX;
+    *(double*)(*env)->GetDirectBufferAddress(env, ypos) = cursorY;
+}
+
+JNIEXPORT void JNICALL
+Java_org_lwjgl_glfw_GLFW_nglfwGetCursorPosA(JNIEnv *env, jclass clazz, jlong window,
+                                            jdoubleArray xpos, jdoubleArray ypos) {
+    (*env)->SetDoubleArrayRegion(env, xpos, 0,1, &cursorX);
+    (*env)->SetDoubleArrayRegion(env, ypos, 0,1, &cursorY);
+}
+
+JNIEXPORT void JNICALL
+Java_org_lwjgl_glfw_GLFW_glfwSetCursorPos(JNIEnv *env, jclass clazz, jlong window, jdouble xpos,
+                                          jdouble ypos) {
+    cLastX = cursorX = xpos;
+    cLastY = cursorY = ypos;
+}
+
+void sendData(char type, short i1, short i2, short i3, short i4) {
+    size_t counter = atomic_load_explicit(&eventCounter, memory_order_acquire);
+    if (counter < 7999) {
+        GLFWInputEvent *event = &events[counter++];
+        event->type = type;
+        event->i1 = i1;
+        event->i2 = i2;
+        event->i3 = i3;
+        event->i4 = i4;
+    }
+    atomic_store_explicit(&eventCounter, counter, memory_order_release);
 }
 
 void closeGLFWWindow() {
@@ -194,45 +246,41 @@ void closeGLFWWindow() {
     exit(-1);
 }
 
-/*
-void callback_SurfaceViewController_launchMinecraft(int width, int height) {
-    NSDebugLog(@"Received SurfaceViewController callback, width=%d, height=%d\n", width, height);
-
-    // Because UI init after JVM init, this should not be null
-    assert(runtimeJNIEnvPtr != NULL);
-    
-    if (!uikitBridgeClass) {
-        uikitBridgeClass = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "net/kdt/pojavlaunch/uikit/UIKit");
-        assert(uikitBridgeClass != NULL);
-    }
-
-    jstring rendererLibStr = (*runtimeJNIEnvPtr)->NewStringUTF(runtimeJNIEnvPtr, getenv("POJAV_RENDERER"));
-
-    jmethodID method = (*runtimeJNIEnvPtr)->GetStaticMethodID(runtimeJNIEnvPtr, uikitBridgeClass, "callback_SurfaceViewController_launchMinecraft", "(IILjava/lang/String;)V");
-    assert(method != NULL);
-    
-    (*runtimeJNIEnvPtr)->CallStaticVoidMethod(
-        runtimeJNIEnvPtr,
-        uikitBridgeClass, method,
-        width, height,
-        rendererLibStr
-    );
-}
-*/
-
 void callback_SurfaceViewController_onTouch(int event, CGFloat x, CGFloat y) {
-    if (!isInputReady) return;
+    if (!GLFW_invoke_CursorPos || !isInputReady) return;
 
-    if (!runtimeJNIEnvPtr) {
-        (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &runtimeJNIEnvPtr, NULL);
+    switch (event) {
+        case ACTION_DOWN:
+        case ACTION_UP:
+            if (!isGrabbing) {
+                cursorX = x;
+                cursorY = y;
+            }
+            break;
+
+        case ACTION_MOVE:
+            if (isGrabbing) {
+                cursorX += x - cLastX;
+                cursorY += y - cLastY;
+            } else {
+                cursorX = x;
+                cursorY = y;
+            }
+            break;
+
+        case ACTION_MOVE_MOTION:
+            cursorX += x;
+            cursorY += y;
+            break;
     }
+    cLastX = x;
+    cLastY = y;
 
-
-    (*runtimeJNIEnvPtr)->CallStaticVoidMethod(
-        runtimeJNIEnvPtr,
-        uikitBridgeClass, uikitBridgeTouchMethod,
-        event, (jfloat)x, (jfloat)y
-    );
+    if (!isUseStackQueueCall) {
+        GLFW_invoke_CursorPos((void*) showingWindow, (double) cursorX, (double) cursorY);
+    } else {
+        sendData(EVENT_TYPE_CURSOR_POS, (double) cursorX, (double) cursorY, 0, 0);
+    }
 }
 
 const int hotbarKeys[9] = {
@@ -277,25 +325,17 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetInputRead
 
 JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetGrabbing(JNIEnv* env, jclass clazz, jboolean grabbing, jfloat xset, jfloat yset) {
     isGrabbing = grabbing;
-    if (isGrabbing == JNI_TRUE) {
-        grabCursorX = xset; // savedWidth / 2;
-        grabCursorY = yset; // savedHeight / 2;
-        isPrepareGrabPos = true;
-
-        CGRect screenBounds = [[UIScreen mainScreen] bounds];
-        virtualMouseFrame.origin.x = screenBounds.size.width / 2;
-        virtualMouseFrame.origin.y = screenBounds.size.height / 2;
-    }
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIView *surfaceView = ((SurfaceViewController *)currentWindow().rootViewController).surfaceView;
+        SurfaceViewController *vc = ((SurfaceViewController *)currentWindow().rootViewController);
+        UIView *surfaceView = vc.surfaceView;
         if (isGrabbing == JNI_TRUE) {
             CGFloat screenScale = [[UIScreen mainScreen] scale] * resolutionScale;
-            callback_SurfaceViewController_onTouch(ACTION_DOWN, lastVirtualMousePoint.x * screenScale, lastVirtualMousePoint.y * screenScale);
-            ((SurfaceViewController *)currentWindow().rootViewController).mousePointerView.frame = virtualMouseFrame;
+            callback_SurfaceViewController_onTouch(ACTION_DOWN, lastVirtualMousePoint.x * screenScale, lastVirtualMousePoint.y * screenScale);//TODO
+            vc.mousePointerView.frame = virtualMouseFrame;
         }
-        ((SurfaceViewController *)currentWindow().rootViewController).scrollPanGesture.enabled = !isGrabbing;
-        ((SurfaceViewController *)currentWindow().rootViewController).mousePointerView.hidden = isGrabbing || !virtualMouseEnabled;
+        vc.scrollPanGesture.enabled = !isGrabbing;
+        vc.mousePointerView.hidden = isGrabbing || !virtualMouseEnabled;
     });
 }
 
@@ -351,29 +391,13 @@ void CallbackBridge_nativeSendCursorPos(CGFloat x, CGFloat y) {
             }
         }
         
-        if (isGrabbing) {
-            if (!isPrepareGrabPos) {
-                grabCursorX += x - lastCursorX;
-                grabCursorY += y - lastCursorY;
-            }
-            
-            lastCursorX = x;
-            lastCursorY = y;
-            
-            if (isPrepareGrabPos) {
-                isPrepareGrabPos = false;
-                return;
-            }
-        }
-        
         if (!isUseStackQueueCall) {
             GLFW_invoke_CursorPos((void*) showingWindow, (double) (x), (double) (y));
         } else {
-            sendData(EVENT_TYPE_CURSOR_POS, (isGrabbing ? grabCursorX : x), (isGrabbing ? grabCursorY : y), 0, 0);
+            cursorX = x;
+            cursorY = y;
+            //sendData(EVENT_TYPE_CURSOR_POS, (isGrabbing ? grabCursorX : x), (isGrabbing ? grabCursorY : y), 0, 0);
         }
-        
-        lastCursorX = x;
-        lastCursorY = y;
     }
 }
 
@@ -409,6 +433,7 @@ char getKeyModifiers(int key, int action) {
 
 void CallbackBridge_nativeSendKey(int key, int scancode, int action, int mods) {
     if (GLFW_invoke_Key && isInputReady) {
+        keyDownBuffer[MAX(0, key-31)]=(jbyte)action;
         if (mods == 0) {
             mods = getKeyModifiers(key, action);
         }
@@ -424,8 +449,6 @@ void CallbackBridge_nativeSendKey(int key, int scancode, int action, int mods) {
 void CallbackBridge_nativeSendMouseButton(int button, int action, int mods) {
     if (isInputReady) {
         if (button == -1) {
-            // Notify to prepare set new grab pos
-            isPrepareGrabPos = true;
         } else if (GLFW_invoke_MouseButton) {
             if (mods == 0) {
                 mods = getKeyModifiers(0, action);
@@ -474,16 +497,6 @@ void CallbackBridge_nativeSendScroll(CGFloat xoffset, CGFloat yoffset) {
     }
 }
 
-void CallbackBridge_nativeSendWindowPos(int x, int y) {
-    if (GLFW_invoke_WindowPos && isInputReady) {
-        if (isUseStackQueueCall) {
-            sendData(EVENT_TYPE_WINDOW_POS, x, y, 0, 0);
-        } else {
-            GLFW_invoke_WindowPos((void*) showingWindow, x, y);
-        }
-    }
-}
-
 JNIEXPORT void JNICALL Java_org_lwjgl_glfw_GLFW_nglfwSetShowingWindow(JNIEnv* env, jclass clazz, jlong window) {
     showingWindow = (long) window;
 }
@@ -495,27 +508,9 @@ void CallbackBridge_setWindowAttrib(int attrib, int value) {
         return;
     }
 
-    jclass glfwClazz = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "org/lwjgl/glfw/GLFW");
-    assert(glfwClazz != NULL);
-    jmethodID glfwMethod = (*runtimeJNIEnvPtr)->GetStaticMethodID(runtimeJNIEnvPtr, glfwClazz, "glfwSetWindowAttrib", "(JII)V");
-    assert(glfwMethod != NULL);
-
     (*runtimeJNIEnvPtr)->CallStaticVoidMethod(
         runtimeJNIEnvPtr,
-        glfwClazz, glfwMethod,
+        vmGlfwClass, method_glfwSetWindowAttrib,
         (jlong) showingWindow, attrib, value
     );
-}
-
-JNIEXPORT void JNICALL
-Java_org_lwjgl_glfw_CallbackBridge_setClass(JNIEnv *env, jclass clazz) {
-    inputBridgeMethod_ANDROID = (*env)->GetStaticMethodID(env, clazz, "receiveCallback", "(IFFII)V");
-    assert(inputBridgeMethod_ANDROID != NULL);
-    inputBridgeClass_ANDROID = (*env)->NewGlobalRef(env, clazz);
-    assert(inputBridgeClass_ANDROID != NULL);
-
-    uikitBridgeClass = (*env)->NewGlobalRef(env, (*env)->FindClass(env, "net/kdt/pojavlaunch/uikit/UIKit"));
-    assert(uikitBridgeClass != NULL);
-    uikitBridgeTouchMethod = (*env)->GetStaticMethodID(env, uikitBridgeClass, "callback_SurfaceViewController_onTouch", "(IFF)V");
-    assert(uikitBridgeTouchMethod != NULL);
 }

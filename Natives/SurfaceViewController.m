@@ -35,7 +35,7 @@ int memorystatus_control(uint32_t command, int32_t pid, uint32_t flags, void *bu
 
 int inputTextLength;
 
-int currentHotbarSlot = -1;
+char currentHotbarSlot = -1;
 BOOL slideableHotbar;
 
 // TODO: key modifiers impl

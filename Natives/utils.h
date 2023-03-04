@@ -3,10 +3,11 @@
 #import <UIKit/UIKit.h>
 
 #include <stdbool.h>
+#include "environ.h"
 #include "jni.h"
 
 // Remove date + time from NSLog, unneeded
-#define NSLog(args...) customNSLog(__FILE__,__LINE__,__PRETTY_FUNCTION__,args); 
+#define NSLog(args...) customNSLog(__FILE__,__LINE__,__PRETTY_FUNCTION__,args);
 
 // Control button actions
 #define ACTION_DOWN 0
@@ -19,16 +20,16 @@
 #define BUTTON3_DOWN_MASK 1 << 12 // right btn
 
 // GLFW event types
-#define EVENT_TYPE_CHAR 1000
-#define EVENT_TYPE_CHAR_MODS 1001
-#define EVENT_TYPE_CURSOR_ENTER 1002
-#define EVENT_TYPE_CURSOR_POS 1003
-#define EVENT_TYPE_FRAMEBUFFER_SIZE 1004
-#define EVENT_TYPE_KEY 1005
-#define EVENT_TYPE_MOUSE_BUTTON 1006
-#define EVENT_TYPE_SCROLL 1007
-#define EVENT_TYPE_WINDOW_POS 1008
-#define EVENT_TYPE_WINDOW_SIZE 1009
+#define EVENT_TYPE_CHAR 10
+#define EVENT_TYPE_CHAR_MODS 11
+#define EVENT_TYPE_CURSOR_ENTER 12
+#define EVENT_TYPE_CURSOR_POS 13
+#define EVENT_TYPE_FRAMEBUFFER_SIZE 14
+#define EVENT_TYPE_KEY 15
+#define EVENT_TYPE_MOUSE_BUTTON 16
+#define EVENT_TYPE_SCROLL 17
+#define EVENT_TYPE_WINDOW_POS 18
+#define EVENT_TYPE_WINDOW_SIZE 19
 
 #define GLFW_FOCUSED 0x00020001
 #define GLFW_VISIBLE 0x00020004
@@ -50,8 +51,6 @@
 #define NSDebugLog(...) if (debugLogEnabled) { NSLog(__VA_ARGS__); }
 BOOL debugBoundsEnabled, debugLogEnabled;
 
-JavaVM* runtimeJavaVMPtr;
-JNIEnv* runtimeJNIEnvPtr;
 //__weak UIViewController *viewController;
 
 #define CS_DEBUGGED 0x10000000
@@ -59,15 +58,6 @@ int csops(pid_t pid, unsigned int ops, void *useraddr, size_t usersize);
 BOOL isJITEnabled(BOOL checkCSOps);
 
 void* gbuffer; // OSMesa framebuffer
-long showingWindow;
-int windowWidth, windowHeight;
-int physicalWidth, physicalHeight;
-BOOL isInputReady, isCursorEntered, isPrepareGrabPos, isUseStackQueueCall;
-jboolean isGrabbing;
-BOOL virtualMouseEnabled;
-
-float resolutionScale;
-BOOL isControlModifiable;
 
 // Init functions
 void init_hookFunctions();
@@ -97,7 +87,7 @@ void _CGDataProviderReleaseBytePointerCallback(void *info,const void *pointer);
 
 jboolean attachThread(bool isAndroid, JNIEnv** secondJNIEnvPtr);
 
-void sendData(int type, CGFloat i1, CGFloat i2, int i3, int i4);
+void sendData(char type, short i1, short i2, short i3, short i4);
 
 void closeGLFWWindow();
 void callback_LauncherViewController_installMinecraft();
@@ -112,6 +102,5 @@ void CallbackBridge_nativeSendKey(int key, int scancode, int action, int mods);
 void CallbackBridge_nativeSendMouseButton(int button, int action, int mods);
 void CallbackBridge_nativeSendScreenSize(int width, int height);
 void CallbackBridge_nativeSendScroll(CGFloat xoffset, CGFloat yoffset);
-void CallbackBridge_nativeSendWindowPos(jint x, jint y);
 void CallbackBridge_sendKeycode(int keycode, jchar keychar, int scancode, int modifiers, BOOL isDown);
 void CallbackBridge_setWindowAttrib(int attrib, int value);
