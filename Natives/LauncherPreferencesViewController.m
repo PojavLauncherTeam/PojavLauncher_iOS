@@ -210,18 +210,23 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             }
         ], @[
         // Control settings
-        /*
-            @"disable_gesture": @{
-                @"type": self.typeSwitch
-            },
-        */
             @{@"icon": @"gamecontroller"},
+            @{@"key": @"gesture_mouse",
+                @"icon": @"cursorarrow.click",
+                @"hasDetail": @YES,
+                @"type": self.typeSwitch,
+            },
+            @{@"key": @"gesture_hotbar",
+                @"icon": @"hand.tap",
+                @"hasDetail": @YES,
+                @"type": self.typeSwitch,
+            },
             @{@"key": @"press_duration",
                 @"hasDetail": @YES,
                 @"icon": @"cursorarrow.click.badge.clock",
                 @"type": self.typeSlider,
                 @"min": @(100),
-                @"max": @(1000)
+                @"max": @(1000),
             },
             @{@"key": @"button_scale",
                 @"hasDetail": @YES,
@@ -247,11 +252,6 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             @{@"key": @"virtmouse_enable",
                 @"hasDetail": @YES,
                 @"icon": @"cursorarrow.rays",
-                @"type": self.typeSwitch
-            },
-            @{@"key": @"slideable_hotbar",
-                @"hasDetail": @YES,
-                @"icon": @"slider.horizontal.below.rectangle",
                 @"type": self.typeSwitch
             },
             @{@"key": @"gyroscope_enable",

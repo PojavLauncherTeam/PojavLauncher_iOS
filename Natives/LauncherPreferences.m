@@ -120,6 +120,10 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(prefDict, @"selected_account", @"");
     setDefaultValueForPref(prefDict, @"selected_version", @"1.7.10");
     setDefaultValueForPref(prefDict, @"selected_version_type", @(0));
+    
+    setDefaultValueForPref(envPrefDict, @"gesture_mouse", @YES);
+    setDefaultValueForPref(envPrefDict, @"gesture_hotbar", @YES);
+
     setDefaultValueForPref(envPrefDict, @"press_duration", @(400));
     setDefaultValueForPref(envPrefDict, @"mouse_scale", @(100));
     setDefaultValueForPref(envPrefDict, @"mouse_speed", @(100));

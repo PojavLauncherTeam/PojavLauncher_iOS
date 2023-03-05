@@ -49,7 +49,8 @@ BOOL slideableHotbar;
 @property(nonatomic) ControlButton* swipingButton;
 @property(nonatomic) UITouch *primaryTouch, *hotbarTouch;
 
-@property(nonatomic) UILongPressGestureRecognizer* longpressGesture;
+@property(nonatomic) UILongPressGestureRecognizer* longPressGesture;
+@property(nonatomic) UITapGestureRecognizer *tapGesture, *doubleTapGesture;
 
 @property(nonatomic) id mouseConnectCallback, mouseDisconnectCallback;
 @property(nonatomic) id controllerConnectCallback, controllerDisconnectCallback;
@@ -58,6 +59,8 @@ BOOL slideableHotbar;
 @property(nonatomic) CGFloat mouseSpeed;
 @property(nonatomic) CGRect clickRange;
 @property(nonatomic) BOOL shouldTriggerClick;
+
+@property(nonatomic) BOOL enableMouseGestures, enableHotbarGestures;
 
 @end
 
@@ -116,23 +119,23 @@ BOOL slideableHotbar;
 
     [self performSelector:@selector(setupCategory_Navigation)];
 
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]
+    self.tapGesture = [[UITapGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnClick:)];
-    tapGesture.allowedTouchTypes = @[@(UITouchTypeDirect)];
-    tapGesture.delegate = self;
-    tapGesture.numberOfTapsRequired = 1;
-    tapGesture.numberOfTouchesRequired = 1;
-    tapGesture.cancelsTouchesInView = NO;
-    [self.touchView addGestureRecognizer:tapGesture];
+    self.tapGesture.allowedTouchTypes = @[@(UITouchTypeDirect)];
+    self.tapGesture.delegate = self;
+    self.tapGesture.numberOfTapsRequired = 1;
+    self.tapGesture.numberOfTouchesRequired = 1;
+    self.tapGesture.cancelsTouchesInView = NO;
+    [self.touchView addGestureRecognizer:self.tapGesture];
 
-    UITapGestureRecognizer *doubleTapGesture = [[UITapGestureRecognizer alloc]
+    self.doubleTapGesture = [[UITapGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnDoubleClick:)];
-    doubleTapGesture.allowedTouchTypes = @[@(UITouchTypeDirect)];
-    doubleTapGesture.delegate = self;
-    doubleTapGesture.numberOfTapsRequired = 2;
-    doubleTapGesture.numberOfTouchesRequired = 1;
-    doubleTapGesture.cancelsTouchesInView = NO;
-    [self.touchView addGestureRecognizer:doubleTapGesture];
+    self.doubleTapGesture.allowedTouchTypes = @[@(UITouchTypeDirect)];
+    self.doubleTapGesture.delegate = self;
+    self.doubleTapGesture.numberOfTapsRequired = 2;
+    self.doubleTapGesture.numberOfTouchesRequired = 1;
+    self.doubleTapGesture.cancelsTouchesInView = NO;
+    [self.touchView addGestureRecognizer:self.doubleTapGesture];
 
     if (@available(iOS 13.0, *)) {
         if (@available(iOS 14.0, *)) {
@@ -144,12 +147,12 @@ BOOL slideableHotbar;
         }
     }
 
-    self.longpressGesture = [[UILongPressGestureRecognizer alloc]
+    self.longPressGesture = [[UILongPressGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnLongpress:)];
-    self.longpressGesture.allowedTouchTypes = @[@(UITouchTypeDirect)];
-    self.longpressGesture.cancelsTouchesInView = NO;
-    self.longpressGesture.delegate = self;
-    [self.touchView addGestureRecognizer:self.longpressGesture];
+    self.longPressGesture.allowedTouchTypes = @[@(UITouchTypeDirect)];
+    self.longPressGesture.cancelsTouchesInView = NO;
+    self.longPressGesture.delegate = self;
+    [self.touchView addGestureRecognizer:self.longPressGesture];
 
     self.scrollPanGesture = [[UIPanGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnTouchesScroll:)];
@@ -301,7 +304,6 @@ BOOL slideableHotbar;
     [GyroInput updateSensitivity:gyroEnabled?gyroSensitivity:0 invertXAxis:gyroInvertX];
 
     self.mouseSpeed = [getPreference(@"mouse_speed") floatValue] / 100.0;
-    slideableHotbar = [getPreference(@"slideable_hotbar") boolValue];
 
     virtualMouseEnabled = [getPreference(@"virtmouse_enable") boolValue];
     self.mousePointerView.hidden = isGrabbing || !virtualMouseEnabled;
@@ -311,8 +313,6 @@ BOOL slideableHotbar;
     virtualMouseFrame = CGRectMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2, 18.0 * mouseScale, 27 * mouseScale);
     self.mousePointerView.frame = virtualMouseFrame;
 
-    self.longpressGesture.minimumPressDuration = [getPreference(@"press_duration") floatValue] / 1000.0;
-
     CGRect ctrlFrame = CGRectFromString(getPreference(@"control_safe_area"));
     if ((ctrlFrame.size.width > ctrlFrame.size.height) != (self.view.frame.size.width > self.view.frame.size.height)) {
         CGFloat tmpHeight = ctrlFrame.size.width;
@@ -321,6 +321,15 @@ BOOL slideableHotbar;
     }
     self.ctrlView.frame = ctrlFrame;
     [self loadCustomControls];
+
+    // Update gestures state
+    slideableHotbar = [getPreference(@"slideable_hotbar") boolValue];
+    self.enableMouseGestures = [getPreference(@"gesture_mouse") boolValue];
+    self.enableHotbarGestures = [getPreference(@"gesture_hotbar") boolValue];
+
+    self.scrollPanGesture.enabled = self.enableMouseGestures;
+    self.doubleTapGesture.enabled = self.enableHotbarGestures;
+    self.longPressGesture.minimumPressDuration = [getPreference(@"press_duration") floatValue] / 1000.0;
 
     // Update resolution
     [self updateSavedResolution];
@@ -399,7 +408,8 @@ BOOL slideableHotbar;
             [self.swipeableButtons addObject:button];
         }
 
-        if (@available(iOS 14, *) && isMenuButton) {
+        if (@available(iOS 14, *)) {
+            if (!isMenuButton) continue;
             NSMutableArray *items = [NSMutableArray new];
             for (int i = 0; i < self.menuArray.count; i++) {
                 UIAction *item = [UIAction actionWithTitle:localize(self.menuArray[i], nil) image:nil identifier:nil
@@ -508,8 +518,8 @@ BOOL slideableHotbar;
 
         if (touchEvent == self.hotbarTouch && slideableHotbar && ![self isTouchInactive:self.hotbarTouch]) {
             CGFloat screenScale = [[UIScreen mainScreen] scale];
-            int slot = callback_SurfaceViewController_touchHotbar(locationInView.x * screenScale, locationInView.y * screenScale);
-            
+            int slot = self.enableHotbarGestures ?
+            callback_SurfaceViewController_touchHotbar(locationInView.x * screenScale, locationInView.y * screenScale) : -1;
             if (slot != -1 && currentHotbarSlot != slot && (event == ACTION_DOWN || currentHotbarSlot != -1)) {
                 currentHotbarSlot = slot;
                 CallbackBridge_nativeSendKey(slot, 0, 1, 0);
@@ -621,6 +631,7 @@ BOOL slideableHotbar;
         if (currentHotbarSlot == -1) {
             inputTextLength = 0;
 
+            if (!self.enableMouseGestures) return;
             CallbackBridge_nativeSendMouseButton(isGrabbing == JNI_TRUE ?
                 GLFW_MOUSE_BUTTON_RIGHT : GLFW_MOUSE_BUTTON_LEFT, 1, 0);
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 33 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
@@ -638,7 +649,8 @@ BOOL slideableHotbar;
     if (sender.state == UIGestureRecognizerStateRecognized && isGrabbing) {
         CGFloat screenScale = [[UIScreen mainScreen] scale];
         CGPoint point = [sender locationInView:self.rootView];
-        int hotbarSlot = callback_SurfaceViewController_touchHotbar(point.x * screenScale, point.y * screenScale);
+        int hotbarSlot = self.enableHotbarGestures ?
+            callback_SurfaceViewController_touchHotbar(point.x * screenScale, point.y * screenScale) : -1;
         if (hotbarSlot != -1 && currentHotbarSlot == hotbarSlot) {
             CallbackBridge_nativeSendKey(GLFW_KEY_F, 0, 1, 0);
             CallbackBridge_nativeSendKey(GLFW_KEY_F, 0, 0, 0);
@@ -675,29 +687,30 @@ BOOL slideableHotbar;
     if (!slideableHotbar) {
         CGPoint location = [sender locationInView:self.rootView];
         CGFloat screenScale = UIScreen.mainScreen.scale;
-        currentHotbarSlot = callback_SurfaceViewController_touchHotbar(location.x * screenScale, location.y * screenScale);
+        currentHotbarSlot = self.enableHotbarGestures ?
+            callback_SurfaceViewController_touchHotbar(location.x * screenScale, location.y * screenScale) : -1;
     }
     if (sender.state == UIGestureRecognizerStateBegan) {
         self.shouldTriggerClick = NO;
         if (currentHotbarSlot == -1) {
             inputTextLength = 0;
 
-            CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_LEFT, 1, 0);
+            if (self.enableMouseGestures)
+                CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_LEFT, 1, 0);
         } else {
             CallbackBridge_nativeSendKey(GLFW_KEY_Q, 0, 1, 0);
         }
     } else if (sender.state == UIGestureRecognizerStateChanged) {
         // Nothing to do here, already handled in touchesMoved
-    } else {
-        if (sender.state == UIGestureRecognizerStateCancelled
-            || sender.state == UIGestureRecognizerStateFailed
+    } else if (sender.state == UIGestureRecognizerStateCancelled
+        || sender.state == UIGestureRecognizerStateFailed
             || sender.state == UIGestureRecognizerStateEnded)
-        {
-            if (currentHotbarSlot == -1) {
+    {
+        if (currentHotbarSlot == -1) {
+            if (self.enableMouseGestures)
                 CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_LEFT, 0, 0);
-            } else {
-                CallbackBridge_nativeSendKey(GLFW_KEY_Q, 0, 0, 0);
-            }
+        } else {
+            CallbackBridge_nativeSendKey(GLFW_KEY_Q, 0, 0, 0);
         }
     }
 }
@@ -903,7 +916,8 @@ int touchesMovedCount;
         }
         CGPoint locationInView = [touch locationInView:self.rootView];
         CGFloat screenScale = [[UIScreen mainScreen] scale];
-        currentHotbarSlot = callback_SurfaceViewController_touchHotbar(locationInView.x * screenScale, locationInView.y * screenScale);
+        currentHotbarSlot = self.enableHotbarGestures ?
+            callback_SurfaceViewController_touchHotbar(locationInView.x * screenScale, locationInView.y * screenScale) : -1;
         if ([self isTouchInactive:self.hotbarTouch] && currentHotbarSlot != -1) {
             self.hotbarTouch = touch;
         }
