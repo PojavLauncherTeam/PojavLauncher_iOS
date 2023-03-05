@@ -120,6 +120,12 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                     localize(@"preference.title.appicon-dark", nil)
                 ]
             },
+            @{@"key": @"hidden_sidebar",
+                @"hasDetail": @YES,
+                @"icon": @"sidebar.leading",
+                @"type": self.typeSwitch,
+                @"enableCondition": whenNotInGame
+            },
             @{@"key": @"reset_warnings",
                 @"icon": @"exclamationmark.triangle",
                 @"type": self.typeButton,

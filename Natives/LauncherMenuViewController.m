@@ -306,7 +306,7 @@
                 [self displayProgress:nil];
             } else {
                 NSLog(@"[AltKit] Could not enable JIT compilation. %@", error);
-                [self displayProgress:[NSString stringWithFormat:localize(@"login.jit.fail.AltKit", nil), error]];
+                [self displayProgress:[NSString stringWithFormat:localize(@"login.jit.fail.AltKit", nil), error.description]];
                 [self displayProgress:nil];
                 showDialog(self, localize(@"Error", nil), error.description);
             }
