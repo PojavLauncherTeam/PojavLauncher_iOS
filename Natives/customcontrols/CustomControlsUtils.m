@@ -347,3 +347,107 @@ void loadControlObject(UIView* targetView, NSMutableDictionary* controlDictionar
         }
     }
 }
+
+void initKeycodeTable(NSMutableArray* keyCodeMap, NSMutableArray* keyValueMap) {
+#define GLFW_KEY_NONE 0
+#define addkey(key) \
+    [keyCodeMap addObject:@(#key)]; \
+    [keyValueMap addObject:@(GLFW_KEY_##key)];
+#define addspec(key) \
+    [keyCodeMap addObject:@(#key)]; \
+    [keyValueMap addObject:@(key)];
+
+    addspec(SPECIALBTN_MENU)
+    addspec(SPECIALBTN_SCROLLDOWN)
+    addspec(SPECIALBTN_SCROLLUP)
+    addspec(SPECIALBTN_VIRTUALMOUSE)
+    addspec(SPECIALBTN_MOUSEMID)
+    addspec(SPECIALBTN_MOUSESEC)
+    addspec(SPECIALBTN_MOUSEPRI)
+    addspec(SPECIALBTN_TOGGLECTRL)
+    addspec(SPECIALBTN_KEYBOARD)
+
+    addkey(NONE)
+    addkey(HOME)
+    addkey(ESCAPE)
+
+    // 0-9 keys
+    addkey(0) addkey(1) addkey(2) addkey(3) addkey(4)
+    addkey(5) addkey(6) addkey(7) addkey(8) addkey(9)
+    //addkey(POUND)
+
+    // Arrow keys
+    addkey(DPAD_UP) addkey(DPAD_DOWN) addkey(DPAD_LEFT) addkey(DPAD_RIGHT)
+
+    // A-Z keys
+    addkey(A) addkey(B) addkey(C) addkey(D) addkey(E)
+    addkey(F) addkey(G) addkey(H) addkey(I) addkey(J)
+    addkey(K) addkey(L) addkey(M) addkey(N) addkey(O)
+    addkey(P) addkey(Q) addkey(R) addkey(S) addkey(T)
+    addkey(U) addkey(V) addkey(W) addkey(X) addkey(Y)
+    addkey(Z)
+
+    addkey(COMMA)
+    addkey(PERIOD)
+
+    // Alt keys
+    addkey(LEFT_ALT)
+    addkey(RIGHT_ALT)
+
+    // Shift keys
+    addkey(LEFT_SHIFT)
+    addkey(RIGHT_SHIFT)
+
+    addkey(TAB)
+    addkey(SPACE)
+    addkey(ENTER)
+    addkey(BACKSPACE)
+    addkey(DELETE)
+    addkey(GRAVE_ACCENT)
+    addkey(MINUS)
+    addkey(EQUAL)
+    addkey(LEFT_BRACKET) addkey(RIGHT_BRACKET)
+    addkey(BACKSLASH)
+    addkey(SEMICOLON)
+    addkey(SLASH)
+    //addkey(AT) //@
+
+    // Page keys
+    addkey(PAGE_UP) addkey(PAGE_DOWN)
+
+    // Control keys
+    addkey(LEFT_CONTROL)
+    addkey(RIGHT_CONTROL)
+
+    addkey(CAPS_LOCK)
+    addkey(PAUSE)
+    addkey(INSERT)
+
+    // Fn keys
+    addkey(F1) addkey(F2) addkey(F3) addkey(F4)
+    addkey(F5) addkey(F6) addkey(F7) addkey(F8)
+    addkey(F9) addkey(F10) addkey(F11) addkey(F12)
+
+    // Num keys
+    addkey(NUM_LOCK)
+    addkey(NUMPAD_0)
+    addkey(NUMPAD_1) addkey(NUMPAD_2) addkey(NUMPAD_3)
+    addkey(NUMPAD_4) addkey(NUMPAD_5) addkey(NUMPAD_6)
+    addkey(NUMPAD_7) addkey(NUMPAD_8) addkey(NUMPAD_9)
+    addkey(NUMPAD_DECIMAL)
+    addkey(NUMPAD_DIVIDE)
+    addkey(NUMPAD_MULTIPLY)
+    addkey(NUMPAD_SUBTRACT)
+    addkey(NUMPAD_ADD)
+    addkey(NUMPAD_ENTER)
+    addkey(NUMPAD_EQUAL)
+
+    //addkey(APOSTROPHE)
+    //addkey(WORLD_1) addkey(WORLD_2)
+    //addkey(END)
+    //addkey(SCROLL_LOCK) 
+    //addkey(PRINT_SCREEN)
+    //addkey(LEFT_SUPER) addkey(RIGHT_ENTER)
+    //addkey(MENU)
+#undef addkey
+}

@@ -15,7 +15,6 @@
 #include "utils.h"
 
 BOOL shouldDismissPopover = YES;
-NSMutableArray *keyCodeMap, *keyValueMap;
 
 @implementation ControlHandleView
 // Nothing
@@ -102,7 +101,6 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     longpressGesture.minimumPressDuration = 0.5;
     [self.ctrlView addGestureRecognizer:longpressGesture];
     self.currentFileName = [getPreference(@"default_ctrl") stringByDeletingPathExtension];
-    [self initKeyCodeMap];
     [self loadControlFile:getPreference(@"default_ctrl")];
 }
 
@@ -615,112 +613,6 @@ NSMutableArray *keyCodeMap, *keyValueMap;
     return shouldDismissPopover;
 }
 
-#pragma mark - Keycode table init
-- (void)initKeyCodeMap {
-#define addkey(key) \
-    [keyCodeMap addObject:@(#key)]; \
-    [keyValueMap addObject:@(GLFW_KEY_##key)];
-#define addspec(key) \
-    [keyCodeMap addObject:@(#key)]; \
-    [keyValueMap addObject:@(key)];
-
-    keyCodeMap = [[NSMutableArray alloc] init];
-    keyValueMap = [[NSMutableArray alloc] init];
-    addspec(SPECIALBTN_MENU)
-    addspec(SPECIALBTN_SCROLLDOWN)
-    addspec(SPECIALBTN_SCROLLUP)
-    addspec(SPECIALBTN_VIRTUALMOUSE)
-    addspec(SPECIALBTN_MOUSEMID)
-    addspec(SPECIALBTN_MOUSESEC)
-    addspec(SPECIALBTN_MOUSEPRI)
-    addspec(SPECIALBTN_TOGGLECTRL)
-    addspec(SPECIALBTN_KEYBOARD)
-
-    addkey(UNKNOWN)
-    addkey(HOME)
-    addkey(ESCAPE)
-
-    // 0-9 keys
-    addkey(0) addkey(1) addkey(2) addkey(3) addkey(4)
-    addkey(5) addkey(6) addkey(7) addkey(8) addkey(9)
-    //addkey(POUND)
-
-    // Arrow keys
-    addkey(DPAD_UP) addkey(DPAD_DOWN) addkey(DPAD_LEFT) addkey(DPAD_RIGHT)
-
-    // A-Z keys
-    addkey(A) addkey(B) addkey(C) addkey(D) addkey(E)
-    addkey(F) addkey(G) addkey(H) addkey(I) addkey(J)
-    addkey(K) addkey(L) addkey(M) addkey(N) addkey(O)
-    addkey(P) addkey(Q) addkey(R) addkey(S) addkey(T)
-    addkey(U) addkey(V) addkey(W) addkey(X) addkey(Y)
-    addkey(Z)
-
-    addkey(COMMA)
-    addkey(PERIOD)
-
-    // Alt keys
-    addkey(LEFT_ALT)
-    addkey(RIGHT_ALT)
-
-    // Shift keys
-    addkey(LEFT_SHIFT)
-    addkey(RIGHT_SHIFT)
-
-    addkey(TAB)
-    addkey(SPACE)
-    addkey(ENTER)
-    addkey(BACKSPACE)
-    addkey(DELETE)
-    addkey(GRAVE_ACCENT)
-    addkey(MINUS)
-    addkey(EQUAL)
-    addkey(LEFT_BRACKET) addkey(RIGHT_BRACKET)
-    addkey(BACKSLASH)
-    addkey(SEMICOLON)
-    addkey(SLASH)
-    //addkey(AT) //@
-
-    // Page keys
-    addkey(PAGE_UP) addkey(PAGE_DOWN)
-
-    // Control keys
-    addkey(LEFT_CONTROL)
-    addkey(RIGHT_CONTROL)
-
-    addkey(CAPS_LOCK)
-    addkey(PAUSE)
-    addkey(INSERT)
-
-    // Fn keys
-    addkey(F1) addkey(F2) addkey(F3) addkey(F4)
-    addkey(F5) addkey(F6) addkey(F7) addkey(F8)
-    addkey(F9) addkey(F10) addkey(F11) addkey(F12)
-
-    // Num keys
-    addkey(NUM_LOCK)
-    addkey(NUMPAD_0)
-    addkey(NUMPAD_1) addkey(NUMPAD_2) addkey(NUMPAD_3)
-    addkey(NUMPAD_4) addkey(NUMPAD_5) addkey(NUMPAD_6)
-    addkey(NUMPAD_7) addkey(NUMPAD_8) addkey(NUMPAD_9)
-    addkey(NUMPAD_DECIMAL)
-    addkey(NUMPAD_DIVIDE)
-    addkey(NUMPAD_MULTIPLY)
-    addkey(NUMPAD_SUBTRACT)
-    addkey(NUMPAD_ADD)
-    addkey(NUMPAD_ENTER)
-    addkey(NUMPAD_EQUAL)
-
-    //addkey(APOSTROPHE)
-    //addkey(WORLD_1) addkey(WORLD_2)
-    //addkey(END)
-    //addkey(SCROLL_LOCK) 
-    //addkey(PRINT_SCREEN)
-    //addkey(LEFT_SUPER) addkey(RIGHT_ENTER)
-    //addkey(MENU)
-#undef addkey
-}
-
 @end
 
 #define TAG_SLIDER_STROKEWIDTH 10
@@ -735,6 +627,7 @@ CGFloat currentY;
 @interface CCMenuViewController () <UIPickerViewDataSource, UIPickerViewDelegate, HBColorPickerDelegate> {
 }
 
+@property(nonatomic) NSMutableArray *keyCodeMap, *keyValueMap;
 @property(nonatomic) NSArray* arrOrientation;
 @property(nonatomic) NSMutableDictionary* oldProperties;
 
@@ -764,6 +657,11 @@ CGFloat currentY;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    self.keyCodeMap = [[NSMutableArray alloc] init];
+    self.keyValueMap = [[NSMutableArray alloc] init];
+    initKeycodeTable(self.keyCodeMap, self.keyValueMap);
+
     self.oldProperties = self.targetButton.properties.mutableCopy;
     currentY = 6.0;
 
@@ -870,7 +768,7 @@ CGFloat currentY;
         self.pickerMapping.dataSource = self;
         [self.pickerMapping reloadAllComponents];
         for (int i = 0; i < 4; i++) {
-            [self.pickerMapping selectRow:[keyValueMap indexOfObject:self.targetButton.properties[@"keycodes"][i]] inComponent:i animated:NO];
+            [self.pickerMapping selectRow:[self.keyValueMap indexOfObject:self.targetButton.properties[@"keycodes"][i]] inComponent:i animated:NO];
         }
         [self pickerView:self.pickerMapping didSelectRow:0 inComponent:0];
 
@@ -1112,14 +1010,14 @@ CGFloat currentY;
 #pragma mark - UIPickerView stuff
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     self.editMapping.text = [NSString stringWithFormat:@"1: %@\n2: %@\n3: %@\n4: %@",
-      keyCodeMap[[pickerView selectedRowInComponent:0]],
-      keyCodeMap[[pickerView selectedRowInComponent:1]],
-      keyCodeMap[[pickerView selectedRowInComponent:2]],
-      keyCodeMap[[pickerView selectedRowInComponent:3]]
+        self.keyCodeMap[[pickerView selectedRowInComponent:0]],
+        self.keyCodeMap[[pickerView selectedRowInComponent:1]],
+        self.keyCodeMap[[pickerView selectedRowInComponent:2]],
+        self.keyCodeMap[[pickerView selectedRowInComponent:3]]
     ];
 
     for (int i = 0; i < 4; i++) {
-        self.targetButton.properties[@"keycodes"][i] = keyValueMap[[self.pickerMapping selectedRowInComponent:i]];
+        self.targetButton.properties[@"keycodes"][i] = self.keyValueMap[[self.pickerMapping selectedRowInComponent:i]];
     }
 }
 
@@ -1128,11 +1026,11 @@ CGFloat currentY;
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    return keyCodeMap.count;
+    return self.keyCodeMap.count;
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    return [keyCodeMap objectAtIndex:row];
+    return [self.keyCodeMap objectAtIndex:row];
 }
 
 - (void)closeTextField {
