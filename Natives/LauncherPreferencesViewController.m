@@ -120,12 +120,6 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                     localize(@"preference.title.appicon-dark", nil)
                 ]
             },
-            @{@"key": @"hidden_sidebar",
-                @"hasDetail": @YES,
-                @"icon": @"sidebar.leading",
-                @"type": self.typeSwitch,
-                @"enableCondition": whenNotInGame
-            },
             @{@"key": @"reset_warnings",
                 @"icon": @"exclamationmark.triangle",
                 @"type": self.typeButton,
@@ -429,10 +423,10 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
     if (section == 0) { // Add to general section
-        return [NSString stringWithFormat:@"PojavLauncher %@-%s (%s/%s) pid=%d\niOS %s on %s (%s)",
+        return [NSString stringWithFormat:@"PojavLauncher %@-%s (%s/%s)\niOS %s on %s (%s)\nPID: %d",
             NSBundle.mainBundle.infoDictionary[@"CFBundleShortVersionString"],
-            CONFIG_TYPE, CONFIG_BRANCH, CONFIG_COMMIT, getpid(),
-            getenv("POJAV_DETECTEDSW"), getenv("POJAV_DETECTEDHW"), getenv("POJAV_DETECTEDINST")];
+            CONFIG_TYPE, CONFIG_BRANCH, CONFIG_COMMIT,
+            getenv("POJAV_DETECTEDSW"), getenv("POJAV_DETECTEDHW"), getenv("POJAV_DETECTEDINST"), getpid()];
     }
 
     NSString *footer = NSLocalizedStringWithDefaultValue(([NSString stringWithFormat:@"preference.section.footer.%@", self.prefSections[section]]), @"Localizable", NSBundle.mainBundle, @" ", nil);

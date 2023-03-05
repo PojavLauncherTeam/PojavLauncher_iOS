@@ -1,5 +1,6 @@
 #import "LauncherSplitViewController.h"
 #import "LauncherMenuViewController.h"
+#import "LauncherNewsViewController.h"
 #import "LauncherNavigationController.h"
 #import "LauncherPreferences.h"
 #import "utils.h"
@@ -20,11 +21,11 @@ extern NSMutableDictionary *prefDict;
 
     self.delegate = self;
 
-    LauncherMenuViewController *masterVc = [[LauncherMenuViewController alloc] init];
-    LauncherNavigationController *detailVc = [[LauncherNavigationController alloc] init];
+    UINavigationController *masterVc = [[UINavigationController alloc] initWithRootViewController:[[LauncherMenuViewController alloc] init]];
+    LauncherNavigationController *detailVc = [[LauncherNavigationController alloc] initWithRootViewController:[[LauncherNewsViewController alloc] init]];
     detailVc.toolbarHidden = NO;
 
-    self.viewControllers = @[[[UINavigationController alloc] initWithRootViewController:masterVc], detailVc];
+    self.viewControllers = @[masterVc, detailVc];
     [self changeDisplayModeForSize:self.view.frame.size];
 }
 
@@ -45,18 +46,10 @@ extern NSMutableDictionary *prefDict;
 - (void)changeDisplayModeForSize:(CGSize)size {
     BOOL isPortrait = size.height > size.width;
     if (self.preferredDisplayMode == 0 || self.displayMode != UISplitViewControllerDisplayModeSecondaryOnly) {
-        if([getPreference(@"hidden_sidebar") boolValue] == NO) {
-            self.preferredDisplayMode = isPortrait ?
-                UISplitViewControllerDisplayModeOneOverSecondary :
-                UISplitViewControllerDisplayModeOneBesideSecondary;
-        } else {
-            self.preferredDisplayMode = UISplitViewControllerDisplayModeSecondaryOnly;
-        }
+        self.preferredDisplayMode = UISplitViewControllerDisplayModeSecondaryOnly;
     }
     if (@available(iOS 14.0, tvOS 14.0, *)) {
-        self.preferredSplitBehavior = isPortrait ?
-            UISplitViewControllerSplitBehaviorOverlay :
-            UISplitViewControllerSplitBehaviorTile;
+        self.preferredSplitBehavior = UISplitViewControllerSplitBehaviorOverlay;
     }
 }
 

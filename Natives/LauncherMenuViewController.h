@@ -8,7 +8,12 @@
 @interface LauncherMenuViewController : UITableViewController
 
 @property NSString* listPath;
+@property(nonatomic) UIButton *accountButton;
+@property(nonatomic) UIBarButtonItem *accountBtnItem;
+@property(nonatomic) BOOL isInitialVc;
 
 - (void)restoreHighlightedSelection;
-
+- (void)selectAccount:(UIButton *)sender;
+- (void)updateAccountInfo;
+- (UIBarButtonItem *)drawAccountButton;
 @end
