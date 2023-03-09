@@ -99,6 +99,12 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"type": self.typeTextField,
                 @"enableCondition": whenNotInGame
             },
+            @{@"key": @"enable_altkit",
+                @"hasDetail": @YES,
+                @"icon": @"network",
+                @"type": self.typeSwitch,
+                @"enableCondition": whenNotInGame
+            },
             @{@"key": @"appicon",
                 @"hasDetail": @YES,
                 @"icon": @"paintbrush",

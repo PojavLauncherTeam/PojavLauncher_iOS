@@ -149,6 +149,7 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(prefDict, @"auto_ram", @(!getEntitlementValue(@"com.apple.private.memorystatus")));
     setDefaultValueForPref(prefDict, @"unsupported_warn_counter", @(0));
     setDefaultValueForPref(prefDict, @"hidden_sidebar", @YES);
+    setDefaultValueForPref(prefDict, @"enable_altkit", @YES);
     
     // Debug settings
     setDefaultValueForPref(debugPrefDict, @"debug_skip_wait_jit", @NO);

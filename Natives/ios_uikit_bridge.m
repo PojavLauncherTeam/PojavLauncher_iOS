@@ -20,7 +20,7 @@ jclass class_CTCAndroidInput;
 jmethodID method_ReceiveInput;
 
 void internal_showDialog(UIViewController *viewController, NSString* title, NSString* message) {
-    NSLog(@"Dialog shown: %@: %@", title, message);
+    NSLog(@"[UI] Dialog shown: %@: %@", title, message);
 
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:title
         message:message

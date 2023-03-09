@@ -77,10 +77,9 @@
 
 "login.jit.checking" = "Checking for JIT";
 "login.jit.enabled" = "JIT has been enabled";
-"login.jit.fail.JitStreamer" = "JitStreamer error: %@";
-"login.jit.found.JitStreamer" = "Found JitStreamer, enabling JIT";
-"login.jit.start.AltKit" = "Attempting to use AltJIT";
-"login.jit.fail.AltKit" = "AltKit error: %@";
+"login.jit.fail" = "JIT could not be enabled.";
+"login.jit.fail.title" = "JIT could not be enabled on your device.";
+"login.jit.fail.description" = "No integrations could be used to automatically enable JIT on your device, and it must now be enabled manually. Errors have been logged to latestlog.txt.";
 
 // Login buttons
 "login.menu.sendlogs" = "Send your logs";
@@ -146,6 +145,8 @@
 "preference.detail.debug_logging" = "Logs internal settings and actions to latestlog.txt. This helps the developers find issues easier, but Minecraft may run slower as the logs will be written to more often.";
 "preference.title.jitstreamer_server" = "JitStreamer server IP";
 "preference.detail.jitstreamer_server" = "Allows you to change to a custom JitStreamer server IP, such as for self-hosted instances. This option can be left alone if you use the default JitStreamer servers.";
+"preference.title.enable_altkit" = "Enable AltKit integration";
+"preference.detail.enable_altkit" = "When enabled, PojavLauncher will attempt to connect to local AltServers to enable JIT.";
 "preference.title.appicon" = "Set app icon";
 "preference.detail.appicon" = "Allows you to choose between different Home Screen icons for PojavLauncher.";
 "preference.title.appicon-default" = "Familiar PojavLauncher light";

@@ -66,6 +66,7 @@
             [contentNavigationController performSelector:@selector(enterModInstaller)];
         }]];
 
+    // TODO: Finish log-uploading service integration
     [self.options addObject:
         (id)[LauncherMenuCustomItem
             title:localize(@"login.menu.sendlogs", nil)
@@ -125,13 +126,17 @@
     self.accountBtnItem = [self drawAccountButton];
 
     [self updateAccountInfo];
+
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+    [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
     
     if (!getEntitlementValue(@"dynamic-codesigning")) {
         if (isJITEnabled(false)) {
             [self displayProgress:localize(@"login.jit.enabled", nil)];
             [self displayProgress:nil];
         } else {
-            [self enableJITWithJitStreamer];
+            [self enableJITWithIntegrations];
         }
     }
 }
@@ -211,6 +216,8 @@
         
         selected.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
         selected.navigationItem.leftItemsSupplementBackButton = true;
+        contentNavigationController.navigationBar.prefersLargeTitles = YES;
+        selected.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
     } else {
         [self restoreHighlightedSelection];
         ((LauncherMenuCustomItem *)selected).action();
@@ -313,41 +320,35 @@
     }
 }
 
-- (void)enableJITWithAltJIT
+- (BOOL)enableJITWithAltKit
 {
-    [self displayProgress:localize(@"login.jit.start.AltKit", nil)];
+    __block BOOL enabled = NO;
     [ALTServerManager.sharedManager startDiscovering];
     [ALTServerManager.sharedManager autoconnectWithCompletionHandler:^(ALTServerConnection *connection, NSError *error) {
         if (error) {
             NSLog(@"[AltKit] Could not auto-connect to server. %@", error);
-            [self displayProgress:localize(@"login.jit.fail.AltKit", nil)];
-            [self displayProgress:nil];
-            return;
         }
         [connection enableUnsignedCodeExecutionWithCompletionHandler:^(BOOL success, NSError *error) {
             if (success) {
                 NSLog(@"[AltKit] Successfully enabled JIT compilation!");
                 [ALTServerManager.sharedManager stopDiscovering];
-                [self displayProgress:localize(@"login.jit.enabled", nil)];
-                [self displayProgress:nil];
+                enabled = YES;
             } else {
-                NSLog(@"[AltKit] Could not enable JIT compilation. %@", error);
-                [self displayProgress:[NSString stringWithFormat:localize(@"login.jit.fail.AltKit", nil), error.description]];
-                [self displayProgress:nil];
-                showDialog(self, localize(@"Error", nil), error.description);
+                NSLog(@"[AltKit] Error enabling JIT: %@", error.description);
             }
             [connection disconnect];
         }];
     }];
+    
+    return enabled;
 }
 
-- (void)enableJITWithJitStreamer
+- (BOOL)enableJITWithJitStreamer
 {
-    [self displayProgress:localize(@"login.jit.checking", nil)];
+    __block BOOL enabled = NO;
 
-    // TODO: customizable address
     NSString *address = getPreference(@"jitstreamer_server");
-    NSLog(@"JitStreamer server is %@, attempting to connect...", address);
+    NSLog(@"[JitStreamer] Server is %@, attempting to connect...", address);
 
     AFHTTPSessionManager *manager = AFHTTPSessionManager.manager;
     manager.requestSerializer.timeoutInterval = 10;
@@ -355,8 +356,7 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain", nil];
     [manager GET:[NSString stringWithFormat:@"http://%@/version", address] parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask *task, NSData *response) {
         NSString *version = [[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding];
-        NSLog(@"Found JitStreamer %@", version);
-        [self displayProgress:localize(@"login.jit.found.JitStreamer", nil)];
+        NSLog(@"[JitStreamer] Found JitStreamer %@", version);
         manager.requestSerializer.timeoutInterval = 0;
         manager.responseSerializer = AFJSONResponseSerializer.serializer;
         void(^handleResponse)(NSURLSessionDataTask *task, id response) = ^void(NSURLSessionDataTask *task, id response){
@@ -370,18 +370,44 @@
                 responseDict = response;
             }
             if ([responseDict[@"success"] boolValue]) {
-                [self displayProgress:localize(@"login.jit.enabled", nil)];
-                [self displayProgress:nil];
+                enabled = YES;
             } else {
-                [self displayProgress:[NSString stringWithFormat:localize(@"login.jit.fail.JitStreamer", nil), responseDict[@"message"]]];
-                showDialog(self, localize(@"Error", nil), responseDict[@"message"]);
-                [self enableJITWithAltJIT];
+                NSLog(@"[JitStreamer] Error enabling JIT: %@", responseDict[@"message"]);
             }
         };
         [manager POST:[NSString stringWithFormat:@"http://%@/attach/%d/", address, getpid()] parameters:nil headers:nil progress:nil success:handleResponse failure:handleResponse];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [self enableJITWithAltJIT];
+        NSLog(@"[JitStreamer] Server not found or VPN not connected.");
     }];
+    
+    return enabled;
+}
+
+- (void)enableJITWithIntegrations {
+    [self displayProgress:localize(@"login.jit.checking", nil)];
+    
+    BOOL jitstreamer = [self enableJITWithJitStreamer];
+    BOOL altkit = NO;
+    if(!jitstreamer && [getPreference(@"enable_altkit") boolValue]) {
+        altkit = [self enableJITWithAltKit];
+    } else if(jitstreamer) {
+        [self displayProgress:[NSString stringWithFormat:@"%@", localize(@"login.jit.enabled", nil)]];
+        [self displayProgress:nil];
+        return;
+    }
+    
+    if(!altkit) {
+        [self displayProgress:[NSString stringWithFormat:@"%@", localize(@"login.jit.fail", nil)]];
+        [self displayProgress:nil];
+        NSLog(@"[JIT] All integrations failed. User must enable JIT manually.");
+        if(![getPreference(@"debug_skip_wait_jit") boolValue]) {
+            showDialog(self, localize(@"login.jit.fail.title", nil), localize(@"login.jit.fail.description", nil));
+        }
+    } else {
+        [self displayProgress:localize(@"login.jit.enabled", nil)];
+        [self displayProgress:nil];
+        return;
+    }
 }
 
 @end

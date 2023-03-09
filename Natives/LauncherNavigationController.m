@@ -7,6 +7,7 @@
 #import "LauncherPreferences.h"
 #import "MinecraftResourceUtils.h"
 #import "ios_uikit_bridge.h"
+#import "UIKit+hook.h"
 
 #include "utils.h"
 
@@ -121,6 +122,8 @@
         };
         [BaseAuthenticator.current refreshTokenWithCallback:callback];
     }
+    
+    self.navigationBar.prefersLargeTitles = YES;
 }
 
 - (BOOL)isVersionInstalled:(NSString *)versionId
