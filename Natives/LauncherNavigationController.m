@@ -2,6 +2,7 @@
 #import "AFNetworking.h"
 #import "CustomControlsViewController.h"
 #import "JavaGUIViewController.h"
+#import "LauncherMenuViewController.h"
 #import "LauncherNavigationController.h"
 #import "LauncherPreferences.h"
 #import "MinecraftResourceUtils.h"
@@ -10,6 +11,8 @@
 #include "utils.h"
 
 #define AUTORESIZE_MASKS UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin
+#define sidebarNavController ((UINavigationController *)self.splitViewController.viewControllers[0])
+#define sidebarViewController ((LauncherMenuViewController *)sidebarNavController.viewControllers[0])
 
 @interface LauncherNavigationController () <UIDocumentPickerDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDelegate> {
 }
@@ -383,5 +386,9 @@
     return YES;
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [sidebarViewController updateAccountInfo];
+}
 
 @end

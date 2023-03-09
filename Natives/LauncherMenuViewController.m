@@ -125,9 +125,7 @@
     self.accountBtnItem = [self drawAccountButton];
 
     [self updateAccountInfo];
-
-    [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-
+    
     if (!getEntitlementValue(@"dynamic-codesigning")) {
         if (isJITEnabled(false)) {
             [self displayProgress:localize(@"login.jit.enabled", nil)];
@@ -204,7 +202,10 @@
             [contentNavigationController setViewControllers:@[selected] animated:NO];
         }
         
-        if(![selected.title isEqualToString:localize(@"Settings", nil)]) {
+        if([self.options[indexPath.row].title isEqualToString:localize(@"Settings", nil)]) {
+            LauncherPreferencesViewController *vc = (LauncherPreferencesViewController *)selected;
+            selected.navigationItem.rightBarButtonItems = @[self.accountBtnItem, [vc drawHelpButton]];
+        } else {
             selected.navigationItem.rightBarButtonItem = self.accountBtnItem;
         }
         
@@ -246,8 +247,14 @@
 
 - (void)updateAccountInfo {
     NSDictionary *selected = BaseAuthenticator.current.authData;
-
+    CGSize size = CGSizeMake(contentNavigationController.view.frame.size.width, contentNavigationController.view.frame.size.height);
+    
     if (selected == nil) {
+        if((size.width / 3) > 200) {
+            [self.accountButton setAttributedTitle:[[NSAttributedString alloc] initWithString:localize(@"login.option.select", nil)] forState:UIControlStateNormal];
+        } else {
+            [self.accountButton setAttributedTitle:(NSAttributedString *)@"" forState:UIControlStateNormal];
+        }
         [self.accountButton setImage:[UIImage imageNamed:@"DefaultAccount"] forState:UIControlStateNormal];
         [self.accountButton sizeToFit];
         return;
@@ -261,11 +268,30 @@
     unsetenv("DEMO_LOCK");
     setenv("POJAV_GAME_DIR", [NSString stringWithFormat:@"%s/Library/Application Support/minecraft", getenv("POJAV_HOME")].UTF8String, 1);
 
+    
+    id subtitle;
     if (isDemo) {
+        subtitle = localize(@"login.option.demo", nil);
         setenv("DEMO_LOCK", "1", 1);
         setenv("POJAV_GAME_DIR", [NSString stringWithFormat:@"%s/.demo", getenv("POJAV_HOME")].UTF8String, 1);
+    } else if (selected[@"xboxGamertag"] == nil) {
+        subtitle = localize(@"login.option.local", nil);
+    } else {
+        // Display the Xbox gamertag for online accounts
+        subtitle = selected[@"xboxGamertag"];
     }
 
+    subtitle = [[NSAttributedString alloc] initWithString:subtitle attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12]}];
+    [title appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n" attributes:nil]];
+    [title appendAttributedString:subtitle];
+    
+    if((size.width / 3) > 200) {
+        [self.accountButton setAttributedTitle:title forState:UIControlStateNormal];
+    } else {
+        [self.accountButton setAttributedTitle:(NSAttributedString *)@"" forState:UIControlStateNormal];
+    }
+    
+    // TODO: Add caching mechanism for profile pictures
     NSURL *url = [NSURL URLWithString:[selected[@"profilePicURL"] stringByReplacingOccurrencesOfString:@"\\/" withString:@"/"]];
     UIImage *placeholder = [UIImage imageNamed:@"DefaultAccount"];
     [self.accountButton setImageForState:UIControlStateNormal withURL:url placeholderImage:placeholder];

@@ -2,4 +2,6 @@
 
 @interface LauncherPreferencesViewController : UITableViewController<UITextFieldDelegate>
 
+- (UIBarButtonItem *)drawHelpButton;
+
 @end

@@ -17,6 +17,12 @@ RELEASE ?= 0
 # Check if running on github runner
 RUNNER ?= 0
 
+# Check if slimmed should be built
+SLIMMED ?= 0
+
+# Check if slimmed should be built, and additionally skip normal build
+SLIMMED_ONLY ?= 0
+
 ifeq (1,$(RELEASE))
 CMAKE_BUILD_TYPE := Release
 else
@@ -244,8 +250,12 @@ package: native java jre assets
 	else \
 		sudo chown -R 501:501 Payload; \
 	fi; \
-	zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher-$(VERSION).ipa Payload; \
-	zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher.slimmed-$(VERSION).ipa Payload --exclude='Payload/PojavLauncher.app/jvm/java-17-openjdk/*'
+	if [ '$(SLIMMED_ONLY)' = '0' ]; then \
+		zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher-$(VERSION).ipa Payload; \
+	fi; \
+	if [ '$(SLIMMED)' = '1' ] || [ '$(SLIMMED_ONLY)' = '1' ]; then \
+		zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher.slimmed-$(VERSION).ipa Payload --exclude='Payload/PojavLauncher.app/jvm/java-17-openjdk/*'; \
+	fi
 	@echo '[PojavLauncher v$(VERSION)] package - end'
 
 dsym: package

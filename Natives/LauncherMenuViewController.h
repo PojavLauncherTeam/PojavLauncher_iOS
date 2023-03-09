@@ -16,4 +16,5 @@
 - (void)selectAccount:(UIButton *)sender;
 - (void)updateAccountInfo;
 - (UIBarButtonItem *)drawAccountButton;
+
 @end

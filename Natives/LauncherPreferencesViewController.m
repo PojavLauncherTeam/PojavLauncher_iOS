@@ -3,6 +3,7 @@
 
 #import "DBNumberedSlider.h"
 #import "LauncherNavigationController.h"
+#import "LauncherMenuViewController.h"
 #import "LauncherPreferences.h"
 #import "LauncherPreferencesViewController.h"
 #import "LauncherPrefGameDirViewController.h"
@@ -13,6 +14,9 @@
 #import "ios_uikit_bridge.h"
 #import "utils.h"
 
+#define sidebarNavController ((UINavigationController *)self.splitViewController.viewControllers[0])
+#define sidebarViewController ((LauncherMenuViewController *)sidebarNavController.viewControllers[0])
+
 typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
 @interface LauncherPreferencesViewController(){}
@@ -20,6 +24,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 @property(nonatomic) NSMutableArray<NSNumber*>* prefSectionsVisibility;
 @property(nonatomic) NSArray<NSArray<NSDictionary*>*>* prefContents;
 @property(nonatomic) BOOL prefDetailVisible;
+@property(nonatomic) UIBarButtonItem *helpBtn;
 
 @property CreateView typeButton, typeChildPane, typePickField, typeTextField, typeSlider, typeSwitch;
 @end
@@ -381,13 +386,18 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
         ]
     ];
 
-    UIBarButtonItem *helpButton;
+    self.title = localize(@"Settings", nil);
+    self.navigationItem.rightBarButtonItems = @[[sidebarViewController drawAccountButton], [self drawHelpButton]];
+}
+
+- (UIBarButtonItem *)drawHelpButton {
     if (@available(iOS 13.0, *)) {
-        helpButton = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"questionmark.circle"] style:UIBarButtonItemStyleDone target:self action:@selector(toggleDetailVisibility)];
+        self.helpBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"questionmark.circle"] style:UIBarButtonItemStyleDone target:self action:@selector(toggleDetailVisibility)];
     } else {
-        helpButton = [[UIBarButtonItem alloc] initWithTitle:localize(@"Help", nil) style:UIBarButtonItemStyleDone target:self action:@selector(toggleDetailVisibility)];
+        self.helpBtn = [[UIBarButtonItem alloc] initWithTitle:localize(@"Help", nil) style:UIBarButtonItemStyleDone target:self action:@selector(toggleDetailVisibility)];
     }
-    self.navigationItem.rightBarButtonItems = @[helpButton];
+    
+    return self.helpBtn;
 }
 
 - (void)viewWillAppear:(BOOL)animated {

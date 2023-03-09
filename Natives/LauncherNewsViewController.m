@@ -75,7 +75,7 @@ UIEdgeInsets insets;
         setPreference(@"ram_unjb_warn", @NO);
     }
     
-    self.navigationItem.title = localize(@"News", nil);
+    self.title = localize(@"News", nil);
     self.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
     self.navigationItem.rightBarButtonItem = [sidebarViewController drawAccountButton];
     self.navigationItem.leftItemsSupplementBackButton = true;
