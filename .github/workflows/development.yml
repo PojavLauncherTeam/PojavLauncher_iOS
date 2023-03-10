@@ -27,8 +27,6 @@ jobs:
           
       - name: Checkout repository
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
 
       - name: Checkout repository submodules
         run: git submodule update --init --recursive
