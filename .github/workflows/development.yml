@@ -32,8 +32,8 @@ jobs:
 
       - name: Checkout repository submodules
         run: git submodule update --init --recursive
-        
-       - name: Get gl4es latest commit hash
+
+      - name: Get gl4es latest commit hash
         id: gl4es-sha
         run: echo "::set-output name=sha::$(echo $(git ls-remote https://github.com/PojavLauncherTeam/gl4es-114-extra refs/heads/master | grep -io '^\S*'))"
         shell: bash
@@ -64,7 +64,7 @@ jobs:
             -DNOX11=ON -DNOEGL=OFF -DSTATICLIB=OFF -DPLATFORM=OS64 \
             -DCMAKE_C_FLAGS=-Wno-error=implicit-function-declaration
           cmake --build build --config RelWithDebInfo --target GL
-          cp -R libs/libGL.dylib ../Natives/resources/Frameworks/libgl4es_114.dylib
+          cp -R lib/libGL.dylib ../Natives/resources/Frameworks/libgl4es_114.dylib
 
       - name: Push gl4es
         if: github.event != 'pull_request' && github.ref_name == 'main' && steps.gl4es-cache.outputs.cache-hit != 'true'
