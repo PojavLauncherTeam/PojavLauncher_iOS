@@ -13,8 +13,6 @@
 @property(nonatomic) ControlLayout* ctrlView;
 @property(nonatomic) ControlHandleView* resizeView;
 
-- (void)initKeyCodeMap;
-
 @end
 
 @interface CustomControlsViewController(UndoManager)
