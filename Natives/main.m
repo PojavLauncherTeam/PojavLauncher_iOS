@@ -322,8 +322,6 @@ void init_setupHomeDirectory() {
     } else {
         homeDir = [NSString stringWithFormat:@"%s/Documents", getenv("HOME")];
     }
-    
-    setenv("POJAV_HOME", homeDir.UTF8String, 1);
 
     if (![fm fileExistsAtPath:homeDir] ) {
         [fm createDirectoryAtPath:homeDir withIntermediateDirectories:NO attributes:nil error:&homeError];
@@ -335,6 +333,8 @@ void init_setupHomeDirectory() {
         homeDir = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
         [fm createDirectoryAtPath:homeDir withIntermediateDirectories:YES attributes:nil error:&homeError];
     }
+    
+    setenv("POJAV_HOME", homeDir.UTF8String, 1);
 }
 
 int main(int argc, char *argv[]) {
