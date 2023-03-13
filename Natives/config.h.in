@@ -1,7 +1,11 @@
 // Configuration macros
 
-#define CONFIG_RELEASE 0
 #cmakedefine CONFIG_RELEASE 1
+
+#if !(CONFIG_RELEASE)
+# define CONFIG_RELEASE 0
+#endif
+ 
 #if CONFIG_RELEASE
 # define CONFIG_TYPE "release"
 #else
