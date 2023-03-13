@@ -238,6 +238,11 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"hasDetail": @YES,
                 @"type": self.typeSwitch,
             },
+            @{@"key": @"slideable_hotbar",
+                @"hasDetail": @YES,
+                @"icon": @"slider.horizontal.below.rectangle",
+                @"type": self.typeSwitch
+            },
             @{@"key": @"press_duration",
                 @"hasDetail": @YES,
                 @"icon": @"cursorarrow.click.badge.clock",

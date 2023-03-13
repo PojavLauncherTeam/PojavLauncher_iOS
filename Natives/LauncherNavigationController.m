@@ -18,6 +18,8 @@
 @interface LauncherNavigationController () <UIDocumentPickerDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDelegate> {
 }
 
+@property(nonatomic) UIView* fakeToolbar;
+
 @property(nonatomic) NSMutableArray* versionList;
 
 @property(nonatomic) UIPickerView* versionPickerView;
@@ -76,9 +78,11 @@
         targetToolbar = self.toolbar;
     } else { // iOS 13.x and 12.x
         // Workaround user interaction issue by using a fake toolbar
-        targetToolbar = [[UIView alloc] initWithFrame:self.toolbar.frame];
+        CGRect frame = self.toolbar.frame;
+        frame.origin.y -= frame.size.height;
+        self.fakeToolbar = [[UIView alloc] initWithFrame:frame];
+        targetToolbar = self.fakeToolbar;
         targetToolbar.autoresizingMask = self.toolbar.autoresizingMask;
-        [self.view addSubview:targetToolbar];
     }
 
     [targetToolbar addSubview:self.versionTextField];
@@ -124,6 +128,13 @@
     }
     
     self.navigationBar.prefersLargeTitles = YES;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    if (self.fakeToolbar != nil) {
+        // Make this view appear on top of the real one
+        [self.view addSubview:self.fakeToolbar];
+    }
 }
 
 - (BOOL)isVersionInstalled:(NSString *)versionId
