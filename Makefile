@@ -23,9 +23,6 @@ SLIMMED ?= 0
 # Check if slimmed should be built, and additionally skip normal build
 SLIMMED_ONLY ?= 0
 
-# DO NOT SET THIS IF YOU DON'T KNOW WHAT IT DOES.
-DISABLE_HOOKING ?= 0
-
 ifeq (1,$(RELEASE))
 CMAKE_BUILD_TYPE := Release
 else
@@ -169,7 +166,6 @@ native:
 		-DCONFIG_BRANCH="$(BRANCH)" \
 		-DCONFIG_COMMIT="$(COMMIT)" \
 		-DCONFIG_RELEASE=$(RELEASE) \
-		-DCONFIG_DISABLE_HOOKING=$(DISABLE_HOOKING) \
 		..
 
 	@cmake --build $(WORKINGDIR) --config $(CMAKE_BUILD_TYPE) -j$(JOBS)

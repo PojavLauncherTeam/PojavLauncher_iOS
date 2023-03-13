@@ -1,11 +1,7 @@
 // Configuration macros
 
+#define CONFIG_RELEASE 0
 #cmakedefine CONFIG_RELEASE 1
-
-#if !(CONFIG_RELEASE)
-# define CONFIG_RELEASE 0
-#endif
-
 #if CONFIG_RELEASE
 # define CONFIG_TYPE "release"
 #else
@@ -14,9 +10,3 @@
 
 #cmakedefine CONFIG_BRANCH "@CONFIG_BRANCH@"
 #cmakedefine CONFIG_COMMIT "@CONFIG_COMMIT@"
-
-#cmakedefine CONFIG_DISABLE_HOOKING 1
-
-#if !(CONFIG_DISABLE_HOOKING)
-# define CONFIG_DISABLE_HOOKING 0
-#endif

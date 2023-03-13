@@ -370,9 +370,7 @@ int main(int argc, char *argv[]) {
     init_redirectStdio();
     init_logDeviceAndVer(argv[0]);
 
-    if(CONFIG_DISABLE_HOOKING == 0) {
-        init_hookFunctions();
-    }
+    init_hookFunctions();
     init_hookUIKitConstructor();
 
     loadPreferences(NO);
