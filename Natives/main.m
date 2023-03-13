@@ -311,6 +311,32 @@ void init_setupSlimmed() {
     }
 }
 
+void init_setupHomeDirectory() {
+    setenv("HOME", [NSFileManager.defaultManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask]
+        .lastObject.path.stringByDeletingLastPathComponent.UTF8String, 1);
+    NSString *homeDir;
+    NSError *homeError;
+    
+    if ([@(getenv("HOME")) isEqualToString:@"/var/mobile"]) {
+        homeDir = @"/var/mobile/Documents/PojavLauncher";
+    } else {
+        homeDir = [NSString stringWithFormat:@"%s/Documents", getenv("HOME")];
+    }
+    
+    setenv("POJAV_HOME", homeDir.UTF8String, 1);
+
+    if (![fm fileExistsAtPath:homeDir] ) {
+        [fm createDirectoryAtPath:homeDir withIntermediateDirectories:NO attributes:nil error:&homeError];
+    }
+    
+    if(homeError != nil) {
+        // TODO: Persistent storage
+        homeError = nil;
+        homeDir = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
+        [fm createDirectoryAtPath:homeDir withIntermediateDirectories:YES attributes:nil error:&homeError];
+    }
+}
+
 int main(int argc, char *argv[]) {
     if (pJLI_Launch) {
         return pJLI_Launch(argc, (const char **)argv,
@@ -339,17 +365,8 @@ int main(int argc, char *argv[]) {
     init_migrateDirIfNecessary();
 
     setenv("BUNDLE_PATH", dirname(argv[0]), 1);
-    setenv("HOME", [NSFileManager.defaultManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask]
-        .lastObject.path.stringByDeletingLastPathComponent.UTF8String, 1);
-    // WARNING: THIS DIRECTS TO /var/mobile/Documents IF INSTALLED WITH APPSYNC UNIFIED
-    if ([@(getenv("HOME")) isEqualToString:@"/var/mobile"]) {
-        setenv("POJAV_HOME", "/var/mobile/Documents/PojavLauncher", 1);
-    } else {
-        setenv("POJAV_HOME", [NSString stringWithFormat:@"%s/Documents", getenv("HOME")].UTF8String, 1);
-    }
-
-    [fm createDirectoryAtPath:@(getenv("POJAV_HOME")) withIntermediateDirectories:NO attributes:nil error:nil];
-
+    
+    init_setupHomeDirectory();
     init_redirectStdio();
     init_logDeviceAndVer(argv[0]);
 
