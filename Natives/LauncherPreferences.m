@@ -141,6 +141,7 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(envPrefDict, @"java_home", @"java-8-openjdk");
     setDefaultValueForPref(envPrefDict, @"renderer", @"auto");
     setDefaultValueForPref(envPrefDict, @"fullscreen_airplay", @YES);
+    setDefaultValueForPref(envPrefDict, @"hardware_hide", @NO);
     fillDefaultWarningDict();
     setDefaultValueForPref(prefDict, @"force_unsupported_launch", @NO);
     setDefaultValueForPref(prefDict, @"slideable_hotbar", @NO);

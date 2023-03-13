@@ -38,196 +38,201 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     [self initViewCreation];
-
+    
     self.prefDetailVisible = self.navigationController == nil;
-
+    
     self.tableView = [[TOInsetGroupedTableView alloc] init];
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
-
+    
     if (self.navigationController == nil) {
         self.tableView.alpha = 0.9;
     }
-
+    
     BOOL(^whenNotInGame)() = ^BOOL(){
         return self.navigationController != nil;
     };
-
+    
     self.prefSections = @[@"general", @"video", @"control", @"java", @"debug"];
     self.prefSectionsVisibility = [[NSMutableArray alloc] initWithCapacity:self.prefSections.count];
     for (int i = 0; i < self.prefSections.count; i++) {
         [self.prefSectionsVisibility addObject:@NO];
     }
-
+    
     self.prefContents = @[
         @[
-        // General settings
+            // General settings
             @{@"icon": @"cube"},
             @{@"key": @"game_directory",
-                @"icon": @"folder",
-                @"type": self.typeChildPane,
-                @"enableCondition": ^BOOL(){
-                    return whenNotInGame() && !getenv("DEMO_LOCK");
-                },
-                @"class": LauncherPrefGameDirViewController.class,
+              @"icon": @"folder",
+              @"type": self.typeChildPane,
+              @"enableCondition": ^BOOL(){
+                  return whenNotInGame() && !getenv("DEMO_LOCK");
+              },
+              @"class": LauncherPrefGameDirViewController.class,
             },
             @{@"key": @"check_sha",
-                @"hasDetail": @YES,
-                @"icon": @"lock.shield",
-                @"type": self.typeSwitch,
-                @"enableCondition": whenNotInGame
+              @"hasDetail": @YES,
+              @"icon": @"lock.shield",
+              @"type": self.typeSwitch,
+              @"enableCondition": whenNotInGame
             },
             @{@"key": @"cosmetica",
-                @"hasDetail": @YES,
-                @"icon": @"eyeglasses",
-                @"type": self.typeSwitch,
-                @"enableCondition": whenNotInGame
+              @"hasDetail": @YES,
+              @"icon": @"eyeglasses",
+              @"type": self.typeSwitch,
+              @"enableCondition": whenNotInGame
             },
             @{@"key": @"debug_logging",
-                @"hasDetail": @YES,
-                @"icon": @"doc.badge.gearshape",
-                @"type": self.typeSwitch,
-                @"action": ^(BOOL enabled){
-                    debugLogEnabled = enabled;
-                    NSLog(@"Debug log enabled: %@", enabled ? @"YES" : @"NO");
-                }
+              @"hasDetail": @YES,
+              @"icon": @"doc.badge.gearshape",
+              @"type": self.typeSwitch,
+              @"action": ^(BOOL enabled){
+                  debugLogEnabled = enabled;
+                  NSLog(@"Debug log enabled: %@", enabled ? @"YES" : @"NO");
+              }
             },
             @{@"key": @"jitstreamer_server",
-                @"hasDetail": @YES,
-                @"icon": @"hare",
-                @"type": self.typeTextField,
-                @"enableCondition": whenNotInGame
+              @"hasDetail": @YES,
+              @"icon": @"hare",
+              @"type": self.typeTextField,
+              @"enableCondition": whenNotInGame
             },
             @{@"key": @"enable_altkit",
-                @"hasDetail": @YES,
-                @"icon": @"network",
-                @"type": self.typeSwitch,
-                @"enableCondition": whenNotInGame
+              @"hasDetail": @YES,
+              @"icon": @"network",
+              @"type": self.typeSwitch,
+              @"enableCondition": whenNotInGame
             },
             @{@"key": @"appicon",
-                @"hasDetail": @YES,
-                @"icon": @"paintbrush",
-                @"type": self.typePickField,
-                @"enableCondition": ^BOOL(){
-                    return UIApplication.sharedApplication.supportsAlternateIcons;
-                },
-                @"action": ^void(NSString *iconName) {
-                    if ([iconName isEqualToString:@"AppIcon-Light"]) {
-                        iconName = nil;
-                    }
-                    [UIApplication.sharedApplication setAlternateIconName:iconName completionHandler:^(NSError * _Nullable error) {
-                        if (error == nil) return;
-                        NSLog(@"Error in appicon: %@", error);
-                        showDialog(self, localize(@"Error", nil), error.localizedDescription);
-                    }];
-                },
-                @"pickKeys": @[
+              @"hasDetail": @YES,
+              @"icon": @"paintbrush",
+              @"type": self.typePickField,
+              @"enableCondition": ^BOOL(){
+                  return UIApplication.sharedApplication.supportsAlternateIcons;
+              },
+              @"action": ^void(NSString *iconName) {
+                  if ([iconName isEqualToString:@"AppIcon-Light"]) {
+                      iconName = nil;
+                  }
+                  [UIApplication.sharedApplication setAlternateIconName:iconName completionHandler:^(NSError * _Nullable error) {
+                      if (error == nil) return;
+                      NSLog(@"Error in appicon: %@", error);
+                      showDialog(self, localize(@"Error", nil), error.localizedDescription);
+                  }];
+              },
+              @"pickKeys": @[
                   @"AppIcon-Light",
                   @"AppIcon-Dark"
-                ],
-                @"pickList": @[
-                    localize(@"preference.title.appicon-default", nil),
-                    localize(@"preference.title.appicon-dark", nil)
-                ]
+              ],
+              @"pickList": @[
+                  localize(@"preference.title.appicon-default", nil),
+                  localize(@"preference.title.appicon-dark", nil)
+              ]
             },
             @{@"key": @"hidden_sidebar",
-                @"hasDetail": @YES,
-                @"icon": @"sidebar.leading",
-                @"type": self.typeSwitch,
-                @"enableCondition": whenNotInGame
+              @"hasDetail": @YES,
+              @"icon": @"sidebar.leading",
+              @"type": self.typeSwitch,
+              @"enableCondition": whenNotInGame
             },
             @{@"key": @"reset_warnings",
-                @"icon": @"exclamationmark.triangle",
-                @"type": self.typeButton,
-                @"enableCondition": whenNotInGame,
-                @"action": ^void(){
-                    resetWarnings();
-                }
+              @"icon": @"exclamationmark.triangle",
+              @"type": self.typeButton,
+              @"enableCondition": whenNotInGame,
+              @"action": ^void(){
+                  resetWarnings();
+              }
             },
             @{@"key": @"reset_settings",
-                @"icon": @"trash",
-                @"type": self.typeButton,
-                @"enableCondition": whenNotInGame,
-                @"requestReload": @YES,
-                @"showConfirmPrompt": @YES,
-                @"destructive": @YES,
-                @"action": ^void(){
-                    loadPreferences(YES);
-                    [self.tableView reloadData];
-                }
+              @"icon": @"trash",
+              @"type": self.typeButton,
+              @"enableCondition": whenNotInGame,
+              @"requestReload": @YES,
+              @"showConfirmPrompt": @YES,
+              @"destructive": @YES,
+              @"action": ^void(){
+                  loadPreferences(YES);
+                  [self.tableView reloadData];
+              }
             },
             @{@"key": @"erase_demo_data",
-                @"icon": @"trash",
-                @"type": self.typeButton,
-                @"enableCondition": ^BOOL(){
-                    NSString *demoPath = [NSString stringWithFormat:@"%s/.demo", getenv("POJAV_HOME")];
-                    int count = [NSFileManager.defaultManager contentsOfDirectoryAtPath:demoPath error:nil].count;
-                    return whenNotInGame() && count > 0;
-                },
-                @"showConfirmPrompt": @YES,
-                @"destructive": @YES,
-                @"action": ^void(){
-                    NSString *demoPath = [NSString stringWithFormat:@"%s/.demo", getenv("POJAV_HOME")];
-                    NSError *error;
-                    if([NSFileManager.defaultManager removeItemAtPath:demoPath error:&error]) {
-                        [NSFileManager.defaultManager createDirectoryAtPath:demoPath
-                            withIntermediateDirectories:YES attributes:nil error:nil];
-                        if ([getPreference(@"selected_version_type") intValue] == 0 && getenv("DEMO_LOCK")) {
-                            [(LauncherNavigationController *)self.navigationController reloadVersionList:0];
-                        }
-                    } else {
-                        NSLog(@"Error in erase_demo_data: %@", error);
-                        showDialog(self, localize(@"Error", nil), error.localizedDescription);
-                    }
-                }
+              @"icon": @"trash",
+              @"type": self.typeButton,
+              @"enableCondition": ^BOOL(){
+                  NSString *demoPath = [NSString stringWithFormat:@"%s/.demo", getenv("POJAV_HOME")];
+                  int count = [NSFileManager.defaultManager contentsOfDirectoryAtPath:demoPath error:nil].count;
+                  return whenNotInGame() && count > 0;
+              },
+              @"showConfirmPrompt": @YES,
+              @"destructive": @YES,
+              @"action": ^void(){
+                  NSString *demoPath = [NSString stringWithFormat:@"%s/.demo", getenv("POJAV_HOME")];
+                  NSError *error;
+                  if([NSFileManager.defaultManager removeItemAtPath:demoPath error:&error]) {
+                      [NSFileManager.defaultManager createDirectoryAtPath:demoPath
+                                              withIntermediateDirectories:YES attributes:nil error:nil];
+                      if ([getPreference(@"selected_version_type") intValue] == 0 && getenv("DEMO_LOCK")) {
+                          [(LauncherNavigationController *)self.navigationController reloadVersionList:0];
+                      }
+                  } else {
+                      NSLog(@"Error in erase_demo_data: %@", error);
+                      showDialog(self, localize(@"Error", nil), error.localizedDescription);
+                  }
+              }
             }
         ], @[
-        // Video and renderer settings
+            // Video and renderer settings
             @{@"icon": @"video"},
             @{@"key": @"renderer",
-                @"icon": @"cpu",
-                @"type": self.typePickField,
-                @"enableCondition": whenNotInGame,
-                @"pickKeys": @[
-                    @"auto",
-                    @ RENDERER_NAME_GL4ES,
-                    @ RENDERER_NAME_MTL_ANGLE,
-                    @ RENDERER_NAME_VK_ZINK
-                ],
-                @"pickList": @[
-                    localize(@"preference.title.renderer.auto", nil),
-                    localize(@"preference.title.renderer.gl4es", nil),
-                    localize(@"preference.title.renderer.angle", nil),
-                    localize(@"preference.title.renderer.zink", nil)
-                ]
+              @"icon": @"cpu",
+              @"type": self.typePickField,
+              @"enableCondition": whenNotInGame,
+              @"pickKeys": @[
+                  @"auto",
+                  @ RENDERER_NAME_GL4ES,
+                  @ RENDERER_NAME_MTL_ANGLE,
+                  @ RENDERER_NAME_VK_ZINK
+              ],
+              @"pickList": @[
+                  localize(@"preference.title.renderer.auto", nil),
+                  localize(@"preference.title.renderer.gl4es", nil),
+                  localize(@"preference.title.renderer.angle", nil),
+                  localize(@"preference.title.renderer.zink", nil)
+              ]
             },
             @{@"key": @"resolution",
-                @"hasDetail": @YES,
-                @"icon": @"viewfinder",
-                @"type": self.typeSlider,
-                @"min": @(25),
-                @"max": @(150)
+              @"hasDetail": @YES,
+              @"icon": @"viewfinder",
+              @"type": self.typeSlider,
+              @"min": @(25),
+              @"max": @(150)
             },
             @{@"key": @"fullscreen_airplay",
-                @"hasDetail": @YES,
-                @"icon": @"airplayvideo",
-                @"type": self.typeSwitch,
-                @"action": ^(BOOL enabled){
-                    if (self.navigationController != nil) return;
-                    if (@available(iOS 13.0, *)) {
-                        if (UIApplication.sharedApplication.connectedScenes.count < 2) return;
-                    }
-                    if (enabled) {
-                        [self.presentingViewController performSelector:@selector(switchToExternalDisplay)];
-                    } else {
-                        [self.presentingViewController performSelector:@selector(switchToInternalDisplay)];
-                    }
-                }
+              @"hasDetail": @YES,
+              @"icon": @"airplayvideo",
+              @"type": self.typeSwitch,
+              @"action": ^(BOOL enabled){
+                  if (self.navigationController != nil) return;
+                  if (@available(iOS 13.0, *)) {
+                      if (UIApplication.sharedApplication.connectedScenes.count < 2) return;
+                  }
+                  if (enabled) {
+                      [self.presentingViewController performSelector:@selector(switchToExternalDisplay)];
+                  } else {
+                      [self.presentingViewController performSelector:@selector(switchToInternalDisplay)];
+                  }
+              }
             }
         ], @[
-        // Control settings
+            // Control settings
             @{@"icon": @"gamecontroller"},
+            @{@"key": @"hardware_hide",
+                @"icon": @"eye.slash",
+                @"hasDetail": @"YES",
+                @"type": self.typeSwitch,
+            },
             @{@"key": @"gesture_mouse",
                 @"icon": @"cursorarrow.click",
                 @"hasDetail": @YES,

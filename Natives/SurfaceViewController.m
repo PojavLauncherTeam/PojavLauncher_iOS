@@ -211,6 +211,9 @@ BOOL slideableHotbar;
             self.mousePointerView.hidden = isGrabbing;
             virtualMouseEnabled = YES;
             [self setNeedsUpdateOfPrefersPointerLocked];
+            if([getPreference(@"hardware_hide") boolValue]) {
+                self.ctrlView.hidden = YES;
+            }
         }];
         self.mouseDisconnectCallback = [[NSNotificationCenter defaultCenter] addObserverForName:GCMouseDidDisconnectNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
             NSLog(@"Input: Mouse disconnected!");
@@ -220,6 +223,9 @@ BOOL slideableHotbar;
             mouse.mouseInput.middleButton.pressedChangedHandler = nil;
             mouse.mouseInput.rightButton.pressedChangedHandler = nil;
             [self setNeedsUpdateOfPrefersPointerLocked];
+            if([getPreference(@"hardware_hide") boolValue]) {
+                self.ctrlView.hidden = NO;
+            }
         }];
         if (GCMouse.current != nil) {
             [self registerMouseCallbacks: GCMouse.current];
@@ -234,11 +240,17 @@ BOOL slideableHotbar;
         [ControllerInput registerControllerCallbacks:controller];
         self.mousePointerView.hidden = isGrabbing;
         virtualMouseEnabled = YES;
+        if([getPreference(@"hardware_hide") boolValue]) {
+            self.ctrlView.hidden = YES;
+        }
     }];
     self.controllerDisconnectCallback = [[NSNotificationCenter defaultCenter] addObserverForName:GCControllerDidDisconnectNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
         NSLog(@"Input: Controller disconnected!");
         GCController* controller = note.object;
         [ControllerInput unregisterControllerCallbacks:controller];
+        if([getPreference(@"hardware_hide") boolValue]) {
+            self.ctrlView.hidden = NO;
+        }
     }];
     if (GCController.controllers.count == 1) {
         [ControllerInput registerControllerCallbacks:GCController.controllers.firstObject];
