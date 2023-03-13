@@ -1008,6 +1008,20 @@ CGFloat currentY;
 }
 
 #pragma mark - UIPickerView stuff
+- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
+{
+    UILabel *label = (UILabel *)view;
+    if (label == nil) {
+        label = [UILabel new];
+        label.adjustsFontSizeToFitWidth = YES;
+        label.minimumScaleFactor = 0.5;
+        label.textAlignment = NSTextAlignmentCenter;
+    }
+    label.text = [self pickerView:pickerView titleForRow:row forComponent:component];
+
+    return label;
+}
+
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     self.editMapping.text = [NSString stringWithFormat:@"1: %@\n2: %@\n3: %@\n4: %@",
         self.keyCodeMap[[pickerView selectedRowInComponent:0]],
