@@ -213,7 +213,7 @@ java:
 	$(BOOTJDK)/jar -uf ../lwjgl3-minecraft.jar org || exit 1;
 	@echo '[PojavLauncher v$(VERSION)] java - end'
 
-jre:
+jre: native 
 	@echo '[PojavLauncher v$(VERSION)] jre - start'
 	@mkdir -p $(SOURCEDIR)/depends; \
 	cd $(SOURCEDIR)/depends; \
