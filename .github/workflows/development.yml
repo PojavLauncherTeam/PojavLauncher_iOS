@@ -133,11 +133,24 @@ jobs:
     needs: build
     runs-on: MacStadium-prerequisite
     steps:
+      - name: Get gl4es latest commit hash
+        id: gl4es-sha
+        run: echo "::set-output name=sha::$(echo $(git ls-remote https://github.com/PojavLauncherTeam/gl4es-114-extra refs/heads/master | grep -io '^\S*'))"
+        shell: bash
+
+      - name: Cache gl4es
+        uses: actions/cache@v2
+        id: gl4eslibs-cache
+        with:
+          path: gl4es/libs
+          key: gl4eslibs-holy-ios-shared-2-${{ steps.gl4es-sha.outputs.sha }}
+    
       - name: Checkout repository
+        if: github.event != 'pull_request' && github.ref_name == 'main' && steps.gl4eslibs-cache.outputs.cache-hit != 'true'
         uses: actions/checkout@v2
         
       - name: Push gl4es
-        if: github.event != 'pull_request' && github.ref_name == 'main' && deps.steps.gl4eslibs-cache.outputs.cache-hit != 'true'
+        if: github.event != 'pull_request' && github.ref_name == 'main' && steps.gl4eslibs-cache.outputs.cache-hit != 'true'
         continue-on-error: true
         run: |
           cp -R /Users/eilionoir/actions/prerequisites/libgl4es_114.dylib Natives/resources/Frameworks/libgl4es_114.dylib
