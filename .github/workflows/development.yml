@@ -79,9 +79,9 @@ jobs:
           - platform: 2
             platform_name: ios
           - platform: 3
-            platform_name: iossimulator
-          - platform: 7
             platform_name: tvos
+          - platform: 7
+            platform_name: iossimulator
           - platform: 8
             platform_name: tvossimulator
     
@@ -114,7 +114,7 @@ jobs:
           export PATH=/opt/procursus/bin:/opt/homebrew/bin:$PATH
           export NOSTDIN=1 SUDOPASS=$password RUNNER=1 SLIMMED=1
           gmake -j$(sysctl -n hw.ncpu) dsym PLATFORM=${{ matrix.platform }}
-          cp -R artifacts/PojavLauncher.dSYM /Users/eilionoir/actions/prerequisites/PojavLauncher.dSYM.${{ matrix.platform }}
+          cp -R artifacts/PojavLauncher.dSYM /Users/eilionoir/actions/prerequisites/PojavLauncher.dSYM.${{ matrix.platform_name }}
 
       - name: Upload regular ipa
         uses: actions/upload-artifact@v2
@@ -137,10 +137,10 @@ jobs:
         uses: actions/checkout@v2
         
       - name: Push gl4es
-        if: github.event != 'pull_request' && github.ref_name == 'main' && steps.gl4eslibs-cache.outputs.cache-hit != 'true'
+        if: github.event != 'pull_request' && github.ref_name == 'main' && jobs.deps.steps.gl4eslibs-cache.outputs.cache-hit != 'true'
         continue-on-error: true
         run: |
-          cp -R /Users/eilionoir/actions/prerequisites/libgl4es_114.dylib Natives/resources/libgl4es_114.dylib
+          cp -R /Users/eilionoir/actions/prerequisites/libgl4es_114.dylib Natives/resources/Frameworks/libgl4es_114.dylib
           git add Natives/resources/Frameworks/libgl4es_114.dylib
           git commit -am "CI: Update gl4es"
           git push

@@ -59,10 +59,13 @@ PLATFORM_NAME := ios
 $(warning Set PLATFORM to 2, which is equal to iOS.)
 else ifeq ($(PLATFORM),3)
 PLATFORM_NAME := tvos
+$(warning Set PLATFORM to 3, which is equal to tvOS.)
 else ifeq ($(PLATFORM),7)
 PLATFORM_NAME := iossimulator
+$(warning Set PLATFORM to 7, which is equal to iOS Simulator.)
 else ifeq ($(PLATFORM),8)
 PLATFORM_NAME := tvossimulator
+$(warning Set PLATFORM to 8, which is equal to tvOS Simulator.)
 else
 $(error PLATFORM is not valid.)
 endif
