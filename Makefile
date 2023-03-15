@@ -86,7 +86,7 @@ INFOPLIST  =  \
 # Function to check directories
 DIRCHECK   = \
 	if [ ! -d '$(1)' ]; then \
-		mkdir $(1); \
+		mkdir -p $(1); \
 	else \
 		sudo rm -rf $(1)/*; \
 	fi
