@@ -10,6 +10,7 @@ DETECTARCH  := $(shell uname -m)
 VERSION     := 2.2
 BRANCH      := $(shell git branch --show-current)
 COMMIT      := $(shell git log --oneline | sed '2,10000000d' | cut -b 1-7)
+PLATFORM    ?= 2
 
 # Release vs Debug
 RELEASE ?= 0
@@ -52,6 +53,20 @@ else
 $(error This platform is not currently supported for building PojavLauncher.)
 endif
 
+# Define PLATFORM_NAME from PLATFORM
+ifeq ($(PLATFORM),2)
+PLATFORM_NAME := ios
+$(warning Set PLATFORM to 2, which is equal to iOS.)
+else ifeq ($(PLATFORM),3)
+PLATFORM_NAME := tvos
+else ifeq ($(PLATFORM),7)
+PLATFORM_NAME := iossimulator
+else ifeq ($(PLATFORM),8)
+PLATFORM_NAME := tvossimulator
+else
+$(error PLATFORM is not valid.)
+endif
+
 # IPABuilder depending variables
 POJAV_BUNDLE_DIR    ?= $(OUTPUTDIR)/PojavLauncher.app
 POJAV_JRE8_DIR       ?= $(SOURCEDIR)/depends/java-8-openjdk
@@ -74,6 +89,20 @@ DIRCHECK   = \
 		mkdir $(1); \
 	else \
 		sudo rm -rf $(1)/*; \
+	fi
+	
+# Function to change the platform on Mach-O files.
+# iOS = 2, tvOS = 3, iOS Simulator = 7, tvOS Simulator = 8
+CHANGE_PLAT = \
+	vtool -arch arm64 -set-build-version $(1) 14.0 16.0 -replace -output $(2) $(2)
+	
+# Function to package the application
+PACKAGE = \
+	if [ '$(SLIMMED_ONLY)' = '0' ]; then \
+		zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher-$(VERSION)-$(PLATFORM_NAME).ipa Payload; \
+	fi; \
+	if [ '$(SLIMMED)' = '1' ] || [ '$(SLIMMED_ONLY)' = '1' ]; then \
+		zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher.slimmed-$(VERSION)-$(PLATFORM_NAME).ipa Payload --exclude='Payload/PojavLauncher.app/jvm/java-17-openjdk/*'; \
 	fi
 
 # Make sure everything is already available for use. Error if they require something
@@ -224,7 +253,7 @@ assets:
 	fi
 	@echo '[PojavLauncher v$(VERSION)] assets - end'
 
-package: native java jre assets
+payload: native java jre assets
 	@echo '[PojavLauncher v$(VERSION)] package - start'
 	$(call DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs)
 	$(call DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs_caciocavallo)
@@ -236,42 +265,13 @@ package: native java jre assets
 	@cp $(SOURCEDIR)/JavaApp/local_out/*.jar $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
 	@cp -R $(SOURCEDIR)/JavaApp/libs_caciocavallo* $(WORKINGDIR)/PojavLauncher.app/ || exit 1
 	@cp -R $(SOURCEDIR)/Natives/*.lproj $(WORKINGDIR)/PojavLauncher.app/ || exit 1
-	$(call DIRCHECK,$(OUTPUTDIR))
-	@cp -R $(WORKINGDIR)/PojavLauncher.app $(OUTPUTDIR)
-	ldid -S $(OUTPUTDIR)/PojavLauncher.app; \
-	ldid -S$(SOURCEDIR)/entitlements.xml $(OUTPUTDIR)/PojavLauncher.app/PojavLauncher; \
-	rm -f $(OUTPUTDIR)/*.ipa; \
-	cd $(OUTPUTDIR); \
-	$(call DIRCHECK,Payload); \
-	mv PojavLauncher.app Payload/; \
-	chmod -R 755 Payload; \
-	if [ '$(NOSTDIN)' = '1' ]; then \
-		echo '$(SUDOPASS)' | sudo -S chown -R 501:501 Payload; \
-	else \
-		sudo chown -R 501:501 Payload; \
-	fi; \
-	if [ '$(SLIMMED_ONLY)' = '0' ]; then \
-		zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher-$(VERSION).ipa Payload; \
-	fi; \
-	if [ '$(SLIMMED)' = '1' ] || [ '$(SLIMMED_ONLY)' = '1' ]; then \
-		zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher.slimmed-$(VERSION).ipa Payload --exclude='Payload/PojavLauncher.app/jvm/java-17-openjdk/*'; \
-	fi
+	$(call DIRCHECK,$(OUTPUTDIR)/Payload)
+	@cp -R $(WORKINGDIR)/PojavLauncher.app $(OUTPUTDIR)/Payload
+	ldid -S $(OUTPUTDIR)/Payload/PojavLauncher.app; \
+	ldid -S$(SOURCEDIR)/entitlements.xml $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher; \
+	chmod -R 755 $(OUTPUTDIR)/Payload
 	@echo '[PojavLauncher v$(VERSION)] package - end'
 
-dsym: package
-	@echo '[PojavLauncher v$(VERSION)] dsym - start'
-	@cd $(OUTPUTDIR); \
-	if [ '$(NOSTDIN)' = '1' ]; then \
-		echo '$(SUDOPASS)' | sudo -S dsymutil --arch arm64 $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher; \
-		echo '$(SUDOPASS)' | sudo -S rm -rf $(OUTPUTDIR)/PojavLauncher.dSYM; \
-		echo '$(SUDOPASS)' | sudo -S mv $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher.dSYM $(OUTPUTDIR)/PojavLauncher.dSYM; \
-	else \
-		sudo dsymutil --arch arm64 $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher; \
-		sudo rm -rf $(OUTPUTDIR)/PojavLauncher.dSYM; \
-		sudo mv $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher.dSYM $(OUTPUTDIR)/PojavLauncher.dSYM; \
-	fi
-	@echo '[PojavLauncher v$(VERSION)] dsym - end'
-	
 deploy:
 	@echo '[PojavLauncher v$(VERSION)] deploy - start'
 	ldid -S $(WORKINGDIR)/PojavLauncher.app; \
@@ -288,9 +288,36 @@ deploy:
 		sudo mv $(SOURCEDIR)/JavaApp/local_out/*.jar /Applications/PojavLauncher.app/libs/; \
 		cd /Applications/PojavLauncher.app/Frameworks; \
 		sudo chown -R 501:501 /Applications/PojavLauncher.app/*; \
-	fi; \
-	
+	fi
 	@echo '[PojavLauncher v$(VERSION)] deploy - end'
+
+package: payload
+	@echo '[PojavLauncher v$(VERSION)] platformer - start'
+	if [  '$(PLATFORM)' != '2' ]; then \
+		for file in $$(find $(OUTPUTDIR)/Payload/PojavLauncher.app); do \
+			if [[ "$$(file $$file)" == *"Mach-O"* ]]; then \
+				$(call CHANGE_PLAT,$(PLATFORM),$$file); \
+			fi; \
+		done; \
+	fi; \
+	cd $(OUTPUTDIR); \
+	$(call PACKAGE)
+	@echo '[PojavLauncher v$(VERSION)] platformer - end'
+	
+dsym: package
+	@echo '[PojavLauncher v$(VERSION)] dsym - start'
+	@cd $(OUTPUTDIR); \
+	if [ '$(NOSTDIN)' = '1' ]; then \
+		echo '$(SUDOPASS)' | sudo -S dsymutil --arch arm64 $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher; \
+		echo '$(SUDOPASS)' | sudo -S rm -rf $(OUTPUTDIR)/PojavLauncher.dSYM; \
+		echo '$(SUDOPASS)' | sudo -S mv $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher.dSYM $(OUTPUTDIR)/PojavLauncher.dSYM; \
+	else \
+		sudo dsymutil --arch arm64 $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher; \
+		sudo rm -rf $(OUTPUTDIR)/PojavLauncher.dSYM; \
+		sudo mv $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher.dSYM $(OUTPUTDIR)/PojavLauncher.dSYM; \
+	fi
+	@echo '[PojavLauncher v$(VERSION)] dsym - end'
+	
 
 clean:
 	@echo '[PojavLauncher v$(VERSION)] clean - start'
@@ -316,6 +343,7 @@ help:
 	@echo '    make java                           Builds the Java app'
 	@echo '    make jre                            Downloads/unpacks the iOS JREs'
 	@echo '    make assets                         Compiles Assets.xcassets'
+	@echo '    make payload                        Makes Payload/PojavLauncher.app'
 	@echo '    make package                        Builds ipa of PojavLauncher'
 	@echo '    make deploy                         Copies files to local iDevice'
 	@echo '    make dsym                           Generate debug symbol files'

@@ -12,6 +12,18 @@ on:
 jobs:
   build:
     name: Development build
+    strategy:
+      matrix:
+        include:
+          - platform: 2
+            platform_name: iOS
+          - platform: 3
+            platform_name: iOS Simulator
+          - platform: 7
+            platform_name: tvOS
+          - platform: 8
+            platform_name: tvOS Simulator
+    
     runs-on: MacStadium
     steps:
       - name: Remove work folders
@@ -95,13 +107,13 @@ jobs:
           branch: buildjre17
           name: jre17-ios-aarch64
 
-      - name: Build packages
+      - name: Build for ${{ matrix.platform_name }}
         env:
           password: ${{ secrets.ELLIE_MINI_SECRET }}
         run: |
           export PATH=/opt/procursus/bin:/opt/homebrew/bin:$PATH
           export NOSTDIN=1 SUDOPASS=$password RUNNER=1 SLIMMED=1
-          gmake -j$(sysctl -n hw.ncpu) dsym
+          gmake -j$(sysctl -n hw.ncpu) dsym PLATFORM=${{ matrix.platform }}
 
       - name: Upload regular ipa
         uses: actions/upload-artifact@v2
