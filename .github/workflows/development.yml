@@ -137,7 +137,7 @@ jobs:
         uses: actions/checkout@v2
         
       - name: Push gl4es
-        if: github.event != 'pull_request' && github.ref_name == 'main' && jobs.deps.steps.gl4eslibs-cache.outputs.cache-hit != 'true'
+        if: github.event != 'pull_request' && github.ref_name == 'main' && deps.steps.gl4eslibs-cache.outputs.cache-hit != 'true'
         continue-on-error: true
         run: |
           cp -R /Users/eilionoir/actions/prerequisites/libgl4es_114.dylib Natives/resources/Frameworks/libgl4es_114.dylib
