@@ -700,8 +700,9 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
 - (void)tableView:(UITableView *)tableView openChildPaneAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *item = self.prefContents[indexPath.section][indexPath.row];
-    UIViewController *vc = [[item[@"class"] alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    UINavigationController *vc = [[UINavigationController alloc] initWithRootViewController:[[item[@"class"] alloc] init]];
+    vc.navigationBar.prefersLargeTitles = YES;
+    [self.navigationController presentViewController:vc animated:YES completion:nil];
 }
 
 - (void)tableView:(UITableView *)tableView openPickerAtIndexPath:(NSIndexPath *)indexPath {

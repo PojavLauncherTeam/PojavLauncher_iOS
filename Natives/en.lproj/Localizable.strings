@@ -133,7 +133,7 @@
 
 "preference.title.confirm" = "Are you sure?";
 
-"preference.title.game_directory" = "Minecraft game directory";
+"preference.title.game_directory" = "Game directory";
 "preference.title.confirm.delete_game_directory" = "The instance %@ will be deleted forever and cannot be restored.";
 "preference.multidir.add_directory" = "add game directory";
 
