@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-    deps:
+  deps:
     name: Get dependencies
     runs-on: MacStadium-prerequisite
     steps:
