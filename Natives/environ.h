@@ -9,7 +9,7 @@
 #include "jni.h"
 
 typedef struct {
-    char type;
+    short type;
     short i1;
     short i2;
     short i3;
@@ -24,6 +24,7 @@ typedef void GLFW_invoke_FramebufferSize_func(void* window, int width, int heigh
 typedef void GLFW_invoke_Key_func(void* window, int key, int scancode, int action, int mods);
 typedef void GLFW_invoke_MouseButton_func(void* window, int button, int action, int mods);
 typedef void GLFW_invoke_Scroll_func(void* window, double xoffset, double yoffset);
+typedef void GLFW_invoke_WindowPos_func(void* window, int x, int y);
 typedef void GLFW_invoke_WindowSize_func(void* window, int width, int height);
 
 //struct pojav_environ_s {
@@ -61,6 +62,7 @@ typedef void GLFW_invoke_WindowSize_func(void* window, int width, int height);
     ADD_CALLBACK_WWIN(Key);
     ADD_CALLBACK_WWIN(MouseButton);
     ADD_CALLBACK_WWIN(Scroll);
+    ADD_CALLBACK_WWIN(WindowPos);
     ADD_CALLBACK_WWIN(WindowSize);
 
 #undef ADD_CALLBACK_WWIN

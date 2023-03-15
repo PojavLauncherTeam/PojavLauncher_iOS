@@ -105,21 +105,40 @@ void hookExec() {
 }
 
 // JNI_OnLoad
-jint JNI_OnLoad(JavaVM* vm, void* reserved) {
-    runtimeJavaVMPtr = vm;
-    (*vm)->GetEnv(vm, (void**)&runtimeJNIEnvPtr, JNI_VERSION_1_4);
+void JNI_OnLoadGLFW() {
     vmGlfwClass = (*runtimeJNIEnvPtr)->NewGlobalRef(runtimeJNIEnvPtr, (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "org/lwjgl/glfw/GLFW"));
     method_glfwSetWindowAttrib = (*runtimeJNIEnvPtr)->GetStaticMethodID(runtimeJNIEnvPtr, vmGlfwClass, "glfwSetWindowAttrib", "(JII)V");
     method_internalWindowSizeChanged = (*runtimeJNIEnvPtr)->GetStaticMethodID(runtimeJNIEnvPtr, vmGlfwClass, "internalWindowSizeChanged", "(JII)V");
     jfieldID field_keyDownBuffer = (*runtimeJNIEnvPtr)->GetStaticFieldID(runtimeJNIEnvPtr, vmGlfwClass, "keyDownBuffer", "Ljava/nio/ByteBuffer;");
     jobject keyDownBufferJ = (*runtimeJNIEnvPtr)->GetStaticObjectField(runtimeJNIEnvPtr, vmGlfwClass, field_keyDownBuffer);
     keyDownBuffer = (*runtimeJNIEnvPtr)->GetDirectBufferAddress(runtimeJNIEnvPtr, keyDownBufferJ);
+}
+/*
+jint JNI_OnLoad(JavaVM* vm, void* reserved) {
+    runtimeJavaVMPtr = vm;
 
-    if (isUseStackQueueCall) {
-        sendData(EVENT_TYPE_WINDOW_SIZE, windowWidth, windowHeight, 0, 0);
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &runtimeJNIEnvPtr, NULL);
+        if (!getenv("POJAV_SKIP_JNI_GLFW")) {
+            JNI_OnLoadGLFW();
+        }
+        hookExec();
+    });
 
+    return JNI_VERSION_1_4;
+}
+*/
+
+jint JNI_OnLoad(JavaVM* vm, void* reserved) {
+    runtimeJavaVMPtr = vm;
+
+    (*runtimeJavaVMPtr)->GetEnv(runtimeJavaVMPtr, (void **)&runtimeJNIEnvPtr, JNI_VERSION_1_4);
     hookExec();
+    if (getenv("POJAV_SKIP_JNI_GLFW")) {
+        runtimeJNIEnvPtr = nil;
+    } else {
+        JNI_OnLoadGLFW();
+    }
 
     return JNI_VERSION_1_4;
 }
@@ -144,17 +163,26 @@ ADD_CALLBACK_WWIN(FramebufferSize)
 ADD_CALLBACK_WWIN(Key)
 ADD_CALLBACK_WWIN(MouseButton)
 ADD_CALLBACK_WWIN(Scroll)
+ADD_CALLBACK_WWIN(WindowPos)
 ADD_CALLBACK_WWIN(WindowSize)
 
 #undef ADD_CALLBACK_WWIN
 
-void handleFramebufferSizeJava(long window, int w, int h) {
+void handleFramebufferSizeJava(void* window, int w, int h) {
+    if(GLFW_invoke_CursorEnter)GLFW_invoke_CursorEnter(window, 1);
+    if(GLFW_invoke_WindowPos)GLFW_invoke_WindowPos(window, 0, 0);
     (*runtimeJNIEnvPtr)->CallStaticVoidMethod(runtimeJNIEnvPtr, vmGlfwClass, method_internalWindowSizeChanged, (long)window, w, h);
 }
 
 void pojavPumpEvents(void* window) {
     //__android_log_print(ANDROID_LOG_INFO, "input_bridge_v3", "pojavPumpevents %d", eventCounter);
     size_t counter = atomic_load_explicit(&eventCounter, memory_order_acquire);
+    if((cLastX != cursorX || cLastY != cursorY) && GLFW_invoke_CursorPos) {
+        cLastX = cursorX;
+        cLastY = cursorY;
+        if (isUseStackQueueCall)
+            GLFW_invoke_CursorPos(window, cursorX, cursorY);
+    }
     for(size_t i = 0; i < counter; i++) {
         GLFWInputEvent event = events[i];
         switch(event.type) {
@@ -174,19 +202,14 @@ void pojavPumpEvents(void* window) {
                 if(GLFW_invoke_Scroll) GLFW_invoke_Scroll(window, event.i1, event.i2);
                 break;
             case EVENT_TYPE_FRAMEBUFFER_SIZE:
-                handleFramebufferSizeJava(showingWindow, event.i1, event.i2);
+                handleFramebufferSizeJava(window, event.i1, event.i2);
                 if(GLFW_invoke_FramebufferSize) GLFW_invoke_FramebufferSize(window, event.i1, event.i2);
                 break;
             case EVENT_TYPE_WINDOW_SIZE:
-                handleFramebufferSizeJava(showingWindow, event.i1, event.i2);
+                handleFramebufferSizeJava(window, event.i1, event.i2);
                 if(GLFW_invoke_WindowSize) GLFW_invoke_WindowSize(window, event.i1, event.i2);
                 break;
         }
-    }
-    if((cLastX != cursorX || cLastY != cursorY) && GLFW_invoke_CursorPos) {
-        cLastX = cursorX;
-        cLastY = cursorY;
-        GLFW_invoke_CursorPos(window, cursorX, cursorY);
     }
     atomic_store_explicit(&eventCounter, counter, memory_order_release);
 }
@@ -215,7 +238,7 @@ Java_org_lwjgl_glfw_GLFW_glfwSetCursorPos(JNIEnv *env, jclass clazz, jlong windo
     cLastY = cursorY = ypos;
 }
 
-void sendData(char type, short i1, short i2, short i3, short i4) {
+void sendData(short type, short i1, short i2, short i3, short i4) {
     size_t counter = atomic_load_explicit(&eventCounter, memory_order_acquire);
     if (counter < 7999) {
         GLFWInputEvent *event = &events[counter++];
@@ -246,43 +269,6 @@ void closeGLFWWindow() {
     exit(-1);
 }
 
-void callback_SurfaceViewController_onTouch(int event, CGFloat x, CGFloat y) {
-    if (!GLFW_invoke_CursorPos || !isInputReady) return;
-
-    switch (event) {
-        case ACTION_DOWN:
-        case ACTION_UP:
-            if (!isGrabbing) {
-                cursorX = x;
-                cursorY = y;
-            }
-            break;
-
-        case ACTION_MOVE:
-            if (isGrabbing) {
-                cursorX += x - cLastX;
-                cursorY += y - cLastY;
-            } else {
-                cursorX = x;
-                cursorY = y;
-            }
-            break;
-
-        case ACTION_MOVE_MOTION:
-            cursorX += x;
-            cursorY += y;
-            break;
-    }
-    cLastX = x;
-    cLastY = y;
-
-    if (!isUseStackQueueCall) {
-        GLFW_invoke_CursorPos((void*) showingWindow, (double) cursorX, (double) cursorY);
-    } else {
-        sendData(EVENT_TYPE_CURSOR_POS, (double) cursorX, (double) cursorY, 0, 0);
-    }
-}
-
 const int hotbarKeys[9] = {
     GLFW_KEY_1, GLFW_KEY_2, GLFW_KEY_3,
     GLFW_KEY_4, GLFW_KEY_5, GLFW_KEY_6,
@@ -299,10 +285,12 @@ int callback_SurfaceViewController_touchHotbar(CGFloat x, CGFloat y) {
 
     int barHeight = mcscale(20);
     int barY = physicalHeight - barHeight;
+    NSLog(@"Y(%d) vs BarY(%d)", (int)y, barY);
     if (y < barY) return -1;
 
     int barWidth = mcscale(180);
     int barX = (physicalWidth / 2) - (barWidth / 2);
+    NSLog(@"X(%d) vs BarX(%d) and BarEndX(%d)", (int)x, barX, barX + barWidth);
     if (x < barX || x >= barX + barWidth) return -1;
 
     return hotbarKeys[(int) MathUtils_map(x, barX, barX + barWidth, 0, 9)];
@@ -320,6 +308,10 @@ JNIEXPORT jstring JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeClipboard(JNI
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetInputReady(JNIEnv* env, jclass clazz, jboolean inputReady) {
     //NSDebugLog(@"Debug: Changing input state, isReady=%d, isUseStackQueueCall=%d\n", inputReady, isUseStackQueueCall);
     isInputReady = inputReady;
+    if (isUseStackQueueCall) {
+        sendData(EVENT_TYPE_FRAMEBUFFER_SIZE, windowWidth, windowHeight, 0, 0);
+        sendData(EVENT_TYPE_WINDOW_SIZE, windowWidth, windowHeight, 0, 0);
+    }
     return isUseStackQueueCall;
 }
 
@@ -331,7 +323,7 @@ JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetGrabbing(JNIE
         UIView *surfaceView = vc.surfaceView;
         if (isGrabbing == JNI_TRUE) {
             CGFloat screenScale = [[UIScreen mainScreen] scale] * resolutionScale;
-            callback_SurfaceViewController_onTouch(ACTION_DOWN, lastVirtualMousePoint.x * screenScale, lastVirtualMousePoint.y * screenScale);//TODO
+            CallbackBridge_nativeSendCursorPos(ACTION_DOWN, lastVirtualMousePoint.x * screenScale, lastVirtualMousePoint.y * screenScale);//TODO
             vc.mousePointerView.frame = virtualMouseFrame;
         }
         vc.scrollPanGesture.enabled = !isGrabbing;
@@ -374,30 +366,36 @@ JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSendCursorEnter(
     }
 }
 */
-void CallbackBridge_nativeSendCursorPos(CGFloat x, CGFloat y) {
-    if (GLFW_invoke_CursorPos && isInputReady) {
-        if (!isCursorEntered) {
-            if (GLFW_invoke_CursorEnter) {
-                isCursorEntered = true;
-                if (isUseStackQueueCall) {
-                    sendData(EVENT_TYPE_CURSOR_ENTER, 1, 0, 0, 0);
-                } else {
-                    GLFW_invoke_CursorEnter((void*) showingWindow, 1);
-                }
-            } else if (isGrabbing) {
-                // Some Minecraft versions does not use GLFWCursorEnterCallback
-                // This is a smart check, as Minecraft will not in grab mode if already not.
-                isCursorEntered = true;
+void CallbackBridge_nativeSendCursorPos(char event, CGFloat x, CGFloat y) {
+    if (!GLFW_invoke_CursorPos || !isInputReady) return;
+
+    switch (event) {
+        case ACTION_DOWN:
+        case ACTION_UP:
+            if (!isGrabbing) {
+                cursorX = x;
+                cursorY = y;
             }
-        }
-        
-        if (!isUseStackQueueCall) {
-            GLFW_invoke_CursorPos((void*) showingWindow, (double) (x), (double) (y));
-        } else {
-            cursorX = x;
-            cursorY = y;
-            //sendData(EVENT_TYPE_CURSOR_POS, (isGrabbing ? grabCursorX : x), (isGrabbing ? grabCursorY : y), 0, 0);
-        }
+            break;
+
+        case ACTION_MOVE:
+            if (isGrabbing) {
+                cursorX += x - cLastX;
+                cursorY += y - cLastY;
+            } else {
+                cursorX = x;
+                cursorY = y;
+            }
+            break;
+
+        case ACTION_MOVE_MOTION:
+            cursorX += x;
+            cursorY += y;
+            break;
+    }
+
+    if (!isUseStackQueueCall) {
+        GLFW_invoke_CursorPos((void*) showingWindow, (double) cursorX, (double) cursorY);
     }
 }
 

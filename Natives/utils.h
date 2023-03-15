@@ -20,16 +20,16 @@
 #define BUTTON3_DOWN_MASK 1 << 12 // right btn
 
 // GLFW event types
-#define EVENT_TYPE_CHAR 10
-#define EVENT_TYPE_CHAR_MODS 11
-#define EVENT_TYPE_CURSOR_ENTER 12
-#define EVENT_TYPE_CURSOR_POS 13
-#define EVENT_TYPE_FRAMEBUFFER_SIZE 14
-#define EVENT_TYPE_KEY 15
-#define EVENT_TYPE_MOUSE_BUTTON 16
-#define EVENT_TYPE_SCROLL 17
-#define EVENT_TYPE_WINDOW_POS 18
-#define EVENT_TYPE_WINDOW_SIZE 19
+#define EVENT_TYPE_CHAR 1000
+#define EVENT_TYPE_CHAR_MODS 1001
+#define EVENT_TYPE_CURSOR_ENTER 1002
+#define EVENT_TYPE_CURSOR_POS 1003
+#define EVENT_TYPE_FRAMEBUFFER_SIZE 1004
+#define EVENT_TYPE_KEY 1005
+#define EVENT_TYPE_MOUSE_BUTTON 1006
+#define EVENT_TYPE_SCROLL 1007
+#define EVENT_TYPE_WINDOW_POS 1008
+#define EVENT_TYPE_WINDOW_SIZE 1009
 
 #define GLFW_FOCUSED 0x00020001
 #define GLFW_VISIBLE 0x00020004
@@ -87,17 +87,16 @@ void _CGDataProviderReleaseBytePointerCallback(void *info,const void *pointer);
 
 jboolean attachThread(bool isAndroid, JNIEnv** secondJNIEnvPtr);
 
-void sendData(char type, short i1, short i2, short i3, short i4);
+void sendData(short type, short i1, short i2, short i3, short i4);
 
 void closeGLFWWindow();
 void callback_LauncherViewController_installMinecraft();
 void callback_SurfaceViewController_launchMinecraft(int width, int height);
-void callback_SurfaceViewController_onTouch(int event, CGFloat x, CGFloat y);
 int callback_SurfaceViewController_touchHotbar(CGFloat x, CGFloat y);
 
 BOOL CallbackBridge_nativeSendChar(jchar codepoint /* jint codepoint */);
 BOOL CallbackBridge_nativeSendCharMods(jchar codepoint, int mods);
-void CallbackBridge_nativeSendCursorPos(CGFloat x, CGFloat y);
+void CallbackBridge_nativeSendCursorPos(char event, CGFloat x, CGFloat y);
 void CallbackBridge_nativeSendKey(int key, int scancode, int action, int mods);
 void CallbackBridge_nativeSendMouseButton(int button, int action, int mods);
 void CallbackBridge_nativeSendScreenSize(int width, int height);
