@@ -11,6 +11,7 @@ int convertUIColor2ARGB(UIColor* color);
 int convertUIColor2RGB(UIColor* color);
 BOOL convertLayoutIfNecessary(NSMutableDictionary* dict);
 void generateAndSaveDefaultControl();
+void generateAndSaveDefaultControlForGamepad();
 void loadControlObject(UIView* targetView, NSMutableDictionary* controlDictionary);
 
 void initKeycodeTable(NSMutableArray* keyCodeMap, NSMutableArray* keyValueMap);

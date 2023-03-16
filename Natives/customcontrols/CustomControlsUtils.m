@@ -23,6 +23,14 @@ NSMutableDictionary* createButton(NSString* name, int* keycodes, NSString* dynam
     return dict;
 }
 
+NSMutableDictionary* createGamepadButton(NSString* name, int gamepad_button, int keycode) {
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    dict[@"name"] = name;
+    dict[@"gamepad_button"] = @(gamepad_button);
+    dict[@"keycode"] = @(keycode);
+    return dict;
+}
+
 UIColor* convertARGB2UIColor(int argb) {
     return [UIColor 
         colorWithRed:((argb>>16)&0xFF)/255.0
@@ -300,6 +308,67 @@ void generateAndSaveDefaultControl() {
         WIDTHHEIGHT
     )];
 */
+}
+
+void generateAndSaveDefaultControlForGamepad() {
+    NSString *gamepadPath = [NSString stringWithFormat:@"%s/controlmap/gamepad-default.json", getenv("POJAV_HOME")];
+    if ([NSFileManager.defaultManager fileExistsAtPath:gamepadPath]) {
+        return;
+    }
+    
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    dict[@"version"] = @(1);
+    
+    dict[@"mGameMappingList"] = [[NSMutableArray alloc] init];
+    
+    [dict[@"mGameMappingList"] addObject:createGamepadButton(@"mouse_primary", SPECIALBTN_MOUSEPRI, SPECIALBTN_MOUSEPRI)];
+    [dict[@"mGameMappingList"] addObject:createGamepadButton(@"mouse_middle", SPECIALBTN_MOUSEMID, SPECIALBTN_MOUSEMID)];
+    [dict[@"mGameMappingList"] addObject:createGamepadButton(@"mouse_secondary", SPECIALBTN_MOUSESEC, SPECIALBTN_MOUSESEC)];
+    
+    [dict[@"mGameMappingList"] addObject:createGamepadButton(@"bumper_left", GLFW_GAMEPAD_BUTTON_LEFT_BUMPER, SPECIALBTN_SCROLLUP)];
+    [dict[@"mGameMappingList"] addObject:createGamepadButton(@"bumper_right", GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER, SPECIALBTN_SCROLLDOWN)];
+    
+    [dict[@"mGameMappingList"] addObject:createGamepadButton(@"trigger_left", GLFW_GAMEPAD_BUTTON_LEFT_TRIGGER, SPECIALBTN_MOUSESEC)];
+    [dict[@"mGameMappingList"] addObject:createGamepadButton(@"trigger_right", GLFW_GAMEPAD_BUTTON_RIGHT_TRIGGER, SPECIALBTN_MOUSEPRI)];
+    
+    [dict[@"mGameMappingList"] addObject:createGamepadButton(@"named_back", GLFW_GAMEPAD_BUTTON_BACK, GLFW_KEY_TAB)];
+    [dict[@"mGameMappingList"] addObject:createGamepadButton(@"named_start", GLFW_GAMEPAD_BUTTON_START, GLFW_KEY_ESCAPE)];
+    
+    [dict[@"mGameMappingList"] addObject:createGamepadButton(@"named_a", GLFW_GAMEPAD_BUTTON_A, GLFW_KEY_SPACE)];
+    [dict[@"mGameMappingList"] addObject:createGamepadButton(@"named_b", GLFW_GAMEPAD_BUTTON_B, GLFW_KEY_Q)];
+    [dict[@"mGameMappingList"] addObject:createGamepadButton(@"named_x", GLFW_GAMEPAD_BUTTON_X, GLFW_KEY_E)];
+    [dict[@"mGameMappingList"] addObject:createGamepadButton(@"named_y", GLFW_GAMEPAD_BUTTON_Y, GLFW_KEY_F)];
+    
+    [dict[@"mGameMappingList"] addObject:createGamepadButton(@"dpad_up", GLFW_GAMEPAD_BUTTON_DPAD_UP, GLFW_KEY_LEFT_SHIFT)];
+    [dict[@"mGameMappingList"] addObject:createGamepadButton(@"dpad_down", GLFW_GAMEPAD_BUTTON_DPAD_DOWN, GLFW_KEY_O)];
+    [dict[@"mGameMappingList"] addObject:createGamepadButton(@"dpad_left", GLFW_GAMEPAD_BUTTON_DPAD_LEFT, GLFW_KEY_J)];
+    [dict[@"mGameMappingList"] addObject:createGamepadButton(@"dpad_right", GLFW_GAMEPAD_BUTTON_DPAD_RIGHT, GLFW_KEY_K)];
+    
+    [dict[@"mGameMappingList"] addObject:createGamepadButton(@"thumb_left", GLFW_GAMEPAD_BUTTON_LEFT_THUMB, GLFW_KEY_LEFT_CONTROL)];
+    [dict[@"mGameMappingList"] addObject:createGamepadButton(@"thumb_right", GLFW_GAMEPAD_BUTTON_RIGHT_THUMB, -GLFW_KEY_LEFT_SHIFT)];
+    
+    dict[@"mMenuMappingList"] = [[NSMutableArray alloc] init];
+    
+    [dict[@"mMenuMappingList"] addObject:createGamepadButton(@"mouse_primary", SPECIALBTN_MOUSEPRI, SPECIALBTN_MOUSEPRI)];
+    [dict[@"mMenuMappingList"] addObject:createGamepadButton(@"mouse_middle", SPECIALBTN_MOUSEMID, SPECIALBTN_MOUSEMID)];
+    [dict[@"mMenuMappingList"] addObject:createGamepadButton(@"mouse_secondary", SPECIALBTN_MOUSESEC, SPECIALBTN_MOUSESEC)];
+    
+    [dict[@"mMenuMappingList"] addObject:createGamepadButton(@"bumper_left", GLFW_GAMEPAD_BUTTON_LEFT_BUMPER, SPECIALBTN_SCROLLUP)];
+    [dict[@"mMenuMappingList"] addObject:createGamepadButton(@"bumper_right", GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER, SPECIALBTN_SCROLLDOWN)];
+    
+    [dict[@"mMenuMappingList"] addObject:createGamepadButton(@"named_a", GLFW_GAMEPAD_BUTTON_A, SPECIALBTN_MOUSEPRI)];
+    [dict[@"mMenuMappingList"] addObject:createGamepadButton(@"named_b", GLFW_GAMEPAD_BUTTON_B, GLFW_KEY_ESCAPE)];
+    [dict[@"mMenuMappingList"] addObject:createGamepadButton(@"named_x", GLFW_GAMEPAD_BUTTON_X, SPECIALBTN_MOUSESEC)];
+    [dict[@"mMenuMappingList"] addObject:createGamepadButton(@"named_y", GLFW_GAMEPAD_BUTTON_Y, GLFW_KEY_LEFT_SHIFT)];
+    
+    [dict[@"mMenuMappingList"] addObject:createGamepadButton(@"dpad_down", GLFW_GAMEPAD_BUTTON_DPAD_DOWN, GLFW_KEY_O)];
+    [dict[@"mMenuMappingList"] addObject:createGamepadButton(@"dpad_left", GLFW_GAMEPAD_BUTTON_DPAD_LEFT, GLFW_KEY_J)];
+    [dict[@"mMenuMappingList"] addObject:createGamepadButton(@"dpad_right", GLFW_GAMEPAD_BUTTON_DPAD_RIGHT, GLFW_KEY_K)];
+    
+    NSOutputStream *os = [[NSOutputStream alloc] initToFileAtPath:gamepadPath append:NO];
+    [os open];
+    [NSJSONSerialization writeJSONObject:dict toStream:os options:NSJSONWritingPrettyPrinted error:nil];
+    [os close];
 }
 
 void loadControlObject(UIView* targetView, NSMutableDictionary* controlDictionary) {

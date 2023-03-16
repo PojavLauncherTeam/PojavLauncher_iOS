@@ -242,6 +242,7 @@ void init_setupCustomControls() {
     NSString *controlPath = [@(getenv("POJAV_HOME")) stringByAppendingPathComponent:@"controlmap"];
     [fm createDirectoryAtPath:controlPath withIntermediateDirectories:NO attributes:nil error:nil];
     generateAndSaveDefaultControl();
+    generateAndSaveDefaultControlForGamepad();
 }
 
 void init_setupLauncherProfiles() {

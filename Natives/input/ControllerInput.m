@@ -1,4 +1,5 @@
 #import "ControllerInput.h"
+#import "../LauncherPreferences.h"
 #import "../SurfaceViewController.h"
 #import "../utils.h"
 
@@ -28,61 +29,27 @@ BOOL leftShiftHeld;
     if (gameMap && menuMap) {
         return;
     }
-
-    gameMap = [[NSMutableDictionary alloc] init];
-
-    gameMap[@(SPECIALBTN_MOUSEPRI)] = @(SPECIALBTN_MOUSEPRI);
-    gameMap[@(SPECIALBTN_MOUSEMID)] = @(SPECIALBTN_MOUSEMID);
-    gameMap[@(SPECIALBTN_MOUSESEC)] = @(SPECIALBTN_MOUSESEC);
-
-    gameMap[@(GLFW_GAMEPAD_BUTTON_LEFT_BUMPER)] = @(SPECIALBTN_SCROLLUP);
-    gameMap[@(GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER)] = @(SPECIALBTN_SCROLLDOWN);
-
-    gameMap[@(GLFW_GAMEPAD_BUTTON_LEFT_TRIGGER)] = @(SPECIALBTN_MOUSESEC);
-    gameMap[@(GLFW_GAMEPAD_BUTTON_RIGHT_TRIGGER)] = @(SPECIALBTN_MOUSEPRI);
-
-    gameMap[@(GLFW_GAMEPAD_BUTTON_BACK)] = @(GLFW_KEY_TAB);
-    gameMap[@(GLFW_GAMEPAD_BUTTON_START)] = @(GLFW_KEY_ESCAPE);
-    //gameMap[@(GLFW_GAMEPAD_BUTTON_GUIDE)] = @(GLFW_KEY_UNKNOWN);
-
-    gameMap[@(GLFW_GAMEPAD_BUTTON_A)] = @(GLFW_KEY_SPACE);
-    gameMap[@(GLFW_GAMEPAD_BUTTON_B)] = @(GLFW_KEY_Q);
-    gameMap[@(GLFW_GAMEPAD_BUTTON_X)] = @(GLFW_KEY_E);
-    gameMap[@(GLFW_GAMEPAD_BUTTON_Y)] = @(GLFW_KEY_F);
-
-    gameMap[@(GLFW_GAMEPAD_BUTTON_DPAD_UP)] = @(GLFW_KEY_LEFT_SHIFT);
-    gameMap[@(GLFW_GAMEPAD_BUTTON_DPAD_DOWN)] = @(GLFW_KEY_O);
-    gameMap[@(GLFW_GAMEPAD_BUTTON_DPAD_LEFT)] = @(GLFW_KEY_J);
-    gameMap[@(GLFW_GAMEPAD_BUTTON_DPAD_RIGHT)] = @(GLFW_KEY_K);
-
-    gameMap[@(GLFW_GAMEPAD_BUTTON_LEFT_THUMB)] = @(GLFW_KEY_LEFT_CONTROL);
-    gameMap[@(GLFW_GAMEPAD_BUTTON_RIGHT_THUMB)] = @(-GLFW_KEY_LEFT_SHIFT);
-
-    menuMap = [[NSMutableDictionary alloc] init];
-
-    menuMap[@(SPECIALBTN_MOUSEPRI)] = @(SPECIALBTN_MOUSEPRI);
-    menuMap[@(SPECIALBTN_MOUSEMID)] = @(SPECIALBTN_MOUSEMID);
-    menuMap[@(SPECIALBTN_MOUSESEC)] = @(SPECIALBTN_MOUSESEC);
-
-    menuMap[@(GLFW_GAMEPAD_BUTTON_LEFT_BUMPER)] = @(SPECIALBTN_SCROLLUP);
-    menuMap[@(GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER)] = @(SPECIALBTN_SCROLLDOWN);
-
-    menuMap[@(GLFW_GAMEPAD_BUTTON_A)] = @(SPECIALBTN_MOUSEPRI);
-    menuMap[@(GLFW_GAMEPAD_BUTTON_B)] = @(GLFW_KEY_ESCAPE);
-    menuMap[@(GLFW_GAMEPAD_BUTTON_X)] = @(SPECIALBTN_MOUSESEC);
-    menuMap[@(GLFW_GAMEPAD_BUTTON_Y)] = @(GLFW_KEY_LEFT_SHIFT);
-
-    menuMap[@(GLFW_GAMEPAD_BUTTON_DPAD_DOWN)] = @(GLFW_KEY_O);
-    menuMap[@(GLFW_GAMEPAD_BUTTON_DPAD_LEFT)] = @(GLFW_KEY_J);
-    menuMap[@(GLFW_GAMEPAD_BUTTON_DPAD_RIGHT)] = @(GLFW_KEY_K);
+    
+    NSString *gamepadPath = [NSString stringWithFormat:@"%s/controlmap/gamepad-%@", getenv("POJAV_HOME"), getPreference(@"default_gamepad_ctrl")];
+    NSMutableDictionary *gamepadJSON = parseJSONFromFile(gamepadPath);
+    
+    gameMap = gamepadJSON[@"mGameMappingList"];
+    menuMap = gamepadJSON[@"mMenuMappingList"];
 }
 
 + (void)sendKeyEvent:(int)controllerKeycode pressed:(BOOL)pressed {
     int keycode;
+    __block NSMutableDictionary *mapping;
     if (isGrabbing) {
-        keycode = [gameMap[@(controllerKeycode)] intValue];
+        mapping = gameMap;
     } else {
-        keycode = [menuMap[@(controllerKeycode)] intValue];
+        mapping = menuMap;
+    }
+    
+    for (NSMutableDictionary *buttonDict in mapping) {
+        if(controllerKeycode == [buttonDict[@"gamepad_button"] intValue]) {
+            keycode = [buttonDict[@"keycode"] intValue];
+        }
     }
 
     switch (keycode) {

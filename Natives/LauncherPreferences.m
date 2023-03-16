@@ -131,10 +131,12 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(envPrefDict, @"gyroscope_invert_x_axis", @NO);
     setDefaultValueForPref(envPrefDict, @"gyroscope_sensitivity", @(100));
     setDefaultValueForPref(envPrefDict, @"default_ctrl", @"default.json");
+    setDefaultValueForPref(envPrefDict, @"default_gamepad_ctrl", @"default.json");
     setDefaultValueForPref(envPrefDict, @"game_directory", @"default");
     setDefaultValueForPref(envPrefDict, @"java_args", @"");
     setDefaultValueForPref(envPrefDict, @"allocated_memory", [NSNumber numberWithFloat:roundf((NSProcessInfo.processInfo.physicalMemory / 1048576) * 0.25)]);
     setDefaultValueForPref(envPrefDict, @"jitstreamer_server", @"69.69.0.1");
+    setDefaultValueForPref(envPrefDict, @"max_framerate", @YES);
     setDefaultValueForPref(prefDict, @"appicon", @"AppIcon-Light");
     setDefaultValueForPref(prefDict, @"debug_logging", @(CONFIG_RELEASE != 1));
     setDefaultValueForPref(prefDict, @"cosmetica", @YES);

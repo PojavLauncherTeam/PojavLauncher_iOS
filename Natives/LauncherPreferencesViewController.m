@@ -211,6 +211,14 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
               @"min": @(25),
               @"max": @(150)
             },
+            @{@"key": @"max_framerate",
+              @"hasDetail": @YES,
+              @"icon": @"timelapse",
+              @"type": self.typeSwitch,
+              @"enableCondition": ^BOOL(){
+                  return whenNotInGame() && (UIScreen.mainScreen.maximumFramesPerSecond > 60);
+              }
+            },
             @{@"key": @"fullscreen_airplay",
               @"hasDetail": @YES,
               @"icon": @"airplayvideo",

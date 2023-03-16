@@ -175,6 +175,8 @@
 
 "preference.title.resolution" = "Resolution (%)";
 "preference.detail.resolution" = "Allows you to decrease the game resolution.";
+"preference.title.max_framerate" = "Maximum framerate";
+"preference.detail.max_framerate" = "Allows you to limit the game framerate to 60FPS on ProMotion displays.";
 
 "preference.title.fullscreen_airplay" = "Fullscreen AirPlay";
 "preference.detail.fullscreen_airplay" = "Allows presenting fullscreen game window on the external display rather than mirroring everything on screen.";
