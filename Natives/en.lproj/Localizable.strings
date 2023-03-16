@@ -151,6 +151,7 @@
 "preference.detail.appicon" = "Allows you to choose between different Home Screen icons for PojavLauncher.";
 "preference.title.appicon-default" = "Familiar PojavLauncher light";
 "preference.title.appicon-dark" = "Familiar PojavLauncher dark";
+"preference.title.appicon-development" = "Penciled Development";
 "preference.title.hidden_sidebar" = "Hide main menu sidebar by default";
 "preference.detail.hidden_sidebar" = "Allows you to hide the sidebar on the main menu by default and when rotating.";
 

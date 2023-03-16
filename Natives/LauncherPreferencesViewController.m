@@ -124,11 +124,13 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
               },
               @"pickKeys": @[
                   @"AppIcon-Light",
-                  @"AppIcon-Dark"
+                  @"AppIcon-Dark",
+                  @"AppIcon-Development"
               ],
               @"pickList": @[
                   localize(@"preference.title.appicon-default", nil),
-                  localize(@"preference.title.appicon-dark", nil)
+                  localize(@"preference.title.appicon-dark", nil),
+                  localize(@"preference.title.appicon-development", nil)
               ]
             },
             @{@"key": @"hidden_sidebar",
