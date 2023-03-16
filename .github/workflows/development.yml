@@ -110,7 +110,7 @@ jobs:
         run: |
           mkdir -p depends/
           cp -R /Users/eilionoir/actions/prerequisites/*.tar.xz depends/
-          cp -R /Users/eilionoir/actions/prerequisites/libgl4es_114.dylib Natives/resources/libgl4es_114.dylib
+          cp -R /Users/eilionoir/actions/prerequisites/libgl4es_114.dylib Natives/resources/Frameworks/libgl4es_114.dylib
           export PATH=/opt/procursus/bin:/opt/homebrew/bin:$PATH
           export NOSTDIN=1 SUDOPASS=$password RUNNER=1 SLIMMED=1
           gmake -j$(sysctl -n hw.ncpu) dsym PLATFORM=${{ matrix.platform }}
