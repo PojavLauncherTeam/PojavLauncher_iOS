@@ -89,7 +89,11 @@ BOOL slideableHotbar;
     };
     CADisplayLink *displayLink = [CADisplayLink displayLinkWithTarget:tickInput selector:@selector(invoke)];
     if (@available(iOS 15.0, tvOS 15.0, *)) {
-        displayLink.preferredFrameRateRange = CAFrameRateRangeMake(60, 120, 120);
+        if([getPreference(@"max_framerate") boolValue]) {
+            displayLink.preferredFrameRateRange = CAFrameRateRangeMake(30, 120, 120);
+        } else {
+            displayLink.preferredFrameRateRange = CAFrameRateRangeMake(30, 60, 60);
+        }
     }
     [displayLink addToRunLoop:NSRunLoop.currentRunLoop forMode:NSRunLoopCommonModes];
 
