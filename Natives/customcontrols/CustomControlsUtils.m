@@ -311,7 +311,7 @@ void generateAndSaveDefaultControl() {
 }
 
 void generateAndSaveDefaultControlForGamepad() {
-    NSString *gamepadPath = [NSString stringWithFormat:@"%s/controlmap/gamepad-default.json", getenv("POJAV_HOME")];
+    NSString *gamepadPath = [NSString stringWithFormat:@"%s/controlmap/gamepads/gamepad-default.json", getenv("POJAV_HOME")];
     if ([NSFileManager.defaultManager fileExistsAtPath:gamepadPath]) {
         return;
     }
