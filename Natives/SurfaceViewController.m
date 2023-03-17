@@ -62,6 +62,9 @@ BOOL slideableHotbar;
 
 @property(nonatomic) BOOL enableMouseGestures, enableHotbarGestures;
 
+@property(nonatomic) UIImpactFeedbackGenerator *lightHaptic;
+@property(nonatomic) UIImpactFeedbackGenerator *mediumHaptic;
+
 @end
 
 @implementation SurfaceViewController
@@ -70,6 +73,9 @@ BOOL slideableHotbar;
 {
     [super viewDidLoad];
     isControlModifiable = NO;
+    
+    self.lightHaptic = [[UIImpactFeedbackGenerator alloc] initWithStyle:(UIImpactFeedbackStyleLight)];
+    self.mediumHaptic = [[UIImpactFeedbackGenerator alloc] initWithStyle:(UIImpactFeedbackStyleMedium)];
 
     setPreference(@"internal_launch_on_boot", @(NO));
     isUseStackQueueCall = [getPreference(@"internal_useStackQueue") boolValue];
@@ -522,7 +528,6 @@ BOOL slideableHotbar;
             case ACTION_DOWN:
                 self.clickRange = CGRectMake(locationInView.x - 2, locationInView.y - 2, 5, 5);
                 self.shouldTriggerClick = YES;
-
                 break;
 
             case ACTION_MOVE:
@@ -641,6 +646,10 @@ BOOL slideableHotbar;
 }
 
 - (void)surfaceOnClick:(UITapGestureRecognizer *)sender {
+    if (sender.state == UIGestureRecognizerStateBegan || sender.state == UIGestureRecognizerStateEnded){
+        [self.lightHaptic impactOccurred];
+    }
+    
     if (!self.shouldTriggerClick) return;
 
     if (sender.state == UIGestureRecognizerStateRecognized) {
@@ -662,6 +671,10 @@ BOOL slideableHotbar;
 }
 
 - (void)surfaceOnDoubleClick:(UITapGestureRecognizer *)sender {
+    if (sender.state == UIGestureRecognizerStateBegan || sender.state == UIGestureRecognizerStateEnded){
+        [self.lightHaptic impactOccurred];
+    }
+    
     if (sender.state == UIGestureRecognizerStateRecognized && isGrabbing) {
         CGFloat screenScale = [[UIScreen mainScreen] scale];
         CGPoint point = [sender locationInView:self.rootView];
@@ -675,6 +688,10 @@ BOOL slideableHotbar;
 }
 
 - (void)surfaceOnHover:(UIHoverGestureRecognizer *)sender API_AVAILABLE(ios(13.0)) {
+    if (sender.state == UIGestureRecognizerStateBegan || sender.state == UIGestureRecognizerStateEnded){
+        [self.lightHaptic impactOccurred];
+    }
+    
     if (@available(iOS 14.0, *)) {
         if (isGrabbing) return;
     }
@@ -700,6 +717,10 @@ BOOL slideableHotbar;
 
 -(void)surfaceOnLongpress:(UILongPressGestureRecognizer *)sender
 {
+    if (sender.state == UIGestureRecognizerStateBegan || sender.state == UIGestureRecognizerStateEnded){
+        [self.mediumHaptic impactOccurred];
+    }
+    
     if (!slideableHotbar) {
         CGPoint location = [sender locationInView:self.rootView];
         CGFloat screenScale = UIScreen.mainScreen.scale;
@@ -732,6 +753,10 @@ BOOL slideableHotbar;
 }
 
 - (void)surfaceOnTouchesScroll:(UIPanGestureRecognizer *)sender {
+    if (sender.state == UIGestureRecognizerStateBegan || sender.state == UIGestureRecognizerStateEnded){
+        [self.lightHaptic impactOccurred];
+    }
+    
     if (isGrabbing) return;
     if (sender.state == UIGestureRecognizerStateBegan ||
         sender.state == UIGestureRecognizerStateChanged ||
@@ -840,6 +865,8 @@ int currentVisibility = 1;
 
 - (void)executebtn_down:(ControlButton *)sender
 {
+    [self.lightHaptic impactOccurred];
+    
     if (sender.savedBackgroundColor == nil) {
         [self executebtn:sender withAction:ACTION_DOWN];
     }
@@ -887,6 +914,8 @@ int currentVisibility = 1;
         sender.backgroundColor = sender.savedBackgroundColor;
         [self executebtn:sender withAction:ACTION_UP];
     }
+    
+    [self.lightHaptic impactOccurred];
 }
 
 - (void)executebtn_up_inside:(ControlButton *)sender {
@@ -948,6 +977,7 @@ int touchesMovedCount;
 // Equals to Android ACTION_MOVE
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    
     [super touchesMoved:touches withEvent:event];
 
     for (UITouch *touch in touches) {
