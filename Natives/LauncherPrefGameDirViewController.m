@@ -1,6 +1,7 @@
 #import "LauncherNavigationController.h"
 #import "LauncherPreferences.h"
 #import "LauncherPrefGameDirViewController.h"
+#import "NSFileManager+NRFileManager.h"
 #import "TOInsetGroupedTableView.h"
 #import "ios_uikit_bridge.h"
 #import "utils.h"
@@ -62,7 +63,7 @@
     UITextField *view;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
         view = [[UITextField alloc] initWithFrame:CGRectMake(20, 10, (cell.bounds.size.width-40)/2, cell.bounds.size.height-20)];
         [view addTarget:view action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
         view.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -72,10 +73,23 @@
         view.returnKeyType = UIReturnKeyDone;
         view.userInteractionEnabled = indexPath.row != 0;
         [cell.contentView addSubview:view];
+        cell.detailTextLabel.text = @"...";
     }
-    view = cell.contentView.subviews.lastObject;
+    view = cell.contentView.subviews.firstObject;
     view.placeholder = self.array[indexPath.row];
     view.text = self.array[indexPath.row];
+    cell.textLabel.hidden = YES;
+    cell.textLabel.text = view.text;
+
+    // Calculate the instance size
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        unsigned long long folderSize = 0;
+        NSString *directory = [NSString stringWithFormat:@"%s/instances/%@", getenv("POJAV_HOME"), self.array[indexPath.row]];
+        [NSFileManager.defaultManager nr_getAllocatedSize:&folderSize ofDirectoryAtURL:[NSURL fileURLWithPath:directory] error:nil];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            cell.detailTextLabel.text = [NSByteCountFormatter stringFromByteCount:folderSize countStyle:NSByteCountFormatterCountStyleMemory];
+        });
+    });
 
     if ([getPreference(@"game_directory") isEqualToString:self.array[indexPath.row]]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -181,7 +195,7 @@ viewForFooterInSection:(NSInteger)section
             identifier:nil
             handler:^(UIAction *action) {
                 UITableViewCell *view = [self.tableView cellForRowAtIndexPath:indexPath];
-                [view.contentView.subviews.lastObject becomeFirstResponder];
+                [view.contentView.subviews.firstObject becomeFirstResponder];
             }
         ];
 

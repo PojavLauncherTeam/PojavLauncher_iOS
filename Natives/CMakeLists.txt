@@ -17,6 +17,7 @@ include_directories(
   "external/AFNetworking/AFNetworking"
   "external/AFNetworking/UIKit+AFNetworking"
   "external/DBNumberedSlider/Classes"
+  "external/NRFileManager"
   "external/TOInsetGroupedTableView/TOInsetGroupedTableView"
   "external/fishhook"
   "external/mesa"
@@ -67,7 +68,7 @@ target_link_libraries(tinygl4angle
 )
 
 
-add_executable(PojavLauncher
+add_library(AFNetworking SHARED
   external/AFNetworking/AFNetworking/AFSecurityPolicy.m
   external/AFNetworking/AFNetworking/AFHTTPSessionManager.m
   external/AFNetworking/AFNetworking/AFURLRequestSerialization.m
@@ -79,7 +80,17 @@ add_executable(PojavLauncher
   external/AFNetworking/UIKit+AFNetworking/AFImageDownloader.m
   external/AFNetworking/UIKit+AFNetworking/UIButton+AFNetworking.m
   external/AFNetworking/UIKit+AFNetworking/UIImageView+AFNetworking.m
+)
+target_link_libraries(AFNetworking
+  "-framework CoreGraphics"
+  "-framework CoreServices"
+  "-framework Security"
+  "-framework SystemConfiguration"
+  "-framework UIKit"
+)
 
+
+add_executable(PojavLauncher
   main.m
   main_hook.m
   JavaLauncher.m
@@ -97,6 +108,7 @@ add_executable(PojavLauncher
   customcontrols/CustomControlsUtils.m
 
   external/DBNumberedSlider/Classes/DBNumberedSlider.m
+  external/NRFileManager/NSFileManager+NRFileManager.m
   external/TOInsetGroupedTableView/TOInsetGroupedTableView/TOInsetGroupedTableView.m
 
   input/ControllerInput.m
@@ -136,6 +148,7 @@ target_sources(PojavLauncher PUBLIC non_darwin_utils.m)
 endif()
 
 target_link_libraries(PojavLauncher
+  PUBLIC AFNetworking
   "-F'${CMAKE_CURRENT_LIST_DIR}/build'"
   "-F'${CMAKE_CURRENT_LIST_DIR}/resources/Frameworks'"
   "-framework AltKit"
@@ -145,11 +158,8 @@ target_link_libraries(PojavLauncher
   "-framework CoreGraphics"
   "-framework CoreImage"
   "-framework CoreMotion"
-  "-framework CoreServices"
   "-framework GameController"
   "-framework QuartzCore"
-  "-framework Security"
-  "-framework SystemConfiguration"
   "-framework UIKit"
   "-framework WebKit"
 )
