@@ -97,7 +97,7 @@ DIRCHECK   = \
 # Function to change the platform on Mach-O files.
 # iOS = 2, tvOS = 3, iOS Simulator = 7, tvOS Simulator = 8
 CHANGE_PLAT = \
-	vtool -arch arm64 -set-build-version $(1) 14.0 16.0 -replace -output $(2) $(2)
+	vtool -arch arm64 -set-build-version $(1) 12.0 16.0 -replace -output $(2) $(2)
 	
 # Function to package the application
 PACKAGE = \

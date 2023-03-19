@@ -279,13 +279,13 @@ static AFURLSessionManager* manager;
             // we have libjnidispatch 5.8.0 in Frameworks directory
             NSString *versionStr = [library[@"name"] componentsSeparatedByString:@":"][2];
             NSArray<NSString *> *version = [versionStr componentsSeparatedByString:@"."];
-            if (version[0].intValue < 5 || version[1].intValue < 8) {
-                //System.out.println("Library " + libItem.name + " has been changed to version 5.8.0");
-                library[@"name"] = @"net.java.dev.jna:jna:5.8.0";
-                library[@"downloads"][@"artifact"][@"path"] = @"net/java/dev/jna/jna/5.8.0/jna-5.8.0.jar";
-                library[@"downloads"][@"artifact"][@"url"] = @"https://libraries.minecraft.net/net/java/dev/jna/jna/5.8.0/jna-5.8.0.jar";
-                library[@"downloads"][@"artifact"][@"sha1"] = @"3551d8d827e54858214107541d3aff9c615cb615";
+            if (!(version[0].intValue < 5 || version[1].intValue < 13 || version[2].intValue < 1)) {
+                NSLog(@"[MCDL] Warning: JNA version required by %@ is %@ > 5.13.0, compatibility might be broken.", json[@"id"], versionStr);
             }
+            library[@"name"] = @"net.java.dev.jna:jna:5.13.0";
+            library[@"downloads"][@"artifact"][@"path"] = @"net/java/dev/jna/jna/5.13.0/jna-5.13.0.jar";
+            library[@"downloads"][@"artifact"][@"url"] = @"https://repo1.maven.org/maven2/net/java/dev/jna/jna/5.13.0/jna-5.13.0.jar";
+            library[@"downloads"][@"artifact"][@"sha1"] = @"1200e7ebeedbe0d10062093f32925a912020e747";
         }
     }
 

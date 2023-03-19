@@ -391,13 +391,13 @@ public final class Tools
                     libItem._skip = true;
             } else if (libItem.name.startsWith("net.java.dev.jna:jna:")) {
                 // Special handling for LabyMod 1.8.9 and Forge 1.12.2(?)
-                // we have libjnidispatch 5.8.0 in Frameworks directory
+                // we have libjnidispatch 5.13.0 in Frameworks directory
                 int[] version = Arrays.stream(libItem.name.split(":")[2].split("\\.")).mapToInt(Integer::parseInt).toArray();
-                if (version[0] >= 5 && version[1] >= 8) return;
-                System.out.println("Library " + libItem.name + " has been changed to version 5.8.0");
-                libItem.name = "net.java.dev.jna:jna:5.8.0";
-                libItem.downloads.artifact.path = "net/java/dev/jna/jna/5.8.0/jna-5.8.0.jar";
-                libItem.downloads.artifact.url = "https://libraries.minecraft.net/net/java/dev/jna/jna/5.8.0/jna-5.8.0.jar";
+                if (version[0] >= 5 && version[1] >= 13) return;
+                System.out.println("Library " + libItem.name + " has been changed to version 5.13.0");
+                libItem.name = "net.java.dev.jna:jna:5.13.0";
+                libItem.downloads.artifact.path = "net/java/dev/jna/jna/5.13.0/jna-5.13.0.jar";
+                libItem.downloads.artifact.url = "https://libraries.minecraft.net/net/java/dev/jna/jna/5.13.0/jna-5.13.0.jar";
             }
         }
     }
