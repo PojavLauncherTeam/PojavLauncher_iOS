@@ -306,14 +306,6 @@ void init_setupResolvConf() {
     }
 }
 
-void init_setupSlimmed() {
-    NSString *ipajre = [NSString stringWithFormat:@"%s/jvm/java-17-openjdk", getenv("BUNDLE_PATH")];
-    NSString *sysjre = @"/usr/lib/jvm/java-17-openjdk";
-    if ((![fm fileExistsAtPath:ipajre]) && (![fm fileExistsAtPath:sysjre])) {
-        setenv("SLIMMED", "1", 1);
-    }
-}
-
 void init_setupHomeDirectory() {
     setenv("HOME", [NSFileManager.defaultManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask]
         .lastObject.path.stringByDeletingLastPathComponent.UTF8String, 1);
@@ -341,6 +333,8 @@ void init_setupHomeDirectory() {
 }
 
 int main(int argc, char *argv[]) {
+    setenv("BUNDLE_PATH", dirname(argv[0]), 1);
+    
     if (pJLI_Launch) {
         return pJLI_Launch(argc, (const char **)argv,
                    0, NULL, // sizeof(const_jargs) / sizeof(char *), const_jargs,
@@ -363,12 +357,8 @@ int main(int argc, char *argv[]) {
     }
 
     init_checkForJailbreak();
-    init_setupSlimmed();
     
     init_migrateDirIfNecessary();
-
-    setenv("BUNDLE_PATH", dirname(argv[0]), 1);
-    
     init_setupHomeDirectory();
     init_redirectStdio();
     init_logDeviceAndVer(argv[0]);

@@ -334,7 +334,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"icon": @"cube",
                 @"type": self.typeSwitch,
                 @"enableCondition": ^BOOL(){
-                    return !getenv("SLIMMED") && whenNotInGame();
+                    return (![getPreference(@"slimmed") boolValue]) && whenNotInGame();
                 },
                 // false: 8, true: 17
                 @"customSwitchValue": @[@"java-8-openjdk", @"java-17-openjdk"]
