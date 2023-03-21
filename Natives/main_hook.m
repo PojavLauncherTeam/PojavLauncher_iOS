@@ -51,7 +51,7 @@ void* hooked_dlopen(const char* path, int mode) {
 void hooked_exit(int code) {
     NSLog(@"exit(%d) called", code);
     if (code == 0) {
-        UIKit_returnToSplitView();
+        orig_exit(code);
         return;
     }
     handle_fatal_exit(code);
@@ -60,7 +60,7 @@ void hooked_exit(int code) {
         (*runtimeJavaVMPtr)->DestroyJavaVM(runtimeJavaVMPtr);
     }
 
-    UIKit_returnToSplitView();
+    orig_exit(code);
 }
 
 int hooked_open(const char *path, int oflag, ...) {
