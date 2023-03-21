@@ -140,6 +140,7 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(prefDict, @"appicon", @"AppIcon-Light");
     setDefaultValueForPref(prefDict, @"debug_logging", @(CONFIG_RELEASE != 1));
     setDefaultValueForPref(prefDict, @"cosmetica", @YES);
+    setDefaultValueForPref(prefDict, @"controller_type", @"xbox");
     setDefaultValueForPref(envPrefDict, @"java_home", @"java-8-openjdk");
     setDefaultValueForPref(envPrefDict, @"renderer", @"auto");
     setDefaultValueForPref(envPrefDict, @"fullscreen_airplay", @YES);

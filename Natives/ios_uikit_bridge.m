@@ -124,6 +124,26 @@ void UIKit_launchMinecraftSurfaceVC() {
     });
 }
 
+void UIKit_returnToSplitView() {
+    // Researching memory-safe ways to return from SurfaceViewController to the split view
+    // so that the app doesn't close when quitting the game (similar behaviour to Android)
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIWindow *window = currentWindow();
+        [UIView animateWithDuration:0.2 animations:^{
+            window.alpha = 0;
+        } completion:^(BOOL b){
+            [window resignKeyWindow];
+            window.alpha = 1;
+            if (@available(iOS 14.0, tvOS 14.0, *)) {
+                window.rootViewController = [[LauncherSplitViewController alloc] initWithStyle:UISplitViewControllerStyleDoubleColumn];
+            } else {
+                window.rootViewController = [[LauncherSplitViewController alloc] init];
+            }
+            [window makeKeyAndVisible];
+        }];
+    });
+}
+
 void launchInitialViewController(UIWindow *window) {
     if ([getPreference(@"internal_launch_on_boot") boolValue]) {
         window.rootViewController = [[SurfaceViewController alloc] init];

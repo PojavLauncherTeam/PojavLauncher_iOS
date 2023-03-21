@@ -5,7 +5,7 @@
 #define BTN_SQUARE 50.0, 50.0
 
 NSMutableDictionary* createButton(NSString* name, int* keycodes, NSString* dynamicX, NSString* dynamicY, CGFloat width, CGFloat height);
-
+NSMutableDictionary* createGamepadButton(NSString* name, int gamepad_button, int keycode);
 UIColor* convertARGB2UIColor(int argb);
 int convertUIColor2ARGB(UIColor* color);
 int convertUIColor2RGB(UIColor* color);

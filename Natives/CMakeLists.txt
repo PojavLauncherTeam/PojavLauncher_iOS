@@ -127,6 +127,7 @@ add_executable(PojavLauncher
   LauncherNewsViewController.m
   LauncherPreferences.m
   LauncherPreferencesViewController.m
+  LauncherPrefContCfgViewController.m
   LauncherPrefGameDirViewController.m
   LauncherSplitViewController.m
   MinecraftResourceUtils.m

@@ -6,6 +6,7 @@
 #import "LauncherMenuViewController.h"
 #import "LauncherPreferences.h"
 #import "LauncherPreferencesViewController.h"
+#import "LauncherPrefContCfgViewController.h"
 #import "LauncherPrefGameDirViewController.h"
 #import "TOInsetGroupedTableView.h"
 #import "UIKit+hook.h"
@@ -70,6 +71,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
               @"enableCondition": ^BOOL(){
                   return whenNotInGame() && !getenv("DEMO_LOCK");
               },
+              @"canDismissWithSwipe": @YES,
               @"class": LauncherPrefGameDirViewController.class,
             },
             @{@"key": @"check_sha",
@@ -238,9 +240,16 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
         ], @[
             // Control settings
             @{@"icon": @"gamecontroller"},
+            @{@"key": @"default_gamepad_ctrl",
+                @"icon": @"hammer",
+                @"type": self.typeChildPane,
+                @"enableCondition": whenNotInGame,
+                @"canDismissWithSwipe": @NO,
+                @"class": LauncherPrefContCfgViewController.class
+            },
             @{@"key": @"hardware_hide",
                 @"icon": @"eye.slash",
-                @"hasDetail": @"YES",
+                @"hasDetail": @YES,
                 @"type": self.typeSwitch,
             },
             @{@"key": @"gesture_mouse",
@@ -712,6 +721,9 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     NSDictionary *item = self.prefContents[indexPath.section][indexPath.row];
     UINavigationController *vc = [[UINavigationController alloc] initWithRootViewController:[[item[@"class"] alloc] init]];
     vc.navigationBar.prefersLargeTitles = YES;
+    if(@available(iOS 13.0, *)) {
+        vc.modalInPresentation = ![item[@"canDismissWithSwipe"] boolValue];
+    }
     [self.navigationController presentViewController:vc animated:YES completion:nil];
 }
 

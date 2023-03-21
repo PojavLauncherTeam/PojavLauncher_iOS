@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "SurfaceViewController.h"
+#import "ios_uikit_bridge.h"
 #import "utils.h"
 
 #include <dlfcn.h>
@@ -50,7 +51,7 @@ void* hooked_dlopen(const char* path, int mode) {
 void hooked_exit(int code) {
     NSLog(@"exit(%d) called", code);
     if (code == 0) {
-        orig_exit(code);
+        UIKit_returnToSplitView();
         return;
     }
     handle_fatal_exit(code);
@@ -59,7 +60,7 @@ void hooked_exit(int code) {
         (*runtimeJavaVMPtr)->DestroyJavaVM(runtimeJavaVMPtr);
     }
 
-    orig_exit(code);
+    UIKit_returnToSplitView();
 }
 
 int hooked_open(const char *path, int oflag, ...) {
