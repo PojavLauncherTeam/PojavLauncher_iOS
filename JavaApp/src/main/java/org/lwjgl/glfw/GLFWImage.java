@@ -21,21 +21,13 @@ import static org.lwjgl.system.MemoryStack.*;
  * 
  * <p>This describes a single 2D image. See the documentation for each related function to see what the expected pixel format is.</p>
  * 
- * <h3>Member documentation</h3>
- * 
- * <ul>
- * <li>{@code width} &ndash; the width, in pixels, of this image</li>
- * <li>{@code height} &ndash; the height, in pixels, of this image</li>
- * <li>{@code pixels} &ndash; the pixel data of this image, arranged left-to-right, top-to-bottom</li>
- * </ul>
- * 
  * <h3>Layout</h3>
  * 
  * <pre><code>
  * struct GLFWimage {
- *     int width;
- *     int height;
- *     unsigned char * pixels;
+ *     int {@link #width};
+ *     int {@link #height};
+ *     unsigned char * {@link #pixels};
  * }</code></pre>
  *
  * @since version 2.1
@@ -83,23 +75,23 @@ public class GLFWImage extends Struct implements NativeResource {
     @Override
     public int sizeof() { return SIZEOF; }
 
-    /** Returns the value of the {@code width} field. */
+    /** the width, in pixels, of this image */
     public int width() { return nwidth(address()); }
-    /** Returns the value of the {@code height} field. */
+    /** the height, in pixels, of this image */
     public int height() { return nheight(address()); }
     /**
-     * Returns a {@link ByteBuffer} view of the data pointed to by the {@code pixels} field.
-     *
      * @param capacity the number of elements in the returned buffer
+     *
+     * @return the pixel data of this image, arranged left-to-right, top-to-bottom
      */
     @NativeType("unsigned char *")
     public ByteBuffer pixels(int capacity) { return npixels(address(), capacity); }
 
-    /** Sets the specified value to the {@code width} field. */
+    /** Sets the specified value to the {@link #width} field. */
     public GLFWImage width(int value) { nwidth(address(), value); return this; }
-    /** Sets the specified value to the {@code height} field. */
+    /** Sets the specified value to the {@link #height} field. */
     public GLFWImage height(int value) { nheight(address(), value); return this; }
-    /** Sets the address of the specified {@link ByteBuffer} to the {@code pixels} field. */
+    /** Sets the address of the specified {@link ByteBuffer} to the {@link #pixels} field. */
     public GLFWImage pixels(@NativeType("unsigned char *") ByteBuffer value) { npixels(address(), value); return this; }
 
     /** Initializes this struct with the specified values. */
@@ -202,22 +194,29 @@ public class GLFWImage extends Struct implements NativeResource {
 
     // -----------------------------------
 
-    /** Returns a new {@code GLFWImage} instance allocated on the thread-local {@link MemoryStack}. */
-    public static GLFWImage mallocStack() {
-        return mallocStack(stackGet());
-    }
-
-    /** Returns a new {@code GLFWImage} instance allocated on the thread-local {@link MemoryStack} and initializes all its bits to zero. */
-    public static GLFWImage callocStack() {
-        return callocStack(stackGet());
-    }
+    /** Deprecated for removal in 3.4.0. Use {@link #malloc(MemoryStack)} instead. */
+    @Deprecated public static GLFWImage mallocStack() { return malloc(stackGet()); }
+    /** Deprecated for removal in 3.4.0. Use {@link #calloc(MemoryStack)} instead. */
+    @Deprecated public static GLFWImage callocStack() { return calloc(stackGet()); }
+    /** Deprecated for removal in 3.4.0. Use {@link #malloc(MemoryStack)} instead. */
+    @Deprecated public static GLFWImage mallocStack(MemoryStack stack) { return malloc(stack); }
+    /** Deprecated for removal in 3.4.0. Use {@link #calloc(MemoryStack)} instead. */
+    @Deprecated public static GLFWImage callocStack(MemoryStack stack) { return calloc(stack); }
+    /** Deprecated for removal in 3.4.0. Use {@link #malloc(int, MemoryStack)} instead. */
+    @Deprecated public static GLFWImage.Buffer mallocStack(int capacity) { return malloc(capacity, stackGet()); }
+    /** Deprecated for removal in 3.4.0. Use {@link #calloc(int, MemoryStack)} instead. */
+    @Deprecated public static GLFWImage.Buffer callocStack(int capacity) { return calloc(capacity, stackGet()); }
+    /** Deprecated for removal in 3.4.0. Use {@link #malloc(int, MemoryStack)} instead. */
+    @Deprecated public static GLFWImage.Buffer mallocStack(int capacity, MemoryStack stack) { return malloc(capacity, stack); }
+    /** Deprecated for removal in 3.4.0. Use {@link #calloc(int, MemoryStack)} instead. */
+    @Deprecated public static GLFWImage.Buffer callocStack(int capacity, MemoryStack stack) { return calloc(capacity, stack); }
 
     /**
      * Returns a new {@code GLFWImage} instance allocated on the specified {@link MemoryStack}.
      *
      * @param stack the stack from which to allocate
      */
-    public static GLFWImage mallocStack(MemoryStack stack) {
+    public static GLFWImage malloc(MemoryStack stack) {
         return wrap(GLFWImage.class, stack.nmalloc(ALIGNOF, SIZEOF));
     }
 
@@ -226,45 +225,27 @@ public class GLFWImage extends Struct implements NativeResource {
      *
      * @param stack the stack from which to allocate
      */
-    public static GLFWImage callocStack(MemoryStack stack) {
+    public static GLFWImage calloc(MemoryStack stack) {
         return wrap(GLFWImage.class, stack.ncalloc(ALIGNOF, 1, SIZEOF));
-    }
-
-    /**
-     * Returns a new {@link GLFWImage.Buffer} instance allocated on the thread-local {@link MemoryStack}.
-     *
-     * @param capacity the buffer capacity
-     */
-    public static GLFWImage.Buffer mallocStack(int capacity) {
-        return mallocStack(capacity, stackGet());
-    }
-
-    /**
-     * Returns a new {@link GLFWImage.Buffer} instance allocated on the thread-local {@link MemoryStack} and initializes all its bits to zero.
-     *
-     * @param capacity the buffer capacity
-     */
-    public static GLFWImage.Buffer callocStack(int capacity) {
-        return callocStack(capacity, stackGet());
     }
 
     /**
      * Returns a new {@link GLFWImage.Buffer} instance allocated on the specified {@link MemoryStack}.
      *
-     * @param stack the stack from which to allocate
+     * @param stack    the stack from which to allocate
      * @param capacity the buffer capacity
      */
-    public static GLFWImage.Buffer mallocStack(int capacity, MemoryStack stack) {
+    public static GLFWImage.Buffer malloc(int capacity, MemoryStack stack) {
         return wrap(Buffer.class, stack.nmalloc(ALIGNOF, capacity * SIZEOF), capacity);
     }
 
     /**
      * Returns a new {@link GLFWImage.Buffer} instance allocated on the specified {@link MemoryStack} and initializes all its bits to zero.
      *
-     * @param stack the stack from which to allocate
+     * @param stack    the stack from which to allocate
      * @param capacity the buffer capacity
      */
-    public static GLFWImage.Buffer callocStack(int capacity, MemoryStack stack) {
+    public static GLFWImage.Buffer calloc(int capacity, MemoryStack stack) {
         return wrap(Buffer.class, stack.ncalloc(ALIGNOF, capacity, SIZEOF), capacity);
     }
 
@@ -291,18 +272,6 @@ public class GLFWImage extends Struct implements NativeResource {
      */
     public static void validate(long struct) {
         check(memGetAddress(struct + GLFWImage.PIXELS));
-    }
-
-    /**
-     * Calls {@link #validate(long)} for each struct contained in the specified struct array.
-     *
-     * @param array the struct array to validate
-     * @param count the number of structs in {@code array}
-     */
-    public static void validate(long array, int count) {
-        for (int i = 0; i < count; i++) {
-            validate(array + Integer.toUnsignedLong(i) * SIZEOF);
-        }
     }
 
     // -----------------------------------
@@ -343,23 +312,23 @@ public class GLFWImage extends Struct implements NativeResource {
             return ELEMENT_FACTORY;
         }
 
-        /** Returns the value of the {@code width} field. */
+        /** @return the value of the {@link GLFWImage#width} field. */
         public int width() { return GLFWImage.nwidth(address()); }
-        /** Returns the value of the {@code height} field. */
+        /** @return the value of the {@link GLFWImage#height} field. */
         public int height() { return GLFWImage.nheight(address()); }
         /**
-         * Returns a {@link ByteBuffer} view of the data pointed to by the {@code pixels} field.
+         * @return a {@link ByteBuffer} view of the data pointed to by the {@link GLFWImage#pixels} field.
          *
          * @param capacity the number of elements in the returned buffer
          */
         @NativeType("unsigned char *")
         public ByteBuffer pixels(int capacity) { return GLFWImage.npixels(address(), capacity); }
 
-        /** Sets the specified value to the {@code width} field. */
+        /** Sets the specified value to the {@link GLFWImage#width} field. */
         public GLFWImage.Buffer width(int value) { GLFWImage.nwidth(address(), value); return this; }
-        /** Sets the specified value to the {@code height} field. */
+        /** Sets the specified value to the {@link GLFWImage#height} field. */
         public GLFWImage.Buffer height(int value) { GLFWImage.nheight(address(), value); return this; }
-        /** Sets the address of the specified {@link ByteBuffer} to the {@code pixels} field. */
+        /** Sets the address of the specified {@link ByteBuffer} to the {@link GLFWImage#pixels} field. */
         public GLFWImage.Buffer pixels(@NativeType("unsigned char *") ByteBuffer value) { GLFWImage.npixels(address(), value); return this; }
 
     }
