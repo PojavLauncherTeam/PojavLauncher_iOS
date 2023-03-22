@@ -17,6 +17,7 @@ include_directories(
   "external/AFNetworking/AFNetworking"
   "external/AFNetworking/UIKit+AFNetworking"
   "external/DBNumberedSlider/Classes"
+  "external/MGL"
   "external/NRFileManager"
   "external/TOInsetGroupedTableView/TOInsetGroupedTableView"
   "external/fishhook"

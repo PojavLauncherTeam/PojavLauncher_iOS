@@ -14,6 +14,8 @@
 #include "EGL/eglext.h"
 #include "GL/osmesa.h"
 
+#include "MGLContext.h"
+#include "MGLRenderer.h"
 #include "glfw_keycodes.h"
 #include "osmesa_internal.h"
 #include "utils.h"
@@ -66,6 +68,12 @@ EGLContext (*eglCreateContext_p) (EGLDisplay dpy, EGLConfig config, EGLContext s
 EGLBoolean (*eglSwapInterval_p) (EGLDisplay dpy, EGLint interval);
 EGLSurface (*eglGetCurrentSurface_p) (EGLint readdraw);
 
+/* MGL functions */
+void* (*createGLMContext_p)(GLenum format, GLenum type, GLenum depth_format, GLenum depth_type, GLenum stencil_format, GLenum stencil_type);
+void* (*MGLgetCurrentContext_p)(void);
+void (*MGLsetCurrentContext_p)(void* ctx);
+void (*MGLswapBuffers_p)(void* ctx);
+
 int (*vtest_main_p) (int, const char*[]);
 void (*vtest_swap_buffers_p) (void);
 void* egl_make_current(void* window);
@@ -74,6 +82,7 @@ void* egl_make_current(void* window);
 #define RENDERER_VK_ZINK 2
 #define RENDERER_VIRGL 3
 #define RENDERER_VULKAN 4
+#define RENDERER_MTL_MGL 5
 
 int config_renderer;
 
@@ -118,6 +127,10 @@ void pojavTerminate() {
         case RENDERER_VK_ZINK: {
             // Nothing to do here
         } break;
+        
+        case RENDERER_MTL_MGL: {
+            // TODO: anything?
+        } break;
     }
 }
 
@@ -129,6 +142,9 @@ void* pojavGetCurrentContext() {
         case RENDERER_VIRGL:
         case RENDERER_VK_ZINK:
             return (void *)OSMesaGetCurrentContext_p();
+
+        case RENDERER_MTL_MGL:
+            return (void *)MGLgetCurrentContext_p();
 
         default: return NULL;
     }
@@ -155,6 +171,13 @@ void dlsym_EGL(void* dl_handle) {
     eglGetCurrentSurface_p = dlsym(dl_handle,"eglGetCurrentSurface");
 }
 
+void dlsym_MGL(void* dl_handle) {
+    createGLMContext_p = dlsym(dl_handle, "createGLMContext");
+    MGLgetCurrentContext_p = dlsym(dl_handle, "MGLgetCurrentContext");
+    MGLsetCurrentContext_p = dlsym(dl_handle, "MGLsetCurrentContext");
+    MGLswapBuffers_p = dlsym(dl_handle, "MGLswapBuffers");
+}
+
 void dlsym_OSMesa(void* dl_handle) {
     OSMesaMakeCurrent_p = dlsym(dl_handle,"OSMesaMakeCurrent");
     OSMesaGetCurrentContext_p = dlsym(dl_handle,"OSMesaGetCurrentContext");
@@ -176,6 +199,9 @@ void loadSymbols(int renderer) {
         case RENDERER_MTL_ANGLE:
             sprintf((char *)fileName, "%s/Frameworks/MetalANGLE.framework/MetalANGLE", getenv("BUNDLE_PATH"));
             break;
+        case RENDERER_MTL_MGL: //temp
+            sprintf((char *)fileName, "%s/Frameworks/%s", getenv("BUNDLE_PATH"), getenv("POJAV_RENDERER"));
+            break;
     }
     void* dl_handle = dlopen(fileName,RTLD_NOW|RTLD_GLOBAL|RTLD_NODELETE);
 
@@ -189,6 +215,9 @@ void loadSymbols(int renderer) {
             break;
         case RENDERER_MTL_ANGLE:
             dlsym_EGL(dl_handle);
+            break;
+        case RENDERER_MTL_MGL:
+            dlsym_MGL(dl_handle);
             break;
     }
 }
@@ -234,6 +263,8 @@ jboolean pojavInit_OpenGL() {
     } else if ([renderer hasPrefix:@"libOSMesa"]) {
         config_renderer = RENDERER_VK_ZINK;
         setenv("GALLIUM_DRIVER","zink",1);
+    } else if ([renderer isEqualToString:@ RENDERER_NAME_MTL_MGL]) {
+        config_renderer = RENDERER_MTL_MGL;
     }
     JNI_LWJGL_changeRenderer(renderer.UTF8String);
     loadSymbols(config_renderer);
@@ -344,7 +375,12 @@ jboolean pojavInit_OpenGL() {
             return JNI_FALSE;
         }
     }
-    
+
+    if (config_renderer == RENDERER_MTL_MGL) {
+        // Nothing to do here
+        return JNI_TRUE;
+    }
+
     return JNI_FALSE;
 }
 
@@ -407,6 +443,10 @@ void pojavSwapBuffers() {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [((SurfaceViewController *)currentWindow().rootViewController).surfaceView displayLayer];
             });
+        } break;
+
+        case RENDERER_MTL_MGL: {
+            MGLswapBuffers_p(potatoBridge.eglContext);
         } break;
     }
 }
@@ -478,6 +518,16 @@ void pojavMakeCurrent(void* window) {
             return;
     }
 
+    if (config_renderer == RENDERER_MTL_MGL) {
+        potatoBridge.eglContext = window;
+        Class MGLRenderer_class = NSClassFromString(@"MGLRenderer");
+        MGLRenderer *renderer = [[MGLRenderer_class alloc] init];
+        assert(renderer);
+        MGLsetCurrentContext_p(window);
+        [renderer createMGLRendererAndBindToContext:window view:((SurfaceViewController *)currentVC()).surfaceView];
+        return;
+    }
+
     if (window) {
         // should not reach here
         NSLog(@"Error: Invalid renderer %d, aborting.", config_renderer);
@@ -515,6 +565,10 @@ void* pojavCreateContext(void* contextSrc) {
             return ctx;
     }
 
+    if (config_renderer == RENDERER_MTL_MGL) {
+        return createGLMContext_p(GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, GL_DEPTH_COMPONENT, GL_FLOAT, 0, 0);
+    }
+
     return NULL;
 }
 
@@ -548,8 +602,9 @@ void pojavSwapInterval(int interval) {
             eglSwapInterval_p(potatoBridge.eglDisplay, interval);
         } break;
 
+        case RENDERER_MTL_MGL:
         case RENDERER_VK_ZINK: {
-            NSDebugLog(@"eglSwapInterval: NOT IMPLEMENTED YET!");
+            NSDebugLog(@"pojavSwapInterval: NOT IMPLEMENTED YET!");
             // Nothing to do here
         } break;
     }

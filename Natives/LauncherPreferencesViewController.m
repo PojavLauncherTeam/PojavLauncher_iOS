@@ -197,13 +197,15 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                   @"auto",
                   @ RENDERER_NAME_GL4ES,
                   @ RENDERER_NAME_MTL_ANGLE,
-                  @ RENDERER_NAME_VK_ZINK
+                  @ RENDERER_NAME_VK_ZINK,
+                  @ RENDERER_NAME_MTL_MGL
               ],
               @"pickList": @[
                   localize(@"preference.title.renderer.auto", nil),
                   localize(@"preference.title.renderer.gl4es", nil),
                   localize(@"preference.title.renderer.angle", nil),
-                  localize(@"preference.title.renderer.zink", nil)
+                  localize(@"preference.title.renderer.zink", nil),
+                  @"MGL - exports OpenGL 4.6 (Core Profile)"
               ]
             },
             @{@"key": @"resolution",

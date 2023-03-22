@@ -17,7 +17,7 @@ import org.lwjgl.*;
 import org.lwjgl.system.*;
 import org.lwjgl.system.macosx.*;
 
-import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL46.*;
 import static org.lwjgl.system.APIUtil.*;
 import static org.lwjgl.system.Checks.*;
 import static org.lwjgl.system.JNI.*;
@@ -802,6 +802,11 @@ public class GLFW
     public static long glfwGetCurrentContext() {
         long __functionAddress = Functions.GetCurrentContext;
         return invokeP(__functionAddress);
+    }
+
+    public static void nglfwGetFramebufferSize(@NativeType("GLFWwindow *") long window, @Nullable @NativeType("int *") long width, @Nullable @NativeType("int *") long height) {
+        memPutInt(width, internalGetWindow(window).width);
+        memPutInt(height, internalGetWindow(window).height);
     }
 
     public static void glfwGetFramebufferSize(@NativeType("GLFWwindow *") long window, @Nullable @NativeType("int *") IntBuffer width, @Nullable @NativeType("int *") IntBuffer height) {
