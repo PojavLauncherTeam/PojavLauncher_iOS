@@ -333,8 +333,6 @@ void init_setupHomeDirectory() {
 }
 
 int main(int argc, char *argv[]) {
-    setenv("BUNDLE_PATH", dirname(argv[0]), 1);
-    
     if (pJLI_Launch) {
         return pJLI_Launch(argc, (const char **)argv,
                    0, NULL, // sizeof(const_jargs) / sizeof(char *), const_jargs,
@@ -356,6 +354,7 @@ int main(int argc, char *argv[]) {
         return ret;
     }
 
+    setenv("BUNDLE_PATH", dirname(argv[0]), 1);
     init_checkForJailbreak();
     
     init_migrateDirIfNecessary();
