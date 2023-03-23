@@ -236,7 +236,7 @@ jre: native
 	$(call METHOD_JAVA_UNPACK,17,'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre17-ca01427/jre17-arm64-20220817-release.tar.xz'); \
 	if [ -f "$(ls jre*.tar.xz)" ]; then rm $(SOURCEDIR)/depends/jre*.tar.xz; fi; \
 	cd $(SOURCEDIR); \
-	rm -rf $(SOURCEDIR)/depends/java-*-openjdk/{ASSEMBLY_EXCEPTION,bin,conf,include,jre,legal,LICENSE,man,release,THIRD_PARTY_README,lib/{ct.sym,libjsig.dylib,src.zip,tools.jar}}; \
+	rm -rf $(SOURCEDIR)/depends/java-*-openjdk/{ASSEMBLY_EXCEPTION,bin,include,jre,legal,LICENSE,man,THIRD_PARTY_README,lib/{ct.sym,libjsig.dylib,src.zip,tools.jar}}; \
 	$(call METHOD_DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/jvm); \
 	cp -R $(POJAV_JRE8_DIR) $(WORKINGDIR)/PojavLauncher.app/jvm/; \
 	cp -R $(POJAV_JRE17_DIR) $(WORKINGDIR)/PojavLauncher.app/jvm/; \
