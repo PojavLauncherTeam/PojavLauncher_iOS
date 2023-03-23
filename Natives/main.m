@@ -138,11 +138,6 @@ void init_logDeviceAndVer(char *argument) {
     
     NSLog(@"[Pre-Init] %s with iOS %s (%s)", getenv("POJAV_DETECTEDHW"), getenv("POJAV_DETECTEDSW"), getenv("POJAV_DETECTEDINST"));
     
-    NSString *jvmPath = [NSString stringWithFormat:@"%s/jvm", getenv("BUNDLE_PATH")];
-    if (![fm fileExistsAtPath:jvmPath]) {
-        setenv("POJAV_PREFER_EXTERNAL_JRE", "1", 1);
-    }
-    
     NSLog(@"[Pre-init] Entitlements availability:");
     printEntitlementAvailability(@"com.apple.developer.kernel.extended-virtual-addressing");
     printEntitlementAvailability(@"com.apple.developer.kernel.increased-memory-limit");

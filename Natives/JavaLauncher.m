@@ -89,7 +89,7 @@ void init_loadCustomJvmFlags() {
 }
 
 NSString* environmentFailsafes(int minVersion) {
-    NSString *jvmPath = getenv("POJAV_PREFER_EXTERNAL_JRE") ? @"/usr/lib/jvm" : [NSString stringWithFormat:@"%s/jvm", getenv("BUNDLE_PATH")];
+    NSString *jvmPath = [NSString stringWithFormat:@"%s/jvm", getenv("BUNDLE_PATH")];
     NSString *javaHome = nil;
 
     NSString *jre8Path = [NSString stringWithFormat:@"%@/java-8-openjdk", jvmPath];
@@ -115,35 +115,35 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
 
     NSLog(@"[JavaLauncher] Beginning JVM launch");
 
-    NSString *javaHome_pre = getPreference(@"java_home");
-    if (![javaHome_pre hasPrefix:@"/"]) {
-        javaHome_pre = [NSString stringWithFormat:@"%s/jvm/%@", getenv("POJAV_PREFER_EXTERNAL_JRE") ? "/usr/lib" : getenv("BUNDLE_PATH"), javaHome_pre];
+    NSString *javaHome = getPreference(@"java_home");
+    if (![javaHome hasPrefix:@"/"]) {
+        javaHome = [NSString stringWithFormat:@"%s/jvm/%@", getenv("BUNDLE_PATH"), javaHome];
     }
 
     // We handle unset JAVA_HOME right there
     if (getSelectedJavaVersion() < minVersion) {
         NSLog(@"[JavaLauncher] Attempting to change to Java %d (actual might be higher)", minVersion);
+        javaHome = environmentFailsafes(minVersion);
+        NSLog(@"[JavaLauncher] JAVA_HOME is now set to %@", javaHome);
+    } /* else if (javaHome.length == 0) {
         javaHome_pre = environmentFailsafes(minVersion);
-        NSLog(@"[JavaLauncher] JAVA_HOME is now set to %@", javaHome_pre);
-    } /* else if (javaHome_pre.length == 0) {
-        javaHome_pre = environmentFailsafes(minVersion);
-        setPreference(@"java_home", javaHome_pre);
-        NSLog(@"[JavaLauncher] JAVA_HOME environment variable was not set. Default to %@ for future use.\n", javaHome_pre);
+        setPreference(@"java_home", javaHome);
+        NSLog(@"[JavaLauncher] JAVA_HOME environment variable was not set. Default to %@ for future use.\n", javaHome);
     } */ else {
-        if (![fm fileExistsAtPath:javaHome_pre]) {
-            javaHome_pre = environmentFailsafes(minVersion);
-            setPreference(@"java_home", javaHome_pre);
-            NSLog(@"[JavaLauncher] Failed to locate %@. Restored default value for JAVA_HOME.", javaHome_pre);
+        if (![fm fileExistsAtPath:javaHome]) {
+            javaHome = environmentFailsafes(minVersion);
+            setPreference(@"java_home", javaHome);
+            NSLog(@"[JavaLauncher] Failed to locate %@. Restored default value for JAVA_HOME.", javaHome);
         } else {
-            NSLog(@"[JavaLauncher] Restored preference: JAVA_HOME is set to %@\n", javaHome_pre);
+            NSLog(@"[JavaLauncher] Restored preference: JAVA_HOME is set to %@\n", javaHome);
         }
     }
 
-    if (javaHome_pre == nil) {
+    if (javaHome == nil) {
         return 1;
     }
 
-    setenv("JAVA_HOME", javaHome_pre.UTF8String, 1);
+    setenv("JAVA_HOME", javaHome.UTF8String, 1);
 
     NSString *renderer = getPreference(@"renderer");
     if (renderer.length == 0) {
@@ -164,7 +164,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     }
     NSLog(@"[JavaLauncher] Max RAM allocation is set to %d MB", allocmem);
 
-    margv[++margc] = [NSString stringWithFormat:@"%@/bin/java", javaHome_pre].UTF8String;
+    margv[++margc] = [NSString stringWithFormat:@"%@/bin/java", javaHome].UTF8String;
     margv[++margc] = "-XstartOnFirstThread";
     margv[++margc] = "-Djava.system.class.loader=net.kdt.pojavlaunch.PojavClassLoader";
     margv[++margc] = "-Xms128M";
@@ -190,8 +190,8 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     margv[++margc] = "-Dfml.earlyprogresswindow=false";
 
     // Load java
-    NSString *libjlipath8 = [NSString stringWithFormat:@"%@/lib/jli/libjli.dylib", javaHome_pre]; // java 8
-    NSString *libjlipath11 = [NSString stringWithFormat:@"%@/lib/libjli.dylib", javaHome_pre]; // java 11+
+    NSString *libjlipath8 = [NSString stringWithFormat:@"%@/lib/jli/libjli.dylib", javaHome]; // java 8
+    NSString *libjlipath11 = [NSString stringWithFormat:@"%@/lib/libjli.dylib", javaHome]; // java 11+
     setenv("INTERNAL_JLI_PATH", libjlipath11.UTF8String, 1);
     BOOL isJava8;
     void* libjli = dlopen(libjlipath11.UTF8String, RTLD_GLOBAL);

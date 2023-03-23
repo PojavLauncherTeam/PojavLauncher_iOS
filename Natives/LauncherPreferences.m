@@ -172,8 +172,7 @@ void loadPreferences(BOOL reset) {
     prefDict[@"warnings"] = warnPrefDict;
     
     NSString *ipajre = [NSString stringWithFormat:@"%s/jvm/java-17-openjdk", getenv("BUNDLE_PATH")];
-    NSString *sysjre = @"/usr/lib/jvm/java-17-openjdk";
-    if ((![fileManager fileExistsAtPath:ipajre]) && (![fileManager fileExistsAtPath:sysjre])) {
+    if (![fileManager fileExistsAtPath:ipajre]) {
         setPreference(@"slimmed", @YES);
     } else {
         setPreference(@"slimmed", @NO);

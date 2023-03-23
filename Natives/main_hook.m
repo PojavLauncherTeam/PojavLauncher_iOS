@@ -39,12 +39,6 @@ void* hooked_dlopen(const char* path, int mode) {
         return orig_dlopen(NULL, mode);
     }
 
-    if (getenv("POJAV_PREFER_EXTERNAL_JRE") && [@(path) hasSuffix:@"/libawt_xawt.dylib"]) {
-        // In this environment, libawt_xawt is not available/X11 only.
-        // hook dlopen to use our libawt_xawt
-        return orig_dlopen([NSString stringWithFormat:@"%s/Frameworks/libawt_xawt.dylib", getenv("BUNDLE_PATH")].UTF8String, mode);
-    }
-
     return orig_dlopen(path, mode);
 }
 
