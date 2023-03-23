@@ -236,7 +236,7 @@ jre: native
 	$(call METHOD_JAVA_UNPACK,17,'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre17-ca01427/jre17-arm64-20220817-release.tar.xz'); \
 	if [ -f "$(ls jre*.tar.xz)" ]; then rm $(SOURCEDIR)/depends/jre*.tar.xz; fi; \
 	cd $(SOURCEDIR); \
-	rm -rf $(SOURCEDIR)/depends/java-*-openjdk/{bin,include,jre,lib/{ct.sym,libjsig.dylib,src.zip,tools.jar}}; \
+	rm -rf $(SOURCEDIR)/depends/java-*-openjdk/{bin,include,jre,man,lib/{ct.sym,libjsig.dylib,src.zip,tools.jar}}; \
 	$(call METHOD_DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/jvm); \
 	cp -R $(POJAV_JRE8_DIR) $(WORKINGDIR)/PojavLauncher.app/jvm/; \
 	cp -R $(POJAV_JRE17_DIR) $(WORKINGDIR)/PojavLauncher.app/jvm/; \
@@ -254,7 +254,7 @@ assets:
 			--minimum-deployment-target 12.0 \
 			--app-icon AppIcon-Light \
 			--alternate-app-icon AppIcon-Dark \
-			--alternate-app-icon AppIcon-Development
+			--alternate-app-icon AppIcon-Development \
 			--output-partial-info-plist /dev/null || exit 1; \
 	elif [ '$(IOS)' = '1' ]; then \
 		echo 'Due to the required tools not being available, you cannot compile the extras for PojavLauncher with an iOS device.'; \
