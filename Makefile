@@ -116,13 +116,13 @@ METHOD_PACKAGE = \
 	fi
 	
 METHOD_JAVA_UNPACK = \
+	cd $(SOURCEDIR)/depends; \
 	if [ ! -f "java-$(1)-openjdk/release" ] && [ ! -f "$(ls jre8-$(1).tar.xz)" ]; then \
 		if [ "$(RUNNER)" != "1" ]; then \
 			wget '$(2)' -q --show-progress; \
 		fi; \
 		mkdir java-$(1)-openjdk && cd java-$(1)-openjdk; \
 		tar xvf ../jre$(1)-*.tar.xz; \
-		rm ../jre$(1)-*.tar.xz; \
 	fi
 
 # Make sure everything is already available for use. Error if they require something
@@ -230,11 +230,12 @@ java:
 
 jre: native 
 	echo '[PojavLauncher v$(VERSION)] jre - start'
-	mkdir -p $(SOURCEDIR)/depends; \
+	mkdir -p $(SOURCEDIR)/depends
 	cd $(SOURCEDIR)/depends; \
 	$(call METHOD_JAVA_UNPACK,8,'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre8-40df388/jre8-arm64-20220811-release.tar.xz'); \
 	$(call METHOD_JAVA_UNPACK,17,'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre17-ca01427/jre17-arm64-20220817-release.tar.xz'); \
-	cd ..; \
+	rm $(SOURCEDIR)/depends/jre*.tar.xz; \
+	cd $(SOURCEDIR); \
 	rm -rf $(SOURCEDIR)/depends/java-*-openjdk/{bin,include,jre,lib/{ct.sym,libjsig.dylib,src.zip,tools.jar}}; \
 	$(call METHOD_DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/jvm); \
 	cp -R $(POJAV_JRE8_DIR) $(WORKINGDIR)/PojavLauncher.app/jvm/; \
