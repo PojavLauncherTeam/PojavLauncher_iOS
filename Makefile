@@ -248,7 +248,14 @@ assets:
 	echo '[PojavLauncher v$(VERSION)] assets - start'
 	if [ '$(IOS)' = '0' ]; then \
 		mkdir -p $(WORKINGDIR)/PojavLauncher.app/Base.lproj; \
-		xcrun actool $(SOURCEDIR)/Natives/Assets.xcassets --compile $(SOURCEDIR)/Natives/resources --platform iphoneos --minimum-deployment-target 12.0 --app-icon AppIcon-Light --alternate-app-icon AppIcon-Dark --alternate-app-icon AppIcon-Development --output-partial-info-plist /dev/null || exit 1; \
+		xcrun actool $(SOURCEDIR)/Natives/Assets.xcassets \
+			--compile $(SOURCEDIR)/Natives/resources \
+			--platform iphoneos \
+			--minimum-deployment-target 12.0 \
+			--app-icon AppIcon-Light \
+			--alternate-app-icon AppIcon-Dark \
+			--alternate-app-icon AppIcon-Development
+			--output-partial-info-plist /dev/null || exit 1; \
 	elif [ '$(IOS)' = '1' ]; then \
 		echo 'Due to the required tools not being available, you cannot compile the extras for PojavLauncher with an iOS device.'; \
 	fi
