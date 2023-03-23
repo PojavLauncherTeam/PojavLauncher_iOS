@@ -1,5 +1,7 @@
 SHELL := /bin/bash
 .SHELLFLAGS = -ec
+# Use `make VERBOSE=1` to print commands.
+$(VERBOSE).SILENT:
 
 # Prerequisite variables
 SOURCEDIR   := $(shell printf "%q\n" "$(shell pwd)")
@@ -33,6 +35,7 @@ endif
 
 # Distinguish iOS from macOS, and *OS from others
 ifeq ($(DETECTPLAT),Darwin)
+OSVER       := $(shell sw_vers -ProductVersion | cut -b 1-2)
 ifeq ($(shell sw_vers -productName),macOS)
 IOS         := 0
 SDKPATH     ?= $(shell xcrun --sdk iphoneos --show-sdk-path)
@@ -42,7 +45,12 @@ else
 IOS         := 1
 SDKPATH     ?= /usr/share/SDKs/iPhoneOS.sdk
 BOOTJDK     ?= /usr/lib/jvm/java-8-openjdk/bin
-$(warning Building on iOS.)
+ifeq ($(shell test $(OSVER) -gt 14; echo $$?),0)
+PREFIX      ?= /var/jb/
+else
+PREFIX      ?= /
+endif
+$(warning Building on iOS. Note that all targets may not compile or require external components.)
 endif
 else ifeq ($(DETECTPLAT),Linux)
 IOS         := 0
@@ -50,7 +58,7 @@ IOS         := 0
 BOOTJDK     ?= /usr/bin
 $(warning Building on Linux. Note that all targets may not compile or require external components.)
 else
-$(error This platform is not currently supported for building PojavLauncher.)
+$(error This platform is not currently supported for building PojavLauncher)
 endif
 
 # Define PLATFORM_NAME from PLATFORM
@@ -70,16 +78,15 @@ else
 $(error PLATFORM is not valid.)
 endif
 
-# IPABuilder depending variables
-POJAV_BUNDLE_DIR    ?= $(OUTPUTDIR)/PojavLauncher.app
-POJAV_JRE8_DIR       ?= $(SOURCEDIR)/depends/java-8-openjdk
+POJAV_BUNDLE_DIR      ?= $(OUTPUTDIR)/PojavLauncher.app
+POJAV_JRE8_DIR        ?= $(SOURCEDIR)/depends/java-8-openjdk
 POJAV_JRE17_DIR       ?= $(SOURCEDIR)/depends/java-17-openjdk
 
 # Function to use later for checking dependencies
-DEPCHECK   = $(shell $(1) >/dev/null 2>&1 && echo 1)
+METHOD_DEPCHECK   = $(shell $(1) >/dev/null 2>&1 && echo 1)
 
 # Function to modify Info.plist files
-INFOPLIST  =  \
+METHOD_INFOPLIST  =  \
 	if [ '$(4)' = '0' ]; then \
 		plutil -replace $(1) -string $(2) $(3); \
 	else \
@@ -87,33 +94,43 @@ INFOPLIST  =  \
 	fi
 
 # Function to check directories
-DIRCHECK   = \
+METHOD_DIRCHECK   = \
 	if [ ! -d '$(1)' ]; then \
 		mkdir -p $(1); \
 	else \
-		sudo rm -rf $(1)/*; \
+		rm -rf $(1)/*; \
 	fi
 	
 # Function to change the platform on Mach-O files.
 # iOS = 2, tvOS = 3, iOS Simulator = 7, tvOS Simulator = 8
-CHANGE_PLAT = \
+METHOD_CHANGE_PLAT = \
 	vtool -arch arm64 -set-build-version $(1) 12.0 16.0 -replace -output $(2) $(2)
 	
 # Function to package the application
-PACKAGE = \
+METHOD_PACKAGE = \
 	if [ '$(SLIMMED_ONLY)' = '0' ]; then \
 		zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher-$(VERSION)-$(PLATFORM_NAME).ipa Payload; \
 	fi; \
 	if [ '$(SLIMMED)' = '1' ] || [ '$(SLIMMED_ONLY)' = '1' ]; then \
 		zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher.slimmed-$(VERSION)-$(PLATFORM_NAME).ipa Payload --exclude='Payload/PojavLauncher.app/jvm/java-17-openjdk/*'; \
 	fi
+	
+METHOD_JAVA_UNPACK = \
+	if [ ! -f "java-$(1)-openjdk/release" ] && [ ! -f "$(ls jre8-$(1).tar.xz)" ]; then \
+		if [ "$(RUNNER)" != "1" ]; then \
+			wget '$(2)' -q --show-progress; \
+		fi; \
+		mkdir java-$(1)-openjdk && cd java-$(1)-openjdk; \
+		tar xvf ../jre$(1)-*.tar.xz; \
+		rm ../jre$(1)-*.tar.xz; \
+	fi
 
 # Make sure everything is already available for use. Error if they require something
-ifneq ($(call DEPCHECK,cmake --version),1)
+ifneq ($(call METHOD_DEPCHECK,cmake --version),1)
 $(error You need to install cmake)
 endif
 
-ifneq ($(call DEPCHECK,$(BOOTJDK)/javac -version),1)
+ifneq ($(call METHOD_DEPCHECK,$(BOOTJDK)/javac -version),1)
 $(error You need to install JDK 8)
 endif
 
@@ -123,22 +140,22 @@ $(error You need to install JDK 8)
 endif
 endif
 
-ifneq ($(call DEPCHECK,ldid),1)
+ifneq ($(call METHOD_DEPCHECK,ldid),1)
 $(error You need to install ldid)
 endif
 
-ifneq ($(call DEPCHECK,wget --version),1)
+ifneq ($(call METHOD_DEPCHECK,wget --version),1)
 $(error You need to install wget)
 endif
 
 ifeq ($(DETECTPLAT),Linux)
-ifneq ($(call DEPCHECK,lld),1)
+ifneq ($(call METHOD_DEPCHECK,lld),1)
 $(error You need to install lld)
 endif
 endif
 
-ifneq ($(call DEPCHECK,nproc --version),1)
-ifneq ($(call DEPCHECK,gnproc --version),1)
+ifneq ($(call METHOD_DEPCHECK,nproc --version),1)
+ifneq ($(call METHOD_DEPCHECK,gnproc --version),1)
 $(warning Unable to determine number of threads, defaulting to 2.)
 JOBS   ?= 2
 else
@@ -152,42 +169,37 @@ ifndef SDKPATH
 $(error You need to specify SDKPATH to the path of iPhoneOS.sdk. The SDK version should be 14.0 or newer.)
 endif
 
-# Now for the actual Makefile recipes.
-#  all     - runs clean, native, java, extras, and package.
-#  check   - Makes sure that all variables are correct.
-#  native  - Builds the Objective-C code.
-#  java    - Builds the Java code.
-#  jre     - Download iOS JRE and/or unpack it for use.
-#  assets  - Builds the Assets.
-#  package - Builds the application package.
-#  deploy  - runs native and java + installs to jailbroken device.
-#  dsym    - Generates debug symbol files
-
 all: clean native java jre extras package dsym
 
+help:
+	echo 'Makefile to compile PojavLauncher'
+	echo ''
+	echo 'Usage:'
+	echo '    make                                Makes everything under all'
+	echo '    make help                           Displays this message'
+	echo '    make all                            Builds the entire app'
+	echo '    make native                         Builds the native app'
+	echo '    make java                           Builds the Java app'
+	echo '    make jre                            Downloads/unpacks the iOS JREs'
+	echo '    make assets                         Compiles Assets.xcassets'
+	echo '    make payload                        Makes Payload/PojavLauncher.app'
+	echo '    make package                        Builds ipa of PojavLauncher'
+	echo '    make deploy                         Copies files to local iDevice'
+	echo '    make dsym                           Generate debug symbol files'
+	echo '    make clean                          Cleans build directories'
+	echo '    make check                          Dump all variables for checking'
+
 check:
-	@printf '\nDumping all Makefile variables.\n'
-	@printf 'DETECTPLAT           - $(DETECTPLAT)\n'
-	@printf 'DETECTARCH           - $(DETECTARCH)\n'
-	@printf 'SDKPATH              - $(SDKPATH)\n'
-	@printf 'BOOTJDK              - $(BOOTJDK)\n'
-	@printf 'SOURCEDIR            - $(SOURCEDIR)\n'
-	@printf 'WORKINGDIR           - $(WORKINGDIR)\n'
-	@printf 'OUTPUTDIR            - $(OUTPUTDIR)\n'
-	@printf 'JOBS                 - $(JOBS)\n'
-	@printf 'VERSION              - $(VERSION)\n'
-	@printf 'BRANCH               - $(BRANCH)\n'
-	@printf 'COMMIT               - $(COMMIT)\n'
-	@printf 'RELEASE              - $(RELEASE)\n'
-	@printf 'IOS                  - $(IOS)\n'
-	@printf 'POJAV_BUNDLE_DIR     - $(POJAV_BUNDLE_DIR)\n'
-	@printf 'POJAV_JRE_DIR        - $(POJAV_JRE_DIR)\n'
-	@printf '\nVerify that all of the variables are correct.\n'
-	
+	$(foreach v, \
+		$(shell echo "$(filter-out METHOD_% .% MAKEFILE_LIST MAKEFLAGS CURDIR,$(.VARIABLES))" | tr ' ' '\n' | sort), \
+		$(if $(filter file,$(origin $(v))), \
+		$(info $(shell printf "%-20s" "$(v)") = $(value $(v)))) \
+	)
+
 native:
-	@echo '[PojavLauncher v$(VERSION)] native - start'
-	@mkdir -p $(WORKINGDIR)
-	@cd $(WORKINGDIR) && cmake . \
+	echo '[PojavLauncher v$(VERSION)] native - start'
+	mkdir -p $(WORKINGDIR)
+	cd $(WORKINGDIR) && cmake . \
 		-DCMAKE_BUILD_TYPE=$(CMAKE_BUILD_TYPE) \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_SYSTEM_NAME=Darwin \
@@ -200,46 +212,31 @@ native:
 		-DCONFIG_RELEASE=$(RELEASE) \
 		..
 
-	@cmake --build $(WORKINGDIR) --config $(CMAKE_BUILD_TYPE) -j$(JOBS)
-	@# --target awt_headless awt_xawt libOSMesaOverride.dylib tinygl4angle PojavLauncher
-	@rm $(WORKINGDIR)/libawt_headless.dylib
-	@echo '[PojavLauncher v$(VERSION)] native - end'
+	cmake --build $(WORKINGDIR) --config $(CMAKE_BUILD_TYPE) -j$(JOBS)
+	# --target awt_headless awt_xawt libOSMesaOverride.dylib tinygl4angle PojavLauncher
+	rm $(WORKINGDIR)/libawt_headless.dylib
+	echo '[PojavLauncher v$(VERSION)] native - end'
 
 java:
-	@echo '[PojavLauncher v$(VERSION)] java - start'
-	@cd $(SOURCEDIR)/JavaApp; \
+	echo '[PojavLauncher v$(VERSION)] java - start'
+	cd $(SOURCEDIR)/JavaApp; \
 	mkdir -p local_out/classes; \
 	$(BOOTJDK)/javac -cp "libs/*:libs_caciocavallo/*" -d local_out/classes $$(find src -type f -name "*.java" -print) -XDignore.symbol.file || exit 1; \
 	cd local_out/classes; \
 	$(BOOTJDK)/jar -cf ../launcher.jar android com net || exit 1; \
 	cp $(SOURCEDIR)/JavaApp/libs/lwjgl3-minecraft.jar ../lwjgl3-minecraft.jar || exit 1; \
 	$(BOOTJDK)/jar -uf ../lwjgl3-minecraft.jar org || exit 1;
-	@echo '[PojavLauncher v$(VERSION)] java - end'
+	echo '[PojavLauncher v$(VERSION)] java - end'
 
 jre: native 
-	@echo '[PojavLauncher v$(VERSION)] jre - start'
-	@mkdir -p $(SOURCEDIR)/depends; \
+	echo '[PojavLauncher v$(VERSION)] jre - start'
+	mkdir -p $(SOURCEDIR)/depends; \
 	cd $(SOURCEDIR)/depends; \
-	if [ ! -f "java-8-openjdk/release" ] && [ ! -f "$(ls jre8-*.tar.xz)" ]; then \
-		if [ "$(RUNNER)" != "1" ]; then \
-			wget 'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre8-40df388/jre8-arm64-20220811-release.tar.xz' -q --show-progress; \
-		fi; \
-		mkdir java-8-openjdk && cd java-8-openjdk; \
-		tar xvf ../jre8-*.tar.xz; \
-		rm ../jre8-*.tar.xz; \
-	fi; \
-	cd $(SOURCEDIR)/depends; \
-	if [ ! -f "java-17-openjdk/release" ] && [ ! -f "$(ls jre17-*.tar.xz)" ]; then \
-		if [ "$(RUNNER)" != "1" ]; then \
-			wget 'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre17-ca01427/jre17-arm64-20220817-release.tar.xz' -q --show-progress; \
-		fi; \
-		mkdir java-17-openjdk && cd java-17-openjdk; \
-		tar xvf ../jre17-*.tar.xz; \
-		rm ../jre17-*.tar.xz; \
-	fi; \
+	$(call METHOD_JAVA_UNPACK,8,'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre8-40df388/jre8-arm64-20220811-release.tar.xz'); \
+	$(call METHOD_JAVA_UNPACK,17,'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre17-ca01427/jre17-arm64-20220817-release.tar.xz'); \
 	cd ..; \
 	rm -rf $(SOURCEDIR)/depends/java-*-openjdk/{bin,include,jre,lib/{ct.sym,libjsig.dylib,src.zip,tools.jar}}; \
-	$(call DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/jvm); \
+	$(call METHOD_DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/jvm); \
 	cp -R $(POJAV_JRE8_DIR) $(WORKINGDIR)/PojavLauncher.app/jvm/; \
 	cp -R $(POJAV_JRE17_DIR) $(WORKINGDIR)/PojavLauncher.app/jvm/; \
 	cp $(WORKINGDIR)/libawt_xawt.dylib $(WORKINGDIR)/PojavLauncher.app/jvm/java-17-openjdk/lib/; \
@@ -247,110 +244,75 @@ jre: native
 	echo '[PojavLauncher v$(VERSION)] jre - end'
 
 assets:
-	@echo '[PojavLauncher v$(VERSION)] assets - start'
-	@if [ '$(IOS)' = '0' ]; then \
+	echo '[PojavLauncher v$(VERSION)] assets - start'
+	if [ '$(IOS)' = '0' ]; then \
 		mkdir -p $(WORKINGDIR)/PojavLauncher.app/Base.lproj; \
 		xcrun actool $(SOURCEDIR)/Natives/Assets.xcassets --compile $(SOURCEDIR)/Natives/resources --platform iphoneos --minimum-deployment-target 12.0 --app-icon AppIcon-Light --alternate-app-icon AppIcon-Dark --alternate-app-icon AppIcon-Development --output-partial-info-plist /dev/null || exit 1; \
 	elif [ '$(IOS)' = '1' ]; then \
 		echo 'Due to the required tools not being available, you cannot compile the extras for PojavLauncher with an iOS device.'; \
 	fi
-	@echo '[PojavLauncher v$(VERSION)] assets - end'
+	echo '[PojavLauncher v$(VERSION)] assets - end'
 
 payload: native java jre assets
-	@echo '[PojavLauncher v$(VERSION)] package - start'
-	$(call DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs)
-	$(call DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs_caciocavallo)
-	$(call DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs_caciocavallo17)
-	@cp -R $(SOURCEDIR)/Natives/en.lproj/LaunchScreen.storyboardc $(WORKINGDIR)/PojavLauncher.app/Base.lproj/ || exit 1
-	@cp -R $(SOURCEDIR)/Natives/resources/* $(WORKINGDIR)/PojavLauncher.app/ || exit 1
-	@cp $(WORKINGDIR)/*.dylib $(WORKINGDIR)/PojavLauncher.app/Frameworks/ || exit 1
-	@cp -R $(SOURCEDIR)/JavaApp/libs/* $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
-	@cp $(SOURCEDIR)/JavaApp/local_out/*.jar $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
-	@cp -R $(SOURCEDIR)/JavaApp/libs_caciocavallo* $(WORKINGDIR)/PojavLauncher.app/ || exit 1
-	@cp -R $(SOURCEDIR)/Natives/*.lproj $(WORKINGDIR)/PojavLauncher.app/ || exit 1
-	$(call DIRCHECK,$(OUTPUTDIR)/Payload)
-	@cp -R $(WORKINGDIR)/PojavLauncher.app $(OUTPUTDIR)/Payload
+	echo '[PojavLauncher v$(VERSION)] payload - start'
+	$(call METHOD_DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs)
+	$(call METHOD_DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs_caciocavallo)
+	$(call METHOD_DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs_caciocavallo17)
+	cp -R $(SOURCEDIR)/Natives/en.lproj/LaunchScreen.storyboardc $(WORKINGDIR)/PojavLauncher.app/Base.lproj/ || exit 1
+	cp -R $(SOURCEDIR)/Natives/resources/* $(WORKINGDIR)/PojavLauncher.app/ || exit 1
+	cp $(WORKINGDIR)/*.dylib $(WORKINGDIR)/PojavLauncher.app/Frameworks/ || exit 1
+	cp -R $(SOURCEDIR)/JavaApp/libs/* $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
+	cp $(SOURCEDIR)/JavaApp/local_out/*.jar $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
+	cp -R $(SOURCEDIR)/JavaApp/libs_caciocavallo* $(WORKINGDIR)/PojavLauncher.app/ || exit 1
+	cp -R $(SOURCEDIR)/Natives/*.lproj $(WORKINGDIR)/PojavLauncher.app/ || exit 1
+	$(call METHOD_DIRCHECK,$(OUTPUTDIR)/Payload)
+	cp -R $(WORKINGDIR)/PojavLauncher.app $(OUTPUTDIR)/Payload
 	ldid -S $(OUTPUTDIR)/Payload/PojavLauncher.app; \
 	ldid -S$(SOURCEDIR)/entitlements.xml $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher; \
 	chmod -R 755 $(OUTPUTDIR)/Payload
-	@echo '[PojavLauncher v$(VERSION)] package - end'
+	echo '[PojavLauncher v$(VERSION)] payload - end'
 
 deploy:
-	@echo '[PojavLauncher v$(VERSION)] deploy - start'
-	ldid -S $(WORKINGDIR)/PojavLauncher.app; \
-	ldid -S$(SOURCEDIR)/entitlements.xml $(WORKINGDIR)/PojavLauncher.app/PojavLauncher; \
-	if [ '$(NOSTDIN)' = '1' ]; then \
-		echo '$(SUDOPASS)' | sudo -S mv $(WORKINGDIR)/*.dylib /Applications/PojavLauncher.app/Frameworks/; \
-		echo '$(SUDOPASS)' | sudo -S mv $(WORKINGDIR)/PojavLauncher.app/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher; \
-		echo '$(SUDOPASS)' | sudo -S mv $(SOURCEDIR)/JavaApp/local_out/*.jar /Applications/PojavLauncher.app/libs/; \
-		cd /Applications/PojavLauncher.app/Frameworks; \
-		echo '$(SUDOPASS)' | sudo -S chown -R 501:501 /Applications/PojavLauncher.app/*; \
-	else \
-		sudo mv $(WORKINGDIR)/*.dylib /Applications/PojavLauncher.app/Frameworks/; \
-		sudo mv $(WORKINGDIR)/PojavLauncher.app/PojavLauncher /Applications/PojavLauncher.app/PojavLauncher; \
-		sudo mv $(SOURCEDIR)/JavaApp/local_out/*.jar /Applications/PojavLauncher.app/libs/; \
-		cd /Applications/PojavLauncher.app/Frameworks; \
-		sudo chown -R 501:501 /Applications/PojavLauncher.app/*; \
+	echo '[PojavLauncher v$(VERSION)] deploy - start'
+	if [ '$(IOS)' = '1' ]; then \
+		ldid -S $(WORKINGDIR)/PojavLauncher.app || exit 1; \
+		ldid -S$(SOURCEDIR)/entitlements.xml $(WORKINGDIR)/PojavLauncher.app/PojavLauncher || exit 1; \
+		sudo mv $(WORKINGDIR)/*.dylib $(PREFIX)Applications/PojavLauncher.app/Frameworks/ || exit 1; \
+		sudo mv $(WORKINGDIR)/PojavLauncher.app/PojavLauncher $(PREFIX)Applications/PojavLauncher.app/PojavLauncher || exit 1; \
+		sudo mv $(SOURCEDIR)/JavaApp/local_out/*.jar $(PREFIX)Applications/PojavLauncher.app/libs/ || exit 1; \
+		cd $(PREFIX)Applications/PojavLauncher.app/Frameworks || exit 1; \
+		sudo chown -R 501:501 $(PREFIX)Applications/PojavLauncher.app/* || exit 1; \
+	elif [ '$(IOS)' = '0' ]; then \
+		echo 'Deploy recipe only supports being run on a jailbroken iOS device.'; \
 	fi
-	@echo '[PojavLauncher v$(VERSION)] deploy - end'
+	echo '[PojavLauncher v$(VERSION)] deploy - end'
 
 package: payload
-	@echo '[PojavLauncher v$(VERSION)] platformer - start'
+	echo '[PojavLauncher v$(VERSION)] package - start'
 	if [  '$(PLATFORM)' != '2' ]; then \
 		for file in $$(find $(OUTPUTDIR)/Payload/PojavLauncher.app); do \
 			if [[ "$$(file $$file)" == *"Mach-O"* ]]; then \
-				$(call CHANGE_PLAT,$(PLATFORM),$$file); \
+				$(call METHOD_CHANGE_PLAT,$(PLATFORM),$$file); \
 			fi; \
 		done; \
 	fi; \
 	cd $(OUTPUTDIR); \
-	$(call PACKAGE)
-	@echo '[PojavLauncher v$(VERSION)] platformer - end'
+	$(call METHOD_PACKAGE)
+	echo '[PojavLauncher v$(VERSION)] package - end'
 	
 dsym: package
-	@echo '[PojavLauncher v$(VERSION)] dsym - start'
-	@cd $(OUTPUTDIR); \
-	if [ '$(NOSTDIN)' = '1' ]; then \
-		echo '$(SUDOPASS)' | sudo -S dsymutil --arch arm64 $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher; \
-		echo '$(SUDOPASS)' | sudo -S rm -rf $(OUTPUTDIR)/PojavLauncher.dSYM; \
-		echo '$(SUDOPASS)' | sudo -S mv $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher.dSYM $(OUTPUTDIR)/PojavLauncher.dSYM; \
-	else \
-		sudo dsymutil --arch arm64 $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher; \
-		sudo rm -rf $(OUTPUTDIR)/PojavLauncher.dSYM; \
-		sudo mv $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher.dSYM $(OUTPUTDIR)/PojavLauncher.dSYM; \
-	fi
-	@echo '[PojavLauncher v$(VERSION)] dsym - end'
+	echo '[PojavLauncher v$(VERSION)] dsym - start'
+	dsymutil --arch arm64 $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher; \
+	rm -rf $(OUTPUTDIR)/PojavLauncher.dSYM; \
+	mv $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher.dSYM $(OUTPUTDIR)/PojavLauncher.dSYM
+	echo '[PojavLauncher v$(VERSION)] dsym - end'
 	
 
 clean:
-	@echo '[PojavLauncher v$(VERSION)] clean - start'
-	@if [ '$(NOSTDIN)' = '1' ]; then \
-		echo '$(SUDOPASS)' | sudo -S rm -rf $(WORKINGDIR); \
-		echo '$(SUDOPASS)' | sudo -S rm -rf JavaApp/build; \
-		echo '$(SUDOPASS)' | sudo -S rm -rf $(OUTPUTDIR); \
-	else \
-		sudo rm -rf $(WORKINGDIR); \
-		sudo rm -rf JavaApp/build; \
-		sudo rm -rf $(OUTPUTDIR); \
-	fi
-	@echo '[PojavLauncher v$(VERSION)] clean - end'
+	echo '[PojavLauncher v$(VERSION)] clean - start'
+	rm -rf $(WORKINGDIR)
+	rm -rf JavaApp/build
+	rm -rf $(OUTPUTDIR)
+	echo '[PojavLauncher v$(VERSION)] clean - end'
 
-help:
-	@echo 'Makefile to compile PojavLauncher'
-	@echo ''
-	@echo 'Usage:'
-	@echo '    make                                Makes everything under all'
-	@echo '    make help                           Displays this message'
-	@echo '    make all                            Builds the entire app'
-	@echo '    make native                         Builds the native app'
-	@echo '    make java                           Builds the Java app'
-	@echo '    make jre                            Downloads/unpacks the iOS JREs'
-	@echo '    make assets                         Compiles Assets.xcassets'
-	@echo '    make payload                        Makes Payload/PojavLauncher.app'
-	@echo '    make package                        Builds ipa of PojavLauncher'
-	@echo '    make deploy                         Copies files to local iDevice'
-	@echo '    make dsym                           Generate debug symbol files'
-	@echo '    make clean                          Cleans build directories'
-	@echo '    make check                          Dump all variables for checking'
-
-.PHONY: all clean check native java jre package dsym deploy 
+.PHONY: all clean check native java jre package dsym deploy help
