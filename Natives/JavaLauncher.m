@@ -285,7 +285,20 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     
     // TODO: Add preference toggle 
     NSError *sessionError = nil;
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionMixWithOthers error:&sessionError];
+    AVAudioSessionCategory category;
+    AVAudioSessionCategoryOptions options;
+    if([getPreference(@"silence_other_audio") boolValue]) {
+        category = AVAudioSessionCategorySoloAmbient;
+    } else {
+        category = AVAudioSessionCategoryPlayback;
+    }
+    
+    if([getPreference(@"silence_with_switch") boolValue]) {
+        options = AVAudioSessionCategoryOptionMixWithOthers;
+    } else {
+        options = 0;
+    }
+    [[AVAudioSession sharedInstance] setCategory:category withOptions:options error:&sessionError];
     [[AVAudioSession sharedInstance] setActive:YES error:&sessionError];
     
 

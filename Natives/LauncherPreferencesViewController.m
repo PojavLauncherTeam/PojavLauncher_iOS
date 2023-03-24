@@ -236,7 +236,19 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                       [self.presentingViewController performSelector:@selector(switchToInternalDisplay)];
                   }
               }
-            }
+            },
+            @{@"key": @"silence_other_audio",
+              @"hasDetail": @YES,
+              @"icon": @"speaker.slash",
+              @"type": self.typeSwitch,
+              @"enableCondition": whenNotInGame
+            },
+            @{@"key": @"silence_with_switch",
+              @"hasDetail": @YES,
+              @"icon": @"speaker.zzz",
+              @"type": self.typeSwitch,
+              @"enableCondition": whenNotInGame
+            },
         ], @[
             // Control settings
             @{@"icon": @"gamecontroller"},

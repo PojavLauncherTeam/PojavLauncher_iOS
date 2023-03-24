@@ -145,6 +145,8 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(envPrefDict, @"renderer", @"auto");
     setDefaultValueForPref(envPrefDict, @"fullscreen_airplay", @YES);
     setDefaultValueForPref(envPrefDict, @"hardware_hide", @NO);
+    setDefaultValueForPref(envPrefDict, @"silence_other_audio", @NO);
+    setDefaultValueForPref(envPrefDict, @"silence_with_switch", @NO);
     setDefaultValueForPref(prefDict, @"slimmed", @NO);
     fillDefaultWarningDict();
     setDefaultValueForPref(prefDict, @"force_unsupported_launch", @NO);
