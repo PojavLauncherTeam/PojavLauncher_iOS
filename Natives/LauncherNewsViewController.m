@@ -44,15 +44,6 @@ UIEdgeInsets insets;
     [webView loadRequest:request];
     [self.view addSubview:webView];
 
-    if(roundf(NSProcessInfo.processInfo.physicalMemory / 1048576) < 1900 && ![getPreference(@"force_unsupported_launch") boolValue]) {
-        UIAlertController *RAMAlert = [UIAlertController alertControllerWithTitle:localize(@"login.warn.title.a7", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:localize(@"OK", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            exit(0);
-        }];
-        [self presentViewController:RAMAlert animated:YES completion:nil];
-        [RAMAlert addAction:ok];
-    }
-
     if(!goodiOS && ([getPreference(@"unsupported_warn_counter") intValue] == 0)) {
         UIAlertController *verAlert = [UIAlertController alertControllerWithTitle:localize(@"login.warn.title.iosver", nil) message:localize(@"login.warn.message.iosver", nil) preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *ok = [UIAlertAction actionWithTitle:localize(@"OK", nil) style:UIAlertActionStyleCancel handler:nil];
