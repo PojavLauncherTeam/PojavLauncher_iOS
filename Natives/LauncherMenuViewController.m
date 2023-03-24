@@ -136,7 +136,7 @@
             [self displayProgress:localize(@"login.jit.enabled", nil)];
             [self displayProgress:nil];
         } else {
-            [self enableJITWithIntegrations];
+            [self enableJITWithJitStreamer:[getPreference(@"enable_altkit") boolValue]];
         }
     }
 }
@@ -320,33 +320,31 @@
     }
 }
 
-- (BOOL)enableJITWithAltKit
+- (void)enableJITWithAltKit
 {
-    __block BOOL enabled = NO;
     [ALTServerManager.sharedManager startDiscovering];
     [ALTServerManager.sharedManager autoconnectWithCompletionHandler:^(ALTServerConnection *connection, NSError *error) {
         if (error) {
-            NSLog(@"[AltKit] Could not auto-connect to server. %@", error);
+            NSLog(@"[AltKit] Could not auto-connect to server. %@", error.localizedRecoverySuggestion);
         }
         [connection enableUnsignedCodeExecutionWithCompletionHandler:^(BOOL success, NSError *error) {
             if (success) {
                 NSLog(@"[AltKit] Successfully enabled JIT compilation!");
                 [ALTServerManager.sharedManager stopDiscovering];
-                enabled = YES;
             } else {
-                NSLog(@"[AltKit] Error enabling JIT: %@", error.description);
+                NSLog(@"[AltKit] Error enabling JIT: %@", error.localizedRecoverySuggestion);
+                showDialog(self, localize(@"login.jit.fail.title", nil), localize(@"login.jit.fail.description", nil));
             }
             [connection disconnect];
         }];
     }];
-    
-    return enabled;
 }
 
-- (BOOL)enableJITWithJitStreamer
+- (void)enableJITWithJitStreamer:(BOOL)shouldRunAltKit
 {
-    __block BOOL enabled = NO;
+    [self displayProgress:localize(@"login.jit.checking", nil)];
 
+    // TODO: customizable address
     NSString *address = getPreference(@"jitstreamer_server");
     NSLog(@"[JitStreamer] Server is %@, attempting to connect...", address);
 
@@ -370,44 +368,20 @@
                 responseDict = response;
             }
             if ([responseDict[@"success"] boolValue]) {
-                enabled = YES;
+                [self displayProgress:localize(@"login.jit.enabled", nil)];
+                [self displayProgress:nil];
             } else {
                 NSLog(@"[JitStreamer] Error enabling JIT: %@", responseDict[@"message"]);
+                if(shouldRunAltKit) { [self enableJITWithAltKit]; }
+                else { showDialog(self, localize(@"login.jit.fail.title", nil), localize(@"login.jit.fail.description", nil)); }
             }
         };
         [manager POST:[NSString stringWithFormat:@"http://%@/attach/%d/", address, getpid()] parameters:nil headers:nil progress:nil success:handleResponse failure:handleResponse];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"[JitStreamer] Server not found or VPN not connected.");
+        if(shouldRunAltKit) { [self enableJITWithAltKit]; }
+        else { showDialog(self, localize(@"login.jit.fail.title", nil), localize(@"login.jit.fail.description", nil)); }
     }];
-    
-    return enabled;
-}
-
-- (void)enableJITWithIntegrations {
-    [self displayProgress:localize(@"login.jit.checking", nil)];
-    
-    BOOL jitstreamer = [self enableJITWithJitStreamer];
-    BOOL altkit = NO;
-    if(!jitstreamer && [getPreference(@"enable_altkit") boolValue]) {
-        altkit = [self enableJITWithAltKit];
-    } else if(jitstreamer) {
-        [self displayProgress:[NSString stringWithFormat:@"%@", localize(@"login.jit.enabled", nil)]];
-        [self displayProgress:nil];
-        return;
-    }
-    
-    if(!altkit) {
-        [self displayProgress:[NSString stringWithFormat:@"%@", localize(@"login.jit.fail", nil)]];
-        [self displayProgress:nil];
-        NSLog(@"[JIT] All integrations failed. User must enable JIT manually.");
-        if(![getPreference(@"debug_skip_wait_jit") boolValue]) {
-            showDialog(self, localize(@"login.jit.fail.title", nil), localize(@"login.jit.fail.description", nil));
-        }
-    } else {
-        [self displayProgress:localize(@"login.jit.enabled", nil)];
-        [self displayProgress:nil];
-        return;
-    }
 }
 
 @end
