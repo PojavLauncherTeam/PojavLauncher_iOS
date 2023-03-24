@@ -106,9 +106,9 @@ void init_checkForJailbreak() {
 
 void init_logDeviceAndVer(char *argument) {
     // PojavLauncher version
-    NSLog(@"[Pre-Init] PojavLauncher version: %s-%s, branch: %s, commit: %s",
-        [NSBundle.mainBundle.infoDictionary[@"CFBundleShortVersionString"] UTF8String],
-        CONFIG_TYPE, CONFIG_BRANCH, CONFIG_COMMIT);
+    NSLog(@"[Pre-Init] PojavLauncher INIT!");
+    NSLog(@"[Pre-Init] Version: %@-%s", NSBundle.mainBundle.infoDictionary[@"CFBundleShortVersionString"], CONFIG_TYPE);
+    NSLog(@"[Pre-Init] Commit: %s (%s)", CONFIG_COMMIT, CONFIG_BRANCH);
 
     // Hardware + Software
     struct utsname systemInfo;
@@ -116,7 +116,7 @@ void init_logDeviceAndVer(char *argument) {
     NSString *deviceHardware = @(systemInfo.machine);
     const char *deviceSoftware = [[UIDevice currentDevice] systemVersion].UTF8String;
     
-    NSString *friendlyName = deviceid_dict [deviceHardware];
+    NSString *friendlyName = deviceid_dict[deviceHardware];
     if(friendlyName != nil) {
         setenv("POJAV_DETECTEDHW", friendlyName.UTF8String, 1);
     } else {
@@ -136,7 +136,8 @@ void init_logDeviceAndVer(char *argument) {
     
     setenv("POJAV_DETECTEDINST", type, 1);
     
-    NSLog(@"[Pre-Init] %s with iOS %s (%s)", getenv("POJAV_DETECTEDHW"), getenv("POJAV_DETECTEDSW"), getenv("POJAV_DETECTEDINST"));
+    NSLog(@"[Pre-Init] Device: %s", getenv("POJAV_DETECTEDHW"));
+    NSLog(@"[Pre-Init] iOS %s (%s)", getenv("POJAV_DETECTEDSW"), getenv("POJAV_DETECTEDINST"));
     
     NSLog(@"[Pre-init] Entitlements availability:");
     printEntitlementAvailability(@"com.apple.developer.kernel.extended-virtual-addressing");
@@ -263,9 +264,9 @@ void init_setupMultiDir() {
     if (multidir.length == 0) {
         multidir = @"default";
         setPreference(@"game_directory", multidir);
-        NSLog(@"[Pre-init] MULTI_DIR environment variable was not set. Defaulting to %@ for future use.\n", multidir);
+        NSLog(@"[Pre-init] Game directory was not set. Defaulting to %@ for future use.\n", multidir);
     } else {
-        NSLog(@"[Pre-init] Restored preference: MULTI_DIR is set to %@\n", multidir);
+        NSLog(@"[Pre-init] Restored game directory preference (%@)\n", multidir);
     }
 
     NSString *lasmPath = [NSString stringWithFormat:@"%s/Library/Application Support/minecraft", getenv("POJAV_HOME")]; //libr
@@ -277,18 +278,8 @@ void init_setupMultiDir() {
     [fm removeItemAtPath:lasmPath error:nil];
     [fm createDirectoryAtPath:lasmPath.stringByDeletingLastPathComponent withIntermediateDirectories:YES attributes:nil error:nil];
     [fm createSymbolicLinkAtPath:lasmPath withDestinationPath:multidirPath error:nil];
-    setenv("POJAV_GAME_DIR", lasmPath.UTF8String, 1);
-
-    if (0 == access("/var/mobile/Documents/minecraft", F_OK)) {
-        [fm moveItemAtPath:@"/var/mobile/Documents/minecraft" toPath:multidir error:nil];
-        NSLog(@"[Pre-init] Migrated old minecraft folder to new location.");
-    }
-
-    if (0 == access("/var/mobile/Documents/Library", F_OK)) {
-        remove("/var/mobile/Documents/Library");
-    }
-
     [fm changeCurrentDirectoryPath:lasmPath];
+    setenv("POJAV_GAME_DIR", lasmPath.UTF8String, 1);
 }
 
 void init_setupResolvConf() {
@@ -320,7 +311,7 @@ void init_setupHomeDirectory() {
     if(homeError != nil) {
         // TODO: Persistent storage
         homeError = nil;
-        homeDir = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
+        homeDir = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES).lastObject;
         [fm createDirectoryAtPath:homeDir withIntermediateDirectories:YES attributes:nil error:&homeError];
     }
     
@@ -363,7 +354,7 @@ int main(int argc, char *argv[]) {
     loadPreferences(NO);
     debugBoundsEnabled = [getPreference(@"debug_show_layout_bounds") boolValue];
     debugLogEnabled = [getPreference(@"debug_logging") boolValue];
-    NSLog(@"Debug log enabled: %@", debugLogEnabled ? @"YES" : @"NO");
+    NSLog(@"[Debugging] Debug log enabled: %@", debugLogEnabled ? @"YES" : @"NO");
 
     init_setupResolvConf();
     init_setupMultiDir();
