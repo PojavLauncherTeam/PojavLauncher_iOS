@@ -35,7 +35,7 @@ endif
 
 # Distinguish iOS from macOS, and *OS from others
 ifeq ($(DETECTPLAT),Darwin)
-OSVER       := $(shell sw_vers -ProductVersion | cut -b 1-2)
+OSVER       := $(shell sw_vers -productVersion | cut -b 1-2)
 ifeq ($(shell sw_vers -productName),macOS)
 IOS         := 0
 SDKPATH     ?= $(shell xcrun --sdk iphoneos --show-sdk-path)
@@ -45,7 +45,7 @@ else
 IOS         := 1
 SDKPATH     ?= /usr/share/SDKs/iPhoneOS.sdk
 BOOTJDK     ?= /usr/lib/jvm/java-8-openjdk/bin
-ifeq ($(shell test $(OSVER) -gt 14; echo $$?),0)
+ifeq ($(shell test "$(OSVER)" -gt 14; echo $$?),0)
 PREFIX      ?= /var/jb/
 else
 PREFIX      ?= /
