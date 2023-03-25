@@ -434,7 +434,9 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     ];
 
     self.title = localize(@"Settings", nil);
-    self.navigationItem.rightBarButtonItems = @[[sidebarViewController drawAccountButton], [self drawHelpButton]];
+    if (self.navigationController) {
+        self.navigationItem.rightBarButtonItems = @[[sidebarViewController drawAccountButton], [self drawHelpButton]];
+    }
 }
 
 - (UIBarButtonItem *)drawHelpButton {
