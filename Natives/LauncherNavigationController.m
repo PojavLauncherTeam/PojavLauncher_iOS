@@ -225,6 +225,7 @@
         reloadCompletion();
     } failure:^(NSURLSessionTask *operation, NSError *error) {
         NSDebugLog(@"[VersionList] Warning: Unable to fetch version list: %@", error.localizedDescription);
+        reloadCompletion();
     }];
 }
 

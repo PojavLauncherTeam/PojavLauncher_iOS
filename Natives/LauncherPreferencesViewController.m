@@ -733,12 +733,17 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
 - (void)tableView:(UITableView *)tableView openChildPaneAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *item = self.prefContents[indexPath.section][indexPath.row];
-    UINavigationController *vc = [[UINavigationController alloc] initWithRootViewController:[[item[@"class"] alloc] init]];
-    vc.navigationBar.prefersLargeTitles = YES;
-    if(@available(iOS 13.0, *)) {
-        vc.modalInPresentation = ![item[@"canDismissWithSwipe"] boolValue];
+    UIViewController *vc = [item[@"class"] new];
+    if ([item[@"canDismissWithSwipe"] boolValue]) {
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+        nav.navigationBar.prefersLargeTitles = YES;
+        if(@available(iOS 13.0, *)) {
+            nav.modalInPresentation = YES;
+        }
+        [self.navigationController presentViewController:nav animated:YES completion:nil];
     }
-    [self.navigationController presentViewController:vc animated:YES completion:nil];
 }
 
 - (void)tableView:(UITableView *)tableView openPickerAtIndexPath:(NSIndexPath *)indexPath {

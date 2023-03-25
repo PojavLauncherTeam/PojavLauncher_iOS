@@ -6,8 +6,6 @@
 #import "ios_uikit_bridge.h"
 #import "utils.h"
 
-#define contentNavigationController (LauncherNavigationController *)UIApplication.sharedApplication.keyWindow.rootViewController.splitViewController.viewControllers[1]
-
 @interface LauncherPrefGameDirViewController ()<UITextFieldDelegate>
 @property(nonatomic) NSMutableArray *array;
 @end
@@ -37,9 +35,6 @@
             [self.array addObject:file];
         }
     }
-    
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissModalViewController)];
-    
 }
 
 - (void)changeSelectionTo:(NSString *)name {
@@ -49,7 +44,7 @@
     [NSFileManager.defaultManager removeItemAtPath:lasmPath error:nil];
     [NSFileManager.defaultManager createSymbolicLinkAtPath:lasmPath withDestinationPath:multidirPath error:nil];
     if ([getPreference(@"selected_version_type") intValue] == 0) {
-        [(LauncherNavigationController *)contentNavigationController reloadVersionList:0];
+        [(LauncherNavigationController *)self.navigationController reloadVersionList:0];
     }
 }
 
