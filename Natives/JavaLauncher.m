@@ -278,17 +278,15 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     }
     margv[++margc] = [NSString stringWithFormat:@"%dx%d", width, height].UTF8String;
     
-    // TODO: Add preference toggle 
     NSError *sessionError = nil;
     AVAudioSessionCategory category;
     AVAudioSessionCategoryOptions options;
-    if([getPreference(@"silence_other_audio") boolValue]) {
+    if([getPreference(@"silence_with_switch") boolValue]) {
         category = AVAudioSessionCategorySoloAmbient;
     } else {
         category = AVAudioSessionCategoryPlayback;
     }
-    
-    if([getPreference(@"silence_with_switch") boolValue]) {
+    if([getPreference(@"silence_other_audio") boolValue]) {
         options = AVAudioSessionCategoryOptionMixWithOthers;
     } else {
         options = 0;
