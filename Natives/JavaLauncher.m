@@ -287,9 +287,9 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
         category = AVAudioSessionCategoryPlayback;
     }
     if([getPreference(@"silence_other_audio") boolValue]) {
-        options = AVAudioSessionCategoryOptionMixWithOthers;
-    } else {
         options = 0;
+    } else {
+        options = AVAudioSessionCategoryOptionMixWithOthers;
     }
     [[AVAudioSession sharedInstance] setCategory:category withOptions:options error:&sessionError];
     [[AVAudioSession sharedInstance] setActive:YES error:&sessionError];
