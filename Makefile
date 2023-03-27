@@ -136,7 +136,9 @@ METHOD_JAVA_UNPACK = \
 
 # Function to codesign binaries.
 METHOD_CODESIGN = \
-	codesign -f -s $(1) --generate-entitlement-der --entitlements entitlements.codesign.xml $(2)
+	codesign --remove-signature $(2); \
+	codesign -f -s $(1) --generate-entitlement-der --entitlements entitlements.codesign.xml $(2); \
+	printf 'File: '; printf $(2); printf ', Codesigned with team: '; printf $(1); printf '\n'
 
 # Function to run code when finding Mach-O files.
 METHOD_MACHO = \
@@ -262,7 +264,7 @@ jre: native
 	cp -R $(POJAV_JRE8_DIR) $(OUTPUTDIR)/java_runtimes; \
 	cp -R $(POJAV_JRE17_DIR) $(OUTPUTDIR)/java_runtimes; \
 	cp $(WORKINGDIR)/libawt_xawt.dylib $(OUTPUTDIR)/java_runtimes/java-8-openjdk/lib; \
-	cp $(WORKINGDIR)/libawt_xawt.dylib $(OUTPUTDIR)/java_runtimes/java-17-openjdk/lib; \
+	cp $(WORKINGDIR)/libawt_xawt.dylib $(OUTPUTDIR)/java_runtimes/java-17-openjdk/lib
 	echo '[PojavLauncher v$(VERSION)] jre - end'
 
 assets:
@@ -348,8 +350,6 @@ codesign:
 	$(call METHOD_MACHO,$(OUTPUTDIR)/Payload/PojavLauncher.app,$(call METHOD_CODESIGN,$(SIGNING_TEAMID),$$file))
 	$(call METHOD_MACHO,$(OUTPUTDIR)/java_runtimes,$(call METHOD_CODESIGN,$(SIGNING_TEAMID),$$file))
 	echo '[PojavLauncher v$(VERSION)] codesign - end'
-	
-
 clean:
 	echo '[PojavLauncher v$(VERSION)] clean - start'
 	rm -rf $(WORKINGDIR)
