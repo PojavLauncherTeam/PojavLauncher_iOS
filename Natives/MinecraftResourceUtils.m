@@ -47,7 +47,7 @@ static AFURLSessionManager* manager;
 }
 
 // Check SHA of the file
-+ (BOOL)checkSHAIgnorePref:(NSString *)sha forFile:(NSString *)path altName:(NSString *)altName {
++ (BOOL)checkSHAIgnorePref:(NSString *)sha forFile:(NSString *)path altName:(NSString *)altName logSuccess:(BOOL)logSuccess {
     if (sha == nil) {
         // When sha = skip, only check for file existence
         BOOL existence = [NSFileManager.defaultManager fileExistsAtPath:path];
@@ -71,7 +71,7 @@ static AFURLSessionManager* manager;
     }
 
     BOOL check = [sha isEqualToString:localSHA];
-    if (!check || [getPreference(@"debug_logging") boolValue]) {
+    if (!check || ([getPreference(@"debug_logging") boolValue] && logSuccess)) {
         NSLog(@"[MCDL] SHA1 %@ for %@%@",
           (check ? @"passed" : @"failed"), 
           (altName ? altName : path.lastPathComponent),
@@ -80,12 +80,16 @@ static AFURLSessionManager* manager;
     return check;
 }
 
-+ (BOOL)checkSHA:(NSString *)sha forFile:(NSString *)path altName:(NSString *)altName {
++ (BOOL)checkSHA:(NSString *)sha forFile:(NSString *)path altName:(NSString *)altName logSuccess:(BOOL)logSuccess {
     if ([getPreference(@"check_sha") boolValue]) {
-        return [self checkSHAIgnorePref:sha forFile:path altName:altName];
+        return [self checkSHAIgnorePref:sha forFile:path altName:altName logSuccess:logSuccess];
     } else {
         return [NSFileManager.defaultManager fileExistsAtPath:path];
     }
+}
+
++ (BOOL)checkSHA:(NSString *)sha forFile:(NSString *)path altName:(NSString *)altName {
+    return [self checkSHA:sha forFile:path altName:altName logSuccess:YES];
 }
 
 // Handle inheritsFrom
@@ -146,6 +150,10 @@ static AFURLSessionManager* manager;
         versionSHA = nil;
     }
 
+    if (mainProgress) {
+        callback([NSString stringWithFormat:localize(@"launcher.mcl.downloading_file", nil), versionStr], mainProgress, nil);
+    }
+
     NSString *jsonPath;
     if (isAssetIndex) {
         versionStr = [NSString stringWithFormat:@"assets/indexes/%@", versionStr];
@@ -171,11 +179,10 @@ static AFURLSessionManager* manager;
             return;
         }
 
-        callback([NSString stringWithFormat:@"Downloading %@.json", versionStr], mainProgress, nil);
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:versionURL]];
 
         NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull progress){
-            callback([NSString stringWithFormat:@"Downloading %@.json", versionStr], mainProgress, progress);
+            callback([NSString stringWithFormat:localize(@"launcher.mcl.downloading_file", nil), jsonPath.lastPathComponent], mainProgress, progress);
         } destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
             [NSFileManager.defaultManager removeItemAtPath:jsonPath error:nil];
             return [NSURL fileURLWithPath:jsonPath];
@@ -208,7 +215,6 @@ static AFURLSessionManager* manager;
                 }];
             }
         }];
-        callback([NSString stringWithFormat:@"Downloading %@.json", versionStr], mainProgress, [manager downloadProgressForTask:downloadTask]);
         [downloadTask resume];
     } else {
         NSMutableDictionary *json = parseJSONFromFile(jsonPath);
@@ -349,10 +355,9 @@ static AFURLSessionManager* manager;
 
         dispatch_group_enter(group);
         [NSFileManager.defaultManager createDirectoryAtPath:path.stringByDeletingLastPathComponent withIntermediateDirectories:YES attributes:nil error:nil];
-        callback([NSString stringWithFormat:@"Downloading library %@", name], nil); 
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
         NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull progress){
-            callback([NSString stringWithFormat:@"Downloading library %@", name], progress);
+            callback([NSString stringWithFormat:localize(@"launcher.mcl.downloading_file", nil), name], progress);
         } destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
             [NSFileManager.defaultManager removeItemAtPath:path error:nil];
             return [NSURL fileURLWithPath:path];
@@ -372,7 +377,6 @@ static AFURLSessionManager* manager;
             dispatch_group_leave(group);
             ++mainProgress.completedUnitCount;
         }];
-        callback([NSString stringWithFormat:@"Downloading library %@", name], [manager downloadProgressForTask:downloadTask]);
         [downloadTask resume];
     }
     dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
@@ -384,7 +388,7 @@ static AFURLSessionManager* manager;
     callback(@"Begin: download assets", nil);
 
     dispatch_group_t group = dispatch_group_create();
-    int downloadIndex = -1;
+    __block int verifiedCount = 0;
     __block int jobsAvailable = 10;
     for (NSString *name in assets[@"objects"]) {
         if (jobsAvailable < 0) {
@@ -392,7 +396,7 @@ static AFURLSessionManager* manager;
         } else if (jobsAvailable == 0) {
             //dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
             while (jobsAvailable == 0) {
-                usleep(50000);
+                usleep(1000);
             }
         }
 
@@ -416,11 +420,12 @@ static AFURLSessionManager* manager;
         } else {
             path = [NSString stringWithFormat:@"%s/assets/objects/%@", getenv("POJAV_GAME_DIR"), pathname];
         }
-        if ([self checkSHA:hash forFile:path altName:name]) { 
-            ++mainProgress.completedUnitCount;
+        if ([self checkSHA:hash forFile:path altName:name logSuccess:NO]) { 
+            if (++verifiedCount % (mainProgress.totalUnitCount/10) == 0) {
+                mainProgress.completedUnitCount = verifiedCount;
+            }
             ++jobsAvailable;
             dispatch_group_leave(group);
-            usleep(1000);
             continue;
         }
 
@@ -432,12 +437,11 @@ static AFURLSessionManager* manager;
         NSError *err;
         [NSFileManager.defaultManager createDirectoryAtPath:path.stringByDeletingLastPathComponent withIntermediateDirectories:YES attributes:nil error:&err];
         //NSLog(@"path %@ err %@", path, err);
-        usleep(50000); // avoid overloading queue
-        callback([NSString stringWithFormat:@"Downloading %@", name], nil);
+        usleep(1000); // avoid overloading queue
         NSString *url = [NSString stringWithFormat:@"https://resources.download.minecraft.net/%@", pathname];
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
         NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull progress){
-            callback([NSString stringWithFormat:@"Downloading %@", name], progress);
+            callback([NSString stringWithFormat:localize(@"launcher.mcl.downloading_file", nil), name], progress);
         } destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
             [NSFileManager.defaultManager removeItemAtPath:path error:nil];
             return [NSURL fileURLWithPath:path];
@@ -452,7 +456,7 @@ static AFURLSessionManager* manager;
                 NSLog(@"[MCDL] Error: %@ %@", errorStr, NSThread.callStackSymbols);
                 showDialog(currentVC(), localize(@"Error", nil), errorStr);
                 callback(nil, nil);
-            } else if (![self checkSHA:hash forFile:path altName:name]) {
+            } else if (![self checkSHA:hash forFile:path altName:name logSuccess:NO]) {
                 // Abort when a downloaded file's SHA mismatches
                 if (jobsAvailable < 0) {
                     dispatch_group_leave(group);
@@ -462,15 +466,21 @@ static AFURLSessionManager* manager;
                 showDialog(currentVC(), localize(@"Error", nil), [NSString stringWithFormat:@"Failed to verify file %@: SHA1 mismatch", path.lastPathComponent]);
                 callback(nil, nil);
             }
+            ++verifiedCount;
             ++jobsAvailable;
-            ++mainProgress.completedUnitCount;
+            mainProgress.completedUnitCount = verifiedCount;
             dispatch_group_leave(group);
         }];
-        callback([NSString stringWithFormat:@"Downloading %@", name], [manager downloadProgressForTask:downloadTask]);
         [downloadTask resume];
     }
     dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
     callback(@"Finished: download assets", nil);
+    if ([getPreference(@"check_sha") boolValue]) {
+        NSLog(@"[MCDL] SHA1 passed for %d/%d asset files", verifiedCount, [assets[@"objects"] count]);
+        if ([assets[@"objects"] count] - verifiedCount < 3) {
+            NSLog(@"Note: some files of 1.19+ are skipped to workaround an issue");
+        }
+    }
     return jobsAvailable != -1;
 }
 

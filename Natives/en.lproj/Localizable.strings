@@ -12,9 +12,6 @@
 
 "game.title.exit_code" = "Game exited with code %d";
 
-// The options button at the top-right corner on iOS 12
-"Options" = "Options";
-
 // The play button
 "Play" = "Play";
 
@@ -63,6 +60,7 @@
 
 "init.migrateDir" = "The PojavLauncher data directory is now %@. All of your existing data has been moved to the new location.";
 
+"launcher.mcl.downloading_file" = "Downloading %@";
 "launcher.mcl.error_download" = "Failed to download %@: %@";
 
 "launcher.menu.custom_controls" = "Custom controls";
