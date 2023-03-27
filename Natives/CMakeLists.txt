@@ -26,7 +26,7 @@ include_directories(
 )
 
 # For cacio support library
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -rpath @loader_path -rpath @executable_path/jvm/java-8-openjdk/lib -rpath /usr/lib/jvm/java-8-openjdk/lib")
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -rpath @loader_path -rpath @executable_path/java_runtimes/java-8-openjdk/lib -rpath /usr/lib/jvm/java-8-openjdk/lib")
 
 # EXT: stub library, delete after compile awt_xawt
 add_library(awt_headless SHARED

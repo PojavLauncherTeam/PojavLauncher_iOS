@@ -26,6 +26,14 @@ SLIMMED ?= 0
 # Check if slimmed should be built, and additionally skip normal build
 SLIMMED_ONLY ?= 0
 
+# Team IDs and provisioning profile for the codesign function
+# Default to -1 for check
+
+# Currently requires a paid Apple Developer account, will fix later
+SIGNING_TEAMID ?= -1
+TEAMID ?= -1
+PROVISIONING ?= -1
+
 ifeq (1,$(RELEASE))
 CMAKE_BUILD_TYPE := Release
 else
@@ -112,9 +120,10 @@ METHOD_PACKAGE = \
 		zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher-$(VERSION)-$(PLATFORM_NAME).ipa Payload; \
 	fi; \
 	if [ '$(SLIMMED)' = '1' ] || [ '$(SLIMMED_ONLY)' = '1' ]; then \
-		zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher.slimmed-$(VERSION)-$(PLATFORM_NAME).ipa Payload --exclude='Payload/PojavLauncher.app/jvm/java-17-openjdk/*'; \
+		zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher.slimmed-$(VERSION)-$(PLATFORM_NAME).ipa Payload --exclude='Payload/PojavLauncher.app/java_runtimes/*'; \
 	fi
-	
+
+# Function to download and unpack Java runtimes.
 METHOD_JAVA_UNPACK = \
 	cd $(SOURCEDIR)/depends; \
 	if [ ! -f "java-$(1)-openjdk/release" ] && [ ! -f "$(ls jre8-$(1).tar.xz)" ]; then \
@@ -124,6 +133,18 @@ METHOD_JAVA_UNPACK = \
 		mkdir java-$(1)-openjdk && cd java-$(1)-openjdk; \
 		tar xvf ../jre$(1)-*.tar.xz; \
 	fi
+
+# Function to codesign binaries.
+METHOD_CODESIGN = \
+	codesign -f -s $(1) --generate-entitlement-der --entitlements entitlements.codesign.xml $(2)
+
+# Function to run code when finding Mach-O files.
+METHOD_MACHO = \
+	for file in $$(find $(1)); do \
+		if [[ "$$(file $$file)" == *"Mach-O"* ]]; then \
+			$(2); \
+		fi; \
+	done
 
 # Make sure everything is already available for use. Error if they require something
 ifneq ($(call METHOD_DEPCHECK,cmake --version),1)
@@ -237,11 +258,11 @@ jre: native
 	if [ -f "$(ls jre*.tar.xz)" ]; then rm $(SOURCEDIR)/depends/jre*.tar.xz; fi; \
 	cd $(SOURCEDIR); \
 	rm -rf $(SOURCEDIR)/depends/java-*-openjdk/{ASSEMBLY_EXCEPTION,bin,include,jre,legal,LICENSE,man,THIRD_PARTY_README,lib/{ct.sym,libjsig.dylib,src.zip,tools.jar}}; \
-	$(call METHOD_DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/jvm); \
-	cp -R $(POJAV_JRE8_DIR) $(WORKINGDIR)/PojavLauncher.app/jvm/; \
-	cp -R $(POJAV_JRE17_DIR) $(WORKINGDIR)/PojavLauncher.app/jvm/; \
-	cp $(WORKINGDIR)/libawt_xawt.dylib $(WORKINGDIR)/PojavLauncher.app/jvm/java-17-openjdk/lib/; \
-	cp $(WORKINGDIR)/libawt_xawt.dylib $(WORKINGDIR)/PojavLauncher.app/jvm/java-8-openjdk/lib/; \
+	$(call METHOD_DIRCHECK,$(OUTPUTDIR)/java_runtimes); \
+	cp -R $(POJAV_JRE8_DIR) $(OUTPUTDIR)/java_runtimes; \
+	cp -R $(POJAV_JRE17_DIR) $(OUTPUTDIR)/java_runtimes; \
+	cp $(WORKINGDIR)/libawt_xawt.dylib $(OUTPUTDIR)/java_runtimes/java-8-openjdk/lib; \
+	cp $(WORKINGDIR)/libawt_xawt.dylib $(OUTPUTDIR)/java_runtimes/java-17-openjdk/lib; \
 	echo '[PojavLauncher v$(VERSION)] jre - end'
 
 assets:
@@ -275,9 +296,16 @@ payload: native java jre assets
 	cp -R $(SOURCEDIR)/Natives/*.lproj $(WORKINGDIR)/PojavLauncher.app/ || exit 1
 	$(call METHOD_DIRCHECK,$(OUTPUTDIR)/Payload)
 	cp -R $(WORKINGDIR)/PojavLauncher.app $(OUTPUTDIR)/Payload
+	if [ '$(SLIMMED_ONLY)' != '1' ]; then \
+		cp -R $(OUTPUTDIR)/java_runtimes $(OUTPUTDIR)/Payload/PojavLauncher.app; \
+	fi
 	ldid -S $(OUTPUTDIR)/Payload/PojavLauncher.app; \
 	ldid -S$(SOURCEDIR)/entitlements.xml $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher; \
 	chmod -R 755 $(OUTPUTDIR)/Payload
+	if [ '$(PLATFORM)' != '2' ]; then \
+		$(call METHOD_MACHO,$(OUTPUTDIR)/Payload/PojavLauncher.app,$(call METHOD_CHANGE_PLAT,$(PLATFORM),$$file)); \
+		$(call METHOD_MACHO,$(OUTPUTDIR)/java_runtimes,$(call METHOD_CHANGE_PLAT,$(PLATFORM),$$file)); \
+	fi
 	echo '[PojavLauncher v$(VERSION)] payload - end'
 
 deploy:
@@ -297,23 +325,29 @@ deploy:
 
 package: payload
 	echo '[PojavLauncher v$(VERSION)] package - start'
-	if [  '$(PLATFORM)' != '2' ]; then \
-		for file in $$(find $(OUTPUTDIR)/Payload/PojavLauncher.app); do \
-			if [[ "$$(file $$file)" == *"Mach-O"* ]]; then \
-				$(call METHOD_CHANGE_PLAT,$(PLATFORM),$$file); \
-			fi; \
-		done; \
-	fi; \
+	if [ '$(TEAMID)' != '-1' ] && [ '$(SIGNING_TEAMID)' != '-1' ] && [ '$(PROVISIONING)' != '-1' ]; then \
+		printf '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n<plist version="1.0">\n<dict>\n	<key>application-identifier</key>\n	<string>$(TEAMID).net.kdt.pojavlauncher</string>\n	<key>com.apple.developer.team-identifier</key>\n	<string>$(TEAMID)</string>\n	<key>get-task-allow</key>\n	<true/>\n	<key>keychain-access-groups</key>\n	<array>\n	<string>$(TEAMID).*</string>\n	<string>com.apple.token</string>\n	</array>\n</dict>\n</plist>' > entitlements.codesign.xml; \
+		$(MAKE) codesign; \
+		rm -rf entitlements.codesign.xml; \
+	fi
 	cd $(OUTPUTDIR); \
-	$(call METHOD_PACKAGE)
+	$(call METHOD_PACKAGE); \
+	zip --symlinks -r $(OUTPUTDIR)/java_runtimes.zip java_runtimes; \
 	echo '[PojavLauncher v$(VERSION)] package - end'
 	
-dsym: package
+dsym: payload
 	echo '[PojavLauncher v$(VERSION)] dsym - start'
 	dsymutil --arch arm64 $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher; \
 	rm -rf $(OUTPUTDIR)/PojavLauncher.dSYM; \
 	mv $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher.dSYM $(OUTPUTDIR)/PojavLauncher.dSYM
 	echo '[PojavLauncher v$(VERSION)] dsym - end'
+	
+codesign:
+	echo '[PojavLauncher v$(VERSION)] codesign - start'
+	cp $(PROVISIONING) $(OUTPUTDIR)/Payload/PojavLauncher.app/embedded.mobileprovision
+	$(call METHOD_MACHO,$(OUTPUTDIR)/Payload/PojavLauncher.app,$(call METHOD_CODESIGN,$(SIGNING_TEAMID),$$file))
+	$(call METHOD_MACHO,$(OUTPUTDIR)/java_runtimes,$(call METHOD_CODESIGN,$(SIGNING_TEAMID),$$file))
+	echo '[PojavLauncher v$(VERSION)] codesign - end'
 	
 
 clean:

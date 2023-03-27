@@ -139,6 +139,13 @@ void init_logDeviceAndVer(char *argument) {
     NSLog(@"[Pre-Init] Device: %s", getenv("POJAV_DETECTEDHW"));
     NSLog(@"[Pre-Init] iOS %s (%s)", getenv("POJAV_DETECTEDSW"), getenv("POJAV_DETECTEDINST"));
     
+    NSString *jvmPath = [NSString stringWithFormat:@"%s/java_runtimes", getenv("BUNDLE_PATH")];
+    if (![fm fileExistsAtPath:jvmPath]) {
+        setenv("POJAV_PREFER_EXTERNAL_JRE", "1", 1);
+        NSLog(@"[Java] !!! THIS FEATURE IS A WORK IN PROGRESS !!!");
+        NSLog(@"[Java] Loading runtimes from Documents directory.");
+    }
+    
     NSLog(@"[Pre-init] Entitlements availability:");
     printEntitlementAvailability(@"com.apple.developer.kernel.extended-virtual-addressing");
     printEntitlementAvailability(@"com.apple.developer.kernel.increased-memory-limit");

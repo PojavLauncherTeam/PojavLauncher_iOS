@@ -84,7 +84,7 @@ void init_loadCustomJvmFlags() {
 }
 
 NSString* environmentFailsafes(int minVersion) {
-    NSString *jvmPath = [NSString stringWithFormat:@"%s/jvm", getenv("BUNDLE_PATH")];
+    NSString *jvmPath = [NSString stringWithFormat:@"%s/java_runtimes", getenv("POJAV_PREFER_EXTERNAL_JRE") ? getenv("POJAV_HOME") : getenv("BUNDLE_PATH")];
     NSString *javaHome = nil;
 
     NSString *jre8Path = [NSString stringWithFormat:@"%@/java-8-openjdk", jvmPath];
@@ -112,7 +112,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
 
     NSString *javaHome = getPreference(@"java_home");
     if (![javaHome hasPrefix:@"/"]) {
-        javaHome = [NSString stringWithFormat:@"%s/jvm/%@", getenv("BUNDLE_PATH"), javaHome];
+        javaHome = [NSString stringWithFormat:@"%s/java_runtimes/%@", getenv("POJAV_PREFER_EXTERNAL_JRE") ? getenv("POJAV_HOME") : getenv("BUNDLE_PATH"), javaHome];
     }
 
     // We handle unset JAVA_HOME right there

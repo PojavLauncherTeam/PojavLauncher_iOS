@@ -173,7 +173,7 @@ void loadPreferences(BOOL reset) {
     prefDict[@"env_vars"] = envPrefDict;
     prefDict[@"warnings"] = warnPrefDict;
     
-    NSString *ipajre = [NSString stringWithFormat:@"%s/jvm/java-17-openjdk", getenv("BUNDLE_PATH")];
+    NSString *ipajre = [NSString stringWithFormat:@"%s/java_runtimes/java-17-openjdk", getenv("POJAV_PREFER_EXTERNAL_JRE") ? getenv("POJAV_HOME") : getenv("BUNDLE_PATH")];
     if (![fileManager fileExistsAtPath:ipajre]) {
         setPreference(@"slimmed", @YES);
     } else {
