@@ -16,13 +16,13 @@ jobs:
       matrix:
         include:
           - platform: 2
-            platform_name: iOS
+            platform_name: ios
           - platform: 3
-            platform_name: iOS Simulator
+            platform_name: iossimulator
           - platform: 7
-            platform_name: tvOS
+            platform_name: tvos
           - platform: 8
-            platform_name: tvOS Simulator
+            platform_name: tvossimulator
     
     runs-on: MacStadium
     steps:
