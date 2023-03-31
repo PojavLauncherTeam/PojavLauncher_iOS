@@ -10,80 +10,19 @@ on:
   workflow_dispatch:
 
 jobs:
-  deps:
-    name: Get dependencies
-    runs-on: MacStadium-prerequisite
-    steps:
-      - name: Get gl4es latest commit hash
-        id: gl4es-sha
-        run: echo "::set-output name=sha::$(echo $(git ls-remote https://github.com/PojavLauncherTeam/gl4es-114-extra refs/heads/master | grep -io '^\S*'))"
-        shell: bash
-
-      - name: Cache gl4es
-        uses: actions/cache@v2
-        id: gl4eslibs-cache
-        with:
-          path: gl4es/libs
-          key: gl4eslibs-holy-ios-shared-2-${{ steps.gl4es-sha.outputs.sha }}
-
-      - name: Get gl4es
-        if: steps.gl4eslibs-cache.outputs.cache-hit != 'true'
-        uses: actions/checkout@v2
-        with:
-          repository: 'PojavLauncherTeam/gl4es-114-extra'
-          path: 'gl4es'
-          
-      - name: Build gl4es
-        if: steps.gl4eslibs-cache.outputs.cache-hit != 'true'
-        continue-on-error: true
-        run: |
-          cd gl4es
-          git config --global user.email "github-actions@users.noreply.github.com"
-          git config --global user.name "github-actions"
-          export PATH=/opt/procursus/bin:$PATH
-          wget https://github.com/leetal/ios-cmake/raw/master/ios.toolchain.cmake
-          cmake -B build -DCMAKE_TOOLCHAIN_FILE=ios.toolchain.cmake -DDEFAULT_ES=2 \
-            -DNOX11=ON -DNOEGL=OFF -DSTATICLIB=OFF -DPLATFORM=OS64 \
-            -DCMAKE_C_FLAGS=-Wno-error=implicit-function-declaration
-          cmake --build build --config RelWithDebInfo --target GL
-          cp -R lib/libGL.dylib /Users/eilionoir/actions/prerequisites/libgl4es_114.dylib
-
-      - name: Get JRE8
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          github_token: ${{secrets.GITHUB_TOKEN}}
-          workflow: build.yml
-          path: /Users/eilionoir/actions/prerequisites
-          workflow_conclusion: success
-          repo: PojavLauncherTeam/android-openjdk-build-multiarch
-          branch: jre8-ios-jitjailed
-          name: jre8-ios-aarch64
-
-      - name: Get JRE17
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          github_token: ${{secrets.GITHUB_TOKEN}}
-          workflow: build.yml
-          path: /Users/eilionoir/actions/prerequisites
-          workflow_conclusion: success
-          repo: PojavLauncherTeam/android-openjdk-build-multiarch
-          branch: buildjre17
-          name: jre17-ios-aarch64
-    
   build:
     name: Development build
-    needs: deps
     strategy:
       matrix:
         include:
           - platform: 2
-            platform_name: ios
+            platform_name: iOS
           - platform: 3
-            platform_name: tvos
+            platform_name: iOS Simulator
           - platform: 7
-            platform_name: iossimulator
+            platform_name: tvOS
           - platform: 8
-            platform_name: tvossimulator
+            platform_name: tvOS Simulator
     
     runs-on: MacStadium
     steps:
@@ -104,35 +43,6 @@ jobs:
       - name: Checkout repository submodules
         run: git submodule update --init --recursive
 
-      - name: Build for ${{ matrix.platform_name }}
-        env:
-          password: ${{ secrets.ELLIE_MINI_SECRET }}
-        run: |
-          mkdir -p depends/
-          cp -R /Users/eilionoir/actions/prerequisites/*.tar.xz depends/
-          cp -R /Users/eilionoir/actions/prerequisites/libgl4es_114.dylib Natives/resources/Frameworks/libgl4es_114.dylib
-          export PATH=/opt/procursus/bin:/opt/homebrew/bin:$PATH
-          export NOSTDIN=1 SUDOPASS=$password RUNNER=1 SLIMMED=1
-          gmake -j$(sysctl -n hw.ncpu) dsym PLATFORM=${{ matrix.platform }}
-          cp -R artifacts/PojavLauncher.dSYM /Users/eilionoir/actions/prerequisites/PojavLauncher.dSYM.${{ matrix.platform_name }}
-
-      - name: Upload regular ipa
-        uses: actions/upload-artifact@v2
-        with:
-          name: net.kdt.pojavlauncher-${{ matrix.platform_name }}.ipa
-          path: artifacts/net.kdt.pojavlauncher-*-${{ matrix.platform_name }}.ipa
-
-      - name: Upload slimmed ipa
-        uses: actions/upload-artifact@v2
-        with:
-          name: net.kdt.pojavlauncher.slimmed-${{ matrix.platform_name }}.ipa
-          path: artifacts/net.kdt.pojavlauncher.slimmed-*-${{ matrix.platform_name }}.ipa
-
-  update-gl4es:
-    name: Update GL4ES
-    needs: build
-    runs-on: MacStadium-prerequisite
-    steps:
       - name: Get gl4es latest commit hash
         id: gl4es-sha
         run: echo "::set-output name=sha::$(echo $(git ls-remote https://github.com/PojavLauncherTeam/gl4es-114-extra refs/heads/master | grep -io '^\S*'))"
@@ -140,27 +50,83 @@ jobs:
 
       - name: Cache gl4es
         uses: actions/cache@v2
-        id: gl4eslibs-cache
+        id: gl4es-cache
         with:
           path: gl4es/libs
-          key: gl4eslibs-holy-ios-shared-2-${{ steps.gl4es-sha.outputs.sha }}
-    
-      - name: Checkout repository
-        if: github.event != 'pull_request' && github.ref_name == 'main' && steps.gl4eslibs-cache.outputs.cache-hit != 'true'
+          key: gl4es-holy-ios-shared-2-${{ steps.gl4es-sha.outputs.sha }}
+
+      - name: Get gl4es
+        if: steps.gl4es-cache.outputs.cache-hit != 'true'
         uses: actions/checkout@v2
-        
-      - name: Push gl4es
-        if: github.event != 'pull_request' && github.ref_name == 'main' && steps.gl4eslibs-cache.outputs.cache-hit != 'true'
+        with:
+          repository: 'PojavLauncherTeam/gl4es-114-extra'
+          path: 'gl4es'
+
+      - name: Build gl4es
+        if: steps.gl4es-cache.outputs.cache-hit != 'true'
         continue-on-error: true
         run: |
-          cp -R /Users/eilionoir/actions/prerequisites/libgl4es_114.dylib Natives/resources/Frameworks/libgl4es_114.dylib
+          cd gl4es
+          git config --global user.email "github-actions@users.noreply.github.com"
+          git config --global user.name "github-actions"
+          export PATH=/opt/procursus/bin:$PATH
+          wget https://github.com/leetal/ios-cmake/raw/master/ios.toolchain.cmake
+          cmake -B build -DCMAKE_TOOLCHAIN_FILE=ios.toolchain.cmake -DDEFAULT_ES=2 \
+            -DNOX11=ON -DNOEGL=OFF -DSTATICLIB=OFF -DPLATFORM=OS64 \
+            -DCMAKE_C_FLAGS=-Wno-error=implicit-function-declaration
+          cmake --build build --config RelWithDebInfo --target GL
+          cp -R lib/libGL.dylib ../Natives/resources/Frameworks/libgl4es_114.dylib
+      - name: Push gl4es
+        if: github.event != 'pull_request' && github.ref_name == 'main' && steps.gl4es-cache.outputs.cache-hit != 'true'
+        continue-on-error: true
+        run: |
           git add Natives/resources/Frameworks/libgl4es_114.dylib
           git commit -am "CI: Update gl4es"
           git push
-        
-    
+          
+      - name: Get JRE8
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          workflow: build.yml
+          path: depends
+          workflow_conclusion: success
+          repo: PojavLauncherTeam/android-openjdk-build-multiarch
+          branch: jre8-ios-jitjailed
+          name: jre8-ios-aarch64
+
+      - name: Get JRE17
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          workflow: build.yml
+          path: depends
+          workflow_conclusion: success
+          repo: PojavLauncherTeam/android-openjdk-build-multiarch
+          branch: buildjre17
+          name: jre17-ios-aarch64
+
+      - name: Build for ${{ matrix.platform_name }}
+        env:
+          password: ${{ secrets.ELLIE_MINI_SECRET }}
+        run: |
+          export PATH=/opt/procursus/bin:/opt/homebrew/bin:$PATH
+          export RUNNER=1 SLIMMED=1
+          gmake -j$(sysctl -n hw.ncpu) dsym package PLATFORM=${{ matrix.platform }}
+      - name: Upload regular ipa
+        uses: actions/upload-artifact@v2
+        with:
+          name: net.kdt.pojavlauncher.ipa
+          path: artifacts/net.kdt.pojavlauncher-*.ipa
+
+      - name: Upload slimmed ipa
+        uses: actions/upload-artifact@v2
+        with:
+          name: net.kdt.pojavlauncher.slimmed.ipa
+          path: artifacts/net.kdt.pojavlauncher.slimmed-*.ipa
+
       - name: Upload PojavLauncher.dSYM
         uses: actions/upload-artifact@v2
         with:
           name: PojavLauncher.dSYM
-          path: /Users/eilionoir/actions/prerequisites/PojavLauncher.dSYM.ios
+          path: artifacts/PojavLauncher.dSYM
