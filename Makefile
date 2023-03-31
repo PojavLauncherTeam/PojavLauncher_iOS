@@ -129,8 +129,9 @@ METHOD_JAVA_UNPACK = \
 	if [ ! -f "java-$(1)-openjdk/release" ] && [ ! -f "$(ls jre8-$(1).tar.xz)" ]; then \
 		if [ "$(RUNNER)" != "1" ]; then \
 			wget '$(2)' -q --show-progress; \
+			unzip jre*-ios-aarch64.zip && rm jre*-ios-aarch64.zip; \
 		fi; \
-		mkdir java-$(1)-openjdk && cd java-$(1)-openjdk; \
+		mkdir java-$(1)-openjdk; cd java-$(1)-openjdk; \
 		tar xvf ../jre$(1)-*.tar.xz; \
 	fi
 
@@ -251,12 +252,12 @@ java:
 	$(BOOTJDK)/jar -uf ../lwjgl3-minecraft.jar org || exit 1;
 	echo '[PojavLauncher v$(VERSION)] java - end'
 
-jre: native 
+jre: native
 	echo '[PojavLauncher v$(VERSION)] jre - start'
 	mkdir -p $(SOURCEDIR)/depends
 	cd $(SOURCEDIR)/depends; \
-	$(call METHOD_JAVA_UNPACK,8,'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre8-40df388/jre8-arm64-20220811-release.tar.xz'); \
-	$(call METHOD_JAVA_UNPACK,17,'https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/releases/download/jre17-ca01427/jre17-arm64-20220817-release.tar.xz'); \
+	$(call METHOD_JAVA_UNPACK,8,'https://nightly.link/PojavLauncherTeam/android-openjdk-build-multiarch/workflows/build/jre8-ios-jitjailed/jre8-ios-aarch64.zip'); \
+	$(call METHOD_JAVA_UNPACK,17,'https://nightly.link/PojavLauncherTeam/android-openjdk-build-multiarch/workflows/build/buildjre17/jre17-ios-aarch64.zip'); \
 	if [ -f "$(ls jre*.tar.xz)" ]; then rm $(SOURCEDIR)/depends/jre*.tar.xz; fi; \
 	cd $(SOURCEDIR); \
 	rm -rf $(SOURCEDIR)/depends/java-*-openjdk/{ASSEMBLY_EXCEPTION,bin,include,jre,legal,LICENSE,man,THIRD_PARTY_README,lib/{ct.sym,libjsig.dylib,src.zip,tools.jar}}; \
