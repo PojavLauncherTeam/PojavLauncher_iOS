@@ -78,7 +78,7 @@ jobs:
           cp -R lib/libGL.dylib ../Natives/resources/Frameworks/libgl4es_114.dylib
           
       - name: Push gl4es
-        if: github.event != 'pull_request' && github.ref_name == 'main' && steps.gl4es-cache.outputs.cache-hit != 'true' && ${{ matrix.platform }} == 2
+        if: github.event != 'pull_request' && github.ref_name == 'main' && steps.gl4es-cache.outputs.cache-hit != 'true' && ${{ matrix.platform }} == '2'
         continue-on-error: true
         run: |
           git add Natives/resources/Frameworks/libgl4es_114.dylib
@@ -128,7 +128,7 @@ jobs:
           path: artifacts/net.kdt.pojavlauncher.slimmed-${{ matrix.platform_name }}.ipa
 
       - name: Upload PojavLauncher.dSYM
-        if: ${{ matrix.platform }} == 2
+        if: ${{ matrix.platform }} == '2'
         uses: actions/upload-artifact@v2
         with:
           name: PojavLauncher.dSYM
