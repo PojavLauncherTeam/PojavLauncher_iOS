@@ -71,7 +71,7 @@ jobs:
           cmake --build build --config RelWithDebInfo --target GL
           cp -R lib/libGL.dylib ../Natives/resources/Frameworks/libgl4es_114.dylib
       - name: Push gl4es
-        if: github.event != 'pull_request' && github.ref_name == 'main' && steps.gl4es-cache.outputs.cache-hit != 'true'
+        if: github.event != 'pull_request' && github.ref_name == 'main' && steps.gl4es-cache.outputs.cache-hit != 'true' && ${{ matrix.platform }} == 2
         continue-on-error: true
         run: |
           git add Natives/resources/Frameworks/libgl4es_114.dylib
@@ -107,19 +107,21 @@ jobs:
           export PATH=/opt/procursus/bin:/opt/homebrew/bin:$PATH
           export RUNNER=1 SLIMMED=1
           gmake -j$(sysctl -n hw.ncpu) dsym package PLATFORM=${{ matrix.platform }}
+          
       - name: Upload regular ipa
         uses: actions/upload-artifact@v2
         with:
-          name: net.kdt.pojavlauncher.ipa
-          path: artifacts/net.kdt.pojavlauncher-*.ipa
+          name: net.kdt.pojavlauncher-${{ matrix.platform_name }}.ipa
+          path: artifacts/net.kdt.pojavlauncher-*-${{ matrix.platform_name }}.ipa
 
       - name: Upload slimmed ipa
         uses: actions/upload-artifact@v2
         with:
-          name: net.kdt.pojavlauncher.slimmed.ipa
-          path: artifacts/net.kdt.pojavlauncher.slimmed-*.ipa
+          name: net.kdt.pojavlauncher.slimmed-${{ matrix.platform_name }}.ipa
+          path: artifacts/net.kdt.pojavlauncher.slimmed-*-${{ matrix.platform_name }}.ipa
 
       - name: Upload PojavLauncher.dSYM
+        if: ${{ matrix.platform }} == 2
         uses: actions/upload-artifact@v2
         with:
           name: PojavLauncher.dSYM
