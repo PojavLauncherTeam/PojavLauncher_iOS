@@ -636,12 +636,12 @@ BOOL slideableHotbar;
     };
 
     mouse.mouseInput.scroll.xAxis.valueChangedHandler = ^(GCControllerAxisInput * _Nonnull axis, float value) {
-        //CallbackBridge_nativeSendScroll(value, 0);
         // Workaround MC-121772 (macOS/iOS feature)
         CallbackBridge_nativeSendScroll(value, value);
     };
     mouse.mouseInput.scroll.yAxis.valueChangedHandler = ^(GCControllerAxisInput * _Nonnull axis, float value) {
-        CallbackBridge_nativeSendScroll(0, -value);
+        // Workaround MC-121772 (macOS/iOS feature)
+        CallbackBridge_nativeSendScroll(-value, -value);
     };
 }
 
