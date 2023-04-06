@@ -176,18 +176,24 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row < 0) return nil;
-
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
     }
+    if (indexPath.row < 0) return cell;
 
     cell.textLabel.text = [self.options[indexPath.row] title];
-    //cell.imageView.contentMode = UIViewContentModeScaleToFill;
     if (@available(iOS 13.0, *)) {
-        cell.imageView.image = [UIImage systemImageNamed:[self.options[indexPath.row]
+        UIImage *origImage = [UIImage systemImageNamed:[self.options[indexPath.row]
             performSelector:@selector(imageName)]];
+        if (origImage) {
+            UIGraphicsImageRenderer *renderer = [[UIGraphicsImageRenderer alloc] initWithSize:CGSizeMake(50, 50)];
+            UIImage *image = [renderer imageWithActions:^(UIGraphicsImageRendererContext*_Nonnull myContext) {
+                CGFloat scaleFactor = 50/origImage.size.height;
+                [origImage drawInRect:CGRectMake(25 - origImage.size.width*scaleFactor/2, 0, origImage.size.width*scaleFactor, 50)];
+            }];
+            cell.imageView.image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        }
     }
     if (cell.imageView.image == nil) {
         cell.imageView.layer.magnificationFilter = kCAFilterNearest;
