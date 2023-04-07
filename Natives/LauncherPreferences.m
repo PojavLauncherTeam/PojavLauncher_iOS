@@ -155,7 +155,7 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(prefDict, @"check_sha", @YES);
     setDefaultValueForPref(prefDict, @"auto_ram", @(!getEntitlementValue(@"com.apple.private.memorystatus")));
     setDefaultValueForPref(prefDict, @"unsupported_warn_counter", @(0));
-    setDefaultValueForPref(prefDict, @"hidden_sidebar", @YES);
+    setDefaultValueForPref(prefDict, @"hidden_sidebar", @(realUIIdiom == UIUserInterfaceIdiomPhone));
     setDefaultValueForPref(prefDict, @"enable_altkit", @YES);
     
     // Debug settings
