@@ -165,7 +165,7 @@
 
     // Restore the selected row when the view appears again
     int index = [self.options indexOfObject:[contentNavigationController viewControllers][0]];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:MAX(0, index) inSection:0];
     [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
@@ -180,7 +180,6 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
     }
-    if (indexPath.row < 0) return cell;
 
     cell.textLabel.text = [self.options[indexPath.row] title];
     if (@available(iOS 13.0, *)) {
