@@ -137,7 +137,11 @@ const NSString *cornerLayerKey = @"cornerLayer";
 // Simulate safe area on iPhones without notch
 /*
 - (UIEdgeInsets)safeAreaInsets {
-    return UIEdgeInsetsMake(0, 44, 21, 44);
+    if (self.frame.size.width < self.frame.size.height) {
+        return UIEdgeInsetsMake(44, 0, 44, 0);
+    } else {
+        return UIEdgeInsetsMake(0, 44, 21, 44);
+    }
 }
 */
 

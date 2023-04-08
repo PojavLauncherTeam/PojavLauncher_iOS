@@ -48,6 +48,7 @@ int getJavaVersion(NSString* java) {
         return [java substringWithRange:NSMakeRange(5, java.length - 13)].intValue;
     } else {
         NSLog(@"FIXME: What is the Java version of %@?", java);
+        // TODO: parse from the release file
         return 0;
     }
 }
@@ -190,18 +191,42 @@ void resetWarnings() {
     [prefDict writeToFile:prefPath atomically:YES];
 }
 
-CGRect getDefaultSafeArea() {
-    CGRect defaultSafeArea = UIScreen.mainScreen.bounds;
-    UIEdgeInsets insets = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets;
-    defaultSafeArea.origin.x = insets.left;
-    //defaultSafeArea.origin.y = insets.top;
-    defaultSafeArea.size.width -= insets.left + insets.right;
-    //defaultSafeArea.size.height -= insets.bottom;
-    // In some cases, the returned bounds is portrait instead of landscape
-    if (defaultSafeArea.size.width < defaultSafeArea.size.height) {
-        CGFloat height = defaultSafeArea.size.width;
-        defaultSafeArea.size.width = defaultSafeArea.size.height;
-        defaultSafeArea.size.height = height;
+CGRect getSafeArea() {
+    CGRect screenBounds = UIScreen.mainScreen.bounds;
+    UIEdgeInsets safeArea = UIEdgeInsetsFromString(getPreference(@"control_safe_area"));
+    if (screenBounds.size.width < screenBounds.size.height) {
+        safeArea = UIEdgeInsetsMake(safeArea.right, safeArea.top, safeArea.left, safeArea.bottom);
     }
-    return defaultSafeArea;
+    return UIEdgeInsetsInsetRect(screenBounds, safeArea);
+}
+
+void setSafeArea(CGRect frame) {
+    CGSize screenSize = UIScreen.mainScreen.bounds.size;
+    UIEdgeInsets safeArea;
+    // TODO: make safe area consistent across opposite orientations?
+    if (screenSize.width < screenSize.height) {
+        safeArea = UIEdgeInsetsMake(
+            frame.origin.x,
+            screenSize.height - CGRectGetMaxY(frame),
+            screenSize.width - CGRectGetMaxX(frame),
+            frame.origin.y);
+    } else {
+        safeArea = UIEdgeInsetsMake(
+            frame.origin.y,
+            frame.origin.x,
+            screenSize.height - CGRectGetMaxY(frame),
+            screenSize.width - CGRectGetMaxX(frame));
+    }
+    setPreference(@"control_safe_area", NSStringFromUIEdgeInsets(safeArea));
+}
+
+UIEdgeInsets getDefaultSafeArea() {
+    UIEdgeInsets safeArea = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets;
+    CGSize screenSize = UIScreen.mainScreen.bounds.size;
+    if (screenSize.width < screenSize.height) {
+        safeArea.left = safeArea.top;
+        safeArea.right = safeArea.bottom;
+    }
+    safeArea.top = safeArea.bottom = 0;
+    return safeArea;
 }

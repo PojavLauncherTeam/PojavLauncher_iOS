@@ -17,7 +17,11 @@ extern NSMutableDictionary *prefDict;
     [super viewDidLoad];
     UIApplication.sharedApplication.idleTimerDisabled = YES;
     setViewBackgroundColor(self.view);
-    setDefaultValueForPref(prefDict, @"control_safe_area", NSStringFromCGRect(getDefaultSafeArea()));
+    setDefaultValueForPref(prefDict, @"control_safe_area", NSStringFromUIEdgeInsets(getDefaultSafeArea()));
+    if (![getPreference(@"internal_reset_safe_area") boolValue]) {
+        setPreference(@"internal_reset_safe_area", @YES);
+        setPreference(@"control_safe_area", NSStringFromUIEdgeInsets(getDefaultSafeArea()));
+    }
 
     self.delegate = self;
 

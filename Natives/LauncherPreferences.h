@@ -9,5 +9,8 @@ void setDefaultValueForPref(NSMutableDictionary *dict, NSString* key, id value);
 void setPreference(NSString* key, id value);
 void resetWarnings();
 
-CGRect getDefaultSafeArea();
 BOOL getEntitlementValue(NSString *key);
+
+UIEdgeInsets getDefaultSafeArea();
+CGRect getSafeArea();
+void setSafeArea(CGRect safeArea);

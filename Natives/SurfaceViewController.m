@@ -110,7 +110,7 @@ BOOL slideableHotbar;
     self.rootView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width + 30.0, self.view.frame.size.height)];
     [self.view addSubview:self.rootView];
 
-    self.ctrlView = [[ControlLayout alloc] initWithFrame:CGRectFromString(getPreference(@"control_safe_area"))];
+    self.ctrlView = [[ControlLayout alloc] initWithFrame:getSafeArea()];
 
     [self performSelector:@selector(initCategory_Navigation)];
     
@@ -335,13 +335,7 @@ BOOL slideableHotbar;
     virtualMouseFrame = CGRectMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2, 18.0 * mouseScale, 27 * mouseScale);
     self.mousePointerView.frame = virtualMouseFrame;
 
-    CGRect ctrlFrame = CGRectFromString(getPreference(@"control_safe_area"));
-    if ((ctrlFrame.size.width > ctrlFrame.size.height) != (self.view.frame.size.width > self.view.frame.size.height)) {
-        CGFloat tmpHeight = ctrlFrame.size.width;
-        ctrlFrame.size.width = ctrlFrame.size.height;
-        ctrlFrame.size.height = tmpHeight;
-    }
-    self.ctrlView.frame = ctrlFrame;
+    self.ctrlView.frame = getSafeArea();
     [self loadCustomControls];
 
     // Update gestures state
@@ -459,17 +453,7 @@ BOOL slideableHotbar;
         [self viewWillTransitionToSize_Navigation:frame];
 
         // Update custom controls button position
-        CGRect ctrlFrame = CGRectFromString(getPreference(@"control_safe_area"));
-        CGSize screenSize = UIScreen.mainScreen.bounds.size;
-        if (size.width < screenSize.width || size.height < screenSize.height) {
-            // TODO: safe area for windowed mode?
-            ctrlFrame.size = screenSize;
-        } else if ((ctrlFrame.size.width > ctrlFrame.size.height) != (size.width > size.height)) {
-            CGFloat tmpHeight = ctrlFrame.size.width;
-            ctrlFrame.size.width = ctrlFrame.size.height;
-            ctrlFrame.size.height = tmpHeight;
-        }
-        self.ctrlView.frame = ctrlFrame;
+        self.ctrlView.frame = getSafeArea();
         [self.ctrlView.subviews makeObjectsPerformSelector:@selector(update)];
 
         // Update game resolution

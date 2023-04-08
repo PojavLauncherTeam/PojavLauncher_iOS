@@ -53,7 +53,7 @@ BOOL shouldDismissPopover = YES;
     guideLabel.text = localize(@"custom_controls.hint", nil);
     [self.view addSubview:guideLabel]; 
 
-    self.ctrlView = [[ControlLayout alloc] initWithFrame:CGRectFromString(getPreference(@"control_safe_area"))];
+    self.ctrlView = [[ControlLayout alloc] initWithFrame:getSafeArea()];
     if (@available(iOS 13.0, *)) {
         self.ctrlView.layer.borderColor = UIColor.labelColor.CGColor;
     } else {
@@ -180,13 +180,8 @@ BOOL shouldDismissPopover = YES;
 }
 
 - (void)viewDidLayoutSubviews {
-    CGRect ctrlFrame = CGRectFromString(getPreference(@"control_safe_area"));
-    if ((ctrlFrame.size.width > ctrlFrame.size.height) != (self.view.frame.size.width > self.view.frame.size.height)) {
-        CGFloat tmpHeight = ctrlFrame.size.width;
-        ctrlFrame.size.width = ctrlFrame.size.height;
-        ctrlFrame.size.height = tmpHeight;
-        self.ctrlView.frame = ctrlFrame;
-        setPreference(@"control_safe_area", NSStringFromCGRect(ctrlFrame));
+    if (self.navigationBar.hidden) {
+        self.ctrlView.frame = getSafeArea();
     }
 
     // Update dynamic position for each view
@@ -203,10 +198,10 @@ BOOL shouldDismissPopover = YES;
             self.ctrlView.frame = self.view.frame;
             break;
         case 1:
-            self.ctrlView.frame = getDefaultSafeArea();
+            self.ctrlView.frame = UIEdgeInsetsInsetRect(self.view.frame, getDefaultSafeArea());
             break;
         case 2:
-            self.ctrlView.frame = CGRectFromString(getPreference(@"control_safe_area"));
+            self.ctrlView.frame = getSafeArea();
             break;
     }
     self.ctrlView.userInteractionEnabled = sender.selectedSegmentIndex == 2;
@@ -217,7 +212,7 @@ BOOL shouldDismissPopover = YES;
     if (CGRectEqualToRect(self.ctrlView.frame, UIScreen.mainScreen.bounds)) {
         control.selectedSegmentIndex = 0;
     } else {
-        control.selectedSegmentIndex = !CGRectEqualToRect(self.ctrlView.frame, getDefaultSafeArea()) + 1;
+        control.selectedSegmentIndex = !CGRectEqualToRect(self.ctrlView.frame, UIEdgeInsetsInsetRect(self.view.frame, getDefaultSafeArea())) + 1;
     }
 }
 
@@ -375,12 +370,12 @@ BOOL shouldDismissPopover = YES;
 }
 
 - (void)actionMenuSafeAreaCancel {
-    self.ctrlView.frame = CGRectFromString(getPreference(@"control_safe_area"));
+    self.ctrlView.frame = getSafeArea();
     [self actionMenuSafeArea];
 }
 
 - (void)actionMenuSafeAreaDone {
-    setPreference(@"control_safe_area", NSStringFromCGRect(self.ctrlView.frame));
+    setSafeArea(self.ctrlView.frame);
     [self actionMenuSafeArea];
 }
 
