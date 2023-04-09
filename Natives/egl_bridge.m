@@ -75,8 +75,6 @@ void* egl_make_current(void* window);
 #define RENDERER_VIRGL 3
 #define RENDERER_VULKAN 4
 
-int config_renderer;
-
 typedef jint RegalMakeCurrent_func(EGLContext context);
 
 // Called from JNI_OnLoad of liblwjgl_opengl, TODO: check if unused

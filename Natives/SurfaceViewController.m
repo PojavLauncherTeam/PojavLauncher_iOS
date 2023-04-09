@@ -489,12 +489,12 @@ BOOL slideableHotbar;
             virtualMouseFrame.origin.y = clamp(virtualMouseFrame.origin.y, 0, self.surfaceView.frame.size.height);
             lastVirtualMousePoint = location;
             self.mousePointerView.frame = virtualMouseFrame;
-            callback_SurfaceViewController_onTouch(event, virtualMouseFrame.origin.x * screenScale, virtualMouseFrame.origin.y * screenScale);
+            CallbackBridge_nativeSendCursorPos(event, virtualMouseFrame.origin.x * screenScale, virtualMouseFrame.origin.y * screenScale);
             return;
         }
         lastVirtualMousePoint = location;
     }
-    callback_SurfaceViewController_onTouch(event, location.x * screenScale, location.y * screenScale);
+    CallbackBridge_nativeSendCursorPos(event, location.x * screenScale, location.y * screenScale);
 }
 
 #pragma mark - Input: on-surface functions
@@ -547,7 +547,7 @@ BOOL slideableHotbar;
 
         if (touchEvent == self.primaryTouch) {
             if ([self isTouchInactive:self.primaryTouch]) return; // FIXME: should be? ACTION_UP will never be sent
-            if (event == ACTION_MOVE) {
+            if (event == ACTION_MOVE && isGrabbing) {
                 event = ACTION_MOVE_MOTION;
                 CGPoint prevLocationInView = [touchEvent previousLocationInView:self.rootView];
                 locationInView.x -= prevLocationInView.x;

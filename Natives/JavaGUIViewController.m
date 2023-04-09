@@ -191,6 +191,7 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
 
     rgbArray = calloc(4, (size_t) (windowWidth * windowHeight));
 
+    setenv("POJAV_SKIP_JNI_GLFW", "1", 1);
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         launchJVM(nil, self.filepath, windowWidth, windowHeight, 8);
     });

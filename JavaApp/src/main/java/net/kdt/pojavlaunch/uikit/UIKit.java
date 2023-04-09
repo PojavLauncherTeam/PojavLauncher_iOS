@@ -89,36 +89,6 @@ public class UIKit {
         method.invoke(null, new Object[]{new String[]{}});
     }
 
-    public static void callback_SurfaceViewController_onTouch(int event, float x, float y) {
-        switch (event) {
-            case ACTION_DOWN:
-            case ACTION_UP:
-                if (!GLFW.mGLFWIsGrabbing) {
-                    CallbackBridge.mouseX = x;
-                    CallbackBridge.mouseY = y;
-                }
-                break;
-
-            case ACTION_MOVE:
-                if (GLFW.mGLFWIsGrabbing) {
-                    CallbackBridge.mouseX += x - CallbackBridge.mouseLastX;
-                    CallbackBridge.mouseY += y - CallbackBridge.mouseLastY;
-                } else {
-                    CallbackBridge.mouseX = x;
-                    CallbackBridge.mouseY = y;
-                }
-                break;
-
-            case ACTION_MOVE_MOTION:
-                CallbackBridge.mouseX += x;
-                CallbackBridge.mouseY += y;
-        }
-        CallbackBridge.mouseLastX = x;
-        CallbackBridge.mouseLastY = y;
-        
-        CallbackBridge.sendCursorPos(CallbackBridge.mouseX, CallbackBridge.mouseY);
-    }
-    
     public static void updateMCGuiScale() {
         MCOptionUtils.load();
         String str = MCOptionUtils.get("guiScale");
