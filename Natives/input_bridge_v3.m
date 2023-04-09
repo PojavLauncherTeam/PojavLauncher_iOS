@@ -285,12 +285,10 @@ int callback_SurfaceViewController_touchHotbar(CGFloat x, CGFloat y) {
 
     int barHeight = mcscale(20);
     int barY = physicalHeight - barHeight;
-    NSLog(@"Y(%d) vs BarY(%d)", (int)y, barY);
     if (y < barY) return -1;
 
     int barWidth = mcscale(180);
     int barX = (physicalWidth / 2) - (barWidth / 2);
-    NSLog(@"X(%d) vs BarX(%d) and BarEndX(%d)", (int)x, barX, barX + barWidth);
     if (x < barX || x >= barX + barWidth) return -1;
 
     return hotbarKeys[(int) MathUtils_map(x, barX, barX + barWidth, 0, 9)];
