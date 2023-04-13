@@ -48,8 +48,8 @@
     @"iPad5,4" : @"iPad Air (2nd generation)", \
     @"iPad6,3" : @"iPad Pro (9.7-inch)", \
     @"iPad6,4" : @"iPad Pro (9.7-inch)", \
-    @"iPad6,7" : @"iPad Pro (12.9-inch, 1st generation)", \
-    @"iPad6,8" : @"iPad Pro (12.9-inch, 1st generation)", \
+    @"iPad6,7" : @"iPad Pro (12.9-inch)", \
+    @"iPad6,8" : @"iPad Pro (12.9-inch)", \
     @"iPad6,11" : @"iPad (5th generation)", \
     @"iPad6,12" : @"iPad (5th generation)", \
     @"iPad7,1" : @"iPad Pro (12.9-inch, 2nd generation)", \
@@ -60,10 +60,10 @@
     @"iPad7,6" : @"iPad (6th generation)", \
     @"iPad7,11" : @"iPad (7th generation)", \
     @"iPad7,12" : @"iPad (7th generation)", \
-    @"iPad8,1" : @"iPad Pro (11-inch, 1st generation)", \
-    @"iPad8,2" : @"iPad Pro (11-inch, 1st generation)", \
-    @"iPad8,3" : @"iPad Pro (11-inch, 1st generation)", \
-    @"iPad8,4" : @"iPad Pro (11-inch, 1st generation)", \
+    @"iPad8,1" : @"iPad Pro (11-inch)", \
+    @"iPad8,2" : @"iPad Pro (11-inch)", \
+    @"iPad8,3" : @"iPad Pro (11-inch)", \
+    @"iPad8,4" : @"iPad Pro (11-inch)", \
     @"iPad8,5" : @"iPad Pro (12.9-inch, 3rd generation)", \
     @"iPad8,6" : @"iPad Pro (12.9-inch, 3rd generation)", \
     @"iPad8,7" : @"iPad Pro (12.9-inch, 3rd generation)", \
