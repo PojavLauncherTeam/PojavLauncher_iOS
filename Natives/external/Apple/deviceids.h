@@ -101,8 +101,8 @@
     @"iPad14,5" : @"iPad Pro (12.9-inch, 6th generation)", \
     @"iPad14,6" : @"iPad Pro (12.9-inch, 6th generation)", \
     @"iPod9,1" : @"iPod touch (7th generation)", \
-    @"AppleTV5,3" : @"Apple TV HD (4th generation)", \
-    @"AppleTV6,2" : @"Apple TV 4K (1st generation)", \
+    @"AppleTV5,3" : @"Apple TV HD", \
+    @"AppleTV6,2" : @"Apple TV 4K", \
     @"AppleTV11,1" : @"Apple TV 4K (2nd generation)", \
     @"AppleTV14,1" : @"Apple TV 4K (3rd generation)" \
 }
