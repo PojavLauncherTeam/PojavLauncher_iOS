@@ -129,6 +129,13 @@ jobs:
 
       - name: Upload PojavLauncher.dSYM
         uses: actions/upload-artifact@v2
+        
+  #ota:
+  #  name: Upload to OTA server
+  #  needs: build
+  #  runs-on: MacStadium
+  #  steps: idk yet that's why this is commented
+  
         with:
           name: PojavLauncher.dSYM
           path: artifacts/PojavLauncher.dSYM
