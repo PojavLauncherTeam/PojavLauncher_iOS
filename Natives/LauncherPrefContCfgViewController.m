@@ -70,6 +70,11 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     NSString *gamepadPath = [NSString stringWithFormat:@"%s/controlmap/gamepads/%@", getenv("POJAV_HOME"), getPreference(@"default_gamepad_ctrl")];
     self.currentMappings = parseJSONFromFile(gamepadPath);
     self.currentFileName = [getPreference(@"default_ctrl") stringByDeletingPathExtension];
+    NSPredicate *filterPredicate = [NSPredicate predicateWithBlock:^BOOL(id obj, NSDictionary *dict) {
+        return ![obj[@"name"] hasPrefix:@"mouse_"];
+    }];
+    [self.currentMappings[@"mGameMappingList"] filterUsingPredicate:filterPredicate];
+    [self.currentMappings[@"mMenuMappingList"] filterUsingPredicate:filterPredicate];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -168,11 +173,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     if(indexPath.section == 0) {
         [self actionMenuLoad];
     } else if(indexPath.section == 3) {
-        if(indexPath.row == 0) {
-            setPreference(@"controller_type", @"xbox");
-        } else if(indexPath.row == 1) {
-            setPreference(@"controller_type", @"playstation");
-        }
+        setPreference(@"controller_type", self.prefControllerTypes[indexPath.row][@"name"]);
         NSIndexSet *section = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 3)];
         [self.tableView reloadSections:section withRowAnimation:UITableViewRowAnimationNone];
     }
@@ -220,49 +221,11 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 {
     UITableViewCell *cell = (UITableViewCell *)textField.superview;
     NSMutableDictionary *item = objc_getAssociatedObject(cell.accessoryView, @"item");
-/*
-    if(textField.tag == 1) {
-        arrayToSave = self.prefMappings[0];
-        index = @"mGameMappingList";
-    } else if(textField.tag == 2) {
-        arrayToSave = self.prefMappings[1];
-        index = @"mMenuMappingList";
-    }
-*/
     if(![textField.text hasPrefix:@"SPECIALBTN"]) {
         item[@"keycode"] = self.keycodePlist[[@"GLFW_KEY_" stringByAppendingString:textField.text]];
     } else {
         item[@"keycode"] = self.keycodePlist[textField.text];
     }
-/*
-    __block NSString *fullString = @"";
-    __block NSArray *arrayToSave = nil;
-    __block NSUInteger btnIndex = 0;
-    __block NSString *index = @"";
-    
-    if(textField.tag == 1) {
-        arrayToSave = self.prefMappings[0];
-        index = @"mGameMappingList";
-    } else if(textField.tag == 2) {
-        arrayToSave = self.prefMappings[1];
-        index = @"mMenuMappingList";
-    }
-    
-    for(NSDictionary* mapping in arrayToSave) {
-        if(item[@"gamepad_button"] == mapping[@"gamepad_button"]) {
-            btnIndex = [arrayToSave indexOfObject:mapping];
-            break;
-        }
-    }
-    
-    if(![textField.text hasPrefix:@"SPECIALBTN"]) {
-        fullString = [@"GLFW_KEY_" stringByAppendingString:textField.text];
-    } else {
-        fullString = textField.text;
-    }
-    
-    self.currentMappings[index][btnIndex][@"keycode"] = [self.keycodePlist objectForKey:fullString];
-*/
     self.activeTextField = nil;
 }
 
