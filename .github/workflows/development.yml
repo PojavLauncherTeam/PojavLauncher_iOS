@@ -38,7 +38,7 @@ jobs:
           ls -lah ./
           
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Checkout repository submodules
         run: git submodule update --init --recursive
@@ -49,7 +49,7 @@ jobs:
         shell: bash
 
       - name: Cache gl4es
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         if: ${{ false }} # use gl4es 1.1.5
         id: gl4es-cache
         with:
@@ -58,7 +58,7 @@ jobs:
 
       - name: Get gl4es
         if: success() && steps.gl4es-cache.outputs.cache-hit != 'true'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: 'PojavLauncherTeam/gl4es-114-extra'
           path: 'gl4es'
