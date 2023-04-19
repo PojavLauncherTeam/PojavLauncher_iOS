@@ -9,7 +9,7 @@
 #if CONFIG_RELEASE
 # define CONFIG_TYPE "release"
 #else
-# define CONFIG_TYPE "debug"
+# define CONFIG_TYPE "development"
 #endif
 
 #cmakedefine CONFIG_BRANCH "@CONFIG_BRANCH@"

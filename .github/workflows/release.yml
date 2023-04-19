@@ -107,7 +107,7 @@ jobs:
           password: ${{ secrets.ELLIE_MINI_SECRET }}
         run: |
           export PATH=/opt/procursus/bin:/opt/homebrew/bin:$PATH
-          export RUNNER=1 SLIMMED=1
+          export RUNNER=1
           gmake -j$(sysctl -n hw.ncpu) dsym package PLATFORM=${{ matrix.platform }}
           
       - name: Upload regular ipa
@@ -115,12 +115,6 @@ jobs:
         with:
           name: net.kdt.pojavlauncher-${{ matrix.platform_name }}.ipa
           path: artifacts/net.kdt.pojavlauncher-*-${{ matrix.platform_name }}.ipa
-
-      - name: Upload slimmed ipa
-        uses: actions/upload-artifact@v2
-        with:
-          name: net.kdt.pojavlauncher.slimmed-${{ matrix.platform_name }}.ipa
-          path: artifacts/net.kdt.pojavlauncher.slimmed-*-${{ matrix.platform_name }}.ipa
 
       - name: Upload PojavLauncher.dSYM
         uses: actions/upload-artifact@v2
