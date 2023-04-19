@@ -6,6 +6,7 @@
 #import "LauncherNavigationController.h"
 #import "LauncherPreferences.h"
 #import "MinecraftResourceUtils.h"
+#import "PickTextField.h"
 #import "ios_uikit_bridge.h"
 #import "UIKit+hook.h"
 
@@ -38,7 +39,7 @@
         [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
     }
 
-    self.versionTextField = [[UITextField alloc] initWithFrame:CGRectMake(0, 4, self.toolbar.frame.size.width * 0.8, self.toolbar.frame.size.height - 8)];
+    self.versionTextField = [[PickTextField alloc] initWithFrame:CGRectMake(0, 4, self.toolbar.frame.size.width * 0.8, self.toolbar.frame.size.height - 8)];
     [self.versionTextField addTarget:self.versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     self.versionTextField.autoresizingMask = AUTORESIZE_MASKS;
     self.versionTextField.placeholder = @"Specify version...";

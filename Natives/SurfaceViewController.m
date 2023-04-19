@@ -1,3 +1,4 @@
+#import <AVFoundation/AVFoundation.h>
 #import <GameController/GameController.h>
 #import <objc/runtime.h>
 
@@ -299,6 +300,24 @@ BOOL slideableHotbar;
     }
 }
 
+- (void)updateAudioSettings {
+    NSError *sessionError = nil;
+    AVAudioSessionCategory category;
+    AVAudioSessionCategoryOptions options;
+    if([getPreference(@"silence_with_switch") boolValue]) {
+        category = AVAudioSessionCategorySoloAmbient;
+    } else {
+        category = AVAudioSessionCategoryPlayback;
+    }
+    if([getPreference(@"silence_other_audio") boolValue]) {
+        options = 0;
+    } else {
+        options = AVAudioSessionCategoryOptionMixWithOthers;
+    }
+    [[AVAudioSession sharedInstance] setCategory:category withOptions:options error:&sessionError];
+    [[AVAudioSession sharedInstance] setActive:YES error:&sessionError];
+}
+
 - (void)updateJetsamControl {
     if (!getEntitlementValue(@"com.apple.private.memorystatus")) {
         return;
@@ -347,6 +366,8 @@ BOOL slideableHotbar;
     self.doubleTapGesture.enabled = self.enableHotbarGestures;
     self.longPressGesture.minimumPressDuration = [getPreference(@"press_duration") floatValue] / 1000.0;
 
+    // Update audio settings
+    [self updateAudioSettings];
     // Update resolution
     [self updateSavedResolution];
 }

@@ -240,14 +240,12 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             @{@"key": @"silence_other_audio",
               @"hasDetail": @YES,
               @"icon": @"speaker.slash",
-              @"type": self.typeSwitch,
-              @"enableCondition": whenNotInGame
+              @"type": self.typeSwitch
             },
             @{@"key": @"silence_with_switch",
               @"hasDetail": @YES,
               @"icon": @"speaker.zzz",
-              @"type": self.typeSwitch,
-              @"enableCondition": whenNotInGame
+              @"type": self.typeSwitch
             },
         ], @[
             // Control settings

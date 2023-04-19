@@ -11,8 +11,6 @@
 
 #include "utils.h"
 
-#import <AVFoundation/AVFoundation.h>
-
 #import "ios_uikit_bridge.h"
 #import "JavaLauncher.h"
 #import "LauncherPreferences.h"
@@ -277,23 +275,6 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
         margv[++margc] = [launchTarget UTF8String];
     }
     margv[++margc] = [NSString stringWithFormat:@"%dx%d", width, height].UTF8String;
-    
-    NSError *sessionError = nil;
-    AVAudioSessionCategory category;
-    AVAudioSessionCategoryOptions options;
-    if([getPreference(@"silence_with_switch") boolValue]) {
-        category = AVAudioSessionCategorySoloAmbient;
-    } else {
-        category = AVAudioSessionCategoryPlayback;
-    }
-    if([getPreference(@"silence_other_audio") boolValue]) {
-        options = 0;
-    } else {
-        options = AVAudioSessionCategoryOptionMixWithOthers;
-    }
-    [[AVAudioSession sharedInstance] setCategory:category withOptions:options error:&sessionError];
-    [[AVAudioSession sharedInstance] setActive:YES error:&sessionError];
-    
 
     pJLI_Launch = (JLI_Launch_func *)dlsym(libjli, "JLI_Launch");
           
