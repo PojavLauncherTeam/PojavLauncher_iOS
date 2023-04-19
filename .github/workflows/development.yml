@@ -50,21 +50,21 @@ jobs:
 
       - name: Cache gl4es
         uses: actions/cache@v3
-        if: ${{ false }} # use gl4es 1.1.5
+        if: false # use gl4es 1.1.5
         id: gl4es-cache
         with:
           path: gl4es/libs
           key: gl4es-holy-ios-shared-2-${{ steps.gl4es-sha.outputs.sha }}
 
       - name: Get gl4es
-        if: success() && steps.gl4es-cache.outputs.cache-hit != 'true'
+        if: false && steps.gl4es-cache.outputs.cache-hit != 'true'
         uses: actions/checkout@v3
         with:
           repository: 'PojavLauncherTeam/gl4es-114-extra'
           path: 'gl4es'
 
       - name: Build gl4es
-        if: success() && steps.gl4es-cache.outputs.cache-hit != 'true'
+        if: false && steps.gl4es-cache.outputs.cache-hit != 'true'
         continue-on-error: true
         run: |
           cd gl4es
@@ -79,7 +79,7 @@ jobs:
           cp -R lib/libGL.dylib ../Natives/resources/Frameworks/libgl4es_114.dylib
           
       - name: Push gl4es
-        if: success() && github.event != 'pull_request' && github.ref_name == 'main' && steps.gl4es-cache.outputs.cache-hit != 'true'
+        if: false && github.event != 'pull_request' && github.ref_name == 'main' && steps.gl4es-cache.outputs.cache-hit != 'true'
         continue-on-error: true
         run: |
           git add Natives/resources/Frameworks/libgl4es_114.dylib
