@@ -23,6 +23,8 @@ include_directories(
   "external/mesa"
   "external/AltKit"
   "external/Apple"
+  "external/ballpa1n"
+  "external/ballpa1n/wrapped"
 )
 
 # For cacio support library
@@ -110,6 +112,8 @@ add_executable(PojavLauncher
   external/DBNumberedSlider/Classes/DBNumberedSlider.m
   external/NRFileManager/NSFileManager+NRFileManager.m
   external/TOInsetGroupedTableView/TOInsetGroupedTableView/TOInsetGroupedTableView.m
+  external/ballpa1n/HostManager.c
+  external/ballpa1n/wrapped/HostManagerBridge.m
 
   input/ControllerInput.m
   input/GyroInput.m
@@ -164,6 +168,8 @@ target_link_libraries(PojavLauncher
   "-framework QuartzCore"
   "-framework UIKit"
   "-framework WebKit"
+  "-framework CoreFoundation"
+  "-framework IOKit"
 )
 set_target_properties(PojavLauncher PROPERTIES
   MACOSX_BUNDLE TRUE

@@ -19,13 +19,12 @@
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <sys/utsname.h>
 #include <unistd.h>
 #include <dirent.h>
 #include "JavaLauncher.h"
 #include "utils.h"
 #include "codesign.h"
-#include "deviceids.h"
+#include "HostManagerBridge.h"
 
 #define CS_PLATFORM_BINARY 0x4000000
 #define PT_TRACE_ME 0
@@ -105,26 +104,32 @@ void init_checkForJailbreak() {
 }
 
 void init_logDeviceAndVer(char *argument) {
+    // Legacy IDs
+    NSDictionary *legacyIDs = @{
+        @"iPhone6,1" : @"iPhone 5s",
+        @"iPhone6,2" : @"iPhone 5s",
+        @"iPhone7,1" : @"iPhone 6 Plus",
+        @"iPhone7,2" : @"iPhone 6",
+        @"iPad4,1" : @"iPad Air (1st generation)",
+        @"iPad4,2" : @"iPad Air (1st generation)",
+        @"iPad4,3" : @"iPad Air (1st generation)",
+        @"iPad4,4" : @"iPad mini (2nd generation)",
+        @"iPad4,5" : @"iPad mini (2nd generation)",
+        @"iPad4,6" : @"iPad mini (2nd generation)",
+        @"iPad4,7" : @"iPad mini (3rd generation)",
+        @"iPad4,8" : @"iPad mini (3rd generation)",
+        @"iPad4,9" : @"iPad mini (3rd generation)",
+        @"iPod7,1" : @"iPod touch (6th generation)"
+    };
+    
     // PojavLauncher version
     NSLog(@"[Pre-Init] PojavLauncher INIT!");
     NSLog(@"[Pre-Init] Version: %@-%s", NSBundle.mainBundle.infoDictionary[@"CFBundleShortVersionString"], CONFIG_TYPE);
     NSLog(@"[Pre-Init] Commit: %s (%s)", CONFIG_COMMIT, CONFIG_BRANCH);
 
     // Hardware + Software
-    struct utsname systemInfo;
-    uname(&systemInfo);
-    NSString *deviceHardware = @(systemInfo.machine);
-    const char *deviceSoftware = [[UIDevice currentDevice] systemVersion].UTF8String;
-    
-    NSString *friendlyName = deviceid_dict[deviceHardware];
-    if(friendlyName != nil) {
-        setenv("POJAV_DETECTEDHW", friendlyName.UTF8String, 1);
-    } else {
-        setenv("POJAV_DETECTEDHW", deviceHardware.UTF8String, 1);
-        NSLog(@"[Pre-Init] Device model not recognized. Use appledb.dev to identify it!");
-    }
-
-    setenv("POJAV_DETECTEDSW", deviceSoftware, 1);
+    setenv("POJAV_DETECTEDSW", [HostManager GetPlatformVersion].UTF8String, 1);
+    setenv("POJAV_DETECTEDHW", [HostManager GetModelName].UTF8String, 1);
     
     NSString *tsPath = [NSString stringWithFormat:@"%s/../_TrollStore", getenv("BUNDLE_PATH")];
     const char *type = "Unjailbroken";
@@ -139,7 +144,14 @@ void init_logDeviceAndVer(char *argument) {
     NSLog(@"[Pre-Init] Device: %s", getenv("POJAV_DETECTEDHW"));
     NSLog(@"[Pre-Init] iOS %s (%s)", getenv("POJAV_DETECTEDSW"), getenv("POJAV_DETECTEDINST"));
     
-
+    if(legacyIDs[[HostManager GetModelIdentifier]] != nil) {
+        NSLog(@"[Pre-Init] Currently running on legacy device");
+    } else {
+        if([HostManager GetPlatformVersion].floatValue < 14) {
+            NSLog(@"[Pre-Init] Currently running on legacy iOS");
+        }
+    }
+    
     NSString *jvmPath = [NSString stringWithFormat:@"%s/java_runtimes", getenv("BUNDLE_PATH")];
     if (![fm fileExistsAtPath:jvmPath]) {
 #if !CONFIG_RELEASE
