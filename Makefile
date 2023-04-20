@@ -236,8 +236,8 @@ native:
 		-DCONFIG_RELEASE=$(RELEASE) \
 		..
 
-	cmake --build $(WORKINGDIR) --config $(CMAKE_BUILD_TYPE) -j$(JOBS) \
-		--target awt_headless awt_xawt libOSMesaOverride.dylib tinygl4angle PojavLauncher
+	cmake --build $(WORKINGDIR) --config $(CMAKE_BUILD_TYPE) -j$(JOBS)
+	#	--target awt_headless awt_xawt libOSMesaOverride.dylib tinygl4angle PojavLauncher
 	rm $(WORKINGDIR)/libawt_headless.dylib
 	echo '[PojavLauncher v$(VERSION)] native - end'
 
