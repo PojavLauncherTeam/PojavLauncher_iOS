@@ -83,13 +83,11 @@ void setPreference(NSString* key, id value) {
 }
 
 void fillDefaultWarningDict() {
-    setDefaultValueForPref(warnPrefDict, @"option_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"local_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"mem_warn", @YES);
-    setDefaultValueForPref(warnPrefDict, @"java_warn", @YES);
-    setDefaultValueForPref(warnPrefDict, @"jb_warn", @YES);
-    setDefaultValueForPref(warnPrefDict, @"int_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"auto_ram_warn", @YES);
+    setDefaultValueForPref(warnPrefDict, @"legacy_device_warn", @YES);
+    setDefaultValueForPref(warnPrefDict, @"limited_ram_warn", @YES);
 }
 
 NSMutableDictionary* getDictionarySafe(NSString* key) {
@@ -150,12 +148,11 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(envPrefDict, @"silence_with_switch", @NO);
     setDefaultValueForPref(prefDict, @"slimmed", @NO);
     fillDefaultWarningDict();
-    setDefaultValueForPref(prefDict, @"force_unsupported_launch", @NO);
     setDefaultValueForPref(prefDict, @"slideable_hotbar", @NO);
     setDefaultValueForPref(prefDict, @"virtmouse_enable", @NO);
     setDefaultValueForPref(prefDict, @"check_sha", @YES);
     setDefaultValueForPref(prefDict, @"auto_ram", @(!getEntitlementValue(@"com.apple.private.memorystatus")));
-    setDefaultValueForPref(prefDict, @"unsupported_warn_counter", @(0));
+    setDefaultValueForPref(prefDict, @"legacy_version_counter", @(0));
     setDefaultValueForPref(prefDict, @"hidden_sidebar", @(realUIIdiom == UIUserInterfaceIdiomPhone));
     setDefaultValueForPref(prefDict, @"enable_altkit", @YES);
     

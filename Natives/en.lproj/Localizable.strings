@@ -87,14 +87,12 @@
 "login.option.microsoft" = "Microsoft account";
 "login.option.local" = "Local account";
 
-"login.warn.title.ram_unjb" = "Memory slider is enabled";
-"login.warn.message.ram_unjb" = "Be aware that changing this setting can cause game instability or break the ability to play at all.";
-
-"login.warn.title.iosver" = "This is the last update for this iOS version.";
-"login.warn.message.iosver" = "A future version of PojavLauncher will not support iOS 12 or 13, due to feature inconsistencies and development hurdles.";
-
-"login.warn.title.3gb" = "Your device has limited RAM.";
-"login.warn.message.3gb" = "Devices with less than 4GB of memory may run into memory constraints. We recommend leaving the automatic selector on for your device.";
+"login.warn.title.legacy_device" = "The next release of PojavLauncher will not be compatible with this device.";
+"login.warn.message.legacy_device" = "To run the next major release, a device capable of running iOS 14 is required.";
+"login.warn.title.legacy_ios" = "The next release of PojavLauncher will require a system update.";
+"login.warn.message.legacy_ios" = "To run the next major release, this device needs to be running iOS 14 or later.";
+"login.warn.title.limited_ram" = "This device has a limited amount of memory available.";
+"login.warn.message.limited_ram" = "We recommend leaving auto RAM enabled to prevent instability and performance issues.";
 
 "login.warn.title.demomode" = "Your account is Demo";
 "login.warn.message.demomode" = "As a replacement to offline and local mode, demo mode will allow you to sign into a Microsoft account that does not own the game and play the Java Edition trial, introduced in 1.3.1 and newer versions. Older versions contain the full game, as the official launcher does not place these restrictions. See our website to learn more about this transition from offline mode.";
