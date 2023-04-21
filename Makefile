@@ -270,7 +270,7 @@ jre: native
 
 assets:
 	echo '[PojavLauncher v$(VERSION)] assets - start'
-	if [ '$(IOS)' = '0' ]; then \
+	if [ '$(IOS)' = '0' ] && [ '$(DETECTPLAT)' = 'Darwin' ]; then \
 		mkdir -p $(WORKINGDIR)/PojavLauncher.app/Base.lproj; \
 		xcrun actool $(SOURCEDIR)/Natives/Assets.xcassets \
 			--compile $(SOURCEDIR)/Natives/resources \
@@ -280,7 +280,7 @@ assets:
 			--alternate-app-icon AppIcon-Dark \
 			--alternate-app-icon AppIcon-Development \
 			--output-partial-info-plist /dev/null || exit 1; \
-	elif [ '$(IOS)' = '1' ]; then \
+	else \
 		echo 'Due to the required tools not being available, you cannot compile the extras for PojavLauncher with an iOS device.'; \
 	fi
 	echo '[PojavLauncher v$(VERSION)] assets - end'
@@ -313,6 +313,7 @@ payload: native java jre assets
 
 deploy:
 	echo '[PojavLauncher v$(VERSION)] deploy - start'
+	cd $(OUTPUTDIR); \
 	if [ '$(IOS)' = '1' ]; then \
 		ldid -S $(WORKINGDIR)/PojavLauncher.app || exit 1; \
 		ldid -S$(SOURCEDIR)/entitlements.xml $(WORKINGDIR)/PojavLauncher.app/PojavLauncher || exit 1; \
@@ -321,14 +322,25 @@ deploy:
 		sudo mv $(SOURCEDIR)/JavaApp/local_out/*.jar $(PREFIX)Applications/PojavLauncher.app/libs/ || exit 1; \
 		cd $(PREFIX)Applications/PojavLauncher.app/Frameworks || exit 1; \
 		sudo chown -R 501:501 $(PREFIX)Applications/PojavLauncher.app/* || exit 1; \
-	elif [ '$(IOS)' = '0' ]; then \
-		echo 'Deploy recipe only supports being run on a jailbroken iOS device.'; \
+	elif [ '$(IOS)' = '0' ] && [ '$(DETECTPLAT)' = 'Darwin' ]; then \
+		if [ '$(PLATFORM)' != '2' ] || [ '$(TEAMID)' = '-1' ] || [ '$(SIGNING_TEAMID)' = '-1' ] || [ '$(PROVISIONING)' = '-1' ]; then \
+			echo 'Configuration not supported for deploy recipe.'; \
+		else \
+			$(call METHOD_PACKAGE); \
+			if [ '$(SLIMMED_ONLY)' = '0' ]; then \
+				open $(OUTPUTDIR)/net.kdt.pojavlauncher-$(VERSION)-$(PLATFORM_NAME).ipa; \
+			else \
+				open $(OUTPUTDIR)/net.kdt.pojavlauncher.slimmed-$(VERSION)-$(PLATFORM_NAME).ipa; \
+			fi; \
+		fi; \
+	else \
+		echo 'Device not supported for deploy recipe.'; \
 	fi
 	echo '[PojavLauncher v$(VERSION)] deploy - end'
 
 package: payload
 	echo '[PojavLauncher v$(VERSION)] package - start'
-	if [ '$(TEAMID)' != '-1' ] && [ '$(SIGNING_TEAMID)' != '-1' ] && [ '$(PROVISIONING)' != '-1' ]; then \
+	if [ '$(TEAMID)' != '-1' ] && [ '$(SIGNING_TEAMID)' != '-1' ] && [ '$(PROVISIONING)' != '-1' ] && [ '$(DETECTPLAT)' = 'Darwin']; then \
 		printf '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n<plist version="1.0">\n<dict>\n	<key>application-identifier</key>\n	<string>$(TEAMID).net.kdt.pojavlauncher</string>\n	<key>com.apple.developer.team-identifier</key>\n	<string>$(TEAMID)</string>\n	<key>get-task-allow</key>\n	<true/>\n	<key>keychain-access-groups</key>\n	<array>\n	<string>$(TEAMID).*</string>\n	<string>com.apple.token</string>\n	</array>\n</dict>\n</plist>' > entitlements.codesign.xml; \
 		$(MAKE) codesign; \
 		rm -rf entitlements.codesign.xml; \
