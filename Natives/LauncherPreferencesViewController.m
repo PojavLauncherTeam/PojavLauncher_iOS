@@ -21,7 +21,7 @@
 typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
 @interface LauncherPreferencesViewController(){}
-@property(nonatomic) NSArray<NSString*>* prefSections;
+@property(nonatomic) NSArray<NSString*>* prefSections, *rendererKeys, *rendererList;
 @property(nonatomic) NSMutableArray<NSNumber*>* prefSectionsVisibility;
 @property(nonatomic) NSArray<NSArray<NSDictionary*>*>* prefContents;
 @property(nonatomic) BOOL prefDetailVisible;
@@ -60,6 +60,37 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     for (int i = 0; i < self.prefSections.count; i++) {
         [self.prefSectionsVisibility addObject:@NO];
     }
+
+#if CONFIG_RELEASE
+    if(@available(iOS 16.0, *)) {
+        // Disabling Zink on iOS 16.0+ to figure out what's wrong with it
+        self.rendererKeys = @[
+            @"auto",
+            @ RENDERER_NAME_GL4ES,
+            @ RENDERER_NAME_MTL_ANGLE
+        ];
+        self.rendererList = @[
+            localize(@"preference.title.renderer.auto", nil),
+            localize(@"preference.title.renderer.gl4es", nil),
+            localize(@"preference.title.renderer.angle", nil)
+        ];
+    } else {
+#endif
+        self.rendererKeys = @[
+            @"auto",
+            @ RENDERER_NAME_GL4ES,
+            @ RENDERER_NAME_MTL_ANGLE,
+            @ RENDERER_NAME_VK_ZINK
+        ];
+        self.rendererList = @[
+            localize(@"preference.title.renderer.auto", nil),
+            localize(@"preference.title.renderer.gl4es", nil),
+            localize(@"preference.title.renderer.angle", nil),
+            localize(@"preference.title.renderer.zink", nil)
+        ];
+#if CONFIG_RELEASE
+    }
+#endif
     
     self.prefContents = @[
         @[
@@ -92,7 +123,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
               @"type": self.typeSwitch,
               @"action": ^(BOOL enabled){
                   debugLogEnabled = enabled;
-                  NSLog(@"Debug log enabled: %@", enabled ? @"YES" : @"NO");
+                  NSLog(@"[Debugging] Debug log enabled: %@", enabled ? @"YES" : @"NO");
               }
             },
             @{@"key": @"jitstreamer_server",
@@ -190,21 +221,12 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             // Video and renderer settings
             @{@"icon": @"video"},
             @{@"key": @"renderer",
+              @"hasDetail": @YES,
               @"icon": @"cpu",
               @"type": self.typePickField,
               @"enableCondition": whenNotInGame,
-              @"pickKeys": @[
-                  @"auto",
-                  @ RENDERER_NAME_GL4ES,
-                  @ RENDERER_NAME_MTL_ANGLE,
-                  @ RENDERER_NAME_VK_ZINK
-              ],
-              @"pickList": @[
-                  localize(@"preference.title.renderer.auto", nil),
-                  localize(@"preference.title.renderer.gl4es", nil),
-                  localize(@"preference.title.renderer.angle", nil),
-                  localize(@"preference.title.renderer.zink", nil)
-              ]
+              @"pickKeys": self.rendererKeys,
+              @"pickList": self.rendererList
             },
             @{@"key": @"resolution",
               @"hasDetail": @YES,

@@ -165,7 +165,7 @@
 "preference.title.renderer.gl4es" = "holy gl4es - exports OpenGL 2.1";
 "preference.title.renderer.angle" = "ANGLE (1.17+) - exports OpenGL 3.2 (Core Profile, limited)";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - exports OpenGL 4.1";
-"preference.detail.renderer" = "Change the OpenGL render engine to use";
+"preference.detail.renderer" = "Change the OpenGL render engine to use. Zink is temporarily disabled on iOS 16 and later to diagnose issues.";
 
 "preference.title.resolution" = "Resolution (%)";
 "preference.detail.resolution" = "Allows you to decrease the game resolution.";
