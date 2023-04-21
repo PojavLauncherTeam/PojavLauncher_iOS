@@ -345,10 +345,6 @@ void generateAndSaveDefaultControlForGamepad() {
     
     dict[@"mMenuMappingList"] = [[NSMutableArray alloc] init];
     
-    [dict[@"mMenuMappingList"] addObject:createGamepadButton(@"mouse_primary", SPECIALBTN_MOUSEPRI, SPECIALBTN_MOUSEPRI)];
-    [dict[@"mMenuMappingList"] addObject:createGamepadButton(@"mouse_middle", SPECIALBTN_MOUSEMID, SPECIALBTN_MOUSEMID)];
-    [dict[@"mMenuMappingList"] addObject:createGamepadButton(@"mouse_secondary", SPECIALBTN_MOUSESEC, SPECIALBTN_MOUSESEC)];
-    
     [dict[@"mMenuMappingList"] addObject:createGamepadButton(@"bumper_left", GLFW_GAMEPAD_BUTTON_LEFT_BUMPER, SPECIALBTN_SCROLLUP)];
     [dict[@"mMenuMappingList"] addObject:createGamepadButton(@"bumper_right", GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER, SPECIALBTN_SCROLLDOWN)];
     
