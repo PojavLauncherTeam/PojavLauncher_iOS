@@ -59,7 +59,7 @@ UIEdgeInsets insets;
             [deviceWarn addAction:deviceAction];
             [self presentViewController:deviceWarn animated:YES completion:nil];
             setPreference(@"legacy_device_warn", @NO);
-        } else {
+        } else if(!getenv("POJAV_DETECTED_LEGACY")) {
             if([getPreference(@"legacy_version_counter") intValue] == 0) {
                 // "The next release of PojavLauncher will require a system update."
                 UIAlertController *versionWarn = [UIAlertController
