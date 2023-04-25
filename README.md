@@ -19,26 +19,22 @@ This repository contains the code for our iOS, iPadOS, and tvOS port of PojavLau
 The [PojavLauncher Website](https://pojavlauncherteam.github.io/INSTALL.html#ios) has extensive documentation on how to install, set up, and play! For those who wish to install quickly, here's the basics:
 
 ### Requirements
-At the minimum, you'll need one of the following devices on iOS 12.2 or tvOS 14.0 and later:
-- iPhone 6s and later
+At the minimum, you'll need one of the following devices on **iOS 12.2** and later:
+- iPhone 5s and later
 - iPad (5th generation) and later
-- iPad Air (2nd generation) and later
-- iPad mini (4th generation) and later
+- iPad Air (all models)
+- iPad mini (2nd generation) and later
 - iPad Pro (all models)
-- iPod touch (7th generation)
-- Apple TV HD
+- iPod touch (6th generation)
 
-However, we recommend one of the following devices on iOS or tvOS 14.0 and later:
+However, we recommend one of the following devices on **iOS 14.0** and later:
 - iPhone XS and later, excluding iPhone XR and iPhone SE (2nd generation)
 - iPad (10th generation) and later
 - iPad Air (4th generation) and later
 - iPad mini (6th generation) and later
-- iPad Pro (all models), excluding iPad Pro (9.7-inch)
-- Apple TV 4K (3rd generation)
 
 Recommended devices provide a smoother and more enjoyable gameplay experience compared to other supported devices.
-
-Apple TV support is currently in development.
+- [The next release of PojavLauncher will be dropping support for iOS 12 and iOS 13.](https://github.com/PojavLauncherTeam/PojavLauncher_iOS/issues/547)
 
 ### Setting up to sideload
 PojavLauncher can be sideloaded in many ways. Our recommended solution is to install [TrollStore](https://github.com/opa334/TrollStore) if your iOS version supports it. Installing with TrollStore allows you to permenantly sign the application, automatically enable JIT, and increase memory limits.
