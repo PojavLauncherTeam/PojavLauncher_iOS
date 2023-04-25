@@ -1,0 +1,139 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXFileReference section */
+		054957CB2986E91000EFD4CE /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		054957CC2986E91000EFD4CE /* .gitmodules */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitmodules; sourceTree = "<group>"; };
+		054957CD2986E91000EFD4CE /* entitlements.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = entitlements.xml; sourceTree = "<group>"; };
+		054957CE2986E91000EFD4CE /* .github */ = {isa = PBXFileReference; lastKnownFileType = folder; path = .github; sourceTree = "<group>"; };
+		054957CF2986E91000EFD4CE /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		054957D02986E91000EFD4CE /* Natives */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Natives; sourceTree = "<group>"; };
+		054957D12986E91000EFD4CE /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		054957D22986E91000EFD4CE /* crowdin.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = crowdin.yml; sourceTree = "<group>"; };
+		054957D32986E91000EFD4CE /* JavaApp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = JavaApp; sourceTree = "<group>"; };
+		054957D42986E91000EFD4CE /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		054957C02986E8DC00EFD4CE = {
+			isa = PBXGroup;
+			children = (
+				054957CE2986E91000EFD4CE /* .github */,
+				054957CF2986E91000EFD4CE /* .gitignore */,
+				054957CC2986E91000EFD4CE /* .gitmodules */,
+				054957D22986E91000EFD4CE /* crowdin.yml */,
+				054957CD2986E91000EFD4CE /* entitlements.xml */,
+				054957D32986E91000EFD4CE /* JavaApp */,
+				054957D42986E91000EFD4CE /* LICENSE */,
+				054957CB2986E91000EFD4CE /* Makefile */,
+				054957D02986E91000EFD4CE /* Natives */,
+				054957D12986E91000EFD4CE /* README.md */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXLegacyTarget section */
+		054957C52986E8DC00EFD4CE /* PojavLauncher */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "$(ACTION)";
+			buildConfigurationList = 054957C82986E8DC00EFD4CE /* Build configuration list for PBXLegacyTarget "PojavLauncher" */;
+			buildPhases = (
+			);
+			buildToolPath = /opt/homebrew/bin/gmake;
+			dependencies = (
+			);
+			name = PojavLauncher;
+			passBuildSettingsInEnvironment = 1;
+			productName = PojavLauncher;
+		};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXProject section */
+		054957C12986E8DC00EFD4CE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1420;
+				TargetAttributes = {
+					054957C52986E8DC00EFD4CE = {
+						CreatedOnToolsVersion = 14.2;
+					};
+				};
+			};
+			buildConfigurationList = 054957C42986E8DC00EFD4CE /* Build configuration list for PBXProject "PojavLauncher" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 054957C02986E8DC00EFD4CE;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				054957C52986E8DC00EFD4CE /* PojavLauncher */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		054957C62986E8DC00EFD4CE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PATH = "${PATH}:/opt/procursus/bin:/opt/procursus/sbin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/local/sbin";
+				RELEASE = 0;
+			};
+			name = Debug;
+		};
+		054957C72986E8DC00EFD4CE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PATH = "${PATH}:/opt/procursus/bin:/opt/procursus/sbin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/local/sbin";
+				RELEASE = 1;
+			};
+			name = Release;
+		};
+		054957C92986E8DC00EFD4CE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		054957CA2986E8DC00EFD4CE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		054957C42986E8DC00EFD4CE /* Build configuration list for PBXProject "PojavLauncher" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				054957C62986E8DC00EFD4CE /* Debug */,
+				054957C72986E8DC00EFD4CE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		054957C82986E8DC00EFD4CE /* Build configuration list for PBXLegacyTarget "PojavLauncher" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				054957C92986E8DC00EFD4CE /* Debug */,
+				054957CA2986E8DC00EFD4CE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 054957C12986E8DC00EFD4CE /* Project object */;
+}

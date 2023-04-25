@@ -6,6 +6,8 @@
 /Natives/PojavLauncher
 /Natives/build
 .DS_Store
-/pojavlauncher.xcodeproj
+/PojavLauncher.xcodeproj/xcshareddata/*
+/PojavLauncher.xcodeproj/xcuserdata/*
+/PojavLauncher.xcodeproj/project.xcworkspace/*
 /depends
 /Natives/config.h

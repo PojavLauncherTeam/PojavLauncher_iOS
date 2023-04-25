@@ -193,7 +193,7 @@ ifndef SDKPATH
 $(error You need to specify SDKPATH to the path of iPhoneOS.sdk. The SDK version should be 14.0 or newer.)
 endif
 
-all: clean native java jre extras package dsym
+all: clean native java jre assets payload package dsym
 
 help:
 	echo 'Makefile to compile PojavLauncher'
@@ -340,7 +340,7 @@ deploy:
 
 package: payload
 	echo '[PojavLauncher v$(VERSION)] package - start'
-	if [ '$(TEAMID)' != '-1' ] && [ '$(SIGNING_TEAMID)' != '-1' ] && [ '$(PROVISIONING)' != '-1' ] && [ '$(DETECTPLAT)' = 'Darwin']; then \
+	if [ '$(TEAMID)' != '-1' ] && [ '$(SIGNING_TEAMID)' != '-1' ] && [ '$(PROVISIONING)' != '-1' ] && [ '$(DETECTPLAT)' = 'Darwin' ]; then \
 		printf '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n<plist version="1.0">\n<dict>\n	<key>application-identifier</key>\n	<string>$(TEAMID).net.kdt.pojavlauncher</string>\n	<key>com.apple.developer.team-identifier</key>\n	<string>$(TEAMID)</string>\n	<key>get-task-allow</key>\n	<true/>\n	<key>keychain-access-groups</key>\n	<array>\n	<string>$(TEAMID).*</string>\n	<string>com.apple.token</string>\n	</array>\n</dict>\n</plist>' > entitlements.codesign.xml; \
 		$(MAKE) codesign; \
 		rm -rf entitlements.codesign.xml; \
