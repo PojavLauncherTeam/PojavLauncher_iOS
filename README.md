@@ -5,7 +5,7 @@
 [![Reddit](https://img.shields.io/badge/dynamic/json.svg?label=r/PojavLauncher%20member%20count&query=$.data.subscribers&url=https://www.reddit.com/r/PojavLauncher/about.json)](https://reddit.com/r/PojavLauncher)
 
 ## Introduction
-PojavLauncher is a Minecraft: Java Edition launcher for Android, iOS, and tvOS, based off of zhouwei's [Boardwalk](https://github.com/zhouwei/Boardwalk) project.
+PojavLauncher is a Minecraft: Java Edition launcher for Android, iOS, and iPadOS, based off of zhouwei's [Boardwalk](https://github.com/zhouwei/Boardwalk) project.
 * Supports most versions of Minecraft: Java Edition, from the very first beta to the newest snapshots.
 * Supports Forge, Fabric, OptiFine, and Quilt for you to customize the experience with supported mods.
 * Includes customizable on-screen controls, keyboard and mouse support, and game controller support.
@@ -13,7 +13,7 @@ PojavLauncher is a Minecraft: Java Edition launcher for Android, iOS, and tvOS, 
 * Microsoft account and demo mode support for logging into Minecraft.
 * ...and much more!
 
-This repository contains the code for our iOS, iPadOS, and tvOS port of PojavLauncher. Looking for [Android?](https://github.com/PojavLauncherTeam/PojavLauncher)
+This repository contains the code for our iOS and iPadOS port of PojavLauncher. Looking for [Android?](https://github.com/PojavLauncherTeam/PojavLauncher)
 
 ## Getting started with PojavLauncher
 The [PojavLauncher Website](https://pojavlauncherteam.github.io/INSTALL.html#ios) has extensive documentation on how to install, set up, and play! For those who wish to install quickly, here's the basics:
