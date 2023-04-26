@@ -60,6 +60,9 @@
 
 "init.migrateDir" = "Složka dat PojavLauncheru je nyní %@. Všechna vaše data byla přesunuta do nového umístění.";
 
+"launcher.mcl.downloading_file" = "Stahování %@";
+"launcher.mcl.error_download" = "Nepodařilo se stáhnout %@: %@";
+
 "launcher.menu.custom_controls" = "Vlastní ovládací prvky";
 "launcher.menu.install_jar" = "Instalovat .jar";
 
