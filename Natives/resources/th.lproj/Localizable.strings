@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   StringLocalization
 */
@@ -6,9 +6,6 @@
 "game.menu.force_close" = "บังคับปิด";
 "game.menu.log_output" = "ประวัติที่บันทึกไว้";
 "game.menu.custom_controls" = "การควบคุมกำหนดเอง";
-
-// The options button at the top-right corner on iOS 12
-"Options" = "ตัวเลือก";
 
 // The play button
 "Play" = "เล่น";
@@ -43,11 +40,17 @@
 "preference.section.control" = "ปรับเเต่งการควบคุม";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "จาวาทวิก";
+
+"preference.title.game_directory" = "ตำเเห่งโฟรเดอร์เกม";
 "preference.title.cosmetica" = "ผ้าคลุมที่มีภาพ";
 
 "preference.title.renderer" = "การแสดงผล";
-"preference.title.disable_gesture" = "ปิดท่าทางสัมผัส";
+
+"preference.title.gyroscope_enable" = "เปิดใช้งานการควบคุมไจโรสโคป";
+"preference.title.gyroscope_sensitivity" = "ความรวดเร็วในการควบคุมไจโร";
+"preference.detail.gyroscope_sensitivity" = "ปรับความไวของการควบคุมไจโรสโคป";
 "preference.title.java_args" = "JVM Launch arguments";
 "preference.title.auto_ram" = "RAM อัตโนมัติ";
 "preference.detail.auto_ram" = "เปิดใช้งานตัวปรับ RAM อัตโนมัติ";
 "preference.detail.allocated_memory" = "ควบคุมเเรมที่จะให้กับเกมมายคราฟ";
+"controller_configurator.playstation.title.named_back" = "เลือก";
