@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   StringLocalization
 */
@@ -11,9 +11,6 @@
 "game.note.airplay" = "Minecraft sedang ditunjukkan di layar telah dikaca AirPlay";
 
 "game.title.exit_code" = "Permainan keluar dengan kode %d";
-
-// The options button at the top-right corner on iOS 12
-"Options" = "Opsi";
 
 // The play button
 "Play" = "Main";
@@ -87,7 +84,6 @@
 "login.warn.message.demomode" = "Sebagai pengganti offline dan mode lokal, mode demo akan memperbolehkan anda masuk ke akun Microsoft yang tidak mempunyai permainannya dan main versi Java Edition Trial, diadakan sejak versi 1.3.1 dan seterusnya. Versi lebih lama mempunyai permainan penuhnya, karena peluncur resmi tidak memberlakukan restriksi ini. Lihat website kita untuk dapat mempelajari lebih lanjut tentang transisi dari mode offline.";
 
 "login.warn.title.localmode" = "Mode offline sekarang menjadi mode lokal.";
-"login.warn.message.localmode" = "Anda bisa tetap memainkan versi yang telah dipasang, tetapi anda tidak akan bisa mengunduh Minectaft tanpa sebuah akun bayaran. Tidak akan ada dukungan atau bantuan tentang masalah dengan akun local, atau cara lain mendapatkan Minecraft. Lihat FAQ untuk informasi selanjutnya.";
 
 "login.msa.error.xsts.noxboxacc" = "Tidak ada profil Xbox yang terdaftar di akun Microsoft ini. Mohon memastikan bahwa anda telag membuat sebuah profil Xbox.\nKode error: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live sekarang sedang tidak ada di negata anda.\nKode error: 2148916235";
@@ -105,7 +101,7 @@
 "Settings" = "Pengaturan";
 
 "preference.section.general" = "Peraturan Umum";
-"preference.section.footer.video" = "Renderer otomatis memperbolehkan Minecraft untuk memilih renderer yang mana untuk dipake. Menurunkan resolusi akan menurunkan kerjaan GPU untuk perfoma lebih baik.";
+"preference.section.video" = "Peraturan Video";
 "preference.section.control" = "Kustomisasi kontrol";
 "preference.section.debug" = "Peraturan debugging UI";
 "preference.section.footer.debug" = "Selain debugging, peraturan-peraturan ini mungkin berguna untuk kontrol kustom. Anda mungkin butuh mengrestart peluncur agar perubahan berlaku.";
@@ -114,6 +110,8 @@
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "Apakah anda yakin?";
+
+"preference.title.game_directory" = "Direktori game";
 "preference.title.confirm.delete_game_directory" = "Instansi %@ akan dihapus selamanya dan tidak dapat dikembalikan.";
 "preference.multidir.add_directory" = "Tambah direktori permainan";
 
@@ -140,16 +138,19 @@
 "preference.title.done.reset_settings" = "Semua peraturan bawaan telah dipulihkan.";
 
 "preference.title.renderer" = "Renderer";
-"preference.title.renderer.auto" = "Otomatis: gl4es atau ANGLE";
-"preference.title.renderer.angle" = "ANGLE (1.17+) - mengekspor OpenGL 3.2 (Profil Core, terbatas)";
-"preference.title.renderer.zink" = "Zink (Mesa 21.0) - mengekspor OpenGL 4.1";
+
+"preference.title.renderer.debug.auto" = "Otomatis: gl4es atau ANGLE";
+"preference.title.renderer.debug.gl4es" = "gl4es 1.1.4 - mengekspor OpenGL 2.1";
+"preference.title.renderer.debug.angle" = "ANGLE (1.17+) - mengekspor OpenGL 3.2 (Profil Core, terbatas)";
+"preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - mengekspor OpenGL 4.1";
+
+"preference.detail.renderer" = "Ganti mesin render OpenGL yang dipake";
 
 "preference.title.resolution" = "Resolusi (%)";
 "preference.detail.resolution" = "Memperbolehkan anda untuk menunrunkan resolusi permainan.";
 
 "preference.title.fullscreen_airplay" = "Fullscreen AirPlay";
 "preference.detail.fullscreen_airplay" = "Memperbolehkan anda mempresentasikan window permainan dalam fullscreen di layar eksternal daripada mengkaca semuanya di layar.";
-"preference.title.disable_gesture" = "Matikan gestures";
 "preference.title.press_duration" = "Durasi pencet-lama (ms)";
 "preference.detail.press_duration" = "Durasi pemicu pencet untuk menghancurkan balok dan menjatuhkan barang.";
 "preference.title.button_scale" = "Skala tombol dilayar (%)";
@@ -162,10 +163,13 @@
 "preference.detail.virtmouse_enable" = "Nyalakan opsi ini untuk memulai dengan mouse virtual nyala";
 "preference.title.slideable_hotbar" = "Hotbar bisa digeser";
 "preference.detail.slideable_hotbar" = "Buat hotbar bisa digeser seperti mouse wheel";
+
+"preference.title.gyroscope_enable" = "Hidupkan kontrol giroskop";
+"preference.title.gyroscope_sensitivity" = "Giroskop mengontrol sensitivitas";
+"preference.detail.gyroscope_sensitivity" = "Sesuaikan sensitivitas kontrol giroskop";
+
 "preference.title.java_home" = "Gunakan Java 17 untuk Minecraft < 1.17";
-"preference.detail.java_home" = "Java 8 digunakan secara bawaan untuk versi-versi tersebut. Nyalakan opsi ini untuk memaksa menggunakan Java 17, tetapi kompabilitas tidak dapat dipastikan.";
 "preference.title.java_args" = "Argumen peluncuran JVM";
-"preference.detail.java_args" = "Hati-hati, ini bisa membuat permainannya berhenti tiba-tiba jika dimodifikasi tanpa pengetahuan sebelumnya.";
 "preference.placeholder.java_args" = "Sebutkan argument...";
 "preference.title.auto_ram" = "RAM otomatis";
 "preference.detail.auto_ram" = "Mengaktifkan pengatur RAM otomatis";
@@ -174,7 +178,6 @@
 "preference.detail.allocated_memory" = "Mengkontrol berapa banyak memori yang diberikan ke Minecraft";
 "preference.warn.allocated_memory" = "Karena limitasi dari operating systemnya, opsi ini bisa membuat permainan tidak stabil dengan isi yang tinggi. Lanjut dengan perhatian.";
 "preference.title.custom_env" = "Variable environment";
-"preference.detail.custom_env" = "Opsi ini sedang dalam pembangunan.";
 
 "preference.title.debug_skip_wait_jit" = "Lewati dialog \"Menunggu JIT\"";
 "preference.detail.debug_skip_wait_jit" = "Ini tidak memperbolehkan anda untuk meluncur tanpa JIT, alih-alih ini melewati cek debugger, karena ceknya gagal di jailbreak tertentu.";
@@ -188,3 +191,4 @@
 "preference.detail.debug_show_layout_bounds" = "Tampilkan batas klip, margin";
 "preference.title.debug_show_layout_overlap" = "Tampilkan layout yang overlapping";
 "preference.detail.debug_show_layout_overlap" = "Lapis semua view dengan sebuah warna transparen untuk mengungkap view yang overlapping.";
+"controller_configurator.playstation.title.named_back" = "Pilih";
