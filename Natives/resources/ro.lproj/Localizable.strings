@@ -7,6 +7,9 @@
 "game.menu.log_output" = "Ieșire jurnal";
 "game.menu.custom_controls" = "Controale personalizate";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "Opțiuni";
+
 // The play button
 "Play" = "Joacă";
 "Snapshot" = "Lansat pentru testare";
@@ -39,11 +42,10 @@
 "preference.section.control" = "Personalizarea controalelor";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Ajustări Java";
-
-"preference.title.game_directory" = "Dosarul jocului";
 "preference.title.cosmetica" = "Pelerine Cosmetica";
 
 "preference.title.renderer" = "Randator";
+"preference.title.disable_gesture" = "Dezactivează gesturi";
 "preference.title.java_args" = "Argumente de lansare JVM";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Activează ajustarea automată RAM";
