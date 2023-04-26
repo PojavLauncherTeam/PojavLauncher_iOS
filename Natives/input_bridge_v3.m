@@ -321,7 +321,10 @@ JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetGrabbing(JNIE
         UIView *surfaceView = vc.surfaceView;
         if (isGrabbing == JNI_TRUE) {
             CGFloat screenScale = [[UIScreen mainScreen] scale] * resolutionScale;
-            CallbackBridge_nativeSendCursorPos(ACTION_DOWN, lastVirtualMousePoint.x * screenScale, lastVirtualMousePoint.y * screenScale);//TODO
+            CallbackBridge_nativeSendCursorPos(ACTION_DOWN, lastVirtualMousePoint.x * screenScale, lastVirtualMousePoint.y * screenScale);
+            CGRect screenBounds = [[UIScreen mainScreen] bounds];
+            virtualMouseFrame.origin.x = screenBounds.size.width / 2;
+            virtualMouseFrame.origin.y = screenBounds.size.height / 2;
             vc.mousePointerView.frame = virtualMouseFrame;
         }
         vc.scrollPanGesture.enabled = !isGrabbing;
