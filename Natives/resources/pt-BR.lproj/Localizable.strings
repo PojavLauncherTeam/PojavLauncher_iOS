@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   StringLocalization
 */
@@ -11,9 +11,6 @@
 "game.note.airplay" = "Minecraft está sendo exibido na visão espelhada do AirPlay";
 
 "game.title.exit_code" = "Jogo terminado com código %d";
-
-// The options button at the top-right corner on iOS 12
-"Options" = "Opções";
 
 // The play button
 "Play" = "Jogar";
@@ -63,15 +60,20 @@
 
 "init.migrateDir" = "O diretório de dados do PojavLauncher agora é %@. Todos os dados existentes foram movidos para a nova localização.";
 
+"launcher.mcl.downloading_file" = "Baixando %@";
+
 "launcher.menu.custom_controls" = "Controles personalizados";
 "launcher.menu.install_jar" = "Instalar .jar";
 
 "launcher.wait_jit.title" = "Aguardando o JIT";
 
+"login.error.username.outOfRange" = "O nome de usuário deve ter no mínimo 3 caracteres e no máximo 16 caracteres";
+
 "login.alert.field.username" = "Nome de Usuário";
 
 "login.jit.checking" = "Verificando o JIT";
 "login.jit.enabled" = "O JIT foi ativado";
+"login.jit.fail" = "Usuário '%s' não pode ser habilitado.";
 
 // Login buttons
 "login.menu.sendlogs" = "Envie seus registros";
@@ -96,6 +98,7 @@
 "Settings" = "Configurações";
 
 "preference.section.general" = "Configurações Gerais";
+"preference.section.video" = "Configurações de Vídeo";
 "preference.section.control" = "Personalização dos controles";
 "preference.section.debug" = "Configurações da depuração do UI";
 "preference.section.footer.debug" = "Além da depuração, essas configurações podem ser úteis para controles personalizados. Pode ser necessário reiniciar o launcher para que as alterações tenham efeito.";
@@ -104,6 +107,8 @@
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "Você tem certeza?";
+
+"preference.title.game_directory" = "Diretório do jogo";
 "preference.multidir.add_directory" = "Adicionar diretório do jogo";
 
 "preference.title.check_sha" = "Verifique os arquivos após o download";
@@ -121,13 +126,16 @@
 "preference.title.done.reset_settings" = "Todas as configurações padrão foram restauradas.";
 
 "preference.title.renderer" = "Renderizador";
-"preference.title.renderer.auto" = "Auto: gl4es ou ANGLE";
-"preference.title.renderer.angle" = "ANGLE (1.17+) - exporta OpenGL 3.2 (Perfil de navegação, limitado)";
-"preference.title.renderer.zink" = "Zink (Mesa 21.0) - exports OpenGL 4.1";
+
+"preference.title.renderer.debug.auto" = "Auto: gl4es ou ANGLE";
+"preference.title.renderer.debug.gl4es" = "gl4es 1.1.4 - exports OpenGL 2.1";
+"preference.title.renderer.debug.angle" = "ANGLE (1.17+) - exporta OpenGL 3.2 (Perfil de navegação, limitado)";
+"preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - exports OpenGL 4.1";
+
+"preference.detail.renderer" = "Alterar o mecanismo de renderização OpenGL para usar";
 
 "preference.title.resolution" = "Resolução (%)";
 "preference.detail.resolution" = "Permite que você diminua a resolução do jogo.";
-"preference.title.disable_gesture" = "Desativar gestos";
 "preference.title.press_duration" = "Duração de pressionamento longo (ms)";
 "preference.title.button_scale" = "Escala dos botões virtuais (%)";
 "preference.title.mouse_scale" = "Escala do mouse (%)";
@@ -136,6 +144,11 @@
 "preference.detail.mouse_speed" = "Alterar a velocidade do mouse virtual";
 "preference.title.virtmouse_enable" = "Mouse virtual";
 "preference.title.slideable_hotbar" = "Hotbar deslizante";
+
+"preference.title.gyroscope_enable" = "Habilitar controles do gyrocópio";
+"preference.title.gyroscope_sensitivity" = "Sensibilidade de controles do Giroscópio";
+"preference.detail.gyroscope_sensitivity" = "Ajustar a sensibilidade dos controles do giroscópio";
+
 "preference.title.java_home" = "Use Java 17 para o Minecraft < 1.17";
 "preference.title.java_args" = "Argumentos JVM";
 "preference.placeholder.java_args" = "Especifique os argumentos...";
@@ -144,7 +157,6 @@
 "preference.title.allocated_memory" = "Alocação de memória (MB)";
 "preference.detail.allocated_memory" = "Controla o quanto de RAM será usado pelo Minecraft";
 "preference.title.custom_env" = "Variáveis ambientais";
-"preference.detail.custom_env" = "Esta opção está em construção.";
 
 "preference.title.debug_skip_wait_jit" = "Ignorar caixa de diálogo \"Aguardando JIT\"";
 "preference.title.debug_ipad_ui" = "Desbloquear iPadOS UI";
@@ -157,3 +169,4 @@
 "preference.detail.debug_show_layout_bounds" = "Mostrar limites e margens do clipe";
 "preference.title.debug_show_layout_overlap" = "Mostrar sobreposição de layout";
 "preference.detail.debug_show_layout_overlap" = "Sobreponha cada exibições com cores transparentes para revelar visões de sobreposição.";
+"controller_configurator.playstation.title.named_back" = "Selecionar";
