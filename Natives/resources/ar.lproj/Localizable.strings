@@ -12,6 +12,9 @@
 
 "game.title.exit_code" = "توقفت العملية برمز الخروج %d";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "الخيارات";
+
 // The play button
 "Play" = "إبدأ اللعب";
 
@@ -104,13 +107,11 @@
 "preference.section.control" = "تخصيص التحكم";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "تعديلات جافا";
-
-"preference.title.game_directory" = "مكان تخزين اللعبة";
 "preference.title.cosmetica" = "Cosmetica Capes";
 
 "preference.title.renderer" = "العارض";
+"preference.title.disable_gesture" = "تعطيل الإيماءات";
 "preference.title.java_args" = "حجج إطلاق JVM";
 "preference.title.auto_ram" = "ذاكرة الوصول العشوائية التلقائية";
 "preference.detail.auto_ram" = "تمكين  ذاكرة الوصول العشوائي التلقائي";
 "preference.detail.allocated_memory" = "يتحكم في كمية الذاكرة المعطاة لـ Minecraft";
-"controller_configurator.playstation.title.named_back" = "اختر";

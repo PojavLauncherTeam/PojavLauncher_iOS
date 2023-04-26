@@ -7,6 +7,9 @@
 "game.menu.log_output" = "לוג פלט";
 "game.menu.custom_controls" = "פקדים מותאמים אישית";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "אפשרויות";
+
 // The play button
 "Play" = "הפעל";
 "Snapshot" = "סנאפשוט";
@@ -40,9 +43,8 @@
 //"preference.section.footer.control" = "";
 "preference.section.java" = "התאמות ל- Java";
 
-"preference.title.game_directory" = "תיקיית המשחק";
-
 "preference.title.renderer" = "רינדור";
+"preference.title.disable_gesture" = "השבת מחוות";
 "preference.title.java_args" = "פרמטרים להפעלת JVM";
 "preference.title.auto_ram" = "זיכרון אוטומטי";
 "preference.detail.auto_ram" = "מפעיל התאמת RAM אוטומטית";

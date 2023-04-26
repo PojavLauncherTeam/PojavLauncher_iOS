@@ -7,6 +7,9 @@
 "game.menu.log_output" = "Log output";
 "game.menu.custom_controls" = "Custom controls";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "Options";
+
 // The play button
 "Play" = "Play";
 "Snapshot" = "Snapshot";
@@ -30,6 +33,7 @@
 "Settings" = "Settings";
 
 "preference.title.renderer" = "Renderer";
+"preference.title.disable_gesture" = "Disable gestures";
 "preference.title.java_args" = "JVM Launch arguments";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Enables automatic RAM adjuster";

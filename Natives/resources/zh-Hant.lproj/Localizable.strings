@@ -12,6 +12,9 @@
 
 "game.title.exit_code" = "遊戲以代碼%d退出";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "選項";
+
 // The play button
 "Play" = "啟動遊戲";
 
@@ -102,7 +105,6 @@
 "Settings" = "設定";
 
 "preference.section.general" = "一般設定";
-"preference.section.video" = "動畫設定";
 "preference.section.footer.video" = "自動宣染器允許我的世界判斷使用哪一個渲染器。降低解析度會降低圖形處理器的工作量，並提高效能。";
 "preference.section.control" = "自定控制鍵";
 "preference.section.debug" = "用戶界面除錯選項";
@@ -112,8 +114,6 @@
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "你確定嗎？";
-
-"preference.title.game_directory" = "遊戲資料夾";
 "preference.title.confirm.delete_game_directory" = "實例%@會被永久刪除，且不能回復。";
 "preference.multidir.add_directory" = "新增遊戲目錄";
 
@@ -140,16 +140,15 @@
 
 "preference.title.renderer" = "渲染器";
 "preference.title.renderer.auto" = "自動：gl4es或ANGLE";
-"preference.title.renderer.gl4es" = "gl4es 1.1.4 － 輸出OpenGL 2.1";
 "preference.title.renderer.angle" = "ANGLE（1.17+）— 輸出OpenGL 3.2（核心，有限）";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) － 輸出OpenGL 4.1";
-"preference.detail.renderer" = "改變要使用的OpenGL渲染引擎";
 
 "preference.title.resolution" = "解像度（%）";
 "preference.detail.resolution" = "允許你降低遊戲的解像度。";
 
 "preference.title.fullscreen_airplay" = "全螢幕隔空投放";
 "preference.detail.fullscreen_airplay" = "允許在外部顯示器上展示全螢幕遊戲畫面，而不是影射螢幕上的內容。";
+"preference.title.disable_gesture" = "停用手勢";
 "preference.title.press_duration" = "長按時間（毫秒）";
 "preference.detail.press_duration" = "觸發破壞方塊及釋出物件的按壓時間。";
 "preference.title.button_scale" = "螢幕按鈕比例（%）";
@@ -162,11 +161,6 @@
 "preference.detail.virtmouse_enable" = "啟用這個選項以在啟動時啟動虛擬鼠標。";
 "preference.title.slideable_hotbar" = "可捲動快捷欄";
 "preference.detail.slideable_hotbar" = "令快捷欄能夠以像滑鼠輪一般地捲動";
-
-"preference.title.gyroscope_enable" = "啟用陀螺儀控制";
-"preference.title.gyroscope_sensitivity" = "陀螺儀控制靈敏度";
-"preference.detail.gyroscope_sensitivity" = "調整陀螺儀控制的靈敏度";
-
 "preference.title.java_home" = "對於我的世界 < 1.17，使用Java 17";
 "preference.detail.java_home" = "這些版本預設使用Java 8。啟用這個選項來強制使用Java 17，但是對修改版的遊戲的相容性沒有任何保證。";
 "preference.title.java_args" = "JVM 啟動引數";
@@ -193,4 +187,3 @@
 "preference.detail.debug_show_layout_bounds" = "顯示剪輯範圍、邊界";
 "preference.title.debug_show_layout_overlap" = "顯示重複的佈局";
 "preference.detail.debug_show_layout_overlap" = "通過用透明顏色來覆蓋所有視圖，來顯示重複的視圖";
-"controller_configurator.playstation.title.named_back" = "選擇";

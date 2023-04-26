@@ -8,6 +8,9 @@
 "game.menu.log_output" = "로그 확인";
 "game.menu.custom_controls" = "사용자 지정 조작";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "설정";
+
 // The play button
 "Play" = "시작하기";
 
@@ -65,8 +68,6 @@
 "preference.section.control" = "사용자 지정 조작";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java 기능";
-
-"preference.title.game_directory" = "게임 디렉토리";
 "preference.title.cosmetica" = "코스메티카 망토";
 "preference.title.appicon" = "앱 아이콘 설정";
 
@@ -76,11 +77,10 @@
 "preference.title.reset_settings" = "모든 설정 초기화";
 
 "preference.title.renderer" = "렌더러";
+"preference.title.disable_gesture" = "제스쳐 비활성화";
 "preference.title.virtmouse_enable" = "가상 마우스";
-
 "preference.title.java_home" = "마인크래프트 버전 < 1.17 부터 자바 17을 사용하세요";
 "preference.title.java_args" = "JVM 시작 스크립트";
 "preference.title.auto_ram" = "자동 RAM 할당";
 "preference.detail.auto_ram" = "자동 RAM 할당 활성화하기";
 "preference.detail.allocated_memory" = "Minecraft 메모리 할당 조절";
-"controller_configurator.playstation.title.named_back" = "선택";

@@ -12,6 +12,9 @@
 
 "game.title.exit_code" = "Gra została zakończona z kodem %d";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "Opcje";
+
 // The play button
 "Play" = "Graj";
 
@@ -99,7 +102,6 @@
 "Settings" = "Ustawienia";
 
 "preference.section.general" = "Ogólne ustawienia";
-"preference.section.video" = "Ustawienia grafiki";
 "preference.section.footer.video" = "Automatyczny renderer pozwala Minecraftowi zdecydować, którego renderera użyć. Zmniejszenie rozdzielczości zmniejsza obciążenie GPU, zapewniając lepszą wydajność.";
 "preference.section.control" = "Sterowanie";
 "preference.section.debug" = "Ustawienia debugowania interfejsu";
@@ -109,8 +111,6 @@
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "Czy na pewno?";
-
-"preference.title.game_directory" = "Katalog gry";
 "preference.title.confirm.delete_game_directory" = "Instancja %@ zostanie trwale usunięta i nie będzie można jej przywrócić.";
 "preference.multidir.add_directory" = "dodaj katalog gry";
 
@@ -133,12 +133,11 @@
 "preference.title.done.reset_settings" = "Wszystkie ustawienia zostały wyzerowane.";
 
 "preference.title.renderer" = "Silnik renderujący";
-"preference.title.renderer.gl4es" = "gl4es 1.1.4 - eksportuje OpenGL 2.1";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - eksportuje OpenGL 4.1";
-"preference.detail.renderer" = "Zmień używany silnik renderujący OpenGL";
 
 "preference.title.resolution" = "Rozdzielczość (%)";
 "preference.detail.resolution" = "Umożliwia zmniejszenie rozdzielczości gry.";
+"preference.title.disable_gesture" = "Wyłącz gesty";
 "preference.title.press_duration" = "Czas długiego naciśnięcia (ms)";
 "preference.detail.press_duration" = "Zmieniaj czas trwania prasy dla niszczenia bloków i upuszczania przedmiotów.";
 "preference.title.button_scale" = "Skala przycisków ekranowych (%)";
@@ -151,11 +150,6 @@
 "preference.detail.virtmouse_enable" = "Aktywuj tę opcję, aby uruchamiać z włączoną wirtualną myszą";
 "preference.title.slideable_hotbar" = "Przesuwalny pasek narzędzi";
 "preference.detail.slideable_hotbar" = "Spraw, aby pasek skrótów był przesuwany jak kółko myszy";
-
-"preference.title.gyroscope_enable" = "Włącz sterowanie żyroskopem";
-"preference.title.gyroscope_sensitivity" = "Czułość sterowania żyroskopem";
-"preference.detail.gyroscope_sensitivity" = "Dostosuj czułość sterowania żyroskopem";
-
 "preference.title.java_home" = "Użyj Java 17 dla Minecraft < 1.17";
 "preference.detail.java_home" = "W tych wersjach domyślnie używana jest Java 8. Włącz tę opcję, aby wymusić użycie Javy 17, jednak zgodność z modded nie jest gwarantowana.";
 "preference.title.java_args" = "Argumenty uruchomienia JVM";
@@ -165,7 +159,7 @@
 "preference.detail.auto_ram" = "Włącza automatyczny przydział pamięci RAM";
 "preference.warn.auto_ram" = "Wyłączenie tej opcji na urządzeniach bez jailbreak może doprowadzić do niestabilności po dostosowaniu. Zachowaj ostrożność.";
 "preference.title.allocated_memory" = "Przydział pamięci (MB)";
-"preference.detail.allocated_memory" = "Dostosuj ilość pamięci przydzieloną do Minecraft";
+"preference.detail.allocated_memory" = "Kontroluje ilość pamięci przydzielonej Minecraft";
 "preference.warn.allocated_memory" = "Ze względu na ograniczenia samego systemu operacyjnego, ta opcja może powodować niestabilność przy tej i wyższych wartościach. Zachowaj ostrożność.";
 "preference.title.custom_env" = "Zmienne środowiskowe";
 "preference.detail.custom_env" = "Ta opcja jest w trakcie opracowania.";
@@ -180,4 +174,3 @@
 "preference.detail.debug_show_layout_bounds" = "Pokaż granice klipów, marginesy";
 "preference.title.debug_show_layout_overlap" = "Pokaż nakładające się układy";
 "preference.detail.debug_show_layout_overlap" = "Nakładaj każdy widok przezroczystym kolorem, aby odsłonić nakładające się widoki.";
-"controller_configurator.playstation.title.named_back" = "Wybierz";

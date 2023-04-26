@@ -12,6 +12,9 @@
 
 "game.title.exit_code" = "Das Spiel wurde mit dem Code %d beendet";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "Optionen";
+
 // The play button
 "Play" = "Spielen";
 
@@ -77,6 +80,7 @@
 "login.menu.sendlogs" = "Fehlerprotokolle senden";
 "login.option.add" = "Konto hinzufügen";
 "login.option.select" = "Konto auswählen";
+"login.option.demo" = "Demo-Konto";
 "login.option.microsoft" = "Microsoft-Konto";
 "login.option.local" = "Lokales Konto";
 
@@ -102,7 +106,6 @@
 "Settings" = "Einstellungen";
 
 "preference.section.general" = "Allgemeine Einstellungen";
-"preference.section.video" = "Grafik-Einstellungen";
 "preference.section.footer.video" = "Mit dem automatischen Renderer kann Minecraft entscheiden, welcher Renderer verwendet werden soll. Verringerte Auflösung reduziert die Arbeitslast der GPU für eine bessere Leistung.";
 "preference.section.control" = "Steuerung anpassen";
 "preference.section.debug" = "UI-Debugging-Einstellungen";
@@ -112,8 +115,6 @@
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "Bist du dir sicher?";
-
-"preference.title.game_directory" = "Spielverzeichnis";
 "preference.title.confirm.delete_game_directory" = "Die Instanz %@ wird für immer gelöscht und kann nicht wiederhergestellt werden.";
 "preference.multidir.add_directory" = "Spielverzeichnis hinzufügen";
 
@@ -139,18 +140,21 @@
 "preference.title.confirm.reset_settings" = "Dies wird alle deine benutzerdefinierten Einstellungen entfernen, einschließlich Auflösung, Schaltflächen-Größe und Java-Argumente.";
 "preference.title.done.reset_settings" = "Alle Standard-Einstellungen wurden wiederhergestellt.";
 
+"preference.title.erase_demo_data" = "Demo-Spieldaten löschen";
+"preference.title.confirm.erase_demo_data" = "Dies löscht alle Demo-Spielversionen und Daten, die für Demo-Konten verwendet werden.";
+"preference.title.done.erase_demo_data" = "Alle Demo-Spieldaten wurden gelöscht.";
+
 "preference.title.renderer" = "Renderer";
 "preference.title.renderer.auto" = "Auto: gl4es or ANGLE";
-"preference.title.renderer.gl4es" = "gl4es 1.1.4 - gibt OpenGL 2.1 aus";
 "preference.title.renderer.angle" = "ANGLE (1.17+) - gibt OpenGL 3.2 (Kernprofil, begrenzt) aus";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - gibt OpenGL 4.1 aus";
-"preference.detail.renderer" = "Ändern Sie die OpenGL-Rendering-Engine";
 
 "preference.title.resolution" = "Auflösung (%)";
 "preference.detail.resolution" = "Ermöglicht es dir die Spielauflösung zu verringern.";
 
 "preference.title.fullscreen_airplay" = "Vollbild-AirPlay";
 "preference.detail.fullscreen_airplay" = "Ermöglicht es dir nur das Spielfenster auf ein externes Display zu spiegeln, anstatt den ganzen Bildschirm zu spiegeln.";
+"preference.title.disable_gesture" = "Gesten deaktivieren";
 "preference.title.press_duration" = "Dauer eines langen Touch (ms)";
 "preference.detail.press_duration" = "Auslösedauer um Blöcke zu zerstören und Items zu droppen.";
 "preference.title.button_scale" = "Schalflächengröße (%)";
@@ -163,11 +167,6 @@
 "preference.detail.virtmouse_enable" = "Aktiviere diese Option, um mit Virtueller Maus zu spielen";
 "preference.title.slideable_hotbar" = "Schiebbare Hotbar";
 "preference.detail.slideable_hotbar" = "Macht die Hotbar wie mit dem Mausrad schiebbar";
-
-"preference.title.gyroscope_enable" = "Aktiviere Gyroskop-Steuerung";
-"preference.title.gyroscope_sensitivity" = "Gyroskop-Steuerungs-Empfindlichkeit";
-"preference.detail.gyroscope_sensitivity" = "Passe die Empfindlichkeit der Gyroskop-Steuerung an";
-
 "preference.title.java_home" = "Nutze Java 17 für Minecraft < 1.17";
 "preference.detail.java_home" = "Für diese Versionen wird standardmäßig Java 8 verwendet. Aktiviere diese Option, um die Verwendung von Java 17 zu erzwingen. Kompatibilität mit ge-moddeten Versionen ist nicht garantiert.";
 "preference.title.java_args" = "JVM-Start-Argumente";
@@ -194,4 +193,3 @@
 "preference.detail.debug_show_layout_bounds" = "Zuschnittbegrenzungen, Ränder anzeigen";
 "preference.title.debug_show_layout_overlap" = "Layoutüberlappungen anzeigen";
 "preference.detail.debug_show_layout_overlap" = "Überlagere jede Ansicht mit einer transparenten Farbe, um überlappende Ansichten anzuzeigen.";
-"controller_configurator.playstation.title.named_back" = "Auswählen";
