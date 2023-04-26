@@ -12,6 +12,9 @@
 
 "game.title.exit_code" = "بازی با کد %d به اتمام رسید";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "گزینه‌ها";
+
 // The play button
 "Play" = "شروع بازی";
 
@@ -111,8 +114,6 @@
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "آیا مطمئن هستید؟";
-
-"preference.title.game_directory" = "پوشه بازی";
 "preference.title.confirm.delete_game_directory" = "ورژن %@ برای همیشه حذف خواهد شد و قابل بازیابی نیست.";
 "preference.multidir.add_directory" = "افزودن پوشه بازی";
 
@@ -147,6 +148,7 @@
 
 "preference.title.fullscreen_airplay" = "AirPlay تمام صفحه";
 "preference.detail.fullscreen_airplay" = "به جای انعکاس همه چیز روی صفحه نمایش، به نمایش پنجره بازی تمام صفحه روی صفحه نمایش خارجی اجازه می دهد.";
+"preference.title.disable_gesture" = "غیرفعال کردن حسگر ها";
 "preference.title.press_duration" = "مدت زمان فشار طولانی (ms)";
 "preference.detail.press_duration" = "مدت زمان فشار برای از بین بردن بلوک ها و انداختن آیتم ها را فعال کنید.";
 "preference.title.button_scale" = "مقیاس دکمه روی صفحه (%)";
@@ -159,11 +161,6 @@
 "preference.detail.virtmouse_enable" = "این گزینه را برای شروع با موس مجازی فعال کنید";
 "preference.title.slideable_hotbar" = "هاتبار کشویی";
 "preference.detail.slideable_hotbar" = "هاتبار را مانند چرخ ماوس قابل لغزش کنید";
-
-"preference.title.gyroscope_enable" = "فعال کردن کنترل های ژیروسکوپ";
-"preference.title.gyroscope_sensitivity" = "حساسیت کنترلر های ژیروسکوپ";
-"preference.detail.gyroscope_sensitivity" = "حساسیت کنترل های ژیروسکوپ را تنظیم کنید";
-
 "preference.title.java_home" = "از جاوا 17 برای ماینکرفت 1.17 به بالا استفاده کنید";
 "preference.detail.java_home" = "جاوا 8 به طور پیش فرض برای آن نسخه ها استفاده می شود. این گزینه را برای استفاده اجباری از جاوا 17 فعال کنید، اما سازگاری با مود شده تضمین نمی شود.";
 "preference.title.java_args" = "آرگومان‌های جاوا در هنگام اجرا";
@@ -190,4 +187,3 @@
 "preference.detail.debug_show_layout_bounds" = "نمایش مرزها، حاشیه‌ها";
 "preference.title.debug_show_layout_overlap" = "نمایش همپوشانی طرح";
 "preference.detail.debug_show_layout_overlap" = "هر نما را با یک رنگ شفاف پوشش دهید تا نماهای همپوشانی نشان داده شود.";
-"controller_configurator.playstation.title.named_back" = "انتخاب";
