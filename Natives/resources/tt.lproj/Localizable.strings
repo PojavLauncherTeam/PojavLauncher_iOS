@@ -9,6 +9,9 @@
 
 "game.title.exit_code" = "Уен %d код белән сафтан чыкты";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "Көйләүләр";
+
 // The play button
 "Play" = "Уйнарга";
 
@@ -57,15 +60,13 @@
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "Сез чыннан да телисезме?";
-
-"preference.title.game_directory" = "Уен папкасы";
 "preference.title.cosmetica" = "Cosmetica япмалары";
 "preference.title.jitstreamer_server" = "JitStreamer серверының IP";
 
 "preference.title.renderer" = "Күрсәткеч";
 
 "preference.title.resolution" = "Ачыклык (%)";
+"preference.title.disable_gesture" = "Ишарә сүндерергә";
 "preference.title.virtmouse_enable" = "Виртуаль тычкан";
 "preference.title.java_args" = "JVM кушу аргументлары";
 "preference.title.auto_ram" = "Автоматик тиз хәтер билгеләү";
-"controller_configurator.playstation.title.named_back" = "Сайлау";
