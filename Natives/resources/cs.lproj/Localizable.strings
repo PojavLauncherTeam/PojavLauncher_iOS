@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   StringLocalization
 */
@@ -11,9 +11,6 @@
 "game.note.airplay" = "Minecraft se zobrazuje ve zrcadleném displeji AirPlay";
 
 "game.title.exit_code" = "Hra skončila s kódem %d";
-
-// The options button at the top-right corner on iOS 12
-"Options" = "Možnosti";
 
 // The play button
 "Play" = "Hrát";
@@ -87,7 +84,7 @@
 "login.warn.message.demomode" = "Jako náhrada za offline a místní režim, demo režim povolí přihlášení do Microsoft účtu, jenž hru nevlastní, a hrát zkušební verzi Java edice, přidanou v 1.3.1 a novějších verzích. Starší verze obsahují plnou hru, majíce ji i v oficiálním spouštěči, jenž nemá pro ně omezení. Viz naši webovou stránku pro více informací o této změně z offline režimu.";
 
 "login.warn.title.localmode" = "Offline režim je nyní Místní režim.";
-"login.warn.message.localmode" = "Můžeš pokračovat ve hraní instalovaných verzí, ale už nemůžeš stáhnout Minecraft bez placeného účtu. Nebudeme poskytovat podporu pro problémy s místními účty, či pro jiné způsoby získávání Minecraftu. Viz FAQ pro více informací.";
+"login.warn.message.localmode" = "Můžete dále pokračovat ve hraní nainstalovaných verzí, avšak nebudete si moci stáhnout Minecraft bez placeného účtu. Pro problémy s místními účty, či pro jakékoli jiné způsoby získáni Minecraftu, nebude poskytována žádná podpora.";
 
 "login.msa.error.xsts.noxboxacc" = "Xboxový profil není registrován pro tento Microsoft účet. Prosím ujisti se zdali máš vytvořený Xbox účet.\nKód chyby: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live není právě teď k dostupný ve tvé zemi.\nKód chyby: 2148916235";
@@ -105,7 +102,8 @@
 "Settings" = "Nastavení";
 
 "preference.section.general" = "Obecné Nastavení";
-"preference.section.footer.video" = "Automatický vykreslovač dovolí Minecraftu rozhodnout který vykreslovač používat. Zmenšováním rozlišení sníží zatížení GPU pro lepší výkon.";
+"preference.section.video" = "Nastavení obrazu";
+"preference.section.footer.video" = "Automatický vykreslovač umožní PojavLauncheru vybrat nejlepší možnost na základě verze Minecraftu. Snižením rozlišení snížíte zatížení GPU pro lepší výkon.";
 "preference.section.control" = "Přizpůsobení ovládání";
 "preference.section.debug" = "Nastavení ladění UI";
 "preference.section.footer.debug" = "Kromě ladění mohou být tato nastavení užitečná pro vlastní ovládání. Možná budete muset restartovat spouštěč aby se změny projevily.";
@@ -114,6 +112,8 @@
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "Jsi si jist/a?";
+
+"preference.title.game_directory" = "Složka hry";
 "preference.title.confirm.delete_game_directory" = "Instance %@ bude navždy smazána a nebude možno ji obnovit.";
 "preference.multidir.add_directory" = "přidat složku hry";
 
@@ -140,16 +140,24 @@
 "preference.title.done.reset_settings" = "Všechna výchozí nastavení byla obnovena.";
 
 "preference.title.renderer" = "Vykreslovač";
-"preference.title.renderer.auto" = "Automaticky: gl4es či ANGLE";
-"preference.title.renderer.angle" = "ANGLE (1.17+) - exportuje OpenGL 3.2 (Jádrový Profil, omezen)";
-"preference.title.renderer.zink" = "Zink (Mesa 21.0) - exportuje OpenGL 4.1";
+
+"preference.title.renderer.release.auto" = "Automaticky";
+"preference.title.renderer.release.gl4es" = "svatý gl4es";
+"preference.title.renderer.release.angle" = "ANGLE";
+"preference.title.renderer.release.zink" = "Zink";
+
+"preference.title.renderer.debug.auto" = "Automaticky: gl4es či ANGLE";
+"preference.title.renderer.debug.gl4es" = "gl4es 1.1.4 - exportuje OpenGL 2.1";
+"preference.title.renderer.debug.angle" = "ANGLE (1.17+) - exportuje OpenGL 3.2 (Jádrový Profil, omezen)";
+"preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - exportuje OpenGL 4.1";
+
+"preference.detail.renderer" = "Změnit OpenGL vykreslovací systém k užívání";
 
 "preference.title.resolution" = "Rozlišení (%)";
 "preference.detail.resolution" = "Umožňuje ti snížit rozlišení hry.";
 
 "preference.title.fullscreen_airplay" = "AirPlay celé obrazovky";
 "preference.detail.fullscreen_airplay" = "Umožňuje zobrazovat okno hry na celé obrazovce na externím displeji bez zrcadlení všeho na obrazovce.";
-"preference.title.disable_gesture" = "Vypnout gesta";
 "preference.title.press_duration" = "Trvání dlouhého stisku (ms)";
 "preference.detail.press_duration" = "Délka trvání dlouhého držení ke zničení bloků a vyhazování itemů.";
 "preference.title.button_scale" = "Měřítko tlačítka na obrazovce (%)";
@@ -162,10 +170,15 @@
 "preference.detail.virtmouse_enable" = "Zapni tutu možnost pro začínání se zapnutou vyrtuální myší";
 "preference.title.slideable_hotbar" = "Posuvný hotbar";
 "preference.detail.slideable_hotbar" = "Udělat hotbar posunovatelný jako kolečko myši";
+
+"preference.title.gyroscope_enable" = "Zapnout gyroskopové ovládání";
+"preference.title.gyroscope_sensitivity" = "Citlivost gyroskopového ovládání";
+"preference.detail.gyroscope_sensitivity" = "Upravit citlivost gyroskopového ovládání";
+
 "preference.title.java_home" = "Používat Javu 17 Minecraftem < 1.17";
-"preference.detail.java_home" = "Java 8 je výchozí pro tyto verze. Zapni toto k donucení užívání Javy 17, ačkoliv její kompatibilita s módy není zaručena.";
+"preference.detail.java_home" = "Java 8 je výchozí pro tyto verze. Povolivše tuto možnost vynutíte užívání Javy 17, avšak její kompatibilita není zaručena.";
 "preference.title.java_args" = "JVM spouštěcí argumenty";
-"preference.detail.java_args" = "Pozor, toto může způsobit pád hry, jeli upraveno bez znalostí.";
+"preference.detail.java_args" = "Předá argumenty Javě spouštějíc Minecraft. Buďte opatrní, může to způsobit pád hry byly-li upraveny neprávně.";
 "preference.placeholder.java_args" = "Určit argumenty...";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Automaticky bude měnit množství RAM";
@@ -174,7 +187,7 @@
 "preference.detail.allocated_memory" = "Určete kolik paměti bude mít Minecraft";
 "preference.warn.allocated_memory" = "Tato možnost může způsobit nestabilitu při této a vyšších hodnotách, kvůli limitacím v operačním systému. Pokračuj s opatrností.";
 "preference.title.custom_env" = "Proměnné prostředí";
-"preference.detail.custom_env" = "Tato možnost je ve vývoji.";
+"preference.detail.custom_env" = "Tato možnost je ve výstavbě. Mezitím vytvořte a upravte custom_env.txt.";
 
 "preference.title.debug_skip_wait_jit" = "Přeskočit dialog \"Čekání na JIT\"";
 "preference.detail.debug_skip_wait_jit" = "Toto vám neumožní spustit bez JITu, ale přeskočí ladící kontrolu, neboť ta kontrola chybuje na určitých jailbreacích.";
@@ -188,3 +201,4 @@
 "preference.detail.debug_show_layout_bounds" = "Zobrazit překrývající se hranice a mezery";
 "preference.title.debug_show_layout_overlap" = "Zobrazit překrývající se rozložení";
 "preference.detail.debug_show_layout_overlap" = "Překrýt každé zobrazení průhlednou barvou pro odhalení překrývajících se zobrazení.";
+"controller_configurator.playstation.title.named_back" = "Vybrat";
