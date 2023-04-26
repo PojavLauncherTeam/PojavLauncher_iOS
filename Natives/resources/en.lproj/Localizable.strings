@@ -98,7 +98,7 @@
 "login.warn.message.demomode" = "As a replacement to offline and local mode, demo mode will allow you to sign into a Microsoft account that does not own the game and play the Java Edition trial, introduced in 1.3.1 and newer versions. Older versions contain the full game, as the official launcher does not place these restrictions. See our website to learn more about this transition from offline mode.";
 
 "login.warn.title.localmode" = "Offline mode is now Local mode.";
-"login.warn.message.localmode" = "You can continue to play installed versions, but you can no longer download Minecraft without a paid account. No support will be provided for issues with local accounts, or other means of acquiring Minecraft. See the FAQ for more information.";
+"login.warn.message.localmode" = "You can continue to play installed versions, but you can no longer download Minecraft without a paid account. No support will be provided for issues with local accounts, or other means of acquiring Minecraft.";
 
 "login.msa.error.xsts.noxboxacc" = "An Xbox profile is not registered for this Microsoft account. Please make sure that you have made an Xbox profile.\nError code: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live is currently unavailable in your country.\nError code: 2148916235";
@@ -117,7 +117,7 @@
 
 "preference.section.general" = "General Settings";
 "preference.section.video" = "Video and Audio Settings";
-"preference.section.footer.video" = "Auto renderer allows Minecraft to decide which renderer to use. Decreasing resolution reduces GPU workload for better performance.";
+"preference.section.footer.video" = "Auto renderer allows PojavLauncher to choose the best option based on Minecraft version. Decreasing resolution reduces GPU workload for better performance.";
 "preference.section.control" = "Control customization";
 "preference.section.debug" = "UI Debugging settings";
 "preference.section.footer.debug" = "Aside from debugging, these settings may be useful for custom controls. You may need to restart the launcher for changes to take effect.";
@@ -161,10 +161,17 @@
 "preference.title.done.erase_demo_data" = "All of the Demo game data has been erased.";
 
 "preference.title.renderer" = "Renderer";
-"preference.title.renderer.auto" = "Auto: gl4es or ANGLE";
-"preference.title.renderer.gl4es" = "holy gl4es - exports OpenGL 2.1";
-"preference.title.renderer.angle" = "ANGLE (1.17+) - exports OpenGL 3.2 (Core Profile, limited)";
-"preference.title.renderer.zink" = "Zink (Mesa 21.0) - exports OpenGL 4.1";
+
+"preference.title.renderer.release.auto" = "Auto";
+"preference.title.renderer.release.gl4es" = "holy gl4es";
+"preference.title.renderer.release.angle" = "ANGLE";
+"preference.title.renderer.release.zink" = "Zink";
+
+"preference.title.renderer.debug.auto" = "Auto: gl4es or ANGLE";
+"preference.title.renderer.debug.gl4es" = "holy gl4es - exports OpenGL 2.1";
+"preference.title.renderer.debug.angle" = "ANGLE (1.17+) - exports OpenGL 3.2 (Core Profile, limited)";
+"preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - exports OpenGL 4.1";
+
 "preference.detail.renderer" = "Change the OpenGL render engine to use. Zink is temporarily disabled on iOS 16 and later to diagnose issues.";
 
 "preference.title.resolution" = "Resolution (%)";
@@ -206,9 +213,9 @@
 "preference.detail.gyroscope_sensitivity" = "Adjust the sensitivity of gyroscope controls";
 
 "preference.title.java_home" = "Use Java 17 for Minecraft < 1.17";
-"preference.detail.java_home" = "Java 8 is used by default for those versions. Enable this option to force use Java 17, however compatibility with modded is not guaranteed.";
+"preference.detail.java_home" = "Java 8 is used by default for those versions. Enable this option to force use Java 17, however compatibility is not guaranteed.";
 "preference.title.java_args" = "JVM Launch arguments";
-"preference.detail.java_args" = "Be careful, this can make the game crash if modified without any prior knowledge.";
+"preference.detail.java_args" = "Pass arguments to Java when launching Minecraft. Be careful, this can make the game crash if modified incorrectly.";
 "preference.placeholder.java_args" = "Specify arguments...";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Enables automatic RAM adjuster";
@@ -217,7 +224,7 @@
 "preference.detail.allocated_memory" = "Controls how much memory is given to Minecraft";
 "preference.warn.allocated_memory" = "Due to limitations in the operating system itself, this option may cause instability at this and higher values. Proceed with caution.";
 "preference.title.custom_env" = "Environment variables";
-"preference.detail.custom_env" = "This option is under construction.";
+"preference.detail.custom_env" = "This option is under construction. Create and edit custom_env.txt in the meantime.";
 
 "preference.title.debug_skip_wait_jit" = "Skip \"Waiting for JIT\" dialog";
 "preference.detail.debug_skip_wait_jit" = "This does not allow you to launch without JIT, instead this skips debugger check, because check fails on certain jailbreaks.";

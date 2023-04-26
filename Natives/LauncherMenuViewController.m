@@ -223,8 +223,6 @@
         
         selected.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
         selected.navigationItem.leftItemsSupplementBackButton = true;
-        contentNavigationController.navigationBar.prefersLargeTitles = YES;
-        selected.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
     } else {
         [self restoreHighlightedSelection];
         ((LauncherMenuCustomItem *)selected).action();

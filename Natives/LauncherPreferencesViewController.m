@@ -70,9 +70,9 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             @ RENDERER_NAME_MTL_ANGLE
         ];
         self.rendererList = @[
-            localize(@"preference.title.renderer.auto", nil),
-            localize(@"preference.title.renderer.gl4es", nil),
-            localize(@"preference.title.renderer.angle", nil)
+            localize(@"preference.title.renderer.release.auto", nil),
+            localize(@"preference.title.renderer.release.gl4es", nil),
+            localize(@"preference.title.renderer.release.angle", nil)
         ];
     } else {
 #endif
@@ -83,10 +83,10 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             @ RENDERER_NAME_VK_ZINK
         ];
         self.rendererList = @[
-            localize(@"preference.title.renderer.auto", nil),
-            localize(@"preference.title.renderer.gl4es", nil),
-            localize(@"preference.title.renderer.angle", nil),
-            localize(@"preference.title.renderer.zink", nil)
+            localize(@"preference.title.renderer.debug.auto", nil),
+            localize(@"preference.title.renderer.debug.gl4es", nil),
+            localize(@"preference.title.renderer.debug.angle", nil),
+            localize(@"preference.title.renderer.debug.zink", nil)
         ];
 #if CONFIG_RELEASE
     }

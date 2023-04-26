@@ -127,8 +127,6 @@
         };
         [BaseAuthenticator.current refreshTokenWithCallback:callback];
     }
-    
-    self.navigationBar.prefersLargeTitles = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
