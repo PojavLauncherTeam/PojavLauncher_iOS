@@ -12,6 +12,9 @@
 
 "game.title.exit_code" = "Произошёл сбой игры с кодом %d";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "Опции";
+
 // The play button
 "Play" = "Играть";
 
@@ -102,7 +105,6 @@
 "Settings" = "Настройки";
 
 "preference.section.general" = "Основные настройки";
-"preference.section.video" = "Настройки графики";
 "preference.section.footer.video" = "Автоматический режим позволяет игре самой определять оптимальную реализацию. Уменьшение разрешения снижает нагрузку на ГП и улучшает производительность.";
 "preference.section.control" = "Настройка управления";
 "preference.section.debug" = "Настройки отладки";
@@ -112,8 +114,6 @@
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "Вы уверены?";
-
-"preference.title.game_directory" = "Папка игры";
 "preference.title.confirm.delete_game_directory" = "Профиль %@ будет навсегда удалён без возможности восстановления.";
 "preference.multidir.add_directory" = "Добавить расположение";
 
@@ -140,16 +140,15 @@
 
 "preference.title.renderer" = "Визуализатор";
 "preference.title.renderer.auto" = "Авто: gl4es или ANGLE";
-"preference.title.renderer.gl4es" = "gl4es 1.1.4 — обеспечивает OpenGL 2.1";
 "preference.title.renderer.angle" = "ANGLE (1.17+) — обеспечивает OpenGL 3.2 (ограниченно, Core Profile)";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) — обеспечивает OpenGL 4.1";
-"preference.detail.renderer" = "Выберите используемую графическую реализацию OpenGL";
 
 "preference.title.resolution" = "Разрешение (%)";
 "preference.detail.resolution" = "Можно уменьшить разрешение игры в целях быстродействия.";
 
 "preference.title.fullscreen_airplay" = "Полноэкранный AirPlay";
 "preference.detail.fullscreen_airplay" = "Транслировать на внешний монитор только окно игры во весь экран вместо отображения всего, что происходит на устройстве.";
+"preference.title.disable_gesture" = "Отключение жестов";
 "preference.title.press_duration" = "Длительность нажатия (мс)";
 "preference.detail.press_duration" = "Длительность удерживания для разрушения блоков и выбрасывания предметов.";
 "preference.title.button_scale" = "Размер кнопок (%)";
@@ -162,11 +161,6 @@
 "preference.detail.virtmouse_enable" = "Запускать игру с включённой виртуальной мышью";
 "preference.title.slideable_hotbar" = "Прокручиваемый хотбар";
 "preference.detail.slideable_hotbar" = "Включить прокрутку слотов хотбара как при использовании колёсика мыши.";
-
-"preference.title.gyroscope_enable" = "Управление наклоном";
-"preference.title.gyroscope_sensitivity" = "Чувствительность гироскопа";
-"preference.detail.gyroscope_sensitivity" = "Изменить чувствительность датчика вращения.";
-
 "preference.title.java_home" = "Java 17 для старых версий Minecraft";
 "preference.detail.java_home" = "Для 1.16.5 и ниже по умолчанию используется Java 8. Включение приведёт к принудительному использованию Java 17, однако это может нарушить совместимость с модами.";
 "preference.title.java_args" = "Аргументы запуска JVM";
@@ -192,4 +186,3 @@
 "preference.detail.debug_show_layout_bounds" = "Показать границы и отступы";
 "preference.title.debug_show_layout_overlap" = "Показывать наложение элементов";
 "preference.detail.debug_show_layout_overlap" = "Обозначить каждый элемент прозрачным цветом, чтобы упростить нахождение пересечений.";
-"controller_configurator.playstation.title.named_back" = "Выбрать";
