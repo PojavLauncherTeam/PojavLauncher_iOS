@@ -7,9 +7,6 @@
 "game.menu.log_output" = "Záznam výstupu";
 "game.menu.custom_controls" = "Vlastné ovládacie prvky";
 
-// The options button at the top-right corner on iOS 12
-"Options" = "Možnosti";
-
 // The play button
 "Play" = "Hrať";
 "Snapshot" = "Snapshot";
@@ -35,6 +32,7 @@
 
 "launcher.menu.custom_controls" = "Vlastné ovládacie prvky";
 "launcher.menu.install_jar" = "Inštalovať .jar";
+"login.option.add" = "Pridať účet";
 "login.option.select" = "Vybrať účet";
 
 "News" = "Novinky";
@@ -42,10 +40,11 @@
 "preference.section.control" = "Ovládanie";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Nastavenia Javy";
+
+"preference.title.game_directory" = "Zložka hry";
 "preference.title.cosmetica" = "Cosmetica Capeky";
 
 "preference.title.renderer" = "Renderer";
-"preference.title.disable_gesture" = "Zakázať gestá";
 "preference.title.java_args" = "Spúštacie argumenty pre JVM";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Automaticky bude meniť množstvo RAM";
