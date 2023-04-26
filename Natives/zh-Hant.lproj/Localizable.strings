@@ -12,9 +12,6 @@
 
 "game.title.exit_code" = "遊戲以代碼%d退出";
 
-// The options button at the top-right corner on iOS 12
-"Options" = "選項";
-
 // The play button
 "Play" = "啟動遊戲";
 
@@ -58,6 +55,7 @@
 "custom_controls.control_menu.safe_area" = "安全區";
 "custom_controls.control_menu.add_button" = "添加按鈕";
 "custom_controls.control_menu.add_drawer" = "增加清單";
+"custom_controls.error.incompatible" = "此控制版本（號碼 %d）在這個啟動器構建中沒有實現。";
 "custom_controls.hint" = "長按螢幕上的任何位置以顯示更多選項";
 
 "init.migrateDir" = "PojavLauncher數據資料夾現為%@。你的所有已有資料已被移動到新位置。";
@@ -74,23 +72,15 @@
 
 "login.jit.checking" = "正在檢查即時編譯";
 "login.jit.enabled" = "即時編譯已啟動";
-"login.jit.fail.JitStreamer" = "JitStreamer 錯誤：%@";
-"login.jit.found.JitStreamer" = "找到JitStreamer，正在啟動即時編譯。";
 
 // Login buttons
 "login.menu.sendlogs" = "發送你的日誌";
+"login.option.add" = "新增帳號";
 "login.option.select" = "選擇帳號";
 "login.option.microsoft" = "微軟帳戶";
 "login.option.local" = "本地帳戶";
 
-"login.warn.title.ram_unjb" = "已啟動記憶體搖桿";
-"login.warn.message.ram_unjb" = "請注意，更改這個設定可能會導致遊戲不穩定，或導致完全無法遊玩。";
-
-"login.warn.title.iosver" = "這是對於這個iOS版本的最後一次更新。";
-"login.warn.message.iosver" = "由於功能上不一致和開發困難，未來版本的PojavLauncher將不會支持iOS 12或13。";
-
-"login.warn.title.2gb" = "你的裝置的記憶體有限。";
-"login.warn.message.2gb" = "記憶體容量少於3GB的裝置可能會遇到記憶體限制。我們建議你保持自動記憶體選擇器在啟動狀態。";
+"login.warn.title.demomode" = "你的帳戶是一個示範帳戶";
 "login.warn.message.demomode" = "作為離線和本地模式的代替，示範模式會允許你用一個不擁有遊戲的微軟帳戶來登入，並遊玩在版本1.3.1引入的Java版試玩版。由於官方的啟動器沒有加入限制，更舊的版本將含有完整的遊戲。要了解更多關於從離線模式過渡到示範模式的資訊，請瀏覽我們的網頁。";
 
 "login.warn.title.localmode" = "離線模式現為本地模式。";
@@ -114,7 +104,7 @@
 "preference.section.general" = "一般設定";
 "preference.section.video" = "動畫設定";
 "preference.section.footer.video" = "自動宣染器允許我的世界判斷使用哪一個渲染器。降低解析度會降低圖形處理器的工作量，並提高效能。";
-"preference.section.control" = "自定義控制";
+"preference.section.control" = "自定控制鍵";
 "preference.section.debug" = "用戶界面除錯選項";
 "preference.section.footer.debug" = "除了除錯外，這些選項可能對自定義控制鍵有用。你可能需要重新啟動啟動器來讓更變生效。";
 //"preference.section.footer.control" = "";
@@ -123,7 +113,7 @@
 
 "preference.title.confirm" = "你確定嗎？";
 
-"preference.title.game_directory" = "我的世界遊戲目錄";
+"preference.title.game_directory" = "遊戲資料夾";
 "preference.title.confirm.delete_game_directory" = "實例%@會被永久刪除，且不能回復。";
 "preference.multidir.add_directory" = "新增遊戲目錄";
 
@@ -135,6 +125,11 @@
 "preference.detail.debug_logging" = "把內部設定和動作記錄到lateslog.txt。這能幫助開發者更容易地找到問題，但由於日誌寫入的次數會增多，我的世界的運行速度可能會減慢。";
 "preference.title.jitstreamer_server" = "JitStreamer伺服器地址";
 "preference.detail.jitstreamer_server" = "這個選項允許你設定一個自定義JitStreamer IP地址，例如一個自托管的伺服器。如果你使用預設的JitStreamer伺服器，你可以忽略這個選項。";
+"preference.title.appicon" = "設定應用程式圖示";
+"preference.detail.appicon" = "讓你能選擇PojavLauncher在主畫面上的圖示。";
+"preference.title.appicon-default" = "熟悉的明亮PojavLauncher";
+"preference.title.appicon-dark" = "熟悉的暗黑PojavLauncher";
+"preference.title.hidden_sidebar" = "預設隱藏主選單的側邊欄";
 
 "preference.title.reset_warnings" = "重設所有警告";
 "preference.title.done.reset_warnings" = "所有警告已被重設。";
@@ -144,13 +139,17 @@
 "preference.title.done.reset_settings" = "所有的預設設定已被回復。";
 
 "preference.title.renderer" = "渲染器";
+"preference.title.renderer.auto" = "自動：gl4es或ANGLE";
 "preference.title.renderer.gl4es" = "gl4es 1.1.4 － 輸出OpenGL 2.1";
+"preference.title.renderer.angle" = "ANGLE（1.17+）— 輸出OpenGL 3.2（核心，有限）";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) － 輸出OpenGL 4.1";
 "preference.detail.renderer" = "改變要使用的OpenGL渲染引擎";
 
 "preference.title.resolution" = "解像度（%）";
 "preference.detail.resolution" = "允許你降低遊戲的解像度。";
-"preference.title.disable_gesture" = "停用手勢";
+
+"preference.title.fullscreen_airplay" = "全螢幕隔空投放";
+"preference.detail.fullscreen_airplay" = "允許在外部顯示器上展示全螢幕遊戲畫面，而不是影射螢幕上的內容。";
 "preference.title.press_duration" = "長按時間（毫秒）";
 "preference.detail.press_duration" = "觸發破壞方塊及釋出物件的按壓時間。";
 "preference.title.button_scale" = "螢幕按鈕比例（%）";
@@ -163,6 +162,11 @@
 "preference.detail.virtmouse_enable" = "啟用這個選項以在啟動時啟動虛擬鼠標。";
 "preference.title.slideable_hotbar" = "可捲動快捷欄";
 "preference.detail.slideable_hotbar" = "令快捷欄能夠以像滑鼠輪一般地捲動";
+
+"preference.title.gyroscope_enable" = "啟用陀螺儀控制";
+"preference.title.gyroscope_sensitivity" = "陀螺儀控制靈敏度";
+"preference.detail.gyroscope_sensitivity" = "調整陀螺儀控制的靈敏度";
+
 "preference.title.java_home" = "對於我的世界 < 1.17，使用Java 17";
 "preference.detail.java_home" = "這些版本預設使用Java 8。啟用這個選項來強制使用Java 17，但是對修改版的遊戲的相容性沒有任何保證。";
 "preference.title.java_args" = "JVM 啟動引數";
@@ -176,9 +180,17 @@
 "preference.warn.allocated_memory" = "由於系統限制，在這個數值或以上時，這個選項可能會導致不穩定。";
 "preference.title.custom_env" = "環境變量";
 "preference.detail.custom_env" = "這個選項仍在建築中。";
+
+"preference.title.debug_skip_wait_jit" = "跳過「正在等待即時編譯」對話方塊。";
+"preference.detail.debug_skip_wait_jit" = "這不會允許你在沒有即時編譯的情況下啟動，而只會跳過除錯器檢測，因為這個檢測在部份越獄中無法正常運作。";
 "preference.title.debug_ipad_ui" = "解鎖iPadOS用戶介面";
 "preference.detail.debug_ipad_ui" = "當啟動時或當iPhone用戶介面被禁用時，解鎖iPad專屬用戶介面（提示、鍵盤等）";
+"preference.title.debug_auto_correction" = "自動校正";
+"preference.detail.debug_auto_correction" = "當在遊戲中輸入文字時，啟用自動校正。";
+"preference.title.debug_hide_home_indicator" = "隱藏主畫面指示器";
+"preference.detail.debug_hide_home_indicator" = "這會禁用主畫面指示器鎖定。你必須使用指導模式來同時隱藏和鎖定主畫面顯示器。";
 "preference.title.debug_show_layout_bounds" = "顯示佈局界線";
 "preference.detail.debug_show_layout_bounds" = "顯示剪輯範圍、邊界";
 "preference.title.debug_show_layout_overlap" = "顯示重複的佈局";
 "preference.detail.debug_show_layout_overlap" = "通過用透明顏色來覆蓋所有視圖，來顯示重複的視圖";
+"controller_configurator.playstation.title.named_back" = "選擇";
