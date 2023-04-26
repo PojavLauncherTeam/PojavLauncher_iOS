@@ -12,6 +12,9 @@
 
 "game.title.exit_code" = "Гра завершилась з кодом %d";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "Опції";
+
 // The play button
 "Play" = "Грати";
 
@@ -102,7 +105,6 @@
 "Settings" = "Налаштування";
 
 "preference.section.general" = "Загальні налаштування";
-"preference.section.video" = "Налаштування графіки";
 "preference.section.footer.video" = "Авто рендер дозволяє Minecraft вирішувати, який рендер використовувати. Зменшення розмірів зменшує навантаження на графічний процесор для підвищення продуктивности.";
 "preference.section.control" = "Налаштування керування";
 "preference.section.debug" = "Налаштування налагодження інтерфейсу";
@@ -112,8 +114,6 @@
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "Ви впевнені?";
-
-"preference.title.game_directory" = "Тека гри";
 "preference.title.confirm.delete_game_directory" = "Екземпляр %@ буде видалено назавжди і його не можливо відновити.";
 "preference.multidir.add_directory" = "Додати теку гри";
 
@@ -141,16 +141,15 @@
 
 "preference.title.renderer" = "Візуалізатор";
 "preference.title.renderer.auto" = "Авто: gl4 або ANGLE";
-"preference.title.renderer.gl4es" = "Gl4es 1.1.4 - експортує OpenGL 2.1";
 "preference.title.renderer.angle" = "ANGLE (1.17+) - експортує OpenGL 3.2 (Базовий профіль, обмежений)";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - експортує OpenGL 4.1";
-"preference.detail.renderer" = "Зміни двигун візуалізації OpenGL для використання";
 
 "preference.title.resolution" = "Роздільна здатність відео (%)";
 "preference.detail.resolution" = "Дозволяє вам зменшити роздільну здатність гри.";
 
 "preference.title.fullscreen_airplay" = "Повноекранний AirPlay";
 "preference.detail.fullscreen_airplay" = "Дозволяє презентувати повноекранне вікно гри на зовнішньому дисплеї, а не віддзеркалювати все, що є на екрані.";
+"preference.title.disable_gesture" = "Вимкнути жести";
 "preference.title.press_duration" = "Тривалість тривалого натискання (мс)";
 "preference.detail.press_duration" = "Тривалість натискання для знищення блоків і скидання речей.";
 "preference.title.button_scale" = "Шкала екранних кнопок (%)";
@@ -163,11 +162,6 @@
 "preference.detail.virtmouse_enable" = "Увімкніть цю опцію, щоб починати з віртуальною мишею";
 "preference.title.slideable_hotbar" = "Панель швидкого доступу";
 "preference.detail.slideable_hotbar" = "Зробити повзунком швидкого доступу як колесо миші";
-
-"preference.title.gyroscope_enable" = "Увімкнути керування гіроскопом";
-"preference.title.gyroscope_sensitivity" = "Налаштування чутливості гіроскопа";
-"preference.detail.gyroscope_sensitivity" = "Налаштуйте чутливість елементів керування гіроскопом";
-
 "preference.title.java_home" = "Використовувати Java 17 для Minecraft < 1.17";
 "preference.detail.java_home" = "Java 8 використовується за замовчуванням для цих версій. Увімкніть цю опцію, щоб примусово використовувати Java 17, проте сумісність з модифікаціями не гарантується.";
 "preference.title.java_args" = "Аргументи запуску JVM";
@@ -194,4 +188,3 @@
 "preference.detail.debug_show_layout_bounds" = "Показувати межі обрізування, поля і т. д.";
 "preference.title.debug_show_layout_overlap" = "Показати накладання макета";
 "preference.detail.debug_show_layout_overlap" = "Накладання кожного перегляду з прозорим кольором, щоб розкрити огляди, що перекриваються.";
-"controller_configurator.playstation.title.named_back" = "Обрати";
