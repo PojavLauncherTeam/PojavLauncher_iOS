@@ -75,13 +75,24 @@
 
 "login.jit.checking" = "Kontrolování JIT";
 "login.jit.enabled" = "JIT byl zapnut";
+"login.jit.fail" = "JIT nemohla být zapnuta.";
+"login.jit.fail.title" = "JIT nemohla být zapnuta na vašem zařízení.";
+"login.jit.fail.description" = "Nebylo možno použít jakoukoliv integraci k automatickému zapnutí JIT na vašem zařízení, tudíž musí být zapnuta ručně. Chyby se zaznamenaly do latestlot.txt.";
 
 // Login buttons
 "login.menu.sendlogs" = "Odeslat záznamy";
 "login.option.add" = "Přidat účet";
 "login.option.select" = "Vybrat účet";
+"login.option.demo" = "Demo účet";
 "login.option.microsoft" = "Účet Microsoft";
 "login.option.local" = "Místní účet";
+
+"login.warn.title.legacy_device" = "Příští vydání PojavLauncheru nebude kompatibilní s tímto zařízením.";
+"login.warn.message.legacy_device" = "Ke spuštění příštího velkého vydání je potřeba zařízení schopného spustit iOS 14.";
+"login.warn.title.legacy_ios" = "Příští vydání PojavLauncheru bude vyžadovat aktualizaci systému.";
+"login.warn.message.legacy_ios" = "Ke spuštění příštího velkého vydání, toto zařízení musí mít spuštěn iOS 14 či novější.";
+"login.warn.title.limited_ram" = "Toto zařízení má dostupné omezené množství paměti.";
+"login.warn.message.limited_ram" = "Doporučujeme ponechat automatickou RAM zapnutu, aby se zabránilo nestabilitě a problémům s výkonem.";
 
 "login.warn.title.demomode" = "Váš účet demo je";
 "login.warn.message.demomode" = "Jako náhrada za offline a místní režim, demo režim povolí přihlášení do Microsoft účtu, jenž hru nevlastní, a hrát zkušební verzi Java edice, přidanou v 1.3.1 a novějších verzích. Starší verze obsahují plnou hru, majíce ji i v oficiálním spouštěči, jenž nemá pro ně omezení. Viz naši webovou stránku pro více informací o této změně z offline režimu.";
@@ -128,10 +139,13 @@
 "preference.detail.debug_logging" = "Zaznamenává interní nastavení a akce do latestlog.txt. Toto dovoluje vývojářům nalézt problémy dřiv, ale záznamy budou častěji zapisovány, díky čemuž Minecraft může běžet pomaleji.";
 "preference.title.jitstreamer_server" = "IP adresa serveru JitStreameru";
 "preference.detail.jitstreamer_server" = "Umožňuje zadat vlastní IP adresu JitStreameru, například pro samohostěné instance. Tato možnost může být nechána nezměněná používáte-li výchozí servery JitStreameru.";
+"preference.title.enable_altkit" = "Povolit integraci AltKitu";
+"preference.detail.enable_altkit" = "Pokud povoleno, PojavLauncher se pokusí o připojení k místním AltServerům pro zapnutí JIT.";
 "preference.title.appicon" = "Nastaviti ikonu aplikace";
 "preference.detail.appicon" = "Umožnǔje vybrat mezi různými ikonami plochy PojavLauncheru.";
 "preference.title.appicon-default" = "Známá PojavLauncher světlá";
 "preference.title.appicon-dark" = "Známá PojavLauncher tmavá";
+"preference.title.appicon-development" = "Načrtnutý vývoj";
 "preference.title.hidden_sidebar" = "Skrývat hlavní postranní menu ze začátku";
 "preference.detail.hidden_sidebar" = "Umožňuje skrývat hlavní postranní panel ve hlavním menu ve výchozím nastavení při otáčení v iOSe 14 a novějších.";
 
@@ -141,6 +155,10 @@
 "preference.title.reset_settings" = "Resetovat všechna nastavení";
 "preference.title.confirm.reset_settings" = "Toto odstraní všechna tvé nastavení, cčetně rozlišení, velikosti tlačítek a argumentů Javy.";
 "preference.title.done.reset_settings" = "Všechna výchozí nastavení byla obnovena.";
+
+"preference.title.erase_demo_data" = "Vymazat data Demo her";
+"preference.title.confirm.erase_demo_data" = "Toto smaže všechny verze Demo her a všechna data Demo účtů.";
+"preference.title.done.erase_demo_data" = "Byla smazána všechna data Demo her.";
 
 "preference.title.renderer" = "Vykreslovač";
 
@@ -158,9 +176,22 @@
 
 "preference.title.resolution" = "Rozlišení (%)";
 "preference.detail.resolution" = "Umožňuje ti snížit rozlišení hry.";
+"preference.title.max_framerate" = "Maximální snímková frekvence";
+"preference.detail.max_framerate" = "Umožňuje omezit frekvenci snímků hry na 60FPS na displejích ProMotion.";
 
 "preference.title.fullscreen_airplay" = "AirPlay celé obrazovky";
 "preference.detail.fullscreen_airplay" = "Umožňuje zobrazovat okno hry na celé obrazovce na externím displeji bez zrcadlení všeho na obrazovce.";
+"preference.title.silence_other_audio" = "Pozastavit zvuk při otevření hry";
+"preference.detail.silence_other_audio" = "Zapněte pro umožnění PojavLauncheru pozastavit zvuk z jiných aplikací, například Hudbu při spouštění hry.";
+"preference.title.silence_with_switch" = "Vypnout zvuk tichým přepínačem";
+"preference.detail.silence_with_switch" = "Povolte pro vypnutí zvuku při Tichém režimu. Sluchátka a externí reproduktory nejsou ovlivněny.";
+"preference.title.default_gamepad_ctrl" = "Nastavení ovladače";
+"preference.title.hardware_hide" = "Skrýt ovládací prvky při připojení zařízení";
+"preference.detail.hardware_hide" = "Povolte pro automatické vypínání překrytí na obrazovce při připojení myši či herního ovladače.";
+"preference.title.gesture_mouse" = "Gesta myši";
+"preference.detail.gesture_mouse" = "Povolí gesta, například kliknutím umístit blok, podržením zníčit blok a posouvání dvěma prsty";
+"preference.title.gesture_hotbar" = "Gesta hotbaru";
+"preference.detail.gesture_hotbar" = "Povolí gesta, například dotknutí se slotu hotbaru, vyměnění předměty mezi rukama a zahození předmětů";
 "preference.title.press_duration" = "Trvání dlouhého stisku (ms)";
 "preference.detail.press_duration" = "Délka trvání dlouhého držení ke zničení bloků a vyhazování itemů.";
 "preference.title.button_scale" = "Měřítko tlačítka na obrazovce (%)";
@@ -175,6 +206,9 @@
 "preference.detail.slideable_hotbar" = "Udělat hotbar posunovatelný jako kolečko myši";
 
 "preference.title.gyroscope_enable" = "Zapnout gyroskopové ovládání";
+"preference.detail.gyroscope_enable" = "Zapnutí tohoto vám umožní otáčet se ve hře otočením zařízení";
+"preference.title.gyroscope_invert_x_axis" = "Obrátit pravo a levo gyroskopu";
+"preference.detail.gyroscope_invert_x_axis" = "Obrací osu X gyroskopu";
 "preference.title.gyroscope_sensitivity" = "Citlivost gyroskopového ovládání";
 "preference.detail.gyroscope_sensitivity" = "Upravit citlivost gyroskopového ovládání";
 
@@ -204,4 +238,49 @@
 "preference.detail.debug_show_layout_bounds" = "Zobrazit překrývající se hranice a mezery";
 "preference.title.debug_show_layout_overlap" = "Zobrazit překrývající se rozložení";
 "preference.detail.debug_show_layout_overlap" = "Překrýt každé zobrazení průhlednou barvou pro odhalení překrývajících se zobrazení.";
+
+"controller_configurator.title.current" = "Soubor nastavení Gamepadu";
+"controller_configurator.title.type.xbox" = "Xbox";
+"controller_configurator.title.type.playstation" = "PlayStation";
+
+"controller_configurator.xbox.title.bumper_left" = "Levé tlačítko";
+"controller_configurator.xbox.title.bumper_right" = "Pravé tlačítko";
+"controller_configurator.xbox.title.trigger_left" = "Levá spoušť";
+"controller_configurator.xbox.title.trigger_right" = "Pravá spoušť";
+"controller_configurator.xbox.title.named_back" = "Průvodce";
+"controller_configurator.xbox.title.named_start" = "Nabídka";
+"controller_configurator.xbox.title.named_a" = "A";
+"controller_configurator.xbox.title.named_b" = "B";
+"controller_configurator.xbox.title.named_x" = "X";
+"controller_configurator.xbox.title.named_y" = "Y";
+"controller_configurator.xbox.title.dpad_up" = "Nahoru";
+"controller_configurator.xbox.title.dpad_down" = "Dolů";
+"controller_configurator.xbox.title.dpad_left" = "Vlevo";
+"controller_configurator.xbox.title.dpad_right" = "Vpravo";
+"controller_configurator.xbox.title.thumb_left" = "Kliknutí levé páčky";
+"controller_configurator.xbox.title.thumb_right" = "Kliknutí pravé páčky";
+
+"controller_configurator.playstation.title.bumper_left" = "L1";
+"controller_configurator.playstation.title.bumper_right" = "R1";
+"controller_configurator.playstation.title.trigger_left" = "L2";
+"controller_configurator.playstation.title.trigger_right" = "R2";
 "controller_configurator.playstation.title.named_back" = "Vybrat";
+"controller_configurator.playstation.title.named_start" = "Start";
+"controller_configurator.playstation.title.named_a" = "Kříž";
+"controller_configurator.playstation.title.named_b" = "Kruh";
+"controller_configurator.playstation.title.named_x" = "Čtverec";
+"controller_configurator.playstation.title.named_y" = "Trojúhelník";
+"controller_configurator.playstation.title.dpad_up" = "Nahoru";
+"controller_configurator.playstation.title.dpad_down" = "Dolů";
+"controller_configurator.playstation.title.dpad_left" = "Vlevo";
+"controller_configurator.playstation.title.dpad_right" = "Vpravo";
+"controller_configurator.playstation.title.thumb_left" = "L3";
+"controller_configurator.playstation.title.thumb_right" = "R3";
+
+"controller_configurator.section.config_files" = "Současný soubor nastavení";
+"controller_configurator.section.game_mappings" = "Herní mapování";
+"controller_configurator.section.footer.game_mappings" = "Mapování při uzamčené myši ve hře.";
+"controller_configurator.section.menu_mappings" = "Mapování nabídky";
+"controller_configurator.section.footer.menu_mappings" = "Mapování při odemčené myši, například na titulní obrazovce či v nabídce pozastavení.";
+"controller_configurator.section.controller_style" = "Typ ovladače";
+"controller_configurator.section.footer.controller_style" = "Ukázat odlišné názvy tlačítek ovladače v tomto nastavení.";
