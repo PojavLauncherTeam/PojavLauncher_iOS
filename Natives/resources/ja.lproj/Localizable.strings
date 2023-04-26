@@ -12,6 +12,9 @@
 
 "game.title.exit_code" = "コード %dでゲームを終了しました";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "設定";
+
 // The play button
 "Play" = "プレイ";
 
@@ -111,8 +114,6 @@
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "よろしいですか？";
-
-"preference.title.game_directory" = "ゲームのディレクトリ";
 "preference.title.confirm.delete_game_directory" = "インスタンス %@ は永久に削除されるため、復元できません。";
 "preference.multidir.add_directory" = "ゲームディレクトリの追加";
 
@@ -147,6 +148,7 @@
 
 "preference.title.fullscreen_airplay" = "全画面AirPlay";
 "preference.detail.fullscreen_airplay" = "画面上のすべてをミラーリングするのではなく、外部ディスプレイにフルスクリーンのゲームウィンドウを表示できます。";
+"preference.title.disable_gesture" = "ジェスチャーの無効化";
 "preference.title.press_duration" = "長押し時間 (ms)";
 "preference.detail.press_duration" = "ブロックを破壊したりアイテムをドロップしたりするための長さをトリガーします。";
 "preference.title.button_scale" = "オンスクリーンボタンの拡大率(%)";
@@ -159,7 +161,6 @@
 "preference.detail.virtmouse_enable" = "仮想マウスの起動時にこのオプションを有効にする";
 "preference.title.slideable_hotbar" = "スライド可能なホットバー";
 "preference.detail.slideable_hotbar" = "マウスホイールのようにホットバーをスライド可能にする";
-
 "preference.title.java_home" = "Java 17 for Minecraft < 1.17 を使用";
 "preference.detail.java_home" = "これらのバージョンでは、Java 8がデフォルトで使用されています。Java 17を強制的に使用するには、このオプションを有効にしますが、modedとの互換性は保証されません。";
 "preference.title.java_args" = "JVM 起動引数";
@@ -186,4 +187,3 @@
 "preference.detail.debug_show_layout_bounds" = "クリップの境界線、余白を表示";
 "preference.title.debug_show_layout_overlap" = "レイアウト重複を表示";
 "preference.detail.debug_show_layout_overlap" = "透明な色ですべてのビューをオーバーレイし、重複するビューを表示します。";
-"controller_configurator.playstation.title.named_back" = "選択...";

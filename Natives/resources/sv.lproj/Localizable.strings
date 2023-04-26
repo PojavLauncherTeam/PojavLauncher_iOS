@@ -7,6 +7,9 @@
 "game.menu.log_output" = "Logga utdata";
 "game.menu.custom_controls" = "Anpassade kontroller";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "Alternativ";
+
 // The play button
 "Play" = "Spela";
 "custom_controls.button_edit.swipeable" = "Svepbar";
@@ -18,6 +21,5 @@
 
 "News" = "Nyheter";
 "Settings" = "Inställningar";
-
-"preference.title.game_directory" = "Spelkatalog";
+"preference.title.disable_gesture" = "Inaktivera gester";
 "preference.detail.allocated_memory" = "Kontrollerar hur mycket minne som ges till Minecraft";

@@ -12,6 +12,9 @@
 
 "game.title.exit_code" = "El juego se cerró con el código %d";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "Opciones";
+
 // The play button
 "Play" = "Jugar";
 
@@ -96,7 +99,6 @@
 "Settings" = "Ajustes";
 
 "preference.section.general" = "Configuración general";
-"preference.section.video" = "Configuración de Vídeo";
 "preference.section.footer.video" = "El auto renderizador le permite a Minecraft decidir cuál renderizador usar. Reduciendo la resolución reduce la carga del GPU para un mejor rendimiento.";
 "preference.section.control" = "Personalización del control";
 "preference.section.footer.debug" = "Aparte de el debugging, estas opciones pueden ser útiles para los controles personalizados. Es posible que tengas que reiniciar el launcher para que los cambios tengan efecto.";
@@ -105,8 +107,6 @@
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "¿Estás seguro?";
-
-"preference.title.game_directory" = "Directorio del juego";
 "preference.title.confirm.delete_game_directory" = "La instancia %@ va a ser borrada para siempre y nunca podrá ser restaurada.";
 "preference.multidir.add_directory" = "Añadir Ubicación de carpeta del juego";
 
@@ -131,16 +131,15 @@
 
 "preference.title.renderer" = "Renderizador";
 "preference.title.renderer.auto" = "Automático: gl4es o ANGLE";
-"preference.title.renderer.gl4es" = "gl4es 1.1.4 - exporta a OpenGL 2.1";
 "preference.title.renderer.angle" = "ANGLE (1.17+) - exporta OpenGL 3.1 (perfil Core, limitado)";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - exporta a OpenGL 4.1";
-"preference.detail.renderer" = "Cambiar el motor de renderizado para que OpenGL utilicé";
 
 "preference.title.resolution" = "Resolución (%)";
 "preference.detail.resolution" = "Permite reducir la resolución del juego.";
 
 "preference.title.fullscreen_airplay" = "AirPlay en pantalla completa";
 "preference.detail.fullscreen_airplay" = "Permite presentar la ventana de juego a pantalla completa en la pantalla externa en lugar de reflejar todo en la pantalla interna.";
+"preference.title.disable_gesture" = "Desactivar gestos";
 "preference.title.press_duration" = "Duración para pulsado largo (ms)";
 "preference.title.button_scale" = "Escala de botones en pantalla (%)";
 "preference.detail.button_scale" = "Sube de tamaño a los botones si resultan ser muy pequeños, es usualmente necesario para usuarios de iPad.";
@@ -152,7 +151,6 @@
 "preference.detail.virtmouse_enable" = "Habilita está opcion para empezar con el ratón virtual encendido";
 "preference.title.slideable_hotbar" = "Hotbar deslizable";
 "preference.detail.slideable_hotbar" = "Permite deslizarse en el hotbar como la rueda del ratón";
-
 "preference.title.java_home" = "Usar Java 17 para Minecraft < 1.17";
 "preference.detail.java_home" = "Java 8 es utilizado por defecto para esas versiones. Activa está opción para forzar el uso de Java 17. Sin embargo, la compatibilidad con el modeado no está garantizada.";
 "preference.title.java_args" = "JRE Argumentos de lanzamiento";

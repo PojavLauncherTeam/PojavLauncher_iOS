@@ -12,6 +12,9 @@
 
 "game.title.exit_code" = "Il gioco si è chiuso con il codice %d";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "Impostazioni";
+
 // The play button
 "Play" = "Gioca";
 
@@ -87,7 +90,6 @@
 "Settings" = "Impostazioni";
 
 "preference.section.general" = "Impostazioni generali";
-"preference.section.video" = "Impostazioni video";
 "preference.section.footer.video" = "Il renderer automatico consente a Minecraft di decidere quale renderer usare. Diminuire la risoluzione riduce il carico di lavoro della GPU per prestazioni migliori.";
 "preference.section.control" = "Personalizza controlli";
 "preference.section.debug" = "Impostazioni di debug UI";
@@ -97,8 +99,6 @@
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "Sei sicuro?";
-
-"preference.title.game_directory" = "Cartella gioco";
 "preference.title.confirm.delete_game_directory" = "L'istanza %@ verrà eliminata per sempre e non può essere ripristinata.";
 "preference.multidir.add_directory" = "aggiungi game directory";
 
@@ -119,12 +119,11 @@
 "preference.title.done.reset_settings" = "Tutte le impostazioni predefinite sono state ripristinate.";
 
 "preference.title.renderer" = "Renderer";
-"preference.title.renderer.gl4es" = "gl4es 1.1.4 - exports OpenGL 2.1";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - exports OpenGL 4.1";
-"preference.detail.renderer" = "Cambia il motore di rendering OpenGL in uso";
 
 "preference.title.resolution" = "Risoluzione (%)";
 "preference.detail.resolution" = "Permette di diminuire la risoluzione del gioco.";
+"preference.title.disable_gesture" = "Disattiva gestures";
 "preference.title.press_duration" = "Durata click-lungo (ms)";
 "preference.title.button_scale" = "Scala pulsante sullo schermo (%)";
 "preference.detail.button_scale" = "Aggiornali se i pulsanti sono troppo piccoli, di solito necessari per gli utenti iPad.";
@@ -136,11 +135,6 @@
 "preference.detail.virtmouse_enable" = "Abilita questa opzione per abilitare il mouse virtuale";
 "preference.title.slideable_hotbar" = "Hotbar scorrevole";
 "preference.detail.slideable_hotbar" = "Rendi la hotbar scorrevole come la rotellina del mouse";
-
-"preference.title.gyroscope_enable" = "Abilita controlli giroscopio";
-"preference.title.gyroscope_sensitivity" = "Sensibilità giroscopio";
-"preference.detail.gyroscope_sensitivity" = "Regola la sensibilità del giroscopio";
-
 "preference.title.java_home" = "Usa Java 17 per Minecraft < 1.17";
 "preference.detail.java_home" = "Java 8 è usato per impostazione predefinita per quelle versioni. Abilita questa opzione per forzare l'uso di Java 17, tuttavia la compatibilità con modded non è garantita.";
 "preference.title.java_args" = "Argomenti di avvio della JVM";
@@ -165,4 +159,3 @@
 "preference.detail.debug_show_layout_bounds" = "Mostra misure clip, margini, bounds";
 "preference.title.debug_show_layout_overlap" = "Mostra sovrapposizione del layout";
 "preference.detail.debug_show_layout_overlap" = "Sovrapponi ad ogni visuale un colore trasparente per mostrare visuali sovrapposte.";
-"controller_configurator.playstation.title.named_back" = "Seleziona";
