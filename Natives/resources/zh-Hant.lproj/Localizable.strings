@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   StringLocalization
 */
@@ -11,9 +11,6 @@
 "game.note.airplay" = "我的世界正在AirPlay鏡像顯示器中顯示";
 
 "game.title.exit_code" = "遊戲以代碼%d退出";
-
-// The options button at the top-right corner on iOS 12
-"Options" = "選項";
 
 // The play button
 "Play" = "啟動遊戲";
@@ -87,7 +84,6 @@
 "login.warn.message.demomode" = "作為離線和本地模式的代替，示範模式會允許你用一個不擁有遊戲的微軟帳戶來登入，並遊玩在版本1.3.1引入的Java版試玩版。由於官方的啟動器沒有加入限制，更舊的版本將含有完整的遊戲。要了解更多關於從離線模式過渡到示範模式的資訊，請瀏覽我們的網頁。";
 
 "login.warn.title.localmode" = "離線模式現為本地模式。";
-"login.warn.message.localmode" = "你可以繼續遊玩已安裝的版本，但你將無法在沒有付費帳戶的情況下下載我的世界。使用本地帳戶時的問題和其他取得我的世界的方法是不受支持的。";
 
 "login.msa.error.xsts.noxboxacc" = "這個微軟帳戶沒有註冊的Xbox用戶檔案。請確定你已經註冊Xbox用戶檔案。\n錯誤代碼：2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live不適用於你的國家。\n錯誤代碼：2148916235";
@@ -105,7 +101,7 @@
 "Settings" = "設定";
 
 "preference.section.general" = "一般設定";
-"preference.section.footer.video" = "自動宣染器允許我的世界判斷使用哪一個渲染器。降低解析度會降低圖形處理器的工作量，並提高效能。";
+"preference.section.video" = "動畫設定";
 "preference.section.control" = "自定控制鍵";
 "preference.section.debug" = "用戶界面除錯選項";
 "preference.section.footer.debug" = "除了除錯外，這些選項可能對自定義控制鍵有用。你可能需要重新啟動啟動器來讓更變生效。";
@@ -114,6 +110,8 @@
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "你確定嗎？";
+
+"preference.title.game_directory" = "遊戲資料夾";
 "preference.title.confirm.delete_game_directory" = "實例%@會被永久刪除，且不能回復。";
 "preference.multidir.add_directory" = "新增遊戲目錄";
 
@@ -139,16 +137,19 @@
 "preference.title.done.reset_settings" = "所有的預設設定已被回復。";
 
 "preference.title.renderer" = "渲染器";
-"preference.title.renderer.auto" = "自動：gl4es或ANGLE";
-"preference.title.renderer.angle" = "ANGLE（1.17+）— 輸出OpenGL 3.2（核心，有限）";
-"preference.title.renderer.zink" = "Zink (Mesa 21.0) － 輸出OpenGL 4.1";
+
+"preference.title.renderer.debug.auto" = "自動：gl4es或ANGLE";
+"preference.title.renderer.debug.gl4es" = "gl4es 1.1.4 － 輸出OpenGL 2.1";
+"preference.title.renderer.debug.angle" = "ANGLE（1.17+）— 輸出OpenGL 3.2（核心，有限）";
+"preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) － 輸出OpenGL 4.1";
+
+"preference.detail.renderer" = "改變要使用的OpenGL渲染引擎";
 
 "preference.title.resolution" = "解像度（%）";
 "preference.detail.resolution" = "允許你降低遊戲的解像度。";
 
 "preference.title.fullscreen_airplay" = "全螢幕隔空投放";
 "preference.detail.fullscreen_airplay" = "允許在外部顯示器上展示全螢幕遊戲畫面，而不是影射螢幕上的內容。";
-"preference.title.disable_gesture" = "停用手勢";
 "preference.title.press_duration" = "長按時間（毫秒）";
 "preference.detail.press_duration" = "觸發破壞方塊及釋出物件的按壓時間。";
 "preference.title.button_scale" = "螢幕按鈕比例（%）";
@@ -161,10 +162,13 @@
 "preference.detail.virtmouse_enable" = "啟用這個選項以在啟動時啟動虛擬鼠標。";
 "preference.title.slideable_hotbar" = "可捲動快捷欄";
 "preference.detail.slideable_hotbar" = "令快捷欄能夠以像滑鼠輪一般地捲動";
+
+"preference.title.gyroscope_enable" = "啟用陀螺儀控制";
+"preference.title.gyroscope_sensitivity" = "陀螺儀控制靈敏度";
+"preference.detail.gyroscope_sensitivity" = "調整陀螺儀控制的靈敏度";
+
 "preference.title.java_home" = "對於我的世界 < 1.17，使用Java 17";
-"preference.detail.java_home" = "這些版本預設使用Java 8。啟用這個選項來強制使用Java 17，但是對修改版的遊戲的相容性沒有任何保證。";
 "preference.title.java_args" = "JVM 啟動引數";
-"preference.detail.java_args" = "請小心，在沒有先前知識的情況下修改這個選項能夠導致遊戲崩潰。";
 "preference.placeholder.java_args" = "提供選項......";
 "preference.title.auto_ram" = "自動調節RAM";
 "preference.detail.auto_ram" = "啟用 RAM 自動調節";
@@ -173,7 +177,6 @@
 "preference.detail.allocated_memory" = "分配多少記憶體給Minecraft";
 "preference.warn.allocated_memory" = "由於系統限制，在這個數值或以上時，這個選項可能會導致不穩定。";
 "preference.title.custom_env" = "環境變量";
-"preference.detail.custom_env" = "這個選項仍在建築中。";
 
 "preference.title.debug_skip_wait_jit" = "跳過「正在等待即時編譯」對話方塊。";
 "preference.detail.debug_skip_wait_jit" = "這不會允許你在沒有即時編譯的情況下啟動，而只會跳過除錯器檢測，因為這個檢測在部份越獄中無法正常運作。";
@@ -187,3 +190,4 @@
 "preference.detail.debug_show_layout_bounds" = "顯示剪輯範圍、邊界";
 "preference.title.debug_show_layout_overlap" = "顯示重複的佈局";
 "preference.detail.debug_show_layout_overlap" = "通過用透明顏色來覆蓋所有視圖，來顯示重複的視圖";
+"controller_configurator.playstation.title.named_back" = "選擇";
