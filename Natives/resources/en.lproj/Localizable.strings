@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   StringLocalization
 */
@@ -11,9 +11,6 @@
 "game.note.airplay" = "Minecraft is being displayed in AirPlay mirrored display";
 
 "game.title.exit_code" = "Game exited with code %d";
-
-// The options button at the top-right corner on iOS 12
-"Options" = "Options";
 
 // The play button
 "Play" = "Play";
@@ -63,6 +60,9 @@
 
 "init.migrateDir" = "The PojavLauncher data directory is now %@. All of your existing data has been moved to the new location.";
 
+"launcher.mcl.downloading_file" = "Downloading %@";
+"launcher.mcl.error_download" = "Failed to download %@: %@";
+
 "launcher.menu.custom_controls" = "Custom controls";
 "launcher.menu.install_jar" = "Install .jar";
 
@@ -75,10 +75,9 @@
 
 "login.jit.checking" = "Checking for JIT";
 "login.jit.enabled" = "JIT has been enabled";
-"login.jit.fail.JitStreamer" = "JitStreamer error: %@";
-"login.jit.found.JitStreamer" = "Found JitStreamer, enabling JIT";
-"login.jit.start.AltKit" = "Attempting to use AltJIT";
-"login.jit.fail.AltKit" = "AltKit error: %@";
+"login.jit.fail" = "JIT could not be enabled.";
+"login.jit.fail.title" = "JIT could not be enabled on your device.";
+"login.jit.fail.description" = "No integrations could be used to automatically enable JIT on your device, and it must now be enabled manually. Errors have been logged to latestlog.txt.";
 
 // Login buttons
 "login.menu.sendlogs" = "Send your logs";
@@ -88,16 +87,12 @@
 "login.option.microsoft" = "Microsoft account";
 "login.option.local" = "Local account";
 
-"login.warn.title.ram_unjb" = "Memory slider is enabled";
-"login.warn.message.ram_unjb" = "Be aware that changing this setting can cause game instability or break the ability to play at all.";
-
-"login.warn.title.a7" = "PojavLauncher 2.2 is not supported on this device.";
-
-"login.warn.title.iosver" = "This is the last update for this iOS version.";
-"login.warn.message.iosver" = "A future version of PojavLauncher will not support iOS 12 or 13, due to feature inconsistencies and development hurdles.";
-
-"login.warn.title.2gb" = "Your device has limited RAM.";
-"login.warn.message.2gb" = "Devices with less than 3GB of memory may run into memory constraints. We recommend leaving the automatic selector on for your device.";
+"login.warn.title.legacy_device" = "The next release of PojavLauncher will not be compatible with this device.";
+"login.warn.message.legacy_device" = "To run the next major release, a device capable of running iOS 14 is required.";
+"login.warn.title.legacy_ios" = "The next release of PojavLauncher will require a system update.";
+"login.warn.message.legacy_ios" = "To run the next major release, this device needs to be running iOS 14 or later.";
+"login.warn.title.limited_ram" = "This device has a limited amount of memory available.";
+"login.warn.message.limited_ram" = "We recommend leaving auto RAM enabled to prevent instability and performance issues.";
 
 "login.warn.title.demomode" = "Your account is Demo";
 "login.warn.message.demomode" = "As a replacement to offline and local mode, demo mode will allow you to sign into a Microsoft account that does not own the game and play the Java Edition trial, introduced in 1.3.1 and newer versions. Older versions contain the full game, as the official launcher does not place these restrictions. See our website to learn more about this transition from offline mode.";
@@ -121,7 +116,7 @@
 "Settings" = "Settings";
 
 "preference.section.general" = "General Settings";
-"preference.section.video" = "Video Settings";
+"preference.section.video" = "Video and Audio Settings";
 "preference.section.footer.video" = "Auto renderer allows Minecraft to decide which renderer to use. Decreasing resolution reduces GPU workload for better performance.";
 "preference.section.control" = "Control customization";
 "preference.section.debug" = "UI Debugging settings";
@@ -132,7 +127,7 @@
 
 "preference.title.confirm" = "Are you sure?";
 
-"preference.title.game_directory" = "Minecraft game directory";
+"preference.title.game_directory" = "Game directory";
 "preference.title.confirm.delete_game_directory" = "The instance %@ will be deleted forever and cannot be restored.";
 "preference.multidir.add_directory" = "add game directory";
 
@@ -144,10 +139,13 @@
 "preference.detail.debug_logging" = "Logs internal settings and actions to latestlog.txt. This helps the developers find issues easier, but Minecraft may run slower as the logs will be written to more often.";
 "preference.title.jitstreamer_server" = "JitStreamer server IP";
 "preference.detail.jitstreamer_server" = "Allows you to change to a custom JitStreamer server IP, such as for self-hosted instances. This option can be left alone if you use the default JitStreamer servers.";
+"preference.title.enable_altkit" = "Enable AltKit integration";
+"preference.detail.enable_altkit" = "When enabled, PojavLauncher will attempt to connect to local AltServers to enable JIT.";
 "preference.title.appicon" = "Set app icon";
 "preference.detail.appicon" = "Allows you to choose between different Home Screen icons for PojavLauncher.";
 "preference.title.appicon-default" = "Familiar PojavLauncher light";
 "preference.title.appicon-dark" = "Familiar PojavLauncher dark";
+"preference.title.appicon-development" = "Penciled Development";
 "preference.title.hidden_sidebar" = "Hide main menu sidebar by default";
 "preference.detail.hidden_sidebar" = "Allows you to hide the sidebar on the main menu by default and when rotating.";
 
@@ -164,17 +162,29 @@
 
 "preference.title.renderer" = "Renderer";
 "preference.title.renderer.auto" = "Auto: gl4es or ANGLE";
-"preference.title.renderer.gl4es" = "gl4es 1.1.4 - exports OpenGL 2.1";
+"preference.title.renderer.gl4es" = "holy gl4es - exports OpenGL 2.1";
 "preference.title.renderer.angle" = "ANGLE (1.17+) - exports OpenGL 3.2 (Core Profile, limited)";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - exports OpenGL 4.1";
-"preference.detail.renderer" = "Change the OpenGL render engine to use";
+"preference.detail.renderer" = "Change the OpenGL render engine to use. Zink is temporarily disabled on iOS 16 and later to diagnose issues.";
 
 "preference.title.resolution" = "Resolution (%)";
 "preference.detail.resolution" = "Allows you to decrease the game resolution.";
+"preference.title.max_framerate" = "Maximum framerate";
+"preference.detail.max_framerate" = "Allows you to limit the game framerate to 60FPS on ProMotion displays.";
 
 "preference.title.fullscreen_airplay" = "Fullscreen AirPlay";
 "preference.detail.fullscreen_airplay" = "Allows presenting fullscreen game window on the external display rather than mirroring everything on screen.";
-"preference.title.disable_gesture" = "Disable gestures";
+"preference.title.silence_other_audio" = "Pause audio when game opens";
+"preference.detail.silence_other_audio" = "Enable to allow PojavLauncher to pause audio from other apps, such as Music, when launching the game.";
+"preference.title.silence_with_switch" = "Disable audio with silent switch";
+"preference.detail.silence_with_switch" = "Enable to disable audio when Silent Mode is on. Headphones and external speakers are not affected.";
+"preference.title.default_gamepad_ctrl" = "Controller configuration";
+"preference.title.hardware_hide" = "Hide controls when hardware is connected";
+"preference.detail.hardware_hide" = "Enable the behaviour of automatically disabling the on-screen control overlay when a mouse or game controller is connected.";
+"preference.title.gesture_mouse" = "Mouse gestures";
+"preference.detail.gesture_mouse" = "Enables gestures, such as tap to place block, hold to break block, scrolling with 2 fingers";
+"preference.title.gesture_hotbar" = "Hotbar gestures";
+"preference.detail.gesture_hotbar" = "Enables gestures, such as touch the hotbar slot, swap items between hand, throw items";
 "preference.title.press_duration" = "Long-press duration (ms)";
 "preference.detail.press_duration" = "Trigger press duration for destroying blocks and dropping items.";
 "preference.title.button_scale" = "On-screen button scale (%)";
@@ -187,6 +197,14 @@
 "preference.detail.virtmouse_enable" = "Enable this option to start with virtual mouse on";
 "preference.title.slideable_hotbar" = "Slideable hotbar";
 "preference.detail.slideable_hotbar" = "Make the hotbar slideable like the mouse wheel";
+
+"preference.title.gyroscope_enable" = "Enable gyroscope controls";
+"preference.detail.gyroscope_enable" = "Enabling this will allow you to turn in game by turning your device";
+"preference.title.gyroscope_invert_x_axis" = "Invert gyroscope left and right";
+"preference.detail.gyroscope_invert_x_axis" = "Inverts the X-axis of the gyroscope";
+"preference.title.gyroscope_sensitivity" = "Gyroscope controls sensitivity";
+"preference.detail.gyroscope_sensitivity" = "Adjust the sensitivity of gyroscope controls";
+
 "preference.title.java_home" = "Use Java 17 for Minecraft < 1.17";
 "preference.detail.java_home" = "Java 8 is used by default for those versions. Enable this option to force use Java 17, however compatibility with modded is not guaranteed.";
 "preference.title.java_args" = "JVM Launch arguments";
@@ -213,3 +231,49 @@
 "preference.detail.debug_show_layout_bounds" = "Show clip bounds, margins";
 "preference.title.debug_show_layout_overlap" = "Show layout overlapping";
 "preference.detail.debug_show_layout_overlap" = "Overlay every view with a transparent color to reveal overlapping views.";
+
+"controller_configurator.title.current" = "Gamepad configuration file";
+"controller_configurator.title.type.xbox" = "Xbox";
+"controller_configurator.title.type.playstation" = "PlayStation";
+
+"controller_configurator.xbox.title.bumper_left" = "Left bumper";
+"controller_configurator.xbox.title.bumper_right" = "Right bumper";
+"controller_configurator.xbox.title.trigger_left" = "Left trigger";
+"controller_configurator.xbox.title.trigger_right" = "Right trigger";
+"controller_configurator.xbox.title.named_back" = "Guide";
+"controller_configurator.xbox.title.named_start" = "Menu";
+"controller_configurator.xbox.title.named_a" = "A";
+"controller_configurator.xbox.title.named_b" = "B";
+"controller_configurator.xbox.title.named_x" = "X";
+"controller_configurator.xbox.title.named_y" = "Y";
+"controller_configurator.xbox.title.dpad_up" = "Up";
+"controller_configurator.xbox.title.dpad_down" = "Down";
+"controller_configurator.xbox.title.dpad_left" = "Left";
+"controller_configurator.xbox.title.dpad_right" = "Right";
+"controller_configurator.xbox.title.thumb_left" = "Left thumbstick click";
+"controller_configurator.xbox.title.thumb_right" = "Right thumbstick click";
+
+"controller_configurator.playstation.title.bumper_left" = "L1";
+"controller_configurator.playstation.title.bumper_right" = "R1";
+"controller_configurator.playstation.title.trigger_left" = "L2";
+"controller_configurator.playstation.title.trigger_right" = "R2";
+"controller_configurator.playstation.title.named_back" = "Select";
+"controller_configurator.playstation.title.named_start" = "Start";
+"controller_configurator.playstation.title.named_a" = "Cross";
+"controller_configurator.playstation.title.named_b" = "Circle";
+"controller_configurator.playstation.title.named_x" = "Square";
+"controller_configurator.playstation.title.named_y" = "Triangle";
+"controller_configurator.playstation.title.dpad_up" = "Up";
+"controller_configurator.playstation.title.dpad_down" = "Down";
+"controller_configurator.playstation.title.dpad_left" = "Left";
+"controller_configurator.playstation.title.dpad_right" = "Right";
+"controller_configurator.playstation.title.thumb_left" = "L3";
+"controller_configurator.playstation.title.thumb_right" = "R3";
+
+"controller_configurator.section.config_files" = "Current configuration file";
+"controller_configurator.section.game_mappings" = "Game mappings";
+"controller_configurator.section.footer.game_mappings" = "Bindings when the mouse is locked in game.";
+"controller_configurator.section.menu_mappings" = "Menu mappings";
+"controller_configurator.section.footer.menu_mappings" = "Bindings when the mouse is not locked, such as on the title screen or in the pause menu.";
+"controller_configurator.section.controller_style" = "Controller type";
+"controller_configurator.section.footer.controller_style" = "Show different controller button names in this configurator.";
