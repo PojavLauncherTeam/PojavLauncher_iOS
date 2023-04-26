@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   StringLocalization
 */
@@ -6,9 +6,6 @@
 "game.menu.force_close" = "Sundsulge";
 "game.menu.log_output" = "Logiväljund";
 "game.menu.custom_controls" = "Kohandatud juhtnupud";
-
-// The options button at the top-right corner on iOS 12
-"Options" = "Valikud";
 
 // The play button
 "Play" = "Mängi";
@@ -44,7 +41,6 @@
 
 "News" = "Uudised";
 "Settings" = "Seaded";
-"preference.section.footer.video" = "Automaatne renderdaja lubab Minecraftil valida, millist renderdajat kasutada. Eraldusvõime vähendamine vähendab graafikamootori tööd, andes parema jõudluse.";
 "preference.section.control" = "Juhtnuppude kohandamine";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java trikid";
@@ -55,14 +51,17 @@
 "preference.title.appicon-dark" = "Tuttav PojavLauncher tume";
 
 "preference.title.renderer" = "Renderdaja";
-"preference.title.renderer.auto" = "Autom.: gl4es või ANGLE";
-"preference.title.renderer.angle" = "ANGLE (1.17+) - väljastab OpenGL 3.2 (Core Profile, piiratud)";
-"preference.title.renderer.zink" = "Zink (Mesa 21.0) - väljastab OpenGL 4.1";
+
+"preference.title.renderer.debug.auto" = "Autom.: gl4es või ANGLE";
+"preference.title.renderer.debug.gl4es" = "gl4es 1.1.4 - väljastab OpenGL 2.1";
+"preference.title.renderer.debug.angle" = "ANGLE (1.17+) - väljastab OpenGL 3.2 (Core Profile, piiratud)";
+"preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - väljastab OpenGL 4.1";
+
+"preference.detail.renderer" = "Vaheta kasutatavat OpenGL renderdusmootorit";
 
 "preference.title.resolution" = "Eraldusvõime (%)";
 
 "preference.title.fullscreen_airplay" = "Täisekraanis AirPlay";
-"preference.title.disable_gesture" = "Keela viiped";
 "preference.title.virtmouse_enable" = "Virtuaalne hiir";
 "preference.title.auto_ram" = "Automaatne RAM";
 "preference.title.allocated_memory" = "Mälueraldus (MB)";
