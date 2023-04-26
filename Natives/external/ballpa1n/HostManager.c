@@ -1,5 +1,7 @@
 // Thanks to this mf named Capt Inc for his ballpa1n
 
+#define kIOMainPortDefault kIOMasterPortDefault
+
 #import "HostManager.h"
 #import <stddef.h>
 #import <stdint.h>
