@@ -12,9 +12,6 @@
 
 "game.title.exit_code" = "Jogo terminado com código %d";
 
-// The options button at the top-right corner on iOS 12
-"Options" = "Opções";
-
 // The play button
 "Play" = "Jogar";
 
@@ -72,21 +69,13 @@
 
 "login.jit.checking" = "Verificando o JIT";
 "login.jit.enabled" = "O JIT foi ativado";
-"login.jit.fail.JitStreamer" = "Erro no JitStreamer: %@";
-"login.jit.start.AltKit" = "Tentativa de usar AltJIT";
-"login.jit.fail.AltKit" = "Erro no Altkit: %@";
 
 // Login buttons
 "login.menu.sendlogs" = "Envie seus registros";
+"login.option.add" = "Adicionar conta";
 "login.option.select" = "Selecionar conta";
 "login.option.microsoft" = "Conta Microsoft";
 "login.option.local" = "Conta local";
-
-"login.warn.title.ram_unjb" = "Slider de memória está ativado";
-
-"login.warn.title.iosver" = "Esta é a última atualização para esta versão iOS.";
-
-"login.warn.title.2gb" = "Seu dispositivo tem RAM limitado.";
 
 "login.warn.title.demomode" = "Sua conta é Demonstrativa";
 
@@ -114,7 +103,7 @@
 
 "preference.title.confirm" = "Você tem certeza?";
 
-"preference.title.game_directory" = "Diretório de jogo Minecraft";
+"preference.title.game_directory" = "Diretório do jogo";
 "preference.multidir.add_directory" = "Adicionar diretório do jogo";
 
 "preference.title.check_sha" = "Verifique os arquivos após o download";
@@ -140,7 +129,6 @@
 
 "preference.title.resolution" = "Resolução (%)";
 "preference.detail.resolution" = "Permite que você diminua a resolução do jogo.";
-"preference.title.disable_gesture" = "Desativar gestos";
 "preference.title.press_duration" = "Duração de pressionamento longo (ms)";
 "preference.title.button_scale" = "Escala dos botões virtuais (%)";
 "preference.title.mouse_scale" = "Escala do mouse (%)";
@@ -149,6 +137,10 @@
 "preference.detail.mouse_speed" = "Alterar a velocidade do mouse virtual";
 "preference.title.virtmouse_enable" = "Mouse virtual";
 "preference.title.slideable_hotbar" = "Hotbar deslizante";
+
+"preference.title.gyroscope_enable" = "Habilitar controles do gyrocópio";
+"preference.title.gyroscope_sensitivity" = "Sensibilidade de controles do Giroscópio";
+
 "preference.title.java_home" = "Use Java 17 para o Minecraft < 1.17";
 "preference.title.java_args" = "Argumentos JVM";
 "preference.placeholder.java_args" = "Especifique os argumentos...";
@@ -170,3 +162,4 @@
 "preference.detail.debug_show_layout_bounds" = "Mostrar limites e margens do clipe";
 "preference.title.debug_show_layout_overlap" = "Mostrar sobreposição de layout";
 "preference.detail.debug_show_layout_overlap" = "Sobreponha cada exibições com cores transparentes para revelar visões de sobreposição.";
+"controller_configurator.playstation.title.named_back" = "Selecionar";
