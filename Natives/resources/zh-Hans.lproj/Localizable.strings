@@ -12,6 +12,9 @@
 
 "game.title.exit_code" = "游戏非正常退出，错误代码%d";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "选项";
+
 // The play button
 "Play" = "启动游戏";
 
@@ -102,7 +105,6 @@
 "Settings" = "设置";
 
 "preference.section.general" = "启动器基础设置";
-"preference.section.video" = "视频设置";
 "preference.section.footer.video" = "使用自动选择的渲染器将根据游戏版本选择最佳渲染器启动游戏，降低分辨率可以使得 GPU 负载变低从而提升性能。";
 "preference.section.control" = "自定义控制键";
 "preference.section.debug" = "UI设置";
@@ -112,8 +114,6 @@
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "确认？";
-
-"preference.title.game_directory" = "游戏目录";
 "preference.title.confirm.delete_game_directory" = "目录 %@ 将被永久删除，并且无法恢复。";
 "preference.multidir.add_directory" = "添加游戏目录";
 
@@ -141,16 +141,15 @@
 
 "preference.title.renderer" = "渲染器";
 "preference.title.renderer.auto" = "自动：gl4es 或 ANGLE";
-"preference.title.renderer.gl4es" = "gl4es 1.1.4 - OpenGL版本2.1";
 "preference.title.renderer.angle" = "ANGLE（仅支持1.17+）- exports OpenGL 版本 3.2";
 "preference.title.renderer.zink" = "Zink（Mesa 21.0）- exports OpenGL 版本 4.1";
-"preference.detail.renderer" = "更改使用的 OpenGL 渲染器";
 
 "preference.title.resolution" = "分辨率缩放 (%)";
 "preference.detail.resolution" = "降低分辨率可能会提升FPS。默认分辨率为屏幕的分辨率";
 
 "preference.title.fullscreen_airplay" = "全屏 AirPlay";
 "preference.detail.fullscreen_airplay" = "允许在外部显示器上全屏显示游戏，而不是直接镜像显示。";
+"preference.title.disable_gesture" = "禁用手势";
 "preference.title.press_duration" = "长按延迟（毫秒）";
 "preference.detail.press_duration" = "修改长按摧毁方块、丢弃物品的触发时长。";
 "preference.title.button_scale" = "屏幕按钮缩放 (%)";
@@ -163,11 +162,6 @@
 "preference.detail.virtmouse_enable" = "启用此选项以在游戏启动时显示虚拟鼠标";
 "preference.title.slideable_hotbar" = "可滑动快捷栏";
 "preference.detail.slideable_hotbar" = "使快捷栏像鼠标滚轮一样可滑动";
-
-"preference.title.gyroscope_enable" = "启用陀螺仪控制";
-"preference.title.gyroscope_sensitivity" = "陀螺仪控制灵敏度";
-"preference.detail.gyroscope_sensitivity" = "调整陀螺仪控制的灵敏度";
-
 "preference.title.java_home" = "游戏版本小于 1.17 时仍然使用 Java 17";
 "preference.detail.java_home" = "这些版本默认使用 Java 8。启用此选项可强制使用 Java 17，但不保证与安装了 Mod 的 Minecraft 兼容。";
 "preference.title.java_args" = "JVM 启动参数";
@@ -194,4 +188,3 @@
 "preference.detail.debug_show_layout_bounds" = "显示剪辑边界、边距";
 "preference.title.debug_show_layout_overlap" = "布局重叠显示";
 "preference.detail.debug_show_layout_overlap" = "用浅黄色覆盖每个视图，颜色越深则重叠越多";
-"controller_configurator.playstation.title.named_back" = "选择";
