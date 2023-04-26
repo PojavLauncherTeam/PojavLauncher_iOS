@@ -7,9 +7,6 @@
 "game.menu.log_output" = "Logiväljund";
 "game.menu.custom_controls" = "Kohandatud juhtnupud";
 
-// The options button at the top-right corner on iOS 12
-"Options" = "Valikud";
-
 // The play button
 "Play" = "Mängi";
 "Snapshot" = "Katsetus";
@@ -39,6 +36,7 @@
 
 "launcher.menu.custom_controls" = "Kohandatud juhtnupud";
 "launcher.menu.install_jar" = "Paigalda .jar";
+"login.option.add" = "Lisa konto";
 "login.option.select" = "Vali konto";
 
 "News" = "Uudised";
@@ -63,7 +61,6 @@
 "preference.title.resolution" = "Eraldusvõime (%)";
 
 "preference.title.fullscreen_airplay" = "Täisekraanis AirPlay";
-"preference.title.disable_gesture" = "Keela viiped";
 "preference.title.virtmouse_enable" = "Virtuaalne hiir";
 "preference.title.auto_ram" = "Automaatne RAM";
 "preference.title.allocated_memory" = "Mälueraldus (MB)";
