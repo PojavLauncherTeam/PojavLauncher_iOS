@@ -12,6 +12,9 @@
 
 "game.title.exit_code" = "Le jeu s'est arrêté avec le code %d";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "Options";
+
 // The play button
 "Play" = "Jouer";
 
@@ -102,7 +105,6 @@
 "Settings" = "Paramètres";
 
 "preference.section.general" = "Paramètres généraux";
-"preference.section.video" = "Paramètres vidéo";
 "preference.section.footer.video" = "Le moteur de rendu automatique permet à Minecraft de décider quel moteur de rendu utiliser. Réduire la résolution réduit la charge de travail GPU pour de meilleures performances.";
 "preference.section.control" = "Contrôlez la customisation";
 "preference.section.debug" = "Paramètres de débogage de l'interface utilisateur";
@@ -112,8 +114,6 @@
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "Êtes-vous sûr ?";
-
-"preference.title.game_directory" = "Répertoire du jeu";
 "preference.title.confirm.delete_game_directory" = "L'instance %@ sera définitivement supprimée et ne pourra pas être restaurée.";
 "preference.multidir.add_directory" = "Ajouter un répertoire de jeu";
 
@@ -141,16 +141,15 @@
 
 "preference.title.renderer" = "Moteur de rendu";
 "preference.title.renderer.auto" = "Auto: gl4es ou ANGLE";
-"preference.title.renderer.gl4es" = "gl4es 1.1.4 - exporte OpenGL 2.1";
 "preference.title.renderer.angle" = "ANGLE (1.17+) - exporte OpenGL 3.2 (Profil de base, Limité)";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - exporte OpenGL 4.1";
-"preference.detail.renderer" = "Changer le moteur de rendu OpenGL à utiliser";
 
 "preference.title.resolution" = "Résolution (%)";
 "preference.detail.resolution" = "Vous permet de diminuer la résolution du jeu.";
 
 "preference.title.fullscreen_airplay" = "AirPlay en plein écran";
 "preference.detail.fullscreen_airplay" = "Permet d'afficher une fenêtre de jeu en plein écran sur l'écran externe plutôt que de tout copier sur l'écran.";
+"preference.title.disable_gesture" = "Désactiver les gestes";
 "preference.title.press_duration" = "Durée d'un appui long (ms)";
 "preference.detail.press_duration" = "Déclenche le bouton pour détruire des blocs et jeter des objets.";
 "preference.title.button_scale" = "Échelle des boutons à l'écran (%)";
@@ -163,11 +162,6 @@
 "preference.detail.virtmouse_enable" = "Activez cette option pour démarrer avec la souris virtuelle activée";
 "preference.title.slideable_hotbar" = "Barre d'action glissable";
 "preference.detail.slideable_hotbar" = "Rend la barre d'action glissante comme la molette de la souris";
-
-"preference.title.gyroscope_enable" = "Activer les contrôles du gyroscope";
-"preference.title.gyroscope_sensitivity" = "Sensibilité des contrôles du gyroscope";
-"preference.detail.gyroscope_sensitivity" = "Ajuster la sensibilité des contrôles du gyroscope";
-
 "preference.title.java_home" = "Utiliser Java 17 pour Minecraft < 1.17";
 "preference.detail.java_home" = "Java 8 est utilisé par défaut pour ces versions. Activez cette option pour forcer l'utilisation de Java 17, seulement la compatibilité avec le moddé n'est pas garantie.";
 "preference.title.java_args" = "Arguments de lancement JVM";
@@ -194,4 +188,3 @@
 "preference.detail.debug_show_layout_bounds" = "Afficher les limites, les marges de clip";
 "preference.title.debug_show_layout_overlap" = "Afficher le chevauchement de la mise en page";
 "preference.detail.debug_show_layout_overlap" = "Superposez chaque vue avec une couleur transparente pour révéler des vues qui se chevauchent.";
-"controller_configurator.playstation.title.named_back" = "Sélectionner";
