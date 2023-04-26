@@ -7,9 +7,6 @@
 "game.menu.log_output" = "tree input";
 "game.menu.custom_controls" = "Custom controls";
 
-// The options button at the top-right corner on iOS 12
-"Options" = "Opshuns";
-
 // The play button
 "Play" = "Pulay";
 "Snapshot" = "Snapshot";
@@ -42,8 +39,9 @@
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java Tweakz";
 
+"preference.title.game_directory" = "Gamez’ direktory";
+
 "preference.title.renderer" = "Renderer";
-"preference.title.disable_gesture" = "Disabel gesturez";
 "preference.title.java_args" = "CCz’UM L’unch argumentz";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Enablez automatic RAM adjustah";
