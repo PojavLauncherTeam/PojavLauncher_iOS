@@ -12,9 +12,6 @@
 
 "game.title.exit_code" = "Das Spiel wurde mit dem Code %d beendet";
 
-// The options button at the top-right corner on iOS 12
-"Options" = "Optionen";
-
 // The play button
 "Play" = "Spielen";
 
@@ -75,27 +72,13 @@
 
 "login.jit.checking" = "Prüfe auf JIT";
 "login.jit.enabled" = "JIT wurde aktiviert";
-"login.jit.fail.JitStreamer" = "JitStreamer-Fehler: %@";
-"login.jit.found.JitStreamer" = "JitStreamer gefunden, JIT wird aktivieren";
-"login.jit.start.AltKit" = "Versuche AltJIT zu benutzen";
-"login.jit.fail.AltKit" = "AltKit-Fehler: %@";
 
 // Login buttons
 "login.menu.sendlogs" = "Fehlerprotokolle senden";
+"login.option.add" = "Konto hinzufügen";
 "login.option.select" = "Konto auswählen";
 "login.option.microsoft" = "Microsoft-Konto";
 "login.option.local" = "Lokales Konto";
-
-"login.warn.title.ram_unjb" = "RAM-Regler ist aktiviert";
-"login.warn.message.ram_unjb" = "Sei dir darüber bewusst, dass Änderung dieser Einstellung die Stabilität des Spiels oder das Starten des Spiels komplett beeinträchtigt kann.";
-
-"login.warn.title.a7" = "PojavLauncher 2.2 wird auf diesem Gerät nicht unterstützt.";
-
-"login.warn.title.iosver" = "Dies ist das letzte Update für diese iOS Version.";
-"login.warn.message.iosver" = "Eine zukünftige Version von PojavLauncher wird iOS 12 oder 13 aufgrund von Inkonsistenzen und Entwicklungshürden nicht unterstützen.";
-
-"login.warn.title.2gb" = "Ihr Gerät hat begrenzten Arbeitsspeicher.";
-"login.warn.message.2gb" = "Geräte mit weniger als 3 GB Arbeitsspeicher können auf Speicherbeschränkungen stoßen. Wir empfehlen den automatischen Selektor für Ihr Gerät einzuschalten.";
 
 "login.warn.title.demomode" = "Dein Konto ist im Demo-Modus";
 "login.warn.message.demomode" = "Als Ersatz für den Offline- und Lokalmodus, erlaubt der Demo-Modus, sich mit einem Microsoft-Konto einzuloggen, welches das Spiel nicht besitzt. Somit kann die Testversion von Minecraft gespielt werden, die in Version 1.3 eingeführt wurde. Ältere Versionen können in der Vollversion gespielt werden, da bei ihnen der offizielle Launcher auch keine Einschränlungen setzt. Auf unserer Website findet man mehr Informationen zu diesem Übergang vom Offline-Modus.";
@@ -130,7 +113,7 @@
 
 "preference.title.confirm" = "Bist du dir sicher?";
 
-"preference.title.game_directory" = "Minecraft-Spielverzeichnis";
+"preference.title.game_directory" = "Spielverzeichnis";
 "preference.title.confirm.delete_game_directory" = "Die Instanz %@ wird für immer gelöscht und kann nicht wiederhergestellt werden.";
 "preference.multidir.add_directory" = "Spielverzeichnis hinzufügen";
 
@@ -168,7 +151,6 @@
 
 "preference.title.fullscreen_airplay" = "Vollbild-AirPlay";
 "preference.detail.fullscreen_airplay" = "Ermöglicht es dir nur das Spielfenster auf ein externes Display zu spiegeln, anstatt den ganzen Bildschirm zu spiegeln.";
-"preference.title.disable_gesture" = "Gesten deaktivieren";
 "preference.title.press_duration" = "Dauer eines langen Touch (ms)";
 "preference.detail.press_duration" = "Auslösedauer um Blöcke zu zerstören und Items zu droppen.";
 "preference.title.button_scale" = "Schalflächengröße (%)";
@@ -181,6 +163,11 @@
 "preference.detail.virtmouse_enable" = "Aktiviere diese Option, um mit Virtueller Maus zu spielen";
 "preference.title.slideable_hotbar" = "Schiebbare Hotbar";
 "preference.detail.slideable_hotbar" = "Macht die Hotbar wie mit dem Mausrad schiebbar";
+
+"preference.title.gyroscope_enable" = "Aktiviere Gyroskop-Steuerung";
+"preference.title.gyroscope_sensitivity" = "Gyroskop-Steuerungs-Empfindlichkeit";
+"preference.detail.gyroscope_sensitivity" = "Passe die Empfindlichkeit der Gyroskop-Steuerung an";
+
 "preference.title.java_home" = "Nutze Java 17 für Minecraft < 1.17";
 "preference.detail.java_home" = "Für diese Versionen wird standardmäßig Java 8 verwendet. Aktiviere diese Option, um die Verwendung von Java 17 zu erzwingen. Kompatibilität mit ge-moddeten Versionen ist nicht garantiert.";
 "preference.title.java_args" = "JVM-Start-Argumente";
@@ -207,3 +194,4 @@
 "preference.detail.debug_show_layout_bounds" = "Zuschnittbegrenzungen, Ränder anzeigen";
 "preference.title.debug_show_layout_overlap" = "Layoutüberlappungen anzeigen";
 "preference.detail.debug_show_layout_overlap" = "Überlagere jede Ansicht mit einer transparenten Farbe, um überlappende Ansichten anzuzeigen.";
+"controller_configurator.playstation.title.named_back" = "Auswählen";
