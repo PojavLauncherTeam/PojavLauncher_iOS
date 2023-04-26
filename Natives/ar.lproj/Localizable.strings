@@ -8,10 +8,9 @@
 "game.menu.log_output" = "سجل الإخراج";
 "game.menu.custom_controls" = "تخصيص التحكم";
 
-"game.title.exit_code" = "توقفت العملية برمز الخروج %d";
+"game.note.airplay" = "يتم عرض Minecraft في انعكاس الشاشة Airplay";
 
-// The options button at the top-right corner on iOS 12
-"Options" = "الخيارات";
+"game.title.exit_code" = "توقفت العملية برمز الخروج %d";
 
 // The play button
 "Play" = "إبدأ اللعب";
@@ -35,32 +34,83 @@
 "custom_controls.button_edit.mapping" = "تخطيط الأزرار";
 "custom_controls.button_edit.orientation" = "الإتجاة";
 "custom_controls.button_edit.toggleable" = "تبديلي";
+"custom_controls.button_edit.mouse_pass" = "حركة الماوس";
 "custom_controls.button_edit.swipeable" = "قابل للسحب";
 "custom_controls.button_edit.bg_color" = "لون الخلفية";
 "custom_controls.button_edit.stroke_width" = "عرض الخط (%)";
 "custom_controls.button_edit.stroke_color" = "لون الخط";
 "custom_controls.button_edit.corner_radius" = "تقوس الزاوية (%)";
+"custom_controls.button_edit.opacity" = "التعتيم (%)";
 
 "custom_controls.button_menu.add_subbutton" = "إضافة زر فرعي";
+"custom_controls.control_menu.discard_changes" = "تجاهل التغييرات";
 "custom_controls.control_menu.exit" = "خروج";
+"custom_controls.control_menu.exit.warn" = "أنت على وشك الخروج من دون حفظ التغييرات.";
 "custom_controls.control_menu.save" = "حفظ";
+"custom_controls.control_menu.save.error.default" = "لا يمكن أن يكون اسم التحكم \"افتراضي\" لأنه سيتم الكتابة فوقه.";
+"custom_controls.control_menu.save.error.json" = "خطأ JSON";
+"custom_controls.control_menu.save.error.write" = "خطأ في حفظ الملف.";
 "custom_controls.control_menu.load" = "تحميل";
+"custom_controls.control_menu.make_default" = "جعله إفتراضي";
+"custom_controls.control_menu.safe_area" = "منطقة آمنة";
 "custom_controls.control_menu.add_button" = "إضافة زر";
+"custom_controls.control_menu.add_drawer" = "درج التطبيقات";
+"custom_controls.error.incompatible" = "هذا الإصدار للتحكم (الرمز %d) لم يتم تنفيذه في إنشاء هذا المشغل.";
+"custom_controls.hint" = "اضغط مطولاً في أي مكان على الشاشة لمزيد من الخيارات";
+
+"init.migrateDir" = "دليل بيانات PojavLauncher هو الآن %@. تم نقل جميع بياناتك الموجودة إلى الموقع الجديد.";
 
 "launcher.menu.custom_controls" = "تخصيص التحكم";
 "launcher.menu.install_jar" = "تثبيت ملف .jar";
+
+"launcher.wait_jit.title" = "انتظر JIT";
+"launcher.wait_jit.message" = "يعتمد PojavLauncher على تجميع Just-in-time لـ Java للعمل بأقصى قدر من الأداء.";
+
+"login.error.username.outOfRange" = "يجب أن يكون إسم المستخدم بين 3 و 16 حرف";
+
+"login.alert.field.username" = "اسم المستخدم";
+
+"login.jit.checking" = "التحقق من JIT";
+"login.jit.enabled" = "تم تمكين JIT";
+
+// Login buttons
+"login.menu.sendlogs" = "ارسال سجلات الخطأ";
 "login.option.select" = "اختر الحساب";
+"login.option.microsoft" = "حساب مايكروسوفت";
+"login.option.local" = "حساب محلي";
+
+"login.warn.title.demomode" = "حسابك تجريبي";
+"login.warn.message.demomode" = "كبديل للوضع غير المتصل بالإنترنت والوضع المحلي، سيسمح لك الوضع التجريبي بتسجيل الدخول إلى حساب مايكروسوفت الذي لا يملك اللعبة ويلعب تجربة إصدار جافا، تم إدخاله في 1.3. والإصدارات الأحدث. الإصدارات الأقدم تحتوي على اللعبة الكاملة، لأن المشغل الرسمي لا يضع هذه القيود. راجع موقعنا على الإنترنت لمعرفة المزيد عن هذا الانتقال من وضع عدم الاتصال.";
+
+"login.warn.title.localmode" = "الوضع دون اتصال الآن هو الوضع المحلي.";
+"login.warn.message.localmode" = "يمكنك الاستمرار في تشغيل الإصدارات المثبتة، ولكن لم يعد بإمكانك تحميل Minecraft بدون حساب مدفوع. لن يتم تقديم أي دعم للمشكلات مع الحسابات المحلية أو وسائل أخرى للحصول على Minecraft. راجع الأسئلة الشائعة لمزيد من المعلومات.";
+
+"login.msa.error.xsts.noxboxacc" = "ملف تعريف Xbox غير مسجل لحساب Microsoft هذا. الرجاء التأكد من أنك قمت بإنشاء ملف تعريف Xbox\nرمز الخطأ: 2148916233";
+"login.msa.error.xsts.noxbox" = "Xbox Live غير متوفر حاليا في بلدك.\nرمز الخطأ: 2148916235";
+"login.msa.error.xsts.krverify" = "يجب التحقق من حسابك من قبل والديك قبل أن تتمكن من المتابعة.\nرمز الخطأ: 2148916236 أو 2148916237.";
+"login.msa.error.xsts.underage" = "يجب التحقق من حسابك من قبل والديك قبل أن تتمكن من المتابعة.\nرمز الخطأ: 2148916238 أو";
+
+"login.msa.progress.acquireAccessToken" = "(1/5) الحصول على رمز الوصول";
+"login.msa.progress.acquireXBLToken" = "(2/5) الحصول على رمز الدخول";
+"login.msa.progress.acquireXSTS" = "الحصول على XSTS";
+"login.msa.progress.acquireXboxProfile" = "(3/5) الحصول على ملف Xbox";
+"login.msa.progress.acquireMCToken" = "(4/5) الحصول على رمز Minecraft";
+"login.msa.progress.checkMCProfile" = "(5/5) التحقق من الملف الشخصي لـ Minecraft";
 
 "News" = "الأخبار";
 "Settings" = "الاعدادات";
+
+"preference.section.general" = "إعدادات عامة";
 "preference.section.control" = "تخصيص التحكم";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "تعديلات جافا";
+
+"preference.title.game_directory" = "مكان تخزين اللعبة";
 "preference.title.cosmetica" = "Cosmetica Capes";
 
 "preference.title.renderer" = "العارض";
-"preference.title.disable_gesture" = "تعطيل الإيماءات";
 "preference.title.java_args" = "حجج إطلاق JVM";
 "preference.title.auto_ram" = "ذاكرة الوصول العشوائية التلقائية";
 "preference.detail.auto_ram" = "تمكين  ذاكرة الوصول العشوائي التلقائي";
 "preference.detail.allocated_memory" = "يتحكم في كمية الذاكرة المعطاة لـ Minecraft";
+"controller_configurator.playstation.title.named_back" = "اختر";
