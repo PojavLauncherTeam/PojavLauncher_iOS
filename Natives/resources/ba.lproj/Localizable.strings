@@ -1,8 +1,5 @@
 "game.menu.log_output" = "Журнал";
 
-// The options button at the top-right corner on iOS 12
-"Options" = "Опциялар";
-
 // The play button
 "Play" = "Уйнарға";
 "Snapshot" = "Снапшотттар";
