@@ -75,13 +75,29 @@
 
 "login.jit.checking" = "检查是否开启 JIT 权限";
 "login.jit.enabled" = "JIT 权限已启用";
+"login.jit.fail.JitStreamer" = "JitStreamer 错误：%@";
+"login.jit.found.JitStreamer" = "检测到 JitStreamer，正在开启 JIT 权限";
+"login.jit.start.AltKit" = "正在尝试通过 AltServer 获取 JIT 权限";
+"login.jit.fail.AltKit" = "AltKit 错误： %@";
 
 // Login buttons
 "login.menu.sendlogs" = "发送日志文件";
 "login.option.add" = "添加账户";
 "login.option.select" = "选择账户";
+"login.option.demo" = "演示账户";
 "login.option.microsoft" = "微软账户";
-"login.option.local" = "本机账户(不支持在线下载游戏)";
+"login.option.local" = "本地账户";
+
+"login.warn.title.ram_unjb" = "自动分配内存尚未打开";
+"login.warn.message.ram_unjb" = "请注意，更改此设置可能导致游戏不稳定或无法游玩。";
+
+"login.warn.title.a7" = "此设备不支持 PojavLauncher 2.2。";
+
+"login.warn.title.iosver" = "这是此 iOS 设备的最后一次更新。";
+"login.warn.message.iosver" = "由于功能不一致和开发障碍，未来版本的 PojavLauncher 将不支持 iOS 12 或 13。";
+
+"login.warn.title.2gb" = "您的设备内存有限。";
+"login.warn.message.2gb" = "内存小于 3GB 的设备可能会运行到内存约束。我们建议为您的设备保留自动内存分配。";
 
 "login.warn.title.demomode" = "您现在是演示账户";
 "login.warn.message.demomode" = "演示模式作为离线和本地模式的替代，将允许你登录到一个尚未购买游戏的微软账户中游玩 1.3.1 及更新版本的试玩版本。因为官方启动器的一些特性，在较旧版本中会包含完整的游戏。详情请参阅我们的网站，了解更多关于离线模式的过渡。";
@@ -105,6 +121,7 @@
 "Settings" = "设置";
 
 "preference.section.general" = "启动器基础设置";
+"preference.section.video" = "视频设置";
 "preference.section.footer.video" = "使用自动选择的渲染器将根据游戏版本选择最佳渲染器启动游戏，降低分辨率可以使得 GPU 负载变低从而提升性能。";
 "preference.section.control" = "自定义控制键";
 "preference.section.debug" = "UI设置";
@@ -114,6 +131,8 @@
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "确认？";
+
+"preference.title.game_directory" = "Minecraft 游戏目录";
 "preference.title.confirm.delete_game_directory" = "目录 %@ 将被永久删除，并且无法恢复。";
 "preference.multidir.add_directory" = "添加游戏目录";
 
@@ -139,10 +158,16 @@
 "preference.title.confirm.reset_settings" = "这将重制您所有的自定义首选项，包括分辨率、按钮大小以及 Java 参数。";
 "preference.title.done.reset_settings" = "已重置所有设置";
 
+"preference.title.erase_demo_data" = "清除演示游戏数据";
+"preference.title.confirm.erase_demo_data" = "进行此操作将清除演示账户使用的所有演示游戏版本和数据。";
+"preference.title.done.erase_demo_data" = "所有演示游戏数据已被清除。";
+
 "preference.title.renderer" = "渲染器";
 "preference.title.renderer.auto" = "自动：gl4es 或 ANGLE";
+"preference.title.renderer.gl4es" = "gl4es 1.1.4 - OpenGL 版本 2.1";
 "preference.title.renderer.angle" = "ANGLE（仅支持1.17+）- exports OpenGL 版本 3.2";
 "preference.title.renderer.zink" = "Zink（Mesa 21.0）- exports OpenGL 版本 4.1";
+"preference.detail.renderer" = "更改使用的 OpenGL 渲染器";
 
 "preference.title.resolution" = "分辨率缩放 (%)";
 "preference.detail.resolution" = "降低分辨率可能会提升FPS。默认分辨率为屏幕的分辨率";
