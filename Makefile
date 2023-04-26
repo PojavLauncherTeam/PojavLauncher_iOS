@@ -26,9 +26,13 @@ SLIMMED ?= 0
 # Check if slimmed should be built, and additionally skip normal build
 SLIMMED_ONLY ?= 0
 
+# If not in a GitHub repository, default to these
+# so that compiling doesn't fail
+BRANCH ?= "unknown"
+COMMIT ?= "unknown"
+
 # Team IDs and provisioning profile for the codesign function
 # Default to -1 for check
-
 # Currently requires a paid Apple Developer account, will fix later
 SIGNING_TEAMID ?= -1
 TEAMID ?= -1
