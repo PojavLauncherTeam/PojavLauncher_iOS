@@ -12,9 +12,6 @@
 
 "game.title.exit_code" = "Hra skončila s kódem %d";
 
-// The options button at the top-right corner on iOS 12
-"Options" = "Možnosti";
-
 // The play button
 "Play" = "Hrát";
 
@@ -75,27 +72,13 @@
 
 "login.jit.checking" = "Kontrolování JIT";
 "login.jit.enabled" = "JIT byl zapnut";
-"login.jit.fail.JitStreamer" = "Chyba JitStreameru: %@";
-"login.jit.found.JitStreamer" = "Nalezen JitStreamer, povoluji JIT";
-"login.jit.start.AltKit" = "Pokoušení užití AltJITu";
-"login.jit.fail.AltKit" = "Chyba AltKitu: %@";
 
 // Login buttons
 "login.menu.sendlogs" = "Odeslat záznamy";
+"login.option.add" = "Přidat účet";
 "login.option.select" = "Vybrat účet";
 "login.option.microsoft" = "Účet Microsoft";
 "login.option.local" = "Místní účet";
-
-"login.warn.title.ram_unjb" = "Posuvník paměti je povolen";
-"login.warn.message.ram_unjb" = "Uvědomte si, že měnění tohoto nastavení může způsobit nestabilitu hry či rozbít schopnost hrát vůbec.";
-
-"login.warn.title.a7" = "Toto zařízení nepodporuje PojavLauncher 2.2.";
-
-"login.warn.title.iosver" = "Poslední aktualizace pro tuto verzi iOSu je tato.";
-"login.warn.message.iosver" = "Budoucí verze PojavLauncheru nebude podporovat iOS 12 a 13, kvůli funkčním nekonzistencím a překážkám vývoje.";
-
-"login.warn.title.2gb" = "Tvé zařízení má omezenou RAM.";
-"login.warn.message.2gb" = "Zařízení s méně než 3GB paměti mohou narazit na pamětová omezení. Doporučujeme nechat automatický selektor zapnutý pro tvé zařízení.";
 
 "login.warn.title.demomode" = "Váš účet demo je";
 "login.warn.message.demomode" = "Jako náhrada za offline a místní režim, demo režim povolí přihlášení do Microsoft účtu, jenž hru nevlastní, a hrát zkušební verzi Java edice, přidanou v 1.3.1 a novějších verzích. Starší verze obsahují plnou hru, majíce ji i v oficiálním spouštěči, jenž nemá pro ně omezení. Viz naši webovou stránku pro více informací o této změně z offline režimu.";
@@ -130,7 +113,7 @@
 
 "preference.title.confirm" = "Jsi si jist/a?";
 
-"preference.title.game_directory" = "Složka hry Minecraft";
+"preference.title.game_directory" = "Složka hry";
 "preference.title.confirm.delete_game_directory" = "Instance %@ bude navždy smazána a nebude možno ji obnovit.";
 "preference.multidir.add_directory" = "přidat složku hry";
 
@@ -168,7 +151,6 @@
 
 "preference.title.fullscreen_airplay" = "AirPlay celé obrazovky";
 "preference.detail.fullscreen_airplay" = "Umožňuje zobrazovat okno hry na celé obrazovce na externím displeji bez zrcadlení všeho na obrazovce.";
-"preference.title.disable_gesture" = "Vypnout gesta";
 "preference.title.press_duration" = "Trvání dlouhého stisku (ms)";
 "preference.detail.press_duration" = "Délka trvání dlouhého držení ke zničení bloků a vyhazování itemů.";
 "preference.title.button_scale" = "Měřítko tlačítka na obrazovce (%)";
@@ -181,6 +163,11 @@
 "preference.detail.virtmouse_enable" = "Zapni tutu možnost pro začínání se zapnutou vyrtuální myší";
 "preference.title.slideable_hotbar" = "Posuvný hotbar";
 "preference.detail.slideable_hotbar" = "Udělat hotbar posunovatelný jako kolečko myši";
+
+"preference.title.gyroscope_enable" = "Zapnout gyroskopové ovládání";
+"preference.title.gyroscope_sensitivity" = "Citlivost gyroskopového ovládání";
+"preference.detail.gyroscope_sensitivity" = "Upravit citlivost gyroskopového ovládání";
+
 "preference.title.java_home" = "Používat Javu 17 Minecraftem < 1.17";
 "preference.detail.java_home" = "Java 8 je výchozí pro tyto verze. Zapni toto k donucení užívání Javy 17, ačkoliv její kompatibilita s módy není zaručena.";
 "preference.title.java_args" = "JVM spouštěcí argumenty";
@@ -207,3 +194,4 @@
 "preference.detail.debug_show_layout_bounds" = "Zobrazit překrývající se hranice a mezery";
 "preference.title.debug_show_layout_overlap" = "Zobrazit překrývající se rozložení";
 "preference.detail.debug_show_layout_overlap" = "Překrýt každé zobrazení průhlednou barvou pro odhalení překrývajících se zobrazení.";
+"controller_configurator.playstation.title.named_back" = "Vybrat";
