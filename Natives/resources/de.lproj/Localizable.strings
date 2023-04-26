@@ -80,6 +80,7 @@
 "login.menu.sendlogs" = "Fehlerprotokolle senden";
 "login.option.add" = "Konto hinzufügen";
 "login.option.select" = "Konto auswählen";
+"login.option.demo" = "Demo-Konto";
 "login.option.microsoft" = "Microsoft-Konto";
 "login.option.local" = "Lokales Konto";
 
@@ -138,6 +139,10 @@
 "preference.title.reset_settings" = "Alle Einstellungen zurücksetzen";
 "preference.title.confirm.reset_settings" = "Dies wird alle deine benutzerdefinierten Einstellungen entfernen, einschließlich Auflösung, Schaltflächen-Größe und Java-Argumente.";
 "preference.title.done.reset_settings" = "Alle Standard-Einstellungen wurden wiederhergestellt.";
+
+"preference.title.erase_demo_data" = "Demo-Spieldaten löschen";
+"preference.title.confirm.erase_demo_data" = "Dies löscht alle Demo-Spielversionen und Daten, die für Demo-Konten verwendet werden.";
+"preference.title.done.erase_demo_data" = "Alle Demo-Spieldaten wurden gelöscht.";
 
 "preference.title.renderer" = "Renderer";
 "preference.title.renderer.auto" = "Auto: gl4es or ANGLE";
