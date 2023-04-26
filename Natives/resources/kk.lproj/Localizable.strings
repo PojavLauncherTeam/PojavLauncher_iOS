@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   StringLocalization
 */
@@ -6,9 +6,6 @@
 "game.menu.force_close" = "Мәжбүрлеп жабу";
 "game.menu.log_output" = "Жорнал шығысы";
 "game.menu.custom_controls" = "Өңделген басқару";
-
-// The options button at the top-right corner on iOS 12
-"Options" = "Баптау";
 
 // The play button
 "Play" = "Ойнау";
