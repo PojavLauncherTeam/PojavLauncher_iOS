@@ -4,18 +4,23 @@
 */
 
 "game.menu.force_close" = "강제 종료";
+"game.menu.confirm.force_close" = "강제 종료를 하시겠습니까?";
 "game.menu.log_output" = "로그 확인";
 "game.menu.custom_controls" = "사용자 지정 조작";
 
-// The options button at the top-right corner on iOS 12
-"Options" = "설정";
-
 // The play button
 "Play" = "시작하기";
+
+// Version categories
+"Installed" = "설치됨";
 "Snapshot" = "스냅숏";
 "Old-beta" = "Old-beta";
 "Old-alpha" = "Old-alpha";
+
+// Custom controls
+"Copy" = "복사";
 "Edit" = "수정";
+"Move" = "움직이다";
 "Remove" = "제거";
 
 "custom_controls.button_edit.name" = "이름";
@@ -30,23 +35,52 @@
 "custom_controls.button_menu.add_subbutton" = "부속 버튼 추가";
 "custom_controls.control_menu.exit" = "나가기";
 "custom_controls.control_menu.save" = "저장";
+"custom_controls.control_menu.save.error.write" = "파일 저장중 오류 발생";
 "custom_controls.control_menu.load" = "불러오기";
+"custom_controls.control_menu.make_default" = "기본값으로 설정";
+"custom_controls.control_menu.safe_area" = "안전한 공간";
 "custom_controls.control_menu.add_button" = "버튼 추가";
 
 "launcher.menu.custom_controls" = "사용자 지정 조작";
 "launcher.menu.install_jar" = ".jar 설치";
+
+"launcher.wait_jit.title" = "JIT를 기다리고 있습니다";
+
+"login.alert.field.username" = "사용자명";
+
+"login.jit.checking" = "JIT를 확인하고 있습니다";
+"login.jit.enabled" = "JIT가 활성화 되었습니다";
+
+// Login buttons
+"login.menu.sendlogs" = "로그 보내기";
+"login.option.add" = "계정 추가";
 "login.option.select" = "계정 선택";
+"login.option.microsoft" = "Microsoft 계정";
+"login.option.local" = "로컬 계정";
+
+"login.warn.title.demomode" = "당신의 계정은 데모 버전입니다";
 
 "News" = "소식";
 "Settings" = "설정";
 "preference.section.control" = "사용자 지정 조작";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java 기능";
+
+"preference.title.game_directory" = "게임 디렉토리";
 "preference.title.cosmetica" = "코스메티카 망토";
+"preference.title.appicon" = "앱 아이콘 설정";
+
+"preference.title.reset_warnings" = "모든 경고 초기화";
+"preference.title.done.reset_warnings" = "모든 경고가 리셋되었습니다";
+
+"preference.title.reset_settings" = "모든 설정 초기화";
 
 "preference.title.renderer" = "렌더러";
-"preference.title.disable_gesture" = "제스쳐 비활성화";
+"preference.title.virtmouse_enable" = "가상 마우스";
+
+"preference.title.java_home" = "마인크래프트 버전 < 1.17 부터 자바 17을 사용하세요";
 "preference.title.java_args" = "JVM 시작 스크립트";
 "preference.title.auto_ram" = "자동 RAM 할당";
 "preference.detail.auto_ram" = "자동 RAM 할당 활성화하기";
 "preference.detail.allocated_memory" = "Minecraft 메모리 할당 조절";
+"controller_configurator.playstation.title.named_back" = "선택";

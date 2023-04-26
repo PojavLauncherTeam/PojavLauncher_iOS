@@ -7,9 +7,6 @@
 "game.menu.log_output" = "Log output";
 "game.menu.custom_controls" = "Kawalan custom";
 
-// The options button at the top-right corner on iOS 12
-"Options" = "Pilihan";
-
 // The play button
 "Play" = "Main";
 "Snapshot" = "Petikan";
@@ -32,7 +29,6 @@
 "launcher.menu.custom_controls" = "Kawalan custom";
 "launcher.menu.install_jar" = "Pasang .jar";
 "login.option.select" = "Pilih akaun";
-"login.warn.message.ram_unjb" = "Harap maklum bahawa menukar tetapan ini boleh menyebabkan ketidakstabilan permainan atau merosakkan keupayaan untuk bermain sama sekali.";
 
 "News" = "Berita";
 "Settings" = "Tetapan";
@@ -45,7 +41,7 @@
 
 "preference.title.confirm" = "Adakah anda pasti?";
 
-"preference.title.game_directory" = "Direktori permainan Minecraft";
+"preference.title.game_directory" = "Direktori permainan";
 "preference.title.cosmetica" = "Mantel Cosmetica";
 "preference.detail.debug_logging" = "Mengelog tetapan dan tindakan dalaman ke latestlog.txt. Ini membantu pembangun mencari isu dengan lebih mudah, tetapi Minecraft mungkin berjalan lebih perlahan kerana log akan ditulis dengan lebih kerap.";
 
@@ -54,7 +50,6 @@
 "preference.title.done.reset_settings" = "Semua tetapan lalai telah dipulihkan.";
 
 "preference.title.renderer" = "Renderer";
-"preference.title.disable_gesture" = "Nyahdayakan gerak isyarat";
 "preference.title.java_args" = "JVM Launch arguments";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Membenarkan pelaras RAM automatik";

@@ -4,45 +4,190 @@
 */
 
 "game.menu.force_close" = "توقف اجباری";
+"game.menu.confirm.force_close" = "آیا از خروج اجباری اطمینان دارید؟";
 "game.menu.log_output" = "خروجی گزارش (لاگ)";
 "game.menu.custom_controls" = "کنترل‌های شخصی";
 
-// The options button at the top-right corner on iOS 12
-"Options" = "گزینه‌ها";
+"game.note.airplay" = "ماینکرفت در صفحه نمایش AirPlay نمایش داده می شود";
+
+"game.title.exit_code" = "بازی با کد %d به اتمام رسید";
 
 // The play button
 "Play" = "شروع بازی";
+
+// Version categories
+"Installed" = "نصب شد";
 "Snapshot" = "اسنپ‌شات";
+"Releases" = "ورژن ها";
 "Old-beta" = "بتای-قدیمی";
 "Old-alpha" = "آلفای-قدیمی";
+
+// Custom controls
+"Copy" = "کپی";
 "Edit" = "ویرایش";
+"Move" = "انتقال";
 "Remove" = "حذف";
+"Resize" = "تغییر اندازه";
 
 "custom_controls.button_edit.name" = "نام";
 "custom_controls.button_edit.size" = "اندازه";
 "custom_controls.button_edit.mapping" = "نقشه‌برداری";
 "custom_controls.button_edit.orientation" = "جهت";
 "custom_controls.button_edit.toggleable" = "حالت فعال/غیرفعال";
+"custom_controls.button_edit.mouse_pass" = "عبور از ماوس";
 "custom_controls.button_edit.swipeable" = "قابل سوایپ";
 "custom_controls.button_edit.bg_color" = "رنگ پس‌زمینه";
+"custom_controls.button_edit.stroke_width" = "ضخامت حاشیه (%)";
 "custom_controls.button_edit.stroke_color" = "رنگ حاشیه";
+"custom_controls.button_edit.corner_radius" = "شعاع گوشه (%)";
+"custom_controls.button_edit.opacity" = "کدورت (%)";
 
 "custom_controls.button_menu.add_subbutton" = "افزودن زیر-دکمه";
+"custom_controls.control_menu.discard_changes" = "لغو تغییرات";
 "custom_controls.control_menu.exit" = "خروج";
+"custom_controls.control_menu.exit.warn" = "شما درحال خروج بدون ذخیره تغییرات هستید.";
 "custom_controls.control_menu.save" = "ذخیره";
+"custom_controls.control_menu.save.error.default" = "نام کنترلر نمی تواند \"default\" باشد زیرا بازنویسی می شود.";
+"custom_controls.control_menu.save.error.json" = "ارور JSON";
+"custom_controls.control_menu.save.error.write" = "خطا هنگام ذخیرهٔ پرونده";
 "custom_controls.control_menu.load" = "بارگذاری";
+"custom_controls.control_menu.make_default" = "انتخاب به عنوان پیش فرض";
+"custom_controls.control_menu.safe_area" = "ناحیه امن";
 "custom_controls.control_menu.add_button" = "اضافه کردن دکمه";
+"custom_controls.control_menu.add_drawer" = "اضافه کردن کشو";
+"custom_controls.error.incompatible" = "این نسخه کنترل (کد %d) در این نسخه‌ی لانچر اجرا نشده است.";
+"custom_controls.hint" = "برای گزینه‌های بیشتر، هر نقطه از صفحه را طولانی فشار دهید";
+
+"init.migrateDir" = "دایرکتوری داده Pojavlauncher در حال حاضر %@ است. تمام داده های موجود شما به مکان جدید منتقل شده اند.";
 
 "launcher.menu.custom_controls" = "کنترل‌های شخصی";
 "launcher.menu.install_jar" = "نصب .jar";
+
+"launcher.wait_jit.title" = "در انتظار JIT";
+"launcher.wait_jit.message" = "Pojavlauncher متکی به تدوین در زمان مناسب برای جاوا برای کار در حداکثر عملکرد است.";
+
+"login.error.username.outOfRange" = "نام کاربری باید حداقل 3 کاراکتر و حداکثر 16 کاراکتر باشد";
+
+"login.alert.field.username" = "نام کاربری";
+
+"login.jit.checking" = "در حال بررسی JIT";
+"login.jit.enabled" = "JIT فعال شد";
+
+// Login buttons
+"login.menu.sendlogs" = "log خود را ارسال کنید";
+"login.option.add" = "اضافه کردن حساب کاربری";
 "login.option.select" = "انتخاب اکانت";
+"login.option.microsoft" = "حساب مایکروسافت";
+"login.option.local" = "حساب محلی";
+
+"login.warn.title.demomode" = "حساب شما نسخه ی دمو است";
+"login.warn.message.demomode" = "به عنوان جایگزینی برای حالت آفلاین و محلی، حالت دمو به شما این امکان را می دهد که وارد حساب مایکروسافتی شوید که مالک بازی نیست و نسخه آزمایشی Java Edition را که در نسخه های 1.3.1 و جدیدتر معرفی شده است، بازی کنید. نسخه‌های قدیمی‌تر شامل بازی کامل هستند، زیرا لانچر رسمی این محدودیت‌ها را اعمال نمی‌کند. برای کسب اطلاعات بیشتر در مورد این انتقال از حالت آفلاین به وب سایت ما مراجعه کنید.";
+
+"login.warn.title.localmode" = "حالت آفلاین اکنون حالت محلی است.";
+"login.warn.message.localmode" = "می‌توانید به پخش نسخه‌های نصب‌شده ادامه دهید، اما دیگر نمی‌توانید Minecraft را بدون حساب پولی دانلود کنید. هیچ پشتیبانی برای مشکلات مربوط به حساب های محلی یا سایر ابزارهای خرید Minecraft ارائه نخواهد شد. برای اطلاعات بیشتر به سوالات متداول مراجعه کنید.";
+
+"login.msa.error.xsts.noxboxacc" = "یک نمایه Xbox برای این حساب مایکروسافت ثبت نشده است. لطفاً مطمئن شوید که یک نمایه Xbox ساخته اید.\nکد خطا: 2148916233";
+"login.msa.error.xsts.noxbox" = "Xbox Live در حال حاضر در کشور شما در دسترس نیست.\nکد خطا: 2148916235";
+"login.msa.error.xsts.krverify" = "قبل از اینکه بتوانید ادامه دهید، باید حساب شما توسط والدینتان تأیید شود.\nکد خطا: 2148916236 یا 2148916237.";
+"login.msa.error.xsts.underage" = "قبل از اینکه بتوانید ادامه دهید، باید حساب شما به یک حساب والدین مرتبط شود.\nکد خطا: 2148916238";
+
+"login.msa.progress.acquireAccessToken" = "(1/5) به دست آوردن توکن دسترسی";
+"login.msa.progress.acquireXBLToken" = "(2/5) دریافت توکن Xbox Live";
+"login.msa.progress.acquireXSTS" = "گرفتن XSTS";
+"login.msa.progress.acquireXboxProfile" = "(3/5) به دست آوردن نمایه Xbox";
+"login.msa.progress.acquireMCToken" = "(4/5) به دست آوردن توکن حساب ماینکرفت";
+"login.msa.progress.checkMCProfile" = "(5/5) بررسی پروفایل حساب ماینکرفت";
 
 "News" = "اخبار";
 "Settings" = "تنظیمات";
 
+"preference.section.general" = "تنظیمات عمومی";
+"preference.section.footer.video" = "رندر خودکار به ماینکرفت اجازه می دهد تصمیم بگیرد از کدام رندرر استفاده کند. کاهش وضوح باعث کاهش حجم کاری GPU برای عملکرد بهتر می شود.";
+"preference.section.control" = "شخصی سازی کنترلر";
+"preference.section.debug" = "تنظیمات اشکال زدایی رابط کاربری";
+"preference.section.footer.debug" = "جدای از اشکال زدایی، این تنظیمات ممکن است برای کنترل های سفارشی مفید باشند. ممکن است لازم باشد نرم‌افزار را مجدداً راه‌اندازی کنید تا تغییرات اعمال شوند.";
+//"preference.section.footer.control" = "";
+"preference.section.java" = "ترفند های جاوا";
+//"preference.section.footer.java" = "";
+
+"preference.title.confirm" = "آیا مطمئن هستید؟";
+
+"preference.title.game_directory" = "پوشه بازی";
+"preference.title.confirm.delete_game_directory" = "ورژن %@ برای همیشه حذف خواهد شد و قابل بازیابی نیست.";
+"preference.multidir.add_directory" = "افزودن پوشه بازی";
+
+"preference.title.check_sha" = "بررسی فایل ها بعد از دانلود";
+"preference.detail.check_sha" = "این گزینه لانچر را وادار می کند تا در صورت موجود بودن هش فایل را بررسی کند. از دانلودهای ناقص جلوگیری می کند.";
+"preference.title.cosmetica" = "شنل های Cosmetica";
+"preference.detail.cosmetica" = "شنل‌های Cosmetica (قبلاً Arc) را فعال کنید.  برای اطلاعات بیشتر لطفاً به https://cosmetica.cc مراجعه کنید.  به OptiFine نیاز دارد";
+"preference.title.debug_logging" = "گزارش اشکال زدایی";
+"preference.detail.debug_logging" = "تنظیمات و اقدامات داخلی را در latestlog.txt ثبت می کند. این به توسعه‌دهندگان کمک می‌کند تا مشکلات را آسان‌تر پیدا کنند، اما Minecraft ممکن است کندتر اجرا شود زیرا گزارش‌ها اغلب روی آن نوشته می‌شوند.";
+"preference.title.jitstreamer_server" = "آیپی سرور JitStreamer";
+"preference.detail.jitstreamer_server" = "به شما امکان می‌دهد به یک IP سرور سفارشی JitStreamer، مانند ورژن های خود میزبان، تغییر دهید. اگر از سرورهای پیش‌فرض JitStreamer استفاده می‌کنید، می‌توانید این گزینه را به حال خود رها کنید.";
+"preference.title.appicon" = "تنظیم نماد برنامه";
+"preference.detail.appicon" = "به شما امکان می دهد بین نمادهای مختلف صفحه اصلی برای PojavLauncher یکی را انتخاب کنید.";
+"preference.title.appicon-default" = "نور آشنا PojavLauncher";
+"preference.title.appicon-dark" = "تاریکی PojavLauncher آشنا";
+"preference.title.hidden_sidebar" = "نوار کناری منوی اصلی را به طور پیش فرض مخفی کنید";
+
+"preference.title.reset_warnings" = "بازنشانی همه هشدارها";
+"preference.title.done.reset_warnings" = "همه هشدار ها بازتنظیم شدند.";
+
+"preference.title.reset_settings" = "تمام تنظیمات را بازنشانی کنید";
+"preference.title.confirm.reset_settings" = "با این کار همه تنظیمات برگزیده سفارشی شما از جمله وضوح، اندازه دکمه و آرگومان های جاوا حذف می شود.";
+"preference.title.done.reset_settings" = "تمام تنظیمات پیش فرض بازیابی شده است.";
+
 "preference.title.renderer" = "رندر کننده";
-"preference.title.disable_gesture" = "غیرفعال کردن حسگر ها";
-"preference.title.java_args" = "آرگومان‌های جاوا در هنگام لانچ";
+"preference.title.renderer.auto" = "خودکار: gl4es یا ANGLE";
+"preference.title.renderer.angle" = "ANGLE (1.17+) - OpenGL 3.2 را صادر می کند (نمایه هسته، محدود)";
+"preference.title.renderer.zink" = "Zink (Mesa 21.0) - OpenGL 4.1 را صادر می کند";
+
+"preference.title.resolution" = "وضوح (%)";
+"preference.detail.resolution" = "به شما امکان می دهد وضوح بازی را کاهش دهید.";
+
+"preference.title.fullscreen_airplay" = "AirPlay تمام صفحه";
+"preference.detail.fullscreen_airplay" = "به جای انعکاس همه چیز روی صفحه نمایش، به نمایش پنجره بازی تمام صفحه روی صفحه نمایش خارجی اجازه می دهد.";
+"preference.title.press_duration" = "مدت زمان فشار طولانی (ms)";
+"preference.detail.press_duration" = "مدت زمان فشار برای از بین بردن بلوک ها و انداختن آیتم ها را فعال کنید.";
+"preference.title.button_scale" = "مقیاس دکمه روی صفحه (%)";
+"preference.detail.button_scale" = "اگر دکمه‌ها خیلی کوچک هستند، آن‌ها را ارتقا دهید، که معمولاً برای کاربران iPad مورد نیاز است.";
+"preference.title.mouse_scale" = "مقیاس ماوس (%)";
+"preference.detail.mouse_scale" = "تغییر اندازه ماوس مجازی";
+"preference.title.mouse_speed" = "سرعت ماوس (%)";
+"preference.detail.mouse_speed" = "تغییر سرعت ماوس مجازی";
+"preference.title.virtmouse_enable" = "ماوس مجازی";
+"preference.detail.virtmouse_enable" = "این گزینه را برای شروع با موس مجازی فعال کنید";
+"preference.title.slideable_hotbar" = "هاتبار کشویی";
+"preference.detail.slideable_hotbar" = "هاتبار را مانند چرخ ماوس قابل لغزش کنید";
+
+"preference.title.gyroscope_enable" = "فعال کردن کنترل های ژیروسکوپ";
+"preference.title.gyroscope_sensitivity" = "حساسیت کنترلر های ژیروسکوپ";
+"preference.detail.gyroscope_sensitivity" = "حساسیت کنترل های ژیروسکوپ را تنظیم کنید";
+
+"preference.title.java_home" = "از جاوا 17 برای ماینکرفت 1.17 به بالا استفاده کنید";
+"preference.detail.java_home" = "جاوا 8 به طور پیش فرض برای آن نسخه ها استفاده می شود. این گزینه را برای استفاده اجباری از جاوا 17 فعال کنید، اما سازگاری با مود شده تضمین نمی شود.";
+"preference.title.java_args" = "آرگومان‌های جاوا در هنگام اجرا";
+"preference.detail.java_args" = "مراقب باشید، این ممکن است باعث از کار افتادن بازی در صورت اصلاح بدون اطلاع شود.";
+"preference.placeholder.java_args" = "آرگومان ها را مشخص کنید...";
 "preference.title.auto_ram" = "رم اتوماتیک";
 "preference.detail.auto_ram" = "تنظیم‌کننده اتوماتیک رم را فعال می‌کند";
+"preference.warn.auto_ram" = "غیرفعال کردن این گزینه در دستگاه‌های غیر جیلبریک می‌تواند در صورت تغییر، بی‌ثباتی ایجاد کند. با توجه ادامه بدهید.";
+"preference.title.allocated_memory" = "میزان رم اختصاص یافته(MB)";
 "preference.detail.allocated_memory" = "میزان مموری اختصاص یافته به ماینکرفت را کنترل می‌کند";
+"preference.warn.allocated_memory" = "با توجه به محدودیت های موجود در خود سیستم عامل، این گزینه ممکن است باعث ناپایداری در مقادیر این و بالاتر شود. با توجه ادامه بدهید.";
+"preference.title.custom_env" = "متغیرهای محیطی";
+"preference.detail.custom_env" = "این مولفه در دست ساخت است.";
+
+"preference.title.debug_skip_wait_jit" = "از گفتگوی \"در انتظار JIT\" رد شوید";
+"preference.detail.debug_skip_wait_jit" = "این به شما اجازه نمی‌دهد بدون JIT راه‌اندازی کنید، در عوض از بررسی دیباگر صرفنظر می‌شود، زیرا بررسی در برخی از جیلبریک‌ها با شکست مواجه می‌شود.";
+"preference.title.debug_ipad_ui" = "رابط کاربری iPadOS را باز کنید";
+"preference.detail.debug_ipad_ui" = "در صورت فعال بودن، رابط کاربری منحصر به فرد iPad (هشدار، صفحه کلید و غیره) یا در صورت غیرفعال بودن رابط کاربری آیفون را باز کنید.";
+"preference.title.debug_auto_correction" = "تصحیح خودکار";
+"preference.detail.debug_auto_correction" = "هنگام تایپ متن در بازی، تصحیح خودکار را فعال کنید.";
+"preference.title.debug_hide_home_indicator" = "نشانگر خانه را پنهان کنید";
+"preference.detail.debug_hide_home_indicator" = "این کار قفل نشانگر خانه را غیرفعال می کند. برای مخفی کردن و قفل کردن نشانگر خانه به طور همزمان باید از Guided Access استفاده کنید.";
+"preference.title.debug_show_layout_bounds" = "نمایش محدوده‌های طرح‌بندی";
+"preference.detail.debug_show_layout_bounds" = "نمایش مرزها، حاشیه‌ها";
+"preference.title.debug_show_layout_overlap" = "نمایش همپوشانی طرح";
+"preference.detail.debug_show_layout_overlap" = "هر نما را با یک رنگ شفاف پوشش دهید تا نماهای همپوشانی نشان داده شود.";
+"controller_configurator.playstation.title.named_back" = "انتخاب";

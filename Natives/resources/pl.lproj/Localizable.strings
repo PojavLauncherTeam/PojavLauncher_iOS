@@ -6,14 +6,11 @@
 "game.menu.force_close" = "Wymuś zamknięcie";
 "game.menu.confirm.force_close" = "Czy na pewno chcesz wymusić zamknięcie?";
 "game.menu.log_output" = "Wyjście danych";
-"game.menu.custom_controls" = "Sterowanie niestandardowe";
+"game.menu.custom_controls" = "Sterowanie";
 
 "game.note.airplay" = "Minecraft jest wyświetlany na ekranie lustrzanym AirPlay";
 
 "game.title.exit_code" = "Gra została zakończona z kodem %d";
-
-// The options button at the top-right corner on iOS 12
-"Options" = "Opcje";
 
 // The play button
 "Play" = "Graj";
@@ -62,7 +59,7 @@
 
 "init.migrateDir" = "Katalogiem danych PojavLauncher jest teraz %@. Wszystkie istniejące dane zostały przeniesione do nowej lokalizacji.";
 
-"launcher.menu.custom_controls" = "Sterowanie niestandardowe";
+"launcher.menu.custom_controls" = "Sterowanie";
 "launcher.menu.install_jar" = "Zainstaluj .jar";
 
 "launcher.wait_jit.title" = "Czekam na JIT";
@@ -74,25 +71,13 @@
 
 "login.jit.checking" = "Sprawdzanie JIT";
 "login.jit.enabled" = "JIT zostało włączone";
-"login.jit.fail.JitStreamer" = "Błąd JitStreamer: %@";
-"login.jit.found.JitStreamer" = "Znaleziono JitStreamer, włączanie JIT";
-"login.jit.start.AltKit" = "Próba użycia AltJIT";
-"login.jit.fail.AltKit" = "Błąd AltKit: %@";
 
 // Login buttons
 "login.menu.sendlogs" = "Prześlij swój rejestr";
+"login.option.add" = "Dodaj konto";
 "login.option.select" = "Wybierz konto";
 "login.option.microsoft" = "Konto Microsoft";
 "login.option.local" = "Konto lokalne";
-
-"login.warn.title.ram_unjb" = "Suwak pamięci jest włączony";
-"login.warn.message.ram_unjb" = "Pamiętaj, że zmiana tego ustawienia może spowodować niestabilność gry lub całkowicie uniemożliwić grę.";
-
-"login.warn.title.iosver" = "To jest ostatnia aktualizacja dla tej wersji iOS.";
-"login.warn.message.iosver" = "Przyszłe wersje PojavLauncher nie będą obsługiwać iOS 12 lub 13 ze względu na niespójności funkcji oraz przeszkody w rozwoju programu.";
-
-"login.warn.title.2gb" = "Twoje urządzenie posiada mało pamięci RAM.";
-"login.warn.message.2gb" = "Na urządzeniach z mniej niż 3 GB pamięci mogą wystąpić problemy. Zalecane jest włączenie automatycznego przydziału pamięci.";
 "login.warn.message.demomode" = "Jak zamiennik dla trybu offline oraz lokalnego, tryb demo umożliwia logowanie na Konto Microsoft, które nie posiada gry i umożliwia granie w wersję próbną Java Edition wprowadzoną w wersji 1.3.1 oraz nowszych. Starsze wersje zawierają pełną wersję gry, ponieważ oficjalny launcher nie wymusza tych ograniczeń. Sprawdź naszą stronę internetową, aby dowiedzieć się więcej o przejściu z trybu offline.";
 
 "login.warn.title.localmode" = "Tryb offline to teraz Tryb lokalny.";
@@ -125,7 +110,7 @@
 
 "preference.title.confirm" = "Czy na pewno?";
 
-"preference.title.game_directory" = "Katalog gry Minecraft";
+"preference.title.game_directory" = "Katalog gry";
 "preference.title.confirm.delete_game_directory" = "Instancja %@ zostanie trwale usunięta i nie będzie można jej przywrócić.";
 "preference.multidir.add_directory" = "dodaj katalog gry";
 
@@ -137,6 +122,8 @@
 "preference.detail.debug_logging" = "Rejestruje ustawienia wewnętrzne i działania w lastlog.txt. Pomaga to programistom łatwiej znajdować problemy, ale Minecraft może działać wolniej, ponieważ logi będą zapisywane częściej.";
 "preference.title.jitstreamer_server" = "Adres IP serwera JitStreamer";
 "preference.detail.jitstreamer_server" = "Pozwala na zmianę na niestandardowy adres IP serwera JitStreamer, np. dla instancji hostowanych przez siebie. Ta opcja może pozostać sama jeśli używasz domyślnych serwerów JitStreamer.";
+"preference.title.appicon" = "Ustaw ikonę aplikacji";
+"preference.detail.appicon" = "Pozwala wybrać między różnymi ikonami ekranu głównego dla PojavLauncher.";
 
 "preference.title.reset_warnings" = "Wyzeruj wszystkie ostrzeżenia";
 "preference.title.done.reset_warnings" = "Wszystkie ostrzeżenia zostały wyzerowane.";
@@ -152,7 +139,6 @@
 
 "preference.title.resolution" = "Rozdzielczość (%)";
 "preference.detail.resolution" = "Umożliwia zmniejszenie rozdzielczości gry.";
-"preference.title.disable_gesture" = "Wyłącz gesty";
 "preference.title.press_duration" = "Czas długiego naciśnięcia (ms)";
 "preference.detail.press_duration" = "Zmieniaj czas trwania prasy dla niszczenia bloków i upuszczania przedmiotów.";
 "preference.title.button_scale" = "Skala przycisków ekranowych (%)";
@@ -165,6 +151,11 @@
 "preference.detail.virtmouse_enable" = "Aktywuj tę opcję, aby uruchamiać z włączoną wirtualną myszą";
 "preference.title.slideable_hotbar" = "Przesuwalny pasek narzędzi";
 "preference.detail.slideable_hotbar" = "Spraw, aby pasek skrótów był przesuwany jak kółko myszy";
+
+"preference.title.gyroscope_enable" = "Włącz sterowanie żyroskopem";
+"preference.title.gyroscope_sensitivity" = "Czułość sterowania żyroskopem";
+"preference.detail.gyroscope_sensitivity" = "Dostosuj czułość sterowania żyroskopem";
+
 "preference.title.java_home" = "Użyj Java 17 dla Minecraft < 1.17";
 "preference.detail.java_home" = "W tych wersjach domyślnie używana jest Java 8. Włącz tę opcję, aby wymusić użycie Javy 17, jednak zgodność z modded nie jest gwarantowana.";
 "preference.title.java_args" = "Argumenty uruchomienia JVM";
@@ -183,7 +174,10 @@
 "preference.detail.debug_skip_wait_jit" = "To nie pozwala na uruchamianie bez JIT, zamiast tego pomija kontrolę debugera, ponieważ sprawdzenie nie powiodło się na niektórych więzieniach.";
 "preference.title.debug_ipad_ui" = "Odblokuj interfejs iPadOS";
 "preference.detail.debug_ipad_ui" = "Odblokuj interfejs użytkownika wyłącznie dla iPada (alarm, klawiatura itp.), jeśli jest włączony, lub interfejs iPhone'a, jeśli jest wyłączony.";
+"preference.title.debug_auto_correction" = "Auto-korekta";
+"preference.detail.debug_auto_correction" = "Włącz automatyczną korektę podczas wpisywania tekstu w grze.";
 "preference.title.debug_show_layout_bounds" = "Pokaż granice układu";
 "preference.detail.debug_show_layout_bounds" = "Pokaż granice klipów, marginesy";
 "preference.title.debug_show_layout_overlap" = "Pokaż nakładające się układy";
 "preference.detail.debug_show_layout_overlap" = "Nakładaj każdy widok przezroczystym kolorem, aby odsłonić nakładające się widoki.";
+"controller_configurator.playstation.title.named_back" = "Wybierz";

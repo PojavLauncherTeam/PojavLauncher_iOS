@@ -8,10 +8,9 @@
 "game.menu.log_output" = "Registro de salida";
 "game.menu.custom_controls" = "Controles personalizados";
 
-"game.title.exit_code" = "El juego se cerró con el código %d";
+"game.note.airplay" = "Minecraft está siendo mostrado en la pantalla de AirPlay";
 
-// The options button at the top-right corner on iOS 12
-"Options" = "Opciones";
+"game.title.exit_code" = "El juego se cerró con el código %d";
 
 // The play button
 "Play" = "Jugar";
@@ -44,7 +43,7 @@
 "custom_controls.button_menu.add_subbutton" = "Añadir sub-botón";
 "custom_controls.control_menu.discard_changes" = "Descartar cambios";
 "custom_controls.control_menu.exit" = "Salir";
-"custom_controls.control_menu.exit.warn" = "Estás a punto de salir sin guardas los cambios.";
+"custom_controls.control_menu.exit.warn" = "Estás a punto de salir sin guardar los cambios.";
 "custom_controls.control_menu.save" = "Guardar";
 "custom_controls.control_menu.save.error.default" = "Los controles no pueden llamarse \"default\" ya que serán sobrescritos.";
 "custom_controls.control_menu.save.error.json" = "Error JSON";
@@ -62,35 +61,29 @@
 "launcher.menu.install_jar" = "Instalar .jar";
 
 "launcher.wait_jit.title" = "Esperando por JIT";
+"launcher.wait_jit.message" = "PojavLauncher utiliza la compilación Just-in-time para que Java funcione con el máximo rendimiento.";
+
+"login.error.username.outOfRange" = "El nombre de usuario debe tener al menos 3 caracteres y un máximo de 16 caracteres";
 
 "login.alert.field.username" = "Nombre de usuario";
 
 "login.jit.checking" = "Buscando JIT";
 "login.jit.enabled" = "JIT ha sido habilitado";
-"login.jit.fail.JitStreamer" = "JitStreamer error: %@";
-"login.jit.found.JitStreamer" = "JitStreamer encontrado, habilitando JIT";
 
 // Login buttons
 "login.menu.sendlogs" = "Envía tus logs";
 "login.option.select" = "Seleccione una cuenta";
 "login.option.microsoft" = "Cuenta de Microsoft";
 "login.option.local" = "Cuenta local";
-
-"login.warn.title.ram_unjb" = "Slider de memoria habilitado";
-"login.warn.message.ram_unjb" = "Ten en cuenta que al cambiar esta opción es posible que cause inestabilidades en el juego o la incapacidad para jugar.";
-
-"login.warn.title.iosver" = "Esta es la última actualización para esta versión de iOS.";
-"login.warn.message.iosver" = "Una futura versión de PojavLauncher no tendrá soporte para iOS 12 o 13, debido a inconsistencias de características y obstáculos en el desarrollo.";
-
-"login.warn.title.2gb" = "Tu dispositivo tiene RAM limitada.";
-"login.warn.message.2gb" = "Dispositivos con menos de 3GB de memoria pueden tener restricciones. Recomendamos dejar al selector automático encendido para tu dispositivo.";
 "login.warn.message.demomode" = "Como reemplazo del modo offline y el modo local, el modo demo te permitirá iniciar sesión en una cuenta de Microsoft que no tenga el juego para jugar a las trials de Java Edition, introducido en la versión 1.3.1 y versiones nuevas. Versiones anteriores a estas tienen acceso al juego entero, porque el launcher oficial no contiene estas restricciones. Ve a nuestro sitio web para saber más sobre esta transición de el modo offline.";
 
 "login.warn.title.localmode" = "El modo offline ahora es el modo local.";
-"login.warn.message.localmode" = "Puedes seguir jugando a versiones ya instaladas, pero ya no puedes descargar Minecraft sin una cuenta de paga. No habrá soporte a casos con las cuentas locales u otros medios para adquirir Minecraft consulte a las Preguntas frecuentes (FAQ) para más información.";
+"login.warn.message.localmode" = "Puedes seguir jugando versiones ya instaladas, pero ya no puedes descargar Minecraft sin una cuenta de paga. No habrá soporte a casos con las cuentas locales u otros medios para adquirir Minecraft. Consulte a las preguntas frecuentes (FAQ) para más información.";
 
 "login.msa.error.xsts.noxboxacc" = "Esta cuenta de Microsoft no poseé un perfil de Xbox. Por favor, asegúrate de haber creado un perfil de Xbox en esta cuenta.\nCódigo de error: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live no está disponible actualmente en tu país.\nCódigo de error: 2148916235";
+"login.msa.error.xsts.krverify" = "Tu cuenta debe ser verificada por tus padres para poder continuar.\nCódigo de error: 2148916236 o 2148916237.";
+"login.msa.error.xsts.underage" = "Tu cuenta debe de ser vinculada a una cuenta de padre para poder continuar.\nCódigo de error: 2148916238";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Adquiriendo el token de acceso";
 "login.msa.progress.acquireXBLToken" = "(2/5) Adquiriendo el token de Xbox Live";
@@ -113,7 +106,7 @@
 
 "preference.title.confirm" = "¿Estás seguro?";
 
-"preference.title.game_directory" = "Carpeta de Minecraft";
+"preference.title.game_directory" = "Directorio del juego";
 "preference.title.confirm.delete_game_directory" = "La instancia %@ va a ser borrada para siempre y nunca podrá ser restaurada.";
 "preference.multidir.add_directory" = "Añadir Ubicación de carpeta del juego";
 
@@ -124,6 +117,10 @@
 "preference.title.debug_logging" = "Registro de depuración";
 "preference.detail.debug_logging" = "Registra las configuraciones y acciones internas en latestlog.txt. Esto ayuda a los desarrolladores a encontrar problemas más fácilmente, pero es posible que el juego sea más lento, ya que los registros serán escritos con más frecuencia.";
 "preference.title.jitstreamer_server" = "IP del servidor JitStreamer";
+"preference.title.appicon" = "Establecer icono del app";
+"preference.detail.appicon" = "Le permite elegir entre diferentes iconos de PojavLauncher para tu pantalla de inicio.";
+"preference.title.appicon-default" = "PojavLauncher clásico claro";
+"preference.title.appicon-dark" = "PojavLauncher clásico oscuro";
 
 "preference.title.reset_warnings" = "Reiniciar todas las advertencias";
 "preference.title.done.reset_warnings" = "Todas las advertencias han sido reiniciadas.";
@@ -133,13 +130,17 @@
 "preference.title.done.reset_settings" = "Todas las configuraciones predeterminadas han sido restauradas.";
 
 "preference.title.renderer" = "Renderizador";
+"preference.title.renderer.auto" = "Automático: gl4es o ANGLE";
 "preference.title.renderer.gl4es" = "gl4es 1.1.4 - exporta a OpenGL 2.1";
+"preference.title.renderer.angle" = "ANGLE (1.17+) - exporta OpenGL 3.1 (perfil Core, limitado)";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - exporta a OpenGL 4.1";
 "preference.detail.renderer" = "Cambiar el motor de renderizado para que OpenGL utilicé";
 
 "preference.title.resolution" = "Resolución (%)";
 "preference.detail.resolution" = "Permite reducir la resolución del juego.";
-"preference.title.disable_gesture" = "Desactivar gestos";
+
+"preference.title.fullscreen_airplay" = "AirPlay en pantalla completa";
+"preference.detail.fullscreen_airplay" = "Permite presentar la ventana de juego a pantalla completa en la pantalla externa en lugar de reflejar todo en la pantalla interna.";
 "preference.title.press_duration" = "Duración para pulsado largo (ms)";
 "preference.title.button_scale" = "Escala de botones en pantalla (%)";
 "preference.detail.button_scale" = "Sube de tamaño a los botones si resultan ser muy pequeños, es usualmente necesario para usuarios de iPad.";
@@ -151,6 +152,7 @@
 "preference.detail.virtmouse_enable" = "Habilita está opcion para empezar con el ratón virtual encendido";
 "preference.title.slideable_hotbar" = "Hotbar deslizable";
 "preference.detail.slideable_hotbar" = "Permite deslizarse en el hotbar como la rueda del ratón";
+
 "preference.title.java_home" = "Usar Java 17 para Minecraft < 1.17";
 "preference.detail.java_home" = "Java 8 es utilizado por defecto para esas versiones. Activa está opción para forzar el uso de Java 17. Sin embargo, la compatibilidad con el modeado no está garantizada.";
 "preference.title.java_args" = "JRE Argumentos de lanzamiento";
@@ -164,3 +166,11 @@
 "preference.warn.allocated_memory" = "Debido a limitaciones con el sistema operativo en sí, esta opción puede causar inestabilidad en esta y mayores cantidades. Procede con cuidado.";
 "preference.title.custom_env" = "Variables de entorno";
 "preference.detail.custom_env" = "Está opción está en desarrollo.";
+
+"preference.title.debug_skip_wait_jit" = "Omitir diálogo \"Esperando por JIT\"";
+"preference.detail.debug_skip_wait_jit" = "Esto no le permite jugar sin JIT, solo la omite la comprobación del depurador, porque la comprobación falla en ciertas jailbreaks.";
+"preference.title.debug_ipad_ui" = "Activar interfaz de iPadOS";
+"preference.detail.debug_ipad_ui" = "Activa la interfaz exclusiva de iPad (alerta, teclado, etc.) si está opción está habilitada, o usar la interfaz de iPhone si está opción está desactivada.";
+"preference.title.debug_auto_correction" = "Corrección automática";
+"preference.detail.debug_auto_correction" = "Activar corrección automática al escribir texto en el juego.";
+"preference.title.debug_show_layout_bounds" = "Mostrar límites de diseño";

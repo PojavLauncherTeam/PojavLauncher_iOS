@@ -12,9 +12,6 @@
 
 "game.title.exit_code" = "Гра завершилась з кодом %d";
 
-// The options button at the top-right corner on iOS 12
-"Options" = "Опції";
-
 // The play button
 "Play" = "Грати";
 
@@ -75,27 +72,13 @@
 
 "login.jit.checking" = "Перевірка JIT";
 "login.jit.enabled" = "JIT було увімкнено";
-"login.jit.fail.JitStreamer" = "Помилка JitStreamer: %@";
-"login.jit.found.JitStreamer" = "Знайдено JitStreamer, увімкнення JIT";
-"login.jit.start.AltKit" = "Спроба використовувати AltJIT";
-"login.jit.fail.AltKit" = "Помилка AltKit: %@";
 
 // Login buttons
 "login.menu.sendlogs" = "Надіслати ваші звіти";
+"login.option.add" = "Додати обл. запис";
 "login.option.select" = "Виберіть обліковий запис";
 "login.option.microsoft" = "Обліковий запис Microsoft";
 "login.option.local" = "Локальний профіль";
-
-"login.warn.title.ram_unjb" = "Повзунок пам'яті увімкнено";
-"login.warn.message.ram_unjb" = "Майте на увазі, що зміна цього налаштування може призвести до нестабільности гри чи руйнування її взагалі.";
-
-"login.warn.title.a7" = "На жаль, PojavLauncher 2.2 не підтримується на вашому пристрої.";
-
-"login.warn.title.iosver" = "Це останнє оновлення для цієї версії iOS.";
-"login.warn.message.iosver" = "Майбутня версія PojavLauncher не підтримуватиме перешкоди для роботи iOS 12 чи 13, внаслідок невідповідності та обмеження розробки.";
-
-"login.warn.title.2gb" = "Пристрій має обмеження оперативної пам'яті.";
-"login.warn.message.2gb" = "Пристрої, що мають менше ніж 3 ГБ пам'яті, можуть наштовхуватися на обмеження пам'яті. Ми рекомендуємо залишити автоматичний вибір для пристрою.";
 
 "login.warn.title.demomode" = "Ваш акаунт демонстраційний";
 "login.warn.message.demomode" = "Як заміна в офлайн та локальний режимах, демо-режим дозволить вам увійти в обліковий запис Microsoft, який не володіє грою та грати в пробну версію Java Видання, введено в 1.3.1 і більш нових версій. Старіші версії містять повну версію гри, оскільки офіційний лаунчер не веде ці обмеження. Відвідайте наш веб-сайт, щоб дізнатися більше про цей перехід з автономного режиму.";
@@ -130,7 +113,7 @@
 
 "preference.title.confirm" = "Ви впевнені?";
 
-"preference.title.game_directory" = "Тека Minecraft";
+"preference.title.game_directory" = "Тека гри";
 "preference.title.confirm.delete_game_directory" = "Екземпляр %@ буде видалено назавжди і його не можливо відновити.";
 "preference.multidir.add_directory" = "Додати теку гри";
 
@@ -168,7 +151,6 @@
 
 "preference.title.fullscreen_airplay" = "Повноекранний AirPlay";
 "preference.detail.fullscreen_airplay" = "Дозволяє презентувати повноекранне вікно гри на зовнішньому дисплеї, а не віддзеркалювати все, що є на екрані.";
-"preference.title.disable_gesture" = "Вимкнути жести";
 "preference.title.press_duration" = "Тривалість тривалого натискання (мс)";
 "preference.detail.press_duration" = "Тривалість натискання для знищення блоків і скидання речей.";
 "preference.title.button_scale" = "Шкала екранних кнопок (%)";
@@ -181,6 +163,11 @@
 "preference.detail.virtmouse_enable" = "Увімкніть цю опцію, щоб починати з віртуальною мишею";
 "preference.title.slideable_hotbar" = "Панель швидкого доступу";
 "preference.detail.slideable_hotbar" = "Зробити повзунком швидкого доступу як колесо миші";
+
+"preference.title.gyroscope_enable" = "Увімкнути керування гіроскопом";
+"preference.title.gyroscope_sensitivity" = "Налаштування чутливості гіроскопа";
+"preference.detail.gyroscope_sensitivity" = "Налаштуйте чутливість елементів керування гіроскопом";
+
 "preference.title.java_home" = "Використовувати Java 17 для Minecraft < 1.17";
 "preference.detail.java_home" = "Java 8 використовується за замовчуванням для цих версій. Увімкніть цю опцію, щоб примусово використовувати Java 17, проте сумісність з модифікаціями не гарантується.";
 "preference.title.java_args" = "Аргументи запуску JVM";
@@ -207,3 +194,4 @@
 "preference.detail.debug_show_layout_bounds" = "Показувати межі обрізування, поля і т. д.";
 "preference.title.debug_show_layout_overlap" = "Показати накладання макета";
 "preference.detail.debug_show_layout_overlap" = "Накладання кожного перегляду з прозорим кольором, щоб розкрити огляди, що перекриваються.";
+"controller_configurator.playstation.title.named_back" = "Обрати";

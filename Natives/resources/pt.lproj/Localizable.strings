@@ -7,9 +7,6 @@
 "game.menu.log_output" = "Registro de saída";
 "game.menu.custom_controls" = "Controlos personalizados";
 
-// The options button at the top-right corner on iOS 12
-"Options" = "Opções";
-
 // The play button
 "Play" = "Jogar";
 "Snapshot" = "Snapshot";
@@ -42,10 +39,11 @@
 "preference.section.control" = "Customização dos controlos";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Ajustes do Java";
+
+"preference.title.game_directory" = "Diretório do jogo";
 "preference.title.cosmetica" = "Capas da 'Comestica'";
 
 "preference.title.renderer" = "Renderizador";
-"preference.title.disable_gesture" = "Desativar gestos";
 "preference.title.java_args" = "Argumentos JVM";
 "preference.title.auto_ram" = "RAM automática";
 "preference.detail.auto_ram" = "Ativa o ajuste automático de RAM";

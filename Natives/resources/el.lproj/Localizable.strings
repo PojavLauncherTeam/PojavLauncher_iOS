@@ -7,9 +7,6 @@
 "game.menu.log_output" = "Αρχείο Καταγραφής";
 "game.menu.custom_controls" = "Προσαρμοσμένα controls";
 
-// The options button at the top-right corner on iOS 12
-"Options" = "Ρυθμίσεις";
-
 // The play button
 "Play" = "Παίξε";
 "Snapshot" = "Στιγμιότυπο";
@@ -39,8 +36,9 @@
 "News" = "Νέα";
 "Settings" = "Ρυθμίσεις";
 
+"preference.title.game_directory" = "Κατάλογος παιχνιδιού";
+
 "preference.title.renderer" = "Απόδοση";
-"preference.title.disable_gesture" = "Απενεργοποίηση χειρονομιών";
 "preference.title.java_args" = "JVM Εντολές εκκίνησης";
 "preference.title.auto_ram" = "Αυτόματη RAM";
 "preference.detail.auto_ram" = "Ενεργοποιεί τον αυτόματο ρυθμιστή RAM";

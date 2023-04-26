@@ -5,15 +5,12 @@
 
 "game.menu.force_close" = "Chiusura forzata";
 "game.menu.confirm.force_close" = "Sicuro di voler chiudere forzatamente?";
-"game.menu.log_output" = "Uscita";
+"game.menu.log_output" = "Registro log";
 "game.menu.custom_controls" = "Controlli personalizzati";
 
 "game.note.airplay" = "Minecraft sta venendo visualizzato nel display duplicato AirPlay";
 
 "game.title.exit_code" = "Il gioco si è chiuso con il codice %d";
-
-// The options button at the top-right corner on iOS 12
-"Options" = "Impostazioni";
 
 // The play button
 "Play" = "Gioca";
@@ -35,13 +32,13 @@
 "custom_controls.button_edit.name" = "Nome";
 "custom_controls.button_edit.size" = "Dimensione";
 "custom_controls.button_edit.mapping" = "Mapping";
-"custom_controls.button_edit.orientation" = "Orientazione";
+"custom_controls.button_edit.orientation" = "Orientamento";
 "custom_controls.button_edit.toggleable" = "Attivabile";
-"custom_controls.button_edit.swipeable" = "Swipabile";
-"custom_controls.button_edit.bg_color" = "Colore sfondo";
+"custom_controls.button_edit.swipeable" = "Swipeabile";
+"custom_controls.button_edit.bg_color" = "Colore di sfondo";
 "custom_controls.button_edit.stroke_color" = "Colore tratto";
 
-"custom_controls.button_menu.add_subbutton" = "Aggiungi sub-pulsante";
+"custom_controls.button_menu.add_subbutton" = "Aggiungi sotto-pulsante";
 "custom_controls.control_menu.discard_changes" = "Annulla modifiche";
 "custom_controls.control_menu.exit" = "Esci";
 "custom_controls.control_menu.exit.warn" = "Stai per uscire senza salvare le modifiche.";
@@ -64,23 +61,13 @@
 
 "login.jit.checking" = "Controllando JIT";
 "login.jit.enabled" = "JIT è stato attivato";
-"login.jit.fail.JitStreamer" = "JitStreamer errore: %@";
-"login.jit.found.JitStreamer" = "Trovato JitStreamer, attivando JIT";
 
 // Login buttons
 "login.menu.sendlogs" = "Invia i logs";
+"login.option.add" = "Aggiungi un account";
 "login.option.select" = "Seleziona account";
 "login.option.microsoft" = "Account Microsoft";
 "login.option.local" = "Account locale";
-
-"login.warn.title.ram_unjb" = "Memory slider attivo";
-"login.warn.message.ram_unjb" = "Sii consapevole che cambiando questa impostazione si potrebbero causare instabilità o rendere in-giocabile il gioco.";
-
-"login.warn.title.iosver" = "Questo è l'ultimo aggiornamento per questa versione iOS.";
-"login.warn.message.iosver" = "Le versioni future di PojavLauncher non supporteranno iOS 12 o 13, a causa di incongruenze e difficoltà di sviluppo.";
-
-"login.warn.title.2gb" = "Il tuo dispositivo ha poca RAM.";
-"login.warn.message.2gb" = "I dispositivi con meno di 3GB di memoria possono avere limiti di memoria. Si consiglia di lasciare la dimensione automatica per il dispositivo.";
 "login.warn.message.demomode" = "In sostituzione di modalità offline e locale, la modalità demo vi permetterà di accedere ad un account Microsoft che non possiede il gioco e giocare la prova Java Edition, introdotto successivamente alla 1.3. Le versioni più vecchie contengono il gioco completo, poiché il launcher ufficiale non pone queste restrizioni. Visita il nostro sito web per saperne di più su questa transizione dalla modalità offline.";
 
 "login.warn.title.localmode" = "La modalità offline è ora modalità locale.";
@@ -102,7 +89,7 @@
 "preference.section.general" = "Impostazioni generali";
 "preference.section.video" = "Impostazioni video";
 "preference.section.footer.video" = "Il renderer automatico consente a Minecraft di decidere quale renderer usare. Diminuire la risoluzione riduce il carico di lavoro della GPU per prestazioni migliori.";
-"preference.section.control" = "Controlla personalizzazioni";
+"preference.section.control" = "Personalizza controlli";
 "preference.section.debug" = "Impostazioni di debug UI";
 "preference.section.footer.debug" = "Oltre al debug, queste impostazioni possono essere utili per i controlli personalizzati. Potrebbe essere necessario riavviare il launcher affinché le modifiche abbiano effetto.";
 //"preference.section.footer.control" = "";
@@ -111,7 +98,7 @@
 
 "preference.title.confirm" = "Sei sicuro?";
 
-"preference.title.game_directory" = "Directory Minecraft";
+"preference.title.game_directory" = "Cartella gioco";
 "preference.title.confirm.delete_game_directory" = "L'istanza %@ verrà eliminata per sempre e non può essere ripristinata.";
 "preference.multidir.add_directory" = "aggiungi game directory";
 
@@ -138,7 +125,6 @@
 
 "preference.title.resolution" = "Risoluzione (%)";
 "preference.detail.resolution" = "Permette di diminuire la risoluzione del gioco.";
-"preference.title.disable_gesture" = "Disattiva gestures";
 "preference.title.press_duration" = "Durata click-lungo (ms)";
 "preference.title.button_scale" = "Scala pulsante sullo schermo (%)";
 "preference.detail.button_scale" = "Aggiornali se i pulsanti sono troppo piccoli, di solito necessari per gli utenti iPad.";
@@ -150,12 +136,17 @@
 "preference.detail.virtmouse_enable" = "Abilita questa opzione per abilitare il mouse virtuale";
 "preference.title.slideable_hotbar" = "Hotbar scorrevole";
 "preference.detail.slideable_hotbar" = "Rendi la hotbar scorrevole come la rotellina del mouse";
+
+"preference.title.gyroscope_enable" = "Abilita controlli giroscopio";
+"preference.title.gyroscope_sensitivity" = "Sensibilità giroscopio";
+"preference.detail.gyroscope_sensitivity" = "Regola la sensibilità del giroscopio";
+
 "preference.title.java_home" = "Usa Java 17 per Minecraft < 1.17";
 "preference.detail.java_home" = "Java 8 è usato per impostazione predefinita per quelle versioni. Abilita questa opzione per forzare l'uso di Java 17, tuttavia la compatibilità con modded non è garantita.";
-"preference.title.java_args" = "Impostazioni di avvio JVM";
+"preference.title.java_args" = "Argomenti di avvio della JVM";
 "preference.detail.java_args" = "Fa attenzione, se effettui modifiche senza saper quello che fai potresti crashare.";
 "preference.placeholder.java_args" = "Specifica argomenti...";
-"preference.title.auto_ram" = "Auto RAM";
+"preference.title.auto_ram" = "RAM automatica";
 "preference.detail.auto_ram" = "Attiva regolatore RAM automatico";
 "preference.warn.auto_ram" = "Disabilitare questa opzione su un dispositivo non jailbroken può creare instabilità. Procedere con cautela.";
 "preference.title.allocated_memory" = "Memoria allocata (MB)";
@@ -174,3 +165,4 @@
 "preference.detail.debug_show_layout_bounds" = "Mostra misure clip, margini, bounds";
 "preference.title.debug_show_layout_overlap" = "Mostra sovrapposizione del layout";
 "preference.detail.debug_show_layout_overlap" = "Sovrapponi ad ogni visuale un colore trasparente per mostrare visuali sovrapposte.";
+"controller_configurator.playstation.title.named_back" = "Seleziona";
