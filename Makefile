@@ -290,7 +290,7 @@ payload: native java jre assets
 	$(call METHOD_DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs)
 	$(call METHOD_DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs_caciocavallo)
 	$(call METHOD_DIRCHECK,$(WORKINGDIR)/PojavLauncher.app/libs_caciocavallo17)
-	cp -R $(SOURCEDIR)/Natives/en.lproj/resources/LaunchScreen.storyboardc $(WORKINGDIR)/PojavLauncher.app/Base.lproj/ || exit 1
+	cp -R $(SOURCEDIR)/Natives/resources/en.lproj/LaunchScreen.storyboardc $(WORKINGDIR)/PojavLauncher.app/Base.lproj/ || exit 1
 	cp -R $(SOURCEDIR)/Natives/resources/* $(WORKINGDIR)/PojavLauncher.app/ || exit 1
 	cp $(WORKINGDIR)/*.dylib $(WORKINGDIR)/PojavLauncher.app/Frameworks/ || exit 1
 	cp -R $(SOURCEDIR)/JavaApp/libs/* $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
