@@ -12,6 +12,9 @@
 
 "game.title.exit_code" = "Trò chơi thoát với mã %d";
 
+// The options button at the top-right corner on iOS 12
+"Options" = "Tùy chọn";
+
 // The play button
 "Play" = "Chơi";
 
@@ -102,7 +105,6 @@
 "Settings" = "Thiết lập";
 
 "preference.section.general" = "Cài đặt chung";
-"preference.section.video" = "Cài đặt hình ảnh";
 "preference.section.footer.video" = "Trình kết xuất tự động cho phép Minecraft quyết định sẽ sử dụng trình kết xuất nào. Giảm độ phân giải sẽ giảm hoạt động cho GPU, giúp tăng hiệu năng.";
 "preference.section.control" = "Tuỳ chỉnh bộ điều khiển";
 "preference.section.debug" = "Cài đặt gỡ lỗi UI";
@@ -112,8 +114,6 @@
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "Bạn có chắc không?";
-
-"preference.title.game_directory" = "Đường dẫn thư mục của trò chơi";
 "preference.title.confirm.delete_game_directory" = "Thư mục %@ sẽ bị xoá vĩnh viễn và không thể phục hồi.";
 "preference.multidir.add_directory" = "Thêm thư mục trò chơi";
 
@@ -140,16 +140,15 @@
 
 "preference.title.renderer" = "Trình kết xuất";
 "preference.title.renderer.auto" = "Tự động: gl4es hoặc ANGLE";
-"preference.title.renderer.gl4es" = "gl4es 1.1.4 - xuất ra OpenGL 2.1";
 "preference.title.renderer.angle" = "tinygl4angle (1.17+) - xuất ra OpenGL 3.2 (Core Profile, bị giới hạn)";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) - xuất ra OpenGL 4.1";
-"preference.detail.renderer" = "Thay đổi kết xuất OpenGL được sử dụng";
 
 "preference.title.resolution" = "Độ phân giải (%)";
 "preference.detail.resolution" = "Cho phép thay đổi độ phân giải trò chơi.";
 
 "preference.title.fullscreen_airplay" = "AirPlay toàn màn hình";
 "preference.detail.fullscreen_airplay" = "Cho phép chiếu toàn màn hình cửa sổ game thay vì chiếu mọi thứ trên màn hình ngoài.";
+"preference.title.disable_gesture" = "Tắt cử chỉ";
 "preference.title.press_duration" = "Độ dài nhấn giữ (ms)";
 "preference.detail.press_duration" = "Khoảng thời gian chạm giữ để phá khối và ném đồ vật.";
 "preference.title.button_scale" = "Độ rộng nút trên màn hình (%)";
@@ -162,11 +161,6 @@
 "preference.detail.virtmouse_enable" = "Bật tùy chọn này để khởi động trò chơi với chuột ảo được bật sẵn";
 "preference.title.slideable_hotbar" = "Thanh vật phẩm có thể trượt";
 "preference.detail.slideable_hotbar" = "Làm thanh vật phẩm có thể trượt, hoạt động như cuộn nút giữa chuột";
-
-"preference.title.gyroscope_enable" = "Bật con quay hồi chuyển";
-"preference.title.gyroscope_sensitivity" = "Độ nhạy con quay hồi chuyển";
-"preference.detail.gyroscope_sensitivity" = "Điều chỉnh độ nhạy của điều khiển bằng con quay hồi chuyển";
-
 "preference.title.java_home" = "Sử dụng Java 17 cho Minecraft < 1.17";
 "preference.detail.java_home" = "Mặc định, Java 8 được sử dụng cho các phiên bản này. Sử dụng tùy chọn này có thể làm mất tính tương thích với các trình khởi động mod.";
 "preference.title.java_args" = "Các chỉ số chạy JVM";
@@ -193,4 +187,3 @@
 "preference.detail.debug_show_layout_bounds" = "Hiển thị ranh giới, lề";
 "preference.title.debug_show_layout_overlap" = "Hiện sắp xếp chồng lên nhau";
 "preference.detail.debug_show_layout_overlap" = "Đặt màu nền cho mỗi vùng để phát hiện những vùng bị chồng.";
-"controller_configurator.playstation.title.named_back" = "Chọn";
