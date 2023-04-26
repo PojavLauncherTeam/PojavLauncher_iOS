@@ -7,9 +7,6 @@
 "game.menu.log_output" = "Registra la sortida";
 "game.menu.custom_controls" = "Custom controls";
 
-// The options button at the top-right corner on iOS 12
-"Options" = "Options";
-
 // The play button
 "Play" = "Play";
 "Snapshot" = "Snapshot";
