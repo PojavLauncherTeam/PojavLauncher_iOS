@@ -7,9 +7,6 @@
 "game.menu.log_output" = "Журналъ";
 "game.menu.custom_controls" = "Пользовательское управленіе";
 
-// The options button at the top-right corner on iOS 12
-"Options" = "Настройки";
-
 // The play button
 "Play" = "Играть";
 "Snapshot" = "Пробныя версіи";
@@ -39,8 +36,9 @@
 "News" = "Извѣстія лаунчера";
 "Settings" = "Настройки";
 
+"preference.title.game_directory" = "Папка игры";
+
 "preference.title.renderer" = "Визуализаторъ";
-"preference.title.disable_gesture" = "Отключеніе жестовъ";
 "preference.title.java_args" = "Аргументы запуска J.V.M.";
 "preference.title.auto_ram" = "Автоматическое выдѣленіе О.З.У.";
 "preference.detail.auto_ram" = "Автоматически управляетъ количествомъ выдѣленнаго О.З.У.";
