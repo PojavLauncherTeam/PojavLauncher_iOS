@@ -75,13 +75,29 @@
 
 "login.jit.checking" = "Проверка JIT...";
 "login.jit.enabled" = "JIT активирован";
+"login.jit.fail.JitStreamer" = "Ошибка JitStreamer: %@";
+"login.jit.found.JitStreamer" = "Обнаружен JitStreamer, запуск JIT...";
+"login.jit.start.AltKit" = "Попытка запуска AltJIT";
+"login.jit.fail.AltKit" = "Ошибка AltKit: %@";
 
 // Login buttons
 "login.menu.sendlogs" = "Отправить журнал";
 "login.option.add" = "Добавить учётную запись";
 "login.option.select" = "Учётные записи";
+"login.option.demo" = "Демонстрационный режим";
 "login.option.microsoft" = "Учётная запись Microsoft";
 "login.option.local" = "Локальная учётная запись";
+
+"login.warn.title.ram_unjb" = "Ползунок памяти включён";
+"login.warn.message.ram_unjb" = "Учтите, что изменение этой настройки может привести к нестабильности или невозможности играть в принципе.";
+
+"login.warn.title.a7" = "PojavLauncher 2.2 не поддерживается на этом устройстве.";
+
+"login.warn.title.iosver" = "Это последнее обновление для вашей версии iOS.";
+"login.warn.message.iosver" = "Следующие версии PojavLauncher не будут работать на iOS 12 и 13 из-за функциональной ограниченности и сложностей в разработке.";
+
+"login.warn.title.2gb" = "Устройство с малым объёмом ОЗУ.";
+"login.warn.message.2gb" = "Устройства, имеющие менее 2ГБ ОЗУ, могут столкнуться с нехваткой памяти. Для вашего устройства рекомендуется оставить автоматический выбор.";
 
 "login.warn.title.demomode" = "Демонстрационный режим";
 "login.warn.message.demomode" = "В качестве замены локальному и офлайн-режиму, демонстрационный режим позволяет использовать учётную запись Microsoft для пробной игры в Java Edition 1.3.1 и выше без необходимости покупать лицензию. Более старые версии не содержат проверки лицензии и полностью доступны в любом режиме, поскольку официальный лаунчер не накладывает на них ограничений. Более подробно об этом можно узнать на нашем сайте.";
@@ -105,6 +121,7 @@
 "Settings" = "Настройки";
 
 "preference.section.general" = "Основные настройки";
+"preference.section.video" = "Настройки графики";
 "preference.section.footer.video" = "Автоматический режим позволяет игре самой определять оптимальную реализацию. Уменьшение разрешения снижает нагрузку на ГП и улучшает производительность.";
 "preference.section.control" = "Настройка управления";
 "preference.section.debug" = "Настройки отладки";
@@ -114,6 +131,8 @@
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "Вы уверены?";
+
+"preference.title.game_directory" = "Расположение Minecraft";
 "preference.title.confirm.delete_game_directory" = "Профиль %@ будет навсегда удалён без возможности восстановления.";
 "preference.multidir.add_directory" = "Добавить расположение";
 
@@ -140,8 +159,10 @@
 
 "preference.title.renderer" = "Визуализатор";
 "preference.title.renderer.auto" = "Авто: gl4es или ANGLE";
+"preference.title.renderer.gl4es" = "gl4es 1.1.4 — обеспечивает OpenGL 2.1";
 "preference.title.renderer.angle" = "ANGLE (1.17+) — обеспечивает OpenGL 3.2 (ограниченно, Core Profile)";
 "preference.title.renderer.zink" = "Zink (Mesa 21.0) — обеспечивает OpenGL 4.1";
+"preference.detail.renderer" = "Выберите используемую графическую реализацию OpenGL";
 
 "preference.title.resolution" = "Разрешение (%)";
 "preference.detail.resolution" = "Можно уменьшить разрешение игры в целях быстродействия.";
