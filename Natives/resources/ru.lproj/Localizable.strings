@@ -166,9 +166,13 @@
 
 "preference.title.fullscreen_airplay" = "Полноэкранный AirPlay";
 "preference.detail.fullscreen_airplay" = "Транслировать на внешний монитор только окно игры во весь экран вместо отображения всего, что происходит на устройстве.";
+"preference.title.silence_other_audio" = "Приостанавливать воспроизведение при открытии игры";
+"preference.detail.silence_other_audio" = "При запуске игры PojavLauncher будет приостанавливать воспроизведение звука другими приложениями (например, музыку).";
+"preference.title.default_gamepad_ctrl" = "Настройки контроллера";
+"preference.title.hardware_hide" = "Скрывать раскладку при подключении внешних устройств ввода";
 "preference.detail.hardware_hide" = "Автоматически скрывать раскладку экранного управления при подключении мыши или контроллера.";
 "preference.title.gesture_mouse" = "Жесты мыши";
-"preference.detail.gesture_mouse" = "Включить имитацию действий мыши — двойное касание для размещения блока, удержание для его добычи и прокрутку двумя пальцами.";
+"preference.detail.gesture_mouse" = "Включить имитацию действий мыши — двойное касание для размещения блока, удержание для его разрушения и прокрутку двумя пальцами.";
 "preference.title.gesture_hotbar" = "Жесты панели инструментов";
 "preference.detail.gesture_hotbar" = "Включить жесты выбора слотов, выбрасывания предметов и их перемещения во вторую руку.";
 "preference.title.press_duration" = "Длительность нажатия (мс)";
@@ -185,6 +189,7 @@
 "preference.detail.slideable_hotbar" = "Включить прокрутку слотов хотбара как при использовании колёсика мыши.";
 
 "preference.title.gyroscope_enable" = "Управление наклоном";
+"preference.detail.gyroscope_enable" = "Это позволит вам управлять положением камеры в игре путём вращения устройства.";
 "preference.title.gyroscope_sensitivity" = "Чувствительность гироскопа";
 "preference.detail.gyroscope_sensitivity" = "Изменить чувствительность датчика вращения.";
 
