@@ -80,8 +80,15 @@
 "login.menu.sendlogs" = "Kirim log-log kamu";
 "login.option.add" = "Tambah akun";
 "login.option.select" = "Pilih akun";
+"login.option.demo" = "Akun demo";
 "login.option.microsoft" = "Akun Microsoft";
 "login.option.local" = "Akun lokal";
+
+"login.warn.title.legacy_device" = "Rilis PojavLauncher selanjutnya tidak kompatibel dengan perangkat ini.";
+"login.warn.message.legacy_device" = "Untuk menggunakan rilis selanjutnya, perangkat yang dapat menggunakan iOS 14 diperlukan.";
+"login.warn.title.legacy_ios" = "Rilis PojavLauncher selanjutnya memerlukan pembaruan sistem.";
+"login.warn.message.legacy_ios" = "Untuk menggunakan rilis selanjutnya, perangkat yang dapat menggunakan iOS 14 diperlukan.";
+"login.warn.title.limited_ram" = "Perangkat ini memiliki jumlah memori terbatas yang tersedia.";
 
 "login.warn.title.demomode" = "Akun anda adalah akun demo";
 "login.warn.message.demomode" = "Sebagai pengganti offline dan mode lokal, mode demo akan memperbolehkan anda masuk ke akun Microsoft yang tidak mempunyai permainannya dan main versi Java Edition Trial, diadakan sejak versi 1.3.1 dan seterusnya. Versi lebih lama mempunyai permainan penuhnya, karena peluncur resmi tidak memberlakukan restriksi ini. Lihat website kita untuk dapat mempelajari lebih lanjut tentang transisi dari mode offline.";
@@ -194,4 +201,6 @@
 "preference.detail.debug_show_layout_bounds" = "Tampilkan batas klip, margin";
 "preference.title.debug_show_layout_overlap" = "Tampilkan layout yang overlapping";
 "preference.detail.debug_show_layout_overlap" = "Lapis semua view dengan sebuah warna transparen untuk mengungkap view yang overlapping.";
+"controller_configurator.title.type.xbox" = "Xbox";
+"controller_configurator.title.type.playstation" = "PlayStation";
 "controller_configurator.playstation.title.named_back" = "Pilih";
