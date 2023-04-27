@@ -288,13 +288,6 @@ void generateAndSaveDefaultControl() {
         @"${bottom} - ${margin}",
         BTN_RECT
     )];
-    // Additional button for old versions that don't enter fullscreen automatically
-    [dict[@"mControlDataList"] addObject:createButton(@"Fullscreen",
-        (int[]){GLFW_KEY_F11,0,0,0},
-        @"${right} - ${margin} * 2 - ${width}",
-        @"${bottom} - ${margin}",
-        BTN_RECT
-    )];
     NSOutputStream *os = [[NSOutputStream alloc] initToFileAtPath:defaultPath append:NO];
     [os open];
     [NSJSONSerialization writeJSONObject:dict toStream:os options:NSJSONWritingPrettyPrinted error:nil];
