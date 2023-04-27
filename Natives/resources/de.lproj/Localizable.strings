@@ -180,6 +180,11 @@
 "preference.detail.silence_with_switch" = "Aktivieren, um Audio zu deaktivieren, wenn der Lautlos-Modus aktiviert ist. Kopfhörer und externe Lautsprecher sind nicht betroffen.";
 "preference.title.default_gamepad_ctrl" = "Steuerungs-Konfiguration";
 "preference.title.hardware_hide" = "Steuerelemente ausblenden, wenn Hardware verbunden ist";
+"preference.detail.hardware_hide" = "Aktivieren Sie die automatische Deaktivierung des Overlays auf dem Bildschirm, wenn eine Maus oder ein Game-Controller angeschlossen ist.";
+"preference.title.gesture_mouse" = "Mausgesten";
+"preference.detail.gesture_mouse" = "Ermöglicht Gesten wie Tippen zum Platzieren des Blocks, halten um den Block abzubauen, mit 2 Fingern zu scrollen";
+"preference.title.gesture_hotbar" = "Hotbar Gesten";
+"preference.detail.gesture_hotbar" = "Aktiviert Gesten wie Berühren des Hotbar Slot, tausche Gegenstände zwischen der Hand aus, wirf Items";
 "preference.title.press_duration" = "Dauer eines langen Touch (ms)";
 "preference.detail.press_duration" = "Auslösedauer um Blöcke zu zerstören und Items zu droppen.";
 "preference.title.button_scale" = "Schalflächengröße (%)";
@@ -194,6 +199,9 @@
 "preference.detail.slideable_hotbar" = "Macht die Hotbar wie mit dem Mausrad schiebbar";
 
 "preference.title.gyroscope_enable" = "Aktiviere Gyroskop-Steuerung";
+"preference.detail.gyroscope_enable" = "Wenn du dies aktivierst, kannst du dich im Spiel drehen, indem du dein Gerät drehst";
+"preference.title.gyroscope_invert_x_axis" = "Gyroskop umkehren";
+"preference.detail.gyroscope_invert_x_axis" = "Wechselt die X-Achse des Gyroskops";
 "preference.title.gyroscope_sensitivity" = "Gyroskop-Steuerungs-Empfindlichkeit";
 "preference.detail.gyroscope_sensitivity" = "Passe die Empfindlichkeit der Gyroskop-Steuerung an";
 
@@ -220,4 +228,46 @@
 "preference.detail.debug_show_layout_bounds" = "Zuschnittbegrenzungen, Ränder anzeigen";
 "preference.title.debug_show_layout_overlap" = "Layoutüberlappungen anzeigen";
 "preference.detail.debug_show_layout_overlap" = "Überlagere jede Ansicht mit einer transparenten Farbe, um überlappende Ansichten anzuzeigen.";
+
+"controller_configurator.title.current" = "Gamepads Konfigurationsdatei";
+"controller_configurator.title.type.xbox" = "XBox";
+"controller_configurator.title.type.playstation" = "PlayStation";
+
+"controller_configurator.xbox.title.bumper_left" = "Linker Stoß";
+"controller_configurator.xbox.title.bumper_right" = "Rechter Stoß";
+"controller_configurator.xbox.title.trigger_left" = "Linker Auslöser";
+"controller_configurator.xbox.title.trigger_right" = "Rechter Auslöser";
+"controller_configurator.xbox.title.named_back" = "Anleitung";
+"controller_configurator.xbox.title.named_start" = "Menü";
+"controller_configurator.xbox.title.named_a" = "A";
+"controller_configurator.xbox.title.named_b" = "B";
+"controller_configurator.xbox.title.named_x" = "X";
+"controller_configurator.xbox.title.named_y" = "Y";
+"controller_configurator.xbox.title.dpad_up" = "Hoch";
+"controller_configurator.xbox.title.dpad_down" = "Unten";
+"controller_configurator.xbox.title.dpad_left" = "Links";
+"controller_configurator.xbox.title.dpad_right" = "Rechts";
+"controller_configurator.xbox.title.thumb_left" = "Linksklick";
+"controller_configurator.xbox.title.thumb_right" = "Rechtsklick";
+
+"controller_configurator.playstation.title.bumper_left" = "L1";
+"controller_configurator.playstation.title.bumper_right" = "R1";
+"controller_configurator.playstation.title.trigger_left" = "L2";
+"controller_configurator.playstation.title.trigger_right" = "R2";
 "controller_configurator.playstation.title.named_back" = "Auswählen";
+"controller_configurator.playstation.title.named_start" = "Start";
+"controller_configurator.playstation.title.named_a" = "Kreuz";
+"controller_configurator.playstation.title.named_b" = "Kreis";
+"controller_configurator.playstation.title.named_x" = "Quadrat";
+"controller_configurator.playstation.title.named_y" = "Dreieck";
+"controller_configurator.playstation.title.dpad_up" = "Hoch";
+"controller_configurator.playstation.title.dpad_down" = "Unten";
+"controller_configurator.playstation.title.dpad_left" = "Links";
+"controller_configurator.playstation.title.dpad_right" = "Rechts";
+"controller_configurator.playstation.title.thumb_left" = "L3";
+"controller_configurator.playstation.title.thumb_right" = "R3";
+
+"controller_configurator.section.config_files" = "Aktuelle Konfiguration";
+"controller_configurator.section.game_mappings" = "Spielzuordnung";
+"controller_configurator.section.footer.game_mappings" = "Bindet, wenn die Maus im Spiel gesperrt ist.";
+"controller_configurator.section.menu_mappings" = "Menü-Zuordnungen";
