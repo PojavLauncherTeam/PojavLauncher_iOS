@@ -98,6 +98,7 @@
 "login.warn.message.demomode" = "演示模式作为离线和本地模式的替代，将允许你登录到一个尚未购买游戏的微软账户中游玩 1.3.1 及更新版本的试玩版本。因为官方启动器的一些特性，在较旧版本中会包含完整的游戏。详情请参阅我们的网站，了解更多关于离线模式的过渡。";
 
 "login.warn.title.localmode" = "离线模式现在是本地模式了。";
+"login.warn.message.localmode" = "您可以继续游玩已经安装的版本，但是如果没有正版账户，您将无法再下载其他版本。任何有关本地账户以及如何获取其他 Minecraft 版本的问题将不会得到任何解答。";
 
 "login.msa.error.xsts.noxboxacc" = "此微软账户没有注册 Xbox 账户。请确认您已注册了 Xbox 账户。\n错误代码：2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live 目前在您的国家/地区不可用。\n错误代码：2148916235";
@@ -116,6 +117,7 @@
 
 "preference.section.general" = "启动器基础设置";
 "preference.section.video" = "视频设置";
+"preference.section.footer.video" = "自动渲染器允许 PojavLauncher 选择基于 Minecraft 版本的最佳选项。减少分辨率降低GPU 工作量以提高性能。";
 "preference.section.control" = "自定义控制键";
 "preference.section.debug" = "UI设置";
 "preference.section.footer.debug" = "除了调试外，这些设置可能对自定义控件有用。您可能需要重新启动启动器才能使更改生效。";
@@ -158,6 +160,11 @@
 "preference.title.done.erase_demo_data" = "所有演示游戏数据已被清除。";
 
 "preference.title.renderer" = "渲染器";
+
+"preference.title.renderer.release.auto" = "自动";
+"preference.title.renderer.release.gl4es" = "holy gl4es";
+"preference.title.renderer.release.angle" = "ANGLE";
+"preference.title.renderer.release.zink" = "Zink";
 
 "preference.title.renderer.debug.auto" = "自动：gl4es 或 ANGLE";
 "preference.title.renderer.debug.gl4es" = "gl4es 1.1.4 - OpenGL版本2.1";
@@ -205,7 +212,9 @@
 "preference.detail.gyroscope_sensitivity" = "调整陀螺仪控制的灵敏度";
 
 "preference.title.java_home" = "游戏版本小于 1.17 时仍然使用 Java 17";
+"preference.detail.java_home" = "这些版本默认使用 Java 8。启用此选项可强制使用 Java 17，但不保证兼容性。";
 "preference.title.java_args" = "JVM 启动参数";
+"preference.detail.java_args" = "当启动 Minecraft 时将参数传递到 Java。小心，如果修改不正确，可能会使游戏崩溃。";
 "preference.placeholder.java_args" = "自定义参数...";
 "preference.title.auto_ram" = "自动设置内存大小";
 "preference.detail.auto_ram" = "启用内存自动调节";
@@ -214,6 +223,7 @@
 "preference.detail.allocated_memory" = "控制给 Minecraft 分配多少内存";
 "preference.warn.allocated_memory" = "由于系统的限制,可能会导致游戏不稳定";
 "preference.title.custom_env" = "环境变量";
+"preference.detail.custom_env" = "此选项正在构建中。在此期间创建并编辑 custom_env.txt。";
 
 "preference.title.debug_skip_wait_jit" = "跳过获取\"JIT(Just-in-time)\"请求";
 "preference.detail.debug_skip_wait_jit" = "这并不是让您在没有 JIT 的情况下启动，而是跳过调试检查，因为在越狱设备上会检查失败。";
