@@ -60,6 +60,9 @@
 
 "init.migrateDir" = "Data folder PojavLauncher sekarang di %@. Semua datamu yang ada telah dipindah ke lokasi baru tersebut.";
 
+"launcher.mcl.downloading_file" = "Mengunduh %@";
+"launcher.mcl.error_download" = "Gagal untuk mengunduh %@: %@";
+
 "launcher.menu.custom_controls" = "Kontrol kustom";
 "launcher.menu.install_jar" = "Install .jar";
 
