@@ -144,6 +144,9 @@
 "preference.title.renderer" = "Визуализатор";
 
 "preference.title.renderer.release.auto" = "Авто";
+"preference.title.renderer.release.gl4es" = "holy gl4es";
+"preference.title.renderer.release.angle" = "ANGLE";
+"preference.title.renderer.release.zink" = "Zink";
 
 "preference.title.renderer.debug.auto" = "Авто: gl4es или ANGLE";
 "preference.title.renderer.debug.gl4es" = "gl4es 1.1.4 — обеспечивает OpenGL 2.1";
@@ -175,6 +178,7 @@
 "preference.detail.gyroscope_sensitivity" = "Изменить чувствительность датчика вращения.";
 
 "preference.title.java_home" = "Java 17 для старых версий Minecraft";
+"preference.detail.java_home" = "Для этих версий по умолчанию используется Java 8. Включение приведёт к принудительному использованию Java 17, однако это может нарушить совместимость.";
 "preference.title.java_args" = "Аргументы запуска JVM";
 "preference.placeholder.java_args" = "Укажите аргументы...";
 "preference.title.auto_ram" = "Автоматическое выделение ОЗУ";
@@ -184,6 +188,7 @@
 "preference.detail.allocated_memory" = "Управляет тем, сколько памяти выделится для Minecraft";
 "preference.warn.allocated_memory" = "Из-за ограничений операционной системы может вызвать нестабильность при этом и более высоких значениях. Используйте с осторожностью.";
 "preference.title.custom_env" = "Переменные среды";
+"preference.detail.custom_env" = "Эта функция ещё в разработке. Пока что вручную создайте и отредактируйте файл custom_env.txt.";
 
 "preference.title.debug_skip_wait_jit" = "Пропускать этап ожидания JIT";
 "preference.detail.debug_skip_wait_jit" = "Без JIT это запускать игру не позволит, однако исправит ошибку запуска на некоторых устройствах с jailbreak за счёт пропуска проверки отладчика.";
