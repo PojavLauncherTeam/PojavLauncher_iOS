@@ -84,6 +84,7 @@
 "login.warn.message.demomode" = "Chế độ chơi thử sẽ thay thế các chế độ ngoại tuyến và nội bộ. Nó cho phép bạn đăng nhập bằng tài khoản Microsoft chưa mua trò chơi và chơi bản chơi thử, được thêm vào từ phiên bản 1.3.1. Các phiên bản cũ hơn vẫn có bản đầy đủ, vì trình khởi chạy chính thức không đặt bất kì giới hạn nào. Xem trang web của chúng tôi để biết thêm về sự chuyển dời từ chế độ ngoại tuyến.";
 
 "login.warn.title.localmode" = "Chế độ ngoại tuyến bây giờ là Chế độ nội bộ.";
+"login.warn.message.localmode" = "Bạn có thể tiếp tục chơi các phiên bản đã cài đặt, nhưng bạn không còn có thể tải xuống Minecraft nếu không có tài khoản trả phí. Sẽ không có hỗ trợ nào được cung cấp cho các sự cố với tài khoản cục bộ hoặc các phương tiện khác để mua Minecraft.";
 
 "login.msa.error.xsts.noxboxacc" = "Chưa có một hồ sơ Xbox được đăng kí cho tài khoản Microsoft này. Hãy chắc chắn rằng bạn đã tạo một hồ sơ.\nMã lỗi: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live không khả dụng ở quốc gia của bạn.\nMã lỗi: 2148916235";
@@ -102,6 +103,7 @@
 
 "preference.section.general" = "Cài đặt chung";
 "preference.section.video" = "Cài đặt hình ảnh";
+"preference.section.footer.video" = "Trình kết xuất tự động cho phép PojavLauncher chọn tùy chọn tốt nhất dựa trên phiên bản Minecraft. Giảm độ phân giải làm giảm khối lượng công việc GPU để có hiệu suất tốt hơn.";
 "preference.section.control" = "Tuỳ chỉnh bộ điều khiển";
 "preference.section.debug" = "Cài đặt gỡ lỗi UI";
 "preference.section.footer.debug" = "Ngoài gỡ lỗi, những cài đặt này có thể giúp ích cho tùy biến điều khiển. Bạn có thể phải khởi động lại launcher.";
@@ -138,6 +140,11 @@
 
 "preference.title.renderer" = "Trình kết xuất";
 
+"preference.title.renderer.release.auto" = "Tự động";
+"preference.title.renderer.release.gl4es" = "gl4es Thần Thánh";
+"preference.title.renderer.release.angle" = "GÓC";
+"preference.title.renderer.release.zink" = "Kẽm";
+
 "preference.title.renderer.debug.auto" = "Tự động: gl4es hoặc ANGLE";
 "preference.title.renderer.debug.gl4es" = "gl4es 1.1.4 - xuất ra OpenGL 2.1";
 "preference.title.renderer.debug.angle" = "tinygl4angle (1.17+) - xuất ra OpenGL 3.2 (Core Profile, bị giới hạn)";
@@ -150,6 +157,8 @@
 
 "preference.title.fullscreen_airplay" = "AirPlay toàn màn hình";
 "preference.detail.fullscreen_airplay" = "Cho phép chiếu toàn màn hình cửa sổ game thay vì chiếu mọi thứ trên màn hình ngoài.";
+"preference.detail.gesture_mouse" = "Bật các cử chỉ, chẳng hạn như nhấn để đặt khối, giữ để phá khối, cuộn bằng 2";
+"preference.title.gesture_hotbar" = "Cử Chỉ Hotbar";
 "preference.title.press_duration" = "Độ dài nhấn giữ (ms)";
 "preference.detail.press_duration" = "Khoảng thời gian chạm giữ để phá khối và ném đồ vật.";
 "preference.title.button_scale" = "Độ rộng nút trên màn hình (%)";
@@ -168,7 +177,9 @@
 "preference.detail.gyroscope_sensitivity" = "Điều chỉnh độ nhạy của điều khiển bằng con quay hồi chuyển";
 
 "preference.title.java_home" = "Sử dụng Java 17 cho Minecraft < 1.17";
+"preference.detail.java_home" = "Java 8 được sử dụng theo mặc định cho các phiên bản đó. Bật tùy chọn này để bắt buộc sử dụng Java 17, tuy nhiên khả năng tương thích không được đảm bảo.";
 "preference.title.java_args" = "Các chỉ số chạy JVM";
+"preference.detail.java_args" = "Truyền đối số cho Java khi khởi chạy Minecraft. Hãy cẩn thận, điều này có thể khiến trò chơi bị sập nếu sửa đổi không đúng cách.";
 "preference.placeholder.java_args" = "Nhập các chỉ số...";
 "preference.title.auto_ram" = "RAM tự động";
 "preference.detail.auto_ram" = "Bật tự động điều chỉnh RAM";
@@ -177,6 +188,7 @@
 "preference.detail.allocated_memory" = "Điều chỉnh số lượng bộ nhớ được cung cấp cho Minecraft";
 "preference.warn.allocated_memory" = "Do những giới hạn của hệ điều hành, tùy chọn này có thể gây ra sự cố với mức phân bổ này hoặc cao hơn. Chú ý khi tiếp tục.";
 "preference.title.custom_env" = "Các chỉ số môi trường";
+"preference.detail.custom_env" = "Tùy chọn này đang được xây dựng. Trong khi chờ đợi, hãy tạo và chỉnh sửa custom_env.txt.";
 
 "preference.title.debug_skip_wait_jit" = "Bỏ qua thông bảo \"Đang đợi JIT\"";
 "preference.detail.debug_skip_wait_jit" = "Tùy chọn này không cho phép chạy trò chơi mà không có JIT, thay vào đó trình khởi chạy sẽ bỏ qua việc kiểm tra. Hữu ích nếu kiểm tra thất bại với một số trình jailbreak.";
