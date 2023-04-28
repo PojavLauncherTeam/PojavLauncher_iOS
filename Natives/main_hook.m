@@ -39,6 +39,7 @@ void* hooked_dlopen(const char* path, int mode) {
         return orig_dlopen(NULL, mode);
     }
 
+    // NOTE: no longer used, if jre has Pojav's libawt_xawt
     if (getenv("POJAV_PREFER_EXTERNAL_JRE") && [@(path) hasSuffix:@"/libawt_xawt.dylib"]) {
         // In this environment, libawt_xawt is not available/X11 only.
         // hook dlopen to use our libawt_xawt
@@ -77,12 +78,18 @@ int hooked_open(const char *path, int oflag, ...) {
 
 void init_hookFunctions() {
     void *orig_dlopen_local;
-    rebind_symbols((struct rebinding[4]){
+    if (@available(iOS 14, *)) {
+        // Skip hooking dlopen
+    } else {
+        rebind_symbols((struct rebinding[1]){
+            {"dlopen", hooked_dlopen, (void *)&orig_dlopen_local}
+        }, 1);
+    }
+    rebind_symbols((struct rebinding[3]){
         {"abort", hooked_abort, (void *)&orig_abort},
-        {"dlopen", hooked_dlopen, (void *)&orig_dlopen_local},
         {"exit", hooked_exit, (void *)&orig_exit},
         {"open", hooked_open, (void *)&orig_open}
-    }, 4);
+    }, 3);
     // workaround weird pointer overwritten issue in jre 17.0.7
     orig_dlopen = orig_dlopen_local;
 }
