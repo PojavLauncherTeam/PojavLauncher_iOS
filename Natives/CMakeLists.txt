@@ -160,6 +160,7 @@ target_link_libraries(PojavLauncher
   "-framework AltKit"
   "-framework AuthenticationServices"
   "-framework AVFoundation"
+  "-framework CAltKit"
   "-framework CoreGraphics"
   "-framework CoreImage"
   "-framework CoreMotion"
