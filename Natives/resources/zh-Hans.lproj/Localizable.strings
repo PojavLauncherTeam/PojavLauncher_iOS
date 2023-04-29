@@ -145,6 +145,7 @@
 "preference.detail.appicon" = "允许您为 PojavLauncher 选择不同的主屏幕图标。";
 "preference.title.appicon-default" = "设置 PojavLauncher 图标为浅色";
 "preference.title.appicon-dark" = "设置 PojavLauncher 图标为深色";
+"preference.title.appicon-development" = "已封装开发";
 "preference.title.hidden_sidebar" = "默认隐藏主菜单侧边栏";
 "preference.detail.hidden_sidebar" = "允许您在 iOS 14 及更高版本中默认或旋转中隐藏主菜单上的侧边栏。";
 
@@ -256,6 +257,8 @@
 "controller_configurator.xbox.title.dpad_down" = "下";
 "controller_configurator.xbox.title.dpad_left" = "左";
 "controller_configurator.xbox.title.dpad_right" = "右";
+"controller_configurator.xbox.title.thumb_left" = "左手套装";
+"controller_configurator.xbox.title.thumb_right" = "右拇指单击";
 
 "controller_configurator.playstation.title.bumper_left" = "L1";
 "controller_configurator.playstation.title.bumper_right" = "R1";
