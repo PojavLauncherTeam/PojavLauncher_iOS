@@ -75,6 +75,8 @@
 
 "login.jit.checking" = "Memeriksa JIT";
 "login.jit.enabled" = "JIT telah dinyalakan";
+"login.jit.fail" = "JIT tidak dapat diaktifkan.";
+"login.jit.fail.title" = "JIT tidak bisa diaktifkan pada perangkat anda.";
 
 // Login buttons
 "login.menu.sendlogs" = "Kirim log-log kamu";
