@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   StringLocalization
 */
@@ -11,9 +11,6 @@
 "game.note.airplay" = "Minecraft は AirPlay ミラーディスプレイに表示されています";
 
 "game.title.exit_code" = "コード %dでゲームを終了しました";
-
-// The options button at the top-right corner on iOS 12
-"Options" = "設定";
 
 // The play button
 "Play" = "プレイ";
@@ -87,7 +84,6 @@
 "login.warn.message.demomode" = "オフラインモードとローカルモードへの置き換えとして デモモードでは、ゲームを所有していないMicrosoftアカウントにサインインし、Java Editionの試用版をプレイすることができます。 1.3で導入されました。以前のバージョンでは、公式ランチャーがこれらの制限を設けていないため、以前のバージョンではフルゲームが含まれています。 このオフラインモードからの移行の詳細については、当社のウェブサイトをご覧ください。";
 
 "login.warn.title.localmode" = "オフラインモードは現在ローカルモードです。";
-"login.warn.message.localmode" = "インストール済みのバージョンは引き続きプレイできますが、有料アカウントなしで Minecraft をダウンロードすることはできません。 ローカルアカウントやその他のマインクラフトの取得手段についてはサポートは提供されません。詳細についてはFAQをご覧ください。";
 
 "login.msa.error.xsts.noxboxacc" = "このMicrosoftアカウントにXboxプロファイルが登録されていません。Xboxプロファイルを作成したことを確認してください。\nエラーコード: 2148916233";
 "login.msa.error.xsts.noxbox" = "現在お住まいの国では Xbox Live がご利用いただけません。\nエラーコード: 2148916235";
@@ -105,7 +101,6 @@
 "Settings" = "設定";
 
 "preference.section.general" = "一般設定";
-"preference.section.footer.video" = "自動レンダラーを使用すると、Minecraftはどのレンダラーを使用するかを決定できます。解像度を下げると、パフォーマンスを向上させるためにGPUワークロードを削減します。";
 "preference.section.control" = "制御のカスタマイズ";
 "preference.section.debug" = "UIデバッグ設定";
 "preference.section.footer.debug" = "デバッグとは別に、これらの設定はカスタムコントロールに役立ちます。変更を有効にするにはランチャーを再起動する必要があります。";
@@ -114,6 +109,8 @@
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "よろしいですか？";
+
+"preference.title.game_directory" = "ゲームのディレクトリ";
 "preference.title.confirm.delete_game_directory" = "インスタンス %@ は永久に削除されるため、復元できません。";
 "preference.multidir.add_directory" = "ゲームディレクトリの追加";
 
@@ -139,16 +136,16 @@
 "preference.title.done.reset_settings" = "すべての既定の設定が復元されました。";
 
 "preference.title.renderer" = "レンダラー";
-"preference.title.renderer.auto" = "自動: gl4es または angle";
-"preference.title.renderer.angle" = "ANGLE (1.17+) - エクスポートOpenGL 3.2 (Core Profile, limited)";
-"preference.title.renderer.zink" = "Zink (Mesa 21.0) - exports OpenGL 4.1";
+
+"preference.title.renderer.debug.auto" = "自動: gl4es または angle";
+"preference.title.renderer.debug.angle" = "ANGLE (1.17+) - エクスポートOpenGL 3.2 (Core Profile, limited)";
+"preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - exports OpenGL 4.1";
 
 "preference.title.resolution" = "解像度 (%)";
 "preference.detail.resolution" = "ゲームの解像度を下げることができます。";
 
 "preference.title.fullscreen_airplay" = "全画面AirPlay";
 "preference.detail.fullscreen_airplay" = "画面上のすべてをミラーリングするのではなく、外部ディスプレイにフルスクリーンのゲームウィンドウを表示できます。";
-"preference.title.disable_gesture" = "ジェスチャーの無効化";
 "preference.title.press_duration" = "長押し時間 (ms)";
 "preference.detail.press_duration" = "ブロックを破壊したりアイテムをドロップしたりするための長さをトリガーします。";
 "preference.title.button_scale" = "オンスクリーンボタンの拡大率(%)";
@@ -161,10 +158,9 @@
 "preference.detail.virtmouse_enable" = "仮想マウスの起動時にこのオプションを有効にする";
 "preference.title.slideable_hotbar" = "スライド可能なホットバー";
 "preference.detail.slideable_hotbar" = "マウスホイールのようにホットバーをスライド可能にする";
+
 "preference.title.java_home" = "Java 17 for Minecraft < 1.17 を使用";
-"preference.detail.java_home" = "これらのバージョンでは、Java 8がデフォルトで使用されています。Java 17を強制的に使用するには、このオプションを有効にしますが、modedとの互換性は保証されません。";
 "preference.title.java_args" = "JVM 起動引数";
-"preference.detail.java_args" = "注意してください。これは、任意の事前知識なしで変更された場合、ゲームがクラッシュする可能性があります。";
 "preference.placeholder.java_args" = "引数の指定...";
 "preference.title.auto_ram" = "自動RAM調整";
 "preference.detail.auto_ram" = "メモリの自動調整を有効にする";
@@ -173,7 +169,6 @@
 "preference.detail.allocated_memory" = "Minecraftに与えられるメモリの量を制御します";
 "preference.warn.allocated_memory" = "オペレーティングシステム自体に制限があるため、このオプションは不安定な場合があり、値が大きい場合がありますのでご注意ください。";
 "preference.title.custom_env" = "環境変数";
-"preference.detail.custom_env" = "このオプションは現在構築中です";
 
 "preference.title.debug_skip_wait_jit" = "「JIT待機中」ダイアログをスキップ";
 "preference.detail.debug_skip_wait_jit" = "これは、JITなしで起動することはできません。代わりに、特定の脱獄時にチェックが失敗するため、デバッガのチェックをスキップします。";
@@ -187,3 +182,4 @@
 "preference.detail.debug_show_layout_bounds" = "クリップの境界線、余白を表示";
 "preference.title.debug_show_layout_overlap" = "レイアウト重複を表示";
 "preference.detail.debug_show_layout_overlap" = "透明な色ですべてのビューをオーバーレイし、重複するビューを表示します。";
+"controller_configurator.playstation.title.named_back" = "選択...";

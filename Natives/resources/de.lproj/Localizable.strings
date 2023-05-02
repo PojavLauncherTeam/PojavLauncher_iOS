@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   StringLocalization
 */
@@ -11,9 +11,6 @@
 "game.note.airplay" = "Minecraft wird in AirPlay-gespiegelter Anzeige angezeigt";
 
 "game.title.exit_code" = "Das Spiel wurde mit dem Code %d beendet";
-
-// The options button at the top-right corner on iOS 12
-"Options" = "Optionen";
 
 // The play button
 "Play" = "Spielen";
@@ -63,6 +60,9 @@
 
 "init.migrateDir" = "Das PojavLauncher-Datenverzeichnis ist jetzt %@. Alle vorhandenen Daten wurden an den neuen Standort verschoben.";
 
+"launcher.mcl.downloading_file" = "%@ wird heruntergeladen";
+"launcher.mcl.error_download" = "Fehler beim Herunterladen von %@: %@";
+
 "launcher.menu.custom_controls" = "Benutzerdefinierte Steuerung";
 "launcher.menu.install_jar" = ".jar installieren";
 
@@ -75,6 +75,9 @@
 
 "login.jit.checking" = "Prüfe auf JIT";
 "login.jit.enabled" = "JIT wurde aktiviert";
+"login.jit.fail" = "JIT konnte nicht aktiviert werden.";
+"login.jit.fail.title" = "JIT konnte auf deinem Gerät nicht aktiviert werden.";
+"login.jit.fail.description" = "Es konnten keine Integrationen verwendet werden, um JIT automatisch auf deinem Gerät zu aktivieren, weshalb es nun manuell aktiviert werden muss. Fehler wurden in latestlog.txt protokolliert.";
 
 // Login buttons
 "login.menu.sendlogs" = "Fehlerprotokolle senden";
@@ -84,11 +87,17 @@
 "login.option.microsoft" = "Microsoft-Konto";
 "login.option.local" = "Lokales Konto";
 
+"login.warn.title.legacy_device" = "Die nächste Version von PojavLauncher wird mit diesem Gerät nicht mehr kompatibel sein.";
+"login.warn.message.legacy_device" = "Für das nächste große Update wird ein iOS-14-kompatibles Gerät benötigt.";
+"login.warn.title.legacy_ios" = "Die nächste Version von PojavLauncher wird ein Systemupdate erfordern.";
+"login.warn.message.legacy_ios" = "Um das nächste große Update starten zu können muss dieses Gerät iOS 14 oder neuer installiert haben.";
+"login.warn.title.limited_ram" = "Dieses Gerät hat eine begrenzte Menge an Arbeitsspeicher zur Verfügung.";
+"login.warn.message.limited_ram" = "Wir empfehlen, dass der Auto RAM Mode aktiviert bleibt, um Instabilität und Performance-Probleme zu vermeiden.";
+
 "login.warn.title.demomode" = "Dein Konto ist im Demo-Modus";
 "login.warn.message.demomode" = "Als Ersatz für den Offline- und Lokalmodus, erlaubt der Demo-Modus, sich mit einem Microsoft-Konto einzuloggen, welches das Spiel nicht besitzt. Somit kann die Testversion von Minecraft gespielt werden, die in Version 1.3 eingeführt wurde. Ältere Versionen können in der Vollversion gespielt werden, da bei ihnen der offizielle Launcher auch keine Einschränlungen setzt. Auf unserer Website findet man mehr Informationen zu diesem Übergang vom Offline-Modus.";
 
 "login.warn.title.localmode" = "Der Offline-Modus ist jetzt der Lokale Modus.";
-"login.warn.message.localmode" = "Du kannst weiterhin installierte Versionen spielen, aber ohne ein kostenpflichtiges Konto kannst du Minecraft nicht mehr herunterladen. Es wird kein Support für Probleme mit lokalen Konten oder andere Mittel zur Erlangung von Minecraft geben. Weitere Informationen findest du in unseren FAQ.";
 
 "login.msa.error.xsts.noxboxacc" = "Es ist kein Xbox-Profil mit diesem Microsoft-Konto registriert. Stelle bitte sicher, dass du ein Xbox-Profil erstellt hast.\nFehlercode: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live ist derzeit in deinem Land nicht verfügbar.\nFehlercode: 2148916235";
@@ -106,7 +115,7 @@
 "Settings" = "Einstellungen";
 
 "preference.section.general" = "Allgemeine Einstellungen";
-"preference.section.footer.video" = "Mit dem automatischen Renderer kann Minecraft entscheiden, welcher Renderer verwendet werden soll. Verringerte Auflösung reduziert die Arbeitslast der GPU für eine bessere Leistung.";
+"preference.section.video" = "Grafik-Einstellungen";
 "preference.section.control" = "Steuerung anpassen";
 "preference.section.debug" = "UI-Debugging-Einstellungen";
 "preference.section.footer.debug" = "Neben dem Debuggen können diese Einstellungen für benutzerdefinierte Steuerelemente nützlich sein. Möglicherweise muss der Launcher neu startet werden, damit die Änderungen wirksam werden.";
@@ -115,6 +124,8 @@
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "Bist du dir sicher?";
+
+"preference.title.game_directory" = "Spielverzeichnis";
 "preference.title.confirm.delete_game_directory" = "Die Instanz %@ wird für immer gelöscht und kann nicht wiederhergestellt werden.";
 "preference.multidir.add_directory" = "Spielverzeichnis hinzufügen";
 
@@ -126,10 +137,13 @@
 "preference.detail.debug_logging" = "Protokolliert interne Einstellungen und Aktionen an latestlog.txt. Dies hilft den Entwicklern Probleme leichter zu finden, kann aber Minecraft langsamer laufen lassen, da die Protokolle öfter geschrieben werden.";
 "preference.title.jitstreamer_server" = "JitStreamer-Server-IP";
 "preference.detail.jitstreamer_server" = "Erlaubt es dir, auf eine benutzerdefinierte JitStreamer-Server-IP zu wechseln, wie zum Beispiel für selbst gehostete Instanzen. Diese Option kann ausgelassen werden, wenn du die Standard-JitStreamer-Server verwendest.";
+"preference.title.enable_altkit" = "AltKit-Integration aktivieren";
+"preference.detail.enable_altkit" = "Wenn aktiviert, versucht PojavLauncher sich mit lokalen AltServern zu verbinden, um JIT zu aktivieren.";
 "preference.title.appicon" = "App-Icon festlegen";
 "preference.detail.appicon" = "Erlaubt es dir, zwischen verschiedenen Startbildschirm-Icons für PojavLauncher zu wählen.";
 "preference.title.appicon-default" = "Bekanntes PojavLauncher-Icon (Hell)";
 "preference.title.appicon-dark" = "Bekanntes PojavLauncher-Icon (Dunkel)";
+"preference.title.appicon-development" = "Gelenkte Entwicklung";
 "preference.title.hidden_sidebar" = "Hauptmenü-Sidebar standardmäßig ausblenden";
 "preference.detail.hidden_sidebar" = "Ermöglicht es dir, die Sidebar im Hauptmenü standardmäßig und beim Drehen auf iOS 14+ auszublenden.";
 
@@ -145,16 +159,32 @@
 "preference.title.done.erase_demo_data" = "Alle Demo-Spieldaten wurden gelöscht.";
 
 "preference.title.renderer" = "Renderer";
-"preference.title.renderer.auto" = "Auto: gl4es or ANGLE";
-"preference.title.renderer.angle" = "ANGLE (1.17+) - gibt OpenGL 3.2 (Kernprofil, begrenzt) aus";
-"preference.title.renderer.zink" = "Zink (Mesa 21.0) - gibt OpenGL 4.1 aus";
+
+"preference.title.renderer.debug.auto" = "Auto: gl4es or ANGLE";
+"preference.title.renderer.debug.gl4es" = "gl4es 1.1.4 - gibt OpenGL 2.1 aus";
+"preference.title.renderer.debug.angle" = "ANGLE (1.17+) - gibt OpenGL 3.2 (Kernprofil, begrenzt) aus";
+"preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - gibt OpenGL 4.1 aus";
+
+"preference.detail.renderer" = "Ändern Sie die OpenGL-Rendering-Engine";
 
 "preference.title.resolution" = "Auflösung (%)";
 "preference.detail.resolution" = "Ermöglicht es dir die Spielauflösung zu verringern.";
+"preference.title.max_framerate" = "Maximale Framerate";
+"preference.detail.max_framerate" = "Erlaubt es dir, die Framerate auf 60FPS auf ProMotion-Displays zu beschränken.";
 
 "preference.title.fullscreen_airplay" = "Vollbild-AirPlay";
 "preference.detail.fullscreen_airplay" = "Ermöglicht es dir nur das Spielfenster auf ein externes Display zu spiegeln, anstatt den ganzen Bildschirm zu spiegeln.";
-"preference.title.disable_gesture" = "Gesten deaktivieren";
+"preference.title.silence_other_audio" = "Audio anhalten, wenn das Spiel geöffnet wird";
+"preference.detail.silence_other_audio" = "Aktiviere diese Option um PojavLauncher zu erlauben, Audio von anderen Apps wie Musik zu pausieren, wenn das Spiel gestartet wird.";
+"preference.title.silence_with_switch" = "Audio mit Lautlos-Schalter deaktivieren";
+"preference.detail.silence_with_switch" = "Aktivieren, um Audio zu deaktivieren, wenn der Lautlos-Modus aktiviert ist. Kopfhörer und externe Lautsprecher sind nicht betroffen.";
+"preference.title.default_gamepad_ctrl" = "Steuerungs-Konfiguration";
+"preference.title.hardware_hide" = "Steuerelemente ausblenden, wenn Hardware verbunden ist";
+"preference.detail.hardware_hide" = "Aktivieren Sie die automatische Deaktivierung des Overlays auf dem Bildschirm, wenn eine Maus oder ein Game-Controller angeschlossen ist.";
+"preference.title.gesture_mouse" = "Mausgesten";
+"preference.detail.gesture_mouse" = "Ermöglicht Gesten wie Tippen zum Platzieren des Blocks, halten um den Block abzubauen, mit 2 Fingern zu scrollen";
+"preference.title.gesture_hotbar" = "Hotbar Gesten";
+"preference.detail.gesture_hotbar" = "Aktiviert Gesten wie Berühren des Hotbar Slot, tausche Gegenstände zwischen der Hand aus, wirf Items";
 "preference.title.press_duration" = "Dauer eines langen Touch (ms)";
 "preference.detail.press_duration" = "Auslösedauer um Blöcke zu zerstören und Items zu droppen.";
 "preference.title.button_scale" = "Schalflächengröße (%)";
@@ -167,10 +197,16 @@
 "preference.detail.virtmouse_enable" = "Aktiviere diese Option, um mit Virtueller Maus zu spielen";
 "preference.title.slideable_hotbar" = "Schiebbare Hotbar";
 "preference.detail.slideable_hotbar" = "Macht die Hotbar wie mit dem Mausrad schiebbar";
+
+"preference.title.gyroscope_enable" = "Aktiviere Gyroskop-Steuerung";
+"preference.detail.gyroscope_enable" = "Wenn du dies aktivierst, kannst du dich im Spiel drehen, indem du dein Gerät drehst";
+"preference.title.gyroscope_invert_x_axis" = "Gyroskop umkehren";
+"preference.detail.gyroscope_invert_x_axis" = "Wechselt die X-Achse des Gyroskops";
+"preference.title.gyroscope_sensitivity" = "Gyroskop-Steuerungs-Empfindlichkeit";
+"preference.detail.gyroscope_sensitivity" = "Passe die Empfindlichkeit der Gyroskop-Steuerung an";
+
 "preference.title.java_home" = "Nutze Java 17 für Minecraft < 1.17";
-"preference.detail.java_home" = "Für diese Versionen wird standardmäßig Java 8 verwendet. Aktiviere diese Option, um die Verwendung von Java 17 zu erzwingen. Kompatibilität mit ge-moddeten Versionen ist nicht garantiert.";
 "preference.title.java_args" = "JVM-Start-Argumente";
-"preference.detail.java_args" = "Passe auf. Sollten die Argumente ohne Fachwissen einfach verändert werden, kann dies zu Abstürzen führen.";
 "preference.placeholder.java_args" = "Argumente angeben...";
 "preference.title.auto_ram" = "Auto-RAM";
 "preference.detail.auto_ram" = "Aktiviert automatische RAM-Einstellungen";
@@ -179,7 +215,6 @@
 "preference.detail.allocated_memory" = "Legt fest, wie viel RAM Minecraft gegeben wird";
 "preference.warn.allocated_memory" = "Aufgrund von Einschränkungen des Betriebssystems kann diese Option zu Instabilität bei diesem und höheren Werten führen. Sei vorsichtig.";
 "preference.title.custom_env" = "Umgebungsvariablen";
-"preference.detail.custom_env" = "Diese Einstellung ist in Bearbeitung.";
 
 "preference.title.debug_skip_wait_jit" = "Überspringe den \"Warten auf JIT\"-Dialog";
 "preference.detail.debug_skip_wait_jit" = "Dies ermöglicht es dir nicht, ohne JIT zu starten. Stattdessen wird die Debuggerprüfung übersprungen, da die Überprüfung bei bestimmten Jailbreaks fehlschlägt.";
@@ -193,3 +228,46 @@
 "preference.detail.debug_show_layout_bounds" = "Zuschnittbegrenzungen, Ränder anzeigen";
 "preference.title.debug_show_layout_overlap" = "Layoutüberlappungen anzeigen";
 "preference.detail.debug_show_layout_overlap" = "Überlagere jede Ansicht mit einer transparenten Farbe, um überlappende Ansichten anzuzeigen.";
+
+"controller_configurator.title.current" = "Gamepads Konfigurationsdatei";
+"controller_configurator.title.type.xbox" = "XBox";
+"controller_configurator.title.type.playstation" = "PlayStation";
+
+"controller_configurator.xbox.title.bumper_left" = "Linker Stoß";
+"controller_configurator.xbox.title.bumper_right" = "Rechter Stoß";
+"controller_configurator.xbox.title.trigger_left" = "Linker Auslöser";
+"controller_configurator.xbox.title.trigger_right" = "Rechter Auslöser";
+"controller_configurator.xbox.title.named_back" = "Anleitung";
+"controller_configurator.xbox.title.named_start" = "Menü";
+"controller_configurator.xbox.title.named_a" = "A";
+"controller_configurator.xbox.title.named_b" = "B";
+"controller_configurator.xbox.title.named_x" = "X";
+"controller_configurator.xbox.title.named_y" = "Y";
+"controller_configurator.xbox.title.dpad_up" = "Hoch";
+"controller_configurator.xbox.title.dpad_down" = "Unten";
+"controller_configurator.xbox.title.dpad_left" = "Links";
+"controller_configurator.xbox.title.dpad_right" = "Rechts";
+"controller_configurator.xbox.title.thumb_left" = "Linksklick";
+"controller_configurator.xbox.title.thumb_right" = "Rechtsklick";
+
+"controller_configurator.playstation.title.bumper_left" = "L1";
+"controller_configurator.playstation.title.bumper_right" = "R1";
+"controller_configurator.playstation.title.trigger_left" = "L2";
+"controller_configurator.playstation.title.trigger_right" = "R2";
+"controller_configurator.playstation.title.named_back" = "Auswählen";
+"controller_configurator.playstation.title.named_start" = "Start";
+"controller_configurator.playstation.title.named_a" = "Kreuz";
+"controller_configurator.playstation.title.named_b" = "Kreis";
+"controller_configurator.playstation.title.named_x" = "Quadrat";
+"controller_configurator.playstation.title.named_y" = "Dreieck";
+"controller_configurator.playstation.title.dpad_up" = "Hoch";
+"controller_configurator.playstation.title.dpad_down" = "Unten";
+"controller_configurator.playstation.title.dpad_left" = "Links";
+"controller_configurator.playstation.title.dpad_right" = "Rechts";
+"controller_configurator.playstation.title.thumb_left" = "L3";
+"controller_configurator.playstation.title.thumb_right" = "R3";
+
+"controller_configurator.section.config_files" = "Aktuelle Konfiguration";
+"controller_configurator.section.game_mappings" = "Spielzuordnung";
+"controller_configurator.section.footer.game_mappings" = "Bindet, wenn die Maus im Spiel gesperrt ist.";
+"controller_configurator.section.menu_mappings" = "Menü-Zuordnungen";

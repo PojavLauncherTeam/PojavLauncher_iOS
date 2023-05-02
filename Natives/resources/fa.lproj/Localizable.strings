@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   StringLocalization
 */
@@ -11,9 +11,6 @@
 "game.note.airplay" = "ماینکرفت در صفحه نمایش AirPlay نمایش داده می شود";
 
 "game.title.exit_code" = "بازی با کد %d به اتمام رسید";
-
-// The options button at the top-right corner on iOS 12
-"Options" = "گزینه‌ها";
 
 // The play button
 "Play" = "شروع بازی";
@@ -87,7 +84,6 @@
 "login.warn.message.demomode" = "به عنوان جایگزینی برای حالت آفلاین و محلی، حالت دمو به شما این امکان را می دهد که وارد حساب مایکروسافتی شوید که مالک بازی نیست و نسخه آزمایشی Java Edition را که در نسخه های 1.3.1 و جدیدتر معرفی شده است، بازی کنید. نسخه‌های قدیمی‌تر شامل بازی کامل هستند، زیرا لانچر رسمی این محدودیت‌ها را اعمال نمی‌کند. برای کسب اطلاعات بیشتر در مورد این انتقال از حالت آفلاین به وب سایت ما مراجعه کنید.";
 
 "login.warn.title.localmode" = "حالت آفلاین اکنون حالت محلی است.";
-"login.warn.message.localmode" = "می‌توانید به پخش نسخه‌های نصب‌شده ادامه دهید، اما دیگر نمی‌توانید Minecraft را بدون حساب پولی دانلود کنید. هیچ پشتیبانی برای مشکلات مربوط به حساب های محلی یا سایر ابزارهای خرید Minecraft ارائه نخواهد شد. برای اطلاعات بیشتر به سوالات متداول مراجعه کنید.";
 
 "login.msa.error.xsts.noxboxacc" = "یک نمایه Xbox برای این حساب مایکروسافت ثبت نشده است. لطفاً مطمئن شوید که یک نمایه Xbox ساخته اید.\nکد خطا: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live در حال حاضر در کشور شما در دسترس نیست.\nکد خطا: 2148916235";
@@ -105,7 +101,6 @@
 "Settings" = "تنظیمات";
 
 "preference.section.general" = "تنظیمات عمومی";
-"preference.section.footer.video" = "رندر خودکار به ماینکرفت اجازه می دهد تصمیم بگیرد از کدام رندرر استفاده کند. کاهش وضوح باعث کاهش حجم کاری GPU برای عملکرد بهتر می شود.";
 "preference.section.control" = "شخصی سازی کنترلر";
 "preference.section.debug" = "تنظیمات اشکال زدایی رابط کاربری";
 "preference.section.footer.debug" = "جدای از اشکال زدایی، این تنظیمات ممکن است برای کنترل های سفارشی مفید باشند. ممکن است لازم باشد نرم‌افزار را مجدداً راه‌اندازی کنید تا تغییرات اعمال شوند.";
@@ -114,6 +109,8 @@
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "آیا مطمئن هستید؟";
+
+"preference.title.game_directory" = "پوشه بازی";
 "preference.title.confirm.delete_game_directory" = "ورژن %@ برای همیشه حذف خواهد شد و قابل بازیابی نیست.";
 "preference.multidir.add_directory" = "افزودن پوشه بازی";
 
@@ -139,16 +136,16 @@
 "preference.title.done.reset_settings" = "تمام تنظیمات پیش فرض بازیابی شده است.";
 
 "preference.title.renderer" = "رندر کننده";
-"preference.title.renderer.auto" = "خودکار: gl4es یا ANGLE";
-"preference.title.renderer.angle" = "ANGLE (1.17+) - OpenGL 3.2 را صادر می کند (نمایه هسته، محدود)";
-"preference.title.renderer.zink" = "Zink (Mesa 21.0) - OpenGL 4.1 را صادر می کند";
+
+"preference.title.renderer.debug.auto" = "خودکار: gl4es یا ANGLE";
+"preference.title.renderer.debug.angle" = "ANGLE (1.17+) - OpenGL 3.2 را صادر می کند (نمایه هسته، محدود)";
+"preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - OpenGL 4.1 را صادر می کند";
 
 "preference.title.resolution" = "وضوح (%)";
 "preference.detail.resolution" = "به شما امکان می دهد وضوح بازی را کاهش دهید.";
 
 "preference.title.fullscreen_airplay" = "AirPlay تمام صفحه";
 "preference.detail.fullscreen_airplay" = "به جای انعکاس همه چیز روی صفحه نمایش، به نمایش پنجره بازی تمام صفحه روی صفحه نمایش خارجی اجازه می دهد.";
-"preference.title.disable_gesture" = "غیرفعال کردن حسگر ها";
 "preference.title.press_duration" = "مدت زمان فشار طولانی (ms)";
 "preference.detail.press_duration" = "مدت زمان فشار برای از بین بردن بلوک ها و انداختن آیتم ها را فعال کنید.";
 "preference.title.button_scale" = "مقیاس دکمه روی صفحه (%)";
@@ -161,10 +158,13 @@
 "preference.detail.virtmouse_enable" = "این گزینه را برای شروع با موس مجازی فعال کنید";
 "preference.title.slideable_hotbar" = "هاتبار کشویی";
 "preference.detail.slideable_hotbar" = "هاتبار را مانند چرخ ماوس قابل لغزش کنید";
+
+"preference.title.gyroscope_enable" = "فعال کردن کنترل های ژیروسکوپ";
+"preference.title.gyroscope_sensitivity" = "حساسیت کنترلر های ژیروسکوپ";
+"preference.detail.gyroscope_sensitivity" = "حساسیت کنترل های ژیروسکوپ را تنظیم کنید";
+
 "preference.title.java_home" = "از جاوا 17 برای ماینکرفت 1.17 به بالا استفاده کنید";
-"preference.detail.java_home" = "جاوا 8 به طور پیش فرض برای آن نسخه ها استفاده می شود. این گزینه را برای استفاده اجباری از جاوا 17 فعال کنید، اما سازگاری با مود شده تضمین نمی شود.";
 "preference.title.java_args" = "آرگومان‌های جاوا در هنگام اجرا";
-"preference.detail.java_args" = "مراقب باشید، این ممکن است باعث از کار افتادن بازی در صورت اصلاح بدون اطلاع شود.";
 "preference.placeholder.java_args" = "آرگومان ها را مشخص کنید...";
 "preference.title.auto_ram" = "رم اتوماتیک";
 "preference.detail.auto_ram" = "تنظیم‌کننده اتوماتیک رم را فعال می‌کند";
@@ -173,7 +173,6 @@
 "preference.detail.allocated_memory" = "میزان مموری اختصاص یافته به ماینکرفت را کنترل می‌کند";
 "preference.warn.allocated_memory" = "با توجه به محدودیت های موجود در خود سیستم عامل، این گزینه ممکن است باعث ناپایداری در مقادیر این و بالاتر شود. با توجه ادامه بدهید.";
 "preference.title.custom_env" = "متغیرهای محیطی";
-"preference.detail.custom_env" = "این مولفه در دست ساخت است.";
 
 "preference.title.debug_skip_wait_jit" = "از گفتگوی \"در انتظار JIT\" رد شوید";
 "preference.detail.debug_skip_wait_jit" = "این به شما اجازه نمی‌دهد بدون JIT راه‌اندازی کنید، در عوض از بررسی دیباگر صرفنظر می‌شود، زیرا بررسی در برخی از جیلبریک‌ها با شکست مواجه می‌شود.";
@@ -187,3 +186,4 @@
 "preference.detail.debug_show_layout_bounds" = "نمایش مرزها، حاشیه‌ها";
 "preference.title.debug_show_layout_overlap" = "نمایش همپوشانی طرح";
 "preference.detail.debug_show_layout_overlap" = "هر نما را با یک رنگ شفاف پوشش دهید تا نماهای همپوشانی نشان داده شود.";
+"controller_configurator.playstation.title.named_back" = "انتخاب";

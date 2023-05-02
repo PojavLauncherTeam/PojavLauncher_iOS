@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   StringLocalization
 */
@@ -11,9 +11,6 @@
 "game.note.airplay" = "Minecraft jest wyświetlany na ekranie lustrzanym AirPlay";
 
 "game.title.exit_code" = "Gra została zakończona z kodem %d";
-
-// The options button at the top-right corner on iOS 12
-"Options" = "Opcje";
 
 // The play button
 "Play" = "Graj";
@@ -84,7 +81,6 @@
 "login.warn.message.demomode" = "Jak zamiennik dla trybu offline oraz lokalnego, tryb demo umożliwia logowanie na Konto Microsoft, które nie posiada gry i umożliwia granie w wersję próbną Java Edition wprowadzoną w wersji 1.3.1 oraz nowszych. Starsze wersje zawierają pełną wersję gry, ponieważ oficjalny launcher nie wymusza tych ograniczeń. Sprawdź naszą stronę internetową, aby dowiedzieć się więcej o przejściu z trybu offline.";
 
 "login.warn.title.localmode" = "Tryb offline to teraz Tryb lokalny.";
-"login.warn.message.localmode" = "Możesz nadal grać w zainstalowane wersje, ale nie możesz już pobierać Minecraft bez płatnego konta. Nie oferujemy wsparcia dla problemów z kontami lokalnymi lub innymi sposobami pozyskiwania Minecraft. Sprawdź najczęstsze pytania po więcej informacji.";
 
 "login.msa.error.xsts.noxboxacc" = "Profil Xbox nie został zarejestrowany dla tego Konta Microsoft. Upewnij się, że profil Xbox został utworzony.\nKod błędu: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live nie jest obecnie dostępne w Twoim kraju.\nKod błędu: 2148916235";
@@ -102,7 +98,7 @@
 "Settings" = "Ustawienia";
 
 "preference.section.general" = "Ogólne ustawienia";
-"preference.section.footer.video" = "Automatyczny renderer pozwala Minecraftowi zdecydować, którego renderera użyć. Zmniejszenie rozdzielczości zmniejsza obciążenie GPU, zapewniając lepszą wydajność.";
+"preference.section.video" = "Ustawienia grafiki";
 "preference.section.control" = "Sterowanie";
 "preference.section.debug" = "Ustawienia debugowania interfejsu";
 "preference.section.footer.debug" = "Poza debugowaniem, te ustawienia mogą być przydatne dp ustawień sterowania. Może być wymagane ponowne uruchomienie programu, aby zmiany zostały wprowadzone.";
@@ -111,6 +107,8 @@
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "Czy na pewno?";
+
+"preference.title.game_directory" = "Katalog gry";
 "preference.title.confirm.delete_game_directory" = "Instancja %@ zostanie trwale usunięta i nie będzie można jej przywrócić.";
 "preference.multidir.add_directory" = "dodaj katalog gry";
 
@@ -133,11 +131,13 @@
 "preference.title.done.reset_settings" = "Wszystkie ustawienia zostały wyzerowane.";
 
 "preference.title.renderer" = "Silnik renderujący";
-"preference.title.renderer.zink" = "Zink (Mesa 21.0) - eksportuje OpenGL 4.1";
+"preference.title.renderer.debug.gl4es" = "gl4es 1.1.4 - eksportuje OpenGL 2.1";
+"preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - eksportuje OpenGL 4.1";
+
+"preference.detail.renderer" = "Zmień używany silnik renderujący OpenGL";
 
 "preference.title.resolution" = "Rozdzielczość (%)";
 "preference.detail.resolution" = "Umożliwia zmniejszenie rozdzielczości gry.";
-"preference.title.disable_gesture" = "Wyłącz gesty";
 "preference.title.press_duration" = "Czas długiego naciśnięcia (ms)";
 "preference.detail.press_duration" = "Zmieniaj czas trwania prasy dla niszczenia bloków i upuszczania przedmiotów.";
 "preference.title.button_scale" = "Skala przycisków ekranowych (%)";
@@ -150,10 +150,13 @@
 "preference.detail.virtmouse_enable" = "Aktywuj tę opcję, aby uruchamiać z włączoną wirtualną myszą";
 "preference.title.slideable_hotbar" = "Przesuwalny pasek narzędzi";
 "preference.detail.slideable_hotbar" = "Spraw, aby pasek skrótów był przesuwany jak kółko myszy";
+
+"preference.title.gyroscope_enable" = "Włącz sterowanie żyroskopem";
+"preference.title.gyroscope_sensitivity" = "Czułość sterowania żyroskopem";
+"preference.detail.gyroscope_sensitivity" = "Dostosuj czułość sterowania żyroskopem";
+
 "preference.title.java_home" = "Użyj Java 17 dla Minecraft < 1.17";
-"preference.detail.java_home" = "W tych wersjach domyślnie używana jest Java 8. Włącz tę opcję, aby wymusić użycie Javy 17, jednak zgodność z modded nie jest gwarantowana.";
 "preference.title.java_args" = "Argumenty uruchomienia JVM";
-"preference.detail.java_args" = "Zachowaj ostrożność, ponieważ zmiany wprowadzone bez odpowiedniej wiedzy mogą doprowadzić do awarii gry.";
 "preference.placeholder.java_args" = "Określ argumenty...";
 "preference.title.auto_ram" = "Automatyczny RAM";
 "preference.detail.auto_ram" = "Włącza automatyczny przydział pamięci RAM";
@@ -162,7 +165,6 @@
 "preference.detail.allocated_memory" = "Kontroluje ilość pamięci przydzielonej Minecraft";
 "preference.warn.allocated_memory" = "Ze względu na ograniczenia samego systemu operacyjnego, ta opcja może powodować niestabilność przy tej i wyższych wartościach. Zachowaj ostrożność.";
 "preference.title.custom_env" = "Zmienne środowiskowe";
-"preference.detail.custom_env" = "Ta opcja jest w trakcie opracowania.";
 
 "preference.title.debug_skip_wait_jit" = "Pomiń okno dialogowe \"Oczekiwanie na JIT\"";
 "preference.detail.debug_skip_wait_jit" = "To nie pozwala na uruchamianie bez JIT, zamiast tego pomija kontrolę debugera, ponieważ sprawdzenie nie powiodło się na niektórych więzieniach.";
@@ -174,3 +176,4 @@
 "preference.detail.debug_show_layout_bounds" = "Pokaż granice klipów, marginesy";
 "preference.title.debug_show_layout_overlap" = "Pokaż nakładające się układy";
 "preference.detail.debug_show_layout_overlap" = "Nakładaj każdy widok przezroczystym kolorem, aby odsłonić nakładające się widoki.";
+"controller_configurator.playstation.title.named_back" = "Wybierz";

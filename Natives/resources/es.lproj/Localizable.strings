@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   StringLocalization
 */
@@ -11,9 +11,6 @@
 "game.note.airplay" = "Minecraft está siendo mostrado en la pantalla de AirPlay";
 
 "game.title.exit_code" = "El juego se cerró con el código %d";
-
-// The options button at the top-right corner on iOS 12
-"Options" = "Opciones";
 
 // The play button
 "Play" = "Jugar";
@@ -81,7 +78,6 @@
 "login.warn.message.demomode" = "Como reemplazo del modo offline y el modo local, el modo demo te permitirá iniciar sesión en una cuenta de Microsoft que no tenga el juego para jugar a las trials de Java Edition, introducido en la versión 1.3.1 y versiones nuevas. Versiones anteriores a estas tienen acceso al juego entero, porque el launcher oficial no contiene estas restricciones. Ve a nuestro sitio web para saber más sobre esta transición de el modo offline.";
 
 "login.warn.title.localmode" = "El modo offline ahora es el modo local.";
-"login.warn.message.localmode" = "Puedes seguir jugando versiones ya instaladas, pero ya no puedes descargar Minecraft sin una cuenta de paga. No habrá soporte a casos con las cuentas locales u otros medios para adquirir Minecraft. Consulte a las preguntas frecuentes (FAQ) para más información.";
 
 "login.msa.error.xsts.noxboxacc" = "Esta cuenta de Microsoft no poseé un perfil de Xbox. Por favor, asegúrate de haber creado un perfil de Xbox en esta cuenta.\nCódigo de error: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live no está disponible actualmente en tu país.\nCódigo de error: 2148916235";
@@ -99,7 +95,7 @@
 "Settings" = "Ajustes";
 
 "preference.section.general" = "Configuración general";
-"preference.section.footer.video" = "El auto renderizador le permite a Minecraft decidir cuál renderizador usar. Reduciendo la resolución reduce la carga del GPU para un mejor rendimiento.";
+"preference.section.video" = "Configuración de Vídeo";
 "preference.section.control" = "Personalización del control";
 "preference.section.footer.debug" = "Aparte de el debugging, estas opciones pueden ser útiles para los controles personalizados. Es posible que tengas que reiniciar el launcher para que los cambios tengan efecto.";
 //"preference.section.footer.control" = "";
@@ -107,6 +103,8 @@
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "¿Estás seguro?";
+
+"preference.title.game_directory" = "Directorio del juego";
 "preference.title.confirm.delete_game_directory" = "La instancia %@ va a ser borrada para siempre y nunca podrá ser restaurada.";
 "preference.multidir.add_directory" = "Añadir Ubicación de carpeta del juego";
 
@@ -130,16 +128,19 @@
 "preference.title.done.reset_settings" = "Todas las configuraciones predeterminadas han sido restauradas.";
 
 "preference.title.renderer" = "Renderizador";
-"preference.title.renderer.auto" = "Automático: gl4es o ANGLE";
-"preference.title.renderer.angle" = "ANGLE (1.17+) - exporta OpenGL 3.1 (perfil Core, limitado)";
-"preference.title.renderer.zink" = "Zink (Mesa 21.0) - exporta a OpenGL 4.1";
+
+"preference.title.renderer.debug.auto" = "Automático: gl4es o ANGLE";
+"preference.title.renderer.debug.gl4es" = "gl4es 1.1.4 - exporta a OpenGL 2.1";
+"preference.title.renderer.debug.angle" = "ANGLE (1.17+) - exporta OpenGL 3.1 (perfil Core, limitado)";
+"preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - exporta a OpenGL 4.1";
+
+"preference.detail.renderer" = "Cambiar el motor de renderizado para que OpenGL utilicé";
 
 "preference.title.resolution" = "Resolución (%)";
 "preference.detail.resolution" = "Permite reducir la resolución del juego.";
 
 "preference.title.fullscreen_airplay" = "AirPlay en pantalla completa";
 "preference.detail.fullscreen_airplay" = "Permite presentar la ventana de juego a pantalla completa en la pantalla externa en lugar de reflejar todo en la pantalla interna.";
-"preference.title.disable_gesture" = "Desactivar gestos";
 "preference.title.press_duration" = "Duración para pulsado largo (ms)";
 "preference.title.button_scale" = "Escala de botones en pantalla (%)";
 "preference.detail.button_scale" = "Sube de tamaño a los botones si resultan ser muy pequeños, es usualmente necesario para usuarios de iPad.";
@@ -151,10 +152,9 @@
 "preference.detail.virtmouse_enable" = "Habilita está opcion para empezar con el ratón virtual encendido";
 "preference.title.slideable_hotbar" = "Hotbar deslizable";
 "preference.detail.slideable_hotbar" = "Permite deslizarse en el hotbar como la rueda del ratón";
+
 "preference.title.java_home" = "Usar Java 17 para Minecraft < 1.17";
-"preference.detail.java_home" = "Java 8 es utilizado por defecto para esas versiones. Activa está opción para forzar el uso de Java 17. Sin embargo, la compatibilidad con el modeado no está garantizada.";
 "preference.title.java_args" = "JRE Argumentos de lanzamiento";
-"preference.detail.java_args" = "Ten cuidado, esto puede hacer que el juego crashee si es modificado sin ningún conocimiento previo.";
 "preference.placeholder.java_args" = "Especifica argumentos...";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Habilita el ajuste automático de RAM";
@@ -163,7 +163,6 @@
 "preference.detail.allocated_memory" = "Controla cuánta memoria se le da a Minecraft";
 "preference.warn.allocated_memory" = "Debido a limitaciones con el sistema operativo en sí, esta opción puede causar inestabilidad en esta y mayores cantidades. Procede con cuidado.";
 "preference.title.custom_env" = "Variables de entorno";
-"preference.detail.custom_env" = "Está opción está en desarrollo.";
 
 "preference.title.debug_skip_wait_jit" = "Omitir diálogo \"Esperando por JIT\"";
 "preference.detail.debug_skip_wait_jit" = "Esto no le permite jugar sin JIT, solo la omite la comprobación del depurador, porque la comprobación falla en ciertas jailbreaks.";

@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   StringLocalization
 */
@@ -11,9 +11,6 @@
 "game.note.airplay" = "Minecraft показується в дзеркальному дисплеї AirPlay";
 
 "game.title.exit_code" = "Гра завершилась з кодом %d";
-
-// The options button at the top-right corner on iOS 12
-"Options" = "Опції";
 
 // The play button
 "Play" = "Грати";
@@ -63,6 +60,9 @@
 
 "init.migrateDir" = "Каталог даних PojavLauncher тепер у %@. Усі ваші наявні дані було переміщено в нове місце.";
 
+"launcher.mcl.downloading_file" = "Завантажується %@";
+"launcher.mcl.error_download" = "Не вдалося завантажити %@: %@";
+
 "launcher.menu.custom_controls" = "Користувацьке керування";
 "launcher.menu.install_jar" = "Встановити .jar";
 
@@ -75,19 +75,29 @@
 
 "login.jit.checking" = "Перевірка JIT";
 "login.jit.enabled" = "JIT було увімкнено";
+"login.jit.fail" = "JIT не може бути активований.";
+"login.jit.fail.title" = "JIT не може бути активований на вашому пристрої.";
+"login.jit.fail.description" = "Жодна інтеграція не може бути використана для автоматичного включення JIT на вашому пристрої, і тепер воно має бути увімкнене вручну. Помилки записані в latestlog.txt.";
 
 // Login buttons
 "login.menu.sendlogs" = "Надіслати ваші звіти";
 "login.option.add" = "Додати обл. запис";
 "login.option.select" = "Виберіть обліковий запис";
+"login.option.demo" = "Тимчасовий запис";
 "login.option.microsoft" = "Обліковий запис Microsoft";
 "login.option.local" = "Локальний профіль";
+
+"login.warn.title.legacy_device" = "Наступний реліз PojavLauncher не буде сумісний з цим пристроєм.";
+"login.warn.message.legacy_device" = "Щоб запустити наступний стабільний реліз, потрібен пристрій, що здатний запустити iOS 14.";
+"login.warn.title.legacy_ios" = "Для наступного релізу PojavLauncher необхідне оновлення системи.";
+"login.warn.message.legacy_ios" = "Щоб запустити наступний стабільний реліз, потрібен пристрій, що здатний запустити iOS 14 чи новішу.";
+"login.warn.title.limited_ram" = "Цей пристрій має обмежений обсяг пам’яті.";
+"login.warn.message.limited_ram" = "Ми рекомендуємо не вимикати автоматичну оперативну пам'ять для запобігання проблем з нестабільністю та продуктивністю.";
 
 "login.warn.title.demomode" = "Ваш акаунт демонстраційний";
 "login.warn.message.demomode" = "Як заміна в офлайн та локальний режимах, демо-режим дозволить вам увійти в обліковий запис Microsoft, який не володіє грою та грати в пробну версію Java Видання, введено в 1.3.1 і більш нових версій. Старіші версії містять повну версію гри, оскільки офіційний лаунчер не веде ці обмеження. Відвідайте наш веб-сайт, щоб дізнатися більше про цей перехід з автономного режиму.";
 
 "login.warn.title.localmode" = "Офлайн режим тепер локальний режим.";
-"login.warn.message.localmode" = "Ви можете продовжити грати у встановлені версії, але більше не можете завантажити Minecraft без оплаченого облікового запису. Підтримка не буде надана з питань локальних облікових записів, а також з іншими засобами отримання Minecraft. Перегляньте \"Часті питання\", щоб дізнатися більше.";
 
 "login.msa.error.xsts.noxboxacc" = "Профіль Xbox Live не зареєстровано для цього облікового запису Microsoft. Будь ласка, переконайтеся, що ви точно робили профіль Xbox.\nКод помилки: 2148916233";
 "login.msa.error.xsts.noxbox" = "Наразі Xbox Live недоступний у вашій країні. \nКод помилки: 2148916235";
@@ -105,7 +115,7 @@
 "Settings" = "Налаштування";
 
 "preference.section.general" = "Загальні налаштування";
-"preference.section.footer.video" = "Авто рендер дозволяє Minecraft вирішувати, який рендер використовувати. Зменшення розмірів зменшує навантаження на графічний процесор для підвищення продуктивности.";
+"preference.section.video" = "Налаштування графіки";
 "preference.section.control" = "Налаштування керування";
 "preference.section.debug" = "Налаштування налагодження інтерфейсу";
 "preference.section.footer.debug" = "Окрім налагодження, ці параметри можуть бути корисними для користувацьких елементів керування. Можливо, вам слід перезапустити лаунчер, щоб зміни застосувалися.";
@@ -114,6 +124,8 @@
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "Ви впевнені?";
+
+"preference.title.game_directory" = "Тека гри";
 "preference.title.confirm.delete_game_directory" = "Екземпляр %@ буде видалено назавжди і його не можливо відновити.";
 "preference.multidir.add_directory" = "Додати теку гри";
 
@@ -125,10 +137,13 @@
 "preference.detail.debug_logging" = "Записує внутрішні налаштування і дії на latestlog.txt. Це допомагає розробникам швидше знаходити проблеми, але Minecraft може працювати повільніше, оскільки журнали пишуться часто.";
 "preference.title.jitstreamer_server" = "JitStreamer IP сервер";
 "preference.detail.jitstreamer_server" = "Дозволяє вам змінити на користувацькі IP сервера JitStreamer, наприклад як для екземплярів свого хостингу. Цей параметр може бути у спокої, якщо ви використовуєте стандартні сервери JitStreamer.";
+"preference.title.enable_altkit" = "Увімкнути інтеграцію AltKit";
+"preference.detail.enable_altkit" = "Якщо увімкнено, PojavLauncher спробує приєднатися до локальних AltServers аби увімкнути JIT.";
 "preference.title.appicon" = "Встановити іконку додатка";
 "preference.detail.appicon" = "Дозволяє обрати різні значки основного екрана для PojavLauncher.";
 "preference.title.appicon-default" = "Знайоме світле PojavLauncher";
 "preference.title.appicon-dark" = "Знайоме темне PojavLauncher";
+"preference.title.appicon-development" = "Планова розробка";
 "preference.title.hidden_sidebar" = "Сховати основну панель меню за замовчуванням";
 "preference.detail.hidden_sidebar" = "Дозволяє сховати бічну панель в головному меню за замовчуванням і при обертанні на iOS 14 і новіше.";
 
@@ -139,17 +154,36 @@
 "preference.title.confirm.reset_settings" = "Це прибере всі ваші користувацькі налаштування, включаючи роздільну здатність, розмір кнопок та параметри Java.";
 "preference.title.done.reset_settings" = "Всі стандартні налаштування були відновлені.";
 
+"preference.title.erase_demo_data" = "Стерти дані демонстраційної гри";
+"preference.title.confirm.erase_demo_data" = "Це знищить всі демо-версії гри та дані, що використовуються для тимчасових облікових записів.";
+"preference.title.done.erase_demo_data" = "Всі дані демонстраційної гри були видалені.";
+
 "preference.title.renderer" = "Візуалізатор";
-"preference.title.renderer.auto" = "Авто: gl4 або ANGLE";
-"preference.title.renderer.angle" = "ANGLE (1.17+) - експортує OpenGL 3.2 (Базовий профіль, обмежений)";
-"preference.title.renderer.zink" = "Zink (Mesa 21.0) - експортує OpenGL 4.1";
+
+"preference.title.renderer.release.auto" = "Авто";
+"preference.title.renderer.release.gl4es" = "holy gl4es";
+"preference.title.renderer.release.angle" = "ANGLE";
+"preference.title.renderer.release.zink" = "Zink";
+
+"preference.title.renderer.debug.auto" = "Авто: gl4 або ANGLE";
+"preference.title.renderer.debug.gl4es" = "Gl4es 1.1.4 - експортує OpenGL 2.1";
+"preference.title.renderer.debug.angle" = "ANGLE (1.17+) - експортує OpenGL 3.2 (Базовий профіль, обмежений)";
+"preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - експортує OpenGL 4.1";
+
+"preference.detail.renderer" = "Зміни двигун візуалізації OpenGL для використання";
 
 "preference.title.resolution" = "Роздільна здатність відео (%)";
 "preference.detail.resolution" = "Дозволяє вам зменшити роздільну здатність гри.";
+"preference.title.max_framerate" = "Максимальна частота кадрів";
+"preference.detail.max_framerate" = "Дозволяє вам обмежити частоту кадрів в грі до 60 FPS на ProMotion дисплеях.";
 
 "preference.title.fullscreen_airplay" = "Повноекранний AirPlay";
 "preference.detail.fullscreen_airplay" = "Дозволяє презентувати повноекранне вікно гри на зовнішньому дисплеї, а не віддзеркалювати все, що є на екрані.";
-"preference.title.disable_gesture" = "Вимкнути жести";
+"preference.title.silence_other_audio" = "Зупинити звук, коли відкривається гра";
+"preference.detail.silence_other_audio" = "Увімкніть, щоб PojavLauncher зупиняв звук з інших додатків, таких як \"Apple Music\" під час запуску гри.";
+"preference.title.silence_with_switch" = "Вимкнути звук беззвучним перемикачем";
+"preference.detail.silence_with_switch" = "Увімкніть, щоб вимкнути звук, якщо ввімкнено беззвучний режим. Навушники та зовнішні динаміки не впливають на це.";
+"preference.title.default_gamepad_ctrl" = "Налаштування контроллера";
 "preference.title.press_duration" = "Тривалість тривалого натискання (мс)";
 "preference.detail.press_duration" = "Тривалість натискання для знищення блоків і скидання речей.";
 "preference.title.button_scale" = "Шкала екранних кнопок (%)";
@@ -162,10 +196,14 @@
 "preference.detail.virtmouse_enable" = "Увімкніть цю опцію, щоб починати з віртуальною мишею";
 "preference.title.slideable_hotbar" = "Панель швидкого доступу";
 "preference.detail.slideable_hotbar" = "Зробити повзунком швидкого доступу як колесо миші";
+
+"preference.title.gyroscope_enable" = "Увімкнути керування гіроскопом";
+"preference.title.gyroscope_sensitivity" = "Налаштування чутливості гіроскопа";
+"preference.detail.gyroscope_sensitivity" = "Налаштуйте чутливість елементів керування гіроскопом";
+
 "preference.title.java_home" = "Використовувати Java 17 для Minecraft < 1.17";
-"preference.detail.java_home" = "Java 8 використовується за замовчуванням для цих версій. Увімкніть цю опцію, щоб примусово використовувати Java 17, проте сумісність з модифікаціями не гарантується.";
+"preference.detail.java_home" = "Java 8 використовується за замовчуванням для цих версій. Увімкніть цю опцію, щоб примусово використовувати Java 17, проте сумісність не гарантується.";
 "preference.title.java_args" = "Аргументи запуску JVM";
-"preference.detail.java_args" = "Будьте обережні, це може призвести до збоїв у грі, якщо це замінити без знань.";
 "preference.placeholder.java_args" = "Вкажіть аргументи...";
 "preference.title.auto_ram" = "Автоматичне виділення ОЗП";
 "preference.detail.auto_ram" = "Вмикає автоматичне регулювання ОЗП";
@@ -174,7 +212,7 @@
 "preference.detail.allocated_memory" = "Визначає, скільки пам'яті буде виділено для Minecraft";
 "preference.warn.allocated_memory" = "Через обмеження у самій операційній системі, цей параметр може викликати нестабільність в цих і вищих значеннях. Будьте обережні.";
 "preference.title.custom_env" = "Змінні середовища";
-"preference.detail.custom_env" = "Ця опція у процесі розробки.";
+"preference.detail.custom_env" = "Ця опція наразі розробляється. Створіть та відредагуйте custom_env.txt в той час.";
 
 "preference.title.debug_skip_wait_jit" = "Пропустити «Очікування JIT»";
 "preference.detail.debug_skip_wait_jit" = "Це не дозволяє запускати без JIT, натомість це пропускає перевірку налагоджувача, оскільки перевірка не вдається під час певних джейлбрейків.";
@@ -188,3 +226,37 @@
 "preference.detail.debug_show_layout_bounds" = "Показувати межі обрізування, поля і т. д.";
 "preference.title.debug_show_layout_overlap" = "Показати накладання макета";
 "preference.detail.debug_show_layout_overlap" = "Накладання кожного перегляду з прозорим кольором, щоб розкрити огляди, що перекриваються.";
+"controller_configurator.title.type.xbox" = "Xbox";
+"controller_configurator.title.type.playstation" = "PlayStation";
+
+"controller_configurator.xbox.title.bumper_left" = "Лівий бампер";
+"controller_configurator.xbox.title.bumper_right" = "Правий бампер";
+"controller_configurator.xbox.title.trigger_left" = "Лівий тригер";
+"controller_configurator.xbox.title.trigger_right" = "Правий тригер";
+"controller_configurator.xbox.title.named_back" = "Посібник";
+"controller_configurator.xbox.title.named_start" = "Меню";
+"controller_configurator.xbox.title.named_a" = "A";
+"controller_configurator.xbox.title.named_b" = "B";
+"controller_configurator.xbox.title.named_x" = "X";
+"controller_configurator.xbox.title.named_y" = "Y";
+"controller_configurator.xbox.title.dpad_up" = "Вверх";
+"controller_configurator.xbox.title.dpad_down" = "Вниз";
+"controller_configurator.xbox.title.dpad_left" = "Вліво";
+"controller_configurator.xbox.title.dpad_right" = "Вправо";
+
+"controller_configurator.playstation.title.bumper_left" = "L1";
+"controller_configurator.playstation.title.bumper_right" = "R1";
+"controller_configurator.playstation.title.trigger_left" = "L2";
+"controller_configurator.playstation.title.trigger_right" = "R2";
+"controller_configurator.playstation.title.named_back" = "Обрати";
+"controller_configurator.playstation.title.named_a" = "Хрест";
+"controller_configurator.playstation.title.named_b" = "Коло";
+"controller_configurator.playstation.title.named_x" = "Квадрат";
+"controller_configurator.playstation.title.named_y" = "Трикутник";
+"controller_configurator.playstation.title.dpad_up" = "Вверх";
+"controller_configurator.playstation.title.dpad_down" = "Вниз";
+"controller_configurator.playstation.title.dpad_left" = "Вліво";
+"controller_configurator.playstation.title.dpad_right" = "Вправо";
+"controller_configurator.playstation.title.thumb_left" = "L3";
+"controller_configurator.playstation.title.thumb_right" = "R3";
+"controller_configurator.section.controller_style" = "Тип контролера";

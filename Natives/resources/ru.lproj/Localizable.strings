@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   StringLocalization
 */
@@ -11,9 +11,6 @@
 "game.note.airplay" = "Minecraft дублируется на экран AirPlay";
 
 "game.title.exit_code" = "Произошёл сбой игры с кодом %d";
-
-// The options button at the top-right corner on iOS 12
-"Options" = "Опции";
 
 // The play button
 "Play" = "Играть";
@@ -63,6 +60,9 @@
 
 "init.migrateDir" = "Новое расположение PojavLauncher: %@. Все существующие данные также были перемещены.";
 
+"launcher.mcl.downloading_file" = "Загрузка %@";
+"launcher.mcl.error_download" = "Не удалось загрузить %@: %@";
+
 "launcher.menu.custom_controls" = "Пользовательское управление";
 "launcher.menu.install_jar" = "Установить .jar";
 
@@ -75,10 +75,9 @@
 
 "login.jit.checking" = "Проверка JIT...";
 "login.jit.enabled" = "JIT активирован";
-"login.jit.fail.JitStreamer" = "Ошибка JitStreamer: %@";
-"login.jit.found.JitStreamer" = "Обнаружен JitStreamer, запуск JIT...";
-"login.jit.start.AltKit" = "Попытка запуска AltJIT";
-"login.jit.fail.AltKit" = "Ошибка AltKit: %@";
+"login.jit.fail" = "Не удалось включить JIT.";
+"login.jit.fail.title" = "Не удалось включить JIT на вашем устройстве.";
+"login.jit.fail.description" = "Не удалось задействовать ни одну из встроенных функций для включения JIT на вашем устройстве, и вам это придётся делать вручную. Ошибки были записаны в latestlog.txt.";
 
 // Login buttons
 "login.menu.sendlogs" = "Отправить журнал";
@@ -87,23 +86,13 @@
 "login.option.demo" = "Демонстрационный режим";
 "login.option.microsoft" = "Учётная запись Microsoft";
 "login.option.local" = "Локальная учётная запись";
-
-"login.warn.title.ram_unjb" = "Ползунок памяти включён";
-"login.warn.message.ram_unjb" = "Учтите, что изменение этой настройки может привести к нестабильности или невозможности играть в принципе.";
-
-"login.warn.title.a7" = "PojavLauncher 2.2 не поддерживается на этом устройстве.";
-
-"login.warn.title.iosver" = "Это последнее обновление для вашей версии iOS.";
-"login.warn.message.iosver" = "Следующие версии PojavLauncher не будут работать на iOS 12 и 13 из-за функциональной ограниченности и сложностей в разработке.";
-
-"login.warn.title.2gb" = "Устройство с малым объёмом ОЗУ.";
-"login.warn.message.2gb" = "Устройства, имеющие менее 2ГБ ОЗУ, могут столкнуться с нехваткой памяти. Для вашего устройства рекомендуется оставить автоматический выбор.";
+"login.warn.message.limited_ram" = "Рекомендуется оставить автоматическое выделение памяти во избежание проблем с производительностью и нестабильности игры.";
 
 "login.warn.title.demomode" = "Демонстрационный режим";
 "login.warn.message.demomode" = "В качестве замены локальному и офлайн-режиму, демонстрационный режим позволяет использовать учётную запись Microsoft для пробной игры в Java Edition 1.3.1 и выше без необходимости покупать лицензию. Более старые версии не содержат проверки лицензии и полностью доступны в любом режиме, поскольку официальный лаунчер не накладывает на них ограничений. Более подробно об этом можно узнать на нашем сайте.";
 
 "login.warn.title.localmode" = "Офлайн-режим теперь называется \"Локальный режим\".";
-"login.warn.message.localmode" = "Вы можете продолжить играть в установленных версиях, однако загрузка новых будет невозможна без наличия лицензии. Поддержка в проблемах с локальным режимом или иными методами игры без наличия лицензии осуществляться не будет. Для получения дополнительной информации обратитесь к разделу частых вопросов.";
+"login.warn.message.localmode" = "Вы можете продолжить играть в установленных версиях, однако загрузка новых будет невозможна без наличия лицензии. Поддержка в проблемах с локальным режимом или иными методами игры без наличия лицензии осуществляться не будет.";
 
 "login.msa.error.xsts.noxboxacc" = "Профиль Xbox не зарегистрирован для этой учётной записи. Пожалуйста, убедитесь, что вы создавали профиль Xbox.\nКод ошибки: 2148916233";
 "login.msa.error.xsts.noxbox" = "В настоящее время сервисы Xbox Live недоступны в вашей стране.\nКод ошибки: 2148916235";
@@ -122,7 +111,7 @@
 
 "preference.section.general" = "Основные настройки";
 "preference.section.video" = "Настройки графики";
-"preference.section.footer.video" = "Автоматический режим позволяет игре самой определять оптимальную реализацию. Уменьшение разрешения снижает нагрузку на ГП и улучшает производительность.";
+"preference.section.footer.video" = "В автоматическом режиме PojavLauncher будет подбирать оптимальные настройки для выбранной версии Minecraft. Уменьшение разрешения снижает объём работы для ГП и улучшает производительность.";
 "preference.section.control" = "Настройка управления";
 "preference.section.debug" = "Настройки отладки";
 "preference.section.footer.debug" = "Помимо отладки, эти настройки могут оказаться полезными для пользовательских раскладок. Возможно, для применения изменений потребуется перезапустить лаунчер.";
@@ -132,7 +121,7 @@
 
 "preference.title.confirm" = "Вы уверены?";
 
-"preference.title.game_directory" = "Расположение Minecraft";
+"preference.title.game_directory" = "Папка игры";
 "preference.title.confirm.delete_game_directory" = "Профиль %@ будет навсегда удалён без возможности восстановления.";
 "preference.multidir.add_directory" = "Добавить расположение";
 
@@ -144,6 +133,7 @@
 "preference.detail.debug_logging" = "Включить запись внутренних настроек и действий в latestlog.txt. Может облегчить нахождение ошибок продвинутым пользователям, однако это немного замедлит запуск Minecraft, поскольку журнал будет записываться значительно чаще.";
 "preference.title.jitstreamer_server" = "IP сервера JitStreamer";
 "preference.detail.jitstreamer_server" = "Позволяет настроить пользовательский IP сервера JitStreamer, например, для своих установок. Оставьте нетронутым для использования обычных серверов JitStreamer.";
+"preference.detail.enable_altkit" = "PojavLauncher будет пытаться подключиться к AltServer для включения JIT.";
 "preference.title.appicon" = "Выбрать иконку приложения";
 "preference.detail.appicon" = "Позволяет выбрать одну из нескольких иконок PojavLauncher для главного экрана.";
 "preference.title.appicon-default" = "Обычный светлый PojavLauncher";
@@ -158,18 +148,33 @@
 "preference.title.done.reset_settings" = "Все настройки сброшены до значений по умолчанию.";
 
 "preference.title.renderer" = "Визуализатор";
-"preference.title.renderer.auto" = "Авто: gl4es или ANGLE";
-"preference.title.renderer.gl4es" = "gl4es 1.1.4 — обеспечивает OpenGL 2.1";
-"preference.title.renderer.angle" = "ANGLE (1.17+) — обеспечивает OpenGL 3.2 (ограниченно, Core Profile)";
-"preference.title.renderer.zink" = "Zink (Mesa 21.0) — обеспечивает OpenGL 4.1";
-"preference.detail.renderer" = "Выберите используемую графическую реализацию OpenGL";
+
+"preference.title.renderer.release.auto" = "Авто";
+"preference.title.renderer.release.gl4es" = "holy gl4es";
+"preference.title.renderer.release.angle" = "ANGLE";
+"preference.title.renderer.release.zink" = "Zink";
+
+"preference.title.renderer.debug.auto" = "Авто: gl4es или ANGLE";
+"preference.title.renderer.debug.gl4es" = "gl4es 1.1.4 — обеспечивает OpenGL 2.1";
+"preference.title.renderer.debug.angle" = "ANGLE (1.17+) — обеспечивает OpenGL 3.2 (ограниченно, Core Profile)";
+"preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) — обеспечивает OpenGL 4.1";
+
+"preference.detail.renderer" = "Выберите используемую графическую реализацию OpenGL. Zink временно отключён для диагностики ошибок для iOS 16 и новее.";
 
 "preference.title.resolution" = "Разрешение (%)";
 "preference.detail.resolution" = "Можно уменьшить разрешение игры в целях быстродействия.";
 
 "preference.title.fullscreen_airplay" = "Полноэкранный AirPlay";
 "preference.detail.fullscreen_airplay" = "Транслировать на внешний монитор только окно игры во весь экран вместо отображения всего, что происходит на устройстве.";
-"preference.title.disable_gesture" = "Отключение жестов";
+"preference.title.silence_other_audio" = "Приостанавливать воспроизведение при открытии игры";
+"preference.detail.silence_other_audio" = "При запуске игры PojavLauncher будет приостанавливать воспроизведение звука другими приложениями (например, музыку).";
+"preference.title.default_gamepad_ctrl" = "Настройки контроллера";
+"preference.title.hardware_hide" = "Скрывать раскладку при подключении внешних устройств ввода";
+"preference.detail.hardware_hide" = "Автоматически скрывать раскладку экранного управления при подключении мыши или контроллера.";
+"preference.title.gesture_mouse" = "Жесты мыши";
+"preference.detail.gesture_mouse" = "Включить имитацию действий мыши — двойное касание для размещения блока, удержание для его разрушения и прокрутку двумя пальцами.";
+"preference.title.gesture_hotbar" = "Жесты панели инструментов";
+"preference.detail.gesture_hotbar" = "Включить жесты выбора слотов, выбрасывания предметов и их перемещения во вторую руку.";
 "preference.title.press_duration" = "Длительность нажатия (мс)";
 "preference.detail.press_duration" = "Длительность удерживания для разрушения блоков и выбрасывания предметов.";
 "preference.title.button_scale" = "Размер кнопок (%)";
@@ -182,10 +187,16 @@
 "preference.detail.virtmouse_enable" = "Запускать игру с включённой виртуальной мышью";
 "preference.title.slideable_hotbar" = "Прокручиваемый хотбар";
 "preference.detail.slideable_hotbar" = "Включить прокрутку слотов хотбара как при использовании колёсика мыши.";
+
+"preference.title.gyroscope_enable" = "Управление наклоном";
+"preference.detail.gyroscope_enable" = "Это позволит вам управлять положением камеры в игре путём вращения устройства.";
+"preference.title.gyroscope_sensitivity" = "Чувствительность гироскопа";
+"preference.detail.gyroscope_sensitivity" = "Изменить чувствительность датчика вращения.";
+
 "preference.title.java_home" = "Java 17 для старых версий Minecraft";
-"preference.detail.java_home" = "Для 1.16.5 и ниже по умолчанию используется Java 8. Включение приведёт к принудительному использованию Java 17, однако это может нарушить совместимость с модами.";
+"preference.detail.java_home" = "Для этих версий по умолчанию используется Java 8. Включение приведёт к принудительному использованию Java 17, однако это может нарушить совместимость.";
 "preference.title.java_args" = "Аргументы запуска JVM";
-"preference.detail.java_args" = "Осторожно, слепое изменение этой настройки может вывести из строя игру.";
+"preference.detail.java_args" = "Задать аргументы Java при запуске Minecraft. Осторожно, их неправильная настройка приведёт к сбою!";
 "preference.placeholder.java_args" = "Укажите аргументы...";
 "preference.title.auto_ram" = "Автоматическое выделение ОЗУ";
 "preference.detail.auto_ram" = "Автоматически управляет количеством выделенного ОЗУ";
@@ -194,7 +205,7 @@
 "preference.detail.allocated_memory" = "Управляет тем, сколько памяти выделится для Minecraft";
 "preference.warn.allocated_memory" = "Из-за ограничений операционной системы может вызвать нестабильность при этом и более высоких значениях. Используйте с осторожностью.";
 "preference.title.custom_env" = "Переменные среды";
-"preference.detail.custom_env" = "Функция всё ещё в разработке.";
+"preference.detail.custom_env" = "Эта функция ещё в разработке. Пока что вручную создайте и отредактируйте файл custom_env.txt.";
 
 "preference.title.debug_skip_wait_jit" = "Пропускать этап ожидания JIT";
 "preference.detail.debug_skip_wait_jit" = "Без JIT это запускать игру не позволит, однако исправит ошибку запуска на некоторых устройствах с jailbreak за счёт пропуска проверки отладчика.";
@@ -207,3 +218,10 @@
 "preference.detail.debug_show_layout_bounds" = "Показать границы и отступы";
 "preference.title.debug_show_layout_overlap" = "Показывать наложение элементов";
 "preference.detail.debug_show_layout_overlap" = "Обозначить каждый элемент прозрачным цветом, чтобы упростить нахождение пересечений.";
+"controller_configurator.title.type.xbox" = "Xbox";
+"controller_configurator.xbox.title.named_a" = "A";
+"controller_configurator.xbox.title.named_b" = "B";
+"controller_configurator.xbox.title.named_x" = "X";
+"controller_configurator.xbox.title.named_y" = "Y";
+"controller_configurator.playstation.title.named_back" = "Выбрать";
+"controller_configurator.section.controller_style" = "Тип контроллера";

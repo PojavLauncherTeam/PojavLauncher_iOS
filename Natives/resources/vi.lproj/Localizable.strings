@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   StringLocalization
 */
@@ -11,9 +11,6 @@
 "game.note.airplay" = "Minecraft đang được hiển thị trên màn hình AirPlay";
 
 "game.title.exit_code" = "Trò chơi thoát với mã %d";
-
-// The options button at the top-right corner on iOS 12
-"Options" = "Tùy chọn";
 
 // The play button
 "Play" = "Chơi";
@@ -63,6 +60,9 @@
 
 "init.migrateDir" = "Đường dẫn dữ liệu của PojavLauncher bây giờ là %@. Tất cả dữ liệu đã có của bạn đã được chuyển đến địa chỉ mới.";
 
+"launcher.mcl.downloading_file" = "Đang tải xuống%@";
+"launcher.mcl.error_download" = "Không thể tải xuống %@:%@";
+
 "launcher.menu.custom_controls" = "Tùy chỉnh điều khiển";
 "launcher.menu.install_jar" = "Cài đặt tệp .jar";
 
@@ -75,19 +75,30 @@
 
 "login.jit.checking" = "Kiểm tra cho JIT";
 "login.jit.enabled" = "JIT đã được bật";
+"login.jit.fail" = "Không thể bật JIT.";
+"login.jit.fail.title" = "Không thể bật JIT trên thiết bị của bạn.";
+"login.jit.fail.description" = "Không thể sử dụng tích hợp nào để tự động bật JIT trên thiết bị của bạn và giờ đây nó phải được bật theo cách thủ công. Lỗi đã được ghi vào latestlog.txt.";
 
 // Login buttons
 "login.menu.sendlogs" = "Gửi nhật kí của bạn";
 "login.option.add" = "Thêm tài khoản";
 "login.option.select" = "Chọn tài khoản";
+"login.option.demo" = "Tài Khoản Demo";
 "login.option.microsoft" = "Tài khoản Microsoft";
 "login.option.local" = "Tài khoản nội bộ";
+
+"login.warn.title.legacy_device" = "Bản phát hành tiếp theo của PojavLauncher sẽ không tương thích với thiết bị này.";
+"login.warn.message.legacy_device" = "Để chạy bản phát hành chính tiếp theo, cần có một thiết bị có khả năng chạy iOS 14.";
+"login.warn.title.legacy_ios" = "Bản phát hành tiếp theo của PojavLauncher sẽ yêu cầu cập nhật hệ thống.";
+"login.warn.message.legacy_ios" = "Để chạy bản phát hành chính tiếp theo, thiết bị này cần chạy iOS 14 trở lên.";
+"login.warn.title.limited_ram" = "Thiết bị này có một lượng bộ nhớ khả dụng hạn chế.";
+"login.warn.message.limited_ram" = "Chúng tôi khuyên bạn nên bật RAM tự động để tránh các vấn đề về hiệu suất và tính không ổn định.";
 
 "login.warn.title.demomode" = "Tài khoản của bạn là Demo";
 "login.warn.message.demomode" = "Chế độ chơi thử sẽ thay thế các chế độ ngoại tuyến và nội bộ. Nó cho phép bạn đăng nhập bằng tài khoản Microsoft chưa mua trò chơi và chơi bản chơi thử, được thêm vào từ phiên bản 1.3.1. Các phiên bản cũ hơn vẫn có bản đầy đủ, vì trình khởi chạy chính thức không đặt bất kì giới hạn nào. Xem trang web của chúng tôi để biết thêm về sự chuyển dời từ chế độ ngoại tuyến.";
 
 "login.warn.title.localmode" = "Chế độ ngoại tuyến bây giờ là Chế độ nội bộ.";
-"login.warn.message.localmode" = "Bạn có thể tiếp tục chơi những phiên bản đã được cài đặt, nhưng không thể tải Minecraft mà không có một tài khoản trả phí. Bạn sẽ không được nhận hỗ trợ về những sự cố liên quan đến tài khoản nội bộ, hoặc các cách tải về Minecraft miễn phí khác. Xem \"Câu hỏi thường gặp\" để biết thêm thông tin.";
+"login.warn.message.localmode" = "Bạn có thể tiếp tục chơi các phiên bản đã cài đặt, nhưng bạn không còn có thể tải xuống Minecraft nếu không có tài khoản trả phí. Sẽ không có hỗ trợ nào được cung cấp cho các sự cố với tài khoản cục bộ hoặc các phương tiện khác để mua Minecraft.";
 
 "login.msa.error.xsts.noxboxacc" = "Chưa có một hồ sơ Xbox được đăng kí cho tài khoản Microsoft này. Hãy chắc chắn rằng bạn đã tạo một hồ sơ.\nMã lỗi: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live không khả dụng ở quốc gia của bạn.\nMã lỗi: 2148916235";
@@ -105,7 +116,8 @@
 "Settings" = "Thiết lập";
 
 "preference.section.general" = "Cài đặt chung";
-"preference.section.footer.video" = "Trình kết xuất tự động cho phép Minecraft quyết định sẽ sử dụng trình kết xuất nào. Giảm độ phân giải sẽ giảm hoạt động cho GPU, giúp tăng hiệu năng.";
+"preference.section.video" = "Cài đặt hình ảnh";
+"preference.section.footer.video" = "Trình kết xuất tự động cho phép PojavLauncher chọn tùy chọn tốt nhất dựa trên phiên bản Minecraft. Giảm độ phân giải làm giảm khối lượng công việc GPU để có hiệu suất tốt hơn.";
 "preference.section.control" = "Tuỳ chỉnh bộ điều khiển";
 "preference.section.debug" = "Cài đặt gỡ lỗi UI";
 "preference.section.footer.debug" = "Ngoài gỡ lỗi, những cài đặt này có thể giúp ích cho tùy biến điều khiển. Bạn có thể phải khởi động lại launcher.";
@@ -114,6 +126,8 @@
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "Bạn có chắc không?";
+
+"preference.title.game_directory" = "Đường dẫn thư mục của trò chơi";
 "preference.title.confirm.delete_game_directory" = "Thư mục %@ sẽ bị xoá vĩnh viễn và không thể phục hồi.";
 "preference.multidir.add_directory" = "Thêm thư mục trò chơi";
 
@@ -125,11 +139,15 @@
 "preference.detail.debug_logging" = "Ghi lại những cài đặt và hoạt động vào tệp latestlog.txt. Nó có thể giúp các nhà phát triển phát hiện ra lỗi dễ dàng hơn, nhưng Minecraft có thể chạy chậm hơn vì nhật kí được ghi lại thường xuyên hơn.";
 "preference.title.jitstreamer_server" = "IP server JITStreamer";
 "preference.detail.jitstreamer_server" = "Cho phép thay đổi địa chỉ IP của máy chủ JitStreamer với những máy chủ tự do. Bỏ qua tùy chọn này nếu bạn sử dụng máy chủ JitStreamer mặc định.";
+"preference.title.enable_altkit" = "Bật tích hợp AltKit";
+"preference.detail.enable_altkit" = "Khi được bật, PojavLauncher sẽ cố gắng kết nối với Máy chủ thay thế cục bộ để bật JIT.";
 "preference.title.appicon" = "Thay đổi icon";
 "preference.detail.appicon" = "Cho phép bạn thay đổi icon màn hình chính cho PojavLauncher.";
 "preference.title.appicon-default" = "PojavLauncher, chủ đề sáng";
 "preference.title.appicon-dark" = "PojavLauncher, chủ đề tối";
+"preference.title.appicon-development" = "Phát triển bút chì";
 "preference.title.hidden_sidebar" = "Mặc định ẩn thanh bên";
+"preference.detail.hidden_sidebar" = "Cho phép bạn ẩn thanh bên trên menu chính theo mặc định và khi xoay.";
 
 "preference.title.reset_warnings" = "Đặt lại tất cả cảnh báo";
 "preference.title.done.reset_warnings" = "Tất cả các cảnh báo đã được đặt lại.";
@@ -138,17 +156,42 @@
 "preference.title.confirm.reset_settings" = "Điều này sẽ đặt lại tất cả các tùy chọn của bạn, báo gồm độ phân giải, kích thước nút, và các chỉ số chạy Java.";
 "preference.title.done.reset_settings" = "Tất cả các thiết lập đã được đặt lại.";
 
+"preference.title.erase_demo_data" = "Xóa dữ liệu trò chơi Demo";
+"preference.title.confirm.erase_demo_data" = "Điều này sẽ xóa tất cả các phiên bản trò chơi Demo và dữ liệu được sử dụng cho tài khoản Demo.";
+"preference.title.done.erase_demo_data" = "Tất cả dữ liệu trò chơi Demo đã bị xóa.";
+
 "preference.title.renderer" = "Trình kết xuất";
-"preference.title.renderer.auto" = "Tự động: gl4es hoặc ANGLE";
-"preference.title.renderer.angle" = "tinygl4angle (1.17+) - xuất ra OpenGL 3.2 (Core Profile, bị giới hạn)";
-"preference.title.renderer.zink" = "Zink (Mesa 21.0) - xuất ra OpenGL 4.1";
+
+"preference.title.renderer.release.auto" = "Tự động";
+"preference.title.renderer.release.gl4es" = "gl4es Thần Thánh";
+"preference.title.renderer.release.angle" = "GÓC";
+"preference.title.renderer.release.zink" = "Kẽm";
+
+"preference.title.renderer.debug.auto" = "Tự động: gl4es hoặc ANGLE";
+"preference.title.renderer.debug.gl4es" = "gl4es 1.1.4 - xuất ra OpenGL 2.1";
+"preference.title.renderer.debug.angle" = "tinygl4angle (1.17+) - xuất ra OpenGL 3.2 (Core Profile, bị giới hạn)";
+"preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - xuất ra OpenGL 4.1";
+
+"preference.detail.renderer" = "Thay đổi kết xuất OpenGL được sử dụng";
 
 "preference.title.resolution" = "Độ phân giải (%)";
 "preference.detail.resolution" = "Cho phép thay đổi độ phân giải trò chơi.";
+"preference.title.max_framerate" = "Tốc độ Khung Hình tối đa";
+"preference.detail.max_framerate" = "Cho phép bạn giới hạn tốc độ khung hình của trò chơi ở mức 60FPS trên màn hình ProMotion.";
 
 "preference.title.fullscreen_airplay" = "AirPlay toàn màn hình";
 "preference.detail.fullscreen_airplay" = "Cho phép chiếu toàn màn hình cửa sổ game thay vì chiếu mọi thứ trên màn hình ngoài.";
-"preference.title.disable_gesture" = "Tắt cử chỉ";
+"preference.title.silence_other_audio" = "Tạm dừng âm thanh khi trò chơi mở ra";
+"preference.detail.silence_other_audio" = "Bật để cho phép PojavLauncher tạm dừng âm thanh từ các ứng dụng khác, chẳng hạn như Âm nhạc, khi khởi chạy trò chơi.";
+"preference.title.silence_with_switch" = "Tắt âm thanh bằng công tắc im lặng";
+"preference.detail.silence_with_switch" = "Bật để tắt âm thanh khi Chế độ im lặng được bật. Tai nghe và loa ngoài không bị ảnh hưởng.";
+"preference.title.default_gamepad_ctrl" = "Cấu hình bộ điều khiển";
+"preference.title.hardware_hide" = "Ẩn điều khiển khi phần cứng được kết nối";
+"preference.detail.hardware_hide" = "Bật hành vi tự động tắt lớp phủ điều khiển trên màn hình khi chuột hoặc bộ điều khiển trò chơi được kết nối.";
+"preference.title.gesture_mouse" = "Mouse gestures";
+"preference.detail.gesture_mouse" = "Bật các cử chỉ, chẳng hạn như nhấn để đặt khối, giữ để phá khối, cuộn bằng 2";
+"preference.title.gesture_hotbar" = "Cử Chỉ Hotbar";
+"preference.detail.gesture_hotbar" = "Cho phép các cử chỉ, chẳng hạn như chạm vào khe thanh nóng, trao đổi vật phẩm giữa các tay, ném vật phẩm";
 "preference.title.press_duration" = "Độ dài nhấn giữ (ms)";
 "preference.detail.press_duration" = "Khoảng thời gian chạm giữ để phá khối và ném đồ vật.";
 "preference.title.button_scale" = "Độ rộng nút trên màn hình (%)";
@@ -161,10 +204,18 @@
 "preference.detail.virtmouse_enable" = "Bật tùy chọn này để khởi động trò chơi với chuột ảo được bật sẵn";
 "preference.title.slideable_hotbar" = "Thanh vật phẩm có thể trượt";
 "preference.detail.slideable_hotbar" = "Làm thanh vật phẩm có thể trượt, hoạt động như cuộn nút giữa chuột";
+
+"preference.title.gyroscope_enable" = "Bật con quay hồi chuyển";
+"preference.detail.gyroscope_enable" = "Kích hoạt tính năng này sẽ cho phép bạn tham gia trò chơi bằng cách xoay thiết bị của mình";
+"preference.title.gyroscope_invert_x_axis" = "Đảo ngược con quay hồi chuyển trái và phải";
+"preference.detail.gyroscope_invert_x_axis" = "Đảo ngược trục X của con quay hồi chuyển";
+"preference.title.gyroscope_sensitivity" = "Độ nhạy con quay hồi chuyển";
+"preference.detail.gyroscope_sensitivity" = "Điều chỉnh độ nhạy của điều khiển bằng con quay hồi chuyển";
+
 "preference.title.java_home" = "Sử dụng Java 17 cho Minecraft < 1.17";
-"preference.detail.java_home" = "Mặc định, Java 8 được sử dụng cho các phiên bản này. Sử dụng tùy chọn này có thể làm mất tính tương thích với các trình khởi động mod.";
+"preference.detail.java_home" = "Java 8 được sử dụng theo mặc định cho các phiên bản đó. Bật tùy chọn này để bắt buộc sử dụng Java 17, tuy nhiên khả năng tương thích không được đảm bảo.";
 "preference.title.java_args" = "Các chỉ số chạy JVM";
-"preference.detail.java_args" = "Cẩn thận, trò chơi có thể bị hỏng nếu sửa đổi mà không có kiến thức.";
+"preference.detail.java_args" = "Truyền đối số cho Java khi khởi chạy Minecraft. Hãy cẩn thận, điều này có thể khiến trò chơi bị sập nếu sửa đổi không đúng cách.";
 "preference.placeholder.java_args" = "Nhập các chỉ số...";
 "preference.title.auto_ram" = "RAM tự động";
 "preference.detail.auto_ram" = "Bật tự động điều chỉnh RAM";
@@ -173,7 +224,7 @@
 "preference.detail.allocated_memory" = "Điều chỉnh số lượng bộ nhớ được cung cấp cho Minecraft";
 "preference.warn.allocated_memory" = "Do những giới hạn của hệ điều hành, tùy chọn này có thể gây ra sự cố với mức phân bổ này hoặc cao hơn. Chú ý khi tiếp tục.";
 "preference.title.custom_env" = "Các chỉ số môi trường";
-"preference.detail.custom_env" = "Tùy chọn này đang được hoàn thiện.";
+"preference.detail.custom_env" = "Tùy chọn này đang được xây dựng. Trong khi chờ đợi, hãy tạo và chỉnh sửa custom_env.txt.";
 
 "preference.title.debug_skip_wait_jit" = "Bỏ qua thông bảo \"Đang đợi JIT\"";
 "preference.detail.debug_skip_wait_jit" = "Tùy chọn này không cho phép chạy trò chơi mà không có JIT, thay vào đó trình khởi chạy sẽ bỏ qua việc kiểm tra. Hữu ích nếu kiểm tra thất bại với một số trình jailbreak.";
@@ -187,3 +238,49 @@
 "preference.detail.debug_show_layout_bounds" = "Hiển thị ranh giới, lề";
 "preference.title.debug_show_layout_overlap" = "Hiện sắp xếp chồng lên nhau";
 "preference.detail.debug_show_layout_overlap" = "Đặt màu nền cho mỗi vùng để phát hiện những vùng bị chồng.";
+
+"controller_configurator.title.current" = "Tập tin cấu hình Gamepad";
+"controller_configurator.title.type.xbox" = "Xbox";
+"controller_configurator.title.type.playstation" = "PlayStation";
+
+"controller_configurator.xbox.title.bumper_left" = "Cản trái";
+"controller_configurator.xbox.title.bumper_right" = "Cản phải";
+"controller_configurator.xbox.title.trigger_left" = "Bấm nút trái";
+"controller_configurator.xbox.title.trigger_right" = "Đúng ngòi nổ";
+"controller_configurator.xbox.title.named_back" = "Hướng dẫn";
+"controller_configurator.xbox.title.named_start" = "Thực đơn";
+"controller_configurator.xbox.title.named_a" = "A";
+"controller_configurator.xbox.title.named_b" = "B";
+"controller_configurator.xbox.title.named_x" = "X";
+"controller_configurator.xbox.title.named_y" = "Y";
+"controller_configurator.xbox.title.dpad_up" = "Lên";
+"controller_configurator.xbox.title.dpad_down" = "Xuống";
+"controller_configurator.xbox.title.dpad_left" = "Bên trái";
+"controller_configurator.xbox.title.dpad_right" = "Phải";
+"controller_configurator.xbox.title.thumb_left" = "Nhấp chuột trái";
+"controller_configurator.xbox.title.thumb_right" = "Nhấp chuột phải";
+
+"controller_configurator.playstation.title.bumper_left" = "L1";
+"controller_configurator.playstation.title.bumper_right" = "R1";
+"controller_configurator.playstation.title.trigger_left" = "L2";
+"controller_configurator.playstation.title.trigger_right" = "R2";
+"controller_configurator.playstation.title.named_back" = "Chọn";
+"controller_configurator.playstation.title.named_start" = "Bắt đầu";
+"controller_configurator.playstation.title.named_a" = "Đi qua";
+"controller_configurator.playstation.title.named_b" = "Vòng tròn";
+"controller_configurator.playstation.title.named_x" = "Quảng trường";
+"controller_configurator.playstation.title.named_y" = "Tam giác";
+"controller_configurator.playstation.title.dpad_up" = "Lên";
+"controller_configurator.playstation.title.dpad_down" = "Xuống";
+"controller_configurator.playstation.title.dpad_left" = "Bên trái";
+"controller_configurator.playstation.title.dpad_right" = "Phải";
+"controller_configurator.playstation.title.thumb_left" = "L3";
+"controller_configurator.playstation.title.thumb_right" = "R3";
+
+"controller_configurator.section.config_files" = "Tập tin cấu hình hiện tại";
+"controller_configurator.section.game_mappings" = "Ánh Xạ Trò chơi";
+"controller_configurator.section.footer.game_mappings" = "Ràng buộc khi chuột bị khóa trong trò chơi.";
+"controller_configurator.section.menu_mappings" = "Ánh Xạ Menu";
+"controller_configurator.section.footer.menu_mappings" = "Các ràng buộc khi chuột không bị khóa, chẳng hạn như trên màn hình tiêu đề hoặc trong menu tạm dừng.";
+"controller_configurator.section.controller_style" = "Loại Bộ điều khiển";
+"controller_configurator.section.footer.controller_style" = "Hiển thị các tên nút điều khiển khác nhau trong bộ cấu hình này.";

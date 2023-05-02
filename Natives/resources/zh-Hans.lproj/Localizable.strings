@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   StringLocalization
 */
@@ -11,9 +11,6 @@
 "game.note.airplay" = "Minecraft 正在通过隔空播放（AirPlay）到其他设备显示";
 
 "game.title.exit_code" = "游戏非正常退出，错误代码%d";
-
-// The options button at the top-right corner on iOS 12
-"Options" = "选项";
 
 // The play button
 "Play" = "启动游戏";
@@ -63,6 +60,9 @@
 
 "init.migrateDir" = "目前 PojavLauncher 数据目录为%@。所有的游戏资源已移动到最新目录。";
 
+"launcher.mcl.downloading_file" = "正在下载 %@";
+"launcher.mcl.error_download" = "下载 %@ 失败：%@";
+
 "launcher.menu.custom_controls" = "自定义控制按键";
 "launcher.menu.install_jar" = "安装 .jar";
 
@@ -75,10 +75,9 @@
 
 "login.jit.checking" = "检查是否开启 JIT 权限";
 "login.jit.enabled" = "JIT 权限已启用";
-"login.jit.fail.JitStreamer" = "JitStreamer 错误：%@";
-"login.jit.found.JitStreamer" = "检测到 JitStreamer，正在开启 JIT 权限";
-"login.jit.start.AltKit" = "正在尝试通过 AltServer 获取 JIT 权限";
-"login.jit.fail.AltKit" = "AltKit 错误： %@";
+"login.jit.fail" = "无法启用 JIT。";
+"login.jit.fail.title" = "无法在您的设备上启用 JIT。";
+"login.jit.fail.description" = "没有集成可在您的设备上自动启用 JIT，现在需要手动启用。错误已记录到 latestlog.txt。";
 
 // Login buttons
 "login.menu.sendlogs" = "发送日志文件";
@@ -88,22 +87,18 @@
 "login.option.microsoft" = "微软账户";
 "login.option.local" = "本地账户";
 
-"login.warn.title.ram_unjb" = "自动分配内存尚未打开";
-"login.warn.message.ram_unjb" = "请注意，更改此设置可能导致游戏不稳定或无法游玩。";
-
-"login.warn.title.a7" = "此设备不支持 PojavLauncher 2.2。";
-
-"login.warn.title.iosver" = "这是此 iOS 设备的最后一次更新。";
-"login.warn.message.iosver" = "由于功能不一致和开发障碍，未来版本的 PojavLauncher 将不支持 iOS 12 或 13。";
-
-"login.warn.title.2gb" = "您的设备内存有限。";
-"login.warn.message.2gb" = "内存小于 3GB 的设备可能会运行到内存约束。我们建议为您的设备保留自动内存分配。";
+"login.warn.title.legacy_device" = "PojavLauncher 的下一个版本将与此设备不兼容。";
+"login.warn.message.legacy_device" = "运行下一个主要版本，需要一台能够运行 iOS 14 的设备。";
+"login.warn.title.legacy_ios" = "PojavLauncher 的下一个版本将需要系统更新。";
+"login.warn.message.legacy_ios" = "运行下一个主要版本，需要一台能够运行 iOS 14 或更高版本的设备。";
+"login.warn.title.limited_ram" = "该设备的可用内存有限。";
+"login.warn.message.limited_ram" = "我们建议启用自动分配内存大小，以防止不稳定和性能问题。";
 
 "login.warn.title.demomode" = "您现在是演示账户";
 "login.warn.message.demomode" = "演示模式作为离线和本地模式的替代，将允许你登录到一个尚未购买游戏的微软账户中游玩 1.3.1 及更新版本的试玩版本。因为官方启动器的一些特性，在较旧版本中会包含完整的游戏。详情请参阅我们的网站，了解更多关于离线模式的过渡。";
 
 "login.warn.title.localmode" = "离线模式现在是本地模式了。";
-"login.warn.message.localmode" = "您可以继续游玩已经安装的版本，但是如果没有正版账户，您将无法再下载其他版本。任何有关本地账户以及如何获取其他 Minecraft 版本的问题将不会得到任何解答。请参阅 FAQ 以获取更多信息。";
+"login.warn.message.localmode" = "您可以继续游玩已经安装的版本，但是如果没有正版账户，您将无法再下载其他版本。任何有关本地账户以及如何获取其他 Minecraft 版本的问题将不会得到任何解答。";
 
 "login.msa.error.xsts.noxboxacc" = "此微软账户没有注册 Xbox 账户。请确认您已注册了 Xbox 账户。\n错误代码：2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live 目前在您的国家/地区不可用。\n错误代码：2148916235";
@@ -122,7 +117,7 @@
 
 "preference.section.general" = "启动器基础设置";
 "preference.section.video" = "视频设置";
-"preference.section.footer.video" = "使用自动选择的渲染器将根据游戏版本选择最佳渲染器启动游戏，降低分辨率可以使得 GPU 负载变低从而提升性能。";
+"preference.section.footer.video" = "自动渲染器允许 PojavLauncher 选择基于 Minecraft 版本的最佳选项。减少分辨率降低GPU 工作量以提高性能。";
 "preference.section.control" = "自定义控制键";
 "preference.section.debug" = "UI设置";
 "preference.section.footer.debug" = "除了调试外，这些设置可能对自定义控件有用。您可能需要重新启动启动器才能使更改生效。";
@@ -132,7 +127,7 @@
 
 "preference.title.confirm" = "确认？";
 
-"preference.title.game_directory" = "Minecraft 游戏目录";
+"preference.title.game_directory" = "游戏目录";
 "preference.title.confirm.delete_game_directory" = "目录 %@ 将被永久删除，并且无法恢复。";
 "preference.multidir.add_directory" = "添加游戏目录";
 
@@ -144,10 +139,13 @@
 "preference.detail.debug_logging" = "完整的记录启动器的各种活动事件到latestlog.txt文件内,有助于开发者更容易的发现错误。但Minecraft游戏内FPS可能会降低(频繁的记录日志内容会使得CPU负载变高)";
 "preference.title.jitstreamer_server" = "JitStreamer的服务器地址";
 "preference.detail.jitstreamer_server" = "该选项将自定义获取 JIT 权限地址的 JitStreamer 服务器，若你不知道如何修改请勿修改，当然也可以保持默认地址";
+"preference.title.enable_altkit" = "启用 AltKit 集成";
+"preference.detail.enable_altkit" = "启用时，PojavLauncher 将尝试连接到本地 AltServers 以启用 JIT。";
 "preference.title.appicon" = "设置应用应用图标风格";
 "preference.detail.appicon" = "允许您为 PojavLauncher 选择不同的主屏幕图标。";
 "preference.title.appicon-default" = "设置 PojavLauncher 图标为浅色";
 "preference.title.appicon-dark" = "设置 PojavLauncher 图标为深色";
+"preference.title.appicon-development" = "已封装开发";
 "preference.title.hidden_sidebar" = "默认隐藏主菜单侧边栏";
 "preference.detail.hidden_sidebar" = "允许您在 iOS 14 及更高版本中默认或旋转中隐藏主菜单上的侧边栏。";
 
@@ -163,18 +161,37 @@
 "preference.title.done.erase_demo_data" = "所有演示游戏数据已被清除。";
 
 "preference.title.renderer" = "渲染器";
-"preference.title.renderer.auto" = "自动：gl4es 或 ANGLE";
-"preference.title.renderer.gl4es" = "gl4es 1.1.4 - OpenGL 版本 2.1";
-"preference.title.renderer.angle" = "ANGLE（仅支持1.17+）- exports OpenGL 版本 3.2";
-"preference.title.renderer.zink" = "Zink（Mesa 21.0）- exports OpenGL 版本 4.1";
+
+"preference.title.renderer.release.auto" = "自动";
+"preference.title.renderer.release.gl4es" = "holy gl4es";
+"preference.title.renderer.release.angle" = "ANGLE";
+"preference.title.renderer.release.zink" = "Zink";
+
+"preference.title.renderer.debug.auto" = "自动：gl4es 或 ANGLE";
+"preference.title.renderer.debug.gl4es" = "gl4es 1.1.4 - OpenGL版本2.1";
+"preference.title.renderer.debug.angle" = "ANGLE（仅支持1.17+）- exports OpenGL 版本 3.2";
+"preference.title.renderer.debug.zink" = "Zink（Mesa 21.0）- exports OpenGL 版本 4.1";
+
 "preference.detail.renderer" = "更改使用的 OpenGL 渲染器";
 
 "preference.title.resolution" = "分辨率缩放 (%)";
 "preference.detail.resolution" = "降低分辨率可能会提升FPS。默认分辨率为屏幕的分辨率";
+"preference.title.max_framerate" = "最大帧率";
+"preference.detail.max_framerate" = "允许您在 ProMotion 显示器上将游戏帧率限制为 60FPS。";
 
 "preference.title.fullscreen_airplay" = "全屏 AirPlay";
 "preference.detail.fullscreen_airplay" = "允许在外部显示器上全屏显示游戏，而不是直接镜像显示。";
-"preference.title.disable_gesture" = "禁用手势";
+"preference.title.silence_other_audio" = "游戏打开时暂停音频";
+"preference.detail.silence_other_audio" = "启用后将允许 PojavLauncher 在启动游戏时暂停其他应用的音频。";
+"preference.title.silence_with_switch" = "使用静音开关禁用音频";
+"preference.detail.silence_with_switch" = "启用时，可以使用静音模式禁用音频，耳机和外部扬声器不受此影响。";
+"preference.title.default_gamepad_ctrl" = "手柄配置";
+"preference.title.hardware_hide" = "硬件连接时隐藏控制键";
+"preference.detail.hardware_hide" = "启用连接鼠标或游戏控制器时自动禁用屏幕控制叠加的行为。";
+"preference.title.gesture_mouse" = "鼠标手势";
+"preference.detail.gesture_mouse" = "启用手势，例如点击放置方块、按住破坏方块、用两根手指转动视角";
+"preference.title.gesture_hotbar" = "快捷栏手势";
+"preference.detail.gesture_hotbar" = "启用手势，例如点击快捷栏物品槽、双手交换物品、丢弃物品";
 "preference.title.press_duration" = "长按延迟（毫秒）";
 "preference.detail.press_duration" = "修改长按摧毁方块、丢弃物品的触发时长。";
 "preference.title.button_scale" = "屏幕按钮缩放 (%)";
@@ -187,10 +204,18 @@
 "preference.detail.virtmouse_enable" = "启用此选项以在游戏启动时显示虚拟鼠标";
 "preference.title.slideable_hotbar" = "可滑动快捷栏";
 "preference.detail.slideable_hotbar" = "使快捷栏像鼠标滚轮一样可滑动";
+
+"preference.title.gyroscope_enable" = "启用陀螺仪控制";
+"preference.detail.gyroscope_enable" = "启用此功能会允许您通过转动设备来在游戏中转动视角";
+"preference.title.gyroscope_invert_x_axis" = "左右反转陀螺仪";
+"preference.detail.gyroscope_invert_x_axis" = "反转陀螺仪的 X 轴";
+"preference.title.gyroscope_sensitivity" = "陀螺仪控制灵敏度";
+"preference.detail.gyroscope_sensitivity" = "调整陀螺仪控制的灵敏度";
+
 "preference.title.java_home" = "游戏版本小于 1.17 时仍然使用 Java 17";
-"preference.detail.java_home" = "这些版本默认使用 Java 8。启用此选项可强制使用 Java 17，但不保证与安装了 Mod 的 Minecraft 兼容。";
+"preference.detail.java_home" = "这些版本默认使用 Java 8。启用此选项可强制使用 Java 17，但不保证兼容性。";
 "preference.title.java_args" = "JVM 启动参数";
-"preference.detail.java_args" = "注意，如果你不清楚自己在做什么请不要修改此选项。";
+"preference.detail.java_args" = "当启动 Minecraft 时将参数传递到 Java。小心，如果修改不正确，可能会使游戏崩溃。";
 "preference.placeholder.java_args" = "自定义参数...";
 "preference.title.auto_ram" = "自动设置内存大小";
 "preference.detail.auto_ram" = "启用内存自动调节";
@@ -199,7 +224,7 @@
 "preference.detail.allocated_memory" = "控制给 Minecraft 分配多少内存";
 "preference.warn.allocated_memory" = "由于系统的限制,可能会导致游戏不稳定";
 "preference.title.custom_env" = "环境变量";
-"preference.detail.custom_env" = "此选项正在开发";
+"preference.detail.custom_env" = "此选项正在构建中。在此期间创建并编辑 custom_env.txt。";
 
 "preference.title.debug_skip_wait_jit" = "跳过获取\"JIT(Just-in-time)\"请求";
 "preference.detail.debug_skip_wait_jit" = "这并不是让您在没有 JIT 的情况下启动，而是跳过调试检查，因为在越狱设备上会检查失败。";
@@ -213,3 +238,49 @@
 "preference.detail.debug_show_layout_bounds" = "显示剪辑边界、边距";
 "preference.title.debug_show_layout_overlap" = "布局重叠显示";
 "preference.detail.debug_show_layout_overlap" = "用浅黄色覆盖每个视图，颜色越深则重叠越多";
+
+"controller_configurator.title.current" = "游戏键盘配置文件";
+"controller_configurator.title.type.xbox" = "Xbox";
+"controller_configurator.title.type.playstation" = "PlayStation";
+
+"controller_configurator.xbox.title.bumper_left" = "左前按钮（LB）";
+"controller_configurator.xbox.title.bumper_right" = "右前按钮（RB）";
+"controller_configurator.xbox.title.trigger_left" = "左扳机（LT）";
+"controller_configurator.xbox.title.trigger_right" = "右扳机（RT）";
+"controller_configurator.xbox.title.named_back" = "指南";
+"controller_configurator.xbox.title.named_start" = "菜单";
+"controller_configurator.xbox.title.named_a" = "A";
+"controller_configurator.xbox.title.named_b" = "B";
+"controller_configurator.xbox.title.named_x" = "X";
+"controller_configurator.xbox.title.named_y" = "Y";
+"controller_configurator.xbox.title.dpad_up" = "上";
+"controller_configurator.xbox.title.dpad_down" = "下";
+"controller_configurator.xbox.title.dpad_left" = "左";
+"controller_configurator.xbox.title.dpad_right" = "右";
+"controller_configurator.xbox.title.thumb_left" = "左手套装";
+"controller_configurator.xbox.title.thumb_right" = "右拇指单击";
+
+"controller_configurator.playstation.title.bumper_left" = "L1";
+"controller_configurator.playstation.title.bumper_right" = "R1";
+"controller_configurator.playstation.title.trigger_left" = "L2";
+"controller_configurator.playstation.title.trigger_right" = "R2";
+"controller_configurator.playstation.title.named_back" = "选择";
+"controller_configurator.playstation.title.named_start" = "开始";
+"controller_configurator.playstation.title.named_a" = "叉";
+"controller_configurator.playstation.title.named_b" = "圆";
+"controller_configurator.playstation.title.named_x" = "方";
+"controller_configurator.playstation.title.named_y" = "三角";
+"controller_configurator.playstation.title.dpad_up" = "上";
+"controller_configurator.playstation.title.dpad_down" = "下";
+"controller_configurator.playstation.title.dpad_left" = "左";
+"controller_configurator.playstation.title.dpad_right" = "右";
+"controller_configurator.playstation.title.thumb_left" = "L3";
+"controller_configurator.playstation.title.thumb_right" = "R3";
+
+"controller_configurator.section.config_files" = "当前配置文件";
+"controller_configurator.section.game_mappings" = "游戏映射";
+"controller_configurator.section.footer.game_mappings" = "当鼠标在游戏中被锁定时绑定。";
+"controller_configurator.section.menu_mappings" = "菜单映射";
+"controller_configurator.section.footer.menu_mappings" = "当鼠标未被锁定时，如在标题屏幕或暂停菜单中时绑定。";
+"controller_configurator.section.controller_style" = "手柄类型";
+"controller_configurator.section.footer.controller_style" = "在此配置器中显示不同的手柄按钮名称。";
