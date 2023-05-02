@@ -60,6 +60,9 @@
 
 "init.migrateDir" = "Каталог даних PojavLauncher тепер у %@. Усі ваші наявні дані було переміщено в нове місце.";
 
+"launcher.mcl.downloading_file" = "Завантажується %@";
+"launcher.mcl.error_download" = "Не вдалося завантажити %@: %@";
+
 "launcher.menu.custom_controls" = "Користувацьке керування";
 "launcher.menu.install_jar" = "Встановити .jar";
 
@@ -72,6 +75,8 @@
 
 "login.jit.checking" = "Перевірка JIT";
 "login.jit.enabled" = "JIT було увімкнено";
+"login.jit.fail" = "JIT не може бути активований.";
+"login.jit.fail.title" = "JIT не може бути активований на вашому пристрої.";
 
 // Login buttons
 "login.menu.sendlogs" = "Надіслати ваші звіти";
