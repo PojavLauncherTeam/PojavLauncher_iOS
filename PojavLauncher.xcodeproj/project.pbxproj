@@ -41,11 +41,12 @@
 /* Begin PBXLegacyTarget section */
 		054957C52986E8DC00EFD4CE /* PojavLauncher */ = {
 			isa = PBXLegacyTarget;
-			buildArgumentsString = "$(ACTION)";
+			buildArgumentsString = "-j$(sysctl -n hw.ncpu) dsym package";
 			buildConfigurationList = 054957C82986E8DC00EFD4CE /* Build configuration list for PBXLegacyTarget "PojavLauncher" */;
 			buildPhases = (
 			);
 			buildToolPath = /opt/homebrew/bin/gmake;
+			buildWorkingDirectory = "";
 			dependencies = (
 			);
 			name = PojavLauncher;
@@ -88,7 +89,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PATH = "${PATH}:/opt/procursus/bin:/opt/procursus/sbin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/local/sbin";
+				PLATFORM = 2;
+				PROVISIONING = "\"/Users/eilionoir/Library/MobileDevice/Provisioning\\ Profiles/WildcardProvisioning.mobileprovision\"";
 				RELEASE = 0;
+				SIGNING_TEAMID = H9UFLHHUZ5;
+				TEAMID = FBT742498U;
+				VERBOSE = 1;
 			};
 			name = Debug;
 		};
@@ -96,19 +102,26 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PATH = "${PATH}:/opt/procursus/bin:/opt/procursus/sbin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/local/sbin";
+				PLATFORM = 2;
+				PROVISIONING = "\"/Users/eilionoir/Library/MobileDevice/Provisioning\\ Profiles/WildcardProvisioning.mobileprovision\"";
 				RELEASE = 1;
+				SIGNING_TEAMID = H9UFLHHUZ5;
+				TEAMID = FBT742498U;
+				VERBOSE = 0;
 			};
 			name = Release;
 		};
 		054957C92986E8DC00EFD4CE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				PROVISIONING = "/Users/eilionoir/Library/MobileDevice/Provisioning\\ Profiles/WildcardProvisioning.mobileprovision";
 			};
 			name = Debug;
 		};
 		054957CA2986E8DC00EFD4CE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				PROVISIONING = "/Users/eilionoir/Library/MobileDevice/Provisioning\\ Profiles/WildcardProvisioning.mobileprovision";
 			};
 			name = Release;
 		};
