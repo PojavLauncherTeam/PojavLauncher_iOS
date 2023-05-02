@@ -364,7 +364,7 @@ dsym: payload
 	
 codesign:
 	echo '[PojavLauncher v$(VERSION)] codesign - start'
-	cp $(PROVISIONING) $(OUTPUTDIR)/Payload/PojavLauncher.app/embedded.mobileprovision
+	cp '$(PROVISIONING)' $(OUTPUTDIR)/Payload/PojavLauncher.app/embedded.mobileprovision
 	$(call METHOD_MACHO,$(OUTPUTDIR)/Payload/PojavLauncher.app,$(call METHOD_CODESIGN,$(SIGNING_TEAMID),$$file))
 	$(call METHOD_MACHO,$(OUTPUTDIR)/java_runtimes,$(call METHOD_CODESIGN,$(SIGNING_TEAMID),$$file))
 	echo '[PojavLauncher v$(VERSION)] codesign - end'
