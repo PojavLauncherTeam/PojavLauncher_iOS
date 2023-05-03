@@ -86,6 +86,8 @@
 "login.option.demo" = "Демонстрационный режим";
 "login.option.microsoft" = "Учётная запись Microsoft";
 "login.option.local" = "Локальная учётная запись";
+
+"login.warn.title.legacy_device" = "Следующая версия PojavLauncher не будет работать на вашем устройстве.";
 "login.warn.message.limited_ram" = "Рекомендуется оставить автоматическое выделение памяти во избежание проблем с производительностью и нестабильности игры.";
 
 "login.warn.title.demomode" = "Демонстрационный режим";
