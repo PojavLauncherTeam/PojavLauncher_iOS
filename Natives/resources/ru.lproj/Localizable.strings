@@ -239,4 +239,6 @@
 "controller_configurator.xbox.title.named_x" = "X";
 "controller_configurator.xbox.title.named_y" = "Y";
 "controller_configurator.playstation.title.named_back" = "Выбрать";
+
+"controller_configurator.section.config_files" = "Текущий файл настроек";
 "controller_configurator.section.controller_style" = "Тип контроллера";
