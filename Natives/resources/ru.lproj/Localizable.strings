@@ -175,6 +175,7 @@
 "preference.title.resolution" = "Разрешение (%)";
 "preference.detail.resolution" = "Можно уменьшить разрешение игры в целях быстродействия.";
 "preference.title.max_framerate" = "Максимальная частота кадров";
+"preference.detail.max_framerate" = "Позволяет включить ограничение частоты обновления в 60 кадров в секунду на дисплеях ProMotion.";
 
 "preference.title.fullscreen_airplay" = "Полноэкранный AirPlay";
 "preference.detail.fullscreen_airplay" = "Транслировать на внешний монитор только окно игры во весь экран вместо отображения всего, что происходит на устройстве.";
@@ -203,6 +204,7 @@
 "preference.title.gyroscope_enable" = "Управление наклоном";
 "preference.detail.gyroscope_enable" = "Это позволит вам управлять положением камеры в игре путём вращения устройства.";
 "preference.title.gyroscope_invert_x_axis" = "Инвертировать поворот";
+"preference.detail.gyroscope_invert_x_axis" = "Поменять направление поворота по горизонтали";
 "preference.title.gyroscope_sensitivity" = "Чувствительность гироскопа";
 "preference.detail.gyroscope_sensitivity" = "Изменить чувствительность датчика вращения.";
 
