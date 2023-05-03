@@ -91,6 +91,7 @@
 "login.warn.message.legacy_device" = "Для запуска следующего крупного обновления потребуется устройство под управлением iOS 14.";
 "login.warn.title.legacy_ios" = "Следующая версия PojavLauncher потребует обновления системы.";
 "login.warn.message.legacy_ios" = "Для запуска следующего крупного обновления на вашем устройстве должна быть установлена iOS 14 или новее.";
+"login.warn.title.limited_ram" = "Объём доступной памяти на вашем устройстве ограничен.";
 "login.warn.message.limited_ram" = "Рекомендуется оставить автоматическое выделение памяти во избежание проблем с производительностью и нестабильности игры.";
 
 "login.warn.title.demomode" = "Демонстрационный режим";
@@ -138,6 +139,7 @@
 "preference.detail.debug_logging" = "Включить запись внутренних настроек и действий в latestlog.txt. Может облегчить нахождение ошибок продвинутым пользователям, однако это немного замедлит запуск Minecraft, поскольку журнал будет записываться значительно чаще.";
 "preference.title.jitstreamer_server" = "IP сервера JitStreamer";
 "preference.detail.jitstreamer_server" = "Позволяет настроить пользовательский IP сервера JitStreamer, например, для своих установок. Оставьте нетронутым для использования обычных серверов JitStreamer.";
+"preference.title.enable_altkit" = "Интеграция AltKit";
 "preference.detail.enable_altkit" = "PojavLauncher будет пытаться подключиться к AltServer для включения JIT.";
 "preference.title.appicon" = "Выбрать иконку приложения";
 "preference.detail.appicon" = "Позволяет выбрать одну из нескольких иконок PojavLauncher для главного экрана.";
@@ -151,6 +153,10 @@
 "preference.title.reset_settings" = "Сбросить все настройки";
 "preference.title.confirm.reset_settings" = "Это приведёт к удалению всех ваших настроек, в том числе разрешения, размера кнопок и аргументов Java.";
 "preference.title.done.reset_settings" = "Все настройки сброшены до значений по умолчанию.";
+
+"preference.title.erase_demo_data" = "Удалить данные демонстрационной игры";
+"preference.title.confirm.erase_demo_data" = "Это уничтожит все версии и данные, используемые для игры в демо-режиме!";
+"preference.title.done.erase_demo_data" = "Данные демонстрационной игры были очищены.";
 
 "preference.title.renderer" = "Визуализатор";
 
@@ -168,6 +174,7 @@
 
 "preference.title.resolution" = "Разрешение (%)";
 "preference.detail.resolution" = "Можно уменьшить разрешение игры в целях быстродействия.";
+"preference.title.max_framerate" = "Максимальная частота кадров";
 
 "preference.title.fullscreen_airplay" = "Полноэкранный AirPlay";
 "preference.detail.fullscreen_airplay" = "Транслировать на внешний монитор только окно игры во весь экран вместо отображения всего, что происходит на устройстве.";
@@ -195,6 +202,7 @@
 
 "preference.title.gyroscope_enable" = "Управление наклоном";
 "preference.detail.gyroscope_enable" = "Это позволит вам управлять положением камеры в игре путём вращения устройства.";
+"preference.title.gyroscope_invert_x_axis" = "Инвертировать поворот";
 "preference.title.gyroscope_sensitivity" = "Чувствительность гироскопа";
 "preference.detail.gyroscope_sensitivity" = "Изменить чувствительность датчика вращения.";
 
