@@ -146,6 +146,7 @@
 "preference.title.appicon-default" = "Обычный светлый PojavLauncher";
 "preference.title.appicon-dark" = "Обычный тёмный PojavLauncher";
 "preference.title.hidden_sidebar" = "Hide main menu sidebar by default";
+"preference.detail.hidden_sidebar" = "Скрывает боковую панель в главном меню в портретном и ландшафтном режимах.";
 
 "preference.title.reset_warnings" = "Сбросить все предупреждения";
 "preference.title.done.reset_warnings" = "Все предупреждения были сброшены.";
@@ -182,6 +183,7 @@
 "preference.title.silence_other_audio" = "Приостанавливать воспроизведение при открытии игры";
 "preference.detail.silence_other_audio" = "При запуске игры PojavLauncher будет приостанавливать воспроизведение звука другими приложениями (например, музыку).";
 "preference.title.silence_with_switch" = "Отключать звук в бесшумном режиме";
+"preference.detail.silence_with_switch" = "При включении звук игры будет выключаться в режиме «Бесшумно». Это не затрагивает наушники и внешние динамики.";
 "preference.title.default_gamepad_ctrl" = "Настройки контроллера";
 "preference.title.hardware_hide" = "Скрывать раскладку при подключении внешних устройств ввода";
 "preference.detail.hardware_hide" = "Автоматически скрывать раскладку экранного управления при подключении мыши или контроллера.";
