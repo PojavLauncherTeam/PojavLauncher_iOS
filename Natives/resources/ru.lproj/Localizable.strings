@@ -86,6 +86,12 @@
 "login.option.demo" = "Демонстрационный режим";
 "login.option.microsoft" = "Учётная запись Microsoft";
 "login.option.local" = "Локальная учётная запись";
+
+"login.warn.title.legacy_device" = "Следующая версия PojavLauncher не будет работать на вашем устройстве.";
+"login.warn.message.legacy_device" = "Для запуска следующего крупного обновления потребуется устройство под управлением iOS 14.";
+"login.warn.title.legacy_ios" = "Следующая версия PojavLauncher потребует обновления системы.";
+"login.warn.message.legacy_ios" = "Для запуска следующего крупного обновления на вашем устройстве должна быть установлена iOS 14 или новее.";
+"login.warn.title.limited_ram" = "Объём доступной памяти на вашем устройстве ограничен.";
 "login.warn.message.limited_ram" = "Рекомендуется оставить автоматическое выделение памяти во избежание проблем с производительностью и нестабильности игры.";
 
 "login.warn.title.demomode" = "Демонстрационный режим";
@@ -133,12 +139,14 @@
 "preference.detail.debug_logging" = "Включить запись внутренних настроек и действий в latestlog.txt. Может облегчить нахождение ошибок продвинутым пользователям, однако это немного замедлит запуск Minecraft, поскольку журнал будет записываться значительно чаще.";
 "preference.title.jitstreamer_server" = "IP сервера JitStreamer";
 "preference.detail.jitstreamer_server" = "Позволяет настроить пользовательский IP сервера JitStreamer, например, для своих установок. Оставьте нетронутым для использования обычных серверов JitStreamer.";
+"preference.title.enable_altkit" = "Интеграция AltKit";
 "preference.detail.enable_altkit" = "PojavLauncher будет пытаться подключиться к AltServer для включения JIT.";
 "preference.title.appicon" = "Выбрать иконку приложения";
 "preference.detail.appicon" = "Позволяет выбрать одну из нескольких иконок PojavLauncher для главного экрана.";
 "preference.title.appicon-default" = "Обычный светлый PojavLauncher";
 "preference.title.appicon-dark" = "Обычный тёмный PojavLauncher";
 "preference.title.hidden_sidebar" = "Hide main menu sidebar by default";
+"preference.detail.hidden_sidebar" = "Скрывает боковую панель в главном меню в портретном и ландшафтном режимах.";
 
 "preference.title.reset_warnings" = "Сбросить все предупреждения";
 "preference.title.done.reset_warnings" = "Все предупреждения были сброшены.";
@@ -146,6 +154,10 @@
 "preference.title.reset_settings" = "Сбросить все настройки";
 "preference.title.confirm.reset_settings" = "Это приведёт к удалению всех ваших настроек, в том числе разрешения, размера кнопок и аргументов Java.";
 "preference.title.done.reset_settings" = "Все настройки сброшены до значений по умолчанию.";
+
+"preference.title.erase_demo_data" = "Удалить данные демонстрационной игры";
+"preference.title.confirm.erase_demo_data" = "Это уничтожит все версии и данные, используемые для игры в демо-режиме!";
+"preference.title.done.erase_demo_data" = "Данные демонстрационной игры были очищены.";
 
 "preference.title.renderer" = "Визуализатор";
 
@@ -163,11 +175,15 @@
 
 "preference.title.resolution" = "Разрешение (%)";
 "preference.detail.resolution" = "Можно уменьшить разрешение игры в целях быстродействия.";
+"preference.title.max_framerate" = "Максимальная частота кадров";
+"preference.detail.max_framerate" = "Позволяет включить ограничение частоты обновления в 60 кадров в секунду на дисплеях ProMotion.";
 
 "preference.title.fullscreen_airplay" = "Полноэкранный AirPlay";
 "preference.detail.fullscreen_airplay" = "Транслировать на внешний монитор только окно игры во весь экран вместо отображения всего, что происходит на устройстве.";
 "preference.title.silence_other_audio" = "Приостанавливать воспроизведение при открытии игры";
 "preference.detail.silence_other_audio" = "При запуске игры PojavLauncher будет приостанавливать воспроизведение звука другими приложениями (например, музыку).";
+"preference.title.silence_with_switch" = "Отключать звук в бесшумном режиме";
+"preference.detail.silence_with_switch" = "При включении звук игры будет выключаться в режиме «Бесшумно». Это не затрагивает наушники и внешние динамики.";
 "preference.title.default_gamepad_ctrl" = "Настройки контроллера";
 "preference.title.hardware_hide" = "Скрывать раскладку при подключении внешних устройств ввода";
 "preference.detail.hardware_hide" = "Автоматически скрывать раскладку экранного управления при подключении мыши или контроллера.";
@@ -190,6 +206,8 @@
 
 "preference.title.gyroscope_enable" = "Управление наклоном";
 "preference.detail.gyroscope_enable" = "Это позволит вам управлять положением камеры в игре путём вращения устройства.";
+"preference.title.gyroscope_invert_x_axis" = "Инвертировать поворот";
+"preference.detail.gyroscope_invert_x_axis" = "Поменять направление поворота по горизонтали";
 "preference.title.gyroscope_sensitivity" = "Чувствительность гироскопа";
 "preference.detail.gyroscope_sensitivity" = "Изменить чувствительность датчика вращения.";
 
@@ -224,4 +242,6 @@
 "controller_configurator.xbox.title.named_x" = "X";
 "controller_configurator.xbox.title.named_y" = "Y";
 "controller_configurator.playstation.title.named_back" = "Выбрать";
+
+"controller_configurator.section.config_files" = "Текущий файл настроек";
 "controller_configurator.section.controller_style" = "Тип контроллера";
