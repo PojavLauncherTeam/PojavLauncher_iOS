@@ -60,6 +60,8 @@
 
 "init.migrateDir" = "دليل بيانات PojavLauncher هو الآن %@. تم نقل جميع بياناتك الموجودة إلى الموقع الجديد.";
 
+"launcher.mcl.downloading_file" = "التحميل جارٍ %@";
+
 "launcher.menu.custom_controls" = "تخصيص التحكم";
 "launcher.menu.install_jar" = "تثبيت ملف .jar";
 
@@ -75,6 +77,7 @@
 
 // Login buttons
 "login.menu.sendlogs" = "ارسال سجلات الخطأ";
+"login.option.add" = "أضف حساباً";
 "login.option.select" = "اختر الحساب";
 "login.option.microsoft" = "حساب مايكروسوفت";
 "login.option.local" = "حساب محلي";
@@ -108,6 +111,10 @@
 "preference.title.cosmetica" = "Cosmetica Capes";
 
 "preference.title.renderer" = "العارض";
+
+"preference.title.gyroscope_enable" = "تمكين التحكم بالغيروسكوب";
+"preference.title.gyroscope_sensitivity" = "حساسية التحكم في الغيروسكوب";
+"preference.detail.gyroscope_sensitivity" = "ضبط حساسية أجهزة التحكم الجيبروسكوب";
 "preference.title.java_args" = "حجج إطلاق JVM";
 "preference.title.auto_ram" = "ذاكرة الوصول العشوائية التلقائية";
 "preference.detail.auto_ram" = "تمكين  ذاكرة الوصول العشوائي التلقائي";
