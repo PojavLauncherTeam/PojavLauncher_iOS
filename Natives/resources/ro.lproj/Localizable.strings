@@ -4,14 +4,26 @@
 */
 
 "game.menu.force_close" = "Oprește forțat";
+"game.menu.confirm.force_close" = "Ești sigur că vrei să închizi forțat?";
 "game.menu.log_output" = "Ieșire jurnal";
 "game.menu.custom_controls" = "Controale personalizate";
 
+"game.note.airplay" = "Minecraft este afisat in afisarea cu oglinda AirPlay";
+
+"game.title.exit_code" = "Jocul a ieșit cu codul %d";
+
 // The play button
 "Play" = "Joacă";
+
+// Version categories
+"Installed" = "Instalat";
 "Snapshot" = "Lansat pentru testare";
+"Releases" = "Lansări";
 "Old-beta" = "Beta-vechi";
 "Old-alpha" = "Alpha-vechi";
+
+// Custom controls
+"Copy" = "Copiere";
 "Edit" = "Editează";
 "Remove" = "Șterge";
 
@@ -32,6 +44,7 @@
 
 "launcher.menu.custom_controls" = "Controale personalizate";
 "launcher.menu.install_jar" = "Instalează .jar";
+"login.option.add" = "Adăugați un cont";
 "login.option.select" = "Selectează contul";
 
 "News" = "Știri";
@@ -44,7 +57,12 @@
 "preference.title.cosmetica" = "Pelerine Cosmetica";
 
 "preference.title.renderer" = "Randator";
+
+"preference.title.gyroscope_enable" = "Permite controalele gyroscopului";
+"preference.title.gyroscope_sensitivity" = "Controalele tiroscopului controlează sensibilitatea";
+"preference.detail.gyroscope_sensitivity" = "Ajustați sensibilitatea controalelor cu giroscop";
 "preference.title.java_args" = "Argumente de lansare JVM";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Activează ajustarea automată RAM";
 "preference.detail.allocated_memory" = "Controlează cât de multă memorie este dată la Minecraft";
+"controller_configurator.playstation.title.named_back" = "Selectați";
