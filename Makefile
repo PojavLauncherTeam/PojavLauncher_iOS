@@ -9,7 +9,7 @@ OUTPUTDIR   := $(SOURCEDIR)/artifacts
 WORKINGDIR  := $(SOURCEDIR)/Natives/build
 DETECTPLAT  := $(shell uname -s)
 DETECTARCH  := $(shell uname -m)
-VERSION     := 2.2
+VERSION     := 3.0
 BRANCH      := $(shell git branch --show-current)
 COMMIT      := $(shell git log --oneline | sed '2,10000000d' | cut -b 1-7)
 PLATFORM    ?= 2
@@ -116,7 +116,7 @@ METHOD_DIRCHECK   = \
 # Function to change the platform on Mach-O files.
 # iOS = 2, tvOS = 3, iOS Simulator = 7, tvOS Simulator = 8
 METHOD_CHANGE_PLAT = \
-	vtool -arch arm64 -set-build-version $(1) 12.0 16.0 -replace -output $(2) $(2)
+	vtool -arch arm64 -set-build-version $(1) 14.0 16.0 -replace -output $(2) $(2)
 	
 # Function to package the application
 METHOD_PACKAGE = \
@@ -234,7 +234,7 @@ native:
 		-DCMAKE_SYSTEM_PROCESSOR=aarch64 \
 		-DCMAKE_OSX_SYSROOT="$(SDKPATH)" \
 		-DCMAKE_OSX_ARCHITECTURES=arm64 \
-		-DCMAKE_C_FLAGS="-arch arm64 -miphoneos-version-min=12.2" \
+		-DCMAKE_C_FLAGS="-arch arm64 -miphoneos-version-min=14.0" \
 		-DCONFIG_BRANCH="$(BRANCH)" \
 		-DCONFIG_COMMIT="$(COMMIT)" \
 		-DCONFIG_RELEASE=$(RELEASE) \
@@ -279,7 +279,7 @@ assets:
 		xcrun actool $(SOURCEDIR)/Natives/Assets.xcassets \
 			--compile $(SOURCEDIR)/Natives/resources \
 			--platform iphoneos \
-			--minimum-deployment-target 12.0 \
+			--minimum-deployment-target 14.0 \
 			--app-icon AppIcon-Light \
 			--alternate-app-icon AppIcon-Dark \
 			--alternate-app-icon AppIcon-Development \
