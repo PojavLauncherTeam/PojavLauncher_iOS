@@ -98,6 +98,7 @@
 "login.warn.message.demomode" = "Als Ersatz für den Offline- und Lokalmodus, erlaubt der Demo-Modus, sich mit einem Microsoft-Konto einzuloggen, welches das Spiel nicht besitzt. Somit kann die Testversion von Minecraft gespielt werden, die in Version 1.3 eingeführt wurde. Ältere Versionen können in der Vollversion gespielt werden, da bei ihnen der offizielle Launcher auch keine Einschränlungen setzt. Auf unserer Website findet man mehr Informationen zu diesem Übergang vom Offline-Modus.";
 
 "login.warn.title.localmode" = "Der Offline-Modus ist jetzt der Lokale Modus.";
+"login.warn.message.localmode" = "Du kannst weiterhin installierte Versionen spielen, aber ohne ein kostenpflichtiges Konto kannst du Minecraft nicht mehr herunterladen. Es wird kein Support für Probleme mit lokalen Konten oder andere Mittel zur Erlangung von Minecraft geben. Weitere Informationen findest du in unseren FAQ.";
 
 "login.msa.error.xsts.noxboxacc" = "Es ist kein Xbox-Profil mit diesem Microsoft-Konto registriert. Stelle bitte sicher, dass du ein Xbox-Profil erstellt hast.\nFehlercode: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live ist derzeit in deinem Land nicht verfügbar.\nFehlercode: 2148916235";
@@ -116,6 +117,8 @@
 
 "preference.section.general" = "Allgemeine Einstellungen";
 "preference.section.video" = "Grafik-Einstellungen";
+"preference.section.footer.video" = "Der automatische Renderer erlaubt PojavLauncher die besten Optionen basierend auf  
+der Minecraft-Version zu wählen. Verringerte Auflösung reduziert die Arbeitslast der GPU für eine bessere Leistung.";
 "preference.section.control" = "Steuerung anpassen";
 "preference.section.debug" = "UI-Debugging-Einstellungen";
 "preference.section.footer.debug" = "Neben dem Debuggen können diese Einstellungen für benutzerdefinierte Steuerelemente nützlich sein. Möglicherweise muss der Launcher neu startet werden, damit die Änderungen wirksam werden.";
@@ -159,6 +162,11 @@
 "preference.title.done.erase_demo_data" = "Alle Demo-Spieldaten wurden gelöscht.";
 
 "preference.title.renderer" = "Renderer";
+
+"preference.title.renderer.release.auto" = "Automatisch";
+"preference.title.renderer.release.gl4es" = "Holy Gl4es";
+"preference.title.renderer.release.angle" = "Angle";
+"preference.title.renderer.release.zink" = "Zink";
 
 "preference.title.renderer.debug.auto" = "Auto: gl4es or ANGLE";
 "preference.title.renderer.debug.gl4es" = "gl4es 1.1.4 - gibt OpenGL 2.1 aus";
@@ -206,7 +214,9 @@
 "preference.detail.gyroscope_sensitivity" = "Passe die Empfindlichkeit der Gyroskop-Steuerung an";
 
 "preference.title.java_home" = "Nutze Java 17 für Minecraft < 1.17";
+"preference.detail.java_home" = "Java 8 wird standardmäßig für diese Versionen verwendet. Aktivieren Sie diese Option, um die Verwendung von Java 17 zu erzwingen, aber die Kompatibilität ist nicht garantiert.";
 "preference.title.java_args" = "JVM-Start-Argumente";
+"preference.detail.java_args" = "Argumente an Java übergeben, wenn Minecraft gestartet wird. Sei vorsichtig, dies kann den Absturz des Spiels verursachen, wenn es falsch geändert wird.";
 "preference.placeholder.java_args" = "Argumente angeben...";
 "preference.title.auto_ram" = "Auto-RAM";
 "preference.detail.auto_ram" = "Aktiviert automatische RAM-Einstellungen";
@@ -215,6 +225,7 @@
 "preference.detail.allocated_memory" = "Legt fest, wie viel RAM Minecraft gegeben wird";
 "preference.warn.allocated_memory" = "Aufgrund von Einschränkungen des Betriebssystems kann diese Option zu Instabilität bei diesem und höheren Werten führen. Sei vorsichtig.";
 "preference.title.custom_env" = "Umgebungsvariablen";
+"preference.detail.custom_env" = "Diese Option befindet sich in Entwicklung. Erstelle und bearbeite in der Zwischenzeit custom_env.txt.";
 
 "preference.title.debug_skip_wait_jit" = "Überspringe den \"Warten auf JIT\"-Dialog";
 "preference.detail.debug_skip_wait_jit" = "Dies ermöglicht es dir nicht, ohne JIT zu starten. Stattdessen wird die Debuggerprüfung übersprungen, da die Überprüfung bei bestimmten Jailbreaks fehlschlägt.";
@@ -271,3 +282,6 @@
 "controller_configurator.section.game_mappings" = "Spielzuordnung";
 "controller_configurator.section.footer.game_mappings" = "Bindet, wenn die Maus im Spiel gesperrt ist.";
 "controller_configurator.section.menu_mappings" = "Menü-Zuordnungen";
+"controller_configurator.section.footer.menu_mappings" = "Bindungen, wenn die Maus nicht gesperrt ist, z. B. auf dem Titelbildschirm oder im Pausemenü.";
+"controller_configurator.section.controller_style" = "Controller Typ";
+"controller_configurator.section.footer.controller_style" = "Zeige verschiedene Controller-Schaltflächennamen in diesem Konfigurator.";
