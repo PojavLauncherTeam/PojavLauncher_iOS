@@ -158,6 +158,7 @@
 "preference.title.java_home" = "Użyj Java 17 dla Minecraft < 1.17";
 "preference.title.java_args" = "Argumenty uruchomienia JVM";
 "preference.placeholder.java_args" = "Określ argumenty...";
+"preference.title.env_variables" = "Zmienne środowiskowe";
 "preference.title.auto_ram" = "Automatyczny RAM";
 "preference.detail.auto_ram" = "Włącza automatyczny przydział pamięci RAM";
 "preference.warn.auto_ram" = "Wyłączenie tej opcji na urządzeniach bez jailbreak może doprowadzić do niestabilności po dostosowaniu. Zachowaj ostrożność.";
