@@ -47,7 +47,7 @@
 "custom_controls.control_menu.exit" = "退出";
 "custom_controls.control_menu.exit.warn" = "您将会退出且不保存任何更改。";
 "custom_controls.control_menu.save" = "保存";
-"custom_controls.control_menu.save.error.default" = "控件名称不能是“default”，因为它是不可更改的。";
+"custom_controls.control_menu.save.error.default" = "控件名称不能是“default”，因为它会被覆盖。";
 "custom_controls.control_menu.save.error.json" = "JSON 文件错误";
 "custom_controls.control_menu.save.error.write" = "保存按键布局时发生错误";
 "custom_controls.control_menu.load" = "加载";
@@ -116,7 +116,7 @@
 "Settings" = "设置";
 
 "preference.section.general" = "启动器基础设置";
-"preference.section.video" = "视频设置";
+"preference.section.video" = "音视频设置";
 "preference.section.footer.video" = "自动渲染器允许 PojavLauncher 选择基于 Minecraft 版本的最佳选项。减少分辨率降低GPU 工作量以提高性能。";
 "preference.section.control" = "自定义控制键";
 "preference.section.debug" = "UI设置";
@@ -257,8 +257,8 @@
 "controller_configurator.xbox.title.dpad_down" = "下";
 "controller_configurator.xbox.title.dpad_left" = "左";
 "controller_configurator.xbox.title.dpad_right" = "右";
-"controller_configurator.xbox.title.thumb_left" = "左手套装";
-"controller_configurator.xbox.title.thumb_right" = "右拇指单击";
+"controller_configurator.xbox.title.thumb_left" = "左摇杆点击";
+"controller_configurator.xbox.title.thumb_right" = "右摇杆单击";
 
 "controller_configurator.playstation.title.bumper_left" = "L1";
 "controller_configurator.playstation.title.bumper_right" = "R1";
