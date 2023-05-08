@@ -166,6 +166,7 @@
 "preference.title.java_home" = "از جاوا 17 برای ماینکرفت 1.17 به بالا استفاده کنید";
 "preference.title.java_args" = "آرگومان‌های جاوا در هنگام اجرا";
 "preference.placeholder.java_args" = "آرگومان ها را مشخص کنید...";
+"preference.title.env_variables" = "متغیرهای محیطی";
 "preference.title.auto_ram" = "رم اتوماتیک";
 "preference.detail.auto_ram" = "تنظیم‌کننده اتوماتیک رم را فعال می‌کند";
 "preference.warn.auto_ram" = "غیرفعال کردن این گزینه در دستگاه‌های غیر جیلبریک می‌تواند در صورت تغییر، بی‌ثباتی ایجاد کند. با توجه ادامه بدهید.";
