@@ -205,6 +205,7 @@
 "preference.detail.java_home" = "Java 8 використовується за замовчуванням для цих версій. Увімкніть цю опцію, щоб примусово використовувати Java 17, проте сумісність не гарантується.";
 "preference.title.java_args" = "Аргументи запуску JVM";
 "preference.placeholder.java_args" = "Вкажіть аргументи...";
+"preference.title.env_variables" = "Змінні середовища";
 "preference.title.auto_ram" = "Автоматичне виділення ОЗП";
 "preference.detail.auto_ram" = "Вмикає автоматичне регулювання ОЗП";
 "preference.warn.auto_ram" = "Вимкнення цієї опції на незламаному Jailbreak пристрої може створити нестабільність, якщо це зміниться. Будьте обережні.";
