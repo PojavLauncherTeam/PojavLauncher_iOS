@@ -1,5 +1,3 @@
-#import "Alderis.h"
-#import "Alderis-Swift.h"
 #import "CustomControlsViewController.h"
 #import "DBNumberedSlider.h"
 #import "FileListViewController.h"
@@ -54,11 +52,7 @@ BOOL shouldDismissPopover = YES;
     [self.view addSubview:guideLabel]; 
 
     self.ctrlView = [[ControlLayout alloc] initWithFrame:getSafeArea()];
-    if (@available(iOS 13.0, *)) {
-        self.ctrlView.layer.borderColor = UIColor.labelColor.CGColor;
-    } else {
-        self.ctrlView.layer.borderColor = UIColor.blackColor.CGColor;
-    }
+    self.ctrlView.layer.borderColor = UIColor.labelColor.CGColor;
     [self.view addSubview:self.ctrlView];
 
     // Prepare the navigation bar for safe area customization
@@ -473,18 +467,12 @@ BOOL shouldDismissPopover = YES;
     self.resizeView.layer.maskedCorners = kCALayerMaxXMaxYCorner | kCALayerMaxXMinYCorner | kCALayerMinXMaxYCorner;
     self.resizeView.target = (ControlButton *)view;
     UIMenuController *menuController = [UIMenuController sharedMenuController];
-    if(@available(iOS 13.0, *)) {
-        if (view) {
-            [menuController showMenuFromView:view rect:self.selectedPoint];
-        } else {
-            [menuController hideMenu];
-        }
+    if (view) {
+        [menuController showMenuFromView:view rect:self.selectedPoint];
     } else {
-        if (view) {
-            [menuController setTargetRect:self.selectedPoint inView:view];
-        }
-        [menuController setMenuVisible:(view!=nil) animated:YES];
+        [menuController hideMenu];
     }
+    
     if (view) {
         CGPoint origin = [self.ctrlView convertPoint:view.frame.origin toView:self.view];
         self.resizeView.frame = CGRectMake(origin.x + view.frame.size.width, origin.y + view.frame.size.height, self.resizeView.frame.size.width, self.resizeView.frame.size.height);
@@ -603,7 +591,7 @@ BOOL shouldDismissPopover = YES;
      return shouldDismissPopover;
 }
 
-- (BOOL)presentationControllerShouldDismiss:(UIPresentationController *)presentationController API_AVAILABLE(ios(13.0))
+- (BOOL)presentationControllerShouldDismiss:(UIPresentationController *)presentationController
 {
     return shouldDismissPopover;
 }
@@ -619,7 +607,7 @@ BOOL shouldDismissPopover = YES;
 
 CGFloat currentY;
 
-@interface CCMenuViewController () <UIPickerViewDataSource, UIPickerViewDelegate, HBColorPickerDelegate> {
+@interface CCMenuViewController () <UIPickerViewDataSource, UIPickerViewDelegate> {
 }
 
 @property(nonatomic) NSMutableArray *keyCodeMap, *keyValueMap;
@@ -633,8 +621,7 @@ CGFloat currentY;
 @property(nonatomic) UIPickerView* pickerMapping;
 @property(nonatomic) UISegmentedControl* ctrlOrientation;
 @property(nonatomic) UISwitch *switchToggleable, *switchMousePass, *switchSwipeable;
-@property(nonatomic) UIColorWell API_AVAILABLE(ios(14.0)) *colorWellINTBackground, *colorWellINTStroke;
-@property(nonatomic) HBColorWell *colorWellEXTBackground, *colorWellEXTStroke;
+@property(nonatomic) UIColorWell *colorWellINTBackground, *colorWellINTStroke;
 @property(nonatomic) DBNumberedSlider *sliderStrokeWidth, *sliderCornerRadius, *sliderOpacity;
 
 @end
@@ -664,13 +651,8 @@ CGFloat currentY;
     CGFloat tempW = MIN(self.view.frame.size.width * 0.75, shortest);
     CGFloat tempH = MIN(self.view.frame.size.height * 0.6, shortest);
 
-    UIBlurEffectStyle blurStyle;
+    UIBlurEffectStyle blurStyle = UIBlurEffectStyleSystemMaterial;
     UIVisualEffectView *blurView;
-    if (@available(iOS 13.0, *)) {
-        blurStyle = UIBlurEffectStyleSystemMaterial;
-    } else {
-        blurStyle = UIBlurEffectStyleExtraLight;
-    }
     blurView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:blurStyle]];
     blurView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
     blurView.frame = CGRectMake(
@@ -811,24 +793,10 @@ CGFloat currentY;
     // Property: Background color
     currentY += labelName.frame.size.height + 12.0;
     UILabel *labelBGColor = [self addLabel:localize(@"custom_controls.button_edit.bg_color", nil)];
-    if(@available(iOS 14.0, *)) {
-        self.colorWellINTBackground = [[UIColorWell alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
-        [self.colorWellINTBackground addTarget:self action:@selector(colorWellChanged) forControlEvents:UIControlEventValueChanged];
-        self.colorWellINTBackground.selectedColor = self.targetButton.backgroundColor;
-        [self.scrollView addSubview:self.colorWellINTBackground];
-    } else {
-        if (!dlopen("Alderis.framework/Alderis", RTLD_NOW)) {
-            NSLog(@"Cannot load Alderis framework: %s", dlerror());
-        }
-
-        self.colorWellEXTBackground = [[NSClassFromString(@"HBColorWell") alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
-        self.colorWellEXTBackground.color = self.targetButton.backgroundColor;
-        self.colorWellEXTBackground.isDragInteractionEnabled = YES;
-        self.colorWellEXTBackground.isDropInteractionEnabled = YES;
-        [self.colorWellEXTBackground addTarget:self action:@selector(presentColorPicker:) forControlEvents:UIControlEventTouchUpInside];
-        [self.scrollView addSubview:self.colorWellEXTBackground];
-    }
-
+    self.colorWellINTBackground = [[UIColorWell alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
+    [self.colorWellINTBackground addTarget:self action:@selector(colorWellChanged) forControlEvents:UIControlEventValueChanged];
+    self.colorWellINTBackground.selectedColor = self.targetButton.backgroundColor;
+    [self.scrollView addSubview:self.colorWellINTBackground];
 
     // Property: Stroke width
     currentY += labelName.frame.size.height + 12.0;
@@ -845,18 +813,10 @@ CGFloat currentY;
     // Property: Stroke color
     currentY += labelName.frame.size.height + 12.0;
     UILabel *labelStrokeColor = [self addLabel:localize(@"custom_controls.button_edit.stroke_color", nil)];
-    if(@available(iOS 14.0, *)) {
-        self.colorWellINTStroke = [[UIColorWell alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
-        [self.colorWellINTStroke addTarget:self action:@selector(colorWellChanged) forControlEvents:UIControlEventValueChanged];
-        self.colorWellINTStroke.selectedColor = [[UIColor alloc] initWithCGColor:self.targetButton.layer.borderColor];
-        [self.scrollView addSubview:self.colorWellINTStroke];
-    } else {
-        self.colorWellEXTStroke = [[NSClassFromString(@"HBColorWell") alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
-        self.colorWellEXTStroke.color = [[UIColor alloc] initWithCGColor:self.targetButton.layer.borderColor];
-        [self.colorWellEXTStroke addTarget:self action:@selector(presentColorPicker:) forControlEvents:UIControlEventTouchUpInside];
-        [self.scrollView addSubview:self.colorWellEXTStroke];
-    }
-    [self sliderValueChanged:self.sliderStrokeWidth];
+    self.colorWellINTStroke = [[UIColorWell alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
+    [self.colorWellINTStroke addTarget:self action:@selector(colorWellChanged) forControlEvents:UIControlEventValueChanged];
+    self.colorWellINTStroke.selectedColor = [[UIColor alloc] initWithCGColor:self.targetButton.layer.borderColor];
+    [self.scrollView addSubview:self.colorWellINTStroke];
 
 
     // Property: Corner radius
@@ -902,46 +862,10 @@ CGFloat currentY;
 }
 
 #pragma mark - Alderis functions
-// HBColorWell
-- (void)presentColorPicker:(HBColorWell *)sender {
-    HBColorPickerViewController *vc = [[NSClassFromString(@"HBColorPickerViewController") alloc] init];
-    vc.delegate = self;
-    vc.popoverPresentationController.sourceView = sender;
-    vc.configuration = [[NSClassFromString(@"HBColorPickerConfiguration") alloc] initWithColor:sender.color];
-    if (sender == self.colorWellEXTBackground) {
-        vc.configuration.title = @"Background color";
-        vc.configuration.supportsAlpha = YES;
-    } else if (sender == self.colorWellEXTStroke) {
-        vc.configuration.title = @"Stroke color";
-        vc.configuration.supportsAlpha = YES;
-    } else {
-        NSLog(@"Unknown color well: %@", sender);
-        abort();
-    }
-    [self presentViewController:vc animated:YES completion:nil];
-}
 
-// iOS 14 color well
 - (void)colorWellChanged {
-    if(@available(iOS 14.0, *)) {
-        self.targetButton.properties[@"bgColor"] = @(convertUIColor2ARGB(self.colorWellINTBackground.selectedColor));
-        self.targetButton.properties[@"strokeColor"] = @(convertUIColor2ARGB(self.colorWellINTStroke.selectedColor));
-    }
-    [self.targetButton update];
-}
-
-// HBColorPickerDelegate (iOS 12-13 color well)
-- (void)colorPicker:(HBColorPickerViewController *)picker didSelectColor:(UIColor *)color {
-    if ([picker.configuration.title isEqualToString:@"Background color"]) {
-        self.colorWellEXTBackground.color = color;
-        self.targetButton.properties[@"bgColor"] = @(convertUIColor2ARGB(self.colorWellEXTBackground.color));
-    } else if ([picker.configuration.title isEqualToString:@"Stroke color"]) {
-        self.colorWellEXTStroke.color = color;
-        self.targetButton.properties[@"strokeColor"] = @(convertUIColor2ARGB(self.colorWellEXTStroke.color));
-    } else {
-        NSLog(@"Unknown color well: %@", picker.configuration.title);
-        abort();
-    }
+    self.targetButton.properties[@"bgColor"] = @(convertUIColor2ARGB(self.colorWellINTBackground.selectedColor));
+    self.targetButton.properties[@"strokeColor"] = @(convertUIColor2ARGB(self.colorWellINTStroke.selectedColor));
     [self.targetButton update];
 }
 
@@ -989,11 +913,7 @@ CGFloat currentY;
 - (void)sliderValueChanged:(DBNumberedSlider *)sender {
     [sender setValue:(NSInteger)sender.value animated:NO];
     if (sender.tag == TAG_SLIDER_STROKEWIDTH) {
-        if(@available(iOS 14.0, *)) {
-            self.colorWellINTStroke.enabled = sender.value != 0;
-        } else {
-            self.colorWellEXTStroke.enabled = sender.value != 0;
-        }
+        self.colorWellINTStroke.enabled = sender.value != 0;
         self.targetButton.properties[@"strokeWidth"] = @((NSInteger) self.sliderStrokeWidth.value);
     } else {
         self.targetButton.properties[@"cornerRadius"] = @((NSInteger) self.sliderCornerRadius.value);

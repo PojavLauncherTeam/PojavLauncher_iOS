@@ -74,18 +74,7 @@
     self.versionTextField.inputView = self.versionPickerView;
 
     UIView *targetToolbar;
-    if (@available(iOS 14.0, *)) {
-        // Use the real toolbar
-        targetToolbar = self.toolbar;
-    } else { // iOS 13.x and 12.x
-        // Workaround user interaction issue by using a fake toolbar
-        CGRect frame = self.toolbar.frame;
-        frame.origin.y -= frame.size.height;
-        self.fakeToolbar = [[UIView alloc] initWithFrame:frame];
-        targetToolbar = self.fakeToolbar;
-        targetToolbar.autoresizingMask = self.toolbar.autoresizingMask;
-    }
-
+    targetToolbar = self.toolbar;
     [targetToolbar addSubview:self.versionTextField];
 
     self.progressViewMain = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 0, self.toolbar.frame.size.width, 4)];

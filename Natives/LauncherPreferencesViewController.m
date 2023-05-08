@@ -249,9 +249,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
               @"type": self.typeSwitch,
               @"action": ^(BOOL enabled){
                   if (self.navigationController != nil) return;
-                  if (@available(iOS 13.0, *)) {
-                      if (UIApplication.sharedApplication.connectedScenes.count < 2) return;
-                  }
+                  if (UIApplication.sharedApplication.connectedScenes.count < 2) return;
                   if (enabled) {
                       [self.presentingViewController performSelector:@selector(switchToExternalDisplay)];
                   } else {
@@ -465,11 +463,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 }
 
 - (UIBarButtonItem *)drawHelpButton {
-    if (@available(iOS 13.0, *)) {
-        self.helpBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"questionmark.circle"] style:UIBarButtonItemStyleDone target:self action:@selector(toggleDetailVisibility)];
-    } else {
-        self.helpBtn = [[UIBarButtonItem alloc] initWithTitle:localize(@"Help", nil) style:UIBarButtonItemStyleDone target:self action:@selector(toggleDetailVisibility)];
-    }
+    self.helpBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"questionmark.circle"] style:UIBarButtonItemStyleDone target:self action:@selector(toggleDetailVisibility)];
     
     return self.helpBtn;
 }
@@ -575,11 +569,10 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     }
 
     // Set general properties
-    if (@available(iOS 13.0, *)) {
-        BOOL destructive = [item[@"destructive"] boolValue];
-        cell.imageView.tintColor = destructive ? UIColor.systemRedColor : nil;
-        cell.imageView.image = [UIImage systemImageNamed:item[@"icon"]];
-    }
+    BOOL destructive = [item[@"destructive"] boolValue];
+    cell.imageView.tintColor = destructive ? UIColor.systemRedColor : nil;
+    cell.imageView.image = [UIImage systemImageNamed:item[@"icon"]];
+    
     if (cellStyle != UITableViewCellStyleValue1) {
         cell.detailTextLabel.text = nil;
         if ([item[@"hasDetail"] boolValue] && self.prefDetailVisible) {
@@ -764,9 +757,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     } else {
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
         nav.navigationBar.prefersLargeTitles = YES;
-        if(@available(iOS 13.0, *)) {
-            nav.modalInPresentation = YES;
-        }
+        nav.modalInPresentation = YES;
         [self.navigationController presentViewController:nav animated:YES completion:nil];
     }
 }
@@ -777,22 +768,20 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     NSArray *pickKeys = item[@"pickKeys"];
     NSArray *pickList = item[@"pickList"];
 /*
-    if (@available(iOS 14.0, *)) {
-        NSMutableArray *menuItems = [[NSMutableArray alloc] init];
-        for (int i = 0; i < pickList.count; i++) {
-            [menuItems addObject:[UIAction
-                actionWithTitle:pickList[i]
-                image:nil
-                identifier:nil
-                handler:^(UIAction *action) {
-                    cell.detailTextLabel.text = pickKeys[i];
-                    setPreference(item[@"key"], pickKeys[i]);
-                }]];
-        }
-        // FIXME: how to set menu for cell?
-        cell.menu = [UIMenu menuWithTitle:cell.textLabel.text children:menuItems];
-        return;
+    NSMutableArray *menuItems = [[NSMutableArray alloc] init];
+    for (int i = 0; i < pickList.count; i++) {
+        [menuItems addObject:[UIAction
+            actionWithTitle:pickList[i]
+            image:nil
+            identifier:nil
+            handler:^(UIAction *action) {
+                cell.detailTextLabel.text = pickKeys[i];
+                setPreference(item[@"key"], pickKeys[i]);
+            }]];
     }
+    // FIXME: how to set menu for cell?
+    cell.menu = [UIMenu menuWithTitle:cell.textLabel.text children:menuItems];
+    return;
 */
     NSString *message = nil;
     if ([item[@"hasDetail"] boolValue]) {

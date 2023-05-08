@@ -104,23 +104,14 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
     self.navigationController.toolbarHidden = NO;
-    UIActivityIndicatorViewStyle indicatorStyle;
-    if (@available(iOS 13.0, *)) {
-        indicatorStyle = UIActivityIndicatorViewStyleMedium;
-    } else {
-        indicatorStyle = UIActivityIndicatorViewStyleGray;
-    }
+    UIActivityIndicatorViewStyle indicatorStyle = UIActivityIndicatorViewStyleMedium;
     UIActivityIndicatorView *toolbarIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:indicatorStyle];
     [toolbarIndicator startAnimating];
     self.toolbarItems = @[
         [[UIBarButtonItem alloc] initWithCustomView:toolbarIndicator],
         [[UIBarButtonItem alloc] init]
     ];
-    if (@available(iOS 13.0, *)) {
-        self.toolbarItems[1].tintColor = UIColor.labelColor;
-    } else {
-        self.toolbarItems[1].tintColor = UIColor.blackColor;
-    }
+    self.toolbarItems[1].tintColor = UIColor.labelColor;
 
     // Setup the account button
     self.accountBtnItem = [self drawAccountButton];
@@ -182,18 +173,18 @@
     }
 
     cell.textLabel.text = [self.options[indexPath.row] title];
-    if (@available(iOS 13.0, *)) {
-        UIImage *origImage = [UIImage systemImageNamed:[self.options[indexPath.row]
-            performSelector:@selector(imageName)]];
-        if (origImage) {
-            UIGraphicsImageRenderer *renderer = [[UIGraphicsImageRenderer alloc] initWithSize:CGSizeMake(50, 50)];
-            UIImage *image = [renderer imageWithActions:^(UIGraphicsImageRendererContext*_Nonnull myContext) {
-                CGFloat scaleFactor = 50/origImage.size.height;
-                [origImage drawInRect:CGRectMake(25 - origImage.size.width*scaleFactor/2, 0, origImage.size.width*scaleFactor, 50)];
-            }];
-            cell.imageView.image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        }
+    
+    UIImage *origImage = [UIImage systemImageNamed:[self.options[indexPath.row]
+        performSelector:@selector(imageName)]];
+    if (origImage) {
+        UIGraphicsImageRenderer *renderer = [[UIGraphicsImageRenderer alloc] initWithSize:CGSizeMake(50, 50)];
+        UIImage *image = [renderer imageWithActions:^(UIGraphicsImageRendererContext*_Nonnull myContext) {
+            CGFloat scaleFactor = 50/origImage.size.height;
+            [origImage drawInRect:CGRectMake(25 - origImage.size.width*scaleFactor/2, 0, origImage.size.width*scaleFactor, 50)];
+        }];
+        cell.imageView.image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     }
+    
     if (cell.imageView.image == nil) {
         cell.imageView.layer.magnificationFilter = kCAFilterNearest;
         cell.imageView.layer.minificationFilter = kCAFilterNearest;

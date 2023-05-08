@@ -33,22 +33,6 @@ void hooked_abort() {
     orig_abort();
 }
 
-void* hooked_dlopen(const char* path, int mode) {
-    // iOS 12 refuses to dlopen executables, so here we put a workaround
-    if (path == NULL || [@(path) hasSuffix:@"/PojavLauncher"]) {
-        return orig_dlopen(NULL, mode);
-    }
-
-    // NOTE: no longer used, if jre has Pojav's libawt_xawt
-    if (getenv("POJAV_PREFER_EXTERNAL_JRE") && [@(path) hasSuffix:@"/libawt_xawt.dylib"]) {
-        // In this environment, libawt_xawt is not available/X11 only.
-        // hook dlopen to use our libawt_xawt
-        return orig_dlopen([NSString stringWithFormat:@"%s/Frameworks/libawt_xawt.dylib", getenv("BUNDLE_PATH")].UTF8String, mode);
-    }
-    
-    return orig_dlopen(path, mode);
-}
-
 void hooked_exit(int code) {
     NSLog(@"exit(%d) called", code);
     if (code == 0) {
@@ -78,13 +62,6 @@ int hooked_open(const char *path, int oflag, ...) {
 
 void init_hookFunctions() {
     void *orig_dlopen_local;
-    if (@available(iOS 14, *)) {
-        // Skip hooking dlopen
-    } else {
-        rebind_symbols((struct rebinding[1]){
-            {"dlopen", hooked_dlopen, (void *)&orig_dlopen_local}
-        }, 1);
-    }
     rebind_symbols((struct rebinding[3]){
         {"abort", hooked_abort, (void *)&orig_abort},
         {"exit", hooked_exit, (void *)&orig_exit},

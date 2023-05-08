@@ -141,11 +141,6 @@ static CGPoint lastCenterPoint;
 }
 
 - (void)actionOpenNavigationMenu {
-    if (@available(iOS 14, *)) {
-        // Use UIMenu
-    } else {
-        [self animateMenuScale:0.7 duration:0.3];
-    }
 }
 
 - (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
@@ -174,11 +169,7 @@ static CGPoint lastCenterPoint;
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
     }
-    if (@available(iOS 13.0, *)) {
-        cell.backgroundColor = UIColor.systemFillColor;
-    } else {
-        cell.backgroundColor = UIColor.groupTableViewBackgroundColor;
-    }
+    cell.backgroundColor = UIColor.systemFillColor;
 
     cell.textLabel.text = localize(self.menuArray[indexPath.row], nil);
 

@@ -13,12 +13,7 @@ static BOOL gyroSwapAxis;
 static CMMotionManager* cmInstance;
 
 + (void)updateOrientation {
-    UIInterfaceOrientation orientation;
-    if (@available(iOS 13.0, *)) {
-        orientation = UIApplication.sharedApplication.windows[0].windowScene.interfaceOrientation;
-    } else {
-        orientation = UIApplication.sharedApplication.statusBarOrientation;
-    }
+    UIInterfaceOrientation orientation = UIApplication.sharedApplication.windows[0].windowScene.interfaceOrientation;
     gyroSwapAxis = UIInterfaceOrientationIsPortrait(orientation);
     // FIXME: camera jumps upon rotating screen
 }

@@ -98,9 +98,7 @@
         return;
     }
 
-    if (@available(iOS 13.0, *)) {
-        self.modalInPresentation = YES;
-    }
+    self.modalInPresentation = YES;
     self.tableView.userInteractionEnabled = NO;
     [self addActivityIndicatorTo:cell];
 
@@ -207,9 +205,7 @@
         // NSLog(@"URL returned = %@", [callbackURL absoluteString]);
 
         if ([urlString containsString:@"/auth/?code="]) {
-            if (@available(iOS 13.0, *)) {
-                self.modalInPresentation = YES;
-            }
+            self.modalInPresentation = YES;
             self.tableView.userInteractionEnabled = NO;
             [self addActivityIndicatorTo:sender];
             NSArray *components = [urlString componentsSeparatedByString:@"/auth/?code="];
@@ -233,10 +229,8 @@
         }
     }];
 
-    if (@available(iOS 13.0, *)) {
-        self.authVC.prefersEphemeralWebBrowserSession = YES;
-        self.authVC.presentationContextProvider = self;
-    }
+    self.authVC.prefersEphemeralWebBrowserSession = YES;
+    self.authVC.presentationContextProvider = self;
 
     if ([self.authVC start] == NO) {
         showDialog(self, localize(@"Error", nil), @"Unable to open Safari");
@@ -244,12 +238,7 @@
 }
 
 - (void)addActivityIndicatorTo:(UITableViewCell *)cell {
-    UIActivityIndicatorViewStyle indicatorStyle;
-    if (@available(iOS 13.0, *)) {
-        indicatorStyle = UIActivityIndicatorViewStyleMedium;
-    } else {
-        indicatorStyle = UIActivityIndicatorViewStyleGray;
-    } 
+    UIActivityIndicatorViewStyle indicatorStyle = UIActivityIndicatorViewStyleMedium;
     UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:indicatorStyle];
     cell.accessoryView = indicator;
     [indicator sizeToFit];
@@ -266,9 +255,7 @@
     if (status != nil) {
         cell.detailTextLabel.text = status;
         if (!success) {
-            if (@available(iOS 13.0, *)) {
-                self.modalInPresentation = NO;
-            }
+            self.modalInPresentation = NO;
             self.tableView.userInteractionEnabled = YES;
             [self removeActivityIndicatorFrom:cell];
             NSLog(@"[MSA] Error: %@", status);
@@ -287,7 +274,7 @@
 }
 
 #pragma mark - ASWebAuthenticationPresentationContextProviding
-- (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session  API_AVAILABLE(ios(13.0)){
+- (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session {
     return UIApplication.sharedApplication.windows.firstObject;
 }
 

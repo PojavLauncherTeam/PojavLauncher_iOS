@@ -53,9 +53,7 @@ const NSString *toolbarKey = @"toolbar";
             CGRectMake(self.view.bounds.origin.x, self.view.bounds.size.height - 100,
             self.view.bounds.size.width, 100)];
         toolbar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
-        if (@available(iOS 13.0, *)) {
-            toolbar.backgroundColor = UIColor.systemBackgroundColor;
-        }
+        toolbar.backgroundColor = UIColor.systemBackgroundColor;
         objc_setAssociatedObject(self, &toolbarKey, toolbar, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         [self performSelector:@selector(_configureToolbar)];
     }
@@ -173,12 +171,10 @@ const NSString *cornerLayerKey = @"cornerLayer";
 
 UIWindow* currentWindowInScene(BOOL external) {
     id delegate = UIApplication.sharedApplication.delegate;
-    if (@available(iOS 13.0, *)) {
-        for (UIScene *scene in UIApplication.sharedApplication.connectedScenes.allObjects) {
-            delegate = scene.delegate;
-            if (external != (scene.session.role == UIWindowSceneSessionRoleApplication)) {
-                break;
-            }
+    for (UIScene *scene in UIApplication.sharedApplication.connectedScenes.allObjects) {
+        delegate = scene.delegate;
+        if (external != (scene.session.role == UIWindowSceneSessionRoleApplication)) {
+            break;
         }
     }
     return [delegate window];

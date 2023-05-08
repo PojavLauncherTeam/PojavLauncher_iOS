@@ -132,22 +132,15 @@ viewForFooterInSection:(NSInteger)section
 */
 
 - (id)createOpenScheme:(NSString *)scheme at:(NSString *)directory {
-    if (@available(iOS 13.0, *)) {
-        return ^(UIAction *action) {
-            [UIApplication.sharedApplication
-                openURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@://%@", scheme, directory]]
-                options:@{} completionHandler:nil];
-        };
-    }
-    return nil;
+    return ^(UIAction *action) {
+        [UIApplication.sharedApplication
+            openURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@://%@", scheme, directory]]
+            options:@{} completionHandler:nil];
+    };
 }
 
-- (UIContextMenuConfiguration *)tableView:(UITableView *)tableView contextMenuConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath point:(CGPoint)point API_AVAILABLE(ios(13.0))
+- (UIContextMenuConfiguration *)tableView:(UITableView *)tableView contextMenuConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath point:(CGPoint)point 
 {
-    // suppress warning
-    if (@available(iOS 13.0, *)) {}
-    else return nil;
-
     NSArray *menuItems;
     NSMutableArray *openItems = [[NSMutableArray alloc] init];
 

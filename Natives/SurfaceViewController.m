@@ -148,16 +148,6 @@ BOOL slideableHotbar;
     self.doubleTapGesture.cancelsTouchesInView = NO;
     [self.touchView addGestureRecognizer:self.doubleTapGesture];
 
-    if (@available(iOS 13.0, *)) {
-        if (@available(iOS 14.0, *)) {
-            // Hover is handled in GCMouse callback
-        } else {
-            UIHoverGestureRecognizer *hoverGesture = [[UIHoverGestureRecognizer alloc]
-            initWithTarget:self action:@selector(surfaceOnHover:)];
-            [self.touchView addGestureRecognizer:hoverGesture];
-        }
-    }
-
     self.longPressGesture = [[UILongPressGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnLongpress:)];
     self.longPressGesture.allowedTouchTypes = @[@(UITouchTypeDirect)];
@@ -173,10 +163,8 @@ BOOL slideableHotbar;
     self.scrollPanGesture.maximumNumberOfTouches = 2;
     [self.touchView addGestureRecognizer:self.scrollPanGesture];
 
-    if (@available(iOS 13.4, *)) {
-        if (!isTVOS) {
-            [self.touchView addInteraction:[[UIPointerInteraction alloc] initWithDelegate:self]];
-        }
+    if (!isTVOS) {
+        [self.touchView addInteraction:[[UIPointerInteraction alloc] initWithDelegate:self]];
     }
 
     // Virtual mouse
@@ -190,11 +178,7 @@ BOOL slideableHotbar;
     [self.touchView addSubview:self.mousePointerView];
 
     self.inputTextField = [[TrackedTextField alloc] initWithFrame:CGRectMake(0, -32.0, self.view.frame.size.width, 30.0)];
-    if (@available(iOS 13.0, *)) {
-        self.inputTextField.backgroundColor = UIColor.secondarySystemBackgroundColor;
-    } else {
-        self.inputTextField.backgroundColor = UIColor.groupTableViewBackgroundColor;
-    }
+    self.inputTextField.backgroundColor = UIColor.secondarySystemBackgroundColor;
     self.inputTextField.delegate = self;
     self.inputTextField.font = [UIFont fontWithName:@"Menlo-Regular" size:20];
     self.inputTextField.clearsOnBeginEditing = YES;
@@ -214,34 +198,33 @@ BOOL slideableHotbar;
     self.swipeableButtons = [[NSMutableArray alloc] init];
 
     [KeyboardInput initKeycodeTable];
-    if (@available(iOS 14.0, tvOS 14.0, *)) {
-        self.mouseConnectCallback = [[NSNotificationCenter defaultCenter] addObserverForName:GCMouseDidConnectNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-            NSLog(@"Input: Mouse connected!");
-            GCMouse* mouse = note.object;
-            [self registerMouseCallbacks:mouse];
-            self.mousePointerView.hidden = isGrabbing;
-            virtualMouseEnabled = YES;
-            [self setNeedsUpdateOfPrefersPointerLocked];
-            if([getPreference(@"hardware_hide") boolValue]) {
-                self.ctrlView.hidden = YES;
-            }
-        }];
-        self.mouseDisconnectCallback = [[NSNotificationCenter defaultCenter] addObserverForName:GCMouseDidDisconnectNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-            NSLog(@"Input: Mouse disconnected!");
-            GCMouse* mouse = note.object;
-            mouse.mouseInput.mouseMovedHandler = nil;
-            mouse.mouseInput.leftButton.pressedChangedHandler = nil;
-            mouse.mouseInput.middleButton.pressedChangedHandler = nil;
-            mouse.mouseInput.rightButton.pressedChangedHandler = nil;
-            [self setNeedsUpdateOfPrefersPointerLocked];
-            if([getPreference(@"hardware_hide") boolValue]) {
-                self.ctrlView.hidden = NO;
-            }
-        }];
-        if (GCMouse.current != nil) {
-            [self registerMouseCallbacks: GCMouse.current];
+    self.mouseConnectCallback = [[NSNotificationCenter defaultCenter] addObserverForName:GCMouseDidConnectNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+        NSLog(@"Input: Mouse connected!");
+        GCMouse* mouse = note.object;
+        [self registerMouseCallbacks:mouse];
+        self.mousePointerView.hidden = isGrabbing;
+        virtualMouseEnabled = YES;
+        [self setNeedsUpdateOfPrefersPointerLocked];
+        if([getPreference(@"hardware_hide") boolValue]) {
+            self.ctrlView.hidden = YES;
         }
+    }];
+    self.mouseDisconnectCallback = [[NSNotificationCenter defaultCenter] addObserverForName:GCMouseDidDisconnectNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+        NSLog(@"Input: Mouse disconnected!");
+        GCMouse* mouse = note.object;
+        mouse.mouseInput.mouseMovedHandler = nil;
+        mouse.mouseInput.leftButton.pressedChangedHandler = nil;
+        mouse.mouseInput.middleButton.pressedChangedHandler = nil;
+        mouse.mouseInput.rightButton.pressedChangedHandler = nil;
+        [self setNeedsUpdateOfPrefersPointerLocked];
+        if([getPreference(@"hardware_hide") boolValue]) {
+            self.ctrlView.hidden = NO;
+        }
+    }];
+    if (GCMouse.current != nil) {
+        [self registerMouseCallbacks: GCMouse.current];
     }
+    
 
     // TODO: deal with multiple controllers by letting users decide which one to use?
     self.controllerConnectCallback = [[NSNotificationCenter defaultCenter] addObserverForName:GCControllerDidConnectNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
@@ -283,11 +266,9 @@ BOOL slideableHotbar;
     [joystick update];
 #endif
 
-    if (@available(iOS 13.0, *)) {
-        if (UIApplication.sharedApplication.connectedScenes.count > 1 &&
-            [getPreference(@"fullscreen_airplay") boolValue]) {
-            [self switchToExternalDisplay];
-        }
+    if (UIApplication.sharedApplication.connectedScenes.count > 1 &&
+        [getPreference(@"fullscreen_airplay") boolValue]) {
+        [self switchToExternalDisplay];
     }
 
     [self launchMinecraft];
@@ -295,9 +276,7 @@ BOOL slideableHotbar;
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    if (@available(iOS 14.0, *)) {
-        [self setNeedsUpdateOfPrefersPointerLocked];
-    }
+    [self setNeedsUpdateOfPrefersPointerLocked];
 }
 
 - (void)updateAudioSettings {
@@ -373,15 +352,11 @@ BOOL slideableHotbar;
 }
 
 - (void)updateSavedResolution {
-    if (@available(iOS 13.0, *)) {
-        for (UIWindowScene *scene in UIApplication.sharedApplication.connectedScenes.allObjects) {
-            self.screenScale = scene.screen.scale;
-            if (scene.session.role != UIWindowSceneSessionRoleApplication) {
-                break;
-            }
+    for (UIWindowScene *scene in UIApplication.sharedApplication.connectedScenes.allObjects) {
+        self.screenScale = scene.screen.scale;
+        if (scene.session.role != UIWindowSceneSessionRoleApplication) {
+            break;
         }
-    } else {
-        self.screenScale = UIScreen.mainScreen.scale;
     }
 
     if (self.surfaceView.superview != nil) {
@@ -445,19 +420,17 @@ BOOL slideableHotbar;
             [self.swipeableButtons addObject:button];
         }
 
-        if (@available(iOS 14, *)) {
-            if (!isMenuButton) continue;
-            NSMutableArray *items = [NSMutableArray new];
-            for (int i = 0; i < self.menuArray.count; i++) {
-                UIAction *item = [UIAction actionWithTitle:localize(self.menuArray[i], nil) image:nil identifier:nil
-                    handler:^(id action) {[self didSelectMenuItem:i];}];
-                [items addObject:item];
-            }
-            button.menu = [UIMenu menuWithTitle:@"" image:nil identifier:nil
-                options:UIMenuOptionsDisplayInline children:items];
-            button.showsMenuAsPrimaryAction = YES;
-            self.edgeGesture.enabled = NO;
+        if (!isMenuButton) continue;
+        NSMutableArray *items = [NSMutableArray new];
+        for (int i = 0; i < self.menuArray.count; i++) {
+            UIAction *item = [UIAction actionWithTitle:localize(self.menuArray[i], nil) image:nil identifier:nil
+                handler:^(id action) {[self didSelectMenuItem:i];}];
+            [items addObject:item];
         }
+        button.menu = [UIMenu menuWithTitle:@"" image:nil identifier:nil
+            options:UIMenuOptionsDisplayInline children:items];
+        button.showsMenuAsPrimaryAction = YES;
+        self.edgeGesture.enabled = NO;
     }
 }
 
@@ -582,13 +555,12 @@ BOOL slideableHotbar;
 - (void)pressesBegan:(NSSet<UIPress *> *)presses withEvent:(UIPressesEvent *)event {
     BOOL handled = NO;
 
-    if (@available(iOS 13.4, *)) {
-        for (UIPress *press in presses) {
-            if (press.key != nil && [KeyboardInput sendKeyEvent:press.key down:YES]) {
-                handled = YES;
-            }
+    for (UIPress *press in presses) {
+        if (press.key != nil && [KeyboardInput sendKeyEvent:press.key down:YES]) {
+            handled = YES;
         }
     }
+    
 
     if (!handled) {
         [super pressesBegan:presses withEvent:event];
@@ -598,13 +570,12 @@ BOOL slideableHotbar;
 - (void)pressesEnded:(NSSet<UIPress *> *)presses withEvent:(UIPressesEvent *)event {
     BOOL handled = NO;
 
-    if (@available(iOS 13.4, *)) {
-        for (UIPress *press in presses) {
-            if (press.key != nil && [KeyboardInput sendKeyEvent:press.key down:NO]) {
-                handled = YES;
-            }
+    for (UIPress *press in presses) {
+        if (press.key != nil && [KeyboardInput sendKeyEvent:press.key down:NO]) {
+            handled = YES;
         }
     }
+    
 
     if (!handled) {
         [super pressesEnded:presses withEvent:event];
@@ -615,7 +586,7 @@ BOOL slideableHotbar;
     return GCMouse.mice.count > 0;
 }
 
-- (void)registerMouseCallbacks:(GCMouse *)mouse API_AVAILABLE(ios(14.0)) {
+- (void)registerMouseCallbacks:(GCMouse *)mouse {
     NSLog(@"Input: Got mouse %@", mouse);
     mouse.mouseInput.mouseMovedHandler = ^(GCMouseInput * _Nonnull mouse, float deltaX, float deltaY) {
         if (!self.view.window.windowScene.pointerLockState.locked) {
@@ -696,14 +667,13 @@ BOOL slideableHotbar;
     }
 }
 
-- (void)surfaceOnHover:(UIHoverGestureRecognizer *)sender API_AVAILABLE(ios(13.0)) {
+- (void)surfaceOnHover:(UIHoverGestureRecognizer *)sender {
     if (sender.state == UIGestureRecognizerStateBegan || sender.state == UIGestureRecognizerStateEnded){
         [self.lightHaptic impactOccurred];
     }
     
-    if (@available(iOS 14.0, *)) {
-        if (isGrabbing) return;
-    }
+    if (isGrabbing) return;
+    
     CGPoint point = [sender locationInView:self.rootView];
     // NSLog(@"Mouse move!!");
     // NSLog(@"Mouse pos = %f, %f", point.x, point.y);
@@ -781,11 +751,11 @@ BOOL slideableHotbar;
     }
 }
 
-- (UIPointerRegion *)pointerInteraction:(UIPointerInteraction *)interaction regionForRequest:(UIPointerRegionRequest *)request defaultRegion:(UIPointerRegion *)defaultRegion API_AVAILABLE(ios(13.4)) API_AVAILABLE(ios(13.4)) API_AVAILABLE(ios(13.4)){
+- (UIPointerRegion *)pointerInteraction:(UIPointerInteraction *)interaction regionForRequest:(UIPointerRegionRequest *)request defaultRegion:(UIPointerRegion *)defaultRegion {
     return nil;
 }
 
-- (UIPointerStyle *)pointerInteraction:(UIPointerInteraction *)interaction styleForRegion:(UIPointerRegion *)region  API_AVAILABLE(ios(13.4)){
+- (UIPointerStyle *)pointerInteraction:(UIPointerInteraction *)interaction styleForRegion:(UIPointerRegion *)region {
     return [UIPointerStyle hiddenPointerStyle];
 }
 
@@ -971,10 +941,8 @@ int touchesMovedCount;
     [super touchesBegan:touches withEvent:event];
     int i = 0;
     for (UITouch *touch in touches) {
-        if (@available(iOS 14.0, *)) { // 13.4
-            if (touch.type == UITouchTypeIndirectPointer) {
-                continue; // handle this in a different place
-            }
+        if (touch.type == UITouchTypeIndirectPointer) {
+            continue; // handle this in a different place
         }
         CGPoint locationInView = [touch locationInView:self.rootView];
         CGFloat screenScale = [[UIScreen mainScreen] scale];
@@ -998,10 +966,8 @@ int touchesMovedCount;
     [super touchesMoved:touches withEvent:event];
 
     for (UITouch *touch in touches) {
-        if (@available(iOS 14.0, *)) { // 13.4
-            if (touch.type == UITouchTypeIndirectPointer) {
-                continue; // handle this in a different place
-            }
+        if (touch.type == UITouchTypeIndirectPointer) {
+            continue; // handle this in a different place
         }
         if (self.hotbarTouch != touch && [self isTouchInactive:self.primaryTouch]) {
             // Replace the inactive touch with the current active touch
@@ -1016,10 +982,8 @@ int touchesMovedCount;
 - (void)touchesEndedGlobal:(NSSet *)touches withEvent:(UIEvent *)event
 {
     for (UITouch *touch in touches) {
-        if (@available(iOS 14.0, *)) { // 13.4
-            if (touch.type == UITouchTypeIndirectPointer) {
-                continue; // handle this in a different place
-            }
+        if (touch.type == UITouchTypeIndirectPointer) {
+            continue; // handle this in a different place
         }
         [self sendTouchEvent:touch withUIEvent:event withEvent:ACTION_UP];
     }

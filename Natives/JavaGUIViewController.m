@@ -139,11 +139,7 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
     [self.view addSubview:scrollView];
 
     self.inputTextField = [[TrackedTextField alloc] initWithFrame:CGRectMake(0, -32.0, self.view.frame.size.width, 30.0)];
-    if (@available(iOS 13.0, *)) {
-        self.inputTextField.backgroundColor = UIColor.secondarySystemBackgroundColor;
-    } else {
-        self.inputTextField.backgroundColor = UIColor.groupTableViewBackgroundColor;
-    }
+    self.inputTextField.backgroundColor = UIColor.secondarySystemBackgroundColor;
     self.inputTextField.font = [UIFont fontWithName:@"Menlo-Regular" size:20];
     self.inputTextField.clearsOnBeginEditing = YES;
     self.inputTextField.textAlignment = NSTextAlignmentCenter;
