@@ -217,6 +217,8 @@
 "preference.detail.java_args" = "Задать аргументы Java при запуске Minecraft. Осторожно, их неправильная настройка приведёт к сбою!";
 "preference.placeholder.java_args" = "Укажите аргументы...";
 "preference.title.env_variables" = "Переменные среды";
+"preference.detail.env_variables" = "Задать пользовательские переменные среды при запуске Minecraft. Осторожно, их неправильная настройка приведёт к сбою!";
+"preference.placeholder.env_variables" = "Указать переменные...";
 "preference.title.auto_ram" = "Автоматическое выделение ОЗУ";
 "preference.detail.auto_ram" = "Автоматически управляет количеством выделенного ОЗУ";
 "preference.warn.auto_ram" = "Отключение этой настройки может привести к нестабильности на устройствах без jailbreak. Используйте с осторожностью.";
