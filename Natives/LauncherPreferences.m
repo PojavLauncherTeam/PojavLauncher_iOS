@@ -112,16 +112,9 @@ void loadPreferences(BOOL reset) {
     envPrefDict = getDictionarySafe(@"env_vars");
     warnPrefDict = getDictionarySafe(@"warnings");
 
-    // set default value
     setDefaultValueForPref(envPrefDict, @"resolution", @(100));
-    setDefaultValueForPref(prefDict, @"button_scale", @(100));
-    setDefaultValueForPref(prefDict, @"selected_account", @"");
-    setDefaultValueForPref(prefDict, @"selected_version", @"1.7.10");
-    setDefaultValueForPref(prefDict, @"selected_version_type", @(0));
-    
     setDefaultValueForPref(envPrefDict, @"gesture_mouse", @YES);
     setDefaultValueForPref(envPrefDict, @"gesture_hotbar", @YES);
-
     setDefaultValueForPref(envPrefDict, @"press_duration", @(400));
     setDefaultValueForPref(envPrefDict, @"mouse_scale", @(100));
     setDefaultValueForPref(envPrefDict, @"mouse_speed", @(100));
@@ -136,10 +129,6 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(envPrefDict, @"allocated_memory", [NSNumber numberWithFloat:roundf((NSProcessInfo.processInfo.physicalMemory / 1048576) * 0.25)]);
     setDefaultValueForPref(envPrefDict, @"jitstreamer_server", @"69.69.0.1");
     setDefaultValueForPref(envPrefDict, @"max_framerate", @YES);
-    setDefaultValueForPref(prefDict, @"appicon", @"AppIcon-Light");
-    setDefaultValueForPref(prefDict, @"debug_logging", @(CONFIG_RELEASE != 1));
-    setDefaultValueForPref(prefDict, @"cosmetica", @YES);
-    setDefaultValueForPref(prefDict, @"controller_type", @"xbox");
     setDefaultValueForPref(envPrefDict, @"java_home", @"java-8-openjdk");
     setDefaultValueForPref(envPrefDict, @"renderer", @"auto");
     setDefaultValueForPref(envPrefDict, @"fullscreen_airplay", @YES);
@@ -147,8 +136,16 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(envPrefDict, @"silence_other_audio", @NO);
     setDefaultValueForPref(envPrefDict, @"silence_with_switch", @NO);
     setDefaultValueForPref(envPrefDict, @"disable_haptics", @NO);
+    
+    setDefaultValueForPref(prefDict, @"button_scale", @(100));
+    setDefaultValueForPref(prefDict, @"selected_account", @"");
+    setDefaultValueForPref(prefDict, @"selected_version", @"1.7.10");
+    setDefaultValueForPref(prefDict, @"selected_version_type", @(0));
+    setDefaultValueForPref(prefDict, @"appicon", @"AppIcon-Light");
+    setDefaultValueForPref(prefDict, @"debug_logging", @(CONFIG_RELEASE != 1));
+    setDefaultValueForPref(prefDict, @"cosmetica", @YES);
+    setDefaultValueForPref(prefDict, @"controller_type", @"xbox");
     setDefaultValueForPref(prefDict, @"slimmed", @NO);
-    fillDefaultWarningDict();
     setDefaultValueForPref(prefDict, @"slideable_hotbar", @NO);
     setDefaultValueForPref(prefDict, @"virtmouse_enable", @NO);
     setDefaultValueForPref(prefDict, @"check_sha", @YES);
@@ -157,15 +154,15 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(prefDict, @"hidden_sidebar", @(realUIIdiom == UIUserInterfaceIdiomPhone));
     setDefaultValueForPref(prefDict, @"enable_altkit", @YES);
     
-    // Debug settings
     setDefaultValueForPref(debugPrefDict, @"debug_skip_wait_jit", @NO);
     setDefaultValueForPref(debugPrefDict, @"debug_hide_home_indicator", @NO);
     setDefaultValueForPref(debugPrefDict, @"debug_ipad_ui", @(realUIIdiom == UIUserInterfaceIdiomPad));
     setDefaultValueForPref(debugPrefDict, @"debug_auto_correction", @YES);
     setDefaultValueForPref(debugPrefDict, @"debug_show_layout_bounds", @NO);
     setDefaultValueForPref(debugPrefDict, @"debug_show_layout_overlap", @NO);
+    
+    fillDefaultWarningDict();
 
-    // Migrate some prefs
     setPreference(@"java_home", [getPreference(@"java_home") lastPathComponent]);
 
     prefDict[@"debugs"] = debugPrefDict;
