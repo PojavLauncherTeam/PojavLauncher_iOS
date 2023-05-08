@@ -8,7 +8,6 @@
 #import "LauncherPreferences.h"
 #import "LauncherPrefContCfgViewController.h"
 #import "PickTextField.h"
-#import "TOInsetGroupedTableView.h"
 #import "ios_uikit_bridge.h"
 #import "utils.h"
 
@@ -45,7 +44,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     self.keyValueMap = [[NSMutableArray alloc] init];
     initKeycodeTable(self.keyCodeMap, self.keyValueMap);
     
-    self.tableView = [[TOInsetGroupedTableView alloc] init];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleInsetGrouped];
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     self.tableView.sectionFooterHeight = 50;
     

@@ -8,7 +8,6 @@
 #import "LauncherPreferencesViewController.h"
 #import "LauncherPrefContCfgViewController.h"
 #import "LauncherPrefGameDirViewController.h"
-#import "TOInsetGroupedTableView.h"
 #import "UIKit+hook.h"
 
 #import "config.h"
@@ -44,7 +43,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     
     self.prefDetailVisible = self.navigationController == nil;
     
-    self.tableView = [[TOInsetGroupedTableView alloc] init];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleInsetGrouped];
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     
     if (self.navigationController == nil) {

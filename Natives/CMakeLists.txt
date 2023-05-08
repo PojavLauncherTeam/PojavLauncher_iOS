@@ -22,7 +22,6 @@ include_directories(
   "external/AFNetworking/UIKit+AFNetworking"
   "external/DBNumberedSlider/Classes"
   "external/NRFileManager"
-  "external/TOInsetGroupedTableView/TOInsetGroupedTableView"
   "external/fishhook"
   "external/mesa"
   "external/AltKit"
@@ -115,7 +114,6 @@ add_executable(PojavLauncher
 
   external/DBNumberedSlider/Classes/DBNumberedSlider.m
   external/NRFileManager/NSFileManager+NRFileManager.m
-  external/TOInsetGroupedTableView/TOInsetGroupedTableView/TOInsetGroupedTableView.m
   external/ballpa1n/HostManager.c
   external/ballpa1n/wrapped/HostManagerBridge.m
 

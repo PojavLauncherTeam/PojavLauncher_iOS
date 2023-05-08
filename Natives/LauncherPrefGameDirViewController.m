@@ -2,7 +2,6 @@
 #import "LauncherPreferences.h"
 #import "LauncherPrefGameDirViewController.h"
 #import "NSFileManager+NRFileManager.h"
-#import "TOInsetGroupedTableView.h"
 #import "ios_uikit_bridge.h"
 #import "utils.h"
 
@@ -20,7 +19,7 @@
     self.array = [[NSMutableArray alloc] init];
     [self.array addObject:@"default"];
 
-    self.tableView = [[TOInsetGroupedTableView alloc] init];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleInsetGrouped];
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     self.tableView.sectionFooterHeight = 50;
 

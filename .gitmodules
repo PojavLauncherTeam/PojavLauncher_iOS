@@ -8,6 +8,3 @@
 [submodule "Natives/external/AFNetworking"]
 	path = Natives/external/AFNetworking
 	url = https://github.com/AFNetworking/AFNetworking
-[submodule "Natives/external/TOInsetGroupedTableView"]
-	path = Natives/external/TOInsetGroupedTableView
-	url = https://github.com/TimOliver/TOInsetGroupedTableView
