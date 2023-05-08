@@ -171,6 +171,7 @@ Bu seçenek varsayılan JitStreamer sunucusunu kullanıyorsanız olduğu gibi b�
 "preference.title.java_home" = "Minecraft 1.17 < için Java 17 kullan";
 "preference.title.java_args" = "JVM Başlatıcı değişkenleri";
 "preference.placeholder.java_args" = "Değişkenleri belirt...";
+"preference.title.env_variables" = "Ortam değişkenleri";
 "preference.title.auto_ram" = "Otomatik BELLEK";
 "preference.detail.auto_ram" = "Otomatik bellek ayarlayıcısını etkinleştirir";
 "preference.warn.auto_ram" = "Bu seçeneği jailbreak'lenmemiş bir cihazda devre dışı bırakmak dengesizlik oluşturabilir. Önlemle devam edin.";
