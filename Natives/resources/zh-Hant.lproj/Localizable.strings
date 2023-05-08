@@ -170,6 +170,7 @@
 "preference.title.java_home" = "對於我的世界 < 1.17，使用Java 17";
 "preference.title.java_args" = "JVM 啟動引數";
 "preference.placeholder.java_args" = "提供選項......";
+"preference.title.env_variables" = "環境變量";
 "preference.title.auto_ram" = "自動調節RAM";
 "preference.detail.auto_ram" = "啟用 RAM 自動調節";
 "preference.warn.auto_ram" = "在沒有越獄的裝置上收據這個選項能夠導致不穩定。請小心繼續。";
