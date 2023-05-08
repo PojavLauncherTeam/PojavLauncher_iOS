@@ -152,6 +152,7 @@
 "preference.title.java_home" = "Use Java 17 para o Minecraft < 1.17";
 "preference.title.java_args" = "Argumentos JVM";
 "preference.placeholder.java_args" = "Especifique os argumentos...";
+"preference.title.env_variables" = "Variáveis ambientais";
 "preference.title.auto_ram" = "RAM automática";
 "preference.detail.auto_ram" = "Ativa o ajuste automático de RAM";
 "preference.title.allocated_memory" = "Alocação de memória (MB)";
