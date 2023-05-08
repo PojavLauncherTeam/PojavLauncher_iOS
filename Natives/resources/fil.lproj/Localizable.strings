@@ -165,6 +165,7 @@
 "preference.title.java_home" = "Gamitin ang Java 17 para sa Minecraft < 1.17";
 "preference.title.java_args" = "JVM Launch arguments";
 "preference.placeholder.java_args" = "Tukuyin ang mga argumento...";
+"preference.title.env_variables" = "Variables ng environment";
 "preference.title.auto_ram" = "Awtomatikong RAM";
 "preference.detail.auto_ram" = "Pinapagana ang awtomatikong RAM adjuster";
 "preference.warn.auto_ram" = "Ang pag-disable sa opsyong ito sa isang unjailbroken na device ay maaaring lumikha ng kawalang-tatag kung babaguhin. Magpatuloy nang may pag-iingat.";
