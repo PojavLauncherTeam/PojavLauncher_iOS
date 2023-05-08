@@ -218,6 +218,7 @@ der Minecraft-Version zu wählen. Verringerte Auflösung reduziert die Arbeitsla
 "preference.title.java_args" = "JVM-Start-Argumente";
 "preference.detail.java_args" = "Argumente an Java übergeben, wenn Minecraft gestartet wird. Sei vorsichtig, dies kann den Absturz des Spiels verursachen, wenn es falsch geändert wird.";
 "preference.placeholder.java_args" = "Argumente angeben...";
+"preference.title.env_variables" = "Umgebungsvariablen";
 "preference.title.auto_ram" = "Auto-RAM";
 "preference.detail.auto_ram" = "Aktiviert automatische RAM-Einstellungen";
 "preference.warn.auto_ram" = "Das Deaktivieren dieser Option kann auf einem nicht-ge-jailbreakten Gerät Instabilität erzeugen. Sei vorsichtig.";
