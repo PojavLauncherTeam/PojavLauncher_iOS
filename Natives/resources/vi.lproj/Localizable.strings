@@ -217,6 +217,7 @@
 "preference.title.java_args" = "Các chỉ số chạy JVM";
 "preference.detail.java_args" = "Truyền đối số cho Java khi khởi chạy Minecraft. Hãy cẩn thận, điều này có thể khiến trò chơi bị sập nếu sửa đổi không đúng cách.";
 "preference.placeholder.java_args" = "Nhập các chỉ số...";
+"preference.title.env_variables" = "Các chỉ số môi trường";
 "preference.title.auto_ram" = "RAM tự động";
 "preference.detail.auto_ram" = "Bật tự động điều chỉnh RAM";
 "preference.warn.auto_ram" = "Tắt tùy chọn này trên thiết bị chưa được jailbreak có thể gây ra sự thiếu ổn định. Chú ý khi tiếp tục.";
