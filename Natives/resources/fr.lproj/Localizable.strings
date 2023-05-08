@@ -72,13 +72,18 @@
 
 "login.jit.checking" = "Recherche du JIT";
 "login.jit.enabled" = "Le JIT a été activé";
+"login.jit.fail" = "JIT ne peut pas être activé.";
+"login.jit.fail.title" = "JIT ne peut pas être activé sur votre appareil.";
 
 // Login buttons
 "login.menu.sendlogs" = "Envoyez vos journaux";
 "login.option.add" = "Ajouter un compte";
 "login.option.select" = "Choisir un compte";
+"login.option.demo" = "Compte démo";
 "login.option.microsoft" = "Compte Microsoft";
 "login.option.local" = "Compte local";
+
+"login.warn.title.legacy_device" = "La prochaine version de PojavLauncher ne sera pas compatible avec cet appareil.";
 
 "login.warn.title.demomode" = "Votre compte est une démo";
 "login.warn.message.demomode" = "En remplacement du mode hors ligne et local, le mode démo vous permettra de vous connecter à un compte Microsoft qui ne possède pas le jeu et de jouer à l'essai de l'édition Java, introduit dans la version 1.3. Les versions plus anciennes contiennent le jeu complet puisque le launcher officiel ne place pas ces restrictions. Consultez notre site pour en savoir plus sur cette transition du mode hors ligne.";
@@ -123,6 +128,7 @@
 "preference.detail.debug_logging" = "Journalise les paramètres internes et les actions sur latestlog.txt. Cela aide les développeurs à trouver des problèmes plus facilement, mais Minecraft peut s'exécuter plus lentement puisque les journaux seront écrits plus souvent.";
 "preference.title.jitstreamer_server" = "IP du serveur JitStreamer";
 "preference.detail.jitstreamer_server" = "Vous permet de passer à une adresse IP personnalisée du serveur JitStreamer, par exemple pour les instances auto-hébergées. Cette option peut être laissée si vous utilisez les serveurs JitStreamer par défaut.";
+"preference.title.enable_altkit" = "Activer l'intégration AltKit";
 "preference.title.appicon" = "Définir l'icône de l'app";
 "preference.detail.appicon" = "Vous permet de choisir entre différentes icônes d'écran d'accueil pour PojavLauncher.";
 "preference.title.appicon-default" = "PojavLauncher clair familier";
@@ -148,9 +154,11 @@
 
 "preference.title.resolution" = "Résolution (%)";
 "preference.detail.resolution" = "Vous permet de diminuer la résolution du jeu.";
+"preference.title.max_framerate" = "Framerate maximum";
 
 "preference.title.fullscreen_airplay" = "AirPlay en plein écran";
 "preference.detail.fullscreen_airplay" = "Permet d'afficher une fenêtre de jeu en plein écran sur l'écran externe plutôt que de tout copier sur l'écran.";
+"preference.title.silence_other_audio" = "Mettre en pause l'audio lorsque le jeu s'ouvre";
 "preference.title.press_duration" = "Durée d'un appui long (ms)";
 "preference.detail.press_duration" = "Déclenche le bouton pour détruire des blocs et jeter des objets.";
 "preference.title.button_scale" = "Échelle des boutons à l'écran (%)";
@@ -165,6 +173,7 @@
 "preference.detail.slideable_hotbar" = "Rend la barre d'action glissante comme la molette de la souris";
 
 "preference.title.gyroscope_enable" = "Activer les contrôles du gyroscope";
+"preference.detail.gyroscope_invert_x_axis" = "Inverser l'axe X du gyroscope";
 "preference.title.gyroscope_sensitivity" = "Sensibilité des contrôles du gyroscope";
 "preference.detail.gyroscope_sensitivity" = "Ajuster la sensibilité des contrôles du gyroscope";
 
@@ -191,4 +200,37 @@
 "preference.detail.debug_show_layout_bounds" = "Afficher les limites, les marges de clip";
 "preference.title.debug_show_layout_overlap" = "Afficher le chevauchement de la mise en page";
 "preference.detail.debug_show_layout_overlap" = "Superposez chaque vue avec une couleur transparente pour révéler des vues qui se chevauchent.";
+"controller_configurator.title.type.xbox" = "Xbox";
+"controller_configurator.title.type.playstation" = "PlayStation";
+"controller_configurator.xbox.title.named_back" = "Guide";
+"controller_configurator.xbox.title.named_start" = "Menu";
+"controller_configurator.xbox.title.named_a" = "A";
+"controller_configurator.xbox.title.named_b" = "B";
+"controller_configurator.xbox.title.named_x" = "X";
+"controller_configurator.xbox.title.named_y" = "Y";
+"controller_configurator.xbox.title.dpad_up" = "Haut";
+"controller_configurator.xbox.title.dpad_down" = "Bas";
+"controller_configurator.xbox.title.dpad_left" = "Gauche";
+"controller_configurator.xbox.title.dpad_right" = "Droite";
+
+"controller_configurator.playstation.title.bumper_left" = "L1";
+"controller_configurator.playstation.title.bumper_right" = "R1";
+"controller_configurator.playstation.title.trigger_left" = "L2";
+"controller_configurator.playstation.title.trigger_right" = "R2";
 "controller_configurator.playstation.title.named_back" = "Sélectionner";
+"controller_configurator.playstation.title.named_start" = "Start";
+"controller_configurator.playstation.title.named_a" = "Croix";
+"controller_configurator.playstation.title.named_b" = "Cercle";
+"controller_configurator.playstation.title.named_x" = "Carré";
+"controller_configurator.playstation.title.named_y" = "Triangle";
+"controller_configurator.playstation.title.dpad_up" = "Haut";
+"controller_configurator.playstation.title.dpad_down" = "Bas";
+"controller_configurator.playstation.title.dpad_left" = "Gauche";
+"controller_configurator.playstation.title.dpad_right" = "Droite";
+"controller_configurator.playstation.title.thumb_left" = "L3";
+"controller_configurator.playstation.title.thumb_right" = "R3";
+
+"controller_configurator.section.config_files" = "Fichier de configuration actuel";
+"controller_configurator.section.game_mappings" = "Mappages de jeu";
+"controller_configurator.section.menu_mappings" = "Mappages du menu";
+"controller_configurator.section.controller_style" = "Type de manette";
