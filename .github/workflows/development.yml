@@ -88,7 +88,7 @@ jobs:
           git push
           
       - name: Get JRE8
-        uses: dawidd6/action-download-artifact@v2
+        uses: dawidd6/action-download-artifact@v3
         with:
           github_token: ${{secrets.GITHUB_TOKEN}}
           workflow: build.yml
@@ -99,7 +99,7 @@ jobs:
           name: jre8-ios-aarch64
 
       - name: Get JRE17
-        uses: dawidd6/action-download-artifact@v2
+        uses: dawidd6/action-download-artifact@v3
         with:
           github_token: ${{secrets.GITHUB_TOKEN}}
           workflow: build.yml
@@ -118,19 +118,19 @@ jobs:
           gmake -j$(sysctl -n hw.ncpu) dsym package PLATFORM=${{ matrix.platform }}
           
       - name: Upload regular ipa
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: net.kdt.pojavlauncher-${{ matrix.platform_name }}.ipa
           path: artifacts/net.kdt.pojavlauncher-*-${{ matrix.platform_name }}.ipa
 
       - name: Upload slimmed ipa
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: net.kdt.pojavlauncher.slimmed-${{ matrix.platform_name }}.ipa
           path: artifacts/net.kdt.pojavlauncher.slimmed-*-${{ matrix.platform_name }}.ipa
 
       - name: Upload PojavLauncher.dSYM
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: PojavLauncher.dSYM
           path: artifacts/PojavLauncher.dSYM

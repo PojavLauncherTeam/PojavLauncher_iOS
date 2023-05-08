@@ -111,13 +111,13 @@ jobs:
           gmake -j$(sysctl -n hw.ncpu) dsym package PLATFORM=${{ matrix.platform }}
           
       - name: Upload regular ipa
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: net.kdt.pojavlauncher-${{ matrix.platform_name }}.ipa
           path: artifacts/net.kdt.pojavlauncher-*-${{ matrix.platform_name }}.ipa
 
       - name: Upload PojavLauncher.dSYM
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: PojavLauncher.dSYM
           path: artifacts/PojavLauncher.dSYM
