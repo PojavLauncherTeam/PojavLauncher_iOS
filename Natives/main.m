@@ -104,24 +104,6 @@ void init_checkForJailbreak() {
 }
 
 void init_logDeviceAndVer(char *argument) {
-    // Legacy IDs
-    NSDictionary *legacyIDs = @{
-        @"iPhone6,1" : @"iPhone 5s",
-        @"iPhone6,2" : @"iPhone 5s",
-        @"iPhone7,1" : @"iPhone 6 Plus",
-        @"iPhone7,2" : @"iPhone 6",
-        @"iPad4,1" : @"iPad Air (1st generation)",
-        @"iPad4,2" : @"iPad Air (1st generation)",
-        @"iPad4,3" : @"iPad Air (1st generation)",
-        @"iPad4,4" : @"iPad mini (2nd generation)",
-        @"iPad4,5" : @"iPad mini (2nd generation)",
-        @"iPad4,6" : @"iPad mini (2nd generation)",
-        @"iPad4,7" : @"iPad mini (3rd generation)",
-        @"iPad4,8" : @"iPad mini (3rd generation)",
-        @"iPad4,9" : @"iPad mini (3rd generation)",
-        @"iPod7,1" : @"iPod touch (6th generation)"
-    };
-    
     // PojavLauncher version
     NSLog(@"[Pre-Init] PojavLauncher INIT!");
     NSLog(@"[Pre-Init] Version: %@-%s", NSBundle.mainBundle.infoDictionary[@"CFBundleShortVersionString"], CONFIG_TYPE);
@@ -143,14 +125,6 @@ void init_logDeviceAndVer(char *argument) {
     
     NSLog(@"[Pre-Init] Device: %s", getenv("POJAV_DETECTEDHW"));
     NSLog(@"[Pre-Init] iOS %s (%s)", getenv("POJAV_DETECTEDSW"), getenv("POJAV_DETECTEDINST"));
-    
-    if(legacyIDs[[HostManager GetModelIdentifier]] != nil) {
-        NSLog(@"[Pre-Init] Currently running on legacy device");
-    } else {
-        if([HostManager GetPlatformVersion].floatValue < 14) {
-            NSLog(@"[Pre-Init] Currently running on legacy iOS");
-        }
-    }
     
     NSString *jvmPath = [NSString stringWithFormat:@"%s/java_runtimes", getenv("BUNDLE_PATH")];
     if (![fm fileExistsAtPath:jvmPath]) {
@@ -185,16 +159,20 @@ void init_migrateDirIfNecessary() {
 }
 
 void init_migrateToPlist(char* prefKey, char* filename) {
-    // NSString *readmeStr = @"#README - this file has been merged into launcher_preferences.plist";
     NSError *error;
-    NSString *str, *path_str;
-
-    // overrideargs.txt
-    path_str = [NSString stringWithFormat:@"%s/%s", getenv("POJAV_HOME"), filename];
-    str = [NSString stringWithContentsOfFile:path_str encoding:NSUTF8StringEncoding error:&error];
+    NSString *path_str = [NSString stringWithFormat:@"%s/%s", getenv("POJAV_HOME"), filename];
+    NSLog(@"[Pre-Init] Beginning migration for file \"%@\"", path_str);
+    NSString *str = [NSString stringWithContentsOfFile:path_str encoding:NSUTF8StringEncoding error:&error];
     if (error == nil && ![str hasPrefix:@"#README"]) {
-        setPreference(@(prefKey), str);
+        NSString *finalized = @"";
+        for (NSString *line in [str componentsSeparatedByCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet]) {
+            finalized = [finalized stringByAppendingString:[NSString stringWithFormat:@"%@ ", line]];
+        }
+        
+        setPreference(@(prefKey), finalized);
         [@"#README - this file has been merged into launcher_preferences.plist" writeToFile:path_str atomically:YES encoding:NSUTF8StringEncoding error:nil];
+    } else {
+        NSLog(@"[Pre-Init] File \"%@\" was already migrated");
     }
 }
 
@@ -388,6 +366,7 @@ int main(int argc, char *argv[]) {
 
     init_migrateToPlist("selected_version", "config_ver.txt");
     init_migrateToPlist("java_args", "overrideargs.txt");
+    init_migrateToPlist("env_variables", "custom_env.txt");
 
     // If sandbox is disabled, W^X JIT can be enabled by PojavLauncher itself
     if (!isJITEnabled(true) && getEntitlementValue(@"com.apple.private.security.no-sandbox")) {

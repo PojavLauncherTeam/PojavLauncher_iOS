@@ -379,6 +379,12 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"type": self.typeTextField,
                 @"enableCondition": whenNotInGame
             },
+            @{@"key": @"env_variables",
+                @"hasDetail": @YES,
+                @"icon": @"terminal",
+                @"type": self.typeTextField,
+                @"enableCondition": whenNotInGame
+            },
             @{@"key": @"auto_ram",
                 @"hasDetail": @YES,
                 @"icon": @"slider.horizontal.3",

@@ -86,7 +86,6 @@ void fillDefaultWarningDict() {
     setDefaultValueForPref(warnPrefDict, @"local_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"mem_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"auto_ram_warn", @YES);
-    setDefaultValueForPref(warnPrefDict, @"legacy_device_warn", @YES);
     setDefaultValueForPref(warnPrefDict, @"limited_ram_warn", @YES);
 }
 
@@ -133,6 +132,7 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(envPrefDict, @"default_gamepad_ctrl", @"default.json");
     setDefaultValueForPref(envPrefDict, @"game_directory", @"default");
     setDefaultValueForPref(envPrefDict, @"java_args", @"");
+    setDefaultValueForPref(envPrefDict, @"env_variables", @"");
     setDefaultValueForPref(envPrefDict, @"allocated_memory", [NSNumber numberWithFloat:roundf((NSProcessInfo.processInfo.physicalMemory / 1048576) * 0.25)]);
     setDefaultValueForPref(envPrefDict, @"jitstreamer_server", @"69.69.0.1");
     setDefaultValueForPref(envPrefDict, @"max_framerate", @YES);

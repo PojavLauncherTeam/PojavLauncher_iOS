@@ -218,6 +218,9 @@
 "preference.title.java_args" = "JVM Launch arguments";
 "preference.detail.java_args" = "Pass arguments to Java when launching Minecraft. Be careful, this can make the game crash if modified incorrectly.";
 "preference.placeholder.java_args" = "Specify arguments...";
+"preference.title.env_variables" = "Environment variables";
+"preference.detail.env_variables" = "Set custom environment variables when launching Minecraft. Be careful, this can make the game crash if modified incorrectly.";
+"preference.placeholder.env_variables" = "Specify variables...";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Enables automatic RAM adjuster";
 "preference.warn.auto_ram" = "Disabling this option on an unjailbroken device can create instability if altered. Proceed with caution.";

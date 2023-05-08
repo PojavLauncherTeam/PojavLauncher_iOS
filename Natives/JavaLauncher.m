@@ -22,7 +22,7 @@ extern char **environ;
 static int margc = -1;
 static const char* margv[1000];
 
-void init_loadCustomEnv() {
+void init_loadDefaultEnv() {
     /* Define default env */
 
     // Silent Caciocavallo NPE error in locating Android-only lib
@@ -42,35 +42,30 @@ void init_loadCustomEnv() {
 
     // Runs JVM in a separate thread
     setenv("HACK_IGNORE_START_ON_FIRST_THREAD", "1", 1);
+}
 
-    /* Load custom env */
-    NSString *envFile = [NSString stringWithFormat:@"%s/custom_env.txt", getenv("POJAV_HOME")];
-    NSString *linesStr = [NSString stringWithContentsOfFile:envFile
-        encoding:NSUTF8StringEncoding error:nil];
-    if (linesStr == nil) return;
-    NSLog(@"[Pre-init] Reading custom environment variables (custom_env.txt)");
-
-    NSArray *lines = [linesStr componentsSeparatedByCharactersInSet:
-        NSCharacterSet.newlineCharacterSet];
-
-    for (NSString *line in lines) {
-        if (line.length == 0 || [line hasPrefix:@"#"]) {
-            continue;
-        } else if (![line containsString:@"="]) {
-            NSLog(@"[Pre-init] Warning: skipped empty value custom env: %@", line);
+void init_loadCustomEnv() {
+    NSString *envvars = getPreference(@"env_variables");
+    if (envvars == nil) return;
+    NSLog(@"[JavaLauncher] Reading custom environment variables");
+    for (NSString *line in [envvars componentsSeparatedByCharactersInSet:NSCharacterSet.whitespaceCharacterSet]) {
+        if (![line containsString:@"="]) {
+            NSLog(@"[JavaLauncher] Warning: skipped empty value custom env variable: %@", line);
             continue;
         }
         NSRange range = [line rangeOfString:@"="];
         NSString *key = [line substringToIndex:range.location];
         NSString *value = [line substringFromIndex:range.location+range.length];
         setenv(key.UTF8String, value.UTF8String, 1);
-        NSLog(@"[Pre-init] Added custom env: %@", line);
+        NSLog(@"[JavaLauncher] Added custom env variable: %@", line);
     }
 }
 
 void init_loadCustomJvmFlags() {
     NSString *jvmargs = getPreference(@"java_args");
+    if (jvmargs == nil) return;
     BOOL isFirstArg = YES;
+    NSLog(@"[JavaLauncher] Reading custom JVM flags");
     for (NSString *jvmarg in [jvmargs componentsSeparatedByString:@" -"]) {
         if ([jvmarg length] == 0) continue;
         //margv[margc] = (char *) [jvmarg UTF8String];
@@ -108,6 +103,7 @@ NSString* environmentFailsafes(int minVersion) {
 }
 
 int launchJVM(NSString *username, id launchTarget, int width, int height, int minVersion) {
+    init_loadDefaultEnv();
     init_loadCustomEnv();
 
     NSString *librariesPath = [NSString stringWithFormat:@"%s/libs", getenv("BUNDLE_PATH")];
