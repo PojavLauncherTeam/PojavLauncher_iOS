@@ -217,6 +217,7 @@
 "preference.title.java_args" = "JVM 启动参数";
 "preference.detail.java_args" = "当启动 Minecraft 时将参数传递到 Java。小心，如果修改不正确，可能会使游戏崩溃。";
 "preference.placeholder.java_args" = "自定义参数...";
+"preference.title.env_variables" = "环境变量";
 "preference.title.auto_ram" = "自动设置内存大小";
 "preference.detail.auto_ram" = "启用内存自动调节";
 "preference.warn.auto_ram" = "在未越狱的设备禁用此选项上可能会导致应用不稳定。请谨慎更改此选项。";
