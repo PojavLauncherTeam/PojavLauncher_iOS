@@ -217,6 +217,7 @@
 "preference.title.java_args" = "JVM spouštěcí argumenty";
 "preference.detail.java_args" = "Předá argumenty Javě spouštějíc Minecraft. Buďte opatrní, může to způsobit pád hry byly-li upraveny neprávně.";
 "preference.placeholder.java_args" = "Určit argumenty...";
+"preference.title.env_variables" = "Proměnné prostředí";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Automaticky bude měnit množství RAM";
 "preference.warn.auto_ram" = "Vypnutí této možnosti na nejailbreakovaných zařízení může způsobit nestabilitu je-li změno. Pokračujte s opatrností.";
