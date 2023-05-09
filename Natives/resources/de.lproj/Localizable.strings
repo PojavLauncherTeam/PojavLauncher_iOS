@@ -193,6 +193,7 @@ der Minecraft-Version zu wählen. Verringerte Auflösung reduziert die Arbeitsla
 "preference.detail.gesture_mouse" = "Ermöglicht Gesten wie Tippen zum Platzieren des Blocks, halten um den Block abzubauen, mit 2 Fingern zu scrollen";
 "preference.title.gesture_hotbar" = "Hotbar Gesten";
 "preference.detail.gesture_hotbar" = "Aktiviert Gesten wie Berühren des Hotbar Slot, tausche Gegenstände zwischen der Hand aus, wirf Items";
+"preference.title.disable_haptics" = "Bildschirmhaptik deaktivieren";
 "preference.title.press_duration" = "Dauer eines langen Touch (ms)";
 "preference.detail.press_duration" = "Auslösedauer um Blöcke zu zerstören und Items zu droppen.";
 "preference.title.button_scale" = "Schalflächengröße (%)";
@@ -219,6 +220,8 @@ der Minecraft-Version zu wählen. Verringerte Auflösung reduziert die Arbeitsla
 "preference.detail.java_args" = "Argumente an Java übergeben, wenn Minecraft gestartet wird. Sei vorsichtig, dies kann den Absturz des Spiels verursachen, wenn es falsch geändert wird.";
 "preference.placeholder.java_args" = "Argumente angeben...";
 "preference.title.env_variables" = "Umgebungsvariablen";
+"preference.detail.env_variables" = "Setze benutzerdefinierte Umgebungsvariablen beim Starten von Minecraft. Sei vorsichtig, dies kann den Absturz des Spiels verursachen, wenn sie falsch geändert wird.";
+"preference.placeholder.env_variables" = "Variablen festlegen...";
 "preference.title.auto_ram" = "Auto-RAM";
 "preference.detail.auto_ram" = "Aktiviert automatische RAM-Einstellungen";
 "preference.warn.auto_ram" = "Das Deaktivieren dieser Option kann auf einem nicht-ge-jailbreakten Gerät Instabilität erzeugen. Sei vorsichtig.";
