@@ -117,7 +117,7 @@
 
 "preference.section.general" = "启动器基础设置";
 "preference.section.video" = "音视频设置";
-"preference.section.footer.video" = "自动渲染器允许 PojavLauncher 选择基于 Minecraft 版本的最佳选项。减少分辨率降低GPU 工作量以提高性能。";
+"preference.section.footer.video" = "根据游戏版本自动选择最佳渲染器给游戏使用。降低分辨率可以减轻GPU负载从而提高性能。";
 "preference.section.control" = "自定义控制键";
 "preference.section.debug" = "UI设置";
 "preference.section.footer.debug" = "除了调试外，这些设置可能对自定义控件有用。您可能需要重新启动启动器才能使更改生效。";
@@ -162,7 +162,7 @@
 
 "preference.title.renderer" = "渲染器";
 
-"preference.title.renderer.release.auto" = "自动";
+"preference.title.renderer.release.auto" = "根据游戏版本自动选择";
 "preference.title.renderer.release.gl4es" = "holy gl4es";
 "preference.title.renderer.release.angle" = "ANGLE";
 "preference.title.renderer.release.zink" = "Zink";
