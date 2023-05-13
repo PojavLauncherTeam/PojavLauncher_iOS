@@ -176,6 +176,10 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
         margv[++margc] = [NSString stringWithFormat:@"-javaagent:%@/arc_dns_injector.jar=23.95.137.176", librariesPath].UTF8String;
     }
 
+    // Workaround random stack guard allocation crashes
+    margv[++margc] = "-XX:+UnlockExperimentalVMOptions";
+    margv[++margc] = "-XX:+DisablePrimordialThreadGuardPages";
+
     // Setup Caciocavallo
     margv[++margc] = "-Djava.awt.headless=false";
     margv[++margc] = "-Dcacio.font.fontmanager=sun.awt.X11FontManager";
