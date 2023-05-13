@@ -43,12 +43,12 @@
 "custom_controls.button_edit.opacity" = "不透明度 (%)：";
 
 "custom_controls.button_menu.add_subbutton" = "添加子按钮";
-"custom_controls.control_menu.discard_changes" = "取消更改";
+"custom_controls.control_menu.discard_changes" = "放弃更改";
 "custom_controls.control_menu.exit" = "退出";
 "custom_controls.control_menu.exit.warn" = "您将会退出且不保存任何更改。";
 "custom_controls.control_menu.save" = "保存";
-"custom_controls.control_menu.save.error.default" = "控件名称不能是“default”，因为它会被覆盖。";
-"custom_controls.control_menu.save.error.json" = "JSON 文件错误";
+"custom_controls.control_menu.save.error.default" = "控件名称不能是“default”，因为它是不可更改的。";
+"custom_controls.control_menu.save.error.json" = "JSON 文件错误(有可能文本格式存在问题)";
 "custom_controls.control_menu.save.error.write" = "保存按键布局时发生错误";
 "custom_controls.control_menu.load" = "加载";
 "custom_controls.control_menu.make_default" = "设置游戏默认的按键布局";
@@ -56,12 +56,12 @@
 "custom_controls.control_menu.add_button" = "添加按键";
 "custom_controls.control_menu.add_drawer" = "添加组合键";
 "custom_controls.error.incompatible" = "此控件版本（代码 %d）在当前启动器版本中尚未实现。";
-"custom_controls.hint" = "长按屏幕上的任意位置以获取更多选项";
+"custom_controls.hint" = "长按屏幕上的任意位置可打开二级菜单从而编辑按键";
 
 "init.migrateDir" = "目前 PojavLauncher 数据目录为%@。所有的游戏资源已移动到最新目录。";
 
-"launcher.mcl.downloading_file" = "正在下载 %@";
-"launcher.mcl.error_download" = "下载 %@ 失败：%@";
+"launcher.mcl.downloading_file" = "正在下载文件 %@";
+"launcher.mcl.error_download" = "文件 %@ 下载失败：%@ ，建议重启启动器重新下载";
 
 "launcher.menu.custom_controls" = "自定义控制按键";
 "launcher.menu.install_jar" = "安装 .jar";
@@ -75,20 +75,20 @@
 
 "login.jit.checking" = "检查是否开启 JIT 权限";
 "login.jit.enabled" = "JIT 权限已启用";
-"login.jit.fail" = "无法启用 JIT。";
-"login.jit.fail.title" = "无法在您的设备上启用 JIT。";
-"login.jit.fail.description" = "没有集成可在您的设备上自动启用 JIT，现在需要手动启用。错误已记录到 latestlog.txt。";
+"login.jit.fail" = "无法开启 JIT权限";
+"login.jit.fail.title" = "无法在您的设备上开启 JIT权限";
+"login.jit.fail.description" = "当前你的设备上没有能开启JIT权限方式，你需要通过牛蛙，Xcode...手动启动JIT权限。你可以在游戏latestlog.txt日志文件中找到当前事件详细记录情况";
 
 // Login buttons
 "login.menu.sendlogs" = "发送日志文件";
 "login.option.add" = "添加账户";
 "login.option.select" = "选择账户";
-"login.option.demo" = "演示账户";
+"login.option.demo" = "演示账户(示范账户)";
 "login.option.microsoft" = "微软账户";
 "login.option.local" = "本地账户";
 
-"login.warn.title.legacy_device" = "PojavLauncher 的下一个版本将与此设备不兼容。";
-"login.warn.message.legacy_device" = "运行下一个主要版本，需要一台能够运行 iOS 14 的设备。";
+"login.warn.title.legacy_device" = "PojavLauncher启动器下一个正式版(或测试版)在你的设备上不可用(原因是你的IOS版本太低)";
+"login.warn.message.legacy_device" = "运行下一代版本的PojavLauncher启动器，你需要一台IOS14+ 或 IPad OS 14+ 的设备";
 "login.warn.title.legacy_ios" = "PojavLauncher 的下一个版本将需要系统更新。";
 "login.warn.message.legacy_ios" = "运行下一个主要版本，需要一台能够运行 iOS 14 或更高版本的设备。";
 "login.warn.title.limited_ram" = "该设备的可用内存有限。";
@@ -192,6 +192,7 @@
 "preference.detail.gesture_mouse" = "启用手势，例如点击放置方块、按住破坏方块、用两根手指转动视角";
 "preference.title.gesture_hotbar" = "快捷栏手势";
 "preference.detail.gesture_hotbar" = "启用手势，例如点击快捷栏物品槽、双手交换物品、丢弃物品";
+"preference.title.disable_haptics" = "关闭触屏（翻译可能不准）";
 "preference.title.press_duration" = "长按延迟（毫秒）";
 "preference.detail.press_duration" = "修改长按摧毁方块、丢弃物品的触发时长。";
 "preference.title.button_scale" = "屏幕按钮缩放 (%)";
@@ -213,13 +214,13 @@
 "preference.detail.gyroscope_sensitivity" = "调整陀螺仪控制的灵敏度";
 
 "preference.title.java_home" = "游戏版本小于 1.17 时仍然使用 Java 17";
-"preference.detail.java_home" = "这些版本默认使用 Java 8。启用此选项可强制使用 Java 17，但不保证兼容性。";
+"preference.detail.java_home" = "正式版低于1.17情况下启动器默认为他们使用Java8运行环境，开启该选项后所有版本都使用Java17运行环境。请注意，某些MOD不支持使用Java17运行环境!!!";
 "preference.title.java_args" = "JVM 启动参数";
 "preference.detail.java_args" = "当启动 Minecraft 时将参数传递到 Java。小心，如果修改不正确，可能会使游戏崩溃。";
 "preference.placeholder.java_args" = "自定义参数...";
 "preference.title.env_variables" = "环境变量";
 "preference.detail.env_variables" = "启动 Minecraft 时设置自定义环境变量。小心，如果修改不正确，这可能会使游戏崩溃。";
-"preference.placeholder.env_variables" = "指定变量...";
+"preference.placeholder.env_variables" = "自定义参数...";
 "preference.title.auto_ram" = "自动设置内存大小";
 "preference.detail.auto_ram" = "启用内存自动调节";
 "preference.warn.auto_ram" = "在未越狱的设备禁用此选项上可能会导致应用不稳定。请谨慎更改此选项。";
