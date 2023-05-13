@@ -98,6 +98,7 @@
 "login.warn.message.demomode" = "Як заміна в офлайн та локальний режимах, демо-режим дозволить вам увійти в обліковий запис Microsoft, який не володіє грою та грати в пробну версію Java Видання, введено в 1.3.1 і більш нових версій. Старіші версії містять повну версію гри, оскільки офіційний лаунчер не веде ці обмеження. Відвідайте наш веб-сайт, щоб дізнатися більше про цей перехід з автономного режиму.";
 
 "login.warn.title.localmode" = "Офлайн режим тепер локальний режим.";
+"login.warn.message.localmode" = "Ви можете продовжувати грати у встановлені версії, але більше не зможете завантажити Minecraft без платного акаунта. Підтримка з питань, пов'язаних з локальними акаунтами або іншими способами придбання Minecraft не надається.";
 
 "login.msa.error.xsts.noxboxacc" = "Профіль Xbox Live не зареєстровано для цього облікового запису Microsoft. Будь ласка, переконайтеся, що ви точно робили профіль Xbox.\nКод помилки: 2148916233";
 "login.msa.error.xsts.noxbox" = "Наразі Xbox Live недоступний у вашій країні. \nКод помилки: 2148916235";
@@ -116,6 +117,7 @@
 
 "preference.section.general" = "Загальні налаштування";
 "preference.section.video" = "Налаштування графіки";
+"preference.section.footer.video" = "Автоматичний рендеринг дозволяє PojavLauncher вибрати найкращий варіант на основі версії Minecraft. Зменшення роздільної здатності зменшує навантаження на графічний процесор для кращої продуктивності.";
 "preference.section.control" = "Налаштування керування";
 "preference.section.debug" = "Налаштування налагодження інтерфейсу";
 "preference.section.footer.debug" = "Окрім налагодження, ці параметри можуть бути корисними для користувацьких елементів керування. Можливо, вам слід перезапустити лаунчер, щоб зміни застосувалися.";
@@ -184,6 +186,13 @@
 "preference.title.silence_with_switch" = "Вимкнути звук беззвучним перемикачем";
 "preference.detail.silence_with_switch" = "Увімкніть, щоб вимкнути звук, якщо ввімкнено беззвучний режим. Навушники та зовнішні динаміки не впливають на це.";
 "preference.title.default_gamepad_ctrl" = "Налаштування контроллера";
+"preference.title.hardware_hide" = "Приховати елементи керування при під’єднанні пристрою";
+"preference.detail.hardware_hide" = "Активуйте поведінку автоматичного вимкнення на екрані накладання при підключенні миші або ігрового контролера.";
+"preference.title.gesture_mouse" = "Жести мишею";
+"preference.detail.gesture_mouse" = "Дозволяє жести, наприклад розміщення блоку дотиком, утримування для розбиття блоку, прокрутка 2-ма пальцями";
+"preference.title.gesture_hotbar" = "Жести гарячої панелі";
+"preference.detail.gesture_hotbar" = "Дозволяє жести, наприклад дотик до слоту швидкого доступу, перекладати предмети з однієї руки в іншу, викидати предмети";
+"preference.title.disable_haptics" = "Вимкнути екранну тактильність";
 "preference.title.press_duration" = "Тривалість тривалого натискання (мс)";
 "preference.detail.press_duration" = "Тривалість натискання для знищення блоків і скидання речей.";
 "preference.title.button_scale" = "Шкала екранних кнопок (%)";
@@ -198,14 +207,20 @@
 "preference.detail.slideable_hotbar" = "Зробити повзунком швидкого доступу як колесо миші";
 
 "preference.title.gyroscope_enable" = "Увімкнути керування гіроскопом";
+"preference.detail.gyroscope_enable" = "Увімкнення цього дозволить вам повертатися в грі за допомогою вашого пристрою";
+"preference.title.gyroscope_invert_x_axis" = "Інвертувати гіроскоп ліворуч і праворуч";
+"preference.detail.gyroscope_invert_x_axis" = "Інвертує вісь X гіроскопу";
 "preference.title.gyroscope_sensitivity" = "Налаштування чутливості гіроскопа";
 "preference.detail.gyroscope_sensitivity" = "Налаштуйте чутливість елементів керування гіроскопом";
 
 "preference.title.java_home" = "Використовувати Java 17 для Minecraft < 1.17";
 "preference.detail.java_home" = "Java 8 використовується за замовчуванням для цих версій. Увімкніть цю опцію, щоб примусово використовувати Java 17, проте сумісність не гарантується.";
 "preference.title.java_args" = "Аргументи запуску JVM";
+"preference.detail.java_args" = "Передавати аргументи до Java під час запуску Minecraft. Будьте обережні, це може призвести до аварійного завершення гри у разі неправильної модифікації.";
 "preference.placeholder.java_args" = "Вкажіть аргументи...";
 "preference.title.env_variables" = "Змінні середовища";
+"preference.detail.env_variables" = "Встановлення користувацьких змінних оточення під час запуску Minecraft. Будьте обережні, це може призвести до аварійного завершення гри у разі неправильної модифікації.";
+"preference.placeholder.env_variables" = "Вкажіть змінні...";
 "preference.title.auto_ram" = "Автоматичне виділення ОЗП";
 "preference.detail.auto_ram" = "Вмикає автоматичне регулювання ОЗП";
 "preference.warn.auto_ram" = "Вимкнення цієї опції на незламаному Jailbreak пристрої може створити нестабільність, якщо це зміниться. Будьте обережні.";
@@ -227,6 +242,8 @@
 "preference.detail.debug_show_layout_bounds" = "Показувати межі обрізування, поля і т. д.";
 "preference.title.debug_show_layout_overlap" = "Показати накладання макета";
 "preference.detail.debug_show_layout_overlap" = "Накладання кожного перегляду з прозорим кольором, щоб розкрити огляди, що перекриваються.";
+
+"controller_configurator.title.current" = "Файл конфігурації геймпаду";
 "controller_configurator.title.type.xbox" = "Xbox";
 "controller_configurator.title.type.playstation" = "PlayStation";
 
@@ -244,12 +261,15 @@
 "controller_configurator.xbox.title.dpad_down" = "Вниз";
 "controller_configurator.xbox.title.dpad_left" = "Вліво";
 "controller_configurator.xbox.title.dpad_right" = "Вправо";
+"controller_configurator.xbox.title.thumb_left" = "Натискання лівою кнопкою миші";
+"controller_configurator.xbox.title.thumb_right" = "Натискання правою кнопкою миші";
 
 "controller_configurator.playstation.title.bumper_left" = "L1";
 "controller_configurator.playstation.title.bumper_right" = "R1";
 "controller_configurator.playstation.title.trigger_left" = "L2";
 "controller_configurator.playstation.title.trigger_right" = "R2";
 "controller_configurator.playstation.title.named_back" = "Обрати";
+"controller_configurator.playstation.title.named_start" = "Почати";
 "controller_configurator.playstation.title.named_a" = "Хрест";
 "controller_configurator.playstation.title.named_b" = "Коло";
 "controller_configurator.playstation.title.named_x" = "Квадрат";
@@ -260,4 +280,11 @@
 "controller_configurator.playstation.title.dpad_right" = "Вправо";
 "controller_configurator.playstation.title.thumb_left" = "L3";
 "controller_configurator.playstation.title.thumb_right" = "R3";
+
+"controller_configurator.section.config_files" = "Поточний файл конфігурації";
+"controller_configurator.section.game_mappings" = "Редагувати ігровий інтерфейс";
+"controller_configurator.section.footer.game_mappings" = "Прив'язки, коли миша заблокована в грі.";
+"controller_configurator.section.menu_mappings" = "Розміщення меню";
+"controller_configurator.section.footer.menu_mappings" = "Прив'язки, коли миша не заблокована, наприклад, на титульному екрані або в меню паузи.";
 "controller_configurator.section.controller_style" = "Тип контролера";
+"controller_configurator.section.footer.controller_style" = "Відображати різні імена кнопок контролера в цьому конфігураторі.";
