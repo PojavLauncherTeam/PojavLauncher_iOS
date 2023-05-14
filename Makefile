@@ -80,6 +80,9 @@ $(warning Set PLATFORM to 2, which is equal to iOS.)
 else ifeq ($(PLATFORM),3)
 PLATFORM_NAME := tvos
 $(warning Set PLATFORM to 3, which is equal to tvOS.)
+else ifeq ($(PLATFORM),6)
+PLATFORM_NAME := maccatalyst
+$(warning Set PLATFORM to 6, which is equal to Mac Catalyst.)
 else ifeq ($(PLATFORM),7)
 PLATFORM_NAME := iossimulator
 $(warning Set PLATFORM to 7, which is equal to iOS Simulator.)

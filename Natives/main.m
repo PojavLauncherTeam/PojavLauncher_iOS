@@ -300,11 +300,9 @@ void init_setupHomeDirectory() {
     NSString *homeDir;
     NSError *homeError;
     
-    if ([@(getenv("HOME")) isEqualToString:@"/var/mobile"]) {
-        homeDir = @"/var/mobile/Documents/PojavLauncher";
-    } else {
-        homeDir = [NSString stringWithFormat:@"%s/Documents", getenv("HOME")];
-    }
+    BOOL isNotSandboxed = [@(getenv("HOME")).lastPathComponent isEqualToString:NSUserName()];
+    homeDir = [NSString stringWithFormat:@"%s/Documents%@", getenv("HOME"),
+        isNotSandboxed ? @"/PojavLauncher":@""];
 
     if (![fm fileExistsAtPath:homeDir] ) {
         [fm createDirectoryAtPath:homeDir withIntermediateDirectories:NO attributes:nil error:&homeError];
