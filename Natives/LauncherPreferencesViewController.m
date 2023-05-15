@@ -22,6 +22,10 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 @interface UIContextMenuInteraction(private)
 - (void)_presentMenuAtLocation:(CGPoint)location;
 @end
+@interface _UIContextMenuStyle : NSObject <NSCopying>
+@property(nonatomic) NSInteger preferredLayout;
++ (instancetype)defaultStyle;
+@end
 
 @interface LauncherPreferencesViewController()<UIContextMenuInteractionDelegate>{}
 @property(nonatomic) UIMenu* currentMenu;
@@ -779,6 +783,13 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     }];
 }
 
+- (_UIContextMenuStyle *)_contextMenuInteraction:(UIContextMenuInteraction *)interaction styleForMenuWithConfiguration:(UIContextMenuConfiguration *)configuration
+{
+    _UIContextMenuStyle *style = [_UIContextMenuStyle defaultStyle];
+    style.preferredLayout = 3; // _UIContextMenuLayoutCompactMenu
+    return style;
+}
+
 - (void)tableView:(UITableView *)tableView openPickerAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     NSDictionary *item = self.prefContents[indexPath.section][indexPath.row];
@@ -808,7 +819,8 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
     self.currentMenu = [UIMenu menuWithTitle:message children:menuItems];
     UIContextMenuInteraction *interaction = [[UIContextMenuInteraction alloc] initWithDelegate:self];
-    [cell addInteraction:interaction];
+    cell.detailTextLabel.interactions = [NSArray new];
+    [cell.detailTextLabel addInteraction:interaction];
     [interaction _presentMenuAtLocation:CGPointZero];
 }
 
