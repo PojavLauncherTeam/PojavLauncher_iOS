@@ -28,8 +28,8 @@ void init_loadDefaultEnv() {
     // Silent Caciocavallo NPE error in locating Android-only lib
     setenv("LD_LIBRARY_PATH", "", 1);
 
-    // Ignore mipmap for performance(?)
-    setenv("LIBGL_MIPMAP", "3", 1);
+    // Ignore mipmap for performance(?) seems does not affect iOS
+    //setenv("LIBGL_MIPMAP", "3", 1);
 
     // Disable overloaded functions hack for Minecraft 1.17+
     setenv("LIBGL_NOINTOVLHACK", "1", 1);

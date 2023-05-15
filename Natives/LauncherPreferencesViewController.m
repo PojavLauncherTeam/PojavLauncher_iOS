@@ -19,7 +19,12 @@
 
 typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
-@interface LauncherPreferencesViewController(){}
+@interface UIContextMenuInteraction(private)
+- (void)_presentMenuAtLocation:(CGPoint)location;
+@end
+
+@interface LauncherPreferencesViewController()<UIContextMenuInteractionDelegate>{}
+@property(nonatomic) UIMenu* currentMenu;
 @property(nonatomic) NSArray<NSString*>* prefSections, *rendererKeys, *rendererList;
 @property(nonatomic) NSMutableArray<NSNumber*>* prefSectionsVisibility;
 @property(nonatomic) NSArray<NSArray<NSDictionary*>*>* prefContents;
@@ -767,12 +772,24 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     }
 }
 
+- (UIContextMenuConfiguration *)contextMenuInteraction:(UIContextMenuInteraction *)interaction configurationForMenuAtLocation:(CGPoint)location
+{
+    return [UIContextMenuConfiguration configurationWithIdentifier:nil previewProvider:nil actionProvider:^UIMenu * _Nullable(NSArray<UIMenuElement *> * _Nonnull suggestedActions) {
+        return self.currentMenu;
+    }];
+}
+
 - (void)tableView:(UITableView *)tableView openPickerAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     NSDictionary *item = self.prefContents[indexPath.section][indexPath.row];
+
+    NSString *message = nil;
+    if ([item[@"hasDetail"] boolValue]) {
+        message = localize(([NSString stringWithFormat:@"preference.detail.%@", item[@"key"]]), nil);
+    }
+
     NSArray *pickKeys = item[@"pickKeys"];
     NSArray *pickList = item[@"pickList"];
-/*
     NSMutableArray *menuItems = [[NSMutableArray alloc] init];
     for (int i = 0; i < pickList.count; i++) {
         [menuItems addObject:[UIAction
@@ -782,38 +799,17 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             handler:^(UIAction *action) {
                 cell.detailTextLabel.text = pickKeys[i];
                 setPreference(item[@"key"], pickKeys[i]);
+                void(^invokeAction)(NSString *) = item[@"action"];
+                if (invokeAction) {
+                    invokeAction(pickKeys[i]);
+                }
             }]];
     }
-    // FIXME: how to set menu for cell?
-    cell.menu = [UIMenu menuWithTitle:cell.textLabel.text children:menuItems];
-    return;
-*/
-    NSString *message = nil;
-    if ([item[@"hasDetail"] boolValue]) {
-        message = localize(([NSString stringWithFormat:@"preference.detail.%@", item[@"key"]]), nil);
-    }
-    UIAlertController *picker = [UIAlertController alertControllerWithTitle:cell.textLabel.text message:message preferredStyle:UIAlertControllerStyleActionSheet];
-    for (int i = 0; i < pickList.count; i++) {
-        UIAlertAction *action = [UIAlertAction actionWithTitle:pickList[i] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            cell.detailTextLabel.text = pickKeys[i];
-            setPreference(item[@"key"], pickKeys[i]);
-            void(^invokeAction)(NSString *) = item[@"action"];
-            if (invokeAction) {
-                invokeAction(pickKeys[i]);
-            }
-        }];
-        [picker addAction:action];
-    }
 
-    UILabel *labels = [UILabel appearanceWhenContainedInInstancesOfClasses:@[UIAlertController.class]];
-    labels.numberOfLines = 2;
-    picker.popoverPresentationController.sourceView = cell;
-    picker.popoverPresentationController.sourceRect = cell.bounds;
-
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:localize(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
-    [picker addAction:cancel];
-
-    [self presentViewController:picker animated:YES completion:nil];
+    self.currentMenu = [UIMenu menuWithTitle:message children:menuItems];
+    UIContextMenuInteraction *interaction = [[UIContextMenuInteraction alloc] initWithDelegate:self];
+    [cell addInteraction:interaction];
+    [interaction _presentMenuAtLocation:CGPointZero];
 }
 
 - (void)tableView:(UITableView *)tableView invokeActionWithPromptAtIndexPath:(NSIndexPath *)indexPath {
