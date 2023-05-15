@@ -33,8 +33,7 @@ BOOL isJITEnabled(BOOL checkCSFlags) {
 }
 
 void openLink(UIViewController* sender, NSURL* link) {
-    void *framework = dlopen("/System/Library/Frameworks/SafariServices.framework/SafariServices", RTLD_GLOBAL);
-    if (framework == nil) {
+    if (NSClassFromString(@"SFSafariViewController") == nil) {
         NSData *data = [link.absoluteString dataUsingEncoding:NSUTF8StringEncoding];
         CIFilter *filter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
         [filter setValue:data forKey:@"inputMessage"];
@@ -58,7 +57,7 @@ void openLink(UIViewController* sender, NSURL* link) {
         [alert addAction:doneAction];
         [sender presentViewController:alert animated:YES completion:nil];
     } else {
-        SFSafariViewController *vc = [[NSClassFromString(@"SFSafariViewController ") alloc] initWithURL:link];
+        SFSafariViewController *vc = [[SFSafariViewController alloc] initWithURL:link];
         [sender presentViewController:vc animated:YES completion:nil];
     }
 }

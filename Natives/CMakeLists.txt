@@ -163,15 +163,16 @@ target_link_libraries(PojavLauncher
   "-framework AuthenticationServices"
   "-framework AVFoundation"
   "-framework CAltKit"
+  "-framework CoreFoundation"
   "-framework CoreGraphics"
   "-framework CoreImage"
   "-framework CoreMotion"
   "-framework GameController"
+  "-framework IOKit"
   "-framework QuartzCore"
   "-framework UIKit"
   "-framework WebKit"
-  "-framework CoreFoundation"
-  "-framework IOKit"
+  "-weak_framework SafariServices"
 )
 set_target_properties(PojavLauncher PROPERTIES
   MACOSX_BUNDLE TRUE

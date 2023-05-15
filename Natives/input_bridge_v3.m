@@ -329,7 +329,6 @@ JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeIsGrabbing(J
 
 void CallbackBridge_nativeSetInputReady(BOOL inputReady) {
     isInputReady = inputReady;
-/*
     if (inputReady) {
         if (GLFW_invoke_FramebufferSize) {
             GLFW_invoke_FramebufferSize((void*) showingWindow, windowWidth, windowHeight);
@@ -338,7 +337,6 @@ void CallbackBridge_nativeSetInputReady(BOOL inputReady) {
             GLFW_invoke_FramebufferSize((void*) showingWindow, windowWidth, windowHeight);
         }
     }
-*/
 }
 
 BOOL CallbackBridge_nativeSendChar(jchar codepoint /* jint codepoint */) {
