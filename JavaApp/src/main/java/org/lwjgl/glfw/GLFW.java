@@ -501,8 +501,6 @@ public class GLFW
 
     private static ArrayMap<Long, GLFWWindowProperties> mGLFWWindowMap;
     public static final ByteBuffer keyDownBuffer = ByteBuffer.allocateDirect(317);
-    private static final String PROP_WINDOW_WIDTH = "glfwstub.windowWidth";
-    private static final String PROP_WINDOW_HEIGHT= "glfwstub.windowHeight";
     public static long mainContext = 0;
 
     static {
@@ -511,8 +509,9 @@ public class GLFW
         } catch (UnsatisfiedLinkError e) {
             e.printStackTrace();
         }
-        mGLFWWindowWidth = Tools.mGLFWWindowWidth;
-        mGLFWWindowHeight = Tools.mGLFWWindowHeight;
+        String[] size = System.getProperty("glfw.windowSize").split("x");
+        mGLFWWindowWidth = Integer.valueOf(size[0]);
+        mGLFWWindowHeight = Integer.valueOf(size[1]);
 
         // Minecraft triggers a glfwPollEvents() on splash screen, so update window size there.
         // CallbackBridge.receiveCallback(CallbackBridge.EVENT_TYPE_FRAMEBUFFER_SIZE, mGLFWWindowWidth, mGLFWWindowHeight, 0, 0);

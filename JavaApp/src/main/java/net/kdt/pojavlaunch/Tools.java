@@ -73,8 +73,6 @@ public final class Tools
     
     public static final String NATIVE_LIB_DIR = DIR_BUNDLE + "/Frameworks";
 
-    volatile public static int mGLFWWindowWidth, mGLFWWindowHeight;
-
     public static void launchMinecraft(MinecraftAccount profile, final JMinecraftVersionList.Version versionInfo) throws Throwable {
         String javaVersion = System.getProperty("java.version");
         if (javaVersion.startsWith("1.")) {

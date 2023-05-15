@@ -61,8 +61,8 @@ public class PojavLauncher {
         System.setProperty("appdir", "./spiral");
         System.setProperty("resource_dir", "./spiral/rsrc");
 
+        System.setProperty("glfw.windowSize", args[2]);
         String[] size = args[2].split("x");
-
         MCOptionUtils.load();
         MCOptionUtils.set("fullscreen", "false");
         MCOptionUtils.set("overrideWidth", size[0]);
@@ -81,12 +81,6 @@ public class PojavLauncher {
         }
 
         System.setProperty("org.lwjgl.vulkan.libname", "libMoltenVK.dylib");
-
-        Tools.mGLFWWindowWidth = Integer.parseInt(size[0]);
-        Tools.mGLFWWindowHeight = Integer.parseInt(size[1]);
-        //GLFW.internalChangeMonitorSize(width, height);
-        //CallbackBridge.mouseX = width / 2;
-        //CallbackBridge.mouseY = height / 2;
 
         MinecraftAccount account = MinecraftAccount.load(args[0]);
         JMinecraftVersionList.Version version = Tools.getVersionInfo(args[1]);

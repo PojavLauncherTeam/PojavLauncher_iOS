@@ -94,7 +94,7 @@ public class UIKit {
         String str = MCOptionUtils.get("guiScale");
         guiScale = (str == null ? 0 :Integer.parseInt(str));
 
-        int scale = Math.max(Math.min(Tools.mGLFWWindowWidth / 320, Tools.mGLFWWindowHeight / 240), 1);
+        int scale = Math.max(Math.min(GLFW.mGLFWWindowWidth / 320, GLFW.mGLFWWindowHeight / 240), 1);
         if(scale < guiScale || guiScale == 0){
             guiScale = scale;
         }

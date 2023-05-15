@@ -4,8 +4,7 @@ import java.util.*;
 import net.kdt.pojavlaunch.Tools;
 
 public class GLFWWindowProperties {
-    public int width = Tools.mGLFWWindowWidth;
-    public int height = Tools.mGLFWWindowHeight;
+    public int width, height;
     public float x, y;
     public CharSequence title;
     public boolean shouldClose, isInitialSizeCalled, isCursorEntered;
