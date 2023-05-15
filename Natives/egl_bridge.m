@@ -98,6 +98,7 @@ void JNI_LWJGL_changeRenderer(const char* value_c) {
 }
 
 void pojavTerminate() {
+    CallbackBridge_nativeSetInputReady(NO);
     NSDebugLog(@"EGLBridge: Terminating");
 
     switch (config_renderer) {

@@ -175,6 +175,7 @@ void handleFramebufferSizeJava(void* window, int w, int h) {
 }
 
 void pojavPumpEvents(void* window) {
+    CallbackBridge_nativeSetInputReady(YES);
     //__android_log_print(ANDROID_LOG_INFO, "input_bridge_v3", "pojavPumpevents %d", eventCounter);
     size_t counter = atomic_load_explicit(&eventCounter, memory_order_acquire);
     if((cLastX != cursorX || cLastY != cursorY) && GLFW_invoke_CursorPos) {
@@ -303,16 +304,6 @@ JNIEXPORT jstring JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeClipboard(JNI
     return UIKit_accessClipboard(env, action, copySrc);
 }
 
-JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetInputReady(JNIEnv* env, jclass clazz, jboolean inputReady) {
-    //NSDebugLog(@"Debug: Changing input state, isReady=%d, isUseStackQueueCall=%d\n", inputReady, isUseStackQueueCall);
-    isInputReady = inputReady;
-    if (isUseStackQueueCall) {
-        sendData(EVENT_TYPE_FRAMEBUFFER_SIZE, windowWidth, windowHeight, 0, 0);
-        sendData(EVENT_TYPE_WINDOW_SIZE, windowWidth, windowHeight, 0, 0);
-    }
-    return isUseStackQueueCall;
-}
-
 JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetGrabbing(JNIEnv* env, jclass clazz, jboolean grabbing, jfloat xset, jfloat yset) {
     isGrabbing = grabbing;
 
@@ -334,6 +325,20 @@ JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetGrabbing(JNIE
 
 JNIEXPORT jboolean JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeIsGrabbing(JNIEnv* env, jclass clazz) {
     return isGrabbing;
+}
+
+void CallbackBridge_nativeSetInputReady(BOOL inputReady) {
+    isInputReady = inputReady;
+/*
+    if (inputReady) {
+        if (GLFW_invoke_FramebufferSize) {
+            GLFW_invoke_FramebufferSize((void*) showingWindow, windowWidth, windowHeight);
+        }
+        if (GLFW_invoke_WindowSize) {
+            GLFW_invoke_FramebufferSize((void*) showingWindow, windowWidth, windowHeight);
+        }
+    }
+*/
 }
 
 BOOL CallbackBridge_nativeSendChar(jchar codepoint /* jint codepoint */) {

@@ -500,7 +500,6 @@ public class GLFW
     private static double mGLFWInitialTime;
 
     private static ArrayMap<Long, GLFWWindowProperties> mGLFWWindowMap;
-    public static boolean mGLFWIsInputReady;
     public static final ByteBuffer keyDownBuffer = ByteBuffer.allocateDirect(317);
     private static final String PROP_WINDOW_WIDTH = "glfwstub.windowWidth";
     private static final String PROP_WINDOW_HEIGHT= "glfwstub.windowHeight";
@@ -791,9 +790,6 @@ public class GLFW
     }
 
     public static void glfwTerminate() {
-        mGLFWIsInputReady = false;
-        CallbackBridge.nativeSetInputReady(false);
-
         long __functionAddress = Functions.Terminate;
         invokeV(__functionAddress);
     }
@@ -1041,11 +1037,6 @@ public class GLFW
     public static void glfwSetWindowIcon(@NativeType("GLFWwindow *") long window, @Nullable @NativeType("GLFWimage const *") GLFWImage.Buffer images) {}
 
     public static void glfwPollEvents() {
-        if (!mGLFWIsInputReady) {
-            mGLFWIsInputReady = true;
-            CallbackBridge.nativeSetInputReady(true);
-        }
-
         for (Long ptr : mGLFWWindowMap.keySet()) callJV(ptr, Functions.PumpEvents);
         callV(Functions.RewindEvents);
     }
