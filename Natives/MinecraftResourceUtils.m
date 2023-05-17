@@ -59,7 +59,7 @@ static AFURLSessionManager* manager;
 
     NSData *data = [NSData dataWithContentsOfFile:path];
     if (data == nil) {
-        NSLog(@"[MCDL] SHA1 checker: file doesn't exist: %@", path.lastPathComponent);
+        NSLog(@"[MCDL] SHA1 checker: file doesn't exist: %@", altName ? altName : path.lastPathComponent);
         return NO;
     }
 
@@ -282,7 +282,7 @@ static AFURLSessionManager* manager;
 
         if ([library[@"name"] hasPrefix:@"net.java.dev.jna:jna:"]) {
             // Special handling for LabyMod 1.8.9 and Forge 1.12.2(?)
-            // we have libjnidispatch 5.8.0 in Frameworks directory
+            // we have libjnidispatch 5.13.0 in Frameworks directory
             NSString *versionStr = [library[@"name"] componentsSeparatedByString:@":"][2];
             NSArray<NSString *> *version = [versionStr componentsSeparatedByString:@"."];
             if (!(version[0].intValue < 5 || version[1].intValue < 13 || version[2].intValue < 1)) {
@@ -403,24 +403,27 @@ static AFURLSessionManager* manager;
         NSString *hash = assets[@"objects"][name][@"hash"];
         NSString *pathname = [NSString stringWithFormat:@"%@/%@", [hash substringToIndex:2], hash];
 
-        /* Special case for 1.19+
-         * Since 1.19-pre1, setting the window icon on macOS goes through ObjC.
-         * However, if an IOException occurs, it won't try to set.
-         * We skip downloading the icon file to trigger this. */
-        if ([name hasSuffix:@"icons/minecraft.icns"]) {
-            [NSFileManager.defaultManager removeItemAtPath:pathname error:nil];
-            continue;
-        }
-
-        --jobsAvailable;
-        dispatch_group_enter(group);
         NSString *path;
         if ([assets[@"map_to_resources"] boolValue]) {
             path = [NSString stringWithFormat:@"%s/resources/%@", getenv("POJAV_GAME_DIR"), name];
         } else {
             path = [NSString stringWithFormat:@"%s/assets/objects/%@", getenv("POJAV_GAME_DIR"), pathname];
         }
-        if ([self checkSHA:hash forFile:path altName:name logSuccess:NO]) { 
+
+        /* Special case for 1.19+
+         * Since 1.19-pre1, setting the window icon on macOS goes through ObjC.
+         * However, if an IOException occurs, it won't try to set.
+         * We skip downloading the icon file to trigger this. */
+        if ([name hasSuffix:@"/minecraft.icns"]) {
+            [NSFileManager.defaultManager removeItemAtPath:path error:nil];
+            continue;
+        }
+
+        --jobsAvailable;
+        dispatch_group_enter(group);
+        BOOL fileExists = [NSFileManager.defaultManager fileExistsAtPath:path];
+        if (fileExists && [self checkSHA:hash forFile:path altName:name logSuccess:NO]) {
+            // update progress for each +10%
             if (++verifiedCount % (mainProgress.totalUnitCount/10) == 0) {
                 mainProgress.completedUnitCount = verifiedCount;
             }
