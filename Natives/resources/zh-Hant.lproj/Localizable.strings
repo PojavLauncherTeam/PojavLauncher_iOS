@@ -60,6 +60,9 @@
 
 "init.migrateDir" = "PojavLauncher數據資料夾現為%@。你的所有已有資料已被移動到新位置。";
 
+"launcher.mcl.downloading_file" = "正在下載 %@";
+"launcher.mcl.error_download" = "無法下載%@：%@";
+
 "launcher.menu.custom_controls" = "自訂控制鍵";
 "launcher.menu.install_jar" = "安裝 .jar";
 
@@ -72,11 +75,15 @@
 
 "login.jit.checking" = "正在檢查即時編譯";
 "login.jit.enabled" = "即時編譯已啟動";
+"login.jit.fail" = "無法啟用即時編譯。";
+"login.jit.fail.title" = "無法在你的裝置上啟用即時編譯。";
+"login.jit.fail.description" = "沒有整合能在你的裝置上自動啟動即時編譯，現在必須手動啟動。錯誤已被記錄到latestlog.txt。";
 
 // Login buttons
 "login.menu.sendlogs" = "發送你的日誌";
 "login.option.add" = "新增帳號";
 "login.option.select" = "選擇帳號";
+"login.option.demo" = "示範帳戶";
 "login.option.microsoft" = "微軟帳戶";
 "login.option.local" = "本地帳戶";
 
