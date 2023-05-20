@@ -69,13 +69,28 @@
 
 "login.warn.title.demomode" = "당신의 계정은 데모 버전입니다";
 
+"login.warn.title.localmode" = "오프라인 모드는 이제 로컬 모드입니다";
+
+"login.msa.progress.acquireAccessToken" = "(1/5) 엑세스 토큰 획득중";
+"login.msa.progress.acquireXBLToken" = "(2/5) Xbox Live 토큰 획득중";
+"login.msa.progress.acquireXboxProfile" = "(3/5) Xbox 프로필 획득중";
+"login.msa.progress.acquireMCToken" = "(4/5) Minecraft 토큰 획득중";
+"login.msa.progress.checkMCProfile" = "(5/5) Minecraft 프로필 확인중";
+
 "News" = "소식";
 "Settings" = "설정";
+
+"preference.section.general" = "일반 설정";
+"preference.section.video" = "비디오 및 오디오 설정";
 "preference.section.control" = "사용자 지정 조작";
+"preference.section.debug" = "UI 디버깅 설정";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java 기능";
 
 "preference.title.game_directory" = "게임 디렉토리";
+"preference.multidir.add_directory" = "게임 경로 추가";
+
+"preference.title.check_sha" = "파일 확인후 다운로드";
 "preference.title.cosmetica" = "코스메티카 망토";
 "preference.title.appicon" = "앱 아이콘 설정";
 
