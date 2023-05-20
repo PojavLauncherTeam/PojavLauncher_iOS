@@ -60,6 +60,9 @@
 
 "init.migrateDir" = "Le répertoire de données PojavLauncher est maintenant %@. Toutes vos données existantes ont été déplacées vers le nouvel emplacement.";
 
+"launcher.mcl.downloading_file" = "Téléchargement %@";
+"launcher.mcl.error_download" = "Échec du téléchargement de %@: %@";
+
 "launcher.menu.custom_controls" = "Contrôles personnalisés";
 "launcher.menu.install_jar" = "Installer le .jar";
 
@@ -89,6 +92,7 @@
 "login.warn.message.demomode" = "En remplacement du mode hors ligne et local, le mode démo vous permettra de vous connecter à un compte Microsoft qui ne possède pas le jeu et de jouer à l'essai de l'édition Java, introduit dans la version 1.3. Les versions plus anciennes contiennent le jeu complet puisque le launcher officiel ne place pas ces restrictions. Consultez notre site pour en savoir plus sur cette transition du mode hors ligne.";
 
 "login.warn.title.localmode" = "Le mode hors-ligne est maintenant le mode local.";
+"login.warn.message.localmode" = "Vous pouvez continuer à jouer aux versions installées, mais vous ne pouvez plus télécharger Minecraft sans un compte payant. Aucun support ne sera fourni pour les problèmes liés aux comptes locaux, ou pour d'autres moyens d'acquérir Minecraft. Consultez la FAQ pour plus d'informations.";
 
 "login.msa.error.xsts.noxboxacc" = "Un profil Xbox n'est pas enregistré pour ce compte Microsoft. Veuillez vous assurer que vous avez créé un profil Xbox.\nCode d'erreur : 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live est actuellement indisponible dans votre pays.\nCode d'erreur: 2148916235";
@@ -107,6 +111,7 @@
 
 "preference.section.general" = "Paramètres généraux";
 "preference.section.video" = "Paramètres vidéo";
+"preference.section.footer.video" = "Le moteur de rendu automatique permet à PojavLauncher de choisir la meilleure option basée sur la version de Minecraft. Réduire la résolution réduit la charge de travail du GPU pour de meilleures performances.";
 "preference.section.control" = "Contrôlez la customisation";
 "preference.section.debug" = "Paramètres de débogage de l'interface utilisateur";
 "preference.section.footer.debug" = "Outre le débogage, ces paramètres peuvent être utiles pour les contrôles personnalisés. Vous devrez peut-être redémarrer le launcher pour que les changements prennent effet.";
@@ -133,6 +138,7 @@
 "preference.detail.appicon" = "Vous permet de choisir entre différentes icônes d'écran d'accueil pour PojavLauncher.";
 "preference.title.appicon-default" = "PojavLauncher clair familier";
 "preference.title.appicon-dark" = "PojavLauncher sombre familier";
+"preference.title.appicon-development" = "Développement Pencé";
 "preference.title.hidden_sidebar" = "Masquer la barre latérale du menu principal par défaut";
 "preference.detail.hidden_sidebar" = "Vous permet de masquer la barre latérale dans le menu principal par défaut et lors de la rotation sur iOS 14 et plus récent.";
 
@@ -143,9 +149,15 @@
 "preference.title.confirm.reset_settings" = "Ceci supprimera toutes vos préférences personnalisées, y compris la résolution, la taille des boutons et les arguments Java.";
 "preference.title.done.reset_settings" = "Tous les paramètres par défaut ont été restaurés.";
 
+"preference.title.erase_demo_data" = "Effacer les données du jeu de démo";
+"preference.title.confirm.erase_demo_data" = "Ceci effacera toutes les versions de jeu de démo et les données utilisées pour les comptes de démonstration.";
+"preference.title.done.erase_demo_data" = "Toutes les données du jeu de démo ont été effacées.";
+
 "preference.title.renderer" = "Moteur de rendu";
 
 "preference.title.renderer.release.auto" = "Auto";
+"preference.title.renderer.release.gl4es" = "holy gl4es";
+"preference.title.renderer.release.angle" = "ANGLE";
 "preference.title.renderer.release.zink" = "Zink";
 
 "preference.title.renderer.debug.auto" = "Auto: gl4es ou ANGLE";
@@ -158,10 +170,19 @@
 "preference.title.resolution" = "Résolution (%)";
 "preference.detail.resolution" = "Vous permet de diminuer la résolution du jeu.";
 "preference.title.max_framerate" = "Framerate maximum";
+"preference.detail.max_framerate" = "Vous permet de limiter le framerate du jeu à 60FPS sur les écrans ProMotion.";
 
 "preference.title.fullscreen_airplay" = "AirPlay en plein écran";
 "preference.detail.fullscreen_airplay" = "Permet d'afficher une fenêtre de jeu en plein écran sur l'écran externe plutôt que de tout copier sur l'écran.";
 "preference.title.silence_other_audio" = "Mettre en pause l'audio lorsque le jeu s'ouvre";
+"preference.detail.silence_other_audio" = "Activer pour permettre à PojavLauncher de mettre l'audio en pause à partir d'autres applications, telles que Musique, lors du lancement du jeu.";
+"preference.title.silence_with_switch" = "Désactiver l'audio avec un interrupteur silencieux";
+"preference.detail.silence_with_switch" = "Activer pour désactiver l'audio lorsque le mode silencieux est activé. Les écouteurs et les hauts-parleurs externes ne sont pas affectés.";
+"preference.title.default_gamepad_ctrl" = "Configuration du contrôleur";
+"preference.title.hardware_hide" = "Masquer les contrôles lorsque le hardware est connecté";
+"preference.title.gesture_mouse" = "Mouvements de la souris";
+"preference.title.gesture_hotbar" = "Gestures de la hotbar";
+"preference.title.disable_haptics" = "Désactiver les touches tactiles à l'écran";
 "preference.title.press_duration" = "Durée d'un appui long (ms)";
 "preference.detail.press_duration" = "Déclenche le bouton pour détruire des blocs et jeter des objets.";
 "preference.title.button_scale" = "Échelle des boutons à l'écran (%)";
@@ -181,9 +202,12 @@
 "preference.detail.gyroscope_sensitivity" = "Ajuster la sensibilité des contrôles du gyroscope";
 
 "preference.title.java_home" = "Utiliser Java 17 pour Minecraft < 1.17";
+"preference.detail.java_home" = "Java 8 est utilisé par défaut pour ces versions. Activez cette option pour forcer l'utilisation de Java 17, cependant la compatibilité avec les versions moddées n'est pas garantie.";
 "preference.title.java_args" = "Arguments de lancement JVM";
+"preference.detail.java_args" = "Passez des arguments à Java lors du lancement de Minecraft. Attention, cela peut faire crash le jeu si modifié de manière incorrecte.";
 "preference.placeholder.java_args" = "Spécifier les arguments...";
 "preference.title.env_variables" = "Variables d'environnement";
+"preference.detail.env_variables" = "Définissez des variables d'environnement personnalisées lors du lancement de Minecraft. Attention, cela peut faire crash le jeu si modifié de manière incorrecte.";
 "preference.placeholder.env_variables" = "Spécifier les variables...";
 "preference.title.auto_ram" = "Mémoire RAM automatique";
 "preference.detail.auto_ram" = "Active le régulateur automatique de la mémoire vive";
@@ -192,6 +216,7 @@
 "preference.detail.allocated_memory" = "Contrôle la quantité de mémoire donnée à Minecraft";
 "preference.warn.allocated_memory" = "En raison de limitations dans le système d'exploitation lui-même, cette option peut causer de l'instabilité à ce niveau et des valeurs plus élevées. Procédez avec prudence.";
 "preference.title.custom_env" = "Variables d'environnement";
+"preference.detail.custom_env" = "Cette option est en cours de construction. Créez et modifiez custom_env.txt pour le moment.";
 
 "preference.title.debug_skip_wait_jit" = "Passer l'alerte \"Attente du JIT\"";
 "preference.detail.debug_skip_wait_jit" = "Cela ne vous permet pas de démarrer sans JIT, à la place, cela saute la vérification du débogueur, car la vérification échoue sur certains jailbreaks.";
@@ -207,6 +232,11 @@
 "preference.detail.debug_show_layout_overlap" = "Superposez chaque vue avec une couleur transparente pour révéler des vues qui se chevauchent.";
 "controller_configurator.title.type.xbox" = "Xbox";
 "controller_configurator.title.type.playstation" = "PlayStation";
+
+"controller_configurator.xbox.title.bumper_left" = "Gâchette gauche";
+"controller_configurator.xbox.title.bumper_right" = "Gâchette droite";
+"controller_configurator.xbox.title.trigger_left" = "Déclencheur gauche";
+"controller_configurator.xbox.title.trigger_right" = "Déclencheur droit";
 "controller_configurator.xbox.title.named_back" = "Guide";
 "controller_configurator.xbox.title.named_start" = "Menu";
 "controller_configurator.xbox.title.named_a" = "A";
