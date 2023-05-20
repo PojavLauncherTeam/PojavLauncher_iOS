@@ -239,12 +239,44 @@
 "preference.detail.debug_show_layout_bounds" = "Показать границы и отступы";
 "preference.title.debug_show_layout_overlap" = "Показывать наложение элементов";
 "preference.detail.debug_show_layout_overlap" = "Обозначить каждый элемент прозрачным цветом, чтобы упростить нахождение пересечений.";
+
+"controller_configurator.title.current" = "Файл настройки геймпада";
 "controller_configurator.title.type.xbox" = "Xbox";
+"controller_configurator.title.type.playstation" = "PlayStation";
+
+"controller_configurator.xbox.title.bumper_left" = "Левый бампер";
+"controller_configurator.xbox.title.bumper_right" = "Правый бампер";
+"controller_configurator.xbox.title.trigger_left" = "Левый курок";
+"controller_configurator.xbox.title.trigger_right" = "Правый курок";
+"controller_configurator.xbox.title.named_back" = "Руководство";
+"controller_configurator.xbox.title.named_start" = "Меню";
 "controller_configurator.xbox.title.named_a" = "A";
 "controller_configurator.xbox.title.named_b" = "B";
 "controller_configurator.xbox.title.named_x" = "X";
 "controller_configurator.xbox.title.named_y" = "Y";
+"controller_configurator.xbox.title.dpad_up" = "Вверх";
+"controller_configurator.xbox.title.dpad_down" = "Вниз";
+"controller_configurator.xbox.title.dpad_left" = "Влево";
+"controller_configurator.xbox.title.dpad_right" = "Вправо";
+"controller_configurator.xbox.title.thumb_left" = "Клик левого стика";
+"controller_configurator.xbox.title.thumb_right" = "Клик правого стика";
+
+"controller_configurator.playstation.title.bumper_left" = "L1";
+"controller_configurator.playstation.title.bumper_right" = "R1";
+"controller_configurator.playstation.title.trigger_left" = "L2";
+"controller_configurator.playstation.title.trigger_right" = "R2";
 "controller_configurator.playstation.title.named_back" = "Выбрать";
+"controller_configurator.playstation.title.named_start" = "Старт";
+"controller_configurator.playstation.title.named_a" = "Крест";
+"controller_configurator.playstation.title.named_b" = "Круг";
+"controller_configurator.playstation.title.named_x" = "Квадрат";
+"controller_configurator.playstation.title.named_y" = "Треугольник";
+"controller_configurator.playstation.title.dpad_up" = "Вверх";
+"controller_configurator.playstation.title.dpad_down" = "Вниз";
+"controller_configurator.playstation.title.dpad_left" = "Влево";
+"controller_configurator.playstation.title.dpad_right" = "Вправо";
+"controller_configurator.playstation.title.thumb_left" = "L3";
+"controller_configurator.playstation.title.thumb_right" = "R3";
 
 "controller_configurator.section.config_files" = "Текущий файл настроек";
 "controller_configurator.section.controller_style" = "Тип контроллера";
