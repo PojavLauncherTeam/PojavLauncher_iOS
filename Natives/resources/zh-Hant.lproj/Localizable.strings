@@ -87,6 +87,13 @@
 "login.option.microsoft" = "微軟帳戶";
 "login.option.local" = "本地帳戶";
 
+"login.warn.title.legacy_device" = "下一版本的PojavLauncher將不兼容這個裝置。";
+"login.warn.message.legacy_device" = "要運行下一個版本，必須使用能夠運行iOS 14的裝置。";
+"login.warn.title.legacy_ios" = "下一個版本的PojavLauncher需要系統更新。";
+"login.warn.message.legacy_ios" = "要運行下一個版本，此裝置必須運行iOS 14或以後的版本。";
+"login.warn.title.limited_ram" = "這個裝置的記憶體有限。";
+"login.warn.message.limited_ram" = "我們建議你保持自動分配記憶體開啟，以避免不穩定及能效問題。";
+
 "login.warn.title.demomode" = "你的帳戶是一個示範帳戶";
 "login.warn.message.demomode" = "作為離線和本地模式的代替，示範模式會允許你用一個不擁有遊戲的微軟帳戶來登入，並遊玩在版本1.3.1引入的Java版試玩版。由於官方的啟動器沒有加入限制，更舊的版本將含有完整的遊戲。要了解更多關於從離線模式過渡到示範模式的資訊，請瀏覽我們的網頁。";
 
@@ -130,10 +137,13 @@
 "preference.detail.debug_logging" = "把內部設定和動作記錄到lateslog.txt。這能幫助開發者更容易地找到問題，但由於日誌寫入的次數會增多，我的世界的運行速度可能會減慢。";
 "preference.title.jitstreamer_server" = "JitStreamer伺服器地址";
 "preference.detail.jitstreamer_server" = "這個選項允許你設定一個自定義JitStreamer IP地址，例如一個自托管的伺服器。如果你使用預設的JitStreamer伺服器，你可以忽略這個選項。";
+"preference.title.enable_altkit" = "啟用AltKit整合";
+"preference.detail.enable_altkit" = "當啟用時，PojavLauncher會嘗試和本地AltServer聯絡以啟動即時編譯。";
 "preference.title.appicon" = "設定應用程式圖示";
 "preference.detail.appicon" = "讓你能選擇PojavLauncher在主畫面上的圖示。";
 "preference.title.appicon-default" = "熟悉的明亮PojavLauncher";
 "preference.title.appicon-dark" = "熟悉的暗黑PojavLauncher";
+"preference.title.appicon-development" = "鉛筆開發";
 "preference.title.hidden_sidebar" = "預設隱藏主選單的側邊欄";
 
 "preference.title.reset_warnings" = "重設所有警告";
