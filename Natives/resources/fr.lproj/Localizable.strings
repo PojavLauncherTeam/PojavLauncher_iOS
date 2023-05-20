@@ -145,6 +145,9 @@
 
 "preference.title.renderer" = "Moteur de rendu";
 
+"preference.title.renderer.release.auto" = "Auto";
+"preference.title.renderer.release.zink" = "Zink";
+
 "preference.title.renderer.debug.auto" = "Auto: gl4es ou ANGLE";
 "preference.title.renderer.debug.gl4es" = "gl4es 1.1.4 - exporte OpenGL 2.1";
 "preference.title.renderer.debug.angle" = "ANGLE (1.17+) - exporte OpenGL 3.2 (Profil de base, Limité)";
@@ -181,6 +184,7 @@
 "preference.title.java_args" = "Arguments de lancement JVM";
 "preference.placeholder.java_args" = "Spécifier les arguments...";
 "preference.title.env_variables" = "Variables d'environnement";
+"preference.placeholder.env_variables" = "Spécifier les variables...";
 "preference.title.auto_ram" = "Mémoire RAM automatique";
 "preference.detail.auto_ram" = "Active le régulateur automatique de la mémoire vive";
 "preference.warn.auto_ram" = "Désactiver cette option sur un appareil non jailbreaké peut créer de l'instabilité. Procédez avec prudence.";
