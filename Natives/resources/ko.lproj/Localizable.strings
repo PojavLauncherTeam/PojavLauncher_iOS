@@ -8,12 +8,15 @@
 "game.menu.log_output" = "로그 확인";
 "game.menu.custom_controls" = "사용자 지정 조작";
 
+"game.note.airplay" = "마인크래프트가 AirPlay 디스플레이에 출력되고있습니다";
+
 // The play button
 "Play" = "시작하기";
 
 // Version categories
 "Installed" = "설치됨";
 "Snapshot" = "스냅숏";
+"Releases" = "정식";
 "Old-beta" = "Old-beta";
 "Old-alpha" = "Old-alpha";
 
@@ -22,6 +25,7 @@
 "Edit" = "수정";
 "Move" = "움직이다";
 "Remove" = "제거";
+"Resize" = "사이즈 변경";
 
 "custom_controls.button_edit.name" = "이름";
 "custom_controls.button_edit.size" = "크기";
@@ -35,6 +39,7 @@
 "custom_controls.button_menu.add_subbutton" = "부속 버튼 추가";
 "custom_controls.control_menu.exit" = "나가기";
 "custom_controls.control_menu.save" = "저장";
+"custom_controls.control_menu.save.error.json" = "JSON 오류";
 "custom_controls.control_menu.save.error.write" = "파일 저장중 오류 발생";
 "custom_controls.control_menu.load" = "불러오기";
 "custom_controls.control_menu.make_default" = "기본값으로 설정";
@@ -46,15 +51,19 @@
 
 "launcher.wait_jit.title" = "JIT를 기다리고 있습니다";
 
+"login.error.username.outOfRange" = "닉네임은 최소 3글자에서 최대 16글자로 해야합니다.";
+
 "login.alert.field.username" = "사용자명";
 
 "login.jit.checking" = "JIT를 확인하고 있습니다";
 "login.jit.enabled" = "JIT가 활성화 되었습니다";
+"login.jit.fail.title" = "장치에서 JIT를 사용하도록 할수 없습니다";
 
 // Login buttons
 "login.menu.sendlogs" = "로그 보내기";
 "login.option.add" = "계정 추가";
 "login.option.select" = "계정 선택";
+"login.option.demo" = "체험판 계정";
 "login.option.microsoft" = "Microsoft 계정";
 "login.option.local" = "로컬 계정";
 
