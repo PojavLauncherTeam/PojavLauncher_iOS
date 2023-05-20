@@ -117,7 +117,7 @@
 
 "preference.section.general" = "启动器基础设置";
 "preference.section.video" = "音视频设置";
-"preference.section.footer.video" = "根据游戏版本自动选择最佳渲染器给游戏使用。降低分辨率可以减轻GPU负载从而提高性能。";
+"preference.section.footer.video" = "根据 Minecraft 版本自动选择最佳渲染器给游戏使用。降低分辨率可以减轻 GPU 负载从而提高性能。";
 "preference.section.control" = "自定义控制键";
 "preference.section.debug" = "UI设置";
 "preference.section.footer.debug" = "除了调试外，这些设置可能对自定义控件有用。您可能需要重新启动启动器才能使更改生效。";
@@ -162,7 +162,7 @@
 
 "preference.title.renderer" = "渲染器";
 
-"preference.title.renderer.release.auto" = "根据游戏版本自动选择";
+"preference.title.renderer.release.auto" = "自动";
 "preference.title.renderer.release.gl4es" = "holy gl4es";
 "preference.title.renderer.release.angle" = "ANGLE";
 "preference.title.renderer.release.zink" = "Zink";
@@ -214,13 +214,13 @@
 "preference.detail.gyroscope_sensitivity" = "调整陀螺仪控制的灵敏度";
 
 "preference.title.java_home" = "游戏版本小于 1.17 时仍然使用 Java 17";
-"preference.detail.java_home" = "正式版低于1.17情况下启动器默认为他们使用Java8运行环境，开启该选项后所有版本都使用Java17运行环境。请注意，某些MOD不支持使用Java17运行环境!!!";
+"preference.detail.java_home" = "这些版本（1.17 以下）默认使用 Java 8，启用此选项可强制使用 Java 17，但不保证兼容性。需注意部分模组并不支持 Java 17。";
 "preference.title.java_args" = "JVM 启动参数";
-"preference.detail.java_args" = "当启动 Minecraft 时将参数传递到 Java。小心，如果修改不正确，可能会使游戏崩溃。";
+"preference.detail.java_args" = "启动 Minecraft 时将参数传递到 Java。小心，如果修改不正确，可能会使游戏崩溃。";
 "preference.placeholder.java_args" = "自定义参数...";
 "preference.title.env_variables" = "环境变量";
 "preference.detail.env_variables" = "启动 Minecraft 时设置自定义环境变量。小心，如果修改不正确，这可能会使游戏崩溃。";
-"preference.placeholder.env_variables" = "自定义参数...";
+"preference.placeholder.env_variables" = "自定义参数……";
 "preference.title.auto_ram" = "自动设置内存大小";
 "preference.detail.auto_ram" = "启用内存自动调节";
 "preference.warn.auto_ram" = "在未越狱的设备禁用此选项上可能会导致应用不稳定。请谨慎更改此选项。";
