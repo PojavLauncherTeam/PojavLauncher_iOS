@@ -504,6 +504,11 @@ JNIEXPORT void JNICALL Java_org_lwjgl_glfw_GLFW_nglfwSetShowingWindow(JNIEnv* en
 }
 
 void CallbackBridge_setWindowAttrib(int attrib, int value) {
+    if (attrib == GLFW_VISIBLE && value == 0 && isGrabbing) {
+        CallbackBridge_nativeSendKey(GLFW_KEY_ESCAPE, 0, 1, 0);
+        CallbackBridge_nativeSendKey(GLFW_KEY_ESCAPE, 0, 0, 0);
+    }
+
     if (!showingWindow || !isUseStackQueueCall) {
         // If the window is not shown, there is nothing to do yet.
         // For Minecraft < 1.13, calling to JNI functions here crashes the JVM for some reason, therefore it is skipped for now.
