@@ -130,7 +130,9 @@
 "preference.title.renderer" = "Renderizador";
 
 "preference.title.renderer.release.auto" = "Automático";
-"preference.title.renderer.release.angle" = "ÂNGULO";
+"preference.title.renderer.release.gl4es" = "holy gl4es";
+"preference.title.renderer.release.angle" = "ANGLE";
+"preference.title.renderer.release.zink" = "Zink";
 
 "preference.title.renderer.debug.auto" = "Auto: gl4es ou ANGLE";
 "preference.title.renderer.debug.gl4es" = "gl4es 1.1.4 - exports OpenGL 2.1";
@@ -156,16 +158,19 @@
 "preference.detail.gyroscope_sensitivity" = "Ajustar a sensibilidade dos controles do giroscópio";
 
 "preference.title.java_home" = "Use Java 17 para o Minecraft < 1.17";
-"preference.detail.java_home" = "O Java 8 é usado por padrão para essas versões. Ative esta opção para forçar o Java 17, no entanto a compatibilidade não é garantida.";
+"preference.detail.java_home" = "O Java 8 é usado por padrão para essas versões. Ative esta opção para forçar o Java 17, no entanto, a compatibilidade não é garantida.";
 "preference.title.java_args" = "Argumentos JVM";
 "preference.detail.java_args" = "Passa argumentos para Java ao iniciar o Minecraft. Tenha cuidado, isso pode fazer o jogo falhar se for modificado incorretamente.";
 "preference.placeholder.java_args" = "Especifique os argumentos...";
 "preference.title.env_variables" = "Variáveis ambientais";
+"preference.detail.env_variables" = "Defina variáveis de ambiente personalizadas ao iniciar o Minecraft. Tenha cuidado, isso pode fazer o jogo falhar se for modificado incorretamente.";
+"preference.placeholder.env_variables" = "Especificar variáveis...";
 "preference.title.auto_ram" = "RAM automática";
 "preference.detail.auto_ram" = "Ativa o ajuste automático de RAM";
 "preference.title.allocated_memory" = "Alocação de memória (MB)";
 "preference.detail.allocated_memory" = "Controla o quanto de RAM será usado pelo Minecraft";
 "preference.title.custom_env" = "Variáveis ambientais";
+"preference.detail.custom_env" = "Esta opção está em construção. Criar e editar custom_env.txt enquanto isso.";
 
 "preference.title.debug_skip_wait_jit" = "Ignorar caixa de diálogo \"Aguardando JIT\"";
 "preference.title.debug_ipad_ui" = "Desbloquear iPadOS UI";
