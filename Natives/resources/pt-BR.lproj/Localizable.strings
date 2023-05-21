@@ -85,6 +85,7 @@
 "login.warn.title.demomode" = "Sua conta é Demonstrativa";
 
 "login.warn.title.localmode" = "O modo off-line agora é o modo local.";
+"login.warn.message.localmode" = "Você pode continuar jogando versões instaladas, mas não pode mais baixar o Minecraft sem uma conta paga. Não será fornecido suporte para problemas com contas locais, ou outros meios de aquisição do Minecraft.";
 "login.msa.error.xsts.krverify" = "Sua conta precisa ser verificada por seus pais antes de continuar.\nCódigo de erro: 2148916236 ou 2148916237.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Adquirindo o token de acesso";
@@ -99,6 +100,7 @@
 
 "preference.section.general" = "Configurações Gerais";
 "preference.section.video" = "Configurações de Vídeo";
+"preference.section.footer.video" = "O renderizador automático permite ao PojavLauncher escolher a melhor opção baseada na versão do Minecraft. Diminuir a resolução reduz a carga de trabalho da GPU para um melhor desempenho.";
 "preference.section.control" = "Personalização dos controles";
 "preference.section.debug" = "Configurações da depuração do UI";
 "preference.section.footer.debug" = "Além da depuração, essas configurações podem ser úteis para controles personalizados. Pode ser necessário reiniciar o launcher para que as alterações tenham efeito.";
@@ -127,6 +129,9 @@
 
 "preference.title.renderer" = "Renderizador";
 
+"preference.title.renderer.release.auto" = "Automático";
+"preference.title.renderer.release.angle" = "ÂNGULO";
+
 "preference.title.renderer.debug.auto" = "Auto: gl4es ou ANGLE";
 "preference.title.renderer.debug.gl4es" = "gl4es 1.1.4 - exports OpenGL 2.1";
 "preference.title.renderer.debug.angle" = "ANGLE (1.17+) - exporta OpenGL 3.2 (Perfil de navegação, limitado)";
@@ -136,6 +141,7 @@
 
 "preference.title.resolution" = "Resolução (%)";
 "preference.detail.resolution" = "Permite que você diminua a resolução do jogo.";
+"preference.title.disable_haptics" = "Desativar os atalhos na tela";
 "preference.title.press_duration" = "Duração de pressionamento longo (ms)";
 "preference.title.button_scale" = "Escala dos botões virtuais (%)";
 "preference.title.mouse_scale" = "Escala do mouse (%)";
@@ -150,7 +156,9 @@
 "preference.detail.gyroscope_sensitivity" = "Ajustar a sensibilidade dos controles do giroscópio";
 
 "preference.title.java_home" = "Use Java 17 para o Minecraft < 1.17";
+"preference.detail.java_home" = "O Java 8 é usado por padrão para essas versões. Ative esta opção para forçar o Java 17, no entanto a compatibilidade não é garantida.";
 "preference.title.java_args" = "Argumentos JVM";
+"preference.detail.java_args" = "Passa argumentos para Java ao iniciar o Minecraft. Tenha cuidado, isso pode fazer o jogo falhar se for modificado incorretamente.";
 "preference.placeholder.java_args" = "Especifique os argumentos...";
 "preference.title.env_variables" = "Variáveis ambientais";
 "preference.title.auto_ram" = "RAM automática";
