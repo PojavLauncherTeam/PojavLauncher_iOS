@@ -257,6 +257,7 @@ BOOL slideableHotbar;
     // [self setPreferredFramesPerSecond:1000];
     [self updateJetsamControl];
     [self updatePreferenceChanges];
+    [self loadCustomControls];
     [self executebtn_special_togglebtn:0];
 
 #ifdef INTERNAL_VIRTUAL_JOYSTICK
@@ -334,7 +335,6 @@ BOOL slideableHotbar;
     self.mousePointerView.frame = virtualMouseFrame;
 
     self.ctrlView.frame = getSafeArea();
-    [self loadCustomControls];
 
     // Update gestures state
     slideableHotbar = [getPreference(@"slideable_hotbar") boolValue];

@@ -77,6 +77,9 @@
         }
         [(ControlButton *)view update];
     }
+
+    CGFloat savedScale = [getPreference(@"button_scale") floatValue];
+    self.layoutDictionary[@"scaledAt"] = @(savedScale);
 }
 
 @end
