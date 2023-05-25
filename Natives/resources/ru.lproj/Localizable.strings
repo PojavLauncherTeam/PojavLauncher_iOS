@@ -204,7 +204,7 @@
 "preference.title.slideable_hotbar" = "Прокручиваемый хотбар";
 "preference.detail.slideable_hotbar" = "Включить прокрутку слотов хотбара как при использовании колёсика мыши.";
 
-"preference.title.gyroscope_enable" = "Управление наклоном";
+"preference.title.gyroscope_enable" = "Включить управление гироскопом";
 "preference.detail.gyroscope_enable" = "Это позволит вам управлять положением камеры в игре путём вращения устройства.";
 "preference.title.gyroscope_invert_x_axis" = "Инвертировать поворот";
 "preference.detail.gyroscope_invert_x_axis" = "Поменять направление поворота по горизонтали";
@@ -279,4 +279,6 @@
 "controller_configurator.playstation.title.thumb_right" = "R3";
 
 "controller_configurator.section.config_files" = "Текущий файл настроек";
+"controller_configurator.section.game_mappings" = "Кнопки в игре";
+"controller_configurator.section.menu_mappings" = "Кнопки в меню";
 "controller_configurator.section.controller_style" = "Тип контроллера";
