@@ -70,9 +70,7 @@
     [super setFrame:frame];
 
     for (UIView *view in self.subviews) {
-        if (![view isKindOfClass:ControlButton.class] ||
-          ([view isKindOfClass:ControlSubButton.class] &&
-          ![((ControlSubButton *)view).parentDrawer.drawerData[@"orientation"] isEqualToString:@"FREE"])) {
+        if (![view isKindOfClass:ControlButton.class]) {
             continue;
         }
         [(ControlButton *)view update];

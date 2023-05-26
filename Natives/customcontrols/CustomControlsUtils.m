@@ -401,7 +401,7 @@ void loadControlObject(UIView* targetView, NSMutableDictionary* controlDictionar
                 [drawer addButton:subView];
                 [targetView addSubview:subView];
             }
-            [drawer syncButtons];
+            [drawer update];
         }
 
         controlDictionary[@"scaledAt"] = @([getPreference(@"button_scale") floatValue]);
