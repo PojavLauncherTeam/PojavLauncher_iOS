@@ -95,39 +95,13 @@ public final class Tools
 
         final String launchClassPath = generateLaunchClassPath(versionInfo);
 
-        List<String> javaArgList = new ArrayList<String>();
-        //javaArgList.add(versionInfo.logging.client.argument.replace("${path}", DIR_GAME_NEW.getAbsolutePath() + "/" + mVersion.logging.client.file.id));
-        javaArgList.add("-cp");
-        javaArgList.add(launchClassPath);
-
-        javaArgList.add(versionInfo.mainClass);
-        javaArgList.addAll(Arrays.asList(launchArgs));
-        // Debug
-/*
-        BufferedWriter bw = new BufferedWriter(new FileWriter(new File(Tools.DIR_GAME_HOME, "currargs_generated.txt")));
-        for (String s : javaArgList) {
-            bw.write(s, 0, s.length());
-            bw.write(" ", 0, 1);
-        }
-        bw.close();
-*/
-
-/*
-        final List<URL> urlList = new ArrayList<>();
-        for (String s : launchClassPath.split(":")) {
-            if (!s.isEmpty()) {
-                urlList.add(new File(s).toURI().toURL());
-            }
-        }
-*/
-
         System.out.println("Args init finished. Now starting game");
-
-        // URLClassLoader loader = new URLClassLoader(urlList.toArray(new URL[0]), ClassLoader.getSystemClassLoader());
 
         PojavClassLoader loader = (PojavClassLoader) ClassLoader.getSystemClassLoader();
         // add launcher.jar itself
-        loader.addURL(Tools.class.getProtectionDomain().getCodeSource().getLocation().toURI().toURL());
+        for (String s : System.getProperty("java.class.path").split(":")) {
+            loader.appendToClassPathForInstrumentation(s);
+        }
         for (String s : launchClassPath.split(":")) {
             if (!s.isEmpty()) {
                 loader.addURL(new File(s).toURI().toURL());
@@ -137,12 +111,6 @@ public final class Tools
         Class<?> clazz = loader.loadClass(versionInfo.mainClass);
         Method method = clazz.getMethod("main", String[].class);
         method.invoke(null, new Object[]{launchArgs});
-
-        // throw new RuntimeException("Game exited. Check latestlog.txt for more details.");
-        
-        //}).start();
-        
-        // JREUtils.launchJavaVM(javaArgList);
     }
 
     public static String[] getMinecraftArgs(MinecraftAccount profile, JMinecraftVersionList.Version versionInfo) {
@@ -250,7 +218,6 @@ public final class Tools
         return libStr.toString();
     }
 */
-    private static boolean isClientFirst = false;
     public static String generateLaunchClassPath(JMinecraftVersionList.Version info) {
         StringBuilder libStr = new StringBuilder(); //versnDir + "/" + version + "/" + version + ".jar:";
 
@@ -276,19 +243,14 @@ public final class Tools
          }
          */
 
-        if (isClientFirst) {
-            libStr.append(DIR_HOME_VERSION + "/" + info.id + "/" + info.id + ".jar");
-        }
         for (String perJar : classpath) {
             if (!new File(perJar).exists()) {
                 System.out.println("Ignored non-exists file: " + perJar);
                 continue;
             }
-            libStr.append((isClientFirst ? ":" : "") + perJar + (!isClientFirst ? ":" : ""));
+            libStr.append(perJar + ":");
         }
-        if (!isClientFirst) {
-            libStr.append(DIR_HOME_VERSION + "/" + info.id + "/" + info.id + ".jar");
-        }
+        libStr.append(DIR_HOME_VERSION + "/" + info.id + "/" + info.id + ".jar");
 
         return libStr.toString();
     }

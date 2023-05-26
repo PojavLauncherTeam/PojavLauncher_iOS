@@ -44,7 +44,7 @@ public class PojavClassLoader extends URLClassLoader {
      *
      * @see java.lang.instrument.Instrumentation#appendToSystemClassPathSearch
      */
-    private void appendToClassPathForInstrumentation(String path) {
+    protected void appendToClassPathForInstrumentation(String path) {
         assert(Thread.holdsLock(this));
 
         // addURL is a no-op if path already contains the URL
