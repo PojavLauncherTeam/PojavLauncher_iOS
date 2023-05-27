@@ -27,7 +27,7 @@
 "custom_controls.button_menu.add_subbutton" = "Pridať podtlačidlo";
 "custom_controls.control_menu.exit" = "Skončiť";
 "custom_controls.control_menu.save" = "Uložiť";
-"custom_controls.control_menu.load" = "Načítať";
+"custom_controls.control_menu.load" = "Otvoriť";
 "custom_controls.control_menu.add_button" = "Pridať tlačidlo";
 
 "launcher.menu.custom_controls" = "Vlastné ovládacie prvky";
@@ -36,7 +36,7 @@
 "login.option.select" = "Vybrať účet";
 
 "News" = "Novinky";
-"Settings" = "Nastavenie";
+"Settings" = "Nastavenia";
 "preference.section.control" = "Ovládanie";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Nastavenia Javy";
@@ -45,6 +45,10 @@
 "preference.title.cosmetica" = "Cosmetica Capeky";
 
 "preference.title.renderer" = "Renderer";
+
+"preference.title.gyroscope_enable" = "Ovládanie gyroskopom";
+"preference.title.gyroscope_sensitivity" = "Citlivosť gyroskopu";
+"preference.detail.gyroscope_sensitivity" = "Uprav si citlivosť gyroskopu na otáčanie";
 "preference.title.java_args" = "Spúštacie argumenty pre JVM";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Automaticky bude meniť množstvo RAM";
