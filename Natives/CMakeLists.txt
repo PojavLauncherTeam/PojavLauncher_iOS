@@ -111,6 +111,7 @@ add_executable(PojavLauncher
   customcontrols/ControlLayout.m
   customcontrols/ControlSubButton.m
   customcontrols/CustomControlsUtils.m
+  customcontrols/NSPredicateUtilitiesExternal.m
 
   external/DBNumberedSlider/Classes/DBNumberedSlider.m
   external/NRFileManager/NSFileManager+NRFileManager.m

@@ -1,8 +1,11 @@
 #import "ControlButton.h"
 #import "ControlLayout.h"
 #import "CustomControlsUtils.h"
+#import "NSPredicateUtilitiesExternal.h"
 #import "../LauncherPreferences.h"
 #import "../utils.h"
+
+#import <objc/runtime.h>
 
 #define MIN_DISTANCE 8.0
 
@@ -10,6 +13,17 @@
   string = [string stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"${%@}", @(KEY)] withString:VALUE];
 
 @implementation ControlButton
+
++ (void)load {
+    Class NSPredicateUtilities = objc_getMetaClass("_NSPredicateUtilities");
+
+    unsigned int count;
+    Method *list = class_copyMethodList(object_getClass(NSPredicateUtilitiesExternal.class), &count);
+    for (int i = 0; i < count; i++) {
+        Method method = list[i];
+        class_addMethod(NSPredicateUtilities, method_getName(method), method_getImplementation(method), method_getTypeEncoding(method));
+    }
+}
 
 + (id)buttonWithProperties:(NSMutableDictionary *)propArray {
     //NSLog(@"DBG button prop = %@", propArray);
@@ -81,21 +95,6 @@
     }
 }
 
-- (NSString *)processFunctions:(NSString *)string {
-    NSString *tmpStr;
-    CGFloat screenScale = [[UIScreen mainScreen] scale];
-
-    // Since NSExpression doesn't support calling as "custom_function(parameter)", we do direct replaces here
-
-    // float dp(float px) => px / screenScale
-    // Without a state machine to do "px / screenScale", just do "1 / screenScale * px" :)
-    tmpStr = [string stringByReplacingOccurrencesOfString:@"dp(" withString:[NSString stringWithFormat:@"(1.0 / %f * ", screenScale]];
-
-    // float px(float dp) => screenScale * dp
-    tmpStr = [tmpStr stringByReplacingOccurrencesOfString:@"px(" withString:[NSString stringWithFormat:@"(%f * ", screenScale]];
-    return tmpStr;
-}
-
 - (CGFloat)calculateDynamicPos:(NSString *)string {
     CGRect screenBounds = self.superview.bounds;
     NSAssert(self.superview, @"Why is it null");
@@ -119,12 +118,12 @@
     INSERT_VALUE("margin", ([NSString stringWithFormat:@"%f", 2.0 * screenScale]));
     INSERT_VALUE("preferred_scale", ([NSString stringWithFormat:@"%f", [getPreference(@"button_scale") floatValue]]));
 
-    string = [self processFunctions:string];
     // NSLog(@"After insert: %@", string);
 
     // Calculate, since the dynamic position contains some math equations
     NSExpression *expression = [NSExpression expressionWithFormat:string];
-    return [[expression expressionValueWithObject:nil context:nil] floatValue] / screenScale;
+    NSDictionary<NSString*, NSNumber*> *variables = @{@"pi": @(M_PI)};
+    return [[expression expressionValueWithObject:variables context:nil] floatValue] / screenScale;
 }
 
 // NOTE: Unlike Android's impl, this method uses dp instead of px (no call to dpToPx)
