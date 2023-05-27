@@ -49,3 +49,4 @@
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Automaticky bude meniť množstvo RAM";
 "preference.detail.allocated_memory" = "Určite, koľko pamäti bude mať Minecraft";
+"controller_configurator.playstation.title.named_back" = "Vyber";
