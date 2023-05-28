@@ -43,3 +43,4 @@
 "preference.title.auto_ram" = "Αυτόματη RAM";
 "preference.detail.auto_ram" = "Ενεργοποιεί τον αυτόματο ρυθμιστή RAM";
 "preference.detail.allocated_memory" = "Ελέγχει πόση μνήμη δίνεται στο Minecraft";
+"controller_configurator.playstation.title.named_back" = "Επιλέξτε";
