@@ -28,12 +28,13 @@ jint (*orig_ProcessImpl_forkAndExec)(JNIEnv *env, jobject process, jint mode, jb
 
 NSString* processPath(NSString* path) {
     if ([path hasPrefix:@"file:"]) {
-        path = [path substringFromIndex:5].stringByRemovingPercentEncoding.stringByResolvingSymlinksInPath;
+        path = [path substringFromIndex:5].stringByRemovingPercentEncoding;
     }
+    path = path.stringByResolvingSymlinksInPath;
 
     NSString *prefix = @"file";
     if ([UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:@"shareddocuments://"]] &&
-      ![path hasPrefix:@"/usr"]) {
+      ![path hasPrefix:@"/var/mobile/Documents"]) {
         // Prefer opening in Files if containerized
         prefix = @"shareddocuments";
     } else if ([UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:@"filza://"]]) {
@@ -45,6 +46,30 @@ NSString* processPath(NSString* path) {
     }
 
     return [NSString stringWithFormat:@"%@://%@", prefix, path];
+}
+
+void openURLGlobal(NSString *path) {
+    dispatch_group_t group = dispatch_group_create();
+    dispatch_group_enter(group);
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([path hasPrefix:@"http"]) {
+            openLink(currentWindow().rootViewController, [NSURL URLWithString:path]);
+            dispatch_group_leave(group);
+            return;
+        }
+        NSString *realPath = processPath(path);
+        [UIApplication.sharedApplication openURL:[NSURL URLWithString:realPath] options:@{} completionHandler:^(BOOL success) {
+            if (success) {
+                NSLog(@"Opened \"%@\"", realPath);
+            } else {
+                NSLog(@"Failed to open \"%@\"", realPath);
+            }
+            dispatch_group_leave(group);
+        }];
+    });
+
+    dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
 }
 
 /**
@@ -61,36 +86,25 @@ hooked_ProcessImpl_forkAndExec(JNIEnv *env, jobject process, jint mode, jbyteArr
         return orig_ProcessImpl_forkAndExec(env, process, mode, helperpath, prog, argBlock, argc, envBlock, envc, dir, std_fds, redirectErrorStream);
     }
 
-    dispatch_group_t group = dispatch_group_create();
-    dispatch_group_enter(group);
-
     char *path = (char *)((*env)->GetByteArrayElements(env, argBlock, NULL));
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if ([@(path) hasPrefix:@"http"]) {
-            openLink(currentWindow().rootViewController, [NSURL URLWithString:@(path)]);
-            dispatch_group_leave(group);
-            return;
-        }
-        NSString *realPath = processPath(@(path));
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:realPath] options:@{} completionHandler:^(BOOL success) {
-            if (success) {
-                NSLog(@"Opened \"%@\"", realPath);
-            } else {
-                NSLog(@"Failed to open \"%@\"", realPath);
-            }
-            dispatch_group_leave(group);
-        }];
-    });
-
-    dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+    openURLGlobal(@(path));
 
     (*env)->ReleaseByteArrayElements(env, prog, (jbyte *)pProg, 0);
     (*env)->ReleaseByteArrayElements(env, argBlock, (jbyte *)path, 0);
     return 0;
 }
 
-void hookExec() {
+// Part of awt_bridge
+void CTCDesktopPeer_openGlobal(JNIEnv *env, jclass clazz, jstring path) {
+    const char* stringChars = (*env)->GetStringUTFChars(env, path, NULL);
+    openURLGlobal(@(stringChars));
+    (*env)->ReleaseStringUTFChars(env, path, stringChars);
+}
+
+void registerOpenHandler() {
     jclass cls;
+
+    // Hook forkAndExec
     orig_ProcessImpl_forkAndExec = dlsym(RTLD_DEFAULT, "Java_java_lang_UNIXProcess_forkAndExec");
     if (!orig_ProcessImpl_forkAndExec) {
         orig_ProcessImpl_forkAndExec = dlsym(RTLD_DEFAULT, "Java_java_lang_ProcessImpl_forkAndExec");
@@ -98,10 +112,24 @@ void hookExec() {
     } else {
         cls = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "java/lang/UNIXProcess");
     }
-    JNINativeMethod methods[] = {
+    JNINativeMethod forkAndExecMethod[] = {
         {"forkAndExec", "(I[B[B[BI[BI[B[IZ)I", (void *)&hooked_ProcessImpl_forkAndExec}
     };
-    (*runtimeJNIEnvPtr)->RegisterNatives(runtimeJNIEnvPtr, cls, methods, 1);
+    (*runtimeJNIEnvPtr)->RegisterNatives(runtimeJNIEnvPtr, cls, forkAndExecMethod, 1);
+
+    // Register CTCDesktopPeer natives
+    cls = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "net/java/openjdk/cacio/ctc/CTCDesktopPeer");
+    if ((*runtimeJNIEnvPtr)->ExceptionOccurred(runtimeJNIEnvPtr)) {
+        // Java 17, not available
+        //(*runtimeJNIEnvPtr)->ExceptionDescribe(runtimeJNIEnvPtr);
+        (*runtimeJNIEnvPtr)->ExceptionClear(runtimeJNIEnvPtr);
+        return;
+    }
+    JNINativeMethod peerOpenMethods[] = {
+        {"openFile", "(Ljava/lang/String;)V", (void *)&CTCDesktopPeer_openGlobal},
+        {"openUri", "(Ljava/lang/String;)V", (void *)&CTCDesktopPeer_openGlobal}
+    };
+    (*runtimeJNIEnvPtr)->RegisterNatives(runtimeJNIEnvPtr, cls, peerOpenMethods, 2);
 }
 
 // JNI_OnLoad
@@ -113,27 +141,12 @@ void JNI_OnLoadGLFW() {
     jobject keyDownBufferJ = (*runtimeJNIEnvPtr)->GetStaticObjectField(runtimeJNIEnvPtr, vmGlfwClass, field_keyDownBuffer);
     keyDownBuffer = (*runtimeJNIEnvPtr)->GetDirectBufferAddress(runtimeJNIEnvPtr, keyDownBufferJ);
 }
-/*
-jint JNI_OnLoad(JavaVM* vm, void* reserved) {
-    runtimeJavaVMPtr = vm;
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-        (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &runtimeJNIEnvPtr, NULL);
-        if (!getenv("POJAV_SKIP_JNI_GLFW")) {
-            JNI_OnLoadGLFW();
-        }
-        hookExec();
-    });
-
-    return JNI_VERSION_1_4;
-}
-*/
 
 jint JNI_OnLoad(JavaVM* vm, void* reserved) {
     runtimeJavaVMPtr = vm;
 
     (*runtimeJavaVMPtr)->GetEnv(runtimeJavaVMPtr, (void **)&runtimeJNIEnvPtr, JNI_VERSION_1_4);
-    hookExec();
+    registerOpenHandler();
     if (getenv("POJAV_SKIP_JNI_GLFW")) {
         runtimeJNIEnvPtr = nil;
     } else {
