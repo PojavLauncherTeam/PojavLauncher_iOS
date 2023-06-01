@@ -192,6 +192,7 @@
 "preference.detail.gesture_mouse" = "تمكين الإيماءات، مثل النقر لوضع الكتلة، الاستمرار لكسر الكتلة، التمرير مع إصبعين";
 "preference.title.gesture_hotbar" = "إيماءات الشريط";
 "preference.detail.gesture_hotbar" = "تمكين الإيماءات، مثل لمس فتحة شريط الاتصال، وتبادل العناصر بين اليد، ورمي العناصر";
+"preference.title.disable_haptics" = "الغاء تفعيل الهزازات اللمسية";
 "preference.title.press_duration" = "مدة الضغط المطول (مللي ثانية)";
 "preference.detail.press_duration" = "تفعيل مدة الضغط لتدمير البلوك وإسقاط العناصر.";
 "preference.title.button_scale" = "حجم الزر على الشاشة (%)";
@@ -218,6 +219,7 @@
 "preference.detail.java_args" = "مرر الحجج إلى جافا عند بدء Minecraft. كن حذرا، هذا يمكن أن يجعل عطل اللعبة إذا تم تعديله بشكل غير صحيح.";
 "preference.placeholder.java_args" = "حدد الدفعات...";
 "preference.title.env_variables" = "متغيرات البيئة";
+"preference.detail.env_variables" = "عين متغيرات بيئة متخصصة عند بدء Minecraft. كن حذراً، هذا يمكن أن يجعل اللعبة تتعطل إذا تم تعديلها بشكل غير صحيح.";
 "preference.placeholder.env_variables" = "حدد المتغيرات...";
 "preference.title.auto_ram" = "ذاكرة الوصول العشوائية التلقائية";
 "preference.detail.auto_ram" = "تمكين  ذاكرة الوصول العشوائي التلقائي";
