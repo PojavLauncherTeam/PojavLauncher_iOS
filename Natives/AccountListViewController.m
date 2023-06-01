@@ -102,7 +102,7 @@
     self.tableView.userInteractionEnabled = NO;
     [self addActivityIndicatorTo:cell];
 
-    id callback = ^(NSString* status, BOOL success) {
+    id callback = ^(id status, BOOL success) {
         [self callbackMicrosoftAuth:status success:success forCell:cell];
     };
     [[BaseAuthenticator loadSavedName:self.accountList[indexPath.row][@"username"]] refreshTokenWithCallback:callback];
@@ -131,6 +131,16 @@
     } else {
         return UITableViewCellEditingStyleDelete;
     }
+}
+
+- (NSDictionary *)parseQueryItems:(NSString *)url {
+    NSMutableDictionary *result = [NSMutableDictionary new];
+    NSArray<NSURLQueryItem *> *queryItems = [NSURLComponents componentsWithString:url].queryItems;
+    for (NSURLQueryItem *item in queryItems) {
+        result[item.name] = 
+item.value;
+    }
+    return result;
 }
 
 - (void)actionAddAccount:(UITableViewCell *)sender {
@@ -176,7 +186,7 @@
             controller.message = localize(@"login.error.username.outOfRange", nil);
             [self presentViewController:controller animated:YES completion:nil];
         } else {
-            id callback = ^(NSString* status, BOOL success) {
+            id callback = ^(id status, BOOL success) {
                 [self dismissViewControllerAnimated:YES completion:nil];
                 self.whenItemSelected();
             };
@@ -201,31 +211,26 @@
             }
             return;
         }
-        NSString *urlString = [callbackURL absoluteString];
         // NSLog(@"URL returned = %@", [callbackURL absoluteString]);
 
-        if ([urlString containsString:@"/auth/?code="]) {
+        NSDictionary *queryItems = [self parseQueryItems:callbackURL.absoluteString];
+        if (queryItems[@"code"]) {
             self.modalInPresentation = YES;
             self.tableView.userInteractionEnabled = NO;
             [self addActivityIndicatorTo:sender];
-            NSArray *components = [urlString componentsSeparatedByString:@"/auth/?code="];
-            id callback = ^(NSString* status, BOOL success) {
-                if ([status isEqualToString:@"DEMO"] && success) {
+            id callback = ^(id status, BOOL success) {
+                if ([status isKindOfClass:NSString.class] && [status isEqualToString:@"DEMO"] && success) {
                     showDialog(self, localize(@"login.warn.title.demomode", nil), localize(@"login.warn.message.demomode", nil));
                 }
                 [self callbackMicrosoftAuth:status success:success forCell:sender];
             };
-            [[[MicrosoftAuthenticator alloc] initWithInput:components[1]] loginWithCallback:callback];
+            [[[MicrosoftAuthenticator alloc] initWithInput:queryItems[@"code"]] loginWithCallback:callback];
         } else {
-            NSArray *components = [urlString componentsSeparatedByString:@"/auth/?error="];
-            if ([components[1] hasPrefix:@"access_denied"]) {
+            if ([queryItems[@"error"] hasPrefix:@"access_denied"]) {
                 // Ignore access denial responses
                 return;
             }
-            NSString *outError = [components[1]
-                stringByReplacingOccurrencesOfString:@"&error_description=" withString:@": "];
-            outError = [outError stringByRemovingPercentEncoding];
-            showDialog(self, localize(@"Error", nil), outError);
+            showDialog(self, localize(@"Error", nil), queryItems[@"error_description"]);
         }
     }];
 
@@ -251,15 +256,19 @@
     cell.accessoryView = nil;
 }
 
-- (void)callbackMicrosoftAuth:(NSString *)status success:(BOOL)success forCell:(UITableViewCell *)cell {
+- (void)callbackMicrosoftAuth:(id)status success:(BOOL)success forCell:(UITableViewCell *)cell {
     if (status != nil) {
-        cell.detailTextLabel.text = status;
-        if (!success) {
+        if (success) {
+            cell.detailTextLabel.text = status;
+        } else {
             self.modalInPresentation = NO;
             self.tableView.userInteractionEnabled = YES;
             [self removeActivityIndicatorFrom:cell];
-            NSLog(@"[MSA] Error: %@", status);
-            showDialog(self, localize(@"Error", nil), status);
+            cell.detailTextLabel.text = [status localizedDescription];
+            NSData *errorData = ((NSError *)status).userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+            NSString *errorStr = [[NSString alloc] initWithData:errorData encoding:NSUTF8StringEncoding];
+            NSLog(@"[MSA] Error: %@", errorStr);
+            showDialog(self, localize(@"Error", nil), errorStr);
         }
     } else if (success) {
         [self removeActivityIndicatorFrom:cell];

@@ -28,7 +28,7 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
             self.authData[@"accessToken"] = @"offline";
             callback(nil, YES);
         } else {
-            callback(error.localizedDescription, NO);
+            callback(error, NO);
         }
     }];
 }
@@ -74,7 +74,7 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
             [self acquireXboxProfile:uhs xstsToken:xsts callback:innerCallback];
         } callback:callback];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        callback(error.localizedDescription, NO);
+        callback(error, NO);
     }];
 }
 
@@ -101,7 +101,7 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
         NSString *errorString;
         NSData *errorData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
         if (errorData == nil) {
-            callback(error.localizedDescription, NO);
+            callback(error, NO);
             return;
         }
         NSDictionary *errorDict = [NSJSONSerialization JSONObjectWithData:errorData options:kNilOptions error:nil];
@@ -142,7 +142,7 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
         self.authData[@"xboxGamertag"] = response[@"profileUsers"][0][@"settings"][1][@"value"];
         callback(nil, YES);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        callback(error.localizedDescription, NO);
+        callback(error, NO);
     }];
 }
 
@@ -159,7 +159,7 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
         self.authData[@"accessToken"] = response[@"access_token"];
         [self checkMCProfile:response[@"access_token"] callback:callback];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        callback(error.localizedDescription, NO);
+        callback(error, NO);
     }];
 }
 

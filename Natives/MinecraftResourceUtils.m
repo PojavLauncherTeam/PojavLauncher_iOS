@@ -509,6 +509,7 @@ static AFURLSessionManager* manager;
             if (!success) return;
 
             isUseStackQueueCall = json[@"arguments"] != nil;
+            manager = nil;
 
             dispatch_async(dispatch_get_main_queue(), ^{
                 callback(nil, mainProgress, nil);
