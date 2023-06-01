@@ -218,6 +218,7 @@
 "preference.detail.java_args" = "مرر الحجج إلى جافا عند بدء Minecraft. كن حذرا، هذا يمكن أن يجعل عطل اللعبة إذا تم تعديله بشكل غير صحيح.";
 "preference.placeholder.java_args" = "حدد الدفعات...";
 "preference.title.env_variables" = "متغيرات البيئة";
+"preference.placeholder.env_variables" = "حدد المتغيرات...";
 "preference.title.auto_ram" = "ذاكرة الوصول العشوائية التلقائية";
 "preference.detail.auto_ram" = "تمكين  ذاكرة الوصول العشوائي التلقائي";
 "preference.warn.auto_ram" = "تعطيل هذا الخيار على جهاز غير مكسور يمكن أن يخلق عدم استقرار إذا تم تغييره. المتابعة بحذر.";
