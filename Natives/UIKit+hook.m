@@ -19,7 +19,7 @@ void init_hookUIKitConstructor(void) {
 
     if (realUIIdiom == UIUserInterfaceIdiomTV) {
         if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-#pragma clang push
+#pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
             // If you are about to test iPadOS idiom on tvOS, there's no better way for this
             class_setSuperclass(NSClassFromString(@"UITableConstants_Pad"), NSClassFromString(@"UITableConstants_TV"));

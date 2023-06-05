@@ -90,8 +90,7 @@
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
-
-    // TODO: display size in the detail label
+    
     return cell;
 }
 
@@ -120,15 +119,6 @@ viewForFooterInSection:(NSInteger)section
         }
     }
 }
-
-/*
-- (UIContextMenuConfiguration *)contextMenuInteraction:(UIContextMenuInteraction *)interaction configurationForMenuAtLocation:(CGPoint)location
-{
-    return [UIContextMenuConfiguration configurationWithIdentifier:nil previewProvider:nil actionProvider:^UIMenu * _Nullable(NSArray<UIMenuElement *> * _Nonnull suggestedActions) {
-        return [UIMenu menuWithTitle:self.array[indexPath.row] children:@[files, filza, santander]];
-    }];
-}
-*/
 
 - (id)createOpenScheme:(NSString *)scheme at:(NSString *)directory {
     return ^(UIAction *action) {

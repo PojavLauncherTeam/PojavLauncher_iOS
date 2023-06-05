@@ -137,8 +137,7 @@
     NSMutableDictionary *result = [NSMutableDictionary new];
     NSArray<NSURLQueryItem *> *queryItems = [NSURLComponents componentsWithString:url].queryItems;
     for (NSURLQueryItem *item in queryItems) {
-        result[item.name] = 
-item.value;
+        result[item.name] = item.value;
     }
     return result;
 }

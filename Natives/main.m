@@ -126,17 +126,6 @@ void init_logDeviceAndVer(char *argument) {
     NSLog(@"[Pre-Init] Device: %s", getenv("POJAV_DETECTEDHW"));
     NSLog(@"[Pre-Init] iOS %s (%s)", getenv("POJAV_DETECTEDSW"), getenv("POJAV_DETECTEDINST"));
     
-    NSString *jvmPath = [NSString stringWithFormat:@"%s/java_runtimes", getenv("BUNDLE_PATH")];
-    if (![fm fileExistsAtPath:jvmPath]) {
-#if !CONFIG_RELEASE
-        setenv("POJAV_PREFER_EXTERNAL_JRE", "1", 1);
-        NSLog(@"[Java] !!! THIS FEATURE IS A WORK IN PROGRESS !!!");
-        NSLog(@"[Java] Loading runtimes from Documents directory.");
-#else
-        NSLog(@"[Java] No runtimes available to use.");
-#endif
-    }
-    
     NSLog(@"[Pre-init] Entitlements availability:");
     printEntitlementAvailability(@"com.apple.developer.kernel.extended-virtual-addressing");
     printEntitlementAvailability(@"com.apple.developer.kernel.increased-memory-limit");
@@ -271,10 +260,12 @@ void init_setupMultiDir() {
         NSLog(@"[Pre-init] Restored game directory preference (%@)\n", multidir);
     }
 
+    NSString *jvmPath = [NSString stringWithFormat:@"%s/java_runtimes", getenv("POJAV_HOME")];
     NSString *lasmPath = [NSString stringWithFormat:@"%s/Library/Application Support/minecraft", getenv("POJAV_HOME")]; //libr
     NSString *multidirPath = [NSString stringWithFormat:@"%s/instances/%@", getenv("POJAV_HOME"), multidir];
     NSString *demoPath = [NSString stringWithFormat:@"%s/.demo", getenv("POJAV_HOME")];
 
+    [fm createDirectoryAtPath:jvmPath withIntermediateDirectories:YES attributes:nil error:nil];
     [fm createDirectoryAtPath:demoPath withIntermediateDirectories:YES attributes:nil error:nil];
     [fm createDirectoryAtPath:multidirPath withIntermediateDirectories:YES attributes:nil error:nil];
     [fm removeItemAtPath:lasmPath error:nil];

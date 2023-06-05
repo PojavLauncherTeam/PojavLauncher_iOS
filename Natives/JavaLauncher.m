@@ -82,26 +82,6 @@ void init_loadCustomJvmFlags() {
     }
 }
 
-NSString* environmentFailsafes(int minVersion) {
-    NSString *jvmPath = [NSString stringWithFormat:@"%s/java_runtimes", getenv("POJAV_PREFER_EXTERNAL_JRE") ? getenv("POJAV_HOME") : getenv("BUNDLE_PATH")];
-    NSString *javaHome = nil;
-
-    NSString *jre8Path = [NSString stringWithFormat:@"%@/java-8-openjdk", jvmPath];
-    NSString *jre17Path = [NSString stringWithFormat:@"%@/java-17-openjdk", jvmPath];
-
-    if ([fm fileExistsAtPath:jre8Path] && minVersion <= 8) {
-        javaHome = jre8Path;
-    } else if ([fm fileExistsAtPath:jre17Path] && minVersion <= 17) {
-        javaHome = jre17Path;
-    }
-
-    if (javaHome == nil) {
-        showDialog(currentVC(), localize(@"Error", nil), [NSString stringWithFormat:@"Minecraft %@ requires Java %d in order to run. Please install it first.", getPreference(@"selected_version"), minVersion]);
-    }
-
-    return javaHome;
-}
-
 int launchJVM(NSString *username, id launchTarget, int width, int height, int minVersion) {
     init_loadDefaultEnv();
     init_loadCustomEnv();
@@ -110,35 +90,31 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
 
     NSLog(@"[JavaLauncher] Beginning JVM launch");
 
-    NSString *javaHome = getPreference(@"java_home");
-    if (![javaHome hasPrefix:@"/"]) {
-        javaHome = [NSString stringWithFormat:@"%s/java_runtimes/%@", getenv("POJAV_PREFER_EXTERNAL_JRE") ? getenv("POJAV_HOME") : getenv("BUNDLE_PATH"), javaHome];
-    }
-
-    // We handle unset JAVA_HOME right there
-    if (getSelectedJavaVersion() < minVersion) {
-        NSLog(@"[JavaLauncher] Attempting to change to Java %d (actual might be higher)", minVersion);
-        javaHome = environmentFailsafes(minVersion);
-        NSLog(@"[JavaLauncher] JAVA_HOME is now set to %@", javaHome);
-    } /* else if (javaHome.length == 0) {
-        javaHome_pre = environmentFailsafes(minVersion);
-        setPreference(@"java_home", javaHome);
-        NSLog(@"[JavaLauncher] JAVA_HOME environment variable was not set. Default to %@ for future use.\n", javaHome);
-    } */ else {
-        if (![fm fileExistsAtPath:javaHome]) {
-            javaHome = environmentFailsafes(minVersion);
-            setPreference(@"java_home", javaHome);
-            NSLog(@"[JavaLauncher] Failed to locate %@. Restored default value for JAVA_HOME.", javaHome);
+    NSString *defaultJRETag;
+    if ([launchTarget isKindOfClass:NSDictionary.class]) {
+        if (minVersion == 8) {
+            defaultJRETag = @"1_16_5_older";
         } else {
-            NSLog(@"[JavaLauncher] Restored preference: JAVA_HOME is set to %@\n", javaHome);
+            defaultJRETag = @"1_17_newer";
         }
+    } else {
+        defaultJRETag = @"install_jar";
     }
+    NSString *javaHome = getSelectedJavaHome(defaultJRETag);
 
     if (javaHome == nil) {
+        // TODO: localize
+        if ([defaultJRETag isEqualToString:@"install_jar"]) {
+            // TODO: have auto option
+            showDialog(currentVC(), localize(@"Error", nil), [NSString stringWithFormat:@"%@ requires Java %d in order to run. Please install it first and specify it in Manage Runtimes.", launchTarget, minVersion]);
+        } else {
+            showDialog(currentVC(), localize(@"Error", nil), [NSString stringWithFormat:@"Minecraft %@ requires Java %d in order to run. Please install it first and specify it in Manage Runtimes.", getPreference(@"selected_version"), minVersion]);
+        }
         return 1;
     }
 
     setenv("JAVA_HOME", javaHome.UTF8String, 1);
+    NSLog(@"[JavaLauncher] JAVA_HOME has been set to %@", javaHome);
 
     NSString *renderer = getPreference(@"renderer");
     if (renderer.length == 0) {
@@ -191,19 +167,18 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     // Load java
     NSString *libjlipath8 = [NSString stringWithFormat:@"%@/lib/jli/libjli.dylib", javaHome]; // java 8
     NSString *libjlipath11 = [NSString stringWithFormat:@"%@/lib/libjli.dylib", javaHome]; // java 11+
-    setenv("INTERNAL_JLI_PATH", libjlipath11.UTF8String, 1);
-    BOOL isJava8;
-    void* libjli = dlopen(libjlipath11.UTF8String, RTLD_GLOBAL);
-    isJava8 = libjli == NULL;
-    if (!libjli) {
-        NSDebugLog(@"[Init] Can't load %@ (%s), trying %@", libjlipath11, dlerror(), libjlipath8);
-        setenv("INTERNAL_JLI_PATH", libjlipath8.UTF8String, 1);
-        libjli = dlopen(libjlipath8.UTF8String, RTLD_GLOBAL);
-        if (!libjli) {
-            NSLog(@"[Init] JLI lib = NULL: %s", dlerror());
-            return -1;
-        }
+    BOOL isJava8 = [fm fileExistsAtPath:libjlipath8];
+    setenv("INTERNAL_JLI_PATH", (isJava8 ? libjlipath8 : libjlipath11).UTF8String, 1);
+    void* libjli = dlopen(getenv("INTERNAL_JLI_PATH"), RTLD_GLOBAL);
 
+    if (!libjli) {
+        const char *error = dlerror();
+        NSLog(@"[Init] JLI lib = NULL: %s", error);
+        showDialog(currentVC(), localize(@"Error", nil), @(error));
+        return 1;
+    }
+
+    if (isJava8) {
         // Setup Caciocavallo
         margv[++margc] = "-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel";
         margv[++margc] = "-Dawt.toolkit=net.java.openjdk.cacio.ctc.CTCToolkit";

@@ -136,6 +136,7 @@ add_executable(PojavLauncher
   LauncherPreferencesViewController.m
   LauncherPrefContCfgViewController.m
   LauncherPrefGameDirViewController.m
+  LauncherPrefManageJREViewController.m
   LauncherSplitViewController.m
   MinecraftResourceUtils.m
   PickTextField.m
