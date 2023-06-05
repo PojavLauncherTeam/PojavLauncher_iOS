@@ -19,34 +19,6 @@
 @property(nonatomic) UIMenu* currentMenu;
 @end
 
-/*
-Current design:
-- Internal
- + java 8     [✔️] (java 8 int selected)
- + java 17
-- External
- + java 8
- + java 17    [✔️] (java 17 ext selected)
- + java 22    [✔️] (java 22 ext selected)
- + etc
-
-TODO:
-- [Menu] Default version <1.17
-- [Menu] Default version 1.17+
- + java 8
- + java 17
- + java 22
-- Java 8
- + int 20230101           [✔️]
- + ext 20230425
- + ext (openj9)
-- Java 17
- + int 20230101
- + ext (hotfix) 20230604  [✔️]
-- Java 22
- + ext 20230405           [✔️]
-*/
-
 @implementation LauncherPrefManageJREViewController
 
 - (void)viewDidLoad
