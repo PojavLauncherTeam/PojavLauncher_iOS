@@ -111,6 +111,9 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
             showDialog(currentVC(), localize(@"Error", nil), [NSString stringWithFormat:@"Minecraft %@ requires Java %d in order to run. Please install it first and specify it in Manage Runtimes.", getPreference(@"selected_version"), minVersion]);
         }
         return 1;
+    } else if ([javaHome hasPrefix:@(getenv("POJAV_HOME"))]) {
+        // Activate Library Validation bypass for external runtime
+        init_bypassDyldLibValidation();
     }
 
     setenv("JAVA_HOME", javaHome.UTF8String, 1);

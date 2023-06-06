@@ -373,16 +373,6 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                 @"class": LauncherPrefManageJREViewController.class,
                 @"enableCondition": whenNotInGame
             },
-            @{@"key": @"java_home", // Use Java 17 for Minecraft < 1.17
-                @"hasDetail": @YES,
-                @"icon": @"cube",
-                @"type": self.typeSwitch,
-                @"enableCondition": ^BOOL(){
-                    return (![getPreference(@"slimmed") boolValue]) && whenNotInGame();
-                },
-                // false: 8, true: 17
-                @"customSwitchValue": @[@"java-8-openjdk", @"java-17-openjdk"]
-            },
             @{@"key": @"java_args",
                 @"hasDetail": @YES,
                 @"icon": @"slider.vertical.3",

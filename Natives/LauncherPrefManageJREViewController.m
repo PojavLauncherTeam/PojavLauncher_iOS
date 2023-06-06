@@ -160,7 +160,6 @@
 
     // Update checkmark
     NSInteger runtimeCount = [self tableView:tableView numberOfRowsInSection:indexPath.section];
-    NSLog(@"count %d", runtimeCount);
     for (int i = 0; i < runtimeCount; i++) {
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:indexPath.section]];
         if (i == indexPath.row) {
@@ -202,7 +201,7 @@
             actionWithTitle:localize(@"None", nil)
             image:nil
             identifier:nil
-            handler:nil]];
+            handler:^(UIAction *action){}]];
     }
 
     self.currentMenu = [UIMenu menuWithTitle:cell.textLabel.text children:menuItems];

@@ -306,7 +306,7 @@ void init_setupHomeDirectory() {
         [fm createDirectoryAtPath:homeDir withIntermediateDirectories:YES attributes:nil error:&homeError];
     }
     
-    setenv("POJAV_HOME", homeDir.UTF8String, 1);
+    setenv("POJAV_HOME", realpath(homeDir.UTF8String, NULL), 1);
 }
 
 int main(int argc, char *argv[]) {

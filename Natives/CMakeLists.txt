@@ -96,6 +96,7 @@ target_link_libraries(AFNetworking
 
 
 add_executable(PojavLauncher
+  dyld_bypass_validation.m
   main.m
   main_hook.m
   JavaLauncher.m

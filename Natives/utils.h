@@ -60,6 +60,7 @@ BOOL isJITEnabled(BOOL checkCSOps);
 void* gbuffer; // OSMesa framebuffer
 
 // Init functions
+void init_bypassDyldLibValidation();
 void init_hookFunctions();
 void init_hookUIKitConstructor();
 void init_setupMultiDir();
