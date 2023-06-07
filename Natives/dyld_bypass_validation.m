@@ -22,33 +22,23 @@ char patch[] = {0x88,0x00,0x00,0x58,0x00,0x01,0x1f,0xd6,0x1f,0x20,0x03,0xd5,0x1f
 extern void* __mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset);
 extern int __fcntl(int fildes, int cmd, void* param);
 
-// Since we're patching libSystem, we must avoid calling to it
-int builtin_cerror_nocancel(int err) {
-    errno = err; // FIXME: rewrite this to asm
-    return err ? -1 : 0;
-}
-
+// Since we're patching libsystem_kernel, we must avoid calling to its functions
 static void builtin_memcpy(char *target, char *source, size_t size) {
     for (int i = 0; i < size; i++) {
         target[i] = source[i];
     }
 }
 
-int builtin_mprotect(void *addr, size_t len, int prot);
-ASM(_builtin_mprotect:              \n
-    mov x16, #0x4a                  \n
-    svc #0x80                       \n
-    b.lo #24                        \n
-    stp x29, x30, [sp, #-0x10]!     \n
-    mov x29, sp                     \n
-    bl _builtin_cerror_nocancel     \n
-    mov sp, x29                     \n
-    ldp x29, x30, [sp], 0x10        \n
+kern_return_t builtin_vm_protect(mach_port_name_t task, mach_vm_address_t address, mach_vm_size_t size, boolean_t set_max, vm_prot_t new_prot);
+// Originated from _kernelrpc_mach_vm_protect_trap
+ASM(_builtin_vm_protect: \n
+    mov x16, #-0xe       \n
+    svc #0x80            \n
     ret
 );
 
 bool redirectFunction(void *patchAddr, void *target) {
-    kern_return_t kret = vm_protect(mach_task_self(), (vm_address_t)patchAddr, sizeof(patch), false, PROT_READ | PROT_WRITE | VM_PROT_COPY);
+    kern_return_t kret = builtin_vm_protect(mach_task_self(), (vm_address_t)patchAddr, sizeof(patch), false, PROT_READ | PROT_WRITE | VM_PROT_COPY);
     if (kret != KERN_SUCCESS) {
         NSDebugLog(@"[DyldLVBypass] vm_protect(RW) fails at line %d", __LINE__);
         return FALSE;
@@ -57,10 +47,9 @@ bool redirectFunction(void *patchAddr, void *target) {
     builtin_memcpy((char *)patchAddr, patch, sizeof(patch));
     *(void **)((char*)patchAddr + 16) = target;
     
-    kret = builtin_mprotect((void *)((uint64_t)patchAddr & -PAGE_SIZE), PAGE_SIZE, PROT_READ | PROT_EXEC);
-    //vm_protect(mach_task_self(), (vm_address_t)patchAddr, sizeof(patch), false, PROT_READ | PROT_EXEC);
+    kret = builtin_vm_protect(mach_task_self(), (vm_address_t)patchAddr, sizeof(patch), false, PROT_READ | PROT_EXEC);
     if (kret != KERN_SUCCESS) {
-        NSDebugLog(@"[DyldLVBypass] mprotect(RX) fails at line %d", __LINE__);
+        NSDebugLog(@"[DyldLVBypass] vm_protect(RX) fails at line %d", __LINE__);
         return FALSE;
     }
     
