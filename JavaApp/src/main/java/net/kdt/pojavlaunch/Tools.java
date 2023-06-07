@@ -268,43 +268,10 @@ public final class Tools
     }
 
     private static void showError(final String title, final Throwable e, final boolean exitIfOk, final boolean showMore) {
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        e.printStackTrace(pw);
-        pw.flush();
         e.printStackTrace();
-        //UIKit.showError(title, sw.toString(), exitIfOk);
-/*
-        Platform.getPlatform().runOnUIThread(() -> {
-            WindowAlertController alertController = new WindowAlertController(title, sw.toString(), UIAlertControllerStyle.Alert);
-            alertController.addAction(new UIAlertAction("OK",
-                UIAlertActionStyle.Default, (action) -> {
-                    alertController.dismissViewController(true, null);
-                    if (exitIfOk) {
-                        System.exit(0);
-                    }
-                })
-            );
-            alertController.show();
-        });
-*/
+        System.exit(1);
     }
-/*
-    public static void dialogOnUiThread(final Activity ctx, final CharSequence title, final CharSequence message) {
-        ctx.runOnUiThread(new Runnable(){
 
-                @Override
-                public void run() {
-                    new AlertDialog.Builder(ctx)
-                        .setTitle(title)
-                        .setMessage(message)
-                        .setPositiveButton(android.R.string.ok, null)
-                        .show();
-                }
-            });
-
-    }
-*/
     public static void moveInside(String from, String to) {
         File fromFile = new File(from);
         for (File fromInside : fromFile.listFiles()) {
@@ -330,12 +297,6 @@ public final class Tools
             from.renameTo(toFrom);
         }
     }
-/*
-    public static void openURL(Activity act, String url) {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        act.startActivity(browserIntent);
-    }
-*/
 
     public static void preProcessLibraries(DependentLibrary[] libraries) {
         // Ignore some libraries since they are unsupported (jinput, text2speech) or unused (LWJGL)
@@ -548,24 +509,7 @@ public final class Tools
     public static void write(String path, String content) throws IOException {
         write(path, content.getBytes());
     }
-/*
-    public static byte[] loadFromAssetToByte(Context ctx, String inFile) {
-        byte[] buffer = null;
 
-        try {
-            InputStream stream = ctx.getAssets().open(inFile);
-
-            int size = stream.available();
-            buffer = new byte[size];
-            stream.read(buffer);
-            stream.close();
-        } catch (IOException e) {
-            // Handle exceptions here
-            e.printStackTrace();
-        }
-        return buffer;
-    }
-*/
     public static void downloadFile(String urlInput, String nameOutput) throws IOException {
         File file = new File(nameOutput);
         DownloadUtils.downloadFile(urlInput, file);
