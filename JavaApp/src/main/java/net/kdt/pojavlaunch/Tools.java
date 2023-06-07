@@ -272,9 +272,8 @@ public final class Tools
         PrintWriter pw = new PrintWriter(sw);
         e.printStackTrace(pw);
         pw.flush();
-        
-        UIKit.showError(title, sw.toString(), exitIfOk);
-        
+        e.printStackTrace();
+        //UIKit.showError(title, sw.toString(), exitIfOk);
 /*
         Platform.getPlatform().runOnUIThread(() -> {
             WindowAlertController alertController = new WindowAlertController(title, sw.toString(), UIAlertControllerStyle.Alert);

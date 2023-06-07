@@ -19,6 +19,10 @@
 // ldr x8, value; br x8; value: .ascii "\x41\x42\x43\x44\x45\x46\x47\x48"
 char patch[] = {0x88,0x00,0x00,0x58,0x00,0x01,0x1f,0xd6,0x1f,0x20,0x03,0xd5,0x1f,0x20,0x03,0xd5,0x41,0x41,0x41,0x41,0x41,0x41,0x41,0x41};
 
+// Signatures to search for
+char mmapSig[] = {0xB0, 0x18, 0x80, 0xD2, 0x01, 0x10, 0x00, 0xD4};
+char fcntlSig[] = {0x90, 0x0B, 0x80, 0xD2, 0x01, 0x10, 0x00, 0xD4};
+
 extern void* __mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset);
 extern int __fcntl(int fildes, int cmd, void* param);
 
@@ -57,21 +61,62 @@ bool redirectFunction(void *patchAddr, void *target) {
     return TRUE;
 }
 
+bool searchAndPatch(char *base, char *signature, int length, void *target) {
+    char *patchAddr = NULL;
+    kern_return_t kret;
+    
+    for(int i=0; i < 0x100000; i++) {
+        if (base[i] == signature[0] && memcmp(base+i, signature, length) == 0) {
+            patchAddr = base + i;
+            break;
+        }
+    }
+    
+    if (patchAddr == NULL) {
+        NSDebugLog(@"[DyldLVBypass] hook fails line %d", __LINE__);
+        return FALSE;
+    }
+    
+    NSDebugLog(@"[DyldLVBypass] found function at %p", patchAddr);
+    return redirectFunction(patchAddr, target);
+}
+
+void *getDyldBase(void) {
+    struct task_dyld_info dyld_info;
+    mach_vm_address_t image_infos;
+    struct dyld_all_image_infos *infos;
+    
+    mach_msg_type_number_t count = TASK_DYLD_INFO_COUNT;
+    kern_return_t ret;
+    
+    ret = task_info(mach_task_self_,
+                    TASK_DYLD_INFO,
+                    (task_info_t)&dyld_info,
+                    &count);
+    
+    if (ret != KERN_SUCCESS) {
+        return NULL;
+    }
+    
+    image_infos = dyld_info.all_image_info_addr;
+    
+    infos = (struct dyld_all_image_infos *)image_infos;
+    return (void *)infos->dyldImageLoadAddress;
+}
+
 void* hooked_mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset) {
-    const char *homeDir = getenv("POJAV_HOME");
-    void *alloc;
     char filePath[PATH_MAX];
-    int newFlags;
     memset(filePath, 0, sizeof(filePath));
     
     // Check if the file is our "in-memory" file
-    if (__fcntl(fd, F_GETPATH, filePath) != -1) {
+    if (fd && __fcntl(fd, F_GETPATH, filePath) != -1) {
+        const char *homeDir = getenv("POJAV_HOME");
         if (!strncmp(filePath, homeDir, strlen(homeDir))) {
-            newFlags = MAP_PRIVATE | MAP_ANONYMOUS;
+            int newFlags = MAP_PRIVATE | MAP_ANONYMOUS;
             if (addr != 0) {
                 newFlags |= MAP_FIXED;
             }
-            alloc = __mmap(addr, len, PROT_READ | PROT_WRITE, newFlags, 0, 0);
+            void *alloc = __mmap(addr, len, PROT_READ | PROT_WRITE, newFlags, 0, 0);
             
             void *memoryLoadedFile = __mmap(NULL, len, PROT_READ, MAP_PRIVATE, fd, offset);
             memcpy(alloc, memoryLoadedFile, len);
@@ -87,12 +132,7 @@ void* hooked_mmap(void *addr, size_t len, int prot, int flags, int fd, off_t off
     return __mmap(addr, len, prot, flags, fd, offset);
 }
 
-int hooked_fcntl(int fildes, int cmd, ...) {
-    va_list ap;
-    va_start(ap, cmd);
-    void *param = va_arg(ap, void *);
-    va_end(ap);
-    
+int hooked___fcntl(int fildes, int cmd, void *param) {
     if (cmd == F_ADDFILESIGS_RETURN) {
         const char *homeDir = getenv("POJAV_HOME");
         char filePath[PATH_MAX];
@@ -119,12 +159,26 @@ int hooked_fcntl(int fildes, int cmd, ...) {
     return __fcntl(fildes, cmd, param);
 }
 
+int hooked_fcntl(int fildes, int cmd, ...) {
+    va_list ap;
+    va_start(ap, cmd);
+    void *param = va_arg(ap, void *);
+    va_end(ap);
+    return hooked___fcntl(fildes, cmd, param);
+}
+
 void init_bypassDyldLibValidation() {
     NSDebugLog(@"[DyldLVBypass] init");
     dispatch_async(dispatch_get_main_queue(), ^{
         // Prevent main thread from executing stuff inside the memory page being modified
         usleep(10000);
     });
-    redirectFunction(mmap, hooked_mmap);
-    redirectFunction(fcntl, hooked_fcntl);
+    if (@available(iOS 15.0, *)) {
+        char *dyldBase = getDyldBase();
+        searchAndPatch(dyldBase, mmapSig, sizeof(mmapSig), hooked_mmap);
+        searchAndPatch(dyldBase, fcntlSig, sizeof(fcntlSig), hooked___fcntl);
+    } else {
+        redirectFunction(mmap, hooked_mmap);
+        redirectFunction(fcntl, hooked_fcntl);
+    }
 }

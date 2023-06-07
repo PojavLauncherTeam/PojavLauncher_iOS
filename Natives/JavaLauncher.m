@@ -114,6 +114,15 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     } else if ([javaHome hasPrefix:@(getenv("POJAV_HOME"))]) {
         // Activate Library Validation bypass for external runtime
         init_bypassDyldLibValidation();
+
+        // Symlink libawt_xawt.dylib
+        NSString *dest = [NSString stringWithFormat:@"%@/lib/libawt_xawt.dylib", javaHome];
+        NSString *source = [NSString stringWithFormat:@"%s/Frameworks/libawt_xawt.dylib", getenv("BUNDLE_PATH")];
+        NSError *error;
+        [fm createSymbolicLinkAtPath:dest withDestinationPath:source error:&error];
+        if (error) {
+            NSLog(@"[JavaLauncher] Symlink libawt_xawt.dylib failed: %@", error.localizedDescription);
+        }
     }
 
     setenv("JAVA_HOME", javaHome.UTF8String, 1);
