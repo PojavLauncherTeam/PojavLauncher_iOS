@@ -98,30 +98,35 @@ void* hooked_mmap(void *addr, size_t len, int prot, int flags, int fd, off_t off
     return __mmap(addr, len, prot, flags, fd, offset);
 }
 
-int hooked_fcntl(int fildes, int cmd, void* param) {
-    const char *homeDir = getenv("POJAV_HOME");
-    char filePath[PATH_MAX];
-    memset(filePath, 0, sizeof(filePath));
+int hooked_fcntl(int fildes, int cmd, ...) {
+    va_list ap;
+    va_start(ap, cmd);
+    void *param = va_arg(ap, void *);
+    va_end(ap);
     
-    // Check if the file is our "in-memory" file
-    if (__fcntl(fildes, F_GETPATH, filePath) != -1) {
-        if (!strncmp(filePath, homeDir, strlen(homeDir))) {
-            if (cmd == F_ADDFILESIGS_RETURN) {
+    if (cmd == F_ADDFILESIGS_RETURN) {
+        const char *homeDir = getenv("POJAV_HOME");
+        char filePath[PATH_MAX];
+        memset(filePath, 0, sizeof(filePath));
+        
+        // Check if the file is our "in-memory" file
+        if (__fcntl(fildes, F_GETPATH, filePath) != -1) {
+            if (!strncmp(filePath, homeDir, strlen(homeDir))) {
                 fsignatures_t *fsig = (fsignatures_t*)param;
                 // called to check that cert covers file.. so we'll make it cover everything ;)
                 fsig->fs_file_start = 0xFFFFFFFF;
                 return 0;
             }
-            
-            // Signature sanity check by dyld
-            if (cmd == F_CHECK_LV) {
-                // Just say everything is fine
-                return 0;
-            }
         }
     }
     
-    // If for another file, we pass through
+    // Signature sanity check by dyld
+    else if (cmd == F_CHECK_LV) {
+        // Just say everything is fine
+        return 0;
+    }
+    
+    // If for another command or file, we pass through
     return __fcntl(fildes, cmd, param);
 }
 
