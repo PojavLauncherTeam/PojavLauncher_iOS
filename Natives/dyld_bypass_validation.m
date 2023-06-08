@@ -169,10 +169,11 @@ int hooked_fcntl(int fildes, int cmd, ...) {
 
 void init_bypassDyldLibValidation() {
     NSDebugLog(@"[DyldLVBypass] init");
-    dispatch_async(dispatch_get_main_queue(), ^{
-        // Prevent main thread from executing stuff inside the memory page being modified
-        usleep(10000);
-    });
+    
+    // Modifying exec page during execution may cause SIGBUS, so ignore it now
+    // Before calling JLI_Launch, this will be set back to SIG_DFL
+    signal(SIGBUS, SIG_IGN);
+    
     char *dyldBase = getDyldBase();
     redirectFunction(mmap, hooked_mmap);
     redirectFunction(fcntl, hooked_fcntl);
