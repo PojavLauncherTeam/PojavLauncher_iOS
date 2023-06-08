@@ -173,12 +173,9 @@ void init_bypassDyldLibValidation() {
         // Prevent main thread from executing stuff inside the memory page being modified
         usleep(10000);
     });
-    if (@available(iOS 15.0, *)) {
-        char *dyldBase = getDyldBase();
-        searchAndPatch(dyldBase, mmapSig, sizeof(mmapSig), hooked_mmap);
-        searchAndPatch(dyldBase, fcntlSig, sizeof(fcntlSig), hooked___fcntl);
-    } else {
-        redirectFunction(mmap, hooked_mmap);
-        redirectFunction(fcntl, hooked_fcntl);
-    }
+    char *dyldBase = getDyldBase();
+    redirectFunction(mmap, hooked_mmap);
+    redirectFunction(fcntl, hooked_fcntl);
+    searchAndPatch(dyldBase, mmapSig, sizeof(mmapSig), hooked_mmap);
+    searchAndPatch(dyldBase, fcntlSig, sizeof(fcntlSig), hooked___fcntl);
 }
