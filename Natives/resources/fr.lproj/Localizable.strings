@@ -186,9 +186,11 @@
 "preference.detail.silence_with_switch" = "Activer pour désactiver l'audio lorsque le mode silencieux est activé. Les écouteurs et les hauts-parleurs externes ne sont pas affectés.";
 "preference.title.default_gamepad_ctrl" = "Configuration du contrôleur";
 "preference.title.hardware_hide" = "Masquer les contrôles lorsque le hardware est connecté";
+"preference.detail.hardware_hide" = "Active le comportement de désactiver automatiquement la superposition de contrôle à l'écran quand une souris ou un contrôleur de jeu est connecté.";
 "preference.title.gesture_mouse" = "Mouvements de la souris";
 "preference.detail.gesture_mouse" = "Active les gestes, comme par exemple appuyer pour placer un bloc, maintenir enfoncé pour casser le bloc, faire défiler avec 2 doigts";
 "preference.title.gesture_hotbar" = "Gestures de la hotbar";
+"preference.detail.gesture_hotbar" = "Active les gestes, tels que toucher à l'emplacement de la barre d'inventaire, échanger des objets entre la main, jeter des objets";
 "preference.title.disable_haptics" = "Désactiver les touches tactiles à l'écran";
 "preference.title.press_duration" = "Durée d'un appui long (ms)";
 "preference.detail.press_duration" = "Déclenche le bouton pour détruire des blocs et jeter des objets.";
@@ -204,6 +206,8 @@
 "preference.detail.slideable_hotbar" = "Rend la barre d'action glissante comme la molette de la souris";
 
 "preference.title.gyroscope_enable" = "Activer les contrôles du gyroscope";
+"preference.detail.gyroscope_enable" = "Activer ceci vous permettra de tourner dans le jeu en tournant votre téléphone";
+"preference.title.gyroscope_invert_x_axis" = "Inverser le gyroscope à gauche et à droite";
 "preference.detail.gyroscope_invert_x_axis" = "Inverser l'axe X du gyroscope";
 "preference.title.gyroscope_sensitivity" = "Sensibilité des contrôles du gyroscope";
 "preference.detail.gyroscope_sensitivity" = "Ajuster la sensibilité des contrôles du gyroscope";
@@ -237,6 +241,8 @@
 "preference.detail.debug_show_layout_bounds" = "Afficher les limites, les marges de clip";
 "preference.title.debug_show_layout_overlap" = "Afficher le chevauchement de la mise en page";
 "preference.detail.debug_show_layout_overlap" = "Superposez chaque vue avec une couleur transparente pour révéler des vues qui se chevauchent.";
+
+"controller_configurator.title.current" = "Fichier de configuration de la manette";
 "controller_configurator.title.type.xbox" = "Xbox";
 "controller_configurator.title.type.playstation" = "PlayStation";
 
