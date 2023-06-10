@@ -187,6 +187,7 @@
 "preference.title.default_gamepad_ctrl" = "Configuration du contrôleur";
 "preference.title.hardware_hide" = "Masquer les contrôles lorsque le hardware est connecté";
 "preference.title.gesture_mouse" = "Mouvements de la souris";
+"preference.detail.gesture_mouse" = "Active les gestes, comme par exemple appuyer pour placer un bloc, maintenir enfoncé pour casser le bloc, faire défiler avec 2 doigts";
 "preference.title.gesture_hotbar" = "Gestures de la hotbar";
 "preference.title.disable_haptics" = "Désactiver les touches tactiles à l'écran";
 "preference.title.press_duration" = "Durée d'un appui long (ms)";
