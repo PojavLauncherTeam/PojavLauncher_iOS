@@ -282,3 +282,4 @@
 "controller_configurator.section.game_mappings" = "Mappages de jeu";
 "controller_configurator.section.menu_mappings" = "Mappages du menu";
 "controller_configurator.section.controller_style" = "Type de manette";
+"controller_configurator.section.footer.controller_style" = "Afficher différents noms de boutons du contrôleur dans cette configuration.";
