@@ -288,12 +288,12 @@ BOOL shouldDismissPopover = YES;
         NSError *error;
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self.ctrlView.layoutDictionary options:NSJSONWritingPrettyPrinted error:&error];
         if (jsonData == nil) {
-            showDialog(self, localize(@"custom_controls.control_menu.save.error.json", nil), error.localizedDescription);
+            showDialog(localize(@"custom_controls.control_menu.save.error.json", nil), error.localizedDescription);
             return;
         }
         BOOL success = [jsonData writeToFile:[NSString stringWithFormat:@"%s/controlmap/%@.json", getenv("POJAV_HOME"), field.text] options:NSDataWritingAtomic error:&error];
         if (!success) {
-            showDialog(self, localize(@"custom_controls.control_menu.save.error.write", nil), error.localizedDescription);
+            showDialog(localize(@"custom_controls.control_menu.save.error.write", nil), error.localizedDescription);
             return;
         }
 

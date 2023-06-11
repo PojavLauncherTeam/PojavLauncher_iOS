@@ -111,7 +111,7 @@
             if (status == nil) {
                 [self setInteractionEnabled:YES];
             } else if (!success) {
-                showDialog(self, localize(@"Error", nil), status);
+                showDialog(localize(@"Error", nil), status);
             }
         };
         [BaseAuthenticator.current refreshTokenWithCallback:callback];
@@ -239,11 +239,14 @@
 
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url {
     if (controller.documentPickerMode == UIDocumentPickerModeImport) {
+        JavaGUIViewController *vc = [[JavaGUIViewController alloc] init];
+        vc.filepath = url.path;
+        if (!vc.requiredJavaVersion) {
+            return;
+        }
         [self invokeAfterJITEnabled:^{
-            JavaGUIViewController *vc = [[JavaGUIViewController alloc] init];
             vc.modalPresentationStyle = UIModalPresentationFullScreen;
-            vc.filepath = url.path;
-            NSLog(@"ModInstaller: launching %@", vc.filepath);
+            NSLog(@"[ModInstaller] launching %@", vc.filepath);
             [self presentViewController:vc animated:YES completion:nil];
         }];
     }

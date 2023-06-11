@@ -22,6 +22,7 @@ include_directories(
   "external/AFNetworking/UIKit+AFNetworking"
   "external/DBNumberedSlider/Classes"
   "external/NRFileManager"
+  "external/UnzipKit"
   "external/fishhook"
   "external/mesa"
   "external/AltKit"
@@ -174,6 +175,7 @@ target_link_libraries(PojavLauncher
   "-framework IOKit"
   "-framework QuartzCore"
   "-framework UIKit"
+  "-framework UnzipKit"
   "-framework WebKit"
   "-weak_framework SafariServices"
 )

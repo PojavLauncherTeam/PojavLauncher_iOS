@@ -153,7 +153,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                   [UIApplication.sharedApplication setAlternateIconName:iconName completionHandler:^(NSError * _Nullable error) {
                       if (error == nil) return;
                       NSLog(@"Error in appicon: %@", error);
-                      showDialog(self, localize(@"Error", nil), error.localizedDescription);
+                      showDialog(localize(@"Error", nil), error.localizedDescription);
                   }];
               },
               @"pickKeys": @[
@@ -214,7 +214,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                       }
                   } else {
                       NSLog(@"Error in erase_demo_data: %@", error);
-                      showDialog(self, localize(@"Error", nil), error.localizedDescription);
+                      showDialog(localize(@"Error", nil), error.localizedDescription);
                   }
               }
             }

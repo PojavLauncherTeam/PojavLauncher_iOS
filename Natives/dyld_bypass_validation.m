@@ -168,6 +168,10 @@ int hooked_fcntl(int fildes, int cmd, ...) {
 }
 
 void init_bypassDyldLibValidation() {
+    static BOOL bypassed;
+    if (bypassed) return;
+    bypassed = YES;
+
     NSDebugLog(@"[DyldLVBypass] init");
     
     // Modifying exec page during execution may cause SIGBUS, so ignore it now

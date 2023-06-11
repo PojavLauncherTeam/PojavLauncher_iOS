@@ -13,4 +13,4 @@ UIEdgeInsets getDefaultSafeArea();
 CGRect getSafeArea();
 void setSafeArea(CGRect safeArea);
 
-NSString* getSelectedJavaHome(NSString* defaultJRETag);
+NSString* getSelectedJavaHome(NSString* defaultJRETag, int minVersion);

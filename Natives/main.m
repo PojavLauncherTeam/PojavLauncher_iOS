@@ -309,6 +309,8 @@ void init_setupHomeDirectory() {
     setenv("POJAV_HOME", realpath(homeDir.UTF8String, NULL), 1);
 }
 
+// NSSetUncaughtExceptionHandler
+
 int main(int argc, char *argv[]) {
     if (pJLI_Launch) {
         return pJLI_Launch(argc, (const char **)argv,

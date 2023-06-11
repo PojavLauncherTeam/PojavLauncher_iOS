@@ -234,7 +234,7 @@ viewForFooterInSection:(NSInteger)section
             [self.array removeObjectAtIndex:indexPath.row];
             [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade]; 
         } else {
-            showDialog(self, localize(@"Error", nil), error.localizedDescription);
+            showDialog(localize(@"Error", nil), error.localizedDescription);
         }
     }];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:localize(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
@@ -291,7 +291,7 @@ viewForFooterInSection:(NSInteger)section
         if (!isFooterView) {
             sender.text = sender.placeholder;
         }
-        showDialog(self, localize(@"Error", nil), error.localizedDescription);
+        showDialog(localize(@"Error", nil), error.localizedDescription);
     }
 }
 

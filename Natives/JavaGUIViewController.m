@@ -4,6 +4,7 @@
 #import "JavaLauncher.h"
 #import "LauncherPreferences.h"
 #import "TrackedTextField.h"
+#import "UnzipKit.h"
 #import "ios_uikit_bridge.h"
 #include "glfw_keycodes.h"
 #include "utils.h"
@@ -188,8 +189,10 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
     rgbArray = calloc(4, (size_t) (windowWidth * windowHeight));
 
     setenv("POJAV_SKIP_JNI_GLFW", "1", 1);
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        launchJVM(nil, self.filepath, windowWidth, windowHeight, 8);
+    
+dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        launchJVM(nil, self.filepath, windowWidth, windowHeight, _requiredJavaVersion);
+        _requiredJavaVersion = 0;
     });
 }
 
@@ -228,6 +231,69 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
         [button addTarget:self action:@selector(executebtn_down:) forControlEvents:UIControlEventTouchDown];
         [button addTarget:self action:@selector(executebtn_up:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
     }
+}
+
+@synthesize requiredJavaVersion = _requiredJavaVersion;
+- (int)requiredJavaVersion {
+    if (_requiredJavaVersion) {
+        return _requiredJavaVersion;
+    }
+
+    NSError *error;
+    UZKArchive *archive = [[UZKArchive alloc] initWithPath:self.filepath error:&error];
+    if (error) {
+        [self showErrorMessage:error.localizedDescription];
+        return _requiredJavaVersion = 0;
+    }
+
+    NSData *manifestData = [archive extractDataFromFile:@"META-INF/MANIFEST.MF" error:&error];
+    if (error) {
+        [self showErrorMessage:error.localizedDescription];
+        return _requiredJavaVersion = 0;
+    }
+
+    NSString *manifestStr = [[NSString alloc] initWithData:manifestData encoding:NSUTF8StringEncoding];
+    NSArray *manifestLines = [manifestStr componentsSeparatedByCharactersInSet:NSCharacterSet.newlineCharacterSet];
+    NSString *mainClass;
+    for (NSString *line in manifestLines) {
+        if ([line hasPrefix:@"Main-Class: "]) {
+            mainClass = [line substringFromIndex:12];
+            break;
+        }
+    }
+    if (!mainClass) {
+        [self showErrorMessage:[NSString stringWithFormat:
+            localize(@"java.error.missing_main_class", nil), self.filepath.lastPathComponent]];
+        return _requiredJavaVersion = 0;
+    }
+    mainClass = [NSString stringWithFormat:@"%@.class",
+        [mainClass stringByReplacingOccurrencesOfString:@"." withString:@"/"]];
+
+    NSData *mainClassData = [archive extractDataFromFile:mainClass error:&error];
+    if (error) {
+        [self showErrorMessage:error.localizedDescription];
+        return _requiredJavaVersion = 0;
+    }
+
+    uint32_t magic = OSSwapConstInt32(*(uint32_t*)mainClassData.bytes);
+    if (magic != 0xCAFEBABE) {
+        [self showErrorMessage:[NSString stringWithFormat:@"Invalid magic number: 0x%x", magic]];
+        return _requiredJavaVersion = 0;
+    }
+
+    uint16_t *version = (uint16_t *)(mainClassData.bytes+sizeof(magic));
+    uint16_t minorVer = OSSwapConstInt16(version[0]);
+    uint16_t majorVer = OSSwapConstInt16(version[1]);
+    NSLog(@"[ModInstaller] Main class version: %u.%u", majorVer, minorVer);
+
+    return _requiredJavaVersion = MAX(2, majorVer - 44);
+}
+
+- (void)showErrorMessage:(NSString *)message {
+    free(rgbArray);
+    rgbArray = NULL;
+    surfaceView = nil;
+    showDialog(localize(@"Error", nil), message);
 }
 
 - (void)executebtn:(ControlButton *)sender withAction:(int)action {

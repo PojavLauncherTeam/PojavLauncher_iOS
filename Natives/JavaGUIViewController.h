@@ -9,5 +9,6 @@
 @end
 
 @interface JavaGUIViewController : UIViewController
-    @property NSString* filepath;
+    @property(nonatomic) NSString* filepath;
+    @property(nonatomic, readonly) int requiredJavaVersion;
 @end

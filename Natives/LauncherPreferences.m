@@ -215,10 +215,24 @@ UIEdgeInsets getDefaultSafeArea() {
 
 #pragma mark Java runtime
 
-NSString* getSelectedJavaHome(NSString* defaultJRETag) {
+NSString* getSelectedJavaHome(NSString* defaultJRETag, int minVersion) {
     NSDictionary *pref = getPreference(@"java_homes");
     NSDictionary<NSString *, NSString *> *selected = pref[@"0"];
     NSString *selectedVer = selected[defaultJRETag];
+    if ([defaultJRETag isEqualToString:@"install_jar"] && minVersion > selectedVer.intValue) {
+        NSArray *sortedVersions = [pref.allKeys valueForKeyPath:@"self.integerValue"];
+        sortedVersions = [sortedVersions sortedArrayUsingSelector:@selector(compare:)];
+        for (NSNumber *version in sortedVersions) {
+            if (version.intValue >= minVersion) {
+                selectedVer = version.stringValue;
+                break;
+            }
+        }
+        if (!selectedVer) {
+            NSLog(@"Error: requested Java >= %d was not installed!", minVersion);
+            return nil;
+        }
+    }
 
     id selectedDir = pref[selectedVer];
     if ([selectedDir isEqualToString:@"internal"]) {

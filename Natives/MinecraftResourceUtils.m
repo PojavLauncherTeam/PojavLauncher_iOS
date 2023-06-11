@@ -41,7 +41,7 @@ static AFURLSessionManager* manager;
     // for now
     BOOL accessible = [BaseAuthenticator.current.authData[@"username"] hasPrefix:@"Demo."] || BaseAuthenticator.current.authData[@"xboxGamertag"] != nil;
     if (!accessible && show) {
-        showDialog(currentVC(), localize(@"Error", nil), @"Minecraft can't be legally installed when logged in with a local account. Please switch to an online account to continue.");
+        showDialog(localize(@"Error", nil), @"Minecraft can't be legally installed when logged in with a local account. Please switch to an online account to continue.");
     }
     return accessible;
 }
@@ -174,7 +174,7 @@ static AFURLSessionManager* manager;
         if (error != nil) {
             NSString *errorStr = [NSString stringWithFormat:@"Failed to create directory %@: %@", verPath, error.localizedDescription];
             NSLog(@"[MCDL] Error: %@", errorStr);
-            showDialog(currentVC(), localize(@"Error", nil), errorStr);
+            showDialog(localize(@"Error", nil), errorStr);
             callback(nil, nil, nil);
             return;
         }
@@ -190,14 +190,14 @@ static AFURLSessionManager* manager;
             if (error != nil) { // FIXME: correct?
                 NSString *errorStr = [NSString stringWithFormat:localize(@"launcher.mcl.error_download", NULL), versionURL, error.localizedDescription];
                 NSLog(@"[MCDL] Error: %@ %@", errorStr, NSThread.callStackSymbols);
-                showDialog(currentVC(), localize(@"Error", nil), errorStr);
+                showDialog(localize(@"Error", nil), errorStr);
                 callback(nil, nil, nil);
                 return;
             } else {
                 // A version from the offical server won't likely to have inheritsFrom, so return immediately
                 if (![self checkSHA:versionSHA forFile:jsonPath altName:nil]) {
                     // Abort when a downloaded file's SHA mismatches
-                    showDialog(currentVC(), localize(@"Error", nil), [NSString stringWithFormat:@"Failed to verify file %@: SHA1 mismatch", versionStr]);
+                    showDialog(localize(@"Error", nil), [NSString stringWithFormat:@"Failed to verify file %@: SHA1 mismatch", versionStr]);
                     callback(nil, nil, nil);
                     return;
                 }
@@ -255,7 +255,7 @@ static AFURLSessionManager* manager;
         }
 
         // If the inheritsFrom is not found, return an error
-        showDialog(currentVC(), localize(@"Error", nil), [NSString stringWithFormat:@"Could not find inheritsFrom=%@ for version %@", json[@"inheritsFrom"], versionStr]);
+        showDialog(localize(@"Error", nil), [NSString stringWithFormat:@"Could not find inheritsFrom=%@ for version %@", json[@"inheritsFrom"], versionStr]);
     }
 }
 
@@ -366,12 +366,12 @@ static AFURLSessionManager* manager;
                 cancel = YES;
                 NSString *errorStr = [NSString stringWithFormat:localize(@"launcher.mcl.error_download", NULL), url, error.localizedDescription];
                 NSLog(@"[MCDL] Error: %@ %@", errorStr, NSThread.callStackSymbols);
-                showDialog(currentVC(), localize(@"Error", nil), errorStr);
+                showDialog(localize(@"Error", nil), errorStr);
                 callback(nil, nil);
             } else if (![self checkSHA:sha1 forFile:path altName:nil]) {
                 // Abort when a downloaded file's SHA mismatches
                 cancel = YES;
-                showDialog(currentVC(), localize(@"Error", nil), [NSString stringWithFormat:@"Failed to verify file %@: SHA1 mismatch", path.lastPathComponent]);
+                showDialog(localize(@"Error", nil), [NSString stringWithFormat:@"Failed to verify file %@: SHA1 mismatch", path.lastPathComponent]);
                 callback(nil, nil);
             }
             dispatch_group_leave(group);
@@ -457,7 +457,7 @@ static AFURLSessionManager* manager;
                 jobsAvailable = -3;
                 NSString *errorStr = [NSString stringWithFormat:localize(@"launcher.mcl.error_download", NULL), url, error.localizedDescription];
                 NSLog(@"[MCDL] Error: %@ %@", errorStr, NSThread.callStackSymbols);
-                showDialog(currentVC(), localize(@"Error", nil), errorStr);
+                showDialog(localize(@"Error", nil), errorStr);
                 callback(nil, nil);
             } else if (![self checkSHA:hash forFile:path altName:name logSuccess:NO]) {
                 // Abort when a downloaded file's SHA mismatches
@@ -466,7 +466,7 @@ static AFURLSessionManager* manager;
                     return;
                 }
                 jobsAvailable = -2;
-                showDialog(currentVC(), localize(@"Error", nil), [NSString stringWithFormat:@"Failed to verify file %@: SHA1 mismatch", path.lastPathComponent]);
+                showDialog(localize(@"Error", nil), [NSString stringWithFormat:@"Failed to verify file %@: SHA1 mismatch", path.lastPathComponent]);
                 callback(nil, nil);
             }
             ++verifiedCount;

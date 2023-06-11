@@ -19,9 +19,6 @@
 
 extern char **environ;
 
-static int margc = -1;
-static const char* margv[1000];
-
 void init_loadDefaultEnv() {
     /* Define default env */
 
@@ -61,7 +58,7 @@ void init_loadCustomEnv() {
     }
 }
 
-void init_loadCustomJvmFlags() {
+void init_loadCustomJvmFlags(int* argc, const char** argv) {
     NSString *jvmargs = getPreference(@"java_args");
     if (jvmargs == nil) return;
     BOOL isFirstArg = YES;
@@ -70,29 +67,28 @@ void init_loadCustomJvmFlags() {
         if ([jvmarg length] == 0) continue;
         //margv[margc] = (char *) [jvmarg UTF8String];
 
-        ++margc;
+        ++*argc;
         if (isFirstArg) {
             isFirstArg = NO;
-            margv[margc] = jvmarg.UTF8String;
+            argv[*argc] = jvmarg.UTF8String;
         } else {
-            margv[margc] = [@"-" stringByAppendingString:jvmarg].UTF8String;
+            argv[*argc] = [@"-" stringByAppendingString:jvmarg].UTF8String;
         }
 
-        NSLog(@"[JavaLauncher] Added custom JVM flag: %s", margv[margc]);
+        NSLog(@"[JavaLauncher] Added custom JVM flag: %s", argv[*argc]);
     }
 }
 
 int launchJVM(NSString *username, id launchTarget, int width, int height, int minVersion) {
+    NSLog(@"[JavaLauncher] Beginning JVM launch");
+
     init_loadDefaultEnv();
     init_loadCustomEnv();
 
-    NSString *librariesPath = [NSString stringWithFormat:@"%s/libs", getenv("BUNDLE_PATH")];
-
-    NSLog(@"[JavaLauncher] Beginning JVM launch");
-
+    NSLog(@"[JavaLauncher] Looking for Java %d or later", minVersion);
     NSString *defaultJRETag;
     if ([launchTarget isKindOfClass:NSDictionary.class]) {
-        if (minVersion == 8) {
+        if (minVersion <= 8) {
             defaultJRETag = @"1_16_5_older";
         } else {
             defaultJRETag = @"1_17_newer";
@@ -100,16 +96,13 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     } else {
         defaultJRETag = @"install_jar";
     }
-    NSString *javaHome = getSelectedJavaHome(defaultJRETag);
+    NSString *javaHome = getSelectedJavaHome(defaultJRETag, minVersion);
 
     if (javaHome == nil) {
-        // TODO: localize
-        if ([defaultJRETag isEqualToString:@"install_jar"]) {
-            // TODO: have auto option
-            showDialog(currentVC(), localize(@"Error", nil), [NSString stringWithFormat:@"%@ requires Java %d in order to run. Please install it first and specify it in Manage Runtimes.", launchTarget, minVersion]);
-        } else {
-            showDialog(currentVC(), localize(@"Error", nil), [NSString stringWithFormat:@"Minecraft %@ requires Java %d in order to run. Please install it first and specify it in Manage Runtimes.", getPreference(@"selected_version"), minVersion]);
-        }
+        UIKit_returnToSplitView();
+        BOOL isInstallJar = [defaultJRETag isEqualToString:@"install_jar"];
+        showDialog(localize(@"Error", nil), [NSString stringWithFormat:localize(@"java.error.missing_runtime", nil),
+            isInstallJar ? [launchTarget lastPathComponent] : getPreference(@"selected_version"), minVersion]);
         return 1;
     } else if ([javaHome hasPrefix:@(getenv("POJAV_HOME"))]) {
         // Activate Library Validation bypass for external runtime
@@ -147,6 +140,9 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     }
     NSLog(@"[JavaLauncher] Max RAM allocation is set to %d MB", allocmem);
 
+    int margc = -1;
+    const char *margv[1000];
+
     margv[++margc] = [NSString stringWithFormat:@"%@/bin/java", javaHome].UTF8String;
     margv[++margc] = "-XstartOnFirstThread";
     margv[++margc] = "-Djava.system.class.loader=net.kdt.pojavlaunch.PojavClassLoader";
@@ -160,6 +156,8 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     margv[++margc] = [NSString stringWithFormat:@"-DUIScreen.maximumFramesPerSecond=%d", (int)UIScreen.mainScreen.maximumFramesPerSecond].UTF8String;
     margv[++margc] = "-Dorg.lwjgl.system.allocator=system";
     margv[++margc] = "-Dlog4j2.formatMsgNoLookups=true";
+
+    NSString *librariesPath = [NSString stringWithFormat:@"%s/libs", getenv("BUNDLE_PATH")];
     if([getPreference(@"cosmetica") boolValue]) {
         margv[++margc] = [NSString stringWithFormat:@"-javaagent:%@/arc_dns_injector.jar=23.95.137.176", librariesPath].UTF8String;
     }
@@ -186,7 +184,8 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     if (!libjli) {
         const char *error = dlerror();
         NSLog(@"[Init] JLI lib = NULL: %s", error);
-        showDialog(currentVC(), localize(@"Error", nil), @(error));
+        UIKit_returnToSplitView();
+        showDialog(localize(@"Error", nil), @(error));
         return 1;
     }
 
@@ -250,7 +249,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
         }
     }
 
-    init_loadCustomJvmFlags();
+    init_loadCustomJvmFlags(&margc, (const char **)margv);
     NSLog(@"[Init] Found JLI lib");
 
     margv[++margc] = "-cp";
@@ -285,6 +284,9 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     signal(SIGBUS, SIG_DFL);
     signal(SIGILL, SIG_DFL);
     signal(SIGFPE, SIG_DFL);
+
+    // Free split VC
+    tmpRootVC = nil;
 
     return pJLI_Launch(++margc, margv,
                    0, NULL, // sizeof(const_jargs) / sizeof(char *), const_jargs,

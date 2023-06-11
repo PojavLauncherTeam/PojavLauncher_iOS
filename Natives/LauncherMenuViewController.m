@@ -329,7 +329,7 @@
                 [ALTServerManager.sharedManager stopDiscovering];
             } else {
                 NSLog(@"[AltKit] Error enabling JIT: %@", error.localizedRecoverySuggestion);
-                showDialog(self, localize(@"login.jit.fail.title", nil), localize(@"login.jit.fail.description", nil));
+                showDialog(localize(@"login.jit.fail.title", nil), localize(@"login.jit.fail.description", nil));
             }
             [connection disconnect];
         }];
@@ -369,14 +369,14 @@
             } else {
                 NSLog(@"[JitStreamer] Error enabling JIT: %@", responseDict[@"message"]);
                 if(shouldRunAltKit) { [self enableJITWithAltKit]; }
-                else { showDialog(self, localize(@"login.jit.fail.title", nil), localize(@"login.jit.fail.description", nil)); }
+                else { showDialog(localize(@"login.jit.fail.title", nil), localize(@"login.jit.fail.description", nil)); }
             }
         };
         [manager POST:[NSString stringWithFormat:@"http://%@/attach/%d/", address, getpid()] parameters:nil headers:nil progress:nil success:handleResponse failure:handleResponse];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"[JitStreamer] Server not found or VPN not connected.");
         if(shouldRunAltKit) { [self enableJITWithAltKit]; }
-        else { showDialog(self, localize(@"login.jit.fail.title", nil), localize(@"login.jit.fail.description", nil)); }
+        else { showDialog(localize(@"login.jit.fail.title", nil), localize(@"login.jit.fail.description", nil)); }
     }];
 }
 

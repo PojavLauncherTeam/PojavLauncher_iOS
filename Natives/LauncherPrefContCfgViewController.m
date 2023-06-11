@@ -280,12 +280,12 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
         NSError *error;
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self.currentMappings options:NSJSONWritingPrettyPrinted error:&error];
         if (jsonData == nil) {
-            showDialog(self, localize(@"custom_controls.control_menu.save.error.json", nil), error.localizedDescription);
+            showDialog(localize(@"custom_controls.control_menu.save.error.json", nil), error.localizedDescription);
             return;
         }
         BOOL success = [jsonData writeToFile:[NSString stringWithFormat:@"%s/controlmap/gamepads/%@.json", getenv("POJAV_HOME"), field.text] options:NSDataWritingAtomic error:&error];
         if (!success) {
-            showDialog(self, localize(@"custom_controls.control_menu.save.error.write", nil), error.localizedDescription);
+            showDialog(localize(@"custom_controls.control_menu.save.error.write", nil), error.localizedDescription);
             return;
         }
 
