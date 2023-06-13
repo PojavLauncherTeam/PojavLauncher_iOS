@@ -61,6 +61,7 @@
 "init.migrateDir" = "O diretório de dados do PojavLauncher agora é %@. Todos os dados existentes foram movidos para a nova localização.";
 
 "launcher.mcl.downloading_file" = "Baixando %@";
+"launcher.mcl.error_download" = "Falha ao baixar %@: %@";
 
 "launcher.menu.custom_controls" = "Controles personalizados";
 "launcher.menu.install_jar" = "Instalar .jar";
@@ -79,6 +80,7 @@
 "login.menu.sendlogs" = "Envie seus registros";
 "login.option.add" = "Adicionar conta";
 "login.option.select" = "Selecionar conta";
+"login.option.demo" = "Conta demonstrativa";
 "login.option.microsoft" = "Conta Microsoft";
 "login.option.local" = "Conta local";
 
@@ -86,6 +88,7 @@
 
 "login.warn.title.localmode" = "O modo off-line agora é o modo local.";
 "login.warn.message.localmode" = "Você pode continuar jogando versões instaladas, mas não pode mais baixar o Minecraft sem uma conta paga. Não será fornecido suporte para problemas com contas locais, ou outros meios de aquisição do Minecraft.";
+"login.msa.error.xsts.noxbox" = "Xbox Live atualmente não está disponível no seu país.\nCódigo de erro: 2148916235";
 "login.msa.error.xsts.krverify" = "Sua conta precisa ser verificada por seus pais antes de continuar.\nCódigo de erro: 2148916236 ou 2148916237.";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Adquirindo o token de acesso";
