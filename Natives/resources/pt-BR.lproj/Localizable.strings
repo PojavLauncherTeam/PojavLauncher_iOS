@@ -174,12 +174,15 @@
 "preference.placeholder.env_variables" = "Especificar variáveis...";
 "preference.title.auto_ram" = "RAM automática";
 "preference.detail.auto_ram" = "Ativa o ajuste automático de RAM";
+"preference.warn.auto_ram" = "Desabilitar essa opção em um dispositivo unjailbroken pode criar instabilidade se alterado. Prossiga com cuidado.";
 "preference.title.allocated_memory" = "Alocação de memória (MB)";
 "preference.detail.allocated_memory" = "Controla o quanto de RAM será usado pelo Minecraft";
+"preference.warn.allocated_memory" = "Devido a limitações no próprio sistema operacional, essa opção pode causar instabilidade a isso e a valores elevados. Prossiga com cuidado.";
 "preference.title.custom_env" = "Variáveis ambientais";
 "preference.detail.custom_env" = "Esta opção está em construção. Criar e editar custom_env.txt enquanto isso.";
 
 "preference.title.debug_skip_wait_jit" = "Ignorar caixa de diálogo \"Aguardando JIT\"";
+"preference.detail.debug_skip_wait_jit" = "Isso não te permite iniciar sem JIT, ao invés disso pule a verificação de depuração, pois a verificação falhou em certos jailbreaks.";
 "preference.title.debug_ipad_ui" = "Desbloquear iPadOS UI";
 "preference.detail.debug_ipad_ui" = "Desbloqueie a interface de usuário exclusiva do iPad (alerta, teclado, etc.) se habilitada ou iPhone UI se estiver desativado.";
 "preference.title.debug_auto_correction" = "Correção Automática";
@@ -190,11 +193,15 @@
 "preference.detail.debug_show_layout_bounds" = "Mostrar limites e margens do clipe";
 "preference.title.debug_show_layout_overlap" = "Mostrar sobreposição de layout";
 "preference.detail.debug_show_layout_overlap" = "Sobreponha cada exibições com cores transparentes para revelar visões de sobreposição.";
+
+"controller_configurator.title.current" = "Configuração do arquivo do controle";
 "controller_configurator.title.type.xbox" = "Xbox";
 "controller_configurator.title.type.playstation" = "PlayStation";
 
-"controller_configurator.xbox.title.bumper_left" = "Gatilho Esquerdo";
-"controller_configurator.xbox.title.bumper_right" = "Gatilho Direito";
+"controller_configurator.xbox.title.bumper_left" = "Botão L1";
+"controller_configurator.xbox.title.bumper_right" = "Botão R1";
+"controller_configurator.xbox.title.trigger_left" = "Botão L2";
+"controller_configurator.xbox.title.trigger_right" = "Botão R2";
 "controller_configurator.xbox.title.named_back" = "Guia";
 "controller_configurator.xbox.title.named_start" = "Menu";
 "controller_configurator.xbox.title.named_a" = "A";
