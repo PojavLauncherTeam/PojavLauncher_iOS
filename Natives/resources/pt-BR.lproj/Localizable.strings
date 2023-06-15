@@ -75,6 +75,7 @@
 "login.jit.checking" = "Verificando o JIT";
 "login.jit.enabled" = "O JIT foi ativado";
 "login.jit.fail" = "Usuário '%s' não pode ser habilitado.";
+"login.jit.fail.title" = "JIT não pode ser ativado em seu dispositivo.";
 
 // Login buttons
 "login.menu.sendlogs" = "Envie seus registros";
@@ -83,6 +84,8 @@
 "login.option.demo" = "Conta demonstrativa";
 "login.option.microsoft" = "Conta Microsoft";
 "login.option.local" = "Conta local";
+
+"login.warn.title.legacy_device" = "A próxima versão do PojavLauncher não será compatível com esse dispositivo.";
 
 "login.warn.title.demomode" = "Sua conta é Demonstrativa";
 
@@ -146,6 +149,7 @@
 
 "preference.title.resolution" = "Resolução (%)";
 "preference.detail.resolution" = "Permite que você diminua a resolução do jogo.";
+"preference.title.default_gamepad_ctrl" = "Configuração do Controlador";
 "preference.title.disable_haptics" = "Desativar os atalhos na tela";
 "preference.title.press_duration" = "Duração de pressionamento longo (ms)";
 "preference.title.button_scale" = "Escala dos botões virtuais (%)";
@@ -178,7 +182,7 @@
 "preference.title.debug_skip_wait_jit" = "Ignorar caixa de diálogo \"Aguardando JIT\"";
 "preference.title.debug_ipad_ui" = "Desbloquear iPadOS UI";
 "preference.detail.debug_ipad_ui" = "Desbloqueie a interface de usuário exclusiva do iPad (alerta, teclado, etc.) se habilitada ou iPhone UI se estiver desativado.";
-"preference.title.debug_auto_correction" = "Auto correção";
+"preference.title.debug_auto_correction" = "Correção Automática";
 "preference.detail.debug_auto_correction" = "Habilitar correção automática ao digitar texto no jogo.";
 "preference.title.debug_hide_home_indicator" = "Ocultar indicador principal";
 "preference.detail.debug_hide_home_indicator" = "Isto desativará o indicador de casa de bloqueio. Você precisará usar o Acesso Orientado para ocultar e bloquear o indicador de casa ao mesmo tempo.";
@@ -186,4 +190,41 @@
 "preference.detail.debug_show_layout_bounds" = "Mostrar limites e margens do clipe";
 "preference.title.debug_show_layout_overlap" = "Mostrar sobreposição de layout";
 "preference.detail.debug_show_layout_overlap" = "Sobreponha cada exibições com cores transparentes para revelar visões de sobreposição.";
+"controller_configurator.title.type.xbox" = "Xbox";
+"controller_configurator.title.type.playstation" = "PlayStation";
+
+"controller_configurator.xbox.title.bumper_left" = "Gatilho Esquerdo";
+"controller_configurator.xbox.title.bumper_right" = "Gatilho Direito";
+"controller_configurator.xbox.title.named_back" = "Guia";
+"controller_configurator.xbox.title.named_start" = "Menu";
+"controller_configurator.xbox.title.named_a" = "A";
+"controller_configurator.xbox.title.named_b" = "B";
+"controller_configurator.xbox.title.named_x" = "X";
+"controller_configurator.xbox.title.named_y" = "Y";
+"controller_configurator.xbox.title.dpad_up" = "Para cima";
+"controller_configurator.xbox.title.dpad_down" = "Para baixo";
+"controller_configurator.xbox.title.dpad_left" = "Esquerda";
+"controller_configurator.xbox.title.dpad_right" = "Direita";
+"controller_configurator.xbox.title.thumb_left" = "Clique do analógico esquerdo";
+"controller_configurator.xbox.title.thumb_right" = "Clique do analógico direito";
+
+"controller_configurator.playstation.title.bumper_left" = "L1";
+"controller_configurator.playstation.title.bumper_right" = "R1";
+"controller_configurator.playstation.title.trigger_left" = "L2";
+"controller_configurator.playstation.title.trigger_right" = "R2";
 "controller_configurator.playstation.title.named_back" = "Selecionar";
+"controller_configurator.playstation.title.named_start" = "Começar";
+"controller_configurator.playstation.title.named_a" = "Xis";
+"controller_configurator.playstation.title.named_b" = "Bola";
+"controller_configurator.playstation.title.named_x" = "Quadrado";
+"controller_configurator.playstation.title.named_y" = "Triângulo";
+"controller_configurator.playstation.title.dpad_up" = "Para cima";
+"controller_configurator.playstation.title.dpad_down" = "Para baixo";
+"controller_configurator.playstation.title.dpad_left" = "Esquerda";
+"controller_configurator.playstation.title.dpad_right" = "Direita";
+"controller_configurator.playstation.title.thumb_left" = "L3";
+"controller_configurator.playstation.title.thumb_right" = "R3";
+
+"controller_configurator.section.config_files" = "Configuração atual do arquivo";
+"controller_configurator.section.game_mappings" = "Mapeamentos do jogo";
+"controller_configurator.section.controller_style" = "Tipo de controle";
