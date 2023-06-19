@@ -198,10 +198,6 @@ public final class Tools
         return strList.toArray(new String[0]);
     }
 
-    public static String artifactToPath(String group, String artifact, String version) {
-        return group.replaceAll("\\.", "/") + "/" + artifact + "/" + version + "/" + artifact + "-" + version + ".jar";
-    }
-
 /*
     private static String getLWJGL3ClassPath() {
         StringBuilder libStr = new StringBuilder();
@@ -328,9 +324,7 @@ public final class Tools
         preProcessLibraries(info.libraries);
         for (DependentLibrary libItem : info.libraries) {
             if (libItem._skip) continue;
-            
-            String[] libInfos = libItem.name.split(":");
-            String fullPath = Tools.DIR_HOME_LIBRARY + "/" + Tools.artifactToPath(libInfos[0], libInfos[1], libInfos[2]);
+            String fullPath = Tools.DIR_HOME_LIBRARY + "/" + libItem.downloads.artifact.path;
             if (!libDir.contains(fullPath)) {
                 libDir.add(fullPath);
             }

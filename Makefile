@@ -251,12 +251,17 @@ native:
 java:
 	echo '[PojavLauncher v$(VERSION)] java - start'
 	cd $(SOURCEDIR)/JavaApp; \
-	mkdir -p local_out/classes; \
+	rm -rf local_out/lwjgl; \
+	mkdir -p local_out/{classes,lwjgl}; \
 	$(BOOTJDK)/javac -cp "libs/*:libs_caciocavallo/*" -d local_out/classes $$(find src -type f -name "*.java" -print) -XDignore.symbol.file || exit 1; \
 	cd local_out/classes; \
 	$(BOOTJDK)/jar -cf ../launcher.jar android com net || exit 1; \
-	cp $(SOURCEDIR)/JavaApp/libs/lwjgl*.jar .. || exit 1; \
-	$(BOOTJDK)/jar -uf ../lwjgl-glfw.jar org || exit 1;
+	cp $(SOURCEDIR)/JavaApp/libs/lwjgl.jar .. || exit 1; \
+	cd ../lwjgl; \
+	find $(SOURCEDIR)/JavaApp/libs -name 'lwjgl-*.jar' -exec $(BOOTJDK)/jar -xf {} \; || exit 1; \
+	rm -rf META-INF; \
+	cp -R ../classes/org ./; \
+	$(BOOTJDK)/jar -uf ../lwjgl.jar . || exit 1;
 	echo '[PojavLauncher v$(VERSION)] java - end'
 
 jre: native
