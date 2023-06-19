@@ -91,7 +91,7 @@
 "login.warn.message.legacy_device" = "运行下一代版本的PojavLauncher启动器，你需要一台IOS14+ 或 IPad OS 14+ 的设备";
 "login.warn.title.legacy_ios" = "PojavLauncher 的下一个版本将需要系统更新。";
 "login.warn.message.legacy_ios" = "运行下一个主要版本，需要一台能够运行 iOS 14 或更高版本的设备。";
-"login.warn.title.limited_ram" = "该设备的可用内存有限。";
+"login.warn.title.limited_ram" = "设备运行内存不足警告！";
 "login.warn.message.limited_ram" = "我们建议启用自动分配内存大小，以防止不稳定和性能问题。";
 
 "login.warn.title.demomode" = "您现在是演示账户";
