@@ -16,6 +16,19 @@
         gles_##func = dlsym(RTLD_DEFAULT, #func); \
     }
 
+#define AliasDecl(NAME, EXT) \
+    asm(".global _"# NAME "\n_" #NAME ": b _" #NAME #EXT);
+
+// GL_KHR_debug
+AliasDecl(glDebugMessageCallback, KHR)
+AliasDecl(glDebugMessageControl, KHR)
+AliasDecl(glDebugMessageInsert, KHR)
+AliasDecl(glGetDebugMessageLog, KHR)
+AliasDecl(glGetObjectLabel, KHR)
+AliasDecl(glObjectLabel, KHR)
+AliasDecl(glPopDebugGroup, KHR)
+AliasDecl(glPushDebugGroup, KHR)
+
 int proxy_width, proxy_height, proxy_intformat, maxTextureSize;
 
 //void glBindFragDataLocationEXT(GLuint program, GLuint colorNumber, const char * name);

@@ -255,8 +255,8 @@ java:
 	$(BOOTJDK)/javac -cp "libs/*:libs_caciocavallo/*" -d local_out/classes $$(find src -type f -name "*.java" -print) -XDignore.symbol.file || exit 1; \
 	cd local_out/classes; \
 	$(BOOTJDK)/jar -cf ../launcher.jar android com net || exit 1; \
-	cp $(SOURCEDIR)/JavaApp/libs/lwjgl3-minecraft.jar ../lwjgl3-minecraft.jar || exit 1; \
-	$(BOOTJDK)/jar -uf ../lwjgl3-minecraft.jar org || exit 1;
+	cp $(SOURCEDIR)/JavaApp/libs/lwjgl*.jar .. || exit 1; \
+	$(BOOTJDK)/jar -uf ../lwjgl-glfw.jar org || exit 1;
 	echo '[PojavLauncher v$(VERSION)] java - end'
 
 jre: native
