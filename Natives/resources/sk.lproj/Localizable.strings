@@ -4,7 +4,7 @@
 */
 
 "game.menu.force_close" = "Vynútené ukončenie";
-"game.menu.log_output" = "Záznam výstupu";
+"game.menu.log_output" = "Záznam logu";
 "game.menu.custom_controls" = "Vlastné ovládacie prvky";
 
 // The play button
@@ -17,9 +17,9 @@
 
 "custom_controls.button_edit.name" = "Názov";
 "custom_controls.button_edit.size" = "Veľkosť";
-"custom_controls.button_edit.mapping" = "Priradenie ku klávese (bind)";
+"custom_controls.button_edit.mapping" = "Bindy";
 "custom_controls.button_edit.orientation" = "Orientácia";
-"custom_controls.button_edit.toggleable" = "Prepnuteľné (toggle) - po ťuknutí klávesa ostane stlačená";
+"custom_controls.button_edit.toggleable" = "Prepínateľné (toggle)";
 "custom_controls.button_edit.swipeable" = "Posunovateľné";
 "custom_controls.button_edit.bg_color" = "Farba pozadia tlačidla";
 "custom_controls.button_edit.stroke_color" = "Farba obrysu tlačidla";
@@ -51,6 +51,6 @@
 "preference.detail.gyroscope_sensitivity" = "Uprav si citlivosť gyroskopu na otáčanie";
 "preference.title.java_args" = "Spúštacie argumenty pre JVM";
 "preference.title.auto_ram" = "Auto RAM";
-"preference.detail.auto_ram" = "Automaticky bude meniť množstvo RAM";
+"preference.detail.auto_ram" = "Automaticky bude meniť alokovanú RAM";
 "preference.detail.allocated_memory" = "Určite, koľko pamäti bude mať Minecraft";
 "controller_configurator.playstation.title.named_back" = "Vyber";
