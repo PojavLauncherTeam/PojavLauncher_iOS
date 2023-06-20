@@ -67,6 +67,11 @@ public class PojavLauncher {
         MCOptionUtils.set("fullscreen", "false");
         MCOptionUtils.set("overrideWidth", size[0]);
         MCOptionUtils.set("overrideHeight", size[1]);
+        // Default settings for performance
+        MCOptionUtils.setDefault("mipmapLevels", "0");
+        MCOptionUtils.setDefault("particles", "1");
+        MCOptionUtils.setDefault("renderDistance", "2");
+        MCOptionUtils.setDefault("simulationDistance", "5");
         MCOptionUtils.save();
 
         // Setup Forge splash.properties
