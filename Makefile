@@ -89,6 +89,12 @@ $(warning Set PLATFORM to 7, which is equal to iOS Simulator.)
 else ifeq ($(PLATFORM),8)
 PLATFORM_NAME := tvossimulator
 $(warning Set PLATFORM to 8, which is equal to tvOS Simulator.)
+else ifeq ($(PLATFORM),11)
+PLATFORM_NAME := xros
+$(warning Set PLATFORM to 11, which is equal to visionOS.)
+else ifeq ($(PLATFORM),12)
+PLATFORM_NAME := xrsimulator
+$(warning Set PLATFORM to 12, which is equal to visionOS Simulator.)
 else
 $(error PLATFORM is not valid.)
 endif
@@ -117,9 +123,15 @@ METHOD_DIRCHECK   = \
 	fi
 	
 # Function to change the platform on Mach-O files.
-# iOS = 2, tvOS = 3, iOS Simulator = 7, tvOS Simulator = 8
+# iOS = 2, tvOS = 3, iOS Simulator = 7, tvOS Simulator = 8, visionOS = 11, visionOS Simulator = 12
+# https://github.com/apple-oss-distributions/xnu/blob/main/EXTERNAL_HEADERS/mach-o/loader.h
+# TODO: Change Info.plist for visionOS 1.0
 METHOD_CHANGE_PLAT = \
-	vtool -arch arm64 -set-build-version $(1) 14.0 16.0 -replace -output $(2) $(2)
+	if [ '$(1)' != '11' ] && [ '$(1)' != '12' ]; then \
+		vtool -arch arm64 -set-build-version $(1) 14.0 16.0 -replace -output $(2) $(2); \
+	else \
+		vtool -arch arm64 -set-build-version $(1) 1.0 1.0 -replace -output $(2) $(2); \
+	fi
 	
 # Function to package the application
 METHOD_PACKAGE = \
