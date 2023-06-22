@@ -77,6 +77,7 @@
 "login.jit.enabled" = "JIT telah dinyalakan";
 "login.jit.fail" = "JIT tidak dapat diaktifkan.";
 "login.jit.fail.title" = "JIT tidak bisa diaktifkan pada perangkat anda.";
+"login.jit.fail.description" = "Tidak ada integrasi yang dapat digunakan untuk mengaktifkan JIT secara otomatis di perangkat Anda, dan sekarang harus diaktifkan secara manual. Kesalahan telah dicatat ke latestlog.txt.";
 
 // Login buttons
 "login.menu.sendlogs" = "Kirim log-log kamu";
@@ -91,11 +92,13 @@
 "login.warn.title.legacy_ios" = "Rilis PojavLauncher selanjutnya memerlukan pembaruan sistem.";
 "login.warn.message.legacy_ios" = "Untuk menggunakan rilis selanjutnya, perangkat yang dapat menggunakan iOS 14 diperlukan.";
 "login.warn.title.limited_ram" = "Perangkat ini memiliki jumlah memori terbatas yang tersedia.";
+"login.warn.message.limited_ram" = "Kami merekomendasikan RAM Otomatis aktif untuk mencegah ketidakstabilan dan masalah performa.";
 
 "login.warn.title.demomode" = "Akun anda adalah akun demo";
 "login.warn.message.demomode" = "Sebagai pengganti offline dan mode lokal, mode demo akan memperbolehkan anda masuk ke akun Microsoft yang tidak mempunyai permainannya dan main versi Java Edition Trial, diadakan sejak versi 1.3.1 dan seterusnya. Versi lebih lama mempunyai permainan penuhnya, karena peluncur resmi tidak memberlakukan restriksi ini. Lihat website kita untuk dapat mempelajari lebih lanjut tentang transisi dari mode offline.";
 
 "login.warn.title.localmode" = "Mode offline sekarang menjadi mode lokal.";
+"login.warn.message.localmode" = "Anda bisa memainkan versi yang dipasang, tetapi Anda tidak akan bisa mengunduh Minecraft tanpa sebuah akun bayaran. Tidak akan ada dukungan atau bantuan tentang masalah dengan akun lokal, atau cara lain mendapatkan Minecraft.";
 
 "login.msa.error.xsts.noxboxacc" = "Tidak ada profil Xbox yang terdaftar di akun Microsoft ini. Mohon memastikan bahwa anda telag membuat sebuah profil Xbox.\nKode error: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live sekarang sedang tidak ada di negata anda.\nKode error: 2148916235";
@@ -135,6 +138,8 @@
 "preference.detail.debug_logging" = "Mencatat peraturan-peraturan dalam dan aksi ke latestlog.txt. Ini membantu pengembang untuk mencari masalah lebih mudah, tetapi Minecragt kemungkinan akan berjalan lebih lambat karena logs akan lebih sering dicatat.";
 "preference.title.jitstreamer_server" = "IP server JitStreamer";
 "preference.detail.jitstreamer_server" = "Memperbolehkan anda untuk mengganti ke sebuah IP server JitStream kustom, seperti untuk instansi yang dihost sendiri. Opsi ini bisa dibiarkan jika anda menggunakan server JitStreamer bawaan.";
+"preference.title.enable_altkit" = "Aktifkan integrasi AltKit";
+"preference.detail.enable_altkit" = "Ketika diaktifkan, Peluncur Pojav akan mencoba terhubung ke AltServer lokal untuk mengaktifkan JIT.";
 "preference.title.appicon" = "Atur ikon aplikasi";
 "preference.detail.appicon" = "Memperbolehkan anda untuk memilih antara beberapa ikon layar rumah berbeda untuk PojavLauncher.";
 "preference.title.appicon-default" = "Familiar PojavLauncher light";
@@ -149,6 +154,10 @@
 "preference.title.confirm.reset_settings" = "Ini akan menghapus semua peraturan yang telah kamu ubah, termasuk resolusi, besar tombol, dan argument Java.";
 "preference.title.done.reset_settings" = "Semua peraturan bawaan telah dipulihkan.";
 
+"preference.title.erase_demo_data" = "Hapus data permainan Demo";
+"preference.title.confirm.erase_demo_data" = "Ini akan menghapus semua versi permainan Demo dan data yang digunakan untuk akun Demo.";
+"preference.title.done.erase_demo_data" = "Semua data permainan Demo telah dihapus.";
+
 "preference.title.renderer" = "Renderer";
 
 "preference.title.renderer.debug.auto" = "Otomatis: gl4es atau ANGLE";
@@ -160,9 +169,23 @@
 
 "preference.title.resolution" = "Resolusi (%)";
 "preference.detail.resolution" = "Memperbolehkan anda untuk menunrunkan resolusi permainan.";
+"preference.title.max_framerate" = "Kecepatan bingkai maksimum";
+"preference.detail.max_framerate" = "Memperbolehkan anda untuk membatasi kecepatan bingkai ke 60BPD pada layar ProMotion.";
 
 "preference.title.fullscreen_airplay" = "Fullscreen AirPlay";
 "preference.detail.fullscreen_airplay" = "Memperbolehkan anda mempresentasikan window permainan dalam fullscreen di layar eksternal daripada mengkaca semuanya di layar.";
+"preference.title.silence_other_audio" = "Jeda audio ketika permainan terbuka";
+"preference.detail.silence_other_audio" = "Aktifkan untuk memperbolehkan Peluncur Pojav untuk menjeda audio dari aplikasi lain, seperti Musik, ketika membuka permainan.";
+"preference.title.silence_with_switch" = "Matikan audio dengan silent switch";
+"preference.detail.silence_with_switch" = "Aktifkan untuk mematikan audio saat Mode Senyap aktif. Headphone dan spiker eksternal tidak terpengaruh.";
+"preference.title.default_gamepad_ctrl" = "Konfigurasi Kontroler";
+"preference.title.hardware_hide" = "Sembunyikan kontrol saat perangkat keras tersambung";
+"preference.detail.hardware_hide" = "Mengaktifkan perilaku menonaktifkan overlay kontrol di layar secara otomatis saat mouse atau
+pengontrol game terhubung.";
+"preference.title.gesture_mouse" = "Gestur Tetikus";
+"preference.detail.gesture_mouse" = "Aktifkan gestur, seperti ketuk untuk menaruh blok, tahan untuk memecah blok, bergulir dengan 2 jari";
+"preference.title.gesture_hotbar" = "Gestur hotbar";
+"preference.detail.gesture_hotbar" = "Aktifkan gestur, seperti sentuh slot hotbar, bertukar item antar tangan, melempar item";
 "preference.title.press_duration" = "Durasi pencet-lama (ms)";
 "preference.detail.press_duration" = "Durasi pemicu pencet untuk menghancurkan balok dan menjatuhkan barang.";
 "preference.title.button_scale" = "Skala tombol dilayar (%)";
@@ -177,6 +200,9 @@
 "preference.detail.slideable_hotbar" = "Buat hotbar bisa digeser seperti mouse wheel";
 
 "preference.title.gyroscope_enable" = "Hidupkan kontrol giroskop";
+"preference.detail.gyroscope_enable" = "Mengaktifkan ini akan memperolehkan Anda untuk memutar permainan dengan memutar ponsel Anda";
+"preference.title.gyroscope_invert_x_axis" = "Balikan giroskop kiri dan kanan";
+"preference.detail.gyroscope_invert_x_axis" = "Balikan sumbu X giroskop";
 "preference.title.gyroscope_sensitivity" = "Giroskop mengontrol sensitivitas";
 "preference.detail.gyroscope_sensitivity" = "Sesuaikan sensitivitas kontrol giroskop";
 
@@ -204,6 +230,8 @@
 "preference.detail.debug_show_layout_bounds" = "Tampilkan batas klip, margin";
 "preference.title.debug_show_layout_overlap" = "Tampilkan layout yang overlapping";
 "preference.detail.debug_show_layout_overlap" = "Lapis semua view dengan sebuah warna transparen untuk mengungkap view yang overlapping.";
+
+"controller_configurator.title.current" = "Berkas konfigurasi Gamepad";
 "controller_configurator.title.type.xbox" = "Xbox";
 "controller_configurator.title.type.playstation" = "PlayStation";
 "controller_configurator.playstation.title.named_back" = "Pilih";
