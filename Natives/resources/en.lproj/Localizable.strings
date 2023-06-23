@@ -217,6 +217,7 @@
 "preference.detail.gyroscope_sensitivity" = "Adjust the sensitivity of gyroscope controls";
 
 "preference.title.manage_runtime" = "Manage runtimes";
+"preference.title.confirm.delete_runtime" = "%@ will be deleted";
 "preference.manage_runtime.header.default" = "Preferred Java version";
 "preference.manage_runtime.default.1165" = "1.16.5 and older";
 "preference.manage_runtime.default.117" = "1.17 and newer";

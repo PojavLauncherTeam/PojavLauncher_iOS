@@ -1,3 +1,4 @@
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 #import "authenticator/BaseAuthenticator.h"
 #import "AFNetworking.h"
 #import "CustomControlsViewController.h"
@@ -9,8 +10,7 @@
 #import "PickTextField.h"
 #import "ios_uikit_bridge.h"
 #import "UIKit+hook.h"
-
-#include "utils.h"
+#import "utils.h"
 
 #define AUTORESIZE_MASKS UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin
 #define sidebarNavController ((UINavigationController *)self.splitViewController.viewControllers[0])
@@ -230,26 +230,24 @@
 }
 
 - (void)enterModInstaller {
-    UIDocumentPickerViewController *documentPicker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:@[@"com.sun.java-archive"]
-            inMode:UIDocumentPickerModeImport];
+    UIDocumentPickerViewController *documentPicker = [[UIDocumentPickerViewController alloc]
+        initForOpeningContentTypes:@[[UTType typeWithMIMEType:@"application/java-archive"]]];
     documentPicker.delegate = self;
     documentPicker.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:documentPicker animated:YES completion:nil];
 }
 
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url {
-    if (controller.documentPickerMode == UIDocumentPickerModeImport) {
-        JavaGUIViewController *vc = [[JavaGUIViewController alloc] init];
-        vc.filepath = url.path;
-        if (!vc.requiredJavaVersion) {
-            return;
-        }
-        [self invokeAfterJITEnabled:^{
-            vc.modalPresentationStyle = UIModalPresentationFullScreen;
-            NSLog(@"[ModInstaller] launching %@", vc.filepath);
-            [self presentViewController:vc animated:YES completion:nil];
-        }];
+    JavaGUIViewController *vc = [[JavaGUIViewController alloc] init];
+    vc.filepath = url.path;
+    if (!vc.requiredJavaVersion) {
+        return;
     }
+    [self invokeAfterJITEnabled:^{
+        vc.modalPresentationStyle = UIModalPresentationFullScreen;
+        NSLog(@"[ModInstaller] launching %@", vc.filepath);
+        [self presentViewController:vc animated:YES completion:nil];
+    }];
 }
 
 - (void)setInteractionEnabled:(BOOL)enabled {
@@ -299,7 +297,9 @@
             }
             return;
         }
-        self.progressText.text = [NSString stringWithFormat:@"%@ (%.2f MB / %.2f MB)", stage, progress.completedUnitCount/1048576.0, progress.totalUnitCount/1048576.0];
+        NSString *completed = [NSByteCountFormatter stringFromByteCount:progress.completedUnitCount countStyle:NSByteCountFormatterCountStyleMemory];
+        NSString *total = [NSByteCountFormatter stringFromByteCount:progress.totalUnitCount countStyle:NSByteCountFormatterCountStyleMemory];
+        self.progressText.text = [NSString stringWithFormat:@"%@ (%@ / %@)", stage, completed, total];
     }];
 
     //callback_LauncherViewController_installMinecraft("1.12.2");
