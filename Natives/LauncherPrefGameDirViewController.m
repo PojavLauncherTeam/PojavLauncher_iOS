@@ -42,6 +42,7 @@
     NSString *lasmPath = [NSString stringWithFormat:@"%s/Library/Application Support/minecraft", getenv("POJAV_HOME")];
     [NSFileManager.defaultManager removeItemAtPath:lasmPath error:nil];
     [NSFileManager.defaultManager createSymbolicLinkAtPath:lasmPath withDestinationPath:multidirPath error:nil];
+    [NSFileManager.defaultManager changeCurrentDirectoryPath:lasmPath];
     if ([getPreference(@"selected_version_type") intValue] == 0) {
         [(LauncherNavigationController *)self.navigationController reloadVersionList:0];
     }
