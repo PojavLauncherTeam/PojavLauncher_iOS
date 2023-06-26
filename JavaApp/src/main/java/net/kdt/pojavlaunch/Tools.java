@@ -308,6 +308,9 @@ public final class Tools
         // Support for text2speech is not planned, so skip it for now.
         for (int i = 0; i < libraries.length; i++) {
             DependentLibrary libItem = libraries[i];
+            if (libItem.artifact != null) {
+                libItem.downloads = new DependentLibrary.LibraryDownloads(libItem.artifact);
+            }
             if (libItem.name.startsWith("com.mojang:text2speech") ||
                 //libItem.name.startsWith("net.java.jinput") ||
                 libItem.name.startsWith("net.java.dev.jna:platform:") ||
