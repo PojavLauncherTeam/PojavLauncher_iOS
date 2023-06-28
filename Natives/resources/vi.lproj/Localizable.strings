@@ -212,8 +212,6 @@
 "preference.title.gyroscope_sensitivity" = "Độ nhạy con quay hồi chuyển";
 "preference.detail.gyroscope_sensitivity" = "Điều chỉnh độ nhạy của điều khiển bằng con quay hồi chuyển";
 
-"preference.title.java_home" = "Sử dụng Java 17 cho Minecraft < 1.17";
-"preference.detail.java_home" = "Java 8 được sử dụng theo mặc định cho các phiên bản đó. Bật tùy chọn này để bắt buộc sử dụng Java 17, tuy nhiên khả năng tương thích không được đảm bảo.";
 "preference.title.java_args" = "Các chỉ số chạy JVM";
 "preference.detail.java_args" = "Truyền đối số cho Java khi khởi chạy Minecraft. Hãy cẩn thận, điều này có thể khiến trò chơi bị sập nếu sửa đổi không đúng cách.";
 "preference.placeholder.java_args" = "Nhập các chỉ số...";
