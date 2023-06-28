@@ -212,8 +212,6 @@
 "preference.title.gyroscope_sensitivity" = "Citlivost gyroskopového ovládání";
 "preference.detail.gyroscope_sensitivity" = "Upravit citlivost gyroskopového ovládání";
 
-"preference.title.java_home" = "Používat Javu 17 Minecraftem < 1.17";
-"preference.detail.java_home" = "Java 8 je výchozí pro tyto verze. Povolivše tuto možnost vynutíte užívání Javy 17, avšak její kompatibilita není zaručena.";
 "preference.title.java_args" = "JVM spouštěcí argumenty";
 "preference.detail.java_args" = "Předá argumenty Javě spouštějíc Minecraft. Buďte opatrní, může to způsobit pád hry byly-li upraveny neprávně.";
 "preference.placeholder.java_args" = "Určit argumenty...";
