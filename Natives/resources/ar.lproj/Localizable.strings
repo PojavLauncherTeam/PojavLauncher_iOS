@@ -213,8 +213,6 @@
 "preference.title.gyroscope_sensitivity" = "حساسية التحكم في الغيروسكوب";
 "preference.detail.gyroscope_sensitivity" = "ضبط حساسية أجهزة التحكم الجيبروسكوب";
 
-"preference.title.java_home" = "استخدم جافا 17 لماينكرافت < 1.17";
-"preference.detail.java_home" = "يتم استخدام Java 8 بشكل افتراضي لهذه الإصدارات. تمكين هذا الخيار لإجبار استخدام Java 17، ولكن التوافق مع الموديل غير مضمون.";
 "preference.title.java_args" = "حجج إطلاق JVM";
 "preference.detail.java_args" = "مرر الحجج إلى جافا عند بدء Minecraft. كن حذرا، هذا يمكن أن يجعل عطل اللعبة إذا تم تعديله بشكل غير صحيح.";
 "preference.placeholder.java_args" = "حدد الدفعات...";
