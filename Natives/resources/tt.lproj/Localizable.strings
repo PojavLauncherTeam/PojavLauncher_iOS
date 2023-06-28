@@ -66,6 +66,7 @@
 
 "preference.title.resolution" = "Ачыклык (%)";
 "preference.title.virtmouse_enable" = "Виртуаль тычкан";
+
 "preference.title.java_args" = "JVM кушу аргументлары";
 "preference.title.auto_ram" = "Автоматик тиз хәтер билгеләү";
 "controller_configurator.playstation.title.named_back" = "Сайлау";
