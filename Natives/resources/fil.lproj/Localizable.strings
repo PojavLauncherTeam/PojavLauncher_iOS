@@ -162,7 +162,6 @@
 "preference.title.slideable_hotbar" = "Naii-slide na hotbar";
 "preference.detail.slideable_hotbar" = "Gawing slideable ang hotbar na parang gulong ng mouse";
 
-"preference.title.java_home" = "Gamitin ang Java 17 para sa Minecraft < 1.17";
 "preference.title.java_args" = "JVM Launch arguments";
 "preference.placeholder.java_args" = "Tukuyin ang mga argumento...";
 "preference.title.env_variables" = "Variables ng environment";
