@@ -104,6 +104,8 @@ static WFWorkflowProgressView* currentProgressView;
     nav.progressViewSub.observedProgress = fileProgress;
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [url startAccessingSecurityScopedResource];
+
         NSString *outPath = [NSString stringWithFormat:@"%s/java_runtimes/%@", getenv("POJAV_HOME"),
             [url.path substringToIndex:url.path.length-7].lastPathComponent];
         NSString *error = [LauncherPrefManageJREViewController extractTarXZ:url.path
@@ -114,6 +116,8 @@ static WFWorkflowProgressView* currentProgressView;
             nav.progressText.text = [NSString stringWithFormat:@"(%@ / %@) %@", completedSize, totalSize, name];
             currentProgressView.fractionCompleted = totalProgress.fractionCompleted;
         }];
+        [url stopAccessingSecurityScopedResource];
+
         if (error) {
             showDialog(localize(@"Error", nil), error);
         }

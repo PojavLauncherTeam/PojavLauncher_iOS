@@ -231,7 +231,8 @@
 
 - (void)enterModInstaller {
     UIDocumentPickerViewController *documentPicker = [[UIDocumentPickerViewController alloc]
-        initForOpeningContentTypes:@[[UTType typeWithMIMEType:@"application/java-archive"]]];
+        initForOpeningContentTypes:@[[UTType typeWithMIMEType:@"application/java-archive"]]
+        asCopy:YES];
     documentPicker.delegate = self;
     documentPicker.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:documentPicker animated:YES completion:nil];
