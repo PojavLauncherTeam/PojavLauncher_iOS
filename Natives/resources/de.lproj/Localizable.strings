@@ -214,8 +214,6 @@ der Minecraft-Version zu wählen. Verringerte Auflösung reduziert die Arbeitsla
 "preference.title.gyroscope_sensitivity" = "Gyroskop-Steuerungs-Empfindlichkeit";
 "preference.detail.gyroscope_sensitivity" = "Passe die Empfindlichkeit der Gyroskop-Steuerung an";
 
-"preference.title.java_home" = "Nutze Java 17 für Minecraft < 1.17";
-"preference.detail.java_home" = "Java 8 wird standardmäßig für diese Versionen verwendet. Aktivieren Sie diese Option, um die Verwendung von Java 17 zu erzwingen, aber die Kompatibilität ist nicht garantiert.";
 "preference.title.java_args" = "JVM-Start-Argumente";
 "preference.detail.java_args" = "Argumente an Java übergeben, wenn Minecraft gestartet wird. Sei vorsichtig, dies kann den Absturz des Spiels verursachen, wenn es falsch geändert wird.";
 "preference.placeholder.java_args" = "Argumente angeben...";
