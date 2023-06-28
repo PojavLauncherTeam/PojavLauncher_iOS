@@ -184,7 +184,6 @@
 "preference.title.gyroscope_sensitivity" = "陀螺儀控制靈敏度";
 "preference.detail.gyroscope_sensitivity" = "調整陀螺儀控制的靈敏度";
 
-"preference.title.java_home" = "對於我的世界 < 1.17，使用Java 17";
 "preference.title.java_args" = "JVM 啟動引數";
 "preference.placeholder.java_args" = "提供選項......";
 "preference.title.env_variables" = "環境變量";
