@@ -30,6 +30,7 @@
 "Settings" = "Settings";
 
 "preference.title.renderer" = "Renderer";
+
 "preference.title.java_args" = "JVM Launch arguments";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Enables automatic RAM adjuster";
