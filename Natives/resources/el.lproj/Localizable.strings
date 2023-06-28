@@ -39,6 +39,7 @@
 "preference.title.game_directory" = "Κατάλογος παιχνιδιού";
 
 "preference.title.renderer" = "Απόδοση";
+
 "preference.title.java_args" = "JVM Εντολές εκκίνησης";
 "preference.title.auto_ram" = "Αυτόματη RAM";
 "preference.detail.auto_ram" = "Ενεργοποιεί τον αυτόματο ρυθμιστή RAM";
