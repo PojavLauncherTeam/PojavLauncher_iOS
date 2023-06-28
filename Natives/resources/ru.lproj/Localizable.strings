@@ -211,8 +211,6 @@
 "preference.title.gyroscope_sensitivity" = "Чувствительность гироскопа";
 "preference.detail.gyroscope_sensitivity" = "Изменить чувствительность датчика вращения.";
 
-"preference.title.java_home" = "Java 17 для старых версий Minecraft";
-"preference.detail.java_home" = "Для этих версий по умолчанию используется Java 8. Включение приведёт к принудительному использованию Java 17, однако это может нарушить совместимость.";
 "preference.title.java_args" = "Аргументы запуска JVM";
 "preference.detail.java_args" = "Задать аргументы Java при запуске Minecraft. Осторожно, их неправильная настройка приведёт к сбою!";
 "preference.placeholder.java_args" = "Укажите аргументы...";
