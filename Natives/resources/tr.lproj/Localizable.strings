@@ -209,8 +209,6 @@ Bu seçenek varsayılan JitStreamer sunucusunu kullanıyorsanız olduğu gibi b�
 "preference.title.gyroscope_sensitivity" = "Jiroskop kontrolleri hassaslığı";
 "preference.detail.gyroscope_sensitivity" = "Jiroskop kontrollerinin hassaslığını ayarlayın";
 
-"preference.title.java_home" = "Minecraft 1.17 < için Java 17 kullan";
-"preference.detail.java_home" = "Bu sürümler için Java 8 varsayılan olarak kullanılır. Java 17'yi zorla kullanmak için bu seçeneği etkinleştir, ancak modlu ile uyumluluk garanti değildir.";
 "preference.title.java_args" = "JVM Başlatıcı değişkenleri";
 "preference.detail.java_args" = "Minecraft'ı başlatırken bağımsız değişkenleri Java'ya iletin. Dikkatli olun, bu, yanlış bir şekilde değiştirilirse oyunun çökmesine neden olabilir.";
 "preference.placeholder.java_args" = "Değişkenleri belirt...";
