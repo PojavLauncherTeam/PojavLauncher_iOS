@@ -163,7 +163,6 @@
 "preference.title.gyroscope_sensitivity" = "حساسیت کنترلر های ژیروسکوپ";
 "preference.detail.gyroscope_sensitivity" = "حساسیت کنترل های ژیروسکوپ را تنظیم کنید";
 
-"preference.title.java_home" = "از جاوا 17 برای ماینکرفت 1.17 به بالا استفاده کنید";
 "preference.title.java_args" = "آرگومان‌های جاوا در هنگام اجرا";
 "preference.placeholder.java_args" = "آرگومان ها را مشخص کنید...";
 "preference.title.env_variables" = "متغیرهای محیطی";
