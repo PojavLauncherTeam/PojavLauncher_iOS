@@ -39,6 +39,7 @@
 "preference.title.game_directory" = "Папка игры";
 
 "preference.title.renderer" = "Визуализаторъ";
+
 "preference.title.java_args" = "Аргументы запуска J.V.M.";
 "preference.title.auto_ram" = "Автоматическое выдѣленіе О.З.У.";
 "preference.detail.auto_ram" = "Автоматически управляетъ количествомъ выдѣленнаго О.З.У.";
