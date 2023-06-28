@@ -49,6 +49,7 @@
 "preference.title.gyroscope_enable" = "เปิดใช้งานการควบคุมไจโรสโคป";
 "preference.title.gyroscope_sensitivity" = "ความรวดเร็วในการควบคุมไจโร";
 "preference.detail.gyroscope_sensitivity" = "ปรับความไวของการควบคุมไจโรสโคป";
+
 "preference.title.java_args" = "JVM Launch arguments";
 "preference.title.auto_ram" = "RAM อัตโนมัติ";
 "preference.detail.auto_ram" = "เปิดใช้งานตัวปรับ RAM อัตโนมัติ";
