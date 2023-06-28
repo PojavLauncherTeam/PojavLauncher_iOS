@@ -131,7 +131,7 @@
 "preference.title.confirm" = "Вы уверены?";
 
 "preference.title.game_directory" = "Папка игры";
-"preference.title.confirm.delete_game_directory" = "Профиль %@ будет навсегда удалён без возможности восстановления.";
+"preference.title.confirm.delete_game_directory" = "Установка %@ будет навсегда удалена без возможности восстановления.";
 "preference.multidir.add_directory" = "Добавить расположение";
 
 "preference.title.check_sha" = "Проверка файлов после загрузки";
@@ -217,6 +217,12 @@
 "preference.title.manage_runtime" = "Управление средой выполнения";
 "preference.title.confirm.delete_runtime" = "%@ будет удалена";
 "preference.manage_runtime.header.default" = "Предпочитаемая версия Java";
+"preference.manage_runtime.default.1165" = "1.16.5 и старше";
+"preference.manage_runtime.default.117" = "1.17 и новее";
+"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 и ниже способен запускаться при помощи более новой версии Java, однако совместимость с модами не гарантируется. Вы можете поместить внешние среды выполнения в папку «java_runtimes». Изменение версии для «Установить .jar» возымеет эффект, только если установщик не будет предназначен для более новой Java.";
+"preference.manage_runtime.footer.java8" = "Стандартная версия для Minecraft 1.16.5 и ниже.";
+"preference.manage_runtime.footer.java17" = "Стандартная версия для Minecraft 1.17 и выше.";
+"preference.manage_runtime.header.invalid" = "Некорректная среда";
 
 "preference.title.java_args" = "Аргументы запуска JVM";
 "preference.detail.java_args" = "Задать аргументы Java при запуске Minecraft. Осторожно, их неправильная настройка приведёт к сбою!";
@@ -285,5 +291,7 @@
 
 "controller_configurator.section.config_files" = "Текущий файл настроек";
 "controller_configurator.section.game_mappings" = "Кнопки в игре";
+"controller_configurator.section.footer.game_mappings" = "Назначения клавиш при заблокированном (отключённом на время игры) курсоре.";
 "controller_configurator.section.menu_mappings" = "Кнопки в меню";
+"controller_configurator.section.footer.menu_mappings" = "Назначения клавиш при свободном курсоре в главном меню, меню паузы или инвентаре.";
 "controller_configurator.section.controller_style" = "Тип контроллера";
