@@ -150,18 +150,21 @@ void init_migrateDirIfNecessary() {
 void init_migrateToPlist(char* prefKey, char* filename) {
     NSError *error;
     NSString *path_str = [NSString stringWithFormat:@"%s/%s", getenv("POJAV_HOME"), filename];
-    NSLog(@"[Pre-Init] Beginning migration for file \"%@\"", path_str);
+    NSDebugLog(@"[Pre-Init] Beginning migration for file \"%s\"", filename);
     NSString *str = [NSString stringWithContentsOfFile:path_str encoding:NSUTF8StringEncoding error:&error];
     if (error == nil && ![str hasPrefix:@"#README"]) {
         NSString *finalized = @"";
         for (NSString *line in [str componentsSeparatedByCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet]) {
-            finalized = [finalized stringByAppendingString:[NSString stringWithFormat:@"%@ ", line]];
+            if (![line hasPrefix:@"#"]) {
+                finalized = [finalized stringByAppendingString:[NSString stringWithFormat:@"%@ ", line]];
+            }
         }
         
         setPreference(@(prefKey), finalized);
         [@"#README - this file has been merged into launcher_preferences.plist" writeToFile:path_str atomically:YES encoding:NSUTF8StringEncoding error:nil];
+        NSLog(@"[Pre-Init] File \"%s\" has been migrated", filename);
     } else {
-        NSLog(@"[Pre-Init] File \"%@\" was already migrated");
+        NSDebugLog(@"[Pre-Init] File \"%s\" was already migrated", filename);
     }
 }
 
@@ -187,8 +190,8 @@ void init_redirectStdio() {
     /* create the pipe and redirect stdout and stderr */
     static int pfd[2];
     pipe(pfd);
-    dup2(pfd[1], 1);
-    dup2(pfd[1], 2);
+    dup2(pfd[1], fileno(stdout));
+    dup2(pfd[1], fileno(stderr));
 
     /* create the logging thread */
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{

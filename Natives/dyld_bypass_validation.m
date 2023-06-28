@@ -41,7 +41,7 @@ ASM(_builtin_vm_protect: \n
     ret
 );
 
-bool redirectFunction(void *patchAddr, void *target) {
+bool redirectFunction(char *name, void *patchAddr, void *target) {
     kern_return_t kret = builtin_vm_protect(mach_task_self(), (vm_address_t)patchAddr, sizeof(patch), false, PROT_READ | PROT_WRITE | VM_PROT_COPY);
     if (kret != KERN_SUCCESS) {
         NSDebugLog(@"[DyldLVBypass] vm_protect(RW) fails at line %d", __LINE__);
@@ -57,11 +57,11 @@ bool redirectFunction(void *patchAddr, void *target) {
         return FALSE;
     }
     
-    NSDebugLog(@"[DyldLVBypass] hook %p succeed!", patchAddr);
+    NSDebugLog(@"[DyldLVBypass] hook %s succeed!", name);
     return TRUE;
 }
 
-bool searchAndPatch(char *base, char *signature, int length, void *target) {
+bool searchAndPatch(char *name, char *base, char *signature, int length, void *target) {
     char *patchAddr = NULL;
     kern_return_t kret;
     
@@ -77,8 +77,8 @@ bool searchAndPatch(char *base, char *signature, int length, void *target) {
         return FALSE;
     }
     
-    NSDebugLog(@"[DyldLVBypass] found function at %p", patchAddr);
-    return redirectFunction(patchAddr, target);
+    NSDebugLog(@"[DyldLVBypass] found %s at %p", name, patchAddr);
+    return redirectFunction(name, patchAddr, target);
 }
 
 void *getDyldBase(void) {
@@ -179,8 +179,8 @@ void init_bypassDyldLibValidation() {
     signal(SIGBUS, SIG_IGN);
     
     char *dyldBase = getDyldBase();
-    redirectFunction(mmap, hooked_mmap);
-    redirectFunction(fcntl, hooked_fcntl);
-    searchAndPatch(dyldBase, mmapSig, sizeof(mmapSig), hooked_mmap);
-    searchAndPatch(dyldBase, fcntlSig, sizeof(fcntlSig), hooked___fcntl);
+    redirectFunction("mmap", mmap, hooked_mmap);
+    redirectFunction("fcntl", fcntl, hooked_fcntl);
+    searchAndPatch("dyld_mmap", dyldBase, mmapSig, sizeof(mmapSig), hooked_mmap);
+    searchAndPatch("dyld_fcntl", dyldBase, fcntlSig, sizeof(fcntlSig), hooked___fcntl);
 }
