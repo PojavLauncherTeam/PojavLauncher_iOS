@@ -42,6 +42,7 @@
 "preference.title.game_directory" = "Gamez’ direktory";
 
 "preference.title.renderer" = "Renderer";
+
 "preference.title.java_args" = "CCz’UM L’unch argumentz";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Enablez automatic RAM adjustah";
