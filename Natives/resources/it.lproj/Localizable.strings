@@ -140,7 +140,6 @@
 "preference.title.gyroscope_sensitivity" = "Sensibilità giroscopio";
 "preference.detail.gyroscope_sensitivity" = "Regola la sensibilità del giroscopio";
 
-"preference.title.java_home" = "Usa Java 17 per Minecraft < 1.17";
 "preference.title.java_args" = "Argomenti di avvio della JVM";
 "preference.placeholder.java_args" = "Specifica argomenti...";
 "preference.title.env_variables" = "Variabili ambientali";
