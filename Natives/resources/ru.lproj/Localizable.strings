@@ -60,6 +60,9 @@
 
 "init.migrateDir" = "Новое расположение PojavLauncher: %@. Все существующие данные также были перемещены.";
 
+"java.error.missing_main_class" = "У %@ отсутствует атрибут главного класса. Если это мод, поместите его в папку «mods» выбранной установки.";
+"java.error.missing_runtime" = "%@ для работы требует Java %d или выше. Сперва установите её и укажите в качестве среды выполнения.";
+
 "launcher.mcl.downloading_file" = "Загрузка %@";
 "launcher.mcl.error_download" = "Не удалось загрузить %@: %@";
 
@@ -210,6 +213,10 @@
 "preference.detail.gyroscope_invert_x_axis" = "Поменять направление поворота по горизонтали";
 "preference.title.gyroscope_sensitivity" = "Чувствительность гироскопа";
 "preference.detail.gyroscope_sensitivity" = "Изменить чувствительность датчика вращения.";
+
+"preference.title.manage_runtime" = "Управление средой выполнения";
+"preference.title.confirm.delete_runtime" = "%@ будет удалена";
+"preference.manage_runtime.header.default" = "Предпочитаемая версия Java";
 
 "preference.title.java_args" = "Аргументы запуска JVM";
 "preference.detail.java_args" = "Задать аргументы Java при запуске Minecraft. Осторожно, их неправильная настройка приведёт к сбою!";
