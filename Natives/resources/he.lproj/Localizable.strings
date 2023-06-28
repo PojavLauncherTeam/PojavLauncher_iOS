@@ -43,6 +43,7 @@
 "preference.title.game_directory" = "תיקיית המשחק";
 
 "preference.title.renderer" = "רינדור";
+
 "preference.title.java_args" = "פרמטרים להפעלת JVM";
 "preference.title.auto_ram" = "זיכרון אוטומטי";
 "preference.detail.auto_ram" = "מפעיל התאמת RAM אוטומטית";
