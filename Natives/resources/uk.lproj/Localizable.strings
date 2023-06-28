@@ -60,6 +60,9 @@
 
 "init.migrateDir" = "Каталог даних PojavLauncher тепер у %@. Усі ваші наявні дані було переміщено в нове місце.";
 
+"java.error.missing_main_class" = "%@ бракує атрибута головного класу. Якщо це мод, перенесіть його до теки \"mods\" вибраного вами встановлення.";
+"java.error.missing_runtime" = "%@ потребує Java %d або вище для роботи. Будь ласка, спочатку встановіть й вкажіть її у \"Керувати середовищами виконання\".";
+
 "launcher.mcl.downloading_file" = "Завантажується %@";
 "launcher.mcl.error_download" = "Не вдалося завантажити %@: %@";
 
@@ -212,6 +215,16 @@
 "preference.detail.gyroscope_invert_x_axis" = "Інвертує вісь X гіроскопу";
 "preference.title.gyroscope_sensitivity" = "Налаштування чутливості гіроскопа";
 "preference.detail.gyroscope_sensitivity" = "Налаштуйте чутливість елементів керування гіроскопом";
+
+"preference.title.manage_runtime" = "Керувати середовищами виконання";
+"preference.title.confirm.delete_runtime" = "%@ буде видалено";
+"preference.manage_runtime.header.default" = "Бажані версії Java";
+"preference.manage_runtime.default.1165" = "1.16.5 і старіше";
+"preference.manage_runtime.default.117" = "1.17 і новіше";
+"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 і старіше можуть запуститися на новіших версіях Java, проте сумісність з модами не гарантована. Зовнішні середовища виконання можуть бути розміщені в теці “java_runtimes”. Змінення версії Java на “Install .jar” набирає чинності, тільки якщо встановлювач не очікуватиме новішу версію Java.";
+"preference.manage_runtime.footer.java8" = "Це стандартна версія для Minecraft 1.16.5 і старіше.";
+"preference.manage_runtime.footer.java17" = "Це стандартна версія для Minecraft 1.17 і вище.";
+"preference.manage_runtime.header.invalid" = "Невірні середовища виконання";
 
 "preference.title.java_args" = "Аргументи запуску JVM";
 "preference.detail.java_args" = "Передавати аргументи до Java під час запуску Minecraft. Будьте обережні, це може призвести до аварійного завершення гри у разі неправильної модифікації.";
