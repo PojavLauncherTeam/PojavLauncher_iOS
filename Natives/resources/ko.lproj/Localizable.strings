@@ -102,7 +102,6 @@
 "preference.title.renderer" = "렌더러";
 "preference.title.virtmouse_enable" = "가상 마우스";
 
-"preference.title.java_home" = "마인크래프트 버전 < 1.17 부터 자바 17을 사용하세요";
 "preference.title.java_args" = "JVM 시작 스크립트";
 "preference.title.auto_ram" = "자동 RAM 할당";
 "preference.detail.auto_ram" = "자동 RAM 할당 활성화하기";
