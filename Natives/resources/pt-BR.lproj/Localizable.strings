@@ -59,6 +59,7 @@
 "custom_controls.hint" = "Pressione e segure em qualquer lugar na tela para mais opções";
 
 "init.migrateDir" = "O diretório de dados do PojavLauncher agora é %@. Todos os dados existentes foram movidos para a nova localização.";
+"java.error.missing_runtime" = "%@ requer Java %d ou posterior para executar. Por favor, instale primeiro e especifique ele em \"Gerenciar Runtimes\".";
 
 "launcher.mcl.downloading_file" = "Baixando %@";
 "launcher.mcl.error_download" = "Falha ao baixar %@: %@";
@@ -163,6 +164,16 @@
 "preference.title.gyroscope_enable" = "Habilitar controles do gyrocópio";
 "preference.title.gyroscope_sensitivity" = "Sensibilidade de controles do Giroscópio";
 "preference.detail.gyroscope_sensitivity" = "Ajustar a sensibilidade dos controles do giroscópio";
+
+"preference.title.manage_runtime" = "Gerenciar runtimes";
+"preference.title.confirm.delete_runtime" = "%@ será deletado";
+"preference.manage_runtime.header.default" = "Versão Java preferida";
+"preference.manage_runtime.default.1165" = "1.16.5 e anterior";
+"preference.manage_runtime.default.117" = "1.17 e mais recente";
+"preference.manage_runtime.footer.default" = "O Minecraft 1.16.5 e anteriores podem ser executados numa versão mais recente do Java, porém a compatibilidade com mods não é garantida. Os runtimes externos podem ser colocados na pasta “java_runtimes”. Alterar a versão do Java para “Instalar .jar” entrará em vigor caso o instalador não tenha uma versão mais recente do Java.";
+"preference.manage_runtime.footer.java8" = "Essa é a versão padrão para Minecraft 1.16.5 e anteriores.";
+"preference.manage_runtime.footer.java17" = "Essa é a versão padrão para Minecraft 1.17 e mais recente.";
+"preference.manage_runtime.header.invalid" = "runtimes inválidos";
 
 "preference.title.java_args" = "Argumentos JVM";
 "preference.detail.java_args" = "Passa argumentos para Java ao iniciar o Minecraft. Tenha cuidado, isso pode fazer o jogo falhar se for modificado incorretamente.";
