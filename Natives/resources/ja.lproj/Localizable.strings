@@ -163,7 +163,6 @@
 "preference.title.gyroscope_sensitivity" = "ジャイロコントロールの感度";
 "preference.detail.gyroscope_sensitivity" = "ジャイロコントロールの感度の調整";
 
-"preference.title.java_home" = "Java 17 for Minecraft < 1.17 を使用";
 "preference.title.java_args" = "JVM 起動引数";
 "preference.placeholder.java_args" = "引数の指定...";
 "preference.title.env_variables" = "環境変数";
