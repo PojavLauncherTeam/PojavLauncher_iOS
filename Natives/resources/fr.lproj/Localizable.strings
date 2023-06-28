@@ -212,8 +212,6 @@
 "preference.title.gyroscope_sensitivity" = "Sensibilité des contrôles du gyroscope";
 "preference.detail.gyroscope_sensitivity" = "Ajuster la sensibilité des contrôles du gyroscope";
 
-"preference.title.java_home" = "Utiliser Java 17 pour Minecraft < 1.17";
-"preference.detail.java_home" = "Java 8 est utilisé par défaut pour ces versions. Activez cette option pour forcer l'utilisation de Java 17, cependant la compatibilité avec les versions moddées n'est pas garantie.";
 "preference.title.java_args" = "Arguments de lancement JVM";
 "preference.detail.java_args" = "Passez des arguments à Java lors du lancement de Minecraft. Attention, cela peut faire crash le jeu si modifié de manière incorrecte.";
 "preference.placeholder.java_args" = "Spécifier les arguments...";
