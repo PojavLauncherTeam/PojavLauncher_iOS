@@ -206,7 +206,6 @@ pengontrol game terhubung.";
 "preference.title.gyroscope_sensitivity" = "Giroskop mengontrol sensitivitas";
 "preference.detail.gyroscope_sensitivity" = "Sesuaikan sensitivitas kontrol giroskop";
 
-"preference.title.java_home" = "Gunakan Java 17 untuk Minecraft < 1.17";
 "preference.title.java_args" = "Argumen peluncuran JVM";
 "preference.placeholder.java_args" = "Sebutkan argument...";
 "preference.title.env_variables" = "Variable environment";
