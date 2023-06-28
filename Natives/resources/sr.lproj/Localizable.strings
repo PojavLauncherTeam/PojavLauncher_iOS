@@ -37,6 +37,7 @@
 "Settings" = "Подешавања";
 
 "preference.title.renderer" = "Рендерер";
+
 "preference.title.java_args" = "ЈВМ Покретање аргументи";
 "preference.title.auto_ram" = "Аутпматски RAM";
 "preference.detail.auto_ram" = "Укључије аутомстски подешавање RAM-а";
