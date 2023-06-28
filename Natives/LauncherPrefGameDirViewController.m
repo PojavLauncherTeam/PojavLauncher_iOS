@@ -42,6 +42,7 @@
     NSString *lasmPath = [NSString stringWithFormat:@"%s/Library/Application Support/minecraft", getenv("POJAV_HOME")];
     [NSFileManager.defaultManager removeItemAtPath:lasmPath error:nil];
     [NSFileManager.defaultManager createSymbolicLinkAtPath:lasmPath withDestinationPath:multidirPath error:nil];
+    [NSFileManager.defaultManager changeCurrentDirectoryPath:lasmPath];
     if ([getPreference(@"selected_version_type") intValue] == 0) {
         [(LauncherNavigationController *)self.navigationController reloadVersionList:0];
     }
@@ -90,8 +91,7 @@
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
-
-    // TODO: display size in the detail label
+    
     return cell;
 }
 
@@ -120,15 +120,6 @@ viewForFooterInSection:(NSInteger)section
         }
     }
 }
-
-/*
-- (UIContextMenuConfiguration *)contextMenuInteraction:(UIContextMenuInteraction *)interaction configurationForMenuAtLocation:(CGPoint)location
-{
-    return [UIContextMenuConfiguration configurationWithIdentifier:nil previewProvider:nil actionProvider:^UIMenu * _Nullable(NSArray<UIMenuElement *> * _Nonnull suggestedActions) {
-        return [UIMenu menuWithTitle:self.array[indexPath.row] children:@[files, filza, santander]];
-    }];
-}
-*/
 
 - (id)createOpenScheme:(NSString *)scheme at:(NSString *)directory {
     return ^(UIAction *action) {
@@ -244,7 +235,7 @@ viewForFooterInSection:(NSInteger)section
             [self.array removeObjectAtIndex:indexPath.row];
             [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade]; 
         } else {
-            showDialog(self, localize(@"Error", nil), error.localizedDescription);
+            showDialog(localize(@"Error", nil), error.localizedDescription);
         }
     }];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:localize(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
@@ -301,7 +292,7 @@ viewForFooterInSection:(NSInteger)section
         if (!isFooterView) {
             sender.text = sender.placeholder;
         }
-        showDialog(self, localize(@"Error", nil), error.localizedDescription);
+        showDialog(localize(@"Error", nil), error.localizedDescription);
     }
 }
 

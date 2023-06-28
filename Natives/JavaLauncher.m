@@ -19,9 +19,6 @@
 
 extern char **environ;
 
-static int margc = -1;
-static const char* margv[1000];
-
 void init_loadDefaultEnv() {
     /* Define default env */
 
@@ -61,7 +58,7 @@ void init_loadCustomEnv() {
     }
 }
 
-void init_loadCustomJvmFlags() {
+void init_loadCustomJvmFlags(int* argc, const char** argv) {
     NSString *jvmargs = getPreference(@"java_args");
     if (jvmargs == nil) return;
     BOOL isFirstArg = YES;
@@ -70,75 +67,59 @@ void init_loadCustomJvmFlags() {
         if ([jvmarg length] == 0) continue;
         //margv[margc] = (char *) [jvmarg UTF8String];
 
-        ++margc;
+        ++*argc;
         if (isFirstArg) {
             isFirstArg = NO;
-            margv[margc] = jvmarg.UTF8String;
+            argv[*argc] = jvmarg.UTF8String;
         } else {
-            margv[margc] = [@"-" stringByAppendingString:jvmarg].UTF8String;
+            argv[*argc] = [@"-" stringByAppendingString:jvmarg].UTF8String;
         }
 
-        NSLog(@"[JavaLauncher] Added custom JVM flag: %s", margv[margc]);
+        NSLog(@"[JavaLauncher] Added custom JVM flag: %s", argv[*argc]);
     }
-}
-
-NSString* environmentFailsafes(int minVersion) {
-    NSString *jvmPath = [NSString stringWithFormat:@"%s/java_runtimes", getenv("POJAV_PREFER_EXTERNAL_JRE") ? getenv("POJAV_HOME") : getenv("BUNDLE_PATH")];
-    NSString *javaHome = nil;
-
-    NSString *jre8Path = [NSString stringWithFormat:@"%@/java-8-openjdk", jvmPath];
-    NSString *jre17Path = [NSString stringWithFormat:@"%@/java-17-openjdk", jvmPath];
-
-    if ([fm fileExistsAtPath:jre8Path] && minVersion <= 8) {
-        javaHome = jre8Path;
-    } else if ([fm fileExistsAtPath:jre17Path] && minVersion <= 17) {
-        javaHome = jre17Path;
-    }
-
-    if (javaHome == nil) {
-        showDialog(currentVC(), localize(@"Error", nil), [NSString stringWithFormat:@"Minecraft %@ requires Java %d in order to run. Please install it first.", getPreference(@"selected_version"), minVersion]);
-    }
-
-    return javaHome;
 }
 
 int launchJVM(NSString *username, id launchTarget, int width, int height, int minVersion) {
+    NSLog(@"[JavaLauncher] Beginning JVM launch");
+
     init_loadDefaultEnv();
     init_loadCustomEnv();
 
-    NSString *librariesPath = [NSString stringWithFormat:@"%s/libs", getenv("BUNDLE_PATH")];
-
-    NSLog(@"[JavaLauncher] Beginning JVM launch");
-
-    NSString *javaHome = getPreference(@"java_home");
-    if (![javaHome hasPrefix:@"/"]) {
-        javaHome = [NSString stringWithFormat:@"%s/java_runtimes/%@", getenv("POJAV_PREFER_EXTERNAL_JRE") ? getenv("POJAV_HOME") : getenv("BUNDLE_PATH"), javaHome];
-    }
-
-    // We handle unset JAVA_HOME right there
-    if (getSelectedJavaVersion() < minVersion) {
-        NSLog(@"[JavaLauncher] Attempting to change to Java %d (actual might be higher)", minVersion);
-        javaHome = environmentFailsafes(minVersion);
-        NSLog(@"[JavaLauncher] JAVA_HOME is now set to %@", javaHome);
-    } /* else if (javaHome.length == 0) {
-        javaHome_pre = environmentFailsafes(minVersion);
-        setPreference(@"java_home", javaHome);
-        NSLog(@"[JavaLauncher] JAVA_HOME environment variable was not set. Default to %@ for future use.\n", javaHome);
-    } */ else {
-        if (![fm fileExistsAtPath:javaHome]) {
-            javaHome = environmentFailsafes(minVersion);
-            setPreference(@"java_home", javaHome);
-            NSLog(@"[JavaLauncher] Failed to locate %@. Restored default value for JAVA_HOME.", javaHome);
+    NSLog(@"[JavaLauncher] Looking for Java %d or later", minVersion);
+    NSString *defaultJRETag;
+    if ([launchTarget isKindOfClass:NSDictionary.class]) {
+        if (minVersion <= 8) {
+            defaultJRETag = @"1_16_5_older";
         } else {
-            NSLog(@"[JavaLauncher] Restored preference: JAVA_HOME is set to %@\n", javaHome);
+            defaultJRETag = @"1_17_newer";
+        }
+    } else {
+        defaultJRETag = @"install_jar";
+    }
+    NSString *javaHome = getSelectedJavaHome(defaultJRETag, minVersion);
+
+    if (javaHome == nil) {
+        UIKit_returnToSplitView();
+        BOOL isInstallJar = [defaultJRETag isEqualToString:@"install_jar"];
+        showDialog(localize(@"Error", nil), [NSString stringWithFormat:localize(@"java.error.missing_runtime", nil),
+            isInstallJar ? [launchTarget lastPathComponent] : getPreference(@"selected_version"), minVersion]);
+        return 1;
+    } else if ([javaHome hasPrefix:@(getenv("POJAV_HOME"))]) {
+        // Activate Library Validation bypass for external runtime
+        init_bypassDyldLibValidation();
+
+        // Symlink libawt_xawt.dylib
+        NSString *dest = [NSString stringWithFormat:@"%@/lib/libawt_xawt.dylib", javaHome];
+        NSString *source = [NSString stringWithFormat:@"%s/Frameworks/libawt_xawt.dylib", getenv("BUNDLE_PATH")];
+        NSError *error;
+        [fm createSymbolicLinkAtPath:dest withDestinationPath:source error:&error];
+        if (error) {
+            NSLog(@"[JavaLauncher] Symlink libawt_xawt.dylib failed: %@", error.localizedDescription);
         }
     }
 
-    if (javaHome == nil) {
-        return 1;
-    }
-
     setenv("JAVA_HOME", javaHome.UTF8String, 1);
+    NSLog(@"[JavaLauncher] JAVA_HOME has been set to %@", javaHome);
 
     NSString *renderer = getPreference(@"renderer");
     if (renderer.length == 0) {
@@ -159,6 +140,9 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     }
     NSLog(@"[JavaLauncher] Max RAM allocation is set to %d MB", allocmem);
 
+    int margc = -1;
+    const char *margv[1000];
+
     margv[++margc] = [NSString stringWithFormat:@"%@/bin/java", javaHome].UTF8String;
     margv[++margc] = "-XstartOnFirstThread";
     margv[++margc] = "-Djava.system.class.loader=net.kdt.pojavlaunch.PojavClassLoader";
@@ -170,8 +154,12 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     margv[++margc] = [NSString stringWithFormat:@"-Duser.home=%s", getenv("POJAV_HOME")].UTF8String;
     margv[++margc] = [NSString stringWithFormat:@"-Duser.timezone=%@", NSTimeZone.localTimeZone.name].UTF8String;
     margv[++margc] = [NSString stringWithFormat:@"-DUIScreen.maximumFramesPerSecond=%d", (int)UIScreen.mainScreen.maximumFramesPerSecond].UTF8String;
+    margv[++margc] = "-Dorg.lwjgl.glfw.checkThread0=false";
     margv[++margc] = "-Dorg.lwjgl.system.allocator=system";
+    margv[++margc] = "-Dorg.lwjgl.util.NoChecks=true";
     margv[++margc] = "-Dlog4j2.formatMsgNoLookups=true";
+
+    NSString *librariesPath = [NSString stringWithFormat:@"%s/libs", getenv("BUNDLE_PATH")];
     if([getPreference(@"cosmetica") boolValue]) {
         margv[++margc] = [NSString stringWithFormat:@"-javaagent:%@/arc_dns_injector.jar=23.95.137.176", librariesPath].UTF8String;
     }
@@ -191,19 +179,19 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     // Load java
     NSString *libjlipath8 = [NSString stringWithFormat:@"%@/lib/jli/libjli.dylib", javaHome]; // java 8
     NSString *libjlipath11 = [NSString stringWithFormat:@"%@/lib/libjli.dylib", javaHome]; // java 11+
-    setenv("INTERNAL_JLI_PATH", libjlipath11.UTF8String, 1);
-    BOOL isJava8;
-    void* libjli = dlopen(libjlipath11.UTF8String, RTLD_GLOBAL);
-    isJava8 = libjli == NULL;
-    if (!libjli) {
-        NSDebugLog(@"[Init] Can't load %@ (%s), trying %@", libjlipath11, dlerror(), libjlipath8);
-        setenv("INTERNAL_JLI_PATH", libjlipath8.UTF8String, 1);
-        libjli = dlopen(libjlipath8.UTF8String, RTLD_GLOBAL);
-        if (!libjli) {
-            NSLog(@"[Init] JLI lib = NULL: %s", dlerror());
-            return -1;
-        }
+    BOOL isJava8 = [fm fileExistsAtPath:libjlipath8];
+    setenv("INTERNAL_JLI_PATH", (isJava8 ? libjlipath8 : libjlipath11).UTF8String, 1);
+    void* libjli = dlopen(getenv("INTERNAL_JLI_PATH"), RTLD_GLOBAL);
 
+    if (!libjli) {
+        const char *error = dlerror();
+        NSLog(@"[Init] JLI lib = NULL: %s", error);
+        UIKit_returnToSplitView();
+        showDialog(localize(@"Error", nil), @(error));
+        return 1;
+    }
+
+    if (isJava8) {
         // Setup Caciocavallo
         margv[++margc] = "-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel";
         margv[++margc] = "-Dawt.toolkit=net.java.openjdk.cacio.ctc.CTCToolkit";
@@ -263,7 +251,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
         }
     }
 
-    init_loadCustomJvmFlags();
+    init_loadCustomJvmFlags(&margc, (const char **)margv);
     NSLog(@"[Init] Found JLI lib");
 
     margv[++margc] = "-cp";
@@ -298,6 +286,9 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     signal(SIGBUS, SIG_DFL);
     signal(SIGILL, SIG_DFL);
     signal(SIGFPE, SIG_DFL);
+
+    // Free split VC
+    tmpRootVC = nil;
 
     return pJLI_Launch(++margc, margv,
                    0, NULL, // sizeof(const_jargs) / sizeof(char *), const_jargs,

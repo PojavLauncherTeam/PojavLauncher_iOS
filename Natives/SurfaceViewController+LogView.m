@@ -159,11 +159,13 @@ static int logCharPerLine;
 
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:logLines.count inSection:0];
     [logLines addObject:line];
+    UIView.animationsEnabled = NO;
     [instance.logTableView beginUpdates];
     [instance.logTableView
         insertRowsAtIndexPaths:@[indexPath]
         withRowAnimation:UITableViewRowAnimationNone];
     [instance.logTableView endUpdates];
+    UIView.animationsEnabled = YES;
 
     [instance.logTableView 
         scrollToRowAtIndexPath:indexPath

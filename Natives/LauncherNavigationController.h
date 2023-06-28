@@ -9,5 +9,6 @@ NSArray<NSDictionary *> *remoteVersionList;
 @property(nonatomic) UIButton* buttonInstall;
 
 - (void)reloadVersionList:(int)type;
+- (void)setInteractionEnabled:(BOOL)enable;
 
 @end

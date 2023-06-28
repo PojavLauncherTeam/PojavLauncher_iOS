@@ -113,13 +113,12 @@ void customNSLog(const char *file, int lineNumber, const char *functionName, NSS
 {
     va_list ap; 
     va_start (ap, format);
-    if (![format hasSuffix: @"\n"])
-    {
-        format = [format stringByAppendingString: @"\n"];
-    }
     NSString *body = [[NSString alloc] initWithFormat:format arguments:ap];
+    printf("%s", [body UTF8String]);
+    if (![format hasSuffix:@"\n"]) {
+        printf("\n");
+    }
     va_end (ap);
-    fprintf(stderr, "%s", [body UTF8String]);
 }
 
 CGFloat MathUtils_dist(CGFloat x1, CGFloat y1, CGFloat x2, CGFloat y2) {

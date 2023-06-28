@@ -8,6 +8,7 @@
 #import "LauncherPreferencesViewController.h"
 #import "LauncherPrefContCfgViewController.h"
 #import "LauncherPrefGameDirViewController.h"
+#import "LauncherPrefManageJREViewController.h"
 #import "UIKit+hook.h"
 
 #import "config.h"
@@ -18,14 +19,6 @@
 #define sidebarViewController ((LauncherMenuViewController *)sidebarNavController.viewControllers[0])
 
 typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
-
-@interface UIContextMenuInteraction(private)
-- (void)_presentMenuAtLocation:(CGPoint)location;
-@end
-@interface _UIContextMenuStyle : NSObject <NSCopying>
-@property(nonatomic) NSInteger preferredLayout;
-+ (instancetype)defaultStyle;
-@end
 
 @interface LauncherPreferencesViewController()<UIContextMenuInteractionDelegate>{}
 @property(nonatomic) UIMenu* currentMenu;
@@ -160,7 +153,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                   [UIApplication.sharedApplication setAlternateIconName:iconName completionHandler:^(NSError * _Nullable error) {
                       if (error == nil) return;
                       NSLog(@"Error in appicon: %@", error);
-                      showDialog(self, localize(@"Error", nil), error.localizedDescription);
+                      showDialog(localize(@"Error", nil), error.localizedDescription);
                   }];
               },
               @"pickKeys": @[
@@ -221,7 +214,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
                       }
                   } else {
                       NSLog(@"Error in erase_demo_data: %@", error);
-                      showDialog(self, localize(@"Error", nil), error.localizedDescription);
+                      showDialog(localize(@"Error", nil), error.localizedDescription);
                   }
               }
             }
@@ -372,15 +365,13 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
         ], @[
         // Java tweaks
             @{@"icon": @"sparkles"},
-            @{@"key": @"java_home", // Use Java 17 for Minecraft < 1.17
+            @{@"key": @"manage_runtime",
                 @"hasDetail": @YES,
                 @"icon": @"cube",
-                @"type": self.typeSwitch,
-                @"enableCondition": ^BOOL(){
-                    return (![getPreference(@"slimmed") boolValue]) && whenNotInGame();
-                },
-                // false: 8, true: 17
-                @"customSwitchValue": @[@"java-8-openjdk", @"java-17-openjdk"]
+                @"type": self.typeChildPane,
+                @"canDismissWithSwipe": @YES,
+                @"class": LauncherPrefManageJREViewController.class,
+                @"enableCondition": whenNotInGame
             },
             @{@"key": @"java_args",
                 @"hasDetail": @YES,
@@ -803,9 +794,10 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     NSArray *pickList = item[@"pickList"];
     NSMutableArray *menuItems = [[NSMutableArray alloc] init];
     for (int i = 0; i < pickList.count; i++) {
+        BOOL selected = [cell.detailTextLabel.text isEqualToString:pickKeys[i]];
         [menuItems addObject:[UIAction
             actionWithTitle:pickList[i]
-            image:nil
+            image:(selected ? [UIImage systemImageNamed:@"checkmark"] : nil)
             identifier:nil
             handler:^(UIAction *action) {
                 cell.detailTextLabel.text = pickKeys[i];
@@ -859,7 +851,6 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
     UIView *view = [self.tableView cellForRowAtIndexPath:indexPath];
     NSString *title = localize(([NSString stringWithFormat:@"preference.title.done.%@", key]), nil);
-    //NSString *message = localize(([NSString stringWithFormat:@"preference.message.done.%@", key]), nil);
     [self showAlertOnView:view title:title message:nil];
 }
 

@@ -28,7 +28,7 @@
 
     self.layoutDictionary = parseJSONFromFile(controlFilePath);
     if (self.layoutDictionary[@"error"] != nil) {
-        showDialog(currentVC(), localize(@"Error", nil), [NSString stringWithFormat:@"Could not open %@: %@", controlFilePath, [self.layoutDictionary[@"error"] localizedDescription]]);
+        showDialog(localize(@"Error", nil), [NSString stringWithFormat:@"Could not open %@: %@", controlFilePath, [self.layoutDictionary[@"error"] localizedDescription]]);
         return;
     }
     [self loadControlLayout:self.layoutDictionary];

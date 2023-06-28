@@ -7,6 +7,9 @@ public class DependentLibrary {
 	public LibraryDownloads downloads;
     public String url;
     
+    // TLauncher style artifact
+    public MinecraftLibraryArtifact artifact;
+    
 	public static class LibraryDownloads
 	{
 		public MinecraftLibraryArtifact artifact;

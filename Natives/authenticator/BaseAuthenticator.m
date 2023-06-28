@@ -23,7 +23,7 @@ static BaseAuthenticator *current = nil;
     if (authData[@"error"] != nil) {
         NSError *error = ((NSError *)authData[@"error"]);
         if (error.code != NSFileReadNoSuchFileError) {
-            showDialog(currentVC(), localize(@"Error", nil), error.localizedDescription);
+            showDialog(localize(@"Error", nil), error.localizedDescription);
         }
         return nil;
     }
@@ -69,7 +69,7 @@ static BaseAuthenticator *current = nil;
     error = saveJSONToFile(self.authData, newPath);
 
     if (error != nil) {
-        showDialog(currentVC(), @"Error while saving file", error.localizedDescription);
+        showDialog(@"Error while saving file", error.localizedDescription);
     }
     return error == nil;
 }

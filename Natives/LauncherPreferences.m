@@ -41,22 +41,6 @@ NSMutableDictionary *getDictionary(NSString *type) {
     return nil;
 }
 
-int getJavaVersion(NSString* java) {
-    if (java.length == 0) {
-        return 0;
-    } else if ([java hasPrefix:@"java-"] && [java hasSuffix:@"-openjdk"]) {
-        return [java substringWithRange:NSMakeRange(5, java.length - 13)].intValue;
-    } else {
-        NSLog(@"FIXME: What is the Java version of %@?", java);
-        // TODO: parse from the release file
-        return 0;
-    }
-}
-
-int getSelectedJavaVersion() {
-    return getJavaVersion([getPreference(@"java_home") lastPathComponent]);
-}
-
 void setDefaultValueForPref(NSMutableDictionary *dict, NSString* key, id value) {
     if (!dict[key]) {
         dict[key] = value;
@@ -129,13 +113,23 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(envPrefDict, @"allocated_memory", [NSNumber numberWithFloat:roundf((NSProcessInfo.processInfo.physicalMemory / 1048576) * 0.25)]);
     setDefaultValueForPref(envPrefDict, @"jitstreamer_server", @"69.69.0.1");
     setDefaultValueForPref(envPrefDict, @"max_framerate", @YES);
-    setDefaultValueForPref(envPrefDict, @"java_home", @"java-8-openjdk");
     setDefaultValueForPref(envPrefDict, @"renderer", @"auto");
     setDefaultValueForPref(envPrefDict, @"fullscreen_airplay", @YES);
     setDefaultValueForPref(envPrefDict, @"hardware_hide", @NO);
     setDefaultValueForPref(envPrefDict, @"silence_other_audio", @NO);
     setDefaultValueForPref(envPrefDict, @"silence_with_switch", @NO);
     setDefaultValueForPref(envPrefDict, @"disable_haptics", @NO);
+    setDefaultValueForPref(envPrefDict, @"java_homes", @{
+        @"0": @{
+            @"1_16_5_older": @"8",
+            @"1_17_newer": @"17",
+            @"install_jar": @"8"
+        }.mutableCopy,
+        @"8": @"internal",
+        @"17": @"internal",
+    }.mutableCopy);
+    // stub pref
+    setDefaultValueForPref(prefDict, @"manage_runtime", @"");
     
     setDefaultValueForPref(prefDict, @"button_scale", @(100));
     setDefaultValueForPref(prefDict, @"selected_account", @"");
@@ -163,18 +157,9 @@ void loadPreferences(BOOL reset) {
     
     fillDefaultWarningDict();
 
-    setPreference(@"java_home", [getPreference(@"java_home") lastPathComponent]);
-
     prefDict[@"debugs"] = debugPrefDict;
     prefDict[@"env_vars"] = envPrefDict;
     prefDict[@"warnings"] = warnPrefDict;
-    
-    NSString *ipajre = [NSString stringWithFormat:@"%s/java_runtimes/java-17-openjdk", getenv("POJAV_PREFER_EXTERNAL_JRE") ? getenv("POJAV_HOME") : getenv("BUNDLE_PATH")];
-    if (![fileManager fileExistsAtPath:ipajre]) {
-        setPreference(@"slimmed", @YES);
-    } else {
-        setPreference(@"slimmed", @NO);
-    }
 
     [prefDict writeToFile:prefPath atomically:YES];
 }
@@ -185,6 +170,8 @@ void resetWarnings() {
     prefDict[@"warnings"] = warnPrefDict;
     [prefDict writeToFile:prefPath atomically:YES];
 }
+
+#pragma mark Safe area
 
 CGRect getSafeArea() {
     CGRect screenBounds = UIScreen.mainScreen.bounds;
@@ -224,4 +211,40 @@ UIEdgeInsets getDefaultSafeArea() {
     }
     safeArea.top = safeArea.bottom = 0;
     return safeArea;
+}
+
+#pragma mark Java runtime
+
+NSString* getSelectedJavaHome(NSString* defaultJRETag, int minVersion) {
+    NSDictionary *pref = getPreference(@"java_homes");
+    NSDictionary<NSString *, NSString *> *selected = pref[@"0"];
+    NSString *selectedVer = selected[defaultJRETag];
+    if ([defaultJRETag isEqualToString:@"install_jar"] && minVersion > selectedVer.intValue) {
+        NSArray *sortedVersions = [pref.allKeys valueForKeyPath:@"self.integerValue"];
+        sortedVersions = [sortedVersions sortedArrayUsingSelector:@selector(compare:)];
+        for (NSNumber *version in sortedVersions) {
+            if (version.intValue >= minVersion) {
+                selectedVer = version.stringValue;
+                break;
+            }
+        }
+        if (!selectedVer) {
+            NSLog(@"Error: requested Java >= %d was not installed!", minVersion);
+            return nil;
+        }
+    }
+
+    id selectedDir = pref[selectedVer];
+    if ([selectedDir isEqualToString:@"internal"]) {
+        selectedDir = [NSString stringWithFormat:@"%s/java_runtimes/java-%@-openjdk", getenv("BUNDLE_PATH"), selectedVer];
+    } else {
+        selectedDir = [NSString stringWithFormat:@"%s/java_runtimes/%@", getenv("POJAV_HOME"), selectedDir];
+    }
+
+    if ([NSFileManager.defaultManager fileExistsAtPath:selectedDir]) {
+        return selectedDir;
+    } else {
+        NSLog(@"Error: selected runtime for %@ does not exist: %@", defaultJRETag, selectedDir);
+        return nil;
+    }
 }

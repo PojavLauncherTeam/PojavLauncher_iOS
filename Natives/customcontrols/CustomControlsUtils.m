@@ -156,7 +156,7 @@ BOOL convertLayoutIfNecessary(NSMutableDictionary* dict) {
         case 4:
             break;
         default:
-            showDialog(currentVC(), localize(@"custom_controls.control_menu.save.error.json", nil), [NSString stringWithFormat:localize(@"custom_controls.error.imcompatible", nil), version]);
+            showDialog(localize(@"custom_controls.control_menu.save.error.json", nil), [NSString stringWithFormat:localize(@"custom_controls.error.imcompatible", nil), version]);
             return NO;
     }
     return YES;
@@ -407,7 +407,7 @@ void loadControlObject(UIView* targetView, NSMutableDictionary* controlDictionar
         controlDictionary[@"scaledAt"] = @([getPreference(@"button_scale") floatValue]);
 
         if (errorString.length > 0) {
-            showDialog(currentVC(), @"Error processing dynamic position", errorString);
+            showDialog(@"Error processing dynamic position", errorString);
         }
     }
 }

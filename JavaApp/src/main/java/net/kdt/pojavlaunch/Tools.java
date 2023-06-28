@@ -198,8 +198,13 @@ public final class Tools
         return strList.toArray(new String[0]);
     }
 
-    public static String artifactToPath(String group, String artifact, String version) {
-        return group.replaceAll("\\.", "/") + "/" + artifact + "/" + version + "/" + artifact + "-" + version + ".jar";
+    public static String artifactToPath(DependentLibrary library) {
+        if (library.downloads != null &&
+            library.downloads.artifact != null &&
+            library.downloads.artifact.path != null)
+            return library.downloads.artifact.path;
+        String[] libInfos = library.name.split(":");
+        return libInfos[0].replaceAll("\\.", "/") + "/" + libInfos[1] + "/" + libInfos[2] + "/" + libInfos[1] + "-" + libInfos[2] + ".jar";
     }
 
 /*
@@ -268,44 +273,10 @@ public final class Tools
     }
 
     private static void showError(final String title, final Throwable e, final boolean exitIfOk, final boolean showMore) {
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        e.printStackTrace(pw);
-        pw.flush();
-        
-        UIKit.showError(title, sw.toString(), exitIfOk);
-        
-/*
-        Platform.getPlatform().runOnUIThread(() -> {
-            WindowAlertController alertController = new WindowAlertController(title, sw.toString(), UIAlertControllerStyle.Alert);
-            alertController.addAction(new UIAlertAction("OK",
-                UIAlertActionStyle.Default, (action) -> {
-                    alertController.dismissViewController(true, null);
-                    if (exitIfOk) {
-                        System.exit(0);
-                    }
-                })
-            );
-            alertController.show();
-        });
-*/
+        e.printStackTrace();
+        System.exit(1);
     }
-/*
-    public static void dialogOnUiThread(final Activity ctx, final CharSequence title, final CharSequence message) {
-        ctx.runOnUiThread(new Runnable(){
 
-                @Override
-                public void run() {
-                    new AlertDialog.Builder(ctx)
-                        .setTitle(title)
-                        .setMessage(message)
-                        .setPositiveButton(android.R.string.ok, null)
-                        .show();
-                }
-            });
-
-    }
-*/
     public static void moveInside(String from, String to) {
         File fromFile = new File(from);
         for (File fromInside : fromFile.listFiles()) {
@@ -331,18 +302,15 @@ public final class Tools
             from.renameTo(toFrom);
         }
     }
-/*
-    public static void openURL(Activity act, String url) {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        act.startActivity(browserIntent);
-    }
-*/
 
     public static void preProcessLibraries(DependentLibrary[] libraries) {
         // Ignore some libraries since they are unsupported (jinput, text2speech) or unused (LWJGL)
         // Support for text2speech is not planned, so skip it for now.
         for (int i = 0; i < libraries.length; i++) {
             DependentLibrary libItem = libraries[i];
+            if (libItem.artifact != null) {
+                libItem.downloads = new DependentLibrary.LibraryDownloads(libItem.artifact);
+            }
             if (libItem.name.startsWith("com.mojang:text2speech") ||
                 //libItem.name.startsWith("net.java.jinput") ||
                 libItem.name.startsWith("net.java.dev.jna:platform:") ||
@@ -368,9 +336,7 @@ public final class Tools
         preProcessLibraries(info.libraries);
         for (DependentLibrary libItem : info.libraries) {
             if (libItem._skip) continue;
-            
-            String[] libInfos = libItem.name.split(":");
-            String fullPath = Tools.DIR_HOME_LIBRARY + "/" + Tools.artifactToPath(libInfos[0], libInfos[1], libInfos[2]);
+            String fullPath = Tools.DIR_HOME_LIBRARY + "/" + artifactToPath(libItem);
             if (!libDir.contains(fullPath)) {
                 libDir.add(fullPath);
             }
@@ -549,24 +515,7 @@ public final class Tools
     public static void write(String path, String content) throws IOException {
         write(path, content.getBytes());
     }
-/*
-    public static byte[] loadFromAssetToByte(Context ctx, String inFile) {
-        byte[] buffer = null;
 
-        try {
-            InputStream stream = ctx.getAssets().open(inFile);
-
-            int size = stream.available();
-            buffer = new byte[size];
-            stream.read(buffer);
-            stream.close();
-        } catch (IOException e) {
-            // Handle exceptions here
-            e.printStackTrace();
-        }
-        return buffer;
-    }
-*/
     public static void downloadFile(String urlInput, String nameOutput) throws IOException {
         File file = new File(nameOutput);
         DownloadUtils.downloadFile(urlInput, file);

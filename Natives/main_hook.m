@@ -3,11 +3,9 @@
 #import "ios_uikit_bridge.h"
 #import "utils.h"
 
-#include <dlfcn.h>
 #include "external/fishhook/fishhook.h"
 
 void (*orig_abort)();
-void* (*orig_dlopen)(const char* path, int mode);
 void (*orig_exit)(int code);
 int (*orig_open)(const char *path, int oflag, ...);
 
@@ -61,12 +59,9 @@ int hooked_open(const char *path, int oflag, ...) {
 }
 
 void init_hookFunctions() {
-    void *orig_dlopen_local;
     rebind_symbols((struct rebinding[3]){
         {"abort", hooked_abort, (void *)&orig_abort},
         {"exit", hooked_exit, (void *)&orig_exit},
         {"open", hooked_open, (void *)&orig_open}
     }, 3);
-    // workaround weird pointer overwritten issue in jre 17.0.7
-    orig_dlopen = orig_dlopen_local;
 }

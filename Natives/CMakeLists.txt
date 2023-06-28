@@ -22,7 +22,9 @@ include_directories(
   "external/AFNetworking/UIKit+AFNetworking"
   "external/DBNumberedSlider/Classes"
   "external/NRFileManager"
+  "external/UnzipKit"
   "external/fishhook"
+  "external/lzma"
   "external/mesa"
   "external/AltKit"
   "external/Apple"
@@ -96,6 +98,7 @@ target_link_libraries(AFNetworking
 
 
 add_executable(PojavLauncher
+  dyld_bypass_validation.m
   main.m
   main_hook.m
   JavaLauncher.m
@@ -136,6 +139,7 @@ add_executable(PojavLauncher
   LauncherPreferencesViewController.m
   LauncherPrefContCfgViewController.m
   LauncherPrefGameDirViewController.m
+  LauncherPrefManageJREViewController.m
   LauncherSplitViewController.m
   MinecraftResourceUtils.m
   PickTextField.m
@@ -158,6 +162,7 @@ endif()
 
 target_link_libraries(PojavLauncher
   PUBLIC AFNetworking
+  lzma
   "-F'${CMAKE_CURRENT_LIST_DIR}/build'"
   "-F'${CMAKE_CURRENT_LIST_DIR}/resources/Frameworks'"
   "-framework AltKit"
@@ -172,6 +177,8 @@ target_link_libraries(PojavLauncher
   "-framework IOKit"
   "-framework QuartzCore"
   "-framework UIKit"
+  "-framework UniformTypeIdentifiers"
+  "-framework UnzipKit"
   "-framework WebKit"
   "-weak_framework SafariServices"
 )

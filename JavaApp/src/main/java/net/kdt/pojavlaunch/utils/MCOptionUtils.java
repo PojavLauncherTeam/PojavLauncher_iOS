@@ -40,7 +40,12 @@ public class MCOptionUtils
         
         mLineList.add(key + ":" + value);
     }
-    
+
+    public static void setDefault(String key, String value) {
+        if (get(key) == null) {
+            mLineList.add(key + ":" + value);
+        }
+    }
 
     public static String get(String key){
         if (mLineList == null){

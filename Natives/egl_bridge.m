@@ -214,7 +214,7 @@ int pojavInit() {
     return JNI_TRUE;
 }
 
-jboolean pojavInit_OpenGL() {
+jboolean pojavInitOpenGL() {
     if (config_renderer) return JNI_TRUE;
 
     NSString *renderer = @(getenv("POJAV_RENDERER"));
@@ -353,11 +353,11 @@ void pojavSetWindowHint(int hint, int value) {
             case GLFW_NO_API:
                 config_renderer = RENDERER_VULKAN;
                 /* Nothing to do: initialization is handled in Java-side */
-                // pojavInit_Vulkan();
+                // pojavInitVulkan();
                 break;
             case GLFW_OPENGL_API:
                 /* Nothing to do: initialization is called in pojavCreateContext */
-                // pojavInit_OpenGL();
+                // pojavInitOpenGL();
                 break;
             default:
                 NSLog(@"GLFW: Unimplemented API 0x%x", value);
@@ -485,11 +485,11 @@ void pojavMakeCurrent(void* window) {
 }
 
 void* pojavCreateContext(void* contextSrc) {
-    pojavInit_OpenGL();
-
     if (config_renderer == RENDERER_VULKAN) {
         return (__bridge void *)(((SurfaceViewController *)currentWindow().rootViewController).surfaceView.layer);
     }
+
+    pojavInitOpenGL();
 
     if (config_renderer == RENDERER_MTL_ANGLE) {
             const EGLint ctx_attribs[] = {

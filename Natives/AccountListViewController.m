@@ -137,8 +137,7 @@
     NSMutableDictionary *result = [NSMutableDictionary new];
     NSArray<NSURLQueryItem *> *queryItems = [NSURLComponents componentsWithString:url].queryItems;
     for (NSURLQueryItem *item in queryItems) {
-        result[item.name] = 
-item.value;
+        result[item.name] = item.value;
     }
     return result;
 }
@@ -207,7 +206,7 @@ item.value;
     {
         if (callbackURL == nil) {
             if (error.code != ASWebAuthenticationSessionErrorCodeCanceledLogin) {
-                showDialog(self, localize(@"Error", nil), error.localizedDescription);
+                showDialog(localize(@"Error", nil), error.localizedDescription);
             }
             return;
         }
@@ -220,7 +219,7 @@ item.value;
             [self addActivityIndicatorTo:sender];
             id callback = ^(id status, BOOL success) {
                 if ([status isKindOfClass:NSString.class] && [status isEqualToString:@"DEMO"] && success) {
-                    showDialog(self, localize(@"login.warn.title.demomode", nil), localize(@"login.warn.message.demomode", nil));
+                    showDialog(localize(@"login.warn.title.demomode", nil), localize(@"login.warn.message.demomode", nil));
                 }
                 [self callbackMicrosoftAuth:status success:success forCell:sender];
             };
@@ -230,7 +229,7 @@ item.value;
                 // Ignore access denial responses
                 return;
             }
-            showDialog(self, localize(@"Error", nil), queryItems[@"error_description"]);
+            showDialog(localize(@"Error", nil), queryItems[@"error_description"]);
         }
     }];
 
@@ -238,7 +237,7 @@ item.value;
     self.authVC.presentationContextProvider = self;
 
     if ([self.authVC start] == NO) {
-        showDialog(self, localize(@"Error", nil), @"Unable to open Safari");
+        showDialog(localize(@"Error", nil), @"Unable to open Safari");
     }
 }
 
@@ -268,7 +267,7 @@ item.value;
             NSData *errorData = ((NSError *)status).userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
             NSString *errorStr = [[NSString alloc] initWithData:errorData encoding:NSUTF8StringEncoding];
             NSLog(@"[MSA] Error: %@", errorStr);
-            showDialog(self, localize(@"Error", nil), errorStr);
+            showDialog(localize(@"Error", nil), errorStr);
         }
     } else if (success) {
         [self removeActivityIndicatorFrom:cell];

@@ -6,6 +6,7 @@
 #import "LauncherSplitViewController.h"
 #import "SurfaceViewController.h"
 
+#include <objc/runtime.h>
 #include "ios_uikit_bridge.h"
 #include "utils.h"
 
@@ -18,7 +19,7 @@ jmethodID method_GetRGB;
 jclass class_CTCAndroidInput;
 jmethodID method_ReceiveInput;
 
-void internal_showDialog(UIViewController *viewController, NSString* title, NSString* message) {
+void internal_showDialog(NSString* title, NSString* message) {
     NSLog(@"[UI] Dialog shown: %@: %@", title, message);
 
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:title
@@ -28,12 +29,19 @@ void internal_showDialog(UIViewController *viewController, NSString* title, NSSt
     UIAlertAction* okAction = [UIAlertAction actionWithTitle:localize(@"OK", nil) style:UIAlertActionStyleDefault handler:nil];
     [alert addAction:okAction];
 
-    [currentVC() presentViewController:alert animated:YES completion:nil];
+    UIWindow *alertWindow = [[UIWindow alloc] initWithWindowScene:currentWindow().windowScene];
+    alertWindow.frame = UIScreen.mainScreen.bounds;
+    alertWindow.rootViewController = [UIViewController new];
+    alertWindow.windowLevel = 1000;
+    [alertWindow makeKeyAndVisible];
+    objc_setAssociatedObject(alert, @selector(alertWindow), alertWindow, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+
+    [alertWindow.rootViewController presentViewController:alert animated:YES completion:nil];
 }
 
-void showDialog(UIViewController *viewController, NSString* title, NSString* message) {
+void showDialog(NSString* title, NSString* message) {
     dispatch_async(dispatch_get_main_queue(), ^{
-        internal_showDialog(viewController ? viewController : currentVC(), title, message);
+        internal_showDialog(title, message);
     });
 }
 
@@ -112,6 +120,7 @@ void UIKit_launchMinecraftSurfaceVC() {
     setPreference(@"internal_useStackQueue", @(isUseStackQueueCall ? YES : NO));
     dispatch_async(dispatch_get_main_queue(), ^{
         UIWindow *window = currentWindow();
+        tmpRootVC = window.rootViewController;
         [UIView animateWithDuration:0.2 animations:^{
             window.alpha = 0;
         } completion:^(BOOL b){
@@ -128,13 +137,25 @@ void UIKit_returnToSplitView() {
     // so that the app doesn't close when quitting the game (similar behaviour to Android)
     dispatch_async(dispatch_get_main_queue(), ^{
         UIWindow *window = currentWindow();
+
+        // Return from JavaGUIViewController
+        if ([window.rootViewController isKindOfClass:LauncherSplitViewController.class]) {
+            [currentVC() dismissViewControllerAnimated:YES completion:nil];
+            return;
+        }
+
+        // Return from SurfaceViewController
         [UIView animateWithDuration:0.2 animations:^{
             window.alpha = 0;
         } completion:^(BOOL b){
             [window resignKeyWindow];
             window.alpha = 1;
-            window.rootViewController = [[LauncherSplitViewController alloc] initWithStyle:UISplitViewControllerStyleDoubleColumn];
-            
+            if (tmpRootVC) {
+                window.rootViewController = tmpRootVC;
+                tmpRootVC = nil;
+            } else {
+                window.rootViewController = [[LauncherSplitViewController alloc] initWithStyle:UISplitViewControllerStyleDoubleColumn];
+            }
             [window makeKeyAndVisible];
         }];
     });
