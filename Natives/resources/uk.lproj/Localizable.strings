@@ -213,8 +213,6 @@
 "preference.title.gyroscope_sensitivity" = "Налаштування чутливості гіроскопа";
 "preference.detail.gyroscope_sensitivity" = "Налаштуйте чутливість елементів керування гіроскопом";
 
-"preference.title.java_home" = "Використовувати Java 17 для Minecraft < 1.17";
-"preference.detail.java_home" = "Java 8 використовується за замовчуванням для цих версій. Увімкніть цю опцію, щоб примусово використовувати Java 17, проте сумісність не гарантується.";
 "preference.title.java_args" = "Аргументи запуску JVM";
 "preference.detail.java_args" = "Передавати аргументи до Java під час запуску Minecraft. Будьте обережні, це може призвести до аварійного завершення гри у разі неправильної модифікації.";
 "preference.placeholder.java_args" = "Вкажіть аргументи...";
