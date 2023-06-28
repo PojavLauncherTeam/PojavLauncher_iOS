@@ -44,6 +44,7 @@
 "preference.title.cosmetica" = "Capas da 'Comestica'";
 
 "preference.title.renderer" = "Renderizador";
+
 "preference.title.java_args" = "Argumentos JVM";
 "preference.title.auto_ram" = "RAM automática";
 "preference.detail.auto_ram" = "Ativa o ajuste automático de RAM";
