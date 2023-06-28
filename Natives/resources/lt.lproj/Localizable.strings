@@ -44,6 +44,7 @@
 "preference.title.cosmetica" = "\"Cosmetica\" apvalkalai";
 
 "preference.title.renderer" = "Vaizdo generatorius";
+
 "preference.title.java_args" = "JVM Paleidimo argumentai";
 "preference.title.auto_ram" = "Automatiškas RAM";
 "preference.detail.auto_ram" = "Įjungia automatišką RAM keitėją";
