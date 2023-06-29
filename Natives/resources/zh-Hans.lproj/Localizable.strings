@@ -61,6 +61,7 @@
 "init.migrateDir" = "目前 PojavLauncher 数据目录为%@。所有的游戏资源已移动到最新目录。";
 
 "java.error.missing_main_class" = "%@ 缺少主类属性。如果是模组，请将其放入您选中实例的 “mod” 文件夹。";
+"java.error.missing_runtime" = "%@ 需要 Java %d 或更高版本运行。请先安装并在管理运行时中指定它。";
 
 "launcher.mcl.downloading_file" = "正在下载文件 %@";
 "launcher.mcl.error_download" = "文件 %@ 下载失败：%@ ，建议重启启动器重新下载";
@@ -214,6 +215,16 @@
 "preference.detail.gyroscope_invert_x_axis" = "反转陀螺仪的 X 轴";
 "preference.title.gyroscope_sensitivity" = "陀螺仪控制灵敏度";
 "preference.detail.gyroscope_sensitivity" = "调整陀螺仪控制的灵敏度";
+
+"preference.title.manage_runtime" = "管理运行时";
+"preference.title.confirm.delete_runtime" = "%@ 将被删除";
+"preference.manage_runtime.header.default" = "首选的 Java 版本";
+"preference.manage_runtime.default.1165" = "1.16.5 及更低版本";
+"preference.manage_runtime.default.117" = "1.17 及更高版本";
+"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 及更低版本可能以较新版本的 Java 运行，但无法保证与模组的兼容性。外部运行时可置于 “java_runtimes” 文件夹中。仅当安装程序不希望使用较新的 Java 版本时，更改 “Install .jar” 的 Java 版本才会生效。";
+"preference.manage_runtime.footer.java8" = "此为 Minecraft 1.16.5 及更低版本的默认版本。";
+"preference.manage_runtime.footer.java17" = "此为 Minecraft 1.17 及更高版本的默认版本。";
+"preference.manage_runtime.header.invalid" = "运行时无效";
 
 "preference.title.java_args" = "JVM 启动参数";
 "preference.detail.java_args" = "启动 Minecraft 时将参数传递到 Java。小心，如果修改不正确，可能会使游戏崩溃。";
