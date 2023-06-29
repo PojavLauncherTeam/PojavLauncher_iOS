@@ -60,6 +60,8 @@
 
 "init.migrateDir" = "目前 PojavLauncher 数据目录为%@。所有的游戏资源已移动到最新目录。";
 
+"java.error.missing_main_class" = "%@ 缺少主类属性。如果是模组，请将其放入您选中实例的 “mod” 文件夹。";
+
 "launcher.mcl.downloading_file" = "正在下载文件 %@";
 "launcher.mcl.error_download" = "文件 %@ 下载失败：%@ ，建议重启启动器重新下载";
 
