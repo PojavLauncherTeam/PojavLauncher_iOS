@@ -234,3 +234,11 @@ pengontrol game terhubung.";
 "controller_configurator.title.type.xbox" = "Xbox";
 "controller_configurator.title.type.playstation" = "PlayStation";
 "controller_configurator.playstation.title.named_back" = "Pilih";
+
+"controller_configurator.section.config_files" = "Berkas konfigurasi saat ini";
+"controller_configurator.section.game_mappings" = "Pemetaan permainan";
+"controller_configurator.section.footer.game_mappings" = "Kaitkan saat tetikus terkunci di dalam permainan.";
+"controller_configurator.section.menu_mappings" = "Menu pemetaan";
+"controller_configurator.section.footer.menu_mappings" = "Kaitkan saat tetikus tidak terkunci, seperti saat di title screen atau di menu jeda.";
+"controller_configurator.section.controller_style" = "Tipe pengontrol";
+"controller_configurator.section.footer.controller_style" = "Tampilan nama pengontrol yang berbeda di konfigurasi ini.";
