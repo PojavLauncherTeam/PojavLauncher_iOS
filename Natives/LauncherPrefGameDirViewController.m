@@ -135,26 +135,20 @@ viewForFooterInSection:(NSInteger)section
     NSMutableArray *openItems = [[NSMutableArray alloc] init];
 
     NSString *directory = [NSString stringWithFormat:@"%s/instances/%@", getenv("POJAV_HOME"), self.array[indexPath.row]];
-    if ([UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:@"shareddocuments://"]]) {
-        [openItems addObject:[UIAction
-            actionWithTitle:@"Files"
-            image:nil
-            identifier:nil
-            handler:[self createOpenScheme:@"shareddocuments" at:directory]]];
-    }
-    if ([UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:@"filza://"]]) {
-        [openItems addObject:[UIAction
-            actionWithTitle:@"Filza"
-            image:nil
-            identifier:nil
-            handler:[self createOpenScheme:@"filza" at:directory]]];
-    }
-    if ([UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:@"santander://"]]) {
-        [openItems addObject:[UIAction
-            actionWithTitle:@"Santander"
-            image:nil
-            identifier:nil
-            handler:[self createOpenScheme:@"santander" at:directory]]];
+    NSDictionary *apps = @{
+        @"shareddocuments": @"Files",
+        @"filza": @"Filza",
+        @"santander": @"Santander",
+    };
+    for (NSString *key in apps.allKeys) {
+        NSString *url = [NSString stringWithFormat:@"%@://", key];
+        if ([UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:url]]) {
+            [openItems addObject:[UIAction
+                actionWithTitle:apps[key]
+                image:nil
+                identifier:nil
+                handler:[self createOpenScheme:key at:directory]]];
+        }
     }
     UIMenu *open = [UIMenu
         menuWithTitle:@""

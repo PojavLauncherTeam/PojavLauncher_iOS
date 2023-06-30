@@ -33,6 +33,12 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
 @implementation LauncherPreferencesViewController
 
+- (id)init {
+    self = [super init];
+    self.title = localize(@"Settings", nil);
+    return self;
+}
+
 - (NSString *)imageName {
     return @"MenuSettings";
 }
@@ -461,7 +467,6 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
         ]
     ];
 
-    self.title = localize(@"Settings", nil);
     if (self.navigationController) {
         self.navigationItem.rightBarButtonItems = @[[sidebarViewController drawAccountButton], [self drawHelpButton]];
     }

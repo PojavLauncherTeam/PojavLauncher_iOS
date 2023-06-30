@@ -14,3 +14,7 @@
 @property(nonatomic) NSInteger preferredLayout;
 + (instancetype)defaultStyle;
 @end
+
+@interface UIImage(private)
+- (UIImage *)_imageWithSize:(CGSize)size;
+@end

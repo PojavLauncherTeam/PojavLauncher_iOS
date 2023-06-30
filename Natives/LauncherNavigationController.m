@@ -43,7 +43,7 @@
     [self.versionTextField addTarget:self.versionTextField action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
     self.versionTextField.autoresizingMask = AUTORESIZE_MASKS;
     self.versionTextField.placeholder = @"Specify version...";
-    self.versionTextField.rightView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SpinnerArrow"]];
+    self.versionTextField.rightView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"SpinnerArrow"] _imageWithSize:CGSizeMake(30, 30)]];
     self.versionTextField.rightView.frame = CGRectMake(0, 0, self.versionTextField.frame.size.height * 0.9, self.versionTextField.frame.size.height * 0.9);
     self.versionTextField.rightViewMode = UITextFieldViewModeAlways;
     self.versionTextField.text = (NSString *) getPreference(@"selected_version");

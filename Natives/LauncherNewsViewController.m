@@ -14,6 +14,12 @@
 WKWebView *webView;
 UIEdgeInsets insets;
 
+- (id)init {
+    self = [super init];
+    self.title = localize(@"News", nil);
+    return self;
+}
+
 - (NSString *)imageName {
     return @"MenuNews";
 }
@@ -46,8 +52,7 @@ UIEdgeInsets insets;
         // "This device has a limited amount of memory available."
         [self showWarningAlert:@"limited_ram" hasPreference:YES];
     }
-    
-    self.title = localize(@"News", nil);
+
     self.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
     self.navigationItem.rightBarButtonItem = [sidebarViewController drawAccountButton];
     self.navigationItem.leftItemsSupplementBackButton = true;

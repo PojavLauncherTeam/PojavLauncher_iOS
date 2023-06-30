@@ -7,6 +7,7 @@
 #import "LauncherNewsViewController.h"
 #import "LauncherPreferences.h"
 #import "LauncherPreferencesViewController.h"
+#import "LauncherProfilesViewController.h"
 #import "UIButton+AFNetworking.h"
 #import "UIImageView+AFNetworking.h"
 #import "UIKit+hook.h"
@@ -47,11 +48,10 @@
     [titleView sizeToFit];
 
     // View controllers are put into an array to keep its state
-    self.options = NSMutableArray.new;
-    [self.options addObject:LauncherNewsViewController.new];
-    self.options[0].title = localize(@"News", nil);
-    [self.options addObject:LauncherPreferencesViewController.new];
-    self.options[1].title = localize(@"Settings", nil);
+    self.options = [NSMutableArray new];
+    [self.options addObject:[LauncherNewsViewController new]];
+    //[self.options addObject:[LauncherProfilesViewController new]];
+    [self.options addObject:[LauncherPreferencesViewController new]];
     if (realUIIdiom != UIUserInterfaceIdiomTV) {
         [self.options addObject:(id)[LauncherMenuCustomItem
             title:localize(@"launcher.menu.custom_controls", nil)
@@ -177,10 +177,10 @@
     UIImage *origImage = [UIImage systemImageNamed:[self.options[indexPath.row]
         performSelector:@selector(imageName)]];
     if (origImage) {
-        UIGraphicsImageRenderer *renderer = [[UIGraphicsImageRenderer alloc] initWithSize:CGSizeMake(50, 50)];
+        UIGraphicsImageRenderer *renderer = [[UIGraphicsImageRenderer alloc] initWithSize:CGSizeMake(40, 40)];
         UIImage *image = [renderer imageWithActions:^(UIGraphicsImageRendererContext*_Nonnull myContext) {
-            CGFloat scaleFactor = 50/origImage.size.height;
-            [origImage drawInRect:CGRectMake(25 - origImage.size.width*scaleFactor/2, 0, origImage.size.width*scaleFactor, 50)];
+            CGFloat scaleFactor = 40/origImage.size.height;
+            [origImage drawInRect:CGRectMake(20 - origImage.size.width*scaleFactor/2, 0, origImage.size.width*scaleFactor, 40)];
         }];
         cell.imageView.image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     }
@@ -190,6 +190,7 @@
         cell.imageView.layer.minificationFilter = kCAFilterNearest;
         cell.imageView.image = [UIImage imageNamed:[self.options[indexPath.row]
             performSelector:@selector(imageName)]];
+        cell.imageView.image = [cell.imageView.image _imageWithSize:CGSizeMake(40, 40)];
     }
     return cell;
 }
