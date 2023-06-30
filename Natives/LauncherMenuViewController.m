@@ -7,7 +7,7 @@
 #import "LauncherNewsViewController.h"
 #import "LauncherPreferences.h"
 #import "LauncherPreferencesViewController.h"
-#import "LauncherProfilesViewController.h"
+//#import "LauncherProfilesViewController.h"
 #import "UIButton+AFNetworking.h"
 #import "UIImageView+AFNetworking.h"
 #import "UIKit+hook.h"
