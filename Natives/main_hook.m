@@ -31,6 +31,16 @@ void hooked_abort() {
     orig_abort();
 }
 
+void hooked___assert_rtn(const char* func, const char* file, int line, const char* failedexpr)
+{
+    if (func == NULL) {
+        fprintf(stderr, "Assertion failed: (%s), file %s, line %d.\n", failedexpr, file, line);
+    } else {
+        fprintf(stderr, "Assertion failed: (%s), function %s, file %s, line %d.\n", failedexpr, func, file, line);
+    }
+    hooked_abort();
+}
+
 void hooked_exit(int code) {
     NSLog(@"exit(%d) called", code);
     if (code == 0) {
@@ -59,9 +69,11 @@ int hooked_open(const char *path, int oflag, ...) {
 }
 
 void init_hookFunctions() {
-    rebind_symbols((struct rebinding[3]){
+    struct rebinding rebindings[] = (struct rebinding[]){
         {"abort", hooked_abort, (void *)&orig_abort},
+        {"__assert_rtn", hooked___assert_rtn, NULL},
         {"exit", hooked_exit, (void *)&orig_exit},
         {"open", hooked_open, (void *)&orig_open}
-    }, 3);
+    };
+    rebind_symbols(rebindings, sizeof(rebindings)/sizeof(struct rebinding));
 }

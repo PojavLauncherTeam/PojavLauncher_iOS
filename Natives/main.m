@@ -37,6 +37,12 @@ void printEntitlementAvailability(NSString *key) {
     NSLog(@"* %@: %@", key, getEntitlementValue(key) ? @"YES" : @"NO");
 }
 
+void uncaughtExceptionHandler(NSException *exception) {
+    NSLog(@"Uncaught exception: %@", exception.description);
+    NSLog(@"Call stack: %@", exception.callStackSymbols);
+    usleep(10000);
+}
+
 bool init_checkForsubstrated() {
     // Please kindly tell pwn20wnd that he sucks
     int mib[4] = {CTL_KERN, KERN_PROC, KERN_PROC_ALL, 0};
@@ -221,6 +227,9 @@ void init_redirectStdio() {
         }
         [file closeFile];
     });
+
+    // We can start catching exception right now
+    NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
 }
 
 void init_setupAccounts() {
@@ -311,8 +320,6 @@ void init_setupHomeDirectory() {
     
     setenv("POJAV_HOME", realpath(homeDir.UTF8String, NULL), 1);
 }
-
-// NSSetUncaughtExceptionHandler
 
 int main(int argc, char *argv[]) {
     if (pJLI_Launch) {
