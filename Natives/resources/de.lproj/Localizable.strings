@@ -60,6 +60,9 @@
 
 "init.migrateDir" = "Das PojavLauncher-Datenverzeichnis ist jetzt %@. Alle vorhandenen Daten wurden an den neuen Standort verschoben.";
 
+"java.error.missing_main_class" = "%@ fehlt das Haupt-Klassen-Attribut. Sollte es sich um Mod handeln, packe es in den „mods“-Ordner der ausgewählten Instanz.";
+"java.error.missing_runtime" = "%@ benötigt Java %d oder neuer. Bitte installiere zuerst die korrekte Java-Version und wähle sie in \"Laufzeiten verwalten\" an.";
+
 "launcher.mcl.downloading_file" = "%@ wird heruntergeladen";
 "launcher.mcl.error_download" = "Fehler beim Herunterladen von %@: %@";
 
@@ -219,6 +222,7 @@ der Minecraft-Version zu wählen. Verringerte Auflösung reduziert die Arbeitsla
 "preference.manage_runtime.header.default" = "Bevorzugte Java-Version";
 "preference.manage_runtime.default.1165" = "1.16.5 und älter";
 "preference.manage_runtime.default.117" = "1.17 und neuer";
+"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 und älter können mit einer neueren Java-Version ausgeführt werden, jedoch ist die Kompatibilität mit Mods nicht gewährleistet. Externe Laufzeiten können im Ordner „java_runtimes“ abgelegt werden. Die Änderung der Java-Version für „Install .jar“ tritt nur in Kraft, wenn der Installer keine neuere Java-Version erwartet.";
 "preference.manage_runtime.footer.java8" = "Dies ist die Standardversion für Minecraft 1.16.5 und älter.";
 "preference.manage_runtime.footer.java17" = "Dies ist die Standardversion für Minecraft 1.17 und neuer.";
 "preference.manage_runtime.header.invalid" = "Ungültige Laufzeiten";
