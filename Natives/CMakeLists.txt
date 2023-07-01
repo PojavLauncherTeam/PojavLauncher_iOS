@@ -143,6 +143,7 @@ add_executable(PojavLauncher
   LauncherSplitViewController.m
   MinecraftResourceUtils.m
   PickTextField.m
+  PLPrefTableViewController.m
   SceneDelegate.m
   SceneExternalDelegate.m
   SurfaceViewController.m

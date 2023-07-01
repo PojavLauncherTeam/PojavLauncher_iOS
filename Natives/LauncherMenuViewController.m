@@ -138,14 +138,16 @@
 }
 
 - (UIBarButtonItem *)drawAccountButton {
-    self.accountButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.accountButton addTarget:self action:@selector(selectAccount:) forControlEvents:UIControlEventPrimaryActionTriggered];
-    self.accountButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    if (!self.accountBtnItem) {
+        self.accountButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.accountButton addTarget:self action:@selector(selectAccount:) forControlEvents:UIControlEventPrimaryActionTriggered];
+        self.accountButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 
-    self.accountButton.titleEdgeInsets = UIEdgeInsetsMake(0, 4, 0, -4);
-    self.accountButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    self.accountButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    self.accountBtnItem = [[UIBarButtonItem alloc] initWithCustomView:self.accountButton];
+        self.accountButton.titleEdgeInsets = UIEdgeInsetsMake(0, 4, 0, -4);
+        self.accountButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        self.accountButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        self.accountBtnItem = [[UIBarButtonItem alloc] initWithCustomView:self.accountButton];
+    }
 
     [self updateAccountInfo];
     
@@ -153,7 +155,6 @@
 }
 
 - (void)restoreHighlightedSelection {
-
     // Restore the selected row when the view appears again
     int index = [self.options indexOfObject:[contentNavigationController viewControllers][0]];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:MAX(0, index) inSection:0];
@@ -205,14 +206,7 @@
         } else {
             [contentNavigationController setViewControllers:@[selected] animated:NO];
         }
-        
-        if([self.options[indexPath.row].title isEqualToString:localize(@"Settings", nil)]) {
-            LauncherPreferencesViewController *vc = (LauncherPreferencesViewController *)selected;
-            selected.navigationItem.rightBarButtonItems = @[self.accountBtnItem, [vc drawHelpButton]];
-        } else {
-            selected.navigationItem.rightBarButtonItem = self.accountBtnItem;
-        }
-        
+        selected.navigationItem.rightBarButtonItem = self.accountBtnItem;
         selected.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
         selected.navigationItem.leftItemsSupplementBackButton = true;
     } else {

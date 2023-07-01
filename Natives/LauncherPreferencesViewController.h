@@ -1,7 +1,6 @@
 #import <UIKit/UIKit.h>
+#import "PLPrefTableViewController.h"
 
-@interface LauncherPreferencesViewController : UITableViewController<UITextFieldDelegate>
-
-- (UIBarButtonItem *)drawHelpButton;
+@interface LauncherPreferencesViewController : PLPrefTableViewController
 
 @end

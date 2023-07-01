@@ -5,6 +5,8 @@
 #import "ios_uikit_bridge.h"
 #import "utils.h"
 
+extern void init_setupLauncherProfiles();
+
 @interface LauncherPrefGameDirViewController ()<UITextFieldDelegate>
 @property(nonatomic) NSMutableArray *array;
 @end
@@ -43,6 +45,7 @@
     [NSFileManager.defaultManager removeItemAtPath:lasmPath error:nil];
     [NSFileManager.defaultManager createSymbolicLinkAtPath:lasmPath withDestinationPath:multidirPath error:nil];
     [NSFileManager.defaultManager changeCurrentDirectoryPath:lasmPath];
+    init_setupLauncherProfiles();
     if ([getPreference(@"selected_version_type") intValue] == 0) {
         [(LauncherNavigationController *)self.navigationController reloadVersionList:0];
     }

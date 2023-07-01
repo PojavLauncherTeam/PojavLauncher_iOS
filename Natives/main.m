@@ -253,7 +253,7 @@ void init_setupLauncherProfiles() {
             @"profiles": @{
                 @"(Default)": @{
                     @"name": @"(Default)",
-                    @"lastVersionId": @"Unknown"
+                    @"lastVersionId": @"latest-release"
                 }
             },
             @"selectedProfile": @"(Default)"
