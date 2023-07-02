@@ -16,7 +16,7 @@
 "Play" = "Играть";
 
 // Version categories
-"Installed" = "Установлено";
+"Installed" = "Установленные";
 "Snapshot" = "Снапшоты";
 "Releases" = "Релизы";
 "Old-beta" = "Старые бета";
@@ -60,7 +60,7 @@
 
 "init.migrateDir" = "Новое расположение PojavLauncher: %@. Все существующие данные также были перемещены.";
 
-"java.error.missing_main_class" = "У %@ отсутствует атрибут главного класса. Если это мод, поместите его в папку «mods» выбранной установки.";
+"java.error.missing_main_class" = "У %@ отсутствует атрибут главного класса. Если это мод, поместите его в папку «mods» выбраннго профиля.";
 "java.error.missing_runtime" = "%@ для работы требует Java %d или выше. Сперва установите её и укажите в качестве среды выполнения.";
 
 "launcher.mcl.downloading_file" = "Загрузка %@";
@@ -131,7 +131,7 @@
 "preference.title.confirm" = "Вы уверены?";
 
 "preference.title.game_directory" = "Папка игры";
-"preference.title.confirm.delete_game_directory" = "Установка %@ будет навсегда удалена без возможности восстановления.";
+"preference.title.confirm.delete_game_directory" = "Профиль %@ будет навсегда удалён без возможности восстановления.";
 "preference.multidir.add_directory" = "Добавить расположение";
 
 "preference.title.check_sha" = "Проверка файлов после загрузки";
