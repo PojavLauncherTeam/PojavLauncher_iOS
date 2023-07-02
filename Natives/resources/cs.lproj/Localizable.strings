@@ -60,6 +60,9 @@
 
 "init.migrateDir" = "Složka dat PojavLauncheru je nyní %@. Všechna vaše data byla přesunuta do nového umístění.";
 
+"java.error.missing_main_class" = "%@ chybí atribut hlavní třídy. Je-li to mód, vložte jej do složky »mods« vaší vybrané instance.";
+"java.error.missing_runtime" = "Spuštění %@ vyžaduje Javu %d či novější. Nejprve si ji nainstalujte a vyberte ve Správci Běhových Prostředí.";
+
 "launcher.mcl.downloading_file" = "Stahování %@";
 "launcher.mcl.error_download" = "Nepodařilo se stáhnout %@: %@";
 
@@ -192,6 +195,7 @@
 "preference.detail.gesture_mouse" = "Povolí gesta, například kliknutím umístit blok, podržením zníčit blok a posouvání dvěma prsty";
 "preference.title.gesture_hotbar" = "Gesta hotbaru";
 "preference.detail.gesture_hotbar" = "Povolí gesta, například dotknutí se slotu hotbaru, vyměnění předměty mezi rukama a zahození předmětů";
+"preference.title.disable_haptics" = "Vypnout hmatové funkce na obrazovce";
 "preference.title.press_duration" = "Trvání dlouhého stisku (ms)";
 "preference.detail.press_duration" = "Délka trvání dlouhého držení ke zničení bloků a vyhazování itemů.";
 "preference.title.button_scale" = "Měřítko tlačítka na obrazovce (%)";
@@ -212,10 +216,22 @@
 "preference.title.gyroscope_sensitivity" = "Citlivost gyroskopového ovládání";
 "preference.detail.gyroscope_sensitivity" = "Upravit citlivost gyroskopového ovládání";
 
+"preference.title.manage_runtime" = "Správce běhových prostředí";
+"preference.title.confirm.delete_runtime" = "%@ bude smazána";
+"preference.manage_runtime.header.default" = "Upřednostňovaná verze Javy";
+"preference.manage_runtime.default.1165" = "1.16.5 či starší";
+"preference.manage_runtime.default.117" = "1.17 či novější";
+"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 či starší mohou běžet s novější verzi Javy, leč kompatibilita s módy není zaručena. Externí běhové prostředí mohou býti umístěny do složky »java_runtimes«. Změna verze Javy pro »Install.jar» se projeví neočekává-li instalátor novější verzi Javy.";
+"preference.manage_runtime.footer.java8" = "Toto je výchozí verze pro Minecraft 1.16.5 či starší.";
+"preference.manage_runtime.footer.java17" = "Toto je výchozí verze pro Minecraft 1.17 či novější.";
+"preference.manage_runtime.header.invalid" = "Neplatné běhové prostředí";
+
 "preference.title.java_args" = "JVM spouštěcí argumenty";
 "preference.detail.java_args" = "Předá argumenty Javě spouštějíc Minecraft. Buďte opatrní, může to způsobit pád hry byly-li upraveny neprávně.";
 "preference.placeholder.java_args" = "Určit argumenty...";
 "preference.title.env_variables" = "Proměnné prostředí";
+"preference.detail.env_variables" = "Nastaví vlastní proměné prostředí spouštějíc Minecraft. Buďte opatrní, toto může způsobit pád hry je-li upraveno špatně.";
+"preference.placeholder.env_variables" = "Určete proměné...";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Automaticky bude měnit množství RAM";
 "preference.warn.auto_ram" = "Vypnutí této možnosti na nejailbreakovaných zařízení může způsobit nestabilitu je-li změno. Pokračujte s opatrností.";
