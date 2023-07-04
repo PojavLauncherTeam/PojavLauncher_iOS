@@ -33,6 +33,7 @@ However, we recommend one of the following devices on **iOS 14.0** and later:
 - iPad (10th generation) and later
 - iPad Air (4th generation) and later
 - iPad mini (6th generation) and later
+- iPad Pro (all models, except for 9.7-inch)
 
 Recommended devices provide a smoother and more enjoyable gameplay experience compared to other supported devices.
 - tvOS support is in development.
