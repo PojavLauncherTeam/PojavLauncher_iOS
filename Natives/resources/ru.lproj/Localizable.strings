@@ -256,6 +256,8 @@
 "preference.profile.title.default_touch_control" = "Сенсорное управление";
 "preference.profile.title.default_gamepad_control" = "Контроллер";
 "profile.title.create" = "Новый профиль";
+"profile.title.separate_preference" = "Изолировать настройки";
+"profile.detail.separate_preference" = "Опция для изоляции всех изменений в настройках. Их сброс приведёт к восстановлению глобальных настроек вместо настроек по умолчанию.";
 
 "controller_configurator.title.current" = "Файл настройки геймпада";
 "controller_configurator.title.type.xbox" = "Xbox";
