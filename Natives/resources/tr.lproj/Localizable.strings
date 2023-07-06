@@ -113,6 +113,7 @@
 "login.msa.progress.checkMCProfile" = "(5/5) Minecraft hesabına bakılıyor";
 
 "News" = "Haberler";
+"Profiles" = "Profiller";
 "Settings" = "Ayarlar";
 
 "preference.section.general" = "Genel Ayarlar";
@@ -239,7 +240,15 @@ Bu seçenek varsayılan JitStreamer sunucusunu kullanıyorsanız olduğu gibi b�
 
 "preference.profile.title.name" = "İsim";
 "preference.profile.title.version" = "Sürüm";
+"preference.profile.title.default_touch_control" = "Dokunmatik kontroller";
+"preference.profile.title.default_gamepad_control" = "Kumanda kontrolleri";
+
+"profile.error.name_exists" = "Bu isme sahip bir profil zaten mevcut. Lütfen başka bir isim kullanın.";
+"profile.section.instance" = "Oyun İstemci Ayarları";
+"profile.section.profiles" = "Bu istemcideki profiller";
 "profile.title.create" = "Yeni profil oluştur";
+"profile.title.separate_preference" = "Ayarları ayır";
+"profile.detail.separate_preference" = "Ayarlarda yapılan değişiklikleri izole etmek için bu seçeneği etkinleştirin. Sıfırlama yapmak, varsayılan ayarlar yerine genel ayarlara geri yükleyecektir.";
 
 "controller_configurator.title.current" = "Gamepad yapılandırma dosyası";
 "controller_configurator.title.type.xbox" = "Xbox";
