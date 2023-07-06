@@ -186,4 +186,8 @@
 "preference.detail.debug_show_layout_bounds" = "クリップの境界線、余白を表示";
 "preference.title.debug_show_layout_overlap" = "レイアウト重複を表示";
 "preference.detail.debug_show_layout_overlap" = "透明な色ですべてのビューをオーバーレイし、重複するビューを表示します。";
+
+"preference.profile.title.name" = "名前";
+"preference.profile.title.version" = "バージョン";
+"profile.title.create" = "新規プロフィールの作成";
 "controller_configurator.playstation.title.named_back" = "選択...";
