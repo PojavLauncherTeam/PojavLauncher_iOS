@@ -144,14 +144,15 @@ static AFURLSessionManager* manager;
         isAssetIndex = [version valueForKey:@"totalSize"] != nil;
 
         versionStr = [version valueForKey:@"id"];
-        if ([versionStr isEqualToString:@"latest-release"]) {
-            versionStr = getPrefObject(@"internal.latest_version.release");
-        } else if ([versionStr isEqualToString:@"latest-snapshot"]) {
-            versionStr = getPrefObject(@"internal.latest_version.snapshot");
+        if (!isAssetIndex) {
+            if ([versionStr isEqualToString:@"latest-release"]) {
+                versionStr = getPrefObject(@"internal.latest_version.release");
+            } else if ([versionStr isEqualToString:@"latest-snapshot"]) {
+                versionStr = getPrefObject(@"internal.latest_version.snapshot");
+            }
+            // Find it again to resolve latest-*
+            version = [self findVersion:versionStr inList:remoteVersionList];
         }
-
-        // Find it again to resolve latest-*
-        version = [self findVersion:versionStr inList:remoteVersionList];
         versionURL = [version valueForKey:@"url"];
         versionSHA = versionURL.stringByDeletingLastPathComponent.lastPathComponent;
     } else {
