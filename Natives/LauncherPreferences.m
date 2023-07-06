@@ -13,12 +13,13 @@ void loadPreferences(BOOL reset) {
         [pref reset];
     } else {
         pref = [[PLPreferences alloc] initWithAutomaticMigrator];
-        pref.instancePath = [NSString stringWithFormat:@"%s/launcher_preferences.plist", getenv("POJAV_GAME_DIR")];
-        [pref toggleIsolationForced:NO];
     }
 }
 
 void toggleIsolatedPref(BOOL forceEnable) {
+    if (!pref.instancePath) {
+        pref.instancePath = [NSString stringWithFormat:@"%s/launcher_preferences.plist", getenv("POJAV_GAME_DIR")];
+    }
     [pref toggleIsolationForced:forceEnable];
 }
 
