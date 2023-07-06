@@ -44,3 +44,5 @@
 "preference.title.auto_ram" = "Автоматическое выдѣленіе О.З.У.";
 "preference.detail.auto_ram" = "Автоматически управляетъ количествомъ выдѣленнаго О.З.У.";
 "preference.detail.allocated_memory" = "Управляетъ выдѣленіемъ памяти для Minecraft";
+
+"preference.profile.title.name" = "Имя";
