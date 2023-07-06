@@ -239,6 +239,10 @@
 "preference.title.debug_show_layout_overlap" = "Hiện sắp xếp chồng lên nhau";
 "preference.detail.debug_show_layout_overlap" = "Đặt màu nền cho mỗi vùng để phát hiện những vùng bị chồng.";
 
+"preference.profile.title.name" = "Tên";
+"preference.profile.title.version" = "Phiên bản";
+"profile.title.create" = "Tạo cấu hình mới";
+
 "controller_configurator.title.current" = "Tập tin cấu hình Gamepad";
 "controller_configurator.title.type.xbox" = "Xbox";
 "controller_configurator.title.type.playstation" = "PlayStation";
