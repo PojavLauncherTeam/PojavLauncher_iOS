@@ -207,4 +207,8 @@
 "preference.detail.debug_show_layout_bounds" = "顯示剪輯範圍、邊界";
 "preference.title.debug_show_layout_overlap" = "顯示重複的佈局";
 "preference.detail.debug_show_layout_overlap" = "通過用透明顏色來覆蓋所有視圖，來顯示重複的視圖";
+
+"preference.profile.title.name" = "名稱";
+"preference.profile.title.version" = "版本";
+"profile.title.create" = "新增設定檔";
 "controller_configurator.playstation.title.named_back" = "選擇";
