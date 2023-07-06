@@ -186,4 +186,7 @@
 "preference.detail.debug_show_layout_bounds" = "نمایش مرزها، حاشیه‌ها";
 "preference.title.debug_show_layout_overlap" = "نمایش همپوشانی طرح";
 "preference.detail.debug_show_layout_overlap" = "هر نما را با یک رنگ شفاف پوشش دهید تا نماهای همپوشانی نشان داده شود.";
+
+"preference.profile.title.name" = "نام";
+"preference.profile.title.version" = "نسخه";
 "controller_configurator.playstation.title.named_back" = "انتخاب";
