@@ -116,6 +116,7 @@
 "login.msa.progress.checkMCProfile" = "(5/5) Überprüfe Minecraft-Profil";
 
 "News" = "Neuigkeiten";
+"Profiles" = "Profile";
 "Settings" = "Einstellungen";
 
 "preference.section.general" = "Allgemeine Einstellungen";
@@ -257,6 +258,12 @@ der Minecraft-Version zu wählen. Verringerte Auflösung reduziert die Arbeitsla
 
 "preference.profile.title.name" = "Name";
 "preference.profile.title.version" = "Version";
+"preference.profile.title.default_touch_control" = "Berührungssteuerung";
+"preference.profile.title.default_gamepad_control" = "Gamepad-Steuerung";
+
+"profile.error.name_exists" = "Ein Profil mit diesen Namen existiert bereits. Verwende bitte einen anderen Namen.";
+"profile.section.instance" = "Spielinstanz-Einstellungen";
+"profile.section.profiles" = "Profile in dieser Instanz";
 "profile.title.create" = "Neues Profil erstellen";
 
 "controller_configurator.title.current" = "Gamepads Konfigurationsdatei";
