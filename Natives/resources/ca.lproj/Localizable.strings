@@ -29,3 +29,5 @@
 "Settings" = "Settings";
 
 "preference.title.renderer" = "Renderitzador";
+
+"preference.profile.title.name" = "Name";
