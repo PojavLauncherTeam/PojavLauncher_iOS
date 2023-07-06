@@ -49,4 +49,7 @@
 "preference.title.auto_ram" = "Automatiškas RAM";
 "preference.detail.auto_ram" = "Įjungia automatišką RAM keitėją";
 "preference.detail.allocated_memory" = "Kontroliuoja kiek RAM atminties duodama Minecraft";
+
+"preference.profile.title.name" = "Pavadinimas";
+"preference.profile.title.version" = "Versija";
 "controller_configurator.playstation.title.named_back" = "Pasirinkti";
