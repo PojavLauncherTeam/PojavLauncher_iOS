@@ -69,4 +69,7 @@
 
 "preference.title.java_args" = "JVM кушу аргументлары";
 "preference.title.auto_ram" = "Автоматик тиз хәтер билгеләү";
+
+"preference.profile.title.name" = "Исем";
+"preference.profile.title.version" = "Версия";
 "controller_configurator.playstation.title.named_back" = "Сайлау";
