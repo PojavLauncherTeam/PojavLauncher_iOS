@@ -240,6 +240,10 @@
 "preference.title.debug_show_layout_overlap" = "Afficher le chevauchement de la mise en page";
 "preference.detail.debug_show_layout_overlap" = "Superposez chaque vue avec une couleur transparente pour révéler des vues qui se chevauchent.";
 
+"preference.profile.title.name" = "Nom";
+"preference.profile.title.version" = "Version";
+"profile.title.create" = "Créer un nouveau profil";
+
 "controller_configurator.title.current" = "Fichier de configuration de la manette";
 "controller_configurator.title.type.xbox" = "Xbox";
 "controller_configurator.title.type.playstation" = "PlayStation";
