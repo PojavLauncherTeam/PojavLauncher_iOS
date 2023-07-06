@@ -254,6 +254,10 @@
 "preference.title.debug_show_layout_overlap" = "布局重叠显示";
 "preference.detail.debug_show_layout_overlap" = "用浅黄色覆盖每个视图，颜色越深则重叠越多";
 
+"preference.profile.title.name" = "名称";
+"preference.profile.title.version" = "版本";
+"profile.title.create" = "创建新配置";
+
 "controller_configurator.title.current" = "游戏键盘配置文件";
 "controller_configurator.title.type.xbox" = "Xbox";
 "controller_configurator.title.type.playstation" = "PlayStation";
