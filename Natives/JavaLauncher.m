@@ -126,7 +126,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
         UIKit_returnToSplitView();
         BOOL isInstallJar = [defaultJRETag isEqualToString:@"install_jar"];
         showDialog(localize(@"Error", nil), [NSString stringWithFormat:localize(@"java.error.missing_runtime", nil),
-            isInstallJar ? [launchTarget lastPathComponent] : PLProfiles.current.selectedProfile[@"id"], minVersion]);
+            isInstallJar ? [launchTarget lastPathComponent] : PLProfiles.current.selectedProfile[@"lastVersionId"], minVersion]);
         return 1;
     } else if ([javaHome hasPrefix:@(getenv("POJAV_HOME"))]) {
         // Activate Library Validation bypass for external runtime

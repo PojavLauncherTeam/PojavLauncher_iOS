@@ -42,9 +42,6 @@
     
     self.hasDetail = YES;
     self.prefDetailVisible = self.navigationController == nil;
-    if (self.navigationController == nil) {
-        self.tableView.alpha = 0.9;
-    }
     
     self.prefSections = @[@"general", @"video", @"control", @"java", @"debug"];
 
@@ -415,6 +412,9 @@
     ];
 
     [super viewDidLoad];
+    if (self.navigationController == nil) {
+        self.tableView.alpha = 0.9;
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

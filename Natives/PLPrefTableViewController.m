@@ -53,7 +53,7 @@
     [super viewWillAppear:animated];
 
     // Put navigation buttons back in place if we're first of the navigation controller
-    if (self.hasDetail) {
+    if (self.hasDetail && self.navigationController) {
         self.navigationItem.rightBarButtonItems = @[[sidebarViewController drawAccountButton], [self drawHelpButton]];
     }
 
