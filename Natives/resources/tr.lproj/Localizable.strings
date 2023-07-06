@@ -237,6 +237,10 @@ Bu seçenek varsayılan JitStreamer sunucusunu kullanıyorsanız olduğu gibi b�
 "preference.title.debug_show_layout_overlap" = "Düzenin üst üste geçmesini göster";
 "preference.detail.debug_show_layout_overlap" = "Üst üste kalan her yeri görebilmek için her düzeni saydam renkle donat.";
 
+"preference.profile.title.name" = "İsim";
+"preference.profile.title.version" = "Sürüm";
+"profile.title.create" = "Yeni profil oluştur";
+
 "controller_configurator.title.current" = "Gamepad yapılandırma dosyası";
 "controller_configurator.title.type.xbox" = "Xbox";
 "controller_configurator.title.type.playstation" = "PlayStation";
