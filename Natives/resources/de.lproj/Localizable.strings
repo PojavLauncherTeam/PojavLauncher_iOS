@@ -255,6 +255,10 @@ der Minecraft-Version zu wählen. Verringerte Auflösung reduziert die Arbeitsla
 "preference.title.debug_show_layout_overlap" = "Layoutüberlappungen anzeigen";
 "preference.detail.debug_show_layout_overlap" = "Überlagere jede Ansicht mit einer transparenten Farbe, um überlappende Ansichten anzuzeigen.";
 
+"preference.profile.title.name" = "Name";
+"preference.profile.title.version" = "Version";
+"profile.title.create" = "Neues Profil erstellen";
+
 "controller_configurator.title.current" = "Gamepads Konfigurationsdatei";
 "controller_configurator.title.type.xbox" = "XBox";
 "controller_configurator.title.type.playstation" = "PlayStation";
