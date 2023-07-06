@@ -241,6 +241,10 @@
 "preference.title.debug_show_layout_overlap" = "إظهار تداخل التخطيط";
 "preference.detail.debug_show_layout_overlap" = "تجاوز كل وجهة نظر مع لون شفاف للكشف عن وجهات نظر متداخلة.";
 
+"preference.profile.title.name" = "الاسم";
+"preference.profile.title.version" = "الإصدار";
+"profile.title.create" = "إنشاء ملف شخصي جديد";
+
 "controller_configurator.title.current" = "ملف تكوين لوحة اللعبة";
 "controller_configurator.title.type.xbox" = "إكس بوكس";
 "controller_configurator.title.type.playstation" = "بلاي ستيشن";
