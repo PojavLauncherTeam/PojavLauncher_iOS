@@ -71,7 +71,7 @@
     // Pickup changes made in the profile editor and switching instance
     [PLProfiles updateCurrent];
     [self.tableView reloadData];
-    [self.navigationController performSelector:@selector(reloadProfileList) withObject:nil];
+    [self.navigationController performSelector:@selector(reloadProfileList)];
 }
 
 - (void)actionTogglePrefIsolation:(UISwitch *)sender {
@@ -203,6 +203,7 @@
     confirmAlert.popoverPresentationController.sourceRect = cell.bounds;
     UIAlertAction *ok = [UIAlertAction actionWithTitle:localize(@"OK", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
         [PLProfiles.current.profiles removeObjectForKey:cell.textLabel.text];
+        [PLProfiles.current save];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:localize(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];

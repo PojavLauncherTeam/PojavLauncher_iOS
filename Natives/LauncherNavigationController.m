@@ -148,7 +148,6 @@
         [remoteVersionList addObjectsFromArray:responseObject[@"versions"]];
         NSDebugLog(@"[VersionList] Got %d versions", remoteVersionList.count);
         setPrefObject(@"internal.latest_version", responseObject[@"latest"]);
-        [self fetchLocalVersionList];
         self.buttonInstall.enabled = YES;
     } failure:^(NSURLSessionTask *operation, NSError *error) {
         NSDebugLog(@"[VersionList] Warning: Unable to fetch version list: %@", error.localizedDescription);

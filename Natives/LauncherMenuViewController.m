@@ -314,7 +314,7 @@
     // Update profiles and local version list if needed
     if (shouldUpdateProfiles) {
         [contentNavigationController fetchLocalVersionList];
-        [PLProfiles updateCurrent];
+        [contentNavigationController performSelector:@selector(reloadProfileList)];
     }
 
     // Update tableView whenever we have
