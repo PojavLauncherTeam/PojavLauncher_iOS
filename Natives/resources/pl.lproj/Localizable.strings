@@ -176,4 +176,8 @@
 "preference.detail.debug_show_layout_bounds" = "Pokaż granice klipów, marginesy";
 "preference.title.debug_show_layout_overlap" = "Pokaż nakładające się układy";
 "preference.detail.debug_show_layout_overlap" = "Nakładaj każdy widok przezroczystym kolorem, aby odsłonić nakładające się widoki.";
+
+"preference.profile.title.name" = "Nazwa";
+"preference.profile.title.version" = "Wersja";
+"profile.title.create" = "Utwórz nowy profil";
 "controller_configurator.playstation.title.named_back" = "Wybierz";
