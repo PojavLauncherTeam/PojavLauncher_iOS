@@ -251,6 +251,10 @@
 "preference.title.debug_show_layout_overlap" = "Показывать наложение элементов";
 "preference.detail.debug_show_layout_overlap" = "Обозначить каждый элемент прозрачным цветом, чтобы упростить нахождение пересечений.";
 
+"preference.profile.title.name" = "Имя";
+"preference.profile.title.version" = "Версия";
+"profile.title.create" = "Новый профиль";
+
 "controller_configurator.title.current" = "Файл настройки геймпада";
 "controller_configurator.title.type.xbox" = "Xbox";
 "controller_configurator.title.type.playstation" = "PlayStation";
