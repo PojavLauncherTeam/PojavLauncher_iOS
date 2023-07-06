@@ -9,11 +9,14 @@
 static CGFloat lastXValue, lastYValue, lastFrameTime;
 static CGFloat gyroSensitivity;
 static int gyroInvertX;
-static BOOL gyroSwapAxis;
+static BOOL gyroInvertAxis, gyroSwapAxis;
 static CMMotionManager* cmInstance;
 
 + (void)updateOrientation {
     UIInterfaceOrientation orientation = UIApplication.sharedApplication.windows[0].windowScene.interfaceOrientation;
+    gyroInvertAxis =
+        orientation==UIInterfaceOrientationPortraitUpsideDown ||
+        orientation==UIInterfaceOrientationLandscapeLeft;
     gyroSwapAxis = UIInterfaceOrientationIsPortrait(orientation);
     // FIXME: camera jumps upon rotating screen
 }
@@ -48,12 +51,15 @@ static CMMotionManager* cmInstance;
     }
 
     // 100% sensitivity -> 1:1 ratio between real world and ingame camera
+    if (gyroInvertAxis) {
+        factor *= -1;
+    }
     if (gyroSwapAxis) {
-        lastXValue = cmInstance.deviceMotion.rotationRate.y / (M_PI*180) * windowWidth * factor * gyroInvertX;
-        lastYValue = -cmInstance.deviceMotion.rotationRate.x / (M_PI*360) * windowHeight * factor;
+        lastXValue = cmInstance.deviceMotion.rotationRate.y / (M_PI*90) * windowWidth * factor * gyroInvertX;
+        lastYValue = -cmInstance.deviceMotion.rotationRate.x / (M_PI*180) * windowHeight * factor;
     } else {
-        lastXValue = cmInstance.deviceMotion.rotationRate.x / (M_PI*360) * windowWidth * factor * gyroInvertX;
-        lastYValue = cmInstance.deviceMotion.rotationRate.y / (M_PI*180) * windowHeight * factor;
+        lastXValue = cmInstance.deviceMotion.rotationRate.x / (M_PI*180) * windowWidth * factor * gyroInvertX;
+        lastYValue = cmInstance.deviceMotion.rotationRate.y / (M_PI*90) * windowHeight * factor;
     }
 
     SurfaceViewController *vc = (id)(currentWindow().rootViewController);
