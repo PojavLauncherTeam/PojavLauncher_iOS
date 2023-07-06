@@ -35,3 +35,5 @@
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Aktiverer automatisk RAM-justering";
 "preference.detail.allocated_memory" = "Kontrollerer hvor mye minne som blir gitt til Minecraft";
+
+"preference.profile.title.name" = "Navn";
