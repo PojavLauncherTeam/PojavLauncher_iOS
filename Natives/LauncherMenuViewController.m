@@ -7,7 +7,8 @@
 #import "LauncherNewsViewController.h"
 #import "LauncherPreferences.h"
 #import "LauncherPreferencesViewController.h"
-//#import "LauncherProfilesViewController.h"
+#import "LauncherProfilesViewController.h"
+#import "PLProfiles.h"
 #import "UIButton+AFNetworking.h"
 #import "UIImageView+AFNetworking.h"
 #import "UIKit+hook.h"
@@ -26,11 +27,22 @@
     return item;
 }
 
++ (LauncherMenuCustomItem *)vcClass:(Class)class {
+    id vc = [class new];
+    LauncherMenuCustomItem *item = [[LauncherMenuCustomItem alloc] init];
+    item.title = [vc title];
+    item.imageName = [vc imageName];
+    // View controllers are put into an array to keep its state
+    item.vcArray = @[vc];
+    return item;
+}
+
 @end
 
 @interface LauncherMenuViewController()
-@property(nonatomic) NSMutableArray<UIViewController*> *options;
+@property(nonatomic) NSMutableArray<LauncherMenuCustomItem*> *options;
 @property(nonatomic) UILabel *statusLabel;
+@property(nonatomic) int lastSelectedIndex;
 @end
 
 @implementation LauncherMenuViewController
@@ -47,11 +59,11 @@
     self.navigationItem.titleView = titleView;
     [titleView sizeToFit];
 
-    // View controllers are put into an array to keep its state
-    self.options = [NSMutableArray new];
-    [self.options addObject:[LauncherNewsViewController new]];
-    //[self.options addObject:[LauncherProfilesViewController new]];
-    [self.options addObject:[LauncherPreferencesViewController new]];
+    self.options = @[
+        [LauncherMenuCustomItem vcClass:LauncherNewsViewController.class],
+        [LauncherMenuCustomItem vcClass:LauncherProfilesViewController.class],
+        [LauncherMenuCustomItem vcClass:LauncherPreferencesViewController.class],
+    ].mutableCopy;
     if (realUIIdiom != UIUserInterfaceIdiomTV) {
         [self.options addObject:(id)[LauncherMenuCustomItem
             title:localize(@"launcher.menu.custom_controls", nil)
@@ -127,7 +139,7 @@
             [self displayProgress:localize(@"login.jit.enabled", nil)];
             [self displayProgress:nil];
         } else {
-            [self enableJITWithJitStreamer:[getPreference(@"enable_altkit") boolValue]];
+            [self enableJITWithJitStreamer:getPrefBool(@"general.enable_altkit")];
         }
     }
 }
@@ -156,8 +168,7 @@
 
 - (void)restoreHighlightedSelection {
     // Restore the selected row when the view appears again
-    int index = [self.options indexOfObject:[contentNavigationController viewControllers][0]];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:MAX(0, index) inSection:0];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.lastSelectedIndex inSection:0];
     [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
@@ -198,34 +209,36 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UIViewController *selected = self.options[indexPath.row];
+    LauncherMenuCustomItem *selected = self.options[indexPath.row];
     
-    if ([selected isKindOfClass:UIViewController.class]) {
+    if (selected.action != nil) {
+        [self restoreHighlightedSelection];
+        ((LauncherMenuCustomItem *)selected).action();
+    } else {
         if(self.isInitialVc) {
             self.isInitialVc = NO;
         } else {
-            [contentNavigationController setViewControllers:@[selected] animated:NO];
+            self.options[self.lastSelectedIndex].vcArray = contentNavigationController.viewControllers;
+            [contentNavigationController setViewControllers:selected.vcArray animated:NO];
+            self.lastSelectedIndex = indexPath.row;
         }
-        selected.navigationItem.rightBarButtonItem = self.accountBtnItem;
-        selected.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
-        selected.navigationItem.leftItemsSupplementBackButton = true;
-    } else {
-        [self restoreHighlightedSelection];
-        ((LauncherMenuCustomItem *)selected).action();
+        selected.vcArray[0].navigationItem.rightBarButtonItem = self.accountBtnItem;
+        selected.vcArray[0].navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
+        selected.vcArray[0].navigationItem.leftItemsSupplementBackButton = true;
     }
 }
 
 - (void)selectAccount:(UIButton *)sender {
     AccountListViewController *vc = [[AccountListViewController alloc] init];
     vc.whenDelete = ^void(NSString* name) {
-        if ([name isEqualToString:getPreference(@"selected_account")]) {
+        if ([name isEqualToString:getPrefObject(@"internal.selected_account")]) {
             BaseAuthenticator.current = nil;
-            setPreference(@"selected_account", @"");
+            setPrefObject(@"internal.selected_account", @"");
             [self updateAccountInfo];
         }
     };
     vc.whenItemSelected = ^void() {
-        setPreference(@"selected_account", BaseAuthenticator.current.authData[@"username"]);
+        setPrefObject(@"internal.selected_account", BaseAuthenticator.current.authData[@"username"]);
         [self updateAccountInfo];
         if (sender != self.accountButton) {
             // Called from the play button, so call back to continue
@@ -262,11 +275,13 @@
     BOOL isDemo = [selected[@"username"] hasPrefix:@"Demo."];
     NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:[selected[@"username"] substringFromIndex:(isDemo?5:0)]];
 
+    // Check if we're switching between demo and full mode
+    BOOL shouldUpdateProfiles = (getenv("DEMO_LOCK")!=NULL) != isDemo;
+
     // Reset states
     unsetenv("DEMO_LOCK");
     setenv("POJAV_GAME_DIR", [NSString stringWithFormat:@"%s/Library/Application Support/minecraft", getenv("POJAV_HOME")].UTF8String, 1);
 
-    
     id subtitle;
     if (isDemo) {
         subtitle = localize(@"login.option.demo", nil);
@@ -296,10 +311,16 @@
     [self.accountButton.imageView setImageWithURL:url placeholderImage:placeholder];
     [self.accountButton sizeToFit];
 
-    // Update the version list, only if the selected type is Installed
-    int selectedVersionType = [getPreference(@"selected_version_type") intValue];
-    if (selectedVersionType == 0) {
-        [contentNavigationController reloadVersionList:0];
+    // Update profiles and local version list if needed
+    if (shouldUpdateProfiles) {
+        [contentNavigationController fetchLocalVersionList];
+        [PLProfiles updateCurrent];
+    }
+
+    // Update tableView whenever we have
+    UITableViewController *tableVC = contentNavigationController.viewControllers.lastObject;
+    if ([tableVC isKindOfClass:UITableViewController.class]) {
+        [tableVC.tableView reloadData];
     }
 }
 
@@ -335,8 +356,7 @@
 {
     [self displayProgress:localize(@"login.jit.checking", nil)];
 
-    // TODO: customizable address
-    NSString *address = getPreference(@"jitstreamer_server");
+    NSString *address = getPrefObject(@"general.jitstreamer_server");
     NSLog(@"[JitStreamer] Server is %@, attempting to connect...", address);
 
     AFHTTPSessionManager *manager = AFHTTPSessionManager.manager;

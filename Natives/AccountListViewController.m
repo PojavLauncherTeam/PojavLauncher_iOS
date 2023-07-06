@@ -162,8 +162,8 @@
 }
 
 - (void)actionLoginLocal:(UIView *)sender {
-    if ([getPreference(@"local_warn") boolValue] == YES) {
-        setPreference(@"local_warn", @NO);
+    if (getPrefBool(@"warnings.local_warn")) {
+        setPrefBool(@"warnings.local_warn", NO);
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:localize(@"login.warn.title.localmode", nil) message:localize(@"login.warn.message.localmode", nil) preferredStyle:UIAlertControllerStyleActionSheet];
         alert.popoverPresentationController.sourceView = sender;
         alert.popoverPresentationController.sourceRect = sender.bounds;
@@ -186,8 +186,8 @@
             [self presentViewController:controller animated:YES completion:nil];
         } else {
             id callback = ^(id status, BOOL success) {
-                [self dismissViewControllerAnimated:YES completion:nil];
                 self.whenItemSelected();
+                [self dismissViewControllerAnimated:YES completion:nil];
             };
             [[[LocalAuthenticator alloc] initWithInput:usernameField.text] loginWithCallback:callback];
         }
@@ -270,9 +270,9 @@
             showDialog(localize(@"Error", nil), errorStr);
         }
     } else if (success) {
+        self.whenItemSelected();
         [self removeActivityIndicatorFrom:cell];
         [self dismissViewControllerAnimated:YES completion:nil];
-        self.whenItemSelected();
     }
 }
 

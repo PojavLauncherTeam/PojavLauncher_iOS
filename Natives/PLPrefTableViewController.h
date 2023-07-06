@@ -1,8 +1,8 @@
 #import <UIKit/UIKit.h>
 
-typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
-typedef id (^GetPreferenceBlock)(NSString *key);
-typedef void (^SetPreferenceBlock)(NSString *key, id value);
+typedef void(^CreateView)(UITableViewCell *, NSString *,NSString *, NSDictionary *);
+typedef id (^GetPreferenceBlock)(NSString *, NSString *);
+typedef void (^SetPreferenceBlock)(NSString *, NSString *, id);
 
 @interface PLPrefTableViewController : UITableViewController<UITextFieldDelegate>
 
@@ -10,6 +10,7 @@ typedef void (^SetPreferenceBlock)(NSString *key, id value);
 
 @property(nonatomic) GetPreferenceBlock getPreference;
 @property(nonatomic) SetPreferenceBlock setPreference;
+@property(nonatomic) BOOL prefSectionsVisible, hasDetail;
 
 @property(nonatomic) NSArray<NSString*>* prefSections;
 @property(nonatomic) NSMutableArray<NSNumber*>* prefSectionsVisibility;

@@ -11,9 +11,6 @@
 #import "ios_uikit_bridge.h"
 #import "utils.h"
 
-#define sidebarNavController ((UINavigationController *)self.splitViewController.viewControllers[0])
-#define sidebarViewController ((LauncherMenuViewController *)sidebarNavController.viewControllers[0])
-
 @interface PLPrefTableViewController()<UIContextMenuInteractionDelegate>{}
 @property(nonatomic) UIMenu* currentMenu;
 @property(nonatomic) UIBarButtonItem *helpBtn;
@@ -34,9 +31,14 @@
 
     self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleInsetGrouped];
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
-    self.prefSectionsVisibility = [[NSMutableArray<NSNumber *> alloc] initWithCapacity:self.prefSections.count];
-    for (int i = 0; i < self.prefSections.count; i++) {
-        [self.prefSectionsVisibility addObject:@NO];
+    if (self.prefSections) {
+        self.prefSectionsVisibility = [[NSMutableArray<NSNumber *> alloc] initWithCapacity:self.prefSections.count];
+        for (int i = 0; i < self.prefSections.count; i++) {
+            [self.prefSectionsVisibility addObject:@(self.prefSectionsVisible)];
+        }
+    } else {
+        // Display one singe section if prefSection is unspecified
+        self.prefSectionsVisibility = (id)@[@YES];
     }
 }
 
@@ -50,8 +52,8 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
-    // Put navigation buttons back in place
-    if (self.navigationController) {
+    // Put navigation buttons back in place if we're first of the navigation controller
+    if (self.hasDetail) {
         self.navigationItem.rightBarButtonItems = @[[sidebarViewController drawAccountButton], [self drawHelpButton]];
     }
 
@@ -79,7 +81,7 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return self.prefSections.count;
+    return self.prefSectionsVisibility.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -105,6 +107,9 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:cellStyle reuseIdentifier:cellID];
+        cell.textLabel.adjustsFontSizeToFitWidth = YES;
+        cell.textLabel.numberOfLines = 0;
+        cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
         cell.detailTextLabel.numberOfLines = 0;
         cell.detailTextLabel.lineBreakMode = NSLineBreakByWordWrapping;
     }
@@ -116,18 +121,20 @@
     cell.detailTextLabel.text = nil;
 
     NSString *key = item[@"key"];
-    if (indexPath.row == 0) {
+    if (indexPath.row == 0 && self.prefSections) {
         key = self.prefSections[indexPath.section];
         cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         cell.textLabel.text = localize(([NSString stringWithFormat:@"preference.section.%@", key]), nil);
     } else {
         CreateView createView = item[@"type"];
-        createView(cell, key, item);
+        createView(cell, self.prefSections[indexPath.section], key, item);
         if (cell.accessoryView) {
+            objc_setAssociatedObject(cell.accessoryView, @"section", self.prefSections[indexPath.section], OBJC_ASSOCIATION_ASSIGN);
             objc_setAssociatedObject(cell.accessoryView, @"key", key, OBJC_ASSOCIATION_ASSIGN);
             objc_setAssociatedObject(cell.accessoryView, @"item", item, OBJC_ASSOCIATION_ASSIGN);
         }
-        cell.textLabel.text = localize(([NSString stringWithFormat:@"preference.title.%@", key]), nil);
+        cell.textLabel.text = localize((item[@"title"] ? item[@"title"] :
+            [NSString stringWithFormat:@"preference.title.%@", key]), nil);
     }
 
     // Set general properties
@@ -156,57 +163,60 @@
 - (void)initViewCreation {
     __weak PLPrefTableViewController *weakSelf = self;
 
-    self.typeButton = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
+    self.typeButton = ^void(UITableViewCell *cell, NSString *section, NSString *key, NSDictionary *item) {
         BOOL destructive = [item[@"destructive"] boolValue];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.textLabel.textColor = destructive ? UIColor.systemRedColor : weakSelf.view.tintColor;
     };
 
-    self.typeChildPane = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
+    self.typeChildPane = ^void(UITableViewCell *cell, NSString *section, NSString *key, NSDictionary *item) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
-        cell.detailTextLabel.text = weakSelf.getPreference(key);
+        cell.detailTextLabel.text = weakSelf.getPreference(section, key);
     };
 
-    self.typeTextField = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
+    self.typeTextField = ^void(UITableViewCell *cell, NSString *section, NSString *key, NSDictionary *item) {
         UITextField *view = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, cell.bounds.size.width / 2.1, cell.bounds.size.height)];
         [view addTarget:view action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
+        view.adjustsFontSizeToFitWidth = YES;
         view.autocorrectionType = UITextAutocorrectionTypeNo;
         view.autocapitalizationType = UITextAutocapitalizationTypeNone;
         view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
+        //view.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
         view.delegate = weakSelf;
-        view.placeholder = localize(([NSString stringWithFormat:@"preference.placeholder.%@", key]), nil);
+        //view.nonEditingLinebreakMode = NSLineBreakByCharWrapping;
         view.returnKeyType = UIReturnKeyDone;
-        view.text = weakSelf.getPreference(key);
         view.textAlignment = NSTextAlignmentRight;
-        view.adjustsFontSizeToFitWidth = YES;
+        view.placeholder = localize((item[@"placeholder"] ? item[@"placeholder"] :
+            [NSString stringWithFormat:@"preference.placeholder.%@", key]), nil);
+        view.text = weakSelf.getPreference(section, key);
         cell.accessoryView = view;
     };
 
-    self.typePickField = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
+    self.typePickField = ^void(UITableViewCell *cell, NSString *section, NSString *key, NSDictionary *item) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
-        cell.detailTextLabel.text = weakSelf.getPreference(key);
+        cell.detailTextLabel.text = weakSelf.getPreference(section, key);
     };
 
-    self.typeSlider = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
+    self.typeSlider = ^void(UITableViewCell *cell, NSString *section, NSString *key, NSDictionary *item) {
         DBNumberedSlider *view = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(0, 0, cell.bounds.size.width / 2.1, cell.bounds.size.height)];
         [view addTarget:weakSelf action:@selector(sliderMoved:) forControlEvents:UIControlEventValueChanged];
         view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
         view.minimumValue = [item[@"min"] intValue];
         view.maximumValue = [item[@"max"] intValue];
         view.continuous = YES;
-        view.value = [weakSelf.getPreference(key) intValue];
+        view.value = [weakSelf.getPreference(section, key) intValue];
         cell.accessoryView = view;
     };
 
-    self.typeSwitch = ^void(UITableViewCell *cell, NSString *key, NSDictionary *item) {
+    self.typeSwitch = ^void(UITableViewCell *cell, NSString *section, NSString *key, NSDictionary *item) {
         UISwitch *view = [[UISwitch alloc] init];
         NSArray *customSwitchValue = item[@"customSwitchValue"];
         if (customSwitchValue == nil) {
-            [view setOn:[weakSelf.getPreference(key) boolValue] animated:NO];
+            [view setOn:[weakSelf.getPreference(section, key) boolValue] animated:NO];
         } else {
-            [view setOn:[weakSelf.getPreference(key) isEqualToString:customSwitchValue[1]] animated:NO];
+            [view setOn:[weakSelf.getPreference(section, key) isEqualToString:customSwitchValue[1]] animated:NO];
         }
         [view addTarget:weakSelf action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
         cell.accessoryView = view;
@@ -231,9 +241,9 @@
     // Display warning if: warn condition is met and either one of these:
     // - does not have warnKey, always warn
     // - has warnKey and its value is YES, warn once and set it to NO
-    if (isWarnable && isWarnable(view) && (!warnKey || [self.getPreference(warnKey) boolValue])) {
+    if (isWarnable && isWarnable(view) && (!warnKey || [self.getPreference(@"warnings", warnKey) boolValue])) {
         if (warnKey) {
-            self.setPreference(warnKey, @NO);
+            self.setPreference(@"warnings", warnKey, @NO);
         }
 
         NSString *message = localize(([NSString stringWithFormat:@"preference.warn.%@", key]), nil);
@@ -245,24 +255,23 @@
 
 - (void)sliderMoved:(DBNumberedSlider *)sender {
     [self checkWarn:sender];
+    NSString *section = objc_getAssociatedObject(sender, @"section");
     NSString *key = objc_getAssociatedObject(sender, @"key");
 
     sender.value = (int)sender.value;
-    self.setPreference(key, @(sender.value));
+    self.setPreference(section, key, @(sender.value));
 }
 
 - (void)switchChanged:(UISwitch *)sender {
     [self checkWarn:sender];
     NSDictionary *item = objc_getAssociatedObject(sender, @"item");
+    NSString *section = objc_getAssociatedObject(sender, @"section");
     NSString *key = item[@"key"];
 
     // Special switches may define custom value instead of NO/YES
     NSArray *customSwitchValue = item[@"customSwitchValue"];
-    if (customSwitchValue != nil) {
-        self.setPreference(key, customSwitchValue[sender.isOn]);
-    } else {
-        self.setPreference(key, @(sender.isOn));
-    }
+    self.setPreference(section, key, customSwitchValue ?
+        customSwitchValue[sender.isOn] : @(sender.isOn));
 
     void(^invokeAction)(BOOL) = item[@"action"];
     if (invokeAction) {
@@ -279,7 +288,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    if (indexPath.row == 0) {
+    if (indexPath.row == 0 && self.prefSections) {
         self.prefSectionsVisibility[indexPath.section] = @(![self.prefSectionsVisibility[indexPath.section] boolValue]);
         [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationFade];
         return;
@@ -358,7 +367,7 @@
             identifier:nil
             handler:^(UIAction *action) {
                 cell.detailTextLabel.text = pickKeys[i];
-                self.setPreference(item[@"key"], pickKeys[i]);
+                self.setPreference(self.prefSections[indexPath.section], item[@"key"], pickKeys[i]);
                 void(^invokeAction)(NSString *) = item[@"action"];
                 if (invokeAction) {
                     invokeAction(pickKeys[i]);
@@ -368,8 +377,7 @@
 
     self.currentMenu = [UIMenu menuWithTitle:message children:menuItems];
     UIContextMenuInteraction *interaction = [[UIContextMenuInteraction alloc] initWithDelegate:self];
-    cell.detailTextLabel.interactions = [NSArray new];
-    [cell.detailTextLabel addInteraction:interaction];
+    cell.detailTextLabel.interactions = @[interaction];
     [interaction _presentMenuAtLocation:CGPointZero];
 }
 
@@ -415,9 +423,10 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)sender {
     [self checkWarn:sender];
+    NSString *section = objc_getAssociatedObject(sender, @"section");
     NSString *key = objc_getAssociatedObject(sender, @"key");
 
-    self.setPreference(key, sender.text);
+    self.setPreference(section, key, sender.text);
 }
 
 @end

@@ -371,7 +371,7 @@ void loadControlObject(UIView* targetView, NSMutableDictionary* controlDictionar
 
     if (convertLayoutIfNecessary(controlDictionary)) {
         NSMutableArray *controlDataList = controlDictionary[@"mControlDataList"];
-        setPreference(@"internal_current_button_scale", controlDictionary[@"scaledAt"]);
+        //setPrefObject(@"internal.internal_current_button_scale", controlDictionary[@"scaledAt"]);
         for (NSMutableDictionary *buttonDict in controlDataList) {
             //APPLY_SCALE(buttonDict[@"strokeWidth"]);
             @try {
@@ -404,7 +404,7 @@ void loadControlObject(UIView* targetView, NSMutableDictionary* controlDictionar
             [drawer update];
         }
 
-        controlDictionary[@"scaledAt"] = @([getPreference(@"button_scale") floatValue]);
+        controlDictionary[@"scaledAt"] = getPrefObject(@"control.button_scale");
 
         if (errorString.length > 0) {
             showDialog(@"Error processing dynamic position", errorString);

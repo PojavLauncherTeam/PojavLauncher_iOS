@@ -15,7 +15,7 @@
     self.layoutDictionary = layoutDictionary;
 
     CGFloat currentScale = [self.layoutDictionary[@"scaledAt"] floatValue];
-    CGFloat savedScale = [getPreference(@"button_scale") floatValue];
+    CGFloat savedScale = getPrefFloat(@"control.button_scale");
     loadControlObject(self, self.layoutDictionary);
 
     self.layoutDictionary[@"scaledAt"] = @(savedScale);
@@ -76,7 +76,7 @@
         [(ControlButton *)view update];
     }
 
-    CGFloat savedScale = [getPreference(@"button_scale") floatValue];
+    CGFloat savedScale = getPrefFloat(@"control.button_scale");
     self.layoutDictionary[@"scaledAt"] = @(savedScale);
 }
 

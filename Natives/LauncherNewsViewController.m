@@ -4,9 +4,6 @@
 #import "LauncherPreferences.h"
 #import "utils.h"
 
-#define sidebarNavController ((UINavigationController *)self.splitViewController.viewControllers[0])
-#define sidebarViewController ((LauncherMenuViewController *)sidebarNavController.viewControllers[0])
-
 @interface LauncherNewsViewController()<WKNavigationDelegate>
 @end
 
@@ -48,7 +45,7 @@ UIEdgeInsets insets;
     [webView loadRequest:request];
     [self.view addSubview:webView];
 
-    if(!getenv("POJAV_DETECTEDJB") && [getPreference(@"limited_ram_warn") boolValue] == YES && (roundf(NSProcessInfo.processInfo.physicalMemory / 1048576) < 32900)) {
+    if(!getenv("POJAV_DETECTEDJB") && getPrefBool(@"warnings.limited_ram_warn") && (roundf(NSProcessInfo.processInfo.physicalMemory / 1048576) < 32900)) {
         // "This device has a limited amount of memory available."
         [self showWarningAlert:@"limited_ram" hasPreference:YES];
     }
@@ -67,7 +64,7 @@ UIEdgeInsets insets;
     UIAlertAction *action;
     if(isPreferenced) {
         action = [UIAlertAction actionWithTitle:localize(@"OK", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
-            setPreference([NSString stringWithFormat:@"%@_warn", key], @NO);
+            setPrefBool([NSString stringWithFormat:@"warnings.%@_warn", key], NO);
         }];
     } else {
         action = [UIAlertAction actionWithTitle:localize(@"OK", nil) style:UIAlertActionStyleCancel handler:nil];

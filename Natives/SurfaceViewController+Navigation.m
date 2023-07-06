@@ -1,6 +1,7 @@
 #import "CustomControlsViewController.h"
 #import "LauncherPreferences.h"
 #import "LauncherPreferencesViewController.h"
+#import "PLProfiles.h"
 #import "SurfaceViewController.h"
 #import "utils.h"
 
@@ -132,6 +133,18 @@ static CGPoint lastCenterPoint;
     [self.ctrlView removeAllButtons];
     CustomControlsViewController *vc = [[CustomControlsViewController alloc] init];
     vc.modalPresentationStyle = UIModalPresentationOverFullScreen;
+    vc.setDefaultCtrl = ^(NSString *name){
+        if (PLProfiles.current.selectedProfile[@"defaultTouchCtrl"]) {
+            // Save default to current profile
+            PLProfiles.current.selectedProfile[@"defaultTouchCtrl"] = name;
+        } else {
+            // Save default to preferences
+            setPrefObject(@"control.default_ctrl", name);
+        }
+    };
+    vc.getDefaultCtrl = ^{
+        return [PLProfiles resolveKeyForCurrentProfile:@"defaultTouchCtrl"];
+    };
     [self presentViewController:vc animated:NO completion:nil];
 }
 
@@ -152,7 +165,7 @@ static CGPoint lastCenterPoint;
 
 - (BOOL)prefersHomeIndicatorAutoHidden {
     return self.menuView.hidden &&
-        [getPreference(@"debug_hide_home_indicator") boolValue];
+        getPrefBool(@"debug.debug_hide_home_indicator");
 }
 
 - (BOOL)prefersStatusBarHidden {

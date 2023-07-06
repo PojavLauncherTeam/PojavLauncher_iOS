@@ -71,7 +71,7 @@ BOOL shouldDismissPopover = YES;
     self.navigationBar.translucent = YES;
     [self.view addSubview:self.navigationBar];
 
-    CGFloat buttonScale = [getPreference(@"button_scale") floatValue] / 100.0;
+    CGFloat buttonScale = getPrefFloat(@"control.button_scale") / 100.0;
 
     self.resizeView = [[ControlHandleView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
     self.resizeView.backgroundColor = self.view.tintColor;
@@ -94,8 +94,9 @@ BOOL shouldDismissPopover = YES;
     UILongPressGestureRecognizer *longpressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(showControlPopover:)];
     longpressGesture.minimumPressDuration = 0.5;
     [self.ctrlView addGestureRecognizer:longpressGesture];
-    self.currentFileName = [getPreference(@"default_ctrl") stringByDeletingPathExtension];
-    [self loadControlFile:getPreference(@"default_ctrl")];
+    NSString *fileName = self.getDefaultCtrl();
+    self.currentFileName = [fileName stringByDeletingPathExtension];
+    [self loadControlFile:fileName];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -344,7 +345,7 @@ BOOL shouldDismissPopover = YES;
         self.currentFileName = name;
         name = [NSString stringWithFormat:@"%@.json", name];
         [self loadControlFile:name];
-        setPreference(@"default_ctrl", name);
+        self.setDefaultCtrl(name);
     }];
 }
 
@@ -484,7 +485,7 @@ BOOL shouldDismissPopover = YES;
 }
 
 - (BOOL)prefersHomeIndicatorAutoHidden {
-    return [getPreference(@"debug_hide_home_indicator") boolValue];
+    return getPrefBool(@"debug.debug_hide_home_indicator");
 }
 
 - (BOOL)prefersStatusBarHidden {

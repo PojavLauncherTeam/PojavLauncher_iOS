@@ -2,10 +2,9 @@
 #import "LauncherPreferences.h"
 #import "LauncherPrefGameDirViewController.h"
 #import "NSFileManager+NRFileManager.h"
+#import "PLProfiles.h"
 #import "ios_uikit_bridge.h"
 #import "utils.h"
-
-extern void init_setupLauncherProfiles();
 
 @interface LauncherPrefGameDirViewController ()<UITextFieldDelegate>
 @property(nonatomic) NSMutableArray *array;
@@ -39,16 +38,16 @@ extern void init_setupLauncherProfiles();
 }
 
 - (void)changeSelectionTo:(NSString *)name {
-    setPreference(@"game_directory", name);
+    if (getenv("DEMO_LOCK")) return;
+
+    setPrefObject(@"general.game_directory", name);
     NSString *multidirPath = [NSString stringWithFormat:@"%s/instances/%@", getenv("POJAV_HOME"), name];
-    NSString *lasmPath = [NSString stringWithFormat:@"%s/Library/Application Support/minecraft", getenv("POJAV_HOME")];
+    NSString *lasmPath = @(getenv("POJAV_GAME_DIR"));
     [NSFileManager.defaultManager removeItemAtPath:lasmPath error:nil];
     [NSFileManager.defaultManager createSymbolicLinkAtPath:lasmPath withDestinationPath:multidirPath error:nil];
     [NSFileManager.defaultManager changeCurrentDirectoryPath:lasmPath];
-    init_setupLauncherProfiles();
-    if ([getPreference(@"selected_version_type") intValue] == 0) {
-        [(LauncherNavigationController *)self.navigationController reloadVersionList:0];
-    }
+    toggleIsolatedPref(NO);
+    [self.navigationController performSelector:@selector(reloadProfileList) withObject:nil];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -89,7 +88,7 @@ extern void init_setupLauncherProfiles();
         });
     });
 
-    if ([getPreference(@"game_directory") isEqualToString:self.array[indexPath.row]]) {
+    if ([getPrefObject(@"general.game_directory") isEqualToString:self.array[indexPath.row]]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
@@ -225,12 +224,12 @@ viewForFooterInSection:(NSInteger)section
         NSString *directory = [NSString stringWithFormat:@"%s/instances/%@", getenv("POJAV_HOME"), self.array[indexPath.row]];
         NSError *error;
         if([NSFileManager.defaultManager removeItemAtPath:directory error:&error]) {
-            if ([getPreference(@"game_directory") isEqualToString:self.array[indexPath.row]]) {
+            if ([getPrefObject(@"general.game_directory") isEqualToString:self.array[indexPath.row]]) {
                 [self changeSelectionTo:self.array[0]];
                 [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]].accessoryType = UITableViewCellAccessoryCheckmark;
             }
             [self.array removeObjectAtIndex:indexPath.row];
-            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade]; 
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         } else {
             showDialog(localize(@"Error", nil), error.localizedDescription);
         }

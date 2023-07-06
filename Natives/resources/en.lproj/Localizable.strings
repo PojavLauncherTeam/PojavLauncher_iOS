@@ -116,6 +116,7 @@
 "login.msa.progress.checkMCProfile" = "(5/5) Checking the Minecraft profile";
 
 "News" = "News";
+"Profiles" = "Profiles";
 "Settings" = "Settings";
 
 "preference.section.general" = "General Settings";
@@ -253,6 +254,18 @@
 "preference.detail.debug_show_layout_bounds" = "Show clip bounds, margins";
 "preference.title.debug_show_layout_overlap" = "Show layout overlapping";
 "preference.detail.debug_show_layout_overlap" = "Overlay every view with a transparent color to reveal overlapping views.";
+
+"preference.profile.title.name" = "Name";
+"preference.profile.title.version" = "Version";
+"preference.profile.title.default_touch_control" = "Touch controls";
+"preference.profile.title.default_gamepad_control" = "Gamepad controls";
+
+"profile.error.name_exists" = "A profile with that name already exists. Please use another name.";
+"profile.section.instance" = "Game Instance settings";
+"profile.section.profiles" = "Profiles in this instance";
+"profile.title.create" = "Create new profile";
+"profile.title.separate_preference" = "Isolate settings";
+"profile.detail.separate_preference" = "Enable this option to isolate any changes made in settings. Doing a Reset will restore to global settings instead of default settings.";
 
 "controller_configurator.title.current" = "Gamepad configuration file";
 "controller_configurator.title.type.xbox" = "Xbox";

@@ -34,7 +34,7 @@ void init_hookUIKitConstructor(void) {
 @implementation UIDevice(hook)
 
 - (UIUserInterfaceIdiom)hook_userInterfaceIdiom {
-    if ([getPreference(@"debug_ipad_ui") boolValue]) {
+    if (getPrefBool(@"debug.debug_ipad_ui")) {
         return UIUserInterfaceIdiomPad;
     } else if (self.hook_userInterfaceIdiom == UIUserInterfaceIdiomTV) {
         return self.hook_userInterfaceIdiom;
@@ -103,7 +103,7 @@ const NSString *cornerLayerKey = @"cornerLayer";
     NSNumber *cornerSpaceH = @(self.frame.size.height-10);
     cornerLayer.lineDashPattern = @[cornerWidth,cornerSpaceW,cornerWidth,@0,cornerWidth,cornerSpaceH,cornerWidth,@0,cornerWidth,cornerSpaceW,cornerWidth,@0,cornerWidth,cornerSpaceH,cornerWidth];
     cornerLayer.path = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)].CGPath;
-    if ([getPreference(@"debug_show_layout_overlap") boolValue]) {
+    if (getPrefBool(@"debug.debug_show_layout_overlap")) {
         cornerLayer.fillColor = [UIColor.yellowColor colorWithAlphaComponent:0.1].CGColor;
     } else {
         cornerLayer.fillColor = nil;

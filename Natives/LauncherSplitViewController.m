@@ -17,10 +17,8 @@ extern NSMutableDictionary *prefDict;
     [super viewDidLoad];
     UIApplication.sharedApplication.idleTimerDisabled = YES;
     setViewBackgroundColor(self.view);
-    setDefaultValueForPref(prefDict, @"control_safe_area", NSStringFromUIEdgeInsets(getDefaultSafeArea()));
-    if (![getPreference(@"internal_reset_safe_area") boolValue]) {
-        setPreference(@"internal_reset_safe_area", @YES);
-        setPreference(@"control_safe_area", NSStringFromUIEdgeInsets(getDefaultSafeArea()));
+    if ([getPrefObject(@"control.control_safe_area") length] == 0) {
+        setPrefObject(@"control.control_safe_area", NSStringFromUIEdgeInsets(getDefaultSafeArea()));
     }
 
     self.delegate = self;
@@ -52,7 +50,7 @@ extern NSMutableDictionary *prefDict;
 - (void)changeDisplayModeForSize:(CGSize)size {
     BOOL isPortrait = size.height > size.width;
     if (self.preferredDisplayMode == 0 || self.displayMode != UISplitViewControllerDisplayModeSecondaryOnly) {
-        if([getPreference(@"hidden_sidebar") boolValue] == NO) {
+        if(!getPrefBool(@"general.hidden_sidebar")) {
             self.preferredDisplayMode = isPortrait ?
                 UISplitViewControllerDisplayModeOneOverSecondary :
                 UISplitViewControllerDisplayModeOneBesideSecondary;

@@ -1,5 +1,6 @@
 #import "GameSurfaceView.h"
 #import "LauncherPreferences.h"
+#import "PLProfiles.h"
 #import "utils.h"
 
 @implementation GameSurfaceView
@@ -22,7 +23,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
     self.layer.drawsAsynchronously = YES;
     self.layer.opaque = YES;
 
-    if ([getPreference(@"renderer") hasPrefix:@"libOSMesaOverride"]) {
+    if ([[PLProfiles resolveKeyForCurrentProfile:@"renderer"] hasPrefix:@"libOSMesaOverride"]) {
 
         colorSpace = CGColorSpaceCreateDeviceRGB();
 
@@ -37,7 +38,7 @@ const void * _CGDataProviderGetBytePointerCallbackOSMESA(void *info) {
 }
 
 + (Class)layerClass {
-    if ([getPreference(@"renderer") hasPrefix:@"libOSMesa"]) {
+    if ([[PLProfiles resolveKeyForCurrentProfile:@"renderer"] hasPrefix:@"libOSMesa"]) {
         return CALayer.class;
     } else {
         return CAMetalLayer.class;

@@ -17,7 +17,7 @@ public class MCOptionUtils
         }
         
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(Tools.DIR_GAME_NEW + "/options.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader(Tools.DIR_GAME_PROFILE + "/options.txt"));
             String line;
             while ((line = reader.readLine()) != null) {
                 mLineList.add(line);
@@ -71,7 +71,7 @@ public class MCOptionUtils
         }
         
         try {
-            Tools.write(Tools.DIR_GAME_NEW + "/options.txt", result.toString());
+            Tools.write(Tools.DIR_GAME_PROFILE + "/options.txt", result.toString());
         } catch (IOException e) {
             System.err.println("Could not save options.txt");
             e.printStackTrace();

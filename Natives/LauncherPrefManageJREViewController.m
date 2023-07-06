@@ -67,7 +67,7 @@ static WFWorkflowProgressView* currentProgressView;
     self.sortedJavaVersions = @[@(DEFAULT_JRE)].mutableCopy;
 
     self.selectedRTTags = @[@"1_16_5_older", @"1_17_newer", @"install_jar"];
-    self.selectedRuntimes = getPreference(@"java_homes");
+    self.selectedRuntimes = getPrefObject(@"java.java_homes");
 
     NSString *internalPath = [NSString stringWithFormat:@"%s/java_runtimes", getenv("BUNDLE_PATH")];
     NSString *externalPath = [NSString stringWithFormat:@"%s/java_runtimes", getenv("POJAV_HOME")];
@@ -269,7 +269,7 @@ static WFWorkflowProgressView* currentProgressView;
     } else {
         self.selectedRuntimes[version.stringValue] = name;
     }
-    setPreference(@"java_homes", self.selectedRuntimes);
+    setPrefObject(@"java.java_homes", self.selectedRuntimes);
 
     // Update checkmark
     NSInteger runtimeCount = [self tableView:tableView numberOfRowsInSection:indexPath.section];
@@ -303,7 +303,7 @@ static WFWorkflowProgressView* currentProgressView;
             handler:^(UIAction *action) {
                 cell.detailTextLabel.text = version;
                 ((NSMutableDictionary *)self.selectedRuntimes[@"0"])[self.selectedRTTags[indexPath.row]] = self.sortedJavaVersions[i].stringValue;
-                setPreference(@"java_homes", self.selectedRuntimes);
+                setPrefObject(@"java.java_homes", self.selectedRuntimes);
             }]];
     }
 
@@ -439,7 +439,7 @@ styleForMenuWithConfiguration:(UIContextMenuConfiguration *)configuration
         self.selectedRuntimes[version.stringValue] = self.javaRuntimes[version][0];
     }
 
-    setPreference(@"java_homes", self.selectedRuntimes);
+    setPrefObject(@"java.java_homes", self.selectedRuntimes);
 }
 
 - (void)listJREInPath:(NSString *)path markInternal:(BOOL)markInternal {

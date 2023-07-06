@@ -19,6 +19,7 @@
 #import "JavaLauncher.h"
 #import "LauncherPreferences.h"
 #import "MinecraftResourceUtils.h"
+#import "PLProfiles.h"
 #import "SurfaceViewController.h"
 #import "TrackedTextField.h"
 #import "UIKit+hook.h"
@@ -59,7 +60,7 @@ BOOL slideableHotbar;
 @property(nonatomic) CGFloat screenScale;
 @property(nonatomic) CGFloat mouseSpeed;
 @property(nonatomic) CGRect clickRange;
-@property(nonatomic) BOOL shouldTriggerClick;
+@property(nonatomic) BOOL shouldTriggerClick, shouldTriggerHaptic;
 
 @property(nonatomic) BOOL enableMouseGestures, enableHotbarGestures;
 
@@ -78,11 +79,9 @@ BOOL slideableHotbar;
     self.lightHaptic = [[UIImpactFeedbackGenerator alloc] initWithStyle:(UIImpactFeedbackStyleLight)];
     self.mediumHaptic = [[UIImpactFeedbackGenerator alloc] initWithStyle:(UIImpactFeedbackStyleMedium)];
 
-    setPreference(@"internal_launch_on_boot", @(NO));
-    isUseStackQueueCall = [getPreference(@"internal_useStackQueue") boolValue];
-    setPreference(@"internal_useStackQueue", nil);
+    //setPrefBool(@"internal.internal_launch_on_boot", NO);
 
-    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+    UIApplication.sharedApplication.idleTimerDisabled = YES;
     BOOL isTVOS = realUIIdiom == UIUserInterfaceIdiomTV;
     if (!isTVOS) {
         [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
@@ -96,7 +95,7 @@ BOOL slideableHotbar;
     };
     CADisplayLink *displayLink = [CADisplayLink displayLinkWithTarget:tickInput selector:@selector(invoke)];
     if (@available(iOS 15.0, tvOS 15.0, *)) {
-        if([getPreference(@"max_framerate") boolValue]) {
+        if(getPrefBool(@"video.max_framerate")) {
             displayLink.preferredFrameRateRange = CAFrameRateRangeMake(30, 120, 120);
         } else {
             displayLink.preferredFrameRateRange = CAFrameRateRangeMake(30, 60, 60);
@@ -168,7 +167,7 @@ BOOL slideableHotbar;
     }
 
     // Virtual mouse
-    virtualMouseEnabled = [getPreference(@"virtmouse_enable") boolValue];
+    virtualMouseEnabled = getPrefBool(@"control.virtmouse_enable");
     virtualMouseFrame = CGRectMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2, 18, 27);
     self.mousePointerView = [[UIImageView alloc] initWithFrame:virtualMouseFrame];
     self.mousePointerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin |UIViewAutoresizingFlexibleBottomMargin;
@@ -193,8 +192,6 @@ BOOL slideableHotbar;
         CallbackBridge_nativeSendKey(key, scancode, action, mods);
     };
 
-    NSString *controlFilePath = [NSString stringWithFormat:@"%s/controlmap/%@", getenv("POJAV_HOME"), (NSString *)getPreference(@"default_ctrl")];
-
     self.swipeableButtons = [[NSMutableArray alloc] init];
 
     [KeyboardInput initKeycodeTable];
@@ -205,7 +202,7 @@ BOOL slideableHotbar;
         self.mousePointerView.hidden = isGrabbing;
         virtualMouseEnabled = YES;
         [self setNeedsUpdateOfPrefersPointerLocked];
-        if([getPreference(@"hardware_hide") boolValue]) {
+        if (getPrefBool(@"control.hardware_hide")) {
             self.ctrlView.hidden = YES;
         }
     }];
@@ -217,7 +214,7 @@ BOOL slideableHotbar;
         mouse.mouseInput.middleButton.pressedChangedHandler = nil;
         mouse.mouseInput.rightButton.pressedChangedHandler = nil;
         [self setNeedsUpdateOfPrefersPointerLocked];
-        if([getPreference(@"hardware_hide") boolValue]) {
+        if (getPrefBool(@"controll.hardware_hide")) {
             self.ctrlView.hidden = NO;
         }
     }];
@@ -234,7 +231,7 @@ BOOL slideableHotbar;
         [ControllerInput registerControllerCallbacks:controller];
         self.mousePointerView.hidden = isGrabbing;
         virtualMouseEnabled = YES;
-        if([getPreference(@"hardware_hide") boolValue]) {
+        if (getPrefBool(@"control.hardware_hide")) {
             self.ctrlView.hidden = YES;
         }
     }];
@@ -242,7 +239,7 @@ BOOL slideableHotbar;
         NSLog(@"Input: Controller disconnected!");
         GCController* controller = note.object;
         [ControllerInput unregisterControllerCallbacks:controller];
-        if([getPreference(@"hardware_hide") boolValue]) {
+        if (getPrefBool(@"control.hardware_hide")) {
             self.ctrlView.hidden = NO;
         }
     }];
@@ -268,7 +265,7 @@ BOOL slideableHotbar;
 #endif
 
     if (UIApplication.sharedApplication.connectedScenes.count > 1 &&
-        [getPreference(@"fullscreen_airplay") boolValue]) {
+      getPrefBool(@"video.fullscreen_airplay")) {
         [self switchToExternalDisplay];
     }
 
@@ -284,18 +281,18 @@ BOOL slideableHotbar;
     NSError *sessionError = nil;
     AVAudioSessionCategory category;
     AVAudioSessionCategoryOptions options;
-    if([getPreference(@"silence_with_switch") boolValue]) {
+    if(getPrefBool(@"video.silence_with_switch")) {
         category = AVAudioSessionCategorySoloAmbient;
     } else {
         category = AVAudioSessionCategoryPlayback;
     }
-    if([getPreference(@"silence_other_audio") boolValue]) {
+    if(getPrefBool(@"video.silence_other_audio")) {
         options = 0;
     } else {
         options = AVAudioSessionCategoryOptionMixWithOthers;
     }
-    [[AVAudioSession sharedInstance] setCategory:category withOptions:options error:&sessionError];
-    [[AVAudioSession sharedInstance] setActive:YES error:&sessionError];
+    [AVAudioSession.sharedInstance setCategory:category withOptions:options error:&sessionError];
+    [AVAudioSession.sharedInstance setActive:YES error:&sessionError];
 }
 
 - (void)updateJetsamControl {
@@ -303,7 +300,7 @@ BOOL slideableHotbar;
         return;
     }
     // More 1024MB is necessary for other memory regions (native, Java GC, etc.)
-    int limit = [getPreference(@"allocated_memory") intValue] + 1024;
+    int limit = getPrefInt(@"java.allocated_memory") + 1024;
     if (memorystatus_control(MEMORYSTATUS_CMD_SET_JETSAM_TASK_LIMIT, getpid(), limit, NULL, 0) == -1) {
         NSLog(@"Failed to set Jetsam task limit: error: %s", strerror(errno));
     } else {
@@ -313,37 +310,38 @@ BOOL slideableHotbar;
 
 - (void)updatePreferenceChanges {
     // Update UITextField auto correction
-    if ([getPreference(@"debug_auto_correction") boolValue]) {
+    if (getPrefBool(@"debug.debug_auto_correction")) {
         self.inputTextField.autocorrectionType = UITextAutocorrectionTypeDefault;
     } else {
         self.inputTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     }
 
-    BOOL gyroEnabled = [getPreference(@"gyroscope_enable") boolValue];
-    BOOL gyroInvertX = [getPreference(@"gyroscope_invert_x_axis") boolValue];
-    int gyroSensitivity = [getPreference(@"gyroscope_sensitivity") intValue];
+    BOOL gyroEnabled = getPrefBool(@"control.gyroscope_enable");
+    BOOL gyroInvertX = getPrefBool(@"control.gyroscope_invert_x_axis");
+    int gyroSensitivity = getPrefInt(@"control.gyroscope_sensitivity");
     [GyroInput updateSensitivity:gyroEnabled?gyroSensitivity:0 invertXAxis:gyroInvertX];
 
-    self.mouseSpeed = [getPreference(@"mouse_speed") floatValue] / 100.0;
+    self.mouseSpeed = getPrefFloat(@"control.mouse_speed") / 100.0;
 
-    virtualMouseEnabled = [getPreference(@"virtmouse_enable") boolValue];
+    virtualMouseEnabled = getPrefBool(@"control.virtmouse_enable");
     self.mousePointerView.hidden = isGrabbing || !virtualMouseEnabled;
 
     // Update virtual mouse scale
-    CGFloat mouseScale = [getPreference(@"mouse_scale") floatValue] / 100.0;
+    CGFloat mouseScale = getPrefFloat(@"control.mouse_scale") / 100.0;
     virtualMouseFrame = CGRectMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2, 18.0 * mouseScale, 27 * mouseScale);
     self.mousePointerView.frame = virtualMouseFrame;
 
     self.ctrlView.frame = getSafeArea();
 
     // Update gestures state
-    slideableHotbar = [getPreference(@"slideable_hotbar") boolValue];
-    self.enableMouseGestures = [getPreference(@"gesture_mouse") boolValue];
-    self.enableHotbarGestures = [getPreference(@"gesture_hotbar") boolValue];
+    slideableHotbar = getPrefBool(@"control.slideable_hotbar");
+    self.enableMouseGestures = getPrefBool(@"control.gesture_mouse");
+    self.enableHotbarGestures = getPrefBool(@"control.gesture_hotbar");
+    self.shouldTriggerHaptic = !getPrefBool(@"control.disable_haptics");
 
     self.scrollPanGesture.enabled = self.enableMouseGestures;
     self.doubleTapGesture.enabled = self.enableHotbarGestures;
-    self.longPressGesture.minimumPressDuration = [getPreference(@"press_duration") floatValue] / 1000.0;
+    self.longPressGesture.minimumPressDuration = getPrefFloat(@"control.press_duration") / 1000.0;
 
     // Update audio settings
     [self updateAudioSettings];
@@ -363,7 +361,7 @@ BOOL slideableHotbar;
         self.surfaceView.frame = self.surfaceView.superview.frame;
     }
 
-    resolutionScale = [getPreference(@"resolution") floatValue] / 100.0;
+    resolutionScale = getPrefFloat(@"video.resolution") / 100.0;
     self.surfaceView.layer.contentsScale = self.screenScale * resolutionScale;
 
     physicalWidth = roundf(self.surfaceView.frame.size.width * self.screenScale);
@@ -382,7 +380,8 @@ BOOL slideableHotbar;
 
 - (void)launchMinecraft {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [MinecraftResourceUtils downloadClientJson:getPreference(@"selected_version") progress:nil callback:nil success:^(NSMutableDictionary *json) {
+        NSDictionary *version = @{@"id": PLProfiles.current.selectedProfile[@"lastVersionId"]};
+        [MinecraftResourceUtils downloadClientJson:version progress:nil callback:nil success:^(NSMutableDictionary *json) {
             [MinecraftResourceUtils processJVMArgs:json];
             launchJVM(
                 BaseAuthenticator.current.authData[@"username"],
@@ -397,7 +396,8 @@ BOOL slideableHotbar;
 - (void)loadCustomControls {
     self.edgeGesture.enabled = YES;
     [self.swipeableButtons removeAllObjects];
-    [self.ctrlView loadControlFile:getPreference(@"default_ctrl")];
+    NSString *controlFile = [PLProfiles resolveKeyForCurrentProfile:@"defaultTouchCtrl"];
+    [self.ctrlView loadControlFile:controlFile];
     for (ControlButton *button in self.ctrlView.subviews) {
         BOOL isSwipeable = [button.properties[@"isSwipeable"] boolValue];
 
@@ -623,7 +623,7 @@ BOOL slideableHotbar;
 
 - (void)surfaceOnClick:(UITapGestureRecognizer *)sender {
     if (sender.state == UIGestureRecognizerStateBegan || sender.state == UIGestureRecognizerStateEnded){
-        if(![getPreference(@"disable_haptics") boolValue]) {
+        if(self.shouldTriggerHaptic) {
             [self.lightHaptic impactOccurred];
         }
     }
@@ -650,7 +650,7 @@ BOOL slideableHotbar;
 
 - (void)surfaceOnDoubleClick:(UITapGestureRecognizer *)sender {
     if (sender.state == UIGestureRecognizerStateBegan || sender.state == UIGestureRecognizerStateEnded){
-        if(![getPreference(@"disable_haptics") boolValue]) {
+        if(self.shouldTriggerHaptic) {
             [self.lightHaptic impactOccurred];
         }
     }
@@ -697,7 +697,7 @@ BOOL slideableHotbar;
 -(void)surfaceOnLongpress:(UILongPressGestureRecognizer *)sender
 {
     if (sender.state == UIGestureRecognizerStateBegan || sender.state == UIGestureRecognizerStateEnded){
-        if(![getPreference(@"disable_haptics") boolValue]) {
+        if(self.shouldTriggerHaptic) {
             [self.mediumHaptic impactOccurred];
         }
     }
@@ -735,7 +735,7 @@ BOOL slideableHotbar;
 
 - (void)surfaceOnTouchesScroll:(UIPanGestureRecognizer *)sender {
     if (sender.state == UIGestureRecognizerStateBegan || sender.state == UIGestureRecognizerStateEnded){
-        if(![getPreference(@"disable_haptics") boolValue]) {
+        if(self.shouldTriggerHaptic) {
             [self.lightHaptic impactOccurred];
         }
     }
@@ -823,7 +823,7 @@ int currentVisibility = 1;
                     if (!isGrabbing && !held) {
                         virtualMouseEnabled = !virtualMouseEnabled;
                         self.mousePointerView.hidden = !virtualMouseEnabled;
-                        setPreference(@"virtmouse_enable", @(virtualMouseEnabled));
+                        setPrefBool(@"control.virtmouse_enable", virtualMouseEnabled);
                     }
                     break;
 
@@ -848,7 +848,7 @@ int currentVisibility = 1;
 
 - (void)executebtn_down:(ControlButton *)sender
 {
-    if(![getPreference(@"disable_haptics") boolValue]) {
+    if(self.shouldTriggerHaptic) {
         [self.lightHaptic impactOccurred];
     }
     
@@ -899,8 +899,8 @@ int currentVisibility = 1;
         sender.backgroundColor = sender.savedBackgroundColor;
         [self executebtn:sender withAction:ACTION_UP];
     }
-    
-    if(![getPreference(@"disable_haptics") boolValue]) {
+
+    if(self.shouldTriggerHaptic) {
         [self.lightHaptic impactOccurred];
     }
 }

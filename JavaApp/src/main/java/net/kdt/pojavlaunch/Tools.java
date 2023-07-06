@@ -52,6 +52,7 @@ public final class Tools
 
     public static final String DIR_GAME_HOME = System.getenv("POJAV_HOME");
     public static final String DIR_GAME_NEW = System.getenv("POJAV_GAME_DIR"); // path to "Library/Application Support/minecraft"
+    public static final String DIR_GAME_PROFILE = System.getProperty("user.dir");
     
     public static final String DIR_APP_DATA = System.getenv("POJAV_HOME");
     public static final String DIR_ACCOUNT_NEW = DIR_APP_DATA + "/accounts";
@@ -120,7 +121,7 @@ public final class Tools
             versionName = versionInfo.inheritsFrom;
         }
 
-        File gameDir = new File(Tools.DIR_GAME_NEW);
+        File gameDir = new File(Tools.DIR_GAME_PROFILE);
         gameDir.mkdirs();
 
         Map<String, String> varArgMap = new ArrayMap<String, String>();

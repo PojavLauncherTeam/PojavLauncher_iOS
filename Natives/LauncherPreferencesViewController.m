@@ -6,7 +6,6 @@
 #import "LauncherPreferences.h"
 #import "LauncherPreferencesViewController.h"
 #import "LauncherPrefContCfgViewController.h"
-#import "LauncherPrefGameDirViewController.h"
 #import "LauncherPrefManageJREViewController.h"
 #import "UIKit+hook.h"
 
@@ -32,13 +31,16 @@
 
 - (void)viewDidLoad
 {
-    self.getPreference = ^id(NSString *key){
-        return getPreference(key);
+    self.getPreference = ^id(NSString *section, NSString *key){
+        NSString *keyFull = [NSString stringWithFormat:@"%@.%@", section, key];
+        return getPrefObject(keyFull);
     };
-    self.setPreference = ^(NSString *key, id value){
-        setPreference(key, value);
+    self.setPreference = ^(NSString *section, NSString *key, id value){
+        NSString *keyFull = [NSString stringWithFormat:@"%@.%@", section, key];
+        setPrefObject(keyFull, value);
     };
     
+    self.hasDetail = YES;
     self.prefDetailVisible = self.navigationController == nil;
     if (self.navigationController == nil) {
         self.tableView.alpha = 0.9;
@@ -46,36 +48,8 @@
     
     self.prefSections = @[@"general", @"video", @"control", @"java", @"debug"];
 
-#if CONFIG_RELEASE
-    if(@available(iOS 16.0, *)) {
-        // Disabling Zink on iOS 16.0+ to figure out what's wrong with it
-        self.rendererKeys = @[
-            @"auto",
-            @ RENDERER_NAME_GL4ES,
-            @ RENDERER_NAME_MTL_ANGLE
-        ];
-        self.rendererList = @[
-            localize(@"preference.title.renderer.release.auto", nil),
-            localize(@"preference.title.renderer.release.gl4es", nil),
-            localize(@"preference.title.renderer.release.angle", nil)
-        ];
-    } else {
-#endif
-        self.rendererKeys = @[
-            @"auto",
-            @ RENDERER_NAME_GL4ES,
-            @ RENDERER_NAME_MTL_ANGLE,
-            @ RENDERER_NAME_VK_ZINK
-        ];
-        self.rendererList = @[
-            localize(@"preference.title.renderer.debug.auto", nil),
-            localize(@"preference.title.renderer.debug.gl4es", nil),
-            localize(@"preference.title.renderer.debug.angle", nil),
-            localize(@"preference.title.renderer.debug.zink", nil)
-        ];
-#if CONFIG_RELEASE
-    }
-#endif
+    self.rendererKeys = getRendererKeys(NO);
+    self.rendererList = getRendererNames(NO);
     
     BOOL(^whenNotInGame)() = ^BOOL(){
         return self.navigationController != nil;
@@ -84,15 +58,6 @@
         @[
             // General settings
             @{@"icon": @"cube"},
-            @{@"key": @"game_directory",
-              @"icon": @"folder",
-              @"type": self.typeChildPane,
-              @"enableCondition": ^BOOL(){
-                  return whenNotInGame() && !getenv("DEMO_LOCK");
-              },
-              @"canDismissWithSwipe": @YES,
-              @"class": LauncherPrefGameDirViewController.class,
-            },
             @{@"key": @"check_sha",
               @"hasDetail": @YES,
               @"icon": @"lock.shield",
@@ -196,8 +161,9 @@
                   if([NSFileManager.defaultManager removeItemAtPath:demoPath error:&error]) {
                       [NSFileManager.defaultManager createDirectoryAtPath:demoPath
                                               withIntermediateDirectories:YES attributes:nil error:nil];
-                      if ([self.getPreference(@"selected_version_type") intValue] == 0 && getenv("DEMO_LOCK")) {
-                          [(LauncherNavigationController *)self.navigationController reloadVersionList:0];
+                      [NSFileManager.defaultManager changeCurrentDirectoryPath:demoPath];
+                      if (getenv("DEMO_LOCK")) {
+                          [(LauncherNavigationController *)self.navigationController fetchLocalVersionList];
                       }
                   } else {
                       NSLog(@"Error in erase_demo_data: %@", error);
@@ -390,7 +356,7 @@
                 @"min": @(250),
                 @"max": @((NSProcessInfo.processInfo.physicalMemory / 1048576) * 0.85),
                 @"enableCondition": ^BOOL(){
-                    return ![self.getPreference(@"auto_ram") boolValue] && whenNotInGame();
+                    return ![self.getPreference(@"java", @"auto_ram") boolValue] && whenNotInGame();
                 },
                 @"warnCondition": ^BOOL(DBNumberedSlider *view){
                     return view.value >= NSProcessInfo.processInfo.physicalMemory / 1048576 * 0.37;
@@ -442,7 +408,7 @@
                 @"icon": @"square.on.square",
                 @"type": self.typeSwitch,
                 @"enableCondition": ^BOOL(){
-                    return [self.getPreference(@"debug_show_layout_bounds") boolValue] && whenNotInGame();
+                    return [self.getPreference(@"debug", @"debug_show_layout_bounds") boolValue] && whenNotInGame();
                 }
             }
         ]

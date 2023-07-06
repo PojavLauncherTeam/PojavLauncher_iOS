@@ -71,7 +71,7 @@ static AFURLSessionManager* manager;
     }
 
     BOOL check = [sha isEqualToString:localSHA];
-    if (!check || ([getPreference(@"debug_logging") boolValue] && logSuccess)) {
+    if (!check || (getPrefBool(@"debug.debug_logging") && logSuccess)) {
         NSLog(@"[MCDL] SHA1 %@ for %@%@",
           (check ? @"passed" : @"failed"), 
           (altName ? altName : path.lastPathComponent),
@@ -81,7 +81,7 @@ static AFURLSessionManager* manager;
 }
 
 + (BOOL)checkSHA:(NSString *)sha forFile:(NSString *)path altName:(NSString *)altName logSuccess:(BOOL)logSuccess {
-    if ([getPreference(@"check_sha") boolValue]) {
+    if (getPrefBool(@"general.check_sha")) {
         return [self checkSHAIgnorePref:sha forFile:path altName:altName logSuccess:logSuccess];
     } else {
         return [NSFileManager.defaultManager fileExistsAtPath:path];
@@ -140,9 +140,18 @@ static AFURLSessionManager* manager;
 
     BOOL isAssetIndex = NO;
     NSString *versionStr, *versionURL, *versionSHA;
-    if ([version isKindOfClass:[NSDictionary class]]) {
+    if ([version isKindOfClass:NSDictionary.class]) {
         isAssetIndex = [version valueForKey:@"totalSize"] != nil;
+
         versionStr = [version valueForKey:@"id"];
+        if ([versionStr isEqualToString:@"latest-release"]) {
+            versionStr = getPrefObject(@"internal.latest_version.release");
+        } else if ([versionStr isEqualToString:@"latest-snapshot"]) {
+            versionStr = getPrefObject(@"internal.latest_version.snapshot");
+        }
+
+        // Find it again to resolve latest-*
+        version = [self findVersion:versionStr inList:remoteVersionList];
         versionURL = [version valueForKey:@"url"];
         versionSHA = versionURL.stringByDeletingLastPathComponent.lastPathComponent;
     } else {
@@ -480,7 +489,7 @@ static AFURLSessionManager* manager;
     }
     dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
     callback(@"Finished: download assets", nil);
-    if ([getPreference(@"check_sha") boolValue]) {
+    if (getPrefBool(@"general.check_sha")) {
         NSLog(@"[MCDL] SHA1 passed for %d/%d asset files", verifiedCount, [assets[@"objects"] count]);
         if ([assets[@"objects"] count] - verifiedCount < 3) {
             NSLog(@"Note: some files of 1.19+ are skipped to workaround an issue");
@@ -489,7 +498,7 @@ static AFURLSessionManager* manager;
     return jobsAvailable != -1;
 }
 
-+ (void)downloadVersion:(NSObject *)version callback:(MDCallback)callback {
++ (void)downloadVersion:(NSDictionary *)version callback:(MDCallback)callback {
     manager = [[AFURLSessionManager alloc] init];
     NSProgress *mainProgress = [NSProgress progressWithTotalUnitCount:0];
     [self downloadClientJson:version progress:mainProgress callback:callback success:^(NSMutableDictionary *json) {
@@ -545,18 +554,7 @@ static AFURLSessionManager* manager;
 }
 
 + (NSObject *)findVersion:(NSString *)version inList:(NSArray *)list {
-    for (id object in list) {
-        NSString *item;
-        if ([object isKindOfClass:[NSDictionary class]]) {
-            item = [object valueForKey:@"id"];
-        } else {
-            item = (NSString *)object;
-        }
-        if ([version isEqualToString:item]) {
-            return object;
-        }
-    }
-    return nil;
+    return [list filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(id == %@)", version]].firstObject;
 }
 
 + (NSObject *)findNearestVersion:(NSObject *)version expectedType:(int)type {

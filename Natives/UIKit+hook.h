@@ -18,3 +18,13 @@
 @interface UIImage(private)
 - (UIImage *)_imageWithSize:(CGSize)size;
 @end
+
+@interface UITextField(private)
+@property(assign, nonatomic) NSInteger nonEditingLinebreakMode;
+@end
+
+/*
+@interface WFTextTokenTextView : UITextField
+@property(nonatomic) NSString* placeholder
+@end
+*/

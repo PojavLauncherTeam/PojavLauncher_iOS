@@ -88,7 +88,7 @@
 
 - (void)preProcessProperties {
     CGFloat currentScale = [((ControlLayout *)self.superview).layoutDictionary[@"scaledAt"] floatValue];
-    CGFloat savedScale = [getPreference(@"button_scale") floatValue];
+    CGFloat savedScale = getPrefFloat(@"control.button_scale");
     if (currentScale != savedScale) {
         self.properties[@"width"] = @([self.properties[@"width"] floatValue] * savedScale / currentScale);
         self.properties[@"height"] = @([self.properties[@"height"] floatValue] * savedScale / currentScale);
@@ -116,7 +116,7 @@
     INSERT_VALUE("screen_width", ([NSString stringWithFormat:@"%f", screenWidth]));
     INSERT_VALUE("screen_height", ([NSString stringWithFormat:@"%f", screenHeight]));
     INSERT_VALUE("margin", ([NSString stringWithFormat:@"%f", 2.0 * screenScale]));
-    INSERT_VALUE("preferred_scale", ([NSString stringWithFormat:@"%f", [getPreference(@"button_scale") floatValue]]));
+    INSERT_VALUE("preferred_scale", ([NSString stringWithFormat:@"%f", getPrefFloat(@"control.button_scale")]));
 
     // NSLog(@"After insert: %@", string);
 
@@ -304,9 +304,9 @@
     NSString *str = [equation stringByReplacingOccurrencesOfString:@"${right}" withString:@"(${screen_width} - ${width})"];
     str = [str stringByReplacingOccurrencesOfString:@"${bottom}" withString:@"(${screen_height} - ${height})"];
     // "(px(" + Tools.pxToDp(button.getProperties().getHeight()) + ") /" + PREF_BUTTONSIZE + " * ${preferred_scale})"
-    str = [str stringByReplacingOccurrencesOfString:@"${height}" withString:[NSString stringWithFormat:@"(px(%f) / %f * ${preferred_scale})", button.frame.size.height, [getPreference(@"button_scale") floatValue]]];
+    str = [str stringByReplacingOccurrencesOfString:@"${height}" withString:[NSString stringWithFormat:@"(px(%f) / %f * ${preferred_scale})", button.frame.size.height, getPrefFloat(@"control.button_scale")]];
     // "(px(" + Tools.pxToDp(button.getProperties().getWidth()) + ") / " + PREF_BUTTONSIZE + " * ${preferred_scale})"
-    str = [str stringByReplacingOccurrencesOfString:@"${width}" withString:[NSString stringWithFormat:@"(px(%f) / %f * ${preferred_scale})", button.frame.size.width, [getPreference(@"button_scale") floatValue]]];
+    str = [str stringByReplacingOccurrencesOfString:@"${width}" withString:[NSString stringWithFormat:@"(px(%f) / %f * ${preferred_scale})", button.frame.size.width, getPrefFloat(@"control.button_scale")]];
     return str;
 }
 

@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 
-NSArray<NSDictionary *> *remoteVersionList;
+NSMutableArray<NSDictionary *> *localVersionList, *remoteVersionList;
 
 @interface LauncherNavigationController : UINavigationController
 
@@ -8,7 +8,7 @@ NSArray<NSDictionary *> *remoteVersionList;
 @property(nonatomic) UILabel* progressText;
 @property(nonatomic) UIButton* buttonInstall;
 
-- (void)reloadVersionList:(int)type;
+- (void)fetchLocalVersionList;
 - (void)setInteractionEnabled:(BOOL)enable;
 
 @end

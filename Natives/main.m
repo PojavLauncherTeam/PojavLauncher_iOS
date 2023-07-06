@@ -8,6 +8,7 @@
 #import "AppDelegate.h"
 #import "customcontrols/CustomControlsUtils.h"
 #import "LauncherPreferences.h"
+#import "PLProfiles.h"
 #import "SurfaceViewController.h"
 #import "config.h"
 
@@ -166,7 +167,7 @@ void init_migrateToPlist(char* prefKey, char* filename) {
             }
         }
         
-        setPreference(@(prefKey), finalized);
+        setPrefObject(@(prefKey), finalized);
         [@"#README - this file has been merged into launcher_preferences.plist" writeToFile:path_str atomically:YES encoding:NSUTF8StringEncoding error:nil];
         NSLog(@"[Pre-Init] File \"%s\" has been migrated", filename);
     } else {
@@ -246,27 +247,11 @@ void init_setupCustomControls() {
     generateAndSaveDefaultControlForGamepad();
 }
 
-void init_setupLauncherProfiles() {
-    NSString *file = [@(getenv("POJAV_GAME_DIR")) stringByAppendingPathComponent:@"launcher_profiles.json"];
-    if (![fm fileExistsAtPath:file]) {
-        NSDictionary *dict = @{
-            @"profiles": @{
-                @"(Default)": @{
-                    @"name": @"(Default)",
-                    @"lastVersionId": @"latest-release"
-                }
-            },
-            @"selectedProfile": @"(Default)"
-        };
-        saveJSONToFile(dict, file);
-    }
-}
-
 void init_setupMultiDir() {
-    NSString *multidir = getPreference(@"game_directory");
+    NSString *multidir = getPrefObject(@"general.game_directory");
     if (multidir.length == 0) {
         multidir = @"default";
-        setPreference(@"game_directory", multidir);
+        setPrefObject(@"general.game_directory", multidir);
         NSLog(@"[Pre-init] Game directory was not set. Defaulting to %@ for future use.\n", multidir);
     } else {
         NSLog(@"[Pre-init] Restored game directory preference (%@)\n", multidir);
@@ -355,19 +340,18 @@ int main(int argc, char *argv[]) {
     init_hookUIKitConstructor();
 
     loadPreferences(NO);
-    debugBoundsEnabled = [getPreference(@"debug_show_layout_bounds") boolValue];
-    debugLogEnabled = [getPreference(@"debug_logging") boolValue];
+    debugBoundsEnabled = getPrefBool(@"debug.debug_show_layout_bounds");
+    debugLogEnabled = getPrefBool(@"general.debug_logging");
     NSLog(@"[Debugging] Debug log enabled: %@", debugLogEnabled ? @"YES" : @"NO");
 
     init_setupResolvConf();
     init_setupMultiDir();
-    init_setupLauncherProfiles();
+    [PLProfiles updateCurrent];
     init_setupAccounts();
     init_setupCustomControls();
 
-    init_migrateToPlist("selected_version", "config_ver.txt");
-    init_migrateToPlist("java_args", "overrideargs.txt");
-    init_migrateToPlist("env_variables", "custom_env.txt");
+    init_migrateToPlist("java.java_args", "overrideargs.txt");
+    init_migrateToPlist("java.env_variables", "custom_env.txt");
 
     // If sandbox is disabled, W^X JIT can be enabled by PojavLauncher itself
     if (!isJITEnabled(true) && getEntitlementValue(@"com.apple.private.security.no-sandbox")) {

@@ -53,8 +53,8 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     
     self.prefSections = @[@"config_files", @"game_mappings", @"menu_mappings", @"controller_style"];
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:localize(@"Save", nil) style:UIBarButtonItemStyleDone target:self action:@selector(actionMenuSave)];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:localize(@"Exit", nil) style:UIBarButtonItemStyleDone target:self action:@selector(exitButtonSelector)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(actionMenuSave)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemClose target:self action:@selector(exitButtonSelector)];
     
     self.editPickMapping = [[UIPickerView alloc] init];
     self.editPickMapping.delegate = self;
@@ -66,9 +66,9 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 }
 
 - (void)loadGamepadConfigurationFile {
-    NSString *gamepadPath = [NSString stringWithFormat:@"%s/controlmap/gamepads/%@", getenv("POJAV_HOME"), getPreference(@"default_gamepad_ctrl")];
+    NSString *gamepadPath = [NSString stringWithFormat:@"%s/controlmap/gamepads/%@", getenv("POJAV_HOME"), getPrefObject(@"control.default_gamepad_ctrl")];
     self.currentMappings = parseJSONFromFile(gamepadPath);
-    self.currentFileName = [getPreference(@"default_ctrl") stringByDeletingPathExtension];
+    self.currentFileName = [getPrefObject(@"control.default_ctrl") stringByDeletingPathExtension];
     NSPredicate *filterPredicate = [NSPredicate predicateWithBlock:^BOOL(id obj, NSDictionary *dict) {
         return ![obj[@"name"] hasPrefix:@"mouse_"];
     }];
@@ -119,10 +119,10 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     if(indexPath.section == 0) {
         cell.textLabel.text = localize(@"controller_configurator.title.current", nil);
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.detailTextLabel.text = getPreference(@"default_gamepad_ctrl");
+        cell.detailTextLabel.text = getPrefObject(@"control.default_gamepad_ctrl");
     } else if(indexPath.section == 1 || indexPath.section == 2) {
         NSNumber *keycode = (NSNumber *)item[@"keycode"];
-        cell.textLabel.text = localize(([NSString stringWithFormat:@"controller_configurator.%@.title.%@", getPreference(@"controller_type"), item[@"name"]]), nil);
+        cell.textLabel.text = localize(([NSString stringWithFormat:@"controller_configurator.%@.title.%@", getPrefObject(@"control.controller_type"), item[@"name"]]), nil);
         UITextField *view = (id)cell.accessoryView;
         if (view == nil) {
             view = [[PickTextField alloc] initWithFrame:CGRectMake(0, 0, cell.bounds.size.width / 2.1, cell.bounds.size.height)];
@@ -145,7 +145,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
         objc_setAssociatedObject(view, @"item", item, OBJC_ASSOCIATION_ASSIGN);
     } else if(indexPath.section == 3) {
         cell.textLabel.text = localize([NSString stringWithFormat:@"controller_configurator.title.type.%@", item[@"name"]], nil);
-        if ([getPreference(@"controller_type") isEqualToString:item[@"name"]]) {
+        if ([getPrefObject(@"control.controller_type") isEqualToString:item[@"name"]]) {
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
         } else {
             cell.accessoryType = UITableViewCellAccessoryNone;
@@ -172,7 +172,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
     if(indexPath.section == 0) {
         [self actionMenuLoad];
     } else if(indexPath.section == 3) {
-        setPreference(@"controller_type", self.prefControllerTypes[indexPath.row][@"name"]);
+        setPrefObject(@"control.controller_type", self.prefControllerTypes[indexPath.row][@"name"]);
         NSIndexSet *section = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 3)];
         [self.tableView reloadSections:section withRowAnimation:UITableViewRowAnimationNone];
     }
@@ -255,9 +255,9 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 
 - (void)actionMenuLoad {
     [self actionOpenFilePicker:^void(NSString* name) {
-        NSString *currentFile = [NSString stringWithFormat:@"%@.json", getPreference(@"default_gamepad_ctrl")];
+        NSString *currentFile = [NSString stringWithFormat:@"%@.json", getPrefObject(@"control.default_gamepad_ctrl")];
         if(![currentFile isEqualToString:name]) {
-            setPreference(@"default_gamepad_ctrl", [NSString stringWithFormat:@"%@.json", name]);
+            setPrefObject(@"control.default_gamepad_ctrl", [NSString stringWithFormat:@"%@.json", name]);
             [self loadGamepadConfigurationFile];
             [self.tableView reloadData];
         }
@@ -293,7 +293,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
             [self dismissModalViewController];
         }
 
-        setPreference(@"default_gamepad_ctrl", [NSString stringWithFormat:@"%@.json", field.text]);
+        setPrefObject(@"control.default_gamepad_ctrl", [NSString stringWithFormat:@"%@.json", field.text]);
     }]];
     if (exit) {
         [controller addAction:[UIAlertAction actionWithTitle:localize(@"custom_controls.control_menu.discard_changes", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
@@ -309,7 +309,7 @@ typedef void(^CreateView)(UITableViewCell *, NSString *, NSDictionary *);
 }
 
 - (void)exitButtonSelector {
-    NSString *gamepadPath = [NSString stringWithFormat:@"%s/controlmap/gamepads/%@", getenv("POJAV_HOME"), getPreference(@"default_gamepad_ctrl")];
+    NSString *gamepadPath = [NSString stringWithFormat:@"%s/controlmap/gamepads/%@", getenv("POJAV_HOME"), getPrefObject(@"control.default_gamepad_ctrl")];
     if([self.currentMappings isEqualToDictionary:parseJSONFromFile(gamepadPath)]) {
         [self dismissModalViewController];
     } else {

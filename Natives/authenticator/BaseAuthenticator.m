@@ -9,7 +9,7 @@ static BaseAuthenticator *current = nil;
 
 + (id)current {
     if (current == nil) {
-        [self loadSavedName:getPreference(@"selected_account")];
+        [self loadSavedName:getPrefObject(@"internal.selected_account")];
     }
     return current;
 }

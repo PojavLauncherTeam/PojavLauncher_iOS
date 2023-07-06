@@ -15,7 +15,7 @@ extern UIWindow* currentWindow();
     UIWindowScene *windowScene = (UIWindowScene *)scene;
     self.window = [[UIWindow alloc] initWithWindowScene:windowScene];
     self.window.frame = windowScene.coordinateSpace.bounds; 
-    if (SurfaceViewController.isRunning && [getPreference(@"fullscreen_airplay") boolValue]) {
+    if (SurfaceViewController.isRunning && getPrefBool(@"video.fullscreen_airplay")) {
         [currentWindow().rootViewController performSelector:@selector(switchToExternalDisplay)];
     }
 }
@@ -26,7 +26,7 @@ extern UIWindow* currentWindow();
     // This occurs shortly after the scene enters the background, or when its session is discarded.
     // Release any resources associated with this scene that can be re-created the next time the scene connects.
     // The scene may re-connect later, as its session was not neccessarily discarded (see `application:didDiscardSceneSessions` instead).
-    if (SurfaceViewController.isRunning && [getPreference(@"fullscreen_airplay") boolValue]) {
+    if (SurfaceViewController.isRunning && getPrefBool(@"video.fullscreen_airplay")) {
         [currentWindow().rootViewController performSelector:@selector(switchToInternalDisplay)];
     }
 }

@@ -2,11 +2,17 @@
 #import "customcontrols/ControlButton.h"
 #import "customcontrols/ControlLayout.h"
 
+typedef NSString* (^GetDefaultCtrlBlock)();
+typedef void (^SetDefaultCtrlBlock)(NSString *);
+
 @interface ControlHandleView : UIView
 @property(nonatomic, weak) ControlButton* target;
 @end
 
 @interface CustomControlsViewController : UIViewController
+
+@property(nonatomic) GetDefaultCtrlBlock getDefaultCtrl;
+@property(nonatomic) SetDefaultCtrlBlock setDefaultCtrl;
 
 @property(nonatomic) UIGestureRecognizer* currentGesture;
 

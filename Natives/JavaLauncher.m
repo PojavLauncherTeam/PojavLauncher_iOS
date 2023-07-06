@@ -14,6 +14,7 @@
 #import "ios_uikit_bridge.h"
 #import "JavaLauncher.h"
 #import "LauncherPreferences.h"
+#import "PLProfiles.h"
 
 #define fm NSFileManager.defaultManager
 
@@ -42,7 +43,7 @@ void init_loadDefaultEnv() {
 }
 
 void init_loadCustomEnv() {
-    NSString *envvars = getPreference(@"env_variables");
+    NSString *envvars = getPrefObject(@"java.env_variables");
     if (envvars == nil) return;
     NSLog(@"[JavaLauncher] Reading custom environment variables");
     for (NSString *line in [envvars componentsSeparatedByCharactersInSet:NSCharacterSet.whitespaceCharacterSet]) {
@@ -59,7 +60,7 @@ void init_loadCustomEnv() {
 }
 
 void init_loadCustomJvmFlags(int* argc, const char** argv) {
-    NSString *jvmargs = getPreference(@"java_args");
+    NSString *jvmargs = [PLProfiles resolveKeyForCurrentProfile:@"javaArgs"];
     if (jvmargs == nil) return;
     BOOL isFirstArg = YES;
     NSLog(@"[JavaLauncher] Reading custom JVM flags");
@@ -85,24 +86,47 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     init_loadDefaultEnv();
     init_loadCustomEnv();
 
-    NSLog(@"[JavaLauncher] Looking for Java %d or later", minVersion);
+    NSString *gameDir;
+
     NSString *defaultJRETag;
     if ([launchTarget isKindOfClass:NSDictionary.class]) {
+        // Get preferred Java version from current profile
+        int preferredJavaVersion = [PLProfiles resolveKeyForCurrentProfile:@"javaVersion"].intValue;
+        if (preferredJavaVersion > 0) {
+            if (minVersion > preferredJavaVersion) {
+                NSLog(@"[JavaLauncher] Profile's preferred Java version (%d) does not meet the minimum version (%d), dropping request", preferredJavaVersion, minVersion);
+            } else {
+                NSDebugLog(@"[PLProfiles] Applying javaVersion");
+                minVersion = preferredJavaVersion;
+            }
+        }
         if (minVersion <= 8) {
             defaultJRETag = @"1_16_5_older";
         } else {
             defaultJRETag = @"1_17_newer";
         }
+
+        // Setup POJAV_RENDERER
+        NSString *renderer = [PLProfiles resolveKeyForCurrentProfile:@"renderer"];
+        NSLog(@"[JavaLauncher] RENDERER is set to %@\n", renderer);
+        setenv("POJAV_RENDERER", renderer.UTF8String, 1);
+        // Setup gameDir
+        gameDir = [NSString stringWithFormat:@"%s/instances/%@/%@",
+            getenv("POJAV_HOME"), getPrefObject(@"general.game_directory"),
+            [PLProfiles resolveKeyForCurrentProfile:@"gameDir"]]
+            .stringByStandardizingPath;
     } else {
         defaultJRETag = @"install_jar";
+        gameDir = @(getenv("POJAV_GAME_DIR"));
     }
+    NSLog(@"[JavaLauncher] Looking for Java %d or later", minVersion);
     NSString *javaHome = getSelectedJavaHome(defaultJRETag, minVersion);
 
     if (javaHome == nil) {
         UIKit_returnToSplitView();
         BOOL isInstallJar = [defaultJRETag isEqualToString:@"install_jar"];
         showDialog(localize(@"Error", nil), [NSString stringWithFormat:localize(@"java.error.missing_runtime", nil),
-            isInstallJar ? [launchTarget lastPathComponent] : getPreference(@"selected_version"), minVersion]);
+            isInstallJar ? [launchTarget lastPathComponent] : getPrefObject(@"internal.selected_version"), minVersion]);
         return 1;
     } else if ([javaHome hasPrefix:@(getenv("POJAV_HOME"))]) {
         // Activate Library Validation bypass for external runtime
@@ -121,22 +145,12 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     setenv("JAVA_HOME", javaHome.UTF8String, 1);
     NSLog(@"[JavaLauncher] JAVA_HOME has been set to %@", javaHome);
 
-    NSString *renderer = getPreference(@"renderer");
-    if (renderer.length == 0) {
-        renderer = @"auto";
-        setPreference(@"renderer", renderer);
-        NSLog(@"[JavaLauncher] RENDERER environment variable was not set. Defaulting to %@ for future use.\n", renderer);
-    } else {
-        NSLog(@"[JavaLauncher] Restored preference: RENDERER is set to %@\n", renderer);
-    }
-    setenv("POJAV_RENDERER", renderer.UTF8String, 1);
-    
     int allocmem;
-    if ([getPreference(@"auto_ram") boolValue]) {
+    if (getPrefBool(@"java.auto_ram")) {
         CGFloat autoRatio = getEntitlementValue(@"com.apple.private.memorystatus") ? 0.4 : 0.25;
         allocmem = roundf((NSProcessInfo.processInfo.physicalMemory / 1048576) * autoRatio);
     } else {
-        allocmem = [getPreference(@"allocated_memory") intValue];
+        allocmem = getPrefInt(@"java.allocated_memory");
     }
     NSLog(@"[JavaLauncher] Max RAM allocation is set to %d MB", allocmem);
 
@@ -150,7 +164,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     margv[++margc] = [NSString stringWithFormat:@"-Xmx%dM", allocmem].UTF8String;
     margv[++margc] = [NSString stringWithFormat:@"-Djava.library.path=%1$s/Frameworks", getenv("BUNDLE_PATH")].UTF8String;
     margv[++margc] = [NSString stringWithFormat:@"-Djna.boot.library.path=%s/Frameworks", getenv("BUNDLE_PATH")].UTF8String;
-    margv[++margc] = [NSString stringWithFormat:@"-Duser.dir=%s", getenv("POJAV_GAME_DIR")].UTF8String;
+    margv[++margc] = [NSString stringWithFormat:@"-Duser.dir=%@", gameDir].UTF8String;
     margv[++margc] = [NSString stringWithFormat:@"-Duser.home=%s", getenv("POJAV_HOME")].UTF8String;
     margv[++margc] = [NSString stringWithFormat:@"-Duser.timezone=%@", NSTimeZone.localTimeZone.name].UTF8String;
     margv[++margc] = [NSString stringWithFormat:@"-DUIScreen.maximumFramesPerSecond=%d", (int)UIScreen.mainScreen.maximumFramesPerSecond].UTF8String;
@@ -160,7 +174,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     margv[++margc] = "-Dlog4j2.formatMsgNoLookups=true";
 
     NSString *librariesPath = [NSString stringWithFormat:@"%s/libs", getenv("BUNDLE_PATH")];
-    if([getPreference(@"cosmetica") boolValue]) {
+    if(getPrefBool(@"general.cosmetica")) {
         margv[++margc] = [NSString stringWithFormat:@"-javaagent:%@/arc_dns_injector.jar=23.95.137.176", librariesPath].UTF8String;
     }
 
@@ -271,7 +285,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     margv[++margc] = [NSString stringWithFormat:@"%dx%d", width, height].UTF8String;
 
     pJLI_Launch = (JLI_Launch_func *)dlsym(libjli, "JLI_Launch");
-          
+
     if (NULL == pJLI_Launch) {
         NSLog(@"[Init] JLI_Launch = NULL");
         return -2;

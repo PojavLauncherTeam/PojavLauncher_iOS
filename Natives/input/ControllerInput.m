@@ -1,5 +1,6 @@
 #import "ControllerInput.h"
 #import "../LauncherPreferences.h"
+#import "../PLProfiles.h"
 #import "../SurfaceViewController.h"
 #import "../utils.h"
 
@@ -30,7 +31,8 @@ BOOL leftShiftHeld;
         return;
     }
     
-    NSString *gamepadPath = [NSString stringWithFormat:@"%s/controlmap/gamepads/%@", getenv("POJAV_HOME"), getPreference(@"default_gamepad_ctrl")];
+    NSString *controlFile = [PLProfiles resolveKeyForCurrentProfile:@"defaultGamepadCtrl"];
+    NSString *gamepadPath = [NSString stringWithFormat:@"%s/controlmap/gamepads/%@", getenv("POJAV_HOME"), controlFile];
     NSMutableDictionary *gamepadJSON = parseJSONFromFile(gamepadPath);
     
     gameMap = gamepadJSON[@"mGameMappingList"];

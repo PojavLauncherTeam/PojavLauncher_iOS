@@ -116,8 +116,7 @@ jstring UIKit_accessClipboard(JNIEnv* env, jint action, jstring copySrc) {
 void UIKit_launchMinecraftSurfaceVC() {
     // Leave this pref, might be useful later for launching with Quick Actions/Shortcuts/URL Scheme
     //setPreference(@"internal_launch_on_boot", getPreference(@"restart_before_launch"));
-    setPreference(@"selected_account", BaseAuthenticator.current.authData[@"username"]);
-    setPreference(@"internal_useStackQueue", @(isUseStackQueueCall ? YES : NO));
+    setPrefObject(@"internal.selected_account", BaseAuthenticator.current.authData[@"username"]);
     dispatch_async(dispatch_get_main_queue(), ^{
         UIWindow *window = currentWindow();
         tmpRootVC = window.rootViewController;
@@ -162,9 +161,12 @@ void UIKit_returnToSplitView() {
 }
 
 void launchInitialViewController(UIWindow *window) {
-    if ([getPreference(@"internal_launch_on_boot") boolValue]) {
+    window.rootViewController = [[LauncherSplitViewController alloc] initWithStyle:UISplitViewControllerStyleDoubleColumn];
+/*
+    if (getPrefBool(@"internal.internal_launch_on_boot")) {
         window.rootViewController = [[SurfaceViewController alloc] init];
     } else {
         window.rootViewController = [[LauncherSplitViewController alloc] initWithStyle:UISplitViewControllerStyleDoubleColumn];
     }
+*/
 }

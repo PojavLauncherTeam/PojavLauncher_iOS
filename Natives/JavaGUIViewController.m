@@ -121,7 +121,7 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
 
     int width = (int) roundf(screenBounds.size.width);
     int height = (int) roundf(screenBounds.size.height);
-    float resolution = [getPreference(@"resolution") floatValue] / 100.0;
+    float resolution = getPrefFloat(@"video.resolution") / 100.0;
 
     windowWidth = roundf(width * screenScale * resolution);
     windowHeight = roundf(height * screenScale * resolution);
@@ -164,7 +164,7 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
     [self.view addSubview:self.inputTextField];
 
     self.virtualMouseEnabled = NO;
-    //[getPreference(@"virtmouse_enable") boolValue];
+    //getPrefBool(@"virtmouse_enable")
     scrollView.bounces = !self.virtualMouseEnabled;
     self.virtualMouseFrame = CGRectMake(screenBounds.size.width / 2, screenBounds.size.height / 2, 18, 27);
     self.mousePointerView = [[UIImageView alloc] initWithFrame:self.virtualMouseFrame];
@@ -323,7 +323,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                     if (held) return;
                     virtualMouseEnabled = !virtualMouseEnabled;
                     self.mousePointerView.hidden = !virtualMouseEnabled;
-                    setPreference(@"virtmouse_enable", @(virtualMouseEnabled));
+                    setPrefBool(@"control.virtmouse_enable", virtualMouseEnabled);
                     break;
 
                 default:
@@ -346,7 +346,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 
 - (void)surfaceOnClick:(UITapGestureRecognizer *)sender {
     if (sender.state == UIGestureRecognizerStateRecognized) {
-        float resolution = ((NSNumber *)getPreference(@"resolution")).floatValue / 100.0;
+        float resolution = getPrefFloat(@"video.resolution") / 100.0;
         CGFloat screenScale = [[UIScreen mainScreen] scale];
         CGPoint location = [sender locationInView:sender.view];
         CGFloat x = location.x * screenScale * resolution;
