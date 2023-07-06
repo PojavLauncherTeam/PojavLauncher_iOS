@@ -254,6 +254,10 @@
 "preference.title.debug_show_layout_overlap" = "Zobrazit překrývající se rozložení";
 "preference.detail.debug_show_layout_overlap" = "Překrýt každé zobrazení průhlednou barvou pro odhalení překrývajících se zobrazení.";
 
+"preference.profile.title.name" = "Název";
+"preference.profile.title.version" = "Verze";
+"profile.title.create" = "Vytvořit nový profil";
+
 "controller_configurator.title.current" = "Soubor nastavení Gamepadu";
 "controller_configurator.title.type.xbox" = "Xbox";
 "controller_configurator.title.type.playstation" = "PlayStation";
