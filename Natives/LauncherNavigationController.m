@@ -91,7 +91,6 @@
 
     self.buttonInstall.enabled = NO;
 
-    [self fetchLocalVersionList];
     [self fetchRemoteVersionList];
 
     if ([BaseAuthenticator.current isKindOfClass:MicrosoftAuthenticator.class]) {
@@ -155,8 +154,10 @@
     }];
 }
 
-// [tmp cmt] Invoked by: startup, instance change event
+// Invoked by: startup, instance change event
 - (void)reloadProfileList {
+    // Reload local version list
+    [self fetchLocalVersionList];
     // Reload launcher_profiles.json
     [PLProfiles updateCurrent];
     [self.versionPickerView reloadAllComponents];
