@@ -34,3 +34,5 @@
 "preference.title.java_args" = "JVM қосу аргументі";
 "preference.title.auto_ram" = "Авто ОЕСҚ";
 "preference.detail.auto_ram" = "Автоматты түрде ОЕСҚ-ны басқарады";
+
+"preference.profile.title.name" = "Атауы";
