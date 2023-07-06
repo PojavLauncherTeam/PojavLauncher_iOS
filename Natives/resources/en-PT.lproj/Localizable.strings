@@ -18,3 +18,6 @@
 "Settings" = "Settings";
 "preference.title.cosmetica" = "Cosmetica Mantles";
 "preference.title.auto_ram" = "RAM by magic";
+
+"preference.profile.title.name" = "Title on yer forhead";
+"preference.profile.title.version" = "Dock";
