@@ -34,3 +34,5 @@
 "preference.title.java_args" = "JVM Launch argumenten";
 "preference.title.auto_ram" = "Automatische RAM";
 "preference.detail.auto_ram" = "Schakel in de automatische RAM aanpasser in";
+
+"preference.profile.title.name" = "Naam";
