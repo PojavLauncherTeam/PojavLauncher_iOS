@@ -116,6 +116,7 @@
 "login.msa.progress.checkMCProfile" = "(5/5) 检查 Minecraft 配置文件";
 
 "News" = "新闻";
+"Profiles" = "配置文件";
 "Settings" = "设置";
 
 "preference.section.general" = "启动器基础设置";
@@ -256,7 +257,15 @@
 
 "preference.profile.title.name" = "名称";
 "preference.profile.title.version" = "版本";
+"preference.profile.title.default_touch_control" = "触摸控制";
+"preference.profile.title.default_gamepad_control" = "手柄控制";
+
+"profile.error.name_exists" = "具有该名称的配置文件已存在。请使用其他名称。";
+"profile.section.instance" = "游戏实例设置";
+"profile.section.profiles" = "此实例中的配置文件";
 "profile.title.create" = "创建新配置";
+"profile.title.separate_preference" = "隔离设置";
+"profile.detail.separate_preference" = "启用此选项可隔离设置中所做的任何更改。执行重置将恢复为全局设置而非默认设置。";
 
 "controller_configurator.title.current" = "游戏键盘配置文件";
 "controller_configurator.title.type.xbox" = "Xbox";
