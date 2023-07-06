@@ -203,6 +203,10 @@
 "preference.title.debug_show_layout_overlap" = "Mostrar sobreposição de layout";
 "preference.detail.debug_show_layout_overlap" = "Sobreponha cada exibições com cores transparentes para revelar visões de sobreposição.";
 
+"preference.profile.title.name" = "Nome";
+"preference.profile.title.version" = "Versão";
+"profile.title.create" = "Criar novo perfil";
+
 "controller_configurator.title.current" = "Configuração do arquivo do controle";
 "controller_configurator.title.type.xbox" = "Xbox";
 "controller_configurator.title.type.playstation" = "PlayStation";
