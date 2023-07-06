@@ -54,4 +54,8 @@
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Automaticky bude meniť alokovanú RAM";
 "preference.detail.allocated_memory" = "Určite, koľko pamäti bude mať Minecraft";
+
+"preference.profile.title.name" = "Názov";
+"preference.profile.title.version" = "Verzia";
+"profile.title.create" = "Vytvoriť nový profil";
 "controller_configurator.playstation.title.named_back" = "Vyber";
