@@ -66,4 +66,8 @@
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Activează ajustarea automată RAM";
 "preference.detail.allocated_memory" = "Controlează cât de multă memorie este dată la Minecraft";
+
+"preference.profile.title.name" = "Nume";
+"preference.profile.title.version" = "Versiunea";
+"profile.title.create" = "Creează un profil nou";
 "controller_configurator.playstation.title.named_back" = "Selectați";
