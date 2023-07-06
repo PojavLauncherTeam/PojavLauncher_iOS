@@ -106,4 +106,7 @@
 "preference.title.auto_ram" = "자동 RAM 할당";
 "preference.detail.auto_ram" = "자동 RAM 할당 활성화하기";
 "preference.detail.allocated_memory" = "Minecraft 메모리 할당 조절";
+
+"preference.profile.title.name" = "이름";
+"preference.profile.title.version" = "버전";
 "controller_configurator.playstation.title.named_back" = "선택";
