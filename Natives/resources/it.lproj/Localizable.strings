@@ -161,4 +161,8 @@
 "preference.detail.debug_show_layout_bounds" = "Mostra misure clip, margini, bounds";
 "preference.title.debug_show_layout_overlap" = "Mostra sovrapposizione del layout";
 "preference.detail.debug_show_layout_overlap" = "Sovrapponi ad ogni visuale un colore trasparente per mostrare visuali sovrapposte.";
+
+"preference.profile.title.name" = "Nome";
+"preference.profile.title.version" = "Versione";
+"profile.title.create" = "Crea nuovo profilo";
 "controller_configurator.playstation.title.named_back" = "Seleziona";
