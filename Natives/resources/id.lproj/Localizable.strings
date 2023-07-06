@@ -230,6 +230,10 @@ pengontrol game terhubung.";
 "preference.title.debug_show_layout_overlap" = "Tampilkan layout yang overlapping";
 "preference.detail.debug_show_layout_overlap" = "Lapis semua view dengan sebuah warna transparen untuk mengungkap view yang overlapping.";
 
+"preference.profile.title.name" = "Nama";
+"preference.profile.title.version" = "Versi";
+"profile.title.create" = "Buat profil baru";
+
 "controller_configurator.title.current" = "Berkas konfigurasi Gamepad";
 "controller_configurator.title.type.xbox" = "Xbox";
 "controller_configurator.title.type.playstation" = "PlayStation";
