@@ -54,4 +54,8 @@
 "preference.title.auto_ram" = "RAM อัตโนมัติ";
 "preference.detail.auto_ram" = "เปิดใช้งานตัวปรับ RAM อัตโนมัติ";
 "preference.detail.allocated_memory" = "ควบคุมเเรมที่จะให้กับเกมมายคราฟ";
+
+"preference.profile.title.name" = "ชื่อ";
+"preference.profile.title.version" = "เวอร์ชัน";
+"profile.title.create" = "สร้างโปรไฟล์ใหม่";
 "controller_configurator.playstation.title.named_back" = "เลือก";
