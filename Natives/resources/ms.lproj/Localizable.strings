@@ -55,3 +55,6 @@
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Membenarkan pelaras RAM automatik";
 "preference.detail.allocated_memory" = "Mengawal berapa banyak memori yang diberikan kepada Minecraft";
+
+"preference.profile.title.name" = "Nama";
+"preference.profile.title.version" = "Versi";
