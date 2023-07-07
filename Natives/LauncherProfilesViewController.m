@@ -203,7 +203,13 @@
     confirmAlert.popoverPresentationController.sourceRect = cell.bounds;
     UIAlertAction *ok = [UIAlertAction actionWithTitle:localize(@"OK", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
         [PLProfiles.current.profiles removeObjectForKey:cell.textLabel.text];
-        [PLProfiles.current save];
+        if ([PLProfiles.current.selectedProfileName isEqualToString:cell.textLabel.text]) {
+            // The one being deleted is the selected one, switch to the random one now
+            PLProfiles.current.selectedProfileName = PLProfiles.current.profiles.allKeys[0];
+            [self.navigationController performSelector:@selector(reloadProfileList)];
+        } else {
+            [PLProfiles.current save];
+        }
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:localize(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];

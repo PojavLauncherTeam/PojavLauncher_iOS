@@ -163,6 +163,10 @@
     [self.versionPickerView reloadAllComponents];
     // Reload selected profile info
     self.profileSelectedAt = [PLProfiles.current.profiles.allKeys indexOfObject:PLProfiles.current.selectedProfileName];
+    if (self.profileSelectedAt == -1) {
+        // This instance has no profiles?
+        return;
+    }
     [self.versionPickerView selectRow:self.profileSelectedAt inComponent:0 animated:NO];
     [self pickerView:self.versionPickerView didSelectRow:self.profileSelectedAt inComponent:0];
 }

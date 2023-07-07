@@ -71,7 +71,7 @@ static AFURLSessionManager* manager;
     }
 
     BOOL check = [sha isEqualToString:localSHA];
-    if (!check || (getPrefBool(@"debug.debug_logging") && logSuccess)) {
+    if (!check || (getPrefBool(@"general.debug_logging") && logSuccess)) {
         NSLog(@"[MCDL] SHA1 %@ for %@%@",
           (check ? @"passed" : @"failed"), 
           (altName ? altName : path.lastPathComponent),
