@@ -4,31 +4,57 @@
 */
 
 "game.menu.force_close" = "บังคับปิด";
+"game.menu.confirm.force_close" = "คุณแน่ใจหรือไม่ว่าคุณต้องการบังคับปิด?";
 "game.menu.log_output" = "ประวัติที่บันทึกไว้";
 "game.menu.custom_controls" = "การควบคุมกำหนดเอง";
 
+"game.note.airplay" = "มายคราฟในขณะนี้เเสดงบนระบบหน้าจอ Airplay mirrored";
+
+"game.title.exit_code" = "เกมถูกบังคับปิดด้วยโค้ด %d";
+
 // The play button
 "Play" = "เล่น";
+
+// Version categories
+"Installed" = "ติดตั้งแล้ว";
 "Snapshot" = "ภาพรวม";
+"Releases" = "เผยแพร่";
 "Old-beta" = "เบตาเก่า";
 "Old-alpha" = "Old-alpha";
+
+// Custom controls
+"Copy" = "คัดลอก";
 "Edit" = "แก้ไข";
+"Move" = "ย้าย";
 "Remove" = "ถอดออก";
+"Resize" = "ปรับขนาด";
 
 "custom_controls.button_edit.name" = "ชื่อ";
 "custom_controls.button_edit.size" = "ขนาด";
 "custom_controls.button_edit.mapping" = "ปุ่มที่ให้กด";
 "custom_controls.button_edit.orientation" = "ทิคทางการหัน";
 "custom_controls.button_edit.toggleable" = "ค้างไว้";
+"custom_controls.button_edit.mouse_pass" = "เมาส์จำลองผ่านได้";
 "custom_controls.button_edit.swipeable" = "ลากได้";
 "custom_controls.button_edit.bg_color" = "สีพื้นหลัง";
+"custom_controls.button_edit.stroke_width" = "ความกว้างของเส้นขึด (%)";
 "custom_controls.button_edit.stroke_color" = "สีของเส้นขึด";
+"custom_controls.button_edit.corner_radius" = "ระยะของมุม (%)";
+"custom_controls.button_edit.opacity" = "ความสว่าง (%)";
 
 "custom_controls.button_menu.add_subbutton" = "เพื่มปุ่มรอง";
+"custom_controls.control_menu.discard_changes" = "ยกเลิกการเปลี่ยนแปลง";
 "custom_controls.control_menu.exit" = "ออก";
+"custom_controls.control_menu.exit.warn" = "คุณกำลังจะออกโดยลืมการบันทึกการเปลี่ยนเเปลง";
 "custom_controls.control_menu.save" = "บันทึก";
+"custom_controls.control_menu.save.error.default" = "ชื่อควบคุมไม่สามารถเป็น \"default\" ได้ อาจะทำให้ถูกเขียนทับ";
+"custom_controls.control_menu.save.error.json" = "ข้อผิดพลาดบน JSON";
+"custom_controls.control_menu.save.error.write" = "เกิดข้อผิดพลาดในการบันทึกไฟล์";
 "custom_controls.control_menu.load" = "โหลด";
+"custom_controls.control_menu.make_default" = "ทำให้เป็นค่าเริ่มต้น";
+"custom_controls.control_menu.safe_area" = "ขอบเขตปลอดภัย";
 "custom_controls.control_menu.add_button" = "เพิ่มปุ่ม";
+"custom_controls.control_menu.add_drawer" = "เพิ่มลิ้นชัก";
 
 "launcher.menu.custom_controls" = "การควบคุมกำหนดเอง";
 "launcher.menu.install_jar" = "ติดตั้ง .jar";
