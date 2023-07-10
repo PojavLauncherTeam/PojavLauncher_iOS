@@ -184,7 +184,12 @@ Bu seçenek varsayılan JitStreamer sunucusunu kullanıyorsanız olduğu gibi b�
 "preference.title.fullscreen_airplay" = "Tam Ekran AirPlay";
 "preference.detail.fullscreen_airplay" = "Ekrandaki herşeyi yansıtmaktansa harici ekranda tam ekran oyun penceresini görüntülemeyi sağlar.";
 "preference.title.silence_other_audio" = "Oyun açıldığında sesi duraklat";
+"preference.detail.silence_other_audio" = "PojavLauncher'ın oyunu açarken, müzik gibi diğer uygulamaların sesini kapatmasına izin vermesi için açınız.";
+"preference.title.silence_with_switch" = "Sessiz ayarıyla sesi kapat";
+"preference.detail.silence_with_switch" = "Sessiz ayarı açıkken sesi kapatır. Kulaklık ve dış hoparlör için geçerli değildir.";
+"preference.title.default_gamepad_ctrl" = "Oyun Kumandası Ayarları";
 "preference.title.hardware_hide" = "Donanım bağlandığında kontrolleri gizle";
+"preference.detail.hardware_hide" = "Ekran üzerindeki kontrolü fare veya kol bağlandığında otomatik olarak kapat.";
 "preference.title.gesture_mouse" = "Fare hareketleri";
 "preference.detail.gesture_mouse" = "Bloğu yerleştirmek için dokunma, bloğu kırmak için basılı tutma, 2 parmakla kaydırma gibi hareketleri etkinleştirir";
 "preference.title.gesture_hotbar" = "Hotbar hareketleri";
@@ -268,6 +273,8 @@ Bu seçenek varsayılan JitStreamer sunucusunu kullanıyorsanız olduğu gibi b�
 "controller_configurator.xbox.title.dpad_down" = "Aşağı";
 "controller_configurator.xbox.title.dpad_left" = "Sol";
 "controller_configurator.xbox.title.dpad_right" = "Sağ";
+"controller_configurator.xbox.title.thumb_left" = "Sol analog tuşu";
+"controller_configurator.xbox.title.thumb_right" = "Sağ analog tuşu";
 
 "controller_configurator.playstation.title.bumper_left" = "L1";
 "controller_configurator.playstation.title.bumper_right" = "R1";
@@ -287,6 +294,7 @@ Bu seçenek varsayılan JitStreamer sunucusunu kullanıyorsanız olduğu gibi b�
 "controller_configurator.playstation.title.thumb_right" = "R3";
 
 "controller_configurator.section.config_files" = "Mevcut yapılandırma dosyası";
+"controller_configurator.section.game_mappings" = "Oyun içi yapılandırma";
 "controller_configurator.section.footer.menu_mappings" = "Başlık ekranı veya duraklatma menüsü gibi fare kilitli olmadığında durdurur.";
 "controller_configurator.section.controller_style" = "Kontrol tipi";
 "controller_configurator.section.footer.controller_style" = "Bu yapılandırıcıda farklı kontrol düğme adlarını gösterin.";
