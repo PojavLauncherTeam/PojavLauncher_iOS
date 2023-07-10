@@ -60,6 +60,9 @@
 
 "init.migrateDir" = "PojavLauncher veri dosyası artık %@. Önceden varolan bütün verilerin yeni konuma taşındı.";
 
+"java.error.missing_main_class" = "%@, ana sınıf özelliğini sahip değil. Bu bir mod ise, seçtiğiniz profilde \"mods\" klasörüne koyunuz.";
+"java.error.missing_runtime" = "%@, Java sürümü %d veya ilerisini gerektiriyor. Lütfen bu sürümü indirin ve Yürütücü Yöneticisi menüsünden seçin.";
+
 "launcher.mcl.downloading_file" = "%@ indiriliyor";
 "launcher.mcl.error_download" = "%@: %@ indirilmesi başarısız oldu";
 
@@ -215,6 +218,16 @@ Bu seçenek varsayılan JitStreamer sunucusunu kullanıyorsanız olduğu gibi b�
 "preference.title.gyroscope_sensitivity" = "Jiroskop kontrolleri hassaslığı";
 "preference.detail.gyroscope_sensitivity" = "Jiroskop kontrollerinin hassaslığını ayarlayın";
 
+"preference.title.manage_runtime" = "Yürütücüleri Yönet";
+"preference.title.confirm.delete_runtime" = "%@ silinecektir";
+"preference.manage_runtime.header.default" = "Tercih edilen Java sürümü";
+"preference.manage_runtime.default.1165" = "1.16.5 ve üzeri";
+"preference.manage_runtime.default.117" = "1.17 ve üstü";
+"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 ve daha eski sürümler, daha yeni bir Java sürümüyle çalışabilir, ancak modlarla uyumluluk garanti edilmez. Harici çalışma zamanları “java_runtimes” klasörüne yerleştirilebilir. \".jar yükle\" seçeneği ile Java sürümünü değiştirmek, yalnızca yükleyici daha yeni bir Java sürümü beklemiyorsa etkili olur.";
+"preference.manage_runtime.footer.java8" = "Minecraft'ın 1.16.5 ve daha eski sürümleri için varsayılan surümdür.";
+"preference.manage_runtime.footer.java17" = "Minecraft 1.17 ve üzeri için varsayılan sürümdür.";
+"preference.manage_runtime.header.invalid" = "Geçersiz yürütücüler";
+
 "preference.title.java_args" = "JVM Başlatıcı değişkenleri";
 "preference.detail.java_args" = "Minecraft'ı başlatırken bağımsız değişkenleri Java'ya iletin. Dikkatli olun, bu, yanlış bir şekilde değiştirilirse oyunun çökmesine neden olabilir.";
 "preference.placeholder.java_args" = "Değişkenleri belirt...";
@@ -295,6 +308,8 @@ Bu seçenek varsayılan JitStreamer sunucusunu kullanıyorsanız olduğu gibi b�
 
 "controller_configurator.section.config_files" = "Mevcut yapılandırma dosyası";
 "controller_configurator.section.game_mappings" = "Oyun içi yapılandırma";
+"controller_configurator.section.footer.game_mappings" = "Oyun içinde fare kilitlendiğinde yapılandırma.";
+"controller_configurator.section.menu_mappings" = "Menü Yapılandırmaları";
 "controller_configurator.section.footer.menu_mappings" = "Başlık ekranı veya duraklatma menüsü gibi fare kilitli olmadığında durdurur.";
 "controller_configurator.section.controller_style" = "Kontrol tipi";
 "controller_configurator.section.footer.controller_style" = "Bu yapılandırıcıda farklı kontrol düğme adlarını gösterin.";
