@@ -382,12 +382,16 @@ BOOL slideableHotbar;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSDictionary *version = @{@"id": PLProfiles.current.selectedProfile[@"lastVersionId"]};
         [MinecraftResourceUtils downloadClientJson:version progress:nil callback:nil success:^(NSMutableDictionary *json) {
+            int minVersion = [json[@"javaVersion"][@"majorVersion"] intValue];
+            if (minVersion == 0) {
+                minVersion = [json[@"javaVersion"][@"version"] intValue];
+            }
             [MinecraftResourceUtils processJVMArgs:json];
             launchJVM(
                 BaseAuthenticator.current.authData[@"username"],
                 json,
                 windowWidth, windowHeight,
-                [json[@"javaVersion"][@"majorVersion"] intValue]
+                minVersion
             );
         }];
     });
