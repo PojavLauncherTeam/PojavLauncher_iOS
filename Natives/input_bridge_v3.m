@@ -95,6 +95,7 @@ hooked_ProcessImpl_forkAndExec(JNIEnv *env, jobject process, jint mode, jbyteArr
 }
 
 // Part of awt_bridge
+    }
 void CTCDesktopPeer_openGlobal(JNIEnv *env, jclass clazz, jstring path) {
     const char* stringChars = (*env)->GetStringUTFChars(env, path, NULL);
     openURLGlobal(@(stringChars));
@@ -458,6 +459,13 @@ void CallbackBridge_nativeSendKey(int key, int scancode, int action, int mods) {
         } else {
             GLFW_invoke_Key((void*) showingWindow, key, scancode, action, mods);
         }
+    }
+
+    // On macOS, Minecraft expects the Command key
+    if (key == GLFW_KEY_LEFT_CONTROL) {
+        CallbackBridge_nativeSendKey(GLFW_KEY_LEFT_SUPER, 0, action, mods);
+    } else if (key == GLFW_KEY_RIGHT_CONTROL) {
+        CallbackBridge_nativeSendKey(GLFW_KEY_RIGHT_SUPER, 0, action, mods);
     }
 }
 
