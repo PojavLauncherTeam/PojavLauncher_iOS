@@ -27,6 +27,9 @@ typedef void GLFW_invoke_Scroll_func(void* window, double xoffset, double yoffse
 typedef void GLFW_invoke_WindowPos_func(void* window, int x, int y);
 typedef void GLFW_invoke_WindowSize_func(void* window, int width, int height);
 
+jclass class_CTCClipboard;
+jmethodID method_SystemClipboardDataReceived;
+
 //struct pojav_environ_s {
     //struct ANativeWindow* pojavWindow;
     //render_window_t* mainWindowBundle;

@@ -2,6 +2,9 @@
 #import <UIKit/UIKit.h>
 #include "jni.h"
 
+#define CLIPBOARD_COPY 2000
+#define CLIPBOARD_PASTE 2001
+
 UIViewController* tmpRootVC;
 
 void showDialog(NSString* title, NSString* message);

@@ -10,9 +10,6 @@
 #include "ios_uikit_bridge.h"
 #include "utils.h"
 
-#define CLIPBOARD_COPY 2000
-#define CLIPBOARD_PASTE 2001
-
 jclass class_CTCScreen;
 jmethodID method_GetRGB;
 

@@ -95,7 +95,29 @@ hooked_ProcessImpl_forkAndExec(JNIEnv *env, jobject process, jint mode, jbyteArr
 }
 
 // Part of awt_bridge
+void CTCClipboard_nQuerySystemClipboard(JNIEnv *env, jclass clazz) {
+    if(method_SystemClipboardDataReceived == NULL) {
+        class_CTCClipboard = (*env)->NewGlobalRef(env, clazz);
+        method_SystemClipboardDataReceived = (*env)->GetStaticMethodID(env, clazz, "systemClipboardDataReceived", "(Ljava/lang/String;Ljava/lang/String;)V");
     }
+    // From Java_net_kdt_pojavlaunch_AWTInputBridge_nativeClipboardReceived
+    // Note: we cannot use main_queue here as it will cause deadlock
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        JNIEnv *env;
+        (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &env, NULL);
+        const char* mimeChars = "text/plain";
+        (*env)->CallStaticVoidMethod(env, class_CTCClipboard, method_SystemClipboardDataReceived,
+            UIKit_accessClipboard(env, CLIPBOARD_PASTE, NULL),
+            (*env)->NewStringUTF(env, mimeChars));
+        (*runtimeJavaVMPtr)->DetachCurrentThread(runtimeJavaVMPtr);
+    });
+}
+
+void CTCClipboard_nPutClipboardData(JNIEnv* env, jclass clazz, jstring clipboardData, jstring clipboardDataMime) {
+    // TODO: handle non-text data(?)
+    UIKit_accessClipboard(env, CLIPBOARD_COPY, clipboardData);
+}
+
 void CTCDesktopPeer_openGlobal(JNIEnv *env, jclass clazz, jstring path) {
     const char* stringChars = (*env)->GetStringUTFChars(env, path, NULL);
     openURLGlobal(@(stringChars));
@@ -117,6 +139,19 @@ void registerOpenHandler() {
         {"forkAndExec", "(I[B[B[BI[BI[B[IZ)I", (void *)&hooked_ProcessImpl_forkAndExec}
     };
     (*runtimeJNIEnvPtr)->RegisterNatives(runtimeJNIEnvPtr, cls, forkAndExecMethod, 1);
+
+    // Register CTCClipboard natives
+    cls = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "net/java/openjdk/cacio/ctc/CTCClipboard");
+    if ((*runtimeJNIEnvPtr)->ExceptionOccurred(runtimeJNIEnvPtr)) {
+        // Java 17
+        (*runtimeJNIEnvPtr)->ExceptionClear(runtimeJNIEnvPtr);
+        cls = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "com/github/caciocavallosilano/cacio/ctc/CTCClipboard");
+    }
+    JNINativeMethod clipboardMethods[] = {
+        {"nQuerySystemClipboard", "()V", (void *)&CTCClipboard_nQuerySystemClipboard},
+        {"nPutClipboardData", "(Ljava/lang/String;Ljava/lang/String;)V", (void *)&CTCClipboard_nPutClipboardData}
+    };
+    (*runtimeJNIEnvPtr)->RegisterNatives(runtimeJNIEnvPtr, cls, clipboardMethods, 2);
 
     // Register CTCDesktopPeer natives
     cls = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "net/java/openjdk/cacio/ctc/CTCDesktopPeer");
