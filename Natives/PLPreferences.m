@@ -70,7 +70,6 @@
         NSDictionary *general = @{
             @"game_directory": @"default",
             @"hidden_sidebar": @(realUIIdiom == UIUserInterfaceIdiomPhone),
-            @"enable_altkit": @YES,
             @"appicon": @"AppIcon-Light"
         };
         [defaults[@"general"] addEntriesFromDictionary:general];

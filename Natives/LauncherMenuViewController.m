@@ -53,12 +53,12 @@
     [super viewDidLoad];
     
     self.isInitialVc = YES;
-
+    
     UIImageView *titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"AppLogo"]];
     [titleView setContentMode:UIViewContentModeScaleAspectFit];
     self.navigationItem.titleView = titleView;
     [titleView sizeToFit];
-
+    
     self.options = @[
         [LauncherMenuCustomItem vcClass:LauncherNewsViewController.class],
         [LauncherMenuCustomItem vcClass:LauncherProfilesViewController.class],
@@ -66,55 +66,55 @@
     ].mutableCopy;
     if (realUIIdiom != UIUserInterfaceIdiomTV) {
         [self.options addObject:(id)[LauncherMenuCustomItem
-            title:localize(@"launcher.menu.custom_controls", nil)
-            imageName:@"MenuCustomControls" action:^{
+                                     title:localize(@"launcher.menu.custom_controls", nil)
+                                     imageName:@"MenuCustomControls" action:^{
             [contentNavigationController performSelector:@selector(enterCustomControls)];
         }]];
     }
     [self.options addObject:
-        (id)[LauncherMenuCustomItem
-            title:localize(@"launcher.menu.install_jar", nil)
-            imageName:@"MenuInstallJar" action:^{
-            [contentNavigationController performSelector:@selector(enterModInstaller)];
-        }]];
-
+     (id)[LauncherMenuCustomItem
+          title:localize(@"launcher.menu.install_jar", nil)
+          imageName:@"MenuInstallJar" action:^{
+        [contentNavigationController performSelector:@selector(enterModInstaller)];
+    }]];
+    
     // TODO: Finish log-uploading service integration
     [self.options addObject:
-        (id)[LauncherMenuCustomItem
-            title:localize(@"login.menu.sendlogs", nil)
-            imageName:@"square.and.arrow.up" action:^{
-            NSString *latestlogPath = [NSString stringWithFormat:@"file://%s/latestlog.old.txt", getenv("POJAV_HOME")];
-            NSLog(@"Path is %@", latestlogPath);
-            UIActivityViewController *activityVC;
-            if (realUIIdiom != UIUserInterfaceIdiomTV) {
-                activityVC = [[UIActivityViewController alloc]
-                    initWithActivityItems:@[@"latestlog.txt", [NSURL URLWithString:latestlogPath]]
-                    applicationActivities:nil];
-            } else {
-                dlopen("/System/Library/PrivateFrameworks/SharingUI.framework/SharingUI", RTLD_GLOBAL);
-                activityVC =
-                    [[NSClassFromString(@"SFAirDropSharingViewControllerTV") alloc]
-                    performSelector:@selector(initWithSharingItems:)
-                    withObject:@[[NSURL URLWithString:latestlogPath]]];
-            }
-            activityVC.popoverPresentationController.sourceView = titleView;
-            activityVC.popoverPresentationController.sourceRect = titleView.bounds;
-            [self presentViewController:activityVC animated:YES completion:nil];
-        }]];
-
+     (id)[LauncherMenuCustomItem
+          title:localize(@"login.menu.sendlogs", nil)
+          imageName:@"square.and.arrow.up" action:^{
+        NSString *latestlogPath = [NSString stringWithFormat:@"file://%s/latestlog.old.txt", getenv("POJAV_HOME")];
+        NSLog(@"Path is %@", latestlogPath);
+        UIActivityViewController *activityVC;
+        if (realUIIdiom != UIUserInterfaceIdiomTV) {
+            activityVC = [[UIActivityViewController alloc]
+                          initWithActivityItems:@[@"latestlog.txt", [NSURL URLWithString:latestlogPath]]
+                          applicationActivities:nil];
+        } else {
+            dlopen("/System/Library/PrivateFrameworks/SharingUI.framework/SharingUI", RTLD_GLOBAL);
+            activityVC =
+            [[NSClassFromString(@"SFAirDropSharingViewControllerTV") alloc]
+             performSelector:@selector(initWithSharingItems:)
+             withObject:@[[NSURL URLWithString:latestlogPath]]];
+        }
+        activityVC.popoverPresentationController.sourceView = titleView;
+        activityVC.popoverPresentationController.sourceRect = titleView.bounds;
+        [self presentViewController:activityVC animated:YES completion:nil];
+    }]];
+    
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.dateFormat = @"MM-dd";
     NSString* date = [dateFormatter stringFromDate:NSDate.date];
     if([date isEqualToString:@"06-29"] || [date isEqualToString:@"06-30"] || [date isEqualToString:@"07-01"]) {
         [self.options addObject:(id)[LauncherMenuCustomItem
-            title:@"Technoblade never dies!"
-            imageName:@"" action:^{
+                                     title:@"Technoblade never dies!"
+                                     imageName:@"" action:^{
             openLink(self, [NSURL URLWithString:@"https://youtu.be/DPMluEVUqS0"]);
         }]];
     }
-
+    
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-
+    
     self.navigationController.toolbarHidden = NO;
     UIActivityIndicatorViewStyle indicatorStyle = UIActivityIndicatorViewStyleMedium;
     UIActivityIndicatorView *toolbarIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:indicatorStyle];
@@ -124,18 +124,19 @@
         [[UIBarButtonItem alloc] init]
     ];
     self.toolbarItems[1].tintColor = UIColor.labelColor;
-
+    
     // Setup the account button
     self.accountBtnItem = [self drawAccountButton];
-
+    
     [self updateAccountInfo];
-
+    
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
     [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
     
     if (!getEntitlementValue(@"dynamic-codesigning")) {
-        if (isJITEnabled(false) && getPrefBool(@"general.enable_altkit")) {
+        [self displayProgress:localize(@"login.jit.checking", nil)];
+        if (isJITEnabled(false)) {
             [self enableJITWithAltKit];
         }
     }
@@ -329,20 +330,24 @@
     }
 }
 
-- (void)enableJITWithAltKit
-{
+- (void)enableJITWithAltKit {
     [ALTServerManager.sharedManager startDiscovering];
     [ALTServerManager.sharedManager autoconnectWithCompletionHandler:^(ALTServerConnection *connection, NSError *error) {
         if (error) {
             NSLog(@"[AltKit] Could not auto-connect to server. %@", error.localizedRecoverySuggestion);
+            [self displayProgress:localize(@"login.jit.fail", nil)];
+            [self displayProgress:nil];
         }
         [connection enableUnsignedCodeExecutionWithCompletionHandler:^(BOOL success, NSError *error) {
             if (success) {
                 NSLog(@"[AltKit] Successfully enabled JIT compilation!");
                 [ALTServerManager.sharedManager stopDiscovering];
+                [self displayProgress:localize(@"login.jit.enabled", nil)];
+                [self displayProgress:nil];
             } else {
                 NSLog(@"[AltKit] Error enabling JIT: %@", error.localizedRecoverySuggestion);
-                showDialog(localize(@"login.jit.fail.title", nil), localize(@"login.jit.fail.description", nil));
+                [self displayProgress:localize(@"login.jit.fail", nil)];
+                [self displayProgress:nil];
             }
             [connection disconnect];
         }];

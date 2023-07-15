@@ -76,12 +76,6 @@
                   NSLog(@"[Debugging] Debug log enabled: %@", enabled ? @"YES" : @"NO");
               }
             },
-            @{@"key": @"enable_altkit",
-              @"hasDetail": @YES,
-              @"icon": @"network",
-              @"type": self.typeSwitch,
-              @"enableCondition": whenNotInGame
-            },
             @{@"key": @"appicon",
               @"hasDetail": @YES,
               @"icon": @"paintbrush",
