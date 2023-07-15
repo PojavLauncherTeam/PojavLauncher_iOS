@@ -137,8 +137,6 @@
 "preference.detail.cosmetica" = "تمكين الأوشحة من Cosmetica, (المعروفة مسبقًا ب Arc). لمزيد من المعلومات، يرجى زيارة https://cosmetica.cc, يتطلب Optifine لكي يعمل";
 "preference.title.debug_logging" = "تصحيح التسجيل";
 "preference.detail.debug_logging" = "تسجيل الإعدادات الداخلية والإجراءات إلى latestlog.txt. هذا يساعد المطورين على العثور على المشكلات أسهل، ولكن Minecraft قد تعمل بشكل أبطأ حيث سيتم كتابة السجلات بشكل أكثر تواترا.";
-"preference.title.jitstreamer_server" = "عنوان خادم JitStreamer: %@";
-"preference.detail.jitstreamer_server" = "يسمح لك بالتغيير إلى عنوان IP لخادم JitStreamer مخصص، على سبيل المثال للحالات التي تستضيف نفسها. يمكن ترك هذا الخيار لوحده إذا كنت تستخدم خوادم JitStreamer الافتراضية.";
 "preference.title.enable_altkit" = "تمكين تكامل AltKit";
 "preference.detail.enable_altkit" = "عند التمكين، سيحاول PojavLauncher الاتصال بAltServers المحلية لتمكين JIT.";
 "preference.title.appicon" = "تعيين أيقونة التطبيق";
