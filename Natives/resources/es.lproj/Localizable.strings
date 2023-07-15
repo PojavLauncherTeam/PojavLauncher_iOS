@@ -114,7 +114,6 @@
 "preference.detail.cosmetica" = "Activar capas de Comestica (anteriormente Arc.) Para más información, por favor ve a https://cosmetica.cc. (Requiere OptiFine)";
 "preference.title.debug_logging" = "Registro de depuración";
 "preference.detail.debug_logging" = "Registra las configuraciones y acciones internas en latestlog.txt. Esto ayuda a los desarrolladores a encontrar problemas más fácilmente, pero es posible que el juego sea más lento, ya que los registros serán escritos con más frecuencia.";
-"preference.title.jitstreamer_server" = "IP del servidor JitStreamer";
 "preference.title.appicon" = "Establecer icono del app";
 "preference.detail.appicon" = "Le permite elegir entre diferentes iconos de PojavLauncher para tu pantalla de inicio.";
 "preference.title.appicon-default" = "PojavLauncher clásico claro";
