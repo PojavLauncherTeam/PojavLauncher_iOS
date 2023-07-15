@@ -188,4 +188,7 @@
 "preference.profile.title.name" = "名前";
 "preference.profile.title.version" = "バージョン";
 "profile.title.create" = "新規プロフィールの作成";
+"controller_configurator.xbox.title.named_a" = "A";
+"controller_configurator.xbox.title.named_b" = "B";
+"controller_configurator.xbox.title.named_x" = "X";
 "controller_configurator.playstation.title.named_back" = "選択...";
