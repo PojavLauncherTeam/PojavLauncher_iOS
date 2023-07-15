@@ -135,8 +135,6 @@
 "preference.detail.cosmetica" = "啟用來自Cosmetica（先前是Arc）的披風。要查看更多資訊請到 https://cosmetica.cc 。需要OptiFine。";
 "preference.title.debug_logging" = "除錯日誌";
 "preference.detail.debug_logging" = "把內部設定和動作記錄到lateslog.txt。這能幫助開發者更容易地找到問題，但由於日誌寫入的次數會增多，我的世界的運行速度可能會減慢。";
-"preference.title.jitstreamer_server" = "JitStreamer伺服器地址";
-"preference.detail.jitstreamer_server" = "這個選項允許你設定一個自定義JitStreamer IP地址，例如一個自托管的伺服器。如果你使用預設的JitStreamer伺服器，你可以忽略這個選項。";
 "preference.title.enable_altkit" = "啟用AltKit整合";
 "preference.detail.enable_altkit" = "當啟用時，PojavLauncher會嘗試和本地AltServer聯絡以啟動即時編譯。";
 "preference.title.appicon" = "設定應用程式圖示";
