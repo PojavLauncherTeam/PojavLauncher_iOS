@@ -673,7 +673,9 @@ BOOL slideableHotbar;
 
 - (void)surfaceOnHover:(UIHoverGestureRecognizer *)sender {
     if (sender.state == UIGestureRecognizerStateBegan || sender.state == UIGestureRecognizerStateEnded){
-        [self.lightHaptic impactOccurred];
+        if(![getPreference(@"disable_haptics") boolValue]) {
+            [self.lightHaptic impactOccurred];
+        }
     }
     
     if (isGrabbing) return;
