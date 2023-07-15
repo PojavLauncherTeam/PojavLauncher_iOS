@@ -70,7 +70,6 @@
         NSDictionary *general = @{
             @"game_directory": @"default",
             @"hidden_sidebar": @(realUIIdiom == UIUserInterfaceIdiomPhone),
-            @"jitstreamer_server": @"69.69.0.1",
             @"enable_altkit": @YES,
             @"appicon": @"AppIcon-Light"
         };

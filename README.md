@@ -63,11 +63,11 @@ If you cannot, [AltStore](https://altstore.io) and [SideStore](https://sidestore
 
 ### Enabling JIT
 PojavLauncher makes use of **just-in-time compilation**, or JIT, to provide usable speeds for the end user. JIT is not supported on iOS without the application being debugged, so workarounds are required to enable it. You can use this chart to determine the best solution for you and your setup.
-| Application         | AltStore | SideStore | TrollStore | JitStreamer | Jitterbug          | Jailbroken |
-|---------------------|----------|-----------|------------|-------------|--------------------|------------|
-| Requires ext-device | Yes      | No        | No         | No          | If VPN unavailable | No         |
-| Requires Wi-Fi      | Yes      | Yes       | No         | Yes         | Yes                | No         |
-| Auto enabled        | Yes(*)   | No        | Yes        | Yes         | No                 | Yes        |
+| Application         | AltStore | SideStore | TrollStore | Jitterbug          | Jailbroken |
+|---------------------|----------|-----------|------------|--------------------|------------|
+| Requires ext-device | Yes      | No        | No         | If VPN unavailable | No         |
+| Requires Wi-Fi      | Yes      | Yes       | No         | Yes                | No         |
+| Auto enabled        | Yes(*)   | No        | Yes        | No                 | Yes        |
 
 (*) AltServer running on the local network is required.
 

@@ -76,12 +76,6 @@
                   NSLog(@"[Debugging] Debug log enabled: %@", enabled ? @"YES" : @"NO");
               }
             },
-            @{@"key": @"jitstreamer_server",
-              @"hasDetail": @YES,
-              @"icon": @"hare",
-              @"type": self.typeTextField,
-              @"enableCondition": whenNotInGame
-            },
             @{@"key": @"enable_altkit",
               @"hasDetail": @YES,
               @"icon": @"network",

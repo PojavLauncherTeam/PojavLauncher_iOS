@@ -135,11 +135,8 @@
     [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
     
     if (!getEntitlementValue(@"dynamic-codesigning")) {
-        if (isJITEnabled(false)) {
-            [self displayProgress:localize(@"login.jit.enabled", nil)];
-            [self displayProgress:nil];
-        } else {
-            [self enableJITWithJitStreamer:getPrefBool(@"general.enable_altkit")];
+        if (isJITEnabled(false) && getPrefBool(@"general.enable_altkit")) {
+            [self enableJITWithAltKit];
         }
     }
 }
@@ -349,49 +346,6 @@
             }
             [connection disconnect];
         }];
-    }];
-}
-
-- (void)enableJITWithJitStreamer:(BOOL)shouldRunAltKit
-{
-    [self displayProgress:localize(@"login.jit.checking", nil)];
-
-    NSString *address = getPrefObject(@"general.jitstreamer_server");
-    NSLog(@"[JitStreamer] Server is %@, attempting to connect...", address);
-
-    AFHTTPSessionManager *manager = AFHTTPSessionManager.manager;
-    manager.requestSerializer.timeoutInterval = 10;
-    manager.responseSerializer = AFHTTPResponseSerializer.serializer;
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain", nil];
-    [manager GET:[NSString stringWithFormat:@"http://%@/version", address] parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask *task, NSData *response) {
-        NSString *version = [[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding];
-        NSLog(@"[JitStreamer] Found JitStreamer %@", version);
-        manager.requestSerializer.timeoutInterval = 0;
-        manager.responseSerializer = AFJSONResponseSerializer.serializer;
-        void(^handleResponse)(NSURLSessionDataTask *task, id response) = ^void(NSURLSessionDataTask *task, id response){
-            NSDictionary *responseDict;
-            // FIXME: successful response may fail due to serialization issues
-            if ([response isKindOfClass:NSError.class]) {
-                NSDebugLog(@"Error?: %@", responseDict);
-                NSData *errorData = ((NSError *)response).userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
-                responseDict = [NSJSONSerialization JSONObjectWithData:errorData options:0 error:nil];
-            } else {
-                responseDict = response;
-            }
-            if ([responseDict[@"success"] boolValue]) {
-                [self displayProgress:localize(@"login.jit.enabled", nil)];
-                [self displayProgress:nil];
-            } else {
-                NSLog(@"[JitStreamer] Error enabling JIT: %@", responseDict[@"message"]);
-                if(shouldRunAltKit) { [self enableJITWithAltKit]; }
-                else { showDialog(localize(@"login.jit.fail.title", nil), localize(@"login.jit.fail.description", nil)); }
-            }
-        };
-        [manager POST:[NSString stringWithFormat:@"http://%@/attach/%d/", address, getpid()] parameters:nil headers:nil progress:nil success:handleResponse failure:handleResponse];
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSLog(@"[JitStreamer] Server not found or VPN not connected.");
-        if(shouldRunAltKit) { [self enableJITWithAltKit]; }
-        else { showDialog(localize(@"login.jit.fail.title", nil), localize(@"login.jit.fail.description", nil)); }
     }];
 }
 
