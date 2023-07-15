@@ -137,8 +137,6 @@
 "preference.detail.cosmetica" = "Sử dụng áo choàng từ dịch vụ Cosmetica (trước đây là Arc). Để biết thêm thông tin, truy cập https://cosmetica.cc. Yêu cầu có OptiFine";
 "preference.title.debug_logging" = "Ghi lại thông tin gỡ lỗi";
 "preference.detail.debug_logging" = "Ghi lại những cài đặt và hoạt động vào tệp latestlog.txt. Nó có thể giúp các nhà phát triển phát hiện ra lỗi dễ dàng hơn, nhưng Minecraft có thể chạy chậm hơn vì nhật kí được ghi lại thường xuyên hơn.";
-"preference.title.jitstreamer_server" = "IP server JITStreamer";
-"preference.detail.jitstreamer_server" = "Cho phép thay đổi địa chỉ IP của máy chủ JitStreamer với những máy chủ tự do. Bỏ qua tùy chọn này nếu bạn sử dụng máy chủ JitStreamer mặc định.";
 "preference.title.enable_altkit" = "Bật tích hợp AltKit";
 "preference.detail.enable_altkit" = "Khi được bật, PojavLauncher sẽ cố gắng kết nối với Máy chủ thay thế cục bộ để bật JIT.";
 "preference.title.appicon" = "Thay đổi icon";
