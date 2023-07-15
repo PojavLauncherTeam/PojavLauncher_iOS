@@ -141,9 +141,6 @@
 "preference.detail.cosmetica" = "Cosmetica'nın pelerinlerini etkinleştir (önceden Arc). Daha fazla bilgi için lütfen https://cosmetica.cc'yi ziyaret edin. OptiFine gerektirir";
 "preference.title.debug_logging" = "Hata ayıklama kaydı tutma";
 "preference.detail.debug_logging" = "İç seçenekleri ve eylemleri latestlog.txt'ye kaydeder. Bu geliştiricilerin sorunu daha kolay bulmasını sağlar, fakat çok sık kayıt edileceği için Minecraft daha yavaş çalışabilir.";
-"preference.title.jitstreamer_server" = "JitStreamer sunucu IP'si";
-"preference.detail.jitstreamer_server" = "Özel bir Jit Streamer suncu IP'sine geçmenizi sağlar, kendi kendini barındıran kurulumlar için gibi.
-Bu seçenek varsayılan JitStreamer sunucusunu kullanıyorsanız olduğu gibi bırakılabilir.";
 "preference.title.enable_altkit" = "AltKit entegrasyonunu etkinleştir";
 "preference.detail.enable_altkit" = "Etkinleştirildiğinde, PojavLauncher, JIT'i etkinleştirmek için yerel Alt Sunuculara bağlanmaya çalışacaktır.";
 "preference.title.appicon" = "Uygulama simgesini ayarla";
