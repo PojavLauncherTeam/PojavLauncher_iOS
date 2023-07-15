@@ -46,7 +46,7 @@ UIEdgeInsets insets;
     // To be removed in the next release of PojavLauncher.
     
     if(@available(iOS 14.0, *)) {
-        if(!getenv("POJAV_DETECTEDJB") && [getPreference(@"limited_ram_warn") boolValue] == YES && (roundf(NSProcessInfo.processInfo.physicalMemory / 1048576) < 32900)) {
+        if(!getenv("POJAV_DETECTEDJB") && [getPreference(@"limited_ram_warn") boolValue] == YES && (roundf(NSProcessInfo.processInfo.physicalMemory / 1048576) < 3900)) {
             // "This device has a limited amount of memory available."
             [self showWarningAlert:@"limited_ram" hasPreference:YES];
         }
