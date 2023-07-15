@@ -140,8 +140,6 @@
 "preference.detail.cosmetica" = "Плащи Cosmetica (ранее Arc). Да получения дополнительной информации посетите https://cosmetica.cc. Требуется Optifine.";
 "preference.title.debug_logging" = "Отладочные записи";
 "preference.detail.debug_logging" = "Включить запись внутренних настроек и действий в latestlog.txt. Может облегчить нахождение ошибок продвинутым пользователям, однако это немного замедлит запуск Minecraft, поскольку журнал будет записываться значительно чаще.";
-"preference.title.jitstreamer_server" = "IP сервера JitStreamer";
-"preference.detail.jitstreamer_server" = "Позволяет настроить пользовательский IP сервера JitStreamer, например, для своих установок. Оставьте нетронутым для использования обычных серверов JitStreamer.";
 "preference.title.enable_altkit" = "Интеграция AltKit";
 "preference.detail.enable_altkit" = "PojavLauncher будет пытаться подключиться к AltServer для включения JIT.";
 "preference.title.appicon" = "Выбрать иконку приложения";
