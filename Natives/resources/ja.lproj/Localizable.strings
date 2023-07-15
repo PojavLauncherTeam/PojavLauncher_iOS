@@ -120,8 +120,6 @@
 "preference.detail.cosmetica" = "Cosmetica (以前はArc) からケープを有効にします。詳細については、https://cosmetica.ccを参照してください。OptiFine が必要です。";
 "preference.title.debug_logging" = "デバッグログ";
 "preference.detail.debug_logging" = "内部設定とアクションをlatestlog.txtに記録します。 これにより、開発者は問題を簡単に見つけることができますが、ログがより頻繁に書き込まれるため、Minecraft の動作が遅くなる可能性があります。";
-"preference.title.jitstreamer_server" = "JitStreamer サーバー IP";
-"preference.detail.jitstreamer_server" = "自己ホストインスタンスなどのカスタムJitStreamerサーバーIPに変更できます。 デフォルトのJitStreamerサーバーを使用している場合は、このオプションを残すことができます。";
 "preference.title.appicon" = "アプリアイコンを設定";
 "preference.detail.appicon" = "PojavLauncherの異なるホーム画面アイコンから選択できます。";
 "preference.title.appicon-default" = "おなじみのPojavLauncher ライトテーマ";
