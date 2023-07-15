@@ -142,8 +142,6 @@ der Minecraft-Version zu wählen. Verringerte Auflösung reduziert die Arbeitsla
 "preference.detail.cosmetica" = "Aktiviert Umhänge von Cosmetica (früher Arc). Für weitere Informationen bitte https://cosmetica.cc besuchen. OptiFine wird benötigt";
 "preference.title.debug_logging" = "Debug-Protokolle";
 "preference.detail.debug_logging" = "Protokolliert interne Einstellungen und Aktionen an latestlog.txt. Dies hilft den Entwicklern Probleme leichter zu finden, kann aber Minecraft langsamer laufen lassen, da die Protokolle öfter geschrieben werden.";
-"preference.title.jitstreamer_server" = "JitStreamer-Server-IP";
-"preference.detail.jitstreamer_server" = "Erlaubt es dir, auf eine benutzerdefinierte JitStreamer-Server-IP zu wechseln, wie zum Beispiel für selbst gehostete Instanzen. Diese Option kann ausgelassen werden, wenn du die Standard-JitStreamer-Server verwendest.";
 "preference.title.enable_altkit" = "AltKit-Integration aktivieren";
 "preference.detail.enable_altkit" = "Wenn aktiviert, versucht PojavLauncher sich mit lokalen AltServern zu verbinden, um JIT zu aktivieren.";
 "preference.title.appicon" = "App-Icon festlegen";
