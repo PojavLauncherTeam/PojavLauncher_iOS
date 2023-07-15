@@ -146,6 +146,7 @@ void loadPreferences(BOOL reset) {
     setDefaultValueForPref(envPrefDict, @"hardware_hide", @NO);
     setDefaultValueForPref(envPrefDict, @"silence_other_audio", @NO);
     setDefaultValueForPref(envPrefDict, @"silence_with_switch", @NO);
+    setDefaultValueForPref(envPrefDict, @"disable_haptics", @NO);
     setDefaultValueForPref(prefDict, @"slimmed", @NO);
     fillDefaultWarningDict();
     setDefaultValueForPref(prefDict, @"slideable_hotbar", @NO);

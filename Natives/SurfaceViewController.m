@@ -652,7 +652,9 @@ BOOL slideableHotbar;
 
 - (void)surfaceOnClick:(UITapGestureRecognizer *)sender {
     if (sender.state == UIGestureRecognizerStateBegan || sender.state == UIGestureRecognizerStateEnded){
-        [self.lightHaptic impactOccurred];
+        if(![getPreference(@"disable_haptics") boolValue]) {
+            [self.lightHaptic impactOccurred];
+        }
     }
     
     if (!self.shouldTriggerClick) return;
@@ -677,7 +679,9 @@ BOOL slideableHotbar;
 
 - (void)surfaceOnDoubleClick:(UITapGestureRecognizer *)sender {
     if (sender.state == UIGestureRecognizerStateBegan || sender.state == UIGestureRecognizerStateEnded){
-        [self.lightHaptic impactOccurred];
+        if(![getPreference(@"disable_haptics") boolValue]) {
+            [self.lightHaptic impactOccurred];
+        }
     }
     
     if (sender.state == UIGestureRecognizerStateRecognized && isGrabbing) {
@@ -694,7 +698,9 @@ BOOL slideableHotbar;
 
 - (void)surfaceOnHover:(UIHoverGestureRecognizer *)sender API_AVAILABLE(ios(13.0)) {
     if (sender.state == UIGestureRecognizerStateBegan || sender.state == UIGestureRecognizerStateEnded){
-        [self.lightHaptic impactOccurred];
+        if(![getPreference(@"disable_haptics") boolValue]) {
+            [self.lightHaptic impactOccurred];
+        }
     }
     
     if (@available(iOS 14.0, *)) {
@@ -723,7 +729,9 @@ BOOL slideableHotbar;
 -(void)surfaceOnLongpress:(UILongPressGestureRecognizer *)sender
 {
     if (sender.state == UIGestureRecognizerStateBegan || sender.state == UIGestureRecognizerStateEnded){
-        [self.mediumHaptic impactOccurred];
+        if(![getPreference(@"disable_haptics") boolValue]) {
+            [self.mediumHaptic impactOccurred];
+        }
     }
     
     if (!slideableHotbar) {
@@ -759,7 +767,9 @@ BOOL slideableHotbar;
 
 - (void)surfaceOnTouchesScroll:(UIPanGestureRecognizer *)sender {
     if (sender.state == UIGestureRecognizerStateBegan || sender.state == UIGestureRecognizerStateEnded){
-        [self.lightHaptic impactOccurred];
+        if(![getPreference(@"disable_haptics") boolValue]) {
+            [self.lightHaptic impactOccurred];
+        }
     }
     
     if (isGrabbing) return;
@@ -870,7 +880,9 @@ int currentVisibility = 1;
 
 - (void)executebtn_down:(ControlButton *)sender
 {
-    [self.lightHaptic impactOccurred];
+    if(![getPreference(@"disable_haptics") boolValue]) {
+        [self.lightHaptic impactOccurred];
+    }
     
     if (sender.savedBackgroundColor == nil) {
         [self executebtn:sender withAction:ACTION_DOWN];
@@ -920,7 +932,9 @@ int currentVisibility = 1;
         [self executebtn:sender withAction:ACTION_UP];
     }
     
-    [self.lightHaptic impactOccurred];
+    if(![getPreference(@"disable_haptics") boolValue]) {
+        [self.lightHaptic impactOccurred];
+    }
 }
 
 - (void)executebtn_up_inside:(ControlButton *)sender {
