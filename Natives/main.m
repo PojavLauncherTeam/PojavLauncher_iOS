@@ -106,7 +106,10 @@ void init_checkForJailbreak() {
     }
     
     if (jbDyld || jbFlag || jbProc || jbFile) {
-        setenv("POJAV_DETECTEDJB", "1", 1);
+        if (!NSProcessInfo.processInfo.macCatalystApp) {
+            // macOS doesn't automatically enable JIT.
+            setenv("POJAV_DETECTEDJB", "1", 1);
+        }
     }
 }
 
