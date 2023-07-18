@@ -1,6 +1,7 @@
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 #import "authenticator/BaseAuthenticator.h"
 #import "AFNetworking.h"
+#import "ALTServerConnection.h"
 #import "CustomControlsViewController.h"
 #import "JavaGUIViewController.h"
 #import "LauncherMenuViewController.h"
@@ -270,6 +271,7 @@
 
     if (isJITEnabled(false)) {
         dispatch_async(dispatch_get_main_queue(), ^{
+            [ALTServerManager.sharedManager stopDiscovering];
             handler();
         });
         return;
