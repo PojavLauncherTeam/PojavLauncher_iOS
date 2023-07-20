@@ -4,11 +4,26 @@
 */
 
 "game.menu.force_close" = "Bağlamağa zorla";
+"game.menu.confirm.force_close" = "Zorla bağlamaq istədiyinizə əminsiniz?";
 "game.menu.log_output" = "Log çıxışı";
 "game.menu.custom_controls" = "Fərdi idarəetmələr";
 
+"game.note.airplay" = "Minecraft AirPlay güzgü ekranında göstərilir";
+
+"game.title.exit_code" = "%d kodu ilə oyundan çıxdı";
+
 // The play button
 "Play" = "Oyna";
+
+// Version categories
+"Installed" = "Quraşdırıldı";
+"Snapshot" = "Snapshot";
+"Old-beta" = "Köhnə-beta";
+"Old-alpha" = "Köhnə-alfa";
+"Edit" = "Düzəliş et";
+"Remove" = "Sil";
+
+"custom_controls.button_edit.name" = "Ad";
 "custom_controls.button_edit.size" = "Ölçü";
 "custom_controls.button_edit.mapping" = "Mapping";
 "custom_controls.button_edit.orientation" = "Oriyentasiya";
@@ -17,18 +32,27 @@
 "custom_controls.button_edit.stroke_color" = "Ştrix rəngi";
 
 "custom_controls.button_menu.add_subbutton" = "Alt düymə əlavə et";
+"custom_controls.control_menu.exit" = "Çıxış";
+"custom_controls.control_menu.save" = "Saxla";
+"custom_controls.control_menu.load" = "Yüklə";
 "custom_controls.control_menu.add_button" = "Düymə əlavə et";
 
 "launcher.menu.custom_controls" = "Fərdi idarəetmələr";
 "launcher.menu.install_jar" = ".jar quraşdırın";
-"login.option.select" = "Hesabı seçin";
+"login.option.add" = "Hesab əlavə edin";
+"login.option.select" = "Hesab seçin";
 
 "News" = "Xəbərlər";
 "Settings" = "Parametrlər";
 "preference.section.control" = "İdarəetmə fərdiləşdirməsi";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java Ayarları";
+"preference.title.cosmetica" = "Cosmetica Capes";
 
 "preference.title.renderer" = "Renderer";
 
 "preference.title.java_args" = "JVM Launch arqumentləri";
+
+"preference.profile.title.name" = "Ad";
+"preference.profile.title.version" = "Versiya";
+"controller_configurator.playstation.title.named_back" = "Seç";
