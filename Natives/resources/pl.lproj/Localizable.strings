@@ -59,6 +59,9 @@
 
 "init.migrateDir" = "Katalogiem danych PojavLauncher jest teraz %@. Wszystkie istniejące dane zostały przeniesione do nowej lokalizacji.";
 
+"launcher.mcl.downloading_file" = "Pobieranie %@";
+"launcher.mcl.error_download" = "Nie udało się pobrać %@:%@";
+
 "launcher.menu.custom_controls" = "Sterowanie";
 "launcher.menu.install_jar" = "Zainstaluj .jar";
 
@@ -76,6 +79,7 @@
 "login.menu.sendlogs" = "Prześlij swój rejestr";
 "login.option.add" = "Dodaj konto";
 "login.option.select" = "Wybierz konto";
+"login.option.demo" = "Konto demo";
 "login.option.microsoft" = "Konto Microsoft";
 "login.option.local" = "Konto lokalne";
 "login.warn.message.demomode" = "Jak zamiennik dla trybu offline oraz lokalnego, tryb demo umożliwia logowanie na Konto Microsoft, które nie posiada gry i umożliwia granie w wersję próbną Java Edition wprowadzoną w wersji 1.3.1 oraz nowszych. Starsze wersje zawierają pełną wersję gry, ponieważ oficjalny launcher nie wymusza tych ograniczeń. Sprawdź naszą stronę internetową, aby dowiedzieć się więcej o przejściu z trybu offline.";
@@ -178,4 +182,33 @@
 "preference.profile.title.name" = "Nazwa";
 "preference.profile.title.version" = "Wersja";
 "profile.title.create" = "Utwórz nowy profil";
+"controller_configurator.title.type.xbox" = "Xbox";
+"controller_configurator.title.type.playstation" = "PlayStation";
+"controller_configurator.xbox.title.named_back" = "Poradnik";
+"controller_configurator.xbox.title.named_start" = "Menu";
+"controller_configurator.xbox.title.named_a" = "A";
+"controller_configurator.xbox.title.named_b" = "B";
+"controller_configurator.xbox.title.named_x" = "X";
+"controller_configurator.xbox.title.named_y" = "Y";
+"controller_configurator.xbox.title.dpad_up" = "Góra";
+"controller_configurator.xbox.title.dpad_down" = "Dół";
+"controller_configurator.xbox.title.dpad_left" = "Lewo";
+"controller_configurator.xbox.title.dpad_right" = "Prawo";
+
+"controller_configurator.playstation.title.bumper_left" = "L1";
+"controller_configurator.playstation.title.bumper_right" = "R1";
+"controller_configurator.playstation.title.trigger_left" = "L2";
+"controller_configurator.playstation.title.trigger_right" = "R2";
 "controller_configurator.playstation.title.named_back" = "Wybierz";
+"controller_configurator.playstation.title.named_start" = "Start";
+"controller_configurator.playstation.title.named_a" = "Krzyżyk";
+"controller_configurator.playstation.title.named_b" = "Kółko";
+"controller_configurator.playstation.title.named_x" = "Kwadrat";
+"controller_configurator.playstation.title.named_y" = "Trójkąt";
+"controller_configurator.playstation.title.dpad_up" = "Góra";
+"controller_configurator.playstation.title.dpad_down" = "Dół";
+"controller_configurator.playstation.title.dpad_left" = "Lewo";
+"controller_configurator.playstation.title.dpad_right" = "Prawo";
+"controller_configurator.playstation.title.thumb_left" = "L3";
+"controller_configurator.playstation.title.thumb_right" = "R3";
+"controller_configurator.section.controller_style" = "Typ kontrolera";
