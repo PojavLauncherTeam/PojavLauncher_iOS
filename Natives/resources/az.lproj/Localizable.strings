@@ -1,4 +1,14 @@
+/*
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "Bağlamağa zorla";
+"game.menu.log_output" = "Log çıxışı";
 "game.menu.custom_controls" = "Fərdi idarəetmələr";
+"custom_controls.button_edit.size" = "Ölçü";
+"custom_controls.button_edit.mapping" = "Mapping";
+"custom_controls.button_edit.toggleable" = "Dəyişdirilə bilən";
 
 "launcher.menu.custom_controls" = "Fərdi idarəetmələr";
 "login.option.select" = "Hesabı seçin";
