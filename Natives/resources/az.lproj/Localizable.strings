@@ -18,40 +18,94 @@
 // Version categories
 "Installed" = "Quraşdırıldı";
 "Snapshot" = "Snapshot";
+"Releases" = "Buraxılışlar";
 "Old-beta" = "Köhnə-beta";
 "Old-alpha" = "Köhnə-alfa";
+
+// Custom controls
+"Copy" = "Kopyala";
 "Edit" = "Düzəliş et";
+"Move" = "Hərəkət etdir";
 "Remove" = "Sil";
+"Resize" = "Ölçüsünü dəyişdir";
 
 "custom_controls.button_edit.name" = "Ad";
 "custom_controls.button_edit.size" = "Ölçü";
 "custom_controls.button_edit.mapping" = "Mapping";
 "custom_controls.button_edit.orientation" = "Oriyentasiya";
 "custom_controls.button_edit.toggleable" = "Dəyişdirilə bilən";
+"custom_controls.button_edit.mouse_pass" = "Siçan keçidi";
+"custom_controls.button_edit.swipeable" = "Sürüşdürülə bilər";
 "custom_controls.button_edit.bg_color" = "Arxafon rəngi";
+"custom_controls.button_edit.stroke_width" = "Ştrix eni (%)";
 "custom_controls.button_edit.stroke_color" = "Ştrix rəngi";
+"custom_controls.button_edit.corner_radius" = "Künc radiusu (%)";
+"custom_controls.button_edit.opacity" = "Qeyri-şəffaflıq (%)";
 
 "custom_controls.button_menu.add_subbutton" = "Alt düymə əlavə et";
+"custom_controls.control_menu.discard_changes" = "Dəyişiklikləri ləğv et";
 "custom_controls.control_menu.exit" = "Çıxış";
+"custom_controls.control_menu.exit.warn" = "Dəyişiklikləri yadda saxlamadan çıxmaq üzrəsiniz.";
 "custom_controls.control_menu.save" = "Saxla";
+"custom_controls.control_menu.save.error.default" = "Konrol adı \"defolt\" ola bilməz, çünki onun üzərinə yazılacaq.";
+"custom_controls.control_menu.save.error.json" = "JSON xətası";
+"custom_controls.control_menu.save.error.write" = "Faylı saxlayarkən xəta baş verdi";
 "custom_controls.control_menu.load" = "Yüklə";
+"custom_controls.control_menu.make_default" = "Default et";
+"custom_controls.control_menu.safe_area" = "Təhlükəsiz sahə";
 "custom_controls.control_menu.add_button" = "Düymə əlavə et";
+"custom_controls.control_menu.add_drawer" = "Çəkməcə əlavə edin";
+"custom_controls.error.incompatible" = "Bu idarəetmə versiyası (kod %d) bu başlatma qurğusunda tətbiq edilməyib.";
+"custom_controls.hint" = "Daha çox seçim üçün ekranın istənilən yerinə uzun basın";
+
+"init.migrateDir" = "PojavLauncher məlumat kataloqu indi %@-dir. Bütün mövcud məlumatlarınız yeni yerə köçürüldü.";
+
+"launcher.mcl.downloading_file" = "Endirilir %@";
+"launcher.mcl.error_download" = "Endirmək alınmadı %@: %@";
 
 "launcher.menu.custom_controls" = "Fərdi idarəetmələr";
 "launcher.menu.install_jar" = ".jar quraşdırın";
+
+"launcher.wait_jit.title" = "JIT gözləyir";
+"launcher.wait_jit.message" = "PojavLauncher Java-nın maksimum performansla işləməsi üçün Just-in-time kompilyasiyasına əsaslanır.";
+
+"login.error.username.outOfRange" = "İstifadəçi adı ən azı 3, maksimum 16 simvoldan ibarət olmalıdır";
+
+"login.alert.field.username" = "İstifadəçi adı";
+
+"login.jit.checking" = "JIT yoxlanılır";
+"login.jit.enabled" = "JIT aktivləşdirilib";
+"login.jit.fail" = "JIT aktivləşdirilə bilmədi.";
+"login.jit.fail.title" = "JIT cihazınızda aktiv edilə bilmədi.";
+"login.jit.fail.description" = "Cihazınızda JIT-i avtomatik aktivləşdirmək üçün heç bir inteqrasiyadan istifadə edilə bilməz və o, indi əl ilə aktivləşdirilməlidir. Səhvlər latestlog.txt-ə daxil edilmişdir.";
+
+// Login buttons
+"login.menu.sendlogs" = "Günlüklərinizi göndərin";
 "login.option.add" = "Hesab əlavə edin";
 "login.option.select" = "Hesab seçin";
+"login.option.demo" = "Demo hesabı";
+"login.option.microsoft" = "Microsoft hesabı";
+"login.option.local" = "Yerli hesab";
+
+"login.warn.title.legacy_device" = "PojavLauncher-in növbəti buraxılışı bu cihazla uyğun gəlməyəcək.";
+"login.warn.message.legacy_device" = "Növbəti əsas buraxılışı işə salmaq üçün iOS 14-ü işlədə bilən cihaz tələb olunur.";
+"login.warn.title.legacy_ios" = "PojavLauncher proqramının növbəti buraxılışı sistem yeniləməsini tələb edəcək.";
 
 "News" = "Xəbərlər";
 "Settings" = "Parametrlər";
 "preference.section.control" = "İdarəetmə fərdiləşdirməsi";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java Ayarları";
+
+"preference.title.game_directory" = "Oyun kataloqu";
 "preference.title.cosmetica" = "Cosmetica Capes";
 
 "preference.title.renderer" = "Renderer";
 
 "preference.title.java_args" = "JVM Launch arqumentləri";
+"preference.title.auto_ram" = "Auto RAM";
+"preference.detail.auto_ram" = "Avtomatik RAM tənzimləyicisini işə salır";
+"preference.detail.allocated_memory" = "Minecraft-a nə qədər yaddaş verildiyinə nəzarət edir";
 
 "preference.profile.title.name" = "Ad";
 "preference.profile.title.version" = "Versiya";
