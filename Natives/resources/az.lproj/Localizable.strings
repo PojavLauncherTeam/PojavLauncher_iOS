@@ -60,6 +60,9 @@
 
 "init.migrateDir" = "PojavLauncher məlumat kataloqu indi %@-dir. Bütün mövcud məlumatlarınız yeni yerə köçürüldü.";
 
+"java.error.missing_main_class" = "%@ əsas sinif atributu yoxdur. Bu moddursa, onu seçdiyiniz nümunənin \"mods\" qovluğuna qoyun.";
+"java.error.missing_runtime" = "%@ işləmək üçün Java %d və ya daha yenisini tələb edir. Lütfən, əvvəlcə onu quraşdırın və İcra vaxtlarını idarə et bölməsində qeyd edin.";
+
 "launcher.mcl.downloading_file" = "Endirilir %@";
 "launcher.mcl.error_download" = "Endirmək alınmadı %@: %@";
 
@@ -90,9 +93,28 @@
 "login.warn.title.legacy_device" = "PojavLauncher-in növbəti buraxılışı bu cihazla uyğun gəlməyəcək.";
 "login.warn.message.legacy_device" = "Növbəti əsas buraxılışı işə salmaq üçün iOS 14-ü işlədə bilən cihaz tələb olunur.";
 "login.warn.title.legacy_ios" = "PojavLauncher proqramının növbəti buraxılışı sistem yeniləməsini tələb edəcək.";
+"login.warn.message.legacy_ios" = "Növbəti əsas buraxılışı işə salmaq üçün bu cihaz iOS 14 və ya daha yeni versiyada işləməlidir.";
+"login.warn.title.limited_ram" = "Bu cihazın məhdud yaddaşı var.";
+"login.warn.message.limited_ram" = "Qeyri-sabitlik və performans problemlərinin qarşısını almaq üçün avtomatik RAM-ı aktiv etməyi tövsiyə edirik.";
+
+"login.warn.title.demomode" = "Hesabınız Demodur";
+"login.warn.message.demomode" = "Oflayn və yerli rejimi əvəz edən demo rejimi sizə oyunun sahibi olmayan Microsoft hesabına daxil olmağa və 1.3.1 və daha yeni versiyalarda təqdim edilmiş Java Edition sınaq versiyasını oynamağa imkan verəcək. Köhnə versiyalarda tam oyun var, çünki rəsmi başlatma proqramı bu məhdudiyyətləri qoymur. Oflayn rejimdən bu keçid haqqında ətraflı öyrənmək üçün vebsaytımıza baxın.";
+
+"login.warn.title.localmode" = "Oflayn rejim indi Yerli rejimdir.";
+"login.warn.message.localmode" = "Quraşdırılmış versiyaları oynamağa davam edə bilərsiniz, lakin artıq Minecraftı ödənişli hesab olmadan endirə bilməzsiniz. Yerli hesablar və ya Minecraft əldə etməyin digər vasitələri ilə bağlı problemlər üçün heç bir dəstək verilməyəcək.";
+
+"login.msa.error.xsts.noxboxacc" = "Bu Microsoft hesabı üçün Xbox profili qeydə alınmayıb. Xbox profili yaratdığınızdan əmin olun.\nXəta kodu: 2148916233";
+"login.msa.error.xsts.noxbox" = "Xbox Live hazırda ölkənizdə mövcud deyil.\nXəta kodu: 2148916235";
+"login.msa.error.xsts.krverify" = "Davam etməzdən əvvəl hesabınız valideynləriniz tərəfindən təsdiqlənməlidir.\nXəta kodu: 2148916236 və ya 2148916237.";
+"login.msa.error.xsts.underage" = "Davam etməzdən əvvəl hesabınız valideyn hesabına əlaqələndirilməlidir.\nXəta kodu: 2148916238";
+
+"login.msa.progress.acquireAccessToken" = "(1/5) Access tokeni əldə edilir";
+"login.msa.progress.acquireXBLToken" = "(2/5) Xbox Live tokeni əldə edilir";
 
 "News" = "Xəbərlər";
+"Profiles" = "Profillər";
 "Settings" = "Parametrlər";
+"preference.section.footer.video" = "Avtomatik renderer PojavLauncher-ə Minecraft versiyası əsasında ən yaxşı variantı seçməyə imkan verir. Çözünürlüyün azaldılması daha yaxşı performans üçün GPU iş yükünü azaldır.";
 "preference.section.control" = "İdarəetmə fərdiləşdirməsi";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java Ayarları";
@@ -102,11 +124,131 @@
 
 "preference.title.renderer" = "Renderer";
 
+"preference.title.renderer.release.auto" = "Avto";
+"preference.title.renderer.release.gl4es" = "holy gl4es";
+"preference.title.renderer.release.angle" = "ANGLE";
+"preference.title.renderer.release.zink" = "Zink";
+"preference.detail.silence_with_switch" = "Səssiz rejim aktiv olduqda səsi söndürmək üçün aktiv edin. Qulaqlıqlar və xarici dinamiklər təsirlənmir.";
+"preference.title.default_gamepad_ctrl" = "Kontroller konfiqurasiyası";
+"preference.title.hardware_hide" = "Avadanlıq qoşulduqda idarəetməni gizlədin";
+"preference.detail.hardware_hide" = "Siçan və ya oyun nəzarətçisi qoşulduqda ekrandakı idarəetmə örtüyünün avtomatik söndürülməsi davranışını aktivləşdirin.";
+"preference.title.gesture_mouse" = "Siçan jestləri";
+"preference.detail.gesture_mouse" = "Blok qoymaq üçün klikləyin, bloku qırmaq üçün basıb saxlayın, 2 barmaqla sürüşdürmə kimi jestləri aktivləşdirin";
+"preference.title.gesture_hotbar" = "Hotbar jestləri";
+"preference.detail.gesture_hotbar" = "Hotbar yuvasına toxunmaq, elementləri əllər arasında dəyişmək, atmaq kimi jestləri aktivləşdirir";
+"preference.title.disable_haptics" = "Ekran toxunuşlarını qeyri-aktiv et";
+"preference.title.press_duration" = "Uzun basma müddəti (ms)";
+"preference.detail.press_duration" = "Blokları qırmaq və əşyaları atmaq üçün basma müddəti.";
+"preference.title.button_scale" = "Ekrandakı düymə miqyası (%)";
+"preference.detail.button_scale" = "Düymələr çox kiçikdirsə, onları böyüdün, adətən iPad istifadəçiləri üçün lazımdır.";
+"preference.title.mouse_scale" = "Siçan miqyası (%)";
+"preference.detail.mouse_scale" = "Virtual siçanın ölçüsünü dəyişdirin";
+"preference.title.mouse_speed" = "Siçan sürəti (%)";
+"preference.detail.mouse_speed" = "Virtual siçanın sürətini dəyişdirin";
+"preference.title.virtmouse_enable" = "Virtual siçan";
+"preference.detail.virtmouse_enable" = "Virtual siçan ilə başlamaq üçün bu seçimi aktiv edin";
+"preference.title.slideable_hotbar" = "Sürüşən hotbar";
+"preference.detail.slideable_hotbar" = "Hotbar-ı siçan təkəri kimi sürüşə bilən hala gətirin";
+
+"preference.title.gyroscope_enable" = "Gyroskop nəzarətlərini aktivləşdirin";
+"preference.detail.gyroscope_enable" = "Bunu aktivləşdirmək sizə cihazınızı çevirərək oyunu aktivləşdirməyə imkan verəcək";
+"preference.title.gyroscope_invert_x_axis" = "Giroskopu sola və sağa çevirin";
+"preference.detail.gyroscope_invert_x_axis" = "Gyroskopun X oxunun tərsinə çevirir";
+"preference.title.gyroscope_sensitivity" = "Gyroskop həssaslığını idarə edin";
+"preference.detail.gyroscope_sensitivity" = "Gyroskop nəzarətlərinin həssaslığını tənzimləyin";
+
+"preference.title.manage_runtime" = "Runtimeları idarə edin";
+"preference.title.confirm.delete_runtime" = "%@ silinəcək";
+"preference.manage_runtime.header.default" = "Tərcih edilən Java versiyası";
+"preference.manage_runtime.default.1165" = "1.16.5 və daha yuxarı";
+"preference.manage_runtime.default.117" = "1.17 və daha yeni";
+"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 və daha köhnə versiyalar daha yeni Java versiyası ilə işləyə bilər, lakin modlarla uyğunluğa zəmanət verilmir. Xarici iş vaxtları “java_runtimes” qovluğuna yerləşdirilə bilər. “Install .jar” üçün Java versiyasının dəyişdirilməsi yalnız quraşdırıcının daha yeni Java versiyasını gözləmədiyi halda qüvvəyə minir.";
+"preference.manage_runtime.footer.java8" = "Bu, Minecraft 1.16.5 və daha köhnə versiyalar üçün standart versiyadır.";
+"preference.manage_runtime.footer.java17" = "Bu Minecraft 1.17 və daha yeni versiyalar üçün standart versiyadır.";
+"preference.manage_runtime.header.invalid" = "Etibarsız runtimes";
+
 "preference.title.java_args" = "JVM Launch arqumentləri";
+"preference.detail.java_args" = "Minecraft-ı işə salarkən arqumentləri Java-ya ötürün. Ehtiyatlı olun, səhv dəyişdirilərsə, bu, oyunun çökməsinə səbəb ola bilər.";
+"preference.placeholder.java_args" = "Arqumentləri qeyd edin...";
+"preference.title.env_variables" = "Ətraf mühit dəyişənləri";
+"preference.detail.env_variables" = "Minecraft-ı işə salarkən fərdi mühit dəyişənlərini təyin edin. Ehtiyatlı olun, səhv dəyişdirilərsə, bu, oyunun çökməsinə səbəb ola bilər.";
+"preference.placeholder.env_variables" = "Dəyişənləri təyin edin...";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Avtomatik RAM tənzimləyicisini işə salır";
+"preference.warn.auto_ram" = "Bu seçimi unjailbroken cihazda deaktiv etmək, dəyişdirildikdə qeyri-sabitlik yarada bilər. Ehtiyatla davam edin.";
+"preference.title.allocated_memory" = "Yaddaşın ayrılması (MB)";
 "preference.detail.allocated_memory" = "Minecraft-a nə qədər yaddaş verildiyinə nəzarət edir";
+"preference.warn.allocated_memory" = "Əməliyyat sisteminin özündəki məhdudiyyətlərə görə, bu seçim bu və daha yüksək dəyərlərdə qeyri-sabitliyə səbəb ola bilər. Ehtiyatla davam edin.";
+"preference.title.custom_env" = "Ətraf mühit dəyişənləri";
+"preference.detail.custom_env" = "Bu seçim hazırlanma mərhələsindədir. Bu vaxt custom_env.txt yaradın və redaktə edin.";
+
+"preference.title.debug_skip_wait_jit" = "\"JIT gözləyir\" dialoqunu keçin";
+"preference.detail.debug_skip_wait_jit" = "Bu, JIT olmadan işə salmağa imkan vermir, bunun əvəzinə bu, sazlama yoxlamasını atlayır, çünki yoxlama müəyyən jailbreaklərdə uğursuz olur.";
+"preference.title.debug_ipad_ui" = "iPadOS UI kilidini açın";
+"preference.detail.debug_ipad_ui" = "Aktivdirsə, iPad üçün eksklüziv UI-ni (siqnal, klaviatura və s.) və ya əlil olduqda iPhone UI-ni açın.";
+"preference.title.debug_auto_correction" = "Avtomatik düzəliş";
+"preference.detail.debug_auto_correction" = "Oyunda mətn yazarkən avtomatik düzəlişi aktiv edin.";
+"preference.title.debug_hide_home_indicator" = "Ev göstəricisini gizlədin";
+"preference.detail.debug_hide_home_indicator" = "Bu, ev göstəricisinin kilidlənməsini söndürəcək. Siz eyni zamanda ev göstəricisini gizlətmək və kilidləmək üçün Bələdçi Girişdən istifadə etməli olacaqsınız.";
+"preference.title.debug_show_layout_bounds" = "Düzən həddini göstər";
+"preference.detail.debug_show_layout_bounds" = "Klip sərhədlərini, kənarları göstərin";
+"preference.title.debug_show_layout_overlap" = "Üst-üstə düşən tərtibatı göstərin";
+"preference.detail.debug_show_layout_overlap" = "Üst-üstə düşən görünüşləri aşkar etmək üçün hər görünüşü şəffaf rənglə örtün.";
 
 "preference.profile.title.name" = "Ad";
 "preference.profile.title.version" = "Versiya";
+"preference.profile.title.default_touch_control" = "Toxunuş kontrolları";
+"preference.profile.title.default_gamepad_control" = "Gamepad kontrolları";
+
+"profile.error.name_exists" = "Bu adda profil artıq mövcuddur. Başqa ad istifadə edin.";
+"profile.section.instance" = "Oyun Nümunəsinin parametrləri";
+"profile.section.profiles" = "Bu halda profillər";
+"profile.title.create" = "Yeni profil yaradın";
+"profile.title.separate_preference" = "Parametrləri təcrid edin";
+"profile.detail.separate_preference" = "Parametrlərdə edilən hər hansı dəyişikliyi təcrid etmək üçün bu seçimi aktiv edin. Sıfırlamanın edilməsi standart parametrlər əvəzinə qlobal parametrlərə bərpa olunacaq.";
+
+"controller_configurator.title.current" = "Gamepad konfiqurasiya faylı";
+"controller_configurator.title.type.xbox" = "Xbox";
+"controller_configurator.title.type.playstation" = "PlayStation";
+
+"controller_configurator.xbox.title.bumper_left" = "Sol bamper";
+"controller_configurator.xbox.title.bumper_right" = "Sağ bamper";
+"controller_configurator.xbox.title.trigger_left" = "Sol tətik";
+"controller_configurator.xbox.title.trigger_right" = "Sağ tətik";
+"controller_configurator.xbox.title.named_back" = "Bələdçi";
+"controller_configurator.xbox.title.named_start" = "Menyu";
+"controller_configurator.xbox.title.named_a" = "A";
+"controller_configurator.xbox.title.named_b" = "B";
+"controller_configurator.xbox.title.named_x" = "X";
+"controller_configurator.xbox.title.named_y" = "Y";
+"controller_configurator.xbox.title.dpad_up" = "Yuxarı";
+"controller_configurator.xbox.title.dpad_down" = "Aşağı";
+"controller_configurator.xbox.title.dpad_left" = "Sol";
+"controller_configurator.xbox.title.dpad_right" = "Sağ";
+"controller_configurator.xbox.title.thumb_left" = "Sol barmaq çubuğuna klikləyin";
+"controller_configurator.xbox.title.thumb_right" = "Sağ barmaq çubuğuna klikləyin";
+
+"controller_configurator.playstation.title.bumper_left" = "L1";
+"controller_configurator.playstation.title.bumper_right" = "R1";
+"controller_configurator.playstation.title.trigger_left" = "L2";
+"controller_configurator.playstation.title.trigger_right" = "R2";
 "controller_configurator.playstation.title.named_back" = "Seç";
+"controller_configurator.playstation.title.named_start" = "Başlat";
+"controller_configurator.playstation.title.named_a" = "Xaç";
+"controller_configurator.playstation.title.named_b" = "Dairə";
+"controller_configurator.playstation.title.named_x" = "Kvadrat";
+"controller_configurator.playstation.title.named_y" = "Üçbucaq";
+"controller_configurator.playstation.title.dpad_up" = "Yuxarı";
+"controller_configurator.playstation.title.dpad_down" = "Aşağı";
+"controller_configurator.playstation.title.dpad_left" = "Sol";
+"controller_configurator.playstation.title.dpad_right" = "Sağ";
+"controller_configurator.playstation.title.thumb_left" = "L3";
+"controller_configurator.playstation.title.thumb_right" = "R3";
+
+"controller_configurator.section.config_files" = "Cari konfiqurasiya faylı";
+"controller_configurator.section.game_mappings" = "Game mappings";
+"controller_configurator.section.footer.game_mappings" = "Siçan oyunda kilidləndikdə bağlamalar.";
+"controller_configurator.section.menu_mappings" = "Menu mappings";
+"controller_configurator.section.footer.menu_mappings" = "Siçan kilidlənmədikdə, məsələn, başlıq ekranında və ya pauza menyusunda bağlamalar.";
+"controller_configurator.section.controller_style" = "Kontroller növü";
+"controller_configurator.section.footer.controller_style" = "Bu konfiquratorda müxtəlif kontroller düymələrinin adlarını göstərin.";
