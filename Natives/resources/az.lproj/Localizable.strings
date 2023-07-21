@@ -110,16 +110,30 @@
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Access tokeni əldə edilir";
 "login.msa.progress.acquireXBLToken" = "(2/5) Xbox Live tokeni əldə edilir";
+"login.msa.progress.acquireXSTS" = "XSTS əldə edilir";
+"login.msa.progress.acquireXboxProfile" = "(3/5) Xbox profilinin əldə edilir";
+"login.msa.progress.acquireMCToken" = "(4/5) Minecraft tokeninin əldə edilir";
+"login.msa.progress.checkMCProfile" = "(5/5) Minecraft profili yoxlanılır";
 
 "News" = "Xəbərlər";
 "Profiles" = "Profillər";
 "Settings" = "Parametrlər";
+
+"preference.section.general" = "Ümumi Parametrlər";
+"preference.section.video" = "Video və Audio Parametrləri";
 "preference.section.footer.video" = "Avtomatik renderer PojavLauncher-ə Minecraft versiyası əsasında ən yaxşı variantı seçməyə imkan verir. Çözünürlüyün azaldılması daha yaxşı performans üçün GPU iş yükünü azaldır.";
 "preference.section.control" = "İdarəetmə fərdiləşdirməsi";
+"preference.section.debug" = "UI Sazlama parametrləri";
+"preference.section.footer.debug" = "Sazlamadan başqa, bu parametrlər xüsusi nəzarətlər üçün faydalı ola bilər. Dəyişikliklərin qüvvəyə minməsi üçün işəsalmanı yenidən başlatmalı ola bilərsiniz.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java Ayarları";
+//"preference.section.footer.java" = "";
+
+"preference.title.confirm" = "Əminsinizmi?";
 
 "preference.title.game_directory" = "Oyun kataloqu";
+"preference.title.confirm.delete_game_directory" = "Nümunə %@ həmişəlik silinəcək və bərpa edilə bilinməyəcək.";
+"preference.multidir.add_directory" = "oyun kataloqu əlavə edin";
 "preference.title.cosmetica" = "Cosmetica Capes";
 
 "preference.title.renderer" = "Renderer";
