@@ -134,7 +134,33 @@
 "preference.title.game_directory" = "Oyun kataloqu";
 "preference.title.confirm.delete_game_directory" = "Nümunə %@ həmişəlik silinəcək və bərpa edilə bilinməyəcək.";
 "preference.multidir.add_directory" = "oyun kataloqu əlavə edin";
+
+"preference.title.check_sha" = "Yüklədikdən sonra faylları yoxlayın";
+"preference.detail.check_sha" = "Bu seçim başlatma qurğusunu fayl hash-i mövcud olduqda yoxlamağa məcbur edir. Qırılmış endirmələrin qarşısını alır.";
 "preference.title.cosmetica" = "Cosmetica Capes";
+"preference.detail.cosmetica" = "Cosmetica-dan (əvvəllər Arc) qapaqları aktivləşdirin. Əlavə məlumat üçün https://cosmetica.cc saytına daxil olun. OptiFine tələb edir";
+"preference.title.debug_logging" = "Sazlama jurnalı";
+"preference.detail.debug_logging" = "Daxili parametrləri və hərəkətləri latestlog.txt-ə qeyd edir. Bu, tərtibatçılara problemləri daha asan tapmağa kömək edir, lakin qeydlər daha 8tez-tez yazılacağı üçün Minecraft daha yavaş işləyə bilər.";
+"preference.title.enable_altkit" = "AltKit inteqrasiyasını aktivləşdirin";
+"preference.detail.enable_altkit" = "Aktiv edildikdə, PojavLauncher, JIT-i aktivləşdirmək üçün yerli AltServerlərə qoşulmağa çalışacaq.";
+"preference.title.appicon" = "Proqram ikonasını təyin edin";
+"preference.detail.appicon" = "PojavLauncher üçün müxtəlif Əsas Ekran nişanları arasında seçim etməyə imkan verir.";
+"preference.title.appicon-default" = "Familiar PojavLauncher light";
+"preference.title.appicon-dark" = "Familiar PojavLauncher dark";
+"preference.title.appicon-development" = "Penciled Development";
+"preference.title.hidden_sidebar" = "Defolt olaraq əsas menyunun yan panelini gizlədin";
+"preference.detail.hidden_sidebar" = "Əsas menyuda yan paneli defolt olaraq və fırlanan zaman gizlətməyə imkan verir.";
+
+"preference.title.reset_warnings" = "Bütün xəbərdarlıqları sıfırlayın";
+"preference.title.done.reset_warnings" = "Bütün xəbərdarlıqlar sıfırlandı.";
+
+"preference.title.reset_settings" = "Bütün parametrləri sıfırlayın";
+"preference.title.confirm.reset_settings" = "Bu, rezulyasiya, düymə ölçüsü və Java arqumentləri daxil olmaqla, bütün fərdi seçimlərinizi siləcək.";
+"preference.title.done.reset_settings" = "Bütün standart parametrlər bərpa edildi.";
+
+"preference.title.erase_demo_data" = "Demo oyun məlumatlarını silin";
+"preference.title.confirm.erase_demo_data" = "Bu, bütün Demo oyun versiyalarını və Demo hesabları üçün istifadə olunan məlumatları siləcək.";
+"preference.title.done.erase_demo_data" = "Demo oyununun bütün məlumatları silindi.";
 
 "preference.title.renderer" = "Renderer";
 
@@ -142,6 +168,24 @@
 "preference.title.renderer.release.gl4es" = "holy gl4es";
 "preference.title.renderer.release.angle" = "ANGLE";
 "preference.title.renderer.release.zink" = "Zink";
+
+"preference.title.renderer.debug.auto" = "Avto: gl4es or ANGLE";
+"preference.title.renderer.debug.gl4es" = "holy gl4es - exports OpenGL 2.1";
+"preference.title.renderer.debug.angle" = "ANGLE (1.17+) - OpenGL 3.2 (Əsas Profil, məhdud) ixrac edir";
+"preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - OpenGL 4.1-i ixrac edir";
+
+"preference.detail.renderer" = "İstifadə etmək üçün OpenGL render mühərrikini dəyişdirin. Problemləri aşkar etmək üçün iOS 16 və sonrakı versiyalarda Zink müvəqqəti olaraq deaktiv edilib.";
+
+"preference.title.resolution" = "Rezulyasiya (%)";
+"preference.detail.resolution" = "Oyunun rezulyasiyasını azaltmağa imkan verir.";
+"preference.title.max_framerate" = "Maksimum kadr sürəti";
+"preference.detail.max_framerate" = "ProMotion displeylərində oyunun kadr sürətini 60 FPS ilə məhdudlaşdırmağa imkan verir.";
+
+"preference.title.fullscreen_airplay" = "Tam ekran AirPlay";
+"preference.detail.fullscreen_airplay" = "Ekrandakı hər şeyi əks etdirməkdənsə, xarici displeydə tam ekran oyun pəncərəsini təqdim etməyə imkan verir.";
+"preference.title.silence_other_audio" = "Oyun açıldıqda səsi dayandırın";
+"preference.detail.silence_other_audio" = "Oyunu işə salarkən PojavLauncher-a Musiqi kimi digər proqramların səsini dayandırmağa icazə verin.";
+"preference.title.silence_with_switch" = "Səssiz keçid ilə səsi söndürün";
 "preference.detail.silence_with_switch" = "Səssiz rejim aktiv olduqda səsi söndürmək üçün aktiv edin. Qulaqlıqlar və xarici dinamiklər təsirlənmir.";
 "preference.title.default_gamepad_ctrl" = "Kontroller konfiqurasiyası";
 "preference.title.hardware_hide" = "Avadanlıq qoşulduqda idarəetməni gizlədin";
