@@ -116,6 +116,7 @@
 "login.msa.progress.checkMCProfile" = "(5/5) Перевіряється профіль Minecraft";
 
 "News" = "Новини";
+"Profiles" = "Профілі";
 "Settings" = "Налаштування";
 
 "preference.section.general" = "Загальні налаштування";
@@ -254,7 +255,15 @@
 
 "preference.profile.title.name" = "Ім'я";
 "preference.profile.title.version" = "Версія";
+"preference.profile.title.default_touch_control" = "Сенсорне керування";
+"preference.profile.title.default_gamepad_control" = "Керування контролером";
+
+"profile.error.name_exists" = "Профіль з такою назвою вже існує. Скористайтеся іншою назвою.";
+"profile.section.instance" = "Налаштування екземпляра гри";
+"profile.section.profiles" = "Профілі в цьому екземплярі";
 "profile.title.create" = "Створити профіль";
+"profile.title.separate_preference" = "Відокремити налаштування";
+"profile.detail.separate_preference" = "Увімкніть цю опцію, щоб відокремити всі зміни, внесені в налаштуваннях. Після скидання вони відновляться до глобальних налаштувань, а не до параметрів за замовчуванням.";
 
 "controller_configurator.title.current" = "Файл конфігурації геймпаду";
 "controller_configurator.title.type.xbox" = "Xbox";
