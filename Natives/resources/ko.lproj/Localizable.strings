@@ -10,6 +10,8 @@
 
 "game.note.airplay" = "마인크래프트가 AirPlay 디스플레이에 출력되고있습니다";
 
+"game.title.exit_code" = "마인크래프트가 종료 코드 %d와(과) 함께 종료했습니다.";
+
 // The play button
 "Play" = "시작하기";
 
@@ -102,6 +104,10 @@
 "preference.title.renderer" = "렌더러";
 "preference.title.virtmouse_enable" = "가상 마우스";
 
+"preference.title.gyroscope_enable" = "자이로스코프 컨트롤러 활성화";
+"preference.title.gyroscope_sensitivity" = "자이로스코프 감도 조절";
+"preference.detail.gyroscope_sensitivity" = "자이로스코프 컨트롤의 감도를 조정하세요";
+
 "preference.title.java_args" = "JVM 시작 스크립트";
 "preference.title.auto_ram" = "자동 RAM 할당";
 "preference.detail.auto_ram" = "자동 RAM 할당 활성화하기";
@@ -109,4 +115,5 @@
 
 "preference.profile.title.name" = "이름";
 "preference.profile.title.version" = "버전";
+"profile.title.create" = "새 프로필 생성";
 "controller_configurator.playstation.title.named_back" = "선택";
