@@ -358,13 +358,11 @@
 
     NSArray *pickKeys = item[@"pickKeys"];
     NSArray *pickList = item[@"pickList"];
-    NSMutableArray *menuItems = [[NSMutableArray alloc] init];
+    NSMutableArray<UIAction *> *menuItems = [[NSMutableArray alloc] init];
     for (int i = 0; i < pickList.count; i++) {
-        BOOL selected = [cell.detailTextLabel.text isEqualToString:pickKeys[i]];
         [menuItems addObject:[UIAction
             actionWithTitle:pickList[i]
-            image:(selected ? [UIImage systemImageNamed:@"checkmark"] : nil)
-            identifier:nil
+            image:nil identifier:nil
             handler:^(UIAction *action) {
                 cell.detailTextLabel.text = pickKeys[i];
                 self.setPreference(self.prefSections[indexPath.section], item[@"key"], pickKeys[i]);
@@ -373,6 +371,9 @@
                     invokeAction(pickKeys[i]);
                 }
             }]];
+        if ([cell.detailTextLabel.text isEqualToString:pickKeys[i]]) {
+            menuItems.lastObject.state = UIMenuElementStateOn;
+        }
     }
 
     self.currentMenu = [UIMenu menuWithTitle:message children:menuItems];
