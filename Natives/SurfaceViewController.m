@@ -244,6 +244,7 @@ BOOL slideableHotbar;
         }
     }];
     if (GCController.controllers.count == 1) {
+        [ControllerInput initKeycodeTable];
         [ControllerInput registerControllerCallbacks:GCController.controllers.firstObject];
     }
 
