@@ -60,13 +60,22 @@ void init_loadCustomEnv() {
 }
 
 void init_loadCustomJvmFlags(int* argc, const char** argv) {
+    NSArray *argsToPurge = @[@"Xms", @"Xmx", @"d32", @"d64"];
     NSString *jvmargs = [PLProfiles resolveKeyForCurrentProfile:@"javaArgs"];
     if (jvmargs == nil) return;
     BOOL isFirstArg = YES;
     NSLog(@"[JavaLauncher] Reading custom JVM flags");
     for (NSString *jvmarg in [jvmargs componentsSeparatedByString:@" -"]) {
-        if ([jvmarg length] == 0) continue;
-        //margv[margc] = (char *) [jvmarg UTF8String];
+        if (jvmarg.length == 0) continue;
+        BOOL ignore = NO;
+        for (NSString *argToPurge in argsToPurge) {
+            if ([jvmarg hasPrefix:argToPurge]) {
+                NSLog(@"[JavaLauncher] Ignored JVM flag: -%@", jvmarg);
+                ignore = YES;
+                break;
+            }
+        }
+        if (ignore) continue;
 
         ++*argc;
         if (isFirstArg) {
