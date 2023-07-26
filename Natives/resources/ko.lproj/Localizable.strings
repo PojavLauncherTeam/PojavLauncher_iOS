@@ -45,18 +45,29 @@
 "custom_controls.button_menu.add_subbutton" = "부속 버튼 추가";
 "custom_controls.control_menu.discard_changes" = "변경사항 취소";
 "custom_controls.control_menu.exit" = "나가기";
+"custom_controls.control_menu.exit.warn" = "변경사항을 저장하지 않고 종료하려 합니다.";
 "custom_controls.control_menu.save" = "저장";
+"custom_controls.control_menu.save.error.default" = "컨트롤러 이름은 덮어쓰게 되므로 \"default\"가 될수 없습니다.";
 "custom_controls.control_menu.save.error.json" = "JSON 오류";
 "custom_controls.control_menu.save.error.write" = "파일 저장중 오류 발생";
 "custom_controls.control_menu.load" = "불러오기";
 "custom_controls.control_menu.make_default" = "기본값으로 설정";
 "custom_controls.control_menu.safe_area" = "안전한 공간";
 "custom_controls.control_menu.add_button" = "버튼 추가";
+"custom_controls.control_menu.add_drawer" = "서랍 추가";
+"custom_controls.error.incompatible" = "이 컨트롤 버전(code %d) 은 이 런처 빌드에서 구현되지 않습니다.";
+"custom_controls.hint" = "더 많은 옵션을 보려면 화면의 아무 곳이나 길게 누르세요.";
+
+"init.migrateDir" = "PojavLauncher 데이터 디렉토리는 이제 %@입니다. 모든 기존 데이터가 새 위치로 이동되었습니다.";
+
+"launcher.mcl.downloading_file" = "%@ 다운로드 중";
+"launcher.mcl.error_download" = "%@: %@ 다운로드 실패";
 
 "launcher.menu.custom_controls" = "사용자 지정 조작";
 "launcher.menu.install_jar" = ".jar 설치";
 
 "launcher.wait_jit.title" = "JIT를 기다리고 있습니다";
+"launcher.wait_jit.message" = "PojavLauncher는 최대 성능으로 작동하기 위해 Java용 Just-in-time 컴파일에 의존합니다.";
 
 "login.error.username.outOfRange" = "닉네임은 최소 3글자에서 최대 16글자로 해야합니다.";
 
@@ -64,7 +75,9 @@
 
 "login.jit.checking" = "JIT를 확인하고 있습니다";
 "login.jit.enabled" = "JIT가 활성화 되었습니다";
+"login.jit.fail" = "JIT이 활성화 되지 않았습니다.";
 "login.jit.fail.title" = "장치에서 JIT를 사용하도록 할수 없습니다";
+"login.jit.fail.description" = "디바이스에서 JIT를 자동으로 활성화하는 데 통합을 사용할 수 없으며 이제 수동으로 활성화해야 합니다. latestlog.txt에 오류가 기록되었습니다.";
 
 // Login buttons
 "login.menu.sendlogs" = "로그 보내기";
@@ -74,12 +87,26 @@
 "login.option.microsoft" = "Microsoft 계정";
 "login.option.local" = "로컬 계정";
 
+"login.warn.title.legacy_device" = "다음 버전의 PojavLauncher는 이 디바이스와 호환되지 않을 수 있습니다.";
+"login.warn.message.legacy_device" = "다음 주요 버전을 실행하려면 iOS 14 이상이 필요합니다.";
+"login.warn.title.legacy_ios" = "PojavLauncher의 다음버전은 시스템 업데이트가 필요합니다.";
+"login.warn.message.legacy_ios" = "다음 주요 버전을 실행하려면 이 기기는 iOS 14 이상이 필요합니다.";
+"login.warn.title.limited_ram" = "이 기기는 사용 가능한 메모리의 양이 제한되어 있습니다.";
+"login.warn.message.limited_ram" = "우리는 불안정과 성능 이슈를 예방하기 위해 자동 램 사용을 권장합니다.";
+
 "login.warn.title.demomode" = "당신의 계정은 데모 버전입니다";
+"login.warn.message.demomode" = "오프라인 및 로컬 모드를 대체하는 데모 모드를 사용하면 게임을 소유하지 않은 Microsoft 계정에 로그인하고 1.3.1 및 최신 버전에 도입된 Java Edition 평가판을 플레이할 수 있습니다. 이전 버전에는 공식 런처가 이러한 제한을 두지 않기 때문에 전체 게임이 포함되어 있습니다. 오프라인 모드에서 전환에 대한 자세한 내용은 당사 웹 사이트를 참조하십시오.";
 
 "login.warn.title.localmode" = "오프라인 모드는 이제 로컬 모드입니다";
 
+"login.msa.error.xsts.noxboxacc" = "Xbox 프로필이 이 Microsoft 계정에서 등록되지 않았습니다. Xbox 프로필을 만드셨는지 확인하십시오.\n오류 코드: 2148916233";
+"login.msa.error.xsts.noxbox" = "Xbox Live는 현제 당신의 나라에서 지원되지 않습니다.\n오류 코드: 2148916235";
+"login.msa.error.xsts.krverify" = "당신의 계정은 진행하기전에 부모님의 인증을 받아야 합니다.\n 오류 코드: 2148916236 또는 2148916237.";
+"login.msa.error.xsts.underage" = "당신의 계정은 진행하기 전에 부모님의 계정과 연결되어야 합니다.\n오류코드: 2148916238";
+
 "login.msa.progress.acquireAccessToken" = "(1/5) 엑세스 토큰 획득중";
 "login.msa.progress.acquireXBLToken" = "(2/5) Xbox Live 토큰 획득중";
+"login.msa.progress.acquireXSTS" = "XSTS 받아오는 중";
 "login.msa.progress.acquireXboxProfile" = "(3/5) Xbox 프로필 획득중";
 "login.msa.progress.acquireMCToken" = "(4/5) Minecraft 토큰 획득중";
 "login.msa.progress.checkMCProfile" = "(5/5) Minecraft 프로필 확인중";
@@ -91,15 +118,27 @@
 "preference.section.video" = "비디오 및 오디오 설정";
 "preference.section.control" = "사용자 지정 조작";
 "preference.section.debug" = "UI 디버깅 설정";
+"preference.section.footer.debug" = "디버깅 외에도 이러한 설정은 사용자 지정 컨트롤에 유용할 수 있습니다. 변경 사항을 적용하려면 런처를 다시 시작해야 할 수도 있습니다.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java 기능";
+//"preference.section.footer.java" = "";
+
+"preference.title.confirm" = "정말입니까?";
 
 "preference.title.game_directory" = "게임 디렉토리";
+"preference.title.confirm.delete_game_directory" = "%@ 인스턴스는 완전히 삭제되며 복원할 수 없습니다.";
 "preference.multidir.add_directory" = "게임 경로 추가";
 
 "preference.title.check_sha" = "파일 확인후 다운로드";
+"preference.detail.check_sha" = "이 옵션은 파일 해시를 강제로 확인합니다. 잘못된 다운로드를 막을 수 있습니다.";
 "preference.title.cosmetica" = "코스메티카 망토";
+"preference.detail.cosmetica" = "코스메티카(이전의 Arc)에서 망토를 활성화합니다. 자세한 내용은 https://cosmetica.cc를 참조하십시오. OptiFine이 필요합니다.";
+"preference.title.debug_logging" = "디버그 로깅";
+"preference.detail.debug_logging" = "내부 설정 및 작업을 latestlog.txt에 기록합니다. 이렇게 하면 개발자가 문제를 더 쉽게 찾는 데 도움이 되지만 로그가 더 자주 기록되므로 Minecraft가 느리게 실행될 수 있습니다.";
+"preference.title.enable_altkit" = "AltKit 연동 활성화";
+"preference.detail.enable_altkit" = "활성화되면 PojavLauncher는 JIT를 활성화하기 위해 로컬 AltServer에 연결을 시도합니다.";
 "preference.title.appicon" = "앱 아이콘 설정";
+"preference.detail.appicon" = "PojavLauncher에 대한 다양한 홈 화면 아이콘 중에서 선택할 수 있습니다.";
 
 "preference.title.reset_warnings" = "모든 경고 초기화";
 "preference.title.done.reset_warnings" = "모든 경고가 리셋되었습니다";
