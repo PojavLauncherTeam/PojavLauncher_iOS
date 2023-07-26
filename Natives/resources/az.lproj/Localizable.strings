@@ -141,8 +141,6 @@
 "preference.detail.cosmetica" = "Cosmetica-dan (əvvəllər Arc) qapaqları aktivləşdirin. Əlavə məlumat üçün https://cosmetica.cc saytına daxil olun. OptiFine tələb edir";
 "preference.title.debug_logging" = "Sazlama jurnalı";
 "preference.detail.debug_logging" = "Daxili parametrləri və hərəkətləri latestlog.txt-ə qeyd edir. Bu, tərtibatçılara problemləri daha asan tapmağa kömək edir, lakin qeydlər daha 8tez-tez yazılacağı üçün Minecraft daha yavaş işləyə bilər.";
-"preference.title.enable_altkit" = "AltKit inteqrasiyasını aktivləşdirin";
-"preference.detail.enable_altkit" = "Aktiv edildikdə, PojavLauncher, JIT-i aktivləşdirmək üçün yerli AltServerlərə qoşulmağa çalışacaq.";
 "preference.title.appicon" = "Proqram ikonasını təyin edin";
 "preference.detail.appicon" = "PojavLauncher üçün müxtəlif Əsas Ekran nişanları arasında seçim etməyə imkan verir.";
 "preference.title.appicon-default" = "Familiar PojavLauncher light";
