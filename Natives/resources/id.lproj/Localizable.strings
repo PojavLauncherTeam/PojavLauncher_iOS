@@ -136,8 +136,6 @@
 "preference.detail.cosmetica" = "Nyalakan cape dari Cosmetica (sebelumnya Arc). Untuk informasi lebih lanjut mohon kunjungi https://cosmetica.cc. Membutuhkan OptiFine";
 "preference.title.debug_logging" = "Logging debug";
 "preference.detail.debug_logging" = "Mencatat peraturan-peraturan dalam dan aksi ke latestlog.txt. Ini membantu pengembang untuk mencari masalah lebih mudah, tetapi Minecragt kemungkinan akan berjalan lebih lambat karena logs akan lebih sering dicatat.";
-"preference.title.enable_altkit" = "Aktifkan integrasi AltKit";
-"preference.detail.enable_altkit" = "Ketika diaktifkan, Peluncur Pojav akan mencoba terhubung ke AltServer lokal untuk mengaktifkan JIT.";
 "preference.title.appicon" = "Atur ikon aplikasi";
 "preference.detail.appicon" = "Memperbolehkan anda untuk memilih antara beberapa ikon layar rumah berbeda untuk PojavLauncher.";
 "preference.title.appicon-default" = "Familiar PojavLauncher light";
