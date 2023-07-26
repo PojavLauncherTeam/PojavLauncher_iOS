@@ -38,7 +38,7 @@
 "custom_controls.button_edit.swipeable" = "Пролистываемый";
 "custom_controls.button_edit.bg_color" = "Цвет фона";
 "custom_controls.button_edit.stroke_width" = "Контур (%)";
-"custom_controls.button_edit.stroke_color" = "Цвет обводки";
+"custom_controls.button_edit.stroke_color" = "Цвет контура";
 "custom_controls.button_edit.corner_radius" = "Скругление (%)";
 "custom_controls.button_edit.opacity" = "Видимость (%)";
 
@@ -50,7 +50,7 @@
 "custom_controls.control_menu.save.error.default" = "Название раскладки не может быть \"default\", иначе она будет перезаписана.";
 "custom_controls.control_menu.save.error.json" = "Ошибка формата";
 "custom_controls.control_menu.save.error.write" = "Ошибка сохранения файла";
-"custom_controls.control_menu.load" = "Загрузка";
+"custom_controls.control_menu.load" = "Загрузить";
 "custom_controls.control_menu.make_default" = "Сделать основной";
 "custom_controls.control_menu.safe_area" = "Безопасная область";
 "custom_controls.control_menu.add_button" = "Добавить кнопку";
@@ -140,8 +140,6 @@
 "preference.detail.cosmetica" = "Плащи Cosmetica (ранее Arc). Да получения дополнительной информации посетите https://cosmetica.cc. Требуется Optifine.";
 "preference.title.debug_logging" = "Отладочные записи";
 "preference.detail.debug_logging" = "Включить запись внутренних настроек и действий в latestlog.txt. Может облегчить нахождение ошибок продвинутым пользователям, однако это немного замедлит запуск Minecraft, поскольку журнал будет записываться значительно чаще.";
-"preference.title.enable_altkit" = "Интеграция AltKit";
-"preference.detail.enable_altkit" = "PojavLauncher будет пытаться подключиться к AltServer для включения JIT.";
 "preference.title.appicon" = "Выбрать иконку приложения";
 "preference.detail.appicon" = "Позволяет выбрать одну из нескольких иконок PojavLauncher для главного экрана.";
 "preference.title.appicon-default" = "Обычный светлый PojavLauncher";
