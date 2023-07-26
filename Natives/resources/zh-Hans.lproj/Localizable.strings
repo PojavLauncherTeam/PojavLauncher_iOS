@@ -69,18 +69,18 @@
 "launcher.menu.custom_controls" = "自定义控制按键";
 "launcher.menu.install_jar" = "安装 .jar";
 
-"launcher.wait_jit.title" = "请等待应用获取到JIT(Just-in-time)";
-"launcher.wait_jit.message" = "PojavLauncher启动器必须要JIT (Just-in-time) 权限才能启动游戏";
+"launcher.wait_jit.title" = "正等待即时编译（JIT）中";
+"launcher.wait_jit.message" = "PojavLauncher 依靠 Java 的即时编译（JIT）来以最大性能工作。";
 
 "login.error.username.outOfRange" = "用户名必须在 3-16 个字符以内";
 
 "login.alert.field.username" = "用户名";
 
-"login.jit.checking" = "检查是否开启 JIT 权限";
-"login.jit.enabled" = "JIT 权限已启用";
-"login.jit.fail" = "无法开启 JIT权限";
-"login.jit.fail.title" = "无法在您的设备上开启 JIT权限";
-"login.jit.fail.description" = "当前你的设备上没有能开启JIT权限方式，你需要通过牛蛙，Xcode...手动启动JIT权限。你可以在游戏latestlog.txt日志文件中找到当前事件详细记录情况";
+"login.jit.checking" = "检查是否开启即时编译（JIT）";
+"login.jit.enabled" = "即时编译（JIT）已启用";
+"login.jit.fail" = "无法开启即时编译（JIT）";
+"login.jit.fail.title" = "无法在您的设备上启用即时编译（JIT）";
+"login.jit.fail.description" = "无法使用集成在您的设备上自动启用即时编译（JIT），您需要借助一些方法手动启用其权限。错误已记录于 latestlog.txt。";
 
 // Login buttons
 "login.menu.sendlogs" = "发送日志文件";
@@ -141,8 +141,6 @@
 "preference.detail.cosmetica" = "启用来自 Cosmetica（原 Arc ）的披风。欲了解更多信息，请访问 https://arcapes.com。需要 OptiFine。";
 "preference.title.debug_logging" = "调试日志";
 "preference.detail.debug_logging" = "完整的记录启动器的各种活动事件到latestlog.txt文件内,有助于开发者更容易的发现错误。但Minecraft游戏内FPS可能会降低(频繁的记录日志内容会使得CPU负载变高)";
-"preference.title.enable_altkit" = "启用 AltKit 集成";
-"preference.detail.enable_altkit" = "启用时，PojavLauncher 将尝试连接到本地 AltServers 以启用 JIT。";
 "preference.title.appicon" = "设置应用应用图标风格";
 "preference.detail.appicon" = "允许您为 PojavLauncher 选择不同的主屏幕图标。";
 "preference.title.appicon-default" = "设置 PojavLauncher 图标为浅色";
@@ -240,8 +238,8 @@
 "preference.title.custom_env" = "环境变量";
 "preference.detail.custom_env" = "此选项正在构建中。在此期间创建并编辑 custom_env.txt。";
 
-"preference.title.debug_skip_wait_jit" = "跳过获取\"JIT(Just-in-time)\"请求";
-"preference.detail.debug_skip_wait_jit" = "这并不是让您在没有 JIT 的情况下启动，而是跳过调试检查，因为在越狱设备上会检查失败。";
+"preference.title.debug_skip_wait_jit" = "跳过“正等待即时编译（JIT）中”对话框";
+"preference.detail.debug_skip_wait_jit" = "这并非让您不使用即时编译（JIT）启动，而是跳过调试检查，因为在越狱设备上会检查失败。";
 "preference.title.debug_ipad_ui" = "使用 iPadOS 界面";
 "preference.detail.debug_ipad_ui" = "开启后会使用 iPad OS 的专用界面，否则使用 iPhone 的界面。";
 "preference.title.debug_auto_correction" = "自动校正";
