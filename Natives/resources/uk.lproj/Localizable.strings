@@ -141,8 +141,6 @@
 "preference.detail.cosmetica" = "Включає плащі від Cosmetica (раніше Arc). Для більш детальної інформації, будь ласка, відвідайте https://cosmetica.cc. Потребує OptiFine";
 "preference.title.debug_logging" = "Запис помилок";
 "preference.detail.debug_logging" = "Записує внутрішні налаштування і дії на latestlog.txt. Це допомагає розробникам швидше знаходити проблеми, але Minecraft може працювати повільніше, оскільки журнали пишуться часто.";
-"preference.title.enable_altkit" = "Увімкнути інтеграцію AltKit";
-"preference.detail.enable_altkit" = "Якщо увімкнено, PojavLauncher спробує приєднатися до локальних AltServers аби увімкнути JIT.";
 "preference.title.appicon" = "Встановити іконку додатка";
 "preference.detail.appicon" = "Дозволяє обрати різні значки основного екрана для PojavLauncher.";
 "preference.title.appicon-default" = "Знайоме світле PojavLauncher";
