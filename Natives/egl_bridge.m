@@ -54,6 +54,7 @@ EGLBoolean (*eglDestroySurface_p) (EGLDisplay dpy, EGLSurface surface);
 EGLBoolean (*eglTerminate_p) (EGLDisplay dpy);
 EGLBoolean (*eglReleaseThread_p) (void);
 EGLContext (*eglGetCurrentContext_p) (void);
+EGLDisplay (*eglGetDisplay_p) (void *native_display);
 EGLDisplay (*eglGetPlatformDisplay_p) (EGLenum platform, void *native_display, const EGLint *attrib_list);
 EGLBoolean (*eglInitialize_p) (EGLDisplay dpy, EGLint *major, EGLint *minor);
 EGLBoolean (*eglChooseConfig_p) (EGLDisplay dpy, const EGLint *attrib_list, EGLConfig *configs, EGLint config_size, EGLint *num_config);
@@ -142,7 +143,7 @@ void dlsym_EGL(void* dl_handle) {
     eglDestroySurface_p = dlsym(dl_handle, "eglDestroySurface");
     eglGetConfigAttrib_p = dlsym(dl_handle, "eglGetConfigAttrib");
     eglGetCurrentContext_p = dlsym(dl_handle, "eglGetCurrentContext");
-    //eglGetDisplay = replaced with eglGetPlatformDisplay
+    eglGetDisplay_p = dlsym(dl_handle, "eglGetDisplay");
     eglGetError_p = dlsym(dl_handle, "eglGetError");
     eglGetPlatformDisplay_p = dlsym(dl_handle, "eglGetPlatformDisplay");
     eglInitialize_p = dlsym(dl_handle, "eglInitialize");
@@ -173,7 +174,7 @@ void loadSymbols(int renderer) {
             sprintf((char *)fileName, "%s/Frameworks/%s", getenv("BUNDLE_PATH"), getenv("POJAV_RENDERER"));
             break;
         case RENDERER_MTL_ANGLE:
-            sprintf((char *)fileName, "%s/Frameworks/MetalANGLE.framework/MetalANGLE", getenv("BUNDLE_PATH"));
+            sprintf((char *)fileName, "%s/Frameworks/libtinygl4angle.dylib", getenv("BUNDLE_PATH"));
             break;
     }
     void* dl_handle = dlopen(fileName,RTLD_NOW|RTLD_GLOBAL|RTLD_NODELETE);
@@ -219,16 +220,19 @@ jboolean pojavInitOpenGL() {
 
     NSString *renderer = @(getenv("POJAV_RENDERER"));
     BOOL isAuto = [renderer isEqualToString:@"auto"];
+    BOOL angleDesktopGL = NO;
     /* if ([renderer isEqualToString:@"libOSMesa.8.dylib"]) {
         config_renderer = RENDERER_VIRGL;
         setenv("GALLIUM_DRIVER", "virpipe", 1);
         loadSymbolsVirGL();
     } else */ if (isAuto || [renderer isEqualToString:@ RENDERER_NAME_GL4ES]) {
         // At this point, if renderer is still auto (unspecified major version), pick gl4es
+        angleDesktopGL = NO;
         config_renderer = RENDERER_MTL_ANGLE;
         renderer = @ RENDERER_NAME_GL4ES;
         setenv("POJAV_RENDERER", renderer.UTF8String, 1);
     } else if ([renderer isEqualToString:@ RENDERER_NAME_MTL_ANGLE]) {
+        angleDesktopGL = YES;
         config_renderer = RENDERER_MTL_ANGLE;
     } else if ([renderer hasPrefix:@"libOSMesa"]) {
         config_renderer = RENDERER_VK_ZINK;
@@ -239,7 +243,7 @@ jboolean pojavInitOpenGL() {
 
     if (config_renderer == RENDERER_MTL_ANGLE || config_renderer == RENDERER_VIRGL) {
         if (potatoBridge.eglDisplay == EGL_NO_DISPLAY) {
-            potatoBridge.eglDisplay = eglGetPlatformDisplay_p(EGL_PLATFORM_ANGLE_ANGLE, (void *)EGL_DEFAULT_DISPLAY, NULL);
+            potatoBridge.eglDisplay = eglGetDisplay_p((void *)EGL_DEFAULT_DISPLAY);
             if (potatoBridge.eglDisplay == EGL_NO_DISPLAY) {
                 NSDebugLog(@"EGLBridge: Error eglGetDefaultDisplay() failed: 0x%x", eglGetError_p());
                 return JNI_FALSE;
@@ -256,14 +260,14 @@ jboolean pojavInitOpenGL() {
             return JNI_FALSE;
         }
 
-        static const EGLint attribs[] = {
+        const EGLint attribs[] = {
                 EGL_RED_SIZE, 8,
                 EGL_GREEN_SIZE, 8,
                 EGL_BLUE_SIZE, 8,
                 EGL_ALPHA_SIZE, 8,
                 // Minecraft required on initial 24
                 EGL_DEPTH_SIZE, 24,
-                EGL_RENDERABLE_TYPE, EGL_OPENGL_ES3_BIT,
+                EGL_RENDERABLE_TYPE, angleDesktopGL ? EGL_OPENGL_BIT : EGL_OPENGL_ES3_BIT,
                 EGL_NONE
         };
 
@@ -285,7 +289,9 @@ jboolean pojavInitOpenGL() {
 
         //ANativeWindow_setBuffersGeometry(potatoBridge.androidWindow, 0, 0, vid);
 
-        if (!eglBindAPI_p(EGL_OPENGL_API)) {
+        if (!angleDesktopGL) {
+            eglBindAPI_p(EGL_OPENGL_ES_API);
+        } else if (!eglBindAPI_p(EGL_OPENGL_API)) {
             NSDebugLog(@"EGLBridge: Failed to bind EGL_OPENGL_API, falling back to EGL_OPENGL_ES_API, error=0x%x", eglGetError_p());
             eglBindAPI_p(EGL_OPENGL_ES_API);
         }

@@ -19,6 +19,10 @@
 #define AliasDecl(NAME, EXT) \
     asm(".global _"# NAME "\n_" #NAME ": b _" #NAME #EXT);
 
+// Core OpenGL 2.0
+AliasDecl(glGetTexImage, ANGLE)
+AliasDecl(glMapBuffer, OES)
+
 // GL_KHR_debug
 AliasDecl(glDebugMessageCallback, KHR)
 AliasDecl(glDebugMessageControl, KHR)
@@ -29,6 +33,10 @@ AliasDecl(glObjectLabel, KHR)
 AliasDecl(glPopDebugGroup, KHR)
 AliasDecl(glPushDebugGroup, KHR)
 
+// GL_EXT_blend_func_extended
+AliasDecl(glBindFragDataLocation, EXT)
+AliasDecl(glBindFragDataLocationIndexed, EXT)
+
 int proxy_width, proxy_height, proxy_intformat, maxTextureSize;
 
 //void glBindFragDataLocationEXT(GLuint program, GLuint colorNumber, const char * name);
@@ -38,56 +46,10 @@ int proxy_width, proxy_height, proxy_intformat, maxTextureSize;
 void(*gles_glGetTexLevelParameteriv)(GLenum target, GLint level, GLenum pname, GLint *params);
 void(*gles_glShaderSource)(GLuint shader, GLsizei count, const GLchar * const *string, const GLint *length);
 void(*gles_glTexImage2D)(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *data);
-
-void glBindFragDataLocation(GLuint program, GLuint colorNumber, const char * name) {
-    glBindFragDataLocationEXT(program, colorNumber, name);
-}
+void(*gles_glTexParameterfv)(GLenum target, GLenum pname, const GLfloat *params);
 
 void glClearDepth(GLdouble depth) {
     glClearDepthf(depth);
-}
-
-void *glMapBuffer(GLenum target, GLenum access) {
-    // Use: GL_EXT_map_buffer_range
-
-    GLenum access_range;
-    GLint length;
-
-    switch (target) {
-        // GL 4.2
-        case GL_ATOMIC_COUNTER_BUFFER:
-
-        // GL 4.3
-        case GL_DISPATCH_INDIRECT_BUFFER:
-        case GL_SHADER_STORAGE_BUFFER	:
-
-        // GL 4.4
-        case GL_QUERY_BUFFER:
-            printf("ERROR: glMapBuffer unsupported target=0x%x", target);
-            break; // not supported for now
-
-	     case GL_DRAW_INDIRECT_BUFFER:
-        case GL_TEXTURE_BUFFER:
-            printf("ERROR: glMapBuffer unimplemented target=0x%x", target);
-            break;
-    }
-
-    switch (access) {
-        case GL_READ_ONLY:
-            access_range = GL_MAP_READ_BIT;
-            break;
-
-        case GL_WRITE_ONLY:
-            access_range = GL_MAP_WRITE_BIT;
-            break;
-
-        case GL_READ_WRITE:
-            access_range = GL_MAP_READ_BIT | GL_MAP_WRITE_BIT;
-            break;
-    }
-
-    glGetBufferParameteriv(target, GL_BUFFER_SIZE, &length);
-    return glMapBufferRange(target, 0, length, access_range);
 }
 
 void glShaderSource(GLuint shader, GLsizei count, const GLchar * const *string, const GLint *length) {
@@ -160,6 +122,8 @@ void glShaderSource(GLuint shader, GLsizei count, const GLchar * const *string, 
         "#extension GL_EXT_shader_non_constant_global_initializers : enable\n";
     converted = InplaceInsert(GetLine(converted, 1), extensions, converted, &convertedLen);
 
+    //printf("[tinygl4angle] glShaderSource: %s\n", converted);
+
     gles_glShaderSource(shader, 1, (const GLchar * const*)((converted)?(&converted):(&source)), NULL);
 
     free(source);
@@ -220,6 +184,16 @@ void glTexImage2D(GLenum target, GLint level, GLint internalformat, GLsizei widt
     } else {
         gles_glTexImage2D(target, level, internalformat, width, height, border, format, type, data);
     }
+}
+
+void glTexParameterfv(GLenum target, GLenum pname, const GLfloat *params) {
+    LOOKUP_FUNC(glTexParameterfv)
+    if (pname != GL_TEXTURE_LOD_BIAS) {
+        gles_glTexParameterfv(target, pname, params);
+    }
+}
+void glTexParameterf(GLenum target, GLenum pname, GLfloat param) {
+    glTexParameterfv(target, pname, &param);
 }
 
 // VertexArray stuff
