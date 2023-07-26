@@ -141,8 +141,6 @@
 "preference.detail.cosmetica" = "Enable capes from Cosmetica (previously Arc). For more information please visit https://cosmetica.cc. Requires OptiFine";
 "preference.title.debug_logging" = "Debug logging";
 "preference.detail.debug_logging" = "Logs internal settings and actions to latestlog.txt. This helps the developers find issues easier, but Minecraft may run slower as the logs will be written to more often.";
-"preference.title.enable_altkit" = "Enable AltKit integration";
-"preference.detail.enable_altkit" = "When enabled, PojavLauncher will attempt to connect to local AltServers to enable JIT.";
 "preference.title.appicon" = "Set app icon";
 "preference.detail.appicon" = "Allows you to choose between different Home Screen icons for PojavLauncher.";
 "preference.title.appicon-default" = "Familiar PojavLauncher light";
