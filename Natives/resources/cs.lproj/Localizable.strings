@@ -140,8 +140,6 @@
 "preference.detail.cosmetica" = "Zapne kápě z Cosmeticy (dřiv Arc), vyžadujíc OptiFine. Pro více informací navštivte https://cosmetica.cc";
 "preference.title.debug_logging" = "Zaznamenávání ladění";
 "preference.detail.debug_logging" = "Zaznamenává interní nastavení a akce do latestlog.txt. Toto dovoluje vývojářům nalézt problémy dřiv, ale záznamy budou častěji zapisovány, díky čemuž Minecraft může běžet pomaleji.";
-"preference.title.enable_altkit" = "Povolit integraci AltKitu";
-"preference.detail.enable_altkit" = "Pokud povoleno, PojavLauncher se pokusí o připojení k místním AltServerům pro zapnutí JIT.";
 "preference.title.appicon" = "Nastaviti ikonu aplikace";
 "preference.detail.appicon" = "Umožnǔje vybrat mezi různými ikonami plochy PojavLauncheru.";
 "preference.title.appicon-default" = "Známá PojavLauncher světlá";
