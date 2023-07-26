@@ -135,8 +135,6 @@
 "preference.detail.cosmetica" = "코스메티카(이전의 Arc)에서 망토를 활성화합니다. 자세한 내용은 https://cosmetica.cc를 참조하십시오. OptiFine이 필요합니다.";
 "preference.title.debug_logging" = "디버그 로깅";
 "preference.detail.debug_logging" = "내부 설정 및 작업을 latestlog.txt에 기록합니다. 이렇게 하면 개발자가 문제를 더 쉽게 찾는 데 도움이 되지만 로그가 더 자주 기록되므로 Minecraft가 느리게 실행될 수 있습니다.";
-"preference.title.enable_altkit" = "AltKit 연동 활성화";
-"preference.detail.enable_altkit" = "활성화되면 PojavLauncher는 JIT를 활성화하기 위해 로컬 AltServer에 연결을 시도합니다.";
 "preference.title.appicon" = "앱 아이콘 설정";
 "preference.detail.appicon" = "PojavLauncher에 대한 다양한 홈 화면 아이콘 중에서 선택할 수 있습니다.";
 "preference.title.appicon-default" = "친숙한 PojavLauncher 라이트";
