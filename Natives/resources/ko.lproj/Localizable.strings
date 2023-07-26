@@ -4,11 +4,11 @@
 */
 
 "game.menu.force_close" = "강제 종료";
-"game.menu.confirm.force_close" = "강제 종료를 하시겠습니까?";
+"game.menu.confirm.force_close" = "강제 종료 하시겠습니까?";
 "game.menu.log_output" = "로그 확인";
 "game.menu.custom_controls" = "사용자 지정 조작";
 
-"game.note.airplay" = "마인크래프트가 AirPlay 디스플레이에 출력되고있습니다";
+"game.note.airplay" = "마인크래프트가 AirPlay 디스플레이에 출력되고있습니다.";
 
 "game.title.exit_code" = "마인크래프트가 종료 코드 %d와(과) 함께 종료했습니다.";
 
@@ -25,7 +25,7 @@
 // Custom controls
 "Copy" = "복사";
 "Edit" = "수정";
-"Move" = "움직이다";
+"Move" = "이동";
 "Remove" = "제거";
 "Resize" = "사이즈 변경";
 
@@ -139,13 +139,28 @@
 "preference.detail.enable_altkit" = "활성화되면 PojavLauncher는 JIT를 활성화하기 위해 로컬 AltServer에 연결을 시도합니다.";
 "preference.title.appicon" = "앱 아이콘 설정";
 "preference.detail.appicon" = "PojavLauncher에 대한 다양한 홈 화면 아이콘 중에서 선택할 수 있습니다.";
+"preference.title.appicon-default" = "친숙한 PojavLauncher 라이트";
+"preference.title.appicon-dark" = "친숙한 PojavLauncher 다크";
+"preference.title.appicon-development" = "연필 개발";
+"preference.title.hidden_sidebar" = "기본적으로 메인 메뉴 사이드바 숨기기";
+"preference.detail.hidden_sidebar" = "기본적으로 그리고 회전할 때 기본 메뉴에서 사이드바를 숨길 수 있습니다.";
 
 "preference.title.reset_warnings" = "모든 경고 초기화";
 "preference.title.done.reset_warnings" = "모든 경고가 리셋되었습니다";
 
 "preference.title.reset_settings" = "모든 설정 초기화";
+"preference.title.confirm.reset_settings" = "이렇게 하면 해상도, 버튼 크기 및 Java 인수를 포함한 모든 사용자 정의 기본 설정이 제거됩니다.";
+"preference.title.done.reset_settings" = "모든 기본 설정이 복원되었습니다.";
+
+"preference.title.erase_demo_data" = "데모 게임 데이터 지우기";
+"preference.title.confirm.erase_demo_data" = "이렇게 하면 데모 계정에 사용된 모든 데모 게임 버전과 데이터가 지워집니다.";
+"preference.title.done.erase_demo_data" = "데모 게임 데이터가 모두 삭제되었습니다.";
 
 "preference.title.renderer" = "렌더러";
+
+"preference.title.renderer.debug.auto" = "자동: gl4es 또는 ANGLE";
+"preference.title.renderer.debug.gl4es" = "holy gl4es - OpenGL 2.1 내보내기";
+"preference.title.renderer.debug.angle" = "ANGLE(1.17+) - OpenGL 3.2 내보내기(Core Profile, 제한됨)";
 "preference.title.virtmouse_enable" = "가상 마우스";
 
 "preference.title.gyroscope_enable" = "자이로스코프 컨트롤러 활성화";
@@ -156,8 +171,56 @@
 "preference.title.auto_ram" = "자동 RAM 할당";
 "preference.detail.auto_ram" = "자동 RAM 할당 활성화하기";
 "preference.detail.allocated_memory" = "Minecraft 메모리 할당 조절";
+"preference.detail.debug_show_layout_bounds" = "클립 경계, 여백 표시";
+"preference.title.debug_show_layout_overlap" = "레이아웃 겹침 표시";
+"preference.detail.debug_show_layout_overlap" = "겹치는 뷰를 나타내기 위해 모든 뷰를 투명 색상으로 오버레이합니다.";
 
 "preference.profile.title.name" = "이름";
 "preference.profile.title.version" = "버전";
 "profile.title.create" = "새 프로필 생성";
+
+"controller_configurator.title.current" = "게임패드 구성 파일";
+"controller_configurator.title.type.xbox" = "XBox";
+"controller_configurator.title.type.playstation" = "PlayStation";
+
+"controller_configurator.xbox.title.bumper_left" = "왼쪽 범퍼";
+"controller_configurator.xbox.title.bumper_right" = "오른쪽 범퍼";
+"controller_configurator.xbox.title.trigger_left" = "왼쪽 트리거";
+"controller_configurator.xbox.title.trigger_right" = "오른쪽 트리거";
+"controller_configurator.xbox.title.named_back" = "가이드";
+"controller_configurator.xbox.title.named_start" = "메뉴";
+"controller_configurator.xbox.title.named_a" = "A";
+"controller_configurator.xbox.title.named_b" = "B";
+"controller_configurator.xbox.title.named_x" = "X";
+"controller_configurator.xbox.title.named_y" = "Y";
+"controller_configurator.xbox.title.dpad_up" = "위";
+"controller_configurator.xbox.title.dpad_down" = "아래";
+"controller_configurator.xbox.title.dpad_left" = "왼쪽";
+"controller_configurator.xbox.title.dpad_right" = "오른쪽";
+"controller_configurator.xbox.title.thumb_left" = "왼쪽 스틱 클릭";
+"controller_configurator.xbox.title.thumb_right" = "오른쪽 스틱 클릭";
+
+"controller_configurator.playstation.title.bumper_left" = "L1";
+"controller_configurator.playstation.title.bumper_right" = "R1";
+"controller_configurator.playstation.title.trigger_left" = "L2";
+"controller_configurator.playstation.title.trigger_right" = "R2";
 "controller_configurator.playstation.title.named_back" = "선택";
+"controller_configurator.playstation.title.named_start" = "시작";
+"controller_configurator.playstation.title.named_a" = "✕";
+"controller_configurator.playstation.title.named_b" = "◯";
+"controller_configurator.playstation.title.named_x" = "▢";
+"controller_configurator.playstation.title.named_y" = "△";
+"controller_configurator.playstation.title.dpad_up" = "위";
+"controller_configurator.playstation.title.dpad_down" = "아래";
+"controller_configurator.playstation.title.dpad_left" = "왼쪽";
+"controller_configurator.playstation.title.dpad_right" = "오른쪽";
+"controller_configurator.playstation.title.thumb_left" = "L3";
+"controller_configurator.playstation.title.thumb_right" = "R3";
+
+"controller_configurator.section.config_files" = "현재 구성 파일";
+"controller_configurator.section.game_mappings" = "게임 매핑";
+"controller_configurator.section.footer.game_mappings" = "게임에서 마우스가 잠겨 있을 때 바인딩합니다.";
+"controller_configurator.section.menu_mappings" = "메뉴 메핑";
+"controller_configurator.section.footer.menu_mappings" = "타이틀 화면이나 일시정지 메뉴 등 마우스가 잠기지 않은 상태에서 바인딩합니다.";
+"controller_configurator.section.controller_style" = "콘트롤러 타입";
+"controller_configurator.section.footer.controller_style" = "이 구성 파일에서 다른 컨트롤러 버튼 이름을 표시합니다.";
