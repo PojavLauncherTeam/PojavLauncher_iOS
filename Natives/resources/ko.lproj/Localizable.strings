@@ -60,6 +60,9 @@
 
 "init.migrateDir" = "PojavLauncher 데이터 디렉토리는 이제 %@입니다. 모든 기존 데이터가 새 위치로 이동되었습니다.";
 
+"java.error.missing_main_class" = "%@에 기본 클래스 속성이 없습니다. 모드인 경우 선택한 인스턴스의 \"mods\" 폴더에 넣습니다.";
+"java.error.missing_runtime" = "%@을(를) 실행하려면 Java %d 이상이 필요합니다. 먼저 설치하고 런타임 관리에서 지정하십시오.";
+
 "launcher.mcl.downloading_file" = "%@ 다운로드 중";
 "launcher.mcl.error_download" = "%@: %@ 다운로드 실패";
 
@@ -98,6 +101,7 @@
 "login.warn.message.demomode" = "오프라인 및 로컬 모드를 대체하는 데모 모드를 사용하면 게임을 소유하지 않은 Microsoft 계정에 로그인하고 1.3.1 및 최신 버전에 도입된 Java Edition 평가판을 플레이할 수 있습니다. 이전 버전에는 공식 런처가 이러한 제한을 두지 않기 때문에 전체 게임이 포함되어 있습니다. 오프라인 모드에서 전환에 대한 자세한 내용은 당사 웹 사이트를 참조하십시오.";
 
 "login.warn.title.localmode" = "오프라인 모드는 이제 로컬 모드입니다";
+"login.warn.message.localmode" = "설치된 버전을 계속 플레이할 수 있지만 유료 계정 없이는 더 이상 Minecraft를 다운로드할 수 없습니다. 로컬 계정 문제 또는 기타 Minecraft 획득 수단에 대한 지원은 제공되지 않습니다.";
 
 "login.msa.error.xsts.noxboxacc" = "Xbox 프로필이 이 Microsoft 계정에서 등록되지 않았습니다. Xbox 프로필을 만드셨는지 확인하십시오.\n오류 코드: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live는 현제 당신의 나라에서 지원되지 않습니다.\n오류 코드: 2148916235";
@@ -112,10 +116,12 @@
 "login.msa.progress.checkMCProfile" = "(5/5) Minecraft 프로필 확인중";
 
 "News" = "소식";
+"Profiles" = "프로필";
 "Settings" = "설정";
 
 "preference.section.general" = "일반 설정";
 "preference.section.video" = "비디오 및 오디오 설정";
+"preference.section.footer.video" = "자동 렌더러를 사용하면 PojavLauncher가 Minecraft 버전에 따라 최상의 옵션을 선택할 수 있습니다. 해상도를 낮추면 성능 향상을 위해 GPU 워크로드가 줄어듭니다.";
 "preference.section.control" = "사용자 지정 조작";
 "preference.section.debug" = "UI 디버깅 설정";
 "preference.section.footer.debug" = "디버깅 외에도 이러한 설정은 사용자 지정 컨트롤에 유용할 수 있습니다. 변경 사항을 적용하려면 런처를 다시 시작해야 할 수도 있습니다.";
@@ -156,6 +162,11 @@
 
 "preference.title.renderer" = "렌더러";
 
+"preference.title.renderer.release.auto" = "자동";
+"preference.title.renderer.release.gl4es" = "holy gl4es";
+"preference.title.renderer.release.angle" = "ANGLE";
+"preference.title.renderer.release.zink" = "Zink";
+
 "preference.title.renderer.debug.auto" = "자동: gl4es 또는 ANGLE";
 "preference.title.renderer.debug.gl4es" = "holy gl4es - OpenGL 2.1 내보내기";
 "preference.title.renderer.debug.angle" = "ANGLE(1.17+) - OpenGL 3.2 내보내기(Core Profile, 제한됨)";
@@ -181,6 +192,7 @@
 "preference.detail.gesture_mouse" = "탭하여 블록 배치, 길게 눌러 블록 중단, 두 손가락으로 스크롤과 같은 제스처를 활성화합니다.";
 "preference.title.gesture_hotbar" = "핫바 제스처";
 "preference.detail.gesture_hotbar" = "핫바 슬롯 터치, 손 사이의 항목 교환, 항목 던지기와 같은 제스처를 활성화합니다.";
+"preference.title.disable_haptics" = "햅틱 비활성화";
 "preference.title.press_duration" = "길게 누르기 지속 시간 (ms)";
 "preference.detail.press_duration" = "블록을 파괴하고 아이템을 떨어뜨리기 위한 트리거 누르기 지속 시간.";
 "preference.title.button_scale" = "화면 버튼 크기 (%)";
@@ -201,17 +213,55 @@
 "preference.title.gyroscope_sensitivity" = "자이로스코프 감도 조절";
 "preference.detail.gyroscope_sensitivity" = "자이로스코프 컨트롤의 감도를 조정하세요";
 
+"preference.title.manage_runtime" = "런타임 관리";
+"preference.title.confirm.delete_runtime" = "%@가 삭제됩니다.";
+"preference.manage_runtime.header.default" = "선호하는 자바 버전";
+"preference.manage_runtime.default.1165" = "1.16.5 이하";
+"preference.manage_runtime.default.117" = "1.17 이상";
+"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 이하 버전은 최신 Java 버전에서 실행될 수 있지만 모드와의 호환성은 보장되지 않습니다. 외부 런타임은 \"java_runtimes\" 폴더에 배치할 수 있습니다. \".jar 설치\"에 대한 Java 버전 변경은 설치 프로그램이 최신 Java 버전을 예상하지 않는 경우에만 적용됩니다.";
+"preference.manage_runtime.footer.java8" = "이것은 Minecraft 1.16.5 및 이전 버전의 기본 버전입니다.";
+"preference.manage_runtime.footer.java17" = "이것은 Minecraft 1.17 이상의 기본 버전입니다.";
+"preference.manage_runtime.header.invalid" = "유효하지 않은 런타임";
+
 "preference.title.java_args" = "JVM 시작 스크립트";
+"preference.detail.java_args" = "Minecraft를 시작할 때 Java에 인수를 전달합니다. 잘못 수정하면 게임이 충돌할 수 있으니 주의하세요.";
+"preference.placeholder.java_args" = "인수 지정...";
+"preference.title.env_variables" = "환경 변수";
+"preference.detail.env_variables" = "Minecraft를 시작할 때 사용자 지정 환경 변수를 설정합니다. 잘못 수정하면 게임이 충돌할 수 있으니 주의하세요.";
+"preference.placeholder.env_variables" = "변수 지정...";
 "preference.title.auto_ram" = "자동 RAM 할당";
 "preference.detail.auto_ram" = "자동 RAM 할당 활성화하기";
+"preference.warn.auto_ram" = "탈옥되지 않은 장치에서 이 옵션을 비활성화하면 불안정해질 수 있습니다. 조심해서 진행하세요.";
+"preference.title.allocated_memory" = "메모리 할당 (MB)";
 "preference.detail.allocated_memory" = "Minecraft 메모리 할당 조절";
+"preference.warn.allocated_memory" = "운영 체제 자체의 제한으로 인해 이 옵션은 이 값 이상에서 불안정성을 유발할 수 있습니다. 조심해서 진행하세요.";
+"preference.title.custom_env" = "환경 변수";
+"preference.detail.custom_env" = "이 옵션은 작업 중입니다. 그 동안 custom_env.txt를 만들고 편집합니다.";
+
+"preference.title.debug_skip_wait_jit" = "\"JIT를 기다리고 있습니다\" 건너뛰기";
+"preference.detail.debug_skip_wait_jit" = "이렇게 하면 JIT 없이 시작할 수 없으며 대신 특정 탈옥에서 검사가 실패하기 때문에 디버거 검사를 건너뜁니다.";
+"preference.title.debug_ipad_ui" = "iPadOS UI 잠금해제";
+"preference.detail.debug_ipad_ui" = "활성화된 경우 iPad 전용 UI(경고, 키보드 등) 를 잠금 해제하고 비활성화된 경우 iPhone UI를 잠금 해제합니다.";
+"preference.title.debug_auto_correction" = "자동 수정";
+"preference.detail.debug_auto_correction" = "게임 안에서 타이핑 할때 자동 수정을 활성화 합니다.";
+"preference.title.debug_hide_home_indicator" = "홈바 숨기기";
+"preference.detail.debug_hide_home_indicator" = "이렇게 하면 홈 바 잠금이 비활성화됩니다. 홈 바를 숨기고 잠그려면 사용법 유도를 사용해야 합니다.";
+"preference.title.debug_show_layout_bounds" = "레이아웃 범위 표시";
 "preference.detail.debug_show_layout_bounds" = "클립 경계, 여백 표시";
 "preference.title.debug_show_layout_overlap" = "레이아웃 겹침 표시";
 "preference.detail.debug_show_layout_overlap" = "겹치는 뷰를 나타내기 위해 모든 뷰를 투명 색상으로 오버레이합니다.";
 
 "preference.profile.title.name" = "이름";
 "preference.profile.title.version" = "버전";
+"preference.profile.title.default_touch_control" = "터치 컨트롤";
+"preference.profile.title.default_gamepad_control" = "게임패드 컨트롤";
+
+"profile.error.name_exists" = "해당 이름의 프로필이 이미 존재합니다. 다른 이름을 사용하십시오.";
+"profile.section.instance" = "게임 인스턴스 설정";
+"profile.section.profiles" = "이 인스턴스의 프로필";
 "profile.title.create" = "새 프로필 생성";
+"profile.title.separate_preference" = "격리 설정";
+"profile.detail.separate_preference" = "이 옵션을 활성화하여 설정 변경 사항을 격리합니다. 재설정을 수행하면 기본 설정 대신 전역 설정으로 복원됩니다.";
 
 "controller_configurator.title.current" = "게임패드 구성 파일";
 "controller_configurator.title.type.xbox" = "XBox";
