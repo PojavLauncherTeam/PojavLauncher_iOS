@@ -159,9 +159,45 @@
 "preference.title.renderer.debug.auto" = "자동: gl4es 또는 ANGLE";
 "preference.title.renderer.debug.gl4es" = "holy gl4es - OpenGL 2.1 내보내기";
 "preference.title.renderer.debug.angle" = "ANGLE(1.17+) - OpenGL 3.2 내보내기(Core Profile, 제한됨)";
+"preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - exports OpenGL 4.1";
+
+"preference.detail.renderer" = "사용할 OpenGL 렌더링 엔진을 변경합니다. Zink는 문제 진단을 위해 iOS 16 이상에서 일시적으로 비활성화됩니다.";
+
+"preference.title.resolution" = "해상도 (%)";
+"preference.detail.resolution" = "게임 해상도를 낮출 수 있도록 허용합니다.";
+"preference.title.max_framerate" = "최대 FPS";
+"preference.detail.max_framerate" = "ProMotion 디스플레이에서 게임 프레임 속도를 60FPS로 제한할 수 있도록 허용합니다.";
+
+"preference.title.fullscreen_airplay" = "AirPlay 전체 화면";
+"preference.detail.fullscreen_airplay" = "화면의 모든 것을 미러링하지 않고 외부 디스플레이에 전체 화면 게임 창을 표시할 수 있도록 허용합니다.";
+"preference.title.silence_other_audio" = "게임이 열릴때 오디오 멈추기";
+"preference.detail.silence_other_audio" = "게임을 시작할 때 PojavLauncher가 음악과 같은 다른 앱의 오디오를 일시 중지하도록 허용합니다.";
+"preference.title.silence_with_switch" = "무음 스위치로 오디오 비활성화";
+"preference.detail.silence_with_switch" = "무음 모드가 켜져 있을 때 오디오를 비활성화하려면 활성화합니다. 헤드폰 및 외부 스피커는 영향을 받지 않습니다.";
+"preference.title.default_gamepad_ctrl" = "컨트롤러 구성";
+"preference.title.hardware_hide" = "하드웨어가 연결되면 컨트롤러 숨기기";
+"preference.detail.hardware_hide" = "마우스 또는 게임 컨트롤러가 연결되면 화면 컨트롤 UI를 비활성화합니다.";
+"preference.title.gesture_mouse" = "마우스 제스처";
+"preference.detail.gesture_mouse" = "탭하여 블록 배치, 길게 눌러 블록 중단, 두 손가락으로 스크롤과 같은 제스처를 활성화합니다.";
+"preference.title.gesture_hotbar" = "핫바 제스처";
+"preference.detail.gesture_hotbar" = "핫바 슬롯 터치, 손 사이의 항목 교환, 항목 던지기와 같은 제스처를 활성화합니다.";
+"preference.title.press_duration" = "길게 누르기 지속 시간 (ms)";
+"preference.detail.press_duration" = "블록을 파괴하고 아이템을 떨어뜨리기 위한 트리거 누르기 지속 시간.";
+"preference.title.button_scale" = "화면 버튼 크기 (%)";
+"preference.detail.button_scale" = "버튼이 너무 작으면 높히세요. 기본적으로 iPad 사용자에게 필요합니다.";
+"preference.title.mouse_scale" = "마우스 크기 (%)";
+"preference.detail.mouse_scale" = "가상 마우스 크기 변경";
+"preference.title.mouse_speed" = "마우스 속도 (%)";
+"preference.detail.mouse_speed" = "가상 마우스 속도 변경";
 "preference.title.virtmouse_enable" = "가상 마우스";
+"preference.detail.virtmouse_enable" = "가상 마우스와 함께 시작하려면 활성화 하세요.";
+"preference.title.slideable_hotbar" = "슬라이드 가능한 핫바";
+"preference.detail.slideable_hotbar" = "핫바를 마우스 휠처럼 슬라이드 가능하게 바꿉니다.";
 
 "preference.title.gyroscope_enable" = "자이로스코프 컨트롤러 활성화";
+"preference.detail.gyroscope_enable" = "이 기능을 활성화하면 기기를 돌려서 게임을 시작할 수 있습니다.";
+"preference.title.gyroscope_invert_x_axis" = "자이로스코프 좌우 반전";
+"preference.detail.gyroscope_invert_x_axis" = "자이로스코프 X축 반전";
 "preference.title.gyroscope_sensitivity" = "자이로스코프 감도 조절";
 "preference.detail.gyroscope_sensitivity" = "자이로스코프 컨트롤의 감도를 조정하세요";
 
