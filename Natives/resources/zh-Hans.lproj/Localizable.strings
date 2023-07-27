@@ -224,10 +224,10 @@
 "preference.manage_runtime.header.invalid" = "运行时无效";
 
 "preference.title.java_args" = "JVM 启动参数";
-"preference.detail.java_args" = "启动 Minecraft 时将参数传递到 Java。小心，如果修改不正确，可能会使游戏崩溃。";
+"preference.detail.java_args" = "启动 Minecraft 时将参数传递到 Java，注意：如果修改不正确，可能会使游戏崩溃。";
 "preference.placeholder.java_args" = "自定义参数...";
 "preference.title.env_variables" = "环境变量";
-"preference.detail.env_variables" = "启动 Minecraft 时设置自定义环境变量。小心，如果修改不正确，这可能会使游戏崩溃。";
+"preference.detail.env_variables" = "启动 Minecraft 时设置自定义环境变量，注意：如果修改不正确，这可能会使游戏崩溃。";
 "preference.placeholder.env_variables" = "自定义参数……";
 "preference.title.auto_ram" = "自动设置内存大小";
 "preference.detail.auto_ram" = "启用内存自动调节";
@@ -256,12 +256,12 @@
 "preference.profile.title.default_touch_control" = "触摸控制";
 "preference.profile.title.default_gamepad_control" = "手柄控制";
 
-"profile.error.name_exists" = "具有该名称的配置文件已存在。请使用其他名称。";
+"profile.error.name_exists" = "此配置文件的名称已存在，请使用其他名称。";
 "profile.section.instance" = "游戏实例设置";
 "profile.section.profiles" = "此实例中的配置文件";
 "profile.title.create" = "创建新配置";
 "profile.title.separate_preference" = "隔离设置";
-"profile.detail.separate_preference" = "启用此选项可隔离设置中所做的任何更改。执行重置将恢复为全局设置而非默认设置。";
+"profile.detail.separate_preference" = "启用此选项可隔离设置中所做的任何更改(包括mod，光影，材质包)，执行重置将恢复为全局设置而非默认设置。";
 
 "controller_configurator.title.current" = "游戏键盘配置文件";
 "controller_configurator.title.type.xbox" = "Xbox";
