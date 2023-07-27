@@ -116,6 +116,7 @@
 "login.msa.progress.checkMCProfile" = "(5/5) Проверка профиля Minecraft...";
 
 "News" = "Новости лаунчера";
+"Profiles" = "Профили";
 "Settings" = "Настройки";
 
 "preference.section.general" = "Основные настройки";
@@ -191,6 +192,7 @@
 "preference.detail.gesture_mouse" = "Включить имитацию действий мыши — двойное касание для размещения блока, удержание для его разрушения и прокрутку двумя пальцами.";
 "preference.title.gesture_hotbar" = "Жесты панели инструментов";
 "preference.detail.gesture_hotbar" = "Включить жесты выбора слотов, выбрасывания предметов и их перемещения во вторую руку.";
+"preference.title.disable_haptics" = "Отключить экранные тактильные эффекты";
 "preference.title.press_duration" = "Длительность нажатия (мс)";
 "preference.detail.press_duration" = "Длительность удерживания для разрушения блоков и выбрасывания предметов.";
 "preference.title.button_scale" = "Размер кнопок (%)";
@@ -243,6 +245,7 @@
 "preference.title.debug_auto_correction" = "Автокоррекция";
 "preference.detail.debug_auto_correction" = "Включить автокоррекцию при наборе текста в игре.";
 "preference.title.debug_hide_home_indicator" = "Скрыть индикатор навигации";
+"preference.detail.debug_hide_home_indicator" = "Это отключит блокировку кнопки \"Домой\". Необходимо использовать Guided Access, чтобы скрыть и заблокировать кнопку \"Домой\" за один раз.";
 "preference.title.debug_show_layout_bounds" = "Показывать границы элементов";
 "preference.detail.debug_show_layout_bounds" = "Показать границы и отступы";
 "preference.title.debug_show_layout_overlap" = "Показывать наложение элементов";
@@ -252,6 +255,10 @@
 "preference.profile.title.version" = "Версия";
 "preference.profile.title.default_touch_control" = "Сенсорное управление";
 "preference.profile.title.default_gamepad_control" = "Контроллер";
+
+"profile.error.name_exists" = "Профиль с таким именем уже существует. Введите другое имя.";
+"profile.section.instance" = "Настройки игрового экземпляра";
+"profile.section.profiles" = "Профили в данном экземпляре";
 "profile.title.create" = "Новый профиль";
 "profile.title.separate_preference" = "Изолировать настройки";
 "profile.detail.separate_preference" = "Опция для изоляции всех изменений в настройках. Их сброс приведёт к восстановлению глобальных настроек вместо настроек по умолчанию.";
@@ -300,3 +307,4 @@
 "controller_configurator.section.menu_mappings" = "Кнопки в меню";
 "controller_configurator.section.footer.menu_mappings" = "Назначения клавиш при свободном курсоре в главном меню, меню паузы или инвентаре.";
 "controller_configurator.section.controller_style" = "Тип контроллера";
+"controller_configurator.section.footer.controller_style" = "Отображать в данном конфигураторе различные названия кнопок контроллера.";
