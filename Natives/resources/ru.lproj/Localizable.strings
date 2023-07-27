@@ -144,6 +144,7 @@
 "preference.detail.appicon" = "Позволяет выбрать одну из нескольких иконок PojavLauncher для главного экрана.";
 "preference.title.appicon-default" = "Обычный светлый PojavLauncher";
 "preference.title.appicon-dark" = "Обычный тёмный PojavLauncher";
+"preference.title.appicon-development" = "Запланированная разработка";
 "preference.title.hidden_sidebar" = "Hide main menu sidebar by default";
 "preference.detail.hidden_sidebar" = "Скрывает боковую панель в главном меню в портретном и ландшафтном режимах.";
 
