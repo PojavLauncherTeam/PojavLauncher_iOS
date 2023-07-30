@@ -237,12 +237,14 @@ void glCopyTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffse
     }
 
     // Override with stub
+#if 0
     float *pixels = malloc(width*height*sizeof(float));
     for (int i = 0; i < width*height; i++) {
         pixels[i] = 0.5f;
     }
     glTexSubImage2D(target, level, xoffset, yoffset, width, height, GL_DEPTH_COMPONENT, GL_FLOAT, pixels);
     free(pixels);
+#endif
 
 #if 0
     static GLuint depthFB;
