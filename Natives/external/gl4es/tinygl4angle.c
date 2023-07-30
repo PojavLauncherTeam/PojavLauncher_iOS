@@ -39,13 +39,12 @@ AliasDecl(glBindFragDataLocationIndexed, EXT)
 
 int proxy_width, proxy_height, proxy_intformat, maxTextureSize;
 
-//void glBindFragDataLocationEXT(GLuint program, GLuint colorNumber, const char * name);
-//void glClearDepthf(GLclampf depth);
+void(*gles_glCopyTexSubImage2D)(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height);
 //void glGetBufferParameteriv(GLenum target, GLenum value, GLint * data);
-
 void(*gles_glGetTexLevelParameteriv)(GLenum target, GLint level, GLenum pname, GLint *params);
 void(*gles_glShaderSource)(GLuint shader, GLsizei count, const GLchar * const *string, const GLint *length);
 void(*gles_glTexImage2D)(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *data);
+void(*gles_glTexSubImage2D)(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid *data);
 void(*gles_glTexParameterfv)(GLenum target, GLenum pname, const GLfloat *params);
 
 void glClearDepth(GLdouble depth) {
@@ -115,9 +114,24 @@ void glShaderSource(GLuint shader, GLsizei count, const GLchar * const *string, 
     }
 #endif
 
+    // Workaround unassigned outputs: use gl_FragData[] instead of separate color outputs
+    char tmpOutFindLine[20];
+    char tmpOutReplaceLine[33];
+    strncpy(tmpOutFindLine, "out vec4 outColor0;", 20);
+    strncpy(tmpOutReplaceLine, "#define outColor0 gl_FragData[0]", 33);
+    for (int i = 0; i < 8; i++) {
+        tmpOutFindLine[17] = '0'+i;
+        if (FindString(converted, tmpOutFindLine)) {
+            tmpOutReplaceLine[16] = '0'+i;
+            tmpOutReplaceLine[30] = '0'+i;
+            converted = InplaceReplace(converted, &convertedLen, tmpOutFindLine, tmpOutReplaceLine);
+        }
+    }
+
     // some needed exts
     const char* extensions =
         "#extension GL_EXT_blend_func_extended : enable\n"
+        "#extension GL_EXT_draw_buffers : enable\n"
         // For OptiFine (see patch above)
         "#extension GL_EXT_shader_non_constant_global_initializers : enable\n";
     converted = InplaceInsert(GetLine(converted, 1), extensions, converted, &convertedLen);
@@ -171,6 +185,11 @@ void glGetTexLevelParameteriv(GLenum target, GLint level, GLenum pname, GLint *p
 
 void glTexImage2D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *data) {
     LOOKUP_FUNC(glTexImage2D)
+
+    if (type == GL_UNSIGNED_INT_8_8_8_8_REV) {
+        type = GL_UNSIGNED_BYTE;
+    }
+
     if (isProxyTexture(target)) {
         if (!maxTextureSize) {
             glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
@@ -186,6 +205,16 @@ void glTexImage2D(GLenum target, GLint level, GLint internalformat, GLsizei widt
     }
 }
 
+
+void glTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid *data) {
+    LOOKUP_FUNC(glTexSubImage2D)
+    if (type == GL_UNSIGNED_INT_8_8_8_8_REV) {
+        type = GL_UNSIGNED_BYTE;
+    }
+    gles_glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, data);
+}
+
+
 void glTexParameterfv(GLenum target, GLenum pname, const GLfloat *params) {
     LOOKUP_FUNC(glTexParameterfv)
     if (pname != GL_TEXTURE_LOD_BIAS) {
@@ -194,6 +223,43 @@ void glTexParameterfv(GLenum target, GLenum pname, const GLfloat *params) {
 }
 void glTexParameterf(GLenum target, GLenum pname, GLfloat param) {
     glTexParameterfv(target, pname, &param);
+}
+
+// Handle reading depth buffer
+void glReadBuffer(GLenum mode) {
+    // Override with stub
+}
+
+void glCopyTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height) {
+    if (target != GL_TEXTURE_2D) {
+        LOOKUP_FUNC(glCopyTexSubImage2D)
+        gles_glCopyTexSubImage2D(target, level, xoffset, yoffset, x, y, width, height);
+    }
+
+    // Override with stub
+    float *pixels = malloc(width*height*sizeof(float));
+    for (int i = 0; i < width*height; i++) {
+        pixels[i] = 0.5f;
+    }
+    glTexSubImage2D(target, level, xoffset, yoffset, width, height, GL_DEPTH_COMPONENT, GL_FLOAT, pixels);
+    free(pixels);
+
+#if 0
+    static GLuint depthFB;
+    if (!depthFB) {
+        glGenFramebuffers(1, &depthFB);
+    }
+    int fbID, texID;
+    glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &fbID);
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, &texID);
+    //glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, depthFB);
+    glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, target, texID, level);
+    assert(glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);
+    glBlitFramebuffer(xoffset, yoffset, width, height, x, y, width, height, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+    glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, target, 0, level);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbID);
+#endif
 }
 
 // VertexArray stuff
