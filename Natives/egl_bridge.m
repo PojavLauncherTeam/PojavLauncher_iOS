@@ -209,8 +209,9 @@ void loadSymbolsVirGL() {
     vtest_swap_buffers_p = dlsym(handle, "vtest_swap_buffers");
 }
 
-int pojavInit() {
+int pojavInit(BOOL useStackQueue) {
     isInputReady = 1;
+    isUseStackQueueCall = useStackQueue;
     mainThreadID = gettid();
     return JNI_TRUE;
 }

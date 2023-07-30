@@ -302,8 +302,6 @@ static AFURLSessionManager* manager;
             library[@"downloads"][@"artifact"][@"path"] = @"net/java/dev/jna/jna/5.13.0/jna-5.13.0.jar";
             library[@"downloads"][@"artifact"][@"url"] = @"https://repo1.maven.org/maven2/net/java/dev/jna/jna/5.13.0/jna-5.13.0.jar";
             library[@"downloads"][@"artifact"][@"sha1"] = @"1200e7ebeedbe0d10062093f32925a912020e747";
-        } else if ([library[@"name"] hasPrefix:@"org.lwjgl:lwjgl:"]) {
-            isUseStackQueueCall = [library[@"name"] hasPrefix:@"org.lwjgl:lwjgl:3"];
         }
     }
 
