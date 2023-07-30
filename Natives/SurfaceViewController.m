@@ -60,7 +60,7 @@ BOOL slideableHotbar;
 @property(nonatomic) CGFloat screenScale;
 @property(nonatomic) CGFloat mouseSpeed;
 @property(nonatomic) CGRect clickRange;
-@property(nonatomic) BOOL shouldTriggerClick, shouldTriggerHaptic;
+@property(nonatomic) BOOL isMacCatalystApp, shouldTriggerClick, shouldTriggerHaptic;
 
 @property(nonatomic) BOOL enableMouseGestures, enableHotbarGestures;
 
@@ -75,6 +75,7 @@ BOOL slideableHotbar;
 {
     [super viewDidLoad];
     isControlModifiable = NO;
+    self.isMacCatalystApp = NSProcessInfo.processInfo.isMacCatalystApp;
     
     self.lightHaptic = [[UIImpactFeedbackGenerator alloc] initWithStyle:(UIImpactFeedbackStyleLight)];
     self.mediumHaptic = [[UIImpactFeedbackGenerator alloc] initWithStyle:(UIImpactFeedbackStyleMedium)];
@@ -129,9 +130,17 @@ BOOL slideableHotbar;
 
     [self performSelector:@selector(setupCategory_Navigation)];
 
+    if (self.isMacCatalystApp) {
+        UIHoverGestureRecognizer *hoverGesture = [[UIHoverGestureRecognizer alloc]
+        initWithTarget:self action:@selector(surfaceOnHover:)];
+        [self.surfaceView addGestureRecognizer:hoverGesture];
+    }
+
     self.tapGesture = [[UITapGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnClick:)];
-    self.tapGesture.allowedTouchTypes = @[@(UITouchTypeDirect)];
+    if (!self.isMacCatalystApp) {
+        self.tapGesture.allowedTouchTypes = @[@(UITouchTypeDirect)];
+    }
     self.tapGesture.delegate = self;
     self.tapGesture.numberOfTapsRequired = 1;
     self.tapGesture.numberOfTouchesRequired = 1;
@@ -673,12 +682,6 @@ BOOL slideableHotbar;
 }
 
 - (void)surfaceOnHover:(UIHoverGestureRecognizer *)sender {
-    if (sender.state == UIGestureRecognizerStateBegan || sender.state == UIGestureRecognizerStateEnded){
-        if(self.shouldTriggerHaptic) {
-            [self.lightHaptic impactOccurred];
-        }
-    }
-    
     if (isGrabbing) return;
     
     CGPoint point = [sender locationInView:self.rootView];
@@ -948,7 +951,7 @@ int touchesMovedCount;
     [super touchesBegan:touches withEvent:event];
     int i = 0;
     for (UITouch *touch in touches) {
-        if (touch.type == UITouchTypeIndirectPointer) {
+        if (!self.isMacCatalystApp && touch.type == UITouchTypeIndirectPointer) {
             continue; // handle this in a different place
         }
         CGPoint locationInView = [touch locationInView:self.rootView];
@@ -973,7 +976,7 @@ int touchesMovedCount;
     [super touchesMoved:touches withEvent:event];
 
     for (UITouch *touch in touches) {
-        if (touch.type == UITouchTypeIndirectPointer) {
+        if (!self.isMacCatalystApp && touch.type == UITouchTypeIndirectPointer) {
             continue; // handle this in a different place
         }
         if (self.hotbarTouch != touch && [self isTouchInactive:self.primaryTouch]) {
@@ -989,7 +992,7 @@ int touchesMovedCount;
 - (void)touchesEndedGlobal:(NSSet *)touches withEvent:(UIEvent *)event
 {
     for (UITouch *touch in touches) {
-        if (touch.type == UITouchTypeIndirectPointer) {
+        if (!self.isMacCatalystApp && touch.type == UITouchTypeIndirectPointer) {
             continue; // handle this in a different place
         }
         [self sendTouchEvent:touch withUIEvent:event withEvent:ACTION_UP];

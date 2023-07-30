@@ -2,6 +2,7 @@
 #import "LauncherPreferences.h"
 #import "LauncherProfileEditorViewController.h"
 #import "MinecraftResourceUtils.h"
+#import "PickTextField.h"
 #import "PLProfiles.h"
 #import "ios_uikit_bridge.h"
 #import "utils.h"
@@ -99,7 +100,8 @@
               @"icon": @"archivebox",
               @"title": @"preference.profile.title.version",
               @"type": typeVersionPicker,
-              @"placeholder": self.getPreference(nil, @"lastVersionId")
+              @"placeholder": self.getPreference(nil, @"lastVersionId"),
+              @"customClass": PickTextField.class
             },
             @{@"key": @"gameDir",
               @"icon": @"folder",

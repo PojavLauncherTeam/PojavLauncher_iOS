@@ -176,7 +176,9 @@
     };
 
     self.typeTextField = ^void(UITableViewCell *cell, NSString *section, NSString *key, NSDictionary *item) {
-        UITextField *view = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, cell.bounds.size.width / 2.1, cell.bounds.size.height)];
+        Class cls = item[@"customClass"];
+        if (!cls) cls = UITextField.class;
+        UITextField *view = [[cls alloc] initWithFrame:CGRectMake(0, 0, cell.bounds.size.width / 2.1, cell.bounds.size.height)];
         [view addTarget:view action:@selector(resignFirstResponder) forControlEvents:UIControlEventEditingDidEndOnExit];
         view.adjustsFontSizeToFitWidth = YES;
         view.autocorrectionType = UITextAutocorrectionTypeNo;
