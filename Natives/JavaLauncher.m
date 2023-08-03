@@ -65,8 +65,13 @@ void init_loadCustomJvmFlags(int* argc, const char** argv) {
     if (jvmargs == nil) return;
     BOOL isFirstArg = YES;
     NSLog(@"[JavaLauncher] Reading custom JVM flags");
-    for (NSString *jvmarg in [jvmargs componentsSeparatedByString:@" -"]) {
-        if (jvmarg.length == 0) continue;
+    for (NSString *arg in [jvmargs componentsSeparatedByString:@" -"]) {
+        if (arg.length == 0) continue;
+        NSString *jvmarg = arg;
+        if (isFirstArg) {
+            isFirstArg = NO;
+            jvmarg = [jvmarg substringFromIndex:1];
+        }
         BOOL ignore = NO;
         for (NSString *argToPurge in argsToPurge) {
             if ([jvmarg hasPrefix:argToPurge]) {
@@ -78,12 +83,7 @@ void init_loadCustomJvmFlags(int* argc, const char** argv) {
         if (ignore) continue;
 
         ++*argc;
-        if (isFirstArg) {
-            isFirstArg = NO;
-            argv[*argc] = jvmarg.UTF8String;
-        } else {
-            argv[*argc] = [@"-" stringByAppendingString:jvmarg].UTF8String;
-        }
+        argv[*argc] = [@"-" stringByAppendingString:jvmarg].UTF8String;
 
         NSLog(@"[JavaLauncher] Added custom JVM flag: %s", argv[*argc]);
     }
