@@ -82,7 +82,7 @@ void convertV2Layout(NSMutableDictionary* dict) {
         }
     }
 
-    dict[@"version"] = @(4);
+    dict[@"version"] = @(5);
 }
 
 void convertV1Layout(NSMutableDictionary* dict) {
@@ -154,6 +154,7 @@ BOOL convertLayoutIfNecessary(NSMutableDictionary* dict) {
             break;
         case 3:
         case 4:
+        case 5:
             break;
         default:
             showDialog(localize(@"custom_controls.control_menu.save.error.json", nil), [NSString stringWithFormat:localize(@"custom_controls.error.imcompatible", nil), version]);
@@ -168,9 +169,9 @@ void generateAndSaveDefaultControl() {
         return;
     }
 
-    // Generate a v2.4 control
+    // Generate a v2.6 control
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    dict[@"version"] = @(4);
+    dict[@"version"] = @(5);
     dict[@"scaledAt"] = @(100);
     dict[@"mControlDataList"] = [[NSMutableArray alloc] init];
     dict[@"mDrawerDataList"] = [[NSMutableArray alloc] init];

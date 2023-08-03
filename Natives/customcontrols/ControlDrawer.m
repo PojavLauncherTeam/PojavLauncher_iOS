@@ -65,6 +65,11 @@
 }
 
 - (void)resizeButtons {
+    NSString *orientation = (NSString *)self.drawerData[@"orientation"];
+    if ([orientation isEqualToString:@"FREE"]) {
+        return;
+    }
+
     for (ControlButton *button in self.buttons) {
         button.properties[@"width"] = self.properties[@"width"];
         button.properties[@"height"] = self.properties[@"height"];

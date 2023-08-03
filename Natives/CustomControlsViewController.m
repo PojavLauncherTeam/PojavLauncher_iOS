@@ -399,6 +399,7 @@ BOOL shouldDismissPopover = YES;
         ((ControlSubButton *)button).parentDrawer = drawer;
         [self doAddButton:button atIndex:@(drawer.buttons.count)];
         [button snapAndAlignX:self.selectedPoint.origin.x-25.0 Y:self.selectedPoint.origin.y-25.0];
+        [button update];
         [drawer syncButtons];
     }
 
