@@ -116,6 +116,7 @@
 "login.msa.progress.checkMCProfile" = "(5/5) Kontrola Minecraft účtu";
 
 "News" = "Novinky";
+"Profiles" = "Profily";
 "Settings" = "Nastavení";
 
 "preference.section.general" = "Obecné Nastavení";
@@ -252,7 +253,15 @@
 
 "preference.profile.title.name" = "Název";
 "preference.profile.title.version" = "Verze";
+"preference.profile.title.default_touch_control" = "Dotykové ovládání";
+"preference.profile.title.default_gamepad_control" = "Ovládání ovladače";
+
+"profile.error.name_exists" = "Profil s tímto názvem jíž existuje. Zvolte jiný název.";
+"profile.section.instance" = "Nastavení instance hry";
+"profile.section.profiles" = "Profily v této instanci";
 "profile.title.create" = "Vytvořit nový profil";
+"profile.title.separate_preference" = "Samostatná nastavení";
+"profile.detail.separate_preference" = "Zapněte tuto možnost pro osamostatnění všech změn nastavení. Reset obnoví globální nastavení namísto vychozího.";
 
 "controller_configurator.title.current" = "Soubor nastavení Gamepadu";
 "controller_configurator.title.type.xbox" = "Xbox";
