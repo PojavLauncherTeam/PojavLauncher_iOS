@@ -6,7 +6,7 @@
 "game.menu.force_close" = "强制关闭";
 "game.menu.confirm.force_close" = "确认强制关闭？";
 "game.menu.log_output" = "日志输出";
-"game.menu.custom_controls" = "自定义控制按键";
+"game.menu.custom_controls" = "自定义控制键";
 
 "game.note.airplay" = "Minecraft 正在通过隔空播放（AirPlay）到其他设备显示";
 
@@ -37,21 +37,21 @@
 "custom_controls.button_edit.mouse_pass" = "鼠标穿透";
 "custom_controls.button_edit.swipeable" = "可滑动";
 "custom_controls.button_edit.bg_color" = "背景颜色";
-"custom_controls.button_edit.stroke_width" = "边框宽度 (%)";
+"custom_controls.button_edit.stroke_width" = "边框宽度（%）";
 "custom_controls.button_edit.stroke_color" = "边框颜色";
-"custom_controls.button_edit.corner_radius" = "圆角半径 (%)";
-"custom_controls.button_edit.opacity" = "不透明度 (%)：";
+"custom_controls.button_edit.corner_radius" = "圆角半径（%）";
+"custom_controls.button_edit.opacity" = "不透明度（%）";
 
 "custom_controls.button_menu.add_subbutton" = "添加子按钮";
 "custom_controls.control_menu.discard_changes" = "放弃更改";
 "custom_controls.control_menu.exit" = "退出";
-"custom_controls.control_menu.exit.warn" = "您将会退出且不保存任何更改。";
+"custom_controls.control_menu.exit.warn" = "您将会退出且不保存更改。";
 "custom_controls.control_menu.save" = "保存";
-"custom_controls.control_menu.save.error.default" = "控件名称不能是“default”，因为它是不可更改的。";
-"custom_controls.control_menu.save.error.json" = "JSON 文件错误(有可能文本格式存在问题)";
-"custom_controls.control_menu.save.error.write" = "保存按键布局时发生错误";
+"custom_controls.control_menu.save.error.default" = "控件名称不能是“default”，因为它会被覆盖。";
+"custom_controls.control_menu.save.error.json" = "JSON 文件错误";
+"custom_controls.control_menu.save.error.write" = "保存控制键布局时发生错误";
 "custom_controls.control_menu.load" = "加载";
-"custom_controls.control_menu.make_default" = "设置游戏默认的按键布局";
+"custom_controls.control_menu.make_default" = "重设为默认控制键布局";
 "custom_controls.control_menu.safe_area" = "安全区域";
 "custom_controls.control_menu.add_button" = "添加按键";
 "custom_controls.control_menu.add_drawer" = "添加组合键";
@@ -66,18 +66,18 @@
 "launcher.mcl.downloading_file" = "正在下载文件 %@";
 "launcher.mcl.error_download" = "文件 %@ 下载失败：%@ ，建议重启启动器重新下载";
 
-"launcher.menu.custom_controls" = "自定义控制按键";
+"launcher.menu.custom_controls" = "自定义控制键";
 "launcher.menu.install_jar" = "安装 .jar";
 
-"launcher.wait_jit.title" = "正等待即时编译（JIT）中";
+"launcher.wait_jit.title" = "正在等待获取即时编译（JIT）权限";
 "launcher.wait_jit.message" = "PojavLauncher 依靠 Java 的即时编译（JIT）来以最大性能工作。";
 
 "login.error.username.outOfRange" = "用户名必须在 3-16 个字符以内";
 
 "login.alert.field.username" = "用户名";
 
-"login.jit.checking" = "检查是否开启即时编译（JIT）";
-"login.jit.enabled" = "即时编译（JIT）已启用";
+"login.jit.checking" = "正在检查即时编译（JIT）权限";
+"login.jit.enabled" = "JIT 权限已启用";
 "login.jit.fail" = "无法开启即时编译（JIT）";
 "login.jit.fail.title" = "无法在您的设备上启用即时编译（JIT）";
 "login.jit.fail.description" = "无法使用集成在您的设备上自动启用即时编译（JIT），您需要借助一些方法手动启用其权限。错误已记录于 latestlog.txt。";
@@ -86,7 +86,7 @@
 "login.menu.sendlogs" = "发送日志文件";
 "login.option.add" = "添加账户";
 "login.option.select" = "选择账户";
-"login.option.demo" = "演示账户(示范账户)";
+"login.option.demo" = "演示账户(试玩账户)";
 "login.option.microsoft" = "微软账户";
 "login.option.local" = "本地账户";
 
@@ -94,7 +94,7 @@
 "login.warn.message.legacy_device" = "运行下一代版本的PojavLauncher启动器，你需要一台IOS14+ 或 IPad OS 14+ 的设备";
 "login.warn.title.legacy_ios" = "PojavLauncher 的下一个版本将需要系统更新。";
 "login.warn.message.legacy_ios" = "运行下一个主要版本，需要一台能够运行 iOS 14 或更高版本的设备。";
-"login.warn.title.limited_ram" = "设备运行内存不足警告！";
+"login.warn.title.limited_ram" = "设备内存不足！";
 "login.warn.message.limited_ram" = "我们建议启用自动分配内存大小，以防止不稳定和性能问题。";
 
 "login.warn.title.demomode" = "您现在是演示账户";
@@ -124,7 +124,7 @@
 "preference.section.footer.video" = "根据 Minecraft 版本自动选择最佳渲染器给游戏使用。降低分辨率可以减轻 GPU 负载从而提高性能。";
 "preference.section.control" = "自定义控制键";
 "preference.section.debug" = "UI设置";
-"preference.section.footer.debug" = "除了调试外，这些设置可能对自定义控件有用。您可能需要重新启动启动器才能使更改生效。";
+"preference.section.footer.debug" = "除了调试外，这些设置可能对自定义控制键有用，您可能需要重新启动启动器才能使更改生效。";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java 调整";
 //"preference.section.footer.java" = "";
@@ -156,7 +156,7 @@
 "preference.title.confirm.reset_settings" = "这将重制您所有的自定义首选项，包括分辨率、按钮大小以及 Java 参数。";
 "preference.title.done.reset_settings" = "已重置所有设置";
 
-"preference.title.erase_demo_data" = "清除演示游戏数据";
+"preference.title.erase_demo_data" = "清除演示游戏（试玩版）数据";
 "preference.title.confirm.erase_demo_data" = "进行此操作将清除演示账户使用的所有演示游戏版本和数据。";
 "preference.title.done.erase_demo_data" = "所有演示游戏数据已被清除。";
 
@@ -167,15 +167,15 @@
 "preference.title.renderer.release.angle" = "ANGLE";
 "preference.title.renderer.release.zink" = "Zink";
 
-"preference.title.renderer.debug.auto" = "自动：gl4es 或 ANGLE";
-"preference.title.renderer.debug.gl4es" = "gl4es 1.1.4 - OpenGL版本2.1";
+"preference.title.renderer.debug.auto" = "根据游戏版本自动选择：gl4es 或 ANGLE";
+"preference.title.renderer.debug.gl4es" = "gl4es 1.1.4(仅支持1.16.5及以下) - OpenGL版本2.1";
 "preference.title.renderer.debug.angle" = "ANGLE（仅支持1.17+）- exports OpenGL 版本 3.2";
 "preference.title.renderer.debug.zink" = "Zink（Mesa 21.0）- exports OpenGL 版本 4.1";
 
 "preference.detail.renderer" = "更改使用的 OpenGL 渲染器";
 
 "preference.title.resolution" = "分辨率缩放 (%)";
-"preference.detail.resolution" = "降低分辨率可能会提升FPS。默认分辨率为屏幕的分辨率";
+"preference.detail.resolution" = "允许您降低游戏分辨率。";
 "preference.title.max_framerate" = "最大帧率";
 "preference.detail.max_framerate" = "允许您在 ProMotion 显示器上将游戏帧率限制为 60FPS。";
 
@@ -187,7 +187,7 @@
 "preference.detail.silence_with_switch" = "启用时，可以使用静音模式禁用音频，耳机和外部扬声器不受此影响。";
 "preference.title.default_gamepad_ctrl" = "手柄配置";
 "preference.title.hardware_hide" = "硬件连接时隐藏控制键";
-"preference.detail.hardware_hide" = "启用连接鼠标或游戏控制器时自动禁用屏幕控制叠加的行为。";
+"preference.detail.hardware_hide" = "启用连接鼠标或游戏手柄时自动禁用屏幕控制键的行为。";
 "preference.title.gesture_mouse" = "鼠标手势";
 "preference.detail.gesture_mouse" = "启用手势，例如点击放置方块、按住破坏方块、用两根手指转动视角";
 "preference.title.gesture_hotbar" = "快捷栏手势";
@@ -197,13 +197,13 @@
 "preference.detail.press_duration" = "修改长按摧毁方块、丢弃物品的触发时长。";
 "preference.title.button_scale" = "屏幕按钮缩放 (%)";
 "preference.detail.button_scale" = "如果按钮过小则放大按钮，通常平板用户需要更改此选项。";
-"preference.title.mouse_scale" = "鼠标缩放 (%)";
+"preference.title.mouse_scale" = "鼠标缩放（%）";
 "preference.detail.mouse_scale" = "修改虚拟鼠标的大小";
 "preference.title.mouse_speed" = "鼠标速度 (%)";
 "preference.detail.mouse_speed" = "修改虚拟鼠标的移动速度";
 "preference.title.virtmouse_enable" = "虚拟鼠标";
 "preference.detail.virtmouse_enable" = "启用此选项以在游戏启动时显示虚拟鼠标";
-"preference.title.slideable_hotbar" = "可滑动快捷栏";
+"preference.title.slideable_hotbar" = "可滑动的物品栏";
 "preference.detail.slideable_hotbar" = "使快捷栏像鼠标滚轮一样可滑动";
 
 "preference.title.gyroscope_enable" = "启用陀螺仪控制";
@@ -232,19 +232,19 @@
 "preference.title.auto_ram" = "自动设置内存大小";
 "preference.detail.auto_ram" = "启用内存自动调节";
 "preference.warn.auto_ram" = "在未越狱的设备禁用此选项上可能会导致应用不稳定。请谨慎更改此选项。";
-"preference.title.allocated_memory" = "内存分配 (MB)";
+"preference.title.allocated_memory" = "内存分配（MB）";
 "preference.detail.allocated_memory" = "控制给 Minecraft 分配多少内存";
 "preference.warn.allocated_memory" = "由于系统的限制,可能会导致游戏不稳定";
 "preference.title.custom_env" = "环境变量";
 "preference.detail.custom_env" = "此选项正在构建中。在此期间创建并编辑 custom_env.txt。";
 
-"preference.title.debug_skip_wait_jit" = "跳过“正等待即时编译（JIT）中”对话框";
+"preference.title.debug_skip_wait_jit" = "跳过“正在等待获取即时编译（JIT）权限”对话框";
 "preference.detail.debug_skip_wait_jit" = "这并非让您不使用即时编译（JIT）启动，而是跳过调试检查，因为在越狱设备上会检查失败。";
 "preference.title.debug_ipad_ui" = "使用 iPadOS 界面";
 "preference.detail.debug_ipad_ui" = "开启后会使用 iPad OS 的专用界面，否则使用 iPhone 的界面。";
 "preference.title.debug_auto_correction" = "自动校正";
 "preference.detail.debug_auto_correction" = "在游戏中输入文本时启用自动校正。";
-"preference.title.debug_hide_home_indicator" = "隐藏主屏幕指示键";
+"preference.title.debug_hide_home_indicator" = "隐藏主屏幕指示器（白线）";
 "preference.detail.debug_hide_home_indicator" = "此选项将会禁用主屏幕指示键锁定，你将会需要启用引导式访问来同时隐藏和锁定主屏幕指示键。";
 "preference.title.debug_show_layout_bounds" = "显示边界布局";
 "preference.detail.debug_show_layout_bounds" = "显示剪辑边界、边距";
@@ -256,12 +256,12 @@
 "preference.profile.title.default_touch_control" = "触摸控制";
 "preference.profile.title.default_gamepad_control" = "手柄控制";
 
-"profile.error.name_exists" = "此配置文件的名称已存在，请使用其他名称。";
+"profile.error.name_exists" = "具有该名称的配置文件已存在，请使用其他名称。";
 "profile.section.instance" = "游戏实例设置";
 "profile.section.profiles" = "此实例中的配置文件";
 "profile.title.create" = "创建新配置";
 "profile.title.separate_preference" = "隔离设置";
-"profile.detail.separate_preference" = "启用此选项可隔离设置中所做的任何更改(包括mod，光影，材质包)，执行重置将恢复为全局设置而非默认设置。";
+"profile.detail.separate_preference" = "启用此选项可隔离设置中所做的任何更改（诸如模组、着色器、纹理包），执行重置将恢复为全局设置而非默认设置。";
 
 "controller_configurator.title.current" = "游戏键盘配置文件";
 "controller_configurator.title.type.xbox" = "Xbox";
@@ -292,7 +292,7 @@
 "controller_configurator.playstation.title.named_start" = "开始";
 "controller_configurator.playstation.title.named_a" = "叉";
 "controller_configurator.playstation.title.named_b" = "圆";
-"controller_configurator.playstation.title.named_x" = "方";
+"controller_configurator.playstation.title.named_x" = "方块";
 "controller_configurator.playstation.title.named_y" = "三角";
 "controller_configurator.playstation.title.dpad_up" = "上";
 "controller_configurator.playstation.title.dpad_down" = "下";
@@ -305,6 +305,6 @@
 "controller_configurator.section.game_mappings" = "游戏映射";
 "controller_configurator.section.footer.game_mappings" = "当鼠标在游戏中被锁定时绑定。";
 "controller_configurator.section.menu_mappings" = "菜单映射";
-"controller_configurator.section.footer.menu_mappings" = "当鼠标未被锁定时，如在标题屏幕或暂停菜单中时绑定。";
+"controller_configurator.section.footer.menu_mappings" = "鼠标未被锁定，如在标题屏幕或暂停菜单中时绑定。";
 "controller_configurator.section.controller_style" = "手柄类型";
 "controller_configurator.section.footer.controller_style" = "在此配置器中显示不同的手柄按钮名称。";
