@@ -31,6 +31,7 @@
 "custom_controls.control_menu.add_button" = "Προσθήκη κουμπιού";
 
 "launcher.menu.custom_controls" = "Προσαρμοσμένα controls";
+"launcher.menu.install_jar" = "Εγκαταστήστε αρχείο .jar";
 "login.option.select" = "Επιλέξτε λογαριασμό";
 
 "News" = "Νέα";
