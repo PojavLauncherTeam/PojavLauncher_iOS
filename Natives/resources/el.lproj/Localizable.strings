@@ -36,6 +36,7 @@
 
 "News" = "Νέα";
 "Settings" = "Ρυθμίσεις";
+"preference.section.control" = "Προσαρμογή ελέγχου";
 
 "preference.title.game_directory" = "Κατάλογος παιχνιδιού";
 
