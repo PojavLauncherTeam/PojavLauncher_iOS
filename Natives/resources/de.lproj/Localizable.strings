@@ -261,6 +261,8 @@ der Minecraft-Version zu wählen. Verringerte Auflösung reduziert die Arbeitsla
 "profile.section.instance" = "Spielinstanz-Einstellungen";
 "profile.section.profiles" = "Profile in dieser Instanz";
 "profile.title.create" = "Neues Profil erstellen";
+"profile.title.separate_preference" = "Einstellungen trennen";
+"profile.detail.separate_preference" = "Aktiviere diese Option um jegliche in den Einstellungen gemachten Änderungen zu trennen. Ein Zurücksetzen wird die globalen Einstellungen statt die Standardeinstellungen laden.";
 
 "controller_configurator.title.current" = "Gamepads Konfigurationsdatei";
 "controller_configurator.title.type.xbox" = "XBox";
