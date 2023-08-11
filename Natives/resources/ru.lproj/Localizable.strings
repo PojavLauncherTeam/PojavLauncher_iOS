@@ -28,6 +28,10 @@
 "Move" = "Переместить";
 "Remove" = "Удалить";
 "Resize" = "Изменить размер";
+// Visibility
+"Always" = "Всегда";
+"In game" = "В игре";
+"In menu" = "В меню";
 
 "custom_controls.button_edit.forward_lock" = "Фиксатор движения";
 "custom_controls.button_edit.name" = "Имя";
@@ -38,9 +42,11 @@
 "custom_controls.button_edit.mouse_pass" = "Пропускать касание в игру";
 "custom_controls.button_edit.swipeable" = "Пролистываемый";
 "custom_controls.button_edit.bg_color" = "Цвет фона";
+"custom_controls.button_edit.stroke_width" = "Контур (dp)";
 "custom_controls.button_edit.stroke_color" = "Цвет контура";
 "custom_controls.button_edit.corner_radius" = "Скругление (%)";
 "custom_controls.button_edit.opacity" = "Видимость (%)";
+"custom_controls.button_edit.visibility" = "Видимость";
 
 "custom_controls.button_menu.add_subbutton" = "Добавить под-кнопку";
 "custom_controls.control_menu.discard_changes" = "Сбросить изменения";
