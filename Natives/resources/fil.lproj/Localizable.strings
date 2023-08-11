@@ -28,7 +28,6 @@
 "Move" = "Ilipat";
 "Remove" = "Tanggalin";
 "Resize" = "Baguhin ang sukat";
-
 "custom_controls.button_edit.name" = "Pangalan";
 "custom_controls.button_edit.size" = "Sukat";
 "custom_controls.button_edit.mapping" = "Pag mapa";
@@ -37,7 +36,6 @@
 "custom_controls.button_edit.mouse_pass" = "Mouse Pass";
 "custom_controls.button_edit.swipeable" = "Pwede ma swipe";
 "custom_controls.button_edit.bg_color" = "Kulay ng likuran";
-"custom_controls.button_edit.stroke_width" = "Lapad ng stroke (%)";
 "custom_controls.button_edit.stroke_color" = "Kulay ng stroke";
 "custom_controls.button_edit.corner_radius" = "Corner radius (%)";
 "custom_controls.button_edit.opacity" = "Opacidad (%)";
@@ -47,7 +45,6 @@
 "custom_controls.control_menu.exit" = "Umalis";
 "custom_controls.control_menu.exit.warn" = "Lalabas ka nang hindi nase-save ng mga pagbabago.";
 "custom_controls.control_menu.save" = "I-Save";
-"custom_controls.control_menu.save.error.default" = "Hindi masave bilang \"default\" ang skema sapagkat ma-overwrite ito.";
 "custom_controls.control_menu.save.error.json" = "JSON error";
 "custom_controls.control_menu.save.error.write" = "Error saving file";
 "custom_controls.control_menu.load" = "Ikarga";
