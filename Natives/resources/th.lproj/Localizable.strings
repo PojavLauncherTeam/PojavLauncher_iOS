@@ -28,7 +28,6 @@
 "Move" = "ย้าย";
 "Remove" = "ถอดออก";
 "Resize" = "ปรับขนาด";
-
 "custom_controls.button_edit.name" = "ชื่อ";
 "custom_controls.button_edit.size" = "ขนาด";
 "custom_controls.button_edit.mapping" = "ปุ่มที่ให้กด";
@@ -37,7 +36,6 @@
 "custom_controls.button_edit.mouse_pass" = "เมาส์จำลองผ่านได้";
 "custom_controls.button_edit.swipeable" = "ลากได้";
 "custom_controls.button_edit.bg_color" = "สีพื้นหลัง";
-"custom_controls.button_edit.stroke_width" = "ความกว้างของเส้นขึด (%)";
 "custom_controls.button_edit.stroke_color" = "สีของเส้นขึด";
 "custom_controls.button_edit.corner_radius" = "ระยะของมุม (%)";
 "custom_controls.button_edit.opacity" = "ความสว่าง (%)";
@@ -47,7 +45,6 @@
 "custom_controls.control_menu.exit" = "ออก";
 "custom_controls.control_menu.exit.warn" = "คุณกำลังจะออกโดยลืมการบันทึกการเปลี่ยนเเปลง";
 "custom_controls.control_menu.save" = "บันทึก";
-"custom_controls.control_menu.save.error.default" = "ชื่อควบคุมไม่สามารถเป็น \"default\" ได้ อาจะทำให้ถูกเขียนทับ";
 "custom_controls.control_menu.save.error.json" = "ข้อผิดพลาดบน JSON";
 "custom_controls.control_menu.save.error.write" = "เกิดข้อผิดพลาดในการบันทึกไฟล์";
 "custom_controls.control_menu.load" = "โหลด";
