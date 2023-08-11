@@ -18,7 +18,6 @@
 "Edit" = "Muuda";
 "Move" = "Liiguta";
 "Remove" = "Eemalda";
-
 "custom_controls.button_edit.name" = "Nimi";
 "custom_controls.button_edit.size" = "Suurus";
 "custom_controls.button_edit.mapping" = "Kaardistamine";
