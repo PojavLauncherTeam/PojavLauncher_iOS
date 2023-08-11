@@ -14,7 +14,6 @@
 "Old-alpha" = "Old-alpha";
 "Edit" = "Edit";
 "Remove" = "Remove";
-
 "custom_controls.button_edit.name" = "Name";
 "custom_controls.button_edit.size" = "Size";
 "custom_controls.button_edit.toggleable" = "Toggleable";
