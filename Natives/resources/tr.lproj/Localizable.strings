@@ -28,7 +28,6 @@
 "Move" = "Taşı";
 "Remove" = "Kaldır";
 "Resize" = "Yeniden boyutlandır";
-
 "custom_controls.button_edit.name" = "İsim";
 "custom_controls.button_edit.size" = "Boyut";
 "custom_controls.button_edit.mapping" = "Atama";
@@ -37,7 +36,6 @@
 "custom_controls.button_edit.mouse_pass" = "Fare geçişi";
 "custom_controls.button_edit.swipeable" = "Kaydırılabilir";
 "custom_controls.button_edit.bg_color" = "Arkaplan rengi";
-"custom_controls.button_edit.stroke_width" = "Vurgu genişliği (%)";
 "custom_controls.button_edit.stroke_color" = "Vurgu rengi";
 "custom_controls.button_edit.corner_radius" = "Köşe yarıçapı (%)";
 "custom_controls.button_edit.opacity" = "Opaklık (%)";
@@ -47,7 +45,6 @@
 "custom_controls.control_menu.exit" = "Çıkış";
 "custom_controls.control_menu.exit.warn" = "Değişiklikleri kaydetmeden çıkmak üzeresiniz.";
 "custom_controls.control_menu.save" = "Kaydet";
-"custom_controls.control_menu.save.error.default" = "Üzerine yazılacağından dolayı kontrol ismi \"default\" olamaz.";
 "custom_controls.control_menu.save.error.json" = "JSON hatası";
 "custom_controls.control_menu.save.error.write" = "Dosyayı kaydederken hata oluştu";
 "custom_controls.control_menu.load" = "Yükle";
