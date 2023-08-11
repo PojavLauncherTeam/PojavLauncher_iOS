@@ -28,7 +28,6 @@
 "Move" = "이동";
 "Remove" = "제거";
 "Resize" = "사이즈 변경";
-
 "custom_controls.button_edit.name" = "이름";
 "custom_controls.button_edit.size" = "크기";
 "custom_controls.button_edit.mapping" = "매핑";
@@ -37,7 +36,6 @@
 "custom_controls.button_edit.mouse_pass" = "마우스 패스";
 "custom_controls.button_edit.swipeable" = "끌어당기기";
 "custom_controls.button_edit.bg_color" = "배경 색상";
-"custom_controls.button_edit.stroke_width" = "선 굵기 (%)";
 "custom_controls.button_edit.stroke_color" = "강조 색";
 "custom_controls.button_edit.corner_radius" = "모서리 반경 (%)";
 "custom_controls.button_edit.opacity" = "투명도 (%)";
@@ -47,7 +45,6 @@
 "custom_controls.control_menu.exit" = "나가기";
 "custom_controls.control_menu.exit.warn" = "변경사항을 저장하지 않고 종료하려 합니다.";
 "custom_controls.control_menu.save" = "저장";
-"custom_controls.control_menu.save.error.default" = "컨트롤러 이름은 덮어쓰게 되므로 \"default\"가 될수 없습니다.";
 "custom_controls.control_menu.save.error.json" = "JSON 오류";
 "custom_controls.control_menu.save.error.write" = "파일 저장중 오류 발생";
 "custom_controls.control_menu.load" = "불러오기";
