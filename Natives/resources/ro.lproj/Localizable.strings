@@ -26,7 +26,6 @@
 "Copy" = "Copiere";
 "Edit" = "Editează";
 "Remove" = "Șterge";
-
 "custom_controls.button_edit.name" = "Nume";
 "custom_controls.button_edit.size" = "Dimensiune";
 "custom_controls.button_edit.mapping" = "Asocieri";
