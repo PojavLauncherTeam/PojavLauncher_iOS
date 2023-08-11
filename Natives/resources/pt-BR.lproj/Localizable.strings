@@ -28,6 +28,10 @@
 "Move" = "Mover";
 "Remove" = "Remover";
 "Resize" = "Redimensionar";
+// Visibility
+"Always" = "Sempre";
+"In game" = "Em partida";
+"In menu" = "No menu";
 "custom_controls.button_edit.name" = "Nome";
 "custom_controls.button_edit.size" = "Tamanho";
 "custom_controls.button_edit.mapping" = "Mapeamento";
@@ -36,9 +40,11 @@
 "custom_controls.button_edit.mouse_pass" = "Passe do mouse";
 "custom_controls.button_edit.swipeable" = "Deslizável";
 "custom_controls.button_edit.bg_color" = "Cor de fundo";
+"custom_controls.button_edit.stroke_width" = "Largura do traçado (dp)";
 "custom_controls.button_edit.stroke_color" = "Cor do traçado";
 "custom_controls.button_edit.corner_radius" = "Raio dos cantos (%)";
 "custom_controls.button_edit.opacity" = "Opacidade (%)";
+"custom_controls.button_edit.visibility" = "Visibilidade";
 
 "custom_controls.button_menu.add_subbutton" = "Adicionar sub-botão";
 "custom_controls.control_menu.discard_changes" = "Descartar alterações";
@@ -170,7 +176,7 @@
 "preference.manage_runtime.footer.default" = "O Minecraft 1.16.5 e anteriores podem ser executados numa versão mais recente do Java, porém a compatibilidade com mods não é garantida. Os runtimes externos podem ser colocados na pasta “java_runtimes”. Alterar a versão do Java para “Instalar .jar” entrará em vigor caso o instalador não tenha uma versão mais recente do Java.";
 "preference.manage_runtime.footer.java8" = "Essa é a versão padrão para Minecraft 1.16.5 e anteriores.";
 "preference.manage_runtime.footer.java17" = "Essa é a versão padrão para Minecraft 1.17 e mais recente.";
-"preference.manage_runtime.header.invalid" = "runtimes inválidos";
+"preference.manage_runtime.header.invalid" = "runtimes inválido";
 
 "preference.title.java_args" = "Argumentos JVM";
 "preference.detail.java_args" = "Passa argumentos para Java ao iniciar o Minecraft. Tenha cuidado, isso pode fazer o jogo falhar se for modificado incorretamente.";
