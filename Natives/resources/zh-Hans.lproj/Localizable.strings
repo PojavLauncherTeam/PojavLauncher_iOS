@@ -28,6 +28,10 @@
 "Move" = "移动";
 "Remove" = "移除";
 "Resize" = "调整大小";
+// Visibility
+"Always" = "始终可见";
+"In game" = "游戏内";
+"In menu" = "菜单内";
 
 "custom_controls.button_edit.forward_lock" = "前向锁（Forward lock）";
 "custom_controls.button_edit.name" = "名称";
@@ -38,9 +42,11 @@
 "custom_controls.button_edit.mouse_pass" = "鼠标穿透";
 "custom_controls.button_edit.swipeable" = "可滑动";
 "custom_controls.button_edit.bg_color" = "背景颜色";
+"custom_controls.button_edit.stroke_width" = "边框宽度（dp）";
 "custom_controls.button_edit.stroke_color" = "边框颜色";
 "custom_controls.button_edit.corner_radius" = "圆角半径（%）";
 "custom_controls.button_edit.opacity" = "不透明度（%）";
+"custom_controls.button_edit.visibility" = "可见性";
 
 "custom_controls.button_menu.add_subbutton" = "添加子按钮";
 "custom_controls.control_menu.discard_changes" = "放弃更改";
