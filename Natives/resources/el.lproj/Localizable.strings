@@ -15,6 +15,7 @@
 "Edit" = "Επεξεργασία";
 "Remove" = "Αφαίρεσε";
 
+"custom_controls.button_edit.forward_lock" = "Κλείδωμα ευθείας κινήσεως";
 "custom_controls.button_edit.name" = "Όνομα";
 "custom_controls.button_edit.size" = "Μέγεθος";
 "custom_controls.button_edit.mapping" = "Χαρτογράφηση";
@@ -29,6 +30,7 @@
 "custom_controls.control_menu.save" = "Αποθήκευση";
 "custom_controls.control_menu.load" = "Φόρτωση";
 "custom_controls.control_menu.add_button" = "Προσθήκη κουμπιού";
+"custom_controls.control_menu.add_joystick" = "Προσθήκη χειριστηρίου (joystick)";
 
 "launcher.menu.custom_controls" = "Προσαρμοσμένα controls";
 "launcher.menu.install_jar" = "Εγκαταστήστε αρχείο .jar";
