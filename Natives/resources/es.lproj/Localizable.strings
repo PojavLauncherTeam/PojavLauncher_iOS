@@ -28,7 +28,6 @@
 "Move" = "Mover";
 "Remove" = "Eliminar";
 "Resize" = "Cambiar tamaño";
-
 "custom_controls.button_edit.name" = "Nombre";
 "custom_controls.button_edit.size" = "Tamaño";
 "custom_controls.button_edit.mapping" = "Mapeado";
@@ -45,7 +44,6 @@
 "custom_controls.control_menu.exit" = "Salir";
 "custom_controls.control_menu.exit.warn" = "Estás a punto de salir sin guardar los cambios.";
 "custom_controls.control_menu.save" = "Guardar";
-"custom_controls.control_menu.save.error.default" = "Los controles no pueden llamarse \"default\" ya que serán sobrescritos.";
 "custom_controls.control_menu.save.error.json" = "Error JSON";
 "custom_controls.control_menu.save.error.write" = "Error al guardar el archivo";
 "custom_controls.control_menu.load" = "Cargar";
