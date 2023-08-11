@@ -28,7 +28,6 @@
 "Move" = "Mover";
 "Remove" = "Remover";
 "Resize" = "Redimensionar";
-
 "custom_controls.button_edit.name" = "Nome";
 "custom_controls.button_edit.size" = "Tamanho";
 "custom_controls.button_edit.mapping" = "Mapeamento";
@@ -37,7 +36,6 @@
 "custom_controls.button_edit.mouse_pass" = "Passe do mouse";
 "custom_controls.button_edit.swipeable" = "Deslizável";
 "custom_controls.button_edit.bg_color" = "Cor de fundo";
-"custom_controls.button_edit.stroke_width" = "Largura do traçado (%)";
 "custom_controls.button_edit.stroke_color" = "Cor do traçado";
 "custom_controls.button_edit.corner_radius" = "Raio dos cantos (%)";
 "custom_controls.button_edit.opacity" = "Opacidade (%)";
@@ -47,7 +45,6 @@
 "custom_controls.control_menu.exit" = "Sair";
 "custom_controls.control_menu.exit.warn" = "Você está prestes a sair sem salvar as alterações.";
 "custom_controls.control_menu.save" = "Salvar";
-"custom_controls.control_menu.save.error.default" = "O nome do controle não pode ser \"padrão\", pois será substituído.";
 "custom_controls.control_menu.save.error.json" = "erro JSON";
 "custom_controls.control_menu.save.error.write" = "Erro ao salvar arquivo";
 "custom_controls.control_menu.load" = "Carregar";
@@ -55,6 +52,7 @@
 "custom_controls.control_menu.safe_area" = "Área segura";
 "custom_controls.control_menu.add_button" = "Adicionar botão";
 "custom_controls.control_menu.add_drawer" = "Adicionar gaveta";
+"custom_controls.control_menu.add_joystick" = "Adicionar controle";
 "custom_controls.error.incompatible" = "Esta versão de controle (código %d) não está implementada nesta compilação do inicializador.";
 "custom_controls.hint" = "Pressione e segure em qualquer lugar na tela para mais opções";
 
