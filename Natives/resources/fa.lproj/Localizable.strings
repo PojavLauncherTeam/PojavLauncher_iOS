@@ -28,7 +28,6 @@
 "Move" = "انتقال";
 "Remove" = "حذف";
 "Resize" = "تغییر اندازه";
-
 "custom_controls.button_edit.name" = "نام";
 "custom_controls.button_edit.size" = "اندازه";
 "custom_controls.button_edit.mapping" = "نقشه‌برداری";
@@ -37,7 +36,6 @@
 "custom_controls.button_edit.mouse_pass" = "عبور از ماوس";
 "custom_controls.button_edit.swipeable" = "قابل سوایپ";
 "custom_controls.button_edit.bg_color" = "رنگ پس‌زمینه";
-"custom_controls.button_edit.stroke_width" = "ضخامت حاشیه (%)";
 "custom_controls.button_edit.stroke_color" = "رنگ حاشیه";
 "custom_controls.button_edit.corner_radius" = "شعاع گوشه (%)";
 "custom_controls.button_edit.opacity" = "کدورت (%)";
@@ -47,7 +45,6 @@
 "custom_controls.control_menu.exit" = "خروج";
 "custom_controls.control_menu.exit.warn" = "شما درحال خروج بدون ذخیره تغییرات هستید.";
 "custom_controls.control_menu.save" = "ذخیره";
-"custom_controls.control_menu.save.error.default" = "نام کنترلر نمی تواند \"default\" باشد زیرا بازنویسی می شود.";
 "custom_controls.control_menu.save.error.json" = "ارور JSON";
 "custom_controls.control_menu.save.error.write" = "خطا هنگام ذخیرهٔ پرونده";
 "custom_controls.control_menu.load" = "بارگذاری";
