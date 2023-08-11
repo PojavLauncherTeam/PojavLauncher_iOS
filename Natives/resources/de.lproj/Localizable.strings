@@ -28,7 +28,6 @@
 "Move" = "Verschieben";
 "Remove" = "Entfernen";
 "Resize" = "Größe ändern";
-
 "custom_controls.button_edit.name" = "Name";
 "custom_controls.button_edit.size" = "Größe";
 "custom_controls.button_edit.mapping" = "Zuordnung";
@@ -37,7 +36,6 @@
 "custom_controls.button_edit.mouse_pass" = "Lässt Maus durch";
 "custom_controls.button_edit.swipeable" = "Wischbar";
 "custom_controls.button_edit.bg_color" = "Hintergrundfarbe";
-"custom_controls.button_edit.stroke_width" = "Strichbreite (%)";
 "custom_controls.button_edit.stroke_color" = "Strichfarbe";
 "custom_controls.button_edit.corner_radius" = "Eckenradius (%)";
 "custom_controls.button_edit.opacity" = "Deckkraft (%)";
@@ -47,7 +45,6 @@
 "custom_controls.control_menu.exit" = "Beenden";
 "custom_controls.control_menu.exit.warn" = "Du bist dabei zu beenden ohne Änderungen zu speichern.";
 "custom_controls.control_menu.save" = "Speichern";
-"custom_controls.control_menu.save.error.default" = "Der Name der Steuerung kann nicht „default” sein, da es überschrieben werden würde.";
 "custom_controls.control_menu.save.error.json" = "JSON-Fehler";
 "custom_controls.control_menu.save.error.write" = "Fehler beim Speichern der Datei";
 "custom_controls.control_menu.load" = "Laden";
@@ -55,6 +52,7 @@
 "custom_controls.control_menu.safe_area" = "Sicherer Bereich";
 "custom_controls.control_menu.add_button" = "Taste hinzufügen";
 "custom_controls.control_menu.add_drawer" = "Gruppe hinzufügen";
+"custom_controls.control_menu.add_joystick" = "Joystick hinzufügen";
 "custom_controls.error.incompatible" = "Diese Steuerungsversion (Code %d) ist in dieser Launcher-Version nicht implementiert.";
 "custom_controls.hint" = "Drücke irgendwo auf dem Bildschirm für weitere Optionen";
 
