@@ -28,7 +28,6 @@
 "Move" = "Przenieś";
 "Remove" = "Usuń";
 "Resize" = "Zmień rozmiar";
-
 "custom_controls.button_edit.name" = "Nazwa";
 "custom_controls.button_edit.size" = "Rozmiar";
 "custom_controls.button_edit.mapping" = "Mapowanie";
@@ -37,7 +36,6 @@
 "custom_controls.button_edit.mouse_pass" = "Przejście myszy";
 "custom_controls.button_edit.swipeable" = "Przesuwalny";
 "custom_controls.button_edit.bg_color" = "Kolor tła";
-"custom_controls.button_edit.stroke_width" = "Szerokość obrysu (%)";
 "custom_controls.button_edit.stroke_color" = "Kolor obrysu";
 "custom_controls.button_edit.corner_radius" = "Zaokrąglenie narożników (%)";
 "custom_controls.button_edit.opacity" = "Przezroczystość (%)";
@@ -47,7 +45,6 @@
 "custom_controls.control_menu.exit" = "Wyjdź";
 "custom_controls.control_menu.exit.warn" = "Zamierzasz wyjść bez zapisywania zmian.";
 "custom_controls.control_menu.save" = "Zapisz";
-"custom_controls.control_menu.save.error.default" = "Nazwa kontrolna nie może być \"default\", ponieważ zostanie nadpisana.";
 "custom_controls.control_menu.save.error.json" = "Błąd JSON";
 "custom_controls.control_menu.save.error.write" = "Błąd zapisu pliku";
 "custom_controls.control_menu.load" = "Wczytaj";
