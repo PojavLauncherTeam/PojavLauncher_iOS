@@ -28,6 +28,10 @@
 "Move" = "Hərəkət etdir";
 "Remove" = "Sil";
 "Resize" = "Ölçüsünü dəyişdir";
+// Visibility
+"Always" = "Həmişə";
+"In game" = "Oyunda";
+"In menu" = "Menyuda";
 
 "custom_controls.button_edit.forward_lock" = "İrəli kilid";
 "custom_controls.button_edit.name" = "Ad";
@@ -38,9 +42,11 @@
 "custom_controls.button_edit.mouse_pass" = "Siçan keçidi";
 "custom_controls.button_edit.swipeable" = "Sürüşdürülə bilər";
 "custom_controls.button_edit.bg_color" = "Arxafon rəngi";
+"custom_controls.button_edit.stroke_width" = "Vuruş eni (dp)";
 "custom_controls.button_edit.stroke_color" = "Ştrix rəngi";
 "custom_controls.button_edit.corner_radius" = "Künc radiusu (%)";
 "custom_controls.button_edit.opacity" = "Qeyri-şəffaflıq (%)";
+"custom_controls.button_edit.visibility" = "Görünüş";
 
 "custom_controls.button_menu.add_subbutton" = "Alt düymə əlavə et";
 "custom_controls.control_menu.discard_changes" = "Dəyişiklikləri ləğv et";
