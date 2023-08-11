@@ -28,7 +28,6 @@
 "Move" = "Pindah";
 "Remove" = "Hapus";
 "Resize" = "Ubah ukuran";
-
 "custom_controls.button_edit.name" = "Nama";
 "custom_controls.button_edit.size" = "Ukuran";
 "custom_controls.button_edit.mapping" = "Mapping";
@@ -37,7 +36,6 @@
 "custom_controls.button_edit.mouse_pass" = "Mouse pass";
 "custom_controls.button_edit.swipeable" = "Bisa digesek";
 "custom_controls.button_edit.bg_color" = "Warna background";
-"custom_controls.button_edit.stroke_width" = "Tebal garis (%)";
 "custom_controls.button_edit.stroke_color" = "Warna garis";
 "custom_controls.button_edit.corner_radius" = "Radius sudut (%)";
 "custom_controls.button_edit.opacity" = "Kegelapan (%)";
@@ -47,7 +45,6 @@
 "custom_controls.control_menu.exit" = "Keluar";
 "custom_controls.control_menu.exit.warn" = "Anda akan keluar tanpa menyimpan perubahan.";
 "custom_controls.control_menu.save" = "Simpan";
-"custom_controls.control_menu.save.error.default" = "Nama kontrol tidak bisa \"default\" karena akan ditimpa.";
 "custom_controls.control_menu.save.error.json" = "Kesalahan JSON";
 "custom_controls.control_menu.save.error.write" = "Kesalahan saat menyimpan file";
 "custom_controls.control_menu.load" = "Memuat";
