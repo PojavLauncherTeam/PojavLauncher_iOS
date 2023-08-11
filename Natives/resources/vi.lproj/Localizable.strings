@@ -28,7 +28,6 @@
 "Move" = "Di chuyển";
 "Remove" = "Loại bỏ";
 "Resize" = "Thay đổi kích thước";
-
 "custom_controls.button_edit.name" = "Tên";
 "custom_controls.button_edit.size" = "Kích thước";
 "custom_controls.button_edit.mapping" = "Sơ đồ phím";
@@ -37,7 +36,6 @@
 "custom_controls.button_edit.mouse_pass" = "Di chuột qua phím";
 "custom_controls.button_edit.swipeable" = "Có thể vuốt";
 "custom_controls.button_edit.bg_color" = "Màu nền";
-"custom_controls.button_edit.stroke_width" = "Độ rộng viền phím (%)";
 "custom_controls.button_edit.stroke_color" = "Màu viền phím";
 "custom_controls.button_edit.corner_radius" = "Bán kính góc";
 "custom_controls.button_edit.opacity" = "Độ trong suốt (%)";
@@ -47,7 +45,6 @@
 "custom_controls.control_menu.exit" = "Thoát";
 "custom_controls.control_menu.exit.warn" = "Bạn sẽ thoát mà không lưu thay đổi.";
 "custom_controls.control_menu.save" = "Lưu";
-"custom_controls.control_menu.save.error.default" = "Tên điều khiển không thể là \"default\" vì nó sẽ bị ghi đè.";
 "custom_controls.control_menu.save.error.json" = "Lỗi JSON";
 "custom_controls.control_menu.save.error.write" = "Lỗi lưu tệp";
 "custom_controls.control_menu.load" = "Tải";
