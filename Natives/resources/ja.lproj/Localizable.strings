@@ -28,7 +28,6 @@
 "Move" = "Move";
 "Remove" = "消去";
 "Resize" = "サイズ調整";
-
 "custom_controls.button_edit.name" = "名前";
 "custom_controls.button_edit.size" = "サイズ";
 "custom_controls.button_edit.mapping" = "割り当て";
@@ -37,7 +36,6 @@
 "custom_controls.button_edit.mouse_pass" = "マウスパス";
 "custom_controls.button_edit.swipeable" = "スワイプする";
 "custom_controls.button_edit.bg_color" = "背景色";
-"custom_controls.button_edit.stroke_width" = "線の幅 (%)";
 "custom_controls.button_edit.stroke_color" = "線の色";
 "custom_controls.button_edit.corner_radius" = "角の半径 (%)";
 "custom_controls.button_edit.opacity" = "透明度 (%)";
@@ -47,7 +45,6 @@
 "custom_controls.control_menu.exit" = "閉じる";
 "custom_controls.control_menu.exit.warn" = "変更を保存せずに終了しようとしています。";
 "custom_controls.control_menu.save" = "保存";
-"custom_controls.control_menu.save.error.default" = "コントロール名は上書きされるため、\"default\"にはできません。";
 "custom_controls.control_menu.save.error.json" = "JSON エラー";
 "custom_controls.control_menu.save.error.write" = "ファイルの保存中にエラーが発生しました";
 "custom_controls.control_menu.load" = "読み込む";
