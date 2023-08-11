@@ -29,6 +29,7 @@
 "Remove" = "Sil";
 "Resize" = "Ölçüsünü dəyişdir";
 
+"custom_controls.button_edit.forward_lock" = "İrəli kilid";
 "custom_controls.button_edit.name" = "Ad";
 "custom_controls.button_edit.size" = "Ölçü";
 "custom_controls.button_edit.mapping" = "Mapping";
@@ -37,7 +38,6 @@
 "custom_controls.button_edit.mouse_pass" = "Siçan keçidi";
 "custom_controls.button_edit.swipeable" = "Sürüşdürülə bilər";
 "custom_controls.button_edit.bg_color" = "Arxafon rəngi";
-"custom_controls.button_edit.stroke_width" = "Ştrix eni (%)";
 "custom_controls.button_edit.stroke_color" = "Ştrix rəngi";
 "custom_controls.button_edit.corner_radius" = "Künc radiusu (%)";
 "custom_controls.button_edit.opacity" = "Qeyri-şəffaflıq (%)";
@@ -47,7 +47,6 @@
 "custom_controls.control_menu.exit" = "Çıxış";
 "custom_controls.control_menu.exit.warn" = "Dəyişiklikləri yadda saxlamadan çıxmaq üzrəsiniz.";
 "custom_controls.control_menu.save" = "Saxla";
-"custom_controls.control_menu.save.error.default" = "Konrol adı \"defolt\" ola bilməz, çünki onun üzərinə yazılacaq.";
 "custom_controls.control_menu.save.error.json" = "JSON xətası";
 "custom_controls.control_menu.save.error.write" = "Faylı saxlayarkən xəta baş verdi";
 "custom_controls.control_menu.load" = "Yüklə";
@@ -55,6 +54,7 @@
 "custom_controls.control_menu.safe_area" = "Təhlükəsiz sahə";
 "custom_controls.control_menu.add_button" = "Düymə əlavə et";
 "custom_controls.control_menu.add_drawer" = "Çəkməcə əlavə edin";
+"custom_controls.control_menu.add_joystick" = "Joystik əlavə edin";
 "custom_controls.error.incompatible" = "Bu idarəetmə versiyası (kod %d) bu başlatma qurğusunda tətbiq edilməyib.";
 "custom_controls.hint" = "Daha çox seçim üçün ekranın istənilən yerinə uzun basın";
 
