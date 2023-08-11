@@ -28,7 +28,6 @@
 "Move" = "نقل";
 "Remove" = "إزالة";
 "Resize" = "تغییر الحجم";
-
 "custom_controls.button_edit.name" = "الاسم";
 "custom_controls.button_edit.size" = "الحجم";
 "custom_controls.button_edit.mapping" = "تخطيط الأزرار";
@@ -37,7 +36,6 @@
 "custom_controls.button_edit.mouse_pass" = "حركة الماوس";
 "custom_controls.button_edit.swipeable" = "قابل للسحب";
 "custom_controls.button_edit.bg_color" = "لون الخلفية";
-"custom_controls.button_edit.stroke_width" = "عرض الخط (%)";
 "custom_controls.button_edit.stroke_color" = "لون الخط";
 "custom_controls.button_edit.corner_radius" = "تقوس الزاوية (%)";
 "custom_controls.button_edit.opacity" = "التعتيم (%)";
@@ -47,7 +45,6 @@
 "custom_controls.control_menu.exit" = "خروج";
 "custom_controls.control_menu.exit.warn" = "أنت على وشك الخروج من دون حفظ التغييرات.";
 "custom_controls.control_menu.save" = "حفظ";
-"custom_controls.control_menu.save.error.default" = "لا يمكن أن يكون اسم التحكم \"افتراضي\" لأنه سيتم الكتابة فوقه.";
 "custom_controls.control_menu.save.error.json" = "خطأ JSON";
 "custom_controls.control_menu.save.error.write" = "خطأ في حفظ الملف.";
 "custom_controls.control_menu.load" = "تحميل";
