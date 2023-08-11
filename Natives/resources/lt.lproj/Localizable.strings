@@ -14,7 +14,6 @@
 "Old-alpha" = "Alpha";
 "Edit" = "Redaguoti";
 "Remove" = "Pašalinti";
-
 "custom_controls.button_edit.name" = "Pavadinimas";
 "custom_controls.button_edit.size" = "Dydis";
 "custom_controls.button_edit.mapping" = "Mygtukų sąrašas";
