@@ -28,7 +28,6 @@
 "Move" = "Déplacer";
 "Remove" = "Supprimer";
 "Resize" = "Redimensionner";
-
 "custom_controls.button_edit.name" = "Nom";
 "custom_controls.button_edit.size" = "Taille";
 "custom_controls.button_edit.mapping" = "Mapping";
@@ -37,7 +36,6 @@
 "custom_controls.button_edit.mouse_pass" = "Passage de la souris";
 "custom_controls.button_edit.swipeable" = "Balayable";
 "custom_controls.button_edit.bg_color" = "Couleur d'arrière-plan";
-"custom_controls.button_edit.stroke_width" = "Épaisseur du contour (%)";
 "custom_controls.button_edit.stroke_color" = "Couleur du contour";
 "custom_controls.button_edit.corner_radius" = "Rayon des coins (%)";
 "custom_controls.button_edit.opacity" = "Opacité (%)";
@@ -47,7 +45,6 @@
 "custom_controls.control_menu.exit" = "Quitter";
 "custom_controls.control_menu.exit.warn" = "Vous êtes sur le point de quitter sans enregistrer les modifications.";
 "custom_controls.control_menu.save" = "Sauvegarder";
-"custom_controls.control_menu.save.error.default" = "Le nom du contrôle ne peut pas être \"default\" car il sera remplacé.";
 "custom_controls.control_menu.save.error.json" = "Erreur JSON";
 "custom_controls.control_menu.save.error.write" = "Erreur d'enregistrement du fichier";
 "custom_controls.control_menu.load" = "Charger";
