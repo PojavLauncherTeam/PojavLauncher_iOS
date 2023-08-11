@@ -112,6 +112,7 @@ add_executable(PojavLauncher
  
   customcontrols/ControlButton.m
   customcontrols/ControlDrawer.m
+  customcontrols/ControlJoystick.m
   customcontrols/ControlLayout.m
   customcontrols/ControlSubButton.m
   customcontrols/CustomControlsUtils.m

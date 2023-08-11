@@ -21,6 +21,7 @@ CGPoint lastVirtualMousePoint;
 
 - (void)sendTouchPoint:(CGPoint)location withEvent:(int)event;
 - (void)updateSavedResolution;
+- (void)updateGrabState;
 
 + (BOOL)isRunning;
 

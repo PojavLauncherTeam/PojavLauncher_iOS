@@ -358,17 +358,7 @@ JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetGrabbing(JNIE
 
     dispatch_async(dispatch_get_main_queue(), ^{
         SurfaceViewController *vc = ((SurfaceViewController *)currentWindow().rootViewController);
-        UIView *surfaceView = vc.surfaceView;
-        if (isGrabbing == JNI_TRUE) {
-            CGFloat screenScale = [[UIScreen mainScreen] scale] * resolutionScale;
-            CallbackBridge_nativeSendCursorPos(ACTION_DOWN, lastVirtualMousePoint.x * screenScale, lastVirtualMousePoint.y * screenScale);
-            CGRect screenBounds = [[UIScreen mainScreen] bounds];
-            virtualMouseFrame.origin.x = screenBounds.size.width / 2;
-            virtualMouseFrame.origin.y = screenBounds.size.height / 2;
-            vc.mousePointerView.frame = virtualMouseFrame;
-        }
-        vc.scrollPanGesture.enabled = !isGrabbing;
-        vc.mousePointerView.hidden = isGrabbing || !virtualMouseEnabled;
+        [vc updateGrabState];
     });
 }
 

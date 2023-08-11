@@ -5,10 +5,6 @@
 #import "authenticator/BaseAuthenticator.h"
 #import "customcontrols/ControlButton.h"
 #import "customcontrols/ControlDrawer.h"
-// Incomplete
-#ifdef INTERNAL_VIRTUAL_JOYSTICK
-#import "customcontrols/ControlJoystick.h"
-#endif
 #import "customcontrols/ControlSubButton.h"
 #import "customcontrols/CustomControlsUtils.h"
 
@@ -60,7 +56,7 @@ BOOL slideableHotbar;
 @property(nonatomic) CGFloat screenScale;
 @property(nonatomic) CGFloat mouseSpeed;
 @property(nonatomic) CGRect clickRange;
-@property(nonatomic) BOOL isMacCatalystApp, shouldTriggerClick, shouldTriggerHaptic;
+@property(nonatomic) BOOL isMacCatalystApp, shouldTriggerClick, shouldTriggerHaptic, toggleHidden;
 
 @property(nonatomic) BOOL enableMouseGestures, enableHotbarGestures;
 
@@ -265,14 +261,6 @@ BOOL slideableHotbar;
     [self updateJetsamControl];
     [self updatePreferenceChanges];
     [self loadCustomControls];
-    [self executebtn_special_togglebtn:0];
-
-#ifdef INTERNAL_VIRTUAL_JOYSTICK
-    // just for testing
-    ControlJoystick *joystick = ControlJoystick.buttonWithDefaultProperties;
-    [self.ctrlView addSubview:joystick];
-    [joystick update];
-#endif
 
     if (UIApplication.sharedApplication.connectedScenes.count > 1 &&
       getPrefBool(@"video.fullscreen_airplay")) {
@@ -388,6 +376,40 @@ BOOL slideableHotbar;
     CallbackBridge_nativeSendScreenSize(windowWidth, windowHeight);
 }
 
+- (void)updateControlHiddenState:(BOOL)hide {
+    for (UIView *view in self.ctrlView.subviews) {
+        ControlButton *button = (ControlButton *)view;
+        if (!button.canBeHidden) continue;
+        BOOL hidden = hide || !(
+            (isGrabbing && [button.properties[@"displayInGame"] boolValue]) ||
+            (!isGrabbing && [button.properties[@"displayInMenu"] boolValue]));
+        if (!hidden && ![button isKindOfClass:ControlSubButton.class]) {
+            button.hidden = hidden;
+            if ([button isKindOfClass:ControlDrawer.class]) {
+                [(ControlDrawer *)button restoreButtonVisibility];
+            }
+        } else if (hidden) {
+            button.hidden = hidden;
+        }
+    }
+}
+
+- (void)updateGrabState {
+    // Update cursor position
+    if (isGrabbing == JNI_TRUE) {
+        CGFloat screenScale = self.surfaceView.layer.contentsScale;
+        CallbackBridge_nativeSendCursorPos(ACTION_DOWN, lastVirtualMousePoint.x * screenScale, lastVirtualMousePoint.y * screenScale);
+        virtualMouseFrame.origin.x = self.view.frame.size.width / 2;
+        virtualMouseFrame.origin.y = self.view.frame.size.height / 2;
+        self.mousePointerView.frame = virtualMouseFrame;
+    }
+    self.scrollPanGesture.enabled = !isGrabbing;
+    self.mousePointerView.hidden = isGrabbing || !virtualMouseEnabled;
+
+    // Update buttons visibility
+    [self updateControlHiddenState:NO];
+}
+
 - (void)launchMinecraft {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSDictionary *version = @{@"id": PLProfiles.current.selectedProfile[@"lastVersionId"]};
@@ -412,6 +434,8 @@ BOOL slideableHotbar;
     [self.swipeableButtons removeAllObjects];
     NSString *controlFile = [PLProfiles resolveKeyForCurrentProfile:@"defaultTouchCtrl"];
     [self.ctrlView loadControlFile:controlFile];
+
+    ControlButton *menuButton;
     for (ControlButton *button in self.ctrlView.subviews) {
         BOOL isSwipeable = [button.properties[@"isSwipeable"] boolValue];
 
@@ -419,8 +443,10 @@ BOOL slideableHotbar;
         BOOL isMenuButton = NO;
         for (int i = 0; i < 4; i++) {
             int keycodeInt = [button.properties[@"keycodes"][i] intValue];
-            button.canBeHidden &= keycodeInt != SPECIALBTN_TOGGLECTRL;
-            isMenuButton |= keycodeInt == SPECIALBTN_MENU;
+            button.canBeHidden &= keycodeInt != SPECIALBTN_TOGGLECTRL && keycodeInt != SPECIALBTN_VIRTUALMOUSE;
+            if (keycodeInt == SPECIALBTN_MENU) {
+                menuButton = button;
+            }
         }
 
         [button addTarget:self action:@selector(executebtn_down:) forControlEvents:UIControlEventTouchDown];
@@ -433,17 +459,20 @@ BOOL slideableHotbar;
             [button addGestureRecognizer:panRecognizerButton];
             [self.swipeableButtons addObject:button];
         }
+    }
 
-        if (!isMenuButton) continue;
+    [self updateControlHiddenState:self.toggleHidden];
+
+    if (menuButton) {
         NSMutableArray *items = [NSMutableArray new];
         for (int i = 0; i < self.menuArray.count; i++) {
             UIAction *item = [UIAction actionWithTitle:localize(self.menuArray[i], nil) image:nil identifier:nil
                 handler:^(id action) {[self didSelectMenuItem:i];}];
             [items addObject:item];
         }
-        button.menu = [UIMenu menuWithTitle:@"" image:nil identifier:nil
+        menuButton.menu = [UIMenu menuWithTitle:@"" image:nil identifier:nil
             options:UIMenuOptionsDisplayInline children:items];
-        button.showsMenuAsPrimaryAction = YES;
+        menuButton.showsMenuAsPrimaryAction = YES;
         self.edgeGesture.enabled = NO;
     }
 }
@@ -780,7 +809,6 @@ BOOL slideableHotbar;
 
 #pragma mark - On-screen button functions
 
-int currentVisibility = 1;
 - (void)executebtn:(ControlButton *)sender withAction:(int)action {
     int held = action == ACTION_DOWN;
     for (int i = 0; i < 4; i++) {
@@ -924,22 +952,9 @@ int currentVisibility = 1;
 }
 
 - (void)executebtn_special_togglebtn:(int)held {
-    if (held == 0) {
-        currentVisibility = !currentVisibility;
-        for (UIView *view in self.ctrlView.subviews) {
-            ControlButton *button = (ControlButton *)view;
-            if (button.canBeHidden) {
-                if (!currentVisibility && ![button isKindOfClass:[ControlSubButton class]]) {
-                    button.hidden = currentVisibility;
-                    if ([button isKindOfClass:[ControlDrawer class]]) {
-                        [(ControlDrawer *)button restoreButtonVisibility];
-                    }
-                } else if (currentVisibility) {
-                    button.hidden = currentVisibility;
-                }
-            }
-        }
-    }
+    if (held) return;
+    self.toggleHidden = !self.toggleHidden;
+    [self updateControlHiddenState:self.toggleHidden];
 }
 
 #pragma mark - Input: On-screen touch events

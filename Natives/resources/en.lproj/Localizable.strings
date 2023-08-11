@@ -28,7 +28,12 @@
 "Move" = "Move";
 "Remove" = "Remove";
 "Resize" = "Resize";
+// Visibility
+"Always" = "Always";
+"In game" = "In game";
+"In menu" = "In menu";
 
+"custom_controls.button_edit.forward_lock" = "Forward lock";
 "custom_controls.button_edit.name" = "Name";
 "custom_controls.button_edit.size" = "Size";
 "custom_controls.button_edit.mapping" = "Mapping";
@@ -37,17 +42,17 @@
 "custom_controls.button_edit.mouse_pass" = "Mouse pass";
 "custom_controls.button_edit.swipeable" = "Swipeable";
 "custom_controls.button_edit.bg_color" = "Background color";
-"custom_controls.button_edit.stroke_width" = "Stroke width (%)";
+"custom_controls.button_edit.stroke_width" = "Stroke width (dp)";
 "custom_controls.button_edit.stroke_color" = "Stroke color";
 "custom_controls.button_edit.corner_radius" = "Corner radius (%)";
 "custom_controls.button_edit.opacity" = "Opacity (%)";
+"custom_controls.button_edit.visibility" = "Visibility";
 
 "custom_controls.button_menu.add_subbutton" = "Add sub-button";
 "custom_controls.control_menu.discard_changes" = "Discard changes";
 "custom_controls.control_menu.exit" = "Exit";
 "custom_controls.control_menu.exit.warn" = "You are about to exit without saving changes.";
 "custom_controls.control_menu.save" = "Save";
-"custom_controls.control_menu.save.error.default" = "Control name can not be \"default\" as it will be overwritten.";
 "custom_controls.control_menu.save.error.json" = "JSON error";
 "custom_controls.control_menu.save.error.write" = "Error saving file";
 "custom_controls.control_menu.load" = "Load";
@@ -55,6 +60,7 @@
 "custom_controls.control_menu.safe_area" = "Safe area";
 "custom_controls.control_menu.add_button" = "Add button";
 "custom_controls.control_menu.add_drawer" = "Add drawer";
+"custom_controls.control_menu.add_joystick" = "Add joystick";
 "custom_controls.error.incompatible" = "This control version (code %d) is not implemented in this launcher build.";
 "custom_controls.hint" = "Long-press anywhere on screen for more options";
 

@@ -29,6 +29,7 @@
     //NSLog(@"DBG button prop = %@", propArray);
     ControlButton *instance = [self buttonWithType:UIButtonTypeSystem];
     instance.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    instance.clipsToBounds = YES;
     instance.tintColor = [UIColor whiteColor];
     instance.titleLabel.adjustsFontSizeToFitWidth = YES;
     instance.titleLabel.lineBreakMode = NSLineBreakByCharWrapping;
@@ -151,6 +152,9 @@
 - (void)update {
     NSAssert(self.superview != nil, @"should not be nil");
 
+    self.displayInGame = [self.properties[@"displayInGame"] boolValue];
+    self.displayInMenu = [self.properties[@"displayInMenu"] boolValue];
+
     // net/kdt/pojavlaunch/customcontrols/ControlData.update()
     [self preProcessProperties];
 
@@ -179,10 +183,12 @@
 
     self.layer.borderColor = [convertARGB2UIColor(propStrokeColor) CGColor];
     self.layer.cornerRadius = MIN(self.frame.size.width, self.frame.size.height) / 200.0 * propCornerRadius;
-    self.layer.borderWidth = MAX(self.frame.size.width, self.frame.size.height) / 200.0 * propStrokeWidth;
-    self.clipsToBounds = YES;
+    self.layer.borderWidth = propStrokeWidth;
 
-    [self setTitle:self.properties[@"name"] forState:UIControlStateNormal];
+    [UIView performWithoutAnimation:^{
+        [self setTitle:self.properties[@"name"] forState:UIControlStateNormal];
+        [self layoutIfNeeded];
+    }];
 }
 
 // NOTE: Unlike Android's impl, this method uses dp instead of px (no call to dpToPx), "view.center" instead of "view.pos + view.size/2"
