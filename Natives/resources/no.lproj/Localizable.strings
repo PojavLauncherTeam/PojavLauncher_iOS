@@ -14,7 +14,6 @@
 "Old-alpha" = "Old-alpha";
 "Edit" = "Rediger";
 "Remove" = "Slett";
-
 "custom_controls.button_edit.name" = "Navn";
 "custom_controls.button_edit.size" = "Størrelse";
 "custom_controls.button_edit.toggleable" = "Byttbar";
