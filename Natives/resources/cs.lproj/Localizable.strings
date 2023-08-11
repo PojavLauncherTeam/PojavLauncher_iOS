@@ -29,6 +29,7 @@
 "Remove" = "Odstranit";
 "Resize" = "Změnit velikost";
 
+"custom_controls.button_edit.forward_lock" = "Uzamknout chození vpřed";
 "custom_controls.button_edit.name" = "Název";
 "custom_controls.button_edit.size" = "Velikost";
 "custom_controls.button_edit.mapping" = "Mapování";
@@ -37,7 +38,6 @@
 "custom_controls.button_edit.mouse_pass" = "Průchod myši";
 "custom_controls.button_edit.swipeable" = "Povolit přejíždění";
 "custom_controls.button_edit.bg_color" = "Barva pozadí";
-"custom_controls.button_edit.stroke_width" = "Šířka obrysu (%)";
 "custom_controls.button_edit.stroke_color" = "Barva obrysu";
 "custom_controls.button_edit.corner_radius" = "Poloměr rohu (%)";
 "custom_controls.button_edit.opacity" = "Průhlednost (%)";
@@ -47,7 +47,6 @@
 "custom_controls.control_menu.exit" = "Odejít";
 "custom_controls.control_menu.exit.warn" = "Chystáte se ukončit bez uložení změn.";
 "custom_controls.control_menu.save" = "Uložit";
-"custom_controls.control_menu.save.error.default" = "Název ovládání nemůže být \"default\", neboť by byl přepsán.";
 "custom_controls.control_menu.save.error.json" = "Chyba JSONu";
 "custom_controls.control_menu.save.error.write" = "Chyba ukládání souboru";
 "custom_controls.control_menu.load" = "Načíst";
@@ -55,6 +54,7 @@
 "custom_controls.control_menu.safe_area" = "Bezpečná oblast";
 "custom_controls.control_menu.add_button" = "Přidat tlačítko";
 "custom_controls.control_menu.add_drawer" = "Přidat šuplík";
+"custom_controls.control_menu.add_joystick" = "Přidat joystick";
 "custom_controls.error.incompatible" = "Tato verze ovládání (kód %d) v tomto sestavení spouštěče není implementována.";
 "custom_controls.hint" = "Pro více možností dlouze podržte kdekoli na obrazovce";
 
