@@ -28,7 +28,6 @@
 "Move" = "移動";
 "Remove" = "移除";
 "Resize" = "調整大小";
-
 "custom_controls.button_edit.name" = "名稱";
 "custom_controls.button_edit.size" = "大小";
 "custom_controls.button_edit.mapping" = "對映";
@@ -37,7 +36,6 @@
 "custom_controls.button_edit.mouse_pass" = "滑鼠傳入";
 "custom_controls.button_edit.swipeable" = "可滑動";
 "custom_controls.button_edit.bg_color" = "背景顏色";
-"custom_controls.button_edit.stroke_width" = "邊框寬度 (px)：";
 "custom_controls.button_edit.stroke_color" = "邊框顏色";
 "custom_controls.button_edit.corner_radius" = "圓角半徑 (%)";
 "custom_controls.button_edit.opacity" = "不透明度（%）";
@@ -47,7 +45,6 @@
 "custom_controls.control_menu.exit" = "退出";
 "custom_controls.control_menu.exit.warn" = "你將要在尚未儲存更改的情況下退出";
 "custom_controls.control_menu.save" = "儲存";
-"custom_controls.control_menu.save.error.default" = "控制鍵的名稱不能為「default」，因為它會被覆寫。";
 "custom_controls.control_menu.save.error.json" = "JSON 錯誤";
 "custom_controls.control_menu.save.error.write" = "儲存檔案時發生錯誤";
 "custom_controls.control_menu.load" = "載入";
