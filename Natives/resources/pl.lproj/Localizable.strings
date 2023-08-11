@@ -28,6 +28,10 @@
 "Move" = "Przenieś";
 "Remove" = "Usuń";
 "Resize" = "Zmień rozmiar";
+// Visibility
+"Always" = "Zawsze";
+"In game" = "W grze";
+"In menu" = "W menu";
 "custom_controls.button_edit.name" = "Nazwa";
 "custom_controls.button_edit.size" = "Rozmiar";
 "custom_controls.button_edit.mapping" = "Mapowanie";
@@ -36,9 +40,11 @@
 "custom_controls.button_edit.mouse_pass" = "Przejście myszy";
 "custom_controls.button_edit.swipeable" = "Przesuwalny";
 "custom_controls.button_edit.bg_color" = "Kolor tła";
+"custom_controls.button_edit.stroke_width" = "Szerokość obrysu (dp)";
 "custom_controls.button_edit.stroke_color" = "Kolor obrysu";
 "custom_controls.button_edit.corner_radius" = "Zaokrąglenie narożników (%)";
 "custom_controls.button_edit.opacity" = "Przezroczystość (%)";
+"custom_controls.button_edit.visibility" = "Widzialność";
 
 "custom_controls.button_menu.add_subbutton" = "Dodaj przycisk podrzędny";
 "custom_controls.control_menu.discard_changes" = "Odrzuć zmiany";
