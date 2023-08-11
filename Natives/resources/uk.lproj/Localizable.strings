@@ -28,7 +28,6 @@
 "Move" = "Рухати";
 "Remove" = "Вилучити";
 "Resize" = "Зміна розміру";
-
 "custom_controls.button_edit.name" = "Ім'я";
 "custom_controls.button_edit.size" = "Розмір";
 "custom_controls.button_edit.mapping" = "Кнопки";
@@ -37,7 +36,6 @@
 "custom_controls.button_edit.mouse_pass" = "Перехід миші";
 "custom_controls.button_edit.swipeable" = "Перегортаємий";
 "custom_controls.button_edit.bg_color" = "Колір фону";
-"custom_controls.button_edit.stroke_width" = "Товщина штриха (%)";
 "custom_controls.button_edit.stroke_color" = "Колір контуру";
 "custom_controls.button_edit.corner_radius" = "Радіус округлення (%)";
 "custom_controls.button_edit.opacity" = "Невиразність (%)";
@@ -47,7 +45,6 @@
 "custom_controls.control_menu.exit" = "Вийти";
 "custom_controls.control_menu.exit.warn" = "Ви збираєтесь вийти без збережень.";
 "custom_controls.control_menu.save" = "Зберегти";
-"custom_controls.control_menu.save.error.default" = "Ім'я контролера не буде \"за замовчуванням\" бо воно буде перезаписано.";
 "custom_controls.control_menu.save.error.json" = "Помилка JSON";
 "custom_controls.control_menu.save.error.write" = "Помилка збереження";
 "custom_controls.control_menu.load" = "Завантаження";
