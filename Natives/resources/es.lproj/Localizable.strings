@@ -71,6 +71,7 @@
 
 // Login buttons
 "login.menu.sendlogs" = "Envía tus logs";
+"login.option.add" = "Añadir cuenta";
 "login.option.select" = "Seleccione una cuenta";
 "login.option.microsoft" = "Cuenta de Microsoft";
 "login.option.local" = "Cuenta local";
@@ -150,6 +151,10 @@
 "preference.detail.virtmouse_enable" = "Habilita está opcion para empezar con el ratón virtual encendido";
 "preference.title.slideable_hotbar" = "Hotbar deslizable";
 "preference.detail.slideable_hotbar" = "Permite deslizarse en el hotbar como la rueda del ratón";
+
+"preference.title.gyroscope_enable" = "Habilitar controles de giroscopio";
+"preference.title.gyroscope_sensitivity" = "Sensibilidad de los controles por giroscopio";
+"preference.detail.gyroscope_sensitivity" = "Ajusta la sensibilidad de los controles por giroscopio";
 
 "preference.title.java_args" = "JRE Argumentos de lanzamiento";
 "preference.placeholder.java_args" = "Especifica argumentos...";
