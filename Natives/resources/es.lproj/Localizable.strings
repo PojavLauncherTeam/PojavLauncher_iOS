@@ -51,6 +51,7 @@
 "custom_controls.control_menu.safe_area" = "Área segura";
 "custom_controls.control_menu.add_button" = "Añadir botón";
 "custom_controls.control_menu.add_drawer" = "Añadir Cajón";
+"custom_controls.control_menu.add_joystick" = "Agregar joystick";
 "custom_controls.hint" = "Mantenga pulsado en cualquier lugar de la pantalla para más opciones";
 
 "init.migrateDir" = "La carpeta de PojavLauncher ahora está en %@. Todos tus datos han sido movidos a esa nueva ubicación.";
@@ -172,3 +173,4 @@
 "preference.profile.title.name" = "Nombre";
 "preference.profile.title.version" = "Versión";
 "profile.title.create" = "Crear una nueva instancia";
+"controller_configurator.playstation.title.named_back" = "Seleccionar";
