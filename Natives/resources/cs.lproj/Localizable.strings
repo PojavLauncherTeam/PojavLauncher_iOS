@@ -28,6 +28,10 @@
 "Move" = "Pohnout";
 "Remove" = "Odstranit";
 "Resize" = "Změnit velikost";
+// Visibility
+"Always" = "Vždy";
+"In game" = "Ve hře";
+"In menu" = "V menu";
 
 "custom_controls.button_edit.forward_lock" = "Uzamknout chození vpřed";
 "custom_controls.button_edit.name" = "Název";
@@ -38,9 +42,11 @@
 "custom_controls.button_edit.mouse_pass" = "Průchod myši";
 "custom_controls.button_edit.swipeable" = "Povolit přejíždění";
 "custom_controls.button_edit.bg_color" = "Barva pozadí";
+"custom_controls.button_edit.stroke_width" = "Šířka obrysu";
 "custom_controls.button_edit.stroke_color" = "Barva obrysu";
 "custom_controls.button_edit.corner_radius" = "Poloměr rohu (%)";
 "custom_controls.button_edit.opacity" = "Průhlednost (%)";
+"custom_controls.button_edit.visibility" = "Viditelnost";
 
 "custom_controls.button_menu.add_subbutton" = "Přidat podtlačítko";
 "custom_controls.control_menu.discard_changes" = "Zahodit změny";
