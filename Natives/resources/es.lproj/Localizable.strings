@@ -153,8 +153,8 @@
 "preference.detail.slideable_hotbar" = "Permite deslizarse en el hotbar como la rueda del ratón";
 
 "preference.title.gyroscope_enable" = "Habilitar controles de giroscopio";
-"preference.title.gyroscope_sensitivity" = "Sensibilidad de los controles por giroscopio";
-"preference.detail.gyroscope_sensitivity" = "Ajusta la sensibilidad de los controles por giroscopio";
+"preference.title.gyroscope_sensitivity" = "Sensibilidad del giroscopio";
+"preference.detail.gyroscope_sensitivity" = "Ajustar la sensibilidad de los controles por giroscopio";
 
 "preference.title.java_args" = "JRE Argumentos de lanzamiento";
 "preference.placeholder.java_args" = "Especifica argumentos...";
