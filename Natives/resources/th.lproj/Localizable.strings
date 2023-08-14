@@ -19,8 +19,8 @@
 "Installed" = "ติดตั้งแล้ว";
 "Snapshot" = "ภาพรวม";
 "Releases" = "เผยแพร่";
-"Old-beta" = "เบตาเก่า";
-"Old-alpha" = "Old-alpha";
+"Old-beta" = "เบต้าเก่า";
+"Old-alpha" = "alpha เก่า";
 
 // Custom controls
 "Copy" = "คัดลอก";
@@ -64,7 +64,7 @@
 //"preference.section.footer.control" = "";
 "preference.section.java" = "จาวาทวิก";
 
-"preference.title.game_directory" = "ตำเเห่งโฟรเดอร์เกม";
+"preference.title.game_directory" = "ตำเเหน่งโฟรเดอร์เกม";
 "preference.title.cosmetica" = "ผ้าคลุมที่มีภาพ";
 
 "preference.title.renderer" = "การแสดงผล";
@@ -73,7 +73,7 @@
 "preference.title.gyroscope_sensitivity" = "ความรวดเร็วในการควบคุมไจโร";
 "preference.detail.gyroscope_sensitivity" = "ปรับความไวของการควบคุมไจโรสโคป";
 
-"preference.title.java_args" = "JVM Launch arguments";
+"preference.title.java_args" = "อาร์กิวเมนต์เปิดใช้ JVM";
 "preference.title.auto_ram" = "RAM อัตโนมัติ";
 "preference.detail.auto_ram" = "เปิดใช้งานตัวปรับ RAM อัตโนมัติ";
 "preference.detail.allocated_memory" = "ควบคุมเเรมที่จะให้กับเกมมายคราฟ";
