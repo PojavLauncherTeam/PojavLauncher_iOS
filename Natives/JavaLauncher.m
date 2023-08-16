@@ -60,18 +60,17 @@ void init_loadCustomEnv() {
 }
 
 void init_loadCustomJvmFlags(int* argc, const char** argv) {
-    NSArray *argsToPurge = @[@"Xms", @"Xmx", @"d32", @"d64"];
     NSString *jvmargs = [PLProfiles resolveKeyForCurrentProfile:@"javaArgs"];
     if (jvmargs == nil) return;
-    BOOL isFirstArg = YES;
+    // Make the separator happy
+    jvmargs = [jvmargs stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceCharacterSet];
+    jvmargs = [@" " stringByAppendingString:jvmargs];
+
     NSLog(@"[JavaLauncher] Reading custom JVM flags");
+    NSArray *argsToPurge = @[@"Xms", @"Xmx", @"d32", @"d64"];
     for (NSString *arg in [jvmargs componentsSeparatedByString:@" -"]) {
-        if (arg.length == 0) continue;
-        NSString *jvmarg = arg;
-        if (isFirstArg) {
-            isFirstArg = NO;
-            jvmarg = [jvmarg substringFromIndex:1];
-        }
+        NSString *jvmarg = [arg stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceCharacterSet];
+        if (jvmarg.length == 0) continue;
         BOOL ignore = NO;
         for (NSString *argToPurge in argsToPurge) {
             if ([jvmarg hasPrefix:argToPurge]) {
@@ -179,7 +178,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     margv[++margc] = [NSString stringWithFormat:@"-DUIScreen.maximumFramesPerSecond=%d", (int)UIScreen.mainScreen.maximumFramesPerSecond].UTF8String;
     margv[++margc] = "-Dorg.lwjgl.glfw.checkThread0=false";
     margv[++margc] = "-Dorg.lwjgl.system.allocator=system";
-    margv[++margc] = "-Dorg.lwjgl.util.NoChecks=true";
+    //margv[++margc] = "-Dorg.lwjgl.util.NoChecks=true";
     margv[++margc] = "-Dlog4j2.formatMsgNoLookups=true";
 
     NSString *librariesPath = [NSString stringWithFormat:@"%s/libs", getenv("BUNDLE_PATH")];
