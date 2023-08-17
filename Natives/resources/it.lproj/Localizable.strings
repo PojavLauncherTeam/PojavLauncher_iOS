@@ -28,6 +28,8 @@
 "Move" = "Sposta";
 "Remove" = "Rimuovi";
 "Resize" = "Ridimensiona";
+
+"custom_controls.button_edit.forward_lock" = "Forward lock";
 "custom_controls.button_edit.name" = "Nome";
 "custom_controls.button_edit.size" = "Dimensione";
 "custom_controls.button_edit.mapping" = "Mapping";
@@ -45,6 +47,7 @@
 "custom_controls.control_menu.load" = "Carica";
 "custom_controls.control_menu.make_default" = "Rendi predefinito";
 "custom_controls.control_menu.add_button" = "Aggiungi pulsante";
+"custom_controls.control_menu.add_joystick" = "Aggiungi joystick";
 "custom_controls.hint" = "Tieni premuto ovunque sullo schermo per più opzioni";
 
 "init.migrateDir" = "La nuova cartella di PojavLauncher è %@. Tutti i tuoi dati esistenti sono stati spostati.";
