@@ -563,7 +563,7 @@ BOOL shouldDismissPopover = YES;
     if ([sender.view isKindOfClass:ControlHandleView.class]) {
         if (self.resizeView.target == nil) {
             [self onTouchAreaHandleView:sender];
-        } else {
+        } else if ([self.resizeView.target isKindOfClass:ControlButton.class]) {
             [self onTouchButtonHandleView:sender];
         }
         return;

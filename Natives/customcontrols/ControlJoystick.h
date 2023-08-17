@@ -1,8 +1,4 @@
 #import "ControlButton.h"
 
-@interface ControlJoystick : ControlButton {
-}
-
-+ (id)buttonWithDefaultProperties;
-
+@interface ControlJoystick : ControlButton
 @end

@@ -31,14 +31,6 @@ NSMutableDictionary* createButton(NSString* name, int* keycodes, NSString* dynam
 
 @implementation ControlJoystick
 
-+ (id)buttonWithDefaultProperties {
-    NSMutableDictionary *properties = createButton(@"", (int[4]){0,0,0,0 /* GLFW_KEY_W, GLFW_KEY_A, GLFW_KEY_S, GLFW_KEY_D */}, @"${margin}", @"${bottom} - ${margin}", 200, 200);
-    properties[@"cornerRadius"] = @100;
-    properties[@"bgColor"] = @(0x77111111);
-    ControlJoystick *instance = [self buttonWithProperties:properties];
-    return instance;
-}
-
 + (id)buttonWithProperties:(NSMutableDictionary *)propArray {
     ControlJoystick *instance = [super buttonWithProperties:propArray];
     instance.clipsToBounds = NO;

@@ -436,6 +436,9 @@ void loadControlObject(UIView* targetView, NSMutableDictionary* controlDictionar
         }
 
         NSMutableArray *joystickDataList = controlDictionary[@"mJoystickDataList"];
+        if (!joystickDataList) {
+            controlDictionary[@"mJoystickDataList"] = [NSMutableArray new];
+        }
         for (NSMutableDictionary *joystickDict in joystickDataList) {
             @try {
                 ControlJoystick *button = [ControlJoystick buttonWithProperties:joystickDict];
