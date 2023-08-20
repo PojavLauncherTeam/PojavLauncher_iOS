@@ -60,7 +60,8 @@ void AWTInputBridge_sendChar(jchar keychar) {
 
 void AWTInputBridge_sendKey(int keycode) {
     // TODO: iOS -> AWT keycode mapping
-    AWTInputBridge_nativeSendData(EVENT_TYPE_KEY, 0, keycode, 0, 0);
+    AWTInputBridge_nativeSendData(EVENT_TYPE_KEY, ' ', keycode, 1, 0);
+    AWTInputBridge_nativeSendData(EVENT_TYPE_KEY, ' ', keycode, 0, 0);
 }
 
 @implementation SurfaceView
