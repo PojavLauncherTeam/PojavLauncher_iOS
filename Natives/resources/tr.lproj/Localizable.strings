@@ -28,6 +28,10 @@
 "Move" = "Taşı";
 "Remove" = "Kaldır";
 "Resize" = "Yeniden boyutlandır";
+// Visibility
+"Always" = "Her zaman";
+"In game" = "Oyunda";
+"In menu" = "Menüde";
 "custom_controls.button_edit.name" = "İsim";
 "custom_controls.button_edit.size" = "Boyut";
 "custom_controls.button_edit.mapping" = "Atama";
@@ -36,9 +40,11 @@
 "custom_controls.button_edit.mouse_pass" = "Fare geçişi";
 "custom_controls.button_edit.swipeable" = "Kaydırılabilir";
 "custom_controls.button_edit.bg_color" = "Arkaplan rengi";
+"custom_controls.button_edit.stroke_width" = "Vurgu genişliği (dp)";
 "custom_controls.button_edit.stroke_color" = "Vurgu rengi";
 "custom_controls.button_edit.corner_radius" = "Köşe yarıçapı (%)";
 "custom_controls.button_edit.opacity" = "Opaklık (%)";
+"custom_controls.button_edit.visibility" = "Görünürlük";
 
 "custom_controls.button_menu.add_subbutton" = "Yan-düğme ekle";
 "custom_controls.control_menu.discard_changes" = "Değişiklikleri iptal et";
@@ -52,6 +58,7 @@
 "custom_controls.control_menu.safe_area" = "Güvenli alan";
 "custom_controls.control_menu.add_button" = "Düğme ekle";
 "custom_controls.control_menu.add_drawer" = "Çekmece ekle";
+"custom_controls.control_menu.add_joystick" = "Joystick ekle";
 "custom_controls.error.incompatible" = "Bu kontrol sürümü (kod %d) bu başlatıcı sürümünde uygulanmadı.";
 "custom_controls.hint" = "Daha çok seçenek için ekranın herhangi bir yerinde basılı tut";
 
