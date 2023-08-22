@@ -32,6 +32,8 @@
 "Always" = "Her zaman";
 "In game" = "Oyunda";
 "In menu" = "Menüde";
+
+"custom_controls.button_edit.forward_lock" = "İleri kilit";
 "custom_controls.button_edit.name" = "İsim";
 "custom_controls.button_edit.size" = "Boyut";
 "custom_controls.button_edit.mapping" = "Atama";
