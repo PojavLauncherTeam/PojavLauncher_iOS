@@ -25,6 +25,7 @@
 #include "JavaLauncher.h"
 
 jint (*orig_ProcessImpl_forkAndExec)(JNIEnv *env, jobject process, jint mode, jbyteArray helperpath, jbyteArray prog, jbyteArray argBlock, jint argc, jbyteArray envBlock, jint envc, jbyteArray dir, jintArray std_fds, jboolean redirectErrorStream);
+jlong (*orig_ProcessHandleImpl_isAlive0)(JNIEnv *env, jclass clazz, jlong jpid);
 
 NSString* processPath(NSString* path) {
     if ([path hasPrefix:@"file:"]) {
@@ -94,6 +95,18 @@ hooked_ProcessImpl_forkAndExec(JNIEnv *env, jobject process, jint mode, jbyteArr
     return 0;
 }
 
+/**
+ * Hooked version of java.lang.ProcessHandleImpl.isAlive0()
+ * which is used to ignore "Operation not permitted"
+ */
+jlong hooked_ProcessHandleImpl_isAlive0(JNIEnv *env, jclass clazz, jlong jpid) {
+    jlong result = orig_ProcessHandleImpl_isAlive0(env, clazz, jpid);
+    if ((*env)->ExceptionOccurred(env)) {
+        (*env)->ExceptionClear(runtimeJNIEnvPtr);
+    }
+    return result;
+}
+
 // Part of awt_bridge
 void CTCClipboard_nQuerySystemClipboard(JNIEnv *env, jclass clazz) {
     if(method_SystemClipboardDataReceived == NULL) {
@@ -139,6 +152,19 @@ void registerOpenHandler() {
         {"forkAndExec", "(I[B[B[BI[BI[B[IZ)I", (void *)&hooked_ProcessImpl_forkAndExec}
     };
     (*runtimeJNIEnvPtr)->RegisterNatives(runtimeJNIEnvPtr, cls, forkAndExecMethod, 1);
+
+    // (Java 17 only) Hook isAlive0
+    cls = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "java/lang/ProcessHandleImpl");
+    if ((*runtimeJNIEnvPtr)->ExceptionOccurred(runtimeJNIEnvPtr)) {
+        // Java 8
+        (*runtimeJNIEnvPtr)->ExceptionClear(runtimeJNIEnvPtr);
+    } else {
+        orig_ProcessHandleImpl_isAlive0 = dlsym(RTLD_DEFAULT, "Java_java_lang_ProcessHandleImpl_isAlive0");
+        JNINativeMethod isAlive0Method[] = {
+            {"isAlive0", "(J)J", (void *)&hooked_ProcessHandleImpl_isAlive0}
+        };
+        (*runtimeJNIEnvPtr)->RegisterNatives(runtimeJNIEnvPtr, cls, isAlive0Method, 1);
+    }
 
     // Register CTCClipboard natives
     cls = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "net/java/openjdk/cacio/ctc/CTCClipboard");
