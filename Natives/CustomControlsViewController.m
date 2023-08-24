@@ -444,6 +444,7 @@ BOOL shouldDismissPopover = YES;
     dict[@"height"] = @(100.0);
     dict[@"opacity"] = @(1);
     dict[@"bgColor"] = @(0x4d000000);
+    dict[@"strokeColor"] = @(0xffffffff);
     dict[@"displayInGame"] = dict[@"displayInMenu"] = @YES;
     dict[@"forwardLock"] = @NO;
     ControlJoystick *button = [ControlJoystick buttonWithProperties:dict];
@@ -826,7 +827,7 @@ CGFloat currentY;
     UILabel *labelBGColor = [self addLabel:localize(@"custom_controls.button_edit.bg_color", nil)];
     self.colorWellINTBackground = [[UIColorWell alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
     [self.colorWellINTBackground addTarget:self action:@selector(colorWellChanged) forControlEvents:UIControlEventValueChanged];
-    self.colorWellINTBackground.selectedColor = self.targetButton.backgroundColor;
+    self.colorWellINTBackground.selectedColor = convertARGB2UIColor([self.targetButton.properties[@"bgColor"] intValue]);
     [self.scrollView addSubview:self.colorWellINTBackground];
     currentY += labelBGColor.frame.size.height + 15.0;
 
@@ -846,7 +847,7 @@ CGFloat currentY;
     UILabel *labelStrokeColor = [self addLabel:localize(@"custom_controls.button_edit.stroke_color", nil)];
     self.colorWellINTStroke = [[UIColorWell alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
     [self.colorWellINTStroke addTarget:self action:@selector(colorWellChanged) forControlEvents:UIControlEventValueChanged];
-    self.colorWellINTStroke.selectedColor = [[UIColor alloc] initWithCGColor:self.targetButton.layer.borderColor];
+    self.colorWellINTStroke.selectedColor = convertARGB2UIColor([self.targetButton.properties[@"strokeColor"] intValue]);
     [self.scrollView addSubview:self.colorWellINTStroke];
     currentY += labelStrokeColor.frame.size.height + 15.0;
 
