@@ -1,25 +1,29 @@
 #include <assert.h>
 #include <dlfcn.h>
+#include <stdio.h>
 // #include "log.h"
 
 #include "GL/gl.h"
 
-void (*glDrawArrays_p) (GLenum mode, GLint first, GLsizei count);
+void(*orig_glTexSubImage2D)(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid *data);
 
-GLAPI void GLAPIENTRY glDrawArrays(GLenum mode, GLint first, GLsizei count) {
-    if (!glDrawArrays_p) {
-        glDrawArrays_p = dlsym(RTLD_NEXT, "glDrawArrays");
+// Nothing here now
+#if 0
+#define LOOKUP_FUNC(func) \
+    if (!orig_##func) { \
+        orig_##func = dlsym(RTLD_NEXT, #func); \
+    } if (!orig_##func) { \
+        orig_##func = dlsym(RTLD_DEFAULT, #func); \
     }
 
-    // NSDebugLog(@"func=%p, next=%p", glDrawArrays, glDrawArrays_real);
-    // NSDebugLog(@"glDrawArrays mode=%p", mode);
-    if (mode == GL_TRIANGLE_FAN) {
-        // NSDebugLog(@"ERROR: GL_TRIANGLE_FAN unsupported!");
-        
-        // this is wrong but idk how to deal with it yet...
-        // minecraft stills works with this for unknown reason
-        glDrawArrays_p(GL_TRIANGLE_STRIP, first, count);
-    } else {
-        glDrawArrays_p(mode, first, count);
+void glTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid *data) {
+    LOOKUP_FUNC(glTexSubImage2D)
+    printf("glTexSubImage2D(target=%d, level=%d xoffset=%d yoffset=%d width=%d height=%d format=%d type=%d data=%p)\n", target, level, xoffset, yoffset, width, height, format, type, data);
+/*
+    if (type == GL_UNSIGNED_INT_8_8_8_8_REV) {
+        type = GL_UNSIGNED_BYTE;
     }
+*/
+    orig_glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, data);
 }
+#endif
