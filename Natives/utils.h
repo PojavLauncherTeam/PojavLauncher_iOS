@@ -36,7 +36,7 @@
 
 #define RENDERER_NAME_GL4ES "libgl4es_114.dylib"
 #define RENDERER_NAME_MTL_ANGLE "libtinygl4angle.dylib"
-#define RENDERER_NAME_VK_ZINK "libOSMesaOverride.dylib"
+#define RENDERER_NAME_VK_ZINK "libOSMesa.8.dylib"
 
 #define SPECIALBTN_KEYBOARD -1
 #define SPECIALBTN_TOGGLECTRL -2
@@ -88,7 +88,8 @@ void _CGDataProviderReleaseBytePointerCallback(void *info,const void *pointer);
 
 jboolean attachThread(bool isAndroid, JNIEnv** secondJNIEnvPtr);
 
-void sendData(short type, short i1, short i2, short i3, short i4);
+void sendData(short type, int i1, int i2, short i3, short i4);
+void sendDataFloat(short type, float i1, float i2, short i3, short i4);
 
 void closeGLFWWindow();
 void callback_LauncherViewController_installMinecraft();
