@@ -538,6 +538,10 @@ void CallbackBridge_nativeSendMouseButton(int button, int action, int mods) {
 }
 
 void CallbackBridge_nativeSendScreenSize(int width, int height) {
+    if (gbuffer) {
+        gbuffer = realloc(gbuffer, 4*width*height + 1);
+    }
+
     windowWidth = width;
     windowHeight = height;
     
