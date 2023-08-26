@@ -978,8 +978,8 @@ CGFloat currentY;
 }
 
 - (void)visibilityValueChanged:(UISegmentedControl *)sender {
-    self.targetButton.properties[@"displayInGame"] = @(sender.selectedSegmentIndex != VISIBILITY_IN_MENU);
-    self.targetButton.properties[@"displayInMenu"] = @(sender.selectedSegmentIndex != VISIBILITY_IN_GAME);
+    self.targetButton.properties[@"displayInGame"] = [NSNumber numberWithBool:sender.selectedSegmentIndex != VISIBILITY_IN_MENU];
+    self.targetButton.properties[@"displayInMenu"] = [NSNumber numberWithBool:sender.selectedSegmentIndex != VISIBILITY_IN_GAME];
 }
 
 #pragma mark - UIPickerView stuff
