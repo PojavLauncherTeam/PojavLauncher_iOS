@@ -60,6 +60,8 @@ NSMutableDictionary* createButton(NSString* name, int* keycodes, NSString* dynam
     if (isGrabbing && self.fwdLockView) {
         self.fwdLockView.center = CGPointMake(self.mCenter.x, -self.mCenter.y);
     }
+    // pass this touch through the move handler
+    [self touchesMoved:touches withEvent:event];
 }
 
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
