@@ -8,30 +8,6 @@
 #import "ios_uikit_bridge.h"
 #import "utils.h"
 
-/*
-todo for now - might change anytime
-- make the entire download work anyways
-- cleanup later, before merging?
-- possibility fix incorrect stuff
-
-- Prevent download when account=local
-- download Log4J patch (or use existing one?)
-- download a vanilla version (tested)
-- download a modded ver with inheritsFrom:
- + not downloaded
- + inherit version not found
- + no internet connection (?)
-- download a modded ver without inheritsFrom
-- SHA check:
- + client json (tested)
- + libraries (tested)
- + client jar (tested)
- + assets
-- download assets
- + new structure
- + old structure (mapped)
-*/  
-
 @implementation MinecraftResourceUtils
 
 static AFURLSessionManager* manager;
@@ -290,11 +266,11 @@ static AFURLSessionManager* manager;
             [library[@"name"] hasPrefix:@"org.lwjgl"]
         );
 
+        NSString *versionStr = [library[@"name"] componentsSeparatedByString:@":"][2];
+        NSArray<NSString *> *version = [versionStr componentsSeparatedByString:@"."];
         if ([library[@"name"] hasPrefix:@"net.java.dev.jna:jna:"]) {
             // Special handling for LabyMod 1.8.9 and Forge 1.12.2(?)
             // we have libjnidispatch 5.13.0 in Frameworks directory
-            NSString *versionStr = [library[@"name"] componentsSeparatedByString:@":"][2];
-            NSArray<NSString *> *version = [versionStr componentsSeparatedByString:@"."];
             if (!(version[0].intValue < 5 || version[1].intValue < 13 || version[2].intValue < 1)) {
                 NSLog(@"[MCDL] Warning: JNA version required by %@ is %@ > 5.13.0, compatibility might be broken.", json[@"id"], versionStr);
             }
@@ -302,6 +278,15 @@ static AFURLSessionManager* manager;
             library[@"downloads"][@"artifact"][@"path"] = @"net/java/dev/jna/jna/5.13.0/jna-5.13.0.jar";
             library[@"downloads"][@"artifact"][@"url"] = @"https://repo1.maven.org/maven2/net/java/dev/jna/jna/5.13.0/jna-5.13.0.jar";
             library[@"downloads"][@"artifact"][@"sha1"] = @"1200e7ebeedbe0d10062093f32925a912020e747";
+        } else if ([library[@"name"] hasPrefix:@"org.ow2.asm:asm-all:"]) {
+            // Early versions of the ASM library get repalced with 5.0.4 because Pojav's LWJGL is compiled for
+            // Java 8, which is not supported by old ASM versions. Mod loaders like Forge, which depend on this
+            // library, often include lwjgl in their class transformations, which causes errors with old ASM versions.
+            if(version[0].intValue >= 5) continue;
+            library[@"name"] = @"org.ow2.asm:asm-all:5.0.4";
+            library[@"downloads"][@"artifact"][@"path"] = @"org/ow2/asm/asm-all/5.0.4/asm-all-5.0.4.jar";
+            library[@"downloads"][@"artifact"][@"sha1"] = @"e6244859997b3d4237a552669279780876228909";
+            library[@"downloads"][@"artifact"][@"url"] = @"https://repo1.maven.org/maven2/org/ow2/asm/asm-all/5.0.4/asm-all-5.0.4.jar";
         }
     }
 

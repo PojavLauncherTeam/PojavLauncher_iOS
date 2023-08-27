@@ -36,6 +36,7 @@ import net.kdt.pojavlaunch.utils.DownloadUtils;
 import net.kdt.pojavlaunch.utils.JSONUtils;
 import net.kdt.pojavlaunch.value.DependentLibrary;
 import net.kdt.pojavlaunch.value.MinecraftAccount;
+import net.kdt.pojavlaunch.value.MinecraftLibraryArtifact;
 import org.lwjgl.glfw.GLFW;
 
 public final class Tools
@@ -309,26 +310,42 @@ public final class Tools
         // Support for text2speech is not planned, so skip it for now.
         for (int i = 0; i < libraries.length; i++) {
             DependentLibrary libItem = libraries[i];
-            if (libItem.artifact != null) {
-                libItem.downloads = new DependentLibrary.LibraryDownloads(libItem.artifact);
-            }
             if (libItem.name.startsWith("com.mojang:text2speech") ||
                 //libItem.name.startsWith("net.java.jinput") ||
                 libItem.name.startsWith("net.java.dev.jna:platform:") ||
                 libItem.name.startsWith("org.lwjgl") ||
                 libItem.name.startsWith("tv.twitch")) {
                     libItem._skip = true;
-            } else if (libItem.name.startsWith("net.java.dev.jna:jna:")) {
+                    continue;
+            }
+
+            String[] version = libItem.name.split(":")[2].split("\\.");
+            if (libItem.name.startsWith("net.java.dev.jna:jna:")) {
                 // Special handling for LabyMod 1.8.9 and Forge 1.12.2(?)
                 // we have libjnidispatch 5.13.0 in Frameworks directory
-                int[] version = Arrays.stream(libItem.name.split(":")[2].split("\\.")).mapToInt(Integer::parseInt).toArray();
-                if (version[0] >= 5 && version[1] >= 13) return;
-                System.out.println("Library " + libItem.name + " has been changed to version 5.13.0");
+                if (Integer.parseInt(version[0]) >= 5 && Integer.parseInt(version[1]) >= 13) continue;
+                //System.out.println("Library " + libItem.name + " has been changed to version 5.13.0");
+                
+createLibraryInfo(libItem);
                 libItem.name = "net.java.dev.jna:jna:5.13.0";
                 libItem.downloads.artifact.path = "net/java/dev/jna/jna/5.13.0/jna-5.13.0.jar";
                 libItem.downloads.artifact.url = "https://libraries.minecraft.net/net/java/dev/jna/jna/5.13.0/jna-5.13.0.jar";
+            } else if (libItem.name.startsWith("org.ow2.asm:asm-all:")) {
+                if(Integer.parseInt(version[0]) >= 5) continue;
+                //System.out.println("Library " + libItem.name + " has been changed to version 5.0.4");
+                createLibraryInfo(libItem);
+                libItem.name = "org.ow2.asm:asm-all:5.0.4";
+                libItem.url = null;
+                libItem.downloads.artifact.path = "org/ow2/asm/asm-all/5.0.4/asm-all-5.0.4.jar";
+                libItem.downloads.artifact.sha1 = "e6244859997b3d4237a552669279780876228909";
+                libItem.downloads.artifact.url = "https://repo1.maven.org/maven2/org/ow2/asm/asm-all/5.0.4/asm-all-5.0.4.jar";
             }
         }
+    }
+
+    private static void createLibraryInfo(DependentLibrary library) {
+        if(library.downloads == null || library.downloads.artifact == null)
+            library.downloads = new DependentLibrary.LibraryDownloads(new MinecraftLibraryArtifact());
     }
 
     public static String[] generateLibClasspath(JMinecraftVersionList.Version info) {
