@@ -258,7 +258,9 @@
 "preference.detail.debug_show_layout_overlap" = "用浅黄色覆盖每个视图，颜色越深则重叠越多";
 
 "preference.profile.title.name" = "名称";
+"preference.profile.title.loader_version" = "加载器版本";
 "preference.profile.title.version" = "版本";
+"preference.profile.title.version_type" = "版本类型";
 "preference.profile.title.default_touch_control" = "触摸控制";
 "preference.profile.title.default_gamepad_control" = "手柄控制";
 
