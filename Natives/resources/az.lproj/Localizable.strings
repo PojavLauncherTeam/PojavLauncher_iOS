@@ -258,7 +258,10 @@
 "preference.detail.debug_show_layout_overlap" = "Üst-üstə düşən görünüşləri aşkar etmək üçün hər görünüşü şəffaf rənglə örtün.";
 
 "preference.profile.title.name" = "Ad";
+"preference.profile.title.loader_vendor" = "Yükləyici satıcı";
+"preference.profile.title.loader_version" = "Yükləyici versiyası";
 "preference.profile.title.version" = "Versiya";
+"preference.profile.title.version_type" = "Versiya növü";
 "preference.profile.title.default_touch_control" = "Toxunuş kontrolları";
 "preference.profile.title.default_gamepad_control" = "Gamepad kontrolları";
 
@@ -268,6 +271,7 @@
 "profile.title.create" = "Yeni profil yaradın";
 "profile.title.separate_preference" = "Parametrləri təcrid edin";
 "profile.detail.separate_preference" = "Parametrlərdə edilən hər hansı dəyişikliyi təcrid etmək üçün bu seçimi aktiv edin. Sıfırlamanın edilməsi standart parametrlər əvəzinə qlobal parametrlərə bərpa olunacaq.";
+"profile.title.install_fabric_quilt" = "Fabric/Quilt quraşdırın";
 
 "controller_configurator.title.current" = "Gamepad konfiqurasiya faylı";
 "controller_configurator.title.type.xbox" = "Xbox";
