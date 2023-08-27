@@ -258,7 +258,10 @@
 "preference.detail.debug_show_layout_overlap" = "Обозначить каждый элемент прозрачным цветом, чтобы упростить нахождение пересечений.";
 
 "preference.profile.title.name" = "Имя";
+"preference.profile.title.loader_vendor" = "Поставщик загрузчика";
+"preference.profile.title.loader_version" = "Версия загрузчика";
 "preference.profile.title.version" = "Версия";
+"preference.profile.title.version_type" = "Тип версии";
 "preference.profile.title.default_touch_control" = "Сенсорное управление";
 "preference.profile.title.default_gamepad_control" = "Контроллер";
 
@@ -268,6 +271,7 @@
 "profile.title.create" = "Новый профиль";
 "profile.title.separate_preference" = "Изолировать настройки";
 "profile.detail.separate_preference" = "Опция для изоляции всех изменений в настройках. Их сброс приведёт к восстановлению глобальных настроек вместо настроек по умолчанию.";
+"profile.title.install_fabric_quilt" = "Установка Fabric/Quilt";
 
 "controller_configurator.title.current" = "Файл настройки геймпада";
 "controller_configurator.title.type.xbox" = "Xbox";
