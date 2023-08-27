@@ -28,6 +28,10 @@
 "Move" = "Verschieben";
 "Remove" = "Entfernen";
 "Resize" = "Größe ändern";
+// Visibility
+"Always" = "Immer";
+"In game" = "Im Spiel";
+"In menu" = "Im Menü";
 "custom_controls.button_edit.name" = "Name";
 "custom_controls.button_edit.size" = "Größe";
 "custom_controls.button_edit.mapping" = "Zuordnung";
@@ -36,9 +40,11 @@
 "custom_controls.button_edit.mouse_pass" = "Lässt Maus durch";
 "custom_controls.button_edit.swipeable" = "Wischbar";
 "custom_controls.button_edit.bg_color" = "Hintergrundfarbe";
+"custom_controls.button_edit.stroke_width" = "Strichbreite (dp)";
 "custom_controls.button_edit.stroke_color" = "Strichfarbe";
 "custom_controls.button_edit.corner_radius" = "Eckenradius (%)";
 "custom_controls.button_edit.opacity" = "Deckkraft (%)";
+"custom_controls.button_edit.visibility" = "Sichtbarkeit";
 
 "custom_controls.button_menu.add_subbutton" = "Sub-Schaltfläche hinzufügen";
 "custom_controls.control_menu.discard_changes" = "Änderungen verwerfen";
@@ -251,7 +257,10 @@ der Minecraft-Version zu wählen. Verringerte Auflösung reduziert die Arbeitsla
 "preference.detail.debug_show_layout_overlap" = "Überlagere jede Ansicht mit einer transparenten Farbe, um überlappende Ansichten anzuzeigen.";
 
 "preference.profile.title.name" = "Name";
+"preference.profile.title.loader_vendor" = "Anbieter von Loadern";
+"preference.profile.title.loader_version" = "Loader-Version";
 "preference.profile.title.version" = "Version";
+"preference.profile.title.version_type" = "Versionstyp";
 "preference.profile.title.default_touch_control" = "Berührungssteuerung";
 "preference.profile.title.default_gamepad_control" = "Gamepad-Steuerung";
 
@@ -261,6 +270,7 @@ der Minecraft-Version zu wählen. Verringerte Auflösung reduziert die Arbeitsla
 "profile.title.create" = "Neues Profil erstellen";
 "profile.title.separate_preference" = "Einstellungen trennen";
 "profile.detail.separate_preference" = "Aktiviere diese Option um jegliche in den Einstellungen gemachten Änderungen zu trennen. Ein Zurücksetzen wird die globalen Einstellungen statt die Standardeinstellungen laden.";
+"profile.title.install_fabric_quilt" = "Fabric/Quilt installieren";
 
 "controller_configurator.title.current" = "Gamepads Konfigurationsdatei";
 "controller_configurator.title.type.xbox" = "XBox";
