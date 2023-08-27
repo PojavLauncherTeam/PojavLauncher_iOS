@@ -28,6 +28,8 @@
 "Move" = "Pindah";
 "Remove" = "Hapus";
 "Resize" = "Ubah ukuran";
+
+"custom_controls.button_edit.forward_lock" = "Kunci ke depan";
 "custom_controls.button_edit.name" = "Nama";
 "custom_controls.button_edit.size" = "Ukuran";
 "custom_controls.button_edit.mapping" = "Mapping";
@@ -52,6 +54,7 @@
 "custom_controls.control_menu.safe_area" = "Area aman";
 "custom_controls.control_menu.add_button" = "Tambah tombol";
 "custom_controls.control_menu.add_drawer" = "Tambah drawer";
+"custom_controls.control_menu.add_joystick" = "Tambah Joystick";
 "custom_controls.error.incompatible" = "Kontrol versi ini (code %d) tidak diimplementasikan di build peluncur ini.";
 "custom_controls.hint" = "Pencet lama dimanapun di layar untuk opsi tambahan";
 
