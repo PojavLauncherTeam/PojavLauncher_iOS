@@ -268,6 +268,7 @@
 "profile.title.create" = "创建新配置";
 "profile.title.separate_preference" = "隔离设置";
 "profile.detail.separate_preference" = "启用此选项可隔离设置中所做的任何更改（诸如模组、着色器、纹理包），执行重置将恢复为全局设置而非默认设置。";
+"profile.title.install_fabric_quilt" = "安装 Fabric/Quilt";
 
 "controller_configurator.title.current" = "游戏键盘配置文件";
 "controller_configurator.title.type.xbox" = "Xbox";
