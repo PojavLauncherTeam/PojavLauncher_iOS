@@ -184,7 +184,9 @@
 
 "preference.profile.title.name" = "Nazwa";
 "preference.profile.title.version" = "Wersja";
+"preference.profile.title.version_type" = "Typ wersji";
 "profile.title.create" = "Utwórz nowy profil";
+"profile.title.install_fabric_quilt" = "Zainstaluj Fabric/Quilt";
 "controller_configurator.title.type.xbox" = "Xbox";
 "controller_configurator.title.type.playstation" = "PlayStation";
 "controller_configurator.xbox.title.named_back" = "Poradnik";
