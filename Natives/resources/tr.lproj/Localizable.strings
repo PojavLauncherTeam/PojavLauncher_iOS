@@ -258,7 +258,10 @@
 "preference.detail.debug_show_layout_overlap" = "Üst üste kalan her yeri görebilmek için her düzeni saydam renkle donat.";
 
 "preference.profile.title.name" = "İsim";
+"preference.profile.title.loader_vendor" = "Yükleyici satıcısı";
+"preference.profile.title.loader_version" = "Yükleyici sürümü";
 "preference.profile.title.version" = "Sürüm";
+"preference.profile.title.version_type" = "Sürüm türü";
 "preference.profile.title.default_touch_control" = "Dokunmatik kontroller";
 "preference.profile.title.default_gamepad_control" = "Kumanda kontrolleri";
 
@@ -268,6 +271,7 @@
 "profile.title.create" = "Yeni profil oluştur";
 "profile.title.separate_preference" = "Ayarları ayır";
 "profile.detail.separate_preference" = "Ayarlarda yapılan değişiklikleri izole etmek için bu seçeneği etkinleştirin. Sıfırlama yapmak, varsayılan ayarlar yerine genel ayarlara geri yükleyecektir.";
+"profile.title.install_fabric_quilt" = "Fabric/Quilt kurulumu";
 
 "controller_configurator.title.current" = "Gamepad yapılandırma dosyası";
 "controller_configurator.title.type.xbox" = "Xbox";
