@@ -18,6 +18,7 @@ set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${GLOBAL_LDFLAGS}")
 endif()
 
 include_directories(
+  "."
   "external/AFNetworking/AFNetworking"
   "external/AFNetworking/UIKit+AFNetworking"
   "external/DBNumberedSlider/Classes"
@@ -122,6 +123,8 @@ add_executable(PojavLauncher
   external/NRFileManager/NSFileManager+NRFileManager.m
   external/ballpa1n/HostManager.c
   external/ballpa1n/wrapped/HostManagerBridge.m
+
+  installer/FabricInstallViewController.m
 
   input/ControllerInput.m
   input/GyroInput.m

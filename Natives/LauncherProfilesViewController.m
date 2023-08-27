@@ -8,6 +8,7 @@
 //#import "NSFileManager+NRFileManager.h"
 #import "PLProfiles.h"
 #import "UIKit+hook.h"
+#import "installer/FabricInstallViewController.h"
 #import "ios_uikit_bridge.h"
 #import "utils.h"
 
@@ -32,25 +33,27 @@
 {
     [super viewDidLoad];
 
-    id createHandler = ^(UIAction *action) {
-        [self actionEditProfile:@{
-            @"name": @"",
-            @"lastVersionId": @"latest-release",
-        }];
-    };
     UIMenu *createMenu = [UIMenu menuWithTitle:localize(@"profile.title.create", nil) image:nil identifier:nil
     options:UIMenuOptionsDisplayInline
     children:@[
         [UIAction
             actionWithTitle:@"Vanilla" image:nil
-            identifier:@"vanilla" handler:createHandler],
+            identifier:@"vanilla" handler:^(UIAction *action) {
+                [self actionEditProfile:@{
+                    @"name": @"",
+                    @"lastVersionId": @"latest-release"}];
+            }],
 #if 0 // TODO
         [UIAction
             actionWithTitle:@"OptiFine" image:nil
             identifier:@"optifine" handler:createHandler],
+#endif
         [UIAction
-            actionWithTitle:@"Fabric" image:nil
-            identifier:@"fabric" handler:createHandler],
+            actionWithTitle:@"Fabric/Quilt" image:nil
+            identifier:@"fabric_or_quilt" handler:^(UIAction *action) {
+                [self actionCreateFabricProfile];
+            }],
+#if 0
         [UIAction
             actionWithTitle:@"Forge" image:nil
             identifier:@"forge" handler:createHandler]
@@ -81,9 +84,18 @@
     toggleIsolatedPref(sender.isOn);
 }
 
+- (void)actionCreateFabricProfile {
+    FabricInstallViewController *vc = [FabricInstallViewController new];
+    [self presentNavigatedViewController:vc];
+}
+
 - (void)actionEditProfile:(NSDictionary *)profile {
     LauncherProfileEditorViewController *vc = [LauncherProfileEditorViewController new];
     vc.profile = profile.mutableCopy;
+    [self presentNavigatedViewController:vc];
+}
+
+- (void)presentNavigatedViewController:(UIViewController *)vc {
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
     nav.navigationBar.prefersLargeTitles = YES;
     nav.modalInPresentation = YES;
