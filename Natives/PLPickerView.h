@@ -11,5 +11,7 @@
 
 @protocol PLPickerViewDelegate<UIPickerViewDelegate>
 @required
-- (UIImage * _Nullable)pickerView:(PLPickerView * _Nonnull)pickerView imageForRow:(NSInteger)row forComponent:(NSInteger)component;
+- (void)pickerView:(PLPickerView * _Nonnull)pickerView enumerateImageView:(UIImageView * _Nonnull)imageView forRow:(NSInteger)row forComponent:(NSInteger)component;
+
+//- (UIImage * _Nullable)pickerView:(PLPickerView * _Nonnull)pickerView imageForRow:(NSInteger)row forComponent:(NSInteger)component;
 @end

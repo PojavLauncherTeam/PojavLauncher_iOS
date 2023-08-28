@@ -6,6 +6,10 @@
 - (UIUserInterfaceIdiom)hook_userInterfaceIdiom;
 @end
 
+@interface UIImageView(hook)
+@property(nonatomic) BOOL isSizeFixed;
+@end
+
 // private functions
 @interface UIContextMenuInteraction(private)
 - (void)_presentMenuAtLocation:(CGPoint)location;

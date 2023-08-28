@@ -1,5 +1,6 @@
 #import "AFNetworking.h"
 #import "FabricInstallViewController.h"
+#import "LauncherNavigationController.h"
 #import "LauncherPreferences.h"
 #import "LauncherProfileEditorViewController.h"
 #import "PickTextField.h"
@@ -24,14 +25,14 @@
 - (void)viewDidLoad {
     // Setup navigation bar
     self.title = localize(@"profile.title.install_fabric_quilt", nil);
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(actionDone)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(actionDone:)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemClose target:self action:@selector(actionClose)];
 
     // Setup appearance
     self.prefSectionsVisible = YES;
 
     // Setup preference getter and setter
-    __weak FabricInstallViewController *weakSelf = self;
+    __weak __typeof(self) weakSelf = self;
     self.localKVO = @{
         @"gameVersion": @"1.20.1",
         @"loaderVendor": @"Fabric",
@@ -100,11 +101,13 @@
         @"Fabric": @{
             @"game": @"https://meta.fabricmc.net/v2/versions/game",
             @"loader": @"https://meta.fabricmc.net/v2/versions/loader",
+            @"icon": @"https://avatars.githubusercontent.com/u/21025855?s=64",
             @"json": @"https://meta.fabricmc.net/v2/versions/loader/%@/%@/profile/json"
         },
         @"Quilt": @{
             @"game": @"https://meta.quiltmc.org/v3/versions/game",
             @"loader": @"https://meta.quiltmc.org/v3/versions/loader",
+            @"icon": @"https://raw.githubusercontent.com/QuiltMC/art/master/brand/64png/quilt_logo_transparent.png",
             @"json": @"https://meta.quiltmc.org/v3/versions/loader/%@/%@/profile/json"
         }
     };
@@ -117,7 +120,7 @@
     id errorCallback = ^(NSURLSessionTask *operation, NSError *error) {
         if (!errorShown) {
             errorShown = YES;
-            NSLog(@"Error: %@", error);
+            NSDebugLog(@"Error: %@", error);
             showDialog(localize(@"Error", nil), error.localizedDescription);
             [self actionClose];
         }
@@ -125,12 +128,12 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSDictionary *endpoint = self.endpoints[self.localKVO[@"loaderVendor"]];
     [manager GET:endpoint[@"game"] parameters:nil headers:nil progress:nil  success:^(NSURLSessionTask *task, NSArray *response) {
-        NSLog(@"[%@ Installer] Got %d game versions", self.localKVO[@"loaderVendor"], response.count);
+        NSDebugLog(@"[%@ Installer] Got %d game versions", self.localKVO[@"loaderVendor"], response.count);
         self.versionMetadata = response;
         [self changeVersionTypeTo:[self.localKVO[@"gameType_index"] intValue]];
     } failure:errorCallback];
     [manager GET:endpoint[@"loader"] parameters:nil headers:nil progress:nil success:^(NSURLSessionTask *task, NSArray *response) {
-        NSLog(@"[%@ Installer] Got %d loader versions", self.localKVO[@"loaderVendor"], response.count);
+        NSDebugLog(@"[%@ Installer] Got %d loader versions", self.localKVO[@"loaderVendor"], response.count);
         self.loaderMetadata = response;
         [self.loaderList removeAllObjects];
         [self.loaderList addObjectsFromArray:[response valueForKey:@"version"]];
@@ -141,29 +144,38 @@
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)actionDone {
+- (void)actionDone:(UIBarButtonItem *)sender {
+    sender.enabled = NO;
+
     NSDictionary *endpoint = self.endpoints[self.localKVO[@"loaderVendor"]];
     NSString *path = [NSString stringWithFormat:endpoint[@"json"], self.localKVO[@"gameVersion"], self.localKVO[@"loaderVersion"]];
-    NSLog(@"[%@ Installer] Downloading %@", self.localKVO[@"loaderVendor"], path);
+    NSDebugLog(@"[%@ Installer] Downloading %@", self.localKVO[@"loaderVendor"], path);
 
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     [manager GET:path parameters:nil headers:nil progress:nil  success:^(NSURLSessionTask *task, NSDictionary *response) {
+        sender.enabled = YES;
+
         NSString *jsonPath = [NSString stringWithFormat:@"%1$s/versions/%2$@/%2$@.json", getenv("POJAV_GAME_DIR"), response[@"id"]];
         [NSFileManager.defaultManager createDirectoryAtPath:jsonPath.stringByDeletingLastPathComponent withIntermediateDirectories:YES attributes:nil error:nil];
         NSError *error = saveJSONToFile(response, jsonPath);
         if (error) {
             showDialog(localize(@"Error", nil), error.localizedDescription);
         } else {
+            [localVersionList addObject:@{
+                @"id": response[@"id"],
+                @"type": @"custom"}];
             // Jump to the profile editor
             LauncherProfileEditorViewController *vc = [LauncherProfileEditorViewController new];
             vc.profile = @{
+                @"icon": endpoint[@"icon"],
                 @"name": response[@"id"],
                 @"lastVersionId": response[@"id"]
             }.mutableCopy;
             [self.navigationController pushViewController:vc animated:YES];
         }
     } failure:^(NSURLSessionTask *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
+        sender.enabled = YES;
+        NSDebugLog(@"Error: %@", error);
         showDialog(localize(@"Error", nil), error.localizedDescription);
     }];
 }

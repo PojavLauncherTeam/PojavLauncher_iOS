@@ -7,10 +7,16 @@
 #import "LauncherProfilesViewController.h"
 //#import "NSFileManager+NRFileManager.h"
 #import "PLProfiles.h"
+#import "UIKit+AFNetworking.h"
 #import "UIKit+hook.h"
 #import "installer/FabricInstallViewController.h"
 #import "ios_uikit_bridge.h"
 #import "utils.h"
+
+typedef NS_ENUM(NSUInteger, LauncherProfilesTableSection) {
+    kInstances,
+    kProfiles
+};
 
 @interface LauncherProfilesViewController () //<UIContextMenuInteractionDelegate>
 
@@ -154,30 +160,30 @@
     cell.detailTextLabel.text = profile[@"lastVersionId"];
     cell.imageView.layer.magnificationFilter = kCAFilterNearest;
 
-    if (profile[@"icon"]) {
-        NSString *iconStr = [profile[@"icon"] stringByReplacingOccurrencesOfString:@"data:image/png;base64," withString:@""];
-        NSData *iconData = [[NSData alloc] initWithBase64EncodedString:iconStr options:NSDataBase64DecodingIgnoreUnknownCharacters];
-        cell.imageView.image = [[UIImage imageWithData:iconData] _imageWithSize:CGSizeMake(40, 40)];
-    } else {
-        cell.imageView.image = [[UIImage imageNamed:@"DefaultProfile"] _imageWithSize:CGSizeMake(40, 40)];
-    }
+    UIImage *fallbackImage = [[UIImage imageNamed:@"DefaultProfile"] _imageWithSize:CGSizeMake(40, 40)];
+    [cell.imageView setImageWithURL:[NSURL URLWithString:profile[@"icon"]] placeholderImage:fallbackImage];
 }
 
 - (UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
+    NSString *cellID = indexPath.section == kInstances ? @"InstanceCell" : @"ProfileCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"DefaultCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.detailTextLabel.numberOfLines = 0;
         cell.detailTextLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        if (indexPath.section == kProfiles) {
+            cell.imageView.frame = CGRectMake(0, 0, 40, 40);
+            cell.imageView.isSizeFixed = YES;
+        }
     } else {
         cell.imageView.image = nil;
         cell.userInteractionEnabled = YES;
         cell.accessoryView = nil;
     }
 
-    if (indexPath.section == 0) {
+    if (indexPath.section == kInstances) {
         [self setupInstanceCell:cell atRow:indexPath.row];
     } else {
         [self setupProfileCell:cell atRow:indexPath.row];
@@ -190,7 +196,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
 
-    if (indexPath.section == 0) {
+    if (indexPath.section == kInstances) {
         if (indexPath.row == 0) {
             [self.navigationController pushViewController:[LauncherPrefGameDirViewController new] animated:YES];
         }
@@ -232,7 +238,7 @@
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0 || PLProfiles.current.profiles.count==1) {
+    if (indexPath.section == kInstances || PLProfiles.current.profiles.count==1) {
         return UITableViewCellEditingStyleNone;
     }
     return UITableViewCellEditingStyleDelete;

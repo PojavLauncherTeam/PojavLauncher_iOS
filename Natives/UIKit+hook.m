@@ -14,6 +14,7 @@ void swizzleClass(Class class, SEL originalAction, SEL swizzledAction) {
 
 void init_hookUIKitConstructor(void) {
     swizzle(UIDevice.class, @selector(userInterfaceIdiom), @selector(hook_userInterfaceIdiom));
+    swizzle(UIImageView.class, @selector(setImage:), @selector(hook_setImage:));
     swizzle(UIView.class, @selector(didMoveToSuperview), @selector(hook_didMoveToSuperview));
     swizzle(UIView.class, @selector(setFrame:), @selector(hook_setFrame:));
 
@@ -45,26 +46,47 @@ void init_hookUIKitConstructor(void) {
 
 @end
 
+// Patch: emulate scaleToFill for table views
+@implementation UIImageView(hook)
+
+- (BOOL)isSizeFixed {
+    return [objc_getAssociatedObject(self, @selector(isSizeFixed)) boolValue];
+}
+
+- (void)setIsSizeFixed:(BOOL)fixed {
+    objc_setAssociatedObject(self, @selector(isSizeFixed), @(fixed), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void)hook_setImage:(UIImage *)image {
+    if (self.isSizeFixed) {
+        UIImage *resizedImage = [image _imageWithSize:self.frame.size];
+        [self hook_setImage:resizedImage];
+    } else {
+        [self hook_setImage:image];
+    }
+}
+
+@end
+
 // Patch: unimplemented get/set UIToolbar functions on tvOS
 @implementation UINavigationController(hook)
-const NSString *toolbarKey = @"toolbar";
 
 - (UIToolbar *)hook_toolbar {
-    UIToolbar *toolbar = objc_getAssociatedObject(self, &toolbarKey);
+    UIToolbar *toolbar = objc_getAssociatedObject(self, @selector(toolbar));
     if (toolbar == nil) {
         toolbar = [[UIToolbar alloc] initWithFrame:
             CGRectMake(self.view.bounds.origin.x, self.view.bounds.size.height - 100,
             self.view.bounds.size.width, 100)];
         toolbar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
         toolbar.backgroundColor = UIColor.systemBackgroundColor;
-        objc_setAssociatedObject(self, &toolbarKey, toolbar, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        objc_setAssociatedObject(self, @selector(toolbar), toolbar, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         [self performSelector:@selector(_configureToolbar)];
     }
     return toolbar;
 }
 
 - (void)hook_setToolbar:(UIToolbar *)toolbar {
-    objc_setAssociatedObject(self, &toolbarKey, toolbar, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(toolbar), toolbar, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 @end

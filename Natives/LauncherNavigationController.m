@@ -11,8 +11,9 @@
 #import "PickTextField.h"
 #import "PLPickerView.h"
 #import "PLProfiles.h"
-#import "ios_uikit_bridge.h"
+#import "UIKit+AFNetworking.h"
 #import "UIKit+hook.h"
+#import "ios_uikit_bridge.h"
 #import "utils.h"
 
 #define AUTORESIZE_MASKS UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin
@@ -313,12 +314,7 @@
 #pragma mark - UIPickerView stuff
 - (void)pickerView:(PLPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     self.profileSelectedAt = row;
-/*
-    if (self.versionList.count == 0) {
-        self.versionTextField.text = @"";
-        return;
-    }
-*/
+    //((UIImageView *)self.versionTextField.leftView).image = [pickerView imageAtRow:row column:component];
     ((UIImageView *)self.versionTextField.leftView).image = [pickerView imageAtRow:row column:component];
     self.versionTextField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
     PLProfiles.current.selectedProfileName = self.versionTextField.text;
@@ -336,14 +332,10 @@
     return PLProfiles.current.profiles.allValues[row][@"name"];
 }
 
-- (UIImage *)pickerView:(UIPickerView *)pickerView imageForRow:(NSInteger)row forComponent:(NSInteger)component {
+- (void)pickerView:(UIPickerView *)pickerView enumerateImageView:(UIImageView *)imageView forRow:(NSInteger)row forComponent:(NSInteger)component {
+    UIImage *fallbackImage = [[UIImage imageNamed:@"DefaultProfile"] _imageWithSize:CGSizeMake(40, 40)];
     NSString *urlString = PLProfiles.current.profiles.allValues[row][@"icon"];
-    if (!urlString) {
-        return [[UIImage imageNamed:@"DefaultProfile"] _imageWithSize:CGSizeMake(40, 40)];
-    }
-    NSString *iconStr = [urlString stringByReplacingOccurrencesOfString:@"data:image/png;base64," withString:@""];
-    NSData *iconData = [[NSData alloc] initWithBase64EncodedString:iconStr options:NSDataBase64DecodingIgnoreUnknownCharacters];
-    return [[UIImage imageWithData:iconData] _imageWithSize:CGSizeMake(40, 40)];
+    [imageView setImageWithURL:[NSURL URLWithString:urlString] placeholderImage:fallbackImage];
 }
 
 - (void)versionClosePicker {
