@@ -52,6 +52,7 @@
 "custom_controls.control_menu.safe_area" = "안전한 공간";
 "custom_controls.control_menu.add_button" = "버튼 추가";
 "custom_controls.control_menu.add_drawer" = "서랍 추가";
+"custom_controls.control_menu.add_joystick" = "조이스틱 추가";
 "custom_controls.error.incompatible" = "이 컨트롤 버전(code %d) 은 이 런처 빌드에서 구현되지 않습니다.";
 "custom_controls.hint" = "더 많은 옵션을 보려면 화면의 아무 곳이나 길게 누르세요.";
 
