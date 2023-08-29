@@ -258,7 +258,10 @@
 "preference.detail.debug_show_layout_overlap" = "Překrýt každé zobrazení průhlednou barvou pro odhalení překrývajících se zobrazení.";
 
 "preference.profile.title.name" = "Název";
+"preference.profile.title.loader_vendor" = "Vydavatel načítače";
+"preference.profile.title.loader_version" = "Verze načítače";
 "preference.profile.title.version" = "Verze";
+"preference.profile.title.version_type" = "Typ verze";
 "preference.profile.title.default_touch_control" = "Dotykové ovládání";
 "preference.profile.title.default_gamepad_control" = "Ovládání ovladače";
 
@@ -268,6 +271,7 @@
 "profile.title.create" = "Vytvořit nový profil";
 "profile.title.separate_preference" = "Samostatná nastavení";
 "profile.detail.separate_preference" = "Zapněte tuto možnost pro osamostatnění všech změn nastavení. Reset obnoví globální nastavení namísto vychozího.";
+"profile.title.install_fabric_quilt" = "Nainstalovat Fabric/Quilt";
 
 "controller_configurator.title.current" = "Soubor nastavení Gamepadu";
 "controller_configurator.title.type.xbox" = "Xbox";
