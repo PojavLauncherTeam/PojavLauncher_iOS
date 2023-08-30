@@ -28,6 +28,10 @@
 "Move" = "Déplacer";
 "Remove" = "Supprimer";
 "Resize" = "Redimensionner";
+// Visibility
+"Always" = "Toujours";
+"In game" = "En jeu";
+"In menu" = "Dans le menu";
 
 "custom_controls.button_edit.forward_lock" = "Verrouillage vers l'avant";
 "custom_controls.button_edit.name" = "Nom";
@@ -38,9 +42,11 @@
 "custom_controls.button_edit.mouse_pass" = "Passage de la souris";
 "custom_controls.button_edit.swipeable" = "Balayable";
 "custom_controls.button_edit.bg_color" = "Couleur d'arrière-plan";
+"custom_controls.button_edit.stroke_width" = "Épaisseur du trait (dp)";
 "custom_controls.button_edit.stroke_color" = "Couleur du contour";
 "custom_controls.button_edit.corner_radius" = "Rayon des coins (%)";
 "custom_controls.button_edit.opacity" = "Opacité (%)";
+"custom_controls.button_edit.visibility" = "Visibilité";
 
 "custom_controls.button_menu.add_subbutton" = "Ajouter un sous-bouton";
 "custom_controls.control_menu.discard_changes" = "Ignorer les modifications";
@@ -59,6 +65,9 @@
 "custom_controls.hint" = "Appuyez longuement n'importe où sur l'écran pour plus d'options";
 
 "init.migrateDir" = "Le répertoire de données PojavLauncher est maintenant %@. Toutes vos données existantes ont été déplacées vers le nouvel emplacement.";
+
+"java.error.missing_main_class" = "%@ manque l'attribut de classe principale. S'il s'agit d'un mod, déplacez le dans le dossier \"mods\" de votre instance sélectionnée.";
+"java.error.missing_runtime" = "%@ nécessite Java %d ou ultérieur pour être exécuté. Veuillez l'installer et le spécifier dans \"Gérer les temps d'exécution\".";
 
 "launcher.mcl.downloading_file" = "Téléchargement %@";
 "launcher.mcl.error_download" = "Échec du téléchargement de %@: %@";
@@ -113,6 +122,7 @@
 "login.msa.progress.checkMCProfile" = "(5/5) Vérification du profil Minecraft";
 
 "News" = "Actualités";
+"Profiles" = "Profils";
 "Settings" = "Paramètres";
 
 "preference.section.general" = "Paramètres généraux";
@@ -209,6 +219,16 @@
 "preference.title.gyroscope_sensitivity" = "Sensibilité des contrôles du gyroscope";
 "preference.detail.gyroscope_sensitivity" = "Ajuster la sensibilité des contrôles du gyroscope";
 
+"preference.title.manage_runtime" = "Gérer les temps d'exécution";
+"preference.title.confirm.delete_runtime" = "%@ sera supprimé";
+"preference.manage_runtime.header.default" = "Version préférée de Java";
+"preference.manage_runtime.default.1165" = "1.16.5 et plus vieux";
+"preference.manage_runtime.default.117" = "1.17 et plus récent";
+"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 et plus récent peut fonctionner avec une version Java plus récente, mais la compatibilité avec les mods n'est pas garantie. Les runtimes externes peuvent être placés dans le dossier \"java_runtimes\". La modification de la version de Java pour \"Install.jar\" ne prend effet que si l'installateur ne s'attend pas à une plus récente version de Java.";
+"preference.manage_runtime.footer.java8" = "C'est la version par défaut pour Minecraft 1.16.5 et plus vieux.";
+"preference.manage_runtime.footer.java17" = "C'est la version par défaut pour Minecraft 1.17 et plus récente.";
+"preference.manage_runtime.header.invalid" = "Exécution invalide";
+
 "preference.title.java_args" = "Arguments de lancement JVM";
 "preference.detail.java_args" = "Passez des arguments à Java lors du lancement de Minecraft. Attention, cela peut faire crash le jeu si modifié de manière incorrecte.";
 "preference.placeholder.java_args" = "Spécifier les arguments...";
@@ -238,8 +258,20 @@
 "preference.detail.debug_show_layout_overlap" = "Superposez chaque vue avec une couleur transparente pour révéler des vues qui se chevauchent.";
 
 "preference.profile.title.name" = "Nom";
+"preference.profile.title.loader_vendor" = "Version du chargeur";
+"preference.profile.title.loader_version" = "Version du chargeur";
 "preference.profile.title.version" = "Version";
+"preference.profile.title.version_type" = "Type de version";
+"preference.profile.title.default_touch_control" = "Contrôles tactiles";
+"preference.profile.title.default_gamepad_control" = "Contrôles de la manette";
+
+"profile.error.name_exists" = "Un profil avec ce nom existe déjà. Veuillez utiliser un autre nom.";
+"profile.section.instance" = "Paramètres de l'instance du jeu";
+"profile.section.profiles" = "Profils dans cette instance";
 "profile.title.create" = "Créer un nouveau profil";
+"profile.title.separate_preference" = "Isoler les paramètres";
+"profile.detail.separate_preference" = "Activer cette option pour isoler toutes les modifications apportées dans les paramètres. Faire une réinitialisation restaurera les paramètres globaux au lieu des paramètres par défaut.";
+"profile.title.install_fabric_quilt" = "Installer Fabric/Quilt";
 
 "controller_configurator.title.current" = "Fichier de configuration de la manette";
 "controller_configurator.title.type.xbox" = "Xbox";
@@ -283,5 +315,6 @@
 "controller_configurator.section.game_mappings" = "Mappages de jeu";
 "controller_configurator.section.footer.game_mappings" = "Configuration de touches quand la souris est verrouillée en jeu.";
 "controller_configurator.section.menu_mappings" = "Mappages du menu";
+"controller_configurator.section.footer.menu_mappings" = "Configuration de touches quand la souris n'est pas verrouillée, comme à l'écran titre ou au menu de pause.";
 "controller_configurator.section.controller_style" = "Type de manette";
 "controller_configurator.section.footer.controller_style" = "Afficher différents noms de boutons du contrôleur dans cette configuration.";
