@@ -28,6 +28,8 @@
 "Move" = "Déplacer";
 "Remove" = "Supprimer";
 "Resize" = "Redimensionner";
+
+"custom_controls.button_edit.forward_lock" = "Verrouillage vers l'avant";
 "custom_controls.button_edit.name" = "Nom";
 "custom_controls.button_edit.size" = "Taille";
 "custom_controls.button_edit.mapping" = "Mapping";
@@ -52,6 +54,7 @@
 "custom_controls.control_menu.safe_area" = "Zone de sécurité";
 "custom_controls.control_menu.add_button" = "Ajouter un bouton";
 "custom_controls.control_menu.add_drawer" = "Ajouter un tiroir";
+"custom_controls.control_menu.add_joystick" = "Ajouter un joystick";
 "custom_controls.error.incompatible" = "Cette version de contrôle (code %d) n'est pas implémentée dans cette version du launcher.";
 "custom_controls.hint" = "Appuyez longuement n'importe où sur l'écran pour plus d'options";
 
@@ -89,6 +92,7 @@
 "login.warn.title.legacy_ios" = "La prochaine version de PojavLauncher nécessitera une mise à jour du système.";
 "login.warn.message.legacy_ios" = "Pour exécuter la prochaine version majeure, cet appareil doit fonctionner iOS 14 ou supérieur.";
 "login.warn.title.limited_ram" = "Cet appareil a une quantité limitée de mémoire disponible.";
+"login.warn.message.limited_ram" = "Nous vous recommandons de laisser la mémoire automatique activée pour éviter des problèmes d'instabilité et de performance.";
 
 "login.warn.title.demomode" = "Votre compte est une démo";
 "login.warn.message.demomode" = "En remplacement du mode hors ligne et local, le mode démo vous permettra de vous connecter à un compte Microsoft qui ne possède pas le jeu et de jouer à l'essai de l'édition Java, introduit dans la version 1.3. Les versions plus anciennes contiennent le jeu complet puisque le launcher officiel ne place pas ces restrictions. Consultez notre site pour en savoir plus sur cette transition du mode hors ligne.";
@@ -255,6 +259,8 @@
 "controller_configurator.xbox.title.dpad_down" = "Bas";
 "controller_configurator.xbox.title.dpad_left" = "Gauche";
 "controller_configurator.xbox.title.dpad_right" = "Droite";
+"controller_configurator.xbox.title.thumb_left" = "Clic gauche de thumbstick";
+"controller_configurator.xbox.title.thumb_right" = "Clic droit de thumbstick";
 
 "controller_configurator.playstation.title.bumper_left" = "L1";
 "controller_configurator.playstation.title.bumper_right" = "R1";
@@ -275,6 +281,7 @@
 
 "controller_configurator.section.config_files" = "Fichier de configuration actuel";
 "controller_configurator.section.game_mappings" = "Mappages de jeu";
+"controller_configurator.section.footer.game_mappings" = "Configuration de touches quand la souris est verrouillée en jeu.";
 "controller_configurator.section.menu_mappings" = "Mappages du menu";
 "controller_configurator.section.controller_style" = "Type de manette";
 "controller_configurator.section.footer.controller_style" = "Afficher différents noms de boutons du contrôleur dans cette configuration.";
