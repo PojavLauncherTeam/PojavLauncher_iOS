@@ -398,7 +398,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     self.inputTextField.sendKey(GLFW_KEY_ENTER, 0, 1, 0);
     //self.inputTextField.sendKey(GLFW_KEY_ENTER, 0, 0, 0);
-    textField.text = @" ";
+    textField.text = @"";
     return YES;
 }
 

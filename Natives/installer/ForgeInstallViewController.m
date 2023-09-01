@@ -105,6 +105,7 @@
     [self.visibilityList removeAllObjects];
     [self.versionList removeAllObjects];
     [self.forgeList removeAllObjects];
+    [self.tableView reloadData];
     switch (segment.selectedSegmentIndex) {
         case 0:
             [self loadForgeMetadata];

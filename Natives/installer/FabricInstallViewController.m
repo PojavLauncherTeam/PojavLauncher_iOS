@@ -87,8 +87,8 @@
               @"icon": @"ladybug",
               @"title": @"preference.profile.title.loader_type",
               @"type": typePickSegment,
-              @"pickList": @[localize(@"Release", nil), @"Beta"],
-              //localize(@"Beta", nil)
+              @"pickList": @[localize(@"Release", nil), @"Unstable"],
+              //localize(@"Unstable", nil)
               @"action": ^(int type) {
                   [weakSelf changeLoaderTypeTo:type];
               }

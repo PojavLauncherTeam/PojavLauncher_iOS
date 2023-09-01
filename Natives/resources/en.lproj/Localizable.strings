@@ -19,6 +19,7 @@
 "Installed" = "Installed";
 "Snapshot" = "Snapshot";
 "Releases" = "Releases";
+"Unstable" = "Unstable";
 "Old-beta" = "Old-beta";
 "Old-alpha" = "Old-alpha";
 
