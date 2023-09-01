@@ -10,6 +10,7 @@
 #import "UIKit+AFNetworking.h"
 #import "UIKit+hook.h"
 #import "installer/FabricInstallViewController.h"
+#import "installer/ForgeInstallViewController.h"
 #import "ios_uikit_bridge.h"
 #import "utils.h"
 
@@ -59,11 +60,11 @@ typedef NS_ENUM(NSUInteger, LauncherProfilesTableSection) {
             identifier:@"fabric_or_quilt" handler:^(UIAction *action) {
                 [self actionCreateFabricProfile];
             }],
-#if 0
         [UIAction
             actionWithTitle:@"Forge" image:nil
-            identifier:@"forge" handler:createHandler]
-#endif
+            identifier:@"forge" handler:^(UIAction *action) {
+                [self actionCreateForgeProfile];
+            }]
     ]];
     self.createButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd menu:createMenu];
 
@@ -95,6 +96,11 @@ typedef NS_ENUM(NSUInteger, LauncherProfilesTableSection) {
     [self presentNavigatedViewController:vc];
 }
 
+- (void)actionCreateForgeProfile {
+    ForgeInstallViewController *vc = [ForgeInstallViewController new];
+    [self presentNavigatedViewController:vc];
+}
+
 - (void)actionEditProfile:(NSDictionary *)profile {
     LauncherProfileEditorViewController *vc = [LauncherProfileEditorViewController new];
     vc.profile = profile.mutableCopy;
@@ -103,8 +109,7 @@ typedef NS_ENUM(NSUInteger, LauncherProfilesTableSection) {
 
 - (void)presentNavigatedViewController:(UIViewController *)vc {
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-    nav.navigationBar.prefersLargeTitles = YES;
-    nav.modalInPresentation = YES;
+    //nav.navigationBar.prefersLargeTitles = YES;
     [self presentViewController:nav animated:YES completion:nil];
 }
 

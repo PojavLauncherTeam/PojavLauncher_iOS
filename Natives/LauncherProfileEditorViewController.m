@@ -21,12 +21,11 @@
 @implementation LauncherProfileEditorViewController
 
 - (void)viewDidLoad {
-    // Setup navigation bar
+    // Setup navigation bar & appearance
     self.title = localize(@"Edit profile", nil);
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(actionDone)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemClose target:self action:@selector(actionClose)];
-
-    // Setup appearance
+    self.navigationController.modalInPresentation = YES;
     self.prefSectionsVisible = YES;
 
     // Setup preference getter and setter
@@ -42,7 +41,7 @@
     self.setPreference = ^(NSString *section, NSString *key, NSString *value){
         if ([value isEqualToString:@"(default)"] && [weakSelf isPickFieldAtSection:section key:key]) {
             [weakSelf.profile removeObjectForKey:key];
-        } else {
+        } else if (value) {
             weakSelf.profile[key] = value;
         }
     };

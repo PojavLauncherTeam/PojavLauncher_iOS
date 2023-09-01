@@ -12,3 +12,5 @@ jstring UIKit_accessClipboard(JNIEnv* env, jint action, jstring copySrc);
 void UIKit_launchMinecraftSurfaceVC();
 void UIKit_returnToSplitView();
 void launchInitialViewController(UIWindow *window);
+
+void AWTInputBridge_sendKey(int keycode);

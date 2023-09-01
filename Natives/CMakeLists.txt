@@ -125,6 +125,7 @@ add_executable(PojavLauncher
   external/ballpa1n/wrapped/HostManagerBridge.m
 
   installer/FabricInstallViewController.m
+  installer/ForgeInstallViewController.m
 
   input/ControllerInput.m
   input/GyroInput.m

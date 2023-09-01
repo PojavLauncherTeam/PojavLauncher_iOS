@@ -195,9 +195,10 @@
     [self presentViewController:documentPicker animated:YES completion:nil];
 }
 
-- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url {
+- (void)enterModInstallerWithPath:(NSString *)path hitEnterAfterWindowShown:(BOOL)hitEnter {
     JavaGUIViewController *vc = [[JavaGUIViewController alloc] init];
-    vc.filepath = url.path;
+    vc.filepath = path;
+    vc.hitEnterAfterWindowShown = hitEnter;
     if (!vc.requiredJavaVersion) {
         return;
     }
@@ -206,6 +207,10 @@
         NSLog(@"[ModInstaller] launching %@", vc.filepath);
         [self presentViewController:vc animated:YES completion:nil];
     }];
+}
+
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url {
+    [self enterModInstallerWithPath:url.path hitEnterAfterWindowShown:NO];
 }
 
 - (void)setInteractionEnabled:(BOOL)enabled {

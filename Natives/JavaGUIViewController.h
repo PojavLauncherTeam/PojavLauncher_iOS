@@ -9,6 +9,8 @@
 @end
 
 @interface JavaGUIViewController : UIViewController
-    @property(nonatomic) NSString* filepath;
-    @property(nonatomic, readonly) int requiredJavaVersion;
+@property(nonatomic) NSString* filepath;
+@property(nonatomic, readonly) int requiredJavaVersion;
+
+- (void)setHitEnterAfterWindowShown:(BOOL)hitEnter;
 @end

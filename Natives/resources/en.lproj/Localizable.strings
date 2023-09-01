@@ -258,6 +258,7 @@
 "preference.detail.debug_show_layout_overlap" = "Overlay every view with a transparent color to reveal overlapping views.";
 
 "preference.profile.title.name" = "Name";
+"preference.profile.title.loader_type" = "Loader type";
 "preference.profile.title.loader_vendor" = "Loader vendor";
 "preference.profile.title.loader_version" = "Loader version";
 "preference.profile.title.version" = "Version";

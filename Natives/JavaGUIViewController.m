@@ -9,16 +9,18 @@
 #include "glfw_keycodes.h"
 #include "utils.h"
 
+static BOOL shouldHitEnterAfterWindowShown;
 static int* rgbArray;
-SurfaceView* surfaceView;
+static SurfaceView* surfaceView;
 
-jclass class_CTCAndroidInput;
-jmethodID method_ReceiveInput;
+static jclass class_CTCAndroidInput;
+static jmethodID method_ReceiveInput;
 
 JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_refreshAWTBuffer(JNIEnv* env, jclass clazz, jintArray jreRgbArray) {
     if (!runtimeJNIEnvPtr) {
         dispatch_async(dispatch_get_main_queue(), ^{
             (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &runtimeJNIEnvPtr, NULL);
+            assert(runtimeJNIEnvPtr);
         });
     }
 
@@ -28,6 +30,15 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_refreshAWTBuffer(JNI
     dispatch_async(dispatch_get_main_queue(), ^{
         [surfaceView displayLayer];
     });
+
+    // Wait until something renders at the middle
+    if (shouldHitEnterAfterWindowShown && rgbArray[windowWidth/2 + windowWidth*windowHeight/2] != 0) {
+        shouldHitEnterAfterWindowShown = NO;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 200 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^(void){
+            // Auto hit Enter to install immediately
+            AWTInputBridge_sendKey('\n');
+        });
+    }
 }
 
 void AWTInputBridge_nativeSendData(int type, int i1, int i2, int i3, int i4) {
@@ -96,7 +107,7 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
 }
 @end
 
-@interface JavaGUIViewController ()<UIGestureRecognizerDelegate, UIScrollViewDelegate> {
+@interface JavaGUIViewController ()<UIGestureRecognizerDelegate, UIScrollViewDelegate, UITextFieldDelegate> {
 }
 
 @property BOOL virtualMouseEnabled;
@@ -126,6 +137,13 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
 
     windowWidth = roundf(width * screenScale * resolution);
     windowHeight = roundf(height * screenScale * resolution);
+    // Resolution should not be odd
+    if ((windowWidth % 2) != 0) {
+        --windowWidth;
+    }
+    if ((windowHeight % 2) != 0) {
+        --windowHeight;
+    }
 
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -142,6 +160,7 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
 
     self.inputTextField = [[TrackedTextField alloc] initWithFrame:CGRectMake(0, -32.0, self.view.frame.size.width, 30.0)];
     self.inputTextField.backgroundColor = UIColor.secondarySystemBackgroundColor;
+    self.inputTextField.delegate = self;
     self.inputTextField.font = [UIFont fontWithName:@"Menlo-Regular" size:20];
     self.inputTextField.clearsOnBeginEditing = YES;
     self.inputTextField.textAlignment = NSTextAlignmentCenter;
@@ -153,6 +172,9 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
         switch (key) {
             case GLFW_KEY_BACKSPACE:
                 AWTInputBridge_sendKey('\b'); // VK_BACK_SPACE
+                break;
+            case GLFW_KEY_ENTER:
+                AWTInputBridge_sendKey('\n'); // VK_ENTER;
                 break;
             case GLFW_KEY_DPAD_LEFT:
                 AWTInputBridge_sendKey(0xE2); // VK_KP_LEFT;
@@ -297,6 +319,10 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     showDialog(localize(@"Error", nil), message);
 }
 
+- (void)setHitEnterAfterWindowShown:(BOOL)hitEnter {
+    shouldHitEnterAfterWindowShown = hitEnter;
+}
+
 - (void)executebtn:(ControlButton *)sender withAction:(int)action {
     int held = action == ACTION_DOWN;
     for (int i = 0; i < 4; i++) {
@@ -368,6 +394,14 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     }
 }
 */
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    self.inputTextField.sendKey(GLFW_KEY_ENTER, 0, 1, 0);
+    //self.inputTextField.sendKey(GLFW_KEY_ENTER, 0, 0, 0);
+    textField.text = @" ";
+    return YES;
+}
+
 
 - (void)toggleSoftKeyboard {
     if (self.inputTextField.isFirstResponder) {

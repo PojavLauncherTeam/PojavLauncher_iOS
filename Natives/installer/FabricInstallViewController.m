@@ -63,8 +63,8 @@
               @"title": @"preference.profile.title.version_type",
               @"type": typePickSegment,
               @"pickList": @[localize(@"Release", nil), localize(@"Snapshot", nil)],
-              @"action": ^(int selected) {
-                  [weakSelf changeVersionTypeTo:selected];
+              @"action": ^(int type) {
+                  [weakSelf changeVersionTypeTo:type];
               }
             },
             @{@"key": @"gameVersion",
@@ -79,8 +79,18 @@
               @"title": @"preference.profile.title.loader_vendor",
               @"type": typePickSegment,
               @"pickList": @[@"Fabric", @"Quilt"],
-              @"action": ^(int selected){
-                  [weakSelf fetchVersionEndpoints:selected];
+              @"action": ^(int vendor){
+                  [weakSelf fetchVersionEndpoints:vendor];
+              }
+            },
+            @{@"key": @"loaderType",
+              @"icon": @"ladybug",
+              @"title": @"preference.profile.title.loader_type",
+              @"type": typePickSegment,
+              @"pickList": @[localize(@"Release", nil), @"Beta"],
+              //localize(@"Beta", nil)
+              @"action": ^(int type) {
+                  [weakSelf changeLoaderTypeTo:type];
               }
             },
             @{@"key": @"loaderVersion",
@@ -135,8 +145,7 @@
     [manager GET:endpoint[@"loader"] parameters:nil headers:nil progress:nil success:^(NSURLSessionTask *task, NSArray *response) {
         NSDebugLog(@"[%@ Installer] Got %d loader versions", self.localKVO[@"loaderVendor"], response.count);
         self.loaderMetadata = response;
-        [self.loaderList removeAllObjects];
-        [self.loaderList addObjectsFromArray:[response valueForKey:@"version"]];
+        [self changeLoaderTypeTo:[self.localKVO[@"loaderType_index"] intValue]];
     } failure:errorCallback];
 }
 
@@ -180,11 +189,27 @@
     }];
 }
 
+- (void)changeTypeToStable:(BOOL)stable forList:(NSMutableArray *)list fromMetadata:(NSArray *)metadata atRow:(int)row key:(NSString *)key {
+    [list removeAllObjects];
+
+    for (NSDictionary *version in metadata) {
+        if (version[@"stable"]) {
+            // Fabric: has stable key
+            if ([version[@"stable"] boolValue] != stable) continue;
+        } else {
+            // Quilt: has beta in the version name
+            if ([version[@"version"] containsString:@"beta"] == stable) continue;
+        }
+        [list addObject:version[@"version"]];
+    }
+    self.localKVO[key] = list.firstObject;
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+}
+- (void)changeLoaderTypeTo:(int)type {
+    [self changeTypeToStable:type==0 forList:self.loaderList fromMetadata:self.loaderMetadata atRow:4 key:@"loaderVersion"];
+}
 - (void)changeVersionTypeTo:(int)type {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"stable == %@", @(type == 0)];
-    NSArray *filteredList = [self.versionMetadata filteredArrayUsingPredicate:predicate];
-    [self.versionList removeAllObjects];
-    [self.versionList addObjectsFromArray:[filteredList valueForKey:@"version"]];
+    [self changeTypeToStable:type==0 forList:self.versionList fromMetadata:self.versionMetadata atRow:1 key:@"gameVersion"];
 }
 
 - (void)segmentChanged:(UISegmentedControl *)sender {
