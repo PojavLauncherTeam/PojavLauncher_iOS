@@ -258,6 +258,7 @@
 "preference.detail.debug_show_layout_overlap" = "Překrýt každé zobrazení průhlednou barvou pro odhalení překrývajících se zobrazení.";
 
 "preference.profile.title.name" = "Název";
+"preference.profile.title.loader_type" = "Typ načítače";
 "preference.profile.title.loader_vendor" = "Vydavatel načítače";
 "preference.profile.title.loader_version" = "Verze načítače";
 "preference.profile.title.version" = "Verze";
