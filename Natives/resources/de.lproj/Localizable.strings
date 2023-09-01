@@ -257,6 +257,7 @@ der Minecraft-Version zu wählen. Verringerte Auflösung reduziert die Arbeitsla
 "preference.detail.debug_show_layout_overlap" = "Überlagere jede Ansicht mit einer transparenten Farbe, um überlappende Ansichten anzuzeigen.";
 
 "preference.profile.title.name" = "Name";
+"preference.profile.title.loader_type" = "Loader-Typ";
 "preference.profile.title.loader_vendor" = "Anbieter von Loadern";
 "preference.profile.title.loader_version" = "Loader-Version";
 "preference.profile.title.version" = "Version";
