@@ -258,6 +258,7 @@
 "preference.detail.debug_show_layout_overlap" = "Üst-üstə düşən görünüşləri aşkar etmək üçün hər görünüşü şəffaf rənglə örtün.";
 
 "preference.profile.title.name" = "Ad";
+"preference.profile.title.loader_type" = "Yükləyici növü";
 "preference.profile.title.loader_vendor" = "Yükləyici satıcı";
 "preference.profile.title.loader_version" = "Yükləyici versiyası";
 "preference.profile.title.version" = "Versiya";
