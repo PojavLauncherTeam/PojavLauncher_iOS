@@ -19,6 +19,7 @@
 "Installed" = "已安装";
 "Snapshot" = "快照";
 "Releases" = "正式版";
+"Unstable" = "开发版";
 "Old-beta" = "远古 beta 版";
 "Old-alpha" = "远古 alpha 版";
 
@@ -87,6 +88,7 @@
 "login.jit.fail" = "无法开启即时编译（JIT）";
 "login.jit.fail.title" = "无法在您的设备上启用即时编译（JIT）";
 "login.jit.fail.description" = "无法使用集成在您的设备上自动启用即时编译（JIT），您需要借助一些方法手动启用其权限。错误已记录于 latestlog.txt。";
+"login.jit.fail.description_unsupported" = "检测到不受支持的安装方法，请改用受支持的安装方法之一重新安装。";
 
 // Login buttons
 "login.menu.sendlogs" = "发送日志文件";
