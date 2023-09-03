@@ -19,6 +19,7 @@
 "Installed" = "Kuruldu";
 "Snapshot" = "Test sürümleri";
 "Releases" = "Sürümler";
+"Unstable" = "Kararsız";
 "Old-beta" = "Eski-beta";
 "Old-alpha" = "Eski-alfa";
 
@@ -87,6 +88,7 @@
 "login.jit.fail" = "JIT etkinleştirilemedi.";
 "login.jit.fail.title" = "JIT, cihazınızda etkinleştirilemedi.";
 "login.jit.fail.description" = "JIT'i cihazınızda otomatik olarak etkinleştirmek için hiçbir entegrasyon kullanılamaz ve şimdi manuel olarak etkinleştirilmelidir. Hatalar, latestlog.txt dosyasına kaydedildi.";
+"login.jit.fail.description_unsupported" = "Desteklenmeyen bir yükleme metodu tespit edildi. Lütfen desteklenen bir sürüm ile tekrar yükleyin.";
 
 // Login buttons
 "login.menu.sendlogs" = "Kayıt günlüğünüzü gönderin";
