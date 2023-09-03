@@ -19,6 +19,7 @@
 "Installed" = "Quraşdırıldı";
 "Snapshot" = "Snapshot";
 "Releases" = "Buraxılışlar";
+"Unstable" = "Qeyri-sabit";
 "Old-beta" = "Köhnə-beta";
 "Old-alpha" = "Köhnə-alfa";
 
@@ -87,6 +88,7 @@
 "login.jit.fail" = "JIT aktivləşdirilə bilmədi.";
 "login.jit.fail.title" = "JIT cihazınızda aktiv edilə bilmədi.";
 "login.jit.fail.description" = "Cihazınızda JIT-i avtomatik aktivləşdirmək üçün heç bir inteqrasiyadan istifadə edilə bilməz və o, indi əl ilə aktivləşdirilməlidir. Səhvlər latestlog.txt-ə daxil edilmişdir.";
+"login.jit.fail.description_unsupported" = "Dəstəklənməyən quraşdırma metodu aşkar edildi. Lütfən, dəstəklənən üsullardan birini istifadə edərək yenidən quraşdırın.";
 
 // Login buttons
 "login.menu.sendlogs" = "Günlüklərinizi göndərin";
