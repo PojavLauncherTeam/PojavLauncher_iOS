@@ -88,6 +88,7 @@
 "login.jit.fail" = "JIT could not be enabled.";
 "login.jit.fail.title" = "JIT could not be enabled on your device.";
 "login.jit.fail.description" = "No integrations could be used to automatically enable JIT on your device, and it must now be enabled manually. Errors have been logged to latestlog.txt.";
+"login.jit.fail.description_unsupported" = "An unsupported installation method has been detected. Please reinstall using one of supported methods.";
 
 // Login buttons
 "login.menu.sendlogs" = "Send your logs";

@@ -140,7 +140,7 @@ void init_logDeviceAndVer(char *argument) {
     printEntitlementAvailability(@"com.apple.developer.kernel.extended-virtual-addressing");
     printEntitlementAvailability(@"com.apple.developer.kernel.increased-memory-limit");
     printEntitlementAvailability(@"com.apple.private.security.no-sandbox");
-    printEntitlementAvailability(@"dynamic-codesigning");
+    //printEntitlementAvailability(@"dynamic-codesigning");
 }
 
 void init_migrateDirIfNecessary() {
