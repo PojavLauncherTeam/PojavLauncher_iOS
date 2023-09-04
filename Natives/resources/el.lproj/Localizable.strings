@@ -39,6 +39,8 @@
 "News" = "Νέα";
 "Settings" = "Ρυθμίσεις";
 "preference.section.control" = "Προσαρμογή ελέγχου";
+//"preference.section.footer.control" = "";
+"preference.section.java" = "Java Tweaks";
 
 "preference.title.game_directory" = "Κατάλογος παιχνιδιού";
 
