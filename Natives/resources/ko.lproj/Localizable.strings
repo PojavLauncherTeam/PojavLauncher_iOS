@@ -28,6 +28,8 @@
 "Move" = "이동";
 "Remove" = "제거";
 "Resize" = "사이즈 변경";
+
+"custom_controls.button_edit.forward_lock" = "전면 잠금";
 "custom_controls.button_edit.name" = "이름";
 "custom_controls.button_edit.size" = "크기";
 "custom_controls.button_edit.mapping" = "매핑";
