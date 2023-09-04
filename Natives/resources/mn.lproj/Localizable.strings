@@ -1,0 +1,22 @@
+/*
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "Хүчээр гарах";
+"game.menu.log_output" = "Явц харах";
+"game.menu.custom_controls" = "Control солих";
+"custom_controls.button_edit.size" = "Хэмжээ";
+"custom_controls.button_edit.mapping" = "Сонгон";
+"custom_controls.button_edit.orientation" = "Баримтлал";
+"custom_controls.button_edit.toggleable" = "Асааж болох";
+"custom_controls.button_edit.bg_color" = "Ар талын өнгө";
+"custom_controls.button_edit.stroke_color" = "өнгө";
+"custom_controls.control_menu.add_button" = "Товч нэм";
+"custom_controls.control_menu.add_joystick" = "Joystick нэмэх";
+
+"launcher.menu.custom_controls" = "Control солих";
+"login.option.select" = "Данс сонгох";
+"Settings" = "Тохиргоо";
+
+"preference.title.game_directory" = "Тоглоомын байрлал ";
