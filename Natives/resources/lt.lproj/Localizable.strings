@@ -28,9 +28,11 @@
 "custom_controls.control_menu.save" = "Išsaugoti";
 "custom_controls.control_menu.load" = "Įjungti";
 "custom_controls.control_menu.add_button" = "Pridėti mygtuką";
+"custom_controls.control_menu.add_joystick" = "Pridėti vairasvirte";
 
 "launcher.menu.custom_controls" = "Kontrolės";
 "launcher.menu.install_jar" = "Instaliuoti .jar";
+"login.option.add" = "Pridėti accounta";
 "login.option.select" = "Pasirinkti paskyrą";
 
 "News" = "Naujienos";
