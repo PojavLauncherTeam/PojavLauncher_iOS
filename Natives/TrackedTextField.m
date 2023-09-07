@@ -148,4 +148,9 @@ extern bool isUseStackQueueCall;
     [self sendText:markedText.string];
 }
 
+- (void)setText:(NSString *)text {
+    [super setText:text];
+    self.lastTextPos = text.length;
+}
+
 @end
