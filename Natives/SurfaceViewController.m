@@ -218,6 +218,7 @@ BOOL slideableHotbar;
         mouse.mouseInput.leftButton.pressedChangedHandler = nil;
         mouse.mouseInput.middleButton.pressedChangedHandler = nil;
         mouse.mouseInput.rightButton.pressedChangedHandler = nil;
+        [mouse.mouseInput.auxiliaryButtons makeObjectsPerformSelector:@selector(setPressedChangedHandler:) withObject:nil];
         [self setNeedsUpdateOfPrefersPointerLocked];
         if (getPrefBool(@"controll.hardware_hide")) {
             self.ctrlView.hidden = NO;
@@ -653,6 +654,12 @@ BOOL slideableHotbar;
     mouse.mouseInput.rightButton.pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
         CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_RIGHT, pressed, 0);
     };
+    // GLFW can handle up to 8 mouse buttons, the first 3 buttons are reserved for left,middle,right
+    for (int i = 0; i < MIN(mouse.mouseInput.auxiliaryButtons.count, 5); i++) {
+        mouse.mouseInput.auxiliaryButtons[i].pressedChangedHandler = ^(GCControllerButtonInput * _Nonnull button, float value, BOOL pressed) {
+            CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_4 + i, pressed, 0);
+        };
+    }
 
     mouse.mouseInput.scroll.xAxis.valueChangedHandler = ^(GCControllerAxisInput * _Nonnull axis, float value) {
         // Workaround MC-121772 (macOS/iOS feature)
