@@ -19,6 +19,7 @@
 "Installed" = "Installés";
 "Snapshot" = "Snapshot";
 "Releases" = "Versions publiques";
+"Unstable" = "Instable";
 "Old-beta" = "Bêta";
 "Old-alpha" = "Alpha";
 
@@ -87,6 +88,7 @@
 "login.jit.fail" = "JIT ne peut pas être activé.";
 "login.jit.fail.title" = "JIT ne peut pas être activé sur votre appareil.";
 "login.jit.fail.description" = "Aucune intégration n'a pu être utilisée pour activer JIT automatiquement sur votre appareil, et elle doit maintenant être activée manuellement. Des erreurs ont été enregistrées sur latestlog.txt.";
+"login.jit.fail.description_unsupported" = "Une méthode d'installation non supportée a été détectée. Veuillez réinstaller en utilisant une des méthodes supportées.";
 
 // Login buttons
 "login.menu.sendlogs" = "Envoyez vos journaux";
