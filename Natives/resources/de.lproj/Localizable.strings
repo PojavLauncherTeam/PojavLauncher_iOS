@@ -33,6 +33,8 @@
 "Always" = "Immer";
 "In game" = "Im Spiel";
 "In menu" = "Im Menü";
+
+"custom_controls.button_edit.forward_lock" = "Weiterleitungssperre";
 "custom_controls.button_edit.name" = "Name";
 "custom_controls.button_edit.size" = "Größe";
 "custom_controls.button_edit.mapping" = "Zuordnung";
