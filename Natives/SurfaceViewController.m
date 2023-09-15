@@ -47,7 +47,7 @@ BOOL slideableHotbar;
 @property(nonatomic) ControlButton* swipingButton;
 @property(nonatomic) UITouch *primaryTouch, *hotbarTouch;
 
-@property(nonatomic) UILongPressGestureRecognizer* longPressGesture;
+@property(nonatomic) UILongPressGestureRecognizer* longPressGesture, *longPressTwoGesture;
 @property(nonatomic) UITapGestureRecognizer *tapGesture, *doubleTapGesture;
 
 @property(nonatomic) id mouseConnectCallback, mouseDisconnectCallback;
@@ -158,6 +158,13 @@ BOOL slideableHotbar;
     self.longPressGesture.cancelsTouchesInView = NO;
     self.longPressGesture.delegate = self;
     [self.touchView addGestureRecognizer:self.longPressGesture];
+    
+    self.longPressTwoGesture = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(keyboardGesture:)];
+    self.longPressTwoGesture.numberOfTouchesRequired = 2;
+    self.longPressTwoGesture.allowedTouchTypes = @[@(UITouchTypeDirect)];
+    self.longPressTwoGesture.cancelsTouchesInView = NO;
+    self.longPressTwoGesture.delegate = self;
+    [self.touchView addGestureRecognizer:self.longPressTwoGesture];
 
     self.scrollPanGesture = [[UIPanGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnTouchesScroll:)];
@@ -539,6 +546,20 @@ BOOL slideableHotbar;
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     return YES;
+}
+
+- (void)keyboardGesture:(UIGestureRecognizer*)gestureRecognizer {
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        if (self.inputTextField.isFirstResponder) {
+            [self.inputTextField resignFirstResponder];
+            self.inputTextField.alpha = 1.0f;
+        } else {
+            [self.inputTextField becomeFirstResponder];
+            // Insert an undeletable space
+            self.inputTextField.text = @" ";
+            inputTextLength = 0;
+        }
+    }
 }
 
 - (void)sendTouchEvent:(UITouch *)touchEvent withUIEvent:(UIEvent *)uievent withEvent:(int)event
