@@ -96,6 +96,7 @@ static WFWorkflowProgressView* currentProgressView;
     LauncherNavigationController *nav = (id)self.navigationController;
     [nav setInteractionEnabled:NO];
 
+    [url startAccessingSecurityScopedResource];
     NSUInteger xzSize = [NSFileManager.defaultManager attributesOfItemAtPath:url.path error:nil].fileSize;
 
     NSProgress *totalProgress = [NSProgress progressWithTotalUnitCount:xzSize];
@@ -104,7 +105,6 @@ static WFWorkflowProgressView* currentProgressView;
     nav.progressViewSub.observedProgress = fileProgress;
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [url startAccessingSecurityScopedResource];
 
         NSString *outPath = [NSString stringWithFormat:@"%s/java_runtimes/%@", getenv("POJAV_HOME"),
             [url.path substringToIndex:url.path.length-7].lastPathComponent];
