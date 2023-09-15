@@ -813,7 +813,7 @@ BOOL slideableHotbar;
         sender.state == UIGestureRecognizerStateEnded) {
         CGPoint velocity = [sender velocityInView:self.rootView];
         if (velocity.x != 0.0f || velocity.y != 0.0f) {
-            CallbackBridge_nativeSendScroll(velocity.x/100.0, velocity.y/100.0);
+            CallbackBridge_nativeSendScroll(velocity.x/self.view.frame.size.width, velocity.y/self.view.frame.size.height);
         }
     }
 }

@@ -275,7 +275,7 @@ void pojavPumpEvents(void* window) {
                 if(GLFW_invoke_MouseButton) GLFW_invoke_MouseButton(window, event.i1, event.i2, event.i3);
                 break;
             case EVENT_TYPE_SCROLL:
-                if(GLFW_invoke_Scroll) GLFW_invoke_Scroll(window, event.i1, event.i2);
+                if(GLFW_invoke_Scroll) GLFW_invoke_Scroll(window, event.f1, event.f2);
                 break;
             case EVENT_TYPE_FRAMEBUFFER_SIZE:
                 handleFramebufferSizeJava(window, event.i1, event.i2);
@@ -314,13 +314,26 @@ Java_org_lwjgl_glfw_GLFW_glfwSetCursorPos(JNIEnv *env, jclass clazz, jlong windo
     cLastY = cursorY = ypos;
 }
 
-void sendData(short type, short i1, short i2, short i3, short i4) {
+void sendData(short type, int i1, int i2, short i3, short i4) {
     size_t counter = atomic_load_explicit(&eventCounter, memory_order_acquire);
     if (counter < 7999) {
         GLFWInputEvent *event = &events[counter++];
         event->type = type;
         event->i1 = i1;
         event->i2 = i2;
+        event->i3 = i3;
+        event->i4 = i4;
+    }
+    atomic_store_explicit(&eventCounter, counter, memory_order_release);
+}
+
+void sendDataFloat(short type, float i1, float i2, short i3, short i4) {
+    size_t counter = atomic_load_explicit(&eventCounter, memory_order_acquire);
+    if (counter < 7999) {
+        GLFWInputEvent *event = &events[counter++];
+        event->type = type;
+        event->f1 = i1;
+        event->f2 = i2;
         event->i3 = i3;
         event->i4 = i4;
     }
@@ -564,7 +577,7 @@ void CallbackBridge_nativeSendScreenSize(int width, int height) {
 void CallbackBridge_nativeSendScroll(CGFloat xoffset, CGFloat yoffset) {
     if (GLFW_invoke_Scroll && isInputReady) {
         if (isUseStackQueueCall) {
-            sendData(EVENT_TYPE_SCROLL, xoffset, yoffset, 0, 0);
+            sendDataFloat(EVENT_TYPE_SCROLL, xoffset, yoffset, 0, 0);
         } else {
             GLFW_invoke_Scroll((void*) showingWindow, (double) xoffset, (double) yoffset);
         }

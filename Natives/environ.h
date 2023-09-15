@@ -10,8 +10,14 @@
 
 typedef struct {
     short type;
-    short i1;
-    short i2;
+    union {
+        int i1;
+        float f1;
+    };
+    union {
+        int i2;
+        float f2;
+    };
     short i3;
     short i4;
 } GLFWInputEvent;
