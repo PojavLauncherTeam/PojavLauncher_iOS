@@ -28,6 +28,8 @@
 "Move" = "Рухати";
 "Remove" = "Вилучити";
 "Resize" = "Зміна розміру";
+
+"custom_controls.button_edit.forward_lock" = "Заблокувати йти вперед";
 "custom_controls.button_edit.name" = "Ім'я";
 "custom_controls.button_edit.size" = "Розмір";
 "custom_controls.button_edit.mapping" = "Кнопки";
@@ -52,6 +54,7 @@
 "custom_controls.control_menu.safe_area" = "Безпечна зона";
 "custom_controls.control_menu.add_button" = "Додати кнопку";
 "custom_controls.control_menu.add_drawer" = "Додати елемент";
+"custom_controls.control_menu.add_joystick" = "Додати джойстик";
 "custom_controls.error.incompatible" = "Ця версія керування (код %d) не реалізована в збірці лаунчера.";
 "custom_controls.hint" = "Утримуйте будь-де для додаткових опцій";
 
