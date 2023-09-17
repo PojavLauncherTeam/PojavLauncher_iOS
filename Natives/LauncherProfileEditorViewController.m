@@ -157,7 +157,7 @@
 - (void)actionDone {
     // We might be saving without ending editing, so make sure textFieldDidEndEditing is always called
     UITextField *currentTextField = [self performSelector:@selector(_firstResponder)];
-    if ([currentTextField isKindOfClass:UITextField.class]) {
+    if ([currentTextField isKindOfClass:UITextField.class] && [currentTextField isDescendantOfView:self.tableView]) {
         [self textFieldDidEndEditing:currentTextField];
     }
 
