@@ -54,8 +54,8 @@
 "custom_controls.control_menu.exit" = "退出";
 "custom_controls.control_menu.exit.warn" = "您将会退出且不保存任何更改";
 "custom_controls.control_menu.save" = "保存";
-"custom_controls.control_menu.save.error.json" = "JSON 文件错误";
-"custom_controls.control_menu.save.error.write" = "保存控制键布局时发生错误";
+"custom_controls.control_menu.save.error.json" = "JSON 文件错误(有可能文本格式存在问题)";
+"custom_controls.control_menu.save.error.write" = "保存按键布局时发生错误";
 "custom_controls.control_menu.load" = "加载";
 "custom_controls.control_menu.make_default" = "重设为默认控制键布局";
 "custom_controls.control_menu.safe_area" = "安全区域";
@@ -83,10 +83,10 @@
 
 "login.alert.field.username" = "用户名";
 
-"login.jit.checking" = "正在检查即时编译（JIT）权限";
+"login.jit.checking" = "检查启动器是否拥有 JIT 权限";
 "login.jit.enabled" = "JIT 权限已启用";
-"login.jit.fail" = "无法开启即时编译（JIT）";
-"login.jit.fail.title" = "无法在您的设备上启用即时编译（JIT）";
+"login.jit.fail" = "无法开启 JIT权限";
+"login.jit.fail.title" = "无法在您的设备上开启 JIT权限";
 "login.jit.fail.description" = "无法使用集成在您的设备上自动启用即时编译（JIT），您需要借助一些方法手动启用其权限。错误已记录于 latestlog.txt。";
 "login.jit.fail.description_unsupported" = "检测到不受支持的安装方法，请改用受支持的安装方法之一重新安装。";
 
@@ -96,14 +96,14 @@
 "login.option.select" = "选择账户";
 "login.option.demo" = "演示账户(试玩账户)";
 "login.option.microsoft" = "微软账户";
-"login.option.local" = "本地账户";
+"login.option.local" = "离线账户(本地)";
 
 "login.warn.title.legacy_device" = "PojavLauncher启动器下一个正式版(或测试版)在你的设备上不可用(原因是你的IOS版本太低)";
 "login.warn.message.legacy_device" = "运行下一代版本的PojavLauncher启动器，你需要一台IOS14+ 或 IPad OS 14+ 的设备";
-"login.warn.title.legacy_ios" = "PojavLauncher 的下一个版本将需要系统更新。";
-"login.warn.message.legacy_ios" = "运行下一个主要版本，需要一台能够运行 iOS 14 或更高版本的设备。";
-"login.warn.title.limited_ram" = "设备内存不足！";
-"login.warn.message.limited_ram" = "我们建议启用自动分配内存大小，以防止不稳定和性能问题。";
+"login.warn.title.legacy_ios" = "若你要使用下一个版本的PojavLauncher启动器你需要更新系统至IOS14+";
+"login.warn.message.legacy_ios" = "运行下一个版本的PojavLauncher启动器，要求你的系统必须是IOS14+";
+"login.warn.title.limited_ram" = "设备运行内存不足警告！";
+"login.warn.message.limited_ram" = "建议开启自动分配内存，因为IOS平台的应用不太支持手动分配内存大小";
 
 "login.warn.title.demomode" = "您现在是演示账户（试玩版）";
 "login.warn.message.demomode" = "演示模式作为离线和本地模式的替代，将允许你登录到一个尚未购买游戏的微软账户中游玩 1.3.1 及更新版本的试玩版本。因为官方启动器的一些特性，在较旧版本中会包含完整的游戏。详情请参阅我们的网站，了解更多关于离线模式的过渡。";
@@ -120,7 +120,7 @@
 "login.msa.progress.acquireXBLToken" = "(2/5) 请求 Xbox Live 令牌";
 "login.msa.progress.acquireXSTS" = "正在获取 XSTS";
 "login.msa.progress.acquireXboxProfile" = "(3/5) 获取 Xbox 配置文件";
-"login.msa.progress.acquireMCToken" = "(4/5) 请求 Minecraft 令牌";
+"login.msa.progress.acquireMCToken" = "(4/5)请求Minecraft的账户信息";
 "login.msa.progress.checkMCProfile" = "(5/5) 检查 Minecraft 配置文件";
 
 "News" = "新闻";
@@ -144,7 +144,7 @@
 "preference.multidir.add_directory" = "添加游戏目录";
 
 "preference.title.check_sha" = "检查游戏完整性";
-"preference.detail.check_sha" = "此选项将强制启动器在哈希值可用时检查下载文件以防止下载错误。";
+"preference.detail.check_sha" = "用于效验下载的文件哈希值是否有问题(某些情况下你下载的资源可能是损坏的)";
 "preference.title.cosmetica" = "Cosmetica 披风";
 "preference.detail.cosmetica" = "启用来自 Cosmetica（原 Arc ）的披风。欲了解更多信息，请访问 https://arcapes.com。需要 OptiFine。";
 "preference.title.debug_logging" = "调试日志";
@@ -152,15 +152,15 @@
 "preference.title.appicon" = "设置应用应用图标风格";
 "preference.detail.appicon" = "允许您为 PojavLauncher 选择不同的主屏幕图标。";
 "preference.title.appicon-default" = "设置 PojavLauncher 图标为浅色";
-"preference.title.appicon-dark" = "设置 PojavLauncher 图标为深色";
+"preference.title.appicon-dark" = "设置PojavLauncher图标为黑色(夜间)";
 "preference.title.appicon-development" = "已封装开发";
 "preference.title.hidden_sidebar" = "默认隐藏主菜单侧边栏";
 "preference.detail.hidden_sidebar" = "允许您在 iOS 14 及更高版本中默认或旋转中隐藏主菜单上的侧边栏。";
 
-"preference.title.reset_warnings" = "重置所有警告";
+"preference.title.reset_warnings" = "重置带有“警告”的设置选项";
 "preference.title.done.reset_warnings" = "带有“警告”的设置选项已被恢复默认状态";
 
-"preference.title.reset_settings" = "重置所有设置";
+"preference.title.reset_settings" = "将启动器所有设置重置到默认状态";
 "preference.title.confirm.reset_settings" = "这将重制您所有的自定义首选项，包括分辨率、按钮大小以及 Java 参数。";
 "preference.title.done.reset_settings" = "已重置所有设置";
 
@@ -246,13 +246,13 @@
 "preference.title.custom_env" = "环境变量";
 "preference.detail.custom_env" = "此选项正在构建中。在此期间创建并编辑 custom_env.txt。";
 
-"preference.title.debug_skip_wait_jit" = "跳过“正在等待获取即时编译（JIT）权限”对话框";
-"preference.detail.debug_skip_wait_jit" = "这并非让您不使用即时编译（JIT）启动，而是跳过调试检查，因为在越狱设备上会检查失败。";
+"preference.title.debug_skip_wait_jit" = "跳过获取\"JIT(Just-in-time)\"请求";
+"preference.detail.debug_skip_wait_jit" = "这并不是让您在没有 JIT 的情况下启动，而是跳过调试检查，因为在越狱设备上会检查失败。";
 "preference.title.debug_ipad_ui" = "使用 iPadOS 界面";
-"preference.detail.debug_ipad_ui" = "开启后会使用 iPad OS 的专用界面，否则使用 iPhone 的界面。";
+"preference.detail.debug_ipad_ui" = "开启后会使用 iPad OS 的专用 UI，否则使用 iPhone UI。";
 "preference.title.debug_auto_correction" = "自动校正";
 "preference.detail.debug_auto_correction" = "在游戏中输入文本时启用自动校正。";
-"preference.title.debug_hide_home_indicator" = "隐藏主屏幕指示器（白线）";
+"preference.title.debug_hide_home_indicator" = "隐藏主屏幕指示键(白线)";
 "preference.detail.debug_hide_home_indicator" = "此选项将会禁用主屏幕指示键锁定，你将会需要启用引导式访问来同时隐藏和锁定主屏幕指示键。";
 "preference.title.debug_show_layout_bounds" = "显示边界布局";
 "preference.detail.debug_show_layout_bounds" = "显示剪辑边界、边距";
