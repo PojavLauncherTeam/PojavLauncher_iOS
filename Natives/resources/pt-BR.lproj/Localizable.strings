@@ -32,6 +32,8 @@
 "Always" = "Sempre";
 "In game" = "Em partida";
 "In menu" = "No menu";
+
+"custom_controls.button_edit.forward_lock" = "Bloqueio direto";
 "custom_controls.button_edit.name" = "Nome";
 "custom_controls.button_edit.size" = "Tamanho";
 "custom_controls.button_edit.mapping" = "Mapeamento";
