@@ -8,11 +8,6 @@ extern dispatch_group_t fatalExitGroup;
 
 @implementation AppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
-    return YES;
-}
-
 #pragma mark - UISceneSession lifecycle
 
 
@@ -27,22 +22,6 @@ extern dispatch_group_t fatalExitGroup;
     // Called when the user discards a scene session.
     // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
     // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
-}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application {
-        CallbackBridge_setWindowAttrib(GLFW_FOCUSED, 1);
-}
-
-- (void)applicationDidEnterBackground:(UIApplication *)application {
-    CallbackBridge_setWindowAttrib(GLFW_VISIBLE, 0);
-}
-
-- (void)applicationWillEnterForeground:(UIApplication *)application {
-    CallbackBridge_setWindowAttrib(GLFW_VISIBLE, 1);
-}
-
-- (void)applicationWillResignActive:(UIApplication *)application {
-    CallbackBridge_setWindowAttrib(GLFW_FOCUSED, 0);
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
