@@ -19,6 +19,7 @@
 "Installed" = "Terpasang";
 "Snapshot" = "Snapshot";
 "Releases" = "Rilis";
+"Unstable" = "Tidak stabil";
 "Old-beta" = "Beta-lama";
 "Old-alpha" = "Alpha-lama";
 
@@ -28,6 +29,8 @@
 "Move" = "Pindah";
 "Remove" = "Hapus";
 "Resize" = "Ubah ukuran";
+// Visibility
+"Always" = "Selalu";
 
 "custom_controls.button_edit.forward_lock" = "Kunci ke depan";
 "custom_controls.button_edit.name" = "Nama";
@@ -140,6 +143,7 @@
 "preference.detail.appicon" = "Memperbolehkan anda untuk memilih antara beberapa ikon layar rumah berbeda untuk PojavLauncher.";
 "preference.title.appicon-default" = "Familiar PojavLauncher light";
 "preference.title.appicon-dark" = "Familiar PojavLauncher dark";
+"preference.title.appicon-development" = "Penciled Development";
 "preference.title.hidden_sidebar" = "Sembunyikan sidebar menu utama secara default";
 "preference.detail.hidden_sidebar" = "Memperbolehkan anda untuk menyembunyikan sidebar di menu utama secara default dan saat mengubah orientasi di iOS 14 dan lebih baru.";
 
@@ -233,7 +237,40 @@ pengontrol game terhubung.";
 "controller_configurator.title.current" = "Berkas konfigurasi Gamepad";
 "controller_configurator.title.type.xbox" = "Xbox";
 "controller_configurator.title.type.playstation" = "PlayStation";
+
+"controller_configurator.xbox.title.bumper_left" = "Bumper kiri";
+"controller_configurator.xbox.title.bumper_right" = "Bumper kanan";
+"controller_configurator.xbox.title.trigger_left" = "Pemicu kiri";
+"controller_configurator.xbox.title.trigger_right" = "Pemicu kanan";
+"controller_configurator.xbox.title.named_back" = "Panduan";
+"controller_configurator.xbox.title.named_start" = "Menu";
+"controller_configurator.xbox.title.named_a" = "A";
+"controller_configurator.xbox.title.named_b" = "B";
+"controller_configurator.xbox.title.named_x" = "X";
+"controller_configurator.xbox.title.named_y" = "Y";
+"controller_configurator.xbox.title.dpad_up" = "Atas";
+"controller_configurator.xbox.title.dpad_down" = "Bawah";
+"controller_configurator.xbox.title.dpad_left" = "Kiri";
+"controller_configurator.xbox.title.dpad_right" = "Kanan";
+"controller_configurator.xbox.title.thumb_left" = "Klik jempol kiri";
+"controller_configurator.xbox.title.thumb_right" = "Klik jempol kanan";
+
+"controller_configurator.playstation.title.bumper_left" = "L1";
+"controller_configurator.playstation.title.bumper_right" = "R1";
+"controller_configurator.playstation.title.trigger_left" = "L2";
+"controller_configurator.playstation.title.trigger_right" = "R2";
 "controller_configurator.playstation.title.named_back" = "Pilih";
+"controller_configurator.playstation.title.named_start" = "Mulai";
+"controller_configurator.playstation.title.named_a" = "Silang";
+"controller_configurator.playstation.title.named_b" = "Lingkaran";
+"controller_configurator.playstation.title.named_x" = "Kotak";
+"controller_configurator.playstation.title.named_y" = "Segitiga";
+"controller_configurator.playstation.title.dpad_up" = "Atas";
+"controller_configurator.playstation.title.dpad_down" = "Bawah";
+"controller_configurator.playstation.title.dpad_left" = "Kiri";
+"controller_configurator.playstation.title.dpad_right" = "Kanan";
+"controller_configurator.playstation.title.thumb_left" = "L3";
+"controller_configurator.playstation.title.thumb_right" = "R3";
 
 "controller_configurator.section.config_files" = "Berkas konfigurasi saat ini";
 "controller_configurator.section.game_mappings" = "Pemetaan permainan";
