@@ -33,7 +33,7 @@
 "In game" = "Em partida";
 "In menu" = "No menu";
 
-"custom_controls.button_edit.forward_lock" = "Bloqueio direto";
+"custom_controls.button_edit.forward_lock" = "Bloqueio para frente";
 "custom_controls.button_edit.name" = "Nome";
 "custom_controls.button_edit.size" = "Tamanho";
 "custom_controls.button_edit.mapping" = "Mapeamento";
@@ -60,7 +60,7 @@
 "custom_controls.control_menu.safe_area" = "Área segura";
 "custom_controls.control_menu.add_button" = "Adicionar botão";
 "custom_controls.control_menu.add_drawer" = "Adicionar gaveta";
-"custom_controls.control_menu.add_joystick" = "Adicionar controle";
+"custom_controls.control_menu.add_joystick" = "Adicionar joystick";
 "custom_controls.error.incompatible" = "Esta versão de controle (código %d) não está implementada nesta compilação do inicializador.";
 "custom_controls.hint" = "Pressione e segure em qualquer lugar na tela para mais opções";
 
