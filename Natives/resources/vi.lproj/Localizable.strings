@@ -19,6 +19,7 @@
 "Installed" = "Đã cài đặt";
 "Snapshot" = "Snapshot";
 "Releases" = "Các bản phát hành";
+"Unstable" = "Không ổn định";
 "Old-beta" = "Bản Beta cũ";
 "Old-alpha" = "Bản Alpha cũ";
 
@@ -28,6 +29,8 @@
 "Move" = "Di chuyển";
 "Remove" = "Loại bỏ";
 "Resize" = "Thay đổi kích thước";
+
+"custom_controls.button_edit.forward_lock" = "Khoá di chuyển lên";
 "custom_controls.button_edit.name" = "Tên";
 "custom_controls.button_edit.size" = "Kích thước";
 "custom_controls.button_edit.mapping" = "Sơ đồ phím";
@@ -52,6 +55,7 @@
 "custom_controls.control_menu.safe_area" = "Vùng an toàn";
 "custom_controls.control_menu.add_button" = "Thêm nút";
 "custom_controls.control_menu.add_drawer" = "Thêm ngăn kéo phím";
+"custom_controls.control_menu.add_joystick" = "Thêm cần điều khiển";
 "custom_controls.error.incompatible" = "Phiên bản điều khiển (code %d) không tương thích với bản launcher này.";
 "custom_controls.hint" = "Nhấn giữ trên màn hình để hiện thêm tùy chọn";
 
