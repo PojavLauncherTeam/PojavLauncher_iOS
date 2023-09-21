@@ -28,6 +28,8 @@
 "Move" = "Move";
 "Remove" = "消去";
 "Resize" = "サイズ調整";
+
+"custom_controls.button_edit.forward_lock" = "フォワードロック";
 "custom_controls.button_edit.name" = "名前";
 "custom_controls.button_edit.size" = "サイズ";
 "custom_controls.button_edit.mapping" = "割り当て";
@@ -52,6 +54,7 @@
 "custom_controls.control_menu.safe_area" = "セーフエリア";
 "custom_controls.control_menu.add_button" = "ボタンを追加";
 "custom_controls.control_menu.add_drawer" = "引き出しを追加";
+"custom_controls.control_menu.add_joystick" = "ジョイスティックを追加";
 "custom_controls.error.incompatible" = "この制御バージョン(コード %d) はこのランチャービルドでは実装されていません。";
 "custom_controls.hint" = "画面上の任意の場所を長押ししてオプションを追加";
 
