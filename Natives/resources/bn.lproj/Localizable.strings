@@ -6,3 +6,5 @@
 "launcher.menu.custom_controls" = "কাস্টম কন্ট্রোল";
 "login.option.select" = "আ্যকাউন্ট নির্বাচন করুন";
 "Settings" = "সেটিংস";
+
+"preference.title.java_args" = "JVM লঞ্চ আর্গুমেন্ট";
