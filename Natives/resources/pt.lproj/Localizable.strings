@@ -14,6 +14,8 @@
 "Old-alpha" = "Alpha antiga";
 "Edit" = "Editar";
 "Remove" = "Remover";
+
+"custom_controls.button_edit.forward_lock" = "Bloqueio da Frente";
 "custom_controls.button_edit.name" = "Nome";
 "custom_controls.button_edit.size" = "Tamanho";
 "custom_controls.button_edit.mapping" = "Mapeamento";
@@ -28,6 +30,7 @@
 "custom_controls.control_menu.save" = "Guardar";
 "custom_controls.control_menu.load" = "Carregar";
 "custom_controls.control_menu.add_button" = "Adicionar botão";
+"custom_controls.control_menu.add_joystick" = "Adicionar joystick";
 
 "launcher.menu.custom_controls" = "Controlos personalizados";
 "launcher.menu.install_jar" = "Instalar .jar";
@@ -51,3 +54,4 @@
 
 "preference.profile.title.name" = "Nome";
 "preference.profile.title.version" = "Versão";
+"controller_configurator.playstation.title.named_back" = "Selecionar";
