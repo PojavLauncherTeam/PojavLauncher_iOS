@@ -100,10 +100,10 @@
 
 "login.warn.title.legacy_device" = "PojavLauncher启动器下一个正式版(或测试版)在你的设备上不可用(原因是你的IOS版本太低)";
 "login.warn.message.legacy_device" = "运行下一代版本的PojavLauncher启动器，你需要一台IOS14+ 或 IPad OS 14+ 的设备";
-"login.warn.title.legacy_ios" = "若你要使用下一个版本的PojavLauncher启动器你需要更新系统至IOS14+";
+"login.warn.title.legacy_ios" = "使用下一个版本的 PojavLauncher 启动器，需要更新您的系统";
 "login.warn.message.legacy_ios" = "运行下一个版本的PojavLauncher启动器，要求你的系统必须是IOS14+";
 "login.warn.title.limited_ram" = "设备运行内存不足警告！";
-"login.warn.message.limited_ram" = "建议开启自动分配内存，因为IOS平台的应用不太支持手动分配内存大小";
+"login.warn.message.limited_ram" = "我们建议启用自动分配内存大小，以防止不稳定和性能问题。";
 
 "login.warn.title.demomode" = "您现在是演示账户（试玩版）";
 "login.warn.message.demomode" = "演示模式作为离线和本地模式的替代，将允许你登录到一个尚未购买游戏的微软账户中游玩 1.3.1 及更新版本的试玩版本。因为官方启动器的一些特性，在较旧版本中会包含完整的游戏。详情请参阅我们的网站，了解更多关于离线模式的过渡。";
@@ -160,7 +160,7 @@
 "preference.title.reset_warnings" = "重置带有“警告”的设置选项";
 "preference.title.done.reset_warnings" = "带有“警告”的设置选项已被恢复默认状态";
 
-"preference.title.reset_settings" = "将启动器所有设置重置到默认状态";
+"preference.title.reset_settings" = "重置所有设置";
 "preference.title.confirm.reset_settings" = "这将重制您所有的自定义首选项，包括分辨率、按钮大小以及 Java 参数。";
 "preference.title.done.reset_settings" = "已重置所有设置";
 
@@ -252,7 +252,7 @@
 "preference.detail.debug_ipad_ui" = "开启后会使用 iPad OS 的专用 UI，否则使用 iPhone UI。";
 "preference.title.debug_auto_correction" = "自动校正";
 "preference.detail.debug_auto_correction" = "在游戏中输入文本时启用自动校正。";
-"preference.title.debug_hide_home_indicator" = "隐藏主屏幕指示键(白线)";
+"preference.title.debug_hide_home_indicator" = "隐藏主屏幕指示器（白线）";
 "preference.detail.debug_hide_home_indicator" = "此选项将会禁用主屏幕指示键锁定，你将会需要启用引导式访问来同时隐藏和锁定主屏幕指示键。";
 "preference.title.debug_show_layout_bounds" = "显示边界布局";
 "preference.detail.debug_show_layout_bounds" = "显示剪辑边界、边距";
