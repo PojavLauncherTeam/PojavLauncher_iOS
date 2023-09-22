@@ -167,7 +167,7 @@
 "preference.detail.auto_ram" = "Włącza automatyczny przydział pamięci RAM";
 "preference.warn.auto_ram" = "Wyłączenie tej opcji na urządzeniach bez jailbreak może doprowadzić do niestabilności po dostosowaniu. Zachowaj ostrożność.";
 "preference.title.allocated_memory" = "Przydział pamięci (MB)";
-"preference.detail.allocated_memory" = "Kontroluje ilość pamięci przydzielonej Minecraft";
+"preference.detail.allocated_memory" = "Dostosuj ilość pamięci przydzieloną do Minecraft";
 "preference.warn.allocated_memory" = "Ze względu na ograniczenia samego systemu operacyjnego, ta opcja może powodować niestabilność przy tej i wyższych wartościach. Zachowaj ostrożność.";
 "preference.title.custom_env" = "Zmienne środowiskowe";
 
