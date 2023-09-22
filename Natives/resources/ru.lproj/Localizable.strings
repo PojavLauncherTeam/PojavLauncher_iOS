@@ -24,7 +24,7 @@
 "Old-alpha" = "Старые альфа";
 
 // Custom controls
-"Copy" = "Копировать";
+"Copy" = "Копия";
 "Edit" = "Редактировать";
 "Move" = "Переместить";
 "Remove" = "Удалить";
@@ -49,7 +49,7 @@
 "custom_controls.button_edit.opacity" = "Видимость (%)";
 "custom_controls.button_edit.visibility" = "Видимость";
 
-"custom_controls.button_menu.add_subbutton" = "Добавить под-кнопку";
+"custom_controls.button_menu.add_subbutton" = "Добавить";
 "custom_controls.control_menu.discard_changes" = "Сбросить изменения";
 "custom_controls.control_menu.exit" = "Выйти";
 "custom_controls.control_menu.exit.warn" = "Вы собираетесь выйти без сохранения изменений.";
