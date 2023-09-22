@@ -14,6 +14,8 @@
 "Old-alpha" = "Stará alfa";
 "Edit" = "Upraviť";
 "Remove" = "Odstrániť";
+
+"custom_controls.button_edit.forward_lock" = "Zámok chodenia vpred";
 "custom_controls.button_edit.name" = "Názov";
 "custom_controls.button_edit.size" = "Veľkosť";
 "custom_controls.button_edit.mapping" = "Bindy";
@@ -44,7 +46,7 @@
 "preference.title.game_directory" = "Zložka hry";
 "preference.title.cosmetica" = "Cosmetica Capeky";
 
-"preference.title.renderer" = "Renderer";
+"preference.title.renderer" = "Vykresľovač";
 
 "preference.title.gyroscope_enable" = "Ovládanie gyroskopom";
 "preference.title.gyroscope_sensitivity" = "Citlivosť gyroskopu";
