@@ -144,12 +144,12 @@
 "preference.multidir.add_directory" = "Добавить расположение";
 
 "preference.title.check_sha" = "Проверка файлов после загрузки";
-"preference.detail.check_sha" = "Заставить лаунчер по возможности проверять хэш файла при его загрузке. Предотвращает повреждение скачанных файлов.";
+"preference.detail.check_sha" = "По возможности проверять хэш файла при его загрузке. Предотвращает повреждение скачанных файлов.";
 "preference.title.cosmetica" = "Плащи Cosmetica";
 "preference.detail.cosmetica" = "Плащи Cosmetica (ранее Arc). Да получения дополнительной информации посетите https://cosmetica.cc. Требуется Optifine.";
 "preference.title.debug_logging" = "Отладочные записи";
 "preference.detail.debug_logging" = "Включить запись внутренних настроек и действий в latestlog.txt. Может облегчить нахождение ошибок продвинутым пользователям, однако это немного замедлит запуск Minecraft, поскольку журнал будет записываться значительно чаще.";
-"preference.title.appicon" = "Выбрать иконку приложения";
+"preference.title.appicon" = "Выбрать значок приложения";
 "preference.detail.appicon" = "Позволяет выбрать одну из нескольких иконок PojavLauncher для главного экрана.";
 "preference.title.appicon-default" = "Обычный светлый PojavLauncher";
 "preference.title.appicon-dark" = "Обычный тёмный PojavLauncher";
