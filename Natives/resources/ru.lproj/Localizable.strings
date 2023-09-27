@@ -211,8 +211,8 @@
 "preference.detail.mouse_speed" = "Изменить скорость указателя виртуальный мыши";
 "preference.title.virtmouse_enable" = "Виртуальная мышь";
 "preference.detail.virtmouse_enable" = "Запускать игру с включённой виртуальной мышью";
-"preference.title.slideable_hotbar" = "Прокручиваемый хотбар";
-"preference.detail.slideable_hotbar" = "Включить прокрутку слотов хотбара как при использовании колёсика мыши.";
+"preference.title.slideable_hotbar" = "Прокрутка панели инструментов";
+"preference.detail.slideable_hotbar" = "Включить прокрутку слотов панели инструментов при помощи жеста.";
 
 "preference.title.gyroscope_enable" = "Управление наклоном";
 "preference.detail.gyroscope_enable" = "Позволяет управлять положением камеры в игре путём вращения устройства.";
@@ -253,7 +253,7 @@
 "preference.title.debug_auto_correction" = "Автокоррекция";
 "preference.detail.debug_auto_correction" = "Включить автокоррекцию при наборе текста в игре.";
 "preference.title.debug_hide_home_indicator" = "Скрыть индикатор навигации";
-"preference.detail.debug_hide_home_indicator" = "Это отключит блокировку кнопки \"Домой\". Необходимо использовать Guided Access, чтобы скрыть и заблокировать кнопку \"Домой\" за один раз.";
+"preference.detail.debug_hide_home_indicator" = "Это отключит блокировку нажатий индикатором навигации. Необходимо использовать гид-доступ, чтобы одновременно скрыть индикатор навигации и отключить жест смены приложений.";
 "preference.title.debug_show_layout_bounds" = "Показывать границы элементов";
 "preference.detail.debug_show_layout_bounds" = "Показать границы и отступы";
 "preference.title.debug_show_layout_overlap" = "Показывать наложение элементов";
@@ -282,8 +282,8 @@
 
 "controller_configurator.xbox.title.bumper_left" = "Левый бампер";
 "controller_configurator.xbox.title.bumper_right" = "Правый бампер";
-"controller_configurator.xbox.title.trigger_left" = "Левый курок";
-"controller_configurator.xbox.title.trigger_right" = "Правый курок";
+"controller_configurator.xbox.title.trigger_left" = "Левый триггер";
+"controller_configurator.xbox.title.trigger_right" = "Правый триггер";
 "controller_configurator.xbox.title.named_back" = "Руководство";
 "controller_configurator.xbox.title.named_start" = "Меню";
 "controller_configurator.xbox.title.named_a" = "A";
@@ -315,9 +315,9 @@
 "controller_configurator.playstation.title.thumb_right" = "R3";
 
 "controller_configurator.section.config_files" = "Текущий файл настроек";
-"controller_configurator.section.game_mappings" = "Кнопки в игре";
-"controller_configurator.section.footer.game_mappings" = "Назначения клавиш при заблокированном (отключённом на время игры) курсоре.";
-"controller_configurator.section.menu_mappings" = "Кнопки в меню";
-"controller_configurator.section.footer.menu_mappings" = "Назначения клавиш при свободном курсоре в главном меню, меню паузы или инвентаре.";
+"controller_configurator.section.game_mappings" = "Управление в игре";
+"controller_configurator.section.footer.game_mappings" = "Управление при заблокированной (отключённой на время игры) мыши.";
+"controller_configurator.section.menu_mappings" = "Управление в меню";
+"controller_configurator.section.footer.menu_mappings" = "Управление при свободном движении мыши: в главном меню, меню паузы или инвентаре.";
 "controller_configurator.section.controller_style" = "Тип контроллера";
-"controller_configurator.section.footer.controller_style" = "Отображать в данном конфигураторе различные названия кнопок контроллера.";
+"controller_configurator.section.footer.controller_style" = "Отображать разные названия кнопок контроллера в данном редакторе.";
