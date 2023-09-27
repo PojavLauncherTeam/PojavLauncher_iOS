@@ -24,10 +24,10 @@
 "Old-alpha" = "Старые альфа";
 
 // Custom controls
-"Copy" = "Копия";
+"Copy" = "Копировать";
 "Edit" = "Редактировать";
 "Move" = "Переместить";
-"Remove" = "Удалить";
+"Remove" = "  Удалить  ";
 "Resize" = "Изменить размер";
 // Visibility
 "Always" = "Всегда";
@@ -201,10 +201,10 @@
 "preference.title.gesture_hotbar" = "Жесты панели инструментов";
 "preference.detail.gesture_hotbar" = "Включить жесты выбора слотов, выбрасывания предметов и их перемещения во вторую руку.";
 "preference.title.disable_haptics" = "Отключить экранные тактильные эффекты";
-"preference.title.press_duration" = "Длительность нажатия (мс)";
+"preference.title.press_duration" = "Длительность удерживания (мс)";
 "preference.detail.press_duration" = "Длительность удерживания для разрушения блоков и выбрасывания предметов.";
 "preference.title.button_scale" = "Размер кнопок (%)";
-"preference.detail.button_scale" = "Подстроить кнопки под размер экрана. Особенно полезно для пользователей iPad.";
+"preference.detail.button_scale" = "Увеличьте, если они слишком малы. Особенно полезно для пользователей iPad.";
 "preference.title.mouse_scale" = "Размер указателя (%)";
 "preference.detail.mouse_scale" = "Изменить размер указателя виртуальной мыши";
 "preference.title.mouse_speed" = "Скорость указателя (%)";
