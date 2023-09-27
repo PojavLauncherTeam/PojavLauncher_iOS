@@ -185,6 +185,16 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     //margv[++margc] = "-Dorg.lwjgl.util.NoChecks=true";
     margv[++margc] = "-Dlog4j2.formatMsgNoLookups=true";
 
+    // Preset OpenGL libname
+    const char *glLibName;
+    if (!strcmp(getenv("POJAV_RENDERER"), "auto")) {
+        // workaround only applies to 1.20.2+
+        glLibName = RENDERER_NAME_MTL_ANGLE;
+    } else {
+        glLibName = getenv("POJAV_RENDERER");
+    }
+    margv[++margc] = [NSString stringWithFormat:@"-Dorg.lwjgl.opengl.libname=%s", glLibName].UTF8String;
+
     NSString *librariesPath = [NSString stringWithFormat:@"%s/libs", getenv("BUNDLE_PATH")];
     if(getPrefBool(@"general.cosmetica")) {
         margv[++margc] = [NSString stringWithFormat:@"-javaagent:%@/arc_dns_injector.jar=23.95.137.176", librariesPath].UTF8String;
@@ -263,8 +273,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     }
     margv[++margc] = cacio_classpath.UTF8String;
 
-    if (UIDevice.currentDevice.systemVersion.floatValue < 14 ||
-        !getEntitlementValue(@"com.apple.developer.kernel.extended-virtual-addressing")) {
+    if (!getEntitlementValue(@"com.apple.developer.kernel.extended-virtual-addressing")) {
         // In jailed environment, where extended virtual addressing entitlement isn't
         // present (for free dev account), allocating compressed space fails.
         // FIXME: does extended VA allow allocating compressed class space?
@@ -319,7 +328,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     return pJLI_Launch(++margc, margv,
                    0, NULL, // sizeof(const_jargs) / sizeof(char *), const_jargs,
                    0, NULL, // sizeof(const_appclasspath) / sizeof(char *), const_appclasspath,
-                   // These values are ignoree in Java 17, so keep it anyways
+                   // These values are ignored in Java 17, so keep it anyways
                    "1.8.0-internal",
                    "1.8",
 
