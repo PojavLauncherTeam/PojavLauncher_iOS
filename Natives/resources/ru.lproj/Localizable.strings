@@ -132,6 +132,7 @@
 "preference.section.footer.video" = "В автоматическом режиме PojavLauncher будет подбирать оптимальные настройки для выбранной версии Minecraft. Уменьшение разрешения снижает объём работы для ГП и улучшает производительность.";
 "preference.section.control" = "Настройки управления";
 "preference.section.debug" = "Настройки отладки";
+"preference.section.footer.debug" = "Возможно, потребуется перезапуск лаунчера, чтобы изменения вступили в силу.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Настройки Java";
 //"preference.section.footer.java" = "";
