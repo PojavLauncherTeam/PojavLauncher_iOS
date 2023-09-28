@@ -121,7 +121,6 @@
 "preference.section.footer.video" = "Trình kết xuất tự động cho phép PojavLauncher chọn tùy chọn tốt nhất dựa trên phiên bản Minecraft. Giảm độ phân giải làm giảm khối lượng công việc GPU để có hiệu suất tốt hơn.";
 "preference.section.control" = "Tuỳ chỉnh bộ điều khiển";
 "preference.section.debug" = "Cài đặt gỡ lỗi UI";
-"preference.section.footer.debug" = "Ngoài gỡ lỗi, những cài đặt này có thể giúp ích cho tùy biến điều khiển. Bạn có thể phải khởi động lại launcher.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Điều chỉnh Java";
 //"preference.section.footer.java" = "";
@@ -231,10 +230,6 @@
 "preference.detail.debug_auto_correction" = "Cho phép tự động sửa khi nhập văn bản trong game.";
 "preference.title.debug_hide_home_indicator" = "Ẩn thanh home";
 "preference.detail.debug_hide_home_indicator" = "Tùy chọn này sẽ tắt khoá thanh điều hướng. Sử dụng tính năng \"Truy cập được hướng dẫn\" để ẩn và khoá thanh điều hướng cùng lúc.";
-"preference.title.debug_show_layout_bounds" = "Hiển thị đường viền bố cục";
-"preference.detail.debug_show_layout_bounds" = "Hiển thị ranh giới, lề";
-"preference.title.debug_show_layout_overlap" = "Hiện sắp xếp chồng lên nhau";
-"preference.detail.debug_show_layout_overlap" = "Đặt màu nền cho mỗi vùng để phát hiện những vùng bị chồng.";
 
 "preference.profile.title.name" = "Tên";
 "preference.profile.title.version" = "Phiên bản";
