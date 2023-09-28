@@ -118,7 +118,6 @@
 "preference.section.video" = "Impostazioni video";
 "preference.section.control" = "Personalizza controlli";
 "preference.section.debug" = "Impostazioni di debug UI";
-"preference.section.footer.debug" = "Oltre al debug, queste impostazioni possono essere utili per i controlli personalizzati. Potrebbe essere necessario riavviare il launcher affinché le modifiche abbiano effetto.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Tweaks Java";
 //"preference.section.footer.java" = "";
@@ -213,10 +212,6 @@
 "preference.detail.debug_ipad_ui" = "Utilizza la UI esclusiva di iPad (avvisi, tastiera, etc.) se abilitato o la UI di iPhone se disabilitato.";
 "preference.title.debug_hide_home_indicator" = "Nascondi barra home";
 "preference.detail.debug_hide_home_indicator" = "Questo disabiliterà il blocco della barra home. Dovrai utilizzare Accesso Guidato per nascondere e bloccare la barra home simultaneamente.";
-"preference.title.debug_show_layout_bounds" = "Mostra limiti layout";
-"preference.detail.debug_show_layout_bounds" = "Mostra misure clip, margini, bounds";
-"preference.title.debug_show_layout_overlap" = "Mostra sovrapposizione del layout";
-"preference.detail.debug_show_layout_overlap" = "Sovrapponi ad ogni visuale un colore trasparente per mostrare visuali sovrapposte.";
 
 "preference.profile.title.name" = "Nome";
 "preference.profile.title.version" = "Versione";
