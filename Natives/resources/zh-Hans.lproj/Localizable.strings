@@ -132,6 +132,7 @@
 "preference.section.footer.video" = "根据 Minecraft 版本自动选择最佳渲染器给游戏使用。降低分辨率可以减轻 GPU 负载从而提高性能。";
 "preference.section.control" = "自定义控制键";
 "preference.section.debug" = "UI设置";
+"preference.section.footer.debug" = "您可能需要重启启动器才能使更改生效。";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java 调整";
 //"preference.section.footer.java" = "";
