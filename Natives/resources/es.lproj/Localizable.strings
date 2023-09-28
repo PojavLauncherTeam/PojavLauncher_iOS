@@ -98,7 +98,6 @@
 "preference.section.general" = "Configuración general";
 "preference.section.video" = "Configuración de Vídeo";
 "preference.section.control" = "Personalización del control";
-"preference.section.footer.debug" = "Aparte de el debugging, estas opciones pueden ser útiles para los controles personalizados. Es posible que tengas que reiniciar el launcher para que los cambios tengan efecto.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Ajustes de Java";
 //"preference.section.footer.java" = "";
@@ -174,7 +173,6 @@
 "preference.detail.debug_ipad_ui" = "Activa la interfaz exclusiva de iPad (alerta, teclado, etc.) si está opción está habilitada, o usar la interfaz de iPhone si está opción está desactivada.";
 "preference.title.debug_auto_correction" = "Corrección automática";
 "preference.detail.debug_auto_correction" = "Activar corrección automática al escribir texto en el juego.";
-"preference.title.debug_show_layout_bounds" = "Mostrar límites de diseño";
 
 "preference.profile.title.name" = "Nombre";
 "preference.profile.title.version" = "Versión";
