@@ -132,7 +132,6 @@
 "preference.section.footer.video" = "Avtomatik renderer PojavLauncher-ə Minecraft versiyası əsasında ən yaxşı variantı seçməyə imkan verir. Çözünürlüyün azaldılması daha yaxşı performans üçün GPU iş yükünü azaldır.";
 "preference.section.control" = "İdarəetmə fərdiləşdirməsi";
 "preference.section.debug" = "UI Sazlama parametrləri";
-"preference.section.footer.debug" = "Sazlamadan başqa, bu parametrlər xüsusi nəzarətlər üçün faydalı ola bilər. Dəyişikliklərin qüvvəyə minməsi üçün işəsalmanı yenidən başlatmalı ola bilərsiniz.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java Ayarları";
 //"preference.section.footer.java" = "";
@@ -254,10 +253,6 @@
 "preference.detail.debug_auto_correction" = "Oyunda mətn yazarkən avtomatik düzəlişi aktiv edin.";
 "preference.title.debug_hide_home_indicator" = "Ev göstəricisini gizlədin";
 "preference.detail.debug_hide_home_indicator" = "Bu, ev göstəricisinin kilidlənməsini söndürəcək. Siz eyni zamanda ev göstəricisini gizlətmək və kilidləmək üçün Bələdçi Girişdən istifadə etməli olacaqsınız.";
-"preference.title.debug_show_layout_bounds" = "Düzən həddini göstər";
-"preference.detail.debug_show_layout_bounds" = "Klip sərhədlərini, kənarları göstərin";
-"preference.title.debug_show_layout_overlap" = "Üst-üstə düşən tərtibatı göstərin";
-"preference.detail.debug_show_layout_overlap" = "Üst-üstə düşən görünüşləri aşkar etmək üçün hər görünüşü şəffaf rənglə örtün.";
 
 "preference.profile.title.name" = "Ad";
 "preference.profile.title.loader_type" = "Yükləyici növü";
