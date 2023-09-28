@@ -131,7 +131,6 @@
 "preference.section.footer.video" = "Perender otomatis mengizinkan PojavLauncher untuk memilih opsi terbaik berdasarkan versi Minecraft. Menurunkan resolusi mengurangi kerja GPU untuk performa lebih baik.";
 "preference.section.control" = "Kustomisasi kontrol";
 "preference.section.debug" = "Peraturan debugging UI";
-"preference.section.footer.debug" = "Selain debugging, peraturan-peraturan ini mungkin berguna untuk kontrol kustom. Anda mungkin butuh mengrestart peluncur agar perubahan berlaku.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Tweak Java";
 //"preference.section.footer.java" = "";
@@ -251,10 +250,6 @@ pengontrol game terhubung.";
 "preference.detail.debug_auto_correction" = "Nyalakan koreksi otomatis saat mengetik teks di dalam permainan.";
 "preference.title.debug_hide_home_indicator" = "Sembunyikan indikator rumah";
 "preference.detail.debug_hide_home_indicator" = "Ini akan mematikan penguncian indikator rumah. Anda akan butuh menggunakan Akses Dipandu untuk menyembunyikan dan mengunci indikator rumah di waktu bersamaan.";
-"preference.title.debug_show_layout_bounds" = "Tampilkan batas tata letak";
-"preference.detail.debug_show_layout_bounds" = "Tampilkan batas klip, margin";
-"preference.title.debug_show_layout_overlap" = "Tampilkan layout yang overlapping";
-"preference.detail.debug_show_layout_overlap" = "Lapis semua view dengan sebuah warna transparen untuk mengungkap view yang overlapping.";
 
 "preference.profile.title.name" = "Nama";
 "preference.profile.title.loader_type" = "Tipe pemuat";
