@@ -132,6 +132,7 @@
 "preference.section.footer.video" = "Automatický vykreslovač umožní PojavLauncheru vybrat nejlepší možnost na základě verze Minecraftu. Snižením rozlišení snížíte zatížení GPU pro lepší výkon.";
 "preference.section.control" = "Přizpůsobení ovládání";
 "preference.section.debug" = "Nastavení ladění UI";
+"preference.section.footer.debug" = "Možná budete muset restartovat launcher, aby se projevily změny.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Vyladění Javy";
 //"preference.section.footer.java" = "";
