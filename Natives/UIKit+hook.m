@@ -15,8 +15,6 @@ void swizzleClass(Class class, SEL originalAction, SEL swizzledAction) {
 void init_hookUIKitConstructor(void) {
     swizzle(UIDevice.class, @selector(userInterfaceIdiom), @selector(hook_userInterfaceIdiom));
     swizzle(UIImageView.class, @selector(setImage:), @selector(hook_setImage:));
-    swizzle(UIView.class, @selector(didMoveToSuperview), @selector(hook_didMoveToSuperview));
-    swizzle(UIView.class, @selector(setFrame:), @selector(hook_setFrame:));
 
     if (realUIIdiom == UIUserInterfaceIdiomTV) {
         if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
@@ -115,58 +113,7 @@ void init_hookUIKitConstructor(void) {
 
 @end
 
-@implementation UIView(hook)
-const NSString *cornerLayerKey = @"cornerLayer";
-
-- (void)updateCornerLayer {
-    CAShapeLayer *cornerLayer = objc_getAssociatedObject(self, &cornerLayerKey);
-    NSNumber *cornerWidth = @5;
-    NSNumber *cornerSpaceW = @(self.frame.size.width-10);
-    NSNumber *cornerSpaceH = @(self.frame.size.height-10);
-    cornerLayer.lineDashPattern = @[cornerWidth,cornerSpaceW,cornerWidth,@0,cornerWidth,cornerSpaceH,cornerWidth,@0,cornerWidth,cornerSpaceW,cornerWidth,@0,cornerWidth,cornerSpaceH,cornerWidth];
-    cornerLayer.path = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)].CGPath;
-    if (getPrefBool(@"debug.debug_show_layout_overlap")) {
-        cornerLayer.fillColor = [UIColor.yellowColor colorWithAlphaComponent:0.1].CGColor;
-    } else {
-        cornerLayer.fillColor = nil;
-    }
-}
-
-- (void)hook_didMoveToSuperview {
-    if (debugBoundsEnabled) {
-        self.layer.borderWidth = 1;
-        self.layer.borderColor = UIColor.redColor.CGColor;
-        if (self.layer.sublayers.count == 0) {
-            CAShapeLayer *cornerLayer = [CAShapeLayer layer];
-            cornerLayer.strokeColor = UIColor.blueColor.CGColor;
-            cornerLayer.lineWidth = 1;
-            [self.layer addSublayer:cornerLayer];
-            objc_setAssociatedObject(self, &cornerLayerKey, cornerLayer, OBJC_ASSOCIATION_ASSIGN);
-            [self updateCornerLayer];
-        }
-    }
-    [self hook_didMoveToSuperview];
-}
-
-- (void)hook_setFrame:(CGRect)frame {
-    [self hook_setFrame:frame];
-    [self updateCornerLayer];
-}
-
-@end
-
 @implementation UIWindow(hook)
-
-// Simulate safe area on iPhones without notch
-/*
-- (UIEdgeInsets)safeAreaInsets {
-    if (self.frame.size.width < self.frame.size.height) {
-        return UIEdgeInsetsMake(44, 0, 44, 0);
-    } else {
-        return UIEdgeInsetsMake(0, 44, 21, 44);
-    }
-}
-*/
 
 - (UIViewController *)visibleViewController {
     UIViewController *current = self.rootViewController;

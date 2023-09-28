@@ -343,7 +343,6 @@ int main(int argc, char *argv[]) {
     init_hookUIKitConstructor();
 
     loadPreferences(NO);
-    debugBoundsEnabled = getPrefBool(@"debug.debug_show_layout_bounds");
     debugLogEnabled = getPrefBool(@"general.debug_logging");
     NSLog(@"[Debugging] Debug log enabled: %@", debugLogEnabled ? @"YES" : @"NO");
 

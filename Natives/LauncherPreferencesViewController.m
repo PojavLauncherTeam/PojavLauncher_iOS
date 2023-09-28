@@ -377,24 +377,6 @@
                 @"hasDetail": @YES,
                 @"icon": @"textformat.abc.dottedunderline",
                 @"type": self.typeSwitch
-            },
-            @{@"key": @"debug_show_layout_bounds",
-                @"hasDetail": @YES,
-                @"icon": @"square.dashed",
-                @"type": self.typeSwitch,
-                @"enableCondition": whenNotInGame,
-                @"requestReload": @YES,
-                @"action": ^(BOOL enabled){
-                    debugBoundsEnabled = enabled;
-                }
-            },
-            @{@"key": @"debug_show_layout_overlap",
-                @"hasDetail": @YES,
-                @"icon": @"square.on.square",
-                @"type": self.typeSwitch,
-                @"enableCondition": ^BOOL(){
-                    return [self.getPreference(@"debug", @"debug_show_layout_bounds") boolValue] && whenNotInGame();
-                }
             }
         ]
     ];

@@ -132,7 +132,7 @@
 "preference.section.footer.video" = "Auto renderer allows PojavLauncher to choose the best option based on Minecraft version. Decreasing resolution reduces GPU workload for better performance.";
 "preference.section.control" = "Control customization";
 "preference.section.debug" = "UI Debugging settings";
-"preference.section.footer.debug" = "Aside from debugging, these settings may be useful for custom controls. You may need to restart the launcher for changes to take effect.";
+"preference.section.footer.debug" = "You may need to restart the launcher for changes to take effect.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java Tweaks";
 //"preference.section.footer.java" = "";
@@ -254,10 +254,6 @@
 "preference.detail.debug_auto_correction" = "Enable auto correction when typing text in game.";
 "preference.title.debug_hide_home_indicator" = "Hide home indicator";
 "preference.detail.debug_hide_home_indicator" = "This will disable home indicator locking. You will need to use Guided Access to hide and lock home indicator at the same time.";
-"preference.title.debug_show_layout_bounds" = "Show layout bounds";
-"preference.detail.debug_show_layout_bounds" = "Show clip bounds, margins";
-"preference.title.debug_show_layout_overlap" = "Show layout overlapping";
-"preference.detail.debug_show_layout_overlap" = "Overlay every view with a transparent color to reveal overlapping views.";
 
 "preference.profile.title.name" = "Name";
 "preference.profile.title.loader_type" = "Loader type";

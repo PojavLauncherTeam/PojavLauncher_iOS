@@ -49,7 +49,7 @@
 #define SPECIALBTN_MENU -9
 
 #define NSDebugLog(...) if (debugLogEnabled) { NSLog(__VA_ARGS__); }
-BOOL debugBoundsEnabled, debugLogEnabled;
+BOOL debugLogEnabled;
 
 //__weak UIViewController *viewController;
 
