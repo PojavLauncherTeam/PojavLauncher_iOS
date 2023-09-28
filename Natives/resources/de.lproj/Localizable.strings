@@ -133,6 +133,7 @@
 der Minecraft-Version zu wählen. Verringerte Auflösung reduziert die Arbeitslast der GPU für eine bessere Leistung.";
 "preference.section.control" = "Steuerung anpassen";
 "preference.section.debug" = "UI-Debugging-Einstellungen";
+"preference.section.footer.debug" = "Möglicherweise musst du den Launcher neu starten, damit die Änderungen wirksam werden.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java-Optimierungen";
 //"preference.section.footer.java" = "";
