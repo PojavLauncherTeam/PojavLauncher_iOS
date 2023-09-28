@@ -54,7 +54,7 @@
 "custom_controls.control_menu.exit" = "退出";
 "custom_controls.control_menu.exit.warn" = "您将会退出且不保存任何更改";
 "custom_controls.control_menu.save" = "保存";
-"custom_controls.control_menu.save.error.json" = "JSON 文件错误(有可能文本格式存在问题)";
+"custom_controls.control_menu.save.error.json" = "JSON 文件错误";
 "custom_controls.control_menu.save.error.write" = "保存按键布局时发生错误";
 "custom_controls.control_menu.load" = "加载";
 "custom_controls.control_menu.make_default" = "重设为默认控制键布局";
@@ -94,12 +94,12 @@
 "login.menu.sendlogs" = "发送日志文件";
 "login.option.add" = "添加账户";
 "login.option.select" = "选择账户";
-"login.option.demo" = "演示账户(试玩账户)";
+"login.option.demo" = "演示账户（试玩账户）";
 "login.option.microsoft" = "微软账户";
-"login.option.local" = "离线账户(本地)";
+"login.option.local" = "本地离线账户";
 
-"login.warn.title.legacy_device" = "PojavLauncher启动器下一个正式版(或测试版)在你的设备上不可用(原因是你的IOS版本太低)";
-"login.warn.message.legacy_device" = "运行下一代版本的PojavLauncher启动器，你需要一台IOS14+ 或 IPad OS 14+ 的设备";
+"login.warn.title.legacy_device" = "PojavLauncher 的下一个版本将因系统版本过低而不与此设备兼容。";
+"login.warn.message.legacy_device" = "欲运行下一个大版本，需要一台能够运行 iOS 14（或 iPadOS 14）及以上版本的设备。";
 "login.warn.title.legacy_ios" = "使用下一个版本的 PojavLauncher 启动器，需要更新您的系统";
 "login.warn.message.legacy_ios" = "运行下一个版本的PojavLauncher启动器，要求你的系统必须是IOS14+";
 "login.warn.title.limited_ram" = "设备运行内存不足警告！";
@@ -132,7 +132,6 @@
 "preference.section.footer.video" = "根据 Minecraft 版本自动选择最佳渲染器给游戏使用。降低分辨率可以减轻 GPU 负载从而提高性能。";
 "preference.section.control" = "自定义控制键";
 "preference.section.debug" = "UI设置";
-"preference.section.footer.debug" = "除了调试外，这些设置可能对自定义控制键有用，您可能需要重新启动启动器才能使更改生效。";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java 调整";
 //"preference.section.footer.java" = "";
@@ -148,11 +147,11 @@
 "preference.title.cosmetica" = "Cosmetica 披风";
 "preference.detail.cosmetica" = "启用来自 Cosmetica（原 Arc ）的披风。欲了解更多信息，请访问 https://arcapes.com。需要 OptiFine。";
 "preference.title.debug_logging" = "调试日志";
-"preference.detail.debug_logging" = "完整的记录启动器的各种活动事件到latestlog.txt文件内,有助于开发者更容易的发现错误。但Minecraft游戏内FPS可能会降低(频繁的记录日志内容会使得CPU负载变高)";
+"preference.detail.debug_logging" = "记录内部设置和操作到 latestlog.txt。这可以帮助开发者更容易地找到问题，但频繁地写入日志可能会导致 Minecraft 运行速度降低。";
 "preference.title.appicon" = "设置应用应用图标风格";
 "preference.detail.appicon" = "允许您为 PojavLauncher 选择不同的主屏幕图标。";
-"preference.title.appicon-default" = "设置 PojavLauncher 图标为浅色";
-"preference.title.appicon-dark" = "设置PojavLauncher图标为黑色(夜间)";
+"preference.title.appicon-default" = "设置 PojavLauncher 图标为浅色（默认）";
+"preference.title.appicon-dark" = "设置 PojavLauncher 图标为深色（夜间）";
 "preference.title.appicon-development" = "已封装开发";
 "preference.title.hidden_sidebar" = "默认隐藏主菜单侧边栏";
 "preference.detail.hidden_sidebar" = "允许您在 iOS 14 及更高版本中默认或旋转中隐藏主菜单上的侧边栏。";
@@ -247,17 +246,13 @@
 "preference.detail.custom_env" = "此选项正在构建中。在此期间创建并编辑 custom_env.txt。";
 
 "preference.title.debug_skip_wait_jit" = "跳过获取\"JIT(Just-in-time)\"请求";
-"preference.detail.debug_skip_wait_jit" = "这并不是让您在没有 JIT 的情况下启动，而是跳过调试检查，因为在越狱设备上会检查失败。";
+"preference.detail.debug_skip_wait_jit" = "这并非让您不使用即时编译（JIT）启动，而是跳过调试检查，因为越狱设备上会检查失败。";
 "preference.title.debug_ipad_ui" = "使用 iPadOS 界面";
 "preference.detail.debug_ipad_ui" = "开启后会使用 iPad OS 的专用 UI，否则使用 iPhone UI。";
 "preference.title.debug_auto_correction" = "自动校正";
 "preference.detail.debug_auto_correction" = "在游戏中输入文本时启用自动校正。";
 "preference.title.debug_hide_home_indicator" = "隐藏主屏幕指示器（白线）";
 "preference.detail.debug_hide_home_indicator" = "此选项将会禁用主屏幕指示键锁定，你将会需要启用引导式访问来同时隐藏和锁定主屏幕指示键。";
-"preference.title.debug_show_layout_bounds" = "显示边界布局";
-"preference.detail.debug_show_layout_bounds" = "显示剪辑边界、边距";
-"preference.title.debug_show_layout_overlap" = "布局重叠显示";
-"preference.detail.debug_show_layout_overlap" = "用浅黄色覆盖每个视图，颜色越深则重叠越多";
 
 "preference.profile.title.name" = "名称";
 "preference.profile.title.loader_type" = "加载器类型";
