@@ -3,7 +3,7 @@
   StringLocalization
 */
 
-"game.menu.force_close" = "Erzwinge das Beenden";
+"game.menu.force_close" = "Beenden erzwingen";
 "game.menu.confirm.force_close" = "Möchtest du wirklich das Beenden erzwingen?";
 "game.menu.log_output" = "Protokoll-Ausgabe";
 "game.menu.custom_controls" = "Benutzerdefinierte Steuerung";
@@ -133,7 +133,6 @@
 der Minecraft-Version zu wählen. Verringerte Auflösung reduziert die Arbeitslast der GPU für eine bessere Leistung.";
 "preference.section.control" = "Steuerung anpassen";
 "preference.section.debug" = "UI-Debugging-Einstellungen";
-"preference.section.footer.debug" = "Neben dem Debuggen können diese Einstellungen für benutzerdefinierte Steuerelemente nützlich sein. Möglicherweise muss der Launcher neu startet werden, damit die Änderungen wirksam werden.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java-Optimierungen";
 //"preference.section.footer.java" = "";
@@ -255,10 +254,6 @@ der Minecraft-Version zu wählen. Verringerte Auflösung reduziert die Arbeitsla
 "preference.detail.debug_auto_correction" = "Aktiviere die Auto-Korrektur bei der Eingabe von Text im Spiel.";
 "preference.title.debug_hide_home_indicator" = "Home-Indikator ausblenden";
 "preference.detail.debug_hide_home_indicator" = "Dadurch wird die Sperre des Home-Indikators deaktiviert. Du musst den Guided-Access verwenden, um den Home-Indikator gleichzeitig auszublenden und zu sperren.";
-"preference.title.debug_show_layout_bounds" = "Layoutgrenzen einblenden";
-"preference.detail.debug_show_layout_bounds" = "Zuschnittbegrenzungen, Ränder anzeigen";
-"preference.title.debug_show_layout_overlap" = "Layoutüberlappungen anzeigen";
-"preference.detail.debug_show_layout_overlap" = "Überlagere jede Ansicht mit einer transparenten Farbe, um überlappende Ansichten anzuzeigen.";
 
 "preference.profile.title.name" = "Name";
 "preference.profile.title.loader_type" = "Loader-Typ";
