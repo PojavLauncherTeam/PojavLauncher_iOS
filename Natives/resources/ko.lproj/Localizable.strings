@@ -124,7 +124,6 @@
 "preference.section.footer.video" = "자동 렌더러를 사용하면 PojavLauncher가 Minecraft 버전에 따라 최상의 옵션을 선택할 수 있습니다. 해상도를 낮추면 성능 향상을 위해 GPU 워크로드가 줄어듭니다.";
 "preference.section.control" = "사용자 지정 조작";
 "preference.section.debug" = "UI 디버깅 설정";
-"preference.section.footer.debug" = "디버깅 외에도 이러한 설정은 사용자 지정 컨트롤에 유용할 수 있습니다. 변경 사항을 적용하려면 런처를 다시 시작해야 할 수도 있습니다.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java 기능";
 //"preference.section.footer.java" = "";
@@ -246,10 +245,6 @@
 "preference.detail.debug_auto_correction" = "게임 안에서 타이핑 할때 자동 수정을 활성화 합니다.";
 "preference.title.debug_hide_home_indicator" = "홈바 숨기기";
 "preference.detail.debug_hide_home_indicator" = "이렇게 하면 홈 바 잠금이 비활성화됩니다. 홈 바를 숨기고 잠그려면 사용법 유도를 사용해야 합니다.";
-"preference.title.debug_show_layout_bounds" = "레이아웃 범위 표시";
-"preference.detail.debug_show_layout_bounds" = "클립 경계, 여백 표시";
-"preference.title.debug_show_layout_overlap" = "레이아웃 겹침 표시";
-"preference.detail.debug_show_layout_overlap" = "겹치는 뷰를 나타내기 위해 모든 뷰를 투명 색상으로 오버레이합니다.";
 
 "preference.profile.title.name" = "이름";
 "preference.profile.title.version" = "버전";
