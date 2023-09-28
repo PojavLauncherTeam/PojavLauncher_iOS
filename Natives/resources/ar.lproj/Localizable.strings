@@ -117,7 +117,6 @@
 "preference.section.footer.video" = "يسمح المعرض التلقائي لـ PojavLauncher باختيار أفضل خيار استناداً إلى إصدار Minecraft. تخفيض الدقة يقلل من عبء العمل في GPU من أجل أداء أفضل.";
 "preference.section.control" = "تخصيص التحكم";
 "preference.section.debug" = "إعدادات تصحيح أخطاء واجهة المستخدم";
-"preference.section.footer.debug" = "بصرف النظر عن تصحيح الأخطاء، قد تكون هذه الإعدادات مفيدة للتحكم المخصص. قد تحتاج إلى إعادة تشغيل المشغل حتى تصبح التغييرات نافذة المفعول.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "تعديلات جافا";
 //"preference.section.footer.java" = "";
@@ -229,10 +228,6 @@
 "preference.detail.debug_auto_correction" = "تمكين التصحيح التلقائي عند كتابة النص في اللعبة.";
 "preference.title.debug_hide_home_indicator" = "إخفاء مؤشر الصفحة الرئيسية";
 "preference.detail.debug_hide_home_indicator" = "سيؤدي هذا إلى تعطيل تأمين مؤشر المنزل. سوف تحتاج إلى استخدام الوصول الموجه للإخفاء وقفل مؤشر المنزل في نفس الوقت.";
-"preference.title.debug_show_layout_bounds" = "عرض حدود التخطيط";
-"preference.detail.debug_show_layout_bounds" = "عرض حدود وهوامش المقطع وما إلى ذلك";
-"preference.title.debug_show_layout_overlap" = "إظهار تداخل التخطيط";
-"preference.detail.debug_show_layout_overlap" = "تجاوز كل وجهة نظر مع لون شفاف للكشف عن وجهات نظر متداخلة.";
 
 "preference.profile.title.name" = "الاسم";
 "preference.profile.title.version" = "الإصدار";
