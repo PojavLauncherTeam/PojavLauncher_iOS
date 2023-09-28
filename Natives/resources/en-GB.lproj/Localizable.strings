@@ -39,6 +39,7 @@
 "News" = "News";
 "Settings" = "Settings";
 "preference.section.control" = "Control customization";
+"preference.section.footer.debug" = "You'll need to restart the app for your changes to take effect.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java Tweaks";
 "preference.title.cosmetica" = "Cosmetica Capes";
