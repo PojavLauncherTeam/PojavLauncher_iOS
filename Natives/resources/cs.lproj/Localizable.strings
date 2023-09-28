@@ -132,7 +132,6 @@
 "preference.section.footer.video" = "Automatický vykreslovač umožní PojavLauncheru vybrat nejlepší možnost na základě verze Minecraftu. Snižením rozlišení snížíte zatížení GPU pro lepší výkon.";
 "preference.section.control" = "Přizpůsobení ovládání";
 "preference.section.debug" = "Nastavení ladění UI";
-"preference.section.footer.debug" = "Kromě ladění mohou být tato nastavení užitečná pro vlastní ovládání. Možná budete muset restartovat spouštěč aby se změny projevily.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Vyladění Javy";
 //"preference.section.footer.java" = "";
@@ -254,10 +253,6 @@
 "preference.detail.debug_auto_correction" = "Zapnout samoopravu ve hře při psaní.";
 "preference.title.debug_hide_home_indicator" = "Skrýti indikátor domovu";
 "preference.detail.debug_hide_home_indicator" = "Toto vypne zamykání domovského indikátoru. Budete muset použít Guided Acces ke skrytí a zamčení domovského indikátoru najednou.";
-"preference.title.debug_show_layout_bounds" = "Zobrazit ohraničení rozložení";
-"preference.detail.debug_show_layout_bounds" = "Zobrazit překrývající se hranice a mezery";
-"preference.title.debug_show_layout_overlap" = "Zobrazit překrývající se rozložení";
-"preference.detail.debug_show_layout_overlap" = "Překrýt každé zobrazení průhlednou barvou pro odhalení překrývajících se zobrazení.";
 
 "preference.profile.title.name" = "Název";
 "preference.profile.title.loader_type" = "Typ načítače";
