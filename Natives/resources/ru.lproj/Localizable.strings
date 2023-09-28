@@ -103,7 +103,7 @@
 "login.warn.title.legacy_ios" = "Следующая версия PojavLauncher потребует обновления системы.";
 "login.warn.message.legacy_ios" = "Для запуска следующего крупного обновления на вашем устройстве должна быть установлена iOS 14 или новее.";
 "login.warn.title.limited_ram" = "Объём доступной памяти на вашем устройстве ограничен.";
-"login.warn.message.limited_ram" = "Рекомендуется оставить автоматическое выделение памяти во избежание проблем с производительностью и нестабильности игры.";
+"login.warn.message.limited_ram" = "Рекомендуется оставить автоматическое выделение памяти во избежание проблем с производительностью и нестабильностью игры.";
 
 "login.warn.title.demomode" = "Демонстрационный режим";
 "login.warn.message.demomode" = "В качестве замены локальному и офлайн-режиму, демонстрационный режим позволяет использовать учётную запись Microsoft для пробной игры в Java Edition 1.3.1 и выше без необходимости покупать лицензию. Более старые версии не содержат проверки лицензии и полностью доступны в любом режиме, поскольку официальный лаунчер не накладывает на них ограничений. Более подробно об этом можно узнать на нашем сайте.";
@@ -153,8 +153,8 @@
 "preference.detail.appicon" = "Позволяет выбрать одну из нескольких иконок PojavLauncher для главного экрана.";
 "preference.title.appicon-default" = "Обычный светлый PojavLauncher";
 "preference.title.appicon-dark" = "Обычный тёмный PojavLauncher";
-"preference.title.appicon-development" = "Запланированная разработка";
-"preference.title.hidden_sidebar" = "Hide main menu sidebar by default";
+"preference.title.appicon-development" = "В разработке (набросок)";
+"preference.title.hidden_sidebar" = "Скрыть боковую панель";
 "preference.detail.hidden_sidebar" = "Скрывает боковую панель в главном меню в портретном и ландшафтном режимах.";
 
 "preference.title.reset_warnings" = "Сбросить все предупреждения";
@@ -183,24 +183,24 @@
 "preference.detail.renderer" = "Выберите используемую графическую реализацию OpenGL. Zink временно отключён для диагностики ошибок на iOS 16 и новее.";
 
 "preference.title.resolution" = "Разрешение (%)";
-"preference.detail.resolution" = "Можно уменьшить разрешение игры в целях быстродействия.";
+"preference.detail.resolution" = "Позволяет уменьшить разрешение игры.";
 "preference.title.max_framerate" = "Максимальная частота кадров";
 "preference.detail.max_framerate" = "Позволяет включить ограничение частоты обновления в 60 кадров в секунду на дисплеях ProMotion.";
 
 "preference.title.fullscreen_airplay" = "Полноэкранный AirPlay";
 "preference.detail.fullscreen_airplay" = "Транслировать на внешний монитор только окно игры во весь экран вместо отображения всего, что происходит на устройстве.";
-"preference.title.silence_other_audio" = "Приостанавливать воспроизведение при открытии игры";
+"preference.title.silence_other_audio" = "Только звук игры";
 "preference.detail.silence_other_audio" = "При запуске игры PojavLauncher будет приостанавливать воспроизведение звука другими приложениями (например, музыку).";
 "preference.title.silence_with_switch" = "Отключать звук в бесшумном режиме";
-"preference.detail.silence_with_switch" = "При включении звук игры будет выключаться в режиме «Бесшумно». Это не затрагивает наушники и внешние динамики.";
+"preference.detail.silence_with_switch" = "Звук игры будет отключён в бесшумном режиме. Это не затрагивает наушники и внешние динамики.";
 "preference.title.default_gamepad_ctrl" = "Настройки контроллера";
 "preference.title.hardware_hide" = "Скрывать раскладку при подключении внешних устройств ввода";
 "preference.detail.hardware_hide" = "Автоматически скрывать раскладку экранного управления при подключении мыши или контроллера.";
 "preference.title.gesture_mouse" = "Жесты мыши";
-"preference.detail.gesture_mouse" = "Включить имитацию действий мыши — двойное касание для размещения блока, удержание для его разрушения и прокрутку двумя пальцами.";
+"preference.detail.gesture_mouse" = "Переключение жестов размещения/разрушения блока при касании/удерживании экрана и прокрутки двумя пальцами.";
 "preference.title.gesture_hotbar" = "Жесты панели инструментов";
 "preference.detail.gesture_hotbar" = "Включить жесты выбора слотов, выбрасывания предметов и их перемещения во вторую руку.";
-"preference.title.disable_haptics" = "Отключить экранные тактильные эффекты";
+"preference.title.disable_haptics" = "Отключить вибрацию при касании";
 "preference.title.press_duration" = "Длительность удерживания (мс)";
 "preference.detail.press_duration" = "Длительность удерживания для разрушения блоков и выбрасывания предметов.";
 "preference.title.button_scale" = "Размер кнопок (%)";
