@@ -132,7 +132,6 @@
 "preference.section.footer.video" = "Le moteur de rendu automatique permet à PojavLauncher de choisir la meilleure option basée sur la version de Minecraft. Réduire la résolution réduit la charge de travail du GPU pour de meilleures performances.";
 "preference.section.control" = "Contrôlez la customisation";
 "preference.section.debug" = "Paramètres de débogage de l'interface utilisateur";
-"preference.section.footer.debug" = "Outre le débogage, ces paramètres peuvent être utiles pour les contrôles personnalisés. Vous devrez peut-être redémarrer le launcher pour que les changements prennent effet.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Réglages Java";
 //"preference.section.footer.java" = "";
@@ -254,10 +253,6 @@
 "preference.detail.debug_auto_correction" = "Active la correction automatique lorsque vous écrivez dans le jeu.";
 "preference.title.debug_hide_home_indicator" = "Cacher l'indicateur d'accueil";
 "preference.detail.debug_hide_home_indicator" = "Ceci désactivera le verrouillage de l'indicateur d'accueil. Vous devrez utiliser un accès guidé pour masquer et verrouiller l'indicateur d'accueil en même temps.";
-"preference.title.debug_show_layout_bounds" = "Afficher les limites de la mise en page";
-"preference.detail.debug_show_layout_bounds" = "Afficher les limites, les marges de clip";
-"preference.title.debug_show_layout_overlap" = "Afficher le chevauchement de la mise en page";
-"preference.detail.debug_show_layout_overlap" = "Superposez chaque vue avec une couleur transparente pour révéler des vues qui se chevauchent.";
 
 "preference.profile.title.name" = "Nom";
 "preference.profile.title.loader_vendor" = "Version du chargeur";
