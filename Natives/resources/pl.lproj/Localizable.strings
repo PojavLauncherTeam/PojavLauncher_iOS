@@ -108,7 +108,6 @@
 "preference.section.video" = "Ustawienia grafiki";
 "preference.section.control" = "Sterowanie";
 "preference.section.debug" = "Ustawienia debugowania interfejsu";
-"preference.section.footer.debug" = "Poza debugowaniem, te ustawienia mogą być przydatne dp ustawień sterowania. Może być wymagane ponowne uruchomienie programu, aby zmiany zostały wprowadzone.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Konfiguracja Java";
 //"preference.section.footer.java" = "";
@@ -177,10 +176,6 @@
 "preference.detail.debug_ipad_ui" = "Odblokuj interfejs użytkownika wyłącznie dla iPada (alarm, klawiatura itp.), jeśli jest włączony, lub interfejs iPhone'a, jeśli jest wyłączony.";
 "preference.title.debug_auto_correction" = "Auto-korekta";
 "preference.detail.debug_auto_correction" = "Włącz automatyczną korektę podczas wpisywania tekstu w grze.";
-"preference.title.debug_show_layout_bounds" = "Pokaż granice układu";
-"preference.detail.debug_show_layout_bounds" = "Pokaż granice klipów, marginesy";
-"preference.title.debug_show_layout_overlap" = "Pokaż nakładające się układy";
-"preference.detail.debug_show_layout_overlap" = "Nakładaj każdy widok przezroczystym kolorem, aby odsłonić nakładające się widoki.";
 
 "preference.profile.title.name" = "Nazwa";
 "preference.profile.title.version" = "Wersja";
