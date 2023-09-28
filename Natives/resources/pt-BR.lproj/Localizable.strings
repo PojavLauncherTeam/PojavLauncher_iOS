@@ -117,7 +117,6 @@
 "preference.section.footer.video" = "O renderizador automático permite ao PojavLauncher escolher a melhor opção baseada na versão do Minecraft. Diminuir a resolução reduz a carga de trabalho da GPU para um melhor desempenho.";
 "preference.section.control" = "Personalização dos controles";
 "preference.section.debug" = "Configurações da depuração do UI";
-"preference.section.footer.debug" = "Além da depuração, essas configurações podem ser úteis para controles personalizados. Pode ser necessário reiniciar o launcher para que as alterações tenham efeito.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Ajustes do Java";
 //"preference.section.footer.java" = "";
@@ -204,10 +203,6 @@
 "preference.detail.debug_auto_correction" = "Habilitar correção automática ao digitar texto no jogo.";
 "preference.title.debug_hide_home_indicator" = "Ocultar indicador principal";
 "preference.detail.debug_hide_home_indicator" = "Isto desativará o indicador de casa de bloqueio. Você precisará usar o Acesso Orientado para ocultar e bloquear o indicador de casa ao mesmo tempo.";
-"preference.title.debug_show_layout_bounds" = "Mostrar limites de layout";
-"preference.detail.debug_show_layout_bounds" = "Mostrar limites e margens do clipe";
-"preference.title.debug_show_layout_overlap" = "Mostrar sobreposição de layout";
-"preference.detail.debug_show_layout_overlap" = "Sobreponha cada exibições com cores transparentes para revelar visões de sobreposição.";
 
 "preference.profile.title.name" = "Nome";
 "preference.profile.title.version" = "Versão";
