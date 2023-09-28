@@ -2,12 +2,14 @@
 
 @implementation NSPredicateUtilitiesExternal
 
+#if 0 // FIXME: doesn't work on certain iOS versions
 + (NSNumber *)dp:(NSNumber *)number {
     return @(number.doubleValue / UIScreen.mainScreen.scale);
 }
 + (NSNumber *)px:(NSNumber *)number {
     return @(number.doubleValue * UIScreen.mainScreen.scale);
 }
+#endif
 
 + (NSNumber *)cbrt:(NSNumber *)number {
     return @(cbrt(number.doubleValue));

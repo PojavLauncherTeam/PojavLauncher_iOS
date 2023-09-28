@@ -96,6 +96,21 @@
     }
 }
 
+- (NSString *)processFunctions:(NSString *)string {
+    NSString *tmpStr;
+    CGFloat screenScale = UIScreen.mainScreen.scale;
+
+    // FIXME: on certain iOS versions, we cannot invoke dp: and px: in _NSPredicateUtilities
+    // we gotta do direct replaces here
+
+    // float dp(float px) => px / screenScale
+    tmpStr = [string stringByReplacingOccurrencesOfString:@"dp(" withString:[NSString stringWithFormat:@"(1.0 / %f * ", screenScale]];
+
+    // float px(float dp) => screenScale * dp
+    tmpStr = [tmpStr stringByReplacingOccurrencesOfString:@"px(" withString:[NSString stringWithFormat:@"(%f * ", screenScale]];
+    return tmpStr;
+}
+
 - (CGFloat)calculateDynamicPos:(NSString *)string {
     CGRect screenBounds = self.superview.bounds;
     NSAssert(self.superview, @"Why is it null");
@@ -119,6 +134,7 @@
     INSERT_VALUE("margin", ([NSString stringWithFormat:@"%f", 2.0 * screenScale]));
     INSERT_VALUE("preferred_scale", ([NSString stringWithFormat:@"%f", getPrefFloat(@"control.button_scale")]));
 
+    string = [self processFunctions:string];
     // NSLog(@"After insert: %@", string);
 
     // Calculate, since the dynamic position contains some math equations
