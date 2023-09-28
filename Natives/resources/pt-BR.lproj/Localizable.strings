@@ -117,6 +117,7 @@
 "preference.section.footer.video" = "O renderizador automático permite ao PojavLauncher escolher a melhor opção baseada na versão do Minecraft. Diminuir a resolução reduz a carga de trabalho da GPU para um melhor desempenho.";
 "preference.section.control" = "Personalização dos controles";
 "preference.section.debug" = "Configurações da depuração do UI";
+"preference.section.footer.debug" = "Reinicie o launcher para que as alterações sejam aplicadas.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Ajustes do Java";
 //"preference.section.footer.java" = "";
