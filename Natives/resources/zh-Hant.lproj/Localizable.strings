@@ -115,7 +115,6 @@
 "preference.section.video" = "動畫設定";
 "preference.section.control" = "自定控制鍵";
 "preference.section.debug" = "用戶界面除錯選項";
-"preference.section.footer.debug" = "除了除錯外，這些選項可能對自定義控制鍵有用。你可能需要重新啟動啟動器來讓更變生效。";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java 選項";
 //"preference.section.footer.java" = "";
@@ -196,10 +195,6 @@
 "preference.detail.debug_auto_correction" = "當在遊戲中輸入文字時，啟用自動校正。";
 "preference.title.debug_hide_home_indicator" = "隱藏主畫面指示器";
 "preference.detail.debug_hide_home_indicator" = "這會禁用主畫面指示器鎖定。你必須使用指導模式來同時隱藏和鎖定主畫面顯示器。";
-"preference.title.debug_show_layout_bounds" = "顯示佈局界線";
-"preference.detail.debug_show_layout_bounds" = "顯示剪輯範圍、邊界";
-"preference.title.debug_show_layout_overlap" = "顯示重複的佈局";
-"preference.detail.debug_show_layout_overlap" = "通過用透明顏色來覆蓋所有視圖，來顯示重複的視圖";
 
 "preference.profile.title.name" = "名稱";
 "preference.profile.title.version" = "版本";
