@@ -124,7 +124,6 @@
 "preference.section.footer.video" = "Автоматичний рендеринг дозволяє PojavLauncher вибрати найкращий варіант на основі версії Minecraft. Зменшення роздільної здатності зменшує навантаження на графічний процесор для кращої продуктивності.";
 "preference.section.control" = "Налаштування керування";
 "preference.section.debug" = "Налаштування налагодження інтерфейсу";
-"preference.section.footer.debug" = "Окрім налагодження, ці параметри можуть бути корисними для користувацьких елементів керування. Можливо, вам слід перезапустити лаунчер, щоб зміни застосувалися.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Оптимізація Java";
 //"preference.section.footer.java" = "";
@@ -246,10 +245,6 @@
 "preference.detail.debug_auto_correction" = "Увімкнути автоматичне виправлення при введенні тексту у грі.";
 "preference.title.debug_hide_home_indicator" = "Сховати кнопку \"Додому\"";
 "preference.detail.debug_hide_home_indicator" = "Це вимкне блокування кнопки \"Додому\". Ви повинні використовувати Guided Access, щоб ховати та блокувати кнопку \"Додому\" за один раз.";
-"preference.title.debug_show_layout_bounds" = "Показувати межі об'єктів";
-"preference.detail.debug_show_layout_bounds" = "Показувати межі обрізування, поля і т. д.";
-"preference.title.debug_show_layout_overlap" = "Показати накладання макета";
-"preference.detail.debug_show_layout_overlap" = "Накладання кожного перегляду з прозорим кольором, щоб розкрити огляди, що перекриваються.";
 
 "preference.profile.title.name" = "Ім'я";
 "preference.profile.title.version" = "Версія";
