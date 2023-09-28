@@ -132,7 +132,6 @@
 "preference.section.footer.video" = "В автоматическом режиме PojavLauncher будет подбирать оптимальные настройки для выбранной версии Minecraft. Уменьшение разрешения снижает объём работы для ГП и улучшает производительность.";
 "preference.section.control" = "Настройки управления";
 "preference.section.debug" = "Настройки отладки";
-"preference.section.footer.debug" = "Помимо отладки, эти настройки могут оказаться полезными для пользовательских раскладок. Возможно, для применения изменений потребуется перезапустить лаунчер.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Настройки Java";
 //"preference.section.footer.java" = "";
@@ -254,10 +253,6 @@
 "preference.detail.debug_auto_correction" = "Включить автокоррекцию при наборе текста в игре.";
 "preference.title.debug_hide_home_indicator" = "Скрыть индикатор навигации";
 "preference.detail.debug_hide_home_indicator" = "Это отключит блокировку нажатий индикатором навигации. Необходимо использовать гид-доступ, чтобы одновременно скрыть индикатор навигации и отключить жест смены приложений.";
-"preference.title.debug_show_layout_bounds" = "Показывать границы элементов";
-"preference.detail.debug_show_layout_bounds" = "Показать границы и отступы";
-"preference.title.debug_show_layout_overlap" = "Показывать наложение элементов";
-"preference.detail.debug_show_layout_overlap" = "Обозначить каждый элемент прозрачным цветом, чтобы упростить нахождение пересечений.";
 
 "preference.profile.title.name" = "Имя";
 "preference.profile.title.loader_type" = "Тип загрузчика";
