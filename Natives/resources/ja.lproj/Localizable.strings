@@ -103,7 +103,6 @@
 "preference.section.general" = "一般設定";
 "preference.section.control" = "制御のカスタマイズ";
 "preference.section.debug" = "UIデバッグ設定";
-"preference.section.footer.debug" = "デバッグとは別に、これらの設定はカスタムコントロールに役立ちます。変更を有効にするにはランチャーを再起動する必要があります。";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java の調整";
 //"preference.section.footer.java" = "";
@@ -180,10 +179,6 @@
 "preference.detail.debug_auto_correction" = "ゲーム内でテキストを入力するときに自動修正を有効にします。";
 "preference.title.debug_hide_home_indicator" = "詳細バーを非表示";
 "preference.detail.debug_hide_home_indicator" = "詳細バーのロックを無効にします。ガイド付きアクセスを使用してホームインジケーターを非表示にしてロックする必要があります。";
-"preference.title.debug_show_layout_bounds" = "レイアウト境界を表示";
-"preference.detail.debug_show_layout_bounds" = "クリップの境界線、余白を表示";
-"preference.title.debug_show_layout_overlap" = "レイアウト重複を表示";
-"preference.detail.debug_show_layout_overlap" = "透明な色ですべてのビューをオーバーレイし、重複するビューを表示します。";
 
 "preference.profile.title.name" = "名前";
 "preference.profile.title.version" = "バージョン";
