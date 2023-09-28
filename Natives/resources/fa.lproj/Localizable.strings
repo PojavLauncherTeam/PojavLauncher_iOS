@@ -100,7 +100,6 @@
 "preference.section.general" = "تنظیمات عمومی";
 "preference.section.control" = "شخصی سازی کنترلر";
 "preference.section.debug" = "تنظیمات اشکال زدایی رابط کاربری";
-"preference.section.footer.debug" = "جدای از اشکال زدایی، این تنظیمات ممکن است برای کنترل های سفارشی مفید باشند. ممکن است لازم باشد نرم‌افزار را مجدداً راه‌اندازی کنید تا تغییرات اعمال شوند.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "ترفند های جاوا";
 //"preference.section.footer.java" = "";
@@ -177,10 +176,6 @@
 "preference.detail.debug_auto_correction" = "هنگام تایپ متن در بازی، تصحیح خودکار را فعال کنید.";
 "preference.title.debug_hide_home_indicator" = "نشانگر خانه را پنهان کنید";
 "preference.detail.debug_hide_home_indicator" = "این کار قفل نشانگر خانه را غیرفعال می کند. برای مخفی کردن و قفل کردن نشانگر خانه به طور همزمان باید از Guided Access استفاده کنید.";
-"preference.title.debug_show_layout_bounds" = "نمایش محدوده‌های طرح‌بندی";
-"preference.detail.debug_show_layout_bounds" = "نمایش مرزها، حاشیه‌ها";
-"preference.title.debug_show_layout_overlap" = "نمایش همپوشانی طرح";
-"preference.detail.debug_show_layout_overlap" = "هر نما را با یک رنگ شفاف پوشش دهید تا نماهای همپوشانی نشان داده شود.";
 
 "preference.profile.title.name" = "نام";
 "preference.profile.title.version" = "نسخه";
