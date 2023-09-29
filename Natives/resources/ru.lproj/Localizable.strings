@@ -41,7 +41,7 @@
 "custom_controls.button_edit.orientation" = "Сторона разворота";
 "custom_controls.button_edit.toggleable" = "Переключать касанием";
 "custom_controls.button_edit.mouse_pass" = "Пропускать касание в игру";
-"custom_controls.button_edit.swipeable" = "Пролистываемый";
+"custom_controls.button_edit.swipeable" = "Считывать движение пальца";
 "custom_controls.button_edit.bg_color" = "Цвет фона";
 "custom_controls.button_edit.stroke_width" = "Контур (dp)";
 "custom_controls.button_edit.stroke_color" = "Цвет контура";
