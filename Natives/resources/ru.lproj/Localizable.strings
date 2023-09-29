@@ -37,9 +37,9 @@
 "custom_controls.button_edit.forward_lock" = "Фиксатор движения";
 "custom_controls.button_edit.name" = "Имя";
 "custom_controls.button_edit.size" = "Размер";
-"custom_controls.button_edit.mapping" = "Кнопки";
+"custom_controls.button_edit.mapping" = "Клавиши";
 "custom_controls.button_edit.orientation" = "Сторона разворота";
-"custom_controls.button_edit.toggleable" = "Переключаемый";
+"custom_controls.button_edit.toggleable" = "Переключать касанием";
 "custom_controls.button_edit.mouse_pass" = "Пропускать касание в игру";
 "custom_controls.button_edit.swipeable" = "Пролистываемый";
 "custom_controls.button_edit.bg_color" = "Цвет фона";
