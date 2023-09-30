@@ -52,6 +52,7 @@
 "custom_controls.control_menu.safe_area" = "安全區";
 "custom_controls.control_menu.add_button" = "添加按鈕";
 "custom_controls.control_menu.add_drawer" = "增加清單";
+"custom_controls.control_menu.add_joystick" = "添加搖桿";
 "custom_controls.error.incompatible" = "此控制版本（號碼 %d）在這個啟動器構建中沒有實現。";
 "custom_controls.hint" = "長按螢幕上的任何位置以顯示更多選項";
 
