@@ -9,9 +9,15 @@
 
 // The play button
 "Play" = "Παίξε";
+
+// Version categories
+"Installed" = "Εγκατεστημένο";
 "Snapshot" = "Στιγμιότυπο";
 "Old-beta" = "Παλιά-Beta";
 "Old-alpha" = "Παλιά-alpha";
+
+// Custom controls
+"Copy" = "Αντιγραφή";
 "Edit" = "Επεξεργασία";
 "Remove" = "Αφαίρεσε";
 
@@ -34,7 +40,12 @@
 
 "launcher.menu.custom_controls" = "Προσαρμοσμένα controls";
 "launcher.menu.install_jar" = "Εγκαταστήστε αρχείο .jar";
+
+"login.alert.field.username" = "Όνομα χρήστη";
+"login.option.add" = "Προσθήκη λογαριασμού";
 "login.option.select" = "Επιλέξτε λογαριασμό";
+"login.option.microsoft" = "Λογαριασμός Microsoft";
+"login.option.local" = "Τοπικός λογαριασμός";
 
 "News" = "Νέα";
 "Settings" = "Ρυθμίσεις";
@@ -52,4 +63,12 @@
 "preference.detail.allocated_memory" = "Ελέγχει πόση μνήμη δίνεται στο Minecraft";
 
 "preference.profile.title.name" = "Όνομα";
+"preference.profile.title.version" = "Έκδοση";
+"profile.title.create" = "Δημιουργία νέου προφίλ";
+"controller_configurator.title.type.xbox" = "Xbox";
+"controller_configurator.title.type.playstation" = "PlayStation";
+"controller_configurator.xbox.title.dpad_up" = "Πάνω";
+"controller_configurator.xbox.title.dpad_down" = "Κάτω";
 "controller_configurator.playstation.title.named_back" = "Επιλέξτε";
+"controller_configurator.playstation.title.dpad_up" = "Πάνω";
+"controller_configurator.playstation.title.dpad_down" = "Κάτω";
