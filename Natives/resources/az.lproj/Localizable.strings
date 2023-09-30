@@ -132,6 +132,7 @@
 "preference.section.footer.video" = "Avtomatik renderer PojavLauncher-ə Minecraft versiyası əsasında ən yaxşı variantı seçməyə imkan verir. Çözünürlüyün azaldılması daha yaxşı performans üçün GPU iş yükünü azaldır.";
 "preference.section.control" = "İdarəetmə fərdiləşdirməsi";
 "preference.section.debug" = "UI Sazlama parametrləri";
+"preference.section.footer.debug" = "Dəyişikliklərin qüvvəyə minməsi üçün işəsalmanı yenidən başlatmalı ola bilərsiniz.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java Ayarları";
 //"preference.section.footer.java" = "";
