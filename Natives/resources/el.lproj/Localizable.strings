@@ -69,6 +69,10 @@
 "controller_configurator.title.type.playstation" = "PlayStation";
 "controller_configurator.xbox.title.dpad_up" = "Πάνω";
 "controller_configurator.xbox.title.dpad_down" = "Κάτω";
+"controller_configurator.xbox.title.dpad_left" = "Αριστερά";
+"controller_configurator.xbox.title.dpad_right" = "Δεξιά";
 "controller_configurator.playstation.title.named_back" = "Επιλέξτε";
 "controller_configurator.playstation.title.dpad_up" = "Πάνω";
 "controller_configurator.playstation.title.dpad_down" = "Κάτω";
+"controller_configurator.playstation.title.dpad_left" = "Αριστερά";
+"controller_configurator.playstation.title.dpad_right" = "Δεξιά";
