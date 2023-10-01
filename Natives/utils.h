@@ -105,4 +105,4 @@ void CallbackBridge_nativeSendMouseButton(int button, int action, int mods);
 void CallbackBridge_nativeSendScreenSize(int width, int height);
 void CallbackBridge_nativeSendScroll(CGFloat xoffset, CGFloat yoffset);
 void CallbackBridge_sendKeycode(int keycode, jchar keychar, int scancode, int modifiers, BOOL isDown);
-void CallbackBridge_setWindowAttrib(int attrib, int value);
+void CallbackBridge_pauseGameIfNeed();
