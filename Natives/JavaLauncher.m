@@ -186,14 +186,14 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     margv[++margc] = "-Dlog4j2.formatMsgNoLookups=true";
 
     // Preset OpenGL libname
-    const char *glLibName;
-    if (!strcmp(getenv("POJAV_RENDERER"), "auto")) {
-        // workaround only applies to 1.20.2+
-        glLibName = RENDERER_NAME_MTL_ANGLE;
-    } else {
-        glLibName = getenv("POJAV_RENDERER");
+    const char *glLibName = getenv("POJAV_RENDERER");
+    if (glLibName) {
+        if (!strcmp(glLibName, "auto")) {
+            // workaround only applies to 1.20.2+
+            glLibName = RENDERER_NAME_MTL_ANGLE;
+        }
+        margv[++margc] = [NSString stringWithFormat:@"-Dorg.lwjgl.opengl.libname=%s", glLibName].UTF8String;
     }
-    margv[++margc] = [NSString stringWithFormat:@"-Dorg.lwjgl.opengl.libname=%s", glLibName].UTF8String;
 
     NSString *librariesPath = [NSString stringWithFormat:@"%s/libs", getenv("BUNDLE_PATH")];
     if(getPrefBool(@"general.cosmetica")) {
