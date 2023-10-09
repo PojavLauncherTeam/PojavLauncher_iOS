@@ -35,6 +35,7 @@
 "preference.section.general" = "Tetapan Umum";
 "preference.section.video" = "Tetapan Video";
 "preference.section.debug" = "Tetapan UI Penyahpepijat";
+"preference.section.footer.debug" = "Anda mungkin perlu memulakan semula pelancar untuk perubahan berkuat kuasa.";
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "Adakah anda pasti?";
