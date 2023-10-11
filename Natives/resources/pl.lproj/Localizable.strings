@@ -58,6 +58,7 @@
 "custom_controls.control_menu.safe_area" = "Bezpieczna Strefa";
 "custom_controls.control_menu.add_button" = "Dodaj przycisk";
 "custom_controls.control_menu.add_drawer" = "Dodaj listę";
+"custom_controls.control_menu.add_joystick" = "Dodaj joysticka";
 "custom_controls.hint" = "Naciśnij i przytrzymaj gdziekolwiek na ekranie, aby uzyskać więcej opcji";
 
 "init.migrateDir" = "Katalogiem danych PojavLauncher jest teraz %@. Wszystkie istniejące dane zostały przeniesione do nowej lokalizacji.";
