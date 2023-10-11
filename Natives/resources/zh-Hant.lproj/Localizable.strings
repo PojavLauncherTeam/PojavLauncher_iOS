@@ -147,6 +147,9 @@
 "preference.title.done.reset_settings" = "所有的預設設定已被回復。";
 
 "preference.title.renderer" = "渲染器";
+"preference.title.renderer.release.gl4es" = "Holy GL4ES -（全版本可用，速度較快）";
+"preference.title.renderer.release.angle" = "ANGLE（Vulkan）-（僅支持1.17以上的版本，速度中等）";
+"preference.title.renderer.release.zink" = "Zink（Vulkan）-（全版本可用，速度中等，設備相容性差）";
 
 "preference.title.renderer.debug.auto" = "自動：gl4es或ANGLE";
 "preference.title.renderer.debug.gl4es" = "gl4es 1.1.4 － 輸出OpenGL 2.1";
