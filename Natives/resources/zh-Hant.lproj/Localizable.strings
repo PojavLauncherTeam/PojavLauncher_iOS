@@ -28,6 +28,8 @@
 "Move" = "移動";
 "Remove" = "移除";
 "Resize" = "調整大小";
+
+"custom_controls.button_edit.forward_lock" = "前進/疾跑鎖";
 "custom_controls.button_edit.name" = "名稱";
 "custom_controls.button_edit.size" = "大小";
 "custom_controls.button_edit.mapping" = "對映";
