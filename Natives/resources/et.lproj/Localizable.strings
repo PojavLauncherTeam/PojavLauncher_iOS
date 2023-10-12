@@ -50,6 +50,7 @@
 "preference.title.appicon-dark" = "Tuttav PojavLauncher tume";
 
 "preference.title.renderer" = "Renderdaja";
+"preference.title.renderer.release.angle" = "ANGLE";
 
 "preference.title.renderer.debug.auto" = "Autom.: gl4es või ANGLE";
 "preference.title.renderer.debug.gl4es" = "gl4es 1.1.4 - väljastab OpenGL 2.1";
@@ -62,6 +63,11 @@
 
 "preference.title.fullscreen_airplay" = "Täisekraanis AirPlay";
 "preference.title.virtmouse_enable" = "Virtuaalne hiir";
+"preference.manage_runtime.header.default" = "Eelistatud Java versioon";
+"preference.manage_runtime.default.1165" = "1.16.5 ja vanem";
+"preference.manage_runtime.default.117" = "1.17 ja uuem";
+"preference.manage_runtime.footer.java8" = "See on vaikimisi versioon Minecraft 1.16.5 ja vanema jaoks.";
+"preference.manage_runtime.footer.java17" = "See on vaikimisi versioon Minecraft 1.17 ja uuema jaoks.";
 "preference.title.auto_ram" = "Automaatne RAM";
 "preference.title.allocated_memory" = "Mälueraldus (MB)";
 "preference.detail.allocated_memory" = "Juhib, kui palju mälu Minecraftile antakse";
@@ -73,3 +79,5 @@
 "preference.profile.title.name" = "Nimi";
 "preference.profile.title.version" = "Versioon";
 "profile.title.create" = "Loo uus profiil";
+"controller_configurator.playstation.title.named_back" = "Vali";
+"controller_configurator.playstation.title.named_y" = "Kolmnurk";
