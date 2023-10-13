@@ -132,6 +132,7 @@
 "preference.section.footer.video" = "Otomatik oluşturucu, PojavLauncher'ın Minecraft sürümüne göre en iyi seçeneği seçmesine olanak tanır. Azalan çözünürlük, daha iyi performans için GPU iş yükünü azaltır.";
 "preference.section.control" = "Kontrol özelleştirmesi";
 "preference.section.debug" = "UI hata ayıklama seçenekleri";
+"preference.section.footer.debug" = "Değişikliklerin etkili olması için başlatıcıyı yeniden başlatmanız gerekebilir.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java Ayarlamaları";
 //"preference.section.footer.java" = "";
@@ -255,6 +256,7 @@
 "preference.detail.debug_hide_home_indicator" = "Bu, ana gösterge kilitlemeyi devre dışı bırakacaktır. Giriş göstergesini aynı anda gizlemek ve kilitlemek için Kılavuzlu Erişim'i kullanmanız gerekecek.";
 
 "preference.profile.title.name" = "İsim";
+"preference.profile.title.loader_type" = "Yükleyici türü";
 "preference.profile.title.loader_vendor" = "Yükleyici satıcısı";
 "preference.profile.title.loader_version" = "Yükleyici sürümü";
 "preference.profile.title.version" = "Sürüm";
