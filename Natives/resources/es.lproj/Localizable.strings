@@ -29,6 +29,8 @@
 "Move" = "Mover";
 "Remove" = "Eliminar";
 "Resize" = "Cambiar tamaño";
+
+"custom_controls.button_edit.forward_lock" = "Bloqueo hacia adelante";
 "custom_controls.button_edit.name" = "Nombre";
 "custom_controls.button_edit.size" = "Tamaño";
 "custom_controls.button_edit.mapping" = "Mapeado";
@@ -184,4 +186,27 @@
 "preference.profile.title.name" = "Nombre";
 "preference.profile.title.version" = "Versión";
 "profile.title.create" = "Crear una nueva instancia";
+
+"controller_configurator.title.current" = "Archivo de configuración del mando";
+"controller_configurator.title.type.xbox" = "Xbox";
+"controller_configurator.title.type.playstation" = "PlayStation";
+
+"controller_configurator.xbox.title.bumper_left" = "Bumper izquierdo";
+"controller_configurator.xbox.title.bumper_right" = "Bumper derecho";
+"controller_configurator.xbox.title.trigger_left" = "Gatillo izquierdo";
+"controller_configurator.xbox.title.trigger_right" = "Gatillo derecho";
+"controller_configurator.xbox.title.named_back" = "Guia";
+"controller_configurator.xbox.title.named_start" = "Menú";
+"controller_configurator.xbox.title.named_a" = "A";
+"controller_configurator.xbox.title.named_b" = "B";
+"controller_configurator.xbox.title.named_x" = "X";
+"controller_configurator.xbox.title.named_y" = "Y";
+"controller_configurator.xbox.title.dpad_up" = "Arriba";
+"controller_configurator.xbox.title.dpad_down" = "Abajo";
+"controller_configurator.xbox.title.dpad_left" = "Izquierda";
+"controller_configurator.xbox.title.dpad_right" = "Derecha";
 "controller_configurator.playstation.title.named_back" = "Seleccionar";
+"controller_configurator.playstation.title.dpad_up" = "Arriba";
+"controller_configurator.playstation.title.dpad_down" = "Abajo";
+"controller_configurator.playstation.title.dpad_left" = "Izquierda";
+"controller_configurator.playstation.title.dpad_right" = "Derecha";
