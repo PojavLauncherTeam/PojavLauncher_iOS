@@ -40,6 +40,7 @@
 "custom_controls.button_edit.mapping" = "Mapeado";
 "custom_controls.button_edit.orientation" = "Orientación";
 "custom_controls.button_edit.toggleable" = "Activable";
+"custom_controls.button_edit.mouse_pass" = "Paso del ratón";
 "custom_controls.button_edit.swipeable" = "Deslizable";
 "custom_controls.button_edit.bg_color" = "Color de fondo";
 "custom_controls.button_edit.stroke_width" = "Ancho del trazo (dp)";
@@ -131,6 +132,7 @@
 "preference.section.footer.video" = "El renderizador automático permite a PojavLauncher elegir la mejor opción basada en la versión de Minecraft. La reducción de la resolución reduce la carga para la GPU para un mejor rendimiento.";
 "preference.section.control" = "Personalización del control";
 "preference.section.debug" = "Ajustes de depuración de interfaz";
+"preference.section.footer.debug" = "Quizás sea necesario reiniciar el launcher para que todos los cambios tengan efecto.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Ajustes de Java";
 //"preference.section.footer.java" = "";
@@ -151,6 +153,9 @@
 "preference.detail.appicon" = "Le permite elegir entre diferentes iconos de PojavLauncher para tu pantalla de inicio.";
 "preference.title.appicon-default" = "PojavLauncher clásico claro";
 "preference.title.appicon-dark" = "PojavLauncher clásico oscuro";
+"preference.title.appicon-development" = "Desarrollo escrito";
+"preference.title.hidden_sidebar" = "Oculta la barra lateral del menú principal por defecto";
+"preference.detail.hidden_sidebar" = "Permite ocultar la barra lateral del menú principal por defecto y al girar.";
 
 "preference.title.reset_warnings" = "Reiniciar todas las advertencias";
 "preference.title.done.reset_warnings" = "Todas las advertencias han sido reiniciadas.";
@@ -159,7 +164,13 @@
 "preference.title.confirm.reset_settings" = "Esto va a remover todas tus configuraciones, incluyendo resolución, tamaño de botones y argumentos de Java.";
 "preference.title.done.reset_settings" = "Todas las configuraciones predeterminadas han sido restauradas.";
 
+"preference.title.erase_demo_data" = "Borrar datos de la demo del juego";
+"preference.title.confirm.erase_demo_data" = "Esto borrará todas las versiones Demo del juego y los datos utilizados para las cuentas Demo.";
+"preference.title.done.erase_demo_data" = "Todos los datos de la Demo han sido borrados.";
+
 "preference.title.renderer" = "Renderizador";
+
+"preference.title.renderer.release.auto" = "Auto";
 "preference.title.renderer.release.gl4es" = "holy gl4es";
 "preference.title.renderer.release.angle" = "ANGLE";
 "preference.title.renderer.release.zink" = "Zink";
@@ -173,11 +184,25 @@
 
 "preference.title.resolution" = "Resolución (%)";
 "preference.detail.resolution" = "Permite reducir la resolución del juego.";
+"preference.title.max_framerate" = "FPS máximos";
+"preference.detail.max_framerate" = "Te permite limitar el juego a 60FPS en pantallas ProMotion.";
 
 "preference.title.fullscreen_airplay" = "AirPlay en pantalla completa";
 "preference.detail.fullscreen_airplay" = "Permite presentar la ventana de juego a pantalla completa en la pantalla externa en lugar de reflejar todo en la pantalla interna.";
+"preference.title.silence_other_audio" = "Pausar audio al abrir el juego";
+"preference.detail.silence_other_audio" = "Actívalo para permitir a PojavLauncher pausar el audio de otras aplicaciones, como la música, al iniciar el juego.";
+"preference.title.silence_with_switch" = "Desactivar audio con el botón de silencio";
+"preference.detail.silence_with_switch" = "Actívalo para desactivar el audio cuando el modo silencio está encendido. Los auriculares y los altavoces externos no se ven afectados.";
+"preference.title.default_gamepad_ctrl" = "Configuración del mando";
+"preference.title.hardware_hide" = "Ocultar controles cuando el hardware está conectado";
+"preference.detail.hardware_hide" = "Activa el comportamiento de desactivar automáticamente los controles en pantalla cuando un ratón o un mando están conectados.";
+"preference.title.gesture_mouse" = "Gestos de ratón";
+"preference.detail.gesture_mouse" = "Habilita gestos, como tocar para colocar bloques, mantener para romper bloques, desplazar con 2 dedos";
+"preference.title.gesture_hotbar" = "Gestos de la hotbar";
+"preference.detail.gesture_hotbar" = "Habilita gestos, como tocar la ranura de la hotbar, intercambiar objetos entre manos, tirar objetos";
 "preference.title.disable_haptics" = "Desactivar hápticos en pantalla";
 "preference.title.press_duration" = "Duración para pulsado largo (ms)";
+"preference.detail.press_duration" = "Cambia la duración del retraso para romper bloques y tirar objetos.";
 "preference.title.button_scale" = "Escala de botones en pantalla (%)";
 "preference.detail.button_scale" = "Sube de tamaño a los botones si resultan ser muy pequeños, es usualmente necesario para usuarios de iPad.";
 "preference.title.mouse_scale" = "Tamaño del ratón (%)";
@@ -190,6 +215,9 @@
 "preference.detail.slideable_hotbar" = "Permite deslizarse en el hotbar como la rueda del ratón";
 
 "preference.title.gyroscope_enable" = "Habilitar controles de giroscopio";
+"preference.detail.gyroscope_enable" = "Activar esto te permitirá girar la camara en el juego girando tu teléfono";
+"preference.title.gyroscope_invert_x_axis" = "Invertir izquierda y derecha en el giroscopio";
+"preference.detail.gyroscope_invert_x_axis" = "Invierte el eje X del giroscopio";
 "preference.title.gyroscope_sensitivity" = "Sensibilidad del giroscopio";
 "preference.detail.gyroscope_sensitivity" = "Ajustar la sensibilidad de los controles por giroscopio";
 
