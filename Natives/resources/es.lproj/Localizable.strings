@@ -29,6 +29,10 @@
 "Move" = "Mover";
 "Remove" = "Eliminar";
 "Resize" = "Cambiar tamaño";
+// Visibility
+"Always" = "Siempre";
+"In game" = "En el juego";
+"In menu" = "En el Menú";
 
 "custom_controls.button_edit.forward_lock" = "Bloqueo hacia adelante";
 "custom_controls.button_edit.name" = "Nombre";
@@ -38,9 +42,11 @@
 "custom_controls.button_edit.toggleable" = "Activable";
 "custom_controls.button_edit.swipeable" = "Deslizable";
 "custom_controls.button_edit.bg_color" = "Color de fondo";
+"custom_controls.button_edit.stroke_width" = "Ancho del trazo (dp)";
 "custom_controls.button_edit.stroke_color" = "Color del trazo";
 "custom_controls.button_edit.corner_radius" = "Radio de las esquinas (%)";
 "custom_controls.button_edit.opacity" = "Opacidad (%)";
+"custom_controls.button_edit.visibility" = "Visibilidad";
 
 "custom_controls.button_menu.add_subbutton" = "Añadir sub-botón";
 "custom_controls.control_menu.discard_changes" = "Descartar cambios";
@@ -59,6 +65,9 @@
 
 "init.migrateDir" = "La carpeta de PojavLauncher ahora está en %@. Todos tus datos han sido movidos a esa nueva ubicación.";
 
+"java.error.missing_main_class" = "%@ no tiene un atributo de clase principal. Si se trata de un mod, ponlo en la carpeta \"mods\" de su instancia seleccionada.";
+"java.error.missing_runtime" = "%@ requiere Java %d o posterior para ejecutarse. Por favor, instalalo primero y selecciónalo en los ajustes.";
+
 "launcher.menu.custom_controls" = "Controles personalizados";
 "launcher.menu.install_jar" = "Instalar .jar";
 
@@ -74,6 +83,7 @@
 "login.jit.fail" = "JIT no pudo ser activado.";
 "login.jit.fail.title" = "JIT no pudo ser activado en tu dispositivo.";
 "login.jit.fail.description" = "No se han podido utilizar integraciones para habilitar JIT automáticamente en su dispositivo y ahora debe ser habilitado manualmente. Los errores han sido registrados en latestlog.txt.";
+"login.jit.fail.description_unsupported" = "Se ha detectado un método de instalación no compatible. Por favor, reinstala utilizando uno de los métodos soportados.";
 
 // Login buttons
 "login.menu.sendlogs" = "Envía tus logs";
@@ -88,6 +98,7 @@
 "login.warn.message.demomode" = "Como reemplazo del modo offline y el modo local, el modo demo te permitirá iniciar sesión en una cuenta de Microsoft que no tenga el juego para jugar a las trials de Java Edition, introducido en la versión 1.3.1 y versiones nuevas. Versiones anteriores a estas tienen acceso al juego entero, porque el launcher oficial no contiene estas restricciones. Ve a nuestro sitio web para saber más sobre esta transición de el modo offline.";
 
 "login.warn.title.localmode" = "El modo offline ahora es el modo local.";
+"login.warn.message.localmode" = "Puedes seguir jugando versiones ya instaladas, pero ya no puedes descargar Minecraft sin una cuenta de paga. No habrá soporte a problemas con las cuentas locales ni otros medios para adquirir Minecraft.";
 
 "login.msa.error.xsts.noxboxacc" = "Esta cuenta de Microsoft no poseé un perfil de Xbox. Por favor, asegúrate de haber creado un perfil de Xbox en esta cuenta.\nCódigo de error: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live no está disponible actualmente en tu país.\nCódigo de error: 2148916235";
@@ -102,10 +113,12 @@
 "login.msa.progress.checkMCProfile" = "(5/5) Comprobando el perfil de Minecraft";
 
 "News" = "Noticias";
+"Profiles" = "Perfiles";
 "Settings" = "Ajustes";
 
 "preference.section.general" = "Configuración general";
 "preference.section.video" = "Configuración de Vídeo";
+"preference.section.footer.video" = "El renderizador automático permite a PojavLauncher elegir la mejor opción basada en la versión de Minecraft. La reducción de la resolución reduce la carga para la GPU para un mejor rendimiento.";
 "preference.section.control" = "Personalización del control";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Ajustes de Java";
@@ -205,8 +218,30 @@
 "controller_configurator.xbox.title.dpad_down" = "Abajo";
 "controller_configurator.xbox.title.dpad_left" = "Izquierda";
 "controller_configurator.xbox.title.dpad_right" = "Derecha";
+"controller_configurator.xbox.title.thumb_left" = "Clic de la palanca izquierda";
+"controller_configurator.xbox.title.thumb_right" = "Clic de la palanca derecha";
+
+"controller_configurator.playstation.title.bumper_left" = "L1";
+"controller_configurator.playstation.title.bumper_right" = "R1";
+"controller_configurator.playstation.title.trigger_left" = "L2";
+"controller_configurator.playstation.title.trigger_right" = "R2";
 "controller_configurator.playstation.title.named_back" = "Seleccionar";
+"controller_configurator.playstation.title.named_start" = "Start";
+"controller_configurator.playstation.title.named_a" = "Cruz";
+"controller_configurator.playstation.title.named_b" = "Círculo";
+"controller_configurator.playstation.title.named_x" = "Cuadrado";
+"controller_configurator.playstation.title.named_y" = "Triángulo";
 "controller_configurator.playstation.title.dpad_up" = "Arriba";
 "controller_configurator.playstation.title.dpad_down" = "Abajo";
 "controller_configurator.playstation.title.dpad_left" = "Izquierda";
 "controller_configurator.playstation.title.dpad_right" = "Derecha";
+"controller_configurator.playstation.title.thumb_left" = "L3";
+"controller_configurator.playstation.title.thumb_right" = "R3";
+
+"controller_configurator.section.config_files" = "Configuración actual";
+"controller_configurator.section.game_mappings" = "Controles del juego";
+"controller_configurator.section.footer.game_mappings" = "Controles cuando el ratón está en el juego.";
+"controller_configurator.section.menu_mappings" = "Controles del menú";
+"controller_configurator.section.footer.menu_mappings" = "Controles cuando el ratón no está en el juego, como en el menú de pausa y título.";
+"controller_configurator.section.controller_style" = "Tipo de control";
+"controller_configurator.section.footer.controller_style" = "Mostrar nombres de botones de controlador diferentes en este configurador.";
