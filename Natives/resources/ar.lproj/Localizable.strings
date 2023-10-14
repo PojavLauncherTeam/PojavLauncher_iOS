@@ -33,6 +33,8 @@
 "Always" = "دائماً";
 "In game" = "في اللعبة";
 "In menu" = "في القائمة";
+
+"custom_controls.button_edit.forward_lock" = "قفل إلى الأمام";
 "custom_controls.button_edit.name" = "الاسم";
 "custom_controls.button_edit.size" = "الحجم";
 "custom_controls.button_edit.mapping" = "تخطيط الأزرار";
@@ -64,6 +66,8 @@
 "custom_controls.hint" = "اضغط مطولاً في أي مكان على الشاشة لمزيد من الخيارات";
 
 "init.migrateDir" = "دليل بيانات PojavLauncher هو الآن %@. تم نقل جميع بياناتك الموجودة إلى الموقع الجديد.";
+
+"java.error.missing_main_class" = "%@ يفتقر الى main class attribute. اذا كان هذا ملف مود، ضعه في مجلد \"mods\" داخل الinstance المختارة.";
 "java.error.missing_runtime" = "%@ يتطلب اصدار جافا %d او اعلى، رجاءً ثبته ثم حدده في قائمة Manage Runtimes";
 
 "launcher.mcl.downloading_file" = "التحميل جارٍ %@";
@@ -164,7 +168,7 @@
 "preference.title.confirm.erase_demo_data" = "سيؤدي هذا إلى محو جميع إصدارات اللعبة التجريبية والبيانات المستخدمة في الحسابات التجريبية.";
 "preference.title.done.erase_demo_data" = "تم مسح جميع بيانات اللعبة التجريبية.";
 
-"preference.title.renderer" = "العارض";
+"preference.title.renderer" = "عارض الرسوميات";
 
 "preference.title.renderer.release.auto" = "تلقائي";
 "preference.title.renderer.release.gl4es" = "holy gl4es";
@@ -259,8 +263,13 @@
 "preference.profile.title.version_type" = "نوع الإصدار";
 "preference.profile.title.default_touch_control" = "التحكم باللمس";
 "preference.profile.title.default_gamepad_control" = "التحكم بيد تحكم";
+
+"profile.error.name_exists" = "يوجد ملف شخصي بهذا الأسم، الرجاء اختيار اسم اخر.";
 "profile.section.instance" = "اعدادات ملف اللعبة";
+"profile.section.profiles" = "الملفات الشخصية في هذا الinstance";
 "profile.title.create" = "إنشاء ملف شخصي جديد";
+"profile.title.separate_preference" = "اعزل الإعدادات";
+"profile.detail.separate_preference" = "فعل هذا الخيار لعزل اي تغيير حدث في الأعدادات، اعادة التعيين سوف تستعيد الأعدادات العامة، بدلاً من الأفتراضية.";
 "profile.title.install_fabric_quilt" = "تثبيت Fabric/Quilt";
 
 "controller_configurator.title.current" = "ملف تكوين لوحة اللعبة";
