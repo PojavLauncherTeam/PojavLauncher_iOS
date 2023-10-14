@@ -52,6 +52,7 @@
 "custom_controls.control_menu.safe_area" = "منطقة آمنة";
 "custom_controls.control_menu.add_button" = "إضافة زر";
 "custom_controls.control_menu.add_drawer" = "درج التطبيقات";
+"custom_controls.control_menu.add_joystick" = "اضف عصا تحكم";
 "custom_controls.error.incompatible" = "هذا الإصدار للتحكم (الرمز %d) لم يتم تنفيذه في إنشاء هذا المشغل.";
 "custom_controls.hint" = "اضغط مطولاً في أي مكان على الشاشة لمزيد من الخيارات";
 
