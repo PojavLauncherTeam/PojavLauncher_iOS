@@ -19,6 +19,7 @@
 "Installed" = "مثبت";
 "Snapshot" = "اللمحات (سنابشوت)";
 "Releases" = "الإصدارات";
+"Unstable" = "غير مستقر";
 "Old-beta" = "نسخ بيتا قديمة";
 "Old-alpha" = "نسخ ألفا قديمة";
 
@@ -28,6 +29,10 @@
 "Move" = "نقل";
 "Remove" = "إزالة";
 "Resize" = "تغییر الحجم";
+// Visibility
+"Always" = "دائماً";
+"In game" = "في اللعبة";
+"In menu" = "في القائمة";
 "custom_controls.button_edit.name" = "الاسم";
 "custom_controls.button_edit.size" = "الحجم";
 "custom_controls.button_edit.mapping" = "تخطيط الأزرار";
@@ -36,9 +41,11 @@
 "custom_controls.button_edit.mouse_pass" = "حركة الماوس";
 "custom_controls.button_edit.swipeable" = "قابل للسحب";
 "custom_controls.button_edit.bg_color" = "لون الخلفية";
+"custom_controls.button_edit.stroke_width" = "عرض الخط (%)";
 "custom_controls.button_edit.stroke_color" = "لون الخط";
 "custom_controls.button_edit.corner_radius" = "تقوس الزاوية (%)";
 "custom_controls.button_edit.opacity" = "التعتيم (%)";
+"custom_controls.button_edit.visibility" = "الظهور";
 
 "custom_controls.button_menu.add_subbutton" = "إضافة زر فرعي";
 "custom_controls.control_menu.discard_changes" = "تجاهل التغييرات";
@@ -57,6 +64,7 @@
 "custom_controls.hint" = "اضغط مطولاً في أي مكان على الشاشة لمزيد من الخيارات";
 
 "init.migrateDir" = "دليل بيانات PojavLauncher هو الآن %@. تم نقل جميع بياناتك الموجودة إلى الموقع الجديد.";
+"java.error.missing_runtime" = "%@ يتطلب اصدار جافا %d او اعلى، رجاءً ثبته ثم حدده في قائمة Manage Runtimes";
 
 "launcher.mcl.downloading_file" = "التحميل جارٍ %@";
 "launcher.mcl.error_download" = "فشل التنزيل %@: %@";
@@ -76,6 +84,7 @@
 "login.jit.fail" = "تعذّر تمكين JIT.";
 "login.jit.fail.title" = "تعذّر تمكين JIT على جهازك.";
 "login.jit.fail.description" = "لا يمكن استخدام أي تكاملات لتفعيل JIT تلقائيًا على جهازك، ويجب الآن تمكينها يدوياً. لقد تم تسجيل الأخطاء إلى latestlog.txt.";
+"login.jit.fail.description_unsupported" = "تم اكتشاف طريقة تثبيت غير مدعومة. الرجاء إعادة التثبيت باستخدام طريقة مدعومة.";
 
 // Login buttons
 "login.menu.sendlogs" = "ارسال سجلات الخطأ";
@@ -111,6 +120,7 @@
 "login.msa.progress.checkMCProfile" = "(5/5) التحقق من الملف الشخصي لـ Minecraft";
 
 "News" = "الأخبار";
+"Profiles" = "الملفات الشخصية";
 "Settings" = "الاعدادات";
 
 "preference.section.general" = "إعدادات عامة";
@@ -118,6 +128,7 @@
 "preference.section.footer.video" = "يسمح المعرض التلقائي لـ PojavLauncher باختيار أفضل خيار استناداً إلى إصدار Minecraft. تخفيض الدقة يقلل من عبء العمل في GPU من أجل أداء أفضل.";
 "preference.section.control" = "تخصيص التحكم";
 "preference.section.debug" = "إعدادات تصحيح أخطاء واجهة المستخدم";
+"preference.section.footer.debug" = "قد تحتاج إلى إعادة تشغيل البرنامج حتى تتطبق التغيرات.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "تعديلات جافا";
 //"preference.section.footer.java" = "";
@@ -206,6 +217,16 @@
 "preference.title.gyroscope_sensitivity" = "حساسية التحكم في الغيروسكوب";
 "preference.detail.gyroscope_sensitivity" = "ضبط حساسية أجهزة التحكم الجيبروسكوب";
 
+"preference.title.manage_runtime" = "إدارة اوقات التشغيل";
+"preference.title.confirm.delete_runtime" = "سيتم حذف %@";
+"preference.manage_runtime.header.default" = "إصدار جافا المفضل";
+"preference.manage_runtime.default.1165" = "1.16.5 و ما أحدث";
+"preference.manage_runtime.default.117" = "1.17 و ما أ حدث";
+"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 و ما اقدم قد تعمل مع اصدار جافا احدث، ولكن توافق المودات ليس مضمونا، اوقات التشغيل الخارجية يمكن وضعها بمجلد \"java_runtimes\". و تغيير إصدار الجافا عند \"ثبت .jar\"لن يحدث الا عندما لا يتوقع البرنامج اصدار جافا احدث.";
+"preference.manage_runtime.footer.java8" = "هذا هو الإصدار الافتراضي لـ Minecraft 1.16.5 و الأقدم.";
+"preference.manage_runtime.footer.java17" = "هذا هو الإصدار الافتراضي لـ Minecraft 1.17. و ما اقدم.";
+"preference.manage_runtime.header.invalid" = "وقت تشغيل غير صالح";
+
 "preference.title.java_args" = "حجج إطلاق JVM";
 "preference.detail.java_args" = "مرر الحجج إلى جافا عند بدء Minecraft. كن حذرا، هذا يمكن أن يجعل عطل اللعبة إذا تم تعديله بشكل غير صحيح.";
 "preference.placeholder.java_args" = "حدد الدفعات...";
@@ -231,8 +252,16 @@
 "preference.detail.debug_hide_home_indicator" = "سيؤدي هذا إلى تعطيل تأمين مؤشر المنزل. سوف تحتاج إلى استخدام الوصول الموجه للإخفاء وقفل مؤشر المنزل في نفس الوقت.";
 
 "preference.profile.title.name" = "الاسم";
+"preference.profile.title.loader_type" = "نوع التحميل";
+"preference.profile.title.loader_vendor" = "مورد التحميل";
+"preference.profile.title.loader_version" = "إصدار التحميل";
 "preference.profile.title.version" = "الإصدار";
+"preference.profile.title.version_type" = "نوع الإصدار";
+"preference.profile.title.default_touch_control" = "التحكم باللمس";
+"preference.profile.title.default_gamepad_control" = "التحكم بيد تحكم";
+"profile.section.instance" = "اعدادات ملف اللعبة";
 "profile.title.create" = "إنشاء ملف شخصي جديد";
+"profile.title.install_fabric_quilt" = "تثبيت Fabric/Quilt";
 
 "controller_configurator.title.current" = "ملف تكوين لوحة اللعبة";
 "controller_configurator.title.type.xbox" = "إكس بوكس";
