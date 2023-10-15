@@ -129,7 +129,7 @@
 
 "preference.section.general" = "إعدادات عامة";
 "preference.section.video" = "إعدادات الفيديو والصوت";
-"preference.section.footer.video" = "يسمح المعرض التلقائي لـ PojavLauncher باختيار أفضل خيار استناداً إلى إصدار Minecraft. تخفيض الدقة يقلل من عبء العمل في GPU من أجل أداء أفضل.";
+"preference.section.footer.video" = "يسمح عارض الرسوميات التلقائي لـ PojavLauncher باختيار أفضل خيار استناداً إلى إصدار Minecraft. تخفيض الدقة يقلل من عبء العمل في GPU من أجل أداء أفضل.";
 "preference.section.control" = "تخصيص التحكم";
 "preference.section.debug" = "إعدادات تصحيح أخطاء واجهة المستخدم";
 "preference.section.footer.debug" = "قد تحتاج إلى إعادة تشغيل البرنامج حتى تتطبق التغيرات.";
@@ -214,7 +214,7 @@
 "preference.title.slideable_hotbar" = "شريط اتصال قابل للتمرير";
 "preference.detail.slideable_hotbar" = "جعل شريط الاتصال قابل للانزلاق مثل عجلة الماوس";
 
-"preference.title.gyroscope_enable" = "تمكين التحكم بالغيروسكوب";
+"preference.title.gyroscope_enable" = "تمكين التحكم بالجيروسكوب";
 "preference.detail.gyroscope_enable" = "تمكين هذا سيسمح لك بتشغيل اللعبة عن طريق تحويل هاتفك";
 "preference.title.gyroscope_invert_x_axis" = "عكس الغيروسكوب لليسار واليمين";
 "preference.detail.gyroscope_invert_x_axis" = "عكس المحور X-axi للجروسكوب";
@@ -224,8 +224,8 @@
 "preference.title.manage_runtime" = "إدارة اوقات التشغيل";
 "preference.title.confirm.delete_runtime" = "سيتم حذف %@";
 "preference.manage_runtime.header.default" = "إصدار جافا المفضل";
-"preference.manage_runtime.default.1165" = "1.16.5 و ما أحدث";
-"preference.manage_runtime.default.117" = "1.17 و ما أ حدث";
+"preference.manage_runtime.default.1165" = "1.16.5 و ما أقدم";
+"preference.manage_runtime.default.117" = "1.17 و ما أحدث";
 "preference.manage_runtime.footer.default" = "Minecraft 1.16.5 و ما اقدم قد تعمل مع اصدار جافا احدث، ولكن توافق المودات ليس مضمونا، اوقات التشغيل الخارجية يمكن وضعها بمجلد \"java_runtimes\". و تغيير إصدار الجافا عند \"ثبت .jar\"لن يحدث الا عندما لا يتوقع البرنامج اصدار جافا احدث.";
 "preference.manage_runtime.footer.java8" = "هذا هو الإصدار الافتراضي لـ Minecraft 1.16.5 و الأقدم.";
 "preference.manage_runtime.footer.java17" = "هذا هو الإصدار الافتراضي لـ Minecraft 1.17. و ما اقدم.";
