@@ -34,7 +34,7 @@
 "In game" = "Em partida";
 "In menu" = "No menu";
 
-"custom_controls.button_edit.forward_lock" = "Bloqueio para frente";
+"custom_controls.button_edit.forward_lock" = "Trava para correr";
 "custom_controls.button_edit.name" = "Nome";
 "custom_controls.button_edit.size" = "Tamanho";
 "custom_controls.button_edit.mapping" = "Mapeamento";
@@ -61,7 +61,7 @@
 "custom_controls.control_menu.safe_area" = "Área segura";
 "custom_controls.control_menu.add_button" = "Adicionar botão";
 "custom_controls.control_menu.add_drawer" = "Adicionar gaveta";
-"custom_controls.control_menu.add_joystick" = "Adicionar joystick";
+"custom_controls.control_menu.add_joystick" = "Adicionar analógico";
 "custom_controls.error.incompatible" = "Esta versão de controle (código %d) não está implementada nesta compilação do inicializador.";
 "custom_controls.hint" = "Pressione e segure em qualquer lugar na tela para mais opções";
 
@@ -110,6 +110,7 @@
 "login.msa.progress.checkMCProfile" = "(5/5) Verificando o perfil de Minecraft";
 
 "News" = "Notícias";
+"Profiles" = "Perfis";
 "Settings" = "Configurações";
 
 "preference.section.general" = "Configurações Gerais";
@@ -156,7 +157,12 @@
 
 "preference.title.resolution" = "Resolução (%)";
 "preference.detail.resolution" = "Permite que você diminua a resolução do jogo.";
+"preference.title.max_framerate" = "Taxa de quadros máxima";
+"preference.detail.silence_with_switch" = "Ative para desativar o áudio quando o Modo Silencioso estiver ativo. Os fones de ouvido e alto-falantes externos não são afetados.";
 "preference.title.default_gamepad_ctrl" = "Configuração do Controlador";
+"preference.title.hardware_hide" = "Ocultar controles quando o hardware estiver conectado";
+"preference.title.gesture_mouse" = "Gestos do mouse";
+"preference.title.gesture_hotbar" = "Gestos da barra rápida";
 "preference.title.disable_haptics" = "Desativar os atalhos na tela";
 "preference.title.press_duration" = "Duração de pressionamento longo (ms)";
 "preference.title.button_scale" = "Escala dos botões virtuais (%)";
@@ -168,7 +174,7 @@
 "preference.title.slideable_hotbar" = "Hotbar deslizante";
 
 "preference.title.gyroscope_enable" = "Habilitar controles do gyrocópio";
-"preference.title.gyroscope_sensitivity" = "Sensibilidade de controles do Giroscópio";
+"preference.title.gyroscope_sensitivity" = "Sensibilidade de controles do giroscópio";
 "preference.detail.gyroscope_sensitivity" = "Ajustar a sensibilidade dos controles do giroscópio";
 
 "preference.title.manage_runtime" = "Gerenciar runtimes";
@@ -207,7 +213,16 @@
 
 "preference.profile.title.name" = "Nome";
 "preference.profile.title.version" = "Versão";
+"preference.profile.title.version_type" = "Tipo da versão";
+"preference.profile.title.default_touch_control" = "Controles de toque";
+"preference.profile.title.default_gamepad_control" = "Controles do gamepad";
+
+"profile.error.name_exists" = "Um perfil com esse nome já existe. Escolha outro nome.";
+"profile.section.instance" = "Configurações da instância do jogo";
+"profile.section.profiles" = "Perfis nesta instância";
 "profile.title.create" = "Criar novo perfil";
+"profile.title.separate_preference" = "Configurações isoladas";
+"profile.title.install_fabric_quilt" = "Instalar Fabric/Quilt";
 
 "controller_configurator.title.current" = "Configuração do arquivo do controle";
 "controller_configurator.title.type.xbox" = "Xbox";
