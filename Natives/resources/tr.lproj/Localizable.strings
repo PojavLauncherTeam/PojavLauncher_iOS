@@ -42,7 +42,7 @@
 "custom_controls.button_edit.toggleable" = "Değiştirilebilir";
 "custom_controls.button_edit.mouse_pass" = "Fare geçişi";
 "custom_controls.button_edit.swipeable" = "Kaydırılabilir";
-"custom_controls.button_edit.bg_color" = "Arkaplan rengi";
+"custom_controls.button_edit.bg_color" = "Arka plan rengi";
 "custom_controls.button_edit.stroke_width" = "Vurgu genişliği (dp)";
 "custom_controls.button_edit.stroke_color" = "Vurgu rengi";
 "custom_controls.button_edit.corner_radius" = "Köşe yarıçapı (%)";
