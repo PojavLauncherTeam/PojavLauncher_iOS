@@ -65,7 +65,7 @@
 "custom_controls.error.incompatible" = "Bu kontrol sürümü (kod %d) bu başlatıcı sürümünde uygulanmadı.";
 "custom_controls.hint" = "Daha çok seçenek için ekranın herhangi bir yerinde basılı tut";
 
-"init.migrateDir" = "PojavLauncher veri dosyası artık %@. Önceden varolan bütün verilerin yeni konuma taşındı.";
+"init.migrateDir" = "PojavLauncher veri dizini artık %@. Önceden varolan bütün verileriniz yeni konuma taşındı.";
 
 "java.error.missing_main_class" = "%@, ana sınıf özelliğini sahip değil. Bu bir mod ise, seçtiğiniz profilde \"mods\" klasörüne koyunuz.";
 "java.error.missing_runtime" = "%@, Java sürümü %d veya ilerisini gerektiriyor. Lütfen bu sürümü indirin ve Yürütücü Yöneticisi menüsünden seçin.";
@@ -79,7 +79,7 @@
 "launcher.wait_jit.title" = "JIT için bekleniyor";
 "launcher.wait_jit.message" = "PojavLauncher, Java'nın maksimum performansta çalışması için Just-in-time derlemeye dayanır.";
 
-"login.error.username.outOfRange" = "Kullanıcı adı en az 3 en fazla da 16 karakter olmalıdır";
+"login.error.username.outOfRange" = "Kullanıcı adı en az 3 en fazla 16 karakter olmalıdır";
 
 "login.alert.field.username" = "Kullanıcı Adı";
 
@@ -87,11 +87,11 @@
 "login.jit.enabled" = "JIT etkinleştirildi";
 "login.jit.fail" = "JIT etkinleştirilemedi.";
 "login.jit.fail.title" = "JIT, cihazınızda etkinleştirilemedi.";
-"login.jit.fail.description" = "JIT'i cihazınızda otomatik olarak etkinleştirmek için hiçbir entegrasyon kullanılamaz ve şimdi manuel olarak etkinleştirilmelidir. Hatalar, latestlog.txt dosyasına kaydedildi.";
+"login.jit.fail.description" = "JIT'i cihazınızda otomatik olarak etkinleştirmek için hiçbir entegrasyon kullanılamadı ve şimdi manuel olarak etkinleştirilmelidir. Hatalar, latestlog.txt dosyasına kaydedildi.";
 "login.jit.fail.description_unsupported" = "Desteklenmeyen bir yükleme metodu tespit edildi. Lütfen desteklenen bir sürüm ile tekrar yükleyin.";
 
 // Login buttons
-"login.menu.sendlogs" = "Kayıt günlüğünüzü gönderin";
+"login.menu.sendlogs" = "Kayıt günlüğünüzü (log) gönderin";
 "login.option.add" = "Hesap Ekle";
 "login.option.select" = "Hesap seçin";
 "login.option.demo" = "Demo Hesabı";
@@ -112,23 +112,23 @@
 "login.warn.message.localmode" = "Yüklü sürümleri oynamaya devam edebilirsiniz, ancak artık Minecraft'ı ücretli bir hesap olmadan indiremezsiniz. Yerel hesaplarla ilgili sorunlar veya Mi'yi edinmenin diğer yolları için destek sağlanmayacaktır.";
 
 "login.msa.error.xsts.noxboxacc" = "Bu Microsoft hesabı için bir Xbox profili kayıt olmamış. Lütfen bir Xbox profili oluşturduğunuza emin olun.\nHata kodu: 2148916233";
-"login.msa.error.xsts.noxbox" = "Xbox Live şu anlık ülkenizde mevcuz değil.\nHata kodu: 2148916235";
+"login.msa.error.xsts.noxbox" = "Xbox Live şu anda ülkenizde mevcut değil.\nHata kodu: 2148916235";
 "login.msa.error.xsts.krverify" = "Devam edebilmek için hesabınızın veliniz tarafından onaylanması gerekiyor. \nHata kodu: 2148916236 ya da 2148916237.";
 "login.msa.error.xsts.underage" = "Devam edebilmek için hesabınızın bir veli hesabına bağlı olması gerekiyor.\nHata kodu: 2148916238";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Access token'ı elde ediniliyor";
-"login.msa.progress.acquireXBLToken" = "(2/5) Xbox Live Token'ı elde ediliyor";
-"login.msa.progress.acquireXSTS" = "XSTS elde ediliyor";
-"login.msa.progress.acquireXboxProfile" = "(3/5) Xbox profili elde ediliyor";
-"login.msa.progress.acquireMCToken" = "(4/5) Minecraft Token'ı elde ediliyor";
-"login.msa.progress.checkMCProfile" = "(5/5) Minecraft hesabına bakılıyor";
+"login.msa.progress.acquireXBLToken" = "(2/5) Xbox Live token'ı elde ediliyor";
+"login.msa.progress.acquireXSTS" = "XSTS elde ediniliyor";
+"login.msa.progress.acquireXboxProfile" = "(3/5) Xbox profili elde ediniliyor";
+"login.msa.progress.acquireMCToken" = "(4/5) Minecraft Token'ı elde ediniliyor";
+"login.msa.progress.checkMCProfile" = "(5/5) Minecraft hesabı tespit ediliyor";
 
 "News" = "Haberler";
 "Profiles" = "Profiller";
 "Settings" = "Ayarlar";
 
 "preference.section.general" = "Genel Ayarlar";
-"preference.section.video" = "Video Ayarları";
+"preference.section.video" = "Video ve Ses Ayarları";
 "preference.section.footer.video" = "Otomatik oluşturucu, PojavLauncher'ın Minecraft sürümüne göre en iyi seçeneği seçmesine olanak tanır. Azalan çözünürlük, daha iyi performans için GPU iş yükünü azaltır.";
 "preference.section.control" = "Kontrol özelleştirmesi";
 "preference.section.debug" = "UI hata ayıklama seçenekleri";
@@ -148,7 +148,7 @@
 "preference.title.cosmetica" = "Cosmetica Pelerinleri";
 "preference.detail.cosmetica" = "Cosmetica'nın pelerinlerini etkinleştir (önceden Arc). Daha fazla bilgi için lütfen https://cosmetica.cc'yi ziyaret edin. OptiFine gerektirir";
 "preference.title.debug_logging" = "Hata ayıklama kaydı tutma";
-"preference.detail.debug_logging" = "İç seçenekleri ve eylemleri latestlog.txt'ye kaydeder. Bu geliştiricilerin sorunu daha kolay bulmasını sağlar, fakat çok sık kayıt edileceği için Minecraft daha yavaş çalışabilir.";
+"preference.detail.debug_logging" = "İç seçenekleri ve eylemleri latestlog.txt'ye kaydeder. Bu, geliştiricilerin sorunu daha kolay bulmasını sağlar fakat bu günlüklere çok sık kayıt edileceği için Minecraft daha yavaş çalışabilir.";
 "preference.title.appicon" = "Uygulama simgesini ayarla";
 "preference.detail.appicon" = "PojavLauncher için farklı Ana Ekran simgeleri arasında seçim yapmanızı sağlar.";
 "preference.title.appicon-default" = "Göze aşina PojavLauncher açık";
@@ -176,34 +176,34 @@
 "preference.title.renderer.release.zink" = "Zink";
 
 "preference.title.renderer.debug.auto" = "Oto: gl4es ya da ANGLE";
-"preference.title.renderer.debug.gl4es" = "gl4es 1.1.4 - OpenGL 2.1 çıkarır";
-"preference.title.renderer.debug.angle" = "ANGLE (1.17+) - OpenGL 3.2 dışa aktarır (Çekirdek profili, kısıtlı)";
-"preference.title.renderer.debug.zink" = "Zonk (Mesa 21.0) - OpenGL 4.1 çıkarır";
+"preference.title.renderer.debug.gl4es" = "kutsal gl4es - OpenGL 2.1 dışa aktarır";
+"preference.title.renderer.debug.angle" = "ANGLE (1.17+) - OpenGL 3.2 dışa aktarır (Çekirdek Profili, kısıtlı)";
+"preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - OpenGL 4.1 dışa aktarır";
 
-"preference.detail.renderer" = "Kullanmak için OpenGL işleyici motorunu değiştir";
+"preference.detail.renderer" = "Kullanılacak OpenGL işleyici motorunu değiştir. Sorunları belirlemek için Zink iOS 16 ve üstünde geçici süreliğine devre dışı bırakıldı.";
 
 "preference.title.resolution" = "Çözünürlük (%)";
 "preference.detail.resolution" = "Oyun çözünürlüğünü düşürmenizi sağlar.";
 "preference.title.max_framerate" = "Maksimum kare hızı";
-"preference.detail.max_framerate" = "ProMotion ekranlarda oyun kare hızını 60FPS ile sınırlandırmanıza izin verir.";
+"preference.detail.max_framerate" = "ProMotion ekranlarda oyun kare hızını 60FPS ile sınırlandırmanızı sağlar.";
 
 "preference.title.fullscreen_airplay" = "Tam Ekran AirPlay";
 "preference.detail.fullscreen_airplay" = "Ekrandaki herşeyi yansıtmaktansa harici ekranda tam ekran oyun penceresini görüntülemeyi sağlar.";
 "preference.title.silence_other_audio" = "Oyun açıldığında sesi duraklat";
 "preference.detail.silence_other_audio" = "PojavLauncher'ın oyunu açarken, müzik gibi diğer uygulamaların sesini kapatmasına izin vermesi için açınız.";
 "preference.title.silence_with_switch" = "Sessiz ayarıyla sesi kapat";
-"preference.detail.silence_with_switch" = "Sessiz ayarı açıkken sesi kapatır. Kulaklık ve dış hoparlör için geçerli değildir.";
-"preference.title.default_gamepad_ctrl" = "Oyun Kumandası Ayarları";
+"preference.detail.silence_with_switch" = "Sessiz ayarı açıkken sesi kapatmak için etkinleştirin. Kulaklık ve harici hoparlör bu durumdan etkilenmemektedir.";
+"preference.title.default_gamepad_ctrl" = "Kontrolcü Ayarları";
 "preference.title.hardware_hide" = "Donanım bağlandığında kontrolleri gizle";
-"preference.detail.hardware_hide" = "Ekran üzerindeki kontrolü fare veya kol bağlandığında otomatik olarak kapat.";
+"preference.detail.hardware_hide" = "Bir fare veya oyun kumandası bağlandığında ekran üstü kontrol kaplamasını otomatik olarak devre dışı bırakma davranışını etkinleştirin.";
 "preference.title.gesture_mouse" = "Fare hareketleri";
-"preference.detail.gesture_mouse" = "Bloğu yerleştirmek için dokunma, bloğu kırmak için basılı tutma, 2 parmakla kaydırma gibi hareketleri etkinleştirir";
+"preference.detail.gesture_mouse" = "Blok yerleştirmek için dokunma, kırmak için basılı tutma, 2 parmakla kaydırma gibi hareketleri etkinleştirir";
 "preference.title.gesture_hotbar" = "Hotbar hareketleri";
-"preference.detail.gesture_hotbar" = "Hotbar yuvasına dokunma, eller arasında öğe değiştirme, öğeleri fırlatma gibi hareketleri etkinleştirir";
+"preference.detail.gesture_hotbar" = "Hotbar yuvasına dokunma, eller arasında öğe değiştirme, eşya fırlatma gibi hareketleri etkinleştirir";
 "preference.title.disable_haptics" = "Dokunmatik ekranı devre dışı bırak";
 "preference.title.press_duration" = "Uzun-basma süresi (ms)";
 "preference.detail.press_duration" = "Blok kırmak ve eşya bırakmak için tetiklenen basma süresi.";
-"preference.title.button_scale" = "Ekran üstü tuş ölçeği (%)";
+"preference.title.button_scale" = "Ekran üstü düğme ölçeği (%)";
 "preference.detail.button_scale" = "Düğmeler çok küçükse yukarı ölçekleyin, genellikle iPad kullanıcıları tarafından ihtiyaç duyulur.";
 "preference.title.mouse_scale" = "Fare ölçeği (%)";
 "preference.detail.mouse_scale" = "Sanal farenin boyutunu ayarlar";
@@ -215,7 +215,7 @@
 "preference.detail.slideable_hotbar" = "Hotbar'ın fare tekerleğindeki gibi kaydırılabilmesini sağlar";
 
 "preference.title.gyroscope_enable" = "Jiroskop kontrollerini etkinleştir";
-"preference.detail.gyroscope_enable" = "Bunu etkinleştirmek, cihazınızı döndürerek oyuna girmenizi sağlar";
+"preference.detail.gyroscope_enable" = "Bunu etkinleştirmek, cihazınızı döndürerek oyun içinde dönmenizi sağlar";
 "preference.title.gyroscope_invert_x_axis" = "Jiroskopu sola ve sağa ters çevirin";
 "preference.detail.gyroscope_invert_x_axis" = "Jiroskopun X eksenini tersine çevirir";
 "preference.title.gyroscope_sensitivity" = "Jiroskop kontrolleri hassaslığı";
@@ -311,9 +311,9 @@
 "controller_configurator.playstation.title.thumb_right" = "R3";
 
 "controller_configurator.section.config_files" = "Mevcut yapılandırma dosyası";
-"controller_configurator.section.game_mappings" = "Oyun içi yapılandırma";
-"controller_configurator.section.footer.game_mappings" = "Oyun içinde fare kilitlendiğinde yapılandırma.";
-"controller_configurator.section.menu_mappings" = "Menü Yapılandırmaları";
-"controller_configurator.section.footer.menu_mappings" = "Başlık ekranı veya duraklatma menüsü gibi fare kilitli olmadığında durdurur.";
-"controller_configurator.section.controller_style" = "Kontrol tipi";
-"controller_configurator.section.footer.controller_style" = "Bu yapılandırıcıda farklı kontrol düğme adlarını gösterin.";
+"controller_configurator.section.game_mappings" = "Oyun atamaları";
+"controller_configurator.section.footer.game_mappings" = "Oyun içinde fare kilitlendiğindeki atamalar.";
+"controller_configurator.section.menu_mappings" = "Menü atamaları";
+"controller_configurator.section.footer.menu_mappings" = "Başlık ekranı veya duraklatma menüsü gibi fare kilitli olmadığındaki atamalar.";
+"controller_configurator.section.controller_style" = "Kontrolcü tipi";
+"controller_configurator.section.footer.controller_style" = "Bu yapılandırıcıda farklı kontrol düğme adları gösterin.";
