@@ -157,10 +157,10 @@ target_link_libraries(PojavLauncher
   PUBLIC AFNetworking
   "-F'${CMAKE_CURRENT_LIST_DIR}/build'"
   "-F'${CMAKE_CURRENT_LIST_DIR}/resources/Frameworks'"
-  "-framework AltKit"
+  "-weak_framework AltKit"
   "-framework AuthenticationServices"
   "-framework AVFoundation"
-  "-framework CAltKit"
+  "-weak_framework CAltKit"
   "-framework CoreGraphics"
   "-framework CoreImage"
   "-framework CoreMotion"
