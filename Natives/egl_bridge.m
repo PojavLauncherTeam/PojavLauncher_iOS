@@ -32,7 +32,6 @@ struct PotatoBridge {
 */
 };
 EGLConfig config;
-pid_t mainThreadID;
 struct PotatoBridge potatoBridge;
 
 /* OSMesa functions */
@@ -73,8 +72,7 @@ void* egl_make_current(void* window);
 
 #define RENDERER_MTL_ANGLE 1
 #define RENDERER_VK_ZINK 2
-#define RENDERER_VIRGL 3
-#define RENDERER_VULKAN 4
+#define RENDERER_VULKAN 3
 
 typedef jint RegalMakeCurrent_func(EGLContext context);
 
@@ -126,7 +124,6 @@ void* pojavGetCurrentContext() {
         case RENDERER_MTL_ANGLE:
             return (void *)eglGetCurrentContext_p();
 
-        case RENDERER_VIRGL:
         case RENDERER_VK_ZINK:
             return (void *)OSMesaGetCurrentContext_p();
 
@@ -171,10 +168,10 @@ void loadSymbols(int renderer) {
     char fileName[2048];
     switch (renderer) {
         case RENDERER_VK_ZINK:
-            sprintf((char *)fileName, "%s/Frameworks/%s", getenv("BUNDLE_PATH"), getenv("POJAV_RENDERER"));
+            sprintf((char *)fileName, "@rpath/%s", getenv("POJAV_RENDERER"));
             break;
         case RENDERER_MTL_ANGLE:
-            sprintf((char *)fileName, "%s/Frameworks/libtinygl4angle.dylib", getenv("BUNDLE_PATH"));
+            sprintf((char *)fileName, "@rpath/libtinygl4angle.dylib");
             break;
     }
     void* dl_handle = dlopen(fileName,RTLD_NOW|RTLD_GLOBAL|RTLD_NODELETE);
@@ -193,26 +190,9 @@ void loadSymbols(int renderer) {
     }
 }
 
-void loadSymbolsVirGL() {
-    loadSymbols(RENDERER_MTL_ANGLE);
-    loadSymbols(RENDERER_VK_ZINK);
-
-    char fileName[2048];
-    sprintf((char *)fileName, "%s/Frameworks/libvirgl_test_server.dylib", getenv("BUNDLE_PATH"));
-    void *handle = dlopen(fileName, RTLD_LAZY);
-    NSLog(@"VirGL: libvirgl_test_server = %p", handle);
-    if (!handle) {
-        NSLog(@"VirGL: %s", dlerror());
-        return;
-    }
-    vtest_main_p = dlsym(handle, "vtest_main");
-    vtest_swap_buffers_p = dlsym(handle, "vtest_swap_buffers");
-}
-
 int pojavInit(BOOL useStackQueue) {
     isInputReady = 1;
     isUseStackQueueCall = useStackQueue;
-    mainThreadID = gettid();
     return JNI_TRUE;
 }
 
@@ -222,11 +202,7 @@ jboolean pojavInitOpenGL() {
     NSString *renderer = @(getenv("POJAV_RENDERER"));
     BOOL isAuto = [renderer isEqualToString:@"auto"];
     BOOL angleDesktopGL = NO;
-    /* if ([renderer isEqualToString:@"libOSMesa.8.dylib"]) {
-        config_renderer = RENDERER_VIRGL;
-        setenv("GALLIUM_DRIVER", "virpipe", 1);
-        loadSymbolsVirGL();
-    } else */ if (isAuto || [renderer isEqualToString:@ RENDERER_NAME_GL4ES]) {
+    if (isAuto || [renderer isEqualToString:@ RENDERER_NAME_GL4ES]) {
         // At this point, if renderer is still auto (unspecified major version), pick gl4es
         angleDesktopGL = NO;
         config_renderer = RENDERER_MTL_ANGLE;
@@ -242,7 +218,7 @@ jboolean pojavInitOpenGL() {
     JNI_LWJGL_changeRenderer(renderer.UTF8String);
     loadSymbols(config_renderer);
 
-    if (config_renderer == RENDERER_MTL_ANGLE || config_renderer == RENDERER_VIRGL) {
+    if (config_renderer == RENDERER_MTL_ANGLE) {
         if (potatoBridge.eglDisplay == EGL_NO_DISPLAY) {
             potatoBridge.eglDisplay = eglGetDisplay_p((void *)EGL_DEFAULT_DISPLAY);
             if (potatoBridge.eglDisplay == EGL_NO_DISPLAY) {
@@ -313,27 +289,10 @@ jboolean pojavInitOpenGL() {
                potatoBridge.eglDisplay,
                potatoBridge.eglSurface
         );
-        if (config_renderer != RENDERER_VIRGL) {
-            return JNI_TRUE;
-        }
-    // } else if (strcmp(renderer, "vulkan_zink") == 0) {
+        return JNI_TRUE;
     }
 
-    if (config_renderer == RENDERER_VIRGL) {
-        // Init EGL context and vtest server
-        const EGLint ctx_attribs[] = {
-            EGL_CONTEXT_CLIENT_VERSION, 3,
-            EGL_NONE
-        };
-        EGLContext* ctx = eglCreateContext_p(potatoBridge.eglDisplay, config, NULL, ctx_attribs);
-        NSLog(@"VirGL: created EGL context %p", ctx);
-
-        pthread_t t;
-        pthread_create(&t, NULL, egl_make_current, (void *)ctx);
-        usleep(100*1000); // need enough time for the server to init
-    }
-
-    if (config_renderer == RENDERER_VK_ZINK || config_renderer == RENDERER_VIRGL) {
+    if (config_renderer == RENDERER_VK_ZINK) {
         if(OSMesaCreateContext_p == NULL) {
             NSLog(@"OSMDroid: %s",dlerror());
             return JNI_FALSE;
@@ -403,11 +362,6 @@ void pojavSwapBuffers() {
             }
         } break;
 
-        case RENDERER_VIRGL: {
-            glFinish_p();
-            vtest_swap_buffers_p();
-        } break;
-
         case RENDERER_VK_ZINK: {
             glFinish_p();
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -429,12 +383,6 @@ void* egl_make_current(void* window) {
         NSDebugLog(@"EGLBridge: Error: eglMakeCurrent() failed: 0x%x", eglGetError_p());
     } else {
         NSDebugLog(@"EGLBridge: eglMakeCurrent() succeed!");
-    }
-
-    if (config_renderer == RENDERER_VIRGL) {
-        NSDebugLog(@"VirGL: vtest_main = %p", vtest_main_p);
-        NSDebugLog(@"VirGL: Calling VTest server's main function");
-        vtest_main_p(3, (const char*[]){"vtest", "--no-loop-or-fork", "--use-gles", NULL, NULL});
     }
 
     return NULL;
@@ -467,7 +415,7 @@ void pojavMakeCurrent(void* window) {
             }
     }
 
-    if (config_renderer == RENDERER_VK_ZINK || config_renderer == RENDERER_VIRGL) {
+    if (config_renderer == RENDERER_VK_ZINK) {
             NSLog(@"OSMDroid: making current");
             OSMesaMakeCurrent_p((OSMesaContext)window,gbuffer,GL_UNSIGNED_BYTE,windowWidth,windowHeight);
             if (config_renderer == RENDERER_VK_ZINK) {
@@ -514,7 +462,7 @@ void* pojavCreateContext(void* contextSrc) {
             return (void *)ctx;
     }
 
-    if (config_renderer == RENDERER_VK_ZINK || config_renderer == RENDERER_VIRGL) {
+    if (config_renderer == RENDERER_VK_ZINK) {
             NSDebugLog(@"OSMDroid: generating context");
             void* ctx = OSMesaCreateContext_p(OSMESA_RGBA,contextSrc);
             NSDebugLog(@"OSMDroid: context=%p",ctx);
@@ -549,8 +497,7 @@ Java_org_lwjgl_opengl_GL_getNativeWidthHeight(JNIEnv *env, jobject thiz) {
 
 void pojavSwapInterval(int interval) {
     switch (config_renderer) {
-        case RENDERER_MTL_ANGLE:
-        case RENDERER_VIRGL: {
+        case RENDERER_MTL_ANGLE: {
             eglSwapInterval_p(potatoBridge.eglDisplay, interval);
         } break;
 

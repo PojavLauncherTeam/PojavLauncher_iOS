@@ -49,7 +49,7 @@
 #define SPECIALBTN_MENU -9
 
 #define NSDebugLog(...) if (debugLogEnabled) { NSLog(__VA_ARGS__); }
-BOOL debugLogEnabled;
+BOOL debugLogEnabled, isJailbroken;
 
 //__weak UIViewController *viewController;
 
@@ -83,7 +83,6 @@ CGFloat MathUtils_map(CGFloat x, CGFloat in_min, CGFloat in_max, CGFloat out_min
 CGFloat dpToPx(CGFloat dp);
 CGFloat pxToDp(CGFloat px);
 void setButtonPointerInteraction(UIButton *button);
-void setViewBackgroundColor(UIView* view);
 void _CGDataProviderReleaseBytePointerCallback(void *info,const void *pointer);
 
 jboolean attachThread(bool isAndroid, JNIEnv** secondJNIEnvPtr);

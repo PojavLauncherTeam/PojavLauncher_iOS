@@ -146,7 +146,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
 
         // Symlink libawt_xawt.dylib
         NSString *dest = [NSString stringWithFormat:@"%@/lib/libawt_xawt.dylib", javaHome];
-        NSString *source = [NSString stringWithFormat:@"%s/Frameworks/libawt_xawt.dylib", getenv("BUNDLE_PATH")];
+        NSString *source = [NSString stringWithFormat:@"%@/Frameworks/libawt_xawt.dylib", NSBundle.mainBundle.bundlePath];
         NSError *error;
         [fm createSymbolicLinkAtPath:dest withDestinationPath:source error:&error];
         if (error) {
@@ -174,8 +174,8 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     margv[++margc] = "-Djava.system.class.loader=net.kdt.pojavlaunch.PojavClassLoader";
     margv[++margc] = "-Xms128M";
     margv[++margc] = [NSString stringWithFormat:@"-Xmx%dM", allocmem].UTF8String;
-    margv[++margc] = [NSString stringWithFormat:@"-Djava.library.path=%1$s/Frameworks", getenv("BUNDLE_PATH")].UTF8String;
-    margv[++margc] = [NSString stringWithFormat:@"-Djna.boot.library.path=%s/Frameworks", getenv("BUNDLE_PATH")].UTF8String;
+    margv[++margc] = [NSString stringWithFormat:@"-Djava.library.path=%@/Frameworks", NSBundle.mainBundle.bundlePath].UTF8String;
+    margv[++margc] = [NSString stringWithFormat:@"-Djna.boot.library.path=%@/Frameworks", NSBundle.mainBundle.bundlePath].UTF8String;
     margv[++margc] = [NSString stringWithFormat:@"-Duser.dir=%@", gameDir].UTF8String;
     margv[++margc] = [NSString stringWithFormat:@"-Duser.home=%s", getenv("POJAV_HOME")].UTF8String;
     margv[++margc] = [NSString stringWithFormat:@"-Duser.timezone=%@", NSTimeZone.localTimeZone.name].UTF8String;
@@ -195,7 +195,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
         margv[++margc] = [NSString stringWithFormat:@"-Dorg.lwjgl.opengl.libname=%s", glLibName].UTF8String;
     }
 
-    NSString *librariesPath = [NSString stringWithFormat:@"%s/libs", getenv("BUNDLE_PATH")];
+    NSString *librariesPath = [NSString stringWithFormat:@"%@/libs", NSBundle.mainBundle.bundlePath];
     if(getPrefBool(@"general.cosmetica")) {
         margv[++margc] = [NSString stringWithFormat:@"-javaagent:%@/arc_dns_injector.jar=23.95.137.176", librariesPath].UTF8String;
     }
@@ -264,7 +264,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
 
     // Add Caciocavallo bootclasspath
     NSString *cacio_classpath = [NSString stringWithFormat:@"-Xbootclasspath/%s", isJava8 ? "p" : "a"];
-    NSString *cacio_libs_path = [NSString stringWithFormat:@"%s/libs_caciocavallo%s", getenv("BUNDLE_PATH"), isJava8 ? "" : "17"];
+    NSString *cacio_libs_path = [NSString stringWithFormat:@"%@/libs_caciocavallo%s", NSBundle.mainBundle.bundlePath, isJava8 ? "" : "17"];
     NSArray *files = [fm contentsOfDirectoryAtPath:cacio_libs_path error:nil];
     for(NSString *file in files) {
         if ([file hasSuffix:@".jar"]) {

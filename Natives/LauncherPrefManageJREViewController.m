@@ -69,7 +69,7 @@ static WFWorkflowProgressView* currentProgressView;
     self.selectedRTTags = @[@"1_16_5_older", @"1_17_newer", @"install_jar"];
     self.selectedRuntimes = getPrefObject(@"java.java_homes");
 
-    NSString *internalPath = [NSString stringWithFormat:@"%s/java_runtimes", getenv("BUNDLE_PATH")];
+    NSString *internalPath = [NSString stringWithFormat:@"%@/java_runtimes", NSBundle.mainBundle.bundlePath];
     NSString *externalPath = [NSString stringWithFormat:@"%s/java_runtimes", getenv("POJAV_HOME")];
     [self listJREInPath:internalPath markInternal:YES];
     [self listJREInPath:externalPath markInternal:NO];
@@ -235,8 +235,8 @@ static WFWorkflowProgressView* currentProgressView;
     // Display size
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         unsigned long long folderSize = 0;
-        NSString *directory = [NSString stringWithFormat:@"%s/java_runtimes/%@",
-            getenv(isInternal ? "BUNDLE_PATH" : "POJAV_HOME"),
+        NSString *directory = [NSString stringWithFormat:@"%@/java_runtimes/%@",
+            isInternal ? NSBundle.mainBundle.bundlePath : @(getenv("POJAV_HOME")),
             name];
         [NSFileManager.defaultManager nr_getAllocatedSize:&folderSize ofDirectoryAtURL:[NSURL fileURLWithPath:directory] error:nil];
         dispatch_async(dispatch_get_main_queue(), ^{

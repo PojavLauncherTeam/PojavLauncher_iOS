@@ -3,6 +3,8 @@
 #define realUIIdiom UIDevice.currentDevice.hook_userInterfaceIdiom
 
 @interface UIDevice(hook)
+- (NSString *)buildVersion;
+- (NSString *)completeOSVersion;
 - (UIUserInterfaceIdiom)hook_userInterfaceIdiom;
 @end
 

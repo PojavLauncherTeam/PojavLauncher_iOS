@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 
 #import "DBNumberedSlider.h"
+#import "HostManagerBridge.h"
 #import "LauncherNavigationController.h"
 #import "LauncherMenuViewController.h"
 #import "LauncherPreferences.h"
@@ -329,7 +330,7 @@
                 @"type": self.typeSwitch,
                 @"enableCondition": whenNotInGame,
                 @"warnCondition": ^BOOL(){
-                    return getenv("POJAV_DETECTEDJB") == NULL;
+                    return !isJailbroken;
                 },
                 @"warnKey": @"auto_ram_warn",
                 @"requestReload": @YES
@@ -398,10 +399,10 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
     if (section == 0) { // Add to general section
-        return [NSString stringWithFormat:@"PojavLauncher %@-%s (%s/%s)\niOS %s on %s (%s)\nPID: %d",
+        return [NSString stringWithFormat:@"PojavLauncher %@-%s (%s/%s)\n%@ on %@ (%s)\nPID: %d",
             NSBundle.mainBundle.infoDictionary[@"CFBundleShortVersionString"],
             CONFIG_TYPE, CONFIG_BRANCH, CONFIG_COMMIT,
-            getenv("POJAV_DETECTEDSW"), getenv("POJAV_DETECTEDHW"), getenv("POJAV_DETECTEDINST"), getpid()];
+            UIDevice.currentDevice.completeOSVersion, [HostManager GetModelName], getenv("POJAV_DETECTEDINST"), getpid()];
     }
 
     NSString *footer = NSLocalizedStringWithDefaultValue(([NSString stringWithFormat:@"preference.section.footer.%@", self.prefSections[section]]), @"Localizable", NSBundle.mainBundle, @" ", nil);

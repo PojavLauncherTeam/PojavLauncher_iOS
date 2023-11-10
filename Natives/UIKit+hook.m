@@ -32,6 +32,10 @@ void init_hookUIKitConstructor(void) {
 
 @implementation UIDevice(hook)
 
+- (NSString *)completeOSVersion {
+    return [NSString stringWithFormat:@"%@ %@ (%@)", self.systemName, self.systemVersion, self.buildVersion];
+}
+
 - (UIUserInterfaceIdiom)hook_userInterfaceIdiom {
     if (getPrefBool(@"debug.debug_ipad_ui")) {
         return UIUserInterfaceIdiomPad;

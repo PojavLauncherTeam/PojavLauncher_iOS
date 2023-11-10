@@ -8,12 +8,8 @@
 #import "customcontrols/ControlJoystick.h"
 #import "customcontrols/CustomControlsUtils.h"
 
-#include <dlfcn.h>
-
 #include "glfw_keycodes.h"
 #include "utils.h"
-
-BOOL shouldDismissPopover = YES;
 
 @implementation ControlHandleView
 // Nothing
@@ -102,8 +98,8 @@ BOOL shouldDismissPopover = YES;
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    isControlModifiable = NO;
     if (isInGame) {
-        isControlModifiable = NO;
         [self.presentingViewController performSelector:@selector(loadCustomControls)];
     }
 }
@@ -215,19 +211,9 @@ BOOL shouldDismissPopover = YES;
 - (void)showControlPopover:(UIGestureRecognizer *)sender {
     self.currentGesture = sender;
 
-    switch (sender.state) {
-        case UIGestureRecognizerStateBegan:
-            if (![sender isKindOfClass:[UILongPressGestureRecognizer class]]) {
-                return;
-            }
-            break;
-        case UIGestureRecognizerStateEnded:
-            if ([sender isKindOfClass:[UILongPressGestureRecognizer class]]) {
-                return;
-            }
-            break;
-        default:
-            return;
+    if (sender.state != UIGestureRecognizerStateBegan &&
+        sender.state != UIGestureRecognizerStateEnded) {
+        return;
     }
 
     UIMenuController *menuController = [UIMenuController sharedMenuController];
@@ -468,7 +454,6 @@ BOOL shouldDismissPopover = YES;
 }
 
 - (void)actionMenuBtnEdit {
-    shouldDismissPopover = NO;
     CCMenuViewController *vc = [[CCMenuViewController alloc] init];
     vc.modalPresentationStyle = UIModalPresentationOverFullScreen;
     vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -602,22 +587,9 @@ BOOL shouldDismissPopover = YES;
     return UIModalPresentationNone;
 }
 
-- (BOOL)popoverPresentationControllerShouldDismissPopover:(UIPopoverPresentationController *)popoverPresentationController
-{
-     return shouldDismissPopover;
-}
-
-- (BOOL)presentationControllerShouldDismiss:(UIPresentationController *)presentationController
-{
-    return shouldDismissPopover;
-}
-
 @end
 
 #define TAG_SLIDER_STROKEWIDTH 10
-#define TAG_SLIDER_CORNERRADIUS 11
-#define TAG_SLIDER_OPACITY 12
-#define TAG_SWITCH_DYNAMICPOS 13
 
 #define VISIBILITY_ALWAYS 0
 #define VISIBILITY_IN_GAME 1
@@ -641,7 +613,7 @@ CGFloat currentY;
 @property(nonatomic) UIPickerView* pickerMapping;
 @property(nonatomic) UISegmentedControl *ctrlOrientation, *ctrlVisibility;
 @property(nonatomic) UISwitch *switchFwdLock, *switchToggleable, *switchMousePass, *switchSwipeable;
-@property(nonatomic) UIColorWell *colorWellINTBackground, *colorWellINTStroke;
+@property(nonatomic) UIColorWell *colorWellBackground, *colorWellStroke;
 @property(nonatomic) DBNumberedSlider *sliderStrokeWidth, *sliderCornerRadius, *sliderOpacity;
 
 @end
@@ -825,10 +797,10 @@ CGFloat currentY;
 
     // Property: Background color
     UILabel *labelBGColor = [self addLabel:localize(@"custom_controls.button_edit.bg_color", nil)];
-    self.colorWellINTBackground = [[UIColorWell alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
-    [self.colorWellINTBackground addTarget:self action:@selector(colorWellChanged) forControlEvents:UIControlEventValueChanged];
-    self.colorWellINTBackground.selectedColor = convertARGB2UIColor([self.targetButton.properties[@"bgColor"] intValue]);
-    [self.scrollView addSubview:self.colorWellINTBackground];
+    self.colorWellBackground = [[UIColorWell alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
+    [self.colorWellBackground addTarget:self action:@selector(colorWellChanged) forControlEvents:UIControlEventValueChanged];
+    self.colorWellBackground.selectedColor = convertARGB2UIColor([self.targetButton.properties[@"bgColor"] intValue]);
+    [self.scrollView addSubview:self.colorWellBackground];
     currentY += labelBGColor.frame.size.height + 15.0;
 
     // Property: Stroke width
@@ -845,10 +817,10 @@ CGFloat currentY;
 
     // Property: Stroke color
     UILabel *labelStrokeColor = [self addLabel:localize(@"custom_controls.button_edit.stroke_color", nil)];
-    self.colorWellINTStroke = [[UIColorWell alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
-    [self.colorWellINTStroke addTarget:self action:@selector(colorWellChanged) forControlEvents:UIControlEventValueChanged];
-    self.colorWellINTStroke.selectedColor = convertARGB2UIColor([self.targetButton.properties[@"strokeColor"] intValue]);
-    [self.scrollView addSubview:self.colorWellINTStroke];
+    self.colorWellStroke = [[UIColorWell alloc] initWithFrame:CGRectMake(width - 42.0, currentY - 5.0, 30.0, 30.0)];
+    [self.colorWellStroke addTarget:self action:@selector(colorWellChanged) forControlEvents:UIControlEventValueChanged];
+    self.colorWellStroke.selectedColor = convertARGB2UIColor([self.targetButton.properties[@"strokeColor"] intValue]);
+    [self.scrollView addSubview:self.colorWellStroke];
     currentY += labelStrokeColor.frame.size.height + 15.0;
 
 
@@ -858,7 +830,6 @@ CGFloat currentY;
         self.sliderCornerRadius = [[DBNumberedSlider alloc] initWithFrame:CGRectMake(labelCornerRadius.frame.size.width + 5.0, currentY - 5.0, width - labelCornerRadius.frame.size.width - 5.0, 30.0)];
         self.sliderCornerRadius.continuous = YES;
         self.sliderCornerRadius.maximumValue = 100;
-        self.sliderCornerRadius.tag = TAG_SLIDER_CORNERRADIUS;
         self.sliderCornerRadius.value = [self.targetButton.properties[@"cornerRadius"] intValue];
         [self.sliderCornerRadius addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
         [self.scrollView addSubview:self.sliderCornerRadius];
@@ -872,7 +843,6 @@ CGFloat currentY;
     self.sliderOpacity.continuous = YES;
     self.sliderOpacity.minimumValue = 1;
     self.sliderOpacity.maximumValue = 100;
-    self.sliderOpacity.tag = TAG_SLIDER_OPACITY;
     self.sliderOpacity.value = [self.targetButton.properties[@"opacity"] floatValue] * 100.0;
     [self.sliderOpacity addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
     [self.scrollView addSubview:self.sliderOpacity];
@@ -913,11 +883,11 @@ CGFloat currentY;
     lastPoint = point;
 }
 
-#pragma mark - Alderis functions
+#pragma mark - Color picker functions
 
 - (void)colorWellChanged {
-    self.targetButton.properties[@"bgColor"] = @(convertUIColor2ARGB(self.colorWellINTBackground.selectedColor));
-    self.targetButton.properties[@"strokeColor"] = @(convertUIColor2ARGB(self.colorWellINTStroke.selectedColor));
+    self.targetButton.properties[@"bgColor"] = @(convertUIColor2ARGB(self.colorWellBackground.selectedColor));
+    self.targetButton.properties[@"strokeColor"] = @(convertUIColor2ARGB(self.colorWellStroke.selectedColor));
     [self.targetButton update];
 }
 
@@ -932,7 +902,6 @@ CGFloat currentY;
 - (void)actionEditCancel {
     self.targetButton.properties = self.oldProperties;
     [self.targetButton update];
-    shouldDismissPopover = YES;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -955,7 +924,6 @@ CGFloat currentY;
     [(CustomControlsViewController *)self.presentingViewController
         doUpdateButton:self.targetButton from:self.oldProperties to:newProperties];
     self.oldProperties = nil;
-    shouldDismissPopover = YES;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -967,7 +935,7 @@ CGFloat currentY;
 
 - (void)sliderValueChanged:(DBNumberedSlider *)sender {
     if (sender.tag == TAG_SLIDER_STROKEWIDTH) {
-        self.colorWellINTStroke.enabled = sender.value != 0;
+        self.colorWellStroke.enabled = sender.value != 0;
         self.targetButton.properties[@"strokeWidth"] = @((NSInteger) self.sliderStrokeWidth.value);
     } else {
         [sender setValue:(NSInteger)sender.value animated:NO];
@@ -1019,7 +987,7 @@ CGFloat currentY;
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    return [self.keyCodeMap objectAtIndex:row];
+    return self.keyCodeMap[row];
 }
 
 - (void)closeTextField {

@@ -75,14 +75,14 @@ void AWTInputBridge_sendKey(int keycode) {
     AWTInputBridge_nativeSendData(EVENT_TYPE_KEY, ' ', keycode, 0, 0);
 }
 
+@interface SurfaceView()
+@property(nonatomic) CGColorSpaceRef colorSpace;
+@end
+
 @implementation SurfaceView
-const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
-    return (const void *)rgbArray;
-}
-   
 - (void)displayLayer {
-    CGDataProviderRef bitmapProvider = CGDataProviderCreateDirect(NULL, windowWidth * windowHeight * 4, &callbacks);
-    CGImageRef bitmap = CGImageCreate(windowWidth, windowHeight, 8, 32, 4 * windowWidth, colorSpace, kCGImageAlphaFirst | kCGBitmapByteOrder32Little, bitmapProvider, NULL, FALSE, kCGRenderingIntentDefault);     
+    CGDataProviderRef bitmapProvider = CGDataProviderCreateWithData(NULL, rgbArray, windowWidth * windowHeight * 4, NULL);
+    CGImageRef bitmap = CGImageCreate(windowWidth, windowHeight, 8, 32, 4 * windowWidth, _colorSpace, kCGImageAlphaFirst | kCGBitmapByteOrder32Little, bitmapProvider, NULL, FALSE, kCGRenderingIntentDefault);
 
     self.layer.contents = (__bridge id) bitmap;
     CGImageRelease(bitmap);
@@ -90,19 +90,10 @@ const void * _CGDataProviderGetBytePointerCallbackAWT(void *info) {
    //  CGColorSpaceRelease(colorSpace);
 }
 
-- (id)initWithFrame:(CGRect)frame
-{
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     self.layer.opaque = YES;
-
-    colorSpace = CGColorSpaceCreateDeviceRGB();
-
-    callbacks.version = 0;
-    callbacks.getBytePointer = _CGDataProviderGetBytePointerCallbackAWT;
-    callbacks.releaseBytePointer = _CGDataProviderReleaseBytePointerCallback;
-    callbacks.getBytesAtPosition = NULL;
-    callbacks.releaseInfo = NULL;
-
+    self.colorSpace = CGColorSpaceCreateDeviceRGB();
     return self;
 }
 @end

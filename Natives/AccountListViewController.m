@@ -8,14 +8,6 @@
 #import "ios_uikit_bridge.h"
 #import "utils.h"
 
-@interface ATableViewCell : UITableViewCell
-@end
-
-@implementation ATableViewCell
-
-@end
-
-
 @interface AccountListViewController()<ASWebAuthenticationPresentationContextProviding>
 
 @property(nonatomic, strong) NSMutableArray *accountList;

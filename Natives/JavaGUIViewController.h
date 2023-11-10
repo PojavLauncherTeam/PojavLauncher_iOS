@@ -1,10 +1,6 @@
 #import <UIKit/UIKit.h>
 
-@interface SurfaceView : UIView {
-    CGColorSpaceRef colorSpace;
-    CGDataProviderDirectCallbacks callbacks;
-}
-
+@interface SurfaceView : UIView
 - (void)displayLayer;
 @end
 

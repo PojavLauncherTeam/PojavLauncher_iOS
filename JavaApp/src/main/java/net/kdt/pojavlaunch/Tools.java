@@ -28,71 +28,34 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
 import net.kdt.pojavlaunch.uikit.UIKit;
-import net.kdt.pojavlaunch.utils.DownloadUtils;
 import net.kdt.pojavlaunch.utils.JSONUtils;
 import net.kdt.pojavlaunch.value.DependentLibrary;
 import net.kdt.pojavlaunch.value.MinecraftAccount;
 import net.kdt.pojavlaunch.value.MinecraftLibraryArtifact;
-import org.lwjgl.glfw.GLFW;
 
-public final class Tools
-{
-    public static final boolean ENABLE_DEV_FEATURES = true; // BuildConfig.DEBUG;
-
-    public static String APP_NAME = "PojavLauncher";
-    
+public final class Tools {
     public static final Gson GLOBAL_GSON = new GsonBuilder().setPrettyPrinting().create();
-    
-    public static final String URL_HOME = "https://pojav.ml";
-    public static String DIR_BUNDLE = System.getenv("BUNDLE_PATH"); // path to "PojavLauncher.app"
-    public static String CURRENT_ARCHITECTURE;
 
+    public static final String DIR_BUNDLE = System.getenv("BUNDLE_PATH"); // path to "PojavLauncher.app"
     public static final String DIR_GAME_HOME = System.getenv("POJAV_HOME");
     public static final String DIR_GAME_NEW = System.getenv("POJAV_GAME_DIR"); // path to "Library/Application Support/minecraft"
     public static final String DIR_GAME_PROFILE = System.getProperty("user.dir");
     
     public static final String DIR_APP_DATA = System.getenv("POJAV_HOME");
     public static final String DIR_ACCOUNT_NEW = DIR_APP_DATA + "/accounts";
-    
-    // New since 3.0.0
-    public static String DIR_HOME_JRE = System.getProperty("java.home");
-    public static String DIRNAME_HOME_JRE = "lib";
 
     // New since 2.4.2
     public static final String DIR_HOME_VERSION = DIR_GAME_NEW + "/versions";
     public static final String DIR_HOME_LIBRARY = DIR_GAME_NEW + "/libraries";
 
-    public static final String DIR_HOME_CRASH = DIR_GAME_NEW + "/crash-reports";
-
     public static final String ASSETS_PATH = DIR_GAME_NEW + "/assets";
     public static final String OBSOLETE_RESOURCES_PATH=DIR_GAME_NEW + "/resources";
-    public static final String CTRLMAP_PATH = DIR_GAME_NEW + "/controlmap";
-    public static final String CTRLDEF_FILE = DIR_GAME_NEW + "/controlmap/default.json";
     
-    public static final String NATIVE_LIB_DIR = DIR_BUNDLE + "/Frameworks";
+    public static final String NATIVE_LIB_DIR = "@executable_path/Frameworks";
 
     public static void launchMinecraft(MinecraftAccount profile, final JMinecraftVersionList.Version versionInfo) throws Throwable {
-        String javaVersion = System.getProperty("java.version");
-        if (javaVersion.startsWith("1.")) {
-            javaVersion = javaVersion.substring(2);
-        }
-        int splitIndex = javaVersion.indexOf('.');
-        if (splitIndex == -1) {
-            splitIndex = javaVersion.indexOf('-');
-        }
-        if (splitIndex != -1) {
-            javaVersion = javaVersion.substring(0, splitIndex);
-        }
-        if (versionInfo.javaVersion != null && versionInfo.javaVersion.majorVersion > Integer.parseInt(javaVersion)) {
-            throw new UnsupportedOperationException("Minecraft " + versionInfo.id + " requires Java " + versionInfo.javaVersion.majorVersion + " in order to run. Please switch to Java " + versionInfo.javaVersion.majorVersion + " in launcher settings.");
-        }
-
         String[] launchArgs = getMinecraftArgs(profile, versionInfo);
-
         // System.out.println("Minecraft Args: " + Arrays.toString(launchArgs));
 
         final String launchClassPath = generateLaunchClassPath(versionInfo);
@@ -532,99 +495,5 @@ createLibraryInfo(libItem);
 
     public static void write(String path, String content) throws IOException {
         write(path, content.getBytes());
-    }
-
-    public static void downloadFile(String urlInput, String nameOutput) throws IOException {
-        File file = new File(nameOutput);
-        DownloadUtils.downloadFile(urlInput, file);
-    }
-    public abstract static class DownloaderFeedback {
-        public abstract void updateProgress(int curr, int max);
-    }
-
-    public static void downloadFileMonitored(String urlInput,String nameOutput, DownloaderFeedback monitor) throws IOException {
-        if(!new File(nameOutput).exists()){
-            new File(nameOutput).getParentFile().mkdirs();
-        }
-        HttpURLConnection conn = (HttpURLConnection) new URL(urlInput).openConnection();
-        InputStream readStr = conn.getInputStream();
-        FileOutputStream fos = new FileOutputStream(new File(nameOutput));
-        int cur = 0; int oval=0; int len = conn.getContentLength(); byte[] buf = new byte[65535];
-        while((cur = readStr.read(buf)) != -1) {
-            oval += cur;
-            fos.write(buf,0,cur);
-            monitor.updateProgress(oval,len);
-        }
-        fos.close();
-        conn.disconnect();
-    }
-    public static class ZipTool
-    {
-        private ZipTool(){}
-        public static void zip(List<File> files, File zipFile) throws IOException {
-            final int BUFFER_SIZE = 2048;
-
-            BufferedInputStream origin = null;
-            ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(zipFile)));
-
-            try {
-                byte data[] = new byte[BUFFER_SIZE];
-
-                for (File file : files) {
-                    FileInputStream fileInputStream = new FileInputStream( file );
-
-                    origin = new BufferedInputStream(fileInputStream, BUFFER_SIZE);
-
-                    try {
-                        ZipEntry entry = new ZipEntry(file.getName());
-
-                        out.putNextEntry(entry);
-
-                        int count;
-                        while ((count = origin.read(data, 0, BUFFER_SIZE)) != -1) {
-                            out.write(data, 0, count);
-                        }
-                    }
-                    finally {
-                        origin.close();
-                    }
-                }
-            } finally {
-                out.close();
-            }
-        }
-        public static void unzip(File zipFile, File targetDirectory) throws IOException {
-            final int BUFFER_SIZE = 1024;
-            ZipInputStream zis = new ZipInputStream(
-                new BufferedInputStream(new FileInputStream(zipFile)));
-            try {
-                ZipEntry ze;
-                int count;
-                byte[] buffer = new byte[BUFFER_SIZE];
-                while ((ze = zis.getNextEntry()) != null) {
-                    File file = new File(targetDirectory, ze.getName());
-                    File dir = ze.isDirectory() ? file : file.getParentFile();
-                    if (!dir.isDirectory() && !dir.mkdirs())
-                        throw new FileNotFoundException("Failed to ensure directory: " +
-                                                        dir.getAbsolutePath());
-                    if (ze.isDirectory())
-                        continue;
-                    FileOutputStream fout = new FileOutputStream(file);
-                    try {
-                        while ((count = zis.read(buffer)) != -1)
-                            fout.write(buffer, 0, count);
-                    } finally {
-                        fout.close();
-                    }
-                    /* if time should be restored as well
-                     long time = ze.getTime();
-                     if (time > 0)
-                     file.setLastModified(time);
-                     */
-                }
-            } finally {
-                zis.close();
-            }
-        }
     }
 }

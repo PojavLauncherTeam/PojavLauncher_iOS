@@ -23,7 +23,7 @@ BOOL getEntitlementValue(NSString *key) {
 }
 
 BOOL isJITEnabled(BOOL checkCSFlags) {
-    if (!checkCSFlags && (getEntitlementValue(@"dynamic-codesigning") || getenv("POJAV_DETECTEDJB"))) {
+    if (!checkCSFlags && (getEntitlementValue(@"dynamic-codesigning") || isJailbroken)) {
         return YES;
     }
 
@@ -132,9 +132,6 @@ CGFloat MathUtils_map(CGFloat x, CGFloat in_min, CGFloat in_max, CGFloat out_min
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
-void _CGDataProviderReleaseBytePointerCallback(void *info,const void *pointer) {
-}
-
 CGFloat dpToPx(CGFloat dp) {
     CGFloat screenScale = [[UIScreen mainScreen] scale];
     return dp * screenScale;
@@ -152,8 +149,3 @@ void setButtonPointerInteraction(UIButton *button) {
         return [UIPointerStyle styleWithEffect:[UIPointerHighlightEffect effectWithPreview:preview] shape:proposedShape];
     };
 }
-
-void setViewBackgroundColor(UIView* view) {
-    view.backgroundColor = UIColor.systemBackgroundColor;
-}
-

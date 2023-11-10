@@ -10,12 +10,6 @@
 #include "ios_uikit_bridge.h"
 #include "utils.h"
 
-jclass class_CTCScreen;
-jmethodID method_GetRGB;
-
-jclass class_CTCAndroidInput;
-jmethodID method_ReceiveInput;
-
 void internal_showDialog(NSString* title, NSString* message) {
     NSLog(@"[UI] Dialog shown: %@: %@", title, message);
 
@@ -159,11 +153,11 @@ void UIKit_returnToSplitView() {
 
 void launchInitialViewController(UIWindow *window) {
     window.rootViewController = [[LauncherSplitViewController alloc] initWithStyle:UISplitViewControllerStyleDoubleColumn];
-/*
+#if 0
     if (getPrefBool(@"internal.internal_launch_on_boot")) {
         window.rootViewController = [[SurfaceViewController alloc] init];
     } else {
         window.rootViewController = [[LauncherSplitViewController alloc] initWithStyle:UISplitViewControllerStyleDoubleColumn];
     }
-*/
+#endif
 }

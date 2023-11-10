@@ -46,7 +46,7 @@ jmethodID method_SystemClipboardDataReceived;
     double cursorX, cursorY, cLastX, cLastY;
     //jmethodID method_accessAndroidClipboard;
     //jmethodID method_onGrabStateChanged;
-    jmethodID method_glfwSetWindowAttrib;
+    //jmethodID method_glfwSetWindowAttrib;
     jmethodID method_internalWindowSizeChanged;
     jclass bridgeClazz;
     jclass vmGlfwClass;

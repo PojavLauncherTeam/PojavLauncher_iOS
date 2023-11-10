@@ -56,15 +56,7 @@ set(CMAKE_FRAMEWORK_PATH "${CMAKE_CURRENT_LIST_DIR}/resources/Frameworks")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -rpath @executable_path/Frameworks -rpath @loader_path/Frameworks")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -rpath @executable_path/Frameworks -rpath @loader_path/Frameworks")
 
-
-add_library(OSMesaOverride SHARED gl_mesa3d_patch.m)
-target_link_libraries(OSMesaOverride
-  "${GLOBAL_LDFLAGS}"
-  "-L${CMAKE_FRAMEWORK_PATH}"
-  "-lOSMesa.8"
-)
-
-
+# ANGLE wrapper for 1.17+
 add_library(tinygl4angle SHARED
   external/gl4es/string_utils.c
   external/gl4es/tinygl4angle.c
@@ -76,7 +68,7 @@ target_link_libraries(tinygl4angle
   "-framework libGLESv2"
 )
 
-
+# AFNetworking
 add_library(AFNetworking SHARED
   external/AFNetworking/AFNetworking/AFSecurityPolicy.m
   external/AFNetworking/AFNetworking/AFHTTPSessionManager.m
@@ -98,7 +90,7 @@ target_link_libraries(AFNetworking
   "-framework UIKit"
 )
 
-
+# PojavLauncher
 add_executable(PojavLauncher
   dyld_bypass_validation.m
   main.m

@@ -103,7 +103,7 @@ NSString* getSelectedJavaHome(NSString* defaultJRETag, int minVersion) {
 
     id selectedDir = pref[selectedVer];
     if ([selectedDir isEqualToString:@"internal"]) {
-        selectedDir = [NSString stringWithFormat:@"%s/java_runtimes/java-%@-openjdk", getenv("BUNDLE_PATH"), selectedVer];
+        selectedDir = [NSString stringWithFormat:@"%@/java_runtimes/java-%@-openjdk", NSBundle.mainBundle.bundlePath, selectedVer];
     } else {
         selectedDir = [NSString stringWithFormat:@"%s/java_runtimes/%@", getenv("POJAV_HOME"), selectedDir];
     }

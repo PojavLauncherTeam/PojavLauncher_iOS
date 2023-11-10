@@ -1,15 +1,16 @@
 #import <mach-o/dyld.h>
-#import <mach/mach.h>
-#import <mach/mach_host.h>
 #import <spawn.h>
 #import <sys/sysctl.h>
 #import <UIKit/UIKit.h>
 
 #import "AppDelegate.h"
 #import "customcontrols/CustomControlsUtils.h"
+#import "HostManagerBridge.h"
+#import "JavaLauncher.h"
 #import "LauncherPreferences.h"
 #import "PLProfiles.h"
 #import "SurfaceViewController.h"
+#import "UIKit+hook.h"
 #import "config.h"
 
 #include <libgen.h>
@@ -17,15 +18,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/mman.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
 #include <dirent.h>
-#include "JavaLauncher.h"
 #include "utils.h"
 #include "codesign.h"
-#include "HostManagerBridge.h"
 
 #define CS_PLATFORM_BINARY 0x4000000
 #define PT_TRACE_ME 0
@@ -79,38 +74,29 @@ bool init_checkForsubstrated() {
     return false;
 }
 
-void init_checkForJailbreak() {
-    bool jbDyld = false;
-    bool jbFlag = false;
-    bool jbProc = init_checkForsubstrated();
-    bool jbFile = false;
-    
-    int imageCount = _dyld_image_count();
-    uint32_t flags = CS_PLATFORM_BINARY;
-    
-    for (int i=0; i < imageCount; i++) {
+bool init_checkForJailbreak() {
+    if (NSProcessInfo.processInfo.macCatalystApp) {
+        // macOS doesn't automatically enable JIT.
+        return false;
+    } else if (init_checkForsubstrated()) {
+        return true;
+    }
+
+    // Check if posix_spawn is hooked
+    for (int i=0; i < _dyld_image_count(); i++) {
         if (strcmp(_dyld_get_image_name(i),"/usr/lib/pspawn_payload-stg2.dylib") == 0) {
-            jbDyld = true;
+            return true;
         }
     }
 
-    if (csops(0, CS_OPS_STATUS, &flags, sizeof(flags)) != -1) {
-        if ((flags & CS_PLATFORM_BINARY) != 0) {
-            jbFlag = true;
-        }
+    // Check if we have platform bit set
+    uint32_t flags;
+    csops(0, CS_OPS_STATUS, &flags, sizeof(flags));
+    if ((flags & CS_PLATFORM_BINARY) != 0) {
+        return true;
     }
 
-    DIR *apps = opendir("/Applications");
-    if(apps != NULL) {
-        jbFile = true;
-    }
-    
-    if (jbDyld || jbFlag || jbProc || jbFile) {
-        if (!NSProcessInfo.processInfo.macCatalystApp) {
-            // macOS doesn't automatically enable JIT.
-            setenv("POJAV_DETECTEDJB", "1", 1);
-        }
-    }
+    return opendir("/Applications") != NULL;
 }
 
 void init_logDeviceAndVer(char *argument) {
@@ -118,23 +104,20 @@ void init_logDeviceAndVer(char *argument) {
     NSLog(@"[Pre-Init] PojavLauncher INIT!");
     NSLog(@"[Pre-Init] Version: %@-%s", NSBundle.mainBundle.infoDictionary[@"CFBundleShortVersionString"], CONFIG_TYPE);
     NSLog(@"[Pre-Init] Commit: %s (%s)", CONFIG_COMMIT, CONFIG_BRANCH);
-
-    // Hardware + Software
-    setenv("POJAV_DETECTEDSW", [HostManager GetPlatformVersion].UTF8String, 1);
-    setenv("POJAV_DETECTEDHW", [HostManager GetModelName].UTF8String, 1);
     
-    NSString *tsPath = [NSString stringWithFormat:@"%s/../_TrollStore", getenv("BUNDLE_PATH")];
-    const char *type = "Unjailbroken";
+    NSString *tsPath = [NSString stringWithFormat:@"%@/../_TrollStore", NSBundle.mainBundle.bundlePath];
+    const char *type;
     if ([fm fileExistsAtPath:tsPath]) {
         type = "TrollStore";
-    } else if (getenv("POJAV_DETECTEDJB")) {
+    } else if (isJailbroken) {
         type = "Jailbroken";
+    } else {
+        type = "Unjailbroken";
     }
-    
     setenv("POJAV_DETECTEDINST", type, 1);
     
-    NSLog(@"[Pre-Init] Device: %s", getenv("POJAV_DETECTEDHW"));
-    NSLog(@"[Pre-Init] iOS %s (%s)", getenv("POJAV_DETECTEDSW"), getenv("POJAV_DETECTEDINST"));
+    NSLog(@"[Pre-Init] Device: %@", [HostManager GetModelName]);
+    NSLog(@"[Pre-Init] %@ (%s)", UIDevice.currentDevice.completeOSVersion, type);
     
     NSLog(@"[Pre-init] Entitlements availability:");
     printEntitlementAvailability(@"com.apple.developer.kernel.extended-virtual-addressing");
@@ -181,8 +164,9 @@ void init_migrateToPlist(char* prefKey, char* filename) {
 void init_redirectStdio() {
     NSLog(@"[Pre-init] Starting logging STDIO to latestlog.txt\n");
 
-    NSString *currName = [@(getenv("POJAV_HOME")) stringByAppendingPathComponent:@"latestlog.txt"];
-    NSString *oldName = [@(getenv("POJAV_HOME")) stringByAppendingPathComponent:@"latestlog.old.txt"];
+    NSString *home = @(getenv("POJAV_HOME"));
+    NSString *currName = [home stringByAppendingPathComponent:@"latestlog.txt"];
+    NSString *oldName = [home stringByAppendingPathComponent:@"latestlog.old.txt"];
     [fm removeItemAtPath:oldName error:nil];
     [fm moveItemAtPath:currName toPath:oldName error:nil];
 
@@ -260,10 +244,11 @@ void init_setupMultiDir() {
         NSLog(@"[Pre-init] Restored game directory preference (%@)\n", multidir);
     }
 
-    NSString *jvmPath = [NSString stringWithFormat:@"%s/java_runtimes", getenv("POJAV_HOME")];
-    NSString *lasmPath = [NSString stringWithFormat:@"%s/Library/Application Support/minecraft", getenv("POJAV_HOME")];
-    NSString *multidirPath = [NSString stringWithFormat:@"%s/instances/%@", getenv("POJAV_HOME"), multidir];
-    NSString *demoPath = [NSString stringWithFormat:@"%s/.demo", getenv("POJAV_HOME")];
+    const char *home = getenv("POJAV_HOME");
+    NSString *jvmPath = [NSString stringWithFormat:@"%s/java_runtimes", home];
+    NSString *lasmPath = [NSString stringWithFormat:@"%s/Library/Application Support/minecraft", home];
+    NSString *multidirPath = [NSString stringWithFormat:@"%s/instances/%@", home, multidir];
+    NSString *demoPath = [NSString stringWithFormat:@"%s/.demo", home];
 
     [fm createDirectoryAtPath:jvmPath withIntermediateDirectories:YES attributes:nil error:nil];
     [fm createDirectoryAtPath:demoPath withIntermediateDirectories:YES attributes:nil error:nil];
@@ -314,7 +299,6 @@ int main(int argc, char *argv[]) {
         return pJLI_Launch(argc, (const char **)argv,
                    0, NULL, // sizeof(const_jargs) / sizeof(char *), const_jargs,
                    0, NULL, // sizeof(const_appclasspath) / sizeof(char *), const_appclasspath,
-                   // PojavLancher: fixme: are these wrong?
                    "1.8.0-internal",
                    "1.8",
 
@@ -332,8 +316,7 @@ int main(int argc, char *argv[]) {
     }
 
     setenv("BUNDLE_PATH", dirname(argv[0]), 1);
-    init_checkForJailbreak();
-    
+    isJailbroken = init_checkForJailbreak();
     init_migrateDirIfNecessary();
     init_setupHomeDirectory();
     init_redirectStdio();
