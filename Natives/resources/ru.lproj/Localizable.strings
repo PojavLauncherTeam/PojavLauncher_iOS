@@ -3,10 +3,10 @@
   StringLocalization
 */
 
-"game.menu.force_close" = "Принудительное закрытие";
+"game.menu.force_close" = "Завершить процесс";
 "game.menu.confirm.force_close" = "Вы уверены, что хотите принудительно завершить игру?";
 "game.menu.log_output" = "Журнал";
-"game.menu.custom_controls" = "Пользовательское управление";
+"game.menu.custom_controls" = "Раскладка управления";
 
 "game.note.airplay" = "Minecraft дублируется на экран AirPlay";
 
@@ -57,7 +57,7 @@
 "custom_controls.control_menu.save.error.json" = "Ошибка формата";
 "custom_controls.control_menu.save.error.write" = "Ошибка сохранения файла";
 "custom_controls.control_menu.load" = "Загрузить";
-"custom_controls.control_menu.make_default" = "Сделать основной";
+"custom_controls.control_menu.make_default" = "Выбрать основную";
 "custom_controls.control_menu.safe_area" = "Безопасная область";
 "custom_controls.control_menu.add_button" = "Добавить кнопку";
 "custom_controls.control_menu.add_drawer" = "Добавить группу кнопок";
@@ -73,7 +73,7 @@
 "launcher.mcl.downloading_file" = "Загрузка %@";
 "launcher.mcl.error_download" = "Не удалось загрузить %@: %@";
 
-"launcher.menu.custom_controls" = "Пользовательское управление";
+"launcher.menu.custom_controls" = "Раскладка управления";
 "launcher.menu.install_jar" = "Установить .jar";
 
 "launcher.wait_jit.title" = "Ожидание JIT";
@@ -132,7 +132,7 @@
 "preference.section.footer.video" = "В автоматическом режиме PojavLauncher будет подбирать оптимальные настройки для выбранной версии Minecraft. Уменьшение разрешения снижает объём работы для ГП и улучшает производительность.";
 "preference.section.control" = "Настройки управления";
 "preference.section.debug" = "Настройки отладки";
-"preference.section.footer.debug" = "Возможно, потребуется перезапуск лаунчера, чтобы изменения вступили в силу.";
+"preference.section.footer.debug" = "Для применения изменений может потребоваться перезапуск лаунчера.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Настройки Java";
 //"preference.section.footer.java" = "";
