@@ -4,23 +4,23 @@
 */
 
 "game.menu.force_close" = "강제 종료";
-"game.menu.confirm.force_close" = "강제 종료 하시겠습니까?";
-"game.menu.log_output" = "로그 확인";
+"game.menu.confirm.force_close" = "정말 강제 종료 하시겠습니까?";
+"game.menu.log_output" = "로그 산출";
 "game.menu.custom_controls" = "사용자 지정 조작";
 
 "game.note.airplay" = "마인크래프트가 AirPlay 디스플레이에 출력되고있습니다.";
 
-"game.title.exit_code" = "마인크래프트가 종료 코드 %d와(과) 함께 종료했습니다.";
+"game.title.exit_code" = "마인크래프트가 코드 %d와(과) 함께 종료했습니다.";
 
 // The play button
-"Play" = "시작하기";
+"Play" = "플레이";
 
 // Version categories
-"Installed" = "설치됨";
-"Snapshot" = "스냅숏";
-"Releases" = "정식";
-"Old-beta" = "Old-beta";
-"Old-alpha" = "Old-alpha";
+"Installed" = "설치되어 있는 버전";
+"Snapshot" = "스냅샷";
+"Releases" = "릴리즈";
+"Old-beta" = "구-베타버전";
+"Old-alpha" = "구-알파버전";
 
 // Custom controls
 "Copy" = "복사";
@@ -53,15 +53,15 @@
 "custom_controls.control_menu.make_default" = "기본값으로 설정";
 "custom_controls.control_menu.safe_area" = "안전한 공간";
 "custom_controls.control_menu.add_button" = "버튼 추가";
-"custom_controls.control_menu.add_drawer" = "서랍 추가";
+"custom_controls.control_menu.add_drawer" = "드로어 추가";
 "custom_controls.control_menu.add_joystick" = "조이스틱 추가";
 "custom_controls.error.incompatible" = "이 컨트롤 버전(code %d) 은 이 런처 빌드에서 구현되지 않습니다.";
 "custom_controls.hint" = "더 많은 옵션을 보려면 화면의 아무 곳이나 길게 누르세요.";
 
-"init.migrateDir" = "PojavLauncher 데이터 디렉토리는 이제 %@입니다. 모든 기존 데이터가 새 위치로 이동되었습니다.";
+"init.migrateDir" = "포자브 런처의 데이터 저장공간은 이제 %@입니다. 모든 기존 데이터가 새 위치로 이동되었습니다.";
 
 "java.error.missing_main_class" = "%@에 기본 클래스 속성이 없습니다. 모드인 경우 선택한 인스턴스의 \"mods\" 폴더에 넣습니다.";
-"java.error.missing_runtime" = "%@을(를) 실행하려면 Java %d 이상이 필요합니다. 먼저 설치하고 런타임 관리에서 지정하십시오.";
+"java.error.missing_runtime" = "%@을(를) 실행하려면 자바 %d 이상이 필요합니다. 먼저 설치하고 런타임 관리에서 지정하십시오.";
 
 "launcher.mcl.downloading_file" = "%@ 다운로드 중";
 "launcher.mcl.error_download" = "%@: %@ 다운로드 실패";
@@ -83,7 +83,7 @@
 "login.jit.fail.description" = "디바이스에서 JIT를 자동으로 활성화하는 데 통합을 사용할 수 없으며 이제 수동으로 활성화해야 합니다. latestlog.txt에 오류가 기록되었습니다.";
 
 // Login buttons
-"login.menu.sendlogs" = "로그 보내기";
+"login.menu.sendlogs" = "로그 내보내기";
 "login.option.add" = "계정 추가";
 "login.option.select" = "계정 선택";
 "login.option.demo" = "체험판 계정";
@@ -101,7 +101,7 @@
 "login.warn.message.demomode" = "오프라인 및 로컬 모드를 대체하는 데모 모드를 사용하면 게임을 소유하지 않은 Microsoft 계정에 로그인하고 1.3.1 및 최신 버전에 도입된 Java Edition 평가판을 플레이할 수 있습니다. 이전 버전에는 공식 런처가 이러한 제한을 두지 않기 때문에 전체 게임이 포함되어 있습니다. 오프라인 모드에서 전환에 대한 자세한 내용은 당사 웹 사이트를 참조하십시오.";
 
 "login.warn.title.localmode" = "오프라인 모드는 이제 로컬 모드입니다";
-"login.warn.message.localmode" = "설치된 버전을 계속 플레이할 수 있지만 유료 계정 없이는 더 이상 Minecraft를 다운로드할 수 없습니다. 로컬 계정 문제 또는 기타 Minecraft 획득 수단에 대한 지원은 제공되지 않습니다.";
+"login.warn.message.localmode" = "설치된 버전을 계속 플레이할 수 있지만 유료 계정 없이는 더 이상 마인크래프트를 다운로드할 수 없습니다. 로컬 계정 문제 또는 기타 마인크래프트 획득 수단에 대한 지원은 제공되지 않습니다.";
 
 "login.msa.error.xsts.noxboxacc" = "Xbox 프로필이 이 Microsoft 계정에서 등록되지 않았습니다. Xbox 프로필을 만드셨는지 확인하십시오.\n오류 코드: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live는 현제 당신의 나라에서 지원되지 않습니다.\n오류 코드: 2148916235";
