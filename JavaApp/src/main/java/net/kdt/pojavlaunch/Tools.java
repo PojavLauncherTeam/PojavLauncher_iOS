@@ -51,8 +51,6 @@ public final class Tools {
 
     public static final String ASSETS_PATH = DIR_GAME_NEW + "/assets";
     public static final String OBSOLETE_RESOURCES_PATH=DIR_GAME_NEW + "/resources";
-    
-    public static final String NATIVE_LIB_DIR = "@executable_path/Frameworks";
 
     public static void launchMinecraft(MinecraftAccount profile, final JMinecraftVersionList.Version versionInfo) throws Throwable {
         String[] launchArgs = getMinecraftArgs(profile, versionInfo);
@@ -103,7 +101,7 @@ public final class Tools {
         varArgMap.put("user_type", "msa");
         varArgMap.put("version_name", versionName);
         varArgMap.put("version_type", versionInfo.type);
-        varArgMap.put("natives_directory", Tools.NATIVE_LIB_DIR);
+        varArgMap.put("natives_directory", System.getProperty("java.library.path"));
 
         List<String> minecraftArgs = new ArrayList<String>();
         if (versionInfo.arguments != null) {

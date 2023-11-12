@@ -8,6 +8,7 @@
 #import "HostManagerBridge.h"
 #import "JavaLauncher.h"
 #import "LauncherPreferences.h"
+#import "PLLogOutputView.h"
 #import "PLProfiles.h"
 #import "SurfaceViewController.h"
 #import "UIKit+hook.h"
@@ -208,7 +209,7 @@ void init_redirectStdio() {
                 }
             }
             if (canAppendToLog) {
-                [SurfaceViewController appendToLog:@(buf)];
+                [PLLogOutputView appendToLog:@(buf)];
             }
             [file writeData:[NSData dataWithBytes:buf length:rsize]];
             [file synchronizeFile];

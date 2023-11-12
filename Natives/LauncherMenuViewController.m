@@ -73,7 +73,7 @@
     }
     [self.options addObject:
      (id)[LauncherMenuCustomItem
-          title:localize(@"launcher.menu.install_jar", nil)
+          title:localize(@"launcher.menu.execute_jar", nil)
           imageName:@"MenuInstallJar" action:^{
         [contentNavigationController performSelector:@selector(enterModInstaller)];
     }]];

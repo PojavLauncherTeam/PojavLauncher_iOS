@@ -4,6 +4,7 @@
 #import "LauncherNavigationController.h"
 #import "LauncherPreferences.h"
 #import "LauncherSplitViewController.h"
+#import "PLLogOutputView.h"
 #import "SurfaceViewController.h"
 
 #include <objc/runtime.h>
@@ -46,7 +47,7 @@ JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_showError(JNIEnv* en
 
     if (SurfaceViewController.isRunning) {
         NSLog(@"%@\n%@", title_o, message_o);
-        [SurfaceViewController handleExitCode:1];
+        [PLLogOutputView handleExitCode:1];
         return;
     }
 

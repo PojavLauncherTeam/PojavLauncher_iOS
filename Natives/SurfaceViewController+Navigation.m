@@ -200,7 +200,7 @@ static CGPoint lastCenterPoint;
             [self actionForceClose];
             break;
         case 1:
-            [self performSelector:@selector(actionToggleLogOutput)];
+            [self.logOutputView actionToggleLogOutput];
             break;
         case 2:
             [self actionOpenCustomControls];

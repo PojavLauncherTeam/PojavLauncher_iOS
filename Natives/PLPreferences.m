@@ -49,7 +49,7 @@
                 @"0": @{
                     @"1_16_5_older": @"8",
                     @"1_17_newer": @"17",
-                    @"install_jar": @"8"
+                    @"execute_jar": @"8"
                 }.mutableCopy,
                 @"8": @"internal",
                 @"17": @"internal"

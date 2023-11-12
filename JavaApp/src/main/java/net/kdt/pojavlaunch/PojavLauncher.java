@@ -49,7 +49,7 @@ public class PojavLauncher {
             Class.forName("com.github.caciocavallosilano.cacio.ctc.CTCPreloadClassLoader");
         } catch (ClassNotFoundException e) {}
 
-        if (args[0].equals(".LaunchJAR")) {
+        if (args[0].equals("--launchJar")) {
             UIKit.callback_JavaGUIViewController_launchJarFile(args[1]);
         } else {
             launchMinecraft(args);

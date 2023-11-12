@@ -86,7 +86,7 @@ NSString* getSelectedJavaHome(NSString* defaultJRETag, int minVersion) {
     NSDictionary *pref = getPrefObject(@"java.java_homes");
     NSDictionary<NSString *, NSString *> *selected = pref[@"0"];
     NSString *selectedVer = selected[defaultJRETag];
-    if ([defaultJRETag isEqualToString:@"install_jar"] && minVersion > selectedVer.intValue) {
+    if ([defaultJRETag isEqualToString:@"execute_jar"] && minVersion > selectedVer.intValue) {
         NSArray *sortedVersions = [pref.allKeys valueForKeyPath:@"self.integerValue"];
         sortedVersions = [sortedVersions sortedArrayUsingSelector:@selector(compare:)];
         for (NSNumber *version in sortedVersions) {

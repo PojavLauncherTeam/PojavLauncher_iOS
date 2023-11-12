@@ -62,11 +62,11 @@ static WFWorkflowProgressView* currentProgressView;
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
 
     self.javaRuntimes = @{
-        @(DEFAULT_JRE): @[@"preference.manage_runtime.default.1165", @"preference.manage_runtime.default.117", @"launcher.menu.install_jar"]
+        @(DEFAULT_JRE): @[@"preference.manage_runtime.default.1165", @"preference.manage_runtime.default.117", @"launcher.menu.execute_jar"]
     }.mutableCopy;
     self.sortedJavaVersions = @[@(DEFAULT_JRE)].mutableCopy;
 
-    self.selectedRTTags = @[@"1_16_5_older", @"1_17_newer", @"install_jar"];
+    self.selectedRTTags = @[@"1_16_5_older", @"1_17_newer", @"execute_jar"];
     self.selectedRuntimes = getPrefObject(@"java.java_homes");
 
     NSString *internalPath = [NSString stringWithFormat:@"%@/java_runtimes", NSBundle.mainBundle.bundlePath];

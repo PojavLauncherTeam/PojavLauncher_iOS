@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import "PLLogOutputView.h"
 #import "SurfaceViewController.h"
 #import "ios_uikit_bridge.h"
 #import "utils.h"
@@ -14,7 +15,7 @@ void handle_fatal_exit(int code) {
         return;
     }
 
-    [SurfaceViewController handleExitCode:code];
+    [PLLogOutputView handleExitCode:code];
 
     if (fatalExitGroup != nil) {
         // Likely other threads are crashing, put them to sleep

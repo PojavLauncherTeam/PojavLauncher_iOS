@@ -3,11 +3,14 @@
 #import "JavaGUIViewController.h"
 #import "JavaLauncher.h"
 #import "LauncherPreferences.h"
+#import "PLLogOutputView.h"
 #import "TrackedTextField.h"
 #import "UnzipKit.h"
 #import "ios_uikit_bridge.h"
 #include "glfw_keycodes.h"
 #include "utils.h"
+
+#define SPECIALBTN_LOGOUTPUT -100
 
 static BOOL shouldHitEnterAfterWindowShown;
 static int* rgbArray;
@@ -106,6 +109,7 @@ void AWTInputBridge_sendKey(int keycode) {
 @property(nonatomic) TrackedTextField* inputTextField;
 @property(nonatomic) UIImageView* mousePointerView;
 @property(nonatomic) ControlLayout* ctrlView;
+@property(nonatomic) PLLogOutputView* logOutputView;
 
 @end
 
@@ -200,6 +204,10 @@ void AWTInputBridge_sendKey(int keycode) {
     [self.view addSubview:self.ctrlView];
     [self loadCustomControls];
 
+    self.logOutputView = [[PLLogOutputView alloc] initWithFrame:self.view.frame];
+    self.logOutputView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    [self.view addSubview:self.logOutputView];
+
     rgbArray = calloc(4, (size_t) (windowWidth * windowHeight));
 
     setenv("POJAV_SKIP_JNI_GLFW", "1", 1);
@@ -228,6 +236,11 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         BTN_RECT
     )];
 #endif
+    [dict[@"mControlDataList"] addObject:createButton(@"Log output",
+        (int[]){SPECIALBTN_LOGOUTPUT,0,0,0},
+        @"${right} - ${margin}", @"${margin}",
+        BTN_RECT
+    )];
     [dict[@"mControlDataList"] addObject:createButton(@"PRI",
         (int[]){SPECIALBTN_MOUSEPRI,0,0,0},
         @"${margin}", @"${bottom} - ${margin}",
@@ -338,10 +351,15 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                     break;
 
                 case SPECIALBTN_VIRTUALMOUSE:
-                    if (held) return;
+                    if (held) break;
                     virtualMouseEnabled = !virtualMouseEnabled;
                     self.mousePointerView.hidden = !virtualMouseEnabled;
                     setPrefBool(@"control.virtmouse_enable", virtualMouseEnabled);
+                    break;
+
+                case SPECIALBTN_LOGOUTPUT:
+                    if (held) break;
+                    [self.logOutputView actionToggleLogOutput];
                     break;
 
                 default:

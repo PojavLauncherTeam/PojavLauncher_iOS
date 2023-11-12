@@ -124,7 +124,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
             [PLProfiles resolveKeyForCurrentProfile:@"gameDir"]]
             .stringByStandardizingPath;
     } else {
-        defaultJRETag = @"install_jar";
+        defaultJRETag = @"execute_jar";
         gameDir = @(getenv("POJAV_GAME_DIR"));
     }
     NSLog(@"[JavaLauncher] Looking for Java %d or later", minVersion);
@@ -132,9 +132,9 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
 
     if (javaHome == nil) {
         UIKit_returnToSplitView();
-        BOOL isInstallJar = [defaultJRETag isEqualToString:@"install_jar"];
+        BOOL isExecuteJar = [defaultJRETag isEqualToString:@"execute_jar"];
         showDialog(localize(@"Error", nil), [NSString stringWithFormat:localize(@"java.error.missing_runtime", nil),
-            isInstallJar ? [launchTarget lastPathComponent] : PLProfiles.current.selectedProfile[@"lastVersionId"], minVersion]);
+            isExecuteJar ? [launchTarget lastPathComponent] : PLProfiles.current.selectedProfile[@"lastVersionId"], minVersion]);
         return 1;
     } else if ([javaHome hasPrefix:@(getenv("POJAV_HOME"))]) {
         if (NSBundle.mainBundle.infoDictionary[@"LCDataUUID"]) {
@@ -294,7 +294,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     margv[++margc] = "net.kdt.pojavlaunch.PojavLauncher";
 
     if (username == nil) {
-        margv[++margc] = ".LaunchJAR";
+        margv[++margc] = "--launchJar";
     } else {
         margv[++margc] = username.UTF8String;
     }
