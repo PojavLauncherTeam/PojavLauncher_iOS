@@ -39,7 +39,6 @@
 "custom_controls.control_menu.add_joystick" = "Προσθήκη χειριστηρίου (joystick)";
 
 "launcher.menu.custom_controls" = "Προσαρμοσμένα controls";
-"launcher.menu.install_jar" = "Εγκαταστήστε αρχείο .jar";
 
 "login.alert.field.username" = "Όνομα χρήστη";
 "login.option.add" = "Προσθήκη λογαριασμού";
