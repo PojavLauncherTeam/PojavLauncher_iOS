@@ -64,7 +64,6 @@
 "launcher.mcl.error_download" = "無法下載%@：%@";
 
 "launcher.menu.custom_controls" = "自訂控制鍵";
-"launcher.menu.install_jar" = "安裝 .jar";
 
 "launcher.wait_jit.title" = "正在等待JIT";
 "launcher.wait_jit.message" = "PojavLauncher依賴即時編譯令Java以最大性能執行。";
@@ -183,7 +182,6 @@
 "preference.detail.gyroscope_sensitivity" = "調整陀螺儀控制的靈敏度";
 "preference.manage_runtime.default.1165" = "1.16.5及以上";
 "preference.manage_runtime.default.117" = "1.17及更新版本";
-"preference.manage_runtime.footer.default" = "Minecraft 1.16.5及以上版本可能使用較新的Java版本運行，但不能保證與mods的相容性。 外部運行時可以放在“java_runtimes”資料夾中。 只有當安裝程式不希望有更新的Java版本時，更改“Install.jar”的Java版本才會生效。";
 
 "preference.title.java_args" = "JVM 啟動引數";
 "preference.placeholder.java_args" = "提供選項......";
