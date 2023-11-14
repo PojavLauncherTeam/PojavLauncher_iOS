@@ -67,7 +67,6 @@
 "launcher.mcl.error_download" = "%@: %@ 다운로드 실패";
 
 "launcher.menu.custom_controls" = "사용자 지정 조작";
-"launcher.menu.install_jar" = ".jar 설치";
 
 "launcher.wait_jit.title" = "JIT를 기다리고 있습니다";
 "launcher.wait_jit.message" = "PojavLauncher는 최대 성능으로 작동하기 위해 Java용 Just-in-time 컴파일에 의존합니다.";
@@ -217,7 +216,6 @@
 "preference.manage_runtime.header.default" = "선호하는 자바 버전";
 "preference.manage_runtime.default.1165" = "1.16.5 이하";
 "preference.manage_runtime.default.117" = "1.17 이상";
-"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 이하 버전은 최신 Java 버전에서 실행될 수 있지만 모드와의 호환성은 보장되지 않습니다. 외부 런타임은 \"java_runtimes\" 폴더에 배치할 수 있습니다. \".jar 설치\"에 대한 Java 버전 변경은 설치 프로그램이 최신 Java 버전을 예상하지 않는 경우에만 적용됩니다.";
 "preference.manage_runtime.footer.java8" = "이것은 Minecraft 1.16.5 및 이전 버전의 기본 버전입니다.";
 "preference.manage_runtime.footer.java17" = "이것은 Minecraft 1.17 이상의 기본 버전입니다.";
 "preference.manage_runtime.header.invalid" = "유효하지 않은 런타임";
