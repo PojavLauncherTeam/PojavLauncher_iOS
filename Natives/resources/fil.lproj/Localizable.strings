@@ -58,7 +58,6 @@
 "init.migrateDir" = "Ang direktoryo ng data ng PojavLauncher ay %@ na ngayon. Ang lahat ng iyong umiiral na data ay inilipat sa bagong lokasyon.";
 
 "launcher.menu.custom_controls" = "Pasadyang mga kontrol";
-"launcher.menu.install_jar" = "Install .jar";
 
 "launcher.wait_jit.title" = "Naghihintay ng JIT";
 "launcher.wait_jit.message" = "Umaasa ang PojavLauncher sa Just-in-time na compilation para gumana ang Java sa maximum na performance.";
