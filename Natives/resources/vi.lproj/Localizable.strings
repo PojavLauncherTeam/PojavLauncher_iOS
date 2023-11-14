@@ -65,7 +65,6 @@
 "launcher.mcl.error_download" = "Không thể tải xuống %@:%@";
 
 "launcher.menu.custom_controls" = "Tùy chỉnh điều khiển";
-"launcher.menu.install_jar" = "Cài đặt tệp .jar";
 
 "launcher.wait_jit.title" = "Đang đợi JIT";
 "launcher.wait_jit.message" = "PojavLauncher phụ thuộc vào JIT để Java hoạt động ở mức tối đa hiệu năng.";
