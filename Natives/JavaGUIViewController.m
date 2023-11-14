@@ -101,37 +101,111 @@ void AWTInputBridge_sendKey(int keycode) {
 }
 @end
 
-@interface JavaGUIViewController ()<UIGestureRecognizerDelegate, UIScrollViewDelegate, UITextFieldDelegate> {
+@interface ScrollableSurfaceView<UIScrollViewDelegate> : UIScrollView
+@property CGRect clickRange, virtualMouseFrame;
+@property(nonatomic) UIImageView* mousePointerView;
+@property BOOL shouldTriggerClick;
+@end
+
+@implementation ScrollableSurfaceView
+
+- (instancetype)initWithFrame:(CGRect)frame {
+    surfaceView = [[SurfaceView alloc] initWithFrame:frame];
+    self = [super initWithFrame:frame];
+    [self addSubview:surfaceView];
+    self.delegate = (id)self;
+
+    self.virtualMouseFrame = CGRectMake(frame.size.width / 2, frame.size.height / 2, 18, 27);
+    self.mousePointerView = [[UIImageView alloc] initWithFrame:self.virtualMouseFrame];
+    self.mousePointerView.hidden = !virtualMouseEnabled;
+    self.mousePointerView.image = [UIImage imageNamed:@"MousePointer"];
+    [surfaceView addSubview:self.mousePointerView];
+
+    return self;
 }
 
-@property BOOL virtualMouseEnabled;
-@property CGRect virtualMouseFrame;
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    [super touchesBegan:touches withEvent:event];
+    CGPoint location = [touches.anyObject locationInView:self];
+    self.clickRange = CGRectMake(location.x - 2, location.y - 2, 5, 5);
+    self.shouldTriggerClick = YES;
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    [super touchesMoved:touches withEvent:event];
+    UITouch *touchEvent = touches.anyObject;
+    CGPoint location = [touchEvent locationInView:self];
+    if (self.shouldTriggerClick && !CGRectContainsPoint(self.clickRange, location)) {
+        self.shouldTriggerClick = NO;
+    }
+
+    if (virtualMouseEnabled) {
+        CGPoint prevLocation = [touchEvent previousLocationInView:self];
+        // Calculate delta
+        location.x = (location.x - prevLocation.x) / self.zoomScale;
+        location.y = (location.y - prevLocation.y) / self.zoomScale;
+        // Update cursor's origin
+        _virtualMouseFrame.origin.x = clamp(self.virtualMouseFrame.origin.x + location.x, 0, self.frame.size.width * self.zoomScale);
+        _virtualMouseFrame.origin.y = clamp(self.virtualMouseFrame.origin.y + location.y, 0, self.frame.size.height * self.zoomScale);
+        self.mousePointerView.frame = self.virtualMouseFrame;
+        location = self.virtualMouseFrame.origin;
+
+        CGPoint minimumContentOffset = CGPointMake(-self.contentInset.left, -self.contentInset.top);
+        CGPoint maximumContentOffset = CGPointMake(
+            MAX(minimumContentOffset.x, self.contentSize.width + self.contentInset.right - self.frame.size.width),
+            MAX(minimumContentOffset.y, self.contentSize.height + self.contentInset.bottom - self.frame.size.height));
+        // Focus scroll view's content area on virtual mouse
+        self.contentOffset = CGPointMake(
+            clamp(self.virtualMouseFrame.origin.x * self.zoomScale - self.center.x, minimumContentOffset.x, maximumContentOffset.x),
+            clamp(self.virtualMouseFrame.origin.y * self.zoomScale - self.center.y, minimumContentOffset.y, maximumContentOffset.y));
+    }
+
+    // Send cursor position to AWT
+    CGFloat screenScale = UIScreen.mainScreen.scale * getPrefFloat(@"video.resolution") / 100.0;
+    AWTInputBridge_nativeSendData(EVENT_TYPE_CURSOR_POS, (int)(location.x * screenScale), (int)(location.y * screenScale), 0, 0);
+}
+
+- (void)scrollViewDidZoom:(UIScrollView *)scrollView {
+    if (virtualMouseEnabled) {
+        // Keep virtual mouse in the middle of screen while zooming
+        _virtualMouseFrame.origin.x = (self.contentOffset.x + self.center.x) / self.zoomScale;
+        _virtualMouseFrame.origin.y = (self.contentOffset.y + self.center.y) / self.zoomScale;
+        self.mousePointerView.frame = self.virtualMouseFrame;
+        // Send cursor position to AWT
+        CGFloat screenScale = UIScreen.mainScreen.scale * getPrefFloat(@"video.resolution") / 100.0;
+        AWTInputBridge_nativeSendData(EVENT_TYPE_CURSOR_POS, (int)(_virtualMouseFrame.origin.x * screenScale), (int)(_virtualMouseFrame.origin.y * screenScale), 0, 0);
+    }
+}
+
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)view {
+    return surfaceView;
+}
+
+@end
+
+@interface JavaGUIViewController ()<UIGestureRecognizerDelegate, UITextFieldDelegate>
+
 @property(nonatomic) TrackedTextField* inputTextField;
-@property(nonatomic) UIImageView* mousePointerView;
 @property(nonatomic) ControlLayout* ctrlView;
 @property(nonatomic) PLLogOutputView* logOutputView;
+@property(nonatomic) ScrollableSurfaceView* surfaceScrollView;
 
 @end
 
 @implementation JavaGUIViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = UIColor.blackColor;
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     [self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
     [self setNeedsUpdateOfHomeIndicatorAutoHidden];
+    virtualMouseEnabled = getPrefBool(@"control.virtmouse_enable");
 
     CGRect screenBounds = self.view.bounds;
-    CGFloat screenScale = [[UIScreen mainScreen] scale];
-
-    int width = (int) roundf(screenBounds.size.width);
-    int height = (int) roundf(screenBounds.size.height);
-    float resolution = getPrefFloat(@"video.resolution") / 100.0;
-
-    windowWidth = roundf(width * screenScale * resolution);
-    windowHeight = roundf(height * screenScale * resolution);
+    CGFloat screenScale = UIScreen.mainScreen.scale * getPrefFloat(@"video.resolution") / 100.0;
+    windowWidth = roundf(screenBounds.size.width * screenScale);
+    windowHeight = roundf(screenBounds.size.height * screenScale);
     // Resolution should not be odd
     if ((windowWidth % 2) != 0) {
         --windowWidth;
@@ -140,18 +214,12 @@ void AWTInputBridge_sendKey(int keycode) {
         --windowHeight;
     }
 
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
-    scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    scrollView.delegate = self;
-    scrollView.minimumZoomScale = 1;
-    scrollView.maximumZoomScale = 5;
-    scrollView.scrollEnabled = YES; // will be NO later for virtual mouse/touch
-    scrollView.zoomScale = 1;
-
-    surfaceView = [[SurfaceView alloc] initWithFrame:self.view.frame];
-    [scrollView addSubview:surfaceView];
-
-    [self.view addSubview:scrollView];
+    self.surfaceScrollView = [[ScrollableSurfaceView alloc] initWithFrame:self.view.frame];
+    self.surfaceScrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    self.surfaceScrollView.minimumZoomScale = 1;
+    self.surfaceScrollView.maximumZoomScale = 5;
+    self.surfaceScrollView.scrollEnabled = NO;
+    [self.view addSubview:self.surfaceScrollView];
 
     self.inputTextField = [[TrackedTextField alloc] initWithFrame:CGRectMake(0, -32.0, self.view.frame.size.width, 30.0)];
     self.inputTextField.backgroundColor = UIColor.secondarySystemBackgroundColor;
@@ -180,16 +248,6 @@ void AWTInputBridge_sendKey(int keycode) {
         }
     };
     [self.view addSubview:self.inputTextField];
-
-    self.virtualMouseEnabled = NO;
-    //getPrefBool(@"virtmouse_enable")
-    scrollView.bounces = !self.virtualMouseEnabled;
-    self.virtualMouseFrame = CGRectMake(screenBounds.size.width / 2, screenBounds.size.height / 2, 18, 27);
-    self.mousePointerView = [[UIImageView alloc] initWithFrame:self.virtualMouseFrame];
-    self.mousePointerView.hidden = !self.virtualMouseEnabled;
-    self.mousePointerView.image = [UIImage imageNamed:@"MousePointer"];
-    self.mousePointerView.userInteractionEnabled = NO;
-    [self.view addSubview:self.mousePointerView];
 
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]
         initWithTarget:self action:@selector(surfaceOnClick:)];
@@ -229,16 +287,14 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         @"${margin}", @"${margin}",
         BTN_RECT
     )];
-#if 0 // WIP: virtual mouse
-    [dict[@"mControlDataList"] addObject:createButton(@"Mouse",
-        (int[]){SPECIALBTN_VIRTUALMOUSE,0,0,0},
-        @"${right} - ${margin}", @"${margin}",
-        BTN_RECT
-    )];
-#endif
     [dict[@"mControlDataList"] addObject:createButton(@"Log output",
         (int[]){SPECIALBTN_LOGOUTPUT,0,0,0},
         @"${right} - ${margin}", @"${margin}",
+        BTN_RECT
+    )];
+    [dict[@"mControlDataList"] addObject:createButton(@"Mouse",
+        (int[]){SPECIALBTN_VIRTUALMOUSE,0,0,0},
+        @"${right} - ${margin}", @"${margin} * 2 + ${height}",
         BTN_RECT
     )];
     [dict[@"mControlDataList"] addObject:createButton(@"PRI",
@@ -353,7 +409,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 case SPECIALBTN_VIRTUALMOUSE:
                     if (held) break;
                     virtualMouseEnabled = !virtualMouseEnabled;
-                    self.mousePointerView.hidden = !virtualMouseEnabled;
+                    self.surfaceScrollView.mousePointerView.hidden = !virtualMouseEnabled;
                     setPrefBool(@"control.virtmouse_enable", virtualMouseEnabled);
                     break;
 
@@ -381,28 +437,19 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 }
 
 - (void)surfaceOnClick:(UITapGestureRecognizer *)sender {
+    if (!self.surfaceScrollView.shouldTriggerClick) return;
     if (sender.state == UIGestureRecognizerStateRecognized) {
-        float resolution = getPrefFloat(@"video.resolution") / 100.0;
-        CGFloat screenScale = [[UIScreen mainScreen] scale];
-        CGPoint location = [sender locationInView:sender.view];
-        CGFloat x = location.x * screenScale * resolution;
-        CGFloat y = location.y * screenScale * resolution;
+        CGFloat screenScale = UIScreen.mainScreen.scale * getPrefFloat(@"video.resolution") / 100.0;
+        CGPoint location = virtualMouseEnabled ?
+            self.surfaceScrollView.virtualMouseFrame.origin:
+            [sender locationInView:sender.view];
+        CGFloat x = location.x * screenScale;
+        CGFloat y = location.y * screenScale;
         AWTInputBridge_nativeSendData(EVENT_TYPE_CURSOR_POS, (int)x, (int)y, 0, 0);
         AWTInputBridge_nativeSendData(EVENT_TYPE_MOUSE_BUTTON, BUTTON1_DOWN_MASK, 1, 0, 0);
         AWTInputBridge_nativeSendData(EVENT_TYPE_MOUSE_BUTTON, BUTTON1_DOWN_MASK, 0, 0, 0);
     }
 }
-
-/*
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if (scrollView.contentOffset.x == 0) {
-        
-    }
-    if (scrollView.contentOffset.y == 0) {
-        
-    }
-}
-*/
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     self.inputTextField.sendKey(GLFW_KEY_ENTER, 0, 1, 0);
@@ -420,17 +467,13 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     }
 }
 
-- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
-    return surfaceView;
-}
-
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
         self.ctrlView.frame = UIEdgeInsetsInsetRect(self.view.frame, self.view.safeAreaInsets);
         [self.ctrlView.subviews makeObjectsPerformSelector:@selector(update)];
     } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-        self.virtualMouseFrame = self.mousePointerView.frame;
+        self.surfaceScrollView.virtualMouseFrame = self.surfaceScrollView.mousePointerView.frame;
     }];
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 }
