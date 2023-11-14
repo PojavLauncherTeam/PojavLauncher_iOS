@@ -64,7 +64,6 @@
 "launcher.mcl.error_download" = "Download fallito: %@: %@";
 
 "launcher.menu.custom_controls" = "Controlli personalizzati";
-"launcher.menu.install_jar" = "Installa .jar";
 
 "launcher.wait_jit.title" = "In attesa di JIT";
 "launcher.wait_jit.message" = "PojavLauncher si basa sulla compilazione Just-in-time per Java per lavorare con prestazioni migliori.";
