@@ -72,7 +72,6 @@
 "launcher.mcl.error_download" = "Falha ao baixar %@: %@";
 
 "launcher.menu.custom_controls" = "Controles personalizados";
-"launcher.menu.install_jar" = "Instalar .jar";
 
 "launcher.wait_jit.title" = "Aguardando o JIT";
 
@@ -182,7 +181,6 @@
 "preference.manage_runtime.header.default" = "Versão Java preferida";
 "preference.manage_runtime.default.1165" = "1.16.5 e anterior";
 "preference.manage_runtime.default.117" = "1.17 e mais recente";
-"preference.manage_runtime.footer.default" = "O Minecraft 1.16.5 e anteriores podem ser executados numa versão mais recente do Java, porém a compatibilidade com mods não é garantida. Os runtimes externos podem ser colocados na pasta “java_runtimes”. Alterar a versão do Java para “Instalar .jar” entrará em vigor caso o instalador não tenha uma versão mais recente do Java.";
 "preference.manage_runtime.footer.java8" = "Essa é a versão padrão para Minecraft 1.16.5 e anteriores.";
 "preference.manage_runtime.footer.java17" = "Essa é a versão padrão para Minecraft 1.17 e mais recente.";
 "preference.manage_runtime.header.invalid" = "runtimes inválido";
