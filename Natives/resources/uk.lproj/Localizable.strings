@@ -74,7 +74,6 @@
 "launcher.mcl.error_download" = "Не вдалося завантажити %@: %@";
 
 "launcher.menu.custom_controls" = "Користувацьке керування";
-"launcher.menu.install_jar" = "Встановити .jar";
 
 "launcher.wait_jit.title" = "Очікування на JIT";
 "launcher.wait_jit.message" = "PojavLauncher використовує компіляцію Just-in-time для роботи Java з максимальною продуктивністю.";
@@ -226,7 +225,6 @@
 "preference.manage_runtime.header.default" = "Бажані версії Java";
 "preference.manage_runtime.default.1165" = "1.16.5 і старіше";
 "preference.manage_runtime.default.117" = "1.17 і новіше";
-"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 і старіше можуть запуститися на новіших версіях Java, проте сумісність з модами не гарантована. Зовнішні середовища виконання можуть бути розміщені в теці “java_runtimes”. Змінення версії Java на “Install .jar” набирає чинності, тільки якщо встановлювач не очікуватиме новішу версію Java.";
 "preference.manage_runtime.footer.java8" = "Це стандартна версія для Minecraft 1.16.5 і старіше.";
 "preference.manage_runtime.footer.java17" = "Це стандартна версія для Minecraft 1.17 і вище.";
 "preference.manage_runtime.header.invalid" = "Недійсні середовища виконання";
