@@ -74,7 +74,6 @@
 "launcher.mcl.error_download" = "Endirmək alınmadı %@: %@";
 
 "launcher.menu.custom_controls" = "Fərdi idarəetmələr";
-"launcher.menu.install_jar" = ".jar quraşdırın";
 
 "launcher.wait_jit.title" = "JIT gözləyir";
 "launcher.wait_jit.message" = "PojavLauncher Java-nın maksimum performansla işləməsi üçün Just-in-time kompilyasiyasına əsaslanır.";
@@ -226,7 +225,6 @@
 "preference.manage_runtime.header.default" = "Tərcih edilən Java versiyası";
 "preference.manage_runtime.default.1165" = "1.16.5 və daha yuxarı";
 "preference.manage_runtime.default.117" = "1.17 və daha yeni";
-"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 və daha köhnə versiyalar daha yeni Java versiyası ilə işləyə bilər, lakin modlarla uyğunluğa zəmanət verilmir. Xarici iş vaxtları “java_runtimes” qovluğuna yerləşdirilə bilər. “Install .jar” üçün Java versiyasının dəyişdirilməsi yalnız quraşdırıcının daha yeni Java versiyasını gözləmədiyi halda qüvvəyə minir.";
 "preference.manage_runtime.footer.java8" = "Bu, Minecraft 1.16.5 və daha köhnə versiyalar üçün standart versiyadır.";
 "preference.manage_runtime.footer.java17" = "Bu Minecraft 1.17 və daha yeni versiyalar üçün standart versiyadır.";
 "preference.manage_runtime.header.invalid" = "Etibarsız runtimes";
