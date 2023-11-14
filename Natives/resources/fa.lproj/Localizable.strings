@@ -58,7 +58,6 @@
 "init.migrateDir" = "دایرکتوری داده Pojavlauncher در حال حاضر %@ است. تمام داده های موجود شما به مکان جدید منتقل شده اند.";
 
 "launcher.menu.custom_controls" = "کنترل‌های شخصی";
-"launcher.menu.install_jar" = "نصب .jar";
 
 "launcher.wait_jit.title" = "در انتظار JIT";
 "launcher.wait_jit.message" = "Pojavlauncher متکی به تدوین در زمان مناسب برای جاوا برای کار در حداکثر عملکرد است.";
