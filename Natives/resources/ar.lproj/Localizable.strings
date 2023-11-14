@@ -74,7 +74,6 @@
 "launcher.mcl.error_download" = "فشل التنزيل %@: %@";
 
 "launcher.menu.custom_controls" = "تخصيص التحكم";
-"launcher.menu.install_jar" = "تثبيت ملف .jar";
 
 "launcher.wait_jit.title" = "انتظر JIT";
 "launcher.wait_jit.message" = "يعتمد PojavLauncher على تجميع Just-in-time لـ Java للعمل بأقصى قدر من الأداء.";
@@ -226,7 +225,6 @@
 "preference.manage_runtime.header.default" = "إصدار جافا المفضل";
 "preference.manage_runtime.default.1165" = "1.16.5 و ما أقدم";
 "preference.manage_runtime.default.117" = "1.17 و ما أحدث";
-"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 و ما اقدم قد تعمل مع اصدار جافا احدث، ولكن توافق المودات ليس مضمونا، اوقات التشغيل الخارجية يمكن وضعها بمجلد \"java_runtimes\". و تغيير إصدار الجافا عند \"ثبت .jar\"لن يحدث الا عندما لا يتوقع البرنامج اصدار جافا احدث.";
 "preference.manage_runtime.footer.java8" = "هذا هو الإصدار الافتراضي لـ Minecraft 1.16.5 و الأقدم.";
 "preference.manage_runtime.footer.java17" = "هذا هو الإصدار الافتراضي لـ Minecraft 1.17. و ما اقدم.";
 "preference.manage_runtime.header.invalid" = "وقت تشغيل غير صالح";
