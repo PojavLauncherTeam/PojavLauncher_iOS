@@ -61,7 +61,6 @@
 "init.migrateDir" = "PojavLauncherのディレクトリが %@になりました。既存のすべてのデータが新しい場所に移動されました。";
 
 "launcher.menu.custom_controls" = "カスタムコントロール";
-"launcher.menu.install_jar" = ".jarをインストール";
 
 "launcher.wait_jit.title" = "JITを待っています";
 "launcher.wait_jit.message" = "PojavLauncherは、Javaが最大限のパフォーマンスで動作するようにJust-in-timeコンパイルに依存しています。";
