@@ -67,7 +67,6 @@
 "launcher.mcl.error_download" = "Nie udało się pobrać %@:%@";
 
 "launcher.menu.custom_controls" = "Sterowanie";
-"launcher.menu.install_jar" = "Zainstaluj .jar";
 
 "launcher.wait_jit.title" = "Czekam na JIT";
 "launcher.wait_jit.message" = "PojavLauncher opiera się na kompilacji Just-in-time, aby Java działała z maksymalną wydajnością.";
