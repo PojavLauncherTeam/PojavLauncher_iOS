@@ -74,7 +74,6 @@
 "launcher.mcl.error_download" = "Nepodařilo se stáhnout %@: %@";
 
 "launcher.menu.custom_controls" = "Vlastní ovládací prvky";
-"launcher.menu.install_jar" = "Instalovat .jar";
 
 "launcher.wait_jit.title" = "Čekám na JIT";
 "launcher.wait_jit.message" = "PojavLauncher potřebuje kompilaci Just-in-time, aby Java mohla fungovat maximální rychlostí.";
@@ -226,7 +225,6 @@
 "preference.manage_runtime.header.default" = "Upřednostňovaná verze Javy";
 "preference.manage_runtime.default.1165" = "1.16.5 či starší";
 "preference.manage_runtime.default.117" = "1.17 či novější";
-"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 či starší mohou běžet s novější verzi Javy, leč kompatibilita s módy není zaručena. Externí běhové prostředí mohou býti umístěny do složky »java_runtimes«. Změna verze Javy pro »Install.jar» se projeví neočekává-li instalátor novější verzi Javy.";
 "preference.manage_runtime.footer.java8" = "Toto je výchozí verze pro Minecraft 1.16.5 či starší.";
 "preference.manage_runtime.footer.java17" = "Toto je výchozí verze pro Minecraft 1.17 či novější.";
 "preference.manage_runtime.header.invalid" = "Neplatné běhové prostředí";
