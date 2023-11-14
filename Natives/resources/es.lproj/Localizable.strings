@@ -74,7 +74,6 @@
 "launcher.mcl.error_download" = "Error al descargar %@: %@";
 
 "launcher.menu.custom_controls" = "Controles personalizados";
-"launcher.menu.install_jar" = "Instalar .jar";
 
 "launcher.wait_jit.title" = "Esperando por JIT";
 "launcher.wait_jit.message" = "PojavLauncher utiliza la compilación Just-in-time para que Java funcione con el máximo rendimiento.";
@@ -226,7 +225,6 @@
 "preference.manage_runtime.header.default" = "Versión de Java preferida";
 "preference.manage_runtime.default.1165" = "1.16.5 y anteriores";
 "preference.manage_runtime.default.117" = "1.17 y más recientes";
-"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 y anteriores pueden ejecutarse con una versión más reciente de Java, sin embargo la compatibilidad con mods no está garantizada. Los runtimes externos pueden colocarse en la carpeta “java_runtimes”. Cambiar la versión de Java para “Instalar .jar” sólo tendrá efecto si el instalador no espera una versión más reciente de Java.";
 "preference.manage_runtime.footer.java8" = "Esta es la versión predeterminada para Minecraft 1.16.5 y posteriores.";
 "preference.manage_runtime.footer.java17" = "Esta es la versión predeterminada para Minecraft 1.17. y superiores.";
 "preference.manage_runtime.header.invalid" = "Runtimes inválidos";
