@@ -41,7 +41,7 @@
 "custom_controls.button_edit.orientation" = "方向";
 "custom_controls.button_edit.toggleable" = "可切换";
 "custom_controls.button_edit.mouse_pass" = "鼠标穿透";
-"custom_controls.button_edit.swipeable" = "可滑动";
+"custom_controls.button_edit.swipeable" = "可滑动点击";
 "custom_controls.button_edit.bg_color" = "背景颜色";
 "custom_controls.button_edit.stroke_width" = "边框宽度（dp）";
 "custom_controls.button_edit.stroke_color" = "边框颜色";
@@ -74,6 +74,7 @@
 "launcher.mcl.error_download" = "文件 %@ 下载失败：%@ ，建议重启启动器重新下载";
 
 "launcher.menu.custom_controls" = "自定义控制键位";
+"launcher.menu.execute_jar" = "";
 
 "launcher.wait_jit.title" = "正在等待获取即时编译（JIT）权限";
 "launcher.wait_jit.message" = "PojavLauncher 依靠 Java 的即时编译（JIT）来以最大性能工作。";
