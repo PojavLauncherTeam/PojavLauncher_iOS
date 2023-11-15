@@ -72,6 +72,7 @@
 "launcher.mcl.error_download" = "Falha ao baixar %@: %@";
 
 "launcher.menu.custom_controls" = "Controles personalizados";
+"launcher.menu.execute_jar" = "Executar arquivo .jar";
 
 "launcher.wait_jit.title" = "Aguardando o JIT";
 
