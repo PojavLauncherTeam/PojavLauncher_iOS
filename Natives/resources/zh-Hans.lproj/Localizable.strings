@@ -74,7 +74,7 @@
 "launcher.mcl.error_download" = "文件 %@ 下载失败：%@ ，建议重启启动器重新下载";
 
 "launcher.menu.custom_controls" = "自定义控制键位";
-"launcher.menu.execute_jar" = "";
+"launcher.menu.execute_jar" = "执行 .jar 文件";
 
 "launcher.wait_jit.title" = "正在等待获取即时编译（JIT）权限";
 "launcher.wait_jit.message" = "PojavLauncher 依靠 Java 的即时编译（JIT）来以最大性能工作。";
@@ -226,6 +226,7 @@
 "preference.manage_runtime.header.default" = "首选的 Java 版本";
 "preference.manage_runtime.default.1165" = "1.16.5 及更低版本";
 "preference.manage_runtime.default.117" = "1.17 及更高版本";
+"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 及更低版本可能以较高版本 Java 运行，但未必与模组兼容，外部运行环境可置于“java_runtimes”文件夹，为“执行 .jar 文件”更改 Java 版本仅在安装程序不希望使用较新 Java 版本时生效。";
 "preference.manage_runtime.footer.java8" = "此为 Minecraft 1.16.5 及更低版本的默认版本。";
 "preference.manage_runtime.footer.java17" = "此为 Minecraft 1.17 及更高版本的默认版本。";
 "preference.manage_runtime.header.invalid" = "运行时无效";
