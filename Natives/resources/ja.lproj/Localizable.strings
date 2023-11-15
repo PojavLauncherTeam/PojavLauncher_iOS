@@ -60,6 +60,8 @@
 
 "init.migrateDir" = "PojavLauncherのディレクトリが %@になりました。既存のすべてのデータが新しい場所に移動されました。";
 
+"launcher.mcl.downloading_file" = "%@ をダウンロード中";
+
 "launcher.menu.custom_controls" = "カスタムコントロール";
 
 "launcher.wait_jit.title" = "JITを待っています";
@@ -71,13 +73,21 @@
 
 "login.jit.checking" = "JITを確認中";
 "login.jit.enabled" = "JIT が有効になりました";
+"login.jit.fail" = "JITを有効化できませんでした";
+"login.jit.fail.title" = "お使いのデバイスでJITを有効化できませんでした";
 
 // Login buttons
 "login.menu.sendlogs" = "ログを送信する";
 "login.option.add" = "アカウントを追加";
 "login.option.select" = "アカウントを選択";
+"login.option.demo" = "デモアカウント";
 "login.option.microsoft" = "Microsoft アカウント";
 "login.option.local" = "ローカルアカウント";
+
+"login.warn.title.legacy_device" = "次の PojavLauncher のリリースはこのデバイスと互換性がありません。";
+"login.warn.message.legacy_device" = "次のメジャーリリースを実行するには、iOS 14以降を実行できるデバイスが必要です。";
+"login.warn.title.legacy_ios" = "次のリリースの PojavLauncher を実行するには、システムの更新が必要になります。";
+"login.warn.message.legacy_ios" = "次のメジャーリリースを実行するには、iOS 14以降を実行できるデバイスが必要です。";
 
 "login.warn.title.demomode" = "あなたのアカウントはデモ版です";
 "login.warn.message.demomode" = "オフラインモードとローカルモードへの置き換えとして デモモードでは、ゲームを所有していないMicrosoftアカウントにサインインし、Java Editionの試用版をプレイすることができます。 1.3で導入されました。以前のバージョンでは、公式ランチャーがこれらの制限を設けていないため、以前のバージョンではフルゲームが含まれています。 このオフラインモードからの移行の詳細については、当社のウェブサイトをご覧ください。";
@@ -100,6 +110,7 @@
 "Settings" = "設定";
 
 "preference.section.general" = "一般設定";
+"preference.section.video" = "ビデオと音声の設定";
 "preference.section.control" = "制御のカスタマイズ";
 "preference.section.debug" = "UIデバッグ設定";
 //"preference.section.footer.control" = "";
@@ -131,17 +142,28 @@
 "preference.title.confirm.reset_settings" = "これにより、解像度、ボタンサイズ、Java 引数を含むすべてのカスタム設定が削除されます。";
 "preference.title.done.reset_settings" = "すべての既定の設定が復元されました。";
 
+"preference.title.erase_demo_data" = "デモゲームのデータを消去";
+"preference.title.confirm.erase_demo_data" = "これにより、デモアカウントで使用されるすべてのデモゲームのバージョンとデータが消去されます";
+"preference.title.done.erase_demo_data" = "デモゲームのデータはすべて消去されました。";
+
 "preference.title.renderer" = "レンダラー";
 
 "preference.title.renderer.debug.auto" = "自動: gl4es または angle";
 "preference.title.renderer.debug.angle" = "ANGLE (1.17+) - エクスポートOpenGL 3.2 (Core Profile, limited)";
 "preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - exports OpenGL 4.1";
 
+"preference.detail.renderer" = "使用するOpenGLレンダーエンジンを変更します　iOS 16以降では、問題を診断するためにZinkが一時的に無効になっています";
+
 "preference.title.resolution" = "解像度 (%)";
 "preference.detail.resolution" = "ゲームの解像度を下げることができます。";
+"preference.title.max_framerate" = "最大フレームレート";
 
 "preference.title.fullscreen_airplay" = "全画面AirPlay";
 "preference.detail.fullscreen_airplay" = "画面上のすべてをミラーリングするのではなく、外部ディスプレイにフルスクリーンのゲームウィンドウを表示できます。";
+"preference.detail.silence_other_audio" = "ゲームを起動するときに、PojavLauncherが音楽などの他のアプリの音声を一時停止できるようにします";
+"preference.title.silence_with_switch" = "サイレントスイッチで音声を無効にする";
+"preference.title.default_gamepad_ctrl" = "コントローラーの設定";
+"preference.detail.hardware_hide" = "マウスまたはゲームコントローラーが接続されている場合、画面上のコントロールボタンを自動的に無効にするようにします";
 "preference.title.press_duration" = "長押し時間 (ms)";
 "preference.detail.press_duration" = "ブロックを破壊したりアイテムをドロップしたりするための長さをトリガーします。";
 "preference.title.button_scale" = "オンスクリーンボタンの拡大率(%)";
