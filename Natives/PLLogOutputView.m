@@ -123,7 +123,11 @@ static PLLogOutputView* current;
 
 - (void)actionToggleLogOutput {
     if (fatalErrorOccurred) {
-        [self performSelector:@selector(actionForceClose)];
+        [UIApplication.sharedApplication performSelector:@selector(suspend)];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 200 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
+            dispatch_group_leave(fatalExitGroup);
+            fatalExitGroup = nil;
+        });
         return;
     }
 
@@ -179,7 +183,7 @@ static PLLogOutputView* current;
             localize(@"game.title.exit_code", nil), code];
         navigationBar.items[0].leftBarButtonItem = [[UIBarButtonItem alloc]
             initWithBarButtonSystemItem:UIBarButtonSystemItemAction
-            target:currentVC() action:@selector(actionShareLatestlog)];
+            target:current action:@selector(actionShareLatestlog)];
         UIBarButtonItem *exitItem = navigationBar.items[0].rightBarButtonItems[0];
         navigationBar.items[0].rightBarButtonItems = nil;
         navigationBar.items[0].rightBarButtonItem = exitItem;

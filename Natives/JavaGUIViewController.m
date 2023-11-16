@@ -287,7 +287,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         @"${margin}", @"${margin}",
         BTN_RECT
     )];
-    [dict[@"mControlDataList"] addObject:createButton(@"Log output",
+    [dict[@"mControlDataList"] addObject:createButton(localize(@"game.menu.log_output", nil),
         (int[]){SPECIALBTN_LOGOUTPUT,0,0,0},
         @"${right} - ${margin}", @"${margin}",
         BTN_RECT
