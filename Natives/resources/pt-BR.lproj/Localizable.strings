@@ -182,6 +182,7 @@
 "preference.manage_runtime.header.default" = "Versão Java preferida";
 "preference.manage_runtime.default.1165" = "1.16.5 e anterior";
 "preference.manage_runtime.default.117" = "1.17 e mais recente";
+"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 ou inferior pode funcionar com uma versão de Java mais recente, porém a compatibilidade com mods não é garantida. Runtimes externas podem ser colocadas na pasta \"java_runtimes\". Alterar a versão Java para o \"Executar um arquivo .jar\" só terá efeito se o instalador não esperar por uma versão mais recente do Java.";
 "preference.manage_runtime.footer.java8" = "Essa é a versão padrão para Minecraft 1.16.5 e anteriores.";
 "preference.manage_runtime.footer.java17" = "Essa é a versão padrão para Minecraft 1.17 e mais recente.";
 "preference.manage_runtime.header.invalid" = "runtimes inválido";
