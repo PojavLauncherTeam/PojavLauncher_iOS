@@ -75,6 +75,7 @@
 "launcher.menu.execute_jar" = "Executar arquivo .jar";
 
 "launcher.wait_jit.title" = "Aguardando o JIT";
+"launcher.wait_jit.message" = "O PojavLauncher depende da compilação Just-in-time para que o Java funcione no desempenho máximo.";
 
 "login.error.username.outOfRange" = "O nome de usuário deve ter no mínimo 3 caracteres e no máximo 16 caracteres";
 
@@ -84,6 +85,7 @@
 "login.jit.enabled" = "O JIT foi ativado";
 "login.jit.fail" = "Usuário '%s' não pode ser habilitado.";
 "login.jit.fail.title" = "JIT não pode ser ativado em seu dispositivo.";
+"login.jit.fail.description" = "Nenhuma integração pode ser usada para ativar automaticamente o JIT no seu dispositivo, e agora ele deve estar ativado manualmente. Erros foram registrados no latestlog.txt.";
 
 // Login buttons
 "login.menu.sendlogs" = "Envie seus registros";
@@ -94,13 +96,22 @@
 "login.option.local" = "Conta local";
 
 "login.warn.title.legacy_device" = "A próxima versão do PojavLauncher não será compatível com esse dispositivo.";
+"login.warn.message.legacy_device" = "Para executar a próxima versão principal, um dispositivo capaz de rodar o iOS 14 é necessário.";
+"login.warn.title.legacy_ios" = "A próxima versão do PojavLauncher exigirá uma atualização do sistema.";
+"login.warn.message.legacy_ios" = "Para executar a próxima versão principal, um dispositivo capaz de rodar o iOS 14 é necessário.";
+"login.warn.title.limited_ram" = "Este dispositivo possui uma quantidade limitada de memória disponível.";
+"login.warn.message.limited_ram" = "Recomendamos deixar a auto RAM ativada para evitar problemas de instabilidade e desempenho.";
 
 "login.warn.title.demomode" = "Sua conta é Demonstrativa";
+"login.warn.message.demomode" = "Como um substituto para o modo offline e local, o modo de demonstração permitirá que você entre em uma conta Microsoft que não possui o jogo e jogue o teste Java Edition, introduzida em 1.3. e versões mais recentes. Versões mais antigas contém o jogo completo, já que o launcher oficial não coloca essas restrições. Veja nosso site para saber mais sobre esta transição do modo offline.";
 
 "login.warn.title.localmode" = "O modo off-line agora é o modo local.";
 "login.warn.message.localmode" = "Você pode continuar jogando versões instaladas, mas não pode mais baixar o Minecraft sem uma conta paga. Não será fornecido suporte para problemas com contas locais, ou outros meios de aquisição do Minecraft.";
+
+"login.msa.error.xsts.noxboxacc" = "Nenhum perfil de Xbox registrado para esta conta da Microsoft. Certifique-se de ter criado um perfil Xbox.\nCódigo de erro: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live atualmente não está disponível no seu país.\nCódigo de erro: 2148916235";
 "login.msa.error.xsts.krverify" = "Sua conta precisa ser verificada por seus pais antes de continuar.\nCódigo de erro: 2148916236 ou 2148916237.";
+"login.msa.error.xsts.underage" = "Sua conta precisa ser verificada por seus pais antes de continuar.\nCódigo de erro: 2148916238";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Adquirindo o token de acesso";
 "login.msa.progress.acquireXBLToken" = "(2/5) Adquirindo o token do Xbox Live";
@@ -126,20 +137,33 @@
 "preference.title.confirm" = "Você tem certeza?";
 
 "preference.title.game_directory" = "Diretório do jogo";
+"preference.title.confirm.delete_game_directory" = "A instância %@ será excluída para sempre e não poderá ser restaurada.";
 "preference.multidir.add_directory" = "Adicionar diretório do jogo";
 
 "preference.title.check_sha" = "Verifique os arquivos após o download";
+"preference.detail.check_sha" = "Esta opção força o launcher a verificar o hash da biblioteca se ele estiver disponível. Impede baixar arquivos com problemas.";
 "preference.title.cosmetica" = "Capas da Cosmetica";
+"preference.detail.cosmetica" = "Ative as capas da Cosmetica (anteriormente Arc). Para mais informações visite https://cosmetica.cc. Requer OptiFine";
 "preference.title.debug_logging" = "Log de depuração";
+"preference.detail.debug_logging" = "Registra as configurações internas e ações no latestlog.txt. Isso ajuda os desenvolvedores a encontrarem problemas mais fáceis, mas o Minecraft pode ficar mais lento, pois os logs serão gravados com mais frequência.";
 "preference.title.appicon" = "Definir ícone do aplicativo";
+"preference.detail.appicon" = "Permite que você escolha entre diferentes ícones da Tela Inicial para PojavLauncher.";
 "preference.title.appicon-default" = "Luz familiar de PojavLauncher";
 "preference.title.appicon-dark" = "PojavLauncher familiar escuro";
+"preference.title.appicon-development" = "Desenvolvimento Pincelado";
+"preference.title.hidden_sidebar" = "Ocultar a barra lateral do menu principal por padrão";
+"preference.detail.hidden_sidebar" = "Permite que você oculte a barra lateral no menu principal por padrão e quando girando.";
 
 "preference.title.reset_warnings" = "Redefinir todos os avisos";
 "preference.title.done.reset_warnings" = "Todas as advertências foram redefinidas.";
 
 "preference.title.reset_settings" = "Redefinir todas as configurações";
+"preference.title.confirm.reset_settings" = "Isso removerá todas as suas preferências personalizadas, incluindo resolução, tamanho dos botões e argumentos Java.";
 "preference.title.done.reset_settings" = "Todas as configurações padrão foram restauradas.";
+
+"preference.title.erase_demo_data" = "Apagar dados do jogo Demo";
+"preference.title.confirm.erase_demo_data" = "Isto apagará todas as versões de jogo Demo e dados usados para contas Demo.";
+"preference.title.done.erase_demo_data" = "Todos os dados do jogo Demo foram apagados.";
 
 "preference.title.renderer" = "Renderizador";
 
@@ -158,20 +182,34 @@
 "preference.title.resolution" = "Resolução (%)";
 "preference.detail.resolution" = "Permite que você diminua a resolução do jogo.";
 "preference.title.max_framerate" = "Taxa de quadros máxima";
+"preference.detail.max_framerate" = "Permite limitar a taxa de frames do jogo a 60FPS nas telas de ProMotion.";
+
+"preference.title.fullscreen_airplay" = "Tela Cheia AirPlay";
+"preference.detail.fullscreen_airplay" = "Permite apresentar a janela do jogo em tela cheia na tela externa, em vez de espelhar tudo na tela.";
+"preference.title.silence_other_audio" = "Pausar áudio quando o jogo abrir";
+"preference.detail.silence_other_audio" = "Ative para permitir que o PojavLauncher pause o áudio de outros aplicativos, como o Music, ao iniciar o jogo.";
+"preference.title.silence_with_switch" = "Desativar áudio com interruptor silencioso";
 "preference.detail.silence_with_switch" = "Ative para desativar o áudio quando o Modo Silencioso estiver ativo. Os fones de ouvido e alto-falantes externos não são afetados.";
 "preference.title.default_gamepad_ctrl" = "Configuração do Controlador";
 "preference.title.hardware_hide" = "Ocultar controles quando o hardware estiver conectado";
+"preference.detail.hardware_hide" = "Ativar o comportamento de desabilitar automaticamente a sobreposição de controle na tela quando um controlador do mouse ou de jogo estiver conectado.";
 "preference.title.gesture_mouse" = "Gestos do mouse";
+"preference.detail.gesture_mouse" = "Permite gestos, como tocar para colocar bloco, segure para quebrar blocos, rolando com 2 dedos";
 "preference.title.gesture_hotbar" = "Gestos da barra rápida";
+"preference.detail.gesture_hotbar" = "Permite gestos, como toque no slot da barra de atalho, troque itens entre a mão, lance itens";
 "preference.title.disable_haptics" = "Desativar os atalhos na tela";
 "preference.title.press_duration" = "Duração de pressionamento longo (ms)";
+"preference.detail.press_duration" = "Altera o atraso do gatilho de toque longo para destruir blocos e soltar itens.";
 "preference.title.button_scale" = "Escala dos botões virtuais (%)";
+"preference.detail.button_scale" = "Amplie-os se os botões são muito pequenos, geralmente necessários para usuários de iPad.";
 "preference.title.mouse_scale" = "Escala do mouse (%)";
 "preference.detail.mouse_scale" = "Alterar o tamanho do mouse virtual";
 "preference.title.mouse_speed" = "Velocidade do mouse (%)";
 "preference.detail.mouse_speed" = "Alterar a velocidade do mouse virtual";
 "preference.title.virtmouse_enable" = "Mouse virtual";
+"preference.detail.virtmouse_enable" = "Ative esta opção para iniciar com o mouse virtual ligado";
 "preference.title.slideable_hotbar" = "Hotbar deslizante";
+"preference.detail.slideable_hotbar" = "Deixe a barra rápida deslizável como a roda do mouse";
 
 "preference.title.gyroscope_enable" = "Habilitar controles do gyrocópio";
 "preference.title.gyroscope_sensitivity" = "Sensibilidade de controles do giroscópio";
