@@ -3,7 +3,6 @@
 #define realUIIdiom UIDevice.currentDevice.hook_userInterfaceIdiom
 
 @interface UIDevice(hook)
-- (NSString *)buildVersion;
 - (NSString *)completeOSVersion;
 - (UIUserInterfaceIdiom)hook_userInterfaceIdiom;
 @end
@@ -19,6 +18,10 @@
 @interface _UIContextMenuStyle : NSObject <NSCopying>
 @property(nonatomic) NSInteger preferredLayout;
 + (instancetype)defaultStyle;
+@end
+
+@interface UIDevice(private)
+- (NSString *)buildVersion;
 @end
 
 @interface UIImage(private)

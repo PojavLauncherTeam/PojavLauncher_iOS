@@ -37,9 +37,7 @@ jclass class_CTCClipboard;
 jmethodID method_SystemClipboardDataReceived;
 
 //struct pojav_environ_s {
-    //struct ANativeWindow* pojavWindow;
     //render_window_t* mainWindowBundle;
-    int config_renderer;
     //BOOL force_vsync;
     atomic_size_t eventCounter;
     GLFWInputEvent events[8000];
@@ -78,7 +76,6 @@ jmethodID method_SystemClipboardDataReceived;
 //};
 
 float resolutionScale;
-BOOL virtualMouseEnabled;
-BOOL isControlModifiable;
+BOOL virtualMouseEnabled, isControlModifiable;
 
 #endif //POJAVLAUNCHER_ENVIRON_H

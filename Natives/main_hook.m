@@ -45,7 +45,11 @@ void hooked___assert_rtn(const char* func, const char* file, int line, const cha
 void hooked_exit(int code) {
     NSLog(@"exit(%d) called", code);
     if (code == 0) {
-        orig_exit(code);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [UIApplication.sharedApplication performSelector:@selector(suspend)];
+        });
+        usleep(100*1000);
+        orig_exit(0);
         return;
     }
     handle_fatal_exit(code);

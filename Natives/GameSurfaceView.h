@@ -2,5 +2,4 @@
 #import <UIKit/UIKit.h>
 
 @interface GameSurfaceView : UIView
-- (void)displayLayer;
 @end

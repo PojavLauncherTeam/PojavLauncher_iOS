@@ -24,6 +24,7 @@ CGPoint lastVirtualMousePoint;
 - (void)updateSavedResolution;
 - (void)updateGrabState;
 
++ (GameSurfaceView *)surface;
 + (BOOL)isRunning;
 
 // LogView category
