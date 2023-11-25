@@ -19,6 +19,7 @@
 "Installed" = "已安裝";
 "Snapshot" = "快照";
 "Releases" = "發行";
+"Unstable" = "系統失去穩定";
 "Old-beta" = "遠古beta版";
 "Old-alpha" = "遠古alpha版";
 
@@ -28,6 +29,8 @@
 "Move" = "移動";
 "Remove" = "移除";
 "Resize" = "調整大小";
+// Visibility
+"Always" = "始终";
 
 "custom_controls.button_edit.forward_lock" = "前進/疾跑鎖";
 "custom_controls.button_edit.name" = "名稱";
