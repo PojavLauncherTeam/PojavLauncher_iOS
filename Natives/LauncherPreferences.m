@@ -26,9 +26,27 @@ void toggleIsolatedPref(BOOL forceEnable) {
 id getPrefObject(NSString *key) {
     return [pref getObject:key];
 }
+BOOL getPrefBool(NSString *key) {
+    return [getPrefObject(key) boolValue];
+}
+float getPrefFloat(NSString *key) {
+    return [getPrefObject(key) floatValue];
+}
+NSInteger getPrefInt(NSString *key) {
+    return [getPrefObject(key) intValue];
+}
 
 void setPrefObject(NSString *key, id value) {
     [pref setObject:key value:value];
+}
+void setPrefBool(NSString *key, BOOL value) {
+    setPrefObject(key, @(value));
+}
+void setPrefFloat(NSString *key, float value) {
+    setPrefObject(key, @(value));
+}
+void setPrefInt(NSString *key, NSInteger value) {
+    setPrefObject(key, @(value));
 }
 
 void resetWarnings() {

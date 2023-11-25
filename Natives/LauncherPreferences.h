@@ -4,26 +4,14 @@ void loadPreferences(BOOL reset);
 void toggleIsolatedPref(BOOL forceEnable);
 
 id getPrefObject(NSString *key);
-static inline BOOL getPrefBool(NSString *key) {
-    return [getPrefObject(key) boolValue];
-}
-static inline float getPrefFloat(NSString *key) {
-    return [getPrefObject(key) floatValue];
-}
-static inline NSInteger getPrefInt(NSString *key) {
-    return [getPrefObject(key) intValue];
-}
+BOOL getPrefBool(NSString *key);
+float getPrefFloat(NSString *key);
+NSInteger getPrefInt(NSString *key);
 
 void setPrefObject(NSString *key, id value);
-static inline void setPrefBool(NSString *key, BOOL value) {
-    setPrefObject(key, @(value));
-}
-static inline void setPrefFloat(NSString *key, float value) {
-    setPrefObject(key, @(value));
-}
-static inline void setPrefInt(NSString *key, NSInteger value) {
-    setPrefObject(key, @(value));
-}
+void setPrefBool(NSString *key, BOOL value);
+void setPrefFloat(NSString *key, float value);
+void setPrefInt(NSString *key, NSInteger value);
 
 void resetWarnings();
 
