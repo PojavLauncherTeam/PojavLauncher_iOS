@@ -20,7 +20,7 @@
 "Snapshot" = "ภาพรวม";
 "Releases" = "เผยแพร่";
 "Old-beta" = "เบต้าเก่า";
-"Old-alpha" = "alpha เก่า";
+"Old-alpha" = "อัลฟ่าเก่า";
 
 // Custom controls
 "Copy" = "คัดลอก";
@@ -28,6 +28,8 @@
 "Move" = "ย้าย";
 "Remove" = "ถอดออก";
 "Resize" = "ปรับขนาด";
+
+"custom_controls.button_edit.forward_lock" = "ล็อคไปข้างหน้า";
 "custom_controls.button_edit.name" = "ชื่อ";
 "custom_controls.button_edit.size" = "ขนาด";
 "custom_controls.button_edit.mapping" = "ปุ่มที่ให้กด";
@@ -52,6 +54,7 @@
 "custom_controls.control_menu.safe_area" = "ขอบเขตปลอดภัย";
 "custom_controls.control_menu.add_button" = "เพิ่มปุ่ม";
 "custom_controls.control_menu.add_drawer" = "เพิ่มลิ้นชัก";
+"custom_controls.control_menu.add_joystick" = "เพิ่มจอยสติ๊ก";
 
 "launcher.menu.custom_controls" = "การควบคุมกำหนดเอง";
 "login.option.add" = "เพิ่มบัญชี";
