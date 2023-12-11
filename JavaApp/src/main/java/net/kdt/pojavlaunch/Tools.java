@@ -98,7 +98,7 @@ public final class Tools {
         varArgMap.put("game_assets", Tools.ASSETS_PATH);
         varArgMap.put("game_directory", gameDir.getAbsolutePath());
         varArgMap.put("user_properties", "{}");
-        varArgMap.put("user_type", "msa");
+        varArgMap.put("user_type", "mojang");
         varArgMap.put("version_name", versionName);
         varArgMap.put("version_type", versionInfo.type);
         varArgMap.put("natives_directory", System.getProperty("java.library.path"));
@@ -109,6 +109,9 @@ public final class Tools {
             for (Object arg : versionInfo.arguments.game) {
                 if (arg instanceof String) {
                     minecraftArgs.add((String) arg);
+                    if (arg.equals("--xuid")) {
+                        varArgMap.put("user_type", "msa");
+                    }
                 } else {
                     /*
                     JMinecraftVersionList.Arguments.ArgValue argv = (JMinecraftVersionList.Arguments.ArgValue) arg;
