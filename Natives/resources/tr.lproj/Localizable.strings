@@ -74,6 +74,7 @@
 "launcher.mcl.error_download" = "%@: %@ indirilmesi başarısız oldu";
 
 "launcher.menu.custom_controls" = "Özel kontroller";
+"launcher.menu.execute_jar" = ".jar dosyası çalıştır";
 
 "launcher.wait_jit.title" = "JIT için bekleniyor";
 "launcher.wait_jit.message" = "PojavLauncher, Java'nın maksimum performansta çalışması için Just-in-time derlemeye dayanır.";
@@ -225,6 +226,7 @@
 "preference.manage_runtime.header.default" = "Tercih edilen Java sürümü";
 "preference.manage_runtime.default.1165" = "1.16.5 ve üzeri";
 "preference.manage_runtime.default.117" = "1.17 ve üstü";
+"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 ve daha eski sürümler, daha yeni bir Java sürümüyle çalışabilir, ancak modlarla uyumluluk garanti edilmez. Harici çalışma zamanları “java_runtimes” klasörüne yerleştirilebilir. \".jar çalıştır\" seçeneği ile Java sürümünü değiştirmek, yalnızca yükleyici daha yeni bir Java sürümü beklemiyorsa etkili olur.";
 "preference.manage_runtime.footer.java8" = "Minecraft'ın 1.16.5 ve daha eski sürümleri için varsayılan surümdür.";
 "preference.manage_runtime.footer.java17" = "Minecraft 1.17 ve üzeri için varsayılan sürümdür.";
 "preference.manage_runtime.header.invalid" = "Geçersiz yürütücüler";
