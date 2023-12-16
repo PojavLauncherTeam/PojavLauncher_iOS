@@ -34,14 +34,14 @@
 "In game" = "游戏内";
 "In menu" = "菜单内";
 
-"custom_controls.button_edit.forward_lock" = "前进/疾跑锁";
+"custom_controls.button_edit.forward_lock" = "前进（疾跑）锁";
 "custom_controls.button_edit.name" = "名称";
 "custom_controls.button_edit.size" = "大小";
 "custom_controls.button_edit.mapping" = "按键映射";
 "custom_controls.button_edit.orientation" = "方向";
-"custom_controls.button_edit.toggleable" = "可切换";
+"custom_controls.button_edit.toggleable" = "切换触发";
 "custom_controls.button_edit.mouse_pass" = "鼠标穿透";
-"custom_controls.button_edit.swipeable" = "可滑动点击";
+"custom_controls.button_edit.swipeable" = "可滑动按钮";
 "custom_controls.button_edit.bg_color" = "背景颜色";
 "custom_controls.button_edit.stroke_width" = "边框宽度（dp）";
 "custom_controls.button_edit.stroke_color" = "边框颜色";
@@ -244,7 +244,7 @@
 "preference.detail.allocated_memory" = "控制给 Minecraft 分配多少内存";
 "preference.warn.allocated_memory" = "由于系统的限制,可能会导致游戏不稳定";
 "preference.title.custom_env" = "环境变量";
-"preference.detail.custom_env" = "此选项正在构建中。在此期间创建并编辑 custom_env.txt。";
+"preference.detail.custom_env" = "此选项正在构建中，请在此期间创建并编辑 custom_env.txt。";
 
 "preference.title.debug_skip_wait_jit" = "跳过获取\"JIT(Just-in-time)\"请求";
 "preference.detail.debug_skip_wait_jit" = "这并非让您不使用即时编译（JIT）启动，而是跳过调试检查，因为越狱设备上会检查失败。";
