@@ -47,7 +47,7 @@
 "custom_controls.button_edit.stroke_color" = "Цвет контура";
 "custom_controls.button_edit.corner_radius" = "Скругление (%)";
 "custom_controls.button_edit.opacity" = "Видимость (%)";
-"custom_controls.button_edit.visibility" = "Видимость";
+"custom_controls.button_edit.visibility" = "Отображение";
 
 "custom_controls.button_menu.add_subbutton" = "Добавить";
 "custom_controls.control_menu.discard_changes" = "Сбросить изменения";
@@ -91,7 +91,7 @@
 "login.jit.fail.description_unsupported" = "Обнаружен неподдерживаемый способ установки. Переустановите приложение поддерживаемым способом.";
 
 // Login buttons
-"login.menu.sendlogs" = "Отправить журнал";
+"login.menu.sendlogs" = "Поделиться журналом";
 "login.option.add" = "Добавить учётную запись";
 "login.option.select" = "Учётные записи";
 "login.option.demo" = "Демонстрационный режим";
