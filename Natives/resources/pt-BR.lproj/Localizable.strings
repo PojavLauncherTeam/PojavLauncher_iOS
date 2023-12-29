@@ -66,6 +66,8 @@
 "custom_controls.hint" = "Pressione e segure em qualquer lugar na tela para mais opções";
 
 "init.migrateDir" = "O diretório de dados do PojavLauncher agora é %@. Todos os dados existentes foram movidos para a nova localização.";
+
+"java.error.missing_main_class" = "%@ está faltando o atributo principal da classe. Se este for um mod, coloque-o na pasta \"mods\" da instância selecionada.";
 "java.error.missing_runtime" = "%@ requer Java %d ou posterior para executar. Por favor, instale primeiro e especifique ele em \"Gerenciar Runtimes\".";
 
 "launcher.mcl.downloading_file" = "Baixando %@";
@@ -86,6 +88,7 @@
 "login.jit.fail" = "Usuário '%s' não pode ser habilitado.";
 "login.jit.fail.title" = "JIT não pode ser ativado em seu dispositivo.";
 "login.jit.fail.description" = "Nenhuma integração pode ser usada para ativar automaticamente o JIT no seu dispositivo, e agora ele deve estar ativado manualmente. Erros foram registrados no latestlog.txt.";
+"login.jit.fail.description_unsupported" = "Foi detectado um método de instalação não suportado. Por favor, reinstale usando um dos métodos suportados.";
 
 // Login buttons
 "login.menu.sendlogs" = "Envie seus registros";
@@ -212,6 +215,9 @@
 "preference.detail.slideable_hotbar" = "Deixe a barra rápida deslizável como a roda do mouse";
 
 "preference.title.gyroscope_enable" = "Habilitar controles do gyrocópio";
+"preference.detail.gyroscope_enable" = "Habilitar isto permitirá que você visualize o jogo girando o seu telefone";
+"preference.title.gyroscope_invert_x_axis" = "Inverter giroscópio para esquerda e direita";
+"preference.detail.gyroscope_invert_x_axis" = "Inverte o eixo horizontal do giroscópio";
 "preference.title.gyroscope_sensitivity" = "Sensibilidade de controles do giroscópio";
 "preference.detail.gyroscope_sensitivity" = "Ajustar a sensibilidade dos controles do giroscópio";
 
@@ -250,6 +256,9 @@
 "preference.detail.debug_hide_home_indicator" = "Isto desativará o indicador de casa de bloqueio. Você precisará usar o Acesso Orientado para ocultar e bloquear o indicador de casa ao mesmo tempo.";
 
 "preference.profile.title.name" = "Nome";
+"preference.profile.title.loader_type" = "Tipo de carregamento";
+"preference.profile.title.loader_vendor" = "Versões modificadas";
+"preference.profile.title.loader_version" = "Versão do carregamento";
 "preference.profile.title.version" = "Versão";
 "preference.profile.title.version_type" = "Tipo da versão";
 "preference.profile.title.default_touch_control" = "Controles de toque";
@@ -260,6 +269,7 @@
 "profile.section.profiles" = "Perfis nesta instância";
 "profile.title.create" = "Criar novo perfil";
 "profile.title.separate_preference" = "Configurações isoladas";
+"profile.detail.separate_preference" = "Ative esta opção para isolar quaisquer alterações feitas nas configurações. Fazer um reset irá restaurar as configurações globais em vez de configurações padrão.";
 "profile.title.install_fabric_quilt" = "Instalar Fabric/Quilt";
 
 "controller_configurator.title.current" = "Configuração do arquivo do controle";
@@ -302,4 +312,8 @@
 
 "controller_configurator.section.config_files" = "Configuração atual do arquivo";
 "controller_configurator.section.game_mappings" = "Mapeamentos do jogo";
+"controller_configurator.section.footer.game_mappings" = "Liga-se quando o mouse está bloqueado no jogo.";
+"controller_configurator.section.menu_mappings" = "Mapeamentos de menu.";
+"controller_configurator.section.footer.menu_mappings" = "Ligação quando o mouse não estiver bloqueado, como na tela do título ou no menu de pausa.";
 "controller_configurator.section.controller_style" = "Tipo de controle";
+"controller_configurator.section.footer.controller_style" = "Mostrar nomes de botões de controle diferentes neste configurador.";
