@@ -57,8 +57,6 @@ BOOL debugLogEnabled, isJailbroken;
 int csops(pid_t pid, unsigned int ops, void *useraddr, size_t usersize);
 BOOL isJITEnabled(BOOL checkCSOps);
 
-void* gbuffer; // OSMesa framebuffer
-
 // Init functions
 void init_bypassDyldLibValidation();
 void init_hookFunctions();

@@ -28,16 +28,8 @@
 int memorystatus_control(uint32_t command, int32_t pid, uint32_t flags, void *buffer, size_t buffersize);
 #define MEMORYSTATUS_CMD_SET_JETSAM_TASK_LIMIT        6
 
-// Debugging only
-// #define DEBUG_VISIBLE_TOUCH
-
-int inputTextLength;
-
-int currentHotbarSlot = -1;
-BOOL slideableHotbar;
-
-// TODO: key modifiers impl
-
+static int currentHotbarSlot = -1;
+static GameSurfaceView* pojavWindow;
 
 @interface SurfaceViewController ()<UITextFieldDelegate, UIPointerInteractionDelegate, UIGestureRecognizerDelegate> {
 }
@@ -56,7 +48,7 @@ BOOL slideableHotbar;
 @property(nonatomic) CGFloat screenScale;
 @property(nonatomic) CGFloat mouseSpeed;
 @property(nonatomic) CGRect clickRange;
-@property(nonatomic) BOOL isMacCatalystApp, shouldTriggerClick, shouldTriggerHaptic, toggleHidden;
+@property(nonatomic) BOOL isMacCatalystApp, shouldTriggerClick, shouldTriggerHaptic, slideableHotbar, toggleHidden;
 
 @property(nonatomic) BOOL enableMouseGestures, enableHotbarGestures;
 
@@ -115,6 +107,7 @@ BOOL slideableHotbar;
     self.surfaceView.layer.contentsScale = screenScale * resolutionScale;
     self.surfaceView.layer.magnificationFilter = self.surfaceView.layer.minificationFilter = kCAFilterNearest;
     self.surfaceView.multipleTouchEnabled = YES;
+    pojavWindow = self.surfaceView;
 
     self.touchView = [[UIView alloc] initWithFrame:self.view.frame];
     self.touchView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
@@ -340,7 +333,7 @@ BOOL slideableHotbar;
     self.ctrlView.frame = getSafeArea();
 
     // Update gestures state
-    slideableHotbar = getPrefBool(@"control.slideable_hotbar");
+    self.slideableHotbar = getPrefBool(@"control.slideable_hotbar");
     self.enableMouseGestures = getPrefBool(@"control.gesture_mouse");
     self.enableHotbarGestures = getPrefBool(@"control.gesture_hotbar");
     self.shouldTriggerHaptic = !getPrefBool(@"control.disable_haptics");
@@ -557,7 +550,6 @@ BOOL slideableHotbar;
             [self.inputTextField becomeFirstResponder];
             // Insert an undeletable space
             self.inputTextField.text = @" ";
-            inputTextLength = 0;
         }
     }
 }
@@ -580,7 +572,7 @@ BOOL slideableHotbar;
                 break;
         }
 
-        if (touchEvent == self.hotbarTouch && slideableHotbar && ![self isTouchInactive:self.hotbarTouch]) {
+        if (touchEvent == self.hotbarTouch && self.slideableHotbar && ![self isTouchInactive:self.hotbarTouch]) {
             CGFloat screenScale = [[UIScreen mainScreen] scale];
             int slot = self.enableHotbarGestures ?
             callback_SurfaceViewController_touchHotbar(locationInView.x * screenScale, locationInView.y * screenScale) : -1;
@@ -703,8 +695,6 @@ BOOL slideableHotbar;
 
     if (sender.state == UIGestureRecognizerStateRecognized) {
         if (currentHotbarSlot == -1) {
-            inputTextLength = 0;
-
             if (!self.enableMouseGestures) return;
             CallbackBridge_nativeSendMouseButton(isGrabbing == JNI_TRUE ?
                 GLFW_MOUSE_BUTTON_RIGHT : GLFW_MOUSE_BUTTON_LEFT, 1, 0);
@@ -769,7 +759,7 @@ BOOL slideableHotbar;
         }
     }
     
-    if (!slideableHotbar) {
+    if (!self.slideableHotbar) {
         CGPoint location = [sender locationInView:self.rootView];
         CGFloat screenScale = UIScreen.mainScreen.scale;
         currentHotbarSlot = self.enableHotbarGestures ?
@@ -778,7 +768,6 @@ BOOL slideableHotbar;
     if (sender.state == UIGestureRecognizerStateBegan) {
         self.shouldTriggerClick = NO;
         if (currentHotbarSlot == -1) {
-            inputTextLength = 0;
 
             if (self.enableMouseGestures)
                 CallbackBridge_nativeSendMouseButton(GLFW_MOUSE_BUTTON_LEFT, 1, 0);
@@ -852,7 +841,6 @@ BOOL slideableHotbar;
                             [self.inputTextField becomeFirstResponder];
                             // Insert an undeletable space
                             self.inputTextField.text = @" ";
-                            inputTextLength = 0;
                         }
                     }
                     break;
@@ -1058,6 +1046,10 @@ int touchesMovedCount;
 
 + (BOOL)isRunning {
     return [currentWindow().rootViewController isKindOfClass:SurfaceViewController.class];
+}
+
++ (GameSurfaceView *)surface {
+    return pojavWindow;
 }
 
 @end
