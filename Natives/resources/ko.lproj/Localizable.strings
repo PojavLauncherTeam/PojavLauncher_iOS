@@ -4,30 +4,35 @@
 */
 
 "game.menu.force_close" = "강제 종료";
-"game.menu.confirm.force_close" = "정말 강제 종료 하시겠습니까?";
+"game.menu.confirm.force_close" = "강제종료 하시겠습니까?";
 "game.menu.log_output" = "로그 산출";
 "game.menu.custom_controls" = "사용자 지정 조작";
 
-"game.note.airplay" = "마인크래프트가 AirPlay 디스플레이에 출력되고있습니다.";
+"game.note.airplay" = "마인크래프트가 AirPlay(에어플레이) 디스플레이에 출력되고있습니다.";
 
-"game.title.exit_code" = "마인크래프트가 코드 %d와(과) 함께 종료했습니다.";
+"game.title.exit_code" = "마인크래프트가 게임코드 %d와(과) 함께 종료했습니다.";
 
 // The play button
 "Play" = "플레이";
 
 // Version categories
-"Installed" = "설치되어 있는 버전";
+"Installed" = "이미 설치되어 있는 버전입니다.";
 "Snapshot" = "스냅샷";
-"Releases" = "릴리즈";
+"Releases" = "버전";
+"Unstable" = "불안정함";
 "Old-beta" = "구-베타버전";
 "Old-alpha" = "구-알파버전";
 
 // Custom controls
-"Copy" = "복사";
-"Edit" = "수정";
+"Copy" = "복사하기";
+"Edit" = "편집";
 "Move" = "이동";
-"Remove" = "제거";
+"Remove" = "삭제";
 "Resize" = "사이즈 변경";
+// Visibility
+"Always" = "항상";
+"In game" = "인게임";
+"In menu" = "인메뉴";
 
 "custom_controls.button_edit.forward_lock" = "전면 잠금";
 "custom_controls.button_edit.name" = "이름";
@@ -38,6 +43,7 @@
 "custom_controls.button_edit.mouse_pass" = "마우스 패스";
 "custom_controls.button_edit.swipeable" = "끌어당기기";
 "custom_controls.button_edit.bg_color" = "배경 색상";
+"custom_controls.button_edit.stroke_width" = "선 굵기";
 "custom_controls.button_edit.stroke_color" = "강조 색";
 "custom_controls.button_edit.corner_radius" = "모서리 반경 (%)";
 "custom_controls.button_edit.opacity" = "투명도 (%)";
@@ -67,6 +73,7 @@
 "launcher.mcl.error_download" = "%@: %@ 다운로드 실패";
 
 "launcher.menu.custom_controls" = "사용자 지정 조작";
+"launcher.menu.execute_jar" = ".jar 실행";
 
 "launcher.wait_jit.title" = "JIT를 기다리고 있습니다";
 "launcher.wait_jit.message" = "PojavLauncher는 최대 성능으로 작동하기 위해 Java용 Just-in-time 컴파일에 의존합니다.";
@@ -80,6 +87,7 @@
 "login.jit.fail" = "JIT이 활성화 되지 않았습니다.";
 "login.jit.fail.title" = "장치에서 JIT를 사용하도록 할수 없습니다";
 "login.jit.fail.description" = "디바이스에서 JIT를 자동으로 활성화하는 데 통합을 사용할 수 없으며 이제 수동으로 활성화해야 합니다. latestlog.txt에 오류가 기록되었습니다.";
+"login.jit.fail.description_unsupported" = "지원되지 않는 설치 방법이 탐지되었습니다. 지원되는 방법 중 하나를 사용하여 다시 설치하십시오.";
 
 // Login buttons
 "login.menu.sendlogs" = "로그 내보내기";
@@ -123,6 +131,7 @@
 "preference.section.footer.video" = "자동 렌더러를 사용하면 PojavLauncher가 Minecraft 버전에 따라 최상의 옵션을 선택할 수 있습니다. 해상도를 낮추면 성능 향상을 위해 GPU 워크로드가 줄어듭니다.";
 "preference.section.control" = "사용자 지정 조작";
 "preference.section.debug" = "UI 디버깅 설정";
+"preference.section.footer.debug" = "변경 사항을 적용하려면 런처를 다시 시작해야 할 수도 있습니다.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java 기능";
 //"preference.section.footer.java" = "";
@@ -216,6 +225,7 @@
 "preference.manage_runtime.header.default" = "선호하는 자바 버전";
 "preference.manage_runtime.default.1165" = "1.16.5 이하";
 "preference.manage_runtime.default.117" = "1.17 이상";
+"preference.manage_runtime.footer.default" = "마인크래프트 1.16.5 이상은 더 새로운 자바 버전으로 실행될 수 있지만 모드와의 호환성은 보장되지 않습니다. 외부 런타임은 \"java_runtimes\" 폴더에 배치할 수 있습니다.\"Execute .jar\"를 위해 자바 버전을 변경하는 것은 설치 프로그램이 더 새로운 자바 버전을 기대하지 않는 경우에만 적용됩니다.";
 "preference.manage_runtime.footer.java8" = "이것은 Minecraft 1.16.5 및 이전 버전의 기본 버전입니다.";
 "preference.manage_runtime.footer.java17" = "이것은 Minecraft 1.17 이상의 기본 버전입니다.";
 "preference.manage_runtime.header.invalid" = "유효하지 않은 런타임";
@@ -245,7 +255,11 @@
 "preference.detail.debug_hide_home_indicator" = "이렇게 하면 홈 바 잠금이 비활성화됩니다. 홈 바를 숨기고 잠그려면 사용법 유도를 사용해야 합니다.";
 
 "preference.profile.title.name" = "이름";
+"preference.profile.title.loader_type" = "타입로더";
+"preference.profile.title.loader_vendor" = "로더 버전";
+"preference.profile.title.loader_version" = "수정된 버전";
 "preference.profile.title.version" = "버전";
+"preference.profile.title.version_type" = "버전 유형";
 "preference.profile.title.default_touch_control" = "터치 컨트롤";
 "preference.profile.title.default_gamepad_control" = "게임패드 컨트롤";
 
@@ -255,6 +269,7 @@
 "profile.title.create" = "새 프로필 생성";
 "profile.title.separate_preference" = "격리 설정";
 "profile.detail.separate_preference" = "이 옵션을 활성화하여 설정 변경 사항을 격리합니다. 재설정을 수행하면 기본 설정 대신 전역 설정으로 복원됩니다.";
+"profile.title.install_fabric_quilt" = "설치 Fabric/Quilt";
 
 "controller_configurator.title.current" = "게임패드 구성 파일";
 "controller_configurator.title.type.xbox" = "XBox";
