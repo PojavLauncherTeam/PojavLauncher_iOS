@@ -19,7 +19,7 @@
 "Installed" = "インストール済み";
 "Snapshot" = "スナップショット";
 "Releases" = "リリース";
-"Unstable" = "Unstable";
+"Unstable" = "不安定な";
 "Old-beta" = "Beta 版";
 "Old-alpha" = "Alpha 版";
 
@@ -29,6 +29,10 @@
 "Move" = "Move";
 "Remove" = "消去";
 "Resize" = "サイズ調整";
+// Visibility
+"Always" = "常に有効";
+"In game" = "今ゲーム中...";
+"In menu" = "インメニュー";
 
 "custom_controls.button_edit.forward_lock" = "フォワードロック";
 "custom_controls.button_edit.name" = "名前";
@@ -39,9 +43,11 @@
 "custom_controls.button_edit.mouse_pass" = "マウスパス";
 "custom_controls.button_edit.swipeable" = "スワイプする";
 "custom_controls.button_edit.bg_color" = "背景色";
+"custom_controls.button_edit.stroke_width" = "線の幅 (%)";
 "custom_controls.button_edit.stroke_color" = "線の色";
 "custom_controls.button_edit.corner_radius" = "角の半径 (%)";
 "custom_controls.button_edit.opacity" = "透明度 (%)";
+"custom_controls.button_edit.visibility" = "公開範囲";
 
 "custom_controls.button_menu.add_subbutton" = "サブボタンを追加";
 "custom_controls.control_menu.discard_changes" = "変更を破棄";
@@ -61,9 +67,13 @@
 
 "init.migrateDir" = "PojavLauncherのディレクトリが %@になりました。既存のすべてのデータが新しい場所に移動されました。";
 
+"java.error.missing_main_class" = "%@ にはメインクラス属性がありません。これがmodの場合は、選択したインスタンスの「mods」フォルダに入れてください。";
+"java.error.missing_runtime" = "%@ を実行するにはJava %d 以降が必要です。最初にインストールし、ランタイムの管理で指定してください。";
+
 "launcher.mcl.downloading_file" = "%@ をダウンロード中";
 
 "launcher.menu.custom_controls" = "カスタムコントロール";
+"launcher.menu.execute_jar" = "実行する.jar";
 
 "launcher.wait_jit.title" = "JITを待っています";
 "launcher.wait_jit.message" = "PojavLauncherは、Javaが最大限のパフォーマンスで動作するようにJust-in-timeコンパイルに依存しています。";
@@ -76,6 +86,7 @@
 "login.jit.enabled" = "JIT が有効になりました";
 "login.jit.fail" = "JITを有効化できませんでした";
 "login.jit.fail.title" = "お使いのデバイスでJITを有効化できませんでした";
+"login.jit.fail.description_unsupported" = "サポートされていないインストール方法が検出されました。サポートされている方法のいずれかを使用して再インストールしてください。";
 
 // Login buttons
 "login.menu.sendlogs" = "ログを送信する";
@@ -94,6 +105,7 @@
 "login.warn.message.demomode" = "オフラインモードとローカルモードへの置き換えとして デモモードでは、ゲームを所有していないMicrosoftアカウントにサインインし、Java Editionの試用版をプレイすることができます。 1.3で導入されました。以前のバージョンでは、公式ランチャーがこれらの制限を設けていないため、以前のバージョンではフルゲームが含まれています。 このオフラインモードからの移行の詳細については、当社のウェブサイトをご覧ください。";
 
 "login.warn.title.localmode" = "オフラインモードは現在ローカルモードです。";
+"login.warn.message.localmode" = "インストール済みのバージョンは引き続きプレイできますが、有料アカウントなしで Minecraft をダウンロードすることはできません。 ローカルアカウントやその他のマインクラフトの取得手段についてはサポートは提供されません。詳細についてはFAQをご覧ください。";
 
 "login.msa.error.xsts.noxboxacc" = "このMicrosoftアカウントにXboxプロファイルが登録されていません。Xboxプロファイルを作成したことを確認してください。\nエラーコード: 2148916233";
 "login.msa.error.xsts.noxbox" = "現在お住まいの国では Xbox Live がご利用いただけません。\nエラーコード: 2148916235";
@@ -108,12 +120,15 @@
 "login.msa.progress.checkMCProfile" = "(5/5) Minecraft プロファイルの確認";
 
 "News" = "ニュース";
+"Profiles" = "プロファイル";
 "Settings" = "設定";
 
 "preference.section.general" = "一般設定";
 "preference.section.video" = "ビデオと音声の設定";
+"preference.section.footer.video" = "自動レンダラーを使用すると、PojavLauncherはMinecraftのバージョンに基づいて最適なオプションを選択できます。解像度を下げると、パフォーマンスを向上させるためにGPUのワークロードが減少します。";
 "preference.section.control" = "制御のカスタマイズ";
 "preference.section.debug" = "UIデバッグ設定";
+"preference.section.footer.debug" = "すべての変更を有効にするには、スクリプトを再起動する必要がある場合があります。";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java の調整";
 //"preference.section.footer.java" = "";
@@ -149,6 +164,11 @@
 
 "preference.title.renderer" = "レンダラー";
 
+"preference.title.renderer.release.auto" = "自動";
+"preference.title.renderer.release.gl4es" = "holy gl4es";
+"preference.title.renderer.release.angle" = "角度";
+"preference.title.renderer.release.zink" = "Zink";
+
 "preference.title.renderer.debug.auto" = "自動: gl4es または angle";
 "preference.title.renderer.debug.angle" = "ANGLE (1.17+) - エクスポートOpenGL 3.2 (Core Profile, limited)";
 "preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - exports OpenGL 4.1";
@@ -165,6 +185,7 @@
 "preference.title.silence_with_switch" = "サイレントスイッチで音声を無効にする";
 "preference.title.default_gamepad_ctrl" = "コントローラーの設定";
 "preference.detail.hardware_hide" = "マウスまたはゲームコントローラーが接続されている場合、画面上のコントロールボタンを自動的に無効にするようにします";
+"preference.title.disable_haptics" = "画面上のハプティクスを無効にする";
 "preference.title.press_duration" = "長押し時間 (ms)";
 "preference.detail.press_duration" = "ブロックを破壊したりアイテムをドロップしたりするための長さをトリガーします。";
 "preference.title.button_scale" = "オンスクリーンボタンの拡大率(%)";
@@ -182,9 +203,22 @@
 "preference.title.gyroscope_sensitivity" = "ジャイロコントロールの感度";
 "preference.detail.gyroscope_sensitivity" = "ジャイロコントロールの感度の調整";
 
+"preference.title.manage_runtime" = "実行時の管理";
+"preference.title.confirm.delete_runtime" = "%@ は削除されます";
+"preference.manage_runtime.header.default" = "優先Javaバージョン";
+"preference.manage_runtime.default.1165" = "1.16.5以上";
+"preference.manage_runtime.default.117" = "1.17以上";
+"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 以前は、新しい Java バージョンで動作する可能性がありますが、Mod との互換性は保証されません。 外部ランタイムは「java_runtimes」フォルダに配置できます。 「Execute .jar」のJavaバージョンを変更することは、インストーラが新しいJavaバージョンを期待していない場合にのみ有効です。";
+"preference.manage_runtime.footer.java8" = "これは、Minecraft 1.16.5 以前のデフォルトバージョンです。";
+"preference.manage_runtime.footer.java17" = "これは、Minecraft 1.17. 以前のデフォルトバージョンです。";
+"preference.manage_runtime.header.invalid" = "無効なランタイムです";
+
 "preference.title.java_args" = "JVM 起動引数";
+"preference.detail.java_args" = "Minecraft を起動するときに Java に引数を渡します。正しく変更されないとゲームがクラッシュすることがありますのでご注意ください。";
 "preference.placeholder.java_args" = "引数の指定...";
 "preference.title.env_variables" = "環境変数";
+"preference.detail.env_variables" = "Minecraft を起動するときに Java に引数を渡します。正しく変更されないとゲームがクラッシュすることがありますのでご注意ください。";
+"preference.placeholder.env_variables" = "変数を指定...";
 "preference.title.auto_ram" = "自動RAM調整";
 "preference.detail.auto_ram" = "メモリの自動調整を有効にする";
 "preference.warn.auto_ram" = "脱獄済みのデバイスでこのオプションを無効にすると、変更された場合に不安定になる可能性があります。注意してください。";
@@ -192,6 +226,7 @@
 "preference.detail.allocated_memory" = "Minecraftに与えられるメモリの量を制御します";
 "preference.warn.allocated_memory" = "オペレーティングシステム自体に制限があるため、このオプションは不安定な場合があり、値が大きい場合がありますのでご注意ください。";
 "preference.title.custom_env" = "環境変数";
+"preference.detail.custom_env" = "このオプションは現在構築中です。custom_env.txtを作成して編集します。";
 
 "preference.title.debug_skip_wait_jit" = "「JIT待機中」ダイアログをスキップ";
 "preference.detail.debug_skip_wait_jit" = "これは、JITなしで起動することはできません。代わりに、特定の脱獄時にチェックが失敗するため、デバッガのチェックをスキップします。";
@@ -203,8 +238,21 @@
 "preference.detail.debug_hide_home_indicator" = "詳細バーのロックを無効にします。ガイド付きアクセスを使用してホームインジケーターを非表示にしてロックする必要があります。";
 
 "preference.profile.title.name" = "名前";
+"preference.profile.title.loader_type" = "ローダータイプ";
+"preference.profile.title.loader_vendor" = "ローダーのベンダー:";
+"preference.profile.title.loader_version" = "ローダーのバージョン";
 "preference.profile.title.version" = "バージョン";
+"preference.profile.title.version_type" = "バージョンタイプ";
+"preference.profile.title.default_touch_control" = "Touch controls";
+"preference.profile.title.default_gamepad_control" = "ゲームパッドコントロール";
+
+"profile.error.name_exists" = "その名前があるプロフィールは既に存在している。 ユニークな名前を使用する。";
+"profile.section.instance" = "ゲームインスタンスの設定";
+"profile.section.profiles" = "このインスタンスのプロファイル";
 "profile.title.create" = "新規プロフィールの作成";
+"profile.title.separate_preference" = "単離設定";
+"profile.detail.separate_preference" = "このオプションを有効にすると、設定で行われた変更を隔離します。リセットを行うと、デフォルトの設定ではなくグローバル設定に戻ります。";
+"profile.title.install_fabric_quilt" = "Fabric/Quilt をインストール";
 "controller_configurator.xbox.title.named_a" = "A";
 "controller_configurator.xbox.title.named_b" = "B";
 "controller_configurator.xbox.title.named_x" = "X";
