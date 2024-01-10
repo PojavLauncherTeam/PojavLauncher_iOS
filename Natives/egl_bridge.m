@@ -112,5 +112,6 @@ void* pojavCreateContext(basic_render_window_t* contextSrc) {
 }
 
 void pojavSwapInterval(int interval) {
+    if (!br_swap_interval) return;
     br_swap_interval(interval);
 }
