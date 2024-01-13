@@ -142,6 +142,7 @@
 "preference.title.appicon-dark" = "熟悉的暗黑PojavLauncher";
 "preference.title.appicon-development" = "鉛筆開發";
 "preference.title.hidden_sidebar" = "預設隱藏主選單的側邊欄";
+"preference.detail.hidden_sidebar" = "允許在預設情况下和旋轉時隐藏主選單上的側邊欄。";
 
 "preference.title.reset_warnings" = "重設所有警告";
 "preference.title.done.reset_warnings" = "所有警告已被重設。";
@@ -149,6 +150,10 @@
 "preference.title.reset_settings" = "重設所有設定";
 "preference.title.confirm.reset_settings" = "這會移除你所有的自定義偏好設定，包括解像度、按鈕大小和Java參數。";
 "preference.title.done.reset_settings" = "所有的預設設定已被回復。";
+
+"preference.title.erase_demo_data" = "清除試玩版游戲數據";
+"preference.title.confirm.erase_demo_data" = "這將刪除所有試玩版本和試玩版帳戶的數據。";
+"preference.title.done.erase_demo_data" = "所有試玩版的游戲數據已被清除";
 
 "preference.title.renderer" = "渲染器";
 "preference.title.renderer.release.gl4es" = "Holy GL4ES -（全版本可用，速度較快）";
@@ -164,9 +169,12 @@
 
 "preference.title.resolution" = "解像度（%）";
 "preference.detail.resolution" = "允許你降低遊戲的解像度。";
+"preference.title.max_framerate" = "最大FPS";
+"preference.detail.max_framerate" = "允許你在ProMotion顯示器上限制游戲FPS到60FPS";
 
 "preference.title.fullscreen_airplay" = "全螢幕隔空投放";
 "preference.detail.fullscreen_airplay" = "允許在外部顯示器上展示全螢幕遊戲畫面，而不是影射螢幕上的內容。";
+"preference.title.silence_other_audio" = "在游戲打開時暫停音頻";
 "preference.title.press_duration" = "長按時間（毫秒）";
 "preference.detail.press_duration" = "觸發破壞方塊及釋出物件的按壓時間。";
 "preference.title.button_scale" = "螢幕按鈕比例（%）";
