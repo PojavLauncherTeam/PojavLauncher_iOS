@@ -10,7 +10,7 @@
 
 "game.note.airplay" = "마인크래프트가 AirPlay(에어플레이) 디스플레이에 출력되고있습니다.";
 
-"game.title.exit_code" = "마인크래프트가 게임코드 %d와(과) 함께 종료했습니다.";
+"game.title.exit_code" = "마인크래프트가 코드: %d와(과) 함께 종료했습니다.";
 
 // The play button
 "Play" = "플레이";
@@ -47,6 +47,7 @@
 "custom_controls.button_edit.stroke_color" = "강조 색";
 "custom_controls.button_edit.corner_radius" = "모서리 반경 (%)";
 "custom_controls.button_edit.opacity" = "투명도 (%)";
+"custom_controls.button_edit.visibility" = "투명도";
 
 "custom_controls.button_menu.add_subbutton" = "부속 버튼 추가";
 "custom_controls.control_menu.discard_changes" = "변경사항 취소";
