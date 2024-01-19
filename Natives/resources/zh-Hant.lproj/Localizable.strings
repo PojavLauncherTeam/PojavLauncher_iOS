@@ -31,6 +31,8 @@
 "Resize" = "調整大小";
 // Visibility
 "Always" = "始终";
+"In game" = "遊戲中";
+"In menu" = "選單中";
 
 "custom_controls.button_edit.forward_lock" = "前進/疾跑鎖";
 "custom_controls.button_edit.name" = "名稱";
@@ -67,6 +69,7 @@
 "launcher.mcl.error_download" = "無法下載%@：%@";
 
 "launcher.menu.custom_controls" = "自訂控制鍵";
+"launcher.menu.execute_jar" = "執行 .jar";
 
 "launcher.wait_jit.title" = "正在等待JIT";
 "launcher.wait_jit.message" = "PojavLauncher依賴即時編譯令Java以最大性能執行。";
@@ -114,6 +117,7 @@
 "login.msa.progress.checkMCProfile" = "(5/5) 正在檢查我的世界用戶檔案";
 
 "News" = "新聞";
+"Profiles" = "安裝檔";
 "Settings" = "設定";
 
 "preference.section.general" = "一般設定";
@@ -156,6 +160,8 @@
 "preference.title.done.erase_demo_data" = "所有試玩版的游戲數據已被清除";
 
 "preference.title.renderer" = "渲染器";
+
+"preference.title.renderer.release.auto" = "自動";
 "preference.title.renderer.release.gl4es" = "Holy GL4ES -（全版本可用，速度較快）";
 "preference.title.renderer.release.angle" = "ANGLE（Vulkan）-（僅支持1.17以上的版本，速度中等）";
 "preference.title.renderer.release.zink" = "Zink（Vulkan）-（全版本可用，速度中等，設備相容性差）";
@@ -217,4 +223,21 @@
 "preference.profile.title.name" = "名稱";
 "preference.profile.title.version" = "版本";
 "profile.title.create" = "新增設定檔";
+"controller_configurator.title.type.xbox" = "Xbox";
+"controller_configurator.title.type.playstation" = "PlayStation";
+"controller_configurator.xbox.title.named_start" = "選單";
+"controller_configurator.xbox.title.named_a" = "A";
+"controller_configurator.xbox.title.named_b" = "B";
+"controller_configurator.xbox.title.named_x" = "X";
+"controller_configurator.xbox.title.named_y" = "Y";
+"controller_configurator.xbox.title.dpad_up" = "上";
+"controller_configurator.xbox.title.dpad_down" = "下";
+"controller_configurator.xbox.title.dpad_left" = "左";
+"controller_configurator.xbox.title.dpad_right" = "右";
 "controller_configurator.playstation.title.named_back" = "選擇";
+"controller_configurator.playstation.title.dpad_up" = "上";
+"controller_configurator.playstation.title.dpad_down" = "下";
+"controller_configurator.playstation.title.dpad_left" = "左";
+"controller_configurator.playstation.title.dpad_right" = "右";
+"controller_configurator.section.game_mappings" = "遊戲映射";
+"controller_configurator.section.menu_mappings" = "選單映射";
