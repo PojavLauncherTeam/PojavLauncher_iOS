@@ -13,43 +13,17 @@
 #define SPECIALBTN_LOGOUTPUT -100
 
 static BOOL shouldHitEnterAfterWindowShown;
-static int* rgbArray;
 static SurfaceView* surfaceView;
 
 static jclass class_CTCAndroidInput;
 static jmethodID method_ReceiveInput;
 
-JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_uikit_UIKit_refreshAWTBuffer(JNIEnv* env, jclass clazz, jintArray jreRgbArray) {
-    if (!runtimeJNIEnvPtr) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &runtimeJNIEnvPtr, NULL);
-            assert(runtimeJNIEnvPtr);
-        });
-    }
-
-    int *tmpArray = (*env)->GetIntArrayElements(env, jreRgbArray, 0);
-    memcpy(rgbArray, tmpArray, windowWidth * windowHeight * 4);
-    (*env)->ReleaseIntArrayElements(env, jreRgbArray, tmpArray, JNI_ABORT);
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [surfaceView displayLayer];
-    });
-
-    // Wait until something renders at the middle
-    if (shouldHitEnterAfterWindowShown && rgbArray[windowWidth/2 + windowWidth*windowHeight/2] != 0) {
-        shouldHitEnterAfterWindowShown = NO;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 200 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^(void){
-            // Auto hit Enter to install immediately
-            AWTInputBridge_sendKey('\n');
-        });
-    }
-}
-
 void AWTInputBridge_nativeSendData(int type, int i1, int i2, int i3, int i4) {
-    if (runtimeJNIEnvPtr == NULL) {
+    if (!runtimeJNIEnvPtr) {
         return;
     }
 
-    if (method_ReceiveInput == NULL) {
+    if (!method_ReceiveInput) {
         class_CTCAndroidInput = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "net/java/openjdk/cacio/ctc/CTCAndroidInput");
         if ((*runtimeJNIEnvPtr)->ExceptionCheck(runtimeJNIEnvPtr) == JNI_TRUE) {
             (*runtimeJNIEnvPtr)->ExceptionClear(runtimeJNIEnvPtr);
@@ -78,11 +52,66 @@ void AWTInputBridge_sendKey(int keycode) {
     AWTInputBridge_nativeSendData(EVENT_TYPE_KEY, ' ', keycode, 0, 0);
 }
 
-@interface SurfaceView()
+@interface SurfaceView() {
+    JNIEnv *surfaceJNIEnv;
+    jclass class_CTCScreen;
+    jmethodID method_GetRGB;
+    int *rgbArray; 
+}
 @property(nonatomic) CGColorSpaceRef colorSpace;
 @end
 
 @implementation SurfaceView
+- (void)refreshBuffer {
+    if (!runtimeJavaVMPtr) {
+        // JVM is not ready yet
+        return;
+    } else if (!surfaceJNIEnv) {
+        // Obtain JNIEnvs
+        (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &surfaceJNIEnv, NULL);
+        assert(surfaceJNIEnv);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            (*runtimeJavaVMPtr)->AttachCurrentThread(runtimeJavaVMPtr, &runtimeJNIEnvPtr, NULL);
+            assert(runtimeJNIEnvPtr);
+        });
+
+        // Obtain CTCScreen.getCurrentScreenRGB()
+        class_CTCScreen = (*surfaceJNIEnv)->FindClass(surfaceJNIEnv, "net/java/openjdk/cacio/ctc/CTCScreen");
+        if ((*surfaceJNIEnv)->ExceptionCheck(surfaceJNIEnv) == JNI_TRUE) {
+            (*surfaceJNIEnv)->ExceptionClear(surfaceJNIEnv);
+            class_CTCScreen = (*surfaceJNIEnv)->FindClass(surfaceJNIEnv, "com/github/caciocavallosilano/cacio/ctc/CTCScreen");
+        }
+        assert(class_CTCScreen != NULL);
+        method_GetRGB = (*surfaceJNIEnv)->GetStaticMethodID(surfaceJNIEnv, class_CTCScreen, "getCurrentScreenRGB", "()[I");
+        assert(method_GetRGB != NULL);
+        rgbArray = calloc(4, (size_t) (windowWidth * windowHeight));
+    }
+
+    jintArray jreRgbArray = (jintArray) (*surfaceJNIEnv)->CallStaticObjectMethod(
+        surfaceJNIEnv,
+        class_CTCScreen,
+        method_GetRGB
+    );
+    if (!jreRgbArray) {
+        return;
+    }
+    int *tmpArray = (*surfaceJNIEnv)->GetIntArrayElements(surfaceJNIEnv, jreRgbArray, 0);
+    memcpy(rgbArray, tmpArray, windowWidth * windowHeight * 4);
+    (*surfaceJNIEnv)->ReleaseIntArrayElements(surfaceJNIEnv, jreRgbArray, tmpArray, JNI_ABORT);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [surfaceView displayLayer];
+    });
+
+    // Wait until something renders at the middle
+    if (shouldHitEnterAfterWindowShown && rgbArray[windowWidth/2 + windowWidth*windowHeight/2] != 0) {
+        shouldHitEnterAfterWindowShown = NO;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 200 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^(void){
+            // Auto hit Enter to install immediately
+            AWTInputBridge_sendKey('\n');
+        });
+    }
+}
+
 - (void)displayLayer {
     CGDataProviderRef bitmapProvider = CGDataProviderCreateWithData(NULL, rgbArray, windowWidth * windowHeight * 4, NULL);
     CGImageRef bitmap = CGImageCreate(windowWidth, windowHeight, 8, 32, 4 * windowWidth, _colorSpace, kCGImageAlphaFirst | kCGBitmapByteOrder32Little, bitmapProvider, NULL, FALSE, kCGRenderingIntentDefault);
@@ -266,9 +295,21 @@ void AWTInputBridge_sendKey(int keycode) {
     self.logOutputView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     [self.view addSubview:self.logOutputView];
 
-    rgbArray = calloc(4, (size_t) (windowWidth * windowHeight));
-
     setenv("POJAV_SKIP_JNI_GLFW", "1", 1);
+ 
+    // Register the display loop
+    CADisplayLink *displayLink = [CADisplayLink displayLinkWithTarget:surfaceView selector:@selector(refreshBuffer)];
+    if (@available(iOS 15.0, tvOS 15.0, *)) {
+        if(getPrefBool(@"video.max_framerate")) {
+            displayLink.preferredFrameRateRange = CAFrameRateRangeMake(30, 120, 120);
+        } else {
+            displayLink.preferredFrameRateRange = CAFrameRateRangeMake(30, 60, 60);
+        }
+    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [displayLink addToRunLoop:NSRunLoop.currentRunLoop forMode:NSRunLoopCommonModes];
+    });
+
     
 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         launchJVM(nil, self.filepath, windowWidth, windowHeight, _requiredJavaVersion);
@@ -373,8 +414,6 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 }
 
 - (void)showErrorMessage:(NSString *)message {
-    free(rgbArray);
-    rgbArray = NULL;
     surfaceView = nil;
     showDialog(localize(@"Error", nil), message);
 }
