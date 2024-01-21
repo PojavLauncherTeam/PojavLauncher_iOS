@@ -47,6 +47,7 @@
 "custom_controls.button_edit.stroke_color" = "Warna garis";
 "custom_controls.button_edit.corner_radius" = "Radius sudut (%)";
 "custom_controls.button_edit.opacity" = "Kegelapan (%)";
+"custom_controls.button_edit.visibility" = "Visibilitas";
 
 "custom_controls.button_menu.add_subbutton" = "Tambahkan tombol";
 "custom_controls.control_menu.discard_changes" = "Batal perubahan";
@@ -73,6 +74,7 @@
 "launcher.mcl.error_download" = "Gagal untuk mengunduh %@: %@";
 
 "launcher.menu.custom_controls" = "Kontrol kustom";
+"launcher.menu.execute_jar" = "Eksekusi .jar";
 
 "launcher.wait_jit.title" = "Menunggu JIT";
 "launcher.wait_jit.message" = "PojavLauncher membutuhkan compilation Just-in-Time agar Java dapat bekerja dalam perfoma maksimal.";
@@ -251,7 +253,10 @@ pengontrol game terhubung.";
 
 "preference.profile.title.name" = "Nama";
 "preference.profile.title.loader_type" = "Tipe pemuat";
+"preference.profile.title.loader_version" = "Versi loader";
 "preference.profile.title.version" = "Versi";
+"preference.profile.title.version_type" = "Tipe versi";
+"preference.profile.title.default_touch_control" = "Kontrol sentuhan";
 "preference.profile.title.default_gamepad_control" = "Kontrol Gamepad";
 
 "profile.error.name_exists" = "Profil dengan nama itu sudah ada. Toko gunakan nama lain.";
@@ -259,6 +264,7 @@ pengontrol game terhubung.";
 "profile.title.create" = "Buat profil baru";
 "profile.title.separate_preference" = "Pengaturan isolasi";
 "profile.detail.separate_preference" = "Nyalakan opsi ini untuk isolasi semua perubahan yang ada di pengaturan. Melakukan pengaturan ulang akan mengembalikan ke pengaturan global bukan pengaturan bawaan.";
+"profile.title.install_fabric_quilt" = "Menginstall Fabric/Quilt";
 
 "controller_configurator.title.current" = "Berkas konfigurasi Gamepad";
 "controller_configurator.title.type.xbox" = "Xbox";
