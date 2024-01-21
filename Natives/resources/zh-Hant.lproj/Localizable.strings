@@ -152,7 +152,7 @@
 "preference.title.done.reset_warnings" = "所有警告已被重設。";
 
 "preference.title.reset_settings" = "重設所有設定";
-"preference.title.confirm.reset_settings" = "這會移除你所有的自定義偏好設定，包括解像度、按鈕大小和Java參數。";
+"preference.title.confirm.reset_settings" = "這會移除你所有的客製化偏好設定，包括解析度、按鈕大小和 Java 參數。";
 "preference.title.done.reset_settings" = "所有的預設設定已被回復。";
 
 "preference.title.erase_demo_data" = "清除試玩版游戲數據";
@@ -173,8 +173,8 @@
 
 "preference.detail.renderer" = "改變要使用的OpenGL渲染引擎";
 
-"preference.title.resolution" = "解像度（%）";
-"preference.detail.resolution" = "允許你降低遊戲的解像度。";
+"preference.title.resolution" = "解析度（%）";
+"preference.detail.resolution" = "允許你降低遊戲的解析度。";
 "preference.title.max_framerate" = "最大FPS";
 "preference.detail.max_framerate" = "允許你在ProMotion顯示器上限制游戲FPS到60FPS";
 
@@ -234,10 +234,22 @@
 "controller_configurator.xbox.title.dpad_down" = "下";
 "controller_configurator.xbox.title.dpad_left" = "左";
 "controller_configurator.xbox.title.dpad_right" = "右";
+
+"controller_configurator.playstation.title.bumper_left" = "L1";
+"controller_configurator.playstation.title.bumper_right" = "R1";
+"controller_configurator.playstation.title.trigger_left" = "L2";
+"controller_configurator.playstation.title.trigger_right" = "R2";
 "controller_configurator.playstation.title.named_back" = "選擇";
+"controller_configurator.playstation.title.named_start" = "開始";
+"controller_configurator.playstation.title.named_a" = "叉";
+"controller_configurator.playstation.title.named_b" = "圓";
+"controller_configurator.playstation.title.named_x" = "方";
+"controller_configurator.playstation.title.named_y" = "三角";
 "controller_configurator.playstation.title.dpad_up" = "上";
 "controller_configurator.playstation.title.dpad_down" = "下";
 "controller_configurator.playstation.title.dpad_left" = "左";
 "controller_configurator.playstation.title.dpad_right" = "右";
+"controller_configurator.playstation.title.thumb_left" = "L3";
+"controller_configurator.playstation.title.thumb_right" = "R3";
 "controller_configurator.section.game_mappings" = "遊戲映射";
 "controller_configurator.section.menu_mappings" = "選單映射";
