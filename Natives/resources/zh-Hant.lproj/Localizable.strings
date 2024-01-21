@@ -4,8 +4,8 @@
 */
 
 "game.menu.force_close" = "強制關閉";
-"game.menu.confirm.force_close" = "你是否肯定想強制關閉？";
-"game.menu.log_output" = "日誌輸出";
+"game.menu.confirm.force_close" = "您確定要強制關閉嗎？";
+"game.menu.log_output" = "記錄檔輸出";
 "game.menu.custom_controls" = "自訂控制鍵";
 
 "game.note.airplay" = "我的世界正在AirPlay鏡像顯示器中顯示";
@@ -17,11 +17,11 @@
 
 // Version categories
 "Installed" = "已安裝";
-"Snapshot" = "快照";
+"Snapshot" = "快照版";
 "Releases" = "發行";
 "Unstable" = "系統失去穩定";
-"Old-beta" = "遠古beta版";
-"Old-alpha" = "遠古alpha版";
+"Old-beta" = "遠古 beta 版";
+"Old-alpha" = "遠古 alpha 版";
 
 // Custom controls
 "Copy" = "複製";
@@ -50,20 +50,20 @@
 "custom_controls.button_menu.add_subbutton" = "添加子按鈕";
 "custom_controls.control_menu.discard_changes" = "放棄變更";
 "custom_controls.control_menu.exit" = "退出";
-"custom_controls.control_menu.exit.warn" = "你將要在尚未儲存更改的情況下退出";
+"custom_controls.control_menu.exit.warn" = "您將要在尚未儲存變更的情況下退出。";
 "custom_controls.control_menu.save" = "儲存";
 "custom_controls.control_menu.save.error.json" = "JSON 錯誤";
 "custom_controls.control_menu.save.error.write" = "儲存檔案時發生錯誤";
 "custom_controls.control_menu.load" = "載入";
 "custom_controls.control_menu.make_default" = "設為預設植";
 "custom_controls.control_menu.safe_area" = "安全區";
-"custom_controls.control_menu.add_button" = "添加按鈕";
+"custom_controls.control_menu.add_button" = "新增按鈕";
 "custom_controls.control_menu.add_drawer" = "增加清單";
-"custom_controls.control_menu.add_joystick" = "添加搖桿";
+"custom_controls.control_menu.add_joystick" = "新增搖桿";
 "custom_controls.error.incompatible" = "此控制版本（號碼 %d）在這個啟動器構建中沒有實現。";
 "custom_controls.hint" = "長按螢幕上的任何位置以顯示更多選項";
 
-"init.migrateDir" = "PojavLauncher數據資料夾現為%@。你的所有已有資料已被移動到新位置。";
+"init.migrateDir" = "PojavLauncher 檔案資料夾現為 %@。您的所有已有資料已被移動到新位置。";
 
 "launcher.mcl.downloading_file" = "正在下載 %@";
 "launcher.mcl.error_download" = "無法下載%@：%@";
@@ -81,11 +81,11 @@
 "login.jit.checking" = "正在檢查即時編譯";
 "login.jit.enabled" = "即時編譯已啟動";
 "login.jit.fail" = "無法啟用即時編譯。";
-"login.jit.fail.title" = "無法在你的裝置上啟用即時編譯。";
-"login.jit.fail.description" = "沒有整合能在你的裝置上自動啟動即時編譯，現在必須手動啟動。錯誤已被記錄到latestlog.txt。";
+"login.jit.fail.title" = "無法在您的裝置上啟用 JIT。";
+"login.jit.fail.description" = "沒有整合能在您的裝置上自動啟動 JIT，現在必須手動啟動。錯誤已被記錄到 latestlog.txt。";
 
 // Login buttons
-"login.menu.sendlogs" = "發送你的日誌";
+"login.menu.sendlogs" = "傳送您的記錄檔";
 "login.option.add" = "新增帳號";
 "login.option.select" = "選擇帳號";
 "login.option.demo" = "示範帳戶";
@@ -97,17 +97,17 @@
 "login.warn.title.legacy_ios" = "下一個版本的PojavLauncher需要系統更新。";
 "login.warn.message.legacy_ios" = "要運行下一個版本，此裝置必須運行iOS 14或以後的版本。";
 "login.warn.title.limited_ram" = "這個裝置的記憶體有限。";
-"login.warn.message.limited_ram" = "我們建議你保持自動分配記憶體開啟，以避免不穩定及能效問題。";
+"login.warn.message.limited_ram" = "我們建議您保持自動分配記憶體開啟，以避免不穩定與效能問題。";
 
-"login.warn.title.demomode" = "你的帳戶是一個示範帳戶";
-"login.warn.message.demomode" = "作為離線和本地模式的代替，示範模式會允許你用一個不擁有遊戲的微軟帳戶來登入，並遊玩在版本1.3.1引入的Java版試玩版。由於官方的啟動器沒有加入限制，更舊的版本將含有完整的遊戲。要了解更多關於從離線模式過渡到示範模式的資訊，請瀏覽我們的網頁。";
+"login.warn.title.demomode" = "您的帳戶是示範帳戶";
+"login.warn.message.demomode" = "作為離線和本地模式的代替，示範模式會允許您使用尚未擁有遊戲的 Microsoft 帳戶來登入，並遊玩在版本 1.3.1 引入的 Java 版試玩版。由於官方的啟動器沒有加入限制，更舊的版本將含有完整的遊戲。要了解更多關於從離線模式過渡到示範模式的資訊，請瀏覽我們的網頁。";
 
 "login.warn.title.localmode" = "離線模式現為本地模式。";
 
-"login.msa.error.xsts.noxboxacc" = "這個微軟帳戶沒有註冊的Xbox用戶檔案。請確定你已經註冊Xbox用戶檔案。\n錯誤代碼：2148916233";
-"login.msa.error.xsts.noxbox" = "Xbox Live不適用於你的國家。\n錯誤代碼：2148916235";
-"login.msa.error.xsts.krverify" = "你的帳戶必須由你的家長認證，方可繼續。\n錯誤代碼：2148916236或2148916237。";
-"login.msa.error.xsts.underage" = "你的帳戶必須要連結到一個家長帳戶，方可繼續。\n錯誤代碼：2148916238";
+"login.msa.error.xsts.noxboxacc" = "這個 Microsoft 帳戶沒有註冊的 Xbox 使用者檔案。請確定您已經註冊 Xbox 使用者檔案。\n錯誤代碼：2148916233";
+"login.msa.error.xsts.noxbox" = "Xbox Live不適用於您的國家。\n錯誤代碼：2148916235";
+"login.msa.error.xsts.krverify" = "您的帳戶必須由您的家長驗證，方可繼續。\n錯誤代碼：2148916236或2148916237。";
+"login.msa.error.xsts.underage" = "您的帳戶必須要連結到家長帳戶，方可繼續。\n錯誤代碼：2148916238";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) 正在取得取用金鑰";
 "login.msa.progress.acquireXBLToken" = "(2/5) 正在取得Xbox Live金鑰";
@@ -122,13 +122,13 @@
 
 "preference.section.general" = "一般設定";
 "preference.section.video" = "動畫設定";
-"preference.section.control" = "自定控制鍵";
+"preference.section.control" = "自訂控制鍵";
 "preference.section.debug" = "用戶界面除錯選項";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java 選項";
 //"preference.section.footer.java" = "";
 
-"preference.title.confirm" = "你確定嗎？";
+"preference.title.confirm" = "您確定嗎？";
 
 "preference.title.game_directory" = "遊戲資料夾";
 "preference.title.confirm.delete_game_directory" = "實例%@會被永久刪除，且不能回復。";
@@ -136,12 +136,12 @@
 
 "preference.title.check_sha" = "在下載後檢查檔案";
 "preference.detail.check_sha" = "這個選項強制啟動器在可用的情況下檢查檔案的雜湊值。這樣做能夠防止有問題的下載。";
-"preference.title.cosmetica" = "Cosmetica披風";
+"preference.title.cosmetica" = "Cosmetica 披風";
 "preference.detail.cosmetica" = "啟用來自Cosmetica（先前是Arc）的披風。要查看更多資訊請到 https://cosmetica.cc 。需要OptiFine。";
 "preference.title.debug_logging" = "除錯日誌";
 "preference.detail.debug_logging" = "把內部設定和動作記錄到lateslog.txt。這能幫助開發者更容易地找到問題，但由於日誌寫入的次數會增多，我的世界的運行速度可能會減慢。";
 "preference.title.appicon" = "設定應用程式圖示";
-"preference.detail.appicon" = "讓你能選擇PojavLauncher在主畫面上的圖示。";
+"preference.detail.appicon" = "讓您能選擇 PojavLauncher 在主畫面上的圖示。";
 "preference.title.appicon-default" = "熟悉的明亮PojavLauncher";
 "preference.title.appicon-dark" = "熟悉的暗黑PojavLauncher";
 "preference.title.appicon-development" = "鉛筆開發";
@@ -152,7 +152,7 @@
 "preference.title.done.reset_warnings" = "所有警告已被重設。";
 
 "preference.title.reset_settings" = "重設所有設定";
-"preference.title.confirm.reset_settings" = "這會移除你所有的客製化偏好設定，包括解析度、按鈕大小和 Java 參數。";
+"preference.title.confirm.reset_settings" = "這會移除您所有的客製化偏好設定，包括解析度、按鈕大小和 Java 參數。";
 "preference.title.done.reset_settings" = "所有的預設設定已被回復。";
 
 "preference.title.erase_demo_data" = "清除試玩版游戲數據";
@@ -174,9 +174,9 @@
 "preference.detail.renderer" = "改變要使用的OpenGL渲染引擎";
 
 "preference.title.resolution" = "解析度（%）";
-"preference.detail.resolution" = "允許你降低遊戲的解析度。";
+"preference.detail.resolution" = "允許您降低遊戲的解析度。";
 "preference.title.max_framerate" = "最大FPS";
-"preference.detail.max_framerate" = "允許你在ProMotion顯示器上限制游戲FPS到60FPS";
+"preference.detail.max_framerate" = "允許您在 ProMotion 顯示器上限制游戲 FPS 為 60FPS。";
 
 "preference.title.fullscreen_airplay" = "全螢幕隔空投放";
 "preference.detail.fullscreen_airplay" = "允許在外部顯示器上展示全螢幕遊戲畫面，而不是影射螢幕上的內容。";
@@ -212,13 +212,13 @@
 "preference.title.custom_env" = "環境變量";
 
 "preference.title.debug_skip_wait_jit" = "跳過「正在等待即時編譯」對話方塊。";
-"preference.detail.debug_skip_wait_jit" = "這不會允許你在沒有即時編譯的情況下啟動，而只會跳過除錯器檢測，因為這個檢測在部份越獄中無法正常運作。";
+"preference.detail.debug_skip_wait_jit" = "這不會允許您在沒有即時編譯的情況下啟動，而只會跳過除錯器檢測，因為這個檢測在部份越獄中無法正常運作。";
 "preference.title.debug_ipad_ui" = "解鎖iPadOS用戶介面";
 "preference.detail.debug_ipad_ui" = "當啟動時或當iPhone用戶介面被禁用時，解鎖iPad專屬用戶介面（提示、鍵盤等）";
 "preference.title.debug_auto_correction" = "自動校正";
 "preference.detail.debug_auto_correction" = "當在遊戲中輸入文字時，啟用自動校正。";
 "preference.title.debug_hide_home_indicator" = "隱藏主畫面指示器";
-"preference.detail.debug_hide_home_indicator" = "這會禁用主畫面指示器鎖定。你必須使用指導模式來同時隱藏和鎖定主畫面顯示器。";
+"preference.detail.debug_hide_home_indicator" = "這會停用主畫面指示器鎖定。您必須使用指導模式來同時隱藏和鎖定主畫面顯示器。";
 
 "preference.profile.title.name" = "名稱";
 "preference.profile.title.version" = "版本";
