@@ -64,7 +64,6 @@ public class UIKit {
         System.load(System.getenv("BUNDLE_PATH") + "/PojavLauncher");
     }
 
-    public static native void refreshAWTBuffer(int[] array);
 
     // public static native void runOnUIThread(UIKitCallback callback);
 

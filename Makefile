@@ -135,11 +135,16 @@ METHOD_CHANGE_PLAT = \
 	
 # Function to package the application
 METHOD_PACKAGE = \
+	if [ '$(TROLLSTORE_JIT_ENT)' == '1' ]; then \
+		IPA_SUFFIX="-trollstore.tipa"; \
+	else \
+		IPA_SUFFIX=".ipa"; \
+	fi; \
 	if [ '$(SLIMMED_ONLY)' = '0' ]; then \
-		zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher-$(VERSION)-$(PLATFORM_NAME).ipa Payload; \
+		zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher-$(VERSION)-$(PLATFORM_NAME)$$IPA_SUFFIX Payload; \
 	fi; \
 	if [ '$(SLIMMED)' = '1' ] || [ '$(SLIMMED_ONLY)' = '1' ]; then \
-		zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher.slimmed-$(VERSION)-$(PLATFORM_NAME).ipa Payload --exclude='Payload/PojavLauncher.app/java_runtimes/*'; \
+		zip --symlinks -r $(OUTPUTDIR)/net.kdt.pojavlauncher.slimmed-$(VERSION)-$(PLATFORM_NAME)$$IPA_SUFFIX Payload --exclude='Payload/PojavLauncher.app/java_runtimes/*'; \
 	fi
 
 # Function to download and unpack Java runtimes.
@@ -325,8 +330,11 @@ payload: native java jre assets
 	if [ '$(SLIMMED_ONLY)' != '1' ]; then \
 		cp -R $(OUTPUTDIR)/java_runtimes $(OUTPUTDIR)/Payload/PojavLauncher.app; \
 	fi
-	ldid -S $(OUTPUTDIR)/Payload/PojavLauncher.app; \
-	ldid -S$(SOURCEDIR)/entitlements.xml $(OUTPUTDIR)/Payload/PojavLauncher.app/PojavLauncher; \
+	if [ '$(TROLLSTORE_JIT_ENT)' == '1' ]; then \
+		ldid -S$(SOURCEDIR)/entitlements.trollstore.xml $(OUTPUTDIR)/Payload/PojavLauncher.app; \
+	else \
+		ldid -S$(SOURCEDIR)/entitlements.sideload.xml $(OUTPUTDIR)/Payload/PojavLauncher.app; \
+	fi
 	chmod -R 755 $(OUTPUTDIR)/Payload
 	if [ '$(PLATFORM)' != '2' ]; then \
 		$(call METHOD_MACHO,$(OUTPUTDIR)/Payload/PojavLauncher.app,$(call METHOD_CHANGE_PLAT,$(PLATFORM),$$file)); \
@@ -339,7 +347,7 @@ deploy:
 	cd $(OUTPUTDIR); \
 	if [ '$(IOS)' = '1' ]; then \
 		ldid -S $(WORKINGDIR)/PojavLauncher.app || exit 1; \
-		ldid -S$(SOURCEDIR)/entitlements.xml $(WORKINGDIR)/PojavLauncher.app/PojavLauncher || exit 1; \
+		ldid -S$(SOURCEDIR)/entitlements.trollstore.xml $(WORKINGDIR)/PojavLauncher.app/PojavLauncher || exit 1; \
 		sudo mv $(WORKINGDIR)/*.dylib $(PREFIX)Applications/PojavLauncher.app/Frameworks/ || exit 1; \
 		sudo mv $(WORKINGDIR)/PojavLauncher.app/PojavLauncher $(PREFIX)Applications/PojavLauncher.app/PojavLauncher || exit 1; \
 		sudo mv $(SOURCEDIR)/JavaApp/local_out/*.jar $(PREFIX)Applications/PojavLauncher.app/libs/ || exit 1; \

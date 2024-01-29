@@ -281,6 +281,10 @@
             handler();
         });
         return;
+    } else if (getEntitlementValue(@"local.sandboxed-jit")) {
+        NSURL *jitURL = [NSURL URLWithString:[NSString stringWithFormat:@"apple-magnifier://enable-jit?bundle-id=%@", NSBundle.mainBundle.bundleIdentifier]];
+        [UIApplication.sharedApplication openURL:jitURL options:@{} completionHandler:nil];
+        // Do not return, wait for TrollStore to enable JIT and jump back
     } else if (getPrefBool(@"debug.debug_skip_wait_jit")) {
         NSLog(@"Debug option skipped waiting for JIT. Java might not work.");
         handler();
@@ -302,8 +306,8 @@
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         while (!isJITEnabled(false)) {
-            // Perform check for every second
-            sleep(1);
+            // Perform check for every 200ms
+            usleep(1000*200);
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             [alert dismissViewControllerAnimated:YES completion:handler];

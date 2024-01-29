@@ -298,16 +298,17 @@ void AWTInputBridge_sendKey(int keycode) {
     setenv("POJAV_SKIP_JNI_GLFW", "1", 1);
  
     // Register the display loop
-    CADisplayLink *displayLink = [CADisplayLink displayLinkWithTarget:surfaceView selector:@selector(refreshBuffer)];
-    if (@available(iOS 15.0, tvOS 15.0, *)) {
-        if(getPrefBool(@"video.max_framerate")) {
-            displayLink.preferredFrameRateRange = CAFrameRateRangeMake(30, 120, 120);
-        } else {
-            displayLink.preferredFrameRateRange = CAFrameRateRangeMake(30, 60, 60);
-        }
-    }
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        CADisplayLink *displayLink = [CADisplayLink displayLinkWithTarget:surfaceView selector:@selector(refreshBuffer)];
+        if (@available(iOS 15.0, tvOS 15.0, *)) {
+            if(getPrefBool(@"video.max_framerate")) {
+                displayLink.preferredFrameRateRange = CAFrameRateRangeMake(30, 120, 120);
+            } else {
+                displayLink.preferredFrameRateRange = CAFrameRateRangeMake(30, 60, 60);
+            }
+        }
         [displayLink addToRunLoop:NSRunLoop.currentRunLoop forMode:NSRunLoopCommonModes];
+        [NSRunLoop.currentRunLoop run];
     });
 
     
