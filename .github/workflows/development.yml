@@ -94,6 +94,7 @@ jobs:
           workflow: build.yml
           path: depends
           workflow_conclusion: success
+          allow_forks: false
           repo: PojavLauncherTeam/android-openjdk-build-multiarch
           branch: jre8-ios-jitjailed
           name: jre8-ios-aarch64
@@ -105,6 +106,7 @@ jobs:
           workflow: build.yml
           path: depends
           workflow_conclusion: success
+          allow_forks: false
           repo: PojavLauncherTeam/android-openjdk-build-multiarch
           branch: buildjre17
           name: jre17-ios-aarch64
