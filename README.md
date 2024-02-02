@@ -6,7 +6,7 @@
 
 
 ## Introduction
-PojavLauncher is a Minecraft: Java Edition launcher for Android, iOS, and iPadOS, based off of zhouwei's [Boardwalk](https://github.com/zhouwei/Boardwalk) project.
+PojavLauncher is a Minecraft: Java Edition launcher for Android, iOS, and iPadOS, based off of zhouwei's [Boardwalk](https://github.com/zhuowei/Boardwalk) project.
 * Supports most versions of Minecraft: Java Edition, from the very first beta to the newest snapshots.
 * Supports Forge, Fabric, OptiFine, and Quilt for you to customize the experience with supported mods.
 * Includes customizable on-screen controls, keyboard and mouse support, and game controller support.
