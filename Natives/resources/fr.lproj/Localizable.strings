@@ -74,6 +74,7 @@
 "launcher.mcl.error_download" = "Échec du téléchargement de %@: %@";
 
 "launcher.menu.custom_controls" = "Contrôles personnalisés";
+"launcher.menu.execute_jar" = "Exécuter .jar";
 
 "launcher.wait_jit.title" = "Attente du JIT";
 "launcher.wait_jit.message" = "PojavLauncher s'appuie sur la compilation Just-in-time pour que Java fonctionne avec des performances maximales.";
@@ -131,6 +132,7 @@
 "preference.section.footer.video" = "Le moteur de rendu automatique permet à PojavLauncher de choisir la meilleure option basée sur la version de Minecraft. Réduire la résolution réduit la charge de travail du GPU pour de meilleures performances.";
 "preference.section.control" = "Contrôlez la customisation";
 "preference.section.debug" = "Paramètres de débogage de l'interface utilisateur";
+"preference.section.footer.debug" = "Il se peut que vous deviez redémarrer le launcher pour que les modifications soient prises en compte.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Réglages Java";
 //"preference.section.footer.java" = "";
