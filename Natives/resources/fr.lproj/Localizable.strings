@@ -226,6 +226,7 @@
 "preference.manage_runtime.header.default" = "Version préférée de Java";
 "preference.manage_runtime.default.1165" = "1.16.5 et plus vieux";
 "preference.manage_runtime.default.117" = "1.17 et plus récent";
+"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 et les versions antérieures peuvent fonctionner avec une version plus récente de Java, mais la compatibilité avec les mods n'est pas garantie. Les runtimes externes peuvent être placés dans le dossier \"java_runtimes\". La modification de la version de Java pour \"Exécuter .jar\" ne prend effet que si l'installateur ne s'attend pas à une version plus récente de Java.";
 "preference.manage_runtime.footer.java8" = "C'est la version par défaut pour Minecraft 1.16.5 et plus vieux.";
 "preference.manage_runtime.footer.java17" = "C'est la version par défaut pour Minecraft 1.17 et plus récente.";
 "preference.manage_runtime.header.invalid" = "Exécution invalide";
@@ -255,6 +256,7 @@
 "preference.detail.debug_hide_home_indicator" = "Ceci désactivera le verrouillage de l'indicateur d'accueil. Vous devrez utiliser un accès guidé pour masquer et verrouiller l'indicateur d'accueil en même temps.";
 
 "preference.profile.title.name" = "Nom";
+"preference.profile.title.loader_type" = "Type de chargeur";
 "preference.profile.title.loader_vendor" = "Version du chargeur";
 "preference.profile.title.loader_version" = "Version du chargeur";
 "preference.profile.title.version" = "Version";
