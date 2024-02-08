@@ -33,6 +33,7 @@ void JNI_LWJGL_changeRenderer(const char* value_c) {
 
 void pojavTerminate() {
     CallbackBridge_nativeSetInputReady(NO);
+    if (!br_terminate) return;
     br_terminate();
 }
 
