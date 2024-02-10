@@ -105,7 +105,7 @@
 "login.warn.title.limited_ram" = "Toto zařízení má dostupné omezené množství paměti.";
 "login.warn.message.limited_ram" = "Doporučujeme ponechat automatickou RAM zapnutu, aby se zabránilo nestabilitě a problémům s výkonem.";
 
-"login.warn.title.demomode" = "Váš účet demo je";
+"login.warn.title.demomode" = "Váš účet je demo";
 "login.warn.message.demomode" = "Jako náhrada za offline a místní režim, demo režim povolí přihlášení do Microsoft účtu, jenž hru nevlastní, a hrát zkušební verzi Java edice, přidanou v 1.3.1 a novějších verzích. Starší verze obsahují plnou hru, majíce ji i v oficiálním spouštěči, jenž nemá pro ně omezení. Viz naši webovou stránku pro více informací o této změně z offline režimu.";
 
 "login.warn.title.localmode" = "Offline režim je nyní Místní režim.";
@@ -145,7 +145,7 @@
 
 "preference.title.check_sha" = "Zkontrolovat soubory po stažení";
 "preference.detail.check_sha" = "Tato možnost donutí spouštěč zkontrolovat hash souboru, je-li k dispozici. Zabraňuje rozbitému stažení.";
-"preference.title.cosmetica" = "Kápě Cosmetica";
+"preference.title.cosmetica" = "Kápě z Cosmeticy";
 "preference.detail.cosmetica" = "Zapne kápě z Cosmeticy (dřiv Arc), vyžadujíc OptiFine. Pro více informací navštivte https://cosmetica.cc";
 "preference.title.debug_logging" = "Zaznamenávání ladění";
 "preference.detail.debug_logging" = "Zaznamenává interní nastavení a akce do latestlog.txt. Toto dovoluje vývojářům nalézt problémy dřiv, ale záznamy budou častěji zapisovány, díky čemuž Minecraft může běžet pomaleji.";
