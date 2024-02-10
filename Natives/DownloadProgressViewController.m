@@ -61,7 +61,6 @@ static void *TotalProgressObserverContext = &TotalProgressObserverContext;
     } else if (context == TotalProgressObserverContext) {
         dispatch_async(dispatch_get_main_queue(), ^{
             self.title = [NSString stringWithFormat:@"(%@) %@", progress.localizedAdditionalDescription, progress.localizedDescription];
-            static dispatch_once_t once;
             if (self.needsReloadData) {
                 [self.tableView reloadData];
             }

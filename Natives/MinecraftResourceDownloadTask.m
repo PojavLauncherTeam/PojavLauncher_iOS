@@ -2,7 +2,6 @@
 
 #import "authenticator/BaseAuthenticator.h"
 #import "AFNetworking.h"
-#import "AFURLSessionOperation.h"
 #import "LauncherNavigationController.h"
 #import "LauncherPreferences.h"
 #import "MinecraftResourceDownloadTask.h"
