@@ -130,6 +130,7 @@ add_executable(PojavLauncher
   AppDelegate.m
   CustomControlsViewController.m
   CustomControlsViewController+UndoManager.m
+  DownloadProgressViewController.m
   FileListViewController.m
   GameSurfaceView.m
   JavaGUIViewController.m
@@ -144,6 +145,7 @@ add_executable(PojavLauncher
   LauncherProfileEditorViewController.m
   LauncherProfilesViewController.m
   LauncherSplitViewController.m
+  MinecraftResourceDownloadTask.m
   MinecraftResourceUtils.m
   PickTextField.m
   PLLogOutputView.m

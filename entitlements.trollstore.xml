@@ -1,6 +1,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>application-identifier</key>
+    <string>net.kdt.pojavlauncher</string>
     <key>get-task-allow</key>
     <true/>
 
@@ -33,6 +35,12 @@
         <string>AGXSharedUserClient</string>
         <string>AGXCommandQueue</string>
         <string>AGXDevice</string>
+    </array>
+    <key>com.apple.security.exception.mach-lookup.global-name</key>
+    <array>
+        <string>com.apple.nsurlsessiond</string>
+        <string>com.apple.nsurlsessiond.NSURLSessionProxyService</string>
+        <string>com.apple.nsurlstorage-cache</string>
     </array>
     <key>platform-application</key>
     <true/>

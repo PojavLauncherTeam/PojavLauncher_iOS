@@ -34,6 +34,8 @@ static GameSurfaceView* pojavWindow;
 @interface SurfaceViewController ()<UITextFieldDelegate, UIPointerInteractionDelegate, UIGestureRecognizerDelegate> {
 }
 
+@property(nonatomic) NSDictionary* verMetadata;
+
 @property(nonatomic) TrackedTextField *inputTextField;
 @property(nonatomic) NSMutableArray* swipeableButtons;
 @property(nonatomic) ControlButton* swipingButton;
@@ -58,6 +60,12 @@ static GameSurfaceView* pojavWindow;
 @end
 
 @implementation SurfaceViewController
+
+- (instancetype)initWithMetadata:(NSDictionary *)metadata {
+    self = [super init];
+    self.verMetadata = metadata;
+    return self;
+}
 
 - (void)viewDidLoad
 {
@@ -413,20 +421,16 @@ static GameSurfaceView* pojavWindow;
 
 - (void)launchMinecraft {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSDictionary *version = @{@"id": PLProfiles.current.selectedProfile[@"lastVersionId"]};
-        [MinecraftResourceUtils downloadClientJson:version progress:nil callback:nil success:^(NSMutableDictionary *json) {
-            int minVersion = [json[@"javaVersion"][@"majorVersion"] intValue];
-            if (minVersion == 0) {
-                minVersion = [json[@"javaVersion"][@"version"] intValue];
-            }
-            [MinecraftResourceUtils processJVMArgs:json];
-            launchJVM(
-                BaseAuthenticator.current.authData[@"username"],
-                json,
-                windowWidth, windowHeight,
-                minVersion
-            );
-        }];
+        int minVersion = [self.verMetadata[@"javaVersion"][@"majorVersion"] intValue];
+        if (minVersion == 0) {
+            minVersion = [self.verMetadata[@"javaVersion"][@"version"] intValue];
+        }
+        launchJVM(
+            BaseAuthenticator.current.authData[@"username"],
+            self.verMetadata,
+            windowWidth, windowHeight,
+            minVersion
+        );
     });
 }
 

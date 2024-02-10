@@ -105,7 +105,7 @@ jstring UIKit_accessClipboard(JNIEnv* env, jint action, jstring copySrc) {
     }
 }
 
-void UIKit_launchMinecraftSurfaceVC() {
+void UIKit_launchMinecraftSurfaceVC(NSDictionary* metadata) {
     // Leave this pref, might be useful later for launching with Quick Actions/Shortcuts/URL Scheme
     //setPreference(@"internal_launch_on_boot", getPreference(@"restart_before_launch"));
     setPrefObject(@"internal.selected_account", BaseAuthenticator.current.authData[@"username"]);
@@ -117,7 +117,7 @@ void UIKit_launchMinecraftSurfaceVC() {
         } completion:^(BOOL b){
             [window resignKeyWindow];
             window.alpha = 1;
-            window.rootViewController = [[SurfaceViewController alloc] init];
+            window.rootViewController = [[SurfaceViewController alloc] initWithMetadata:metadata];
             [window makeKeyAndVisible];
         }];
     });
