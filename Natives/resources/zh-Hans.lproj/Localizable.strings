@@ -34,7 +34,7 @@
 "In game" = "游戏内";
 "In menu" = "菜单内";
 
-"custom_controls.button_edit.forward_lock" = "前进（疾跑）锁";
+"custom_controls.button_edit.forward_lock" = "前进锁定";
 "custom_controls.button_edit.name" = "名称";
 "custom_controls.button_edit.size" = "大小";
 "custom_controls.button_edit.mapping" = "按键映射";
