@@ -5,7 +5,7 @@
 
 "game.menu.force_close" = "강제 종료";
 "game.menu.confirm.force_close" = "강제종료 하시겠습니까?";
-"game.menu.log_output" = "로그 산출";
+"game.menu.log_output" = "로그 출력";
 "game.menu.custom_controls" = "사용자 지정 조작";
 
 "game.note.airplay" = "마인크래프트가 AirPlay(에어플레이) 디스플레이에 출력되고있습니다.";
@@ -49,7 +49,7 @@
 "custom_controls.button_edit.opacity" = "투명도 (%)";
 "custom_controls.button_edit.visibility" = "투명도";
 
-"custom_controls.button_menu.add_subbutton" = "부속 버튼 추가";
+"custom_controls.button_menu.add_subbutton" = "하위 버튼 추가";
 "custom_controls.control_menu.discard_changes" = "변경사항 취소";
 "custom_controls.control_menu.exit" = "나가기";
 "custom_controls.control_menu.exit.warn" = "변경사항을 저장하지 않고 종료하려 합니다.";
