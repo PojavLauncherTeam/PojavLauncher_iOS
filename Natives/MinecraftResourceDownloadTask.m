@@ -83,6 +83,7 @@
             NSMutableDictionary *inheritsFromDict = parseJSONFromFile([NSString stringWithFormat:@"%1$s/versions/%2$@/%2$@.json", getenv("POJAV_GAME_DIR"), self.verMetadata[@"inheritsFrom"]]);
             if (inheritsFromDict) {
                 [MinecraftResourceUtils processVersion:self.verMetadata inheritsFrom:inheritsFromDict];
+                self.verMetadata = inheritsFromDict;
             }
         }
         [MinecraftResourceUtils tweakVersionJson:self.verMetadata];
@@ -96,6 +97,7 @@
             [self finishDownloadWithErrorString:@"Local version json was not found"];
         } else if (json[@"inheritsFrom"]) {
             version = (id)[MinecraftResourceUtils findVersion:json[@"inheritsFrom"] inList:remoteVersionList];
+            path = [NSString stringWithFormat:@"%1$s/versions/%2$@/%2$@.json", getenv("POJAV_GAME_DIR"), version[@"id"]];
         } else {
             completionBlock();
             return;
