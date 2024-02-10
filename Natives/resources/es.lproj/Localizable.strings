@@ -20,7 +20,7 @@
 "Snapshot" = "Snapshots";
 "Releases" = "Versiones lanzadas";
 "Unstable" = "Inestable";
-"Old-beta" = "Betas";
+"Old-beta" = "Beta";
 "Old-alpha" = "Alphas";
 
 // Custom controls
@@ -37,7 +37,7 @@
 "custom_controls.button_edit.forward_lock" = "Bloqueo hacia adelante";
 "custom_controls.button_edit.name" = "Nombre";
 "custom_controls.button_edit.size" = "Tamaño";
-"custom_controls.button_edit.mapping" = "Mapeado";
+"custom_controls.button_edit.mapping" = "Mapeo";
 "custom_controls.button_edit.orientation" = "Orientación";
 "custom_controls.button_edit.toggleable" = "Activable";
 "custom_controls.button_edit.mouse_pass" = "Paso del ratón";
@@ -61,7 +61,7 @@
 "custom_controls.control_menu.safe_area" = "Área segura";
 "custom_controls.control_menu.add_button" = "Añadir botón";
 "custom_controls.control_menu.add_drawer" = "Añadir Cajón";
-"custom_controls.control_menu.add_joystick" = "Agregar joystick";
+"custom_controls.control_menu.add_joystick" = "Añadir joystick";
 "custom_controls.error.incompatible" = "Esta versión de control (código %d) no está implementada en esta compilación del launcher.";
 "custom_controls.hint" = "Mantenga pulsado en cualquier lugar de la pantalla para más opciones";
 
