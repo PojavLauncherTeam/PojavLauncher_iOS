@@ -79,6 +79,10 @@
 
     void(^completionBlock)(void) = ^{
         self.verMetadata = parseJSONFromFile(path);
+        if (!self.verMetadata) {
+            [self finishDownloadWithErrorString:@"Downloaded version json was not found"];
+            return;
+        }
         if (self.verMetadata[@"inheritsFrom"]) {
             NSMutableDictionary *inheritsFromDict = parseJSONFromFile([NSString stringWithFormat:@"%1$s/versions/%2$@/%2$@.json", getenv("POJAV_GAME_DIR"), self.verMetadata[@"inheritsFrom"]]);
             if (inheritsFromDict) {
@@ -97,7 +101,7 @@
             [self finishDownloadWithErrorString:@"Local version json was not found"];
         } else if (json[@"inheritsFrom"]) {
             version = (id)[MinecraftResourceUtils findVersion:json[@"inheritsFrom"] inList:remoteVersionList];
-            path = [NSString stringWithFormat:@"%1$s/versions/%2$@/%2$@.json", getenv("POJAV_GAME_DIR"), version[@"id"]];
+            path = [NSString stringWithFormat:@"%1$s/versions/%2$@/%2$@.json", getenv("POJAV_GAME_DIR"), json[@"inheritsFrom"]];
         } else {
             completionBlock();
             return;
@@ -253,7 +257,7 @@
 
 // Check SHA of the file
 - (BOOL)checkSHAIgnorePref:(NSString *)sha forFile:(NSString *)path altName:(NSString *)altName logSuccess:(BOOL)logSuccess {
-    if (sha == nil) {
+    if (sha.length == 0) {
         // When sha = skip, only check for file existence
         BOOL existence = [NSFileManager.defaultManager fileExistsAtPath:path];
         if (existence) {
