@@ -56,6 +56,8 @@
 "custom_controls.control_menu.add_drawer" = "เพิ่มลิ้นชัก";
 "custom_controls.control_menu.add_joystick" = "เพิ่มจอยสติ๊ก";
 
+"launcher.mcl.downloading_file" = "กำลังดาวน์โหลด %@";
+
 "launcher.menu.custom_controls" = "การควบคุมกำหนดเอง";
 "login.option.add" = "เพิ่มบัญชี";
 "login.option.select" = "เลือกบัญชี";
