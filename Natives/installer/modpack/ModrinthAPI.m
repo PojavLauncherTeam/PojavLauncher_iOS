@@ -126,13 +126,8 @@
     if (depInfo[@"json"]) {
         NSString *jsonPath = [NSString stringWithFormat:@"%1$s/versions/%2$@/%2$@.json", getenv("POJAV_GAME_DIR"), depInfo[@"id"]];
         NSURLSessionDownloadTask *task = [downloader createDownloadTask:depInfo[@"json"] sha:nil altName:nil toPath:jsonPath];
-        if (task) {
-            [downloader.fileList addObject:jsonPath.lastPathComponent];
-            [downloader addDownloadTaskToProgress:task];
-            [task resume];
-        } else if (downloader.progress.cancelled) {
-            return; // cancelled
-        }
+        [task resume];
+        // FIXME: sometimes progress doesn't report properly, not adding to total progress for now
     }
     // TODO: automation for Forge
 

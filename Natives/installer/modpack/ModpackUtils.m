@@ -18,7 +18,10 @@
         if (!createdDir) {
             *stop = YES;
             return;
+        } else if (fileInfo.isDirectory) {
+            return;
         }
+
         NSData *data = [archive extractData:fileInfo error:error];
         BOOL written = [data writeToFile:destItemPath options:NSDataWritingAtomic error:error];
         *stop = !data || !written;
