@@ -14,6 +14,7 @@
 
 // The play button
 "Play" = "플레이";
+"Details" = "델타";
 
 // Version categories
 "Installed" = "이미 설치되어 있는 버전입니다.";
