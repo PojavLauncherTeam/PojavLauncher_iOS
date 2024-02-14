@@ -64,7 +64,7 @@ static PLProfiles* current;
     self = [super init];
     self.profilePath = [@(getenv("POJAV_GAME_DIR")) stringByAppendingPathComponent:@"launcher_profiles.json"];
     self.profileDict = parseJSONFromFile(self.profilePath);
-    if (self.profileDict[@"error"]) {
+    if (self.profileDict[@"NSErrorDescription"]) {
         self.profileDict = PLProfiles.defaultProfiles;
         [self save];
     }

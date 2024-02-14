@@ -1,6 +1,7 @@
 #include <CommonCrypto/CommonDigest.h>
 
 #import "authenticator/BaseAuthenticator.h"
+#import "installer/modpack/ModpackAPI.h"
 #import "AFNetworking.h"
 #import "LauncherNavigationController.h"
 #import "LauncherPreferences.h"
@@ -11,7 +12,6 @@
 
 @interface MinecraftResourceDownloadTask ()
 @property AFURLSessionManager* manager;
-@property BOOL cancelled;
 @end
 
 @implementation MinecraftResourceDownloadTask
@@ -47,7 +47,7 @@
         [NSFileManager.defaultManager removeItemAtPath:path error:nil];
         return [NSURL fileURLWithPath:path];
     } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
-        if (self.cancelled) {
+        if (self.progress.cancelled) {
             // Ignore any further errors
         } else if (error != nil) {
             [self finishDownloadWithError:error file:name];
@@ -64,6 +64,13 @@
     return [self createDownloadTask:url sha:sha altName:altName toPath:path success:nil];
 }
 
+- (void)addDownloadTaskToProgress:(NSURLSessionDownloadTask *)task {
+    NSProgress *progress = [self.manager downloadProgressForTask:task];
+    progress.kind = NSProgressKindFile;
+    [self.progressList addObject:progress];
+    [self.progress addChild:progress withPendingUnitCount:1];
+}
+
 - (void)downloadVersionMetadata:(NSDictionary *)version success:(void (^)())success {
     // Download base json
     NSString *versionStr = version[@"id"];
@@ -78,27 +85,28 @@
     version = (id)[MinecraftResourceUtils findVersion:versionStr inList:remoteVersionList];
 
     void(^completionBlock)(void) = ^{
-        self.verMetadata = parseJSONFromFile(path);
-        if (!self.verMetadata) {
-            [self finishDownloadWithErrorString:@"Downloaded version json was not found"];
+        self.metadata = parseJSONFromFile(path);
+        if (self.metadata[@"NSErrorDescription"]) {
+            [self finishDownloadWithErrorString:self.metadata[@"NSErrorDescription"]];
             return;
         }
-        if (self.verMetadata[@"inheritsFrom"]) {
-            NSMutableDictionary *inheritsFromDict = parseJSONFromFile([NSString stringWithFormat:@"%1$s/versions/%2$@/%2$@.json", getenv("POJAV_GAME_DIR"), self.verMetadata[@"inheritsFrom"]]);
+        if (self.metadata[@"inheritsFrom"]) {
+            NSMutableDictionary *inheritsFromDict = parseJSONFromFile([NSString stringWithFormat:@"%1$s/versions/%2$@/%2$@.json", getenv("POJAV_GAME_DIR"), self.metadata[@"inheritsFrom"]]);
             if (inheritsFromDict) {
-                [MinecraftResourceUtils processVersion:self.verMetadata inheritsFrom:inheritsFromDict];
-                self.verMetadata = inheritsFromDict;
+                [MinecraftResourceUtils processVersion:self.metadata inheritsFrom:inheritsFromDict];
+                self.metadata = inheritsFromDict;
             }
         }
-        [MinecraftResourceUtils tweakVersionJson:self.verMetadata];
+        [MinecraftResourceUtils tweakVersionJson:self.metadata];
         success();
     };
 
     if (!version) {
         // This is likely local version, check if json exists and has inheritsFrom
         NSMutableDictionary *json = parseJSONFromFile(path);
-        if (!json) {
-            [self finishDownloadWithErrorString:@"Local version json was not found"];
+        if (json[@"NSErrorDescription"]) {
+            [self finishDownloadWithErrorString:json[@"NSErrorDescription"]];
+            return;
         } else if (json[@"inheritsFrom"]) {
             version = (id)[MinecraftResourceUtils findVersion:json[@"inheritsFrom"] inList:remoteVersionList];
             path = [NSString stringWithFormat:@"%1$s/versions/%2$@/%2$@.json", getenv("POJAV_GAME_DIR"), json[@"inheritsFrom"]];
@@ -116,13 +124,15 @@
     [task resume];
 }
 
+#pragma mark - Minecraft installation
+
 - (void)downloadAssetMetadataWithSuccess:(void (^)())success {
-    NSDictionary *assetIndex = self.verMetadata[@"assetIndex"];
+    NSDictionary *assetIndex = self.metadata[@"assetIndex"];
     NSString *path = [NSString stringWithFormat:@"%s/assets/indexes/%@.json", getenv("POJAV_GAME_DIR"), assetIndex[@"id"]];
     NSString *url = assetIndex[@"url"];
     NSString *sha = url.stringByDeletingLastPathComponent.lastPathComponent;
     NSURLSessionDownloadTask *task = [self createDownloadTask:url sha:sha altName:nil toPath:path success:^{
-        self.verMetadata[@"assetIndexObj"] = parseJSONFromFile(path);
+        self.metadata[@"assetIndexObj"] = parseJSONFromFile(path);
         success();
     }];
     [task resume];
@@ -130,7 +140,7 @@
 
 - (NSArray *)downloadClientLibraries {
     NSMutableArray *tasks = [NSMutableArray new];
-    for (NSDictionary *library in self.verMetadata[@"libraries"]) {
+    for (NSDictionary *library in self.metadata[@"libraries"]) {
         NSString *name = library[@"name"];
 
         NSMutableDictionary *artifact = library[@"downloads"][@"artifact"];
@@ -154,13 +164,10 @@
 
         NSURLSessionDownloadTask *task = [self createDownloadTask:url sha:sha altName:nil toPath:path success:nil];
         if (task) {
-            NSProgress *progress = [self.manager downloadProgressForTask:task];
-            progress.kind = NSProgressKindFile;
             [self.fileList addObject:name];
-            [self.progressList addObject:progress];
-            [self.progress addChild:progress withPendingUnitCount:1];
+            [self addDownloadTaskToProgress:task];
             [tasks addObject:task];
-        } else if (self.cancelled) {
+        } else if (self.progress.cancelled) {
             return nil;
         }
     }
@@ -169,7 +176,7 @@
 
 - (NSArray *)downloadClientAssets {
     NSMutableArray *tasks = [NSMutableArray new];
-    NSDictionary *assets = self.verMetadata[@"assetIndexObj"];
+    NSDictionary *assets = self.metadata[@"assetIndexObj"];
     for (NSString *name in assets[@"objects"]) {
         NSString *hash = assets[@"objects"][name][@"hash"];
         NSString *pathname = [NSString stringWithFormat:@"%@/%@", [hash substringToIndex:2], hash];
@@ -193,13 +200,10 @@
         NSString *url = [NSString stringWithFormat:@"https://resources.download.minecraft.net/%@", pathname];
         NSURLSessionDownloadTask *task = [self createDownloadTask:url sha:hash altName:name toPath:path success:nil];
         if (task) {
-            NSProgress *progress = [self.manager downloadProgressForTask:task];
-            progress.kind = NSProgressKindFile;
             [self.fileList addObject:name];
-            [self.progressList addObject:progress];
-            [self.progress addChild:progress withPendingUnitCount:1];
+            [self addDownloadTaskToProgress:task];
             [tasks addObject:task];
-        } else if (self.cancelled) {
+        } else if (self.progress.cancelled) {
             return nil;
         }
     }
@@ -207,10 +211,7 @@
 }
 
 - (void)downloadVersion:(NSDictionary *)version {
-    self.cancelled = NO;
-    self.progress = [NSProgress new];
-    [self.fileList removeAllObjects];
-    [self.progressList removeAllObjects];
+    [self prepareForDownload];
     [self downloadVersionMetadata:version success:^{
         [self downloadAssetMetadataWithSuccess:^{
             NSArray *libTasks = [self downloadClientLibraries];
@@ -224,13 +225,39 @@
             }
             [libTasks makeObjectsPerformSelector:@selector(resume)];
             [assetTasks makeObjectsPerformSelector:@selector(resume)];
-            [self.verMetadata removeObjectForKey:@"assetIndexObj"];
+            [self.metadata removeObjectForKey:@"assetIndexObj"];
         }];
     }];
 }
 
+#pragma mark - Modpack installation
+
+- (void)downloadModpackFromAPI:(ModpackAPI *)api detail:(NSDictionary *)modDetail atIndex:(NSUInteger)selectedVersion {
+    [self prepareForDownload];
+
+    NSString *url = modDetail[@"versionUrls"][selectedVersion];
+    NSString *sha = modDetail[@"versionHashes"][selectedVersion];
+    NSString *name = [[modDetail[@"title"] lowercaseString] stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceCharacterSet];
+    name = [name stringByReplacingOccurrencesOfString:@" " withString:@"_"];
+    NSString *packagePath = [NSTemporaryDirectory() stringByAppendingFormat:@"/%@.zip", name];
+
+    NSURLSessionDownloadTask *task = [self createDownloadTask:url sha:sha altName:nil toPath:packagePath success:^{
+        NSString *path = [NSString stringWithFormat:@"%s/custom_gamedir/%@", getenv("POJAV_GAME_DIR"), name];
+        [api downloader:self submitDownloadTasksFromPackage:packagePath toPath:path];
+    }];
+    [task resume];
+}
+
+#pragma mark - Utilities
+
+- (void)prepareForDownload {
+    self.progress = [NSProgress new];
+    [self.fileList removeAllObjects];
+    [self.progressList removeAllObjects];
+}
+
 - (void)finishDownloadWithErrorString:(NSString *)error {
-    self.cancelled = YES;
+    [self.progress cancel];
     [self.manager invalidateSessionCancelingTasks:YES resetSession:YES];
     showDialog(localize(@"Error", nil), error);
     self.handleError();
@@ -247,7 +274,7 @@
     // for now
     BOOL accessible = [BaseAuthenticator.current.authData[@"username"] hasPrefix:@"Demo."] || BaseAuthenticator.current.authData[@"xboxGamertag"] != nil;
     if (!accessible) {
-        self.cancelled = YES;
+        [self.progress cancel];
         if (show) {
             [self finishDownloadWithErrorString:@"Minecraft can't be legally installed when logged in with a local account. Please switch to an online account to continue."];
         }

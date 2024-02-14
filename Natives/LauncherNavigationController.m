@@ -83,6 +83,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     self.buttonInstall.layer.cornerRadius = 5;
     self.buttonInstall.frame = CGRectMake(self.toolbar.frame.size.width * 0.8, 4, self.toolbar.frame.size.width * 0.2, self.toolbar.frame.size.height - 8);
     self.buttonInstall.tintColor = UIColor.whiteColor;
+    self.buttonInstall.enabled = NO;
     [self.buttonInstall addTarget:self action:@selector(performInstallOrShowDetails:) forControlEvents:UIControlEventPrimaryActionTriggered];
     [targetToolbar addSubview:self.buttonInstall];
 
@@ -94,9 +95,11 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     self.progressText.userInteractionEnabled = NO;
     [targetToolbar addSubview:self.progressText];
 
-    self.buttonInstall.enabled = NO;
-
     [self fetchRemoteVersionList];
+    [NSNotificationCenter.defaultCenter addObserver:self
+        selector:@selector(receiveNotification:) 
+        name:@"InstallModpack"
+        object:nil];
 
     if ([BaseAuthenticator.current isKindOfClass:MicrosoftAuthenticator.class]) {
         // Perform token refreshment on startup
@@ -230,6 +233,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         self.buttonInstall.alpha = 1;
         self.buttonInstall.enabled = YES;
     }
+    UIApplication.sharedApplication.idleTimerDisabled = !enabled;
 }
 
 - (void)launchMinecraft:(UIButton *)sender {
@@ -251,7 +255,10 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     NSString *versionId = PLProfiles.current.profiles[self.versionTextField.text][@"lastVersionId"];
     NSDictionary *object = [remoteVersionList filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(id == %@)", versionId]].firstObject;
     if (!object) {
-        object = [localVersionList filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(id == %@)", versionId]].firstObject;
+        object = @{
+            @"id": versionId,
+            @"type": @"custom"
+        };
     }
 
     self.task = [MinecraftResourceDownloadTask new];
@@ -290,20 +297,53 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if (context == ProgressObserverContext) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSProgress *progress = object;
-            self.progressText.text = [NSString stringWithFormat:@"(%@) %@", progress.localizedAdditionalDescription, progress.localizedDescription];
-            if (progress.finished) {
-                self.progressViewMain.observedProgress = nil;
-                [self invokeAfterJITEnabled:^{
-                    UIKit_launchMinecraftSurfaceVC(self.task.verMetadata);
-                }];
-            }
-        });
-    } else {
+    if (context != ProgressObserverContext) {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSProgress *progress = object;
+        self.progressText.text = [NSString stringWithFormat:@"(%@) %@", progress.localizedAdditionalDescription, progress.localizedDescription];
+        if (!progress.finished) return;
+
+        self.progressViewMain.observedProgress = nil;
+        if (self.task.metadata) {
+            [self invokeAfterJITEnabled:^{
+                UIKit_launchMinecraftSurfaceVC(self.task.metadata);
+            }];
+        } else {
+            self.task = nil;
+            [self setInteractionEnabled:YES forDownloading:YES];
+            [self reloadProfileList];
+        }
+    });
+}
+
+- (void)receiveNotification:(NSNotification *)notification {
+    if (![notification.name isEqualToString:@"InstallModpack"]) {
+        return;
+    }
+    [self setInteractionEnabled:NO forDownloading:YES];
+    self.task = [MinecraftResourceDownloadTask new];
+    NSDictionary *userInfo = notification.userInfo;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        __weak LauncherNavigationController *weakSelf = self;
+        self.task.handleError = ^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf setInteractionEnabled:YES forDownloading:YES];
+                weakSelf.task = nil;
+                weakSelf.progressVC = nil;
+            });
+        };
+        [self.task downloadModpackFromAPI:notification.object detail:userInfo[@"detail"] atIndex:[userInfo[@"index"] unsignedLongValue]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.progressViewMain.observedProgress = self.task.progress;
+            [self.task.progress addObserver:self
+                forKeyPath:@"fractionCompleted"
+                options:NSKeyValueObservingOptionInitial
+                context:ProgressObserverContext];
+        });
+    });
 }
 
 - (void)invokeAfterJITEnabled:(void(^)(void))handler {
@@ -387,9 +427,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 }
 
 #pragma mark - View controller UI mode
-- (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
-    return UIRectEdgeBottom;
-}
 
 - (BOOL)prefersHomeIndicatorAutoHidden {
     return YES;

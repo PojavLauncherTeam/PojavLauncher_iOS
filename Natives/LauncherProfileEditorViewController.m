@@ -300,8 +300,10 @@
 
     self.versionList = newVersionList;
     [self.versionPickerView reloadAllComponents];
-    [self.versionPickerView selectRow:self.versionSelectedAt inComponent:0 animated:NO];
-    [self pickerView:self.versionPickerView didSelectRow:self.versionSelectedAt inComponent:0];
+    if (self.versionSelectedAt != -1) {
+        [self.versionPickerView selectRow:self.versionSelectedAt inComponent:0 animated:NO];
+        [self pickerView:self.versionPickerView didSelectRow:self.versionSelectedAt inComponent:0];
+    }
 }
 
 @end

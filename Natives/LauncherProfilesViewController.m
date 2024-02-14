@@ -11,6 +11,7 @@
 #import "UIKit+hook.h"
 #import "installer/FabricInstallViewController.h"
 #import "installer/ForgeInstallViewController.h"
+#import "installer/ModpackInstallViewController.h"
 #import "ios_uikit_bridge.h"
 #import "utils.h"
 
@@ -64,6 +65,11 @@ typedef NS_ENUM(NSUInteger, LauncherProfilesTableSection) {
             actionWithTitle:@"Forge" image:nil
             identifier:@"forge" handler:^(UIAction *action) {
                 [self actionCreateForgeProfile];
+            }],
+        [UIAction
+            actionWithTitle:@"Modpack" image:nil
+            identifier:@"modpack" handler:^(UIAction *action) {
+                [self actionCreateModpackProfile];
             }]
     ]];
     self.createButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd menu:createMenu];
@@ -98,6 +104,11 @@ typedef NS_ENUM(NSUInteger, LauncherProfilesTableSection) {
 
 - (void)actionCreateForgeProfile {
     ForgeInstallViewController *vc = [ForgeInstallViewController new];
+    [self presentNavigatedViewController:vc];
+}
+
+- (void)actionCreateModpackProfile {
+    ModpackInstallViewController *vc = [ModpackInstallViewController new];
     [self presentNavigatedViewController:vc];
 }
 

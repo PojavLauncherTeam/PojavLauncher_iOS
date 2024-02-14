@@ -34,7 +34,7 @@ static GameSurfaceView* pojavWindow;
 @interface SurfaceViewController ()<UITextFieldDelegate, UIPointerInteractionDelegate, UIGestureRecognizerDelegate> {
 }
 
-@property(nonatomic) NSDictionary* verMetadata;
+@property(nonatomic) NSDictionary* metadata;
 
 @property(nonatomic) TrackedTextField *inputTextField;
 @property(nonatomic) NSMutableArray* swipeableButtons;
@@ -63,7 +63,7 @@ static GameSurfaceView* pojavWindow;
 
 - (instancetype)initWithMetadata:(NSDictionary *)metadata {
     self = [super init];
-    self.verMetadata = metadata;
+    self.metadata = metadata;
     return self;
 }
 
@@ -421,13 +421,13 @@ static GameSurfaceView* pojavWindow;
 
 - (void)launchMinecraft {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        int minVersion = [self.verMetadata[@"javaVersion"][@"majorVersion"] intValue];
+        int minVersion = [self.metadata[@"javaVersion"][@"majorVersion"] intValue];
         if (minVersion == 0) {
-            minVersion = [self.verMetadata[@"javaVersion"][@"version"] intValue];
+            minVersion = [self.metadata[@"javaVersion"][@"version"] intValue];
         }
         launchJVM(
             BaseAuthenticator.current.authData[@"username"],
-            self.verMetadata,
+            self.metadata,
             windowWidth, windowHeight,
             minVersion
         );

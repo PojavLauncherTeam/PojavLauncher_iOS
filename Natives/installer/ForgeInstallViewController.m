@@ -66,6 +66,7 @@
         if (![parser parse]) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 showDialog(localize(@"Error", nil), parser.parserError.localizedDescription);
+                [self actionClose];
             });
         }
     });

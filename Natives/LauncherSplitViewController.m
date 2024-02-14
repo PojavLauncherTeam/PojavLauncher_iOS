@@ -15,7 +15,6 @@ extern NSMutableDictionary *prefDict;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    UIApplication.sharedApplication.idleTimerDisabled = YES;
     self.view.backgroundColor = UIColor.systemBackgroundColor;
     if ([getPrefObject(@"control.control_safe_area") length] == 0) {
         setPrefObject(@"control.control_safe_area", NSStringFromUIEdgeInsets(getDefaultSafeArea()));
