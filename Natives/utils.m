@@ -68,14 +68,14 @@ NSMutableDictionary* parseJSONFromFile(NSString *path) {
     NSString *content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
     if (content == nil) {
         NSLog(@"[ParseJSON] Error: could not read %@: %@", path, error.localizedDescription);
-        return @{@"NSErrorDescription": error.localizedDescription}.mutableCopy;
+        return @{@"NSErrorObject": error}.mutableCopy;
     }
 
     NSData* data = [content dataUsingEncoding:NSUTF8StringEncoding];
     NSMutableDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
     if (error) {
         NSLog(@"[ParseJSON] Error: could not parse JSON: %@", error.localizedDescription);
-        return [@{@"error": error} mutableCopy];
+        return @{@"NSErrorObject": error}.mutableCopy;
     }
     return dict;
 }

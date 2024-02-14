@@ -20,8 +20,8 @@ static BaseAuthenticator *current = nil;
 
 + (id)loadSavedName:(NSString *)name {
     NSMutableDictionary *authData = parseJSONFromFile([NSString stringWithFormat:@"%s/accounts/%@.json", getenv("POJAV_HOME"), name]);
-    if (authData[@"error"] != nil) {
-        NSError *error = ((NSError *)authData[@"error"]);
+    if (authData[@"NSErrorObject"] != nil) {
+        NSError *error = ((NSError *)authData[@"NSErrorObject"]);
         if (error.code != NSFileReadNoSuchFileError) {
             showDialog(localize(@"Error", nil), error.localizedDescription);
         }

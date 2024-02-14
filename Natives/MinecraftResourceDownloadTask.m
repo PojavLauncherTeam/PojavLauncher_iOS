@@ -86,8 +86,8 @@
 
     void(^completionBlock)(void) = ^{
         self.metadata = parseJSONFromFile(path);
-        if (self.metadata[@"NSErrorDescription"]) {
-            [self finishDownloadWithErrorString:self.metadata[@"NSErrorDescription"]];
+        if (self.metadata[@"NSErrorObject"]) {
+            [self finishDownloadWithErrorString:[self.metadata[@"NSErrorObject"] localizedDescription]];
             return;
         }
         if (self.metadata[@"inheritsFrom"]) {
@@ -104,8 +104,8 @@
     if (!version) {
         // This is likely local version, check if json exists and has inheritsFrom
         NSMutableDictionary *json = parseJSONFromFile(path);
-        if (json[@"NSErrorDescription"]) {
-            [self finishDownloadWithErrorString:json[@"NSErrorDescription"]];
+        if (json[@"NSErrorObject"]) {
+            [self finishDownloadWithErrorString:[json[@"NSErrorObject"] localizedDescription]];
             return;
         } else if (json[@"inheritsFrom"]) {
             version = (id)[MinecraftResourceUtils findVersion:json[@"inheritsFrom"] inList:remoteVersionList];

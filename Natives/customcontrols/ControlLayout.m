@@ -27,8 +27,8 @@
     NSString *controlFilePath = [NSString stringWithFormat:@"%s/controlmap/%@", getenv("POJAV_HOME"), name];
 
     self.layoutDictionary = parseJSONFromFile(controlFilePath);
-    if (self.layoutDictionary[@"error"] != nil) {
-        showDialog(localize(@"Error", nil), [NSString stringWithFormat:@"Could not open %@: %@", controlFilePath, [self.layoutDictionary[@"error"] localizedDescription]]);
+    if (self.layoutDictionary[@"NSErrorObject"] != nil) {
+        showDialog(localize(@"Error", nil), [NSString stringWithFormat:@"Could not open %@: %@", controlFilePath, [self.layoutDictionary[@"NSErrorObject"] localizedDescription]]);
         return;
     }
     [self loadControlLayout:self.layoutDictionary];
