@@ -185,6 +185,7 @@
 "preference.title.silence_with_switch" = "サイレントスイッチで音声を無効にする";
 "preference.title.default_gamepad_ctrl" = "コントローラーの設定";
 "preference.detail.hardware_hide" = "マウスまたはゲームコントローラーが接続されている場合、画面上のコントロールボタンを自動的に無効にするようにします";
+"preference.title.gesture_mouse" = "マウスのジェスチャー";
 "preference.title.disable_haptics" = "画面上のハプティクスを無効にする";
 "preference.title.press_duration" = "長押し時間 (ms)";
 "preference.detail.press_duration" = "ブロックを破壊したりアイテムをドロップしたりするための長さをトリガーします。";
