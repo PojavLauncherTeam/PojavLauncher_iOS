@@ -94,7 +94,7 @@ static WFWorkflowProgressView* currentProgressView;
 
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url {
     LauncherNavigationController *nav = (id)self.navigationController;
-    [nav setInteractionEnabled:NO];
+    [nav setInteractionEnabled:NO forDownloading:NO];
 
     [url startAccessingSecurityScopedResource];
     NSUInteger xzSize = [NSFileManager.defaultManager attributesOfItemAtPath:url.path error:nil].fileSize;
@@ -136,7 +136,7 @@ static WFWorkflowProgressView* currentProgressView;
             vc.installingIndexPath = nil;
             [vc.tableView reloadData];
 
-            [nav setInteractionEnabled:YES];
+            [nav setInteractionEnabled:YES forDownloading:NO];
             nav.progressViewMain.observedProgress = nil;
             nav.progressViewSub.observedProgress = nil;
             nav.progressText.text = @"";

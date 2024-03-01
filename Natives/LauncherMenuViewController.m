@@ -88,7 +88,7 @@
         UIActivityViewController *activityVC;
         if (realUIIdiom != UIUserInterfaceIdiomTV) {
             activityVC = [[UIActivityViewController alloc]
-                          initWithActivityItems:@[@"latestlog.txt", [NSURL URLWithString:latestlogPath]]
+                          initWithActivityItems:@[[NSURL URLWithString:latestlogPath]]
                           applicationActivities:nil];
         } else {
             dlopen("/System/Library/PrivateFrameworks/SharingUI.framework/SharingUI", RTLD_GLOBAL);

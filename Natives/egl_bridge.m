@@ -33,6 +33,7 @@ void JNI_LWJGL_changeRenderer(const char* value_c) {
 
 void pojavTerminate() {
     CallbackBridge_nativeSetInputReady(NO);
+    if (!br_terminate) return;
     br_terminate();
 }
 
@@ -112,5 +113,6 @@ void* pojavCreateContext(basic_render_window_t* contextSrc) {
 }
 
 void pojavSwapInterval(int interval) {
+    if (!br_swap_interval) return;
     br_swap_interval(interval);
 }

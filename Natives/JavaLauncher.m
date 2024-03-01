@@ -94,8 +94,8 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     init_loadDefaultEnv();
     init_loadCustomEnv();
 
+    BOOL launchJar = NO;
     NSString *gameDir;
-
     NSString *defaultJRETag;
     if ([launchTarget isKindOfClass:NSDictionary.class]) {
         // Get preferred Java version from current profile
@@ -126,6 +126,7 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     } else {
         defaultJRETag = @"execute_jar";
         gameDir = @(getenv("POJAV_GAME_DIR"));
+        launchJar = YES;
     }
     NSLog(@"[JavaLauncher] Looking for Java %d or later", minVersion);
     NSString *javaHome = getSelectedJavaHome(defaultJRETag, minVersion);
@@ -171,7 +172,9 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
 
     margv[++margc] = [NSString stringWithFormat:@"%@/bin/java", javaHome].UTF8String;
     margv[++margc] = "-XstartOnFirstThread";
-    margv[++margc] = "-Djava.system.class.loader=net.kdt.pojavlaunch.PojavClassLoader";
+    if (!launchJar) {
+        margv[++margc] = "-Djava.system.class.loader=net.kdt.pojavlaunch.PojavClassLoader";
+    }
     margv[++margc] = "-Xms128M";
     margv[++margc] = [NSString stringWithFormat:@"-Xmx%dM", allocmem].UTF8String;
     margv[++margc] = [NSString stringWithFormat:@"-Djava.library.path=%@/Frameworks", NSBundle.mainBundle.bundlePath].UTF8String;
@@ -204,11 +207,6 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     margv[++margc] = "-XX:+UnlockExperimentalVMOptions";
     margv[++margc] = "-XX:+DisablePrimordialThreadGuardPages";
 
-    // Setup Caciocavallo
-    margv[++margc] = "-Djava.awt.headless=false";
-    margv[++margc] = "-Dcacio.font.fontmanager=sun.awt.X11FontManager";
-    margv[++margc] = "-Dcacio.font.fontscaler=sun.font.FreetypeFontScaler";
-
     // Disable Forge 1.16.x early progress window
     margv[++margc] = "-Dfml.earlyprogresswindow=false";
 
@@ -227,9 +225,14 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
         return 1;
     }
 
+    // Setup Caciocavallo
+    margv[++margc] = "-Djava.awt.headless=false";
+    margv[++margc] = "-Dcacio.font.fontmanager=sun.awt.X11FontManager";
+    margv[++margc] = "-Dcacio.font.fontscaler=sun.font.FreetypeFontScaler";
+    margv[++margc] = [NSString stringWithFormat:@"-Dcacio.managed.screensize=%dx%d", width, height].UTF8String;
+    margv[++margc] = "-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel";
     if (isJava8) {
         // Setup Caciocavallo
-        margv[++margc] = "-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel";
         margv[++margc] = "-Dawt.toolkit=net.java.openjdk.cacio.ctc.CTCToolkit";
         margv[++margc] = "-Djava.awt.graphicsenv=net.java.openjdk.cacio.ctc.CTCGraphicsEnvironment";
     } else {
@@ -237,7 +240,6 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
         margv[++margc] = "--add-opens=java.base/java.net=ALL-UNNAMED";
 
         // Setup Caciocavallo
-        margv[++margc] = "-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel";
         margv[++margc] = "-Dawt.toolkit=com.github.caciocavallosilano.cacio.ctc.CTCToolkit";
         margv[++margc] = "-Djava.awt.graphicsenv=com.github.caciocavallosilano.cacio.ctc.CTCGraphicsEnvironment";
 
@@ -289,21 +291,26 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
     init_loadCustomJvmFlags(&margc, (const char **)margv);
     NSLog(@"[Init] Found JLI lib");
 
+    NSString *classpath = [NSString stringWithFormat:@"%@/*", librariesPath];
+    if (launchJar) {
+        classpath = [classpath stringByAppendingFormat:@":%@", launchTarget];
+    }
     margv[++margc] = "-cp";
-    margv[++margc] = [NSString stringWithFormat:@"%@/*", librariesPath].UTF8String;
+    margv[++margc] = classpath.UTF8String;
     margv[++margc] = "net.kdt.pojavlaunch.PojavLauncher";
 
-    if (username == nil) {
-        margv[++margc] = "--launchJar";
+    if (launchJar) {
+        margv[++margc] = "-jar";
     } else {
         margv[++margc] = username.UTF8String;
     }
+
     if ([launchTarget isKindOfClass:NSDictionary.class]) {
         margv[++margc] = [launchTarget[@"id"] UTF8String];
     } else {
         margv[++margc] = [launchTarget UTF8String];
     }
-    margv[++margc] = [NSString stringWithFormat:@"%dx%d", width, height].UTF8String;
+    //margv[++margc] = "ghidra.GhidraRun";
 
     pJLI_Launch = (JLI_Launch_func *)dlsym(libjli, "JLI_Launch");
 

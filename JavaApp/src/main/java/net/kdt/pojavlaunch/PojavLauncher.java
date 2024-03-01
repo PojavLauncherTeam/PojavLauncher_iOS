@@ -43,14 +43,13 @@ public class PojavLauncher {
             }
         });
 
-        System.setProperty("cacio.managed.screensize", args[2]);
         try {
             // Try to initialize Caciocavallo17
             Class.forName("com.github.caciocavallosilano.cacio.ctc.CTCPreloadClassLoader");
         } catch (ClassNotFoundException e) {}
 
-        if (args[0].equals("--launchJar")) {
-            UIKit.callback_JavaGUIViewController_launchJarFile(args[1]);
+        if (args[0].equals("-jar")) {
+            UIKit.callback_JavaGUIViewController_launchJarFile(args[1], Arrays.copyOfRange(args, 2, args.length));
         } else {
             launchMinecraft(args);
         }
@@ -61,8 +60,9 @@ public class PojavLauncher {
         System.setProperty("appdir", "./spiral");
         System.setProperty("resource_dir", "./spiral/rsrc");
 
-        System.setProperty("glfw.windowSize", args[2]);
-        String[] size = args[2].split("x");
+        String sizeStr = System.getProperty("cacio.managed.screensize");
+        System.setProperty("glfw.windowSize", sizeStr);
+        String[] size = sizeStr.split("x");
         MCOptionUtils.load();
         MCOptionUtils.set("fullscreen", "false");
         MCOptionUtils.set("overrideWidth", size[0]);

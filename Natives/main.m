@@ -108,7 +108,7 @@ void init_logDeviceAndVer(char *argument) {
     
     NSString *tsPath = [NSString stringWithFormat:@"%@/../_TrollStore", NSBundle.mainBundle.bundlePath];
     const char *type;
-    if ([fm fileExistsAtPath:tsPath]) {
+    if (!access(tsPath.UTF8String, F_OK)) {
         type = "TrollStore";
     } else if (isJailbroken) {
         type = "Jailbroken";

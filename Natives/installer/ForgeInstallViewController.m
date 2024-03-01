@@ -40,13 +40,13 @@
         },
         @"NeoForge": @{
             @"installer": @"https://maven.neoforged.net/net/neoforged/forge/%1$@/forge-%1$@-installer.jar",
-            @"metadata": @"https://maven.neoforged.net/api/maven/versions/releases/net/neoforged/forge"
+            @"metadata": @"https://maven.neoforged.net/releases/net/neoforged/forge/maven-metadata.xml"
         }
     };
     self.visibilityList = [NSMutableArray new];
     self.versionList = [NSMutableArray new];
     self.forgeList = [NSMutableArray new];
-    [self loadForgeMetadata];
+    [self loadMetadataFromVendor:@"Forge"];
 }
 
 - (void)actionCancelDownload {
@@ -57,10 +57,10 @@
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)loadForgeMetadata {
+- (void)loadMetadataFromVendor:(NSString *)vendor {
     [self switchToLoadingState];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSURL *url = [[NSURL alloc] initWithString:self.endpoints[@"Forge"][@"metadata"]];
+        NSURL *url = [[NSURL alloc] initWithString:self.endpoints[vendor][@"metadata"]];
         NSXMLParser *parser = [[NSXMLParser alloc] initWithContentsOfURL:url];
         parser.delegate = self;
         if (![parser parse]) {
@@ -69,22 +69,6 @@
             });
         }
     });
-}
-
-- (void)loadNeoForgeMetadata {
-    [self switchToLoadingState];
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    [manager GET:self.endpoints[@"NeoForge"][@"metadata"] parameters:nil headers:nil progress:nil
-    success:^(NSURLSessionTask *task, NSDictionary *response) {
-        for (NSString *version in response[@"versions"]) {
-            [self addVersionToList:version];
-        }
-        [self switchToReadyState];
-        [self.tableView reloadData];
-    } failure:^(NSURLSessionTask *operation, NSError *error) {
-        showDialog(localize(@"Error", nil), error.localizedDescription);
-        [self switchToReadyState];
-    }];
 }
 
 - (void)switchToLoadingState {
@@ -106,14 +90,8 @@
     [self.versionList removeAllObjects];
     [self.forgeList removeAllObjects];
     [self.tableView reloadData];
-    switch (segment.selectedSegmentIndex) {
-        case 0:
-            [self loadForgeMetadata];
-            break;
-        case 1:
-            [self loadNeoForgeMetadata];
-            break;
-    }
+    NSString *vendor = [segment titleForSegmentAtIndex:segment.selectedSegmentIndex];
+    [self loadMetadataFromVendor:vendor];
 }
 
 #pragma mark UITableViewDataSource
@@ -206,6 +184,9 @@
 }
 
 - (void)addVersionToList:(NSString *)version {
+    if (![version containsString:@"-"]) {
+        return;
+    }
     NSRange range = [version rangeOfString:@"-"];
     NSString *gameVersion = [version substringToIndex:range.location];
     //NSString *forgeVersion = [version substringFromIndex:range.location + 1];

@@ -11,7 +11,7 @@ void (*orig_exit)(int code);
 int (*orig_open)(const char *path, int oflag, ...);
 
 void handle_fatal_exit(int code) {
-    if (NSThread.isMainThread || !SurfaceViewController.isRunning) {
+    if (NSThread.isMainThread) {
         return;
     }
 

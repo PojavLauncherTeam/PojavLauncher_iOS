@@ -267,37 +267,39 @@
 }
 
 - (void)changeVersionType:(UISegmentedControl *)sender {
+    NSArray *newVersionList = self.versionList;
     if (sender || !self.versionList) {
         if (self.versionTypeControl.selectedSegmentIndex == 0) {
             // installed
-            self.versionList = localVersionList;
+            newVersionList = localVersionList;
         } else {
             NSString *type = @[@"installed", @"release", @"snapshot", @"old_beta", @"old_alpha"][self.versionTypeControl.selectedSegmentIndex];
-            self.versionList = [remoteVersionList filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(type == %@)", type]];
+            newVersionList = [remoteVersionList filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(type == %@)", type]];
         }
-        [self.versionPickerView reloadAllComponents];
     }
 
     if (self.versionSelectedAt == -1) {
-        NSDictionary *selected = (id)[MinecraftResourceUtils findVersion:self.versionTextField.text inList:self.versionList];
-        self.versionSelectedAt = [self.versionList indexOfObject:selected];
+        NSDictionary *selected = (id)[MinecraftResourceUtils findVersion:self.versionTextField.text inList:newVersionList];
+        self.versionSelectedAt = [newVersionList indexOfObject:selected];
     } else {
         // Find the most matching version for this type
-        NSObject *lastSelected = nil;
-        if (self.versionList.count > 0 && self.versionSelectedAt >= 0) {
+        NSObject *lastSelected = nil; 
+        if (self.versionList.count > self.versionSelectedAt) {
             lastSelected = self.versionList[self.versionSelectedAt];
         }
-        if (self.versionSelectedAt < 0 && lastSelected != nil) {
+        if (lastSelected != nil) {
             NSObject *nearest = [MinecraftResourceUtils findNearestVersion:lastSelected expectedType:self.versionTypeControl.selectedSegmentIndex];
             if (nearest != nil) {
-                self.versionSelectedAt = [self.versionList indexOfObject:(id)nearest];
+                self.versionSelectedAt = [newVersionList indexOfObject:(id)nearest];
             }
         }
         lastSelected = nil;
         // Get back the currently selected in case none matching version found
-        self.versionSelectedAt = MIN(abs(self.versionSelectedAt), self.versionList.count - 1);
+        self.versionSelectedAt = MIN(abs(self.versionSelectedAt), newVersionList.count - 1);
     }
 
+    self.versionList = newVersionList;
+    [self.versionPickerView reloadAllComponents];
     [self.versionPickerView selectRow:self.versionSelectedAt inComponent:0 animated:NO];
     [self pickerView:self.versionPickerView didSelectRow:self.versionSelectedAt inComponent:0];
 }

@@ -6,8 +6,10 @@
 @interface WFWorkflowProgressView : UIControl
 
 @property(nonatomic, retain) UIColor* resolvedTintColor;
-@property(assign, nonatomic) CGFloat fractionCompleted;
+@property(assign, nonatomic) CGFloat fractionCompleted, stopSize;
 
-- (void)transistionToState:(NSInteger)state;
+- (void)reset;
+- (void)transitionCompletedLayerToVisible:(BOOL)visible animated:(BOOL)animated haptic:(BOOL)haptic;
+- (void)transitionRunningLayerToVisible:(BOOL)visible animated:(BOOL)animated;
 
 @end

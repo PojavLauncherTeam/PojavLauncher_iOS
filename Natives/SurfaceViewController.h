@@ -20,6 +20,7 @@ CGPoint lastVirtualMousePoint;
 
 @property(nonatomic) UIView* rootView;
 
+- (instancetype)initWithMetadata:(NSDictionary *)metadata;
 - (void)sendTouchPoint:(CGPoint)location withEvent:(int)event;
 - (void)updateSavedResolution;
 - (void)updateGrabState;

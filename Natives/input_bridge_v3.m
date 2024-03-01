@@ -102,7 +102,7 @@ hooked_ProcessImpl_forkAndExec(JNIEnv *env, jobject process, jint mode, jbyteArr
 jlong hooked_ProcessHandleImpl_isAlive0(JNIEnv *env, jclass clazz, jlong jpid) {
     jlong result = orig_ProcessHandleImpl_isAlive0(env, clazz, jpid);
     if ((*env)->ExceptionOccurred(env)) {
-        (*env)->ExceptionClear(runtimeJNIEnvPtr);
+        (*env)->ExceptionClear(env);
     }
     return result;
 }
@@ -137,61 +137,61 @@ void CTCDesktopPeer_openGlobal(JNIEnv *env, jclass clazz, jstring path) {
     (*env)->ReleaseStringUTFChars(env, path, stringChars);
 }
 
-void registerOpenHandler() {
+void registerOpenHandler(JNIEnv *env) {
     jclass cls;
 
     // Hook forkAndExec
     orig_ProcessImpl_forkAndExec = dlsym(RTLD_DEFAULT, "Java_java_lang_UNIXProcess_forkAndExec");
     if (!orig_ProcessImpl_forkAndExec) {
         orig_ProcessImpl_forkAndExec = dlsym(RTLD_DEFAULT, "Java_java_lang_ProcessImpl_forkAndExec");
-        cls = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "java/lang/ProcessImpl");
+        cls = (*env)->FindClass(env, "java/lang/ProcessImpl");
     } else {
-        cls = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "java/lang/UNIXProcess");
+        cls = (*env)->FindClass(env, "java/lang/UNIXProcess");
     }
     JNINativeMethod forkAndExecMethod[] = {
         {"forkAndExec", "(I[B[B[BI[BI[B[IZ)I", (void *)&hooked_ProcessImpl_forkAndExec}
     };
-    (*runtimeJNIEnvPtr)->RegisterNatives(runtimeJNIEnvPtr, cls, forkAndExecMethod, 1);
+    (*env)->RegisterNatives(env, cls, forkAndExecMethod, 1);
 
     // (Java 17 only) Hook isAlive0
-    cls = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "java/lang/ProcessHandleImpl");
-    if ((*runtimeJNIEnvPtr)->ExceptionOccurred(runtimeJNIEnvPtr)) {
+    cls = (*env)->FindClass(env, "java/lang/ProcessHandleImpl");
+    if ((*env)->ExceptionOccurred(env)) {
         // Java 8
-        (*runtimeJNIEnvPtr)->ExceptionClear(runtimeJNIEnvPtr);
+        (*env)->ExceptionClear(env);
     } else {
         orig_ProcessHandleImpl_isAlive0 = dlsym(RTLD_DEFAULT, "Java_java_lang_ProcessHandleImpl_isAlive0");
         JNINativeMethod isAlive0Method[] = {
             {"isAlive0", "(J)J", (void *)&hooked_ProcessHandleImpl_isAlive0}
         };
-        (*runtimeJNIEnvPtr)->RegisterNatives(runtimeJNIEnvPtr, cls, isAlive0Method, 1);
+        (*env)->RegisterNatives(env, cls, isAlive0Method, 1);
     }
 
     // Register CTCClipboard natives
-    cls = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "net/java/openjdk/cacio/ctc/CTCClipboard");
-    if ((*runtimeJNIEnvPtr)->ExceptionOccurred(runtimeJNIEnvPtr)) {
+    cls = (*env)->FindClass(env, "net/java/openjdk/cacio/ctc/CTCClipboard");
+    if ((*env)->ExceptionOccurred(env)) {
         // Java 17
-        (*runtimeJNIEnvPtr)->ExceptionClear(runtimeJNIEnvPtr);
-        cls = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "com/github/caciocavallosilano/cacio/ctc/CTCClipboard");
+        (*env)->ExceptionClear(env);
+        cls = (*env)->FindClass(env, "com/github/caciocavallosilano/cacio/ctc/CTCClipboard");
     }
     JNINativeMethod clipboardMethods[] = {
         {"nQuerySystemClipboard", "()V", (void *)&CTCClipboard_nQuerySystemClipboard},
         {"nPutClipboardData", "(Ljava/lang/String;Ljava/lang/String;)V", (void *)&CTCClipboard_nPutClipboardData}
     };
-    (*runtimeJNIEnvPtr)->RegisterNatives(runtimeJNIEnvPtr, cls, clipboardMethods, 2);
+    (*env)->RegisterNatives(env, cls, clipboardMethods, 2);
 
     // Register CTCDesktopPeer natives
-    cls = (*runtimeJNIEnvPtr)->FindClass(runtimeJNIEnvPtr, "net/java/openjdk/cacio/ctc/CTCDesktopPeer");
-    if ((*runtimeJNIEnvPtr)->ExceptionOccurred(runtimeJNIEnvPtr)) {
+    cls = (*env)->FindClass(env, "net/java/openjdk/cacio/ctc/CTCDesktopPeer");
+    if ((*env)->ExceptionOccurred(env)) {
         // Java 17, not available
-        //(*runtimeJNIEnvPtr)->ExceptionDescribe(runtimeJNIEnvPtr);
-        (*runtimeJNIEnvPtr)->ExceptionClear(runtimeJNIEnvPtr);
+        //(*env)->ExceptionDescribe(env);
+        (*env)->ExceptionClear(env);
         return;
     }
     JNINativeMethod peerOpenMethods[] = {
         {"openFile", "(Ljava/lang/String;)V", (void *)&CTCDesktopPeer_openGlobal},
         {"openUri", "(Ljava/lang/String;)V", (void *)&CTCDesktopPeer_openGlobal}
     };
-    (*runtimeJNIEnvPtr)->RegisterNatives(runtimeJNIEnvPtr, cls, peerOpenMethods, 2);
+    (*env)->RegisterNatives(env, cls, peerOpenMethods, 2);
 }
 
 // JNI_OnLoad
@@ -206,11 +206,11 @@ void JNI_OnLoadGLFW() {
 jint JNI_OnLoad(JavaVM* vm, void* reserved) {
     runtimeJavaVMPtr = vm;
 
-    (*runtimeJavaVMPtr)->GetEnv(runtimeJavaVMPtr, (void **)&runtimeJNIEnvPtr, JNI_VERSION_1_4);
-    registerOpenHandler();
-    if (getenv("POJAV_SKIP_JNI_GLFW")) {
-        runtimeJNIEnvPtr = nil;
-    } else {
+    JNIEnv *env;
+    (*runtimeJavaVMPtr)->GetEnv(runtimeJavaVMPtr, (void **)&env, JNI_VERSION_1_4);
+    registerOpenHandler(env);
+    if (!getenv("POJAV_SKIP_JNI_GLFW")) {
+        runtimeJNIEnvPtr = env;
         JNI_OnLoadGLFW();
     }
 

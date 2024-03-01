@@ -3,10 +3,12 @@
 #import "AFNetworking.h"
 #import "ALTServerConnection.h"
 #import "CustomControlsViewController.h"
+#import "DownloadProgressViewController.h"
 #import "JavaGUIViewController.h"
 #import "LauncherMenuViewController.h"
 #import "LauncherNavigationController.h"
 #import "LauncherPreferences.h"
+#import "MinecraftResourceDownloadTask.h"
 #import "MinecraftResourceUtils.h"
 #import "PickTextField.h"
 #import "PLPickerView.h"
@@ -18,9 +20,13 @@
 
 #define AUTORESIZE_MASKS UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin
 
+static void *ProgressObserverContext = &ProgressObserverContext;
+
 @interface LauncherNavigationController () <UIDocumentPickerDelegate, UIPickerViewDataSource, PLPickerViewDelegate, UIPopoverPresentationControllerDelegate> {
 }
 
+@property(nonatomic) MinecraftResourceDownloadTask* task;
+@property(nonatomic) DownloadProgressViewController* progressVC;
 @property(nonatomic) PLPickerView* versionPickerView;
 @property(nonatomic) UITextField* versionTextField;
 @property(nonatomic) int profileSelectedAt;
@@ -61,16 +67,13 @@
     self.versionTextField.inputAccessoryView = versionPickToolbar;
     self.versionTextField.inputView = self.versionPickerView;
 
-    UIView *targetToolbar;
-    targetToolbar = self.toolbar;
+    UIView *targetToolbar = self.toolbar;
     [targetToolbar addSubview:self.versionTextField];
 
     self.progressViewMain = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 0, self.toolbar.frame.size.width, 4)];
-    self.progressViewSub = [[UIProgressView alloc] initWithFrame:CGRectMake(0, self.toolbar.frame.size.height - 4, self.toolbar.frame.size.width, 4)];
-    self.progressViewMain.autoresizingMask = self.progressViewSub.autoresizingMask = AUTORESIZE_MASKS;
-    self.progressViewMain.hidden = self.progressViewSub.hidden = YES;
+    self.progressViewMain.autoresizingMask = AUTORESIZE_MASKS;
+    self.progressViewMain.hidden = YES;
     [targetToolbar addSubview:self.progressViewMain];
-    [targetToolbar addSubview:self.progressViewSub];
 
     self.buttonInstall = [UIButton buttonWithType:UIButtonTypeSystem];
     setButtonPointerInteraction(self.buttonInstall);
@@ -80,10 +83,10 @@
     self.buttonInstall.layer.cornerRadius = 5;
     self.buttonInstall.frame = CGRectMake(self.toolbar.frame.size.width * 0.8, 4, self.toolbar.frame.size.width * 0.2, self.toolbar.frame.size.height - 8);
     self.buttonInstall.tintColor = UIColor.whiteColor;
-    [self.buttonInstall addTarget:self action:@selector(launchMinecraft:) forControlEvents:UIControlEventPrimaryActionTriggered];
+    [self.buttonInstall addTarget:self action:@selector(performInstallOrShowDetails:) forControlEvents:UIControlEventPrimaryActionTriggered];
     [targetToolbar addSubview:self.buttonInstall];
 
-    self.progressText = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.toolbar.frame.size.width, self.toolbar.frame.size.height)];
+    self.progressText = [[UILabel alloc] initWithFrame:self.versionTextField.frame];
     self.progressText.adjustsFontSizeToFitWidth = YES;
     self.progressText.autoresizingMask = AUTORESIZE_MASKS;
     self.progressText.font = [self.progressText.font fontWithSize:16];
@@ -97,11 +100,11 @@
 
     if ([BaseAuthenticator.current isKindOfClass:MicrosoftAuthenticator.class]) {
         // Perform token refreshment on startup
-        [self setInteractionEnabled:NO];
+        [self setInteractionEnabled:NO forDownloading:NO];
         id callback = ^(NSString* status, BOOL success) {
             self.progressText.text = status;
             if (status == nil) {
-                [self setInteractionEnabled:YES];
+                [self setInteractionEnabled:YES forDownloading:NO];
             } else if (!success) {
                 showDialog(localize(@"Error", nil), status);
             }
@@ -213,15 +216,20 @@
     [self enterModInstallerWithPath:url.path hitEnterAfterWindowShown:NO];
 }
 
-- (void)setInteractionEnabled:(BOOL)enabled {
+- (void)setInteractionEnabled:(BOOL)enabled forDownloading:(BOOL)downloading {
     for (UIControl *view in self.toolbar.subviews) {
         if ([view isKindOfClass:UIControl.class]) {
             view.alpha = enabled ? 1 : 0.2;
             view.enabled = enabled;
         }
     }
-
-    self.progressViewMain.hidden = self.progressViewSub.hidden = enabled;
+    self.progressViewMain.hidden = enabled;
+    self.progressText.text = nil;
+    if (downloading) {
+        [self.buttonInstall setTitle:localize(enabled ? @"Play" : @"Details", nil) forState:UIControlStateNormal];
+        self.buttonInstall.alpha = 1;
+        self.buttonInstall.enabled = YES;
+    }
 }
 
 - (void)launchMinecraft:(UIButton *)sender {
@@ -238,8 +246,7 @@
         return;
     }
 
-    sender.alpha = 0.5;
-    [self setInteractionEnabled:NO];
+    [self setInteractionEnabled:NO forDownloading:YES];
 
     NSString *versionId = PLProfiles.current.profiles[self.versionTextField.text][@"lastVersionId"];
     NSDictionary *object = [remoteVersionList filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(id == %@)", versionId]].firstObject;
@@ -247,29 +254,56 @@
         object = [localVersionList filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(id == %@)", versionId]].firstObject;
     }
 
-    [MinecraftResourceUtils downloadVersion:object callback:^(NSString *stage, NSProgress *mainProgress, NSProgress *progress) {
-        if (progress == nil && stage != nil) {
-            NSLog(@"[MCDL] %@", stage);
+    self.task = [MinecraftResourceDownloadTask new];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        __weak LauncherNavigationController *weakSelf = self;
+        self.task.handleError = ^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf setInteractionEnabled:YES forDownloading:YES];
+                weakSelf.task = nil;
+                weakSelf.progressVC = nil;
+            });
+        };
+        [self.task downloadVersion:object];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.progressViewMain.observedProgress = self.task.progress;
+            [self.task.progress addObserver:self
+                forKeyPath:@"fractionCompleted"
+                options:NSKeyValueObservingOptionInitial
+                context:ProgressObserverContext];
+        });
+    });
+}
+
+- (void)performInstallOrShowDetails:(UIButton *)sender {
+    if (self.task) {
+        if (!self.progressVC) {
+            self.progressVC = [[DownloadProgressViewController alloc] initWithTask:self.task];
         }
-        self.progressViewMain.observedProgress = mainProgress;
-        self.progressViewSub.observedProgress = progress;
-        if (stage == nil) {
-            sender.alpha = 1;
-            self.progressText.text = nil;
-            [self setInteractionEnabled:YES];
-            if (mainProgress != nil) {
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.progressVC];
+        nav.modalPresentationStyle = UIModalPresentationPopover;
+        nav.popoverPresentationController.sourceView = sender;
+        [self presentViewController:nav animated:YES completion:nil];
+    } else {
+        [self launchMinecraft:sender];
+    } 
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (context == ProgressObserverContext) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSProgress *progress = object;
+            self.progressText.text = [NSString stringWithFormat:@"(%@) %@", progress.localizedAdditionalDescription, progress.localizedDescription];
+            if (progress.finished) {
+                self.progressViewMain.observedProgress = nil;
                 [self invokeAfterJITEnabled:^{
-                    UIKit_launchMinecraftSurfaceVC();
+                    UIKit_launchMinecraftSurfaceVC(self.task.verMetadata);
                 }];
             }
-            return;
-        }
-        NSString *completed = [NSByteCountFormatter stringFromByteCount:progress.completedUnitCount countStyle:NSByteCountFormatterCountStyleMemory];
-        NSString *total = [NSByteCountFormatter stringFromByteCount:progress.totalUnitCount countStyle:NSByteCountFormatterCountStyleMemory];
-        self.progressText.text = [NSString stringWithFormat:@"%@ (%@ / %@)", stage, completed, total];
-    }];
-
-    //callback_LauncherViewController_installMinecraft("1.12.2");
+        });
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
 }
 
 - (void)invokeAfterJITEnabled:(void(^)(void))handler {
@@ -281,6 +315,10 @@
             handler();
         });
         return;
+    } else if (getEntitlementValue(@"local.sandboxed-jit")) {
+        NSURL *jitURL = [NSURL URLWithString:[NSString stringWithFormat:@"apple-magnifier://enable-jit?bundle-id=%@", NSBundle.mainBundle.bundleIdentifier]];
+        [UIApplication.sharedApplication openURL:jitURL options:@{} completionHandler:nil];
+        // Do not return, wait for TrollStore to enable JIT and jump back
     } else if (getPrefBool(@"debug.debug_skip_wait_jit")) {
         NSLog(@"Debug option skipped waiting for JIT. Java might not work.");
         handler();
@@ -302,8 +340,8 @@
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         while (!isJITEnabled(false)) {
-            // Perform check for every second
-            sleep(1);
+            // Perform check for every 200ms
+            usleep(1000*200);
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             [alert dismissViewControllerAnimated:YES completion:handler];

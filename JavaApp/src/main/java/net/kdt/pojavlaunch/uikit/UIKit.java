@@ -29,45 +29,7 @@ public class UIKit {
         System.setProperty("os.name", osName);
     }
 
-    public static void callback_JavaGUIViewController_launchJarFile(final String filepath) throws Throwable {
-        // Thread for refreshing the AWT buffer
-        new Thread(() -> {
-            Method getCurrentScreenRGB;
-            try {
-                try {
-                    getCurrentScreenRGB = Class.forName("net.java.openjdk.cacio.ctc.CTCScreen").getMethod("getCurrentScreenRGB");
-                } catch (ClassNotFoundException e) {
-                    getCurrentScreenRGB = Class.forName("com.github.caciocavallosilano.cacio.ctc.CTCScreen").getMethod("getCurrentScreenRGB");
-                }
-            } catch (Throwable th) {
-                System.err.println("Failed to find class CTCScreen");
-                th.printStackTrace();
-                System.exit(1);
-                return;
-            }
-
-            long lastTime = System.currentTimeMillis();
-            while (true) {
-                int[] pixelsArray = null;
-                try{
-                    pixelsArray = (int[])getCurrentScreenRGB.invoke(null);
-                } catch (Throwable e) {}
-                if (pixelsArray != null) {
-                    //System.out.println(java.util.Arrays.toString(pixelsArray));
-                    refreshAWTBuffer(pixelsArray);
-                }
-                long currentTime = System.currentTimeMillis();
-                if (currentTime - lastTime < 16) {
-                    try {
-                        Thread.sleep(16 - (currentTime - lastTime));
-                    } catch (InterruptedException e) {
-                        break;
-                    }
-                }
-                lastTime = currentTime;
-            }
-        }, "AWTFBRefreshThread").start();
-
+    public static void callback_JavaGUIViewController_launchJarFile(final String filepath, String[] args) throws Throwable {
         // Launch the JAR file
         String mainClassName = null;
 
@@ -78,15 +40,12 @@ public class UIKit {
             throw new IllegalArgumentException("no main manifest attribute, in \"" + filepath + "\"");
         }
 
-        PojavClassLoader loader = (PojavClassLoader) ClassLoader.getSystemClassLoader();
-        loader.addURL(new File(filepath).toURI().toURL());
-
         // LabyMod Installer uses FlatLAF which has some macOS-specific codes, so we make it think it's running on Linux.
         patch_FlatLAF_setLinux();
 
-        Class<?> clazz = loader.loadClass(mainClass);
+        Class<?> clazz = ClassLoader.getSystemClassLoader().loadClass(mainClass);
         Method method = clazz.getMethod("main", String[].class);
-        method.invoke(null, new Object[]{new String[]{}});
+        method.invoke(null, new Object[]{args});
     }
 
     public static void updateMCGuiScale() {
@@ -105,7 +64,6 @@ public class UIKit {
         System.load(System.getenv("BUNDLE_PATH") + "/PojavLauncher");
     }
 
-    public static native void refreshAWTBuffer(int[] array);
 
     // public static native void runOnUIThread(UIKitCallback callback);
 
