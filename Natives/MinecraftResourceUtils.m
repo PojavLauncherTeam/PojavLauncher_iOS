@@ -51,6 +51,22 @@
     }
 }
 
++ (NSInteger)numberOfArgsToSkipForArg:(NSString *)arg {
+    if (![arg isKindOfClass:NSString.class]) {
+        // Skip non-string arg
+        return 1;
+    } else if ([arg hasPrefix:@"-cp"]) {
+        // Skip "-cp <classpath>"
+        return 2;
+    } else if ([arg hasPrefix:@"-Djava.library.path="]) {
+        return 1;
+    } else if ([arg hasPrefix:@"-XX:HeapDumpPath"]) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
 + (void)tweakVersionJson:(NSMutableDictionary *)json {
     // Exclude some libraries
     for (NSMutableDictionary *library in json[@"libraries"]) {
@@ -109,13 +125,19 @@
         @"${library_directory}": [NSString stringWithFormat:@"%s/libraries", getenv("POJAV_GAME_DIR")],
         @"${version_name}": json[@"id"]
     };
-    for (id arg in json[@"arguments"][@"jvm"]) {
-        if ([arg isKindOfClass:NSString.class]) {
+    int argsToSkip = 0;
+    for (NSString *arg in json[@"arguments"][@"jvm"]) {
+        if (argsToSkip == 0) {
+            argsToSkip = [self numberOfArgsToSkipForArg:arg];
+        }
+        if (argsToSkip == 0) {
             NSString *argStr = arg;
             for (NSString *key in varArgMap.allKeys) {
                 argStr = [argStr stringByReplacingOccurrencesOfString:key withString:varArgMap[key]];
             }
             [json[@"arguments"][@"jvm_processed"] addObject:argStr];
+        } else {
+            argsToSkip--;
         }
     }
 }
