@@ -14,6 +14,7 @@
 
 // The play button
 "Play" = "Jouer";
+"Details" = "Détails";
 
 // Version categories
 "Installed" = "Installés";
