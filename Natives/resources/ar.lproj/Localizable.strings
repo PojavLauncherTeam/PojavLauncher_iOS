@@ -14,6 +14,7 @@
 
 // The play button
 "Play" = "إبدأ اللعب";
+"Details" = "التفاصيل";
 
 // Version categories
 "Installed" = "مثبت";
@@ -74,6 +75,7 @@
 "launcher.mcl.error_download" = "فشل التنزيل %@: %@";
 
 "launcher.menu.custom_controls" = "تخصيص التحكم";
+"launcher.menu.execute_jar" = "Usb";
 
 "launcher.wait_jit.title" = "انتظر JIT";
 "launcher.wait_jit.message" = "يعتمد PojavLauncher على تجميع Just-in-time لـ Java للعمل بأقصى قدر من الأداء.";
