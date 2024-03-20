@@ -18,7 +18,7 @@
     <true/>
 
     <!-- Custom entitlement to indicate this was installed with TrollStore, still sandboxed -->
-    <key>local.sandboxed-jit</key>
+    <key>com.apple.private.local.sandboxed-jit</key>
     <true/>
 </dict>
 </plist>

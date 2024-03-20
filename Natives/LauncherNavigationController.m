@@ -355,7 +355,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             handler();
         });
         return;
-    } else if (getEntitlementValue(@"local.sandboxed-jit")) {
+    } else if (getEntitlementValue(@"com.apple.private.local.sandboxed-jit")) {
         NSURL *jitURL = [NSURL URLWithString:[NSString stringWithFormat:@"apple-magnifier://enable-jit?bundle-id=%@", NSBundle.mainBundle.bundleIdentifier]];
         [UIApplication.sharedApplication openURL:jitURL options:@{} completionHandler:nil];
         // Do not return, wait for TrollStore to enable JIT and jump back
