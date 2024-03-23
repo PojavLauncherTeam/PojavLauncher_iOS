@@ -57,8 +57,15 @@
 "custom_controls.control_menu.add_joystick" = "เพิ่มจอยสติ๊ก";
 
 "launcher.mcl.downloading_file" = "กำลังดาวน์โหลด %@";
+"launcher.mcl.error_download" = "ล้มเหลวที่จะโหลด %@: %@";
 
 "launcher.menu.custom_controls" = "การควบคุมกำหนดเอง";
+
+"launcher.wait_jit.title" = "กำลังรอ JIT";
+
+"login.alert.field.username" = "ชื่อผู้ใช้";
+
+"login.jit.checking" = "กำลังตรวจสอบ JIT";
 "login.option.add" = "เพิ่มบัญชี";
 "login.option.select" = "เลือกบัญชี";
 
