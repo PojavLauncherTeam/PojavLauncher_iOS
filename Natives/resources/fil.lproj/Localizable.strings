@@ -28,7 +28,6 @@
 "Move" = "Ilipat";
 "Remove" = "Tanggalin";
 "Resize" = "Baguhin ang sukat";
-
 "custom_controls.button_edit.name" = "Pangalan";
 "custom_controls.button_edit.size" = "Sukat";
 "custom_controls.button_edit.mapping" = "Pag mapa";
@@ -37,7 +36,6 @@
 "custom_controls.button_edit.mouse_pass" = "Mouse Pass";
 "custom_controls.button_edit.swipeable" = "Pwede ma swipe";
 "custom_controls.button_edit.bg_color" = "Kulay ng likuran";
-"custom_controls.button_edit.stroke_width" = "Lapad ng stroke (%)";
 "custom_controls.button_edit.stroke_color" = "Kulay ng stroke";
 "custom_controls.button_edit.corner_radius" = "Corner radius (%)";
 "custom_controls.button_edit.opacity" = "Opacidad (%)";
@@ -47,7 +45,6 @@
 "custom_controls.control_menu.exit" = "Umalis";
 "custom_controls.control_menu.exit.warn" = "Lalabas ka nang hindi nase-save ng mga pagbabago.";
 "custom_controls.control_menu.save" = "I-Save";
-"custom_controls.control_menu.save.error.default" = "Hindi masave bilang \"default\" ang skema sapagkat ma-overwrite ito.";
 "custom_controls.control_menu.save.error.json" = "JSON error";
 "custom_controls.control_menu.save.error.write" = "Error saving file";
 "custom_controls.control_menu.load" = "Ikarga";
@@ -61,7 +58,6 @@
 "init.migrateDir" = "Ang direktoryo ng data ng PojavLauncher ay %@ na ngayon. Ang lahat ng iyong umiiral na data ay inilipat sa bagong lokasyon.";
 
 "launcher.menu.custom_controls" = "Pasadyang mga kontrol";
-"launcher.menu.install_jar" = "Install .jar";
 
 "launcher.wait_jit.title" = "Naghihintay ng JIT";
 "launcher.wait_jit.message" = "Umaasa ang PojavLauncher sa Just-in-time na compilation para gumana ang Java sa maximum na performance.";
@@ -103,7 +99,6 @@
 "preference.section.video" = "Kaayusan ng Video";
 "preference.section.control" = "Kontrolin ang customization";
 "preference.section.debug" = "Mga Setting ng pag-Debug ng UI";
-"preference.section.footer.debug" = "Bukod sa pag-debug, maaaring maging kapaki-pakinabang ang mga setting na ito para sa mga custom na kontrol. Maaaring kailanganin mong i-restart ang launcher para magkabisa ang mga pagbabago.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Mga tweaks sa Java";
 //"preference.section.footer.java" = "";
@@ -120,8 +115,6 @@
 "preference.detail.cosmetica" = "Paganahin ang mga kapa mula sa Cosmetica (dating Arc). Para sa karagdagang impormasyon mangyaring bisitahin ang https://cosmetica.cc. Nangangailangan ng OptiFine";
 "preference.title.debug_logging" = "Pag-log sa pag-debug";
 "preference.detail.debug_logging" = "Nagla-log ng mga panloob na setting at pagkilos sa latestlog.txt. Nakakatulong ito sa mga developer na mas madaling mahanap ang mga isyu, ngunit ang Minecraft ay maaaring tumakbo nang mas mabagal dahil mas madalas na isusulat ang mga log.";
-"preference.title.jitstreamer_server" = "JitStreamer error: %@";
-"preference.detail.jitstreamer_server" = "Binibigyang-daan kang lumipat sa isang custom na JitStreamer server IP, tulad ng para sa mga self-host na pagkakataon. Maaaring iwanang mag-isa ang opsyong ito kung gagamitin mo ang mga default na server ng JitStreamer.";
 "preference.title.appicon" = "Set app icon";
 "preference.detail.appicon" = "Allows you to choose between different Home Screen icons for PojavLauncher.";
 "preference.title.appicon-default" = "Familiar PojavLauncher light";
@@ -162,9 +155,9 @@
 "preference.title.slideable_hotbar" = "Naii-slide na hotbar";
 "preference.detail.slideable_hotbar" = "Gawing slideable ang hotbar na parang gulong ng mouse";
 
-"preference.title.java_home" = "Gamitin ang Java 17 para sa Minecraft < 1.17";
 "preference.title.java_args" = "JVM Launch arguments";
 "preference.placeholder.java_args" = "Tukuyin ang mga argumento...";
+"preference.title.env_variables" = "Variables ng environment";
 "preference.title.auto_ram" = "Awtomatikong RAM";
 "preference.detail.auto_ram" = "Pinapagana ang awtomatikong RAM adjuster";
 "preference.warn.auto_ram" = "Ang pag-disable sa opsyong ito sa isang unjailbroken na device ay maaaring lumikha ng kawalang-tatag kung babaguhin. Magpatuloy nang may pag-iingat.";
@@ -181,8 +174,7 @@
 "preference.detail.debug_auto_correction" = "Enable auto correction when typing text in game.";
 "preference.title.debug_hide_home_indicator" = "Hide home indicator";
 "preference.detail.debug_hide_home_indicator" = "This will disable home indicator locking. You will need to use Guided Access to hide and lock home indicator at the same time.";
-"preference.title.debug_show_layout_bounds" = "Ipakita ang mga hangganan ng layout";
-"preference.detail.debug_show_layout_bounds" = "Ipakita ang mga hangganan ng clip, mga margin";
-"preference.title.debug_show_layout_overlap" = "Ipakita ang layout na magkakapatong";
-"preference.detail.debug_show_layout_overlap" = "I-overlay ang bawat view gamit ang isang transparent na kulay upang ipakita ang mga magkakapatong na view.";
+
+"preference.profile.title.name" = "Pangalan";
+"preference.profile.title.version" = "Bersyon";
 "controller_configurator.playstation.title.named_back" = "Iselekta";

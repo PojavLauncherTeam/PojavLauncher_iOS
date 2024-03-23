@@ -9,12 +9,19 @@
 
 // The play button
 "Play" = "Παίξε";
+
+// Version categories
+"Installed" = "Εγκατεστημένο";
 "Snapshot" = "Στιγμιότυπο";
 "Old-beta" = "Παλιά-Beta";
 "Old-alpha" = "Παλιά-alpha";
+
+// Custom controls
+"Copy" = "Αντιγραφή";
 "Edit" = "Επεξεργασία";
 "Remove" = "Αφαίρεσε";
 
+"custom_controls.button_edit.forward_lock" = "Κλείδωμα ευθείας κινήσεως";
 "custom_controls.button_edit.name" = "Όνομα";
 "custom_controls.button_edit.size" = "Μέγεθος";
 "custom_controls.button_edit.mapping" = "Χαρτογράφηση";
@@ -29,17 +36,42 @@
 "custom_controls.control_menu.save" = "Αποθήκευση";
 "custom_controls.control_menu.load" = "Φόρτωση";
 "custom_controls.control_menu.add_button" = "Προσθήκη κουμπιού";
+"custom_controls.control_menu.add_joystick" = "Προσθήκη χειριστηρίου (joystick)";
 
 "launcher.menu.custom_controls" = "Προσαρμοσμένα controls";
+
+"login.alert.field.username" = "Όνομα χρήστη";
+"login.option.add" = "Προσθήκη λογαριασμού";
 "login.option.select" = "Επιλέξτε λογαριασμό";
+"login.option.microsoft" = "Λογαριασμός Microsoft";
+"login.option.local" = "Τοπικός λογαριασμός";
 
 "News" = "Νέα";
 "Settings" = "Ρυθμίσεις";
+"preference.section.control" = "Προσαρμογή ελέγχου";
+//"preference.section.footer.control" = "";
+"preference.section.java" = "Java Tweaks";
 
 "preference.title.game_directory" = "Κατάλογος παιχνιδιού";
 
 "preference.title.renderer" = "Απόδοση";
+
 "preference.title.java_args" = "JVM Εντολές εκκίνησης";
 "preference.title.auto_ram" = "Αυτόματη RAM";
 "preference.detail.auto_ram" = "Ενεργοποιεί τον αυτόματο ρυθμιστή RAM";
 "preference.detail.allocated_memory" = "Ελέγχει πόση μνήμη δίνεται στο Minecraft";
+
+"preference.profile.title.name" = "Όνομα";
+"preference.profile.title.version" = "Έκδοση";
+"profile.title.create" = "Δημιουργία νέου προφίλ";
+"controller_configurator.title.type.xbox" = "Xbox";
+"controller_configurator.title.type.playstation" = "PlayStation";
+"controller_configurator.xbox.title.dpad_up" = "Πάνω";
+"controller_configurator.xbox.title.dpad_down" = "Κάτω";
+"controller_configurator.xbox.title.dpad_left" = "Αριστερά";
+"controller_configurator.xbox.title.dpad_right" = "Δεξιά";
+"controller_configurator.playstation.title.named_back" = "Επιλέξτε";
+"controller_configurator.playstation.title.dpad_up" = "Πάνω";
+"controller_configurator.playstation.title.dpad_down" = "Κάτω";
+"controller_configurator.playstation.title.dpad_left" = "Αριστερά";
+"controller_configurator.playstation.title.dpad_right" = "Δεξιά";

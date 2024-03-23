@@ -7,7 +7,6 @@
 "Old-alpha" = "Иҫке альфалар";
 "Edit" = "Үҙгәртергә";
 "Remove" = "Юйырға";
-
 "custom_controls.button_edit.name" = "Исем";
 "custom_controls.control_menu.exit" = "Сығырға";
 "custom_controls.control_menu.save" = "Һаҡларға";
@@ -19,3 +18,5 @@
 "Settings" = "Көйләүҙәр";
 
 "preference.title.renderer" = "Рендерер";
+
+"preference.profile.title.name" = "Исем";

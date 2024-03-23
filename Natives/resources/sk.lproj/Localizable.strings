@@ -4,7 +4,7 @@
 */
 
 "game.menu.force_close" = "Vynútené ukončenie";
-"game.menu.log_output" = "Záznam výstupu";
+"game.menu.log_output" = "Záznam logu";
 "game.menu.custom_controls" = "Vlastné ovládacie prvky";
 
 // The play button
@@ -15,11 +15,12 @@
 "Edit" = "Upraviť";
 "Remove" = "Odstrániť";
 
+"custom_controls.button_edit.forward_lock" = "Zámok chodenia vpred";
 "custom_controls.button_edit.name" = "Názov";
 "custom_controls.button_edit.size" = "Veľkosť";
-"custom_controls.button_edit.mapping" = "Priradenie ku klávese (bind)";
+"custom_controls.button_edit.mapping" = "Bindy";
 "custom_controls.button_edit.orientation" = "Orientácia";
-"custom_controls.button_edit.toggleable" = "Prepnuteľné (toggle) - po ťuknutí klávesa ostane stlačená";
+"custom_controls.button_edit.toggleable" = "Prepínateľné (toggle)";
 "custom_controls.button_edit.swipeable" = "Posunovateľné";
 "custom_controls.button_edit.bg_color" = "Farba pozadia tlačidla";
 "custom_controls.button_edit.stroke_color" = "Farba obrysu tlačidla";
@@ -27,16 +28,16 @@
 "custom_controls.button_menu.add_subbutton" = "Pridať podtlačidlo";
 "custom_controls.control_menu.exit" = "Skončiť";
 "custom_controls.control_menu.save" = "Uložiť";
-"custom_controls.control_menu.load" = "Načítať";
+"custom_controls.control_menu.load" = "Otvoriť";
 "custom_controls.control_menu.add_button" = "Pridať tlačidlo";
+"custom_controls.control_menu.add_joystick" = "Pridať joystick";
 
 "launcher.menu.custom_controls" = "Vlastné ovládacie prvky";
-"launcher.menu.install_jar" = "Inštalovať .jar";
 "login.option.add" = "Pridať účet";
 "login.option.select" = "Vybrať účet";
 
 "News" = "Novinky";
-"Settings" = "Nastavenie";
+"Settings" = "Nastavenia";
 "preference.section.control" = "Ovládanie";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Nastavenia Javy";
@@ -44,8 +45,18 @@
 "preference.title.game_directory" = "Zložka hry";
 "preference.title.cosmetica" = "Cosmetica Capeky";
 
-"preference.title.renderer" = "Renderer";
+"preference.title.renderer" = "Vykresľovač";
+
+"preference.title.gyroscope_enable" = "Ovládanie gyroskopom";
+"preference.title.gyroscope_sensitivity" = "Citlivosť gyroskopu";
+"preference.detail.gyroscope_sensitivity" = "Uprav si citlivosť gyroskopu na otáčanie";
+
 "preference.title.java_args" = "Spúštacie argumenty pre JVM";
 "preference.title.auto_ram" = "Auto RAM";
-"preference.detail.auto_ram" = "Automaticky bude meniť množstvo RAM";
+"preference.detail.auto_ram" = "Automaticky bude meniť alokovanú RAM";
 "preference.detail.allocated_memory" = "Určite, koľko pamäti bude mať Minecraft";
+
+"preference.profile.title.name" = "Názov";
+"preference.profile.title.version" = "Verzia";
+"profile.title.create" = "Vytvoriť nový profil";
+"controller_configurator.playstation.title.named_back" = "Vyber";

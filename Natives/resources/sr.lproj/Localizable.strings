@@ -14,7 +14,6 @@
 "Old-alpha" = "Стари-Аlpha";
 "Edit" = "Измени";
 "Remove" = "Уклони";
-
 "custom_controls.button_edit.name" = "Име";
 "custom_controls.button_edit.size" = "Величина";
 "custom_controls.button_edit.mapping" = "Мапирање";
@@ -30,14 +29,16 @@
 "custom_controls.control_menu.add_button" = "Додај дугме";
 
 "launcher.menu.custom_controls" = "Прилагођене контроле";
-"launcher.menu.install_jar" = "Инсталирај .jar";
 "login.option.select" = "Изаберите налог";
 
 "News" = "Вести";
 "Settings" = "Подешавања";
 
 "preference.title.renderer" = "Рендерер";
+
 "preference.title.java_args" = "ЈВМ Покретање аргументи";
 "preference.title.auto_ram" = "Аутпматски RAM";
 "preference.detail.auto_ram" = "Укључије аутомстски подешавање RAM-а";
 "preference.detail.allocated_memory" = "Колико меморије може да корости Minecraft";
+
+"preference.profile.title.name" = "Име";
