@@ -66,11 +66,26 @@
 "login.alert.field.username" = "ชื่อผู้ใช้";
 
 "login.jit.checking" = "กำลังตรวจสอบ JIT";
+"login.jit.enabled" = "JIT ได้เปิดเเล้ว";
+"login.jit.fail" = "JIT เปิดไม่ได้";
+"login.jit.fail.title" = "JIT เปิดบนเครื่องนี้ไม่ได้";
+
+// Login buttons
+"login.menu.sendlogs" = "ส่งบันทึกของคุณ";
 "login.option.add" = "เพิ่มบัญชี";
 "login.option.select" = "เลือกบัญชี";
+"login.option.demo" = "บัญชีทดลอง";
+"login.option.microsoft" = "บัญชี ไมโครซอฟท์";
+"login.option.local" = "บัญชีในเครื่อง";
+
+"login.warn.title.legacy_device" = "Pojavlauncher รุ่นใหม่นี้จะไม่รองรับอุปกรณ์ของคุณอีกต่อไป";
+"login.warn.title.limited_ram" = "เครื่องนี้มีเเรมที่เหลือจำกัด";
+"login.warn.message.limited_ram" = "พวกเราขอเเนะนำให้ปล่อย auto Ram เปิดไว้เพื่อป้องกันการกระตุกเเละไม่เสถียร";
 
 "News" = "ข่าวสาร";
 "Settings" = "การตั้งค่า";
+
+"preference.section.general" = "การตั้งค่าทั่วไป";
 "preference.section.control" = "ปรับเเต่งการควบคุม";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "จาวาทวิก";
