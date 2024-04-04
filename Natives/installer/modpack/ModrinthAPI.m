@@ -87,10 +87,12 @@
 
     downloader.progress.totalUnitCount = [indexDict[@"files"] count];
     for (NSDictionary *indexFile in indexDict[@"files"]) {
+/*
         if ([indexFile[@"downloads"] count] > 1) {
             [downloader finishDownloadWithErrorString:[NSString stringWithFormat:@"Unhandled multiple files download %@", indexFile[@"downloads"]]];
             return;
         }
+*/
         NSString *url = [indexFile[@"downloads"] firstObject];
         NSString *sha = indexFile[@"hashes"][@"sha1"];
         NSString *path = [destPath stringByAppendingPathComponent:indexFile[@"path"]];
@@ -132,11 +134,14 @@
     // TODO: automation for Forge
 
     // Create profile
+    NSString *tmpIconPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"icon.png"];
     PLProfiles.current.profiles[indexDict[@"name"]] = @{
         @"gameDir": [NSString stringWithFormat:@"./custom_gamedir/%@", destPath.lastPathComponent],
         @"name": indexDict[@"name"],
         @"lastVersionId": depInfo[@"id"],
-        //@"icon": 
+        @"icon": [NSString stringWithFormat:@"data:image/png;base64,%@",
+            [[NSData dataWithContentsOfFile:tmpIconPath]
+            base64EncodedStringWithOptions:0]]
     }.mutableCopy;
     PLProfiles.current.selectedProfileName = indexDict[@"name"];
 }

@@ -155,6 +155,8 @@
             image:nil identifier:nil
             handler:^(UIAction *action) {
             [self actionClose];
+            NSString *tmpIconPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"icon.png"];
+                [UIImagePNGRepresentation([cell.imageView.image _imageWithSize:CGSizeMake(40, 40)]) writeToFile:tmpIconPath atomically:YES];
             [self.modrinth installModpackFromDetail:self.list[indexPath.row] atIndex:i];
         }]];
     }];
