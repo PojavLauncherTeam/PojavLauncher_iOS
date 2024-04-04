@@ -21,7 +21,10 @@ public class MinecraftAccount
     }
     
     public static MinecraftAccount parse(String content) throws JsonSyntaxException {
-        return Tools.GLOBAL_GSON.fromJson(content, MinecraftAccount.class);
+        MinecraftAccount account = Tools.GLOBAL_GSON.fromJson(content, MinecraftAccount.class);
+        // Read access token from keychain
+        account.accessToken = getAccessTokenFromKeychain(account.xuid);
+        return account;
     }
     
     public static MinecraftAccount load(String name) throws IOException, JsonSyntaxException {
@@ -39,16 +42,9 @@ public class MinecraftAccount
         }
         return acc;
     }
-/*
-    public static void clearTempAccount() {
-        File tempAccFile = new File(Tools.DIR_BUNDLE, "cache/tempacc.json");
-        tempAccFile.delete();
-    }
 
-    public static void saveTempAccount(MinecraftAccount acc) throws IOException {
-        File tempAccFile = new File(Tools.DIR_DATA, "cache/tempacc.json");
-        tempAccFile.delete();
-        acc.save(tempAccFile.getAbsolutePath());
+    static {
+        System.load(System.getenv("BUNDLE_PATH") + "/PojavLauncher");
     }
-*/
+    public static native String getAccessTokenFromKeychain(String xuid);
 }

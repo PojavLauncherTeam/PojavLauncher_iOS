@@ -1,3 +1,4 @@
+#import <Security/Security.h>
 #import "BaseAuthenticator.h"
 #import "../LauncherPreferences.h"
 #import "../ios_uikit_bridge.h"
@@ -27,7 +28,8 @@ static BaseAuthenticator *current = nil;
         }
         return nil;
     }
-    if ([authData[@"accessToken"] length] < 5) {
+
+    if ([authData[@"expiresAt"] longValue] == 0) {
         return [[LocalAuthenticator alloc] initWithData:authData];
     } else { 
         return [[MicrosoftAuthenticator alloc] initWithData:authData];

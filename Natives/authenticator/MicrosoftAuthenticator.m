@@ -2,6 +2,7 @@
 #import "BaseAuthenticator.h"
 #import "../ios_uikit_bridge.h"
 #import "../utils.h"
+#include "jni.h"
 
 typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
 
@@ -185,7 +186,7 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
         self.authData[@"profilePicURL"] = [NSString stringWithFormat:@"https://mc-heads.net/head/%@/120", self.authData[@"profileId"]];
         self.authData[@"oldusername"] = self.authData[@"username"];
         self.authData[@"username"] = response[@"name"];
-        callback(nil, [super saveChanges]);
+        callback(nil, [self saveChanges]);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSData *errorData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
         NSDictionary *errorDict = [NSJSONSerialization JSONObjectWithData: errorData options:kNilOptions error:nil];
@@ -194,12 +195,16 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
             self.authData[@"profileId"] = @"00000000-0000-0000-0000-000000000000";
             self.authData[@"username"] = [NSString stringWithFormat:@"Demo.%@", self.authData[@"xboxGamertag"]];
 
-            callback(@"DEMO", [super saveChanges]);
-            callback(nil, YES);
+            if ([self saveChanges]) {
+                callback(@"DEMO", YES);
+                callback(nil, YES);
+            } else {
+                callback(nil, NO);
+            }
             return;
         }
 
-        callback([[NSString alloc] initWithData:errorData encoding:NSUTF8StringEncoding], NO);
+        callback(error, NO);
     }];
 }
 
@@ -208,11 +213,91 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
 }
 
 - (void)refreshTokenWithCallback:(Callback)callback {
+    // Move tokens to keychain if we haven't
+    if (!self.tokenData) {
+        [self saveChanges];
+    }
+
     if ([NSDate.date timeIntervalSince1970] > [self.authData[@"expiresAt"] longValue]) {
-        [self acquireAccessToken:self.authData[@"msaRefreshToken"] refresh:YES callback:callback];
+        [self acquireAccessToken:self.tokenData[@"refreshToken"] refresh:YES callback:callback];
     } else {
         callback(nil, YES);
     }
 }
 
+- (BOOL)saveChanges {
+    BOOL savedToKeychain = [self setAccessToken:self.authData[@"accessToken"] refreshToken:self.authData[@"msaRefreshToken"]];
+    if (!savedToKeychain) {
+        showDialog(localize(@"Error", nil), @"Failed to save account tokens to keychain");
+        return NO;
+    }
+    [self.authData removeObjectsForKeys:@[@"accessToken", @"msaRefreshToken"]];
+    return [super saveChanges];
+}
+
+#pragma mark Keychain
+
++ (NSDictionary *)keychainQueryForKey:(NSString *)profile extraInfo:(NSDictionary *)extra {
+    NSMutableDictionary *dict = @{
+        (id)kSecClass: (id)kSecClassGenericPassword,
+        (id)kSecAttrService: @"AccountToken",
+        (id)kSecAttrAccount: profile,
+        (id)kSecAttrAccessible: (id)kSecAttrAccessibleWhenUnlockedThisDeviceOnly
+    }.mutableCopy;
+    if (extra) {
+        [dict addEntriesFromDictionary:extra];
+    }
+    return dict;
+}
+
++ (NSDictionary *)tokenDataOfProfile:(NSString *)profile {
+    NSDictionary *dict = [MicrosoftAuthenticator keychainQueryForKey:profile extraInfo:@{
+        (id)kSecMatchLimit: (id)kSecMatchLimitOne,
+        (id)kSecReturnData: (id)kCFBooleanTrue
+    }];
+    CFTypeRef result = nil;
+    OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)dict, &result);
+    if (status == errSecSuccess) {
+        return [NSKeyedUnarchiver unarchivedObjectOfClass:NSDictionary.class fromData:(__bridge NSData *)result error:nil];
+    } else {
+        return nil;
+    }
+}
+
++ (void)clearTokenDataOfProfile:(NSString *)profile {
+    NSDictionary *dict = [MicrosoftAuthenticator keychainQueryForKey:profile extraInfo:nil];
+    SecItemDelete((__bridge CFDictionaryRef)dict);
+}
+
+- (BOOL)setAccessToken:(NSString *)accessToken refreshToken:(NSString *)refreshToken {
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:@{
+        @"accessToken": accessToken,
+        @"refreshToken": refreshToken ?: self.tokenData[@"refreshToken"]
+    } requiringSecureCoding:YES error:nil];
+    NSDictionary *dict = [MicrosoftAuthenticator keychainQueryForKey:self.authData[@"xuid"] extraInfo:@{
+        (id)kSecValueData: data
+    }];
+    SecItemDelete((__bridge CFDictionaryRef)dict);
+    OSStatus status = SecItemAdd((__bridge CFDictionaryRef)dict, NULL);
+    return status == errSecSuccess;
+}
+
+- (NSDictionary *)tokenData {
+    return [MicrosoftAuthenticator tokenDataOfProfile:self.authData[@"xuid"]];
+}
+
 @end
+
+JNIEXPORT jstring JNICALL Java_net_kdt_pojavlaunch_value_MinecraftAccount_getAccessTokenFromKeychain(JNIEnv *env, jclass clazz, jstring xuid) {
+    // This function should only be called once
+    static BOOL called = NO;
+    if (called) {
+        abort();
+    }
+    called = YES;
+
+    const char *xuidC = (*env)->GetStringUTFChars(env, xuid, 0);
+    NSString *accessToken = [MicrosoftAuthenticator tokenDataOfProfile:@(xuidC)][@"accessToken"];
+    (*env)->ReleaseStringUTFChars(env, xuid, xuidC);
+    return (*env)->NewStringUTF(env, accessToken.UTF8String);
+}

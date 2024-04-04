@@ -110,6 +110,10 @@
         if (self.whenDelete != nil) {
             self.whenDelete(str);
         }
+        NSString *xuid = self.accountList[indexPath.row][@"xuid"];
+        if (xuid) {
+            [MicrosoftAuthenticator clearTokenDataOfProfile:xuid];
+        }
         [fm removeItemAtPath:path error:nil];
         [self.accountList removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
