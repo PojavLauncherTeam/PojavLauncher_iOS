@@ -51,8 +51,10 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
     manager.requestSerializer = AFJSONRequestSerializer.serializer;
     [manager POST:@"https://user.auth.xboxlive.com/user/authenticate" parameters:data headers:nil progress:nil success:^(NSURLSessionDataTask *task, NSDictionary *response) {
         Callback innerCallback = ^(NSString* status, BOOL success) {
-            if (success == NO) {
+            if (!success) {
                 callback(status, NO);
+                return;
+            } else if (status) {
                 return;
             }
             // Obtain XSTS for authenticating to Minecraft
@@ -272,7 +274,7 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
 - (BOOL)setAccessToken:(NSString *)accessToken refreshToken:(NSString *)refreshToken {
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:@{
         @"accessToken": accessToken,
-        @"refreshToken": refreshToken ?: self.tokenData[@"refreshToken"]
+        @"refreshToken": refreshToken,
     } requiringSecureCoding:YES error:nil];
     NSDictionary *dict = [MicrosoftAuthenticator keychainQueryForKey:self.authData[@"xuid"] extraInfo:@{
         (id)kSecValueData: data
