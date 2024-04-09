@@ -348,6 +348,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)invokeAfterJITEnabled:(void(^)(void))handler {
     localVersionList = remoteVersionList = nil;
+    BOOL hasTrollStoreJIT = getEntitlementValue(@"com.apple.private.local.sandboxed-jit");
 
     if (isJITEnabled(false)) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -355,7 +356,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             handler();
         });
         return;
-    } else if (getEntitlementValue(@"com.apple.private.local.sandboxed-jit")) {
+    } else if (hasTrollStoreJIT) {
         NSURL *jitURL = [NSURL URLWithString:[NSString stringWithFormat:@"apple-magnifier://enable-jit?bundle-id=%@", NSBundle.mainBundle.bundleIdentifier]];
         [UIApplication.sharedApplication openURL:jitURL options:@{} completionHandler:nil];
         // Do not return, wait for TrollStore to enable JIT and jump back
@@ -368,7 +369,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     //CADisplayLink *displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(tickJIT)];
 
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:localize(@"launcher.wait_jit.title", nil)
-        message:localize(@"launcher.wait_jit.message", nil)
+        message:hasTrollStoreJIT ? localize(@"launcher.wait_jit_trollstore.message", nil) : localize(@"launcher.wait_jit.message", nil)
         preferredStyle:UIAlertControllerStyleAlert];
 /* TODO:
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:localize(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^{
