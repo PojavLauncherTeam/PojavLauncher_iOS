@@ -79,7 +79,7 @@
 
 "launcher.wait_jit.title" = "正在等待获取即时编译（JIT）权限";
 "launcher.wait_jit.message" = "PojavLauncher 依靠 Java 的即时编译（JIT）来以最大性能工作。";
-"launcher.wait_jit_trollstore.message" = "如您仍然看到该消息，请在TrollStore中启用URL Scheme。";
+"launcher.wait_jit_trollstore.message" = "若您依然看到此消息，请在 TrollStore 中启用 URL Scheme。";
 
 "login.error.username.outOfRange" = "用户名必须在 3-16 个字符以内";
 
