@@ -229,7 +229,7 @@
 "preference.manage_runtime.footer.java17" = "Esta es la versión predeterminada para Minecraft 1.17. y superiores.";
 "preference.manage_runtime.header.invalid" = "Runtimes inválidos";
 
-"preference.title.java_args" = "JRE Argumentos de lanzamiento";
+"preference.title.java_args" = "Argumentos de lanzamiento JVM";
 "preference.detail.java_args" = "Pasa los argumentos a Java al iniciar Minecraft. Ten cuidado, esto puede hacer que el juego se cierre si se modifica incorrectamente.";
 "preference.placeholder.java_args" = "Especifica argumentos...";
 "preference.title.env_variables" = "Variables de entorno";
