@@ -44,7 +44,7 @@ public class MinecraftAccount
     }
 
     static {
-        System.load(System.getenv("BUNDLE_PATH") + "/PojavLauncher");
+        System.loadLibrary("PojavAccountJNI");
     }
     public static native String getAccessTokenFromKeychain(String xuid);
 }

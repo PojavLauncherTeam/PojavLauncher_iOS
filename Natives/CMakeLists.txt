@@ -90,6 +90,12 @@ target_link_libraries(AFNetworking
   "-framework UIKit"
 )
 
+# MinecraftAccount JNI
+add_library(PojavAccountJNI SHARED
+  authenticator/MinecraftAccountJNI.m
+)
+target_link_libraries(PojavAccountJNI)
+
 # PojavLauncher
 add_executable(PojavLauncher
   dyld_bypass_validation.m
