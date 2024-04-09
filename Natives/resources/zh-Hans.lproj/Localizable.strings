@@ -64,7 +64,7 @@
 "custom_controls.control_menu.add_drawer" = "添加组合键";
 "custom_controls.control_menu.add_joystick" = "添加摇杆";
 "custom_controls.error.incompatible" = "此控件版本（代码 %d）在当前启动器版本中尚未实现。";
-"custom_controls.hint" = "长按屏幕上的任意位置可打开二级菜单从而编辑按键";
+"custom_controls.hint" = "长按屏幕上的任意位置以获取更多选项";
 
 "init.migrateDir" = "目前 PojavLauncher 数据目录为%@。所有的游戏资源已移动到最新目录。";
 
@@ -79,6 +79,7 @@
 
 "launcher.wait_jit.title" = "正在等待获取即时编译（JIT）权限";
 "launcher.wait_jit.message" = "PojavLauncher 依靠 Java 的即时编译（JIT）来以最大性能工作。";
+"launcher.wait_jit_trollstore.message" = "如您仍然看到该消息，请在TrollStore中启用URL Scheme。";
 
 "login.error.username.outOfRange" = "用户名必须在 3-16 个字符以内";
 
@@ -103,7 +104,7 @@
 "login.warn.message.legacy_device" = "欲运行下一个大版本，需要一台能够运行 iOS 14（或 iPadOS 14）及以上版本的设备。";
 "login.warn.title.legacy_ios" = "使用下一个版本的 PojavLauncher 启动器，需要更新您的系统";
 "login.warn.message.legacy_ios" = "运行下一个版本的PojavLauncher启动器，要求你的系统必须是IOS14+";
-"login.warn.title.limited_ram" = "设备运行内存不足警告！";
+"login.warn.title.limited_ram" = "该设备的可用内存有限。";
 "login.warn.message.limited_ram" = "我们建议启用自动分配内存大小，以防止不稳定和性能问题。";
 
 "login.warn.title.demomode" = "您现在是演示账户（试玩版）";
@@ -128,7 +129,7 @@
 "Profiles" = "配置文件";
 "Settings" = "设置";
 
-"preference.section.general" = "启动器基础设置";
+"preference.section.general" = "常规设置";
 "preference.section.video" = "音视频设置";
 "preference.section.footer.video" = "根据 Minecraft 版本自动选择最佳渲染器给游戏使用。降低分辨率可以减轻 GPU 负载从而提高性能。";
 "preference.section.control" = "自定义控制键位";
@@ -145,7 +146,7 @@
 "preference.multidir.add_directory" = "添加游戏目录";
 
 "preference.title.check_sha" = "在下载完成后检查游戏完整性";
-"preference.detail.check_sha" = "用于效验下载的文件哈希值是否有问题(某些情况下你下载的资源可能是损坏的)";
+"preference.detail.check_sha" = "此选项强制启动器在哈希值可用时检查下载文件，防止下载错误。";
 "preference.title.cosmetica" = "Cosmetica 披风";
 "preference.detail.cosmetica" = "启用来自 Cosmetica（原 Arc）的披风。欲了解更多信息，请访问 https://arcapes.com。需要 OptiFine。";
 "preference.title.debug_logging" = "调试日志";
@@ -201,7 +202,7 @@
 "preference.detail.gesture_mouse" = "启用手势，例如点击放置方块、按住破坏方块、用两根手指转动视角";
 "preference.title.gesture_hotbar" = "快捷栏手势";
 "preference.detail.gesture_hotbar" = "启用手势，例如点击快捷栏物品槽、双手交换物品、丢弃物品";
-"preference.title.disable_haptics" = "关闭触屏（翻译可能不准）";
+"preference.title.disable_haptics" = "禁用屏幕压感";
 "preference.title.press_duration" = "长按延迟（毫秒）";
 "preference.detail.press_duration" = "修改长按摧毁方块、丢弃物品的触发时长。";
 "preference.title.button_scale" = "屏幕按钮缩放 (%)";
@@ -258,7 +259,7 @@
 
 "preference.profile.title.name" = "名称";
 "preference.profile.title.loader_type" = "加载器类型";
-"preference.profile.title.loader_vendor" = "加载器提供者";
+"preference.profile.title.loader_vendor" = "加载器发行者";
 "preference.profile.title.loader_version" = "加载器版本";
 "preference.profile.title.version" = "版本";
 "preference.profile.title.version_type" = "版本类型";
