@@ -4,7 +4,7 @@
 */
 
 "game.menu.force_close" = "Vynutit zavření";
-"game.menu.confirm.force_close" = "Jste si jist/a zdali chcete vynutit ukončení?";
+"game.menu.confirm.force_close" = "Opravdu chcete vynutit ukončení?";
 "game.menu.log_output" = "Záznam výstupu";
 "game.menu.custom_controls" = "Vlastní ovládací prvky";
 
