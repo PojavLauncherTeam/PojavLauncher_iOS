@@ -79,6 +79,7 @@
 
 "launcher.wait_jit.title" = "JIT için bekleniyor";
 "launcher.wait_jit.message" = "PojavLauncher, Java'nın maksimum performansta çalışması için Just-in-time derlemeye dayanır.";
+"launcher.wait_jit_trollstore.message" = "Bu mesajı hâlâ görüyorsanız lütfen Troll Store'dan URL şemasını etkinleştirin.";
 
 "login.error.username.outOfRange" = "Kullanıcı adı en az 3 en fazla 16 karakter olmalıdır";
 
