@@ -128,7 +128,7 @@ static GameSurfaceView* pojavWindow;
     [self performSelector:@selector(setupCategory_Navigation)];
 
     if (self.isMacCatalystApp) {
-        UIHoverGestureRecognizer *hoverGesture = [[UIHoverGestureRecognizer alloc]
+        UIHoverGestureRecognizer *hoverGesture = [[NSClassFromString(@"UIHoverGestureRecognizer") alloc]
         initWithTarget:self action:@selector(surfaceOnHover:)];
         [self.surfaceView addGestureRecognizer:hoverGesture];
     }
@@ -176,7 +176,7 @@ static GameSurfaceView* pojavWindow;
     [self.touchView addGestureRecognizer:self.scrollPanGesture];
 
     if (!isTVOS) {
-        [self.touchView addInteraction:[[UIPointerInteraction alloc] initWithDelegate:self]];
+        [self.touchView addInteraction:[[NSClassFromString(@"UIPointerInteraction") alloc] initWithDelegate:self]];
     }
 
     // Virtual mouse
@@ -732,7 +732,7 @@ static GameSurfaceView* pojavWindow;
     }
 }
 
-- (void)surfaceOnHover:(UIHoverGestureRecognizer *)sender {
+- (void)surfaceOnHover:(UIGestureRecognizer *)sender {
     if (isGrabbing) return;
     
     CGPoint point = [sender locationInView:self.rootView];
@@ -816,7 +816,7 @@ static GameSurfaceView* pojavWindow;
 }
 
 - (UIPointerStyle *)pointerInteraction:(UIPointerInteraction *)interaction styleForRegion:(UIPointerRegion *)region {
-    return [UIPointerStyle hiddenPointerStyle];
+    return [NSClassFromString(@"UIPointerStyle") hiddenPointerStyle];
 }
 
 #pragma mark - Input view stuff

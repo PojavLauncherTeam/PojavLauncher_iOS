@@ -146,6 +146,6 @@ void setButtonPointerInteraction(UIButton *button) {
     button.pointerInteractionEnabled = YES;
     button.pointerStyleProvider = ^ UIPointerStyle* (UIButton* button, UIPointerEffect* proposedEffect, UIPointerShape* proposedShape) {
         UITargetedPreview *preview = [[UITargetedPreview alloc] initWithView:button];
-        return [UIPointerStyle styleWithEffect:[UIPointerHighlightEffect effectWithPreview:preview] shape:proposedShape];
+        return [NSClassFromString(@"UIPointerStyle") styleWithEffect:[NSClassFromString(@"UIPointerHighlightEffect") effectWithPreview:preview] shape:proposedShape];
     };
 }
