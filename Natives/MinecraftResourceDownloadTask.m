@@ -128,6 +128,10 @@
 
 - (void)downloadAssetMetadataWithSuccess:(void (^)())success {
     NSDictionary *assetIndex = self.metadata[@"assetIndex"];
+    if (!assetIndex) {
+        success();
+        return;
+    }
     NSString *path = [NSString stringWithFormat:@"%s/assets/indexes/%@.json", getenv("POJAV_GAME_DIR"), assetIndex[@"id"]];
     NSString *url = assetIndex[@"url"];
     NSString *sha = url.stringByDeletingLastPathComponent.lastPathComponent;
@@ -177,6 +181,9 @@
 - (NSArray *)downloadClientAssets {
     NSMutableArray *tasks = [NSMutableArray new];
     NSDictionary *assets = self.metadata[@"assetIndexObj"];
+    if (!assets) {
+        return @[];
+    }
     for (NSString *name in assets[@"objects"]) {
         NSString *hash = assets[@"objects"][name][@"hash"];
         NSString *pathname = [NSString stringWithFormat:@"%@/%@", [hash substringToIndex:2], hash];
