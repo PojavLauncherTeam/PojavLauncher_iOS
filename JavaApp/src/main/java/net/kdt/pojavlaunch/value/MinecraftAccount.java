@@ -23,7 +23,9 @@ public class MinecraftAccount
     public static MinecraftAccount parse(String content) throws JsonSyntaxException {
         MinecraftAccount account = Tools.GLOBAL_GSON.fromJson(content, MinecraftAccount.class);
         // Read access token from keychain
-        account.accessToken = getAccessTokenFromKeychain(account.xuid);
+        if (account.xuid != null) {
+            account.accessToken = getAccessTokenFromKeychain(account.xuid);
+        }
         return account;
     }
     
