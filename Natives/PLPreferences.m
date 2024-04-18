@@ -52,7 +52,8 @@
                     @"execute_jar": @"8"
                 }.mutableCopy,
                 @"8": @"internal",
-                @"17": @"internal"
+                @"17": @"internal",
+                @"21": @"internal"
             }.mutableCopy,
             @"java_args": @"",
             @"env_variables": @"",
