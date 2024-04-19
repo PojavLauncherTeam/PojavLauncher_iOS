@@ -104,16 +104,34 @@ jobs:
           branch: buildjre17
           name: jre17-ios-aarch64
 
+      - name: Get JRE21
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          workflow: build.yml
+          path: depends
+          workflow_conclusion: completed
+          allow_forks: false
+          repo: PojavLauncherTeam/android-openjdk-build-multiarch
+          branch: buildjre21
+          name: jre21-ios-aarch64
+
       - name: Build for ${{ matrix.platform_name }}
         env:
           password: ${{ secrets.ELLIE_MINI_SECRET }}
         run: |
           export PATH=/opt/procursus/bin:/opt/homebrew/bin:$PATH
           export RUNNER=1
-          gmake -j$(sysctl -n hw.ncpu) dsym package PLATFORM=${{ matrix.platform }}
-          # Additionally build TrollStore (auto JIT) tipa for iOS
           if [ "${{ matrix.platform_name }}" == "ios" ]; then
+            # Build ipa and tipa for iOS
+            gmake -j$(sysctl -n hw.ncpu) dsym package PLATFORM=${{ matrix.platform }}
             gmake -j$(sysctl -n hw.ncpu) dsym package PLATFORM=${{ matrix.platform }} TROLLSTORE_JIT_ENT=1
+          elif [ "${{ matrix.platform_name }}" == "tvos" ]; then
+            # Build tipa only for tvOS
+            gmake -j$(sysctl -n hw.ncpu) dsym package PLATFORM=${{ matrix.platform }} TROLLSTORE_JIT_ENT=1
+          else
+            # Build ipa only for everything else
+            gmake -j$(sysctl -n hw.ncpu) dsym package PLATFORM=${{ matrix.platform }}
           fi
 
       - name: Upload regular ipa

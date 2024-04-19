@@ -129,10 +129,16 @@ jobs:
         run: |
           export PATH=/opt/procursus/bin:/opt/homebrew/bin:$PATH
           export RUNNER=1 SLIMMED=1
-          gmake -j$(sysctl -n hw.ncpu) dsym package PLATFORM=${{ matrix.platform }}
-          # Additionally build TrollStore (auto JIT) tipa for iOS
           if [ "${{ matrix.platform_name }}" == "ios" ]; then
+            # Build ipa and tipa for iOS
+            gmake -j$(sysctl -n hw.ncpu) dsym package PLATFORM=${{ matrix.platform }}
             gmake -j$(sysctl -n hw.ncpu) dsym package PLATFORM=${{ matrix.platform }} TROLLSTORE_JIT_ENT=1
+          elif [ "${{ matrix.platform_name }}" == "tvos" ]; then
+            # Build tipa only for tvOS
+            gmake -j$(sysctl -n hw.ncpu) dsym package PLATFORM=${{ matrix.platform }} TROLLSTORE_JIT_ENT=1
+          else
+            # Build ipa only for everything else
+            gmake -j$(sysctl -n hw.ncpu) dsym package PLATFORM=${{ matrix.platform }}
           fi
 
       - name: Upload regular ipa
