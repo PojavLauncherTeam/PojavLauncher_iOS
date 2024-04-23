@@ -102,6 +102,7 @@
 "login.warn.message.legacy_device" = "次のメジャーリリースを実行するには、iOS 14以降を実行できるデバイスが必要です。";
 "login.warn.title.legacy_ios" = "次のリリースの PojavLauncher を実行するには、システムの更新が必要になります。";
 "login.warn.message.legacy_ios" = "次のメジャーリリースを実行するには、iOS 14以降を実行できるデバイスが必要です。";
+"login.warn.title.limited_ram" = "お使いデバイスのメモリ容量は足りません";
 
 "login.warn.title.demomode" = "あなたのアカウントはデモ版です";
 "login.warn.message.demomode" = "オフラインモードとローカルモードへの置き換えとして デモモードでは、ゲームを所有していないMicrosoftアカウントにサインインし、Java Editionの試用版をプレイすることができます。 1.3で導入されました。以前のバージョンでは、公式ランチャーがこれらの制限を設けていないため、以前のバージョンではフルゲームが含まれています。 このオフラインモードからの移行の詳細については、当社のウェブサイトをご覧ください。";
@@ -183,9 +184,12 @@
 
 "preference.title.fullscreen_airplay" = "全画面AirPlay";
 "preference.detail.fullscreen_airplay" = "画面上のすべてをミラーリングするのではなく、外部ディスプレイにフルスクリーンのゲームウィンドウを表示できます。";
+"preference.title.silence_other_audio" = "ゲーム開始時にバークグラウンド音声を一時停止";
 "preference.detail.silence_other_audio" = "ゲームを起動するときに、PojavLauncherが音楽などの他のアプリの音声を一時停止できるようにします";
 "preference.title.silence_with_switch" = "サイレントスイッチで音声を無効にする";
+"preference.detail.silence_with_switch" = "マナーモードをオンする場合にオーディオを無効します。ヘッドフォン又は外部スピーカーを使う時に、この設定の効果がありません。";
 "preference.title.default_gamepad_ctrl" = "コントローラーの設定";
+"preference.title.hardware_hide" = "ハードウェア接続時にコントロールを非表示にする";
 "preference.detail.hardware_hide" = "マウスまたはゲームコントローラーが接続されている場合、画面上のコントロールボタンを自動的に無効にするようにします";
 "preference.title.gesture_mouse" = "マウスのジェスチャー";
 "preference.title.disable_haptics" = "画面上のハプティクスを無効にする";
@@ -203,6 +207,8 @@
 "preference.detail.slideable_hotbar" = "マウスホイールのようにホットバーをスライド可能にする";
 
 "preference.title.gyroscope_enable" = "ジャイロコントロールをオンにする";
+"preference.title.gyroscope_invert_x_axis" = "ジャイロスコープを左右反転";
+"preference.detail.gyroscope_invert_x_axis" = "ジャイロスコープのX軸を反転";
 "preference.title.gyroscope_sensitivity" = "ジャイロコントロールの感度";
 "preference.detail.gyroscope_sensitivity" = "ジャイロコントロールの感度の調整";
 
@@ -256,7 +262,30 @@
 "profile.title.separate_preference" = "単離設定";
 "profile.detail.separate_preference" = "このオプションを有効にすると、設定で行われた変更を隔離します。リセットを行うと、デフォルトの設定ではなくグローバル設定に戻ります。";
 "profile.title.install_fabric_quilt" = "Fabric/Quilt をインストール";
+"controller_configurator.title.type.xbox" = "XBOX";
+"controller_configurator.title.type.playstation" = "PlayStation";
 "controller_configurator.xbox.title.named_a" = "A";
 "controller_configurator.xbox.title.named_b" = "B";
 "controller_configurator.xbox.title.named_x" = "X";
+"controller_configurator.xbox.title.named_y" = "Y";
+"controller_configurator.xbox.title.dpad_up" = "UP";
+"controller_configurator.xbox.title.dpad_down" = "DOWN";
+"controller_configurator.xbox.title.dpad_left" = "LEFT";
+"controller_configurator.xbox.title.dpad_right" = "RIGHT";
+
+"controller_configurator.playstation.title.bumper_left" = "L1";
+"controller_configurator.playstation.title.bumper_right" = "R1";
+"controller_configurator.playstation.title.trigger_left" = "L2";
+"controller_configurator.playstation.title.trigger_right" = "R2";
 "controller_configurator.playstation.title.named_back" = "選択...";
+"controller_configurator.playstation.title.named_start" = "Start";
+"controller_configurator.playstation.title.named_a" = "✕";
+"controller_configurator.playstation.title.named_b" = "〇";
+"controller_configurator.playstation.title.named_x" = "▢";
+"controller_configurator.playstation.title.named_y" = "△";
+"controller_configurator.playstation.title.dpad_up" = "UP";
+"controller_configurator.playstation.title.dpad_down" = "DOWN";
+"controller_configurator.playstation.title.dpad_left" = "LEFT";
+"controller_configurator.playstation.title.dpad_right" = "RIGHT";
+"controller_configurator.playstation.title.thumb_left" = "L3";
+"controller_configurator.playstation.title.thumb_right" = "R3";
