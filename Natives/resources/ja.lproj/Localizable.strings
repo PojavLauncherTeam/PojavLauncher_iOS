@@ -71,6 +71,7 @@
 "java.error.missing_runtime" = "%@ を実行するにはJava %d 以降が必要です。最初にインストールし、ランタイムの管理で指定してください。";
 
 "launcher.mcl.downloading_file" = "%@ をダウンロード中";
+"launcher.mcl.error_download" = "ダウンロードを失敗しました %@: %@";
 
 "launcher.menu.custom_controls" = "カスタムコントロール";
 "launcher.menu.execute_jar" = "実行する.jar";
@@ -86,6 +87,7 @@
 "login.jit.enabled" = "JIT が有効になりました";
 "login.jit.fail" = "JITを有効化できませんでした";
 "login.jit.fail.title" = "お使いのデバイスでJITを有効化できませんでした";
+"login.jit.fail.description" = "自動的にJITを起動できなかったです。手動で有効にする必要があります。エラーはlatestlog.txtに記録されています。";
 "login.jit.fail.description_unsupported" = "サポートされていないインストール方法が検出されました。サポートされている方法のいずれかを使用して再インストールしてください。";
 
 // Login buttons
