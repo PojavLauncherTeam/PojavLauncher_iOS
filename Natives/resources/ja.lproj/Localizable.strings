@@ -192,6 +192,9 @@
 "preference.title.hardware_hide" = "ハードウェア接続時にコントロールを非表示にする";
 "preference.detail.hardware_hide" = "マウスまたはゲームコントローラーが接続されている場合、画面上のコントロールボタンを自動的に無効にするようにします";
 "preference.title.gesture_mouse" = "マウスのジェスチャー";
+"preference.detail.gesture_mouse" = "ジェスチャーを有効にする(タップでブロックを置ける、長押しでブロックを破壊する、2本指でスクロール)";
+"preference.title.gesture_hotbar" = "ホットバージェスチャー";
+"preference.detail.gesture_hotbar" = "アイテムジェスチャーを有効にする(ホットバーをタッチ、両手でのアイテム交換、アイテムを投けるなど)";
 "preference.title.disable_haptics" = "画面上のハプティクスを無効にする";
 "preference.title.press_duration" = "長押し時間 (ms)";
 "preference.detail.press_duration" = "ブロックを破壊したりアイテムをドロップしたりするための長さをトリガーします。";
@@ -207,6 +210,7 @@
 "preference.detail.slideable_hotbar" = "マウスホイールのようにホットバーをスライド可能にする";
 
 "preference.title.gyroscope_enable" = "ジャイロコントロールをオンにする";
+"preference.detail.gyroscope_enable" = "ゲームの横縦向きの変更を有効にする";
 "preference.title.gyroscope_invert_x_axis" = "ジャイロスコープを左右反転";
 "preference.detail.gyroscope_invert_x_axis" = "ジャイロスコープのX軸を反転";
 "preference.title.gyroscope_sensitivity" = "ジャイロコントロールの感度";
@@ -264,6 +268,7 @@
 "profile.title.install_fabric_quilt" = "Fabric/Quilt をインストール";
 "controller_configurator.title.type.xbox" = "XBOX";
 "controller_configurator.title.type.playstation" = "PlayStation";
+"controller_configurator.xbox.title.named_back" = "ガイド";
 "controller_configurator.xbox.title.named_a" = "A";
 "controller_configurator.xbox.title.named_b" = "B";
 "controller_configurator.xbox.title.named_x" = "X";
