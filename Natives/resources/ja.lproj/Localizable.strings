@@ -103,6 +103,7 @@
 "login.warn.title.legacy_ios" = "次のリリースの PojavLauncher を実行するには、システムの更新が必要になります。";
 "login.warn.message.legacy_ios" = "次のメジャーリリースを実行するには、iOS 14以降を実行できるデバイスが必要です。";
 "login.warn.title.limited_ram" = "お使いデバイスのメモリ容量は足りません";
+"login.warn.message.limited_ram" = "パフォーマンスの不具合などの場合を防ぐために、オートRAMを有効しておくことをおすすめします";
 
 "login.warn.title.demomode" = "あなたのアカウントはデモ版です";
 "login.warn.message.demomode" = "オフラインモードとローカルモードへの置き換えとして デモモードでは、ゲームを所有していないMicrosoftアカウントにサインインし、Java Editionの試用版をプレイすることができます。 1.3で導入されました。以前のバージョンでは、公式ランチャーがこれらの制限を設けていないため、以前のバージョンではフルゲームが含まれています。 このオフラインモードからの移行の詳細については、当社のウェブサイトをご覧ください。";
@@ -173,8 +174,9 @@
 "preference.title.renderer.release.zink" = "Zink";
 
 "preference.title.renderer.debug.auto" = "自動: gl4es または angle";
-"preference.title.renderer.debug.angle" = "ANGLE (1.17+) - エクスポートOpenGL 3.2 (Core Profile, limited)";
-"preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - exports OpenGL 4.1";
+"preference.title.renderer.debug.gl4es" = "holy gl4es - OpenGL 2.1使用";
+"preference.title.renderer.debug.angle" = "ANGLE (1.17+) - OpenGL 3.2使用 (Core Profile, limited)";
+"preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - OpenGL 4.1使用";
 
 "preference.detail.renderer" = "使用するOpenGLレンダーエンジンを変更します　iOS 16以降では、問題を診断するためにZinkが一時的に無効になっています";
 
@@ -266,6 +268,8 @@
 "profile.title.separate_preference" = "単離設定";
 "profile.detail.separate_preference" = "このオプションを有効にすると、設定で行われた変更を隔離します。リセットを行うと、デフォルトの設定ではなくグローバル設定に戻ります。";
 "profile.title.install_fabric_quilt" = "Fabric/Quilt をインストール";
+
+"controller_configurator.title.current" = "ゲームパッドの設定ファイル";
 "controller_configurator.title.type.xbox" = "XBOX";
 "controller_configurator.title.type.playstation" = "PlayStation";
 "controller_configurator.xbox.title.named_back" = "ガイド";
