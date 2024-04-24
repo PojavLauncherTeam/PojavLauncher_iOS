@@ -14,6 +14,7 @@
 
 // The play button
 "Play" = "プレイ";
+"Details" = "詳細";
 
 // Version categories
 "Installed" = "インストール済み";
@@ -26,7 +27,7 @@
 // Custom controls
 "Copy" = "コピー";
 "Edit" = "編集";
-"Move" = "Move";
+"Move" = "移動";
 "Remove" = "消去";
 "Resize" = "サイズ調整";
 // Visibility
@@ -74,10 +75,11 @@
 "launcher.mcl.error_download" = "ダウンロードを失敗しました %@: %@";
 
 "launcher.menu.custom_controls" = "カスタムコントロール";
-"launcher.menu.execute_jar" = "実行する.jar";
+"launcher.menu.execute_jar" = ".JARを実行";
 
 "launcher.wait_jit.title" = "JITを待っています";
 "launcher.wait_jit.message" = "PojavLauncherは、Javaが最大限のパフォーマンスで動作するようにJust-in-timeコンパイルに依存しています。";
+"launcher.wait_jit_trollstore.message" = "TrollStoreでURL Schemeを有効してください";
 
 "login.error.username.outOfRange" = "ユーザー名は最低3文字、最大16文字でなければなりません。";
 
@@ -153,7 +155,9 @@
 "preference.detail.appicon" = "PojavLauncherの異なるホーム画面アイコンから選択できます。";
 "preference.title.appicon-default" = "おなじみのPojavLauncher ライトテーマ";
 "preference.title.appicon-dark" = "おなじみのPojavLauncherダークテーマ";
+"preference.title.appicon-development" = "頭を捻る";
 "preference.title.hidden_sidebar" = "デフォルトでメインメニューサイドバーを非表示にする";
+"preference.detail.hidden_sidebar" = "縦向きでサイドバーを非表示";
 
 "preference.title.reset_warnings" = "すべての警告をリセット";
 "preference.title.done.reset_warnings" = "すべての警告がリセットされました。";
@@ -183,6 +187,7 @@
 "preference.title.resolution" = "解像度 (%)";
 "preference.detail.resolution" = "ゲームの解像度を下げることができます。";
 "preference.title.max_framerate" = "最大フレームレート";
+"preference.detail.max_framerate" = "ゲームを60フラムレートに制限(ProMotionディスプレイのみ)";
 
 "preference.title.fullscreen_airplay" = "全画面AirPlay";
 "preference.detail.fullscreen_airplay" = "画面上のすべてをミラーリングするのではなく、外部ディスプレイにフルスクリーンのゲームウィンドウを表示できます。";
@@ -221,8 +226,8 @@
 "preference.title.manage_runtime" = "実行時の管理";
 "preference.title.confirm.delete_runtime" = "%@ は削除されます";
 "preference.manage_runtime.header.default" = "優先Javaバージョン";
-"preference.manage_runtime.default.1165" = "1.16.5以上";
-"preference.manage_runtime.default.117" = "1.17以上";
+"preference.manage_runtime.default.1165" = "1.16.5以前";
+"preference.manage_runtime.default.117" = "1.17以降";
 "preference.manage_runtime.footer.default" = "Minecraft 1.16.5 以前は、新しい Java バージョンで動作する可能性がありますが、Mod との互換性は保証されません。 外部ランタイムは「java_runtimes」フォルダに配置できます。 「Execute .jar」のJavaバージョンを変更することは、インストーラが新しいJavaバージョンを期待していない場合にのみ有効です。";
 "preference.manage_runtime.footer.java8" = "これは、Minecraft 1.16.5 以前のデフォルトバージョンです。";
 "preference.manage_runtime.footer.java17" = "これは、Minecraft 1.17. 以前のデフォルトバージョンです。";
@@ -272,7 +277,13 @@
 "controller_configurator.title.current" = "ゲームパッドの設定ファイル";
 "controller_configurator.title.type.xbox" = "XBOX";
 "controller_configurator.title.type.playstation" = "PlayStation";
+
+"controller_configurator.xbox.title.bumper_left" = "左ボタン";
+"controller_configurator.xbox.title.bumper_right" = "右ボタン";
+"controller_configurator.xbox.title.trigger_left" = "左トリガー";
+"controller_configurator.xbox.title.trigger_right" = "右トリガー";
 "controller_configurator.xbox.title.named_back" = "ガイド";
+"controller_configurator.xbox.title.named_start" = "Menu Button";
 "controller_configurator.xbox.title.named_a" = "A";
 "controller_configurator.xbox.title.named_b" = "B";
 "controller_configurator.xbox.title.named_x" = "X";
@@ -281,6 +292,8 @@
 "controller_configurator.xbox.title.dpad_down" = "DOWN";
 "controller_configurator.xbox.title.dpad_left" = "LEFT";
 "controller_configurator.xbox.title.dpad_right" = "RIGHT";
+"controller_configurator.xbox.title.thumb_left" = "左サムスティッククリック";
+"controller_configurator.xbox.title.thumb_right" = "右サムスティッククリック";
 
 "controller_configurator.playstation.title.bumper_left" = "L1";
 "controller_configurator.playstation.title.bumper_right" = "R1";
@@ -298,3 +311,9 @@
 "controller_configurator.playstation.title.dpad_right" = "RIGHT";
 "controller_configurator.playstation.title.thumb_left" = "L3";
 "controller_configurator.playstation.title.thumb_right" = "R3";
+
+"controller_configurator.section.config_files" = "現在の設定ファイル";
+"controller_configurator.section.game_mappings" = "ゲームのマップイング";
+"controller_configurator.section.menu_mappings" = "メーニューのマップイング";
+"controller_configurator.section.controller_style" = "コントローラーの種類";
+"controller_configurator.section.footer.controller_style" = "別のコントローラーのボタン名を表示する";
