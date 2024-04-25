@@ -16,6 +16,11 @@
 "Remove" = "Remove";
 "custom_controls.button_edit.name" = "Name";
 "custom_controls.button_edit.size" = "Mida";
+"custom_controls.button_edit.mapping" = "Mapeigat";
+"custom_controls.button_edit.orientation" = "Orientació";
+"custom_controls.button_edit.toggleable" = "Commutable";
+"custom_controls.button_edit.bg_color" = "Color de fons";
+"custom_controls.button_edit.stroke_color" = "Color de traç";
 "custom_controls.control_menu.exit" = "Exit";
 "custom_controls.control_menu.save" = "Save";
 "custom_controls.control_menu.load" = "Load";
@@ -29,4 +34,7 @@
 
 "preference.title.renderer" = "Renderitzador";
 
+"preference.title.java_args" = "Arguments de llançament del JVM";
+
 "preference.profile.title.name" = "Name";
+"controller_configurator.playstation.title.named_back" = "Selecciona";
