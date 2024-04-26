@@ -228,6 +228,7 @@
 "preference.manage_runtime.header.default" = "إصدار جافا المفضل";
 "preference.manage_runtime.default.1165" = "1.16.5 و ما أقدم";
 "preference.manage_runtime.default.117" = "1.17 و ما أحدث";
+"preference.manage_runtime.footer.default" = "إصدارات Minecraft 1.16.5 وأقدم قد تعمل مع إصدار جافا احدث, ولكن المودات قد لا تعمل, انظمة التنفيذ الخارجية يمكن وضعها بمجلد \"java_runtimes\". تغيير إصدار جافا لـ\"Execute.jar\" لن يحدث الا عندما لا يتوقع المثبت إصدار جافا أحدث.";
 "preference.manage_runtime.footer.java8" = "هذا هو الإصدار الافتراضي لـ Minecraft 1.16.5 و الأقدم.";
 "preference.manage_runtime.footer.java17" = "هذا هو الإصدار الافتراضي لـ Minecraft 1.17. و ما اقدم.";
 "preference.manage_runtime.header.invalid" = "نظام تنفيذ غير صالح";
