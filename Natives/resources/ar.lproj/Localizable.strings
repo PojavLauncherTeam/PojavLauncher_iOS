@@ -79,6 +79,7 @@
 
 "launcher.wait_jit.title" = "انتظر JIT";
 "launcher.wait_jit.message" = "يعتمد PojavLauncher على تجميع Just-in-time لـ Java للعمل بأقصى قدر من الأداء.";
+"launcher.wait_jit_trollstore.message" = "إذا كنت لا تزال ترى هذه الرسالة, يرجى تفعيل URL Scheme (مخطط URL) في TrollStore.";
 
 "login.error.username.outOfRange" = "يجب أن يكون إسم المستخدم بين 3 و 16 حرف";
 
@@ -222,14 +223,14 @@
 "preference.title.gyroscope_sensitivity" = "حساسية التحكم في الغيروسكوب";
 "preference.detail.gyroscope_sensitivity" = "ضبط حساسية أجهزة التحكم الجيبروسكوب";
 
-"preference.title.manage_runtime" = "إدارة اوقات التشغيل";
+"preference.title.manage_runtime" = "إدارة أنظمة التنفيذ";
 "preference.title.confirm.delete_runtime" = "سيتم حذف %@";
 "preference.manage_runtime.header.default" = "إصدار جافا المفضل";
 "preference.manage_runtime.default.1165" = "1.16.5 و ما أقدم";
 "preference.manage_runtime.default.117" = "1.17 و ما أحدث";
 "preference.manage_runtime.footer.java8" = "هذا هو الإصدار الافتراضي لـ Minecraft 1.16.5 و الأقدم.";
 "preference.manage_runtime.footer.java17" = "هذا هو الإصدار الافتراضي لـ Minecraft 1.17. و ما اقدم.";
-"preference.manage_runtime.header.invalid" = "وقت تشغيل غير صالح";
+"preference.manage_runtime.header.invalid" = "نظام تنفيذ غير صالح";
 
 "preference.title.java_args" = "حجج إطلاق JVM";
 "preference.detail.java_args" = "مرر الحجج إلى جافا عند بدء Minecraft. كن حذرا، هذا يمكن أن يجعل عطل اللعبة إذا تم تعديله بشكل غير صحيح.";
