@@ -4,6 +4,7 @@
 */
 
 "game.menu.force_close" = "Force close";
+"game.menu.confirm.force_close" = "Are you sure you want to force exit?";
 "game.menu.log_output" = "Log output";
 "game.menu.custom_controls" = "Custom controls";
 
