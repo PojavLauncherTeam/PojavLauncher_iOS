@@ -4,22 +4,36 @@
 */
 
 "game.menu.force_close" = "Αναγκαστικό κλείσιμο εφαρμογής";
+"game.menu.confirm.force_close" = "Είστε βέβαιοι ότι θέλετε να αναγκάσετε το κλείσιμο;";
 "game.menu.log_output" = "Αρχείο Καταγραφής";
 "game.menu.custom_controls" = "Προσαρμοσμένα controls";
 
+"game.note.airplay" = "Το Minecraft εμφανίζεται στην οθόνη καθρέφτη AirPlay";
+
+"game.title.exit_code" = "Το παιχνίδι τερματίστηκε με κωδικό %d";
+
 // The play button
 "Play" = "Παίξε";
+"Details" = "Λεπτομέρειες";
 
 // Version categories
 "Installed" = "Εγκατεστημένο";
 "Snapshot" = "Στιγμιότυπο";
+"Releases" = "Εκδόσεις";
+"Unstable" = "Ασταθής";
 "Old-beta" = "Παλιά-Beta";
 "Old-alpha" = "Παλιά-alpha";
 
 // Custom controls
 "Copy" = "Αντιγραφή";
 "Edit" = "Επεξεργασία";
+"Move" = "Κίνηση";
 "Remove" = "Αφαίρεσε";
+"Resize" = "Αλλαγή μεγέθους";
+// Visibility
+"Always" = "Πάντα";
+"In game" = "Εντός Παιχνιδιού";
+"In menu" = "Στο μενού";
 
 "custom_controls.button_edit.forward_lock" = "Κλείδωμα ευθείας κινήσεως";
 "custom_controls.button_edit.name" = "Όνομα";
@@ -27,43 +41,111 @@
 "custom_controls.button_edit.mapping" = "Χαρτογράφηση";
 "custom_controls.button_edit.orientation" = "Προσανατολισμός";
 "custom_controls.button_edit.toggleable" = "Εναλλασσόμενο";
+"custom_controls.button_edit.mouse_pass" = "Πέρασμα ποντικιού";
 "custom_controls.button_edit.swipeable" = "Ευέλικτο";
 "custom_controls.button_edit.bg_color" = "Χρώμα φόντου";
+"custom_controls.button_edit.stroke_width" = "Πλάτος περιγράμματος";
 "custom_controls.button_edit.stroke_color" = "Χρώμα περιγράμματος";
+"custom_controls.button_edit.corner_radius" = "Ακτίνα γωνίας (%)";
+"custom_controls.button_edit.opacity" = "Αδιαφάνεια (%)";
+"custom_controls.button_edit.visibility" = "Ορατότητα";
 
-"custom_controls.button_menu.add_subbutton" = "Προσθήκη κουμπιού";
+"custom_controls.button_menu.add_subbutton" = "Προσθήκη υπο-κουμπιού";
+"custom_controls.control_menu.discard_changes" = "Απόρριψη αλλαγών";
 "custom_controls.control_menu.exit" = "Έξοδος";
+"custom_controls.control_menu.exit.warn" = "Πρόκειται να βγείτε χωρίς να αποθηκεύσετε αλλαγές.";
 "custom_controls.control_menu.save" = "Αποθήκευση";
+"custom_controls.control_menu.save.error.json" = "Σφάλμα JSON";
+"custom_controls.control_menu.save.error.write" = "Σφάλμα αποθήκευσης αρχείου";
 "custom_controls.control_menu.load" = "Φόρτωση";
+"custom_controls.control_menu.make_default" = "Ορισμός ως προεπιλογή";
+"custom_controls.control_menu.safe_area" = "Ασφαλής περιοχή";
 "custom_controls.control_menu.add_button" = "Προσθήκη κουμπιού";
+"custom_controls.control_menu.add_drawer" = "Προσθήκη συρταριού";
 "custom_controls.control_menu.add_joystick" = "Προσθήκη χειριστηρίου (joystick)";
+"custom_controls.error.incompatible" = "Αυτή η έκδοση ελέγχου (κωδικός %d) δεν έχει υλοποιηθεί σε αυτήν την έκδοση εκκινητή.";
+"custom_controls.hint" = "Πατήστε παρατεταμένα οπουδήποτε στην οθόνη για περισσότερες επιλογές";
+
+"init.migrateDir" = "Ο κατάλογος δεδομένων του PojavLauncher είναι τώρα %@. Όλα τα υπάρχοντα δεδομένα σας έχουν μεταφερθεί στη νέα θέση.";
+
+"java.error.missing_main_class" = "Το %@ λείπει το κύριο χαρακτηριστικό κλάσης. Αν αυτό είναι ένα mod, βάλτε το στο φάκελο “mods” της επιλεγμένης παρουσίας σας.";
+"java.error.missing_runtime" = "Το %@ απαιτεί Java %d ή νεότερη έκδοση. Παρακαλώ εγκαταστήστε το πρώτα και καθορίστε το στη Διαχείριση Εκτέλεσης.";
+
+"launcher.mcl.downloading_file" = "Γίνεται λήψη %@";
+"launcher.mcl.error_download" = "Αποτυχία λήψης %@: %@";
 
 "launcher.menu.custom_controls" = "Προσαρμοσμένα controls";
+"launcher.menu.execute_jar" = "Εκτέλεση .jar";
+
+"launcher.wait_jit.title" = "Αναμονή για JIT";
+"launcher.wait_jit_trollstore.message" = "Αν εξακολουθείτε να βλέπετε αυτό το μήνυμα, παρακαλούμε ενεργοποιήστε το σύστημα URL στο TrollStore.";
 
 "login.alert.field.username" = "Όνομα χρήστη";
+"login.jit.fail.description_unsupported" = "Έχει εντοπιστεί μια μη υποστηριζόμενη μέθοδος εγκατάστασης. Παρακαλώ επανεγκαταστήστε χρησιμοποιώντας μία από τις υποστηριζόμενες μεθόδους.";
 "login.option.add" = "Προσθήκη λογαριασμού";
 "login.option.select" = "Επιλέξτε λογαριασμό";
 "login.option.microsoft" = "Λογαριασμός Microsoft";
 "login.option.local" = "Τοπικός λογαριασμός";
+"login.warn.message.localmode" = "Μπορείς να συνεχίσεις να παίζεις εγκατεστημένες εκδόσεις, αλλά δεν μπορείς πλέον να κατεβάσεις το Minecraft χωρίς πληρωμένο λογαριασμό. Δεν θα παρέχεται υποστήριξη για ζητήματα με τοπικούς λογαριασμούς, ή άλλα μέσα για την απόκτηση του Minecraft.";
 
 "News" = "Νέα";
+"Profiles" = "Προφίλ";
 "Settings" = "Ρυθμίσεις";
+"preference.section.footer.video" = "Η αυτόματη αποτύπωση επιτρέπει στο PojavLauncher να επιλέξει την καλύτερη επιλογή με βάση την έκδοση του Minecraft. Η μείωση της ανάλυσης μειώνει το φόρτο εργασίας GPU για καλύτερη απόδοση.";
 "preference.section.control" = "Προσαρμογή ελέγχου";
+"preference.section.footer.debug" = "Ίσως χρειαστεί να επανεκκινήσετε τον εκκινητή για να τεθούν σε ισχύ οι αλλαγές.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java Tweaks";
 
 "preference.title.game_directory" = "Κατάλογος παιχνιδιού";
+"preference.title.cosmetica" = "Κάπες Cosmetica";
 
 "preference.title.renderer" = "Απόδοση";
 
+"preference.title.renderer.release.auto" = "Αυτόματο";
+"preference.title.renderer.release.gl4es" = "holy gl4es";
+"preference.title.renderer.release.angle" = "ΓΩΝΙΑ";
+"preference.title.renderer.release.zink" = "Zink";
+"preference.title.disable_haptics" = "Απενεργοποίηση απτικών στην οθόνη";
+
+"preference.title.gyroscope_enable" = "Ενεργοποίηση εξομάλυνσης γυροσκοπίου";
+"preference.title.gyroscope_sensitivity" = "Ευαισθησία ελέγχων γυροσκοπίου";
+
+"preference.title.manage_runtime" = "Διαχείριση runtimes";
+"preference.title.confirm.delete_runtime" = "Το %@ θα διαγραφεί";
+"preference.manage_runtime.header.default" = "Προτιμώμενη έκδοση Java";
+"preference.manage_runtime.default.1165" = "1.16.5 και παλαιότερα";
+"preference.manage_runtime.default.117" = "1.17 και νεότερη";
+"preference.manage_runtime.footer.default" = "Το Minecraft 1.16.5 και παλαιότερο μπορεί να τρέξει με μια νεότερη έκδοση Java, ωστόσο η συμβατότητα με τα mods δεν είναι εγγυημένη. Εξωτερικά runtimes μπορούν να τοποθετηθούν στο φάκελο \"java_runtimes\". Η αλλαγή της έκδοσης Java για το “Execute .jar” τίθεται σε ισχύ μόνο εάν ο εγκαταστάτης δεν αναμένει νεότερη έκδοση Java.";
+"preference.manage_runtime.footer.java8" = "Αυτή είναι η προεπιλεγμένη έκδοση για το Minecraft 1.16.5 και κάτω.";
+"preference.manage_runtime.footer.java17" = "Αυτή είναι η προεπιλεγμένη έκδοση για το Minecraft 1.17. και πάνω.";
+"preference.manage_runtime.header.invalid" = "Μη έγκυρα runtimes";
+
 "preference.title.java_args" = "JVM Εντολές εκκίνησης";
+"preference.detail.java_args" = "Μετακινήστε τις παραμέτρους στην Java κατά την εκκίνηση του Minecraft. Προσέξτε, αυτό μπορεί να προκαλέσει σφάλμα του παιχνιδιού αν δεν τροποποιηθεί σωστά.";
+"preference.detail.env_variables" = "Μετακινήστε τις παραμέτρους στην Java κατά την εκκίνηση του Minecraft. Προσέξτε, αυτό μπορεί να προκαλέσει σφάλμα του παιχνιδιού αν δεν τροποποιηθεί σωστά.";
+"preference.placeholder.env_variables" = "Καθορισμός μεταβλητών...";
 "preference.title.auto_ram" = "Αυτόματη RAM";
 "preference.detail.auto_ram" = "Ενεργοποιεί τον αυτόματο ρυθμιστή RAM";
 "preference.detail.allocated_memory" = "Ελέγχει πόση μνήμη δίνεται στο Minecraft";
+"preference.detail.custom_env" = "Αυτή η επιλογή είναι υπό κατασκευή. Δημιουργήστε και επεξεργαστείτε custom_env.txt εν τω μεταξύ.";
 
 "preference.profile.title.name" = "Όνομα";
+"preference.profile.title.loader_type" = "Τύπος φορτωτή";
+"preference.profile.title.loader_vendor" = "Προμηθευτής φορτωτή";
+"preference.profile.title.loader_version" = "Έκδοση φορτωτή";
 "preference.profile.title.version" = "Έκδοση";
+"preference.profile.title.version_type" = "Είδος έκδοσης";
+"preference.profile.title.default_touch_control" = "Στοιχεία ελέγχου αφής";
+"preference.profile.title.default_gamepad_control" = "Έλεγχοι Gamepad";
+
+"profile.error.name_exists" = "Προφίλ με αυτό το όνομα υπάρχει ήδη. Παρακαλούμε χρησιμοποιήστε άλλο όνομα.";
+"profile.section.instance" = "Ρυθμίσεις Instance παιχνιδιού";
+"profile.section.profiles" = "Προφίλ σε αυτό το Instance";
 "profile.title.create" = "Δημιουργία νέου προφίλ";
+"profile.title.separate_preference" = "Απομονωμένες ρυθμίσεις";
+"profile.detail.separate_preference" = "Ενεργοποιήστε αυτή την επιλογή για να απομονώσετε τυχόν αλλαγές που έγιναν στις ρυθμίσεις. Αν κάνετε επαναφορά σε καθολικές ρυθμίσεις θα ρυθμιστούν αυτές και όχι οι προκαθορισμένες.";
+"profile.title.install_fabric_quilt" = "Εγκατάσταση Fabric/Quilt";
 "controller_configurator.title.type.xbox" = "Xbox";
 "controller_configurator.title.type.playstation" = "PlayStation";
 "controller_configurator.xbox.title.dpad_up" = "Πάνω";
