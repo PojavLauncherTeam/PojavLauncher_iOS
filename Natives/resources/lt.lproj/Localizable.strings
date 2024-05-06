@@ -91,6 +91,9 @@
 "preference.title.resolution" = "Resoliucija (%)";
 "preference.title.virtmouse_enable" = "Virtuali pelė";
 
+"preference.title.gyroscope_enable" = "Įjungti gyroskopo kontroles";
+"preference.title.gyroscope_sensitivity" = "Gyroskopo kontroliu sensityvumas";
+
 "preference.title.java_args" = "JVM Paleidimo argumentai";
 "preference.placeholder.java_args" = "Nurodyti argumentus...";
 "preference.title.auto_ram" = "Automatiškas RAM";
