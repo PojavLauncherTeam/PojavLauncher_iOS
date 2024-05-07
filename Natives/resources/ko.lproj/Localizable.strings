@@ -44,7 +44,7 @@
 "custom_controls.button_edit.mouse_pass" = "마우스 패스";
 "custom_controls.button_edit.swipeable" = "끌어당기기";
 "custom_controls.button_edit.bg_color" = "배경 색상";
-"custom_controls.button_edit.stroke_width" = "선 굵기";
+"custom_controls.button_edit.stroke_width" = "선 너비 (dp)";
 "custom_controls.button_edit.stroke_color" = "강조 색";
 "custom_controls.button_edit.corner_radius" = "모서리 반경 (%)";
 "custom_controls.button_edit.opacity" = "투명도 (%)";
@@ -90,7 +90,7 @@
 "login.jit.fail" = "JIT이 활성화 되지 않았습니다.";
 "login.jit.fail.title" = "장치에서 JIT를 사용하도록 할수 없습니다";
 "login.jit.fail.description" = "디바이스에서 JIT를 자동으로 활성화하는 데 통합을 사용할 수 없으며 이제 수동으로 활성화해야 합니다. latestlog.txt에 오류가 기록되었습니다.";
-"login.jit.fail.description_unsupported" = "지원되지 않는 설치 방법이 탐지되었습니다. 지원되는 방법 중 하나를 사용하여 다시 설치하십시오.";
+"login.jit.fail.description_unsupported" = "지원되지 않는 설치 방법이 인식되었습니다. 지원되는 방법 중 하나를 사용하여 다시 설치하십시오.";
 
 // Login buttons
 "login.menu.sendlogs" = "로그 내보내기";
@@ -224,7 +224,7 @@
 "preference.detail.gyroscope_sensitivity" = "자이로스코프 컨트롤의 감도를 조정하세요";
 
 "preference.title.manage_runtime" = "런타임 관리";
-"preference.title.confirm.delete_runtime" = "%@가 삭제됩니다.";
+"preference.title.confirm.delete_runtime" = "%@이(가) 삭제됩니다.";
 "preference.manage_runtime.header.default" = "선호하는 자바 버전";
 "preference.manage_runtime.default.1165" = "1.16.5 이하";
 "preference.manage_runtime.default.117" = "1.17 이상";
