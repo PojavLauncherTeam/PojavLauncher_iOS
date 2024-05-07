@@ -14,13 +14,13 @@
 
 // The play button
 "Play" = "플레이";
-"Details" = "델타";
+"Details" = "세부 정보";
 
 // Version categories
 "Installed" = "이미 설치되어 있는 버전입니다.";
 "Snapshot" = "스냅샷";
 "Releases" = "버전";
-"Unstable" = "불안정함";
+"Unstable" = "불안정";
 "Old-beta" = "구-베타버전";
 "Old-alpha" = "구-알파버전";
 
@@ -79,6 +79,7 @@
 
 "launcher.wait_jit.title" = "JIT를 기다리고 있습니다";
 "launcher.wait_jit.message" = "PojavLauncher는 최대 성능으로 작동하기 위해 Java용 Just-in-time 컴파일에 의존합니다.";
+"launcher.wait_jit_trollstore.message" = "만약 이 메시지를 계속 본다면, TrollStore에 URL Scheme를 켜주세요";
 
 "login.error.username.outOfRange" = "닉네임은 최소 3글자에서 최대 16글자로 해야합니다.";
 
