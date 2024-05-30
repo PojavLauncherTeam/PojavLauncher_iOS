@@ -18,11 +18,11 @@
 
 // Version categories
 "Installed" = "이미 설치되어 있는 버전입니다.";
-"Snapshot" = "스냅샷";
+"Snapshot" = "스냅숏";
 "Releases" = "버전";
 "Unstable" = "불안정";
-"Old-beta" = "구-베타버전";
-"Old-alpha" = "구-알파버전";
+"Old-beta" = "구-베타";
+"Old-alpha" = "구-알파";
 
 // Custom controls
 "Copy" = "복사하기";
@@ -79,7 +79,7 @@
 
 "launcher.wait_jit.title" = "JIT를 기다리고 있습니다";
 "launcher.wait_jit.message" = "PojavLauncher는 최대 성능으로 작동하기 위해 Java용 Just-in-time 컴파일에 의존합니다.";
-"launcher.wait_jit_trollstore.message" = "만약 이 메시지를 계속 본다면, TrollStore에 URL Scheme를 켜주세요";
+"launcher.wait_jit_trollstore.message" = "만약 이 메시지가 계속 표시된다면, TrollStore에 URL Scheme를 활성화하세요";
 
 "login.error.username.outOfRange" = "닉네임은 최소 3글자에서 최대 16글자로 해야합니다.";
 
@@ -147,7 +147,7 @@
 
 "preference.title.check_sha" = "파일 확인후 다운로드";
 "preference.detail.check_sha" = "이 옵션은 파일 해시를 강제로 확인합니다. 잘못된 다운로드를 막을 수 있습니다.";
-"preference.title.cosmetica" = "코스메티카 망토";
+"preference.title.cosmetica" = "Cosmetica 망토";
 "preference.detail.cosmetica" = "코스메티카(이전의 Arc)에서 망토를 활성화합니다. 자세한 내용은 https://cosmetica.cc를 참조하십시오. OptiFine이 필요합니다.";
 "preference.title.debug_logging" = "디버그 로깅";
 "preference.detail.debug_logging" = "내부 설정 및 작업을 latestlog.txt에 기록합니다. 이렇게 하면 개발자가 문제를 더 쉽게 찾는 데 도움이 되지만 로그가 더 자주 기록되므로 Minecraft가 느리게 실행될 수 있습니다.";
@@ -216,7 +216,7 @@
 "preference.title.slideable_hotbar" = "슬라이드 가능한 핫바";
 "preference.detail.slideable_hotbar" = "핫바를 마우스 휠처럼 슬라이드 가능하게 바꿉니다.";
 
-"preference.title.gyroscope_enable" = "자이로스코프 컨트롤러 활성화";
+"preference.title.gyroscope_enable" = "자이로스코프 컨트롤 활성화";
 "preference.detail.gyroscope_enable" = "이 기능을 활성화하면 기기를 돌려서 게임을 시작할 수 있습니다.";
 "preference.title.gyroscope_invert_x_axis" = "자이로스코프 좌우 반전";
 "preference.detail.gyroscope_invert_x_axis" = "자이로스코프 X축 반전";
