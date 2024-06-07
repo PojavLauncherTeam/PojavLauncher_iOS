@@ -179,17 +179,17 @@
 "preference.title.renderer.debug.angle" = "ANGLE (1.17+) - mengekspor OpenGL 3.2 (Profil Core, terbatas)";
 "preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - mengekspor OpenGL 4.1";
 
-"preference.detail.renderer" = "Ganti mesin render OpenGL yang dipake";
+"preference.detail.renderer" = "mengganti renderer OpenGL yang dipakai. Zink sementara di nonaktifkan di versi iOS 16 dan lanjut untuk mendiagnosis masalah.";
 
 "preference.title.resolution" = "Resolusi (%)";
 "preference.detail.resolution" = "Memperbolehkan anda untuk menunrunkan resolusi permainan.";
 "preference.title.max_framerate" = "Kecepatan bingkai maksimum";
-"preference.detail.max_framerate" = "Memperbolehkan anda untuk membatasi kecepatan bingkai ke 60BPD pada layar ProMotion.";
+"preference.detail.max_framerate" = "Memperbolehkan anda untuk membatasi kecepatan ke 60FPS pada layar ProMotion.";
 
 "preference.title.fullscreen_airplay" = "Fullscreen AirPlay";
 "preference.detail.fullscreen_airplay" = "Memperbolehkan anda mempresentasikan window permainan dalam fullscreen di layar eksternal daripada mengkaca semuanya di layar.";
 "preference.title.silence_other_audio" = "Jeda audio ketika permainan terbuka";
-"preference.detail.silence_other_audio" = "Aktifkan untuk memperbolehkan Peluncur Pojav untuk menjeda audio dari aplikasi lain, seperti Musik, ketika membuka permainan.";
+"preference.detail.silence_other_audio" = "Aktifkan untuk memperbolehkan PojavLauncher untuk menjeda audio dari aplikasi lain, seperti Musik, ketika membuka permainan.";
 "preference.title.silence_with_switch" = "Matikan audio dengan silent switch";
 "preference.detail.silence_with_switch" = "Aktifkan untuk mematikan audio saat Mode Senyap aktif. Headphone dan spiker eksternal tidak terpengaruh.";
 "preference.title.default_gamepad_ctrl" = "Konfigurasi Kontroler";
