@@ -1206,7 +1206,7 @@ public class GLFW
         return false;
     }
     public static String glfwGetGamepadName(int jid) {
-        return null;
+        return "Unknown";
     }
     public static boolean glfwGetGamepadState(int jid, GLFWGamepadState state) {
         return false;
