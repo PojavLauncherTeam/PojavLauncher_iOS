@@ -31,6 +31,7 @@
             @"default_gamepad_ctrl": @"default.json",
             @"controller_type": @"xbox",
             @"hardware_hide": @YES,
+            @"recording_hide": @YES,
             @"gesture_mouse": @YES,
             @"gesture_hotbar": @YES,
             @"disable_haptics": @NO,

@@ -50,7 +50,8 @@ static GameSurfaceView* pojavWindow;
 @property(nonatomic) CGFloat screenScale;
 @property(nonatomic) CGFloat mouseSpeed;
 @property(nonatomic) CGRect clickRange;
-@property(nonatomic) BOOL isMacCatalystApp, shouldTriggerClick, shouldTriggerHaptic, slideableHotbar, toggleHidden;
+@property(nonatomic) BOOL isMacCatalystApp, shouldHideControlsFromRecording,
+    shouldTriggerClick, shouldTriggerHaptic, slideableHotbar, toggleHidden;
 
 @property(nonatomic) BOOL enableMouseGestures, enableHotbarGestures;
 
@@ -338,6 +339,8 @@ static GameSurfaceView* pojavWindow;
     virtualMouseFrame = CGRectMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2, 18.0 * mouseScale, 27 * mouseScale);
     self.mousePointerView.frame = virtualMouseFrame;
 
+    self.shouldHideControlsFromRecording = getPrefFloat(@"control.recording_hide");
+    [self.ctrlView hideViewFromCapture:self.shouldHideControlsFromRecording];
     self.ctrlView.frame = getSafeArea();
 
     // Update gestures state
