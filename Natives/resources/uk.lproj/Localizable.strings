@@ -79,6 +79,7 @@
 
 "launcher.wait_jit.title" = "Очікування на JIT";
 "launcher.wait_jit.message" = "PojavLauncher використовує компіляцію Just-in-time для роботи Java з максимальною продуктивністю.";
+"launcher.wait_jit_trollstore.message" = "Якщо ви все ще бачите це повідомлення, увімкніть схему URL-адрес у TrollStore.";
 
 "login.error.username.outOfRange" = "Ім’я користувача повинно містити мінімум 3 символи та максимум 16 символів";
 
@@ -197,6 +198,8 @@
 "preference.title.default_gamepad_ctrl" = "Налаштування контроллера";
 "preference.title.hardware_hide" = "Приховати елементи керування при під’єднанні пристрою";
 "preference.detail.hardware_hide" = "Увімкнути автоматичне вимкнення накладання екранного керування при під’єднанні миші або ігрового контролера.";
+"preference.title.recording_hide" = "Сховати елементи керування з запису екрана";
+"preference.detail.recording_hide" = "Ховає елементи керування зі знімка та запису екрана, залишаючи їх видимими на екрані користувача.";
 "preference.title.gesture_mouse" = "Жести миші";
 "preference.detail.gesture_mouse" = "Вмикає такі жести, як дотик, щоб встановити блок, утримання, щоб зламати блок, прокрутка двома пальцями";
 "preference.title.gesture_hotbar" = "Жести швидкої панелі";
