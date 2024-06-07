@@ -196,7 +196,7 @@
 "preference.title.silence_with_switch" = "サイレントスイッチで音声を無効にする";
 "preference.detail.silence_with_switch" = "マナーモードをオンする場合にオーディオを無効します。ヘッドフォン又は外部スピーカーを使う時に、この設定の効果がありません。";
 "preference.title.default_gamepad_ctrl" = "コントローラーの設定";
-"preference.title.hardware_hide" = "ハードウェア接続時にコントロールを非表示にする";
+"preference.title.hardware_hide" = "ハードウェア接続時にGUIを非表示にする";
 "preference.detail.hardware_hide" = "マウスまたはゲームコントローラーが接続されている場合、画面上のコントロールボタンを自動的に無効にするようにします";
 "preference.title.gesture_mouse" = "マウスのジェスチャー";
 "preference.detail.gesture_mouse" = "ジェスチャーを有効にする(タップでブロックを置ける、長押しでブロックを破壊する、2本指でスクロール)";
