@@ -198,6 +198,8 @@
 "preference.title.default_gamepad_ctrl" = "手柄配置";
 "preference.title.hardware_hide" = "硬件连接时隐藏控制键";
 "preference.detail.hardware_hide" = "启用连接鼠标或游戏手柄时自动禁用屏幕控制键的行为。";
+"preference.title.recording_hide" = "在屏幕录制中隐藏控件";
+"preference.detail.recording_hide" = "在屏幕截图/录制中隐藏控件，同时在屏幕上保持可见。";
 "preference.title.gesture_mouse" = "鼠标手势";
 "preference.detail.gesture_mouse" = "启用手势，例如点击放置方块、按住破坏方块、用两根手指转动视角";
 "preference.title.gesture_hotbar" = "快捷栏手势";
