@@ -35,14 +35,14 @@
 "In game" = "游戏内";
 "In menu" = "菜单内";
 
-"custom_controls.button_edit.forward_lock" = "前进锁定";
+"custom_controls.button_edit.forward_lock" = "允许锁定前进";
 "custom_controls.button_edit.name" = "名称";
 "custom_controls.button_edit.size" = "大小";
 "custom_controls.button_edit.mapping" = "按键映射";
 "custom_controls.button_edit.orientation" = "方向";
 "custom_controls.button_edit.toggleable" = "切换触发";
 "custom_controls.button_edit.mouse_pass" = "鼠标穿透";
-"custom_controls.button_edit.swipeable" = "可滑动按钮";
+"custom_controls.button_edit.swipeable" = "滑动点击";
 "custom_controls.button_edit.bg_color" = "背景颜色";
 "custom_controls.button_edit.stroke_width" = "边框宽度（dp）";
 "custom_controls.button_edit.stroke_color" = "边框颜色";
