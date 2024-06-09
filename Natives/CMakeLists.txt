@@ -99,6 +99,7 @@ target_link_libraries(PojavAccountJNI)
 # PojavLauncher
 add_executable(PojavLauncher
   dyld_bypass_validation.m
+  dyld_patch_platform.m
   main.m
   main_hook.m
   JavaLauncher.m

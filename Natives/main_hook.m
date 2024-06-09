@@ -8,6 +8,7 @@
 
 void (*orig_abort)();
 void (*orig_exit)(int code);
+void* (*orig_dlopen)(const char* path, int mode);
 int (*orig_open)(const char *path, int oflag, ...);
 
 void handle_fatal_exit(int code) {
@@ -54,11 +55,25 @@ void hooked_exit(int code) {
     }
     handle_fatal_exit(code);
 
+/*
     if (runtimeJavaVMPtr != NULL) {
         (*runtimeJavaVMPtr)->DestroyJavaVM(runtimeJavaVMPtr);
     }
+*/
 
     orig_exit(code);
+}
+
+void* hooked_dlopen(const char* path, int mode) {
+    const char *home = getenv("POJAV_HOME");
+    // Only proceed to check if dylib is in the home dir
+    // Path input from jvm is absolute path(?)
+    if (!path || strncmp(path, home, strlen(home))) {
+        return orig_dlopen(path, mode);
+    }
+
+    PLPatchMachOPlatformForFile(path);
+    return orig_dlopen(path, mode);
 }
 
 int hooked_open(const char *path, int oflag, ...) {
@@ -78,6 +93,7 @@ void init_hookFunctions() {
         {"abort", hooked_abort, (void *)&orig_abort},
         {"__assert_rtn", hooked___assert_rtn, NULL},
         {"exit", hooked_exit, (void *)&orig_exit},
+        {"dlopen", hooked_dlopen, (void *)&orig_dlopen},
         {"open", hooked_open, (void *)&orig_open}
     };
     rebind_symbols(rebindings, sizeof(rebindings)/sizeof(struct rebinding));

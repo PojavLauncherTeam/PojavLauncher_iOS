@@ -63,6 +63,8 @@ void init_hookFunctions();
 void init_hookUIKitConstructor();
 void init_setupMultiDir();
 
+BOOL PLPatchMachOPlatformForFile(const char *path);
+
 UIWindow* currentWindow();
 UIWindow* currentWindowInScene(BOOL external);
 UIViewController* currentVC();
