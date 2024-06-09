@@ -198,6 +198,8 @@
 "preference.title.default_gamepad_ctrl" = "Nastavení ovladače";
 "preference.title.hardware_hide" = "Skrýt ovládací prvky při připojení zařízení";
 "preference.detail.hardware_hide" = "Povolte pro automatické vypínání překrytí na obrazovce při připojení myši či herního ovladače.";
+"preference.title.recording_hide" = "Skrýt ovládací prvky při nahrávání obrazovky";
+"preference.detail.recording_hide" = "Skryje ovládací prvky ze snímků obrazovky a nahrávání obrazovky, přestože zůstanou viditelné na obrazovce.";
 "preference.title.gesture_mouse" = "Gesta myši";
 "preference.detail.gesture_mouse" = "Povolí gesta, například kliknutím umístit blok, podržením zníčit blok a posouvání dvěma prsty";
 "preference.title.gesture_hotbar" = "Gesta hotbaru";
