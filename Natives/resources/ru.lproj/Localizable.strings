@@ -198,6 +198,8 @@
 "preference.title.default_gamepad_ctrl" = "Настройки контроллера";
 "preference.title.hardware_hide" = "Скрывать раскладку при подключении внешних устройств ввода";
 "preference.detail.hardware_hide" = "Автоматически скрывать раскладку экранного управления при подключении мыши или контроллера.";
+"preference.title.recording_hide" = "Скрыть элементы управления от записи";
+"preference.detail.recording_hide" = "Скрывает раскладку управления от записи экрана и скриншотов, сохраняя их видимыми для игрока.";
 "preference.title.gesture_mouse" = "Жесты мыши";
 "preference.detail.gesture_mouse" = "Переключение жестов размещения/разрушения блока при касании/удерживании экрана и прокрутки двумя пальцами.";
 "preference.title.gesture_hotbar" = "Жесты панели инструментов";
