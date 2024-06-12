@@ -198,6 +198,8 @@
 "preference.title.default_gamepad_ctrl" = "Kontroller konfiqurasiyası";
 "preference.title.hardware_hide" = "Avadanlıq qoşulduqda idarəetməni gizlədin";
 "preference.detail.hardware_hide" = "Siçan və ya oyun nəzarətçisi qoşulduqda ekrandakı idarəetmə örtüyünün avtomatik söndürülməsi davranışını aktivləşdirin.";
+"preference.title.recording_hide" = "Ekran qeydindən idarəetmələri gizlədin";
+"preference.detail.recording_hide" = "Nəzarətləri ekranda göründüyü halda ekran görüntüsündən və ekran qeydindən gizlədir.";
 "preference.title.gesture_mouse" = "Siçan jestləri";
 "preference.detail.gesture_mouse" = "Blok qoymaq üçün klikləyin, bloku qırmaq üçün basıb saxlayın, 2 barmaqla sürüşdürmə kimi jestləri aktivləşdirin";
 "preference.title.gesture_hotbar" = "Hotbar jestləri";
