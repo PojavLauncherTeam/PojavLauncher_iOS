@@ -14,11 +14,13 @@
 
 // The play button
 "Play" = "Graj";
+"Details" = "Szczegóły";
 
 // Version categories
 "Installed" = "Zainstalowane";
 "Snapshot" = "Wersja deweloperska";
 "Releases" = "Wydania";
+"Unstable" = "Niestabilne";
 "Old-beta" = "Dawna Beta";
 "Old-alpha" = "Dawna Alpha";
 
@@ -64,13 +66,18 @@
 
 "init.migrateDir" = "Katalogiem danych PojavLauncher jest teraz %@. Wszystkie istniejące dane zostały przeniesione do nowej lokalizacji.";
 
+"java.error.missing_main_class" = "%@ nie ma głównego atrybutu klasy. Jeśli jest to mod, umieść go w folderze \"mods\" wybranej instancji.";
+"java.error.missing_runtime" = "%@ wymaga Javy %d lub nowszej, aby uruchomić. Proszę najpierw zainstalować i określić ją w Zarządzaniu Instancjami.";
+
 "launcher.mcl.downloading_file" = "Pobieranie %@";
 "launcher.mcl.error_download" = "Nie udało się pobrać %@:%@";
 
 "launcher.menu.custom_controls" = "Sterowanie";
+"launcher.menu.execute_jar" = "Uruchom .jar";
 
 "launcher.wait_jit.title" = "Czekam na JIT";
 "launcher.wait_jit.message" = "PojavLauncher opiera się na kompilacji Just-in-time, aby Java działała z maksymalną wydajnością.";
+"launcher.wait_jit_trollstore.message" = "Jeśli nadal widzisz tę wiadomość, włącz schemat URL w TrollStore.";
 
 "login.error.username.outOfRange" = "Nazwa użytkownika musi zawierać od 3 do 16 znaków";
 
@@ -81,6 +88,7 @@
 "login.jit.fail" = "JIT nie może zostać włączony.";
 "login.jit.fail.title" = "JIT nie może być włączony na Twoim urządzeniu.";
 "login.jit.fail.description" = "Żadna integracja nie może być użyta do automatycznego włączenia JIT na Twoim urządzeniu i musi być włączone ręcznie. Błędy zostały zapisane do latestlog.txt.";
+"login.jit.fail.description_unsupported" = "Wykryto nieobsługiwaną metodę instalacji. Zainstaluj ponownie za pomocą jednej z obsługiwanych metod.";
 
 // Login buttons
 "login.menu.sendlogs" = "Prześlij swój rejestr";
@@ -101,6 +109,7 @@
 "login.warn.message.demomode" = "Jak zamiennik dla trybu offline oraz lokalnego, tryb demo umożliwia logowanie na Konto Microsoft, które nie posiada gry i umożliwia granie w wersję próbną Java Edition wprowadzoną w wersji 1.3.1 oraz nowszych. Starsze wersje zawierają pełną wersję gry, ponieważ oficjalny launcher nie wymusza tych ograniczeń. Sprawdź naszą stronę internetową, aby dowiedzieć się więcej o przejściu z trybu offline.";
 
 "login.warn.title.localmode" = "Tryb offline to teraz Tryb lokalny.";
+"login.warn.message.localmode" = "Możesz nadal grać w zainstalowane wersje, ale nie możesz już pobierać Minecraft bez płatnego konta. Nie oferujemy wsparcia dla problemów z kontami lokalnymi lub innymi sposobami pozyskiwania Minecrafta. Sprawdź często zadawane pytania po więcej informacji.";
 
 "login.msa.error.xsts.noxboxacc" = "Profil Xbox nie został zarejestrowany dla tego Konta Microsoft. Upewnij się, że profil Xbox został utworzony.\nKod błędu: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live nie jest obecnie dostępne w Twoim kraju.\nKod błędu: 2148916235";
@@ -115,12 +124,15 @@
 "login.msa.progress.checkMCProfile" = "(5/5) Sprawdzanie profilu Minecraft";
 
 "News" = "Aktualności";
+"Profiles" = "Profile";
 "Settings" = "Ustawienia";
 
 "preference.section.general" = "Ogólne ustawienia";
 "preference.section.video" = "Ustawienia grafiki";
+"preference.section.footer.video" = "Automatyczne wybranie silnika renderowania pozwala PojavLauncher na wybranie najlepszej opcji opartej na wersji Minecraft. Zmniejszenie rozdzielczości zmniejsza obciążenie GPU dla lepszej wydajności.";
 "preference.section.control" = "Sterowanie";
 "preference.section.debug" = "Ustawienia debugowania interfejsu";
+"preference.section.footer.debug" = "Może być konieczne ponowne uruchomienie launchera, aby zmiany odniosły skutek.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Konfiguracja Java";
 //"preference.section.footer.java" = "";
@@ -154,6 +166,11 @@
 
 "preference.title.renderer" = "Silnik renderujący";
 
+"preference.title.renderer.release.auto" = "Automatycznie";
+"preference.title.renderer.release.gl4es" = "holy gl4es";
+"preference.title.renderer.release.angle" = "ANGLE";
+"preference.title.renderer.release.zink" = "Zink";
+
 "preference.title.renderer.debug.auto" = "Automatyczne: GL4ES lub ANGLE";
 "preference.title.renderer.debug.gl4es" = "gl4es 1.1.4 - eksportuje OpenGL 2.1";
 "preference.title.renderer.debug.angle" = "ANGLE (1.17+) - eksportuje OpenGL 3.2 (Podstawowy profil, ograniczony)";
@@ -173,6 +190,13 @@
 "preference.title.silence_with_switch" = "Wyłącz dźwięk, za pomocą przełącznika wyciszenia";
 "preference.detail.silence_with_switch" = "Włącz, aby wyłączyć dźwięk, gdy włączony jest tryb cichy. Nie działa na słuchawki i inne zewnętrzne urządzenia.";
 "preference.title.default_gamepad_ctrl" = "Konfiguracja kontrolera";
+"preference.detail.hardware_hide" = "Włącz automatyczne wyłączanie sterowania dotykowego po podłączeniu myszy lub kontrolera gry.";
+"preference.title.recording_hide" = "Ukryj przyciski sterowania podczas nagrywania ekranu";
+"preference.detail.recording_hide" = "Ukrywa przyciski sterowania przed zrzutem ekranu i nagrywaniem ekranu, a one pozostają widoczne na ekranie.";
+"preference.title.gesture_mouse" = "Gesty myszy";
+"preference.detail.gesture_mouse" = "Włącza gesty, takie jak stuknij, aby umieścić blok, przytrzymaj, aby zniszczyć blok, czy przewijanie dwoma palcami";
+"preference.detail.gesture_hotbar" = "Włącza gesty, takie jak dotykanie pola paska, zmieniania przedmiotów pomiędzy rękami, rzucanie przedmiotami";
+"preference.title.disable_haptics" = "Wyłącz wibracje";
 "preference.title.press_duration" = "Czas długiego naciśnięcia (ms)";
 "preference.detail.press_duration" = "Zmieniaj czas trwania prasy dla niszczenia bloków i upuszczania przedmiotów.";
 "preference.title.button_scale" = "Skala przycisków ekranowych (%)";
@@ -187,8 +211,15 @@
 "preference.detail.slideable_hotbar" = "Spraw, aby pasek skrótów był przesuwany jak kółko myszy";
 
 "preference.title.gyroscope_enable" = "Włącz sterowanie żyroskopem";
+"preference.detail.gyroscope_enable" = "Włączenie tej opcji pozwoli ci obracać się w grze poprzez obracanie telefonu";
+"preference.title.gyroscope_invert_x_axis" = "Odwróć żyroskop w osi X";
+"preference.detail.gyroscope_invert_x_axis" = "Odwraca oś X żyroskopu";
 "preference.title.gyroscope_sensitivity" = "Czułość sterowania żyroskopem";
 "preference.detail.gyroscope_sensitivity" = "Dostosuj czułość sterowania żyroskopem";
+"preference.title.confirm.delete_runtime" = "%@ zostanie usunięty";
+"preference.manage_runtime.header.default" = "Preferowana wersja Javy";
+"preference.manage_runtime.default.1165" = "1.16.5 i starsze";
+"preference.manage_runtime.default.117" = "1.17 i nowsze";
 
 "preference.title.java_args" = "Argumenty uruchomienia JVM";
 "preference.placeholder.java_args" = "Określ argumenty...";
@@ -207,12 +238,15 @@
 "preference.detail.debug_ipad_ui" = "Odblokuj interfejs użytkownika wyłącznie dla iPada (alarm, klawiatura itp.), jeśli jest włączony, lub interfejs iPhone'a, jeśli jest wyłączony.";
 "preference.title.debug_auto_correction" = "Auto-korekta";
 "preference.detail.debug_auto_correction" = "Włącz automatyczną korektę podczas wpisywania tekstu w grze.";
+"preference.title.debug_hide_home_indicator" = "Ukryj przycisk powrotu do ekranu domowego";
 
 "preference.profile.title.name" = "Nazwa";
 "preference.profile.title.version" = "Wersja";
 "preference.profile.title.version_type" = "Typ wersji";
 "profile.title.create" = "Utwórz nowy profil";
 "profile.title.install_fabric_quilt" = "Zainstaluj Fabric/Quilt";
+
+"controller_configurator.title.current" = "Plik konfiguracyjny pada do gry";
 "controller_configurator.title.type.xbox" = "Xbox";
 "controller_configurator.title.type.playstation" = "PlayStation";
 "controller_configurator.xbox.title.named_back" = "Poradnik";
