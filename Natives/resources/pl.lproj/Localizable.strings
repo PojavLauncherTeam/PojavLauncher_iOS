@@ -59,6 +59,7 @@
 "custom_controls.control_menu.add_button" = "Dodaj przycisk";
 "custom_controls.control_menu.add_drawer" = "Dodaj listę";
 "custom_controls.control_menu.add_joystick" = "Dodaj joysticka";
+"custom_controls.error.incompatible" = "Ta wersja kontrolna (kod %d) nie jest zaimplementowana w tej wersji launchera.";
 "custom_controls.hint" = "Naciśnij i przytrzymaj gdziekolwiek na ekranie, aby uzyskać więcej opcji";
 
 "init.migrateDir" = "Katalogiem danych PojavLauncher jest teraz %@. Wszystkie istniejące dane zostały przeniesione do nowej lokalizacji.";
@@ -77,6 +78,9 @@
 
 "login.jit.checking" = "Sprawdzanie JIT";
 "login.jit.enabled" = "JIT zostało włączone";
+"login.jit.fail" = "JIT nie może zostać włączony.";
+"login.jit.fail.title" = "JIT nie może być włączony na Twoim urządzeniu.";
+"login.jit.fail.description" = "Żadna integracja nie może być użyta do automatycznego włączenia JIT na Twoim urządzeniu i musi być włączone ręcznie. Błędy zostały zapisane do latestlog.txt.";
 
 // Login buttons
 "login.menu.sendlogs" = "Prześlij swój rejestr";
@@ -85,6 +89,15 @@
 "login.option.demo" = "Konto demo";
 "login.option.microsoft" = "Konto Microsoft";
 "login.option.local" = "Konto lokalne";
+
+"login.warn.title.legacy_device" = "Następna wersja PojavLauncher nie będzie kompatybilna z tym urządzeniem.";
+"login.warn.message.legacy_device" = "Aby uruchomić następną dużą aktualizację potrzebne będzie urządzenie zdolne do uruchomienia iOS 14.";
+"login.warn.title.legacy_ios" = "Następna wersja PojavLauncher będzie wymagać aktualizacji systemu.";
+"login.warn.message.legacy_ios" = "Aby uruchomić następną dużą aktualizację potrzebna będzie aktualizacja do iOS 14.";
+"login.warn.title.limited_ram" = "Urządzenie ma ograniczoną ilość dostępnej pamięci.";
+"login.warn.message.limited_ram" = "Zalecamy pozostawienie automatycznej pamięci RAM włączonej, aby zapobiec problemom niestabilności i wydajności.";
+
+"login.warn.title.demomode" = "Twoje konto jest Demo";
 "login.warn.message.demomode" = "Jak zamiennik dla trybu offline oraz lokalnego, tryb demo umożliwia logowanie na Konto Microsoft, które nie posiada gry i umożliwia granie w wersję próbną Java Edition wprowadzoną w wersji 1.3.1 oraz nowszych. Starsze wersje zawierają pełną wersję gry, ponieważ oficjalny launcher nie wymusza tych ograniczeń. Sprawdź naszą stronę internetową, aby dowiedzieć się więcej o przejściu z trybu offline.";
 
 "login.warn.title.localmode" = "Tryb offline to teraz Tryb lokalny.";
@@ -126,6 +139,7 @@
 "preference.detail.debug_logging" = "Rejestruje ustawienia wewnętrzne i działania w lastlog.txt. Pomaga to programistom łatwiej znajdować problemy, ale Minecraft może działać wolniej, ponieważ logi będą zapisywane częściej.";
 "preference.title.appicon" = "Ustaw ikonę aplikacji";
 "preference.detail.appicon" = "Pozwala wybrać między różnymi ikonami ekranu głównego dla PojavLauncher.";
+"preference.title.hidden_sidebar" = "Domyślnie ukryj pasek boczny";
 
 "preference.title.reset_warnings" = "Wyzeruj wszystkie ostrzeżenia";
 "preference.title.done.reset_warnings" = "Wszystkie ostrzeżenia zostały wyzerowane.";
@@ -134,14 +148,31 @@
 "preference.title.confirm.reset_settings" = "Spowoduje to usunięcie wszystkich własnych ustawień, w tym rozdzielczości, rozmiar przycisków oraz argumenty Java.";
 "preference.title.done.reset_settings" = "Wszystkie ustawienia zostały wyzerowane.";
 
+"preference.title.erase_demo_data" = "Usuń dane Demo";
+"preference.title.confirm.erase_demo_data" = "Spowoduje to usunięcie wszystkich wersji i danych gry Demo oraz konta Demo.";
+"preference.title.done.erase_demo_data" = "Wszystkie dane gry Demo zostały usunięte.";
+
 "preference.title.renderer" = "Silnik renderujący";
+
+"preference.title.renderer.debug.auto" = "Automatyczne: GL4ES lub ANGLE";
 "preference.title.renderer.debug.gl4es" = "gl4es 1.1.4 - eksportuje OpenGL 2.1";
+"preference.title.renderer.debug.angle" = "ANGLE (1.17+) - eksportuje OpenGL 3.2 (Podstawowy profil, ograniczony)";
 "preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - eksportuje OpenGL 4.1";
 
 "preference.detail.renderer" = "Zmień używany silnik renderujący OpenGL";
 
 "preference.title.resolution" = "Rozdzielczość (%)";
 "preference.detail.resolution" = "Umożliwia zmniejszenie rozdzielczości gry.";
+"preference.title.max_framerate" = "Maksymalna liczba klatek na sekundę";
+"preference.detail.max_framerate" = "Pozwala ograniczyć liczbę klatek do 60FPS na wyświetlaczach ProMotion.";
+
+"preference.title.fullscreen_airplay" = "Pełnoekranowy AirPlay";
+"preference.detail.fullscreen_airplay" = "Pozwala na prezentowanie okna gry w trybie pełnoekranowym na zewnętrznym ekranie, zamiast duplikować wszystko na ekranie.";
+"preference.title.silence_other_audio" = "Wstrzymaj dźwięk, gdy gra się otworzy";
+"preference.detail.silence_other_audio" = "Włącz, aby umożliwić PojavLauncher wstrzymanie dźwięku z innych aplikacji, takich jak YouTube, podczas uruchamiania gry.";
+"preference.title.silence_with_switch" = "Wyłącz dźwięk, za pomocą przełącznika wyciszenia";
+"preference.detail.silence_with_switch" = "Włącz, aby wyłączyć dźwięk, gdy włączony jest tryb cichy. Nie działa na słuchawki i inne zewnętrzne urządzenia.";
+"preference.title.default_gamepad_ctrl" = "Konfiguracja kontrolera";
 "preference.title.press_duration" = "Czas długiego naciśnięcia (ms)";
 "preference.detail.press_duration" = "Zmieniaj czas trwania prasy dla niszczenia bloków i upuszczania przedmiotów.";
 "preference.title.button_scale" = "Skala przycisków ekranowych (%)";
