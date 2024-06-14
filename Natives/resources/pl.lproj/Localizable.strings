@@ -253,7 +253,14 @@
 "preference.profile.title.name" = "Nazwa";
 "preference.profile.title.version" = "Wersja";
 "preference.profile.title.version_type" = "Typ wersji";
+"preference.profile.title.default_touch_control" = "Sterowanie dotykiem";
+"preference.profile.title.default_gamepad_control" = "Sterowanie kontrolerem";
+
+"profile.error.name_exists" = "Profil o takiej nazwie już istnieje, spróbuj użyć innej nazwy.";
+"profile.section.instance" = "Ustawienia instancji gry";
+"profile.section.profiles" = "Profile w tej instancji";
 "profile.title.create" = "Utwórz nowy profil";
+"profile.detail.separate_preference" = "Włącz tę opcję, aby izolować wszelkie zmiany wprowadzone w ustawieniach. Przywrócenie ustawień przywróci ustawienia globalne zamiast ustawień domyślnych.";
 "profile.title.install_fabric_quilt" = "Zainstaluj Fabric/Quilt";
 
 "controller_configurator.title.current" = "Plik konfiguracyjny pada do gry";
