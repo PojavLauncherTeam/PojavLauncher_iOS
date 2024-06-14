@@ -216,14 +216,23 @@
 "preference.detail.gyroscope_invert_x_axis" = "Odwraca oś X żyroskopu";
 "preference.title.gyroscope_sensitivity" = "Czułość sterowania żyroskopem";
 "preference.detail.gyroscope_sensitivity" = "Dostosuj czułość sterowania żyroskopem";
+
+"preference.title.manage_runtime" = "Zarządzaj runtime'ami";
 "preference.title.confirm.delete_runtime" = "%@ zostanie usunięty";
 "preference.manage_runtime.header.default" = "Preferowana wersja Javy";
 "preference.manage_runtime.default.1165" = "1.16.5 i starsze";
 "preference.manage_runtime.default.117" = "1.17 i nowsze";
+"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 i starszy może działać z nowszą wersją Javy, jednak kompatybilność z modami nie jest zagwarantowana. Zewnętrzne runtime'y można umieścić w folderze \"java_runtimes\". Zmiana wersji Javy dla \"Execute .jar\" staje się skuteczna tylko wtedy, gdy instalator nie oczekuje nowszej wersji Javy.";
+"preference.manage_runtime.footer.java8" = "To jest domyślna wersja dla Minecraft 1.16.5 i starszych.";
+"preference.manage_runtime.footer.java17" = "To jest domyślna wersja dla Minecraft 1.17 i nowszych.";
+"preference.manage_runtime.header.invalid" = "Nieprawidłowy runtime";
 
 "preference.title.java_args" = "Argumenty uruchomienia JVM";
+"preference.detail.java_args" = "Przekaż argumenty do Javy podczas uruchamiania Minecrafta. Zachowaj ostrożność, może to spowodować awarię gry, jeśli zostanie ona nieprawidłowo zmodyfikowana.";
 "preference.placeholder.java_args" = "Określ argumenty...";
 "preference.title.env_variables" = "Zmienne środowiskowe";
+"preference.detail.env_variables" = "Ustaw niestandardowe zmienne środowiskowe podczas uruchamiania Minecrafta. Zachowaj ostrożność, może to spowodować awarię gry, jeśli została zmodyfikowana nieprawidłowo.";
+"preference.placeholder.env_variables" = "Określ zmienne...";
 "preference.title.auto_ram" = "Automatyczny RAM";
 "preference.detail.auto_ram" = "Włącza automatyczny przydział pamięci RAM";
 "preference.warn.auto_ram" = "Wyłączenie tej opcji na urządzeniach bez jailbreak może doprowadzić do niestabilności po dostosowaniu. Zachowaj ostrożność.";
@@ -231,6 +240,7 @@
 "preference.detail.allocated_memory" = "Dostosuj ilość pamięci przydzieloną do Minecraft";
 "preference.warn.allocated_memory" = "Ze względu na ograniczenia samego systemu operacyjnego, ta opcja może powodować niestabilność przy tej i wyższych wartościach. Zachowaj ostrożność.";
 "preference.title.custom_env" = "Zmienne środowiskowe";
+"preference.detail.custom_env" = "Ta opcja nie jest jeszcze gotowa. Utwórz i edytuj custom_env.txt w międzyczasie.";
 
 "preference.title.debug_skip_wait_jit" = "Pomiń okno dialogowe \"Oczekiwanie na JIT\"";
 "preference.detail.debug_skip_wait_jit" = "To nie pozwala na uruchamianie bez JIT, zamiast tego pomija kontrolę debugera, ponieważ sprawdzenie nie powiodło się na niektórych więzieniach.";
