@@ -65,10 +65,10 @@ void hooked_exit(int code) {
 }
 
 void* hooked_dlopen(const char* path, int mode) {
-    const char *home = getenv("POJAV_HOME");
+    const char *home = getenv("HOME");
     // Only proceed to check if dylib is in the home dir
-    // Path input from jvm is absolute path(?)
-    if (!path || strncmp(path, home, strlen(home))) {
+    char fullpath[PATH_MAX];
+    if (!path || !realpath(path, fullpath) || !strstr(fullpath, home)) {
         return orig_dlopen(path, mode);
     }
 
