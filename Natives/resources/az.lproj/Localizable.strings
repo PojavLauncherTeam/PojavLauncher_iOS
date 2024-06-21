@@ -189,6 +189,9 @@
 "preference.title.max_framerate" = "Maksimum kadr sürəti";
 "preference.detail.max_framerate" = "ProMotion displeylərində oyunun kadr sürətini 60 FPS ilə məhdudlaşdırmağa imkan verir.";
 
+"preference.title.performance_hud" = "Performans HUD göstərin";
+"preference.detail.performance_hud" = "Mövcud olduqda, performans monitorinqi örtüyünü göstərin.";
+
 "preference.title.fullscreen_airplay" = "Tam ekran AirPlay";
 "preference.detail.fullscreen_airplay" = "Ekrandakı hər şeyi əks etdirməkdənsə, xarici displeydə tam ekran oyun pəncərəsini təqdim etməyə imkan verir.";
 "preference.title.silence_other_audio" = "Oyun açıldıqda səsi dayandırın";
