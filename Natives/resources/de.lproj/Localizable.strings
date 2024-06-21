@@ -191,6 +191,7 @@ der Minecraft-Version zu wählen. Verringerte Auflösung reduziert die Arbeitsla
 "preference.detail.max_framerate" = "Erlaubt es dir, die Framerate auf 60FPS auf ProMotion-Displays zu beschränken.";
 
 "preference.title.performance_hud" = "Performance-HUD anzeigen";
+"preference.detail.performance_hud" = "Overlay zur Leistungsüberwachung anzeigen, falls verfügbar.";
 
 "preference.title.fullscreen_airplay" = "Vollbild-AirPlay";
 "preference.detail.fullscreen_airplay" = "Ermöglicht es dir nur das Spielfenster auf ein externes Display zu spiegeln, anstatt den ganzen Bildschirm zu spiegeln.";
