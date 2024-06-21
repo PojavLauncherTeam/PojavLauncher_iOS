@@ -190,6 +190,8 @@ der Minecraft-Version zu wählen. Verringerte Auflösung reduziert die Arbeitsla
 "preference.title.max_framerate" = "Maximale Framerate";
 "preference.detail.max_framerate" = "Erlaubt es dir, die Framerate auf 60FPS auf ProMotion-Displays zu beschränken.";
 
+"preference.title.performance_hud" = "Performance-HUD anzeigen";
+
 "preference.title.fullscreen_airplay" = "Vollbild-AirPlay";
 "preference.detail.fullscreen_airplay" = "Ermöglicht es dir nur das Spielfenster auf ein externes Display zu spiegeln, anstatt den ganzen Bildschirm zu spiegeln.";
 "preference.title.silence_other_audio" = "Audio anhalten, wenn das Spiel geöffnet wird";
@@ -199,6 +201,7 @@ der Minecraft-Version zu wählen. Verringerte Auflösung reduziert die Arbeitsla
 "preference.title.default_gamepad_ctrl" = "Steuerungs-Konfiguration";
 "preference.title.hardware_hide" = "Steuerelemente ausblenden, wenn Hardware verbunden ist";
 "preference.detail.hardware_hide" = "Aktivieren Sie die automatische Deaktivierung des Overlays auf dem Bildschirm, wenn eine Maus oder ein Game-Controller angeschlossen ist.";
+"preference.title.recording_hide" = "Steuerelemente auf Bildschirmaufnahmen ausblenden";
 "preference.title.gesture_mouse" = "Mausgesten";
 "preference.detail.gesture_mouse" = "Ermöglicht Gesten wie Tippen zum Platzieren des Blocks, halten um den Block abzubauen, mit 2 Fingern zu scrollen";
 "preference.title.gesture_hotbar" = "Hotbar Gesten";
