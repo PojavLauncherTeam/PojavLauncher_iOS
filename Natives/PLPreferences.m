@@ -21,6 +21,7 @@
             @"renderer": @"auto",
             @"resolution": @(100),
             @"max_framerate": @YES,
+            @"performance_hud": @NO,
             @"fullscreen_airplay": @YES,
             @"silence_other_audio": @NO,
             @"silence_with_switch": @NO

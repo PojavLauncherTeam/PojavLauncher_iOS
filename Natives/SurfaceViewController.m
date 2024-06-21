@@ -19,11 +19,12 @@
 #import "SurfaceViewController.h"
 #import "TrackedTextField.h"
 #import "UIKit+hook.h"
-
 #import "ios_uikit_bridge.h"
 
 #include "glfw_keycodes.h"
 #include "utils.h"
+
+#include <dlfcn.h>
 
 int memorystatus_control(uint32_t command, int32_t pid, uint32_t flags, void *buffer, size_t buffersize);
 #define MEMORYSTATUS_CMD_SET_JETSAM_TASK_LIMIT        6
@@ -73,7 +74,9 @@ static GameSurfaceView* pojavWindow;
     [super viewDidLoad];
     isControlModifiable = NO;
     self.isMacCatalystApp = NSProcessInfo.processInfo.isMacCatalystApp;
-    
+    // Load MetalHUD library
+    dlopen("/usr/lib/libMTLHud.dylib", 0);
+
     self.lightHaptic = [[UIImpactFeedbackGenerator alloc] initWithStyle:(UIImpactFeedbackStyleLight)];
     self.mediumHaptic = [[UIImpactFeedbackGenerator alloc] initWithStyle:(UIImpactFeedbackStyleMedium)];
 
@@ -357,6 +360,13 @@ static GameSurfaceView* pojavWindow;
     [self updateAudioSettings];
     // Update resolution
     [self updateSavedResolution];
+    // Update performance HUD visibility
+    if (@available(iOS 16, tvOS 16, *)) {
+        if ([self.surfaceView.layer isKindOfClass:CAMetalLayer.class]) {
+            BOOL perfHUDEnabled = getPrefBool(@"video.performance_hud");
+            ((CAMetalLayer *)self.surfaceView.layer).developerHUDProperties = perfHUDEnabled ? @{@"mode": @"default"} : nil;
+        }
+    }
 }
 
 - (void)updateSavedResolution {

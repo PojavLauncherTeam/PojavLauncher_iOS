@@ -183,6 +183,14 @@
                   return whenNotInGame() && (UIScreen.mainScreen.maximumFramesPerSecond > 60);
               }
             },
+            @{@"key": @"performance_hud",
+              @"hasDetail": @YES,
+              @"icon": @"waveform.path.ecg",
+              @"type": self.typeSwitch,
+              @"enableCondition": ^BOOL(){
+                  return [CAMetalLayer instancesRespondToSelector:@selector(developerHUDProperties)];
+              }
+            },
             @{@"key": @"fullscreen_airplay",
               @"hasDetail": @YES,
               @"icon": @"airplayvideo",
