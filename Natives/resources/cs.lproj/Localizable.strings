@@ -189,6 +189,9 @@
 "preference.title.max_framerate" = "Maximální snímková frekvence";
 "preference.detail.max_framerate" = "Umožňuje omezit frekvenci snímků hry na 60FPS na displejích ProMotion.";
 
+"preference.title.performance_hud" = "Zobrazit HUD výkonu";
+"preference.detail.performance_hud" = "Je-li k dispozici, ukazuje se překryv monitorování výkonnosti.";
+
 "preference.title.fullscreen_airplay" = "AirPlay celé obrazovky";
 "preference.detail.fullscreen_airplay" = "Umožňuje zobrazovat okno hry na celé obrazovce na externím displeji bez zrcadlení všeho na obrazovce.";
 "preference.title.silence_other_audio" = "Pozastavit zvuk při otevření hry";
