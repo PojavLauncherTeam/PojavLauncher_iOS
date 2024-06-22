@@ -189,6 +189,9 @@
 "preference.title.max_framerate" = "Максимальная частота кадров";
 "preference.detail.max_framerate" = "Позволяет включить ограничение частоты обновления в 60 кадров в секунду на дисплеях ProMotion.";
 
+"preference.title.performance_hud" = "Метрики производительности";
+"preference.detail.performance_hud" = "Показывать панель мониторинга производительности, если доступно.";
+
 "preference.title.fullscreen_airplay" = "Полноэкранный AirPlay";
 "preference.detail.fullscreen_airplay" = "Транслировать на внешний монитор только окно игры во весь экран вместо отображения всего, что происходит на устройстве.";
 "preference.title.silence_other_audio" = "Только звук игры";
