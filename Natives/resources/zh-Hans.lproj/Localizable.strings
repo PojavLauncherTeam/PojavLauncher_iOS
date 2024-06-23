@@ -189,8 +189,8 @@
 "preference.title.max_framerate" = "最大帧率";
 "preference.detail.max_framerate" = "允许您在 ProMotion 显示器上将游戏帧率限制为 60FPS。";
 
-"preference.title.performance_hud" = "显示性能HUD";
-"preference.detail.performance_hud" = "若可用，则显示性能监视覆盖。";
+"preference.title.performance_hud" = "显示性能 HUD";
+"preference.detail.performance_hud" = "可用时，显示性能监视叠层。";
 
 "preference.title.fullscreen_airplay" = "全屏 AirPlay";
 "preference.detail.fullscreen_airplay" = "允许在外部显示器上全屏显示游戏，而不是直接镜像显示。";
