@@ -189,6 +189,9 @@
 "preference.title.max_framerate" = "Максимальна частота оновлення";
 "preference.detail.max_framerate" = "Дозволяє вам обмежити частоту оновлення у грі до 60 кадрів/c на екранах ProMotion.";
 
+"preference.title.performance_hud" = "Показати HUD щодо швидкодії";
+"preference.detail.performance_hud" = "Якщо можливо, показати накладання моніторингу швидкодії.";
+
 "preference.title.fullscreen_airplay" = "Повноекранний AirPlay";
 "preference.detail.fullscreen_airplay" = "Дозволяє презентувати повноекранне вікно гри на зовнішньому дисплеї, а не віддзеркалювати все, що є на екрані.";
 "preference.title.silence_other_audio" = "Призупиняти звук під час відкриття гри";
