@@ -3,13 +3,12 @@
 @class ModpackAPI;
 
 @interface MinecraftResourceDownloadTask : NSObject
-@property NSProgress* progress;
+@property NSProgress *progress, *textProgress;
 @property NSMutableArray *fileList, *progressList;
 @property NSMutableDictionary* metadata;
 @property(nonatomic, copy) void(^handleError)(void);
 
-- (NSURLSessionDownloadTask *)createDownloadTask:(NSString *)url sha:(NSString *)sha altName:(NSString *)altName toPath:(NSString *)path;
-- (void)addDownloadTaskToProgress:(NSURLSessionDownloadTask *)task;
+- (NSURLSessionDownloadTask *)createDownloadTask:(NSString *)url size:(NSUInteger)size sha:(NSString *)sha altName:(NSString *)altName toPath:(NSString *)path;
 - (void)finishDownloadWithErrorString:(NSString *)error;
 
 - (void)downloadVersion:(NSDictionary *)version;

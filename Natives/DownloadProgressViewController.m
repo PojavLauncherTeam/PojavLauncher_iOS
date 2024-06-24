@@ -29,7 +29,7 @@ static void *TotalProgressObserverContext = &TotalProgressObserverContext;
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-[self.task.progress addObserver:self
+[self.task.textProgress addObserver:self
         forKeyPath:@"fractionCompleted"
         options:NSKeyValueObservingOptionInitial
         context:TotalProgressObserverContext];
@@ -38,7 +38,7 @@ static void *TotalProgressObserverContext = &TotalProgressObserverContext;
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
-[self.task.progress removeObserver:self forKeyPath:@"fractionCompleted"];
+[self.task.textProgress removeObserver:self forKeyPath:@"fractionCompleted"];
 }
 
 - (void)actionClose {
@@ -60,7 +60,7 @@ static void *TotalProgressObserverContext = &TotalProgressObserverContext;
         });
     } else if (context == TotalProgressObserverContext) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.title = [NSString stringWithFormat:@"(%@) %@", progress.localizedAdditionalDescription, progress.localizedDescription];
+            self.title = progress.localizedDescription;
             if (self.needsReloadData) {
                 [self.tableView reloadData];
             }

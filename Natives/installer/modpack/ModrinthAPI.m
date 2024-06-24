@@ -56,15 +56,19 @@
     NSMutableArray<NSString *> *mcNames = [NSMutableArray new];
     NSMutableArray<NSString *> *urls = [NSMutableArray new];
     NSMutableArray<NSString *> *hashes = [NSMutableArray new];
+    NSMutableArray<NSString *> *sizes = [NSMutableArray new];
     [response enumerateObjectsUsingBlock:
   ^(NSDictionary *version, NSUInteger i, BOOL *stop) {
+        NSDictionary *file = [version[@"files"] firstObject];
         mcNames[i] = [version[@"game_versions"] firstObject];
-        urls[i] = [version[@"files"] firstObject][@"url"];
-        NSDictionary *hashesMap = [version[@"files"] firstObject][@"hashes"];
+        sizes[i] = file[@"size"];
+        urls[i] = file[@"url"];
+        NSDictionary *hashesMap = file[@"hashes"];
         hashes[i] = hashesMap[@"sha1"] ?: [NSNull null];
     }];
     item[@"versionNames"] = names;
     item[@"mcVersionNames"] = mcNames;
+    item[@"versionSizes"] = sizes;
     item[@"versionUrls"] = urls;
     item[@"versionHashes"] = hashes;
     item[@"versionDetailsLoaded"] = @(YES);
@@ -96,10 +100,10 @@
         NSString *url = [indexFile[@"downloads"] firstObject];
         NSString *sha = indexFile[@"hashes"][@"sha1"];
         NSString *path = [destPath stringByAppendingPathComponent:indexFile[@"path"]];
-        NSURLSessionDownloadTask *task = [downloader createDownloadTask:url sha:sha altName:nil toPath:path];
+        NSUInteger size = [indexFile[@"fileSize"] unsignedLongLongValue];
+        NSURLSessionDownloadTask *task = [downloader createDownloadTask:url size:size sha:sha altName:nil toPath:path];
         if (task) {
             [downloader.fileList addObject:indexFile[@"path"]];
-            [downloader addDownloadTaskToProgress:task];
             [task resume];
         } else if (!downloader.progress.cancelled) {
             downloader.progress.completedUnitCount++;
@@ -127,9 +131,8 @@
     NSDictionary<NSString *, NSString *> *depInfo = [ModpackUtils infoForDependencies:indexDict[@"dependencies"]];
     if (depInfo[@"json"]) {
         NSString *jsonPath = [NSString stringWithFormat:@"%1$s/versions/%2$@/%2$@.json", getenv("POJAV_GAME_DIR"), depInfo[@"id"]];
-        NSURLSessionDownloadTask *task = [downloader createDownloadTask:depInfo[@"json"] sha:nil altName:nil toPath:jsonPath];
+        NSURLSessionDownloadTask *task = [downloader createDownloadTask:depInfo[@"json"] size:0 sha:nil altName:nil toPath:jsonPath];
         [task resume];
-        // FIXME: sometimes progress doesn't report properly, not adding to total progress for now
     }
     // TODO: automation for Forge
 

@@ -18,6 +18,8 @@
 #import "ios_uikit_bridge.h"
 #import "utils.h"
 
+#include <sys/time.h>
+
 #define AUTORESIZE_MASKS UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin
 
 static void *ProgressObserverContext = &ProgressObserverContext;
@@ -299,11 +301,30 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if (context != ProgressObserverContext) {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+        return;
+    }
+
+    // Calculate download speed and ETA
+    static CGFloat lastMsTime;
+    static NSUInteger lastSecTime, lastCompletedUnitCount;
+    NSProgress *progress = self.task.textProgress;
+    struct timeval tv;
+    gettimeofday(&tv, NULL); 
+    NSInteger completedUnitCount = self.task.progress.totalUnitCount * self.task.progress.fractionCompleted;
+    progress.completedUnitCount = completedUnitCount;
+    if (lastSecTime < tv.tv_sec) {
+        CGFloat currentTime = tv.tv_sec + tv.tv_usec / 1000000.0;
+        NSInteger throughput = (completedUnitCount - lastCompletedUnitCount) / (currentTime - lastMsTime);
+        progress.throughput = @(throughput);
+        progress.estimatedTimeRemaining = @((progress.totalUnitCount - completedUnitCount) / throughput);
+        lastCompletedUnitCount = completedUnitCount;
+        lastSecTime = tv.tv_sec;
+        lastMsTime = currentTime;
     }
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSProgress *progress = object;
-        self.progressText.text = [NSString stringWithFormat:@"(%@) %@", progress.localizedAdditionalDescription, progress.localizedDescription];
+        self.progressText.text = progress.localizedAdditionalDescription;
+
         if (!progress.finished) return;
 
         self.progressViewMain.observedProgress = nil;
