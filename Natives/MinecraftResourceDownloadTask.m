@@ -77,6 +77,7 @@
     NSProgress *progress = [self.manager downloadProgressForTask:task];
     NSUInteger fileSize = size ?: 1;
     progress.kind = NSProgressKindFile;
+    progress.totalUnitCount = fileSize;
     [self.progressList addObject:progress];
     [self.progress addChild:progress withPendingUnitCount:fileSize];
     self.progress.totalUnitCount += fileSize;
