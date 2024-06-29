@@ -41,11 +41,14 @@
 
     NSString *name = altName ?: path.lastPathComponent;
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
-    NSURLSessionDownloadTask *task = [self.manager downloadTaskWithRequest:request progress:nil
+    __block NSProgress *progress;
+    __block NSURLSessionDownloadTask *task = [self.manager downloadTaskWithRequest:request progress:nil
     destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
         NSLog(@"[MCDL] Downloading %@", name);
+        progress = [self.manager downloadProgressForTask:task];
         if (!size && task) {
             [self addDownloadTaskToProgress:task size:response.expectedContentLength];
+            [self.fileList addObject:name];
         }
         [NSFileManager.defaultManager createDirectoryAtPath:path.stringByDeletingLastPathComponent withIntermediateDirectories:YES attributes:nil error:nil];
         [NSFileManager.defaultManager removeItemAtPath:path error:nil];
@@ -58,12 +61,14 @@
         } else if (![self checkSHA:sha forFile:path altName:altName]) {
             [self finishDownloadWithErrorString:[NSString stringWithFormat:@"Failed to verify file %@: SHA1 mismatch", path.lastPathComponent]];
         } else {
+            progress.totalUnitCount = progress.completedUnitCount;
             if (success) success();
         }
     }];
 
     if (size && task) {
         [self addDownloadTaskToProgress:task size:size];
+        [self.fileList addObject:name];
     }
 
     return task;
@@ -73,11 +78,13 @@
     return [self createDownloadTask:url size:size sha:sha altName:altName toPath:path success:nil];
 }
 
-- (void)addDownloadTaskToProgress:(NSURLSessionDownloadTask *)task size:(NSUInteger)size {
+- (void)addDownloadTaskToProgress:(NSURLSessionDownloadTask *)task size:(NSInteger)size {
     NSProgress *progress = [self.manager downloadProgressForTask:task];
-    NSUInteger fileSize = size ?: 1;
+    NSUInteger fileSize = size>0 ? size : 1;
     progress.kind = NSProgressKindFile;
-    progress.totalUnitCount = fileSize;
+    if (size > 0) {
+        progress.totalUnitCount = fileSize;
+    }
     [self.progressList addObject:progress];
     [self.progress addChild:progress withPendingUnitCount:fileSize];
     self.progress.totalUnitCount += fileSize;
@@ -146,11 +153,12 @@
         success();
         return;
     }
-    NSString *path = [NSString stringWithFormat:@"%s/assets/indexes/%@.json", getenv("POJAV_GAME_DIR"), assetIndex[@"id"]];
+    NSString *name = [NSString stringWithFormat:@"assets/indexes/%@.json", assetIndex[@"id"]];
+    NSString *path = [@(getenv("POJAV_GAME_DIR")) stringByAppendingPathComponent:name];
     NSString *url = assetIndex[@"url"];
     NSString *sha = url.stringByDeletingLastPathComponent.lastPathComponent;
     NSUInteger size = [assetIndex[@"size"] unsignedLongLongValue];
-    NSURLSessionDownloadTask *task = [self createDownloadTask:url size:size sha:sha altName:nil toPath:path success:^{
+    NSURLSessionDownloadTask *task = [self createDownloadTask:url size:size sha:sha altName:name toPath:path success:^{
         self.metadata[@"assetIndexObj"] = parseJSONFromFile(path);
         success();
     }];
@@ -182,9 +190,8 @@
             continue;
         }
 
-        NSURLSessionDownloadTask *task = [self createDownloadTask:url size:size sha:sha altName:nil toPath:path success:nil];
+        NSURLSessionDownloadTask *task = [self createDownloadTask:url size:size sha:sha altName:name toPath:path success:nil];
         if (task) {
-            [self.fileList addObject:name];
             [tasks addObject:task];
         } else if (self.progress.cancelled) {
             return nil;
@@ -224,7 +231,6 @@
         NSString *url = [NSString stringWithFormat:@"https://resources.download.minecraft.net/%@", pathname];
         NSURLSessionDownloadTask *task = [self createDownloadTask:url size:size sha:hash altName:name toPath:path success:nil];
         if (task) {
-            [self.fileList addObject:name];
             [tasks addObject:task];
         } else if (self.progress.cancelled) {
             return nil;
@@ -239,6 +245,9 @@
         [self downloadAssetMetadataWithSuccess:^{
             NSArray *libTasks = [self downloadClientLibraries];
             NSArray *assetTasks = [self downloadClientAssets];
+            // Drop the 1 byte we set initially
+            self.progress.totalUnitCount--;
+            self.textProgress.totalUnitCount--;
             if (self.progress.totalUnitCount == 0) {
                 // We have nothing to download, invoke completion observer
                 self.progress.totalUnitCount = 1;
@@ -284,6 +293,8 @@
     self.textProgress.totalUnitCount = -1;
 
     self.progress = [NSProgress new];
+    // Push 1 byte so it won't accidentally finish after downloading assets index
+    self.progress.totalUnitCount = 1;
     [self.fileList removeAllObjects];
     [self.progressList removeAllObjects];
 }

@@ -7,7 +7,7 @@ static void *CellProgressObserverContext = &CellProgressObserverContext;
 static void *TotalProgressObserverContext = &TotalProgressObserverContext;
 
 @interface DownloadProgressViewController ()
-@property BOOL needsReloadData;
+@property NSInteger fileListCount;
 @end
 
 @implementation DownloadProgressViewController
@@ -61,9 +61,10 @@ static void *TotalProgressObserverContext = &TotalProgressObserverContext;
     } else if (context == TotalProgressObserverContext) {
         dispatch_async(dispatch_get_main_queue(), ^{
             self.title = progress.localizedDescription;
-            if (self.needsReloadData) {
+            if (self.fileListCount != self.task.fileList.count) {
                 [self.tableView reloadData];
             }
+            self.fileListCount = self.task.fileList.count;
         });
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -72,7 +73,6 @@ static void *TotalProgressObserverContext = &TotalProgressObserverContext;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    self.needsReloadData = self.task.fileList.count == 0;
     return self.task.fileList.count;
 }
 
