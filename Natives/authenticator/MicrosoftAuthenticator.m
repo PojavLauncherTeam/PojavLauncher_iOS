@@ -272,6 +272,10 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
 }
 
 - (BOOL)setAccessToken:(NSString *)accessToken refreshToken:(NSString *)refreshToken {
+    if (!accessToken || !refreshToken) {
+        NSDebugLog(@"[MicrosoftAuthenticator] BUG: nil accessToken:%d, refreshToken:%d", !accessToken, !refreshToken);
+        return NO;
+    }
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:@{
         @"accessToken": accessToken,
         @"refreshToken": refreshToken,
