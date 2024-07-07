@@ -108,10 +108,10 @@ extern bool isUseStackQueueCall;
 - (NSRange)insertFilteredText:(NSString *)text {
     int cursorPos = [super offsetFromPosition:self.beginningOfDocument toPosition:self.selectedTextRange.start];
 
-    // This also makes sure that lastTextPos != cursorPos (text should never be empty)
-    if (self.lastTextPos - cursorPos == text.length) {
+    int off = self.lastTextPos - cursorPos;
+    if (off > 0) {
         // Handle text markup by first deleting N amount of characters equal to the replaced text
-        [self sendMultiBackspaces:text.length];
+        [self sendMultiBackspaces:off];
     }
     // What else is done by past-autocomplete (insert a space after autocompletion)
     // See -[TrackedTextField replaceRangeWithTextWithoutClosingTyping:replacementText:]
@@ -126,13 +126,14 @@ extern bool isUseStackQueueCall;
 
 - (id)replaceRangeWithTextWithoutClosingTyping:(UITextRange *)range replacementText:(NSString *)text
 {
-    int length = [super offsetFromPosition:range.start toPosition:range.end];
+    int oldLength = [super offsetFromPosition:range.start toPosition:range.end];
 
     // Delete the range of needs for autocompletion
-    [self sendMultiBackspaces:length];
+    [self sendMultiBackspaces:oldLength];
 
     // Insert the autocompleted text
     [self sendText:text];
+    self.lastTextPos += text.length - oldLength;
 
     return [super replaceRangeWithTextWithoutClosingTyping:range replacementText:text];
 }
