@@ -84,7 +84,7 @@ dispatch_async(dispatch_get_main_queue(), ^{
 });
 }
 
-jstring UIKit_accessClipboard(JNIEnv* env, jint action, jstring copySrc) {
+jstring UIKit_accessClipboard(JNIEnv* env, jint action, jbyteArray copySrc) {
     if (action == CLIPBOARD_PASTE) {
         // paste request
         if (UIPasteboard.generalPasteboard.hasStrings) {
@@ -94,9 +94,11 @@ jstring UIKit_accessClipboard(JNIEnv* env, jint action, jstring copySrc) {
         }
     } else if (action == CLIPBOARD_COPY) {
         // copy request
-        const char* copySrcC = (*env)->GetStringUTFChars(env, copySrc, 0);
-        UIPasteboard.generalPasteboard.string = @(copySrcC);
-        (*env)->ReleaseStringUTFChars(env, copySrc, copySrcC);
+        const char* copySrcC = (*env)->GetByteArrayElements(env, copySrc, 0);
+        if (copySrcC) {
+            UIPasteboard.generalPasteboard.string = @(copySrcC);
+            (*env)->ReleaseByteArrayElements(env, copySrc, copySrcC, 0);
+        }
         return NULL;
     } else {
         // unknown request
