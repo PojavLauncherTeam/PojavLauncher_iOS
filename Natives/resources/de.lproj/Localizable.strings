@@ -197,8 +197,6 @@ der Minecraft-Version zu wählen. Verringerte Auflösung reduziert die Arbeitsla
 "preference.detail.fullscreen_airplay" = "Ermöglicht es dir nur das Spielfenster auf ein externes Display zu spiegeln, anstatt den ganzen Bildschirm zu spiegeln.";
 "preference.title.silence_other_audio" = "Audio anhalten, wenn das Spiel geöffnet wird";
 "preference.detail.silence_other_audio" = "Aktiviere diese Option um PojavLauncher zu erlauben, Audio von anderen Apps wie Musik zu pausieren, wenn das Spiel gestartet wird.";
-"preference.title.silence_with_switch" = "Audio mit Lautlos-Schalter deaktivieren";
-"preference.detail.silence_with_switch" = "Aktivieren, um Audio zu deaktivieren, wenn der Lautlos-Modus aktiviert ist. Kopfhörer und externe Lautsprecher sind nicht betroffen.";
 "preference.title.default_gamepad_ctrl" = "Steuerungs-Konfiguration";
 "preference.title.hardware_hide" = "Steuerelemente ausblenden, wenn Hardware verbunden ist";
 "preference.detail.hardware_hide" = "Aktivieren Sie die automatische Deaktivierung des Overlays auf dem Bildschirm, wenn eine Maus oder ein Game-Controller angeschlossen ist.";
@@ -226,7 +224,7 @@ der Minecraft-Version zu wählen. Verringerte Auflösung reduziert die Arbeitsla
 "preference.detail.gyroscope_enable" = "Wenn du dies aktivierst, kannst du dich im Spiel drehen, indem du dein Gerät drehst";
 "preference.title.gyroscope_invert_x_axis" = "Gyroskop umkehren";
 "preference.detail.gyroscope_invert_x_axis" = "Wechselt die X-Achse des Gyroskops";
-"preference.title.gyroscope_sensitivity" = "Gyroskop-Steuerungs-Empfindlichkeit";
+"preference.title.gyroscope_sensitivity" = "Gyroskopsteuerungsempfindlichkeit";
 "preference.detail.gyroscope_sensitivity" = "Passe die Empfindlichkeit der Gyroskop-Steuerung an";
 
 "preference.title.manage_runtime" = "Laufzeiten verwalten";
