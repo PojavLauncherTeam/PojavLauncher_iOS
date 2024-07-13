@@ -244,7 +244,6 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
         (id)kSecClass: (id)kSecClassGenericPassword,
         (id)kSecAttrService: @"AccountToken",
         (id)kSecAttrAccount: profile,
-        (id)kSecAttrAccessible: (id)kSecAttrAccessibleWhenUnlockedThisDeviceOnly
     }.mutableCopy;
     if (extra) {
         [dict addEntriesFromDictionary:extra];
@@ -281,6 +280,7 @@ typedef void(^XSTSCallback)(NSString *xsts, NSString *uhs);
         @"refreshToken": refreshToken,
     } requiringSecureCoding:YES error:nil];
     NSDictionary *dict = [MicrosoftAuthenticator keychainQueryForKey:self.authData[@"xuid"] extraInfo:@{
+        (id)kSecAttrAccessible: (id)kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
         (id)kSecValueData: data
     }];
     SecItemDelete((__bridge CFDictionaryRef)dict);
