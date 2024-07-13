@@ -196,8 +196,6 @@
 "preference.detail.fullscreen_airplay" = "允许在外部显示器上全屏显示游戏，而不是直接镜像显示。";
 "preference.title.silence_other_audio" = "游戏打开时暂停音频";
 "preference.detail.silence_other_audio" = "启用后将允许 PojavLauncher 在启动游戏时暂停其他应用的音频。";
-"preference.title.silence_with_switch" = "使用静音开关禁用音频";
-"preference.detail.silence_with_switch" = "启用时，可以使用静音模式禁用音频，耳机和外部扬声器不受此影响。";
 "preference.title.default_gamepad_ctrl" = "手柄配置";
 "preference.title.hardware_hide" = "硬件连接时隐藏控制键";
 "preference.detail.hardware_hide" = "启用连接鼠标或游戏手柄时自动禁用屏幕控制键的行为。";
