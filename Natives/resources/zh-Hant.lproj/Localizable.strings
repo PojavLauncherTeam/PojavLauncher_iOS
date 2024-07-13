@@ -196,6 +196,8 @@
 "preference.detail.fullscreen_airplay" = "允許在外部顯示器上展示全螢幕遊戲畫面，而不是影射螢幕上的內容。";
 "preference.title.silence_other_audio" = "在遊戲打開時暫停音訊";
 "preference.detail.silence_other_audio" = "Enable to allow PojavLauncher to pause audio from other apps, such as Music, when launching the game.";
+"preference.title.silence_with_switch" = "允許使用靜音開關禁用音訊並關閉麥克風輸入";
+"preference.detail.silence_with_switch" = "啟用時，可以使用靜音模式禁用音訊，並關閉麥克風輸入，耳機和外部揚聲器不受此影響。";
 "preference.title.default_gamepad_ctrl" = "Controller configuration";
 "preference.title.hardware_hide" = "Hide controls when hardware is connected";
 "preference.detail.hardware_hide" = "Enable the behaviour of automatically disabling the on-screen control overlay when a mouse or game controller is connected.";
