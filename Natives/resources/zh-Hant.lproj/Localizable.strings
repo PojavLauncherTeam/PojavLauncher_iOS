@@ -41,7 +41,7 @@
 "custom_controls.button_edit.mapping" = "對映";
 "custom_controls.button_edit.orientation" = "方向";
 "custom_controls.button_edit.toggleable" = "可切換";
-"custom_controls.button_edit.mouse_pass" = "滑鼠傳入";
+"custom_controls.button_edit.mouse_pass" = "鼠標傳入";
 "custom_controls.button_edit.swipeable" = "可滑動";
 "custom_controls.button_edit.bg_color" = "背景顏色";
 "custom_controls.button_edit.stroke_width" = "Stroke width (dp)";
@@ -105,7 +105,7 @@
 "login.warn.title.legacy_ios" = "下一個版本的 PojavLauncher 需要系統更新。";
 "login.warn.message.legacy_ios" = "要執行下一個版本，此裝置必須執行 iOS 14 或以後的版本。";
 "login.warn.title.limited_ram" = "這個裝置的記憶體有限。";
-"login.warn.message.limited_ram" = "我們建議您保持自動分配記憶體開啟，以避免不穩定與效能問題。";
+"login.warn.message.limited_ram" = "我們建議您保持自動分配 RAM 開啟，以避免不穩定與效能問題。";
 
 "login.warn.title.demomode" = "您的帳戶是示範帳戶";
 "login.warn.message.demomode" = "作為離線和本地模式的代替，示範模式會允許您使用尚未擁有遊戲的 Microsoft 帳戶來登入，並遊玩在版本 1.3.1 引入的 Java 版試玩版。由於官方的啟動器沒有加入限制，更舊的版本將含有完整的遊戲。要了解更多關於從離線模式過渡到示範模式的資訊，請瀏覽我們的網頁。";
@@ -196,8 +196,6 @@
 "preference.detail.fullscreen_airplay" = "允許在外部顯示器上展示全螢幕遊戲畫面，而不是影射螢幕上的內容。";
 "preference.title.silence_other_audio" = "在遊戲打開時暫停音訊";
 "preference.detail.silence_other_audio" = "Enable to allow PojavLauncher to pause audio from other apps, such as Music, when launching the game.";
-"preference.title.silence_with_switch" = "Disable audio with silent switch";
-"preference.detail.silence_with_switch" = "Enable to disable audio when Silent Mode is on. Headphones and external speakers are not affected.";
 "preference.title.default_gamepad_ctrl" = "Controller configuration";
 "preference.title.hardware_hide" = "Hide controls when hardware is connected";
 "preference.detail.hardware_hide" = "Enable the behaviour of automatically disabling the on-screen control overlay when a mouse or game controller is connected.";
@@ -244,7 +242,7 @@
 "preference.title.env_variables" = "環境變量";
 "preference.detail.env_variables" = "Set custom environment variables when launching Minecraft. Be careful, this can make the game crash if modified incorrectly.";
 "preference.placeholder.env_variables" = "Specify variables...";
-"preference.title.auto_ram" = "自動調節記憶體";
+"preference.title.auto_ram" = "自動調節 RAM";
 "preference.detail.auto_ram" = "啟用 RAM 自動調節";
 "preference.warn.auto_ram" = "在沒有越獄的裝置上停用這個選項可能導致不穩定。請小心。";
 "preference.title.allocated_memory" = "記憶體分配（MB）";
