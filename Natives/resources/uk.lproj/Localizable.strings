@@ -196,8 +196,6 @@
 "preference.detail.fullscreen_airplay" = "Дозволяє презентувати повноекранне вікно гри на зовнішньому дисплеї, а не віддзеркалювати все, що є на екрані.";
 "preference.title.silence_other_audio" = "Призупиняти звук під час відкриття гри";
 "preference.detail.silence_other_audio" = "Увімкніть, щоб дозволити PojavLauncher ставити на паузу звук з інших додатків як-от Музика, під час запуску гри.";
-"preference.title.silence_with_switch" = "Вимкнути звук беззвучним перемикачем";
-"preference.detail.silence_with_switch" = "Увімкніть, щоб вимкнути звук, якщо ввімкнено беззвучний режим. Навушники та зовнішні динаміки не впливають на це.";
 "preference.title.default_gamepad_ctrl" = "Налаштування контроллера";
 "preference.title.hardware_hide" = "Приховати елементи керування при під’єднанні пристрою";
 "preference.detail.hardware_hide" = "Увімкнути автоматичне вимкнення накладання екранного керування при під’єднанні миші або ігрового контролера.";
