@@ -91,6 +91,14 @@ void init_loadCustomJvmFlags(int* argc, const char** argv) {
 int launchJVM(NSString *username, id launchTarget, int width, int height, int minVersion) {
     NSLog(@"[JavaLauncher] Beginning JVM launch");
 
+    if (NSBundle.mainBundle.infoDictionary[@"LCDataUUID"]) {
+        NSDebugLog(@"[JavaLauncher] Running in LiveContainer, skipping dyld patch");
+    } else {
+        // Activate Library Validation bypass for external runtime and dylibs (JNA, etc)
+        init_bypassDyldLibValidation();
+    }
+
+
     init_loadDefaultEnv();
     init_loadCustomEnv();
 
@@ -138,13 +146,6 @@ int launchJVM(NSString *username, id launchTarget, int width, int height, int mi
             isExecuteJar ? [launchTarget lastPathComponent] : PLProfiles.current.selectedProfile[@"lastVersionId"], minVersion]);
         return 1;
     } else if ([javaHome hasPrefix:@(getenv("POJAV_HOME"))]) {
-        if (NSBundle.mainBundle.infoDictionary[@"LCDataUUID"]) {
-            NSDebugLog(@"[JavaLauncher] Running in LiveContainer, skipping dyld patch");
-        } else {
-            // Activate Library Validation bypass for external runtime
-            init_bypassDyldLibValidation();
-        }
-
         // Symlink libawt_xawt.dylib
         NSString *dest = [NSString stringWithFormat:@"%@/lib/libawt_xawt.dylib", javaHome];
         NSString *source = [NSString stringWithFormat:@"%@/Frameworks/libawt_xawt.dylib", NSBundle.mainBundle.bundlePath];
