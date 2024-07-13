@@ -193,8 +193,6 @@
 "preference.detail.fullscreen_airplay" = "화면의 모든 것을 미러링하지 않고 외부 디스플레이에 전체 화면 게임 창을 표시할 수 있도록 허용합니다.";
 "preference.title.silence_other_audio" = "게임이 열릴때 오디오 멈추기";
 "preference.detail.silence_other_audio" = "게임을 시작할 때 PojavLauncher가 음악과 같은 다른 앱의 오디오를 일시 중지하도록 허용합니다.";
-"preference.title.silence_with_switch" = "무음 스위치로 오디오 비활성화";
-"preference.detail.silence_with_switch" = "무음 모드가 켜져 있을 때 오디오를 비활성화하려면 활성화합니다. 헤드폰 및 외부 스피커는 영향을 받지 않습니다.";
 "preference.title.default_gamepad_ctrl" = "컨트롤러 구성";
 "preference.title.hardware_hide" = "하드웨어가 연결되면 컨트롤러 숨기기";
 "preference.detail.hardware_hide" = "마우스 또는 게임 컨트롤러가 연결되면 화면 컨트롤 UI를 비활성화합니다.";
