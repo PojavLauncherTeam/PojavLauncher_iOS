@@ -193,8 +193,6 @@
 "preference.detail.fullscreen_airplay" = "يسمح بتقديم نافذة لعبة ملء الشاشة على الشاشة الخارجية بدلاً من عكس كل شيء على الشاشة.";
 "preference.title.silence_other_audio" = "إيقاف الصوت عند فتح اللعبة";
 "preference.detail.silence_other_audio" = "تمكين السماح لـ PojavLauncher بإيقاف الصوت من تطبيقات أخرى، مثل الموسيقى، عند بدء اللعبة.";
-"preference.title.silence_with_switch" = "تعطيل الصوت باستخدام التبديل الصامت";
-"preference.detail.silence_with_switch" = "تمكين تعطيل الصوت عندما يكون الوضع الصامت قيد التشغيل. سماعات الرأس والسماعات الخارجية غير متأثرة.";
 "preference.title.default_gamepad_ctrl" = "تكوين لوحة التحكم";
 "preference.title.hardware_hide" = "إخفاء عناصر التحكم عند توصيل الجهاز";
 "preference.detail.hardware_hide" = "تمكين سلوك تعطيل تراكب التحكم على الشاشة تلقائياً عند توصيل الماوس أو وحدة تحكم اللعبة.";
