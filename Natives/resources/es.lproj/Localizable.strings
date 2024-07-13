@@ -190,8 +190,6 @@
 "preference.detail.fullscreen_airplay" = "Permite presentar la ventana de juego a pantalla completa en la pantalla externa en lugar de reflejar todo en la pantalla interna.";
 "preference.title.silence_other_audio" = "Pausar audio al abrir el juego";
 "preference.detail.silence_other_audio" = "Actívalo para permitir a PojavLauncher pausar el audio de otras aplicaciones, como la música, al iniciar el juego.";
-"preference.title.silence_with_switch" = "Desactivar audio con el botón de silencio";
-"preference.detail.silence_with_switch" = "Actívalo para desactivar el audio cuando el modo silencio está encendido. Los auriculares y los altavoces externos no se ven afectados.";
 "preference.title.default_gamepad_ctrl" = "Configuración del mando";
 "preference.title.hardware_hide" = "Ocultar controles cuando el hardware está conectado";
 "preference.detail.hardware_hide" = "Activa el comportamiento de desactivar automáticamente los controles en pantalla cuando un ratón o un mando están conectados.";
