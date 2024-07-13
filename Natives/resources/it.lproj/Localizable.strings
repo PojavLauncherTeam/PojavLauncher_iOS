@@ -170,8 +170,6 @@
 "preference.detail.fullscreen_airplay" = "Consente di presentare la finestra di gioco a schermo intero sul display esterno piuttosto che specchiare tutto sullo schermo.";
 "preference.title.silence_other_audio" = "Sospendi l'audio all'apertura del gioco";
 "preference.detail.silence_other_audio" = "Abilita per consentire a PojavLauncher di mettere in pausa l'audio delle altre applicazioni, come la musica, quando si avvia il gioco.";
-"preference.title.silence_with_switch" = "Disabilita l'audio con il silent switch";
-"preference.detail.silence_with_switch" = "Abilita per disabilitare l'audio quando la modalità silenziosa è attiva. Le cuffie e gli altoparlanti esterni non ne saranno affetti.";
 "preference.title.default_gamepad_ctrl" = "Configurazione controller";
 "preference.title.hardware_hide" = "Nascondi i controlli quando l'hardware è connesso";
 "preference.detail.hardware_hide" = "Abilità il fatto di disattivare automaticamente l'un-screen overlay quando si collega un mouse o un controller.";
