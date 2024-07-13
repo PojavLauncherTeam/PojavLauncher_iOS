@@ -196,8 +196,8 @@
 "preference.detail.fullscreen_airplay" = "Allows presenting fullscreen game window on the external display rather than mirroring everything on screen.";
 "preference.title.silence_other_audio" = "Pause audio when game opens";
 "preference.detail.silence_other_audio" = "Enable to allow PojavLauncher to pause audio from other apps, such as Music, when launching the game.";
-"preference.title.silence_with_switch" = "Disable audio with silent switch";
-"preference.detail.silence_with_switch" = "Enable to disable audio when Silent Mode is on. Headphones and external speakers are not affected.";
+"preference.title.silence_with_switch" = "Disable audio with silent switch and deny microphone input";
+"preference.detail.silence_with_switch" = "Enable to disable audio when Silent Mode is on, and deny microphone input. Headphones and external speakers are not affected.";
 "preference.title.default_gamepad_ctrl" = "Controller configuration";
 "preference.title.hardware_hide" = "Hide controls when hardware is connected";
 "preference.detail.hardware_hide" = "Enable the behaviour of automatically disabling the on-screen control overlay when a mouse or game controller is connected.";

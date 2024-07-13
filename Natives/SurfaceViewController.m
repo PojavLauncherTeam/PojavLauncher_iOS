@@ -295,7 +295,7 @@ static GameSurfaceView* pojavWindow;
     if(getPrefBool(@"video.silence_with_switch")) {
         category = AVAudioSessionCategorySoloAmbient;
     } else {
-        category = AVAudioSessionCategoryPlayback;
+        category = AVAudioSessionCategoryPlayAndRecord;
     }
     if(getPrefBool(@"video.silence_other_audio")) {
         options = 0;
