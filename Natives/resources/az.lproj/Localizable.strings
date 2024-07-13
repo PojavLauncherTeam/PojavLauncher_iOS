@@ -196,8 +196,6 @@
 "preference.detail.fullscreen_airplay" = "Ekrandakı hər şeyi əks etdirməkdənsə, xarici displeydə tam ekran oyun pəncərəsini təqdim etməyə imkan verir.";
 "preference.title.silence_other_audio" = "Oyun açıldıqda səsi dayandırın";
 "preference.detail.silence_other_audio" = "Oyunu işə salarkən PojavLauncher-a Musiqi kimi digər proqramların səsini dayandırmağa icazə verin.";
-"preference.title.silence_with_switch" = "Səssiz keçid ilə səsi söndürün";
-"preference.detail.silence_with_switch" = "Səssiz rejim aktiv olduqda səsi söndürmək üçün aktiv edin. Qulaqlıqlar və xarici dinamiklər təsirlənmir.";
 "preference.title.default_gamepad_ctrl" = "Kontroller konfiqurasiyası";
 "preference.title.hardware_hide" = "Avadanlıq qoşulduqda idarəetməni gizlədin";
 "preference.detail.hardware_hide" = "Siçan və ya oyun nəzarətçisi qoşulduqda ekrandakı idarəetmə örtüyünün avtomatik söndürülməsi davranışını aktivləşdirin.";
