@@ -187,8 +187,6 @@
 "preference.detail.fullscreen_airplay" = "Pozwala na prezentowanie okna gry w trybie pełnoekranowym na zewnętrznym ekranie, zamiast duplikować wszystko na ekranie.";
 "preference.title.silence_other_audio" = "Wstrzymaj dźwięk, gdy gra się otworzy";
 "preference.detail.silence_other_audio" = "Włącz, aby umożliwić PojavLauncher wstrzymanie dźwięku z innych aplikacji, takich jak YouTube, podczas uruchamiania gry.";
-"preference.title.silence_with_switch" = "Wyłącz dźwięk, za pomocą przełącznika wyciszenia";
-"preference.detail.silence_with_switch" = "Włącz, aby wyłączyć dźwięk, gdy włączony jest tryb cichy. Nie działa na słuchawki i inne zewnętrzne urządzenia.";
 "preference.title.default_gamepad_ctrl" = "Konfiguracja kontrolera";
 "preference.detail.hardware_hide" = "Włącz automatyczne wyłączanie sterowania dotykowego po podłączeniu myszy lub kontrolera gry.";
 "preference.title.recording_hide" = "Ukryj przyciski sterowania podczas nagrywania ekranu";
