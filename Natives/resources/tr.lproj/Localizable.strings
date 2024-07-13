@@ -40,12 +40,12 @@
 "custom_controls.button_edit.size" = "Boyut";
 "custom_controls.button_edit.mapping" = "Atama";
 "custom_controls.button_edit.orientation" = "Yön";
-"custom_controls.button_edit.toggleable" = "Değiştirilebilir";
+"custom_controls.button_edit.toggleable" = "Açılıp kapanabilir";
 "custom_controls.button_edit.mouse_pass" = "Fare geçişi";
 "custom_controls.button_edit.swipeable" = "Kaydırılabilir";
-"custom_controls.button_edit.bg_color" = "Arka plan rengi";
+"custom_controls.button_edit.bg_color" = "Arkaplan rengi";
 "custom_controls.button_edit.stroke_width" = "Vurgu genişliği (dp)";
-"custom_controls.button_edit.stroke_color" = "Vurgu rengi";
+"custom_controls.button_edit.stroke_color" = "Dış hat rengi";
 "custom_controls.button_edit.corner_radius" = "Köşe yarıçapı (%)";
 "custom_controls.button_edit.opacity" = "Opaklık (%)";
 "custom_controls.button_edit.visibility" = "Görünürlük";
@@ -193,8 +193,6 @@
 "preference.detail.fullscreen_airplay" = "Ekrandaki herşeyi yansıtmaktansa harici ekranda tam ekran oyun penceresini görüntülemeyi sağlar.";
 "preference.title.silence_other_audio" = "Oyun açıldığında sesi duraklat";
 "preference.detail.silence_other_audio" = "PojavLauncher'ın oyunu açarken, müzik gibi diğer uygulamaların sesini kapatmasına izin vermesi için açınız.";
-"preference.title.silence_with_switch" = "Sessiz ayarıyla sesi kapat";
-"preference.detail.silence_with_switch" = "Sessiz ayarı açıkken sesi kapatmak için etkinleştirin. Kulaklık ve harici hoparlör bu durumdan etkilenmemektedir.";
 "preference.title.default_gamepad_ctrl" = "Kontrolcü Ayarları";
 "preference.title.hardware_hide" = "Donanım bağlandığında kontrolleri gizle";
 "preference.detail.hardware_hide" = "Bir fare veya oyun kumandası bağlandığında ekran üstü kontrol kaplamasını otomatik olarak devre dışı bırakma davranışını etkinleştirin.";
