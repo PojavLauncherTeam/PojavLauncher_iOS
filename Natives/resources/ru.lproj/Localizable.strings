@@ -196,8 +196,6 @@
 "preference.detail.fullscreen_airplay" = "Транслировать на внешний монитор только окно игры во весь экран вместо отображения всего, что происходит на устройстве.";
 "preference.title.silence_other_audio" = "Только звук игры";
 "preference.detail.silence_other_audio" = "При запуске игры PojavLauncher будет приостанавливать воспроизведение звука другими приложениями (например, музыку).";
-"preference.title.silence_with_switch" = "Отключать звук в бесшумном режиме";
-"preference.detail.silence_with_switch" = "Звук игры будет отключён в бесшумном режиме. Это не затрагивает наушники и внешние динамики.";
 "preference.title.default_gamepad_ctrl" = "Настройки контроллера";
 "preference.title.hardware_hide" = "Скрывать раскладку при подключении внешних устройств ввода";
 "preference.detail.hardware_hide" = "Автоматически скрывать раскладку экранного управления при подключении мыши или контроллера.";
