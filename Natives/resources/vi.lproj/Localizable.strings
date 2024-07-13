@@ -182,6 +182,8 @@
 "preference.detail.fullscreen_airplay" = "Cho phép chiếu toàn màn hình cửa sổ game thay vì chiếu mọi thứ trên màn hình ngoài.";
 "preference.title.silence_other_audio" = "Tạm dừng âm thanh khi trò chơi mở ra";
 "preference.detail.silence_other_audio" = "Bật để cho phép PojavLauncher tạm dừng âm thanh từ các ứng dụng khác, chẳng hạn như Âm nhạc, khi khởi chạy trò chơi.";
+"preference.title.silence_with_switch" = "Tắt âm thanh bằng công tác im lặng và từ chối ghi âm";
+"preference.detail.silence_with_switch" = "Bật để tắt âm thanh khi Chế độ im lặng được bật và từ chối ghi âm. Tai nghe và loa ngoài không bị ảnh hưởng.";
 "preference.title.default_gamepad_ctrl" = "Cấu hình bộ điều khiển";
 "preference.title.hardware_hide" = "Ẩn điều khiển khi phần cứng được kết nối";
 "preference.detail.hardware_hide" = "Bật hành vi tự động tắt lớp phủ điều khiển trên màn hình khi chuột hoặc bộ điều khiển trò chơi được kết nối.";
