@@ -190,8 +190,6 @@
 "preference.detail.fullscreen_airplay" = "Memperbolehkan anda mempresentasikan window permainan dalam fullscreen di layar eksternal daripada mengkaca semuanya di layar.";
 "preference.title.silence_other_audio" = "Jeda audio ketika permainan terbuka";
 "preference.detail.silence_other_audio" = "Aktifkan untuk memperbolehkan PojavLauncher untuk menjeda audio dari aplikasi lain, seperti Musik, ketika membuka permainan.";
-"preference.title.silence_with_switch" = "Matikan audio dengan silent switch";
-"preference.detail.silence_with_switch" = "Aktifkan untuk mematikan audio saat Mode Senyap aktif. Headphone dan spiker eksternal tidak terpengaruh.";
 "preference.title.default_gamepad_ctrl" = "Konfigurasi Kontroler";
 "preference.title.hardware_hide" = "Sembunyikan kontrol saat perangkat keras tersambung";
 "preference.detail.hardware_hide" = "Mengaktifkan perilaku menonaktifkan overlay kontrol di layar secara otomatis saat mouse atau
