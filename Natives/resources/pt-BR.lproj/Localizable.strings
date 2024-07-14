@@ -69,7 +69,7 @@
 "init.migrateDir" = "O diretório de dados do PojavLauncher agora é %@. Todos os dados existentes foram movidos para a nova localização.";
 
 "java.error.missing_main_class" = "%@ está faltando o atributo principal da classe. Se este for um mod, coloque-o na pasta \"mods\" da instância selecionada.";
-"java.error.missing_runtime" = "%@ requer Java %d ou posterior para executar. Por favor, instale primeiro e especifique ele em \"Gerenciar Runtimes\".";
+"java.error.missing_runtime" = "%@ requer Java %d ou posterior para executar. Por favor, instale primeiro e especifique-o em \"Gerenciar Runtimes\".";
 
 "launcher.mcl.downloading_file" = "Baixando %@";
 "launcher.mcl.error_download" = "Falha ao baixar %@: %@";
@@ -255,7 +255,7 @@
 "preference.detail.debug_skip_wait_jit" = "Isso não te permite iniciar sem JIT, ao invés disso pule a verificação de depuração, pois a verificação falhou em certos jailbreaks.";
 "preference.title.debug_ipad_ui" = "Desbloquear iPadOS UI";
 "preference.detail.debug_ipad_ui" = "Desbloqueie a interface de usuário exclusiva do iPad (alerta, teclado, etc.) se habilitada ou iPhone UI se estiver desativado.";
-"preference.title.debug_auto_correction" = "Correção Automática";
+"preference.title.debug_auto_correction" = "Correção automática";
 "preference.detail.debug_auto_correction" = "Habilitar correção automática ao digitar texto no jogo.";
 "preference.title.debug_hide_home_indicator" = "Ocultar indicador principal";
 "preference.detail.debug_hide_home_indicator" = "Isto desativará o indicador de casa de bloqueio. Você precisará usar o Acesso Orientado para ocultar e bloquear o indicador de casa ao mesmo tempo.";
