@@ -127,41 +127,6 @@ void init_logDeviceAndVer(char *argument) {
     //printEntitlementAvailability(@"dynamic-codesigning");
 }
 
-void init_migrateDirIfNecessary() {
-    NSString *oldDir = @"/usr/share/pojavlauncher";
-    if ([fm fileExistsAtPath:oldDir]) {
-        NSString *newDir = @"";
-        if ([@(getenv("HOME")) isEqualToString:@"/var/mobile"]) {
-            newDir = [NSString stringWithFormat:@"%s/Documents/PojavLauncher", getenv("HOME")];
-        } else {
-            newDir = [NSString stringWithFormat:@"%s/Documents", getenv("HOME")];
-        }
-        [fm moveItemAtPath:oldDir toPath:newDir error:nil];
-        [fm removeItemAtPath:oldDir error:nil];
-    }
-}
-
-void init_migrateToPlist(char* prefKey, char* filename) {
-    NSError *error;
-    NSString *path_str = [NSString stringWithFormat:@"%s/%s", getenv("POJAV_HOME"), filename];
-    NSDebugLog(@"[Pre-Init] Beginning migration for file \"%s\"", filename);
-    NSString *str = [NSString stringWithContentsOfFile:path_str encoding:NSUTF8StringEncoding error:&error];
-    if (error == nil && ![str hasPrefix:@"#README"]) {
-        NSString *finalized = @"";
-        for (NSString *line in [str componentsSeparatedByCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet]) {
-            if (![line hasPrefix:@"#"]) {
-                finalized = [finalized stringByAppendingString:[NSString stringWithFormat:@"%@ ", line]];
-            }
-        }
-        
-        setPrefObject(@(prefKey), finalized);
-        [@"#README - this file has been merged into launcher_preferences.plist" writeToFile:path_str atomically:YES encoding:NSUTF8StringEncoding error:nil];
-        NSLog(@"[Pre-Init] File \"%s\" has been migrated", filename);
-    } else {
-        NSDebugLog(@"[Pre-Init] File \"%s\" was already migrated", filename);
-    }
-}
-
 void init_redirectStdio() {
     NSLog(@"[Pre-init] Starting logging STDIO to latestlog.txt\n");
 
@@ -246,16 +211,20 @@ void init_setupMultiDir() {
     }
 
     const char *home = getenv("POJAV_HOME");
-    NSString *jvmPath = [NSString stringWithFormat:@"%s/java_runtimes", home];
     NSString *lasmPath = [NSString stringWithFormat:@"%s/Library/Application Support/minecraft", home];
     NSString *multidirPath = [NSString stringWithFormat:@"%s/instances/%@", home, multidir];
-    NSString *demoPath = [NSString stringWithFormat:@"%s/.demo", home];
 
-    [fm createDirectoryAtPath:jvmPath withIntermediateDirectories:YES attributes:nil error:nil];
-    [fm createDirectoryAtPath:demoPath withIntermediateDirectories:YES attributes:nil error:nil];
-    [fm createDirectoryAtPath:multidirPath withIntermediateDirectories:YES attributes:nil error:nil];
+
+    NSArray *dirsToCreate = @[
+        [NSString stringWithFormat:@"%s/.demo", home],
+        [NSString stringWithFormat:@"%s/java_runtimes", home],
+        lasmPath.stringByDeletingLastPathComponent,
+        multidirPath
+    ];
+    for (NSString *dir in dirsToCreate) {
+        [fm createDirectoryAtPath:dir withIntermediateDirectories:YES attributes:nil error:nil];
+    }
     [fm removeItemAtPath:lasmPath error:nil];
-    [fm createDirectoryAtPath:lasmPath.stringByDeletingLastPathComponent withIntermediateDirectories:YES attributes:nil error:nil];
     [fm createSymbolicLinkAtPath:lasmPath withDestinationPath:multidirPath error:nil];
     [fm changeCurrentDirectoryPath:lasmPath];
     setenv("POJAV_GAME_DIR", lasmPath.UTF8String, 1);
@@ -318,7 +287,6 @@ int main(int argc, char *argv[]) {
 
     setenv("BUNDLE_PATH", dirname(argv[0]), 1);
     isJailbroken = init_checkForJailbreak();
-    init_migrateDirIfNecessary();
     init_setupHomeDirectory();
     init_redirectStdio();
     init_logDeviceAndVer(argv[0]);
@@ -336,9 +304,6 @@ int main(int argc, char *argv[]) {
     [PLProfiles updateCurrent];
     init_setupAccounts();
     init_setupCustomControls();
-
-    init_migrateToPlist("java.java_args", "overrideargs.txt");
-    init_migrateToPlist("java.env_variables", "custom_env.txt");
 
     // If sandbox is disabled, W^X JIT can be enabled by PojavLauncher itself
     if (!isJITEnabled(true) && getEntitlementValue(@"com.apple.private.security.no-sandbox")) {

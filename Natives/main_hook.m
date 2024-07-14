@@ -55,12 +55,6 @@ void hooked_exit(int code) {
     }
     handle_fatal_exit(code);
 
-/*
-    if (runtimeJavaVMPtr != NULL) {
-        (*runtimeJavaVMPtr)->DestroyJavaVM(runtimeJavaVMPtr);
-    }
-*/
-
     orig_exit(code);
 }
 

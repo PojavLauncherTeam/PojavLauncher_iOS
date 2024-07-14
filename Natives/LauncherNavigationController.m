@@ -372,10 +372,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     BOOL hasTrollStoreJIT = getEntitlementValue(@"com.apple.private.local.sandboxed-jit");
 
     if (isJITEnabled(false)) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [ALTServerManager.sharedManager stopDiscovering];
-            handler();
-        });
+        [ALTServerManager.sharedManager stopDiscovering];
+        handler();
         return;
     } else if (hasTrollStoreJIT) {
         NSURL *jitURL = [NSURL URLWithString:[NSString stringWithFormat:@"apple-magnifier://enable-jit?bundle-id=%@", NSBundle.mainBundle.bundleIdentifier]];

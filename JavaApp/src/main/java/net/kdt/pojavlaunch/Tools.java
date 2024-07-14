@@ -225,24 +225,7 @@ public final class Tools {
 
         return libStr.toString();
     }
-
-    public static void showError(Throwable e) {
-        showError(e, false);
-    }
-
-    public static void showError(final Throwable e, final boolean exitIfOk) {
-        showError("Error", e, exitIfOk, false);
-    }
-
-    public static void showError(final String title, final Throwable e, final boolean exitIfOk) {
-        showError(title, e, exitIfOk, false);
-    }
-
-    private static void showError(final String title, final Throwable e, final boolean exitIfOk, final boolean showMore) {
-        e.printStackTrace();
-        System.exit(1);
-    }
-
+    
     public static void moveInside(String from, String to) {
         File fromFile = new File(from);
         for (File fromInside : fromFile.listFiles()) {

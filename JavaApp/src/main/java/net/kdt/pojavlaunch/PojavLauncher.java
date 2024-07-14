@@ -37,9 +37,8 @@ public class PojavLauncher {
         Thread.currentThread().setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
 
             public void uncaughtException(Thread t, Throwable th) {
-                Tools.showError(th);
-                // Block this thread from exiting
-                while (true) {}
+                th.printStackTrace();
+                System.exit(1);
             }
         });
 
