@@ -92,7 +92,6 @@
 
 - (void)preProcessProperties {
     [super preProcessProperties];
-    self.properties[@"isHideable"] = @(YES);
 }
 
 /*

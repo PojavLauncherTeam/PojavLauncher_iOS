@@ -78,7 +78,7 @@ void convertV3_4Layout(NSMutableDictionary* dict) {
         }
     }
 
-    dict[@"version"] = @(6);
+    dict[@"version"] = @(7);
 }
 
 void convertV2Layout(NSMutableDictionary* dict) {
@@ -184,6 +184,7 @@ BOOL convertLayoutIfNecessary(NSMutableDictionary* dict) {
             convertV3_4Layout(dict);
             break;
         case 6:
+        case 7:
             break;
         default:
             showDialog(localize(@"custom_controls.control_menu.save.error.json", nil), [NSString stringWithFormat:localize(@"custom_controls.error.incompatible", nil), version]);
