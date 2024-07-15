@@ -196,6 +196,8 @@
 "preference.detail.fullscreen_airplay" = "Umožňuje zobrazovat okno hry na celé obrazovce na externím displeji bez zrcadlení všeho na obrazovce.";
 "preference.title.silence_other_audio" = "Pozastavit zvuk při otevření hry";
 "preference.detail.silence_other_audio" = "Zapněte pro umožnění PojavLauncheru pozastavit zvuk z jiných aplikací, například Hudbu při spouštění hry.";
+"preference.title.silence_with_switch" = "Vypnout zvuk tichým přepínačem a zakázat vstup mikrofonu";
+"preference.detail.silence_with_switch" = "Povolte pro vypnutí zvuku při Tichém režimu a zakažte vstup mikrofonu. Sluchátka a externí reproduktory nejsou ovlivněny.";
 "preference.title.default_gamepad_ctrl" = "Nastavení ovladače";
 "preference.title.hardware_hide" = "Skrýt ovládací prvky při připojení zařízení";
 "preference.detail.hardware_hide" = "Povolte pro automatické vypínání překrytí na obrazovce při připojení myši či herního ovladače.";
