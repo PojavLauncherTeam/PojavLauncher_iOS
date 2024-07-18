@@ -48,6 +48,8 @@
 "preference.title.done.reset_settings" = "Semua tetapan lalai telah dipulihkan.";
 
 "preference.title.renderer" = "Renderer";
+"preference.title.silence_with_switch" = "Nyahdayakan audio dengan suis senyap dan tolak input mikrofon";
+"preference.detail.silence_with_switch" = "Dayakan untuk menyahdayakan audio apabila Mod Senyap dihidupkan dan tolak input mikrofon. Fon kepala dan pembesar suara luaran tidak terjejas.";
 
 "preference.title.java_args" = "JVM Launch arguments";
 "preference.title.auto_ram" = "Auto RAM";
