@@ -302,8 +302,10 @@ static GameSurfaceView* pojavWindow;
     } else {
         options = AVAudioSessionCategoryOptionMixWithOthers;
     }
-    [AVAudioSession.sharedInstance setCategory:category withOptions:options error:&sessionError];
-    [AVAudioSession.sharedInstance setActive:YES error:&sessionError];
+    AVAudioSession *session = AVAudioSession.sharedInstance;
+    [session setCategory:category withOptions:options error:&sessionError];
+    [session setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error: nil];
+    [session setActive:YES error:&sessionError];
 }
 
 - (void)updateJetsamControl {
