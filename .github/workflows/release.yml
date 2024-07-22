@@ -32,7 +32,7 @@ jobs:
           ls -lah ./
           
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@main
 
       - name: Checkout repository submodules
         run: git submodule update --init --recursive
@@ -43,7 +43,7 @@ jobs:
         shell: bash
 
       - name: Cache gl4es
-        uses: actions/cache@v3
+        uses: actions/cache@main
         if: false # use gl4es 1.1.5
         id: gl4es-cache
         with:
@@ -52,7 +52,7 @@ jobs:
 
       - name: Get gl4es
         if: false && steps.gl4es-cache.outputs.cache-hit != 'true'
-        uses: actions/checkout@v3
+        uses: actions/checkout@main
         with:
           repository: 'PojavLauncherTeam/gl4es-114-extra'
           path: 'gl4es'
@@ -89,7 +89,7 @@ jobs:
           workflow_conclusion: success
           allow_forks: false
           repo: PojavLauncherTeam/android-openjdk-build-multiarch
-          branch: jre8-ios-jitjailed
+          branch: buildjre8
           name: jre8-ios-aarch64
 
       - name: Get JRE17
@@ -135,19 +135,19 @@ jobs:
           fi
 
       - name: Upload regular ipa
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@main
         with:
           name: net.kdt.pojavlauncher-${{ matrix.platform_name }}.ipa
           path: artifacts/net.kdt.pojavlauncher-*-${{ matrix.platform_name }}.ipa
 
       - name: Upload regular tipa
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@main
         with:
           name: net.kdt.pojavlauncher-${{ matrix.platform_name }}.tipa
           path: artifacts/net.kdt.pojavlauncher-*-${{ matrix.platform_name }}-trollstore.tipa
 
       - name: Upload PojavLauncher.dSYM
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@main
         with:
           name: PojavLauncher.dSYM
           path: artifacts/PojavLauncher.dSYM
