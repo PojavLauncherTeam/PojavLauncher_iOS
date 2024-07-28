@@ -233,7 +233,7 @@
 "preference.manage_runtime.header.default" = "首选的 Java 版本";
 "preference.manage_runtime.default.1165" = "1.16.5 及更低版本";
 "preference.manage_runtime.default.117" = "1.17 及更高版本";
-"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 及更低版本可能以较高版本的 Java 运行，但无法保证与模组的兼容性。外部运行环境可置于 “java_runtimes” 文件夹中。仅当安装程序不希望使用较新的 Java 版本时，更改 “执行 .jar” 的 Java 版本才会生效。";
+"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 及更低版本可能能用较高版本的 Java 运行，但无法保证与模组的兼容性。外部运行环境可置于 “java_runtimes” 文件夹中。仅当安装程序不希望使用较新的 Java 版本时，更改 “执行 jar 文件” 用的 Java 版本才会生效。";
 "preference.manage_runtime.footer.java8" = "此为 Minecraft 1.16.5 及更低版本的默认版本。";
 "preference.manage_runtime.footer.java17" = "此为 Minecraft 1.17 及更高版本的默认版本。";
 "preference.manage_runtime.header.invalid" = "运行时无效";
