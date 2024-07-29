@@ -189,10 +189,14 @@
 "preference.title.max_framerate" = "Maksimum kare hızı";
 "preference.detail.max_framerate" = "ProMotion ekranlarda oyun kare hızını 60FPS ile sınırlandırmanızı sağlar.";
 
+"preference.title.performance_hud" = "Performans Arayüzünü Göster";
+"preference.detail.performance_hud" = "Kullanılabilinir olduğunda, Performans Görüntüleme Arayüzünü göster.";
+
 "preference.title.fullscreen_airplay" = "Tam Ekran AirPlay";
 "preference.detail.fullscreen_airplay" = "Ekrandaki herşeyi yansıtmaktansa harici ekranda tam ekran oyun penceresini görüntülemeyi sağlar.";
 "preference.title.silence_other_audio" = "Oyun açıldığında sesi duraklat";
 "preference.detail.silence_other_audio" = "PojavLauncher'ın oyunu açarken, müzik gibi diğer uygulamaların sesini kapatmasına izin vermesi için açınız.";
+"preference.title.silence_with_switch" = "Sağırlaştırma düğmesi ile sesi etkisizleştir ve mikrofon girişini engelle";
 "preference.title.default_gamepad_ctrl" = "Kontrolcü Ayarları";
 "preference.title.hardware_hide" = "Donanım bağlandığında kontrolleri gizle";
 "preference.detail.hardware_hide" = "Bir fare veya oyun kumandası bağlandığında ekran üstü kontrol kaplamasını otomatik olarak devre dışı bırakma davranışını etkinleştirin.";
