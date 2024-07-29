@@ -197,9 +197,12 @@
 "preference.title.silence_other_audio" = "Oyun açıldığında sesi duraklat";
 "preference.detail.silence_other_audio" = "PojavLauncher'ın oyunu açarken, müzik gibi diğer uygulamaların sesini kapatmasına izin vermesi için açınız.";
 "preference.title.silence_with_switch" = "Sağırlaştırma düğmesi ile sesi etkisizleştir ve mikrofon girişini engelle";
+"preference.detail.silence_with_switch" = "Sağırlaştırma modu aktif iken sesi deaktif etmek ve mikrofon girişini engellemek için aktif edin. Kulaklık ve harici hoparlör bu durumdan etkilenmemektedir.";
 "preference.title.default_gamepad_ctrl" = "Kontrolcü Ayarları";
 "preference.title.hardware_hide" = "Donanım bağlandığında kontrolleri gizle";
 "preference.detail.hardware_hide" = "Bir fare veya oyun kumandası bağlandığında ekran üstü kontrol kaplamasını otomatik olarak devre dışı bırakma davranışını etkinleştirin.";
+"preference.title.recording_hide" = "Kontrolleri ekran kaydından gizleyin";
+"preference.detail.recording_hide" = "Kontrolleri ekran görüntüsü ve ekran kaydından arayüzde görünmemesi için gizleyin.";
 "preference.title.gesture_mouse" = "Fare hareketleri";
 "preference.detail.gesture_mouse" = "Blok yerleştirmek için dokunma, kırmak için basılı tutma, 2 parmakla kaydırma gibi hareketleri etkinleştirir";
 "preference.title.gesture_hotbar" = "Hotbar hareketleri";
