@@ -1,0 +1,14 @@
+/packages
+/artifacts
+/JavaApp/.gradle
+/JavaApp/build
+/JavaApp/local_out
+/Natives/PojavLauncher
+/Natives/build
+.DS_Store
+/PojavLauncher.xcodeproj/xcshareddata/*
+/PojavLauncher.xcodeproj/xcuserdata/*
+/PojavLauncher.xcodeproj/project.xcworkspace/*
+/depends
+/Natives/config.h
+.swiftpm

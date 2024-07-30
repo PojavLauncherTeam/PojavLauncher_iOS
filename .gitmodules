@@ -1,0 +1,10 @@
+[submodule "Natives/external/DBNumberedSlider"]
+	path = Natives/external/DBNumberedSlider
+	url = https://github.com/khanhduytran0/DBNumberedSlider
+[submodule "Natives/external/fishhook"]
+	path = Natives/external/fishhook
+	url = https://github.com/khanhduytran0/fishhook
+	branch = jev/main
+[submodule "Natives/external/AFNetworking"]
+	path = Natives/external/AFNetworking
+	url = https://github.com/AFNetworking/AFNetworking

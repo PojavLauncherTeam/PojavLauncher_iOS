@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "default_account_pfp.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
