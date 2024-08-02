@@ -14,11 +14,13 @@
 
 // The play button
 "Play" = "إبدأ اللعب";
+"Details" = "التفاصيل";
 
 // Version categories
 "Installed" = "مثبت";
 "Snapshot" = "اللمحات (سنابشوت)";
 "Releases" = "الإصدارات";
+"Unstable" = "غير مستقر";
 "Old-beta" = "نسخ بيتا قديمة";
 "Old-alpha" = "نسخ ألفا قديمة";
 
@@ -28,7 +30,12 @@
 "Move" = "نقل";
 "Remove" = "إزالة";
 "Resize" = "تغییر الحجم";
+// Visibility
+"Always" = "دائماً";
+"In game" = "في اللعبة";
+"In menu" = "في القائمة";
 
+"custom_controls.button_edit.forward_lock" = "قفل إلى الأمام";
 "custom_controls.button_edit.name" = "الاسم";
 "custom_controls.button_edit.size" = "الحجم";
 "custom_controls.button_edit.mapping" = "تخطيط الأزرار";
@@ -41,13 +48,13 @@
 "custom_controls.button_edit.stroke_color" = "لون الخط";
 "custom_controls.button_edit.corner_radius" = "تقوس الزاوية (%)";
 "custom_controls.button_edit.opacity" = "التعتيم (%)";
+"custom_controls.button_edit.visibility" = "الظهور";
 
 "custom_controls.button_menu.add_subbutton" = "إضافة زر فرعي";
 "custom_controls.control_menu.discard_changes" = "تجاهل التغييرات";
 "custom_controls.control_menu.exit" = "خروج";
 "custom_controls.control_menu.exit.warn" = "أنت على وشك الخروج من دون حفظ التغييرات.";
 "custom_controls.control_menu.save" = "حفظ";
-"custom_controls.control_menu.save.error.default" = "لا يمكن أن يكون اسم التحكم \"افتراضي\" لأنه سيتم الكتابة فوقه.";
 "custom_controls.control_menu.save.error.json" = "خطأ JSON";
 "custom_controls.control_menu.save.error.write" = "خطأ في حفظ الملف.";
 "custom_controls.control_menu.load" = "تحميل";
@@ -55,19 +62,24 @@
 "custom_controls.control_menu.safe_area" = "منطقة آمنة";
 "custom_controls.control_menu.add_button" = "إضافة زر";
 "custom_controls.control_menu.add_drawer" = "درج التطبيقات";
+"custom_controls.control_menu.add_joystick" = "اضف عصا تحكم";
 "custom_controls.error.incompatible" = "هذا الإصدار للتحكم (الرمز %d) لم يتم تنفيذه في إنشاء هذا المشغل.";
 "custom_controls.hint" = "اضغط مطولاً في أي مكان على الشاشة لمزيد من الخيارات";
 
 "init.migrateDir" = "دليل بيانات PojavLauncher هو الآن %@. تم نقل جميع بياناتك الموجودة إلى الموقع الجديد.";
 
+"java.error.missing_main_class" = "%@ يفتقر الى main class attribute. اذا كان هذا ملف مود، ضعه في مجلد \"mods\" داخل الinstance المختارة.";
+"java.error.missing_runtime" = "%@ يتطلب اصدار جافا %d او اعلى، رجاءً ثبته ثم حدده في قائمة Manage Runtimes";
+
 "launcher.mcl.downloading_file" = "التحميل جارٍ %@";
 "launcher.mcl.error_download" = "فشل التنزيل %@: %@";
 
 "launcher.menu.custom_controls" = "تخصيص التحكم";
-"launcher.menu.install_jar" = "تثبيت ملف .jar";
+"launcher.menu.execute_jar" = "Usb";
 
 "launcher.wait_jit.title" = "انتظر JIT";
 "launcher.wait_jit.message" = "يعتمد PojavLauncher على تجميع Just-in-time لـ Java للعمل بأقصى قدر من الأداء.";
+"launcher.wait_jit_trollstore.message" = "إذا كنت لا تزال ترى هذه الرسالة, يرجى تفعيل URL Scheme (مخطط URL) في TrollStore.";
 
 "login.error.username.outOfRange" = "يجب أن يكون إسم المستخدم بين 3 و 16 حرف";
 
@@ -78,6 +90,7 @@
 "login.jit.fail" = "تعذّر تمكين JIT.";
 "login.jit.fail.title" = "تعذّر تمكين JIT على جهازك.";
 "login.jit.fail.description" = "لا يمكن استخدام أي تكاملات لتفعيل JIT تلقائيًا على جهازك، ويجب الآن تمكينها يدوياً. لقد تم تسجيل الأخطاء إلى latestlog.txt.";
+"login.jit.fail.description_unsupported" = "تم اكتشاف طريقة تثبيت غير مدعومة. الرجاء إعادة التثبيت باستخدام طريقة مدعومة.";
 
 // Login buttons
 "login.menu.sendlogs" = "ارسال سجلات الخطأ";
@@ -113,14 +126,15 @@
 "login.msa.progress.checkMCProfile" = "(5/5) التحقق من الملف الشخصي لـ Minecraft";
 
 "News" = "الأخبار";
+"Profiles" = "الملفات الشخصية";
 "Settings" = "الاعدادات";
 
 "preference.section.general" = "إعدادات عامة";
 "preference.section.video" = "إعدادات الفيديو والصوت";
-"preference.section.footer.video" = "يسمح المعرض التلقائي لـ PojavLauncher باختيار أفضل خيار استناداً إلى إصدار Minecraft. تخفيض الدقة يقلل من عبء العمل في GPU من أجل أداء أفضل.";
+"preference.section.footer.video" = "يسمح عارض الرسوميات التلقائي لـ PojavLauncher باختيار أفضل خيار استناداً إلى إصدار Minecraft. تخفيض الدقة يقلل من عبء العمل في GPU من أجل أداء أفضل.";
 "preference.section.control" = "تخصيص التحكم";
 "preference.section.debug" = "إعدادات تصحيح أخطاء واجهة المستخدم";
-"preference.section.footer.debug" = "بصرف النظر عن تصحيح الأخطاء، قد تكون هذه الإعدادات مفيدة للتحكم المخصص. قد تحتاج إلى إعادة تشغيل المشغل حتى تصبح التغييرات نافذة المفعول.";
+"preference.section.footer.debug" = "قد تحتاج إلى إعادة تشغيل البرنامج حتى تتطبق التغيرات.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "تعديلات جافا";
 //"preference.section.footer.java" = "";
@@ -137,10 +151,6 @@
 "preference.detail.cosmetica" = "تمكين الأوشحة من Cosmetica, (المعروفة مسبقًا ب Arc). لمزيد من المعلومات، يرجى زيارة https://cosmetica.cc, يتطلب Optifine لكي يعمل";
 "preference.title.debug_logging" = "تصحيح التسجيل";
 "preference.detail.debug_logging" = "تسجيل الإعدادات الداخلية والإجراءات إلى latestlog.txt. هذا يساعد المطورين على العثور على المشكلات أسهل، ولكن Minecraft قد تعمل بشكل أبطأ حيث سيتم كتابة السجلات بشكل أكثر تواترا.";
-"preference.title.jitstreamer_server" = "عنوان خادم JitStreamer: %@";
-"preference.detail.jitstreamer_server" = "يسمح لك بالتغيير إلى عنوان IP لخادم JitStreamer مخصص، على سبيل المثال للحالات التي تستضيف نفسها. يمكن ترك هذا الخيار لوحده إذا كنت تستخدم خوادم JitStreamer الافتراضية.";
-"preference.title.enable_altkit" = "تمكين تكامل AltKit";
-"preference.detail.enable_altkit" = "عند التمكين، سيحاول PojavLauncher الاتصال بAltServers المحلية لتمكين JIT.";
 "preference.title.appicon" = "تعيين أيقونة التطبيق";
 "preference.detail.appicon" = "يسمح لك بالاختيار بين أيقونات الشاشة الرئيسية المختلفة لـ PojavLauncher.";
 "preference.title.appicon-default" = "مضيء PojavLauncher المألوف";
@@ -160,7 +170,7 @@
 "preference.title.confirm.erase_demo_data" = "سيؤدي هذا إلى محو جميع إصدارات اللعبة التجريبية والبيانات المستخدمة في الحسابات التجريبية.";
 "preference.title.done.erase_demo_data" = "تم مسح جميع بيانات اللعبة التجريبية.";
 
-"preference.title.renderer" = "العارض";
+"preference.title.renderer" = "عارض الرسوميات";
 
 "preference.title.renderer.release.auto" = "تلقائي";
 "preference.title.renderer.release.gl4es" = "holy gl4es";
@@ -183,8 +193,6 @@
 "preference.detail.fullscreen_airplay" = "يسمح بتقديم نافذة لعبة ملء الشاشة على الشاشة الخارجية بدلاً من عكس كل شيء على الشاشة.";
 "preference.title.silence_other_audio" = "إيقاف الصوت عند فتح اللعبة";
 "preference.detail.silence_other_audio" = "تمكين السماح لـ PojavLauncher بإيقاف الصوت من تطبيقات أخرى، مثل الموسيقى، عند بدء اللعبة.";
-"preference.title.silence_with_switch" = "تعطيل الصوت باستخدام التبديل الصامت";
-"preference.detail.silence_with_switch" = "تمكين تعطيل الصوت عندما يكون الوضع الصامت قيد التشغيل. سماعات الرأس والسماعات الخارجية غير متأثرة.";
 "preference.title.default_gamepad_ctrl" = "تكوين لوحة التحكم";
 "preference.title.hardware_hide" = "إخفاء عناصر التحكم عند توصيل الجهاز";
 "preference.detail.hardware_hide" = "تمكين سلوك تعطيل تراكب التحكم على الشاشة تلقائياً عند توصيل الماوس أو وحدة تحكم اللعبة.";
@@ -192,6 +200,7 @@
 "preference.detail.gesture_mouse" = "تمكين الإيماءات، مثل النقر لوضع الكتلة، الاستمرار لكسر الكتلة، التمرير مع إصبعين";
 "preference.title.gesture_hotbar" = "إيماءات الشريط";
 "preference.detail.gesture_hotbar" = "تمكين الإيماءات، مثل لمس فتحة شريط الاتصال، وتبادل العناصر بين اليد، ورمي العناصر";
+"preference.title.disable_haptics" = "الغاء تفعيل الهزازات اللمسية";
 "preference.title.press_duration" = "مدة الضغط المطول (مللي ثانية)";
 "preference.detail.press_duration" = "تفعيل مدة الضغط لتدمير البلوك وإسقاط العناصر.";
 "preference.title.button_scale" = "حجم الزر على الشاشة (%)";
@@ -205,18 +214,29 @@
 "preference.title.slideable_hotbar" = "شريط اتصال قابل للتمرير";
 "preference.detail.slideable_hotbar" = "جعل شريط الاتصال قابل للانزلاق مثل عجلة الماوس";
 
-"preference.title.gyroscope_enable" = "تمكين التحكم بالغيروسكوب";
+"preference.title.gyroscope_enable" = "تمكين التحكم بالجيروسكوب";
 "preference.detail.gyroscope_enable" = "تمكين هذا سيسمح لك بتشغيل اللعبة عن طريق تحويل هاتفك";
 "preference.title.gyroscope_invert_x_axis" = "عكس الغيروسكوب لليسار واليمين";
 "preference.detail.gyroscope_invert_x_axis" = "عكس المحور X-axi للجروسكوب";
 "preference.title.gyroscope_sensitivity" = "حساسية التحكم في الغيروسكوب";
 "preference.detail.gyroscope_sensitivity" = "ضبط حساسية أجهزة التحكم الجيبروسكوب";
 
-"preference.title.java_home" = "استخدم جافا 17 لماينكرافت < 1.17";
-"preference.detail.java_home" = "يتم استخدام Java 8 بشكل افتراضي لهذه الإصدارات. تمكين هذا الخيار لإجبار استخدام Java 17، ولكن التوافق مع الموديل غير مضمون.";
+"preference.title.manage_runtime" = "إدارة أنظمة التنفيذ";
+"preference.title.confirm.delete_runtime" = "سيتم حذف %@";
+"preference.manage_runtime.header.default" = "إصدار جافا المفضل";
+"preference.manage_runtime.default.1165" = "1.16.5 و ما أقدم";
+"preference.manage_runtime.default.117" = "1.17 و ما أحدث";
+"preference.manage_runtime.footer.default" = "إصدارات Minecraft 1.16.5 وأقدم قد تعمل مع إصدار جافا احدث, ولكن المودات قد لا تعمل, انظمة التنفيذ الخارجية يمكن وضعها بمجلد \"java_runtimes\". تغيير إصدار جافا لـ\"Execute.jar\" لن يحدث الا عندما لا يتوقع المثبت إصدار جافا أحدث.";
+"preference.manage_runtime.footer.java8" = "هذا هو الإصدار الافتراضي لـ Minecraft 1.16.5 و الأقدم.";
+"preference.manage_runtime.footer.java17" = "هذا هو الإصدار الافتراضي لـ Minecraft 1.17. و ما اقدم.";
+"preference.manage_runtime.header.invalid" = "نظام تنفيذ غير صالح";
+
 "preference.title.java_args" = "حجج إطلاق JVM";
 "preference.detail.java_args" = "مرر الحجج إلى جافا عند بدء Minecraft. كن حذرا، هذا يمكن أن يجعل عطل اللعبة إذا تم تعديله بشكل غير صحيح.";
 "preference.placeholder.java_args" = "حدد الدفعات...";
+"preference.title.env_variables" = "متغيرات البيئة";
+"preference.detail.env_variables" = "عين متغيرات بيئة متخصصة عند بدء Minecraft. كن حذراً، هذا يمكن أن يجعل اللعبة تتعطل إذا تم تعديلها بشكل غير صحيح.";
+"preference.placeholder.env_variables" = "حدد المتغيرات...";
 "preference.title.auto_ram" = "ذاكرة الوصول العشوائية التلقائية";
 "preference.detail.auto_ram" = "تمكين  ذاكرة الوصول العشوائي التلقائي";
 "preference.warn.auto_ram" = "تعطيل هذا الخيار على جهاز غير مكسور يمكن أن يخلق عدم استقرار إذا تم تغييره. المتابعة بحذر.";
@@ -234,10 +254,23 @@
 "preference.detail.debug_auto_correction" = "تمكين التصحيح التلقائي عند كتابة النص في اللعبة.";
 "preference.title.debug_hide_home_indicator" = "إخفاء مؤشر الصفحة الرئيسية";
 "preference.detail.debug_hide_home_indicator" = "سيؤدي هذا إلى تعطيل تأمين مؤشر المنزل. سوف تحتاج إلى استخدام الوصول الموجه للإخفاء وقفل مؤشر المنزل في نفس الوقت.";
-"preference.title.debug_show_layout_bounds" = "عرض حدود التخطيط";
-"preference.detail.debug_show_layout_bounds" = "عرض حدود وهوامش المقطع وما إلى ذلك";
-"preference.title.debug_show_layout_overlap" = "إظهار تداخل التخطيط";
-"preference.detail.debug_show_layout_overlap" = "تجاوز كل وجهة نظر مع لون شفاف للكشف عن وجهات نظر متداخلة.";
+
+"preference.profile.title.name" = "الاسم";
+"preference.profile.title.loader_type" = "نوع التحميل";
+"preference.profile.title.loader_vendor" = "مورد التحميل";
+"preference.profile.title.loader_version" = "إصدار التحميل";
+"preference.profile.title.version" = "الإصدار";
+"preference.profile.title.version_type" = "نوع الإصدار";
+"preference.profile.title.default_touch_control" = "التحكم باللمس";
+"preference.profile.title.default_gamepad_control" = "التحكم بيد تحكم";
+
+"profile.error.name_exists" = "يوجد ملف شخصي بهذا الأسم، الرجاء اختيار اسم اخر.";
+"profile.section.instance" = "اعدادات ملف اللعبة";
+"profile.section.profiles" = "الملفات الشخصية في هذا الinstance";
+"profile.title.create" = "إنشاء ملف شخصي جديد";
+"profile.title.separate_preference" = "اعزل الإعدادات";
+"profile.detail.separate_preference" = "فعل هذا الخيار لعزل اي تغيير حدث في الأعدادات، اعادة التعيين سوف تستعيد الأعدادات العامة، بدلاً من الأفتراضية.";
+"profile.title.install_fabric_quilt" = "تثبيت Fabric/Quilt";
 
 "controller_configurator.title.current" = "ملف تكوين لوحة اللعبة";
 "controller_configurator.title.type.xbox" = "إكس بوكس";

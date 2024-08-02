@@ -28,7 +28,6 @@
 "Move" = "انتقال";
 "Remove" = "حذف";
 "Resize" = "تغییر اندازه";
-
 "custom_controls.button_edit.name" = "نام";
 "custom_controls.button_edit.size" = "اندازه";
 "custom_controls.button_edit.mapping" = "نقشه‌برداری";
@@ -37,7 +36,6 @@
 "custom_controls.button_edit.mouse_pass" = "عبور از ماوس";
 "custom_controls.button_edit.swipeable" = "قابل سوایپ";
 "custom_controls.button_edit.bg_color" = "رنگ پس‌زمینه";
-"custom_controls.button_edit.stroke_width" = "ضخامت حاشیه (%)";
 "custom_controls.button_edit.stroke_color" = "رنگ حاشیه";
 "custom_controls.button_edit.corner_radius" = "شعاع گوشه (%)";
 "custom_controls.button_edit.opacity" = "کدورت (%)";
@@ -47,7 +45,6 @@
 "custom_controls.control_menu.exit" = "خروج";
 "custom_controls.control_menu.exit.warn" = "شما درحال خروج بدون ذخیره تغییرات هستید.";
 "custom_controls.control_menu.save" = "ذخیره";
-"custom_controls.control_menu.save.error.default" = "نام کنترلر نمی تواند \"default\" باشد زیرا بازنویسی می شود.";
 "custom_controls.control_menu.save.error.json" = "ارور JSON";
 "custom_controls.control_menu.save.error.write" = "خطا هنگام ذخیرهٔ پرونده";
 "custom_controls.control_menu.load" = "بارگذاری";
@@ -61,7 +58,6 @@
 "init.migrateDir" = "دایرکتوری داده Pojavlauncher در حال حاضر %@ است. تمام داده های موجود شما به مکان جدید منتقل شده اند.";
 
 "launcher.menu.custom_controls" = "کنترل‌های شخصی";
-"launcher.menu.install_jar" = "نصب .jar";
 
 "launcher.wait_jit.title" = "در انتظار JIT";
 "launcher.wait_jit.message" = "Pojavlauncher متکی به تدوین در زمان مناسب برای جاوا برای کار در حداکثر عملکرد است.";
@@ -103,7 +99,6 @@
 "preference.section.general" = "تنظیمات عمومی";
 "preference.section.control" = "شخصی سازی کنترلر";
 "preference.section.debug" = "تنظیمات اشکال زدایی رابط کاربری";
-"preference.section.footer.debug" = "جدای از اشکال زدایی، این تنظیمات ممکن است برای کنترل های سفارشی مفید باشند. ممکن است لازم باشد نرم‌افزار را مجدداً راه‌اندازی کنید تا تغییرات اعمال شوند.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "ترفند های جاوا";
 //"preference.section.footer.java" = "";
@@ -120,8 +115,6 @@
 "preference.detail.cosmetica" = "شنل‌های Cosmetica (قبلاً Arc) را فعال کنید.  برای اطلاعات بیشتر لطفاً به https://cosmetica.cc مراجعه کنید.  به OptiFine نیاز دارد";
 "preference.title.debug_logging" = "گزارش اشکال زدایی";
 "preference.detail.debug_logging" = "تنظیمات و اقدامات داخلی را در latestlog.txt ثبت می کند. این به توسعه‌دهندگان کمک می‌کند تا مشکلات را آسان‌تر پیدا کنند، اما Minecraft ممکن است کندتر اجرا شود زیرا گزارش‌ها اغلب روی آن نوشته می‌شوند.";
-"preference.title.jitstreamer_server" = "آیپی سرور JitStreamer";
-"preference.detail.jitstreamer_server" = "به شما امکان می‌دهد به یک IP سرور سفارشی JitStreamer، مانند ورژن های خود میزبان، تغییر دهید. اگر از سرورهای پیش‌فرض JitStreamer استفاده می‌کنید، می‌توانید این گزینه را به حال خود رها کنید.";
 "preference.title.appicon" = "تنظیم نماد برنامه";
 "preference.detail.appicon" = "به شما امکان می دهد بین نمادهای مختلف صفحه اصلی برای PojavLauncher یکی را انتخاب کنید.";
 "preference.title.appicon-default" = "نور آشنا PojavLauncher";
@@ -163,9 +156,9 @@
 "preference.title.gyroscope_sensitivity" = "حساسیت کنترلر های ژیروسکوپ";
 "preference.detail.gyroscope_sensitivity" = "حساسیت کنترل های ژیروسکوپ را تنظیم کنید";
 
-"preference.title.java_home" = "از جاوا 17 برای ماینکرفت 1.17 به بالا استفاده کنید";
 "preference.title.java_args" = "آرگومان‌های جاوا در هنگام اجرا";
 "preference.placeholder.java_args" = "آرگومان ها را مشخص کنید...";
+"preference.title.env_variables" = "متغیرهای محیطی";
 "preference.title.auto_ram" = "رم اتوماتیک";
 "preference.detail.auto_ram" = "تنظیم‌کننده اتوماتیک رم را فعال می‌کند";
 "preference.warn.auto_ram" = "غیرفعال کردن این گزینه در دستگاه‌های غیر جیلبریک می‌تواند در صورت تغییر، بی‌ثباتی ایجاد کند. با توجه ادامه بدهید.";
@@ -182,8 +175,7 @@
 "preference.detail.debug_auto_correction" = "هنگام تایپ متن در بازی، تصحیح خودکار را فعال کنید.";
 "preference.title.debug_hide_home_indicator" = "نشانگر خانه را پنهان کنید";
 "preference.detail.debug_hide_home_indicator" = "این کار قفل نشانگر خانه را غیرفعال می کند. برای مخفی کردن و قفل کردن نشانگر خانه به طور همزمان باید از Guided Access استفاده کنید.";
-"preference.title.debug_show_layout_bounds" = "نمایش محدوده‌های طرح‌بندی";
-"preference.detail.debug_show_layout_bounds" = "نمایش مرزها، حاشیه‌ها";
-"preference.title.debug_show_layout_overlap" = "نمایش همپوشانی طرح";
-"preference.detail.debug_show_layout_overlap" = "هر نما را با یک رنگ شفاف پوشش دهید تا نماهای همپوشانی نشان داده شود.";
+
+"preference.profile.title.name" = "نام";
+"preference.profile.title.version" = "نسخه";
 "controller_configurator.playstation.title.named_back" = "انتخاب";

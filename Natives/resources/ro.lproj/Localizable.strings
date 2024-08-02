@@ -26,7 +26,6 @@
 "Copy" = "Copiere";
 "Edit" = "Editează";
 "Remove" = "Șterge";
-
 "custom_controls.button_edit.name" = "Nume";
 "custom_controls.button_edit.size" = "Dimensiune";
 "custom_controls.button_edit.mapping" = "Asocieri";
@@ -43,7 +42,6 @@
 "custom_controls.control_menu.add_button" = "Adaugă buton";
 
 "launcher.menu.custom_controls" = "Controale personalizate";
-"launcher.menu.install_jar" = "Instalează .jar";
 "login.option.add" = "Adăugați un cont";
 "login.option.select" = "Selectează contul";
 
@@ -61,8 +59,13 @@
 "preference.title.gyroscope_enable" = "Permite controalele gyroscopului";
 "preference.title.gyroscope_sensitivity" = "Controalele tiroscopului controlează sensibilitatea";
 "preference.detail.gyroscope_sensitivity" = "Ajustați sensibilitatea controalelor cu giroscop";
+
 "preference.title.java_args" = "Argumente de lansare JVM";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Activează ajustarea automată RAM";
 "preference.detail.allocated_memory" = "Controlează cât de multă memorie este dată la Minecraft";
+
+"preference.profile.title.name" = "Nume";
+"preference.profile.title.version" = "Versiunea";
+"profile.title.create" = "Creează un profil nou";
 "controller_configurator.playstation.title.named_back" = "Selectați";
