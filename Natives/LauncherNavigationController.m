@@ -326,6 +326,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         self.progressText.text = progress.localizedAdditionalDescription;
 
         if (!progress.finished) return;
+        [self.progressVC dismissModalViewControllerAnimated:NO];
 
         self.progressViewMain.observedProgress = nil;
         if (self.task.metadata) {
@@ -385,7 +386,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         return;
     }
 
-    //CADisplayLink *displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(tickJIT)];
+    self.progressText.text = localize(@"launcher.wait_jit.title", nil);
 
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:localize(@"launcher.wait_jit.title", nil)
         message:hasTrollStoreJIT ? localize(@"launcher.wait_jit_trollstore.message", nil) : localize(@"launcher.wait_jit.message", nil)
