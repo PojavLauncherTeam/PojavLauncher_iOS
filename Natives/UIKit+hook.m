@@ -145,7 +145,7 @@ void init_hookUIKitConstructor(void) {
 @end
 
 UIWindow* currentWindowInScene(BOOL external) {
-    id delegate;
+    id delegate = UIApplication.sharedApplication.delegate;
     for (UIScene *scene in UIApplication.sharedApplication.connectedScenes.allObjects) {
         if (external != (scene.session.role == UIWindowSceneSessionRoleApplication)) {
             delegate = scene.delegate;
