@@ -331,7 +331,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         self.progressViewMain.observedProgress = nil;
         if (self.task.metadata) {
             [self invokeAfterJITEnabled:^{
-                UIKit_launchMinecraftSurfaceVC(self.task.metadata);
+                UIKit_launchMinecraftSurfaceVC(self.view.window, self.task.metadata);
             }];
         } else {
             self.task = nil;
