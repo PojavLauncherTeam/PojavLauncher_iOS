@@ -1,11 +1,27 @@
 import SwiftUI
 
 struct ProfilesView: View {
+    @ObservedObject var launcherProfiles: LauncherProfiles
+    var directory: String
     @State private var selectedProfileIdx: Int?
     @State private var isolateSettings = false
-    @State private var launcherProfiles = LauncherProfiles()
+    
+    init(directory: String) {
+        self.directory = directory
+        do {
+            let jsonData = try Data(contentsOf: GameDirectory.lpJsonPath(of: directory))
+            self.launcherProfiles = try! JSONDecoder().decode(LauncherProfiles.self, from: jsonData)
+        } catch {
+            print("Unexpected error: \(error).")
+            self.launcherProfiles =  LauncherProfiles()
+        }
+    }
+    
     var body: some View {
         Form {
+            Section {
+                Label("launcher.menu.execute_jar", systemImage: "terminal")
+            }
             Section {
                 VStack(alignment: .leading) {
                     Toggle(isOn: $isolateSettings) {
@@ -18,18 +34,34 @@ struct ProfilesView: View {
                 Text("When enabled, changes in the launcher settings will only be available to this instance.")
             }
             Section {
-                ForEach (0..<launcherProfiles.profiles.count, id: \.self) { i in
-                    ProfileRow(profile: $launcherProfiles.profiles[i])
+                ForEach(Array(launcherProfiles.profiles.keys), id: \.self) { key in
+                    ProfileRow(profile: self.launcherProfiles.profiles[key]!)
                 }
-                 .onDelete(perform: delete)
+                .onDelete(perform: delete)
             } header: {
                 Text("profile.section.profiles")
             }
         }
-        .navigationTitle("Profiles")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Add", systemImage: "plus") {
+                    //launcherProfiles.profiles.append(Profile(name: "New", "lastVersionId: 1.21"))
+                }
+            }
+        }
+        .onAppear {
+            if let jsonData = try? JSONEncoder().encode(self.launcherProfiles) {
+                do {
+                    try jsonData.write(to: GameDirectory.lpJsonPath(of: directory))
+                } catch {
+                    print("Failed to write launcher_profiles.json: \(error.localizedDescription)")
+                }
+            }
+        }
+        .navigationTitle(directory)
     }
     
-    func delete(at offsets: IndexSet) {
+    private func delete(at offsets: IndexSet) {
         // delete the objects here
     }
 }

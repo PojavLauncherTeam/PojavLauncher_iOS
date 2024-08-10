@@ -17,6 +17,15 @@
         "revision" : "3d2dc41a01f9e49d84f0a3925fb858bed64f702d",
         "version" : "1.1.2"
       }
+    },
+    {
+      "identity" : "uniqueid",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/karwa/uniqueid",
+      "state" : {
+        "revision" : "0b0a36949d1ff5e02dc1c0aaee7461f12a768d07",
+        "version" : "1.0.4"
+      }
     }
   ],
   "version" : 2

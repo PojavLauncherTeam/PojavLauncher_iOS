@@ -35,7 +35,8 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/Alamofire/Alamofire", "5.9.1"..<"6.0.0"),
-        .package(url: "https://github.com/apple/swift-collections", "1.1.2"..<"2.0.0")
+        .package(url: "https://github.com/apple/swift-collections", "1.1.2"..<"2.0.0"),
+        .package(url: "https://github.com/karwa/uniqueid", "1.0.4"..<"2.0.0")
     ],
     targets: [
         .executableTarget(
@@ -48,7 +49,8 @@ let package = Package(
                 .product(name: "HashTreeCollections", package: "swift-collections"),
                 .product(name: "HeapModule", package: "swift-collections"),
                 .product(name: "OrderedCollections", package: "swift-collections"),
-                .product(name: "_RopeModule", package: "swift-collections")
+                .product(name: "_RopeModule", package: "swift-collections"),
+                .product(name: "UniqueID", package: "uniqueid")
             ],
             path: ".",
             resources: [

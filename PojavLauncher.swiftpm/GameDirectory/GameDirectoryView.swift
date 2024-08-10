@@ -20,14 +20,15 @@ struct GameDirectoryView: View {
     @State private var dirToProcess = ""
     var body: some View {
         // Hidden navigation link
-        NavigationLink(destination: ProfilesView(), isActive: $showInitialProfilesView) {
+        // TODO: read from preference
+        NavigationLink(destination: ProfilesView(directory: "default"), isActive: $showInitialProfilesView) {
             EmptyView()
         }
         // Game directories
         List {
             ForEach (directories, id: \.self) { directory in
                 NavigationLink {
-                    ProfilesView()
+                    ProfilesView(directory: directory)
                 } label: {
                     GameDirectoryRow(directory: directory)
                 }

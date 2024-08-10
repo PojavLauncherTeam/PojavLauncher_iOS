@@ -1,34 +1,23 @@
 import SwiftUI
+import UniqueID
 
-struct ProfileEditView<LinkView: View>: View {
+struct ProfileEditView: View {
+    @ObservedObject var profile: Profile
     private let renderers: KeyValuePairs = [
         "auto": "preference.title.renderer.release.auto",
-        "libgl4es.dylib": "preference.title.renderer.release.gl4es",
-        "libtinygl4angle.dylib": "preference.title.renderer.release.angle",
-        "libOSMesa.8.dylib": "preference.title.renderer.release.zink"
+        "gl4es": "preference.title.renderer.release.gl4es",
+        "tinygl4angle": "preference.title.renderer.release.angle",
+        "osmesa": "preference.title.renderer.release.zink"
     ]
     @State private var showFilePicker = false
     @State private var showImagePicker = false
     @State private var showCustomIconInput = false
     @State private var showGameDirPicker = false
-    @Binding private var profile: Profile
-    @State private var iconToSave: String
+    @State private var iconToSave: String = ""
     @State private var newImage: UIImage = UIImage()
-    
-    let image: LinkView
-    init(profileInput: Binding<Profile>, @ViewBuilder content: () -> LinkView) {
-        _profile = profileInput
-        _iconToSave = State(initialValue: _profile.icon.wrappedValue ?? "")
-        self.image = content()
-        //print("Content Body init")
-    }
     
     var body: some View {
         Form {
-            // temp section
-            Section {
-                Label("FIXME: massive lag issue when updating states", systemImage: "exclamationmark.triangle.fill")
-            }
             HStack {
                 Menu {
                     Button("Photo Library", systemImage: "photo.on.rectangle") {
@@ -40,7 +29,9 @@ struct ProfileEditView<LinkView: View>: View {
                     Button("Custom URL", systemImage: "link") {
                         showCustomIconInput.toggle()
                     }
-                } label: { image }
+                } label: {
+                    ProfileImage(url: profile.icon)
+                }
                 TextField("preference.profile.title.name", text: $profile.name)
             }.listRowInsets(EdgeInsets(top: 12, leading: 15, bottom: 12, trailing: 15))
             Section {
@@ -78,7 +69,7 @@ struct ProfileEditView<LinkView: View>: View {
                 } label: {
                     Label("preference.profile.title.default_touch_control", systemImage: "hand.tap")
                 }
-                Picker(selection: $profile.defaultGamepadCtrl ?? "") {
+                Picker(selection: $profile.defaultGamepadCtrl) {
                     Text("(default)").tag("")
                 } label: {
                     Label("preference.profile.title.default_gamepad_control", systemImage: "gamecontroller")
@@ -121,6 +112,9 @@ struct ProfileEditView<LinkView: View>: View {
             Button("Play", systemImage: "play.fill") {
                 
             }
+        }
+        .onAppear {
+            self.iconToSave = profile.icon ?? ""
         }
     }
 }

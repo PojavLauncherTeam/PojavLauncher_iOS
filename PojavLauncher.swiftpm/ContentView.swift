@@ -45,13 +45,6 @@ struct ContentView: View {
             .tabItem {
                 Label("Settings", systemImage: "gear")
             }
-            NavigationView {
-                OtherView()
-                    .toolbar { accountBtn }
-            }
-            .tabItem {
-                Label("Other", systemImage: "ellipsis.circle")
-            }
         }
     }
 }

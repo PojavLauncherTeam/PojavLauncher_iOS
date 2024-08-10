@@ -13,4 +13,8 @@ struct GameDirectory {
         let directoryURL = instancesURL.appendingPathComponent(name, conformingTo: .folder)
         try? FileManager.default.removeItem(at: directoryURL)
     }
+    
+    static func lpJsonPath(of name: String) -> URL {
+        return instancesURL.appendingPathComponent(name + "/launcher_profiles.json", conformingTo: .fileURL)
+    }
 }
