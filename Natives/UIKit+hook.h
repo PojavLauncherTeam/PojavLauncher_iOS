@@ -32,6 +32,11 @@
 @property(assign, nonatomic) NSInteger nonEditingLinebreakMode;
 @end
 
+@interface UIWindow(global)
++ (UIWindow *)mainWindow;
++ (UIWindow *)externalWindow;
+@end
+
 /*
 @interface WFTextTokenTextView : UITextField
 @property(nonatomic) NSString* placeholder

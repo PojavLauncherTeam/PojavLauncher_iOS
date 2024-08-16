@@ -2,7 +2,7 @@
 #import "SceneExternalDelegate.h"
 #import "SurfaceViewController.h"
 
-extern UIWindow* currentWindow();
+extern UIWindow *externalWindow;
 
 @interface SceneExternalDelegate ()
 
@@ -15,8 +15,9 @@ extern UIWindow* currentWindow();
     UIWindowScene *windowScene = (UIWindowScene *)scene;
     self.window = [[UIWindow alloc] initWithWindowScene:windowScene];
     self.window.frame = windowScene.coordinateSpace.bounds; 
+    externalWindow = self.window;
     if (SurfaceViewController.isRunning && getPrefBool(@"video.fullscreen_airplay")) {
-        [currentWindow().rootViewController performSelector:@selector(switchToExternalDisplay)];
+        [UIWindow.mainWindow.rootViewController performSelector:@selector(switchToExternalDisplay)];
     }
 }
 
@@ -27,7 +28,7 @@ extern UIWindow* currentWindow();
     // Release any resources associated with this scene that can be re-created the next time the scene connects.
     // The scene may re-connect later, as its session was not neccessarily discarded (see `application:didDiscardSceneSessions` instead).
     if (SurfaceViewController.isRunning && getPrefBool(@"video.fullscreen_airplay")) {
-        [currentWindow().rootViewController performSelector:@selector(switchToInternalDisplay)];
+        [UIWindow.mainWindow.rootViewController performSelector:@selector(switchToInternalDisplay)];
     }
 }
 

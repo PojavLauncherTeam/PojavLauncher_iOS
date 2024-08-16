@@ -211,7 +211,7 @@ BOOL leftShiftHeld;
         deltaX *= deltaTimeScale;
         deltaY *= deltaTimeScale;
 
-        SurfaceViewController *vc = (id)(currentWindow().rootViewController);
+        SurfaceViewController *vc = (id)UIWindow.mainWindow.rootViewController;
         [vc sendTouchPoint:CGPointMake(deltaX, deltaY) withEvent:ACTION_MOVE_MOTION];
     }
     lastFrameTime = frameTime;

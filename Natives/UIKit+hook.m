@@ -4,6 +4,8 @@
 #import "UIKit+hook.h"
 #import "utils.h"
 
+__weak UIWindow *mainWindow, *externalWindow;
+
 void swizzle(Class class, SEL originalAction, SEL swizzledAction) {
     method_exchangeImplementations(class_getInstanceMethod(class, originalAction), class_getInstanceMethod(class, swizzledAction));
 }
@@ -119,6 +121,14 @@ void init_hookUIKitConstructor(void) {
 
 @implementation UIWindow(hook)
 
++ (UIWindow *)mainWindow {
+    return mainWindow;
+}
+
++ (UIWindow *)externalWindow {
+    return externalWindow;
+}
+
 - (UIViewController *)visibleViewController {
     UIViewController *current = self.rootViewController;
     while (current.presentedViewController) {
@@ -144,21 +154,6 @@ void init_hookUIKitConstructor(void) {
 }
 @end
 
-UIWindow* currentWindowInScene(BOOL external) {
-    id delegate = UIApplication.sharedApplication.delegate;
-    for (UIScene *scene in UIApplication.sharedApplication.connectedScenes.allObjects) {
-        if (external != (scene.session.role == UIWindowSceneSessionRoleApplication)) {
-            delegate = scene.delegate;
-            break;
-        }
-    }
-    return [delegate window];
-}
-
-UIWindow* currentWindow() {
-    return currentWindowInScene(0);
-}
-
 UIViewController* currentVC() {
-    return currentWindow().visibleViewController;
+    return UIWindow.mainWindow.visibleViewController;
 }

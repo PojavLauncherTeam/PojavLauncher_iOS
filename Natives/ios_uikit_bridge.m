@@ -21,7 +21,7 @@ void internal_showDialog(NSString* title, NSString* message) {
     UIAlertAction* okAction = [UIAlertAction actionWithTitle:localize(@"OK", nil) style:UIAlertActionStyleDefault handler:nil];
     [alert addAction:okAction];
 
-    UIWindow *alertWindow = [[UIWindow alloc] initWithWindowScene:currentWindow().windowScene];
+    UIWindow *alertWindow = [[UIWindow alloc] initWithWindowScene:UIWindow.mainWindow.windowScene];
     alertWindow.frame = UIScreen.mainScreen.bounds;
     alertWindow.rootViewController = [UIViewController new];
     alertWindow.windowLevel = 1000;
@@ -128,7 +128,7 @@ void UIKit_returnToSplitView() {
     // Researching memory-safe ways to return from SurfaceViewController to the split view
     // so that the app doesn't close when quitting the game (similar behaviour to Android)
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIWindow *window = currentWindow();
+        UIWindow *window = UIWindow.mainWindow;
 
         // Return from JavaGUIViewController
         if ([window.rootViewController isKindOfClass:LauncherSplitViewController.class]) {

@@ -2,6 +2,8 @@
 #import "ios_uikit_bridge.h"
 #import "utils.h"
 
+extern UIWindow *mainWindow;
+
 @interface SceneDelegate ()
 
 @end
@@ -13,6 +15,7 @@
     UIWindowScene *windowScene = (UIWindowScene *)scene;
     self.window = [[UIWindow alloc] initWithWindowScene:windowScene];
     self.window.frame = windowScene.coordinateSpace.bounds;
+    mainWindow = self.window;
     launchInitialViewController(self.window);
     [self.window makeKeyAndVisible];
 }

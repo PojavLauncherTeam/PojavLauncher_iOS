@@ -55,7 +55,7 @@ void openURLGlobal(NSString *path) {
 
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([path hasPrefix:@"http"]) {
-            openLink(currentWindow().rootViewController, [NSURL URLWithString:path]);
+            openLink(UIWindow.mainWindow.rootViewController, [NSURL URLWithString:path]);
             dispatch_group_leave(group);
             return;
         }
@@ -395,7 +395,7 @@ JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetGrabbing(JNIE
     isGrabbing = grabbing;
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        SurfaceViewController *vc = ((SurfaceViewController *)currentWindow().rootViewController);
+        SurfaceViewController *vc = ((SurfaceViewController *)UIWindow.mainWindow.rootViewController);
         [vc updateGrabState];
     });
 }

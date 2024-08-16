@@ -119,7 +119,7 @@ NSMutableDictionary* createButton(NSString* name, int* keycodes, NSString* dynam
         debugLabel.lineBreakMode = NSLineBreakByWordWrapping;
         debugLabel.numberOfLines = 0;
         debugLabel.userInteractionEnabled = NO;
-        [currentWindow() addSubview:debugLabel];
+        [UIWindow.mainWindow addSubview:debugLabel];
     }
 #endif
 

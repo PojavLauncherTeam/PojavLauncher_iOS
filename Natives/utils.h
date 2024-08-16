@@ -65,8 +65,6 @@ void init_setupMultiDir();
 
 BOOL PLPatchMachOPlatformForFile(const char *path);
 
-UIWindow* currentWindow();
-UIWindow* currentWindowInScene(BOOL external);
 UIViewController* currentVC();
 void openLink(UIViewController* sender, NSURL* link);
 

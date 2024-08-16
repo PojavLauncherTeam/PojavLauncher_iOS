@@ -1064,7 +1064,7 @@ int touchesMovedCount;
 }
 
 + (BOOL)isRunning {
-    return [currentWindow().rootViewController isKindOfClass:SurfaceViewController.class];
+    return [UIWindow.mainWindow.rootViewController isKindOfClass:SurfaceViewController.class];
 }
 
 + (GameSurfaceView *)surface {
