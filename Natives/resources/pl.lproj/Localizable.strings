@@ -4,7 +4,7 @@
 */
 
 "game.menu.force_close" = "Wymuś zamknięcie";
-"game.menu.confirm.force_close" = "Czy na pewno chcesz wymusić zamknięcie?";
+"game.menu.confirm.force_close" = "Czy na pewno chcesz wymusić zamknięcie gry?";
 "game.menu.log_output" = "Wyjście danych";
 "game.menu.custom_controls" = "Sterowanie";
 
@@ -34,6 +34,8 @@
 "Always" = "Zawsze";
 "In game" = "W grze";
 "In menu" = "W menu";
+
+"custom_controls.button_edit.forward_lock" = "Zablokowanie w przód";
 "custom_controls.button_edit.name" = "Nazwa";
 "custom_controls.button_edit.size" = "Rozmiar";
 "custom_controls.button_edit.mapping" = "Mapowanie";
@@ -155,6 +157,7 @@
 "preference.title.appicon-dark" = "Znajomy PojavLauncher ciemny";
 "preference.title.appicon-development" = "Budowa Ikony";
 "preference.title.hidden_sidebar" = "Domyślnie ukryj pasek boczny";
+"preference.detail.hidden_sidebar" = "Pozwala ci domyślnie chować pasek w menu głównym oraz podczas obracania.";
 
 "preference.title.reset_warnings" = "Wyzeruj wszystkie ostrzeżenia";
 "preference.title.done.reset_warnings" = "Wszystkie ostrzeżenia zostały wyzerowane.";
@@ -196,6 +199,7 @@
 "preference.title.silence_with_switch" = "Wyłącz dźwięk z cichym przełącznikiem i odmawiaj dźwięk z mikrofonu";
 "preference.detail.silence_with_switch" = "Włącz, aby wyłączyć dźwięk po włączeniu trybu cichego i uniemożliwić odbieranie dźwięku z mikrofonu. Słuchawki i zewnętrzne głośniki nie są naruszone.";
 "preference.title.default_gamepad_ctrl" = "Konfiguracja kontrolera";
+"preference.title.hardware_hide" = "Ukryj kontrolki gdy urządzenia typu np. klawiatura są podłączone";
 "preference.detail.hardware_hide" = "Włącz automatyczne wyłączanie sterowania dotykowego po podłączeniu myszy lub kontrolera gry.";
 "preference.title.recording_hide" = "Ukryj przyciski sterowania podczas nagrywania ekranu";
 "preference.detail.recording_hide" = "Ukrywa przyciski sterowania przed zrzutem ekranu i nagrywaniem ekranu, a one pozostają widoczne na ekranie.";
@@ -256,6 +260,7 @@
 "preference.title.debug_auto_correction" = "Auto-korekta";
 "preference.detail.debug_auto_correction" = "Włącz automatyczną korektę podczas wpisywania tekstu w grze.";
 "preference.title.debug_hide_home_indicator" = "Ukryj przycisk powrotu do ekranu domowego";
+"preference.detail.debug_hide_home_indicator" = "Spowoduje to wyłączenie blokady wskaźnika domowego. W tym samym czasie będziesz musiał korzystać ze wskazówek dostępu do ukrycia i zablokowania wskaźnika domu.";
 
 "preference.profile.title.name" = "Nazwa";
 "preference.profile.title.loader_type" = "Typ ładowacza";
@@ -277,6 +282,11 @@
 "controller_configurator.title.current" = "Plik konfiguracyjny pada do gry";
 "controller_configurator.title.type.xbox" = "Xbox";
 "controller_configurator.title.type.playstation" = "PlayStation";
+
+"controller_configurator.xbox.title.bumper_left" = "Lewy bumper";
+"controller_configurator.xbox.title.bumper_right" = "Prawy bumper";
+"controller_configurator.xbox.title.trigger_left" = "Lewy spust";
+"controller_configurator.xbox.title.trigger_right" = "Prawy spust";
 "controller_configurator.xbox.title.named_back" = "Poradnik";
 "controller_configurator.xbox.title.named_start" = "Menu";
 "controller_configurator.xbox.title.named_a" = "A";
@@ -287,6 +297,8 @@
 "controller_configurator.xbox.title.dpad_down" = "Dół";
 "controller_configurator.xbox.title.dpad_left" = "Lewo";
 "controller_configurator.xbox.title.dpad_right" = "Prawo";
+"controller_configurator.xbox.title.thumb_left" = "Kliknięcie lewego joysticka";
+"controller_configurator.xbox.title.thumb_right" = "Kliknięcie prawego joysticka";
 
 "controller_configurator.playstation.title.bumper_left" = "L1";
 "controller_configurator.playstation.title.bumper_right" = "R1";
@@ -304,6 +316,11 @@
 "controller_configurator.playstation.title.dpad_right" = "Prawo";
 "controller_configurator.playstation.title.thumb_left" = "L3";
 "controller_configurator.playstation.title.thumb_right" = "R3";
+
+"controller_configurator.section.config_files" = "Obecny plik konfiguracji";
 "controller_configurator.section.game_mappings" = "Mapowanie gry";
+"controller_configurator.section.footer.game_mappings" = "Powiązania sterowania gdy myszka jest zablokowana w grze.";
 "controller_configurator.section.menu_mappings" = "Mapowanie menu";
+"controller_configurator.section.footer.menu_mappings" = "Powiązania sterowania gdy myszka nie jest zablokowana, np. na ekranie tytułowym, lub menu pauzy.";
 "controller_configurator.section.controller_style" = "Typ kontrolera";
+"controller_configurator.section.footer.controller_style" = "Wyświetlaj różne nazwy przycisków w tym konfiguratorze.";
