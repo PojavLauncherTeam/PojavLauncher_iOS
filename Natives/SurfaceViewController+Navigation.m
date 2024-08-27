@@ -119,7 +119,6 @@ static CGPoint lastCenterPoint;
                 exit(0);
             } else {
                 dispatch_group_leave(fatalExitGroup);
-                fatalExitGroup = nil;
             }
         }];
     }];

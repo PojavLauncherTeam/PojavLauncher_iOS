@@ -124,10 +124,7 @@ static PLLogOutputView* current;
 - (void)actionToggleLogOutput {
     if (fatalErrorOccurred) {
         [UIApplication.sharedApplication performSelector:@selector(suspend)];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 200 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
-            dispatch_group_leave(fatalExitGroup);
-            fatalExitGroup = nil;
-        });
+        dispatch_group_leave(fatalExitGroup);
         return;
     }
 
