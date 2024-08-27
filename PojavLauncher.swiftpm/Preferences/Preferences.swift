@@ -1,49 +1,61 @@
 import UIKit
 
-struct Preferences {
-    struct General {
-        var check_sha: Bool = true
-        var cosmetica: Bool = true
-        var debug_logging: Bool = false
+class Preferences: Codable, ObservableObject {
+    class General: Codable, ObservableObject {
+        @Published var check_sha: Bool = true
+        @Published var cosmetica: Bool = true
+        @Published var debug_logging: Bool = false
         // var appicon: String
     }
-    var general = General()
+    @Published var general = General()
     
-    struct Video {
-        var renderer: String = "auto"
-        var resolution: UInt = 100
-        var max_framerate: Bool = true
-        var performance_hud: Bool = false
-        var fullscreen_airplay: Bool = true
-        var silence_other_audio: Bool = false
-        var silence_with_switch: Bool = false
+    class Video: Codable, ObservableObject {
+        @Published var renderer: String = "auto"
+        @Published var resolution: Double = 100
+        @Published var max_framerate: Bool = true
+        @Published var performance_hud: Bool = false
+        @Published var fullscreen_airplay: Bool = true
+        @Published var silence_other_audio: Bool = false
+        @Published var silence_with_switch: Bool = false
     }
-    var video = Video()
+    @Published var video = Video()
     
-    struct Control {
-        var default_ctrl: String = "default.json"
-        var control_safe_area: String = "" 
+    class Control: Codable, ObservableObject {
+        @Published var default_ctrl: String = "default.json"
+        @Published var control_safe_area: String = "" 
         // Sring(for insets: UIApplication.shared.windows.first.safeAreaInsets)
-        var default_gamepad_ctrl: String = "default.json"
-        var controller_type: String = "xbox"
-        var hardware_hide = true
-        var recording_hide = true
-        var gesture_mouse = true
-        var gesture_hotbar = true
-        var disable_haptics = false
-        var slideable_hotbar = false
-        var press_duration = 400
-        var button_scale = 100
-        var mouse_scale = 100
-        var mouse_speed = 100
-        var virtmouse_enable = false
-        var gyroscope_enable = false
-        var gyroscope_invert_x_axis = false
-        var gyroscope_sensitivity = 100
+        @Published var default_gamepad_ctrl: String = "default.json"
+        @Published var controller_type: String = "xbox"
+        @Published var hardware_hide = true
+        @Published var recording_hide = true
+        @Published var gesture_mouse = true
+        @Published var gesture_hotbar = true
+        @Published var disable_haptics = false
+        @Published var slideable_hotbar = false
+        @Published var press_duration: Double = 400
+        @Published var button_scale: Double = 100
+        @Published var mouse_scale: Double = 100
+        @Published var mouse_speed: Double = 100
+        @Published var virtmouse_enable = false
+        @Published var gyroscope_enable = false
+        @Published var gyroscope_invert_x_axis = false
+        @Published var gyroscope_sensitivity: Double = 100
     }
-    var control = Control()
+    @Published var control = Control()
     
-    struct Java {
-        
+    class Java: Codable, ObservableObject {
+        @Published var java_args = ""
+        @Published var env_variables = ""
+        @Published var auto_ram = false
+        @Published var allocated_memory: Double = Double(ProcessInfo.processInfo.physicalMemory / 0x100000) * 0.25
     }
+    @Published var java = Java()
+    
+    class Debug: Codable, ObservableObject {
+        @Published var debug_skip_wait_jit = false
+        @Published var debug_hide_home_indicator = false
+        @Published var debug_ipad_ui = false
+        @Published var debug_auto_correction = true
+    }
+    @Published var debug = Debug()
 }

@@ -69,7 +69,7 @@ struct AccountView: View {
                     accounts.insert(Account(xboxGamertag: "", username: username, expiresAt: 0, xuid: "", profileId: .init(), profilePicURL: ""), at: 0)
                     username = ""
                 }
-                .disabled(username.count < 3 || username.count > 16)
+                //.disabled(username.count < 3 || username.count > 16)
                 Button("Cancel", role: .cancel) {}
             } message: {
                 Text("Local account will not be able to download game assets.")

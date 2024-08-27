@@ -2,6 +2,7 @@ import SwiftUI
 import Alamofire
 
 struct ContentView: View {
+    @ObservedObject var preferences = Preferences()
     @State private var showAccountView = false
     var accountBtn: some View {
         Button("[AccIcon]") {
@@ -37,7 +38,7 @@ struct ContentView: View {
                 }
             }
             NavigationView {
-                PreferencesView()
+                PreferencesView(preferences: preferences)
                     .toolbar {
                         accountBtn
                     }
@@ -45,6 +46,9 @@ struct ContentView: View {
             .tabItem {
                 Label("Settings", systemImage: "gear")
             }
+        }
+        .onAppear {
+            UITextField.appearance().clearButtonMode = .whileEditing
         }
     }
 }

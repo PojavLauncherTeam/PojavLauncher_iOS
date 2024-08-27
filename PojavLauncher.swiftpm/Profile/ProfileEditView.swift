@@ -3,12 +3,6 @@ import UniqueID
 
 struct ProfileEditView: View {
     @ObservedObject var profile: Profile
-    private let renderers: KeyValuePairs = [
-        "auto": "preference.title.renderer.release.auto",
-        "gl4es": "preference.title.renderer.release.gl4es",
-        "tinygl4angle": "preference.title.renderer.release.angle",
-        "osmesa": "preference.title.renderer.release.zink"
-    ]
     @State private var showFilePicker = false
     @State private var showImagePicker = false
     @State private var showCustomIconInput = false
@@ -56,7 +50,7 @@ struct ProfileEditView: View {
             Section {
                 Picker(selection: $profile.renderer ?? "") {
                     Text("(default)").tag("")
-                    ForEach(renderers, id: \.0) {
+                    ForEach(Constants.renderers, id: \.0) {
                         Text(LocalizedStringKey($0.value)).tag($0.key)
                     }
                 } label: {
@@ -69,7 +63,7 @@ struct ProfileEditView: View {
                 } label: {
                     Label("preference.profile.title.default_touch_control", systemImage: "hand.tap")
                 }
-                Picker(selection: $profile.defaultGamepadCtrl) {
+                Picker(selection: $profile.defaultGamepadCtrl ?? "") {
                     Text("(default)").tag("")
                 } label: {
                     Label("preference.profile.title.default_gamepad_control", systemImage: "gamecontroller")
@@ -85,9 +79,12 @@ struct ProfileEditView: View {
                 } label: {
                     Label("preference.manage_runtime.header.default", systemImage: "cube")
                 }
-                HStack {
+                DisclosureGroup {
+                    TextEditor(text: $profile.javaArgs ?? "")
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled(true)
+                } label: {
                     Label("preference.title.java_args", systemImage: "slider.vertical.3")
-                    TextField("preference.placeholder.java_args", text: $profile.javaArgs ?? "")
                 }
             }
         }
@@ -105,7 +102,7 @@ struct ProfileEditView: View {
                 profile.icon = iconToSave
             }
             Button("Cancel", role: .cancel) {
-                iconToSave = profile.icon!
+                iconToSave = profile.icon ?? ""
             }
         }
         .toolbar {
