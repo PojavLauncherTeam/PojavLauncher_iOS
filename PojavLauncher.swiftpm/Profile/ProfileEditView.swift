@@ -89,7 +89,6 @@ struct ProfileEditView: View {
             }
         }
         .navigationTitle("Edit profile")
-        .interactiveDismissDisabled(false)
         .sheet(isPresented: $showImagePicker) {
             ImagePicker(sourceType: .photoLibrary, selectedImage: $newImage)
         }
@@ -107,7 +106,7 @@ struct ProfileEditView: View {
         }
         .toolbar {
             Button("Play", systemImage: "play.fill") {
-                
+                // TODO
             }
         }
         .onAppear {

@@ -8,40 +8,21 @@ struct ContentView: View {
         Button("[AccIcon]") {
             showAccountView.toggle()
         }
-        .sheet(isPresented: $showAccountView) {
-            if #available(iOS 16.0, *) {
-                AccountView(showModal: $showAccountView)
-                    .presentationDetents([.medium, .large])
-            } else {
-                AccountView(showModal: $showAccountView)
-            }
-        }
     }
     var body: some View {
         TabView {
-            if #available(iOS 16, *) {
-                NavigationStack {
-                    GameDirectoryView()
-                        .toolbar { accountBtn }
-                }
-                .tabItem {
-                    Label("Profiles", systemImage: "folder")
-                }
-            } else {
-                NavigationView {
-                    GameDirectoryView()
-                        .toolbar { accountBtn }
-                }
-                .navigationViewStyle(.stack)
-                .tabItem {
-                    Label("Profiles", systemImage: "folder")
-                }
+            NavigationView {
+                GameDirectoryView(preferences: preferences)
+                    .toolbar { accountBtn }
+                Text("Select a game directory to view profiles")
+            }
+            .navigationViewStyle(DoubleColumnNavigationViewStyle())
+            .tabItem {
+                Label("Profiles", systemImage: "folder")
             }
             NavigationView {
                 PreferencesView(preferences: preferences)
-                    .toolbar {
-                        accountBtn
-                    }
+                    .toolbar { accountBtn }
             }
             .tabItem {
                 Label("Settings", systemImage: "gear")
@@ -50,6 +31,26 @@ struct ContentView: View {
         .onAppear {
             UITextField.appearance().clearButtonMode = .whileEditing
         }
+        .sheet(isPresented: $showAccountView) {
+            if #available(iOS 16.0, *) {
+                AccountView(showModal: $showAccountView)
+                    .presentationDetents([.medium, .large])
+            } else {
+                AccountView(showModal: $showAccountView)
+            }
+        }
+        /*
+        .onAppear {
+            // DEBUG: scale till we get iPadOS sidebar
+            let scale = 1.5
+            let window = UIApplication.shared.currentInternalWindow()!
+            var bounds = UIScreen.main.bounds
+            bounds.size.width *= scale
+            bounds.size.height *= scale
+            window.bounds = bounds
+            window.transform = CGAffineTransformMakeScale(1.0/scale, 1.0/scale)
+        }
+        */
     }
 }
 

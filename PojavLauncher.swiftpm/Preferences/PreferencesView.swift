@@ -3,6 +3,71 @@ import QuartzCore
 
 struct PreferencesView: View {
     @ObservedObject var preferences: Preferences
+    var body: some View {
+        Form {
+            Section {
+                Label("launcher.menu.custom_controls", systemImage: "gamecontroller")
+            }
+            Section {
+                NavigationLink {
+                    GeneralView(preferences: preferences)
+                } label: {
+                    Label("preference.section.general", systemImage: "cube")
+                }
+                NavigationLink {
+                    VideoAndAudioView(preferences: preferences)
+                } label: {
+                    Label("preference.section.video", systemImage: "video")
+                }
+                NavigationLink {
+                    ControlView(preferences: preferences)
+                } label: {
+                    Label("preference.section.control", systemImage: "dpad")
+                }
+                NavigationLink {
+                    JavaView(preferences: preferences)
+                } label: {
+                    Label("preference.section.java", systemImage: "sparkles")
+                }
+                NavigationLink {
+                    DebugView(preferences: preferences)
+                } label: {
+                    Label("preference.section.debug", systemImage: "ladybug")
+                }
+            }
+            Section {
+                Link(destination: URL(string: "https://pojavlauncherteam.github.io/changelogs/IOS.html")!) {
+                    Label("News", systemImage: "newspaper")
+                }
+                Link(destination: URL(string: "https://pojavlauncherteam.github.io")!) {
+                    Label("Wiki", systemImage: "book")
+                }
+                Link(destination: URL(string: "https://github.com/PojavLauncherTeam/PojavLauncher_iOS/issues")!) {
+                    Label("Report an issue", systemImage: "ant")
+                }
+                Button("login.menu.sendlogs", systemImage: "square.and.arrow.up") {
+                    let url = GameDirectory.documentsURL.appendingPathComponent("latestlog.old.txt", conformingTo: .plainText)
+                    let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+                    UIApplication.shared.currentInternalWindow()?.rootViewController?.present(activityVC, animated: true, completion: nil)
+                }
+            } footer: {
+                Text("""
+                \(Bundle.main.infoDictionary!["CFBundleName"]!) \(Bundle.main.infoDictionary!["CFBundleShortVersionString"]!) (\(Bundle.main.infoDictionary!["PLBundleBuild"] ?? "?commit/branch"))
+                \(UIDevice.current.systemName) \(ProcessInfo.processInfo.operatingSystemVersionString)
+                PID: \(ProcessInfo.processInfo.processIdentifier)
+                """)
+            }
+        }
+        .navigationTitle("Settings")
+        .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
+            if UIDevice.current.orientation.isPortrait {
+                 self.navigationViewStyle(StackNavigationViewStyle())
+            } else {
+                self.navigationViewStyle(DoubleColumnNavigationViewStyle())
+            }
+        }
+        GeneralView(preferences: preferences)
+    }
     
     private struct GeneralView: View {
         @ObservedObject var preferences: Preferences
@@ -74,7 +139,7 @@ struct PreferencesView: View {
                         Slider(value: $preferences.video.resolution, in: 25...150, step: 1, minimumValueLabel: Text("25"), maximumValueLabel: Text("150")) {}
                     } label: {
                         Label("preference.title.resolution", systemImage: "viewfinder")
-                            .badge(Int(preferences.video.resolution))
+                            .badge("\(Int(preferences.video.resolution))%")
                     }
                 } footer: {
                     Text("preference.detail.resolution")
@@ -136,130 +201,92 @@ struct PreferencesView: View {
                 } label: {
                     Label("preference.title.default_gamepad_ctrl", systemImage: "hammer")
                 }
-                // Hardware hide
                 Section {
+                    // Recording hide
                     Toggle(isOn: $preferences.control.hardware_hide) {
                         Label("preference.title.hardware_hide", systemImage: "eye.slash")
                     }
-                } footer: {
-                    Text("preference.detail.hardware_hide")
-                }
-                // Recording hide
-                Section {
+                    // Recording hide
                     Toggle(isOn: $preferences.control.recording_hide) {
-                        Label("preference.title.recording_hide", systemImage: "eye.slash")
+                        Label("preference.title.recording_hide", systemImage: "rectangle.dashed.badge.record")
                     }
-                } footer: {
-                    Text("preference.detail.recording_hide")
-                }
-                // Mouse gesture
-                Section {
-                    Toggle(isOn: $preferences.control.gesture_mouse) {
-                        Label("preference.title.gesture_mouse", systemImage: "cursorarrow.click")
-                    }
-                } footer: {
-                    Text("preference.detail.gesture_mouse")
-                }
-                // Hotbar gesture
-                Section {
-                    Toggle(isOn: $preferences.control.gesture_hotbar) {
-                        Label("preference.title.gesture_hotbar", systemImage: "hand.tap")
-                    }
-                } footer: {
-                    Text("preference.detail.gesture_hotbar")
-                }
-                // Disable haptics
-                Section {
-                    Toggle(isOn: $preferences.control.disable_haptics) {
-                        Label("preference.title.disable_haptics", systemImage: "wave.3.left")
-                    }
-                }
-                // Slideable hotbar
-                Section {
-                    Toggle(isOn: $preferences.control.slideable_hotbar) {
-                        Label("preference.title.slideable_hotbar", systemImage: "slider.horizontal.below.rectangle")
-                    }
-                } footer: {
-                    Text("preference.detail.slideable_hotbar")
-                }
-                // Press duration
-                Section {
-                    DisclosureGroup {
-                        Slider(value: $preferences.control.press_duration, in: 100...1000, step: 1, minimumValueLabel: Text("100"), maximumValueLabel: Text("1000")) {}
-                    } label: {
-                        Label("preference.title.press_duration", systemImage: "cursorarrow.click.badge.clock")
-                            .badge(Int(preferences.control.press_duration))
-                    }
-                } footer: {
-                    Text("preference.detail.press_duration")
-                }
-                // Button scale
-                Section {
                     DisclosureGroup {
                         Slider(value: $preferences.control.button_scale, in: 50...500, step: 1, minimumValueLabel: Text("50"), maximumValueLabel: Text("500")) {}
                     } label: {
                         Label("preference.title.button_scale", systemImage: "aspectratio")
-                            .badge(Int(preferences.control.button_scale))
+                            .badge("\(Int(preferences.control.button_scale))%")
                     }
-                } footer: {
-                    Text("preference.detail.button_scale")
+                } header: {
+                    Text("preference.section.control.appearance")
                 }
-                // Mouse scale
+                // TODO: allow deeper gesture customizations
                 Section {
+                    // Mouse gesture
+                    Toggle(isOn: $preferences.control.gesture_mouse) {
+                        Label("preference.title.gesture_mouse", systemImage: "cursorarrow.click")
+                    }
+                    // Hotbar gesture
+                    Toggle(isOn: $preferences.control.gesture_hotbar) {
+                        Label("preference.title.gesture_hotbar", systemImage: "squares.below.rectangle")
+                    }
+                    // Slidable hotbar
+                    Toggle(isOn: $preferences.control.slideable_hotbar) {
+                        Label("preference.title.slideable_hotbar", systemImage: "slider.horizontal.below.rectangle")
+                    }
+                    // Disable haptics
+                    Toggle(isOn: $preferences.control.disable_haptics) {
+                        Label("preference.title.disable_haptics", systemImage: "wave.3.left")
+                    }
+                } header: {
+                    Text("preference.section.control.gesture")
+                }
+                Section {
+                    // Virtual mouse
+                    Toggle(isOn: $preferences.control.virtmouse_enable) {
+                        Label("preference.title.virtmouse_enable", systemImage: "cursorarrow.rays")
+                    }
+                    // Mouse scale
                     DisclosureGroup {
                         Slider(value: $preferences.control.mouse_scale, in: 25...300, step: 1, minimumValueLabel: Text("25"), maximumValueLabel: Text("300")) {}
                     } label: {
                         Label("preference.title.mouse_scale", systemImage: "arrow.up.left.and.arrow.down.right.circle")
-                            .badge(Int(preferences.control.mouse_scale))
+                            .badge("\(Int(preferences.control.mouse_scale))%")
                     }
-                } footer: {
-                    Text("preference.detail.mouse_scale")
-                }
-                // Mouse speed
-                Section {
+                    // Mouse speed
                     DisclosureGroup {
                         Slider(value: $preferences.control.mouse_speed, in: 25...300, step: 1, minimumValueLabel: Text("25"), maximumValueLabel: Text("300")) {}
                     } label: {
                         Label("preference.title.mouse_speed", systemImage: "cursorarrow.motionlines")
-                            .badge(Int(preferences.control.mouse_speed))
+                            .badge("\(Int(preferences.control.mouse_speed))%")
                     }
-                } footer: {
-                    Text("preference.detail.mouse_speed")
-                }
-                // Virtual mouse
-                Section {
-                    Toggle(isOn: $preferences.control.virtmouse_enable) {
-                        Label("preference.title.virtmouse_enable", systemImage: "cursorarrow.rays")
+                    // Press duration
+                    DisclosureGroup {
+                        Slider(value: $preferences.control.press_duration, in: 100...1000, step: 1, minimumValueLabel: Text("100"), maximumValueLabel: Text("1000")) {}
+                    } label: {
+                        Label("preference.title.press_duration", systemImage: "cursorarrow.click.badge.clock")
+                            .badge("\(UInt( preferences.control.press_duration))ms")
                     }
-                } footer: {
-                    Text("preference.detail.virtmouse_enable")
+                } header: {
+                    Text("preference.section.control.mouse")
                 }
-                // Gyroscope
                 Section {
+                    // Gyroscope
                     Toggle(isOn: $preferences.control.gyroscope_enable) {
                         Label("preference.title.gyroscope_enable", systemImage: "gyroscope")
                     }
-                } footer: {
-                    Text("preference.detail.gyroscope_enable")
-                }
-                // Gyroscope invert X axis
-                Section {
+                    // Gyroscope invert X axis
                     Toggle(isOn: $preferences.control.gyroscope_invert_x_axis) {
                         Label("preference.title.gyroscope_invert_x_axis", systemImage: "arrow.left.and.right")
                     }
-                } footer: {
-                    Text("preference.detail.gyroscope_invert_x_axis")
-                }
-                // Gyroscope sensitivity
-                Section {
+                    // Gyroscope sensitivity
                     DisclosureGroup {
                         Slider(value: $preferences.control.gyroscope_sensitivity, in: 50...300, step: 1, minimumValueLabel: Text("50"), maximumValueLabel: Text("300")) {}
                     } label: {
                         Label("preference.title.gyroscope_sensitivity", systemImage: "move.3d")
-                            .badge(Int(preferences.control.gyroscope_sensitivity))
+                            .badge("\(Int(preferences.control.gyroscope_sensitivity))%")
                     }
-                } footer: {
-                    Text("preference.detail.gyroscope_sensitivity")
+                } header: {
+                    Text("preference.section.control.gyroscope")
                 }
             }
             .navigationTitle("preference.section.control")
@@ -333,7 +360,7 @@ struct PreferencesView: View {
                     Toggle(isOn: $preferences.debug.debug_hide_home_indicator) {
                         Label("preference.title.debug_hide_home_indicator", systemImage: "iphone.and.arrow.forward")
                     }
-                    .disabled((UIApplication.shared.connectedScenes.first as? UIWindowScene)?.keyWindow?.safeAreaInsets.bottom == 0)
+                    .disabled(UIApplication.shared.currentInternalWindow()?.safeAreaInsets.bottom == 0)
                 } footer: {
                     Text("preference.detail.debug_hide_home_indicator")
                 }
@@ -356,59 +383,5 @@ struct PreferencesView: View {
             }
             .navigationTitle("preference.section.debug")
         }
-    }
-    
-    var body: some View {
-        Form {
-            Section {
-                Label("launcher.menu.custom_controls", systemImage: "gamecontroller")
-            }
-            Section {
-                NavigationLink {
-                    GeneralView(preferences: preferences)
-                } label: {
-                    Label("preference.section.general", systemImage: "cube")
-                }
-                NavigationLink {
-                    VideoAndAudioView(preferences: preferences)
-                } label: {
-                    Label("preference.section.video", systemImage: "video")
-                }
-                NavigationLink {
-                    ControlView(preferences: preferences)
-                } label: {
-                    Label("preference.section.control", systemImage: "gamecontroller")
-                }
-                NavigationLink {
-                    JavaView(preferences: preferences)
-                } label: {
-                    Label("preference.section.java", systemImage: "sparkles")
-                }
-                NavigationLink {
-                    DebugView(preferences: preferences)
-                } label: {
-                    Label("preference.section.debug", systemImage: "ladybug")
-                }
-            }
-            Section {
-                Link(destination: URL(string: "https://pojavlauncherteam.github.io/changelogs/IOS.html")!) {
-                    Label("News", systemImage: "newspaper")
-                }
-                Link(destination: URL(string: "https://pojavlauncherteam.github.io")!) {
-                    Label("Wiki", systemImage: "book")
-                }
-                Link(destination: URL(string: "https://github.com/PojavLauncherTeam/PojavLauncher_iOS/issues")!) {
-                    Label("Report an issue", systemImage: "ant")
-                }
-                Label("login.menu.sendlogs", systemImage: "square.and.arrow.up")
-            } footer: {
-                Text("""
-                \(Bundle.main.infoDictionary!["CFBundleName"]!) \(Bundle.main.infoDictionary!["CFBundleShortVersionString"]!) (\(Bundle.main.infoDictionary!["PLBundleBuild"] ?? "?commit/branch"))
-                \(UIDevice.current.systemName) \(ProcessInfo.processInfo.operatingSystemVersionString)
-                PID: \(ProcessInfo.processInfo.processIdentifier)
-                """)
-            }
-        }
-        .navigationTitle("Settings")
     }
 }

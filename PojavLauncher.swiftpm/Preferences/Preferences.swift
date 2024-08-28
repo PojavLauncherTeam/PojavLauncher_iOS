@@ -6,6 +6,7 @@ class Preferences: Codable, ObservableObject {
         @Published var cosmetica: Bool = true
         @Published var debug_logging: Bool = false
         // var appicon: String
+        @Published var game_directory: String? = "default"
     }
     @Published var general = General()
     
@@ -58,4 +59,15 @@ class Preferences: Codable, ObservableObject {
         @Published var debug_auto_correction = true
     }
     @Published var debug = Debug()
+    
+    // Internal
+    class Miscellaneous: Codable, ObservableObject {
+        @Published var isolated = false
+        @Published var selected_account = ""
+        @Published var latest_version = [
+            "release": "",
+            "snapshot": ""
+        ]
+    }
+    @Published var misc = Miscellaneous()
 }

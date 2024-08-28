@@ -131,13 +131,13 @@
 
 "preference.section.general" = "General Settings";
 "preference.section.video" = "Video and Audio Settings";
-"preference.section.footer.video" = "Auto renderer allows PojavLauncher to choose the best option based on Minecraft version. Decreasing resolution reduces GPU workload for better performance.";
 "preference.section.control" = "Control customization";
+"preference.section.control.appearance" = "Appearance";
+"preference.section.control.gesture" = "Gestures and feedback";
+"preference.section.control.mouse" = "Virtual mouse";
+"preference.section.control.gyroscope" = "Gyroscope";
 "preference.section.debug" = "UI Debugging settings";
-"preference.section.footer.debug" = "You may need to restart the launcher for changes to take effect.";
-//"preference.section.footer.control" = "";
 "preference.section.java" = "Java Tweaks";
-//"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "Are you sure?";
 
@@ -184,7 +184,7 @@
 
 "preference.detail.renderer" = "Change the OpenGL render engine to use. Zink is temporarily disabled on iOS 16 and later to diagnose issues.";
 
-"preference.title.resolution" = "Resolution (%)";
+"preference.title.resolution" = "Resolution";
 "preference.detail.resolution" = "Allows you to decrease the game resolution.";
 "preference.title.max_framerate" = "Maximum framerate";
 "preference.detail.max_framerate" = "Allows you to limit the game framerate to 60FPS on ProMotion displays.";
@@ -208,16 +208,12 @@
 "preference.title.gesture_hotbar" = "Hotbar gestures";
 "preference.detail.gesture_hotbar" = "Enables gestures, such as touch the hotbar slot, swap items between hand, throw items";
 "preference.title.disable_haptics" = "Disable on-screen haptics";
-"preference.title.press_duration" = "Long-press duration (ms)";
+"preference.title.press_duration" = "Long-press duration";
 "preference.detail.press_duration" = "Trigger press duration for destroying blocks and dropping items.";
-"preference.title.button_scale" = "On-screen button scale (%)";
-"preference.detail.button_scale" = "Upscale them if buttons are too small, usually needed for iPad users.";
-"preference.title.mouse_scale" = "Mouse scaling (%)";
-"preference.detail.mouse_scale" = "Change the size of the virtual mouse";
-"preference.title.mouse_speed" = "Mouse speed (%)";
-"preference.detail.mouse_speed" = "Change the speed of the virtual mouse";
-"preference.title.virtmouse_enable" = "Virtual mouse";
-"preference.detail.virtmouse_enable" = "Enable this option to start with virtual mouse on";
+"preference.title.button_scale" = "On-screen button scale";
+"preference.title.mouse_scale" = "Mouse scale";
+"preference.title.mouse_speed" = "Mouse speed";
+"preference.title.virtmouse_enable" = "Enable virtual mouse";
 "preference.title.slideable_hotbar" = "Slideable hotbar";
 "preference.detail.slideable_hotbar" = "Make the hotbar slideable like the mouse wheel";
 

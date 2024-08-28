@@ -12,39 +12,40 @@ struct GameDirectoryRow: View {
 }
 
 struct GameDirectoryView: View {
+    @ObservedObject var preferences: Preferences
     @State private var directories: OrderedSet<String> = listInstancesDir()
-    @State private var showInitialProfilesOnce = false
-    @State private var showInitialProfilesView = false
     @State private var showCreateDirectoryInput = false
     @State private var showDeleteAlert = false
     @State private var dirToProcess = ""
     var body: some View {
-        // Hidden navigation link
-        // TODO: read from preference
-        NavigationLink(destination: ProfilesView(directory: "default"), isActive: $showInitialProfilesView) {
-            EmptyView()
-        }
         // Game directories
-        List {
-            ForEach (directories, id: \.self) { directory in
-                NavigationLink {
+        List(directories, id: \.self, selection: $preferences.general.game_directory) { directory in
+            HStack {
+                NavigationLink(tag: directory, selection: $preferences.general.game_directory) {
                     ProfilesView(directory: directory)
                 } label: {
                     GameDirectoryRow(directory: directory)
                 }
-                .swipeActions(allowsFullSwipe: true) {
-                    Button("Delete") {
-                        dirToProcess = directory
-                        showDeleteAlert.toggle()
-                    }.tint(.red)
-                }.id(directory)
             }
+            .swipeActions(allowsFullSwipe: true) {
+                Button("Delete") {
+                    dirToProcess = directory
+                    showDeleteAlert.toggle()
+                }.tint(.red)
+            }.id(directory)
         }
         .confirmationDialog("preference.title.confirm", isPresented: $showDeleteAlert, titleVisibility: .visible) {
             Button("OK", role: .destructive) {
                 GameDirectory.removeDirectory(dirToProcess)
-                withAnimation {
-                    directories.remove(dirToProcess)
+                // Always keep the default directory
+                if dirToProcess != "default" {
+                    withAnimation {
+                        directories.remove(dirToProcess)
+                    }
+                }
+                // Reset to default if the user deletes current directory
+                if dirToProcess == preferences.general.game_directory {
+                    preferences.general.game_directory = "default"
                 }
             }
         } message: {
@@ -73,12 +74,6 @@ struct GameDirectoryView: View {
                 }
             }
             Button("Cancel", role: .cancel) {}
-        }
-        .onAppear {
-            if !showInitialProfilesOnce {
-                showInitialProfilesOnce = true
-                showInitialProfilesView = true
-            }
         }
         .navigationTitle("Game directory")
     }
