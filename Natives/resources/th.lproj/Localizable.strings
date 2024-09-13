@@ -56,6 +56,9 @@
 "custom_controls.control_menu.add_drawer" = "เพิ่มลิ้นชัก";
 "custom_controls.control_menu.add_joystick" = "เพิ่มจอยสติ๊ก";
 "custom_controls.error.incompatible" = "Ret";
+"custom_controls.hint" = "I'm ";
+
+"init.migrateDir" = "Mmk";
 
 "launcher.mcl.downloading_file" = "กำลังดาวน์โหลด %@";
 "launcher.mcl.error_download" = "ล้มเหลวที่จะโหลด %@: %@";
@@ -63,6 +66,7 @@
 "launcher.menu.custom_controls" = "การควบคุมกำหนดเอง";
 
 "launcher.wait_jit.title" = "กำลังรอ JIT";
+"launcher.wait_jit.message" = "PojavLauncher relies on Just-in-time compilation for Java to work at maximum performance.";
 
 "login.alert.field.username" = "ชื่อผู้ใช้";
 
