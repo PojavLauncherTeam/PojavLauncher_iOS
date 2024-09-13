@@ -55,6 +55,7 @@
 "custom_controls.control_menu.add_button" = "เพิ่มปุ่ม";
 "custom_controls.control_menu.add_drawer" = "เพิ่มลิ้นชัก";
 "custom_controls.control_menu.add_joystick" = "เพิ่มจอยสติ๊ก";
+"custom_controls.error.incompatible" = "Ret";
 
 "launcher.mcl.downloading_file" = "กำลังดาวน์โหลด %@";
 "launcher.mcl.error_download" = "ล้มเหลวที่จะโหลด %@: %@";
