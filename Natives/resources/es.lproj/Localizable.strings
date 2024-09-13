@@ -14,6 +14,7 @@
 
 // The play button
 "Play" = "Jugar";
+"Details" = "Detalles";
 
 // Version categories
 "Installed" = "Instalada";
@@ -74,9 +75,11 @@
 "launcher.mcl.error_download" = "Error al descargar %@: %@";
 
 "launcher.menu.custom_controls" = "Controles personalizados";
+"launcher.menu.execute_jar" = "Ejecutar .jar";
 
 "launcher.wait_jit.title" = "Esperando por JIT";
 "launcher.wait_jit.message" = "PojavLauncher utiliza la compilación Just-in-time para que Java funcione con el máximo rendimiento.";
+"launcher.wait_jit_trollstore.message" = "Si aún ves este mensaje, por favor activa el Esquema de URL en TrollStore.";
 
 "login.error.username.outOfRange" = "El nombre de usuario debe tener al menos 3 caracteres y un máximo de 16 caracteres";
 
@@ -186,6 +189,9 @@
 "preference.title.max_framerate" = "FPS máximos";
 "preference.detail.max_framerate" = "Te permite limitar el juego a 60FPS en pantallas ProMotion.";
 
+"preference.title.performance_hud" = "Mostrar HUD de rendimiento";
+"preference.detail.performance_hud" = "Cuando esté disponible, mostrar la superposición del monitoreo del rendimiento.";
+
 "preference.title.fullscreen_airplay" = "AirPlay en pantalla completa";
 "preference.detail.fullscreen_airplay" = "Permite presentar la ventana de juego a pantalla completa en la pantalla externa en lugar de reflejar todo en la pantalla interna.";
 "preference.title.silence_other_audio" = "Pausar audio al abrir el juego";
@@ -193,6 +199,8 @@
 "preference.title.default_gamepad_ctrl" = "Configuración del mando";
 "preference.title.hardware_hide" = "Ocultar controles cuando el hardware está conectado";
 "preference.detail.hardware_hide" = "Activa el comportamiento de desactivar automáticamente los controles en pantalla cuando un ratón o un mando están conectados.";
+"preference.title.recording_hide" = "Ocultar controles de la grabación de pantalla";
+"preference.detail.recording_hide" = "Oculta los controles de la captura y grabación de pantalla mientras permanezcna visibles en la pantalla.";
 "preference.title.gesture_mouse" = "Gestos de ratón";
 "preference.detail.gesture_mouse" = "Habilita gestos, como tocar para colocar bloques, mantener para romper bloques, desplazar con 2 dedos";
 "preference.title.gesture_hotbar" = "Gestos de la hotbar";
