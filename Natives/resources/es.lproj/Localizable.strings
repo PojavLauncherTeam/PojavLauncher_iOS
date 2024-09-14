@@ -196,6 +196,8 @@
 "preference.detail.fullscreen_airplay" = "Permite presentar la ventana de juego a pantalla completa en la pantalla externa en lugar de reflejar todo en la pantalla interna.";
 "preference.title.silence_other_audio" = "Pausar audio al abrir el juego";
 "preference.detail.silence_other_audio" = "Actívalo para permitir a PojavLauncher pausar el audio de otras aplicaciones, como la música, al iniciar el juego.";
+"preference.title.silence_with_switch" = "Desactivar el audio con el interruptor silencioso y denegar la entrada del micrófono";
+"preference.detail.silence_with_switch" = "Actívalo para desactivar el audio cuando el modo silencioso está encendido, y denegar la entrada del micrófono. Los auriculares y los altavoces externos no se ven afectados.";
 "preference.title.default_gamepad_ctrl" = "Configuración del mando";
 "preference.title.hardware_hide" = "Ocultar controles cuando el hardware está conectado";
 "preference.detail.hardware_hide" = "Activa el comportamiento de desactivar automáticamente los controles en pantalla cuando un ratón o un mando están conectados.";
@@ -231,6 +233,7 @@
 "preference.manage_runtime.header.default" = "Versión de Java preferida";
 "preference.manage_runtime.default.1165" = "1.16.5 y anteriores";
 "preference.manage_runtime.default.117" = "1.17 y más recientes";
+"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 y anteriores pueden ejecutarse con una versión más reciente de Java, sin embargo la compatibilidad con mods no está garantizada. Los runtimes externos pueden colocarse en la carpeta “java_runtimes”. Cambiar la versión de Java para “Ejecutar .jar” sólo tendrá efecto si el instalador no espera una versión más reciente de Java.";
 "preference.manage_runtime.footer.java8" = "Esta es la versión predeterminada para Minecraft 1.16.5 y posteriores.";
 "preference.manage_runtime.footer.java17" = "Esta es la versión predeterminada para Minecraft 1.17. y superiores.";
 "preference.manage_runtime.header.invalid" = "Runtimes inválidos";
