@@ -19,6 +19,7 @@
 "Installed" = "Terpasang";
 "Snapshot" = "Snapshot";
 "Releases" = "Rilis";
+"Unstable" = "Tidak stabil";
 "Old-beta" = "Beta-lama";
 "Old-alpha" = "Alpha-lama";
 
@@ -28,7 +29,12 @@
 "Move" = "Pindah";
 "Remove" = "Hapus";
 "Resize" = "Ubah ukuran";
+// Visibility
+"Always" = "Selalu";
+"In game" = "Di permainan";
+"In menu" = "Di menu";
 
+"custom_controls.button_edit.forward_lock" = "Kunci ke depan";
 "custom_controls.button_edit.name" = "Nama";
 "custom_controls.button_edit.size" = "Ukuran";
 "custom_controls.button_edit.mapping" = "Mapping";
@@ -37,17 +43,17 @@
 "custom_controls.button_edit.mouse_pass" = "Mouse pass";
 "custom_controls.button_edit.swipeable" = "Bisa digesek";
 "custom_controls.button_edit.bg_color" = "Warna background";
-"custom_controls.button_edit.stroke_width" = "Tebal garis (%)";
+"custom_controls.button_edit.stroke_width" = "Ketebalan garis (dp)";
 "custom_controls.button_edit.stroke_color" = "Warna garis";
 "custom_controls.button_edit.corner_radius" = "Radius sudut (%)";
 "custom_controls.button_edit.opacity" = "Kegelapan (%)";
+"custom_controls.button_edit.visibility" = "Visibilitas";
 
 "custom_controls.button_menu.add_subbutton" = "Tambahkan tombol";
 "custom_controls.control_menu.discard_changes" = "Batal perubahan";
 "custom_controls.control_menu.exit" = "Keluar";
 "custom_controls.control_menu.exit.warn" = "Anda akan keluar tanpa menyimpan perubahan.";
 "custom_controls.control_menu.save" = "Simpan";
-"custom_controls.control_menu.save.error.default" = "Nama kontrol tidak bisa \"default\" karena akan ditimpa.";
 "custom_controls.control_menu.save.error.json" = "Kesalahan JSON";
 "custom_controls.control_menu.save.error.write" = "Kesalahan saat menyimpan file";
 "custom_controls.control_menu.load" = "Memuat";
@@ -55,16 +61,20 @@
 "custom_controls.control_menu.safe_area" = "Area aman";
 "custom_controls.control_menu.add_button" = "Tambah tombol";
 "custom_controls.control_menu.add_drawer" = "Tambah drawer";
+"custom_controls.control_menu.add_joystick" = "Tambah Joystick";
 "custom_controls.error.incompatible" = "Kontrol versi ini (code %d) tidak diimplementasikan di build peluncur ini.";
 "custom_controls.hint" = "Pencet lama dimanapun di layar untuk opsi tambahan";
 
 "init.migrateDir" = "Data folder PojavLauncher sekarang di %@. Semua datamu yang ada telah dipindah ke lokasi baru tersebut.";
 
+"java.error.missing_main_class" = "%@ kehilangan atribut kelas utama. Jika ini adalah mod, taruh itu ke folder \"mods\" dari instansi pilihan mu.";
+"java.error.missing_runtime" = "%@ membutuhkan Java %d atau lebih baru untuk dijalankan. Tolong pasang itu terlebih dahulu dan pilih itu di Kelola Runtime.";
+
 "launcher.mcl.downloading_file" = "Mengunduh %@";
 "launcher.mcl.error_download" = "Gagal untuk mengunduh %@: %@";
 
 "launcher.menu.custom_controls" = "Kontrol kustom";
-"launcher.menu.install_jar" = "Install .jar";
+"launcher.menu.execute_jar" = "Eksekusi .jar";
 
 "launcher.wait_jit.title" = "Menunggu JIT";
 "launcher.wait_jit.message" = "PojavLauncher membutuhkan compilation Just-in-Time agar Java dapat bekerja dalam perfoma maksimal.";
@@ -77,6 +87,8 @@
 "login.jit.enabled" = "JIT telah dinyalakan";
 "login.jit.fail" = "JIT tidak dapat diaktifkan.";
 "login.jit.fail.title" = "JIT tidak bisa diaktifkan pada perangkat anda.";
+"login.jit.fail.description" = "Tidak ada integrasi yang dapat digunakan untuk mengaktifkan JIT secara otomatis di perangkat Anda, dan sekarang harus diaktifkan secara manual. Kesalahan telah dicatat ke latestlog.txt.";
+"login.jit.fail.description_unsupported" = "Terdeteksi metode pemasangan yang tidak didukung. Tolong pasang ulang menggunakan metode yang didukung.";
 
 // Login buttons
 "login.menu.sendlogs" = "Kirim log-log kamu";
@@ -91,11 +103,13 @@
 "login.warn.title.legacy_ios" = "Rilis PojavLauncher selanjutnya memerlukan pembaruan sistem.";
 "login.warn.message.legacy_ios" = "Untuk menggunakan rilis selanjutnya, perangkat yang dapat menggunakan iOS 14 diperlukan.";
 "login.warn.title.limited_ram" = "Perangkat ini memiliki jumlah memori terbatas yang tersedia.";
+"login.warn.message.limited_ram" = "Kami merekomendasikan RAM Otomatis aktif untuk mencegah ketidakstabilan dan masalah performa.";
 
 "login.warn.title.demomode" = "Akun anda adalah akun demo";
 "login.warn.message.demomode" = "Sebagai pengganti offline dan mode lokal, mode demo akan memperbolehkan anda masuk ke akun Microsoft yang tidak mempunyai permainannya dan main versi Java Edition Trial, diadakan sejak versi 1.3.1 dan seterusnya. Versi lebih lama mempunyai permainan penuhnya, karena peluncur resmi tidak memberlakukan restriksi ini. Lihat website kita untuk dapat mempelajari lebih lanjut tentang transisi dari mode offline.";
 
 "login.warn.title.localmode" = "Mode offline sekarang menjadi mode lokal.";
+"login.warn.message.localmode" = "Anda bisa memainkan versi yang dipasang, tetapi Anda tidak akan bisa mengunduh Minecraft tanpa sebuah akun yang di beli. Tidak akan ada dukungan atau bantuan tentang masalah dengan akun lokal, atau cara lain mendapatkan Minecraft.";
 
 "login.msa.error.xsts.noxboxacc" = "Tidak ada profil Xbox yang terdaftar di akun Microsoft ini. Mohon memastikan bahwa anda telag membuat sebuah profil Xbox.\nKode error: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live sekarang sedang tidak ada di negata anda.\nKode error: 2148916235";
@@ -110,13 +124,14 @@
 "login.msa.progress.checkMCProfile" = "(5/5) Memeriksa profil Minecraft";
 
 "News" = "Berita";
+"Profiles" = "Profil";
 "Settings" = "Pengaturan";
 
 "preference.section.general" = "Peraturan Umum";
 "preference.section.video" = "Peraturan Video";
+"preference.section.footer.video" = "Perender otomatis mengizinkan PojavLauncher untuk memilih opsi terbaik berdasarkan versi Minecraft. Menurunkan resolusi mengurangi kerja GPU untuk performa lebih baik.";
 "preference.section.control" = "Kustomisasi kontrol";
 "preference.section.debug" = "Peraturan debugging UI";
-"preference.section.footer.debug" = "Selain debugging, peraturan-peraturan ini mungkin berguna untuk kontrol kustom. Anda mungkin butuh mengrestart peluncur agar perubahan berlaku.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Tweak Java";
 //"preference.section.footer.java" = "";
@@ -133,12 +148,11 @@
 "preference.detail.cosmetica" = "Nyalakan cape dari Cosmetica (sebelumnya Arc). Untuk informasi lebih lanjut mohon kunjungi https://cosmetica.cc. Membutuhkan OptiFine";
 "preference.title.debug_logging" = "Logging debug";
 "preference.detail.debug_logging" = "Mencatat peraturan-peraturan dalam dan aksi ke latestlog.txt. Ini membantu pengembang untuk mencari masalah lebih mudah, tetapi Minecragt kemungkinan akan berjalan lebih lambat karena logs akan lebih sering dicatat.";
-"preference.title.jitstreamer_server" = "IP server JitStreamer";
-"preference.detail.jitstreamer_server" = "Memperbolehkan anda untuk mengganti ke sebuah IP server JitStream kustom, seperti untuk instansi yang dihost sendiri. Opsi ini bisa dibiarkan jika anda menggunakan server JitStreamer bawaan.";
 "preference.title.appicon" = "Atur ikon aplikasi";
 "preference.detail.appicon" = "Memperbolehkan anda untuk memilih antara beberapa ikon layar rumah berbeda untuk PojavLauncher.";
 "preference.title.appicon-default" = "Familiar PojavLauncher light";
 "preference.title.appicon-dark" = "Familiar PojavLauncher dark";
+"preference.title.appicon-development" = "Penciled Development";
 "preference.title.hidden_sidebar" = "Sembunyikan sidebar menu utama secara default";
 "preference.detail.hidden_sidebar" = "Memperbolehkan anda untuk menyembunyikan sidebar di menu utama secara default dan saat mengubah orientasi di iOS 14 dan lebih baru.";
 
@@ -149,20 +163,42 @@
 "preference.title.confirm.reset_settings" = "Ini akan menghapus semua peraturan yang telah kamu ubah, termasuk resolusi, besar tombol, dan argument Java.";
 "preference.title.done.reset_settings" = "Semua peraturan bawaan telah dipulihkan.";
 
+"preference.title.erase_demo_data" = "Hapus data permainan Demo";
+"preference.title.confirm.erase_demo_data" = "Ini akan menghapus semua versi permainan Demo dan data yang digunakan untuk akun Demo.";
+"preference.title.done.erase_demo_data" = "Semua data permainan Demo telah dihapus.";
+
 "preference.title.renderer" = "Renderer";
+
+"preference.title.renderer.release.auto" = "Otomatis";
+"preference.title.renderer.release.gl4es" = "Holy GL4ES";
+"preference.title.renderer.release.angle" = "ANGLE";
+"preference.title.renderer.release.zink" = "Zink";
 
 "preference.title.renderer.debug.auto" = "Otomatis: gl4es atau ANGLE";
 "preference.title.renderer.debug.gl4es" = "gl4es 1.1.4 - mengekspor OpenGL 2.1";
 "preference.title.renderer.debug.angle" = "ANGLE (1.17+) - mengekspor OpenGL 3.2 (Profil Core, terbatas)";
 "preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - mengekspor OpenGL 4.1";
 
-"preference.detail.renderer" = "Ganti mesin render OpenGL yang dipake";
+"preference.detail.renderer" = "mengganti renderer OpenGL yang dipakai. Zink sementara di nonaktifkan di versi iOS 16 dan lanjut untuk mendiagnosis masalah.";
 
 "preference.title.resolution" = "Resolusi (%)";
 "preference.detail.resolution" = "Memperbolehkan anda untuk menunrunkan resolusi permainan.";
+"preference.title.max_framerate" = "Kecepatan bingkai maksimum";
+"preference.detail.max_framerate" = "Memperbolehkan anda untuk membatasi kecepatan ke 60FPS pada layar ProMotion.";
 
 "preference.title.fullscreen_airplay" = "Fullscreen AirPlay";
 "preference.detail.fullscreen_airplay" = "Memperbolehkan anda mempresentasikan window permainan dalam fullscreen di layar eksternal daripada mengkaca semuanya di layar.";
+"preference.title.silence_other_audio" = "Jeda audio ketika permainan terbuka";
+"preference.detail.silence_other_audio" = "Aktifkan untuk memperbolehkan PojavLauncher untuk menjeda audio dari aplikasi lain, seperti Musik, ketika membuka permainan.";
+"preference.title.default_gamepad_ctrl" = "Konfigurasi Kontroler";
+"preference.title.hardware_hide" = "Sembunyikan kontrol saat perangkat keras tersambung";
+"preference.detail.hardware_hide" = "Mengaktifkan perilaku menonaktifkan overlay kontrol di layar secara otomatis saat mouse atau
+pengontrol game terhubung.";
+"preference.title.gesture_mouse" = "Gestur Tetikus";
+"preference.detail.gesture_mouse" = "Aktifkan gestur, seperti ketuk untuk menaruh blok, tahan untuk memecah blok, bergulir dengan 2 jari";
+"preference.title.gesture_hotbar" = "Gestur hotbar";
+"preference.detail.gesture_hotbar" = "Aktifkan gestur, seperti sentuh slot hotbar, bertukar item antar tangan, melempar item";
+"preference.title.disable_haptics" = "Matikan haptik dilayar";
 "preference.title.press_duration" = "Durasi pencet-lama (ms)";
 "preference.detail.press_duration" = "Durasi pemicu pencet untuk menghancurkan balok dan menjatuhkan barang.";
 "preference.title.button_scale" = "Skala tombol dilayar (%)";
@@ -177,12 +213,24 @@
 "preference.detail.slideable_hotbar" = "Buat hotbar bisa digeser seperti mouse wheel";
 
 "preference.title.gyroscope_enable" = "Hidupkan kontrol giroskop";
+"preference.detail.gyroscope_enable" = "Mengaktifkan ini akan memperolehkan Anda untuk memutar permainan dengan memutar ponsel Anda";
+"preference.title.gyroscope_invert_x_axis" = "Balikan giroskop kiri dan kanan";
+"preference.detail.gyroscope_invert_x_axis" = "Balikan sumbu X giroskop";
 "preference.title.gyroscope_sensitivity" = "Giroskop mengontrol sensitivitas";
 "preference.detail.gyroscope_sensitivity" = "Sesuaikan sensitivitas kontrol giroskop";
 
-"preference.title.java_home" = "Gunakan Java 17 untuk Minecraft < 1.17";
+"preference.title.manage_runtime" = "Kelola Runtime";
+"preference.title.confirm.delete_runtime" = "%@ akan dihapus";
+"preference.manage_runtime.header.default" = "Velersi Java preferensi";
+"preference.manage_runtime.default.1165" = "1.16.5 dan lebih lama";
+"preference.manage_runtime.default.117" = "1.17 dan lebih baru";
+"preference.manage_runtime.footer.java8" = "Ini adalah versi bawaan untuk Minecraft 1.16.5 dan lebih lama.";
+"preference.manage_runtime.footer.java17" = "Ini adalah bawaan untuk Minecraft 1.17 dan lebih baru.";
+"preference.manage_runtime.header.invalid" = "Runtime tidak valid";
+
 "preference.title.java_args" = "Argumen peluncuran JVM";
 "preference.placeholder.java_args" = "Sebutkan argument...";
+"preference.title.env_variables" = "Variable environment";
 "preference.title.auto_ram" = "RAM otomatis";
 "preference.detail.auto_ram" = "Mengaktifkan pengatur RAM otomatis";
 "preference.warn.auto_ram" = "Mematikan opsi ini di perangkat tidak dijailbreak bisa berefek membuat permainan tidak stabil jika diubah. Lanjut dengan perhatian.";
@@ -190,6 +238,7 @@
 "preference.detail.allocated_memory" = "Mengkontrol berapa banyak memori yang diberikan ke Minecraft";
 "preference.warn.allocated_memory" = "Karena limitasi dari operating systemnya, opsi ini bisa membuat permainan tidak stabil dengan isi yang tinggi. Lanjut dengan perhatian.";
 "preference.title.custom_env" = "Variable environment";
+"preference.detail.custom_env" = "Opsi ini masih dibawah pengembangan. Buat dan ubah custom_env.txt in meantime.";
 
 "preference.title.debug_skip_wait_jit" = "Lewati dialog \"Menunggu JIT\"";
 "preference.detail.debug_skip_wait_jit" = "Ini tidak memperbolehkan anda untuk meluncur tanpa JIT, alih-alih ini melewati cek debugger, karena ceknya gagal di jailbreak tertentu.";
@@ -199,10 +248,64 @@
 "preference.detail.debug_auto_correction" = "Nyalakan koreksi otomatis saat mengetik teks di dalam permainan.";
 "preference.title.debug_hide_home_indicator" = "Sembunyikan indikator rumah";
 "preference.detail.debug_hide_home_indicator" = "Ini akan mematikan penguncian indikator rumah. Anda akan butuh menggunakan Akses Dipandu untuk menyembunyikan dan mengunci indikator rumah di waktu bersamaan.";
-"preference.title.debug_show_layout_bounds" = "Tampilkan batas tata letak";
-"preference.detail.debug_show_layout_bounds" = "Tampilkan batas klip, margin";
-"preference.title.debug_show_layout_overlap" = "Tampilkan layout yang overlapping";
-"preference.detail.debug_show_layout_overlap" = "Lapis semua view dengan sebuah warna transparen untuk mengungkap view yang overlapping.";
+
+"preference.profile.title.name" = "Nama";
+"preference.profile.title.loader_type" = "Tipe pemuat";
+"preference.profile.title.loader_version" = "Versi loader";
+"preference.profile.title.version" = "Versi";
+"preference.profile.title.version_type" = "Tipe versi";
+"preference.profile.title.default_touch_control" = "Kontrol sentuhan";
+"preference.profile.title.default_gamepad_control" = "Kontrol Gamepad";
+
+"profile.error.name_exists" = "Profil dengan nama itu sudah ada. Toko gunakan nama lain.";
+"profile.section.instance" = "Pengaturan instansi permainan";
+"profile.title.create" = "Buat profil baru";
+"profile.title.separate_preference" = "Pengaturan isolasi";
+"profile.detail.separate_preference" = "Nyalakan opsi ini untuk isolasi semua perubahan yang ada di pengaturan. Melakukan pengaturan ulang akan mengembalikan ke pengaturan global bukan pengaturan bawaan.";
+"profile.title.install_fabric_quilt" = "Menginstall Fabric/Quilt";
+
+"controller_configurator.title.current" = "Berkas konfigurasi Gamepad";
 "controller_configurator.title.type.xbox" = "Xbox";
 "controller_configurator.title.type.playstation" = "PlayStation";
+
+"controller_configurator.xbox.title.bumper_left" = "Bumper kiri";
+"controller_configurator.xbox.title.bumper_right" = "Bumper kanan";
+"controller_configurator.xbox.title.trigger_left" = "Pemicu kiri";
+"controller_configurator.xbox.title.trigger_right" = "Pemicu kanan";
+"controller_configurator.xbox.title.named_back" = "Panduan";
+"controller_configurator.xbox.title.named_start" = "Menu";
+"controller_configurator.xbox.title.named_a" = "A";
+"controller_configurator.xbox.title.named_b" = "B";
+"controller_configurator.xbox.title.named_x" = "X";
+"controller_configurator.xbox.title.named_y" = "Y";
+"controller_configurator.xbox.title.dpad_up" = "Atas";
+"controller_configurator.xbox.title.dpad_down" = "Bawah";
+"controller_configurator.xbox.title.dpad_left" = "Kiri";
+"controller_configurator.xbox.title.dpad_right" = "Kanan";
+"controller_configurator.xbox.title.thumb_left" = "Klik jempol kiri";
+"controller_configurator.xbox.title.thumb_right" = "Klik jempol kanan";
+
+"controller_configurator.playstation.title.bumper_left" = "L1";
+"controller_configurator.playstation.title.bumper_right" = "R1";
+"controller_configurator.playstation.title.trigger_left" = "L2";
+"controller_configurator.playstation.title.trigger_right" = "R2";
 "controller_configurator.playstation.title.named_back" = "Pilih";
+"controller_configurator.playstation.title.named_start" = "Mulai";
+"controller_configurator.playstation.title.named_a" = "Silang";
+"controller_configurator.playstation.title.named_b" = "Lingkaran";
+"controller_configurator.playstation.title.named_x" = "Kotak";
+"controller_configurator.playstation.title.named_y" = "Segitiga";
+"controller_configurator.playstation.title.dpad_up" = "Atas";
+"controller_configurator.playstation.title.dpad_down" = "Bawah";
+"controller_configurator.playstation.title.dpad_left" = "Kiri";
+"controller_configurator.playstation.title.dpad_right" = "Kanan";
+"controller_configurator.playstation.title.thumb_left" = "L3";
+"controller_configurator.playstation.title.thumb_right" = "R3";
+
+"controller_configurator.section.config_files" = "Berkas konfigurasi saat ini";
+"controller_configurator.section.game_mappings" = "Pemetaan permainan";
+"controller_configurator.section.footer.game_mappings" = "Kaitkan saat tetikus terkunci di dalam permainan.";
+"controller_configurator.section.menu_mappings" = "Menu pemetaan";
+"controller_configurator.section.footer.menu_mappings" = "Kaitkan saat tetikus tidak terkunci, seperti saat di title screen atau di menu jeda.";
+"controller_configurator.section.controller_style" = "Tipe pengontrol";
+"controller_configurator.section.footer.controller_style" = "Tampilan nama pengontrol yang berbeda di konfigurasi ini.";

@@ -10,26 +10,43 @@
 // The play button
 "Play" = "Speel";
 "Snapshot" = "Snapshot";
-"Old-beta" = "Old-beta";
-"Old-alpha" = "Old-alpha";
+"Old-beta" = "Oud-beta";
+"Old-alpha" = "Oud-alpha";
 "Edit" = "Bewerken";
 "Remove" = "Verwijderen";
 
+"custom_controls.button_edit.forward_lock" = "Vooruit vergrendelen";
 "custom_controls.button_edit.name" = "Naam";
 "custom_controls.button_edit.size" = "Grootte";
+"custom_controls.button_edit.mapping" = "Koppelen";
+"custom_controls.button_edit.orientation" = "Oriëntatie";
 "custom_controls.button_edit.toggleable" = "Omschakelbaar";
+"custom_controls.button_edit.bg_color" = "Achtergrondkleur";
+"custom_controls.button_edit.stroke_color" = "Lijnkleur";
+
+"custom_controls.button_menu.add_subbutton" = "Subknop toevoegen";
 "custom_controls.control_menu.exit" = "Afsluiten";
 "custom_controls.control_menu.save" = "Opslaan";
-"custom_controls.control_menu.load" = "Lading";
+"custom_controls.control_menu.load" = "Laad";
 "custom_controls.control_menu.add_button" = "Knop toevoegen";
+"custom_controls.control_menu.add_joystick" = "Joystick toevoegen";
 
 "launcher.menu.custom_controls" = "Aangepaste controles";
+"login.option.add" = "Account toevoegen";
 "login.option.select" = "Selecteer account";
 
 "News" = "Nieuws";
 "Settings" = "Instellingen";
+"preference.title.cosmetica" = "Cosmetica Capes";
 
 "preference.title.renderer" = "Renderer";
+
+"preference.title.gyroscope_enable" = "Zet gyroscoop besturing aan";
+"preference.title.gyroscope_sensitivity" = "Gyroscoop bediening gevoeligheid";
+
 "preference.title.java_args" = "JVM Launch argumenten";
 "preference.title.auto_ram" = "Automatische RAM";
 "preference.detail.auto_ram" = "Schakel in de automatische RAM aanpasser in";
+
+"preference.profile.title.name" = "Naam";
+"controller_configurator.playstation.title.named_back" = "Selecteer";

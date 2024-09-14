@@ -14,7 +14,6 @@
 "Old-alpha" = "אלפא: גרסה ישנה";
 "Edit" = "ערוך";
 "Remove" = "הסר";
-
 "custom_controls.button_edit.name" = "שם";
 "custom_controls.button_edit.size" = "גודל";
 "custom_controls.button_edit.mapping" = "מיפוי";
@@ -31,7 +30,6 @@
 "custom_controls.control_menu.add_button" = "הוסף כפתור";
 
 "launcher.menu.custom_controls" = "פקדים מותאמים אישית";
-"launcher.menu.install_jar" = "התקנת .jar";
 "login.option.select" = "בחר חשבון";
 
 "News" = "חדשות";
@@ -43,7 +41,12 @@
 "preference.title.game_directory" = "תיקיית המשחק";
 
 "preference.title.renderer" = "רינדור";
+
 "preference.title.java_args" = "פרמטרים להפעלת JVM";
 "preference.title.auto_ram" = "זיכרון אוטומטי";
 "preference.detail.auto_ram" = "מפעיל התאמת RAM אוטומטית";
 "preference.detail.allocated_memory" = "שולט בכמות הזיכרון הניתנת ל- Minecraft";
+
+"preference.profile.title.name" = "שם";
+"preference.profile.title.version" = "גרסא";
+"controller_configurator.playstation.title.named_back" = "בחר";

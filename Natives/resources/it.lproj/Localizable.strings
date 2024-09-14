@@ -29,51 +29,79 @@
 "Remove" = "Rimuovi";
 "Resize" = "Ridimensiona";
 
+"custom_controls.button_edit.forward_lock" = "Forward lock";
 "custom_controls.button_edit.name" = "Nome";
 "custom_controls.button_edit.size" = "Dimensione";
 "custom_controls.button_edit.mapping" = "Mapping";
 "custom_controls.button_edit.orientation" = "Orientamento";
 "custom_controls.button_edit.toggleable" = "Attivabile";
+"custom_controls.button_edit.mouse_pass" = "Passo Mouse";
 "custom_controls.button_edit.swipeable" = "Swipeabile";
 "custom_controls.button_edit.bg_color" = "Colore di sfondo";
 "custom_controls.button_edit.stroke_color" = "Colore tratto";
+"custom_controls.button_edit.corner_radius" = "Raggio dell'angolo (%)";
+"custom_controls.button_edit.opacity" = "Opacità (%)";
 
 "custom_controls.button_menu.add_subbutton" = "Aggiungi sotto-pulsante";
 "custom_controls.control_menu.discard_changes" = "Annulla modifiche";
 "custom_controls.control_menu.exit" = "Esci";
 "custom_controls.control_menu.exit.warn" = "Stai per uscire senza salvare le modifiche.";
 "custom_controls.control_menu.save" = "Salva";
-"custom_controls.control_menu.save.error.default" = "Il nome dei controlli non può essere \"default\" in quanto verrà sovrascritto.";
+"custom_controls.control_menu.save.error.json" = "Errore JSON";
+"custom_controls.control_menu.save.error.write" = "Errore nel salvataggio del file";
 "custom_controls.control_menu.load" = "Carica";
 "custom_controls.control_menu.make_default" = "Rendi predefinito";
+"custom_controls.control_menu.safe_area" = "Zona sicura";
 "custom_controls.control_menu.add_button" = "Aggiungi pulsante";
+"custom_controls.control_menu.add_drawer" = "Aggiungi drawer";
+"custom_controls.control_menu.add_joystick" = "Aggiungi joystick";
+"custom_controls.error.incompatible" = "Questa control version (codice %d) non è stata implementata in questa build del launcher.";
 "custom_controls.hint" = "Tieni premuto ovunque sullo schermo per più opzioni";
 
 "init.migrateDir" = "La nuova cartella di PojavLauncher è %@. Tutti i tuoi dati esistenti sono stati spostati.";
 
+"launcher.mcl.downloading_file" = "Download %@";
+"launcher.mcl.error_download" = "Download fallito: %@: %@";
+
 "launcher.menu.custom_controls" = "Controlli personalizzati";
-"launcher.menu.install_jar" = "Installa .jar";
 
 "launcher.wait_jit.title" = "In attesa di JIT";
 "launcher.wait_jit.message" = "PojavLauncher si basa sulla compilazione Just-in-time per Java per lavorare con prestazioni migliori.";
+
+"login.error.username.outOfRange" = "Il nome utente deve contenere tra i 3 e i 16 caratteri";
 
 "login.alert.field.username" = "Nome utente";
 
 "login.jit.checking" = "Controllando JIT";
 "login.jit.enabled" = "JIT è stato attivato";
+"login.jit.fail" = "Impossibile abilitare JIT.";
+"login.jit.fail.title" = "Non è stato possibile abilitare JIT sul tuo dispositivo.";
+"login.jit.fail.description" = "Nessuna integrazione può essere utilizzata per abilitare automaticamente JIT sul tuo dispositivo, e ora deve essere abilitata manualmente. Gli errori sono stati registrati su latestlog.txt.";
 
 // Login buttons
 "login.menu.sendlogs" = "Invia i logs";
 "login.option.add" = "Aggiungi un account";
 "login.option.select" = "Seleziona account";
+"login.option.demo" = "Account demo";
 "login.option.microsoft" = "Account Microsoft";
 "login.option.local" = "Account locale";
+
+"login.warn.title.legacy_device" = "La prossima versione di PojavLauncher non sarà compatibile con questo dispositivo.";
+"login.warn.message.legacy_device" = "Per eseguire la prossima major release, è necessario un dispositivo con almeno iOS 14.";
+"login.warn.title.legacy_ios" = "La prossima versione di PojavLauncher richiederà un aggiornamento di sistema.";
+"login.warn.message.legacy_ios" = "Per eseguire la prossima major release, è necessario un dispositivo con almeno iOS 14.";
+"login.warn.title.limited_ram" = "Questo dispositivo ha una quantità limitata di memoria.";
+"login.warn.message.limited_ram" = "Raccomandiamo di lasciare la RAM automatica abilitata per prevenire problemi di instabilità e prestazioni.";
+
+"login.warn.title.demomode" = "Stai usando un account Demo";
 "login.warn.message.demomode" = "In sostituzione di modalità offline e locale, la modalità demo vi permetterà di accedere ad un account Microsoft che non possiede il gioco e giocare la prova Java Edition, introdotto successivamente alla 1.3. Le versioni più vecchie contengono il gioco completo, poiché il launcher ufficiale non pone queste restrizioni. Visita il nostro sito web per saperne di più su questa transizione dalla modalità offline.";
 
 "login.warn.title.localmode" = "La modalità offline è ora modalità locale.";
 
 "login.msa.error.xsts.noxboxacc" = "Un profilo Xbox non è registrato per questo account Microsoft. Assicurati di aver creato un profilo Xbox.\nCodice di errore: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live non è attualmente disponibile nel tuo paese.\nCodice di errore: 2148916235";
+"login.msa.error.xsts.krverify" = "Il tuo account deve essere verificato dai tuoi tutori prima di poter continuare.\nCodice errore: 2148916236 o 2148916237.";
+"login.msa.error.xsts.underage" = "Il tuo account deve essere collegato all'account di un tutore prima di poter continuare.\nCodice errore: 2148916238";
 
 "login.msa.progress.acquireAccessToken" = "(1/5) Acquisendo il token d'accesso";
 "login.msa.progress.acquireXBLToken" = "(2/5) Acquisendo il token Xbox live d'accesso";
@@ -89,7 +117,6 @@
 "preference.section.video" = "Impostazioni video";
 "preference.section.control" = "Personalizza controlli";
 "preference.section.debug" = "Impostazioni di debug UI";
-"preference.section.footer.debug" = "Oltre al debug, queste impostazioni possono essere utili per i controlli personalizzati. Potrebbe essere necessario riavviare il launcher affinché le modifiche abbiano effetto.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Tweaks Java";
 //"preference.section.footer.java" = "";
@@ -108,6 +135,11 @@
 "preference.detail.debug_logging" = "Registra le impostazioni interne e le azioni su latestlog.txt. Questo aiuta gli sviluppatori a trovare problemi più facilmente, ma le prestazioni di Minecraft potrebbero risentirne a causa della scrittura dei registri.";
 "preference.title.appicon" = "Cambia icona app";
 "preference.detail.appicon" = "Ti consente di scegliere icone diverse di PojavLauncher sulla Schermata Home.";
+"preference.title.appicon-default" = "Familiar PojavLauncher chiaro";
+"preference.title.appicon-dark" = "Familiar PojavLauncher scuro";
+"preference.title.appicon-development" = "Sviluppo A Matita";
+"preference.title.hidden_sidebar" = "Nascondi la barra laterale principale di default";
+"preference.detail.hidden_sidebar" = "Consente di nascondere la barra laterale nel menu di default per impostazione di default quando si ruota.";
 
 "preference.title.reset_warnings" = "Ripristina gli avvisi";
 "preference.title.done.reset_warnings" = "Tutti gli avvisi sono stati resettati.";
@@ -116,14 +148,34 @@
 "preference.title.confirm.reset_settings" = "Questo rimuoverà tutte le tue preferenze personalizzate, incluse le dimensioni dei pulsanti, e gli argomenti Java.";
 "preference.title.done.reset_settings" = "Tutte le impostazioni predefinite sono state ripristinate.";
 
+"preference.title.erase_demo_data" = "Cancella i dati del gioco demo";
+"preference.title.confirm.erase_demo_data" = "Questo cancellerà tutte le versioni del gioco Demo e i dati utilizzati per gli account Demo.";
+"preference.title.done.erase_demo_data" = "Tutti i dati del gioco Demo sono stati cancellati.";
+
 "preference.title.renderer" = "Renderer";
+
+"preference.title.renderer.debug.auto" = "Auto: gl4es o ANGLE";
 "preference.title.renderer.debug.gl4es" = "gl4es 1.1.4 - exports OpenGL 2.1";
+"preference.title.renderer.debug.angle" = "ANGLE (1.17+) - esporta OpenGL 3.2 (Core Profile, limited)";
 "preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - exports OpenGL 4.1";
 
 "preference.detail.renderer" = "Cambia il motore di rendering OpenGL in uso";
 
 "preference.title.resolution" = "Risoluzione (%)";
 "preference.detail.resolution" = "Permette di diminuire la risoluzione del gioco.";
+"preference.title.max_framerate" = "Limite FPS";
+"preference.detail.max_framerate" = "Permette di limitare il framerate di gioco a 60FPS su displays con ProMotion.";
+
+"preference.title.fullscreen_airplay" = "AirPlay A Schermo Intero";
+"preference.detail.fullscreen_airplay" = "Consente di presentare la finestra di gioco a schermo intero sul display esterno piuttosto che specchiare tutto sullo schermo.";
+"preference.title.silence_other_audio" = "Sospendi l'audio all'apertura del gioco";
+"preference.detail.silence_other_audio" = "Abilita per consentire a PojavLauncher di mettere in pausa l'audio delle altre applicazioni, come la musica, quando si avvia il gioco.";
+"preference.title.default_gamepad_ctrl" = "Configurazione controller";
+"preference.title.hardware_hide" = "Nascondi i controlli quando l'hardware è connesso";
+"preference.detail.hardware_hide" = "Abilità il fatto di disattivare automaticamente l'un-screen overlay quando si collega un mouse o un controller.";
+"preference.title.gesture_mouse" = "Comandi mouse";
+"preference.detail.gesture_mouse" = "Abilita gestures, come tocca per posizionare il blocco, tieni premuto per rompere il blocco, scroll con 2 dita";
+"preference.title.gesture_hotbar" = "Hotbar gestures";
 "preference.title.press_duration" = "Durata click-lungo (ms)";
 "preference.title.button_scale" = "Scala pulsante sullo schermo (%)";
 "preference.detail.button_scale" = "Aggiornali se i pulsanti sono troppo piccoli, di solito necessari per gli utenti iPad.";
@@ -140,9 +192,9 @@
 "preference.title.gyroscope_sensitivity" = "Sensibilità giroscopio";
 "preference.detail.gyroscope_sensitivity" = "Regola la sensibilità del giroscopio";
 
-"preference.title.java_home" = "Usa Java 17 per Minecraft < 1.17";
 "preference.title.java_args" = "Argomenti di avvio della JVM";
 "preference.placeholder.java_args" = "Specifica argomenti...";
+"preference.title.env_variables" = "Variabili ambientali";
 "preference.title.auto_ram" = "RAM automatica";
 "preference.detail.auto_ram" = "Attiva regolatore RAM automatico";
 "preference.warn.auto_ram" = "Disabilitare questa opzione su un dispositivo non jailbroken può creare instabilità. Procedere con cautela.";
@@ -157,8 +209,8 @@
 "preference.detail.debug_ipad_ui" = "Utilizza la UI esclusiva di iPad (avvisi, tastiera, etc.) se abilitato o la UI di iPhone se disabilitato.";
 "preference.title.debug_hide_home_indicator" = "Nascondi barra home";
 "preference.detail.debug_hide_home_indicator" = "Questo disabiliterà il blocco della barra home. Dovrai utilizzare Accesso Guidato per nascondere e bloccare la barra home simultaneamente.";
-"preference.title.debug_show_layout_bounds" = "Mostra limiti layout";
-"preference.detail.debug_show_layout_bounds" = "Mostra misure clip, margini, bounds";
-"preference.title.debug_show_layout_overlap" = "Mostra sovrapposizione del layout";
-"preference.detail.debug_show_layout_overlap" = "Sovrapponi ad ogni visuale un colore trasparente per mostrare visuali sovrapposte.";
+
+"preference.profile.title.name" = "Nome";
+"preference.profile.title.version" = "Versione";
+"profile.title.create" = "Crea nuovo profilo";
 "controller_configurator.playstation.title.named_back" = "Seleziona";

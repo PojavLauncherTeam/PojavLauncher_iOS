@@ -4,83 +4,316 @@
 */
 
 "game.menu.force_close" = "강제 종료";
-"game.menu.confirm.force_close" = "강제 종료를 하시겠습니까?";
-"game.menu.log_output" = "로그 확인";
+"game.menu.confirm.force_close" = "강제종료 하시겠습니까?";
+"game.menu.log_output" = "로그 출력";
 "game.menu.custom_controls" = "사용자 지정 조작";
 
+"game.note.airplay" = "마인크래프트가 AirPlay(에어플레이) 디스플레이에 출력되고있습니다.";
+
+"game.title.exit_code" = "마인크래프트가 코드: %d와(과) 함께 종료했습니다.";
+
 // The play button
-"Play" = "시작하기";
+"Play" = "플레이";
+"Details" = "세부 정보";
 
 // Version categories
-"Installed" = "설치됨";
+"Installed" = "이미 설치되어 있는 버전입니다.";
 "Snapshot" = "스냅숏";
-"Old-beta" = "Old-beta";
-"Old-alpha" = "Old-alpha";
+"Releases" = "버전";
+"Unstable" = "불안정";
+"Old-beta" = "구-베타";
+"Old-alpha" = "구-알파";
 
 // Custom controls
-"Copy" = "복사";
-"Edit" = "수정";
-"Move" = "움직이다";
-"Remove" = "제거";
+"Copy" = "복사하기";
+"Edit" = "편집";
+"Move" = "이동";
+"Remove" = "삭제";
+"Resize" = "사이즈 변경";
+// Visibility
+"Always" = "항상";
+"In game" = "인게임";
+"In menu" = "인메뉴";
 
+"custom_controls.button_edit.forward_lock" = "전면 잠금";
 "custom_controls.button_edit.name" = "이름";
 "custom_controls.button_edit.size" = "크기";
 "custom_controls.button_edit.mapping" = "매핑";
 "custom_controls.button_edit.orientation" = "방향";
 "custom_controls.button_edit.toggleable" = "토글";
+"custom_controls.button_edit.mouse_pass" = "마우스 패스";
 "custom_controls.button_edit.swipeable" = "끌어당기기";
 "custom_controls.button_edit.bg_color" = "배경 색상";
+"custom_controls.button_edit.stroke_width" = "선 너비 (dp)";
 "custom_controls.button_edit.stroke_color" = "강조 색";
+"custom_controls.button_edit.corner_radius" = "모서리 반경 (%)";
+"custom_controls.button_edit.opacity" = "투명도 (%)";
+"custom_controls.button_edit.visibility" = "투명도";
 
-"custom_controls.button_menu.add_subbutton" = "부속 버튼 추가";
+"custom_controls.button_menu.add_subbutton" = "하위 버튼 추가";
+"custom_controls.control_menu.discard_changes" = "변경사항 취소";
 "custom_controls.control_menu.exit" = "나가기";
+"custom_controls.control_menu.exit.warn" = "변경사항을 저장하지 않고 종료하려 합니다.";
 "custom_controls.control_menu.save" = "저장";
+"custom_controls.control_menu.save.error.json" = "JSON 오류";
 "custom_controls.control_menu.save.error.write" = "파일 저장중 오류 발생";
 "custom_controls.control_menu.load" = "불러오기";
 "custom_controls.control_menu.make_default" = "기본값으로 설정";
 "custom_controls.control_menu.safe_area" = "안전한 공간";
 "custom_controls.control_menu.add_button" = "버튼 추가";
+"custom_controls.control_menu.add_drawer" = "드로어 추가";
+"custom_controls.control_menu.add_joystick" = "조이스틱 추가";
+"custom_controls.error.incompatible" = "이 컨트롤 버전(code %d) 은 이 런처 빌드에서 구현되지 않습니다.";
+"custom_controls.hint" = "더 많은 옵션을 보려면 화면의 아무 곳이나 길게 누르세요.";
+
+"init.migrateDir" = "포자브 런처의 데이터 저장공간은 이제 %@입니다. 모든 기존 데이터가 새 위치로 이동되었습니다.";
+
+"java.error.missing_main_class" = "%@에 기본 클래스 속성이 없습니다. 모드인 경우 선택한 인스턴스의 \"mods\" 폴더에 넣습니다.";
+"java.error.missing_runtime" = "%@을(를) 실행하려면 자바 %d 이상이 필요합니다. 먼저 설치하고 런타임 관리에서 지정하십시오.";
+
+"launcher.mcl.downloading_file" = "%@ 다운로드 중";
+"launcher.mcl.error_download" = "%@: %@ 다운로드 실패";
 
 "launcher.menu.custom_controls" = "사용자 지정 조작";
-"launcher.menu.install_jar" = ".jar 설치";
+"launcher.menu.execute_jar" = ".jar 실행";
 
 "launcher.wait_jit.title" = "JIT를 기다리고 있습니다";
+"launcher.wait_jit.message" = "PojavLauncher는 최대 성능으로 작동하기 위해 Java용 Just-in-time 컴파일에 의존합니다.";
+"launcher.wait_jit_trollstore.message" = "만약 이 메시지가 계속 표시된다면, TrollStore에 URL Scheme를 활성화하세요";
+
+"login.error.username.outOfRange" = "닉네임은 최소 3글자에서 최대 16글자로 해야합니다.";
 
 "login.alert.field.username" = "사용자명";
 
 "login.jit.checking" = "JIT를 확인하고 있습니다";
 "login.jit.enabled" = "JIT가 활성화 되었습니다";
+"login.jit.fail" = "JIT이 활성화 되지 않았습니다.";
+"login.jit.fail.title" = "장치에서 JIT를 사용하도록 할수 없습니다";
+"login.jit.fail.description" = "디바이스에서 JIT를 자동으로 활성화하는 데 통합을 사용할 수 없으며 이제 수동으로 활성화해야 합니다. latestlog.txt에 오류가 기록되었습니다.";
+"login.jit.fail.description_unsupported" = "지원되지 않는 설치 방법이 인식되었습니다. 지원되는 방법 중 하나를 사용하여 다시 설치하십시오.";
 
 // Login buttons
-"login.menu.sendlogs" = "로그 보내기";
+"login.menu.sendlogs" = "로그 내보내기";
 "login.option.add" = "계정 추가";
 "login.option.select" = "계정 선택";
+"login.option.demo" = "체험판 계정";
 "login.option.microsoft" = "Microsoft 계정";
 "login.option.local" = "로컬 계정";
 
+"login.warn.title.legacy_device" = "다음 버전의 PojavLauncher는 이 디바이스와 호환되지 않을 수 있습니다.";
+"login.warn.message.legacy_device" = "다음 주요 버전을 실행하려면 iOS 14 이상이 필요합니다.";
+"login.warn.title.legacy_ios" = "PojavLauncher의 다음버전은 시스템 업데이트가 필요합니다.";
+"login.warn.message.legacy_ios" = "다음 주요 버전을 실행하려면 이 기기는 iOS 14 이상이 필요합니다.";
+"login.warn.title.limited_ram" = "이 기기는 사용 가능한 메모리의 양이 제한되어 있습니다.";
+"login.warn.message.limited_ram" = "우리는 불안정과 성능 이슈를 예방하기 위해 자동 램 사용을 권장합니다.";
+
 "login.warn.title.demomode" = "당신의 계정은 데모 버전입니다";
+"login.warn.message.demomode" = "오프라인 및 로컬 모드를 대체하는 데모 모드를 사용하면 게임을 소유하지 않은 Microsoft 계정에 로그인하고 1.3.1 및 최신 버전에 도입된 Java Edition 평가판을 플레이할 수 있습니다. 이전 버전에는 공식 런처가 이러한 제한을 두지 않기 때문에 전체 게임이 포함되어 있습니다. 오프라인 모드에서 전환에 대한 자세한 내용은 당사 웹 사이트를 참조하십시오.";
+
+"login.warn.title.localmode" = "오프라인 모드는 이제 로컬 모드입니다";
+"login.warn.message.localmode" = "설치된 버전을 계속 플레이할 수 있지만 유료 계정 없이는 더 이상 마인크래프트를 다운로드할 수 없습니다. 로컬 계정 문제 또는 기타 마인크래프트 획득 수단에 대한 지원은 제공되지 않습니다.";
+
+"login.msa.error.xsts.noxboxacc" = "Xbox 프로필이 이 Microsoft 계정에서 등록되지 않았습니다. Xbox 프로필을 만드셨는지 확인하십시오.\n오류 코드: 2148916233";
+"login.msa.error.xsts.noxbox" = "Xbox Live는 현제 당신의 나라에서 지원되지 않습니다.\n오류 코드: 2148916235";
+"login.msa.error.xsts.krverify" = "당신의 계정은 진행하기전에 부모님의 인증을 받아야 합니다.\n 오류 코드: 2148916236 또는 2148916237.";
+"login.msa.error.xsts.underage" = "당신의 계정은 진행하기 전에 부모님의 계정과 연결되어야 합니다.\n오류코드: 2148916238";
+
+"login.msa.progress.acquireAccessToken" = "(1/5) 엑세스 토큰 획득중";
+"login.msa.progress.acquireXBLToken" = "(2/5) Xbox Live 토큰 획득중";
+"login.msa.progress.acquireXSTS" = "XSTS 받아오는 중";
+"login.msa.progress.acquireXboxProfile" = "(3/5) Xbox 프로필 획득중";
+"login.msa.progress.acquireMCToken" = "(4/5) Minecraft 토큰 획득중";
+"login.msa.progress.checkMCProfile" = "(5/5) Minecraft 프로필 확인중";
 
 "News" = "소식";
+"Profiles" = "프로필";
 "Settings" = "설정";
+
+"preference.section.general" = "일반 설정";
+"preference.section.video" = "비디오 및 오디오 설정";
+"preference.section.footer.video" = "자동 렌더러를 사용하면 PojavLauncher가 Minecraft 버전에 따라 최상의 옵션을 선택할 수 있습니다. 해상도를 낮추면 성능 향상을 위해 GPU 워크로드가 줄어듭니다.";
 "preference.section.control" = "사용자 지정 조작";
+"preference.section.debug" = "UI 디버깅 설정";
+"preference.section.footer.debug" = "변경 사항을 적용하려면 런처를 다시 시작해야 할 수도 있습니다.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java 기능";
+//"preference.section.footer.java" = "";
+
+"preference.title.confirm" = "정말입니까?";
 
 "preference.title.game_directory" = "게임 디렉토리";
-"preference.title.cosmetica" = "코스메티카 망토";
+"preference.title.confirm.delete_game_directory" = "%@ 인스턴스는 완전히 삭제되며 복원할 수 없습니다.";
+"preference.multidir.add_directory" = "게임 경로 추가";
+
+"preference.title.check_sha" = "파일 확인후 다운로드";
+"preference.detail.check_sha" = "이 옵션은 파일 해시를 강제로 확인합니다. 잘못된 다운로드를 막을 수 있습니다.";
+"preference.title.cosmetica" = "Cosmetica 망토";
+"preference.detail.cosmetica" = "코스메티카(이전의 Arc)에서 망토를 활성화합니다. 자세한 내용은 https://cosmetica.cc를 참조하십시오. OptiFine이 필요합니다.";
+"preference.title.debug_logging" = "디버그 로깅";
+"preference.detail.debug_logging" = "내부 설정 및 작업을 latestlog.txt에 기록합니다. 이렇게 하면 개발자가 문제를 더 쉽게 찾는 데 도움이 되지만 로그가 더 자주 기록되므로 Minecraft가 느리게 실행될 수 있습니다.";
 "preference.title.appicon" = "앱 아이콘 설정";
+"preference.detail.appicon" = "PojavLauncher에 대한 다양한 홈 화면 아이콘 중에서 선택할 수 있습니다.";
+"preference.title.appicon-default" = "친숙한 PojavLauncher 라이트";
+"preference.title.appicon-dark" = "친숙한 PojavLauncher 다크";
+"preference.title.appicon-development" = "연필 개발";
+"preference.title.hidden_sidebar" = "기본적으로 메인 메뉴 사이드바 숨기기";
+"preference.detail.hidden_sidebar" = "기본적으로 그리고 회전할 때 기본 메뉴에서 사이드바를 숨길 수 있습니다.";
 
 "preference.title.reset_warnings" = "모든 경고 초기화";
 "preference.title.done.reset_warnings" = "모든 경고가 리셋되었습니다";
 
 "preference.title.reset_settings" = "모든 설정 초기화";
+"preference.title.confirm.reset_settings" = "이렇게 하면 해상도, 버튼 크기 및 Java 인수를 포함한 모든 사용자 정의 기본 설정이 제거됩니다.";
+"preference.title.done.reset_settings" = "모든 기본 설정이 복원되었습니다.";
+
+"preference.title.erase_demo_data" = "데모 게임 데이터 지우기";
+"preference.title.confirm.erase_demo_data" = "이렇게 하면 데모 계정에 사용된 모든 데모 게임 버전과 데이터가 지워집니다.";
+"preference.title.done.erase_demo_data" = "데모 게임 데이터가 모두 삭제되었습니다.";
 
 "preference.title.renderer" = "렌더러";
-"preference.title.virtmouse_enable" = "가상 마우스";
 
-"preference.title.java_home" = "마인크래프트 버전 < 1.17 부터 자바 17을 사용하세요";
+"preference.title.renderer.release.auto" = "자동";
+"preference.title.renderer.release.gl4es" = "holy gl4es";
+"preference.title.renderer.release.angle" = "ANGLE";
+"preference.title.renderer.release.zink" = "Zink";
+
+"preference.title.renderer.debug.auto" = "자동: gl4es 또는 ANGLE";
+"preference.title.renderer.debug.gl4es" = "holy gl4es - OpenGL 2.1 내보내기";
+"preference.title.renderer.debug.angle" = "ANGLE(1.17+) - OpenGL 3.2 내보내기(Core Profile, 제한됨)";
+"preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - exports OpenGL 4.1";
+
+"preference.detail.renderer" = "사용할 OpenGL 렌더링 엔진을 변경합니다. Zink는 문제 진단을 위해 iOS 16 이상에서 일시적으로 비활성화됩니다.";
+
+"preference.title.resolution" = "해상도 (%)";
+"preference.detail.resolution" = "게임 해상도를 낮출 수 있도록 허용합니다.";
+"preference.title.max_framerate" = "최대 FPS";
+"preference.detail.max_framerate" = "ProMotion 디스플레이에서 게임 프레임 속도를 60FPS로 제한할 수 있도록 허용합니다.";
+
+"preference.title.fullscreen_airplay" = "AirPlay 전체 화면";
+"preference.detail.fullscreen_airplay" = "화면의 모든 것을 미러링하지 않고 외부 디스플레이에 전체 화면 게임 창을 표시할 수 있도록 허용합니다.";
+"preference.title.silence_other_audio" = "게임이 열릴때 오디오 멈추기";
+"preference.detail.silence_other_audio" = "게임을 시작할 때 PojavLauncher가 음악과 같은 다른 앱의 오디오를 일시 중지하도록 허용합니다.";
+"preference.title.default_gamepad_ctrl" = "컨트롤러 구성";
+"preference.title.hardware_hide" = "하드웨어가 연결되면 컨트롤러 숨기기";
+"preference.detail.hardware_hide" = "마우스 또는 게임 컨트롤러가 연결되면 화면 컨트롤 UI를 비활성화합니다.";
+"preference.title.gesture_mouse" = "마우스 제스처";
+"preference.detail.gesture_mouse" = "탭하여 블록 배치, 길게 눌러 블록 중단, 두 손가락으로 스크롤과 같은 제스처를 활성화합니다.";
+"preference.title.gesture_hotbar" = "핫바 제스처";
+"preference.detail.gesture_hotbar" = "핫바 슬롯 터치, 손 사이의 항목 교환, 항목 던지기와 같은 제스처를 활성화합니다.";
+"preference.title.disable_haptics" = "햅틱 비활성화";
+"preference.title.press_duration" = "길게 누르기 지속 시간 (ms)";
+"preference.detail.press_duration" = "블록을 파괴하고 아이템을 떨어뜨리기 위한 트리거 누르기 지속 시간.";
+"preference.title.button_scale" = "화면 버튼 크기 (%)";
+"preference.detail.button_scale" = "버튼이 너무 작으면 높히세요. 기본적으로 iPad 사용자에게 필요합니다.";
+"preference.title.mouse_scale" = "마우스 크기 (%)";
+"preference.detail.mouse_scale" = "가상 마우스 크기 변경";
+"preference.title.mouse_speed" = "마우스 속도 (%)";
+"preference.detail.mouse_speed" = "가상 마우스 속도 변경";
+"preference.title.virtmouse_enable" = "가상 마우스";
+"preference.detail.virtmouse_enable" = "가상 마우스와 함께 시작하려면 활성화 하세요.";
+"preference.title.slideable_hotbar" = "슬라이드 가능한 핫바";
+"preference.detail.slideable_hotbar" = "핫바를 마우스 휠처럼 슬라이드 가능하게 바꿉니다.";
+
+"preference.title.gyroscope_enable" = "자이로스코프 컨트롤 활성화";
+"preference.detail.gyroscope_enable" = "이 기능을 활성화하면 기기를 돌려서 게임을 시작할 수 있습니다.";
+"preference.title.gyroscope_invert_x_axis" = "자이로스코프 좌우 반전";
+"preference.detail.gyroscope_invert_x_axis" = "자이로스코프 X축 반전";
+"preference.title.gyroscope_sensitivity" = "자이로스코프 감도 조절";
+"preference.detail.gyroscope_sensitivity" = "자이로스코프 컨트롤의 감도를 조정하세요";
+
+"preference.title.manage_runtime" = "런타임 관리";
+"preference.title.confirm.delete_runtime" = "%@이(가) 삭제됩니다.";
+"preference.manage_runtime.header.default" = "선호하는 자바 버전";
+"preference.manage_runtime.default.1165" = "1.16.5 이하";
+"preference.manage_runtime.default.117" = "1.17 이상";
+"preference.manage_runtime.footer.default" = "마인크래프트 1.16.5 이상은 더 새로운 자바 버전으로 실행될 수 있지만 모드와의 호환성은 보장되지 않습니다. 외부 런타임은 \"java_runtimes\" 폴더에 배치할 수 있습니다.\"Execute .jar\"를 위해 자바 버전을 변경하는 것은 설치 프로그램이 더 새로운 자바 버전을 기대하지 않는 경우에만 적용됩니다.";
+"preference.manage_runtime.footer.java8" = "이것은 Minecraft 1.16.5 및 이전 버전의 기본 버전입니다.";
+"preference.manage_runtime.footer.java17" = "이것은 Minecraft 1.17 이상의 기본 버전입니다.";
+"preference.manage_runtime.header.invalid" = "유효하지 않은 런타임";
+
 "preference.title.java_args" = "JVM 시작 스크립트";
+"preference.detail.java_args" = "Minecraft를 시작할 때 Java에 인수를 전달합니다. 잘못 수정하면 게임이 충돌할 수 있으니 주의하세요.";
+"preference.placeholder.java_args" = "인수 지정...";
+"preference.title.env_variables" = "환경 변수";
+"preference.detail.env_variables" = "Minecraft를 시작할 때 사용자 지정 환경 변수를 설정합니다. 잘못 수정하면 게임이 충돌할 수 있으니 주의하세요.";
+"preference.placeholder.env_variables" = "변수 지정...";
 "preference.title.auto_ram" = "자동 RAM 할당";
 "preference.detail.auto_ram" = "자동 RAM 할당 활성화하기";
+"preference.warn.auto_ram" = "탈옥되지 않은 장치에서 이 옵션을 비활성화하면 불안정해질 수 있습니다. 조심해서 진행하세요.";
+"preference.title.allocated_memory" = "메모리 할당 (MB)";
 "preference.detail.allocated_memory" = "Minecraft 메모리 할당 조절";
+"preference.warn.allocated_memory" = "운영 체제 자체의 제한으로 인해 이 옵션은 이 값 이상에서 불안정성을 유발할 수 있습니다. 조심해서 진행하세요.";
+"preference.title.custom_env" = "환경 변수";
+"preference.detail.custom_env" = "이 옵션은 작업 중입니다. 그 동안 custom_env.txt를 만들고 편집합니다.";
+
+"preference.title.debug_skip_wait_jit" = "\"JIT를 기다리고 있습니다\" 건너뛰기";
+"preference.detail.debug_skip_wait_jit" = "이렇게 하면 JIT 없이 시작할 수 없으며 대신 특정 탈옥에서 검사가 실패하기 때문에 디버거 검사를 건너뜁니다.";
+"preference.title.debug_ipad_ui" = "iPadOS UI 잠금해제";
+"preference.detail.debug_ipad_ui" = "활성화된 경우 iPad 전용 UI(경고, 키보드 등) 를 잠금 해제하고 비활성화된 경우 iPhone UI를 잠금 해제합니다.";
+"preference.title.debug_auto_correction" = "자동 수정";
+"preference.detail.debug_auto_correction" = "게임 안에서 타이핑 할때 자동 수정을 활성화 합니다.";
+"preference.title.debug_hide_home_indicator" = "홈바 숨기기";
+"preference.detail.debug_hide_home_indicator" = "이렇게 하면 홈 바 잠금이 비활성화됩니다. 홈 바를 숨기고 잠그려면 사용법 유도를 사용해야 합니다.";
+
+"preference.profile.title.name" = "이름";
+"preference.profile.title.loader_type" = "타입로더";
+"preference.profile.title.loader_vendor" = "로더 버전";
+"preference.profile.title.loader_version" = "수정된 버전";
+"preference.profile.title.version" = "버전";
+"preference.profile.title.version_type" = "버전 유형";
+"preference.profile.title.default_touch_control" = "터치 컨트롤";
+"preference.profile.title.default_gamepad_control" = "게임패드 컨트롤";
+
+"profile.error.name_exists" = "해당 이름의 프로필이 이미 존재합니다. 다른 이름을 사용하십시오.";
+"profile.section.instance" = "게임 인스턴스 설정";
+"profile.section.profiles" = "이 인스턴스의 프로필";
+"profile.title.create" = "새 프로필 생성";
+"profile.title.separate_preference" = "격리 설정";
+"profile.detail.separate_preference" = "이 옵션을 활성화하여 설정 변경 사항을 격리합니다. 재설정을 수행하면 기본 설정 대신 전역 설정으로 복원됩니다.";
+"profile.title.install_fabric_quilt" = "설치 Fabric/Quilt";
+
+"controller_configurator.title.current" = "게임패드 구성 파일";
+"controller_configurator.title.type.xbox" = "XBox";
+"controller_configurator.title.type.playstation" = "PlayStation";
+
+"controller_configurator.xbox.title.bumper_left" = "왼쪽 범퍼";
+"controller_configurator.xbox.title.bumper_right" = "오른쪽 범퍼";
+"controller_configurator.xbox.title.trigger_left" = "왼쪽 트리거";
+"controller_configurator.xbox.title.trigger_right" = "오른쪽 트리거";
+"controller_configurator.xbox.title.named_back" = "가이드";
+"controller_configurator.xbox.title.named_start" = "메뉴";
+"controller_configurator.xbox.title.named_a" = "A";
+"controller_configurator.xbox.title.named_b" = "B";
+"controller_configurator.xbox.title.named_x" = "X";
+"controller_configurator.xbox.title.named_y" = "Y";
+"controller_configurator.xbox.title.dpad_up" = "위";
+"controller_configurator.xbox.title.dpad_down" = "아래";
+"controller_configurator.xbox.title.dpad_left" = "왼쪽";
+"controller_configurator.xbox.title.dpad_right" = "오른쪽";
+"controller_configurator.xbox.title.thumb_left" = "왼쪽 스틱 클릭";
+"controller_configurator.xbox.title.thumb_right" = "오른쪽 스틱 클릭";
+
+"controller_configurator.playstation.title.bumper_left" = "L1";
+"controller_configurator.playstation.title.bumper_right" = "R1";
+"controller_configurator.playstation.title.trigger_left" = "L2";
+"controller_configurator.playstation.title.trigger_right" = "R2";
 "controller_configurator.playstation.title.named_back" = "선택";
+"controller_configurator.playstation.title.named_start" = "시작";
+"controller_configurator.playstation.title.named_a" = "✕";
+"controller_configurator.playstation.title.named_b" = "◯";
+"controller_configurator.playstation.title.named_x" = "▢";
+"controller_configurator.playstation.title.named_y" = "△";
+"controller_configurator.playstation.title.dpad_up" = "위";
+"controller_configurator.playstation.title.dpad_down" = "아래";
+"controller_configurator.playstation.title.dpad_left" = "왼쪽";
+"controller_configurator.playstation.title.dpad_right" = "오른쪽";
+"controller_configurator.playstation.title.thumb_left" = "L3";
+"controller_configurator.playstation.title.thumb_right" = "R3";
+
+"controller_configurator.section.config_files" = "현재 구성 파일";
+"controller_configurator.section.game_mappings" = "게임 매핑";
+"controller_configurator.section.footer.game_mappings" = "게임에서 마우스가 잠겨 있을 때 바인딩합니다.";
+"controller_configurator.section.menu_mappings" = "메뉴 메핑";
+"controller_configurator.section.footer.menu_mappings" = "타이틀 화면이나 일시정지 메뉴 등 마우스가 잠기지 않은 상태에서 바인딩합니다.";
+"controller_configurator.section.controller_style" = "콘트롤러 타입";
+"controller_configurator.section.footer.controller_style" = "이 구성 파일에서 다른 컨트롤러 버튼 이름을 표시합니다.";

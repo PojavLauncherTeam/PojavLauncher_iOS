@@ -14,7 +14,6 @@
 "Old-alpha" = "Old-alaf";
 "Edit" = "Edit";
 "Remove" = "Remoev";
-
 "custom_controls.button_edit.name" = "Naym";
 "custom_controls.button_edit.size" = "Siez";
 "custom_controls.button_edit.mapping" = "Mappin’";
@@ -31,7 +30,6 @@
 "custom_controls.control_menu.add_button" = "Add button";
 
 "launcher.menu.custom_controls" = "Custom controls";
-"launcher.menu.install_jar" = "Install .jar";
 "login.option.select" = "what acc?";
 
 "News" = "Newz";
@@ -42,7 +40,11 @@
 "preference.title.game_directory" = "Gamez’ direktory";
 
 "preference.title.renderer" = "Renderer";
+
 "preference.title.java_args" = "CCz’UM L’unch argumentz";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Enablez automatic RAM adjustah";
 "preference.detail.allocated_memory" = "Controls how mutch RAM iz given 2 Minecraft";
+
+"preference.profile.title.name" = "Naym";
+"preference.profile.title.version" = "Type of cat";
