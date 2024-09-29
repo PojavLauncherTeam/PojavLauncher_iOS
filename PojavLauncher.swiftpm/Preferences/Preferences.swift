@@ -64,10 +64,7 @@ class Preferences: Codable, ObservableObject {
     class Miscellaneous: Codable, ObservableObject {
         @Published var isolated = false
         @Published var selected_account = ""
-        @Published var latest_version = [
-            "release": "",
-            "snapshot": ""
-        ]
+        @Published var latest_version = VersionManifest.Latest()
     }
     @Published var misc = Miscellaneous()
 }

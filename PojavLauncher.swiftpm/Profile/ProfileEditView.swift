@@ -3,10 +3,10 @@ import UniqueID
 
 struct ProfileEditView: View {
     @ObservedObject var profile: Profile
-    @State private var showFilePicker = false
-    @State private var showImagePicker = false
+    @State private var showImageFilePicker = false
+    @State private var showImageGalleryPicker = false
     @State private var showCustomIconInput = false
-    @State private var showGameDirPicker = false
+    @State private var expandItemGameDir = false
     @State private var iconToSave: String = ""
     @State private var newImage: UIImage = UIImage()
     
@@ -15,10 +15,10 @@ struct ProfileEditView: View {
             HStack {
                 Menu {
                     Button("Photo Library", systemImage: "photo.on.rectangle") {
-                        showImagePicker.toggle()
+                        showImageGalleryPicker.toggle()
                     }
                     Button("Choose File", systemImage: "folder") {
-                        showFilePicker.toggle()
+                        showImageFilePicker.toggle()
                     }
                     Button("Custom URL", systemImage: "link") {
                         showCustomIconInput.toggle()
@@ -29,22 +29,19 @@ struct ProfileEditView: View {
                 TextField("preference.profile.title.name", text: $profile.name)
             }.listRowInsets(EdgeInsets(top: 12, leading: 15, bottom: 12, trailing: 15))
             Section {
-                NavigationLink {
-                    Text("WIP")
+                DisclosureGroup {
+                    VersionPickerView(selection: $profile.lastVersionId)
                 } label: {
                     Label("preference.profile.title.version", systemImage: "archivebox")
                         .badge(profile.lastVersionId)
                 }
-                Button {
-                    showGameDirPicker.toggle()
+                DisclosureGroup(isExpanded: $expandItemGameDir) {
+                    TextField(". -> instances/<current>", text: $profile.gameDir ?? "")
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled(true)
                 } label: {
-                    NavigationLink {
-                        Text("WIP")
-                    } label: {
-                        Label("preference.title.game_directory", systemImage: "folder")
-                            .badge(profile.gameDir)
-                    }
-                    .tint(.primary)
+                    Label("preference.title.game_directory", systemImage: "folder")
+                        .badge(expandItemGameDir ? nil : profile.gameDir)
                 }
             }
             Section {
@@ -89,10 +86,10 @@ struct ProfileEditView: View {
             }
         }
         .navigationTitle("Edit profile")
-        .sheet(isPresented: $showImagePicker) {
+        .sheet(isPresented: $showImageGalleryPicker) {
             ImagePicker(sourceType: .photoLibrary, selectedImage: $newImage)
         }
-        .fileImporter(isPresented: $showFilePicker, allowedContentTypes: [.image], onCompletion: { result in
+        .fileImporter(isPresented: $showImageFilePicker, allowedContentTypes: [.image], onCompletion: { result in
             
         })
         .alert("Custom icon URL", isPresented: $showCustomIconInput) {

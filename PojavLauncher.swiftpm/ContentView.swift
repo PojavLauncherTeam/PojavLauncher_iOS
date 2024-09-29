@@ -2,7 +2,7 @@ import SwiftUI
 import Alamofire
 
 struct ContentView: View {
-    @ObservedObject var preferences = Preferences()
+    @StateObject var preferences = Preferences()
     @State private var showAccountView = false
     var accountBtn: some View {
         Button("[AccIcon]") {
@@ -12,16 +12,15 @@ struct ContentView: View {
     var body: some View {
         TabView {
             NavigationView {
-                GameDirectoryView(preferences: preferences)
+                GameDirectoryView()
                     .toolbar { accountBtn }
                 Text("Select a game directory to view profiles")
             }
-            .navigationViewStyle(DoubleColumnNavigationViewStyle())
             .tabItem {
                 Label("Profiles", systemImage: "folder")
             }
             NavigationView {
-                PreferencesView(preferences: preferences)
+                PreferencesView()
                     .toolbar { accountBtn }
             }
             .tabItem {
@@ -39,6 +38,7 @@ struct ContentView: View {
                 AccountView(showModal: $showAccountView)
             }
         }
+        .environmentObject(preferences)
         /*
         .onAppear {
             // DEBUG: scale till we get iPadOS sidebar

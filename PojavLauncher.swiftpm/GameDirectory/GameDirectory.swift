@@ -17,4 +17,8 @@ struct GameDirectory {
     static func lpJsonPath(of name: String) -> URL {
         return instancesURL.appendingPathComponent(name + "/launcher_profiles.json", conformingTo: .fileURL)
     }
+    
+    static func versionsPath(of name: String) -> URL {
+        return instancesURL.appendingPathComponent(name + "/versions", conformingTo: .directory)
+    }
 }

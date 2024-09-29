@@ -2,7 +2,7 @@ import SwiftUI
 import QuartzCore
 
 struct PreferencesView: View {
-    @ObservedObject var preferences: Preferences
+    @EnvironmentObject var preferences: Preferences
     var body: some View {
         Form {
             Section {
@@ -10,27 +10,27 @@ struct PreferencesView: View {
             }
             Section {
                 NavigationLink {
-                    GeneralView(preferences: preferences)
+                    GeneralView()
                 } label: {
                     Label("preference.section.general", systemImage: "cube")
                 }
                 NavigationLink {
-                    VideoAndAudioView(preferences: preferences)
+                    VideoAndAudioView()
                 } label: {
                     Label("preference.section.video", systemImage: "video")
                 }
                 NavigationLink {
-                    ControlView(preferences: preferences)
+                    ControlView()
                 } label: {
                     Label("preference.section.control", systemImage: "dpad")
                 }
                 NavigationLink {
-                    JavaView(preferences: preferences)
+                    JavaView()
                 } label: {
                     Label("preference.section.java", systemImage: "sparkles")
                 }
                 NavigationLink {
-                    DebugView(preferences: preferences)
+                    DebugView()
                 } label: {
                     Label("preference.section.debug", systemImage: "ladybug")
                 }
@@ -61,16 +61,16 @@ struct PreferencesView: View {
         .navigationTitle("Settings")
         .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
             if UIDevice.current.orientation.isPortrait {
-                 self.navigationViewStyle(StackNavigationViewStyle())
+                self.navigationViewStyle(.stack)
             } else {
-                self.navigationViewStyle(DoubleColumnNavigationViewStyle())
+                self.navigationViewStyle(.columns)
             }
         }
-        GeneralView(preferences: preferences)
+        GeneralView()
     }
     
     private struct GeneralView: View {
-        @ObservedObject var preferences: Preferences
+        @EnvironmentObject var preferences: Preferences
         var body: some View {
             Form {
                 // Check SHA
@@ -118,7 +118,7 @@ struct PreferencesView: View {
     }
 
     private struct VideoAndAudioView: View {
-        @ObservedObject var preferences: Preferences
+        @EnvironmentObject var preferences: Preferences
         var body: some View {
             Form {
                 // Renderer
@@ -192,7 +192,7 @@ struct PreferencesView: View {
     }
     
     private struct ControlView: View {
-        @ObservedObject var preferences: Preferences
+        @EnvironmentObject var preferences: Preferences
         var body: some View {
             Form {
                 // Gamepad remapper
@@ -294,7 +294,7 @@ struct PreferencesView: View {
     }
     
     private struct JavaView: View {
-        @ObservedObject var preferences: Preferences
+        @EnvironmentObject var preferences: Preferences
         var body: some View {
             Form {
                 // Manage runtimes
@@ -344,7 +344,7 @@ struct PreferencesView: View {
     }
     
     private struct DebugView: View {
-        @ObservedObject var preferences: Preferences
+        @EnvironmentObject var preferences: Preferences
         var body: some View {
             Form {
                 // Skip waiting for JIT

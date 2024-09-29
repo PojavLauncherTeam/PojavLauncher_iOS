@@ -6,13 +6,13 @@ struct GameDirectoryRow: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text(directory)
-            Text("[directory size]").font(Font.footnote)
+            Text("[directory size]").font(.footnote)
         }
     }
 }
 
 struct GameDirectoryView: View {
-    @ObservedObject var preferences: Preferences
+    @EnvironmentObject var preferences: Preferences
     @State private var directories: OrderedSet<String> = listInstancesDir()
     @State private var showCreateDirectoryInput = false
     @State private var showDeleteAlert = false
