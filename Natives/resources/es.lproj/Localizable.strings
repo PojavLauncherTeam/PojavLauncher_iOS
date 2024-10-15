@@ -274,7 +274,7 @@
 "profile.error.name_exists" = "Un perfil con este nombre ya existe. Por favor usa otro nombre.";
 "profile.section.instance" = "Configuración de instancia del juego";
 "profile.section.profiles" = "Perfiles en esta instancia";
-"profile.title.create" = "Crear una nueva instancia";
+"profile.title.create" = "Crear un perfil nuevo";
 "profile.title.separate_preference" = "Aislar ajustes";
 "profile.detail.separate_preference" = "Activa esta opción para aislar cualquier cambio realizado en la configuración. Al hacer una restauración, se restaurará a la configuración global en lugar de la predeterminada.";
 "profile.title.install_fabric_quilt" = "Instalar Fabric/Quilt";
