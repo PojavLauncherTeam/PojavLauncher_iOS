@@ -122,7 +122,7 @@
 "login.msa.progress.acquireXBLToken" = "(2/5) Adquirindo o token do Xbox Live";
 "login.msa.progress.acquireXSTS" = "Adquirindo XSTS";
 "login.msa.progress.acquireXboxProfile" = "(3/5) Adquirindo o perfil do Xbox";
-"login.msa.progress.acquireMCToken" = "(4/5) Adquirir o token do Minecraft";
+"login.msa.progress.acquireMCToken" = "(4/5) Adquirindo o token do Minecraft";
 "login.msa.progress.checkMCProfile" = "(5/5) Verificando o perfil de Minecraft";
 
 "News" = "Notícias";
@@ -196,6 +196,7 @@
 "preference.detail.fullscreen_airplay" = "Permite apresentar a janela do jogo em tela cheia na tela externa, em vez de espelhar tudo na tela.";
 "preference.title.silence_other_audio" = "Pausar áudio quando o jogo abrir";
 "preference.detail.silence_other_audio" = "Ative para permitir que o PojavLauncher pause o áudio de outros aplicativos, como o Music, ao iniciar o jogo.";
+"preference.title.silence_with_switch" = "";
 "preference.title.default_gamepad_ctrl" = "Configuração do Controlador";
 "preference.title.hardware_hide" = "Ocultar controles quando o hardware estiver conectado";
 "preference.detail.hardware_hide" = "Ativar o comportamento de desabilitar automaticamente a sobreposição de controle na tela quando um controlador do mouse ou de jogo estiver conectado.";
