@@ -189,13 +189,20 @@
 "preference.title.max_framerate" = "Framerate maximum";
 "preference.detail.max_framerate" = "Vous permet de limiter le framerate du jeu à 60FPS sur les écrans ProMotion.";
 
+"preference.title.performance_hud" = "Afficher le HUD des performances";
+"preference.detail.performance_hud" = "Si disponible, afficher la superposition de la surveillance des performances.";
+
 "preference.title.fullscreen_airplay" = "AirPlay en plein écran";
 "preference.detail.fullscreen_airplay" = "Permet d'afficher une fenêtre de jeu en plein écran sur l'écran externe plutôt que de tout copier sur l'écran.";
 "preference.title.silence_other_audio" = "Mettre en pause l'audio lorsque le jeu s'ouvre";
 "preference.detail.silence_other_audio" = "Activer pour permettre à PojavLauncher de mettre l'audio en pause à partir d'autres applications, telles que Musique, lors du lancement du jeu.";
+"preference.title.silence_with_switch" = "Désactiver l'audio avec un switch silencieux et refuser l'entrée du microphone";
+"preference.detail.silence_with_switch" = "Activer pour désactiver l'audio lorsque le mode silencieux est activé et refuser l'entrée du micro. Les écouteurs et les haut-parleurs externes ne sont pas affectés.";
 "preference.title.default_gamepad_ctrl" = "Configuration du contrôleur";
 "preference.title.hardware_hide" = "Masquer les contrôles lorsque le hardware est connecté";
 "preference.detail.hardware_hide" = "Active le comportement de désactiver automatiquement la superposition de contrôle à l'écran quand une souris ou un contrôleur de jeu est connecté.";
+"preference.title.recording_hide" = "Masquer les contrôles de l'enregistrement d'écran";
+"preference.detail.recording_hide" = "Masque les contrôles de la capture d'écran et de l'enregistrement d'écran tant qu'ils restent visibles à l'écran.";
 "preference.title.gesture_mouse" = "Mouvements de la souris";
 "preference.detail.gesture_mouse" = "Active les gestes, comme par exemple appuyer pour placer un bloc, maintenir enfoncé pour casser le bloc, faire défiler avec 2 doigts";
 "preference.title.gesture_hotbar" = "Gestures de la hotbar";
