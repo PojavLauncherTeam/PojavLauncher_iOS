@@ -36,7 +36,8 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/Alamofire/Alamofire", "5.9.1"..<"6.0.0"),
         .package(url: "https://github.com/apple/swift-collections", "1.1.2"..<"2.0.0"),
-        .package(url: "https://github.com/karwa/uniqueid", "1.0.4"..<"2.0.0")
+        .package(url: "https://github.com/karwa/uniqueid", "1.0.4"..<"2.0.0"),
+        .package(url: "https://github.com/stleamist/BetterSafariView", "2.4.2"..<"3.0.0")
     ],
     targets: [
         .executableTarget(
@@ -50,7 +51,8 @@ let package = Package(
                 .product(name: "HeapModule", package: "swift-collections"),
                 .product(name: "OrderedCollections", package: "swift-collections"),
                 .product(name: "_RopeModule", package: "swift-collections"),
-                .product(name: "UniqueID", package: "uniqueid")
+                .product(name: "UniqueID", package: "uniqueid"),
+                .product(name: "BetterSafariView", package: "BetterSafariView")
             ],
             path: ".",
             resources: [

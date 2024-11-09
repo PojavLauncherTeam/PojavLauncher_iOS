@@ -61,9 +61,9 @@ struct PreferencesView: View {
         .navigationTitle("Settings")
         .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
             if UIDevice.current.orientation.isPortrait {
-                self.navigationViewStyle(.stack)
+                _ = self.navigationViewStyle(.stack)
             } else {
-                self.navigationViewStyle(.columns)
+                _ = self.navigationViewStyle(.columns)
             }
         }
         GeneralView()
@@ -73,6 +73,19 @@ struct PreferencesView: View {
         @EnvironmentObject var preferences: Preferences
         var body: some View {
             Form {
+                // iOS 18-style settings description
+                Section {
+                    VStack(alignment: .center) {
+                        Image(systemName: "cube")
+                            .font(.largeTitle)
+                        Text("General settings")
+                            .font(.title2).bold()
+                        Text("A brief description of general settings")
+                            .font(.subheadline)
+                    }
+                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                    .edgesIgnoringSafeArea(.all)
+                }
                 // Check SHA
                 Section {
                     Toggle(isOn: $preferences.general.check_sha) {
@@ -300,7 +313,7 @@ struct PreferencesView: View {
                 // Manage runtimes
                 Section {
                     NavigationLink {
-                        Text("Manage runtimes")
+                        ManageJavaView()
                     } label: {
                         Label("preference.title.manage_runtime", systemImage: "cube")
                     }

@@ -1,32 +1,14 @@
 import SwiftUI
 
-struct ProfileImage: View {
-    var url: String?
-    var body: some View {
-        AsyncImage(url: URL(string: url ?? "a")) { phase in
-            switch phase {
-            case .failure:
-                Image("DefaultProfile")
-                    .resizable()
-            case .success(let image):
-                image
-                    .resizable()
-            default:
-                ProgressView()
-            }
-        }
-        .frame(width: 40, height: 40)
-        .listRowInsets(EdgeInsets())
-    }
-}
-
 struct ProfileRow: View {
     @ObservedObject var profile: Profile
+    @Binding var selection: String?
+    var tag: String
     var body: some View {
-        NavigationLink {
+        NavigationLink(tag: tag, selection: $selection) {
             ProfileEditView(profile: profile)
         } label: {
-            ProfileImage(url: profile.icon)
+            HTTPImage(url: profile.icon, defaultImageName: "DefaultProfile")
             VStack(alignment: .leading) {
                 Text(profile.name)
                 Text(profile.lastVersionId).font(Font.footnote)

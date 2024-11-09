@@ -3,6 +3,7 @@ import SwiftUI
 struct GameDirectory {
     static let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     static let instancesURL = documentsURL.appendingPathComponent("instances", conformingTo: .folder)
+    static let rootPrefsURL = GameDirectory.documentsURL.appendingPathComponent("launcher_preferences.plist", conformingTo: .xmlPropertyList)
 
     static func createDirectory(_ name: String) {
         let directoryURL = instancesURL.appendingPathComponent(name, conformingTo: .folder)

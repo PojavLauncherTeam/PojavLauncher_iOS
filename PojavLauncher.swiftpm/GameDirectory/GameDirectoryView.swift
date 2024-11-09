@@ -39,7 +39,7 @@ struct GameDirectoryView: View {
                 GameDirectory.removeDirectory(dirToProcess)
                 // Always keep the default directory
                 if dirToProcess != "default" {
-                    withAnimation {
+                    _ = withAnimation {
                         directories.remove(dirToProcess)
                     }
                 }

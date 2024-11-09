@@ -1,6 +1,9 @@
 import UIKit
 
-class Preferences: Codable, ObservableObject {
+class Preferences: Codable, ObservableObject, Equatable {
+    private static var saveChanges = true
+    @Published var accounts: [UUID : Account] = [:]
+    
     class General: Codable, ObservableObject {
         @Published var check_sha: Bool = true
         @Published var cosmetica: Bool = true
@@ -63,8 +66,19 @@ class Preferences: Codable, ObservableObject {
     // Internal
     class Miscellaneous: Codable, ObservableObject {
         @Published var isolated = false
-        @Published var selected_account = ""
+        @Published var selected_account = UUID(uuidString: Constants.zeroUUIDString)!
         @Published var latest_version = VersionManifest.Latest()
     }
     @Published var misc = Miscellaneous()
+    
+    func makeChangesWithoutSaving(closure: () -> Void) {
+        Preferences.saveChanges = false
+        closure()
+        Preferences.saveChanges = true
+    }
+    
+    static func == (l: Preferences, r: Preferences) -> Bool {
+        // this is just to make onChange in ContentView work
+        return !Preferences.saveChanges
+    }
 }

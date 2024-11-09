@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "bettersafariview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/stleamist/BetterSafariView",
+      "state" : {
+        "revision" : "884533749e55949b2566030948c6fdbe2873ed0c",
+        "version" : "2.4.2"
+      }
+    },
+    {
       "identity" : "swift-collections",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-collections",

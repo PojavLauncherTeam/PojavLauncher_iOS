@@ -4,7 +4,7 @@ import Alamofire
 struct ProfilesView: View {
     @ObservedObject var launcherProfiles: LauncherProfiles
     var directory: String
-    @State private var selectedProfileIdx: Int?
+    @State private var selectedProfile: String?
     @State private var isolateSettings = false
     
     init(directory: String) {
@@ -35,10 +35,16 @@ struct ProfilesView: View {
                 Text("When enabled, changes in the launcher settings will only be available to this instance.")
             }
             Section {
-                ForEach(Array(launcherProfiles.profiles.keys), id: \.self) { key in
-                    ProfileRow(profile: self.launcherProfiles.profiles[key]!)
+                List(selection: $selectedProfile) {
+                    let keys = Array(launcherProfiles.profiles.keys)
+                    ForEach(keys, id: \.self) { key in
+                        ProfileRow(profile: self.launcherProfiles.profiles[key]!, selection: $selectedProfile, tag: key)
+                    }
+                    .onDelete { offsets in
+                        self.launcherProfiles.profiles.removeValue(forKey: keys[offsets.first!])
+                        saveChanges()
+                    }
                 }
-                .onDelete(perform: delete)
             } header: {
                 Text("profile.section.profiles")
             }
@@ -46,23 +52,28 @@ struct ProfilesView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Add", systemImage: "plus") {
-                    //launcherProfiles.profiles.append(Profile(name: "New", "lastVersionId: 1.21"))
+                    withAnimation {
+                        let key = UUID(.timeOrdered()).uuidString
+                        launcherProfiles.profiles[key] = Profile()
+                        selectedProfile = key
+                        saveChanges()
+                    }
                 }
             }
         }
         .onAppear {
-            if let jsonData = try? JSONEncoder().encode(self.launcherProfiles) {
-                do {
-                    try jsonData.write(to: GameDirectory.lpJsonPath(of: directory))
-                } catch {
-                    print("Failed to write launcher_profiles.json: \(error.localizedDescription)")
-                }
-            }
+            saveChanges()
         }
         .navigationTitle(directory)
     }
     
-    private func delete(at offsets: IndexSet) {
-        // TODO: delete the objects here
+    func saveChanges() {
+        if let jsonData = try? JSONEncoder().encode(self.launcherProfiles) {
+            do {
+                try jsonData.write(to: GameDirectory.lpJsonPath(of: directory))
+            } catch {
+                print("Failed to write launcher_profiles.json: \(error.localizedDescription)")
+            }
+        }
     }
 }

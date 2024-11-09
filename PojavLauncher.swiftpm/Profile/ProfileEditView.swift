@@ -24,7 +24,7 @@ struct ProfileEditView: View {
                         showCustomIconInput.toggle()
                     }
                 } label: {
-                    ProfileImage(url: profile.icon)
+                    HTTPImage(url: profile.icon, defaultImageName: "DefaultProfile")
                 }
                 TextField("preference.profile.title.name", text: $profile.name)
             }.listRowInsets(EdgeInsets(top: 12, leading: 15, bottom: 12, trailing: 15))
