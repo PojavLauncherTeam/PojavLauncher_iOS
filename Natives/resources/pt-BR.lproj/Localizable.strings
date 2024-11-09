@@ -197,6 +197,7 @@
 "preference.title.silence_other_audio" = "Pausar áudio quando o jogo abrir";
 "preference.detail.silence_other_audio" = "Ative para permitir que o PojavLauncher pause o áudio de outros aplicativos, como o Music, ao iniciar o jogo.";
 "preference.title.silence_with_switch" = "";
+"preference.detail.silence_with_switch" = "Ative para desativar o áudio e o microfone quando o Modo Silencioso estiver ativado. Dispositivos de áudio externos não serão afetados.";
 "preference.title.default_gamepad_ctrl" = "Configuração do Controlador";
 "preference.title.hardware_hide" = "Ocultar controles quando o hardware estiver conectado";
 "preference.detail.hardware_hide" = "Ativar o comportamento de desabilitar automaticamente a sobreposição de controle na tela quando um controlador do mouse ou de jogo estiver conectado.";
@@ -220,11 +221,11 @@
 "preference.title.slideable_hotbar" = "Hotbar deslizante";
 "preference.detail.slideable_hotbar" = "Deixe a barra rápida deslizável como a roda do mouse";
 
-"preference.title.gyroscope_enable" = "Habilitar controles do gyrocópio";
+"preference.title.gyroscope_enable" = "Habilitar controles por giroscópio";
 "preference.detail.gyroscope_enable" = "Habilitar isto permitirá que você visualize o jogo girando o seu telefone";
 "preference.title.gyroscope_invert_x_axis" = "Inverter giroscópio para esquerda e direita";
 "preference.detail.gyroscope_invert_x_axis" = "Inverte o eixo horizontal do giroscópio";
-"preference.title.gyroscope_sensitivity" = "Sensibilidade de controles do giroscópio";
+"preference.title.gyroscope_sensitivity" = "Sensibilidade de controles por giroscópio";
 "preference.detail.gyroscope_sensitivity" = "Ajustar a sensibilidade dos controles do giroscópio";
 
 "preference.title.manage_runtime" = "Gerenciar runtimes";
