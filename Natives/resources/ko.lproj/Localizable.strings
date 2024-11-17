@@ -189,6 +189,8 @@
 "preference.title.max_framerate" = "최대 FPS";
 "preference.detail.max_framerate" = "ProMotion 디스플레이에서 게임 프레임 속도를 60FPS로 제한할 수 있도록 허용합니다.";
 
+"preference.title.performance_hud" = "성능 HUD 표시";
+
 "preference.title.fullscreen_airplay" = "AirPlay 전체 화면";
 "preference.detail.fullscreen_airplay" = "화면의 모든 것을 미러링하지 않고 외부 디스플레이에 전체 화면 게임 창을 표시할 수 있도록 허용합니다.";
 "preference.title.silence_other_audio" = "게임이 열릴때 오디오 멈추기";
@@ -196,6 +198,8 @@
 "preference.title.default_gamepad_ctrl" = "컨트롤러 구성";
 "preference.title.hardware_hide" = "하드웨어가 연결되면 컨트롤러 숨기기";
 "preference.detail.hardware_hide" = "마우스 또는 게임 컨트롤러가 연결되면 화면 컨트롤 UI를 비활성화합니다.";
+"preference.title.recording_hide" = "화면 녹화 중 컨트롤 숨기기";
+"preference.detail.recording_hide" = "컨트롤이 화면 녹화 중이나 스크린샷을 찍을경우 화면에서 사라집니다.";
 "preference.title.gesture_mouse" = "마우스 제스처";
 "preference.detail.gesture_mouse" = "탭하여 블록 배치, 길게 눌러 블록 중단, 두 손가락으로 스크롤과 같은 제스처를 활성화합니다.";
 "preference.title.gesture_hotbar" = "핫바 제스처";
