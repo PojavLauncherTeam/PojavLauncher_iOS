@@ -234,11 +234,13 @@ pengontrol game terhubung.";
 "preference.manage_runtime.header.default" = "Velersi Java preferensi";
 "preference.manage_runtime.default.1165" = "1.16.5 dan lebih lama";
 "preference.manage_runtime.default.117" = "1.17 dan lebih baru";
+"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 dan yang lebih lama bisa berjalan dengan versi-versi Java yang baru, tetapi penyesuaian dengan mod-mod tidak bisa dijamin. Runtime eksternal dapat diletakkan di folder \"java_runtimes\". Mengganti versi Java untuk \"Eksekusi .jar\" hanya berefek jika instaler tidak membutuhkan versi baru Java.";
 "preference.manage_runtime.footer.java8" = "Ini adalah versi bawaan untuk Minecraft 1.16.5 dan lebih lama.";
 "preference.manage_runtime.footer.java17" = "Ini adalah bawaan untuk Minecraft 1.17 dan lebih baru.";
 "preference.manage_runtime.header.invalid" = "Runtime tidak valid";
 
 "preference.title.java_args" = "Argumen peluncuran JVM";
+"preference.detail.java_args" = "Pemberian argumen ke Java untuk meluncurkan Minecraft. Hati-hati, ini bisa membuat permainan keluar sendiri jika dimodifikasi secara tidak benar.";
 "preference.placeholder.java_args" = "Sebutkan argument...";
 "preference.title.env_variables" = "Variable environment";
 "preference.detail.env_variables" = "Mengatur variabel lingkungan khusus saat meluncurkan Minecraft. Hati-hati, hal ini dapat membuat game menjadi macet jika dimodifikasi secara tidak benar.";
