@@ -231,6 +231,7 @@ pengontrol game terhubung.";
 "preference.title.java_args" = "Argumen peluncuran JVM";
 "preference.placeholder.java_args" = "Sebutkan argument...";
 "preference.title.env_variables" = "Variable environment";
+"preference.placeholder.env_variables" = "spesifikasikan variabel...";
 "preference.title.auto_ram" = "RAM otomatis";
 "preference.detail.auto_ram" = "Mengaktifkan pengatur RAM otomatis";
 "preference.warn.auto_ram" = "Mematikan opsi ini di perangkat tidak dijailbreak bisa berefek membuat permainan tidak stabil jika diubah. Lanjut dengan perhatian.";
