@@ -131,7 +131,7 @@
 
 "preference.section.general" = "Peraturan Umum";
 "preference.section.video" = "Peraturan Video";
-"preference.section.footer.video" = "Perender otomatis mengizinkan PojavLauncher untuk memilih opsi terbaik berdasarkan versi Minecraft. Menurunkan resolusi mengurangi kerja GPU untuk performa lebih baik.";
+"preference.section.footer.video" = "Pengatur renderer otomatis mengizinkan PojavLauncher untuk memilih opsi terbaik berdasarkan versi Minecraft. Menurunkan resolusi mengurangi kerja GPU untuk performa lebih baik.";
 "preference.section.control" = "Kustomisasi kontrol";
 "preference.section.debug" = "Peraturan debugging UI";
 "preference.section.footer.debug" = "Kamu mungkin harus menghidup ulang peluncurnya untuk perubahan yang akan diterapkan.";
@@ -231,7 +231,7 @@ pengontrol game terhubung.";
 
 "preference.title.manage_runtime" = "Kelola Runtime";
 "preference.title.confirm.delete_runtime" = "%@ akan dihapus";
-"preference.manage_runtime.header.default" = "Velersi Java preferensi";
+"preference.manage_runtime.header.default" = "Versi Java yang dipilih";
 "preference.manage_runtime.default.1165" = "1.16.5 dan lebih lama";
 "preference.manage_runtime.default.117" = "1.17 dan lebih baru";
 "preference.manage_runtime.footer.default" = "Minecraft 1.16.5 dan yang lebih lama bisa berjalan dengan versi-versi Java yang baru, tetapi penyesuaian dengan mod-mod tidak bisa dijamin. Runtime eksternal dapat diletakkan di folder \"java_runtimes\". Mengganti versi Java untuk \"Eksekusi .jar\" hanya berefek jika instaler tidak membutuhkan versi baru Java.";
@@ -252,7 +252,7 @@ pengontrol game terhubung.";
 "preference.detail.allocated_memory" = "Mengkontrol berapa banyak memori yang diberikan ke Minecraft";
 "preference.warn.allocated_memory" = "Karena limitasi dari operating systemnya, opsi ini bisa membuat permainan tidak stabil dengan isi yang tinggi. Lanjut dengan perhatian.";
 "preference.title.custom_env" = "Variable environment";
-"preference.detail.custom_env" = "Opsi ini masih dibawah pengembangan. Buat dan ubah custom_env.txt in meantime.";
+"preference.detail.custom_env" = "Opsi ini masih dibawah pengembangan. Buat dan ubah custom_env.txt sementara.";
 
 "preference.title.debug_skip_wait_jit" = "Lewati dialog \"Menunggu JIT\"";
 "preference.detail.debug_skip_wait_jit" = "Ini tidak memperbolehkan anda untuk meluncur tanpa JIT, alih-alih ini melewati cek debugger, karena ceknya gagal di jailbreak tertentu.";
@@ -276,8 +276,8 @@ pengontrol game terhubung.";
 "profile.section.instance" = "Pengaturan instansi permainan";
 "profile.section.profiles" = "profil di dalam instansi ini";
 "profile.title.create" = "Buat profil baru";
-"profile.title.separate_preference" = "Pengaturan isolasi";
-"profile.detail.separate_preference" = "Nyalakan opsi ini untuk isolasi semua perubahan yang ada di pengaturan. Melakukan pengaturan ulang akan mengembalikan ke pengaturan global bukan pengaturan bawaan.";
+"profile.title.separate_preference" = "Isolasi Pengaturan";
+"profile.detail.separate_preference" = "Nyalakan opsi ini untuk isolasi semua perubahan yang ada di pengaturan. Melakukan pengaturan ulang akan mengembalikan ke pengaturan global dari pada pengaturan bawaan.";
 "profile.title.install_fabric_quilt" = "Menginstall Fabric/Quilt";
 
 "controller_configurator.title.current" = "Berkas konfigurasi Gamepad";
