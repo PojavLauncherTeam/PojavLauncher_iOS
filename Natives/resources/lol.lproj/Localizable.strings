@@ -47,6 +47,9 @@
 
 "preference.title.renderer" = "Renderer";
 
+"preference.title.gyroscope_enable" = "enable gyroscopz controlz like a pro gamer";
+"preference.title.gyroscope_sensitivity" = "Gyroscope controls sensitivity like a sigma";
+
 "preference.title.java_args" = "CCz’UM L’unch argumentz";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Enablez automatic RAM adjustah";
