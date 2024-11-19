@@ -79,7 +79,7 @@
 
 "launcher.wait_jit.title" = "Menunggu JIT";
 "launcher.wait_jit.message" = "PojavLauncher membutuhkan compilation Just-in-Time agar Java dapat bekerja dalam perfoma maksimal.";
-"launcher.wait_jit_trollstore.message" = "jika kamu masih melihat pesan ini, tolong aktifkan skema URL di dalam TrollStore.";
+"launcher.wait_jit_trollstore.message" = "Jika kamu masih melihat pesan ini, tolong aktifkan skema URL di dalam TrollStore.";
 
 "login.error.username.outOfRange" = "Nama pengguna harus minimal mempunyai 3 karakter dan maksimal 16 karakter";
 
@@ -157,7 +157,7 @@
 "preference.title.appicon-dark" = "Familiar PojavLauncher dark";
 "preference.title.appicon-development" = "Penciled Development";
 "preference.title.hidden_sidebar" = "Sembunyikan sidebar menu utama secara default";
-"preference.detail.hidden_sidebar" = "Memperbolehkan anda untuk menyembunyikan sidebar di menu utama secara default dan saat mengubah orientasi di iOS 14 dan lebih baru.";
+"preference.detail.hidden_sidebar" = "Memperbolehkan anda untuk menyembunyikan sidebar di menu utama secara default dan saat mengubah orientasi.";
 
 "preference.title.reset_warnings" = "Reset semua peringatan";
 "preference.title.done.reset_warnings" = "Semua peringatan telah direset.";
@@ -204,7 +204,7 @@
 pengontrol game terhubung.";
 "preference.title.recording_hide" = "Sembunyikan kontrol dari perekam layar";
 "preference.detail.recording_hide" = "Sembunyikan kontrol dari tangkapan layar dan perekam layar sambil kontrol tersebut terlihat di layar.";
-"preference.title.gesture_mouse" = "Gestur Tetikus";
+"preference.title.gesture_mouse" = "Gestur Mouse";
 "preference.detail.gesture_mouse" = "Aktifkan gestur, seperti ketuk untuk menaruh blok, tahan untuk memecah blok, bergulir dengan 2 jari";
 "preference.title.gesture_hotbar" = "Gestur hotbar";
 "preference.detail.gesture_hotbar" = "Aktifkan gestur, seperti sentuh slot hotbar, bertukar item antar tangan, melempar item";
@@ -272,9 +272,9 @@ pengontrol game terhubung.";
 "preference.profile.title.default_touch_control" = "Kontrol sentuhan";
 "preference.profile.title.default_gamepad_control" = "Kontrol Gamepad";
 
-"profile.error.name_exists" = "Profil dengan nama itu sudah ada. Toko gunakan nama lain.";
+"profile.error.name_exists" = "Profil dengan nama itu sudah ada. Tolong gunakan nama lain.";
 "profile.section.instance" = "Pengaturan instansi permainan";
-"profile.section.profiles" = "profil di dalam instansi ini";
+"profile.section.profiles" = "Profil di dalam instansi ini";
 "profile.title.create" = "Buat profil baru";
 "profile.title.separate_preference" = "Isolasi Pengaturan";
 "profile.detail.separate_preference" = "Nyalakan opsi ini untuk isolasi semua perubahan yang ada di pengaturan. Melakukan pengaturan ulang akan mengembalikan ke pengaturan global dari pada pengaturan bawaan.";
