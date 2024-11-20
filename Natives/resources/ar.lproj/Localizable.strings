@@ -189,13 +189,20 @@
 "preference.title.max_framerate" = "الحد الأقصى للإطارات";
 "preference.detail.max_framerate" = "يسمح لك بالحد من إطارات اللعبة إلى 60FPS على عروض ProMotion.";
 
+"preference.title.performance_hud" = "إظهار لوحة الأداء";
+"preference.detail.performance_hud" = "اظهر بيان التداخل بين رصد الأداء، عندما يكون متاحا.";
+
 "preference.title.fullscreen_airplay" = "AirPlay ملء الشاشة";
 "preference.detail.fullscreen_airplay" = "يسمح بتقديم نافذة لعبة ملء الشاشة على الشاشة الخارجية بدلاً من عكس كل شيء على الشاشة.";
 "preference.title.silence_other_audio" = "إيقاف الصوت عند فتح اللعبة";
 "preference.detail.silence_other_audio" = "تمكين السماح لـ PojavLauncher بإيقاف الصوت من تطبيقات أخرى، مثل الموسيقى، عند بدء اللعبة.";
+"preference.title.silence_with_switch" = "تعطيل الصوت مع مفتاح التبديل الصامت ورفض إدخال الميكروفون";
+"preference.detail.silence_with_switch" = "تمكين تعطيل الصوت عندما يكون الوضع الصامت قيد التشغيل. سماعات الرأس والسماعات الخارجية غير متأثرة.";
 "preference.title.default_gamepad_ctrl" = "تكوين لوحة التحكم";
 "preference.title.hardware_hide" = "إخفاء عناصر التحكم عند توصيل الجهاز";
 "preference.detail.hardware_hide" = "تمكين سلوك تعطيل تراكب التحكم على الشاشة تلقائياً عند توصيل الماوس أو وحدة تحكم اللعبة.";
+"preference.title.recording_hide" = "إخفاء عناصر التحكم من تسجيل الشاشة";
+"preference.detail.recording_hide" = "إخفاء عناصر التحكم من تسجيل لقطة الشاشة وتسجيل الشاشة أثناء بقائها مرئية على الشاشة.";
 "preference.title.gesture_mouse" = "إيماءات الفأرة";
 "preference.detail.gesture_mouse" = "تمكين الإيماءات، مثل النقر لوضع الكتلة، الاستمرار لكسر الكتلة، التمرير مع إصبعين";
 "preference.title.gesture_hotbar" = "إيماءات الشريط";
