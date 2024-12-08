@@ -38,6 +38,9 @@
 
 "News" = "Nieuws";
 "Settings" = "Instellingen";
+"preference.section.control" = "Controle aanpassingen";
+//"preference.section.footer.control" = "";
+"preference.section.java" = "Java Tweaks";
 "preference.title.cosmetica" = "Cosmetica Capes";
 
 "preference.title.renderer" = "Renderer";
@@ -50,4 +53,5 @@
 "preference.detail.auto_ram" = "Schakel in de automatische RAM aanpasser in";
 
 "preference.profile.title.name" = "Naam";
+"preference.profile.title.version" = "Versie";
 "controller_configurator.playstation.title.named_back" = "Selecteer";
