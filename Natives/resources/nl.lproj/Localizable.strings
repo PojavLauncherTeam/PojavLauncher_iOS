@@ -21,6 +21,7 @@
 "custom_controls.button_edit.mapping" = "Koppelen";
 "custom_controls.button_edit.orientation" = "Oriëntatie";
 "custom_controls.button_edit.toggleable" = "Omschakelbaar";
+"custom_controls.button_edit.swipeable" = "Sleepbaar";
 "custom_controls.button_edit.bg_color" = "Achtergrondkleur";
 "custom_controls.button_edit.stroke_color" = "Lijnkleur";
 
