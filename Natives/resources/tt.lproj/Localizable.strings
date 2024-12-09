@@ -22,7 +22,6 @@
 "Copy" = "Күчереп алу";
 "Edit" = "Үзгәртү";
 "Remove" = "Бетерү";
-
 "custom_controls.button_edit.name" = "Исем";
 "custom_controls.button_edit.size" = "Зурлык";
 "custom_controls.button_edit.mapping" = "Төймәләр";
@@ -37,7 +36,6 @@
 "custom_controls.control_menu.add_button" = "Төймәне булдырырга";
 
 "launcher.menu.custom_controls" = "Көйләнелгән идарә";
-"launcher.menu.install_jar" = ".jar-файлны урнату";
 
 "login.alert.field.username" = "Кулланучының исеме";
 "login.option.add" = "Аккаунт өстәү";
@@ -60,12 +58,15 @@
 
 "preference.title.game_directory" = "Уен папкасы";
 "preference.title.cosmetica" = "Cosmetica япмалары";
-"preference.title.jitstreamer_server" = "JitStreamer серверының IP";
 
 "preference.title.renderer" = "Күрсәткеч";
 
 "preference.title.resolution" = "Ачыклык (%)";
 "preference.title.virtmouse_enable" = "Виртуаль тычкан";
+
 "preference.title.java_args" = "JVM кушу аргументлары";
 "preference.title.auto_ram" = "Автоматик тиз хәтер билгеләү";
+
+"preference.profile.title.name" = "Исем";
+"preference.profile.title.version" = "Версия";
 "controller_configurator.playstation.title.named_back" = "Сайлау";

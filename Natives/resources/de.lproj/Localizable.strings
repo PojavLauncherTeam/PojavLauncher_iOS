@@ -3,7 +3,7 @@
   StringLocalization
 */
 
-"game.menu.force_close" = "Erzwinge das Beenden";
+"game.menu.force_close" = "Beenden erzwingen";
 "game.menu.confirm.force_close" = "Möchtest du wirklich das Beenden erzwingen?";
 "game.menu.log_output" = "Protokoll-Ausgabe";
 "game.menu.custom_controls" = "Benutzerdefinierte Steuerung";
@@ -14,13 +14,15 @@
 
 // The play button
 "Play" = "Spielen";
+"Details" = "Details";
 
 // Version categories
 "Installed" = "Installiert";
 "Snapshot" = "Entwicklungsversionen";
-"Releases" = "Releases";
-"Old-beta" = "Old-Beta";
-"Old-alpha" = "Old-Alpha";
+"Releases" = "Veröffentlichungen";
+"Unstable" = "Unstabil";
+"Old-beta" = "Alte Beta";
+"Old-alpha" = "Alte Alpha";
 
 // Custom controls
 "Copy" = "Kopieren";
@@ -28,7 +30,12 @@
 "Move" = "Verschieben";
 "Remove" = "Entfernen";
 "Resize" = "Größe ändern";
+// Visibility
+"Always" = "Immer";
+"In game" = "Im Spiel";
+"In menu" = "Im Menü";
 
+"custom_controls.button_edit.forward_lock" = "Weiterleitungssperre";
 "custom_controls.button_edit.name" = "Name";
 "custom_controls.button_edit.size" = "Größe";
 "custom_controls.button_edit.mapping" = "Zuordnung";
@@ -37,17 +44,17 @@
 "custom_controls.button_edit.mouse_pass" = "Lässt Maus durch";
 "custom_controls.button_edit.swipeable" = "Wischbar";
 "custom_controls.button_edit.bg_color" = "Hintergrundfarbe";
-"custom_controls.button_edit.stroke_width" = "Strichbreite (%)";
+"custom_controls.button_edit.stroke_width" = "Strichbreite (dp)";
 "custom_controls.button_edit.stroke_color" = "Strichfarbe";
 "custom_controls.button_edit.corner_radius" = "Eckenradius (%)";
 "custom_controls.button_edit.opacity" = "Deckkraft (%)";
+"custom_controls.button_edit.visibility" = "Sichtbarkeit";
 
 "custom_controls.button_menu.add_subbutton" = "Sub-Schaltfläche hinzufügen";
 "custom_controls.control_menu.discard_changes" = "Änderungen verwerfen";
 "custom_controls.control_menu.exit" = "Beenden";
 "custom_controls.control_menu.exit.warn" = "Du bist dabei zu beenden ohne Änderungen zu speichern.";
 "custom_controls.control_menu.save" = "Speichern";
-"custom_controls.control_menu.save.error.default" = "Der Name der Steuerung kann nicht „default” sein, da es überschrieben werden würde.";
 "custom_controls.control_menu.save.error.json" = "JSON-Fehler";
 "custom_controls.control_menu.save.error.write" = "Fehler beim Speichern der Datei";
 "custom_controls.control_menu.load" = "Laden";
@@ -55,19 +62,24 @@
 "custom_controls.control_menu.safe_area" = "Sicherer Bereich";
 "custom_controls.control_menu.add_button" = "Taste hinzufügen";
 "custom_controls.control_menu.add_drawer" = "Gruppe hinzufügen";
+"custom_controls.control_menu.add_joystick" = "Joystick hinzufügen";
 "custom_controls.error.incompatible" = "Diese Steuerungsversion (Code %d) ist in dieser Launcher-Version nicht implementiert.";
-"custom_controls.hint" = "Drücke irgendwo auf dem Bildschirm für weitere Optionen";
+"custom_controls.hint" = "Drücke und halte irgendwo auf dem Bildschirm für weitere Optionen";
 
 "init.migrateDir" = "Das PojavLauncher-Datenverzeichnis ist jetzt %@. Alle vorhandenen Daten wurden an den neuen Standort verschoben.";
+
+"java.error.missing_main_class" = "%@ fehlt das Hauptklassenattribut. Sollte es sich um eine Mod handeln, packe sie in den „mods“-Ordner der ausgewählten Instanz.";
+"java.error.missing_runtime" = "%@ benötigt Java %d oder neuer. Bitte installiere zuerst die korrekte Java-Version und wähle sie in \"Laufzeiten verwalten\" aus.";
 
 "launcher.mcl.downloading_file" = "%@ wird heruntergeladen";
 "launcher.mcl.error_download" = "Fehler beim Herunterladen von %@: %@";
 
 "launcher.menu.custom_controls" = "Benutzerdefinierte Steuerung";
-"launcher.menu.install_jar" = ".jar installieren";
+"launcher.menu.execute_jar" = ".jar ausführen";
 
-"launcher.wait_jit.title" = "Wartet auf JIT";
+"launcher.wait_jit.title" = "Warten auf JIT";
 "launcher.wait_jit.message" = "PojavLauncher setzt auf Java's Just-in-time-Kompilierung, um mit maximaler Leistung zu arbeiten.";
+"launcher.wait_jit_trollstore.message" = "Falls du diese Nachricht immer noch siehst, aktiviere bitte URL-Schemen in TrollStore.";
 
 "login.error.username.outOfRange" = "Benutzername muss mindestens 3 und maximal 16 Zeichen lang sein";
 
@@ -77,7 +89,8 @@
 "login.jit.enabled" = "JIT wurde aktiviert";
 "login.jit.fail" = "JIT konnte nicht aktiviert werden.";
 "login.jit.fail.title" = "JIT konnte auf deinem Gerät nicht aktiviert werden.";
-"login.jit.fail.description" = "Es konnten keine Integrationen verwendet werden, um JIT automatisch auf deinem Gerät zu aktivieren, weshalb es nun manuell aktiviert werden muss. Fehler wurden in latestlog.txt protokolliert.";
+"login.jit.fail.description" = "Keine Integration konnte verwendet werden, um JIT automatisch auf deinem Gerät zu aktivieren. Nun muss dies manuell getan werden. Fehler wurden in latestlog.txt ausgegeben.";
+"login.jit.fail.description_unsupported" = "Eine nicht unterstützte Installationsmethode wurde erkannt. Bitte reinstalliere mit einer unterstützten Methode.";
 
 // Login buttons
 "login.menu.sendlogs" = "Fehlerprotokolle senden";
@@ -92,7 +105,7 @@
 "login.warn.title.legacy_ios" = "Die nächste Version von PojavLauncher wird ein Systemupdate erfordern.";
 "login.warn.message.legacy_ios" = "Um das nächste große Update starten zu können muss dieses Gerät iOS 14 oder neuer installiert haben.";
 "login.warn.title.limited_ram" = "Dieses Gerät hat eine begrenzte Menge an Arbeitsspeicher zur Verfügung.";
-"login.warn.message.limited_ram" = "Wir empfehlen, dass der Auto RAM Mode aktiviert bleibt, um Instabilität und Performance-Probleme zu vermeiden.";
+"login.warn.message.limited_ram" = "Wir empfehlen den automatischen RAM-Modus aktiviert zu lassen, um Instabilität und Performance-Probleme zu vermeiden.";
 
 "login.warn.title.demomode" = "Dein Konto ist im Demo-Modus";
 "login.warn.message.demomode" = "Als Ersatz für den Offline- und Lokalmodus, erlaubt der Demo-Modus, sich mit einem Microsoft-Konto einzuloggen, welches das Spiel nicht besitzt. Somit kann die Testversion von Minecraft gespielt werden, die in Version 1.3 eingeführt wurde. Ältere Versionen können in der Vollversion gespielt werden, da bei ihnen der offizielle Launcher auch keine Einschränlungen setzt. Auf unserer Website findet man mehr Informationen zu diesem Übergang vom Offline-Modus.";
@@ -113,6 +126,7 @@
 "login.msa.progress.checkMCProfile" = "(5/5) Überprüfe Minecraft-Profil";
 
 "News" = "Neuigkeiten";
+"Profiles" = "Profile";
 "Settings" = "Einstellungen";
 
 "preference.section.general" = "Allgemeine Einstellungen";
@@ -121,7 +135,7 @@
 der Minecraft-Version zu wählen. Verringerte Auflösung reduziert die Arbeitslast der GPU für eine bessere Leistung.";
 "preference.section.control" = "Steuerung anpassen";
 "preference.section.debug" = "UI-Debugging-Einstellungen";
-"preference.section.footer.debug" = "Neben dem Debuggen können diese Einstellungen für benutzerdefinierte Steuerelemente nützlich sein. Möglicherweise muss der Launcher neu startet werden, damit die Änderungen wirksam werden.";
+"preference.section.footer.debug" = "Möglicherweise musst du den Launcher neu starten, damit die Änderungen wirksam werden.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java-Optimierungen";
 //"preference.section.footer.java" = "";
@@ -138,10 +152,6 @@ der Minecraft-Version zu wählen. Verringerte Auflösung reduziert die Arbeitsla
 "preference.detail.cosmetica" = "Aktiviert Umhänge von Cosmetica (früher Arc). Für weitere Informationen bitte https://cosmetica.cc besuchen. OptiFine wird benötigt";
 "preference.title.debug_logging" = "Debug-Protokolle";
 "preference.detail.debug_logging" = "Protokolliert interne Einstellungen und Aktionen an latestlog.txt. Dies hilft den Entwicklern Probleme leichter zu finden, kann aber Minecraft langsamer laufen lassen, da die Protokolle öfter geschrieben werden.";
-"preference.title.jitstreamer_server" = "JitStreamer-Server-IP";
-"preference.detail.jitstreamer_server" = "Erlaubt es dir, auf eine benutzerdefinierte JitStreamer-Server-IP zu wechseln, wie zum Beispiel für selbst gehostete Instanzen. Diese Option kann ausgelassen werden, wenn du die Standard-JitStreamer-Server verwendest.";
-"preference.title.enable_altkit" = "AltKit-Integration aktivieren";
-"preference.detail.enable_altkit" = "Wenn aktiviert, versucht PojavLauncher sich mit lokalen AltServern zu verbinden, um JIT zu aktivieren.";
 "preference.title.appicon" = "App-Icon festlegen";
 "preference.detail.appicon" = "Erlaubt es dir, zwischen verschiedenen Startbildschirm-Icons für PojavLauncher zu wählen.";
 "preference.title.appicon-default" = "Bekanntes PojavLauncher-Icon (Hell)";
@@ -180,19 +190,23 @@ der Minecraft-Version zu wählen. Verringerte Auflösung reduziert die Arbeitsla
 "preference.title.max_framerate" = "Maximale Framerate";
 "preference.detail.max_framerate" = "Erlaubt es dir, die Framerate auf 60FPS auf ProMotion-Displays zu beschränken.";
 
+"preference.title.performance_hud" = "Performance-HUD anzeigen";
+"preference.detail.performance_hud" = "Overlay zur Leistungsüberwachung anzeigen, falls verfügbar.";
+
 "preference.title.fullscreen_airplay" = "Vollbild-AirPlay";
 "preference.detail.fullscreen_airplay" = "Ermöglicht es dir nur das Spielfenster auf ein externes Display zu spiegeln, anstatt den ganzen Bildschirm zu spiegeln.";
 "preference.title.silence_other_audio" = "Audio anhalten, wenn das Spiel geöffnet wird";
 "preference.detail.silence_other_audio" = "Aktiviere diese Option um PojavLauncher zu erlauben, Audio von anderen Apps wie Musik zu pausieren, wenn das Spiel gestartet wird.";
-"preference.title.silence_with_switch" = "Audio mit Lautlos-Schalter deaktivieren";
-"preference.detail.silence_with_switch" = "Aktivieren, um Audio zu deaktivieren, wenn der Lautlos-Modus aktiviert ist. Kopfhörer und externe Lautsprecher sind nicht betroffen.";
 "preference.title.default_gamepad_ctrl" = "Steuerungs-Konfiguration";
 "preference.title.hardware_hide" = "Steuerelemente ausblenden, wenn Hardware verbunden ist";
 "preference.detail.hardware_hide" = "Aktivieren Sie die automatische Deaktivierung des Overlays auf dem Bildschirm, wenn eine Maus oder ein Game-Controller angeschlossen ist.";
+"preference.title.recording_hide" = "Steuerelemente auf Bildschirmaufnahmen ausblenden";
+"preference.detail.recording_hide" = "Versteckt Steuerelemente vor Screenshots und Aufnahmen, während sie auf dem Bildschirm sichtbar bleiben.";
 "preference.title.gesture_mouse" = "Mausgesten";
 "preference.detail.gesture_mouse" = "Ermöglicht Gesten wie Tippen zum Platzieren des Blocks, halten um den Block abzubauen, mit 2 Fingern zu scrollen";
 "preference.title.gesture_hotbar" = "Hotbar Gesten";
 "preference.detail.gesture_hotbar" = "Aktiviert Gesten wie Berühren des Hotbar Slot, tausche Gegenstände zwischen der Hand aus, wirf Items";
+"preference.title.disable_haptics" = "Bildschirmhaptik deaktivieren";
 "preference.title.press_duration" = "Dauer eines langen Touch (ms)";
 "preference.detail.press_duration" = "Auslösedauer um Blöcke zu zerstören und Items zu droppen.";
 "preference.title.button_scale" = "Schalflächengröße (%)";
@@ -210,14 +224,25 @@ der Minecraft-Version zu wählen. Verringerte Auflösung reduziert die Arbeitsla
 "preference.detail.gyroscope_enable" = "Wenn du dies aktivierst, kannst du dich im Spiel drehen, indem du dein Gerät drehst";
 "preference.title.gyroscope_invert_x_axis" = "Gyroskop umkehren";
 "preference.detail.gyroscope_invert_x_axis" = "Wechselt die X-Achse des Gyroskops";
-"preference.title.gyroscope_sensitivity" = "Gyroskop-Steuerungs-Empfindlichkeit";
+"preference.title.gyroscope_sensitivity" = "Gyroskopsteuerungsempfindlichkeit";
 "preference.detail.gyroscope_sensitivity" = "Passe die Empfindlichkeit der Gyroskop-Steuerung an";
 
-"preference.title.java_home" = "Nutze Java 17 für Minecraft < 1.17";
-"preference.detail.java_home" = "Java 8 wird standardmäßig für diese Versionen verwendet. Aktivieren Sie diese Option, um die Verwendung von Java 17 zu erzwingen, aber die Kompatibilität ist nicht garantiert.";
-"preference.title.java_args" = "JVM-Start-Argumente";
+"preference.title.manage_runtime" = "Laufzeiten verwalten";
+"preference.title.confirm.delete_runtime" = "%@ wird gelöscht";
+"preference.manage_runtime.header.default" = "Bevorzugte Java-Version";
+"preference.manage_runtime.default.1165" = "1.16.5 und älter";
+"preference.manage_runtime.default.117" = "1.17 und neuer";
+"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 und älter können mit einer neueren Java-Version ausgeführt werden, jedoch ist die Kompatibilität mit Mods nicht gewährleistet. Externe Laufzeiten können im Ordner „java_runtimes“ abgelegt werden. Die Änderung der Java-Version für „.jar ausführen“ tritt nur in Kraft, wenn der Installer keine neuere Java-Version erwartet.";
+"preference.manage_runtime.footer.java8" = "Dies ist die Standardversion für Minecraft 1.16.5 und älter.";
+"preference.manage_runtime.footer.java17" = "Dies ist die Standardversion für Minecraft 1.17 und neuer.";
+"preference.manage_runtime.header.invalid" = "Ungültige Laufzeiten";
+
+"preference.title.java_args" = "JVM-Startargumente";
 "preference.detail.java_args" = "Argumente an Java übergeben, wenn Minecraft gestartet wird. Sei vorsichtig, dies kann den Absturz des Spiels verursachen, wenn es falsch geändert wird.";
 "preference.placeholder.java_args" = "Argumente angeben...";
+"preference.title.env_variables" = "Umgebungsvariablen";
+"preference.detail.env_variables" = "Setze benutzerdefinierte Umgebungsvariablen beim Starten von Minecraft. Sei vorsichtig, dies kann den Absturz des Spiels verursachen, wenn sie falsch geändert wird.";
+"preference.placeholder.env_variables" = "Variablen festlegen...";
 "preference.title.auto_ram" = "Auto-RAM";
 "preference.detail.auto_ram" = "Aktiviert automatische RAM-Einstellungen";
 "preference.warn.auto_ram" = "Das Deaktivieren dieser Option kann auf einem nicht-ge-jailbreakten Gerät Instabilität erzeugen. Sei vorsichtig.";
@@ -235,10 +260,23 @@ der Minecraft-Version zu wählen. Verringerte Auflösung reduziert die Arbeitsla
 "preference.detail.debug_auto_correction" = "Aktiviere die Auto-Korrektur bei der Eingabe von Text im Spiel.";
 "preference.title.debug_hide_home_indicator" = "Home-Indikator ausblenden";
 "preference.detail.debug_hide_home_indicator" = "Dadurch wird die Sperre des Home-Indikators deaktiviert. Du musst den Guided-Access verwenden, um den Home-Indikator gleichzeitig auszublenden und zu sperren.";
-"preference.title.debug_show_layout_bounds" = "Layoutgrenzen einblenden";
-"preference.detail.debug_show_layout_bounds" = "Zuschnittbegrenzungen, Ränder anzeigen";
-"preference.title.debug_show_layout_overlap" = "Layoutüberlappungen anzeigen";
-"preference.detail.debug_show_layout_overlap" = "Überlagere jede Ansicht mit einer transparenten Farbe, um überlappende Ansichten anzuzeigen.";
+
+"preference.profile.title.name" = "Name";
+"preference.profile.title.loader_type" = "Loader-Typ";
+"preference.profile.title.loader_vendor" = "Anbieter von Loadern";
+"preference.profile.title.loader_version" = "Loader-Version";
+"preference.profile.title.version" = "Version";
+"preference.profile.title.version_type" = "Versionstyp";
+"preference.profile.title.default_touch_control" = "Berührungssteuerung";
+"preference.profile.title.default_gamepad_control" = "Gamepad-Steuerung";
+
+"profile.error.name_exists" = "Ein Profil mit diesen Namen existiert bereits. Verwende bitte einen anderen Namen.";
+"profile.section.instance" = "Spielinstanz-Einstellungen";
+"profile.section.profiles" = "Profile in dieser Instanz";
+"profile.title.create" = "Neues Profil erstellen";
+"profile.title.separate_preference" = "Einstellungen isolieren";
+"profile.detail.separate_preference" = "Aktiviere diese Option, um jegliche in den Einstellungen gemachten Änderungen zu isolieren. Ein Zurücksetzen wird die globalen Einstellungen statt die Standardeinstellungen laden.";
+"profile.title.install_fabric_quilt" = "Fabric/Quilt installieren";
 
 "controller_configurator.title.current" = "Gamepads Konfigurationsdatei";
 "controller_configurator.title.type.xbox" = "XBox";
