@@ -29,11 +29,12 @@ At the minimum, you'll need one of the following devices on **iOS 14.0** and lat
 - iPod touch (7th generation)
 
 However, we recommend one of the following devices on **iOS 14.0** and later:
-- iPhone XS and later, excluding iPhone XR and iPhone SE (2nd generation)
+- iPhone 12 and later
 - iPad (10th generation) and later
 - iPad Air (4th generation) and later
 - iPad mini (6th generation) and later
-- iPad Pro (all models, except for 9.7-inch)
+- iPad Pro 11" (all models)
+- iPad Pro 12.9" (3rd generation) and later
 
 Recommended devices provide a smoother and more enjoyable gameplay experience compared to other supported devices.
 - tvOS support is in development.
@@ -66,10 +67,12 @@ PojavLauncher makes use of **just-in-time compilation**, or JIT, to provide usab
 | Application         | AltStore | SideStore | TrollStore | Jitterbug          | Jailbroken |
 |---------------------|----------|-----------|------------|--------------------|------------|
 | Requires ext-device | Yes      | No        | No         | If VPN unavailable | No         |
-| Requires Wi-Fi      | Yes      | Yes       | No         | Yes                | No         |
+| Requires Wi-Fi      | Yes      | Yes       | No         | Yes(+)             | No         |
 | Auto enabled        | Yes(*)   | No        | Yes        | No                 | Yes        |
 
 (*) AltServer running on the local network is required.
+
+(+) Personal Hotspot works & using a cable with no Wi-Fi also works.
 
 ## Contributors
 PojavLauncher is amazing, and surprisingly stable, and it wouldn't be this way without the commmunity that helped and contribute to the project! Some notable names:
