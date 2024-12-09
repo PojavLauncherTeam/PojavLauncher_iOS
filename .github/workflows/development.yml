@@ -18,8 +18,6 @@ jobs:
         include:
           - platform: 2
             platform_name: ios
-          - platform: 3
-            platform_name: tvos
           - platform: 7
             platform_name: iossimulator
           - platform: 8
