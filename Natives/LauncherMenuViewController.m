@@ -142,7 +142,7 @@
         } else {
             [self enableJITWithAltKit];
         }
-    } else {
+    } else if (!NSProcessInfo.processInfo.macCatalystApp && !getenv("SIMULATOR_DEVICE_NAME")) {
         [self displayProgress:localize(@"login.jit.fail", nil)];
         [self displayProgress:nil];
         UIAlertController* alert = [UIAlertController alertControllerWithTitle:localize(@"login.jit.fail.title", nil)
