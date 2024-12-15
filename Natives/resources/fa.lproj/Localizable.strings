@@ -54,6 +54,7 @@
 "custom_controls.control_menu.safe_area" = "ناحیه امن";
 "custom_controls.control_menu.add_button" = "اضافه کردن دکمه";
 "custom_controls.control_menu.add_drawer" = "اضافه کردن کشو";
+"custom_controls.control_menu.add_joystick" = "اضافه کردن جویستیک";
 "custom_controls.error.incompatible" = "این نسخه کنترل (کد %d) در این نسخه‌ی لانچر اجرا نشده است.";
 "custom_controls.hint" = "برای گزینه‌های بیشتر، هر نقطه از صفحه را طولانی فشار دهید";
 
