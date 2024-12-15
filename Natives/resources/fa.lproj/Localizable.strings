@@ -28,6 +28,8 @@
 "Move" = "انتقال";
 "Remove" = "حذف";
 "Resize" = "تغییر اندازه";
+
+"custom_controls.button_edit.forward_lock" = "قفل حرکت به جلو";
 "custom_controls.button_edit.name" = "نام";
 "custom_controls.button_edit.size" = "اندازه";
 "custom_controls.button_edit.mapping" = "نقشه‌برداری";
