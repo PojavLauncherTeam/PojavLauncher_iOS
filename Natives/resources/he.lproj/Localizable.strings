@@ -28,6 +28,7 @@
 "custom_controls.control_menu.save" = "שמור";
 "custom_controls.control_menu.load" = "טען";
 "custom_controls.control_menu.add_button" = "הוסף כפתור";
+"custom_controls.control_menu.add_joystick" = "הוסף מוט היגוי";
 
 "launcher.menu.custom_controls" = "פקדים מותאמים אישית";
 "login.option.select" = "בחר חשבון";
