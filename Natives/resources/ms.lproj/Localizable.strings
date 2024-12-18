@@ -14,7 +14,6 @@
 "Old-alpha" = "Alfa-lama";
 "Edit" = "Sunting";
 "Remove" = "Hapus";
-
 "custom_controls.button_edit.name" = "Nama";
 "custom_controls.button_edit.size" = "Saiz";
 "custom_controls.button_edit.mapping" = "Pemetaan";
@@ -27,7 +26,6 @@
 "custom_controls.control_menu.add_button" = "Tambah butang";
 
 "launcher.menu.custom_controls" = "Kawalan custom";
-"launcher.menu.install_jar" = "Pasang .jar";
 "login.option.select" = "Pilih akaun";
 
 "News" = "Berita";
@@ -36,7 +34,7 @@
 "preference.section.general" = "Tetapan Umum";
 "preference.section.video" = "Tetapan Video";
 "preference.section.debug" = "Tetapan UI Penyahpepijat";
-"preference.section.footer.debug" = "Selain daripada nyahpepijat, tetapan ini mungkin berguna untuk kawalan tersuai. Anda mungkin perlu memulakan semula pelancar untuk perubahan berkuat kuasa.";
+"preference.section.footer.debug" = "Anda mungkin perlu memulakan semula pelancar untuk perubahan berkuat kuasa.";
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "Adakah anda pasti?";
@@ -50,7 +48,13 @@
 "preference.title.done.reset_settings" = "Semua tetapan lalai telah dipulihkan.";
 
 "preference.title.renderer" = "Renderer";
+"preference.title.silence_with_switch" = "Nyahdayakan audio dengan suis senyap dan tolak input mikrofon";
+"preference.detail.silence_with_switch" = "Dayakan untuk menyahdayakan audio apabila Mod Senyap dihidupkan dan tolak input mikrofon. Fon kepala dan pembesar suara luaran tidak terjejas.";
+
 "preference.title.java_args" = "JVM Launch arguments";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Membenarkan pelaras RAM automatik";
 "preference.detail.allocated_memory" = "Mengawal berapa banyak memori yang diberikan kepada Minecraft";
+
+"preference.profile.title.name" = "Nama";
+"preference.profile.title.version" = "Versi";

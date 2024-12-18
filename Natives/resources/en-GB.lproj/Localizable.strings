@@ -4,33 +4,81 @@
 */
 
 "game.menu.force_close" = "Force close";
+"game.menu.confirm.force_close" = "Are you sure you want to force exit?";
 "game.menu.log_output" = "Log output";
 "game.menu.custom_controls" = "Custom controls";
 
 // The play button
 "Play" = "Play";
+
+// Version categories
+"Installed" = "Installed";
 "Snapshot" = "Snapshot";
+"Releases" = "Releases";
 "Old-beta" = "Old-alpha";
 "Old-alpha" = "Old-alpha";
-"Edit" = "Edit";
-"Remove" = "Remove";
 
+// Custom controls
+"Copy" = "Copy";
+"Edit" = "Edit";
+"Move" = "Move";
+"Remove" = "Remove";
+"Resize" = "Resize";
+
+"custom_controls.button_edit.forward_lock" = "Forward lock";
 "custom_controls.button_edit.name" = "Name";
 "custom_controls.button_edit.size" = "Size";
+"custom_controls.button_edit.mapping" = "Mapping";
+"custom_controls.button_edit.orientation" = "Orientation";
 "custom_controls.button_edit.toggleable" = "Toggleable";
+"custom_controls.button_edit.swipeable" = "Swipeable";
+"custom_controls.button_edit.bg_color" = "Background color";
+"custom_controls.button_edit.stroke_color" = "Stroke color";
+
+"custom_controls.button_menu.add_subbutton" = "Add sub-button";
+"custom_controls.control_menu.discard_changes" = "Discard changes";
 "custom_controls.control_menu.exit" = "Exit";
+"custom_controls.control_menu.exit.warn" = "You are about to exit without saving changes.";
 "custom_controls.control_menu.save" = "Save";
+"custom_controls.control_menu.save.error.json" = "JSON error";
+"custom_controls.control_menu.save.error.write" = "Error saving file";
 "custom_controls.control_menu.load" = "Load";
+"custom_controls.control_menu.make_default" = "Make default";
+"custom_controls.control_menu.safe_area" = "Safe area";
 "custom_controls.control_menu.add_button" = "Add button";
+"custom_controls.control_menu.add_joystick" = "Add joystick";
 
 "launcher.menu.custom_controls" = "Custom controls";
+"login.option.add" = "Add account";
 "login.option.select" = "Select account";
+"login.option.microsoft" = "Microsoft account";
+"login.option.local" = "Local account";
 
 "News" = "News";
 "Settings" = "Settings";
+"preference.section.control" = "Control customization";
+"preference.section.footer.debug" = "You'll need to restart the app for your changes to take effect.";
+//"preference.section.footer.control" = "";
+"preference.section.java" = "Java Tweaks";
+//"preference.section.footer.java" = "";
+
+"preference.title.confirm" = "Are you sure?";
+
+"preference.title.game_directory" = "Game directory";
+"preference.title.cosmetica" = "Cosmetica Capes";
+"preference.title.appicon" = "Set app icon";
 
 "preference.title.renderer" = "Renderer";
+
+"preference.title.gyroscope_enable" = "Enable gyroscope controls";
+"preference.title.gyroscope_sensitivity" = "Gyroscope controls sensitivity";
+
 "preference.title.java_args" = "JVM Launch arguments";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Enables automatic RAM adjuster";
 "preference.detail.allocated_memory" = "Controls how much memory is given to Minecraft";
+
+"preference.profile.title.name" = "Name";
+"preference.profile.title.version" = "Version";
+"profile.title.create" = "Create new profile";
+"controller_configurator.playstation.title.named_back" = "Select";

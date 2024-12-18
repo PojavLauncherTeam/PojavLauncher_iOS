@@ -14,18 +14,36 @@
 "Old-alpha" = "Old-alpha";
 "Edit" = "Edit";
 "Remove" = "Remove";
-
 "custom_controls.button_edit.name" = "Name";
 "custom_controls.button_edit.size" = "Mida";
+"custom_controls.button_edit.mapping" = "Mapeigat";
+"custom_controls.button_edit.orientation" = "Orientació";
+"custom_controls.button_edit.toggleable" = "Commutable";
+"custom_controls.button_edit.bg_color" = "Color de fons";
+"custom_controls.button_edit.stroke_color" = "Color de traç";
+
+"custom_controls.button_menu.add_subbutton" = "Afegeix subbotó";
 "custom_controls.control_menu.exit" = "Exit";
 "custom_controls.control_menu.save" = "Save";
 "custom_controls.control_menu.load" = "Load";
 "custom_controls.control_menu.add_button" = "Add button";
+"custom_controls.control_menu.add_joystick" = "Afegeix joystick";
 
 "launcher.menu.custom_controls" = "Custom controls";
+"login.option.add" = "Afegeix compte";
 "login.option.select" = "Seleccioneu un compte";
 
 "News" = "Notícies";
 "Settings" = "Settings";
+"preference.title.cosmetica" = "Capes de Cosmetica";
 
 "preference.title.renderer" = "Renderitzador";
+
+"preference.title.gyroscope_enable" = "Activa els controls del giroscopi";
+"preference.title.gyroscope_sensitivity" = "Sensibilitat de controls del giroscopi";
+
+"preference.title.java_args" = "Arguments de llançament del JVM";
+
+"preference.profile.title.name" = "Name";
+"preference.profile.title.version" = "Versió";
+"controller_configurator.playstation.title.named_back" = "Selecciona";
