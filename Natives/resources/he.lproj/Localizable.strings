@@ -51,4 +51,5 @@
 
 "preference.profile.title.name" = "שם";
 "preference.profile.title.version" = "גרסא";
+"profile.title.create" = "צור פרופיל חדש";
 "controller_configurator.playstation.title.named_back" = "בחר";
