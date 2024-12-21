@@ -14,6 +14,8 @@
 "Old-alpha" = "אלפא: גרסה ישנה";
 "Edit" = "ערוך";
 "Remove" = "הסר";
+
+"custom_controls.button_edit.forward_lock" = "נעילת קדימה";
 "custom_controls.button_edit.name" = "שם";
 "custom_controls.button_edit.size" = "גודל";
 "custom_controls.button_edit.mapping" = "מיפוי";
@@ -28,9 +30,10 @@
 "custom_controls.control_menu.save" = "שמור";
 "custom_controls.control_menu.load" = "טען";
 "custom_controls.control_menu.add_button" = "הוסף כפתור";
-"custom_controls.control_menu.add_joystick" = "הוסף מוט היגוי";
+"custom_controls.control_menu.add_joystick" = "הוסף בקר";
 
 "launcher.menu.custom_controls" = "פקדים מותאמים אישית";
+"login.option.add" = "הוסף חשבון";
 "login.option.select" = "בחר חשבון";
 
 "News" = "חדשות";
@@ -43,6 +46,9 @@
 "preference.title.cosmetica" = "שכמיות אסתטיות";
 
 "preference.title.renderer" = "רינדור";
+
+"preference.title.gyroscope_enable" = "אפשר את בקרי הג'יירוסקופ";
+"preference.title.gyroscope_sensitivity" = "רגישות בקרי חיישן הכיוון";
 
 "preference.title.java_args" = "פרמטרים להפעלת JVM";
 "preference.title.auto_ram" = "זיכרון אוטומטי";
