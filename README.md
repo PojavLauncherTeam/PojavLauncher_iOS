@@ -37,7 +37,7 @@ However, we recommend one of the following devices on **iOS 14.0** and later:
 
 Recommended devices provide a smoother and more enjoyable gameplay experience compared to other supported devices.
 - tvOS support is in development.
-- iOS 17.x and iOS 18.x is supported. However, a computer is required. These methods will ultilized usage of pymobiledevice3, python 3.11.(x) must be properly set up on your computer.
+- iOS 17.x and iOS 18.x is supported. However, a computer is required. These methods will ultilized usage of pymobiledevice3. Python 3.11.(x) must be properly set up on your computer.
 
 ### Setting up to sideload
 PojavLauncher can be sideloaded in many ways. Our recommended solution is to install [TrollStore](https://github.com/opa334/TrollStore) if your iOS version supports it. Installing with TrollStore allows you to permenantly sign the application, automatically enable JIT, and increase memory limits.
