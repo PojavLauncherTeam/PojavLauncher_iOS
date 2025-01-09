@@ -13,7 +13,7 @@
 "game.title.exit_code" = "遊戲以代碼 %d 退出";
 
 // The play button
-"Play" = "啟動遊戲";
+"Play" = "開始遊戲";
 "Details" = "詳細資料";
 
 // Version categories
@@ -21,8 +21,8 @@
 "Snapshot" = "快照版";
 "Releases" = "正式版";
 "Unstable" = "系統失去穩定";
-"Old-beta" = "遠古 beta 版";
-"Old-alpha" = "遠古 alpha 版";
+"Old-beta" = "舊版 Beta";
+"Old-alpha" = "舊版 Alpha";
 
 // Custom controls
 "Copy" = "複製";
@@ -35,7 +35,7 @@
 "In game" = "遊戲中";
 "In menu" = "選單中";
 
-"custom_controls.button_edit.forward_lock" = "前進/疾跑鎖";
+"custom_controls.button_edit.forward_lock" = "疾走鎖定";
 "custom_controls.button_edit.name" = "名稱";
 "custom_controls.button_edit.size" = "大小";
 "custom_controls.button_edit.mapping" = "對映";
@@ -50,7 +50,7 @@
 "custom_controls.button_edit.opacity" = "不透明度（%）";
 "custom_controls.button_edit.visibility" = "可見性";
 
-"custom_controls.button_menu.add_subbutton" = "添加子按鈕";
+"custom_controls.button_menu.add_subbutton" = "新增子按鈕";
 "custom_controls.control_menu.discard_changes" = "放棄變更";
 "custom_controls.control_menu.exit" = "退出";
 "custom_controls.control_menu.exit.warn" = "您將要在尚未儲存變更的情況下退出。";
@@ -238,7 +238,7 @@
 "preference.manage_runtime.footer.java17" = "This is the default version for Minecraft 1.17 and newer.";
 "preference.manage_runtime.header.invalid" = "無效的執行";
 
-"preference.title.java_args" = "JVM 啟動引數";
+"preference.title.java_args" = "JVM 啟動參數";
 "preference.detail.java_args" = "Pass arguments to Java when launching Minecraft. Be careful, this can make the game crash if modified incorrectly.";
 "preference.placeholder.java_args" = "提供選項……";
 "preference.title.env_variables" = "環境變量";
