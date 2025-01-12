@@ -197,6 +197,8 @@ der Minecraft-Version zu wählen. Verringerte Auflösung reduziert die Arbeitsla
 "preference.detail.fullscreen_airplay" = "Ermöglicht es dir nur das Spielfenster auf ein externes Display zu spiegeln, anstatt den ganzen Bildschirm zu spiegeln.";
 "preference.title.silence_other_audio" = "Audio anhalten, wenn das Spiel geöffnet wird";
 "preference.detail.silence_other_audio" = "Aktiviere diese Option um PojavLauncher zu erlauben, Audio von anderen Apps wie Musik zu pausieren, wenn das Spiel gestartet wird.";
+"preference.title.silence_with_switch" = "Audio mit Lautlos-Schalter deaktivieren und Mikrofon-Eingabe verweigern";
+"preference.detail.silence_with_switch" = "Aktivieren um Audio zu deaktivieren, wenn Lautlos-Modus und Mikrofon-Eingabe verweigern an ist. Kopfhörer und externe Lautsprecher sind nicht betroffen.";
 "preference.title.default_gamepad_ctrl" = "Steuerungs-Konfiguration";
 "preference.title.hardware_hide" = "Steuerelemente ausblenden, wenn Hardware verbunden ist";
 "preference.detail.hardware_hide" = "Aktivieren Sie die automatische Deaktivierung des Overlays auf dem Bildschirm, wenn eine Maus oder ein Game-Controller angeschlossen ist.";
