@@ -173,8 +173,8 @@
 "preference.title.renderer" = "渲染器";
 
 "preference.title.renderer.release.auto" = "自動";
-"preference.title.renderer.release.gl4es" = "Holy GL4ES -（全版本可用，速度較快）";
-"preference.title.renderer.release.angle" = "ANGLE（Vulkan）-（僅支持1.17以上的版本，速度中等）";
+"preference.title.renderer.release.gl4es" = "holy gl4es";
+"preference.title.renderer.release.angle" = "ANGLE";
 "preference.title.renderer.release.zink" = "Zink";
 
 "preference.title.renderer.debug.auto" = "自動：gl4es 或 ANGLE";
@@ -197,17 +197,17 @@
 "preference.title.silence_other_audio" = "在遊戲開啟時暫停音訊";
 "preference.detail.silence_other_audio" = "啟用此選項可讓 PojavLauncher 在啟動遊戲時暫停其他應用程式的音訊，例如音樂。";
 "preference.title.silence_with_switch" = "使用靜音開關關閉音訊並拒絕麥克風輸入";
-"preference.detail.silence_with_switch" = "啟用時，可以使用靜音模式禁用音訊，並關閉麥克風輸入，耳機和外部揚聲器不受此影響。";
+"preference.detail.silence_with_switch" = "啟用此選項可在靜音模式開啟時關閉音訊，並拒絕麥克風輸入。耳機和外接喇叭不受影響。";
 "preference.title.default_gamepad_ctrl" = "控制器設定";
 "preference.title.hardware_hide" = "連接硬體時隱藏控制項";
 "preference.detail.hardware_hide" = "啟用此選項，當連接滑鼠或遊戲控制器時，會自動停用螢幕上的控制項覆蓋層。";
-"preference.title.recording_hide" = "「在屏幕錄製時隱藏控制界面」";
-"preference.detail.recording_hide" = "「在截圖和屏幕錄製時隱藏控制界面，同時保持它們在屏幕上可見」";
-"preference.title.gesture_mouse" = "Mouse gestures";
+"preference.title.recording_hide" = "在螢幕錄影中隱藏控制項";
+"preference.detail.recording_hide" = "在螢幕截圖和螢幕錄影中隱藏控制項，同時它們仍會在畫面上可見。";
+"preference.title.gesture_mouse" = "滑鼠手勢";
 "preference.detail.gesture_mouse" = "啟用手勢，例如輕觸放置方塊、按住破壞方塊、使用兩指捲動";
 "preference.title.gesture_hotbar" = "快捷欄手勢";
 "preference.detail.gesture_hotbar" = "啟用手勢，例如觸控快捷欄欄位、交換慣用手和非慣用手物品、丟出物品";
-"preference.title.disable_haptics" = "Disable on-screen haptics";
+"preference.title.disable_haptics" = "停用螢幕上的觸覺回饋";
 "preference.title.press_duration" = "長按時間（毫秒）";
 "preference.detail.press_duration" = "觸發破壞方塊及釋出物件的按壓時間。";
 "preference.title.button_scale" = "螢幕按鈕比例（%）";
@@ -239,10 +239,10 @@
 "preference.manage_runtime.header.invalid" = "無效的執行階段";
 
 "preference.title.java_args" = "JVM 啟動參數";
-"preference.detail.java_args" = "Pass arguments to Java when launching Minecraft. Be careful, this can make the game crash if modified incorrectly.";
-"preference.placeholder.java_args" = "指定參數……";
+"preference.detail.java_args" = "在啟動 Minecraft 時將參數傳遞給 Java。請小心，如果修改不正確，可能會導致遊戲崩潰。";
+"preference.placeholder.java_args" = "指定……";
 "preference.title.env_variables" = "環境變數";
-"preference.detail.env_variables" = "Set custom environment variables when launching Minecraft. Be careful, this can make the game crash if modified incorrectly.";
+"preference.detail.env_variables" = "在啟動 Minecraft 時設定自訂環境變數。請小心，如果修改不正確，可能會導致遊戲崩潰。";
 "preference.placeholder.env_variables" = "Specify variables...";
 "preference.title.auto_ram" = "自動調節 RAM";
 "preference.detail.auto_ram" = "啟用 RAM 自動調節";
