@@ -14,6 +14,7 @@
 
 // The play button
 "Play" = "Chơi";
+"Details" = "";
 
 // Version categories
 "Installed" = "Đã cài đặt";
@@ -74,11 +75,11 @@
 
 "login.alert.field.username" = "Tên người dùng";
 
-"login.jit.checking" = "Kiểm tra cho JIT";
+"login.jit.checking" = "Đang đợi JIT được bật";
 "login.jit.enabled" = "JIT đã được bật";
 "login.jit.fail" = "Không thể bật JIT.";
 "login.jit.fail.title" = "Không thể bật JIT trên thiết bị của bạn.";
-"login.jit.fail.description" = "Không thể sử dụng tích hợp nào để tự động bật JIT trên thiết bị của bạn và giờ đây nó phải được bật theo cách thủ công. Lỗi đã được ghi vào latestlog.txt.";
+"login.jit.fail.description" = "Không thể sử dụng trình tích hợp nào để tự động bật JIT trên thiết bị của bạn và giờ đây nó phải được bật theo cách thủ công. Lỗi đã được ghi vào latestlog.txt.";
 
 // Login buttons
 "login.menu.sendlogs" = "Gửi nhật kí của bạn";
@@ -92,7 +93,7 @@
 "login.warn.message.legacy_device" = "Để chạy bản phát hành chính tiếp theo, cần có một thiết bị có khả năng chạy iOS 14.";
 "login.warn.title.legacy_ios" = "Bản phát hành tiếp theo của PojavLauncher sẽ yêu cầu cập nhật hệ thống.";
 "login.warn.message.legacy_ios" = "Để chạy bản phát hành chính tiếp theo, thiết bị này cần chạy iOS 14 trở lên.";
-"login.warn.title.limited_ram" = "Thiết bị này có một lượng bộ nhớ khả dụng hạn chế.";
+"login.warn.title.limited_ram" = "Thiết bị này có một lượng bộ nhớ RAM khả dụng hạn chế.";
 "login.warn.message.limited_ram" = "Chúng tôi khuyên bạn nên bật RAM tự động để tránh các vấn đề về hiệu suất và tính không ổn định.";
 
 "login.warn.title.demomode" = "Tài khoản của bạn là Demo";
