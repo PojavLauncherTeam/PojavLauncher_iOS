@@ -42,13 +42,13 @@ Recommended devices provide a smoother and more enjoyable gameplay experience co
 ### Setting up to sideload
 PojavLauncher can be sideloaded in many ways. Our recommended solution is to install [TrollStore](https://github.com/opa334/TrollStore) if your iOS version supports it. By signing PojavLauncher with TrollStore, JIT would be automatically enabled, you wouldn't have to worry about refreshing or the app expiring as PojavLauncher would be permanently signed, as long as you're on a version that is compatible with TrollStore. By taking advantage of TrollStore, your memory limits may increases.
 
-For iOS/iPadOS 17.0: Unfortunately,the above process will not work. It is required that you must use [TrollRestore](https://github.com/JJTech0130/TrollRestore). Any versions above iOS/iPadOS 17.0 will NOT be supported (as of December 23, 2024).
+For iOS/iPadOS 17.0: Unfortunately, the above process will not work. It is required that you must use [TrollRestore](https://github.com/JJTech0130/TrollRestore). Any versions above iOS/iPadOS 17.0 will NOT be supported (as of January 15, 2025).
 
 If you cannot, [AltStore](https://altstore.io) and [SideStore](https://sidestore.io) are your next best options.
-- Signing services that do not use your UDID (and use distribution certificates) are not supported, as PojavLauncher requires capabilities they do not allow. However, if you do managed to gain access to a Development certificate, due to it having the necessary entitlement (being com.apple.security.get-task-allow) to attach a debugger to the running process (enabling JIT), you may use a Development certificate.
+- Signing services that do not use your UDID (and use distribution certificates) are not supported, as PojavLauncher requires capabilities they do not allow. However, if you do managed to gain access to a Development certificate, due to it having the necessary entitlement (being com.apple.security.get-task-allow) to attach a debugger to the running process (enabling JIT), you may use a Development certificate to sign PojavLauncher.
   
 - Only install sideloading software and PojavLauncher from trusted sources. We are not responsible for any harm caused by using unofficial software.
-- Jailbreaks also benefit from permenant signing, autoJIT, and increased memory limits, however we do not recommend them for regular use.
+- Jailbreaks also benefit from permanent signing, autoJIT, and increased memory limits. However, we do not recommend them for regular use if your main purpose is simply for enabling JIT.
 
 ### Installing PojavLauncher
 #### Release build (TrollStore)
