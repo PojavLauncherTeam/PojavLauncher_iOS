@@ -40,7 +40,7 @@ Recommended devices provide a smoother and more enjoyable gameplay experience co
 - iOS 17.x and iOS 18.x is supported. However, a computer is required. These methods will ultilized usage of pymobiledevice3. Python 3.11.(x) must be properly set up on your computer. For more information, please check out the official Wiki: https://pojavlauncherteam.github.io/JIT.html#what-are-the-methods-to-enable-jit
 
 ### Setting up to sideload
-PojavLauncher can be sideloaded in many ways. Our recommended solution is to install [TrollStore](https://github.com/opa334/TrollStore) if your iOS version supports it. Installing with TrollStore allows you to permanently signed the application, automatically enabling JIT, and increases memory limits.
+PojavLauncher can be sideloaded in many ways. Our recommended solution is to install [TrollStore](https://github.com/opa334/TrollStore) if your iOS version supports it. By signing PojavLauncher with TrollStore, JIT would be automatically enabled, you wouldn't have to worry about refreshing or the app expiring as PojavLauncher would be permanently signed, as long as you're on a version that is compatible with TrollStore. By taking advantage of TrollStore, your memory limits may increases.
 
 For iOS/iPadOS 17.0: Unfortunately,the above process will not work. It is required that you must use [TrollRestore](https://github.com/JJTech0130/TrollRestore). Any versions above iOS/iPadOS 17.0 will NOT be supported (as of December 23, 2024).
 
