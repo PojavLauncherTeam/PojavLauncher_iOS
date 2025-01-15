@@ -17,7 +17,7 @@ PojavLauncher is a Minecraft: Java Edition launcher for Android, iOS, and iPadOS
 This repository contains the code for our iOS and iPadOS port of PojavLauncher. Looking for [Android?](https://github.com/PojavLauncherTeam/PojavLauncher)
 
 ## Getting started with PojavLauncher
-The [PojavLauncher Website](https://pojavlauncherteam.github.io/INSTALL.html#ios) has extensive documentation on how to install, set up, and play! For those who wish to install quickly, here's the basics:
+The [PojavLauncher Website](https://pojavlauncher.app/wiki/getting_started/INSTALL.html#ios) has extensive documentation on how to install, set up, and play! For those who wish to install quickly, here's the basics:
 
 ### Requirements
 At the minimum, you'll need one of the following devices on **iOS 14.0** and later:
