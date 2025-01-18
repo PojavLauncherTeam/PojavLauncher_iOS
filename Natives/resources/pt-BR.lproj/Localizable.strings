@@ -178,16 +178,16 @@
 "preference.title.renderer.release.zink" = "Zink";
 
 "preference.title.renderer.debug.auto" = "Auto: gl4es ou ANGLE";
-"preference.title.renderer.debug.gl4es" = "gl4es 1.1.4 - exports OpenGL 2.1";
+"preference.title.renderer.debug.gl4es" = "holy gl4es - exporta OpenGL 2.1";
 "preference.title.renderer.debug.angle" = "ANGLE (1.17+) - exporta OpenGL 3.2 (Perfil de navegação, limitado)";
-"preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - exports OpenGL 4.1";
+"preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - exporta OpenGL 4.1";
 
-"preference.detail.renderer" = "Alterar o mecanismo de renderização OpenGL para usar";
+"preference.detail.renderer" = "Alterar o mecanismo de renderização OpenGL para usar. O Zink está temporariamente desativado no iOS 16 ou superior para diagnosticar problemas.";
 
 "preference.title.resolution" = "Resolução (%)";
 "preference.detail.resolution" = "Permite que você diminua a resolução do jogo.";
 "preference.title.max_framerate" = "Taxa de quadros máxima";
-"preference.detail.max_framerate" = "Permite limitar a taxa de frames do jogo a 60FPS nas telas de ProMotion.";
+"preference.detail.max_framerate" = "Permite limitar a taxa de frames do jogo a 60FPS nas telas ProMotion.";
 
 "preference.title.performance_hud" = "Mostrar HUD de desempenho";
 "preference.detail.performance_hud" = "Quando disponível, Mostra a sobreposição do monitoramento do desempenho.";
@@ -200,7 +200,7 @@
 "preference.detail.silence_with_switch" = "Ative para desativar o áudio e o microfone quando o Modo Silencioso estiver ativado. Dispositivos de áudio externos não serão afetados.";
 "preference.title.default_gamepad_ctrl" = "Configuração do Controlador";
 "preference.title.hardware_hide" = "Ocultar controles quando o hardware estiver conectado";
-"preference.detail.hardware_hide" = "Ativar o comportamento de desabilitar automaticamente a sobreposição de controle na tela quando um controlador do mouse ou de jogo estiver conectado.";
+"preference.detail.hardware_hide" = "Ativar o comportamento de desabilitar automaticamente os controles na tela quando um mouse ou controle estiver conectado.";
 "preference.title.recording_hide" = "Ocultar controles na gravação de tela";
 "preference.detail.recording_hide" = "Esconde os controles em capturas de telas ou gravações de tela enquanto eles permanecem visíveis na tela.";
 "preference.title.gesture_mouse" = "Gestos do mouse";
@@ -283,10 +283,10 @@
 "controller_configurator.title.type.xbox" = "Xbox";
 "controller_configurator.title.type.playstation" = "PlayStation";
 
-"controller_configurator.xbox.title.bumper_left" = "Botão L1";
-"controller_configurator.xbox.title.bumper_right" = "Botão R1";
-"controller_configurator.xbox.title.trigger_left" = "Botão L2";
-"controller_configurator.xbox.title.trigger_right" = "Botão R2";
+"controller_configurator.xbox.title.bumper_left" = "LB";
+"controller_configurator.xbox.title.bumper_right" = "RB";
+"controller_configurator.xbox.title.trigger_left" = "LT";
+"controller_configurator.xbox.title.trigger_right" = "RT";
 "controller_configurator.xbox.title.named_back" = "Guia";
 "controller_configurator.xbox.title.named_start" = "Menu";
 "controller_configurator.xbox.title.named_a" = "A";
