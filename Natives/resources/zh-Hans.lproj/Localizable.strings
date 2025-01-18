@@ -6,7 +6,7 @@
 "game.menu.force_close" = "强制关闭";
 "game.menu.confirm.force_close" = "确认强制关闭？";
 "game.menu.log_output" = "日志输出";
-"game.menu.custom_controls" = "自定义控制键位";
+"game.menu.custom_controls" = "自定义控制布局";
 
 "game.note.airplay" = "Minecraft 正在通过隔空播放（AirPlay）到其他设备显示";
 
@@ -50,7 +50,7 @@
 "custom_controls.button_edit.opacity" = "不透明度（%）";
 "custom_controls.button_edit.visibility" = "可见性";
 
-"custom_controls.button_menu.add_subbutton" = "添加子按钮";
+"custom_controls.button_menu.add_subbutton" = "添加子按键";
 "custom_controls.control_menu.discard_changes" = "放弃更改";
 "custom_controls.control_menu.exit" = "退出";
 "custom_controls.control_menu.exit.warn" = "您将会退出且不保存任何更改";
@@ -74,7 +74,7 @@
 "launcher.mcl.downloading_file" = "正在下载文件 %@";
 "launcher.mcl.error_download" = "文件 %@ 下载失败：%@ ，建议重启启动器重新下载";
 
-"launcher.menu.custom_controls" = "自定义控制键位";
+"launcher.menu.custom_controls" = "自定义控制布局";
 "launcher.menu.execute_jar" = "执行 .jar 文件";
 
 "launcher.wait_jit.title" = "正在等待获取即时编译（JIT）权限";
@@ -132,7 +132,7 @@
 "preference.section.general" = "常规设置";
 "preference.section.video" = "音视频设置";
 "preference.section.footer.video" = "根据 Minecraft 版本自动选择最佳渲染器给游戏使用。降低分辨率可以减轻 GPU 负载从而提高性能。";
-"preference.section.control" = "自定义控制键位";
+"preference.section.control" = "自定义控制布局";
 "preference.section.debug" = "UI设置";
 "preference.section.footer.debug" = "您可能需要重启启动器才能使更改生效。";
 //"preference.section.footer.control" = "";
