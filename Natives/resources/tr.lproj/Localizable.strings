@@ -45,7 +45,7 @@
 "custom_controls.button_edit.swipeable" = "Kaydırılabilir";
 "custom_controls.button_edit.bg_color" = "Arkaplan rengi";
 "custom_controls.button_edit.stroke_width" = "Vurgu genişliği (dp)";
-"custom_controls.button_edit.stroke_color" = "Dış hat rengi";
+"custom_controls.button_edit.stroke_color" = "Vurgu rengi";
 "custom_controls.button_edit.corner_radius" = "Köşe yarıçapı (%)";
 "custom_controls.button_edit.opacity" = "Opaklık (%)";
 "custom_controls.button_edit.visibility" = "Görünürlük";
@@ -170,7 +170,7 @@
 "preference.title.confirm.erase_demo_data" = "Bu, Demo hesapları için kullanılan tüm Demo oyun sürümlerini ve verileri siler.";
 "preference.title.done.erase_demo_data" = "Tüm Demo oyun verileri silindi.";
 
-"preference.title.renderer" = "İşleyici";
+"preference.title.renderer" = "Görüntü İşleyici";
 
 "preference.title.renderer.release.auto" = "Otomatik";
 "preference.title.renderer.release.gl4es" = "kutsal gl4es";
@@ -238,7 +238,7 @@
 "preference.manage_runtime.footer.java17" = "Minecraft 1.17 ve üzeri için varsayılan sürümdür.";
 "preference.manage_runtime.header.invalid" = "Geçersiz yürütücüler";
 
-"preference.title.java_args" = "JVM Başlatıcı değişkenleri";
+"preference.title.java_args" = "JVM Başlatıcı argümanları";
 "preference.detail.java_args" = "Minecraft'ı başlatırken bağımsız değişkenleri Java'ya iletin. Dikkatli olun, bu, yanlış bir şekilde değiştirilirse oyunun çökmesine neden olabilir.";
 "preference.placeholder.java_args" = "Değişkenleri belirt...";
 "preference.title.env_variables" = "Ortam değişkenleri";
