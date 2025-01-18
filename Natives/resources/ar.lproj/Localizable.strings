@@ -5,7 +5,7 @@
 
 "game.menu.force_close" = "فرض الإغلاق";
 "game.menu.confirm.force_close" = "هل أنت متأكد من أنك تريد الإغلاق؟";
-"game.menu.log_output" = "سجل الإخراج";
+"game.menu.log_output" = "سِجل الإخراج";
 "game.menu.custom_controls" = "تخصيص التحكم";
 
 "game.note.airplay" = "يتم عرض Minecraft في انعكاس الشاشة Airplay";
@@ -13,12 +13,12 @@
 "game.title.exit_code" = "توقفت العملية برمز الخروج %d";
 
 // The play button
-"Play" = "إبدأ اللعب";
+"Play" = "ابدأ اللعب";
 "Details" = "التفاصيل";
 
 // Version categories
 "Installed" = "مثبت";
-"Snapshot" = "اللمحات (سنابشوت)";
+"Snapshot" = "اللمحات \"سنابشوت\"";
 "Releases" = "الإصدارات";
 "Unstable" = "غير مستقر";
 "Old-beta" = "نسخ بيتا قديمة";
@@ -39,7 +39,7 @@
 "custom_controls.button_edit.name" = "الاسم";
 "custom_controls.button_edit.size" = "الحجم";
 "custom_controls.button_edit.mapping" = "تخطيط الأزرار";
-"custom_controls.button_edit.orientation" = "الإتجاة";
+"custom_controls.button_edit.orientation" = "الاتجاه";
 "custom_controls.button_edit.toggleable" = "تبديلي";
 "custom_controls.button_edit.mouse_pass" = "حركة الماوس";
 "custom_controls.button_edit.swipeable" = "قابل للسحب";
@@ -132,7 +132,7 @@
 "preference.section.general" = "إعدادات عامة";
 "preference.section.video" = "إعدادات الفيديو والصوت";
 "preference.section.footer.video" = "يسمح عارض الرسوميات التلقائي لـ PojavLauncher باختيار أفضل خيار استناداً إلى إصدار Minecraft. تخفيض الدقة يقلل من عبء العمل في GPU من أجل أداء أفضل.";
-"preference.section.control" = "تخصيص التحكم";
+"preference.section.control" = "تخصيص أزرار التحكم";
 "preference.section.debug" = "إعدادات تصحيح أخطاء واجهة المستخدم";
 "preference.section.footer.debug" = "قد تحتاج إلى إعادة تشغيل البرنامج حتى تتطبق التغيرات.";
 //"preference.section.footer.control" = "";
@@ -238,7 +238,7 @@
 "preference.manage_runtime.footer.java17" = "هذا هو الإصدار الافتراضي لـ Minecraft 1.17. و ما اقدم.";
 "preference.manage_runtime.header.invalid" = "نظام تنفيذ غير صالح";
 
-"preference.title.java_args" = "حجج إطلاق JVM";
+"preference.title.java_args" = "معلمات بَدْء تشغيل JVM";
 "preference.detail.java_args" = "مرر الحجج إلى جافا عند بدء Minecraft. كن حذرا، هذا يمكن أن يجعل عطل اللعبة إذا تم تعديله بشكل غير صحيح.";
 "preference.placeholder.java_args" = "حدد الدفعات...";
 "preference.title.env_variables" = "متغيرات البيئة";
