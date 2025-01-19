@@ -67,6 +67,8 @@
 "custom_controls.hint" = "Nhấn giữ trên màn hình để hiện thêm tùy chọn";
 
 "init.migrateDir" = "Đường dẫn dữ liệu của PojavLauncher bây giờ là %@. Tất cả dữ liệu đã có của bạn đã được chuyển đến địa chỉ mới.";
+
+"java.error.missing_main_class" = "%@ bị thiếu thuộc tính lớp chính. Nếu đây là một mod, đưa nó vào thư mục \"mods\" của phần chơi đã chọn.";
 "java.error.missing_runtime" = "%@ yêu cầu Java phiên bản %d trở lên để chạy. Vui lòng cài đặt nó trước rồi chỉ định trong mục Quản lí Runtime.";
 
 "launcher.mcl.downloading_file" = "Đang tải xuống%@";
@@ -261,12 +263,20 @@
 "preference.detail.debug_hide_home_indicator" = "Tùy chọn này sẽ tắt khoá thanh điều hướng. Sử dụng tính năng \"Truy cập được hướng dẫn\" để ẩn và khoá thanh điều hướng cùng lúc.";
 
 "preference.profile.title.name" = "Tên";
+"preference.profile.title.loader_type" = "Kiểu trình tải mod";
+"preference.profile.title.loader_vendor" = "Nhà cung cấp trình tải mod";
+"preference.profile.title.loader_version" = "Phiên bản trình tải mod";
 "preference.profile.title.version" = "Phiên bản";
+"preference.profile.title.version_type" = "Loại phiên bản";
 "preference.profile.title.default_touch_control" = "Điều khiển cảm ứng";
 "preference.profile.title.default_gamepad_control" = "Điều khiển Gamepad";
 
 "profile.error.name_exists" = "Đã có một hồ sơ trùng tên. Vui lòng sử dụng một tên khác.";
+"profile.section.instance" = "Cài đặt phần chơi của trò chơi";
+"profile.section.profiles" = "Các hồ sơ trong phần chơi này";
 "profile.title.create" = "Tạo cấu hình mới";
+"profile.title.separate_preference" = "Cài đặt phân cách";
+"profile.detail.separate_preference" = "Bật tùy chọn này để phân cách các thay đổi trong cài đặt. Đặt lại cài đặt sẽ trả lại các giá trị toàn cục thay vì giá trị mặc định.";
 "profile.title.install_fabric_quilt" = "Cài đặt Fabric/Quilt";
 
 "controller_configurator.title.current" = "Tập tin cấu hình Gamepad";
