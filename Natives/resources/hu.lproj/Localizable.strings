@@ -1,2 +1,39 @@
-// sha check
-// home symlink
+/*
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "Kényszerített bezárás";
+"game.menu.log_output" = "Napló kimenet";
+"game.menu.custom_controls" = "Irányítás testreszabása";
+
+// The play button
+"Play" = "Játék";
+"Snapshot" = "Pillanatkép";
+"Old-beta" = "Régi-béta";
+"Old-alpha" = "Régi-alpha";
+"custom_controls.button_edit.name" = "Név";
+"custom_controls.button_edit.size" = "Méret";
+"custom_controls.button_edit.mapping" = "Hozzárendelés";
+"custom_controls.button_edit.orientation" = "Tájolás";
+"custom_controls.button_edit.toggleable" = "Kapcsolható";
+"custom_controls.button_edit.bg_color" = "Háttér színe";
+
+"custom_controls.button_menu.add_subbutton" = "Al-gomb hozzáadása";
+"custom_controls.control_menu.save" = "Mentés";
+"custom_controls.control_menu.load" = "Betöltés";
+"custom_controls.control_menu.add_button" = "Gomb hozzáadása";
+"custom_controls.control_menu.add_joystick" = "Joystick hozzáadása";
+
+"launcher.menu.custom_controls" = "Irányítás testreszabása";
+"login.option.select" = "Fiók kiválasztása";
+"preference.section.control" = "Irányítás testreszabása";
+//"preference.section.footer.control" = "";
+"preference.section.java" = "Java Tweak ek";
+
+"preference.title.renderer" = "Renderlő";
+
+"preference.title.java_args" = "JVM Indítási argumentumok";
+
+"preference.profile.title.name" = "Név";
+"controller_configurator.playstation.title.named_back" = "Kiválasztás";

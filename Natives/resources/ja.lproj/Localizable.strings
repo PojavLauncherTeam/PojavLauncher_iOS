@@ -14,21 +14,28 @@
 
 // The play button
 "Play" = "プレイ";
+"Details" = "詳細";
 
 // Version categories
 "Installed" = "インストール済み";
 "Snapshot" = "スナップショット";
 "Releases" = "リリース";
+"Unstable" = "不安定な";
 "Old-beta" = "Beta 版";
 "Old-alpha" = "Alpha 版";
 
 // Custom controls
 "Copy" = "コピー";
 "Edit" = "編集";
-"Move" = "Move";
+"Move" = "移動";
 "Remove" = "消去";
 "Resize" = "サイズ調整";
+// Visibility
+"Always" = "常に有効";
+"In game" = "今ゲーム中...";
+"In menu" = "インメニュー";
 
+"custom_controls.button_edit.forward_lock" = "フォワードロック";
 "custom_controls.button_edit.name" = "名前";
 "custom_controls.button_edit.size" = "サイズ";
 "custom_controls.button_edit.mapping" = "割り当て";
@@ -41,13 +48,13 @@
 "custom_controls.button_edit.stroke_color" = "線の色";
 "custom_controls.button_edit.corner_radius" = "角の半径 (%)";
 "custom_controls.button_edit.opacity" = "透明度 (%)";
+"custom_controls.button_edit.visibility" = "公開範囲";
 
 "custom_controls.button_menu.add_subbutton" = "サブボタンを追加";
 "custom_controls.control_menu.discard_changes" = "変更を破棄";
 "custom_controls.control_menu.exit" = "閉じる";
 "custom_controls.control_menu.exit.warn" = "変更を保存せずに終了しようとしています。";
 "custom_controls.control_menu.save" = "保存";
-"custom_controls.control_menu.save.error.default" = "コントロール名は上書きされるため、\"default\"にはできません。";
 "custom_controls.control_menu.save.error.json" = "JSON エラー";
 "custom_controls.control_menu.save.error.write" = "ファイルの保存中にエラーが発生しました";
 "custom_controls.control_menu.load" = "読み込む";
@@ -55,16 +62,24 @@
 "custom_controls.control_menu.safe_area" = "セーフエリア";
 "custom_controls.control_menu.add_button" = "ボタンを追加";
 "custom_controls.control_menu.add_drawer" = "引き出しを追加";
+"custom_controls.control_menu.add_joystick" = "ジョイスティックを追加";
 "custom_controls.error.incompatible" = "この制御バージョン(コード %d) はこのランチャービルドでは実装されていません。";
 "custom_controls.hint" = "画面上の任意の場所を長押ししてオプションを追加";
 
 "init.migrateDir" = "PojavLauncherのディレクトリが %@になりました。既存のすべてのデータが新しい場所に移動されました。";
 
+"java.error.missing_main_class" = "%@ にはメインクラス属性がありません。これがmodの場合は、選択したインスタンスの「mods」フォルダに入れてください。";
+"java.error.missing_runtime" = "%@ を実行するにはJava %d 以降が必要です。最初にインストールし、ランタイムの管理で指定してください。";
+
+"launcher.mcl.downloading_file" = "%@ をダウンロード中";
+"launcher.mcl.error_download" = "ダウンロードを失敗しました %@: %@";
+
 "launcher.menu.custom_controls" = "カスタムコントロール";
-"launcher.menu.install_jar" = ".jarをインストール";
+"launcher.menu.execute_jar" = ".JARを実行";
 
 "launcher.wait_jit.title" = "JITを待っています";
 "launcher.wait_jit.message" = "PojavLauncherは、Javaが最大限のパフォーマンスで動作するようにJust-in-timeコンパイルに依存しています。";
+"launcher.wait_jit_trollstore.message" = "TrollStoreでURL Schemeを有効してください";
 
 "login.error.username.outOfRange" = "ユーザー名は最低3文字、最大16文字でなければなりません。";
 
@@ -72,18 +87,31 @@
 
 "login.jit.checking" = "JITを確認中";
 "login.jit.enabled" = "JIT が有効になりました";
+"login.jit.fail" = "JITを有効化できませんでした";
+"login.jit.fail.title" = "お使いのデバイスでJITを有効化できませんでした";
+"login.jit.fail.description" = "自動的にJITを起動できなかったです。手動で有効にする必要があります。エラーはlatestlog.txtに記録されています。";
+"login.jit.fail.description_unsupported" = "サポートされていないインストール方法が検出されました。サポートされている方法のいずれかを使用して再インストールしてください。";
 
 // Login buttons
 "login.menu.sendlogs" = "ログを送信する";
 "login.option.add" = "アカウントを追加";
 "login.option.select" = "アカウントを選択";
+"login.option.demo" = "デモアカウント";
 "login.option.microsoft" = "Microsoft アカウント";
 "login.option.local" = "ローカルアカウント";
+
+"login.warn.title.legacy_device" = "次の PojavLauncher のリリースはこのデバイスと互換性がありません。";
+"login.warn.message.legacy_device" = "次のメジャーリリースを実行するには、iOS 14以降を実行できるデバイスが必要です。";
+"login.warn.title.legacy_ios" = "次のリリースの PojavLauncher を実行するには、システムの更新が必要になります。";
+"login.warn.message.legacy_ios" = "次のメジャーリリースを実行するには、iOS 14以降を実行できるデバイスが必要です。";
+"login.warn.title.limited_ram" = "お使いデバイスのメモリ容量は足りません";
+"login.warn.message.limited_ram" = "パフォーマンスの不具合などの場合を防ぐために、オートRAMを有効しておくことをおすすめします";
 
 "login.warn.title.demomode" = "あなたのアカウントはデモ版です";
 "login.warn.message.demomode" = "オフラインモードとローカルモードへの置き換えとして デモモードでは、ゲームを所有していないMicrosoftアカウントにサインインし、Java Editionの試用版をプレイすることができます。 1.3で導入されました。以前のバージョンでは、公式ランチャーがこれらの制限を設けていないため、以前のバージョンではフルゲームが含まれています。 このオフラインモードからの移行の詳細については、当社のウェブサイトをご覧ください。";
 
 "login.warn.title.localmode" = "オフラインモードは現在ローカルモードです。";
+"login.warn.message.localmode" = "インストール済みのバージョンは引き続きプレイできますが、有料アカウントなしで Minecraft をダウンロードすることはできません。 ローカルアカウントやその他のマインクラフトの取得手段についてはサポートは提供されません。詳細についてはFAQをご覧ください。";
 
 "login.msa.error.xsts.noxboxacc" = "このMicrosoftアカウントにXboxプロファイルが登録されていません。Xboxプロファイルを作成したことを確認してください。\nエラーコード: 2148916233";
 "login.msa.error.xsts.noxbox" = "現在お住まいの国では Xbox Live がご利用いただけません。\nエラーコード: 2148916235";
@@ -98,12 +126,15 @@
 "login.msa.progress.checkMCProfile" = "(5/5) Minecraft プロファイルの確認";
 
 "News" = "ニュース";
+"Profiles" = "プロファイル";
 "Settings" = "設定";
 
 "preference.section.general" = "一般設定";
+"preference.section.video" = "ビデオと音声の設定";
+"preference.section.footer.video" = "自動レンダラーを使用すると、PojavLauncherはMinecraftのバージョンに基づいて最適なオプションを選択できます。解像度を下げると、パフォーマンスを向上させるためにGPUのワークロードが減少します。";
 "preference.section.control" = "制御のカスタマイズ";
 "preference.section.debug" = "UIデバッグ設定";
-"preference.section.footer.debug" = "デバッグとは別に、これらの設定はカスタムコントロールに役立ちます。変更を有効にするにはランチャーを再起動する必要があります。";
+"preference.section.footer.debug" = "すべての変更を有効にするには、スクリプトを再起動する必要がある場合があります。";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java の調整";
 //"preference.section.footer.java" = "";
@@ -120,13 +151,13 @@
 "preference.detail.cosmetica" = "Cosmetica (以前はArc) からケープを有効にします。詳細については、https://cosmetica.ccを参照してください。OptiFine が必要です。";
 "preference.title.debug_logging" = "デバッグログ";
 "preference.detail.debug_logging" = "内部設定とアクションをlatestlog.txtに記録します。 これにより、開発者は問題を簡単に見つけることができますが、ログがより頻繁に書き込まれるため、Minecraft の動作が遅くなる可能性があります。";
-"preference.title.jitstreamer_server" = "JitStreamer サーバー IP";
-"preference.detail.jitstreamer_server" = "自己ホストインスタンスなどのカスタムJitStreamerサーバーIPに変更できます。 デフォルトのJitStreamerサーバーを使用している場合は、このオプションを残すことができます。";
 "preference.title.appicon" = "アプリアイコンを設定";
 "preference.detail.appicon" = "PojavLauncherの異なるホーム画面アイコンから選択できます。";
 "preference.title.appicon-default" = "おなじみのPojavLauncher ライトテーマ";
 "preference.title.appicon-dark" = "おなじみのPojavLauncherダークテーマ";
+"preference.title.appicon-development" = "頭を捻る";
 "preference.title.hidden_sidebar" = "デフォルトでメインメニューサイドバーを非表示にする";
+"preference.detail.hidden_sidebar" = "縦向きでサイドバーを非表示";
 
 "preference.title.reset_warnings" = "すべての警告をリセット";
 "preference.title.done.reset_warnings" = "すべての警告がリセットされました。";
@@ -135,17 +166,41 @@
 "preference.title.confirm.reset_settings" = "これにより、解像度、ボタンサイズ、Java 引数を含むすべてのカスタム設定が削除されます。";
 "preference.title.done.reset_settings" = "すべての既定の設定が復元されました。";
 
+"preference.title.erase_demo_data" = "デモゲームのデータを消去";
+"preference.title.confirm.erase_demo_data" = "これにより、デモアカウントで使用されるすべてのデモゲームのバージョンとデータが消去されます";
+"preference.title.done.erase_demo_data" = "デモゲームのデータはすべて消去されました。";
+
 "preference.title.renderer" = "レンダラー";
 
+"preference.title.renderer.release.auto" = "自動";
+"preference.title.renderer.release.gl4es" = "holy gl4es";
+"preference.title.renderer.release.angle" = "角度";
+"preference.title.renderer.release.zink" = "Zink";
+
 "preference.title.renderer.debug.auto" = "自動: gl4es または angle";
-"preference.title.renderer.debug.angle" = "ANGLE (1.17+) - エクスポートOpenGL 3.2 (Core Profile, limited)";
-"preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - exports OpenGL 4.1";
+"preference.title.renderer.debug.gl4es" = "holy gl4es - OpenGL 2.1使用";
+"preference.title.renderer.debug.angle" = "ANGLE (1.17+) - OpenGL 3.2使用 (Core Profile, limited)";
+"preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - OpenGL 4.1使用";
+
+"preference.detail.renderer" = "使用するOpenGLレンダーエンジンを変更します　iOS 16以降では、問題を診断するためにZinkが一時的に無効になっています";
 
 "preference.title.resolution" = "解像度 (%)";
 "preference.detail.resolution" = "ゲームの解像度を下げることができます。";
+"preference.title.max_framerate" = "最大フレームレート";
+"preference.detail.max_framerate" = "ゲームを60フラムレートに制限(ProMotionディスプレイのみ)";
 
 "preference.title.fullscreen_airplay" = "全画面AirPlay";
 "preference.detail.fullscreen_airplay" = "画面上のすべてをミラーリングするのではなく、外部ディスプレイにフルスクリーンのゲームウィンドウを表示できます。";
+"preference.title.silence_other_audio" = "ゲーム開始時にバークグラウンド音声を一時停止";
+"preference.detail.silence_other_audio" = "ゲームを起動するときに、PojavLauncherが音楽などの他のアプリの音声を一時停止できるようにします";
+"preference.title.default_gamepad_ctrl" = "コントローラーの設定";
+"preference.title.hardware_hide" = "ハードウェア接続時にGUIを非表示にする";
+"preference.detail.hardware_hide" = "マウスまたはゲームコントローラーが接続されている場合、画面上のコントロールボタンを自動的に無効にするようにします";
+"preference.title.gesture_mouse" = "マウスのジェスチャー";
+"preference.detail.gesture_mouse" = "ジェスチャーを有効にする(タップでブロックを置ける、長押しでブロックを破壊する、2本指でスクロール)";
+"preference.title.gesture_hotbar" = "ホットバージェスチャー";
+"preference.detail.gesture_hotbar" = "アイテムジェスチャーを有効にする(ホットバーをタッチ、両手でのアイテム交換、アイテムを投けるなど)";
+"preference.title.disable_haptics" = "画面上のハプティクスを無効にする";
 "preference.title.press_duration" = "長押し時間 (ms)";
 "preference.detail.press_duration" = "ブロックを破壊したりアイテムをドロップしたりするための長さをトリガーします。";
 "preference.title.button_scale" = "オンスクリーンボタンの拡大率(%)";
@@ -160,12 +215,28 @@
 "preference.detail.slideable_hotbar" = "マウスホイールのようにホットバーをスライド可能にする";
 
 "preference.title.gyroscope_enable" = "ジャイロコントロールをオンにする";
+"preference.detail.gyroscope_enable" = "ゲームの横縦向きの変更を有効にする";
+"preference.title.gyroscope_invert_x_axis" = "ジャイロスコープを左右反転";
+"preference.detail.gyroscope_invert_x_axis" = "ジャイロスコープのX軸を反転";
 "preference.title.gyroscope_sensitivity" = "ジャイロコントロールの感度";
 "preference.detail.gyroscope_sensitivity" = "ジャイロコントロールの感度の調整";
 
-"preference.title.java_home" = "Java 17 for Minecraft < 1.17 を使用";
+"preference.title.manage_runtime" = "実行時の管理";
+"preference.title.confirm.delete_runtime" = "%@ は削除されます";
+"preference.manage_runtime.header.default" = "優先Javaバージョン";
+"preference.manage_runtime.default.1165" = "1.16.5以前";
+"preference.manage_runtime.default.117" = "1.17以降";
+"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 以前は、新しい Java バージョンで動作する可能性がありますが、Mod との互換性は保証されません。 外部ランタイムは「java_runtimes」フォルダに配置できます。 「Execute .jar」のJavaバージョンを変更することは、インストーラが新しいJavaバージョンを期待していない場合にのみ有効です。";
+"preference.manage_runtime.footer.java8" = "これは、Minecraft 1.16.5 以前のデフォルトバージョンです。";
+"preference.manage_runtime.footer.java17" = "これは、Minecraft 1.17. 以前のデフォルトバージョンです。";
+"preference.manage_runtime.header.invalid" = "無効なランタイムです";
+
 "preference.title.java_args" = "JVM 起動引数";
+"preference.detail.java_args" = "Minecraft を起動するときに Java に引数を渡します。正しく変更されないとゲームがクラッシュすることがありますのでご注意ください。";
 "preference.placeholder.java_args" = "引数の指定...";
+"preference.title.env_variables" = "環境変数";
+"preference.detail.env_variables" = "Minecraft を起動するときに Java に引数を渡します。正しく変更されないとゲームがクラッシュすることがありますのでご注意ください。";
+"preference.placeholder.env_variables" = "変数を指定...";
 "preference.title.auto_ram" = "自動RAM調整";
 "preference.detail.auto_ram" = "メモリの自動調整を有効にする";
 "preference.warn.auto_ram" = "脱獄済みのデバイスでこのオプションを無効にすると、変更された場合に不安定になる可能性があります。注意してください。";
@@ -173,6 +244,7 @@
 "preference.detail.allocated_memory" = "Minecraftに与えられるメモリの量を制御します";
 "preference.warn.allocated_memory" = "オペレーティングシステム自体に制限があるため、このオプションは不安定な場合があり、値が大きい場合がありますのでご注意ください。";
 "preference.title.custom_env" = "環境変数";
+"preference.detail.custom_env" = "このオプションは現在構築中です。custom_env.txtを作成して編集します。";
 
 "preference.title.debug_skip_wait_jit" = "「JIT待機中」ダイアログをスキップ";
 "preference.detail.debug_skip_wait_jit" = "これは、JITなしで起動することはできません。代わりに、特定の脱獄時にチェックが失敗するため、デバッガのチェックをスキップします。";
@@ -182,8 +254,64 @@
 "preference.detail.debug_auto_correction" = "ゲーム内でテキストを入力するときに自動修正を有効にします。";
 "preference.title.debug_hide_home_indicator" = "詳細バーを非表示";
 "preference.detail.debug_hide_home_indicator" = "詳細バーのロックを無効にします。ガイド付きアクセスを使用してホームインジケーターを非表示にしてロックする必要があります。";
-"preference.title.debug_show_layout_bounds" = "レイアウト境界を表示";
-"preference.detail.debug_show_layout_bounds" = "クリップの境界線、余白を表示";
-"preference.title.debug_show_layout_overlap" = "レイアウト重複を表示";
-"preference.detail.debug_show_layout_overlap" = "透明な色ですべてのビューをオーバーレイし、重複するビューを表示します。";
+
+"preference.profile.title.name" = "名前";
+"preference.profile.title.loader_type" = "ローダータイプ";
+"preference.profile.title.loader_vendor" = "ローダーのベンダー:";
+"preference.profile.title.loader_version" = "ローダーのバージョン";
+"preference.profile.title.version" = "バージョン";
+"preference.profile.title.version_type" = "バージョンタイプ";
+"preference.profile.title.default_touch_control" = "Touch controls";
+"preference.profile.title.default_gamepad_control" = "ゲームパッドコントロール";
+
+"profile.error.name_exists" = "その名前があるプロフィールは既に存在している。 ユニークな名前を使用する。";
+"profile.section.instance" = "ゲームインスタンスの設定";
+"profile.section.profiles" = "このインスタンスのプロファイル";
+"profile.title.create" = "新規プロフィールの作成";
+"profile.title.separate_preference" = "単離設定";
+"profile.detail.separate_preference" = "このオプションを有効にすると、設定で行われた変更を隔離します。リセットを行うと、デフォルトの設定ではなくグローバル設定に戻ります。";
+"profile.title.install_fabric_quilt" = "Fabric/Quilt をインストール";
+
+"controller_configurator.title.current" = "ゲームパッドの設定ファイル";
+"controller_configurator.title.type.xbox" = "XBOX";
+"controller_configurator.title.type.playstation" = "PlayStation";
+
+"controller_configurator.xbox.title.bumper_left" = "左ボタン";
+"controller_configurator.xbox.title.bumper_right" = "右ボタン";
+"controller_configurator.xbox.title.trigger_left" = "左トリガー";
+"controller_configurator.xbox.title.trigger_right" = "右トリガー";
+"controller_configurator.xbox.title.named_back" = "ガイド";
+"controller_configurator.xbox.title.named_start" = "Menu Button";
+"controller_configurator.xbox.title.named_a" = "A";
+"controller_configurator.xbox.title.named_b" = "B";
+"controller_configurator.xbox.title.named_x" = "X";
+"controller_configurator.xbox.title.named_y" = "Y";
+"controller_configurator.xbox.title.dpad_up" = "UP";
+"controller_configurator.xbox.title.dpad_down" = "DOWN";
+"controller_configurator.xbox.title.dpad_left" = "LEFT";
+"controller_configurator.xbox.title.dpad_right" = "RIGHT";
+"controller_configurator.xbox.title.thumb_left" = "左サムスティッククリック";
+"controller_configurator.xbox.title.thumb_right" = "右サムスティッククリック";
+
+"controller_configurator.playstation.title.bumper_left" = "L1";
+"controller_configurator.playstation.title.bumper_right" = "R1";
+"controller_configurator.playstation.title.trigger_left" = "L2";
+"controller_configurator.playstation.title.trigger_right" = "R2";
 "controller_configurator.playstation.title.named_back" = "選択...";
+"controller_configurator.playstation.title.named_start" = "Start";
+"controller_configurator.playstation.title.named_a" = "✕";
+"controller_configurator.playstation.title.named_b" = "〇";
+"controller_configurator.playstation.title.named_x" = "▢";
+"controller_configurator.playstation.title.named_y" = "△";
+"controller_configurator.playstation.title.dpad_up" = "UP";
+"controller_configurator.playstation.title.dpad_down" = "DOWN";
+"controller_configurator.playstation.title.dpad_left" = "LEFT";
+"controller_configurator.playstation.title.dpad_right" = "RIGHT";
+"controller_configurator.playstation.title.thumb_left" = "L3";
+"controller_configurator.playstation.title.thumb_right" = "R3";
+
+"controller_configurator.section.config_files" = "現在の設定ファイル";
+"controller_configurator.section.game_mappings" = "ゲームのマップイング";
+"controller_configurator.section.menu_mappings" = "メーニューのマップイング";
+"controller_configurator.section.controller_style" = "コントローラーの種類";
+"controller_configurator.section.footer.controller_style" = "別のコントローラーのボタン名を表示する";
