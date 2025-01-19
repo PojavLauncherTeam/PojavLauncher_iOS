@@ -14,7 +14,7 @@
 
 // The play button
 "Play" = "Chơi";
-"Details" = "";
+"Details" = "Chi tiết";
 
 // Version categories
 "Installed" = "Đã cài đặt";
@@ -30,6 +30,10 @@
 "Move" = "Di chuyển";
 "Remove" = "Loại bỏ";
 "Resize" = "Thay đổi kích thước";
+// Visibility
+"Always" = "Luôn luôn";
+"In game" = "Trong trò chơi";
+"In menu" = "Trong menu";
 
 "custom_controls.button_edit.forward_lock" = "Khoá di chuyển lên";
 "custom_controls.button_edit.name" = "Tên";
@@ -40,9 +44,11 @@
 "custom_controls.button_edit.mouse_pass" = "Di chuột qua phím";
 "custom_controls.button_edit.swipeable" = "Có thể vuốt";
 "custom_controls.button_edit.bg_color" = "Màu nền";
+"custom_controls.button_edit.stroke_width" = "Độ rộng viền phím (dp)";
 "custom_controls.button_edit.stroke_color" = "Màu viền phím";
 "custom_controls.button_edit.corner_radius" = "Bán kính góc";
 "custom_controls.button_edit.opacity" = "Độ trong suốt (%)";
+"custom_controls.button_edit.visibility" = "Có thể nhìn thấy";
 
 "custom_controls.button_menu.add_subbutton" = "Thêm phím phụ";
 "custom_controls.control_menu.discard_changes" = "Hủy bỏ thay đổi";
@@ -61,11 +67,13 @@
 "custom_controls.hint" = "Nhấn giữ trên màn hình để hiện thêm tùy chọn";
 
 "init.migrateDir" = "Đường dẫn dữ liệu của PojavLauncher bây giờ là %@. Tất cả dữ liệu đã có của bạn đã được chuyển đến địa chỉ mới.";
+"java.error.missing_runtime" = "%@ yêu cầu Java phiên bản %d trở lên để chạy. Vui lòng cài đặt nó trước rồi chỉ định trong mục Quản lí Runtime.";
 
 "launcher.mcl.downloading_file" = "Đang tải xuống%@";
 "launcher.mcl.error_download" = "Không thể tải xuống %@:%@";
 
 "launcher.menu.custom_controls" = "Tùy chỉnh điều khiển";
+"launcher.menu.execute_jar" = "Thực thi tệp .jar";
 
 "launcher.wait_jit.title" = "Đang đợi JIT";
 "launcher.wait_jit.message" = "PojavLauncher phụ thuộc vào JIT để Java hoạt động ở mức tối đa hiệu năng.";
@@ -80,6 +88,7 @@
 "login.jit.fail" = "Không thể bật JIT.";
 "login.jit.fail.title" = "Không thể bật JIT trên thiết bị của bạn.";
 "login.jit.fail.description" = "Không thể sử dụng trình tích hợp nào để tự động bật JIT trên thiết bị của bạn và giờ đây nó phải được bật theo cách thủ công. Lỗi đã được ghi vào latestlog.txt.";
+"login.jit.fail.description_unsupported" = "Phương pháp cài đặt này không được hỗ trợ. Vui lòng cài đật lại.";
 
 // Login buttons
 "login.menu.sendlogs" = "Gửi nhật kí của bạn";
@@ -115,6 +124,7 @@
 "login.msa.progress.checkMCProfile" = "(5/5) Kiểm tra hồ sơ Minecraft";
 
 "News" = "Tin tức";
+"Profiles" = "Hồ sơ";
 "Settings" = "Thiết lập";
 
 "preference.section.general" = "Cài đặt chung";
@@ -122,6 +132,7 @@
 "preference.section.footer.video" = "Trình kết xuất tự động cho phép PojavLauncher chọn tùy chọn tốt nhất dựa trên phiên bản Minecraft. Giảm độ phân giải làm giảm khối lượng công việc GPU để có hiệu suất tốt hơn.";
 "preference.section.control" = "Tuỳ chỉnh bộ điều khiển";
 "preference.section.debug" = "Cài đặt gỡ lỗi UI";
+"preference.section.footer.debug" = "Bạn có thể phải khởi động lại trình khởi chạy để áp dụng các thay đổi này.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Điều chỉnh Java";
 //"preference.section.footer.java" = "";
@@ -188,10 +199,13 @@
 "preference.title.default_gamepad_ctrl" = "Cấu hình bộ điều khiển";
 "preference.title.hardware_hide" = "Ẩn điều khiển khi phần cứng được kết nối";
 "preference.detail.hardware_hide" = "Bật hành vi tự động tắt lớp phủ điều khiển trên màn hình khi chuột hoặc bộ điều khiển trò chơi được kết nối.";
+"preference.title.recording_hide" = "Ẩn các phím điều khiển khi quay màn hình";
+"preference.detail.recording_hide" = "Ẩn các phím điều khiển khi chụp hoặc quay màn hình nhưng vẫn hiện chúng trên màn hình.";
 "preference.title.gesture_mouse" = "Mouse gestures";
 "preference.detail.gesture_mouse" = "Bật các cử chỉ, chẳng hạn như nhấn để đặt khối, giữ để phá khối, cuộn bằng 2";
 "preference.title.gesture_hotbar" = "Cử Chỉ Hotbar";
 "preference.detail.gesture_hotbar" = "Cho phép các cử chỉ, chẳng hạn như chạm vào khe thanh nóng, trao đổi vật phẩm giữa các tay, ném vật phẩm";
+"preference.title.disable_haptics" = "Tắt rung xúc giác trên màn hình";
 "preference.title.press_duration" = "Độ dài nhấn giữ (ms)";
 "preference.detail.press_duration" = "Khoảng thời gian chạm giữ để phá khối và ném đồ vật.";
 "preference.title.button_scale" = "Độ rộng nút trên màn hình (%)";
@@ -212,10 +226,21 @@
 "preference.title.gyroscope_sensitivity" = "Độ nhạy con quay hồi chuyển";
 "preference.detail.gyroscope_sensitivity" = "Điều chỉnh độ nhạy của điều khiển bằng con quay hồi chuyển";
 
+"preference.title.manage_runtime" = "Quản lí runtime";
+"preference.title.confirm.delete_runtime" = "%@ sẽ bị xoá";
+"preference.manage_runtime.header.default" = "Phiên bản Java được chọn";
+"preference.manage_runtime.default.1165" = "1.16.5 trở xuống";
+"preference.manage_runtime.default.117" = "1.17 trở lên";
+"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 trở xuống có thể chạy với phiên bản Java cao hơn, nhưng tính tương thích với mod không được đảm bảo. Các runtime bên ngoài có thể được đặt vào thư mục \"java_runtimes\". Thay đổi phiên bản Java cho tính năng \"Chạy tệp .jar\" chỉ có hiệu quả khi trình cài đặt không yêu cầu phiên bản Java cao hơn.";
+"preference.manage_runtime.footer.java8" = "Đây là phiên bản mặc định cho Minecraft 1.16.5 trở xuống.";
+"preference.manage_runtime.footer.java17" = "Đây là phiên bản mặc định cho Minecraft 1.17 trở lên.";
+"preference.manage_runtime.header.invalid" = "Runtime không hợp lệ";
+
 "preference.title.java_args" = "Các chỉ số chạy JVM";
 "preference.detail.java_args" = "Truyền đối số cho Java khi khởi chạy Minecraft. Hãy cẩn thận, điều này có thể khiến trò chơi bị sập nếu sửa đổi không đúng cách.";
 "preference.placeholder.java_args" = "Nhập các chỉ số...";
 "preference.title.env_variables" = "Các chỉ số môi trường";
+"preference.detail.env_variables" = "Đặt chỉ số môi trường cho Java khi khởi chạy Minecraft. Hãy cẩn thận, điều này có thể khiến trò chơi bị sập nếu sửa đổi không đúng cách.";
 "preference.placeholder.env_variables" = "Chỉ định biến...";
 "preference.title.auto_ram" = "RAM tự động";
 "preference.detail.auto_ram" = "Bật tự động điều chỉnh RAM";
@@ -237,7 +262,12 @@
 
 "preference.profile.title.name" = "Tên";
 "preference.profile.title.version" = "Phiên bản";
+"preference.profile.title.default_touch_control" = "Điều khiển cảm ứng";
+"preference.profile.title.default_gamepad_control" = "Điều khiển Gamepad";
+
+"profile.error.name_exists" = "Đã có một hồ sơ trùng tên. Vui lòng sử dụng một tên khác.";
 "profile.title.create" = "Tạo cấu hình mới";
+"profile.title.install_fabric_quilt" = "Cài đặt Fabric/Quilt";
 
 "controller_configurator.title.current" = "Tập tin cấu hình Gamepad";
 "controller_configurator.title.type.xbox" = "Xbox";
