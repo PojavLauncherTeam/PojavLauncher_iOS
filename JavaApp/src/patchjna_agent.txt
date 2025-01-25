@@ -1,0 +1,2 @@
+Agent-Class: net.kdt.patchjna.PatchJNAAgent
+Premain-Class: net.kdt.patchjna.PatchJNAAgent
