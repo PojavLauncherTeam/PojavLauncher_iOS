@@ -268,18 +268,7 @@ native:
 
 java:
 	echo '[PojavLauncher v$(VERSION)] java - start'
-	cd $(SOURCEDIR)/JavaApp; \
-	rm -rf local_out/lwjgl; \
-	mkdir -p local_out/{classes,lwjgl}; \
-	$(BOOTJDK)/javac -cp "libs/*:libs_lwjgl/*:libs_caciocavallo/*" -d local_out/classes $$(find src -type f -name "*.java" -print) -XDignore.symbol.file || exit 1; \
-	cd local_out/classes; \
-	$(BOOTJDK)/jar -cf ../launcher.jar android com net || exit 1; \
-	cp $(SOURCEDIR)/JavaApp/libs_lwjgl/lwjgl.jar .. || exit 1; \
-	cd ../lwjgl; \
-	find $(SOURCEDIR)/JavaApp/libs_lwjgl -name 'lwjgl-*.jar' -exec $(BOOTJDK)/jar -xf {} \; || exit 1; \
-	rm -rf META-INF; \
-	cp -R ../classes/org ./; \
-	$(BOOTJDK)/jar -uf ../lwjgl.jar . || exit 1;
+	$(MAKE) -C JavaApp -j$(JOBS)
 	echo '[PojavLauncher v$(VERSION)] java - end'
 
 jre: native
@@ -326,9 +315,9 @@ payload: native java jre assets
 	cp -R $(SOURCEDIR)/Natives/resources/en.lproj/LaunchScreen.storyboardc $(WORKINGDIR)/PojavLauncher.app/Base.lproj/ || exit 1
 	cp -R $(SOURCEDIR)/Natives/resources/* $(WORKINGDIR)/PojavLauncher.app/ || exit 1
 	cp $(WORKINGDIR)/*.dylib $(WORKINGDIR)/PojavLauncher.app/Frameworks/ || exit 1
-	cp -R $(SOURCEDIR)/JavaApp/libs/* $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
-	cp $(SOURCEDIR)/JavaApp/local_out/*.jar $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
-	cp -R $(SOURCEDIR)/JavaApp/libs_caciocavallo* $(WORKINGDIR)/PojavLauncher.app/ || exit 1
+	cp -R $(SOURCEDIR)/JavaApp/libs/others/* $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
+	cp $(SOURCEDIR)/JavaApp/build/*.jar $(WORKINGDIR)/PojavLauncher.app/libs/ || exit 1
+	cp -R $(SOURCEDIR)/JavaApp/libs/caciocavallo* $(WORKINGDIR)/PojavLauncher.app/ || exit 1
 	$(call METHOD_DIRCHECK,$(OUTPUTDIR)/Payload)
 	cp -R $(WORKINGDIR)/PojavLauncher.app $(OUTPUTDIR)/Payload
 	if [ '$(SLIMMED_ONLY)' != '1' ]; then \
@@ -355,7 +344,7 @@ deploy:
 		ldid -S$(SOURCEDIR)/entitlements.trollstore.xml $(WORKINGDIR)/PojavLauncher.app/PojavLauncher || exit 1; \
 		sudo mv $(WORKINGDIR)/*.dylib $(PREFIX)Applications/PojavLauncher.app/Frameworks/ || exit 1; \
 		sudo mv $(WORKINGDIR)/PojavLauncher.app/PojavLauncher $(PREFIX)Applications/PojavLauncher.app/PojavLauncher || exit 1; \
-		sudo mv $(SOURCEDIR)/JavaApp/local_out/*.jar $(PREFIX)Applications/PojavLauncher.app/libs/ || exit 1; \
+		sudo mv $(SOURCEDIR)/JavaApp/build/*.jar $(PREFIX)Applications/PojavLauncher.app/libs/ || exit 1; \
 		cd $(PREFIX)Applications/PojavLauncher.app/Frameworks || exit 1; \
 		sudo chown -R 501:501 $(PREFIX)Applications/PojavLauncher.app/* || exit 1; \
 	elif [ '$(IOS)' = '0' ] && [ '$(DETECTPLAT)' = 'Darwin' ]; then \
@@ -407,5 +396,7 @@ clean:
 	rm -rf JavaApp/build
 	rm -rf $(OUTPUTDIR)
 	echo '[PojavLauncher v$(VERSION)] clean - end'
+
+		
 
 .PHONY: all clean check native java jre package dsym deploy help
