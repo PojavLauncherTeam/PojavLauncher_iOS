@@ -268,7 +268,7 @@ native:
 
 java:
 	echo '[PojavLauncher v$(VERSION)] java - start'
-	$(MAKE) -C JavaApp -j$(JOBS)
+	$(MAKE) -C JavaApp -j$(JOBS) BOOTJDK=$(BOOTJDK)
 	echo '[PojavLauncher v$(VERSION)] java - end'
 
 jre: native

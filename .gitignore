@@ -2,6 +2,7 @@
 /artifacts
 /JavaApp/.gradle
 /JavaApp/build
+/JavaApp/local_out
 /Natives/PojavLauncher
 /Natives/build
 .DS_Store
