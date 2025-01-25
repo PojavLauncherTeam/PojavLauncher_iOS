@@ -176,7 +176,9 @@
 "preference.title.gesture_mouse" = "Comandi mouse";
 "preference.detail.gesture_mouse" = "Abilita gestures, come tocca per posizionare il blocco, tieni premuto per rompere il blocco, scroll con 2 dita";
 "preference.title.gesture_hotbar" = "Hotbar gestures";
+"preference.detail.gesture_hotbar" = "Abilita i gesti, come toccare lo slot della hotbar, scambiare gli oggetti tra le mani, lanciare gli oggetti";
 "preference.title.press_duration" = "Durata click-lungo (ms)";
+"preference.detail.press_duration" = "Durata della pressione del grilletto per distruggere i blocchi e far cadere gli oggetti.";
 "preference.title.button_scale" = "Scala pulsante sullo schermo (%)";
 "preference.detail.button_scale" = "Aggiornali se i pulsanti sono troppo piccoli, di solito necessari per gli utenti iPad.";
 "preference.title.mouse_scale" = "Dimensioni mouse (%)";
