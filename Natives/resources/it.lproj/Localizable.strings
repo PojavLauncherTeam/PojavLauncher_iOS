@@ -97,6 +97,7 @@
 "login.warn.message.demomode" = "In sostituzione di modalità offline e locale, la modalità demo vi permetterà di accedere ad un account Microsoft che non possiede il gioco e giocare la prova Java Edition, introdotto successivamente alla 1.3. Le versioni più vecchie contengono il gioco completo, poiché il launcher ufficiale non pone queste restrizioni. Visita il nostro sito web per saperne di più su questa transizione dalla modalità offline.";
 
 "login.warn.title.localmode" = "La modalità offline è ora modalità locale.";
+"login.warn.message.localmode" = "È possibile continuare a giocare alle versioni installate, ma non è più possibile scaricare Minecraft senza un account a pagamento. Non verrà fornito alcun supporto per problemi con gli account locali o con altri mezzi di acquisizione di Minecraft.";
 
 "login.msa.error.xsts.noxboxacc" = "Un profilo Xbox non è registrato per questo account Microsoft. Assicurati di aver creato un profilo Xbox.\nCodice di errore: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live non è attualmente disponibile nel tuo paese.\nCodice di errore: 2148916235";
@@ -191,6 +192,9 @@
 "preference.detail.slideable_hotbar" = "Rendi la hotbar scorrevole come la rotellina del mouse";
 
 "preference.title.gyroscope_enable" = "Abilita controlli giroscopio";
+"preference.detail.gyroscope_enable" = "L'attivazione di questa funzione consente di attivare il gioco ruotando il dispositivo";
+"preference.title.gyroscope_invert_x_axis" = "Invertire il giroscopio a destra e a sinistra";
+"preference.detail.gyroscope_invert_x_axis" = "Inverte l'asse X del giroscopio";
 "preference.title.gyroscope_sensitivity" = "Sensibilità giroscopio";
 "preference.detail.gyroscope_sensitivity" = "Regola la sensibilità del giroscopio";
 
@@ -209,10 +213,16 @@
 "preference.detail.debug_skip_wait_jit" = "Questo non consente di avviare senza JIT, ti consente di saltare il controllo del debugger perché questo controllo fallisce su alcuni jailbreak.";
 "preference.title.debug_ipad_ui" = "Unlock iPadOS UI";
 "preference.detail.debug_ipad_ui" = "Utilizza la UI esclusiva di iPad (avvisi, tastiera, etc.) se abilitato o la UI di iPhone se disabilitato.";
+"preference.title.debug_auto_correction" = "Correzione automatica";
+"preference.detail.debug_auto_correction" = "Abilita la correzione automatica quando si digita il testo nel gioco.";
 "preference.title.debug_hide_home_indicator" = "Nascondi barra home";
 "preference.detail.debug_hide_home_indicator" = "Questo disabiliterà il blocco della barra home. Dovrai utilizzare Accesso Guidato per nascondere e bloccare la barra home simultaneamente.";
 
 "preference.profile.title.name" = "Nome";
 "preference.profile.title.version" = "Versione";
 "profile.title.create" = "Crea nuovo profilo";
+
+"controller_configurator.title.current" = "File di configurazione del gamepad";
+"controller_configurator.title.type.xbox" = "Xbox";
+"controller_configurator.title.type.playstation" = "PlayStation";
 "controller_configurator.playstation.title.named_back" = "Seleziona";
