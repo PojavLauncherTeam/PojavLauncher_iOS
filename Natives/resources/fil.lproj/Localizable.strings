@@ -28,6 +28,8 @@
 "Move" = "Ilipat";
 "Remove" = "Tanggalin";
 "Resize" = "Baguhin ang sukat";
+
+"custom_controls.button_edit.forward_lock" = "Pag-lock sa harap";
 "custom_controls.button_edit.name" = "Pangalan";
 "custom_controls.button_edit.size" = "Sukat";
 "custom_controls.button_edit.mapping" = "Pag mapa";
@@ -52,6 +54,7 @@
 "custom_controls.control_menu.safe_area" = "Safe area";
 "custom_controls.control_menu.add_button" = "Magdagdag ng pindutan";
 "custom_controls.control_menu.add_drawer" = "Add drawer";
+"custom_controls.control_menu.add_joystick" = "Magdagdag ng joystick";
 "custom_controls.error.incompatible" = "This control version (code %d) is not implemented in this launcher build.";
 "custom_controls.hint" = "Long-press anywhere on screen for more options";
 
@@ -71,6 +74,7 @@
 
 // Login buttons
 "login.menu.sendlogs" = "I-send ang iyong logs";
+"login.option.add" = "Magdagdag ng account";
 "login.option.select" = "Piliin ng account";
 "login.option.microsoft" = "Microsoft account";
 "login.option.local" = "Lokal na account";
@@ -155,6 +159,9 @@
 "preference.title.slideable_hotbar" = "Naii-slide na hotbar";
 "preference.detail.slideable_hotbar" = "Gawing slideable ang hotbar na parang gulong ng mouse";
 
+"preference.title.gyroscope_enable" = "I-enable ang mga kontrol ng gyroscope";
+"preference.title.gyroscope_sensitivity" = "Sensitivity ng kontrol ng gyroscope";
+
 "preference.title.java_args" = "JVM Launch arguments";
 "preference.placeholder.java_args" = "Tukuyin ang mga argumento...";
 "preference.title.env_variables" = "Variables ng environment";
@@ -177,4 +184,5 @@
 
 "preference.profile.title.name" = "Pangalan";
 "preference.profile.title.version" = "Bersyon";
+"profile.title.create" = "Gumawa ng bagong profile";
 "controller_configurator.playstation.title.named_back" = "Iselekta";
