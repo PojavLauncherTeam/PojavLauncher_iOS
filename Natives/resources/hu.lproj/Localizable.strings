@@ -12,6 +12,7 @@
 
 // The play button
 "Play" = "Játék";
+"Details" = "Részletek";
 
 // Version categories
 "Installed" = "Telepítve";
@@ -26,6 +27,8 @@
 "Move" = "Mozgatás";
 "Remove" = "Eltávolítás";
 "Resize" = "Méretezés";
+"In game" = "Játékban";
+"In menu" = "Menüben";
 
 "custom_controls.button_edit.forward_lock" = "\"Előre\" zárolása";
 "custom_controls.button_edit.name" = "Név";
@@ -35,7 +38,9 @@
 "custom_controls.button_edit.toggleable" = "Kapcsolható";
 "custom_controls.button_edit.swipeable" = "Csúsztatható";
 "custom_controls.button_edit.bg_color" = "Háttér színe";
+"custom_controls.button_edit.stroke_width" = "Körvonal szélessége (dp)";
 "custom_controls.button_edit.stroke_color" = "Körvonal színe";
+"custom_controls.button_edit.visibility" = "Láthatóság";
 
 "custom_controls.button_menu.add_subbutton" = "Al-gomb hozzáadása";
 "custom_controls.control_menu.exit" = "Kilépés";
@@ -70,11 +75,18 @@
 "login.option.local" = "Helyi fiók";
 
 "login.warn.title.legacy_device" = "A következő PojavLauncher kiadása nem lesz kompatibilis ezen az eszközön.";
+"Profiles" = "Profilok";
+"preference.section.footer.video" = "Az Auto Renderer engedélyezi a PojavLauncher-nek, hogy válasszon a legjobb beállítást a Minecraft verzióinak megfelelően. A felbontás csökkentése csökkenti a GPU kihasználtságát a 
+jobb teljesítményhez.";
 "preference.section.control" = "Irányítás testreszabása";
+"preference.section.footer.debug" = "Úja kell indítani a launcher-t, hogy hassanak a megadott beállítások.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java Tweak ek";
 "preference.title.cosmetica" = "Cosmetica köpenyek";
 "preference.title.appicon-default" = "Ismerős PojavLauncher világos";
+"preference.title.appicon-dark" = "Ismerős PojavLauncher sötét";
+"preference.title.appicon-development" = "Ceruzával írt Fejlesztés";
+"preference.title.hidden_sidebar" = "Menü oldalsáv elrejtése alapértelmezetten";
 
 "preference.title.reset_warnings" = "Összes figyelmeztetés visszaállítása";
 "preference.title.done.reset_warnings" = "Az összes figyelmeztetés visszaállítva.";
@@ -86,12 +98,111 @@
 
 "preference.title.renderer" = "Renderlő";
 
+"preference.title.renderer.release.auto" = "Auto";
+"preference.title.renderer.release.gl4es" = "Holy GL4ES";
+"preference.title.renderer.release.angle" = "ANGLE";
+"preference.title.renderer.release.zink" = "Zink";
+
+"preference.title.renderer.debug.auto" = "Auto: GL4ES vagy ANGLE";
+"preference.title.renderer.debug.gl4es" = "Holy GL4ES - OpenGL 2.1-re exportálja";
+
+"preference.title.resolution" = "Felbontás (%)";
+"preference.detail.resolution" = "Átállíthatod a játék felbontását.";
+"preference.title.max_framerate" = "Maximális képfrissítés";
+
+"preference.title.performance_hud" = "HUD teljesítmény megjelenítése";
+"preference.detail.performance_hud" = "Mikor elérhető, mutassa a teljesítmény megfigyelő ablakot.";
+
+"preference.title.fullscreen_airplay" = "AirPlay Teljes Képernyő";
+"preference.title.silence_with_switch" = "Audió letiltása a Silent Switch-el és mikrofon bemenet elutasítása";
+"preference.detail.silence_with_switch" = "Audió engedélyezése vagy letiltása, mikor a Silent Mode be van kapcsolva, és letiltja a mikrofon bemenetet. Fejhallgatókra és küldő hangszórókra ez nem fog hatni.";
+"preference.title.default_gamepad_ctrl" = "Kontroller konfiguráció";
+"preference.title.hardware_hide" = "Vezérlések elrejtése ha egy új hardware van csatlakoztatva";
+"preference.title.recording_hide" = "Irányítópult elrejtése a feltétel közben";
+"preference.detail.recording_hide" = "Irányítópult elrejtése a képernyőkép és képernyőfelvétel készítése közben, de ugyanúgy látható lesz számodra.";
+"preference.title.gesture_mouse" = "Egér gesztusok";
+"preference.title.gesture_hotbar" = "Hotbar gesztusok";
+"preference.title.disable_haptics" = "Rezgés letiltása";
+"preference.title.press_duration" = "Hosszan nyomva tartás (ms)";
+"preference.title.mouse_scale" = "Egér mérete (%)";
+"preference.detail.mouse_scale" = "Átállítja a virtuális egér méretét";
+
 "preference.title.gyroscope_enable" = "Giroszkópos irányítás engedélyezése";
 "preference.title.gyroscope_sensitivity" = "Giroszkópos irányítás érzékenysége";
 
+"preference.title.manage_runtime" = "Runtime-ok kezelése";
+"preference.title.confirm.delete_runtime" = "A(z) %@ törölve lesz";
+"preference.manage_runtime.header.default" = "Preferált Java verzió";
+"preference.manage_runtime.default.1165" = "1.16.5 vagy régebbi";
+"preference.manage_runtime.default.117" = "1.17 vagy újabb";
+"preference.manage_runtime.footer.default" = "A Minecraft 1.16.5 és későbbi verziói egy új Java verzión futhatnak, ugyanakkor modok kompatibilitása nem garantált. A küldő runtime-ok kicserélhetőek a \"java_runtimes\" mappában. A Java verzió a \".jar futtatása\"-val akkor lesz érvényben, hogyha a telepítő nem vár el egy újabb Java verziót.";
+"preference.manage_runtime.footer.java8" = "Ez az alapértelmezett verzió a Minecraft 1.16.5 vagy régebbi verzióihoz.";
+"preference.manage_runtime.footer.java17" = "Ez az alapértelmezett verzió a Minecraft 1.17 vagy újabb verzióihoz.";
+"preference.manage_runtime.header.invalid" = "Érvénytelen runtime-ok";
+
 "preference.title.java_args" = "JVM Indítási argumentumok";
+"preference.detail.java_args" = "Átengedi az argumentumokat Java-hoz mikor a Minecraft elindul. Légy óvatos, mivel összeomlást okozhat, hogyha helytelenül vannak módosítva.";
+"preference.detail.env_variables" = "Beállítja a környezeti változóit a Java-hoz mikor a Minecraft elindul. Légy óvatos, mivel összeomlást okozhat, hogyha helytelenül vannak módosítva.";
+"preference.placeholder.env_variables" = "Változók megadása...";
+"preference.detail.custom_env" = "Ez az opció még munka alatt áll. Addig is, hozz létre vagy szerkessz egy \"custom_eny.txt\" fájlt.";
+
+"preference.title.debug_skip_wait_jit" = "\"Várakozás JIT fájlra\" dialógus átugrása";
+"preference.title.debug_ipad_ui" = "iPadOS UI feloldása";
+"preference.title.debug_auto_correction" = "Helyesírás-ellenőrző";
 
 "preference.profile.title.name" = "Név";
+"preference.profile.title.loader_type" = "Betöltő típusa";
+"preference.profile.title.loader_vendor" = "Betöltő eladója";
+"preference.profile.title.loader_version" = "Betöltő verziója";
 "preference.profile.title.version" = "Verzió";
+"preference.profile.title.version_type" = "Verzió típusa";
+"preference.profile.title.default_touch_control" = "Érintésvezérlés";
+"preference.profile.title.default_gamepad_control" = "Gamepad vezérlés";
+
+"profile.error.name_exists" = "Ez a profil már létezik ezzel a névvel. Kérlek, használj egy másik nevet!";
+"profile.section.instance" = "Játék példák beállítása";
+"profile.section.profiles" = "Profilok ebben a példában";
 "profile.title.create" = "Új profil létrehozása";
+"profile.title.separate_preference" = "Elkülönítő beállítások";
+"profile.detail.separate_preference" = "Engedélyezd ezt az opciót, hogyha bármilyen beállítást el szeretnél különíteni a beállításokban. Visszaállítással helyreállítja a globális beállításokat az alapértelmezett beállítások helyett.";
+"profile.title.install_fabric_quilt" = "Fabric/Quilt telepítése";
+
+"controller_configurator.title.current" = "Gamepad konfigurációs fájl";
+"controller_configurator.title.type.xbox" = "Xbox";
+"controller_configurator.title.type.playstation" = "PlayStation";
+"controller_configurator.xbox.title.named_back" = "Segéd";
+"controller_configurator.xbox.title.named_start" = "Menü";
+"controller_configurator.xbox.title.named_a" = "A";
+"controller_configurator.xbox.title.named_b" = "B";
+"controller_configurator.xbox.title.named_x" = "X";
+"controller_configurator.xbox.title.named_y" = "Y";
+"controller_configurator.xbox.title.dpad_up" = "Fel";
+"controller_configurator.xbox.title.dpad_down" = "Le";
+"controller_configurator.xbox.title.dpad_left" = "Bal";
+"controller_configurator.xbox.title.dpad_right" = "Jobb";
+"controller_configurator.xbox.title.thumb_left" = "Bal thumbstick katt";
+"controller_configurator.xbox.title.thumb_right" = "Jobb thumbstick katt";
+
+"controller_configurator.playstation.title.bumper_left" = "L1";
+"controller_configurator.playstation.title.bumper_right" = "R1";
+"controller_configurator.playstation.title.trigger_left" = "L2";
+"controller_configurator.playstation.title.trigger_right" = "R2";
 "controller_configurator.playstation.title.named_back" = "Kiválasztás";
+"controller_configurator.playstation.title.named_start" = "Start";
+"controller_configurator.playstation.title.named_a" = "Kereszt";
+"controller_configurator.playstation.title.named_b" = "Karika";
+"controller_configurator.playstation.title.named_x" = "Kocka";
+"controller_configurator.playstation.title.named_y" = "Háromszög";
+"controller_configurator.playstation.title.dpad_up" = "Fel";
+"controller_configurator.playstation.title.dpad_down" = "Le";
+"controller_configurator.playstation.title.dpad_left" = "Bal";
+"controller_configurator.playstation.title.dpad_right" = "Jobb";
+"controller_configurator.playstation.title.thumb_left" = "L3";
+"controller_configurator.playstation.title.thumb_right" = "R3";
+
+"controller_configurator.section.config_files" = "Jelenlegi konfigurációs fájl";
+"controller_configurator.section.game_mappings" = "Játék összekötések";
+"controller_configurator.section.footer.game_mappings" = "Összeköti, mikor az egér zárolva van a játékban.";
+"controller_configurator.section.menu_mappings" = "Menü összekötések";
+"controller_configurator.section.controller_style" = "Kontrollertípus";
+"controller_configurator.section.footer.controller_style" = "Különböző gombok nevét jeleníti meg ebben a konfigurációban.";
