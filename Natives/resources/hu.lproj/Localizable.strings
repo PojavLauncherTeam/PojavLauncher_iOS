@@ -18,6 +18,7 @@
 "custom_controls.button_edit.orientation" = "Tájolás";
 "custom_controls.button_edit.toggleable" = "Kapcsolható";
 "custom_controls.button_edit.bg_color" = "Háttér színe";
+"custom_controls.button_edit.stroke_color" = "Körvonal színe";
 
 "custom_controls.button_menu.add_subbutton" = "Al-gomb hozzáadása";
 "custom_controls.control_menu.save" = "Mentés";
