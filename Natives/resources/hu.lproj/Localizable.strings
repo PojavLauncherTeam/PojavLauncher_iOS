@@ -4,14 +4,28 @@
 */
 
 "game.menu.force_close" = "Kényszerített bezárás";
+"game.menu.confirm.force_close" = "Bistos vagy benne, hogy kényszerítve bezárod?";
 "game.menu.log_output" = "Napló kimenet";
 "game.menu.custom_controls" = "Irányítás testreszabása";
 
+"game.title.exit_code" = "A játék %d-es/os kóddal zárult be";
+
 // The play button
 "Play" = "Játék";
+
+// Version categories
+"Installed" = "Telepítve";
 "Snapshot" = "Pillanatkép";
+"Releases" = "Kiadások";
 "Old-beta" = "Régi-béta";
 "Old-alpha" = "Régi-alpha";
+
+// Custom controls
+"Copy" = "Másolás";
+"Edit" = "Szerkesztés";
+"Move" = "Mozgatás";
+"Remove" = "Eltávolítás";
+"Resize" = "Méretezés";
 
 "custom_controls.button_edit.forward_lock" = "\"Előre\" zárolása";
 "custom_controls.button_edit.name" = "Név";
@@ -24,18 +38,51 @@
 "custom_controls.button_edit.stroke_color" = "Körvonal színe";
 
 "custom_controls.button_menu.add_subbutton" = "Al-gomb hozzáadása";
+"custom_controls.control_menu.exit" = "Kilépés";
 "custom_controls.control_menu.save" = "Mentés";
+"custom_controls.control_menu.save.error.json" = "JSON hiba";
+"custom_controls.control_menu.save.error.write" = "Mentési fájl hiba";
 "custom_controls.control_menu.load" = "Betöltés";
+"custom_controls.control_menu.safe_area" = "Biztonságos terület";
 "custom_controls.control_menu.add_button" = "Gomb hozzáadása";
+"custom_controls.control_menu.add_drawer" = "Fiók hozzáadása";
 "custom_controls.control_menu.add_joystick" = "Joystick hozzáadása";
 
+"launcher.mcl.downloading_file" = "%@ letöltése";
+"launcher.mcl.error_download" = "%@: %@ letöltése sikertelen";
+
 "launcher.menu.custom_controls" = "Irányítás testreszabása";
+
+"launcher.wait_jit.title" = "Várakozás JIT-re";
+
+"login.alert.field.username" = "Felhasználónév";
+
+"login.jit.checking" = "JIT ellenőrzése";
+"login.jit.enabled" = "A JIT engedélyezve lett";
+"login.jit.fail" = "A JIT nem engedélyezhető.";
+
+// Login buttons
+"login.menu.sendlogs" = "Küldd el a log fájlt";
 "login.option.add" = "Fiók hozzáadása";
 "login.option.select" = "Fiók kiválasztása";
+"login.option.demo" = "Demó fiók";
+"login.option.microsoft" = "Microsoft fiók";
+"login.option.local" = "Helyi fiók";
+
+"login.warn.title.legacy_device" = "A következő PojavLauncher kiadása nem lesz kompatibilis ezen az eszközön.";
 "preference.section.control" = "Irányítás testreszabása";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java Tweak ek";
 "preference.title.cosmetica" = "Cosmetica köpenyek";
+"preference.title.appicon-default" = "Ismerős PojavLauncher világos";
+
+"preference.title.reset_warnings" = "Összes figyelmeztetés visszaállítása";
+"preference.title.done.reset_warnings" = "Az összes figyelmeztetés visszaállítva.";
+
+"preference.title.reset_settings" = "Összes beállítás visszaállítása";
+"preference.title.confirm.reset_settings" = "Ez az opció el fogja távolítani az egyedi prefenciáid, köztük a felbontást, a gombok méretét és a Java argumentumokat.";
+
+"preference.title.erase_demo_data" = "Demó játék adatának törlése";
 
 "preference.title.renderer" = "Renderlő";
 
@@ -46,4 +93,5 @@
 
 "preference.profile.title.name" = "Név";
 "preference.profile.title.version" = "Verzió";
+"profile.title.create" = "Új profil létrehozása";
 "controller_configurator.playstation.title.named_back" = "Kiválasztás";
