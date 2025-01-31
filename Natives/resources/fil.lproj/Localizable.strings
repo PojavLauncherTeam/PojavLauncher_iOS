@@ -14,11 +14,13 @@
 
 // The play button
 "Play" = "Maglaro";
+"Details" = "Detalye";
 
 // Version categories
 "Installed" = "Naka-Install";
 "Snapshot" = "Snapshot";
 "Releases" = "Pagpapalabas";
+"Unstable" = "Hindi Stable";
 "Old-beta" = "Lumang-beta";
 "Old-alpha" = "Lumang-alpha";
 
@@ -28,6 +30,10 @@
 "Move" = "Ilipat";
 "Remove" = "Tanggalin";
 "Resize" = "Baguhin ang sukat";
+// Visibility
+"Always" = "Palagi";
+"In game" = "sa loob ng laro";
+"In menu" = "sa menu";
 
 "custom_controls.button_edit.forward_lock" = "Pag-lock sa harap";
 "custom_controls.button_edit.name" = "Pangalan";
@@ -38,9 +44,11 @@
 "custom_controls.button_edit.mouse_pass" = "Mouse Pass";
 "custom_controls.button_edit.swipeable" = "Pwede ma swipe";
 "custom_controls.button_edit.bg_color" = "Kulay ng likuran";
+"custom_controls.button_edit.stroke_width" = "lapad ng stroke (dp)";
 "custom_controls.button_edit.stroke_color" = "Kulay ng stroke";
 "custom_controls.button_edit.corner_radius" = "Corner radius (%)";
 "custom_controls.button_edit.opacity" = "Opacidad (%)";
+"custom_controls.button_edit.visibility" = "Bisilibilty";
 
 "custom_controls.button_menu.add_subbutton" = "Lagyan ng sub-button";
 "custom_controls.control_menu.discard_changes" = "Baliwalain ang mga pagbabago";
@@ -60,10 +68,18 @@
 
 "init.migrateDir" = "Ang direktoryo ng data ng PojavLauncher ay %@ na ngayon. Ang lahat ng iyong umiiral na data ay inilipat sa bagong lokasyon.";
 
+"java.error.missing_main_class" = "Nawawala ang main class attribute ng %@. Kung ito ay isang mod.";
+"java.error.missing_runtime" = "Kailangan ng %@ ang Java %d o mas bago para tumakbo. Paki-install muna ito at itakda ito sa Manage Runtimes.";
+
+"launcher.mcl.downloading_file" = "Nagda-download %@";
+"launcher.mcl.error_download" = "Hindi ma-download ang %@: %@";
+
 "launcher.menu.custom_controls" = "Pasadyang mga kontrol";
+"launcher.menu.execute_jar" = "I-execute ang .jar";
 
 "launcher.wait_jit.title" = "Naghihintay ng JIT";
 "launcher.wait_jit.message" = "Umaasa ang PojavLauncher sa Just-in-time na compilation para gumana ang Java sa maximum na performance.";
+"launcher.wait_jit_trollstore.message" = "Kung nakikita mo pa rin ang mensaheng ito, mangyaring i-enable ang URL Scheme sa TrollStore.";
 
 "login.error.username.outOfRange" = "Dapat ang username ay may 3 na characters na hindi dapat lalampas sa 16 na characters";
 
@@ -71,18 +87,31 @@
 
 "login.jit.checking" = "Nagche-check para sa JIT";
 "login.jit.enabled" = "Na-enable na ang JIT";
+"login.jit.fail" = "Hindi ma-enable ang JIT.";
+"login.jit.fail.title" = "Hindi ma-enable ang JIT sa iyong device.";
+"login.jit.fail.description" = "Walang mga integration na maaaring gamitin para awtomatikong ma-enable ang JIT sa iyong device, at kailangan na itong i-enable nang mano-mano. Ang mga error ay naitala sa latestlog.txt.";
+"login.jit.fail.description_unsupported" = "Nakita ang isang hindi suportadong paraan ng pag-install. Mangyaring i-install muli gamit ang isa sa mga suportadong paraan.";
 
 // Login buttons
 "login.menu.sendlogs" = "I-send ang iyong logs";
 "login.option.add" = "Magdagdag ng account";
 "login.option.select" = "Piliin ng account";
+"login.option.demo" = "Demo na account";
 "login.option.microsoft" = "Microsoft account";
 "login.option.local" = "Lokal na account";
+
+"login.warn.title.legacy_device" = "Ang susunod na release ng PojavLauncher ay hindi compatible sa device na ito.";
+"login.warn.message.legacy_device" = "Para mapatakbo ang susunod na major release, kinakailangan ang isang device na kayang magpatakbo ng iOS 14.";
+"login.warn.title.legacy_ios" = "Ang susunod na release ng PojavLauncher ay mangangailangan ng system update.";
+"login.warn.message.legacy_ios" = "Para mapatakbo ang susunod na major release, kailangan ng device na ito na naka-iOS 14 o mas bago.";
+"login.warn.title.limited_ram" = "Ang device na ito ay may limitadong memory na available.";
+"login.warn.message.limited_ram" = "Inirerekomenda namin na iwanang naka-enable ang auto RAM para maiwasan ang instability at mga problema sa performance.";
 
 "login.warn.title.demomode" = "Your account is Demo";
 "login.warn.message.demomode" = "Bilang kapalit sa offline at lokal na mode, magbibigay-daan sa iyo ang demo mode na mag-sign in sa isang Microsoft account na hindi nagmamay-ari ng laro at laruin ang pagsubok ng Java Edition, na ipinakilala sa 1.3.1 at mas bagong mga bersyon.";
 
 "login.warn.title.localmode" = "Ang offline mode ngayon nay' Local mode.";
+"login.warn.message.localmode" = "Maaari kang magpatuloy sa paglalaro ng mga naka-install na bersyon, ngunit hindi ka na maaaring mag-download ng Minecraft nang walang bayad na account. Walang suportang ibibigay para sa mga isyu sa mga local account, o iba pang paraan ng pagkuha ng Minecraft.";
 
 "login.msa.error.xsts.noxboxacc" = "Ang isang Xbox profile ay hindi nakarehistro para sa Microsoft account na ito. Pakitiyak na nakagawa ka ng Xbox profile.\nError code: 2148916233";
 "login.msa.error.xsts.noxbox" = "Kasalukuyang hindi available ang Xbox Live sa iyong bansa.\nError code: 2148916235";
@@ -97,12 +126,15 @@
 "login.msa.progress.checkMCProfile" = "(5/5) Sinusuri ang profile sa Minecraft";
 
 "News" = "Mga Balita";
+"Profiles" = "Propayl";
 "Settings" = "Mga Setting";
 
 "preference.section.general" = "Mga Pangkalahatan na Setting";
 "preference.section.video" = "Kaayusan ng Video";
+"preference.section.footer.video" = "Pinapayagan ng Auto renderer ang PojavLauncher na pumili ng pinakamahusay na opsyon batay sa bersyon ng Minecraft. Ang pagpapababa ng resolution ay nakakabawas sa workload ng GPU para sa mas magandang performance";
 "preference.section.control" = "Kontrolin ang customization";
 "preference.section.debug" = "Mga Setting ng pag-Debug ng UI";
+"preference.section.footer.debug" = "Maaaring kailangan mong i-restart ang launcher para magkabisa ang mga pagbabago.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Mga tweaks sa Java";
 //"preference.section.footer.java" = "";
@@ -134,6 +166,11 @@
 
 "preference.title.renderer" = "Renderer";
 
+"preference.title.renderer.release.auto" = "Automatik";
+"preference.title.renderer.release.gl4es" = "maka-diyos na gl4es";
+"preference.title.renderer.release.angle" = "ANGLE";
+"preference.title.renderer.release.zink" = "Zink";
+
 "preference.title.renderer.debug.auto" = "Auto: gl4es or ANGLE";
 "preference.title.renderer.debug.gl4es" = "gl4es 1.1.4 - ini-export ang OpenGL 2.1";
 "preference.title.renderer.debug.angle" = "tinygl4angle (1.17+) - ini-export ang OpenGL 3.2 (Core Profile, limitado)";
@@ -144,8 +181,18 @@
 "preference.title.resolution" = "Resolusyon (%)";
 "preference.detail.resolution" = "Binibigyang-daan kang bawasan ang resolution ng laro.";
 
+"preference.title.performance_hud" = "pakita ang Performance HUD";
+"preference.detail.performance_hud" = "Kapag meron, ipakita ang overlay ng pagsubaybay sa performance.";
+
 "preference.title.fullscreen_airplay" = "Fullscreen AirPlay";
 "preference.detail.fullscreen_airplay" = "Allows presenting fullscreen game window on the external display rather than mirroring everything on screen.";
+"preference.title.silence_with_switch" = "Patayin ang audio sa pamamagitan ng silent switch at huwag payagan ang mikropono na makarinig.";
+"preference.detail.silence_with_switch" = "Paganahin para i-disable ang audio kapag naka-on ang Silent Mode, at itanggi ang input ng mikropono. Hindi maaapektuhan ang mga headphone at external speaker.";
+"preference.title.recording_hide" = "Itago ang mga kontrol mula sa pag-record ng screen";
+"preference.detail.recording_hide" = "Itinatago ang mga kontrol sa screenshot at pag-record ng screen habang nananatili itong visible sa screen.
+
+";
+"preference.title.disable_haptics" = "I-disable ang on-screen haptics";
 "preference.title.press_duration" = "Tagal ng pagpindot nang long-press (ms)";
 "preference.detail.press_duration" = "Trigger press duration for destroying blocks and dropping items.";
 "preference.title.button_scale" = "Sukat ng button sa screen (%)";
@@ -162,9 +209,22 @@
 "preference.title.gyroscope_enable" = "I-enable ang mga kontrol ng gyroscope";
 "preference.title.gyroscope_sensitivity" = "Sensitivity ng kontrol ng gyroscope";
 
+"preference.title.manage_runtime" = "Pangasiwaan ang mga runtime";
+"preference.title.confirm.delete_runtime" = "Ang %@ ay buburahin";
+"preference.manage_runtime.header.default" = "Mas gustong bersyon ng Java:";
+"preference.manage_runtime.default.1165" = "1.16.5 at mas luma";
+"preference.manage_runtime.default.117" = "1.17 at mas bago";
+"preference.manage_runtime.footer.default" = "Maaaring tumakbo ang Minecraft 1.16.5 at mas luma sa mas bagong bersyon ng Java, ngunit hindi garantisado ang compatibility sa mga mod. Ang mga external runtime ay maaaring ilagay sa folder na “java_runtimes”. Ang pagpapalit ng bersyon ng Java para sa “Execute .jar” ay magkakabisa lamang kung ang installer ay hindi umaasa sa mas bagong bersyon ng Java.";
+"preference.manage_runtime.footer.java8" = "Ito ang default na bersyon para sa Minecraft 1.16.5 at mas luma.";
+"preference.manage_runtime.footer.java17" = "Ito ang default na bersyon para sa Minecraft 1.17 at mas bago.";
+"preference.manage_runtime.header.invalid" = "Mga Invalid na Runtime";
+
 "preference.title.java_args" = "JVM Launch arguments";
+"preference.detail.java_args" = "Magbigay ng arguments sa Java sa paglunsad ng Minecraft. Ingat, pwedeng mag-crash ang laro kapag mali ang pag-edit nito.";
 "preference.placeholder.java_args" = "Tukuyin ang mga argumento...";
 "preference.title.env_variables" = "Variables ng environment";
+"preference.detail.env_variables" = "Magtakda ng mga custom environment variable kapag inilulunsad ang Minecraft. Mag-ingat, maaari itong mag-crash sa laro kung hindi tama ang pagbabago.";
+"preference.placeholder.env_variables" = "Itakda ang mga variable...";
 "preference.title.auto_ram" = "Awtomatikong RAM";
 "preference.detail.auto_ram" = "Pinapagana ang awtomatikong RAM adjuster";
 "preference.warn.auto_ram" = "Ang pag-disable sa opsyong ito sa isang unjailbroken na device ay maaaring lumikha ng kawalang-tatag kung babaguhin. Magpatuloy nang may pag-iingat.";
@@ -172,6 +232,7 @@
 "preference.detail.allocated_memory" = "Kinokontrol kung magkano ang memorya na ibinibigay sa Minecraft";
 "preference.warn.allocated_memory" = "Dahil sa mga limitasyon sa mismong operating system, ang opsyong ito ay maaaring magdulot ng kawalang-tatag dito at mas mataas na halaga. Magpatuloy nang may pag-iingat.";
 "preference.title.custom_env" = "Variables ng environment";
+"preference.detail.custom_env" = "Ang opsyon na ito ay kasalukuyang ginagawa. Lumikha at i-edit ang custom_env.txt sa ngayon.";
 
 "preference.title.debug_skip_wait_jit" = "Skip \"Waiting for JIT\" dialog";
 "preference.detail.debug_skip_wait_jit" = "This does not allow you to launch without JIT, instead this skips debugger check, because check fails on certain jailbreaks.";
@@ -183,6 +244,19 @@
 "preference.detail.debug_hide_home_indicator" = "This will disable home indicator locking. You will need to use Guided Access to hide and lock home indicator at the same time.";
 
 "preference.profile.title.name" = "Pangalan";
+"preference.profile.title.loader_type" = "Uri ng loader:";
+"preference.profile.title.loader_vendor" = "Vendor ng loader";
+"preference.profile.title.loader_version" = "Bersyon ng loader";
 "preference.profile.title.version" = "Bersyon";
+"preference.profile.title.version_type" = "Uri ng bersyon";
+"preference.profile.title.default_touch_control" = "Mga kontrol sa pagpindot";
+"preference.profile.title.default_gamepad_control" = "Mga kontrol ng gamepad";
+
+"profile.error.name_exists" = "May profile na na ang pangalan na iyon. Mangyaring gumamit ng ibang pangalan.";
+"profile.section.instance" = "Mga setting ng Game Instance";
+"profile.section.profiles" = "Mga profile sa instance na ito";
 "profile.title.create" = "Gumawa ng bagong profile";
+"profile.title.separate_preference" = "Ihiwalay ang mga setting";
+"profile.detail.separate_preference" = "Paganahin ang opsyon na ito para ihiwalay ang anumang mga pagbabagong ginawa sa mga setting. Ang pag-Reset ay magbabalik sa mga global setting sa halip na mga default setting.";
+"profile.title.install_fabric_quilt" = "I-install ang Fabric/Quilt";
 "controller_configurator.playstation.title.named_back" = "Iselekta";
