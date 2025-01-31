@@ -26,6 +26,8 @@
 "Copy" = "Copiere";
 "Edit" = "Editează";
 "Remove" = "Șterge";
+
+"custom_controls.button_edit.forward_lock" = "Blochează înaintea";
 "custom_controls.button_edit.name" = "Nume";
 "custom_controls.button_edit.size" = "Dimensiune";
 "custom_controls.button_edit.mapping" = "Asocieri";
@@ -40,6 +42,7 @@
 "custom_controls.control_menu.save" = "Salvează";
 "custom_controls.control_menu.load" = "Incarcă";
 "custom_controls.control_menu.add_button" = "Adaugă buton";
+"custom_controls.control_menu.add_joystick" = "Adaugă un joystick";
 
 "launcher.menu.custom_controls" = "Controale personalizate";
 "login.option.add" = "Adăugați un cont";
