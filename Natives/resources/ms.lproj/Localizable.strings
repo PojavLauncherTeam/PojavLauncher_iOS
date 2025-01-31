@@ -14,18 +14,26 @@
 "Old-alpha" = "Alfa-lama";
 "Edit" = "Sunting";
 "Remove" = "Hapus";
+
+"custom_controls.button_edit.forward_lock" = "Kunci hadapan";
 "custom_controls.button_edit.name" = "Nama";
 "custom_controls.button_edit.size" = "Saiz";
 "custom_controls.button_edit.mapping" = "Pemetaan";
 "custom_controls.button_edit.orientation" = "Orientasi";
 "custom_controls.button_edit.toggleable" = "Boleh Ditukar";
+"custom_controls.button_edit.swipeable" = "Boleh leret";
 "custom_controls.button_edit.bg_color" = "Warna Latar Belakang";
+"custom_controls.button_edit.stroke_color" = "Warna ayunan";
+
+"custom_controls.button_menu.add_subbutton" = "Tambah sub-button";
 "custom_controls.control_menu.exit" = "Keluar";
 "custom_controls.control_menu.save" = "Simpan";
 "custom_controls.control_menu.load" = "Memuat";
 "custom_controls.control_menu.add_button" = "Tambah butang";
+"custom_controls.control_menu.add_joystick" = "Tambah joystick";
 
 "launcher.menu.custom_controls" = "Kawalan custom";
+"login.option.add" = "Tambah Akaun";
 "login.option.select" = "Pilih akaun";
 
 "News" = "Berita";
@@ -33,8 +41,11 @@
 
 "preference.section.general" = "Tetapan Umum";
 "preference.section.video" = "Tetapan Video";
+"preference.section.control" = "Pengubahsuaian kawalan";
 "preference.section.debug" = "Tetapan UI Penyahpepijat";
 "preference.section.footer.debug" = "Anda mungkin perlu memulakan semula pelancar untuk perubahan berkuat kuasa.";
+//"preference.section.footer.control" = "";
+"preference.section.java" = "Pelarasan kecil JAVA";
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "Adakah anda pasti?";
@@ -51,6 +62,9 @@
 "preference.title.silence_with_switch" = "Nyahdayakan audio dengan suis senyap dan tolak input mikrofon";
 "preference.detail.silence_with_switch" = "Dayakan untuk menyahdayakan audio apabila Mod Senyap dihidupkan dan tolak input mikrofon. Fon kepala dan pembesar suara luaran tidak terjejas.";
 
+"preference.title.gyroscope_enable" = "Membolehkan kawalan giroskop";
+"preference.title.gyroscope_sensitivity" = "Giroskop mengawal sensitiviti";
+
 "preference.title.java_args" = "JVM Launch arguments";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Membenarkan pelaras RAM automatik";
@@ -58,3 +72,5 @@
 
 "preference.profile.title.name" = "Nama";
 "preference.profile.title.version" = "Versi";
+"profile.title.create" = "Buat profil baharu";
+"controller_configurator.playstation.title.named_back" = "Pilih";
