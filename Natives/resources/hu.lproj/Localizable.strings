@@ -12,11 +12,14 @@
 "Snapshot" = "Pillanatkép";
 "Old-beta" = "Régi-béta";
 "Old-alpha" = "Régi-alpha";
+
+"custom_controls.button_edit.forward_lock" = "\"Előre\" zárolása";
 "custom_controls.button_edit.name" = "Név";
 "custom_controls.button_edit.size" = "Méret";
 "custom_controls.button_edit.mapping" = "Hozzárendelés";
 "custom_controls.button_edit.orientation" = "Tájolás";
 "custom_controls.button_edit.toggleable" = "Kapcsolható";
+"custom_controls.button_edit.swipeable" = "Csúsztatható";
 "custom_controls.button_edit.bg_color" = "Háttér színe";
 "custom_controls.button_edit.stroke_color" = "Körvonal színe";
 
@@ -27,14 +30,20 @@
 "custom_controls.control_menu.add_joystick" = "Joystick hozzáadása";
 
 "launcher.menu.custom_controls" = "Irányítás testreszabása";
+"login.option.add" = "Fiók hozzáadása";
 "login.option.select" = "Fiók kiválasztása";
 "preference.section.control" = "Irányítás testreszabása";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java Tweak ek";
+"preference.title.cosmetica" = "Cosmetica köpenyek";
 
 "preference.title.renderer" = "Renderlő";
+
+"preference.title.gyroscope_enable" = "Giroszkópos irányítás engedélyezése";
+"preference.title.gyroscope_sensitivity" = "Giroszkópos irányítás érzékenysége";
 
 "preference.title.java_args" = "JVM Indítási argumentumok";
 
 "preference.profile.title.name" = "Név";
+"preference.profile.title.version" = "Verzió";
 "controller_configurator.playstation.title.named_back" = "Kiválasztás";
