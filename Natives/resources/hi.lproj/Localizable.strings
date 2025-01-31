@@ -1,3 +1,6 @@
 "game.menu.log_output" = "लॉग आउटपुट";
+"game.menu.custom_controls" = "कस्टम कंट्रोल्स";
 "custom_controls.control_menu.exit" = "बाहर जाएं";
+
+"launcher.menu.custom_controls" = "कस्टम कंट्रोल्स";
 "login.option.select" = "एकाउंट का चयन करें ";
