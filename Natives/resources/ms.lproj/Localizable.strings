@@ -138,7 +138,7 @@
 "preference.detail.appicon" = "Membolehkan anda memilih antara ikon Skrin Utama yang berbeza untuk PojavLauncher.";
 "preference.title.appicon-default" = "Lampu PojavLauncher yang biasa";
 "preference.title.hidden_sidebar" = "Hilangkan menu utama bar sisi secara default";
-"preference.detail.hidden_sidebar" = "Membolehkan anda untuk menghilangkan bar sisi pada menu utama secara default dan apabila berputar.";
+"preference.detail.hidden_sidebar" = "Membenarkan anda untuk menghilangkan bar sisi pada menu utama secara default dan apabila berputar.";
 
 "preference.title.reset_warnings" = "Set semula semua amaran";
 "preference.title.done.reset_warnings" = "Semua amaran telah diset semula.";
@@ -152,8 +152,39 @@
 "preference.title.done.erase_demo_data" = "Semua data permainan Demo telah dipadamkan.";
 
 "preference.title.renderer" = "Renderer";
+
+"preference.title.renderer.debug.auto" = "Auto: gl4es atau ANGLE";
+"preference.title.renderer.debug.gl4es" = "holy gl4es - eksport OpenGL 2.1";
+"preference.title.renderer.debug.angle" = "ANGLE (1.17+) - eksport OpenGL 3.2 (Profil Teras, terhad)";
+"preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - eksport OpenGL 4.1";
+
+"preference.detail.renderer" = "Tukar OpenGL render enjin untuk guna. Zink telah dilumpuhkan untuk sementara waktu pada iOS 16 dan akan siasat isunya.";
+
+"preference.title.resolution" = "Resolusi (%)";
+"preference.detail.resolution" = "Membenarkan anda untuk menurunkan resolusi permainan.";
+"preference.title.max_framerate" = "Maksimum framerate";
+"preference.detail.max_framerate" = "Membenarkan anda untuk menghadkan permainan framerate kepada 60FPS dalam paparan ProMotion.";
+
+"preference.title.fullscreen_airplay" = "Skrin penuh AirPlay";
+"preference.detail.fullscreen_airplay" = "Membenarkan mempersembahkan skrin penuh window pada paparan luaran daripada mencerminkan semua kepada skrin.";
+"preference.title.silence_other_audio" = "Berhenti audio sebentar apabila buka permainan";
+"preference.detail.silence_other_audio" = "Membolehkan untuk benarkan PojavLauncher untuk berhenti audio sebentar dari aplikasi lain, contohnya Music, apabila melancarkan permainannya.";
 "preference.title.silence_with_switch" = "Nyahdayakan audio dengan suis senyap dan tolak input mikrofon";
 "preference.detail.silence_with_switch" = "Dayakan untuk menyahdayakan audio apabila Mod Senyap dihidupkan dan tolak input mikrofon. Fon kepala dan pembesar suara luaran tidak terjejas.";
+"preference.title.default_gamepad_ctrl" = "Konfigurasi kawalan";
+"preference.title.hardware_hide" = "Hilangkan kawalan apabila hardware disambungkan";
+"preference.title.gesture_mouse" = "Gerak isyarat tetikus";
+"preference.detail.gesture_mouse" = "Membolehkan gerakan isyarat, seperti tekan untuk letakkan blok, tekan lama untuk hancurkan blok, menatal dengan dua jari";
+"preference.title.gesture_hotbar" = "Gerak isyarat hotbar";
+"preference.title.press_duration" = "Durasi tekan lama (ms)";
+"preference.title.button_scale" = "Skala butang pada skrin (%)";
+"preference.detail.button_scale" = "Membesarkan jika butangnya terlalu kecil, selalunya digunakan untuk pengguna iPad.";
+"preference.title.mouse_scale" = "Skala tetikus (%)";
+"preference.detail.mouse_scale" = "Ubah saiz tetikus maya";
+"preference.title.mouse_speed" = "Kelajuan tetikus (%)";
+"preference.detail.mouse_speed" = "Ubah kelajuan tetikus maya";
+"preference.title.virtmouse_enable" = "Tetikus maya";
+"preference.detail.virtmouse_enable" = "Membolehkan pilihan ini untuk memulakan dengan tetikus maya";
 
 "preference.title.gyroscope_enable" = "Membolehkan kawalan giroskop";
 "preference.title.gyroscope_sensitivity" = "Giroskop mengawal sensitiviti";
