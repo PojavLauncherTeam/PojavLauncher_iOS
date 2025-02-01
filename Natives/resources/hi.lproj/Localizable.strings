@@ -6,6 +6,9 @@
 "game.menu.force_close" = "बलपूर्वक बंद करें";
 "game.menu.log_output" = "लॉग आउटपुट";
 "game.menu.custom_controls" = "कस्टम कंट्रोल्स";
+
+// The play button
+"Play" = "खेले";
 "Snapshot" = "स्नैपशॉट";
 "Old-beta" = "पुराना-बीटा";
 "Old-alpha" = "पुराना-अल्फा";
