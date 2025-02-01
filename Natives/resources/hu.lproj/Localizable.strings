@@ -66,6 +66,8 @@
 "custom_controls.error.incompatible" = "Ez a vezérlő verziója (kód \"%d\") nincs implementálva ebben a launcher build-jében.";
 "custom_controls.hint" = "Nyomd hosszan bárhol a kijelzőn a további beállításokért";
 
+"init.migrateDir" = "A PojavLauncher adatainak könyvára mostantól %@. Az összes létező adatok át lettek helyezve.";
+
 "java.error.missing_main_class" = "Az %@-ból/-ből hiányzik a fő osztály attribútuma. Hogyha ez egy mod, helyezd át azt a \"mods\" mappába.";
 "java.error.missing_runtime" = "A(z) %@ Java %d-t vagy későbbit igényel. Kérlek, telepítsd először, majd add meg a \"Runtime-ok kezelése\" opcióban.";
 
@@ -108,6 +110,8 @@
 
 "login.warn.title.localmode" = "Az offline mód mostantól \"helyi fiók\" mód.";
 "login.warn.message.localmode" = "Továbbra is játszhatsz a telepített verziókkal, de nem lesz lehetőséged letölteni a Minectaft-ot fizetett fiók nélkül. Semmilyen segítséget nem adhatunk helyi fiókokon, vagy a Minecraft megszerzésével.";
+
+"login.msa.error.xsts.noxboxacc" = "Nincs regisztrálva egy Xbox profil a Microsoft fiókhoz. Bizonyosodj meg arról, hogy létrehoztál egy Xbox fiókot.\nHibakód: 2148916233";
 "login.msa.error.xsts.noxbox" = "Az Xbox Live jelenleg nem elérhető az országodban.\nHibakód: 2148916235";
 "login.msa.error.xsts.krverify" = "A fiókodat jóvá kell hagyni a szülő által, mielőtt folytatni tudnád.\nHibakód: 2148916236 vagy 2148916237";
 "login.msa.error.xsts.underage" = "A fiókodat hozzá kell csatolni egy szülői fiókhoz, mielőtt folytatod.\nHibakód: 2148916238";
@@ -131,7 +135,7 @@ jobb teljesítményhez.";
 "preference.section.debug" = "UI Debugging beállítások";
 "preference.section.footer.debug" = "Úja kell indítani a launcher-t, hogy hassanak a megadott beállítások.";
 //"preference.section.footer.control" = "";
-"preference.section.java" = "Java Tweak ek";
+"preference.section.java" = "Java Tweak-ek";
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "Biztos vagy benne?";
@@ -146,6 +150,7 @@ jobb teljesítményhez.";
 "preference.detail.cosmetica" = "Engedélyezi a köpenyeket a Cosmetica-ról (Régebben Arc). További infóért látogasd meg a https://cosmetica.cc weboldalt. OptiFine szükseges";
 "preference.title.debug_logging" = "Hibakeresési naplózás";
 "preference.title.appicon" = "Applikáció ikonjának beállítása";
+"preference.detail.appicon" = "Engedélyezi számodra, hogy válassz a Home Screen ikonjai között a PojavLauncher-ben.";
 "preference.title.appicon-default" = "Ismerős PojavLauncher világos";
 "preference.title.appicon-dark" = "Ismerős PojavLauncher sötét";
 "preference.title.appicon-development" = "Ceruzával írt Fejlesztés";
@@ -156,8 +161,11 @@ jobb teljesítményhez.";
 
 "preference.title.reset_settings" = "Összes beállítás visszaállítása";
 "preference.title.confirm.reset_settings" = "Ez az opció el fogja távolítani az egyedi prefenciáid, köztük a felbontást, a gombok méretét és a Java argumentumokat.";
+"preference.title.done.reset_settings" = "Az összes alapértelmezett beállítás visszaállítva.";
 
 "preference.title.erase_demo_data" = "Demó játék adatának törlése";
+"preference.title.confirm.erase_demo_data" = "Ez törölni fogja az összes Demó játék verziókat és a Demó fiókokhoz használt adatokat.";
+"preference.title.done.erase_demo_data" = "Az összes Demó játék adatai törölve lettek.";
 
 "preference.title.renderer" = "Renderlő";
 
@@ -184,6 +192,7 @@ jobb teljesítményhez.";
 "preference.title.fullscreen_airplay" = "AirPlay Teljes Képernyő";
 "preference.detail.fullscreen_airplay" = "Engedélyezi a teljes képernyős megjelenítéses játék ablakot egy küldő kijelzőn, mintha csak képernyőmegosztással mindent megjelenítenél.";
 "preference.title.silence_other_audio" = "Audió szüneteltetése, mikor a játék megnyílik";
+"preference.detail.silence_other_audio" = "Engedélyezi, hogy hozzáférjen a PojavLauncher ahhoz, hogy szüneteltesse az audiót más appokról, mint pl. Zene, mikor elindítod a játékot.";
 "preference.title.silence_with_switch" = "Audió letiltása a Silent Switch-el és mikrofon bemenet elutasítása";
 "preference.detail.silence_with_switch" = "Audió engedélyezése vagy letiltása, mikor a Silent Mode be van kapcsolva, és letiltja a mikrofon bemenetet. Fejhallgatókra és küldő hangszórókra ez nem fog hatni.";
 "preference.title.default_gamepad_ctrl" = "Kontroller konfiguráció";
@@ -204,8 +213,10 @@ jobb teljesítményhez.";
 "preference.title.virtmouse_enable" = "Virtuális egér";
 "preference.detail.virtmouse_enable" = "Kapcsold ezt be, hogyha úgy szeretnéd elindítani a játékot, hogy alapértelmezetten van bekapcsolva a virtuális egér";
 "preference.title.slideable_hotbar" = "Csúsztatható hotbar";
+"preference.detail.slideable_hotbar" = "A hotbar átalakítása csúsztathatóvá az egér görgőjével";
 
 "preference.title.gyroscope_enable" = "Giroszkópos irányítás engedélyezése";
+"preference.detail.gyroscope_enable" = "Ennek az engedélyezésével átforgathatod a játékodat a telefonod forgatásával";
 "preference.title.gyroscope_invert_x_axis" = "Giroszkóp vízszintes irányítás invertálása";
 "preference.detail.gyroscope_invert_x_axis" = "Invertálja az X-tengelyét a giroszkópban";
 "preference.title.gyroscope_sensitivity" = "Giroszkópos irányítás érzékenysége";
@@ -221,7 +232,7 @@ jobb teljesítményhez.";
 "preference.manage_runtime.footer.java17" = "Ez az alapértelmezett verzió a Minecraft 1.17 vagy újabb verzióihoz.";
 "preference.manage_runtime.header.invalid" = "Érvénytelen runtime-ok";
 
-"preference.title.java_args" = "JVM Indítási argumentumok";
+"preference.title.java_args" = "JVM indítási argumentumok";
 "preference.detail.java_args" = "Átengedi az argumentumokat Java-hoz mikor a Minecraft elindul. Légy óvatos, mivel összeomlást okozhat, hogyha helytelenül vannak módosítva.";
 "preference.placeholder.java_args" = "Argumentumok megadása...";
 "preference.title.env_variables" = "Környezeti változók";
@@ -230,13 +241,17 @@ jobb teljesítményhez.";
 "preference.title.auto_ram" = "Automatikus RAM";
 "preference.detail.auto_ram" = "Engedélyezi az automatikus RAM beállítását";
 "preference.title.allocated_memory" = "Memória kiosztása (MB)";
+"preference.detail.allocated_memory" = "Kezeli, hogy mennyi memóriát foglaljon le a Minecraft-nak";
+"preference.warn.allocated_memory" = "Korlátozások miatt, az operációs rendszerben ez az opció instabilitást okozhat, ha a megadott érték magasabb. Folytasd ezzel a tudomással.";
 "preference.title.custom_env" = "Környezeti változók";
 "preference.detail.custom_env" = "Ez az opció még munka alatt áll. Addig is, hozz létre vagy szerkessz egy \"custom_eny.txt\" fájlt.";
 
 "preference.title.debug_skip_wait_jit" = "\"Várakozás JIT fájlra\" dialógus átugrása";
 "preference.detail.debug_skip_wait_jit" = "Ez nem engedélyezi, hogy elindítsd JIT nélkül, ehelyett átugorja a hibakeresési ellenőrzést, mert az ellenőrzést nem sikerül egyes jailbreak-eknél.";
 "preference.title.debug_ipad_ui" = "iPadOS UI feloldása";
+"preference.detail.debug_ipad_ui" = "iPad exkluzív UI feloldása (riasztás, billentyűzet, stb.), hogyha engedélyezve van vagy az iPhone UI-ban, hogy le van tiltva.";
 "preference.title.debug_auto_correction" = "Helyesírás-ellenőrző";
+"preference.detail.debug_auto_correction" = "Helyesírás-ellenőrző engedélyezése játék közben való szövegíráskor.";
 "preference.title.debug_hide_home_indicator" = "\"Otthon\" mutató elrejtése";
 "preference.detail.debug_hide_home_indicator" = "Ez az opció letiltja az \"otthon\" indikátor zárolását. Szükséged lesz egy Guilded hozzáférésre ahhoz, hogy elrejtsd és zárold az \"otthon\" indikátort.";
 
