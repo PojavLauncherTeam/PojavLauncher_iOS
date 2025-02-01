@@ -32,7 +32,7 @@
 "Resize" = "サイズ調整";
 // Visibility
 "Always" = "常に有効";
-"In game" = "今ゲーム中...";
+"In game" = "ゲーム内";
 "In menu" = "インメニュー";
 
 "custom_controls.button_edit.forward_lock" = "フォワードロック";
@@ -48,7 +48,7 @@
 "custom_controls.button_edit.stroke_color" = "線の色";
 "custom_controls.button_edit.corner_radius" = "角の半径 (%)";
 "custom_controls.button_edit.opacity" = "透明度 (%)";
-"custom_controls.button_edit.visibility" = "公開範囲";
+"custom_controls.button_edit.visibility" = "透明度";
 
 "custom_controls.button_menu.add_subbutton" = "サブボタンを追加";
 "custom_controls.control_menu.discard_changes" = "変更を破棄";
@@ -75,7 +75,7 @@
 "launcher.mcl.error_download" = "ダウンロードを失敗しました %@: %@";
 
 "launcher.menu.custom_controls" = "カスタムコントロール";
-"launcher.menu.execute_jar" = ".JARを実行";
+"launcher.menu.execute_jar" = ".JARを実行権する";
 
 "launcher.wait_jit.title" = "JITを待っています";
 "launcher.wait_jit.message" = "PojavLauncherは、Javaが最大限のパフォーマンスで動作するようにJust-in-timeコンパイルに依存しています。";
@@ -174,7 +174,7 @@
 
 "preference.title.renderer.release.auto" = "自動";
 "preference.title.renderer.release.gl4es" = "holy gl4es";
-"preference.title.renderer.release.angle" = "角度";
+"preference.title.renderer.release.angle" = "ANGLE";
 "preference.title.renderer.release.zink" = "Zink";
 
 "preference.title.renderer.debug.auto" = "自動: gl4es または angle";
@@ -188,6 +188,8 @@
 "preference.detail.resolution" = "ゲームの解像度を下げることができます。";
 "preference.title.max_framerate" = "最大フレームレート";
 "preference.detail.max_framerate" = "ゲームを60フラムレートに制限(ProMotionディスプレイのみ)";
+
+"preference.title.performance_hud" = "パフォーマンスHUDを表示する";
 
 "preference.title.fullscreen_airplay" = "全画面AirPlay";
 "preference.detail.fullscreen_airplay" = "画面上のすべてをミラーリングするのではなく、外部ディスプレイにフルスクリーンのゲームウィンドウを表示できます。";
@@ -261,7 +263,7 @@
 "preference.profile.title.loader_version" = "ローダーのバージョン";
 "preference.profile.title.version" = "バージョン";
 "preference.profile.title.version_type" = "バージョンタイプ";
-"preference.profile.title.default_touch_control" = "Touch controls";
+"preference.profile.title.default_touch_control" = "タッチコントロール";
 "preference.profile.title.default_gamepad_control" = "ゲームパッドコントロール";
 
 "profile.error.name_exists" = "その名前があるプロフィールは既に存在している。 ユニークな名前を使用する。";
