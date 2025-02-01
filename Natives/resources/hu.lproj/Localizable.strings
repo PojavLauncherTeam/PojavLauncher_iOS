@@ -8,6 +8,8 @@
 "game.menu.log_output" = "Napló kimenet";
 "game.menu.custom_controls" = "Irányítás testreszabása";
 
+"game.note.airplay" = "A Minecraft meg lesz jelenítve az AirPlay megosztott képernyőn";
+
 "game.title.exit_code" = "A játék %d-es/os kóddal zárult be";
 
 // The play button
@@ -18,6 +20,7 @@
 "Installed" = "Telepítve";
 "Snapshot" = "Pillanatkép";
 "Releases" = "Kiadások";
+"Unstable" = "Instabil";
 "Old-beta" = "Régi-béta";
 "Old-alpha" = "Régi-alpha";
 
@@ -27,6 +30,8 @@
 "Move" = "Mozgatás";
 "Remove" = "Eltávolítás";
 "Resize" = "Méretezés";
+// Visibility
+"Always" = "Mindig";
 "In game" = "Játékban";
 "In menu" = "Menüben";
 
@@ -36,35 +41,53 @@
 "custom_controls.button_edit.mapping" = "Hozzárendelés";
 "custom_controls.button_edit.orientation" = "Tájolás";
 "custom_controls.button_edit.toggleable" = "Kapcsolható";
+"custom_controls.button_edit.mouse_pass" = "Egér áthaladása";
 "custom_controls.button_edit.swipeable" = "Csúsztatható";
 "custom_controls.button_edit.bg_color" = "Háttér színe";
 "custom_controls.button_edit.stroke_width" = "Körvonal szélessége (dp)";
 "custom_controls.button_edit.stroke_color" = "Körvonal színe";
+"custom_controls.button_edit.corner_radius" = "Sarkok átmérője (%)";
+"custom_controls.button_edit.opacity" = "Átlátszatlanság (%)";
 "custom_controls.button_edit.visibility" = "Láthatóság";
 
 "custom_controls.button_menu.add_subbutton" = "Al-gomb hozzáadása";
+"custom_controls.control_menu.discard_changes" = "Változtatások elvetése";
 "custom_controls.control_menu.exit" = "Kilépés";
+"custom_controls.control_menu.exit.warn" = "Változtatások mentése nélkül készül kilépni.";
 "custom_controls.control_menu.save" = "Mentés";
 "custom_controls.control_menu.save.error.json" = "JSON hiba";
 "custom_controls.control_menu.save.error.write" = "Mentési fájl hiba";
 "custom_controls.control_menu.load" = "Betöltés";
+"custom_controls.control_menu.make_default" = "Beállítás alapértelmezettként";
 "custom_controls.control_menu.safe_area" = "Biztonságos terület";
 "custom_controls.control_menu.add_button" = "Gomb hozzáadása";
 "custom_controls.control_menu.add_drawer" = "Fiók hozzáadása";
 "custom_controls.control_menu.add_joystick" = "Joystick hozzáadása";
+"custom_controls.error.incompatible" = "Ez a vezérlő verziója (kód \"%d\") nincs implementálva ebben a launcher build-jében.";
+"custom_controls.hint" = "Nyomd hosszan bárhol a kijelzőn a további beállításokért";
+
+"java.error.missing_main_class" = "Az %@-ból/-ből hiányzik a fő osztály attribútuma. Hogyha ez egy mod, helyezd át azt a \"mods\" mappába.";
+"java.error.missing_runtime" = "A(z) %@ Java %d-t vagy későbbit igényel. Kérlek, telepítsd először, majd add meg a \"Runtime-ok kezelése\" opcióban.";
 
 "launcher.mcl.downloading_file" = "%@ letöltése";
 "launcher.mcl.error_download" = "%@: %@ letöltése sikertelen";
 
 "launcher.menu.custom_controls" = "Irányítás testreszabása";
+"launcher.menu.execute_jar" = ".jar futtatása";
 
 "launcher.wait_jit.title" = "Várakozás JIT-re";
+"launcher.wait_jit_trollstore.message" = "Hogyha ezt az üzenetet látod, kérlek, engedélyezd az URL-sémát a TrollStore-ban.";
+
+"login.error.username.outOfRange" = "A felhasználónév legalább 3 vagy legfeljebb 16 karakter hosszú kell hogy legyen, és csakis betűt, számokat 0-tól 9-ig és alsóvonalat (_) tartalmazhat.";
 
 "login.alert.field.username" = "Felhasználónév";
 
 "login.jit.checking" = "JIT ellenőrzése";
 "login.jit.enabled" = "A JIT engedélyezve lett";
 "login.jit.fail" = "A JIT nem engedélyezhető.";
+"login.jit.fail.title" = "a JIT nem engedélyezhető az eszközödön.";
+"login.jit.fail.description" = "Semmilyen integráció nem használható ahoz, hogy automatikusan engedélyezd a JIT-et az eszközödön, és manuálisan kell ezt engedélyezned. Hibák fel lesznek jegyezve a \"latestlog.txt\" fájlban.";
+"login.jit.fail.description_unsupported" = "Egy nem támogatott telepítesi módszer észlelve lett. Kérlek, telepítsd újra egy támogatott módszerrel.";
 
 // Login buttons
 "login.menu.sendlogs" = "Küldd el a log fájlt";
@@ -75,14 +98,54 @@
 "login.option.local" = "Helyi fiók";
 
 "login.warn.title.legacy_device" = "A következő PojavLauncher kiadása nem lesz kompatibilis ezen az eszközön.";
+"login.warn.message.legacy_device" = "Ahhoz, hogy futtasd a következő kiadást, egy iOS 14-et futtató eszköz szükséges.";
+"login.warn.title.legacy_ios" = "A következő PojavLauncher megjelenésekor rendszerfrissítés szükséges.";
+"login.warn.message.legacy_ios" = "Ahhoz, hogy futtasd a következő kiadást, egy iOS 14-et futtató eszköz szükséges.";
+"login.warn.title.limited_ram" = "Ennek az eszköznek korlátozott memória érhető el.";
+"login.warn.message.limited_ram" = "Ajánljuk azt, hogy bekapcsolva hagyd az automatikus RAM-ot, hogy elkerüld az instabilitást és a problémás teljesítményeket.";
+
+"login.warn.title.demomode" = "Ez a fiók egy demó fiók";
+
+"login.warn.title.localmode" = "Az offline mód mostantól \"helyi fiók\" mód.";
+"login.warn.message.localmode" = "Továbbra is játszhatsz a telepített verziókkal, de nem lesz lehetőséged letölteni a Minectaft-ot fizetett fiók nélkül. Semmilyen segítséget nem adhatunk helyi fiókokon, vagy a Minecraft megszerzésével.";
+"login.msa.error.xsts.noxbox" = "Az Xbox Live jelenleg nem elérhető az országodban.\nHibakód: 2148916235";
+"login.msa.error.xsts.krverify" = "A fiókodat jóvá kell hagyni a szülő által, mielőtt folytatni tudnád.\nHibakód: 2148916236 vagy 2148916237";
+"login.msa.error.xsts.underage" = "A fiókodat hozzá kell csatolni egy szülői fiókhoz, mielőtt folytatod.\nHibakód: 2148916238";
+
+"login.msa.progress.acquireAccessToken" = "Hozzáférési token igénylése (1/5)";
+"login.msa.progress.acquireXBLToken" = "Xbox Live token igénylése (2/5)";
+"login.msa.progress.acquireXSTS" = "XSTS igénylése";
+"login.msa.progress.acquireXboxProfile" = "Xbox profil igénylése (3/5)";
+"login.msa.progress.acquireMCToken" = "Minecraft token igénylése (4/5)";
+"login.msa.progress.checkMCProfile" = "Minecraft profil ellenőrzése (5/5)";
+
+"News" = "Hírek";
 "Profiles" = "Profilok";
+"Settings" = "Beállítások";
+
+"preference.section.general" = "Általános beállítások";
+"preference.section.video" = "Videó- és Audióbeállítások";
 "preference.section.footer.video" = "Az Auto Renderer engedélyezi a PojavLauncher-nek, hogy válasszon a legjobb beállítást a Minecraft verzióinak megfelelően. A felbontás csökkentése csökkenti a GPU kihasználtságát a 
 jobb teljesítményhez.";
 "preference.section.control" = "Irányítás testreszabása";
+"preference.section.debug" = "UI Debugging beállítások";
 "preference.section.footer.debug" = "Úja kell indítani a launcher-t, hogy hassanak a megadott beállítások.";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java Tweak ek";
+//"preference.section.footer.java" = "";
+
+"preference.title.confirm" = "Biztos vagy benne?";
+
+"preference.title.game_directory" = "Játékkönyvtár";
+"preference.title.confirm.delete_game_directory" = "Ez a minta (%@) örökre törölve lesz és nem lehet helyrehozni.";
+"preference.multidir.add_directory" = "Játék könyvtárának hozzáadása";
+
+"preference.title.check_sha" = "Fájlok ellenőrzése letöltés után";
+"preference.detail.check_sha" = "Ez az opció kényszeríti a Launcher-t, hogy ellenőrizze a fájl hash-ét hogyha elérhető. Megelőzi a sérült letöltéseket.";
 "preference.title.cosmetica" = "Cosmetica köpenyek";
+"preference.detail.cosmetica" = "Engedélyezi a köpenyeket a Cosmetica-ról (Régebben Arc). További infóért látogasd meg a https://cosmetica.cc weboldalt. OptiFine szükseges";
+"preference.title.debug_logging" = "Hibakeresési naplózás";
+"preference.title.appicon" = "Applikáció ikonjának beállítása";
 "preference.title.appicon-default" = "Ismerős PojavLauncher világos";
 "preference.title.appicon-dark" = "Ismerős PojavLauncher sötét";
 "preference.title.appicon-development" = "Ceruzával írt Fejlesztés";
@@ -105,15 +168,22 @@ jobb teljesítményhez.";
 
 "preference.title.renderer.debug.auto" = "Auto: GL4ES vagy ANGLE";
 "preference.title.renderer.debug.gl4es" = "Holy GL4ES - OpenGL 2.1-re exportálja";
+"preference.title.renderer.debug.angle" = "ANGLE (1.17+) - OpenGL 3.2-re exportálja (Mag Profil, korlátozott)";
+"preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - az OpenGL 4.1-re exportálja";
+
+"preference.detail.renderer" = "Átállítja az OpenGL renderer motort. A Zink ideiglenesen le lesz tiltva az iOS 16 vagy későbbi verziókkal, hogy ezek a gondok diagnosztizálva legyenek.";
 
 "preference.title.resolution" = "Felbontás (%)";
 "preference.detail.resolution" = "Átállíthatod a játék felbontását.";
 "preference.title.max_framerate" = "Maximális képfrissítés";
+"preference.detail.max_framerate" = "Engedélyezi a 60 FPS-es korlátot a ProMotion kijelzőkön.";
 
 "preference.title.performance_hud" = "HUD teljesítmény megjelenítése";
 "preference.detail.performance_hud" = "Mikor elérhető, mutassa a teljesítmény megfigyelő ablakot.";
 
 "preference.title.fullscreen_airplay" = "AirPlay Teljes Képernyő";
+"preference.detail.fullscreen_airplay" = "Engedélyezi a teljes képernyős megjelenítéses játék ablakot egy küldő kijelzőn, mintha csak képernyőmegosztással mindent megjelenítenél.";
+"preference.title.silence_other_audio" = "Audió szüneteltetése, mikor a játék megnyílik";
 "preference.title.silence_with_switch" = "Audió letiltása a Silent Switch-el és mikrofon bemenet elutasítása";
 "preference.detail.silence_with_switch" = "Audió engedélyezése vagy letiltása, mikor a Silent Mode be van kapcsolva, és letiltja a mikrofon bemenetet. Fejhallgatókra és küldő hangszórókra ez nem fog hatni.";
 "preference.title.default_gamepad_ctrl" = "Kontroller konfiguráció";
@@ -121,14 +191,25 @@ jobb teljesítményhez.";
 "preference.title.recording_hide" = "Irányítópult elrejtése a feltétel közben";
 "preference.detail.recording_hide" = "Irányítópult elrejtése a képernyőkép és képernyőfelvétel készítése közben, de ugyanúgy látható lesz számodra.";
 "preference.title.gesture_mouse" = "Egér gesztusok";
+"preference.detail.gesture_mouse" = "Gesztusok engedélyezése, mint pl. koppints a bollok elhelyezésekor, tartsd nyomva, hogy blokkokat törj, 2 ujjal való görgetés";
 "preference.title.gesture_hotbar" = "Hotbar gesztusok";
 "preference.title.disable_haptics" = "Rezgés letiltása";
 "preference.title.press_duration" = "Hosszan nyomva tartás (ms)";
+"preference.title.button_scale" = "Gomb mérete a kijelzőn (%)";
+"preference.detail.button_scale" = "Skálázd fel, hogyha a gombok túl kicsik. Általában ez iPad felhasználóknak hasznosabb.";
 "preference.title.mouse_scale" = "Egér mérete (%)";
 "preference.detail.mouse_scale" = "Átállítja a virtuális egér méretét";
+"preference.title.mouse_speed" = "Egér sebessége (%)";
+"preference.detail.mouse_speed" = "Átállítja a virtuális egér sebességét";
+"preference.title.virtmouse_enable" = "Virtuális egér";
+"preference.detail.virtmouse_enable" = "Kapcsold ezt be, hogyha úgy szeretnéd elindítani a játékot, hogy alapértelmezetten van bekapcsolva a virtuális egér";
+"preference.title.slideable_hotbar" = "Csúsztatható hotbar";
 
 "preference.title.gyroscope_enable" = "Giroszkópos irányítás engedélyezése";
+"preference.title.gyroscope_invert_x_axis" = "Giroszkóp vízszintes irányítás invertálása";
+"preference.detail.gyroscope_invert_x_axis" = "Invertálja az X-tengelyét a giroszkópban";
 "preference.title.gyroscope_sensitivity" = "Giroszkópos irányítás érzékenysége";
+"preference.detail.gyroscope_sensitivity" = "Átállítja a giroszkóp irányítás érzékenységét";
 
 "preference.title.manage_runtime" = "Runtime-ok kezelése";
 "preference.title.confirm.delete_runtime" = "A(z) %@ törölve lesz";
@@ -142,13 +223,22 @@ jobb teljesítményhez.";
 
 "preference.title.java_args" = "JVM Indítási argumentumok";
 "preference.detail.java_args" = "Átengedi az argumentumokat Java-hoz mikor a Minecraft elindul. Légy óvatos, mivel összeomlást okozhat, hogyha helytelenül vannak módosítva.";
+"preference.placeholder.java_args" = "Argumentumok megadása...";
+"preference.title.env_variables" = "Környezeti változók";
 "preference.detail.env_variables" = "Beállítja a környezeti változóit a Java-hoz mikor a Minecraft elindul. Légy óvatos, mivel összeomlást okozhat, hogyha helytelenül vannak módosítva.";
 "preference.placeholder.env_variables" = "Változók megadása...";
+"preference.title.auto_ram" = "Automatikus RAM";
+"preference.detail.auto_ram" = "Engedélyezi az automatikus RAM beállítását";
+"preference.title.allocated_memory" = "Memória kiosztása (MB)";
+"preference.title.custom_env" = "Környezeti változók";
 "preference.detail.custom_env" = "Ez az opció még munka alatt áll. Addig is, hozz létre vagy szerkessz egy \"custom_eny.txt\" fájlt.";
 
 "preference.title.debug_skip_wait_jit" = "\"Várakozás JIT fájlra\" dialógus átugrása";
+"preference.detail.debug_skip_wait_jit" = "Ez nem engedélyezi, hogy elindítsd JIT nélkül, ehelyett átugorja a hibakeresési ellenőrzést, mert az ellenőrzést nem sikerül egyes jailbreak-eknél.";
 "preference.title.debug_ipad_ui" = "iPadOS UI feloldása";
 "preference.title.debug_auto_correction" = "Helyesírás-ellenőrző";
+"preference.title.debug_hide_home_indicator" = "\"Otthon\" mutató elrejtése";
+"preference.detail.debug_hide_home_indicator" = "Ez az opció letiltja az \"otthon\" indikátor zárolását. Szükséged lesz egy Guilded hozzáférésre ahhoz, hogy elrejtsd és zárold az \"otthon\" indikátort.";
 
 "preference.profile.title.name" = "Név";
 "preference.profile.title.loader_type" = "Betöltő típusa";
@@ -170,6 +260,11 @@ jobb teljesítményhez.";
 "controller_configurator.title.current" = "Gamepad konfigurációs fájl";
 "controller_configurator.title.type.xbox" = "Xbox";
 "controller_configurator.title.type.playstation" = "PlayStation";
+
+"controller_configurator.xbox.title.bumper_left" = "Bal ütköző";
+"controller_configurator.xbox.title.bumper_right" = "Jobb ütköző";
+"controller_configurator.xbox.title.trigger_left" = "Bal ravasz";
+"controller_configurator.xbox.title.trigger_right" = "Jobb ravasz";
 "controller_configurator.xbox.title.named_back" = "Segéd";
 "controller_configurator.xbox.title.named_start" = "Menü";
 "controller_configurator.xbox.title.named_a" = "A";
