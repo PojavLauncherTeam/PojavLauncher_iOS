@@ -32,8 +32,8 @@
 "Resize" = "Baguhin ang sukat";
 // Visibility
 "Always" = "Palagi";
-"In game" = "sa loob ng laro";
-"In menu" = "sa menu";
+"In game" = "Nasa loob ng laro";
+"In menu" = "Nasa menu";
 
 "custom_controls.button_edit.forward_lock" = "Pag-lock sa harap";
 "custom_controls.button_edit.name" = "Pangalan";
@@ -48,7 +48,7 @@
 "custom_controls.button_edit.stroke_color" = "Kulay ng stroke";
 "custom_controls.button_edit.corner_radius" = "Corner radius (%)";
 "custom_controls.button_edit.opacity" = "Opacidad (%)";
-"custom_controls.button_edit.visibility" = "Bisilibilty";
+"custom_controls.button_edit.visibility" = "Bisilibilidad";
 
 "custom_controls.button_menu.add_subbutton" = "Lagyan ng sub-button";
 "custom_controls.control_menu.discard_changes" = "Baliwalain ang mga pagbabago";
@@ -131,7 +131,7 @@
 
 "preference.section.general" = "Mga Pangkalahatan na Setting";
 "preference.section.video" = "Kaayusan ng Video";
-"preference.section.footer.video" = "Pinapayagan ng Auto renderer ang PojavLauncher na pumili ng pinakamahusay na opsyon batay sa bersyon ng Minecraft. Ang pagpapababa ng resolution ay nakakabawas sa workload ng GPU para sa mas magandang performance";
+"preference.section.footer.video" = "Pinapayagan ng Auto renderer ang PojavLauncher na pumili ng pinakamahusay na opsyon batay sa bersyon ng Minecraft. Ang pagpapababa ng resolution ay nakakabawas sa workload ng GPU para sa mas magandang performance.";
 "preference.section.control" = "Kontrolin ang customization";
 "preference.section.debug" = "Mga Setting ng pag-Debug ng UI";
 "preference.section.footer.debug" = "Maaaring kailangan mong i-restart ang launcher para magkabisa ang mga pagbabago.";
@@ -173,7 +173,7 @@
 "preference.title.renderer" = "Renderer";
 
 "preference.title.renderer.release.auto" = "Automatik";
-"preference.title.renderer.release.gl4es" = "maka-diyos na gl4es";
+"preference.title.renderer.release.gl4es" = "Diyos na gl4es";
 "preference.title.renderer.release.angle" = "ANGLE";
 "preference.title.renderer.release.zink" = "Zink";
 
@@ -196,15 +196,13 @@
 "preference.detail.fullscreen_airplay" = "Allows presenting fullscreen game window on the external display rather than mirroring everything on screen.";
 "preference.title.silence_other_audio" = "I-pause ang audio kapag nagbukas ang laro";
 "preference.detail.silence_other_audio" = "Paganahin para payagan ang PojavLauncher na i-pause ang audio mula sa ibang apps, tulad ng Music, kapag naglulunsad ng laro.";
-"preference.title.silence_with_switch" = "Patayin ang audio sa pamamagitan ng silent switch at huwag payagan ang mikropono na makarinig.";
+"preference.title.silence_with_switch" = "Patayin ang audio sa pamamagitan ng silent switch at huwag payagan ang mikropono na makarinig";
 "preference.detail.silence_with_switch" = "Paganahin para i-disable ang audio kapag naka-on ang Silent Mode, at itanggi ang input ng mikropono. Hindi maaapektuhan ang mga headphone at external speaker.";
 "preference.title.default_gamepad_ctrl" = "Konfigurasyon ng controller";
 "preference.title.hardware_hide" = "Itago ang mga kontrol kapag nakakonekta ang hardware";
 "preference.detail.hardware_hide" = "Paganahin ang behavior na awtomatikong mag-disable ng on-screen control overlay kapag nakakonekta ang mouse o game controller.";
 "preference.title.recording_hide" = "Itago ang mga kontrol mula sa pag-record ng screen";
-"preference.detail.recording_hide" = "Itinatago ang mga kontrol sa screenshot at pag-record ng screen habang nananatili itong visible sa screen.
-
-";
+"preference.detail.recording_hide" = "Itinatago ang mga kontrol sa screenshot at pag record ng screen habang nananatili itong visible sa screen.";
 "preference.title.gesture_mouse" = "Mga gestures ng mouse";
 "preference.detail.gesture_mouse" = "Pinapagana ang mga gesture, tulad ng tap para maglagay ng block, hold para masira ang block, pag-scroll gamit ang 2 daliri";
 "preference.title.gesture_hotbar" = "Mga gesture ng hotbar";
@@ -232,7 +230,7 @@
 
 "preference.title.manage_runtime" = "Pangasiwaan ang mga runtime";
 "preference.title.confirm.delete_runtime" = "Ang %@ ay buburahin";
-"preference.manage_runtime.header.default" = "Mas gustong bersyon ng Java:";
+"preference.manage_runtime.header.default" = "Mas gustong bersyon ng Java";
 "preference.manage_runtime.default.1165" = "1.16.5 at mas luma";
 "preference.manage_runtime.default.117" = "1.17 at mas bago";
 "preference.manage_runtime.footer.default" = "Maaaring tumakbo ang Minecraft 1.16.5 at mas luma sa mas bagong bersyon ng Java, ngunit hindi garantisado ang compatibility sa mga mod. Ang mga external runtime ay maaaring ilagay sa folder na “java_runtimes”. Ang pagpapalit ng bersyon ng Java para sa “Execute .jar” ay magkakabisa lamang kung ang installer ay hindi umaasa sa mas bagong bersyon ng Java.";
@@ -265,7 +263,7 @@
 "preference.detail.debug_hide_home_indicator" = "This will disable home indicator locking. You will need to use Guided Access to hide and lock home indicator at the same time.";
 
 "preference.profile.title.name" = "Pangalan";
-"preference.profile.title.loader_type" = "Uri ng loader:";
+"preference.profile.title.loader_type" = "Uri ng loader";
 "preference.profile.title.loader_vendor" = "Vendor ng loader";
 "preference.profile.title.loader_version" = "Bersyon ng loader";
 "preference.profile.title.version" = "Bersyon";
@@ -275,7 +273,7 @@
 
 "profile.error.name_exists" = "May profile na na ang pangalan na iyon. Mangyaring gumamit ng ibang pangalan.";
 "profile.section.instance" = "Mga setting ng Game Instance";
-"profile.section.profiles" = "Mga profile sa instance na ito";
+"profile.section.profiles" = "Mga propayl sa instance na ito";
 "profile.title.create" = "Gumawa ng bagong profile";
 "profile.title.separate_preference" = "Ihiwalay ang mga setting";
 "profile.detail.separate_preference" = "Paganahin ang opsyon na ito para ihiwalay ang anumang mga pagbabagong ginawa sa mga setting. Ang pag-Reset ay magbabalik sa mga global setting sa halip na mga default setting.";
