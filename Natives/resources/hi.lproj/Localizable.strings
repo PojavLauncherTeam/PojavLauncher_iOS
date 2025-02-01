@@ -4,3 +4,4 @@
 
 "launcher.menu.custom_controls" = "कस्टम कंट्रोल्स";
 "login.option.select" = "एकाउंट का चयन करें ";
+"preference.detail.custom_env" = "यह विकल्प पूरा नहीं हुआ है। इस बीच custom_env.txt बनाएं और संपादित करें।";
