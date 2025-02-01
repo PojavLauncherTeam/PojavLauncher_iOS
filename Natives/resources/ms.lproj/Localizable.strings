@@ -14,11 +14,20 @@
 
 // The play button
 "Play" = "Main";
+
+// Version categories
+"Installed" = "Dipasang";
 "Snapshot" = "Snapshot";
+"Releases" = "Rilis";
 "Old-beta" = "Beta-lama";
 "Old-alpha" = "Alfa-lama";
+
+// Custom controls
+"Copy" = "Tiru";
 "Edit" = "Sunting";
+"Move" = "Gerak";
 "Remove" = "Hapus";
+"Resize" = "Ubah saiz";
 
 "custom_controls.button_edit.forward_lock" = "Kunci hadapan";
 "custom_controls.button_edit.name" = "Nama";
@@ -26,18 +35,48 @@
 "custom_controls.button_edit.mapping" = "Pemetaan";
 "custom_controls.button_edit.orientation" = "Orientasi";
 "custom_controls.button_edit.toggleable" = "Boleh Ditukar";
+"custom_controls.button_edit.mouse_pass" = "Pas tetikus";
 "custom_controls.button_edit.swipeable" = "Boleh leret";
 "custom_controls.button_edit.bg_color" = "Warna Latar Belakang";
 "custom_controls.button_edit.stroke_color" = "Warna ayunan";
+"custom_controls.button_edit.corner_radius" = "Jejari Penjuru";
+"custom_controls.button_edit.opacity" = "Kelegapan (%)";
 
 "custom_controls.button_menu.add_subbutton" = "Tambah sub-butang";
+"custom_controls.control_menu.discard_changes" = "Buang perubahan";
 "custom_controls.control_menu.exit" = "Keluar";
+"custom_controls.control_menu.exit.warn" = "Anda akan keluar tanpa menyimpan perubahan.";
 "custom_controls.control_menu.save" = "Simpan";
+"custom_controls.control_menu.save.error.json" = "JSON ralat";
+"custom_controls.control_menu.save.error.write" = "Ralat menyimpan fail";
 "custom_controls.control_menu.load" = "Memuat";
+"custom_controls.control_menu.make_default" = "Buat default";
+"custom_controls.control_menu.safe_area" = "Kawasan selamat";
 "custom_controls.control_menu.add_button" = "Tambah butang";
+"custom_controls.control_menu.add_drawer" = "Tambah drawer";
 "custom_controls.control_menu.add_joystick" = "Tambah joystick";
+"custom_controls.error.incompatible" = "Versi kawalan ini (kod %d) tidak dilaksanakan di dalam binaan pelancar ini.";
+"custom_controls.hint" = "Tekan lama di mana-mana sahaja di dalam skrin untuk membuka tetapan";
+
+"init.migrateDir" = "Tempat data PojavLauncher sekarang di %@. Semua data yang anda ada telah dipindahkan ke lokasi baru.";
+
+"launcher.mcl.downloading_file" = "Memuat turun %@";
+"launcher.mcl.error_download" = "Gagal untuk muat turun %@: %@";
 
 "launcher.menu.custom_controls" = "Kawalan custom";
+
+"launcher.wait_jit.title" = "Menunggu untuk JIT";
+"launcher.wait_jit.message" = "PojavLauncher bergantung kepada kompilasi Just-in-time untuk Java dalam prestasi maksimum.";
+
+"login.error.username.outOfRange" = "Nama pengguna mestilah sekurang-kurangnya 3 aksara dan maksimum 16 aksara";
+
+"login.alert.field.username" = "Nama pengguna";
+
+"login.jit.checking" = "Menyemak JIT";
+"login.jit.enabled" = "JIT telah didayakan";
+"login.jit.fail" = "JIT tidak dapat didayakan.";
+"login.jit.fail.title" = "JIT tidak dapat didayakan pada peranti anda.";
+"login.jit.fail.description" = "Tiada penyepaduan boleh digunakan untuk mendayakan JIT secara automatik pada peranti anda, dan ia kini mesti didayakan secara manual. Ralat telah dilog ke latestlog.txt.";
 "login.option.add" = "Tambah Akaun";
 "login.option.select" = "Pilih akaun";
 
