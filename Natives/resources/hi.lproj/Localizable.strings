@@ -1,7 +1,28 @@
+/*
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "बलपूर्वक बंद करें";
 "game.menu.log_output" = "लॉग आउटपुट";
 "game.menu.custom_controls" = "कस्टम कंट्रोल्स";
+"Snapshot" = "स्नैपशॉट";
+"Old-beta" = "पुराना-बीटा";
+"Old-alpha" = "पुराना-अल्फा";
+"custom_controls.button_edit.name" = "नाम";
 "custom_controls.control_menu.exit" = "बाहर जाएं";
+"custom_controls.control_menu.save" = "संचय";
+"custom_controls.control_menu.load" = "लोड";
 
 "launcher.menu.custom_controls" = "कस्टम कंट्रोल्स";
+"login.option.add" = "अकाउंट जोड़े";
 "login.option.select" = "एकाउंट का चयन करें ";
+
+"preference.title.renderer" = "रेंडरर";
+
+"preference.title.java_args" = "JVM लॉन्च तर्क";
 "preference.detail.custom_env" = "यह विकल्प पूरा नहीं हुआ है। इस बीच custom_env.txt बनाएं और संपादित करें।";
+
+"preference.profile.title.name" = "नाम";
+"profile.title.create" = "नया प्रोफाइल बनाए";
+"controller_configurator.playstation.title.named_back" = "चुने";
