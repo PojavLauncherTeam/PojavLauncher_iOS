@@ -77,8 +77,38 @@
 "login.jit.fail" = "JIT tidak dapat didayakan.";
 "login.jit.fail.title" = "JIT tidak dapat didayakan pada peranti anda.";
 "login.jit.fail.description" = "Tiada penyepaduan boleh digunakan untuk mendayakan JIT secara automatik pada peranti anda, dan ia kini mesti didayakan secara manual. Ralat telah dilog ke latestlog.txt.";
+
+// Login buttons
+"login.menu.sendlogs" = "Hantar log anda";
 "login.option.add" = "Tambah Akaun";
 "login.option.select" = "Pilih akaun";
+"login.option.demo" = "Akaun Demo";
+"login.option.microsoft" = "Akaun Microsoft";
+"login.option.local" = "Akaun Local";
+
+"login.warn.title.legacy_device" = "Rilis seterusnya PojavLauncher tidak akan serasi dengan peranti ini.";
+"login.warn.message.legacy_device" = "Untuk menjalankan rilis utama seterusnya, peranti yang mampu menjalankan iOS 14 diperlukan.";
+"login.warn.title.legacy_ios" = "Rilis PojavLauncher yang seterusnya akan memerlukan kemas kini sistem.";
+"login.warn.message.legacy_ios" = "Untuk menjalankan rilis utama seterusnya, peranti ini perlu menjalankan iOS 14 atau lebih baru.";
+"login.warn.title.limited_ram" = "Peranti ini mempunyai jumlah memori yang terhad.";
+"login.warn.message.limited_ram" = "Kami mengesyorkan agar RAM automatik didayakan untuk mengelakkan masalah ketidakstabilan dan prestasi.";
+
+"login.warn.title.demomode" = "Akaun anda ialah Demo";
+"login.warn.message.demomode" = "Sebagai pengganti kepada mod luar talian dan tempatan, mod demo akan membolehkan anda melog masuk ke akaun Microsoft yang tidak memiliki permainan dan bermain percubaan Edisi Java, yang diperkenalkan dalam versi 1.3.1 dan lebih baharu. Versi lama mengandungi permainan penuh, kerana pelancar rasmi tidak meletakkan sekatan ini. Lihat tapak web kami untuk mengetahui lebih lanjut tentang peralihan ini daripada mod luar talian.";
+
+"login.warn.title.localmode" = "Mod luar talian kini menjadi mod Local.";
+
+"login.msa.error.xsts.noxboxacc" = "Profil Xbox tidak didaftarkan untuk akaun Microsoft ini. Sila pastikan anda telah membuat profil Xbox.\nKod ralat: 2148916233";
+"login.msa.error.xsts.noxbox" = "Xbox Live tidak tersedia di negara anda pada masa ini.\nKod ralat: 2148916235";
+"login.msa.error.xsts.krverify" = "Akaun anda perlu disahkan oleh ibu bapa anda sebelum anda boleh meneruskan.\nKod ralat: 2148916236 atau 2148916237.";
+"login.msa.error.xsts.underage" = "Akaun anda perlu dipautkan ke akaun induk sebelum anda boleh meneruskan.\nKod ralat: 2148916238";
+
+"login.msa.progress.acquireAccessToken" = "(1/5) Memperoleh token Akses";
+"login.msa.progress.acquireXBLToken" = "(2/5) Memperoleh token Xbox Live";
+"login.msa.progress.acquireXSTS" = "Memperoleh XSTS";
+"login.msa.progress.acquireXboxProfile" = "(3/5) Memperoleh profil Xbox";
+"login.msa.progress.acquireMCToken" = "(4/5) Memperoleh token Minecraft";
+"login.msa.progress.checkMCProfile" = "(5/5) Menyemak profil Minecraft";
 
 "News" = "Berita";
 "Settings" = "Tetapan";
@@ -95,8 +125,18 @@
 "preference.title.confirm" = "Adakah anda pasti?";
 
 "preference.title.game_directory" = "Direktori permainan";
+"preference.title.confirm.delete_game_directory" = "Instance %@ akan dipadamkan selama-lamanya dan tidak boleh dipulihkan.";
+"preference.multidir.add_directory" = "tambah direktori permainan";
+
+"preference.title.check_sha" = "Semak fail selepas memuat turun";
+"preference.detail.check_sha" = "Pilihan ini memaksa pelancar menyemak hash fail jika ia tersedia. Menghalang muat turun yang rosak.";
 "preference.title.cosmetica" = "Cosmetica Capes";
+"preference.detail.cosmetica" = "Dayakan capes daripada Cosmetica (sebelum ini Arc). Untuk maklumat lanjut sila layari https://cosmetica.cc. Memerlukan OptiFine";
+"preference.title.debug_logging" = "Pengelogan nyahpepijat";
 "preference.detail.debug_logging" = "Mengelog tetapan dan tindakan dalaman ke latestlog.txt. Ini membantu pembangun mencari isu dengan lebih mudah, tetapi Minecraft mungkin berjalan lebih perlahan kerana log akan ditulis dengan lebih kerap.";
+"preference.title.appicon" = "Tetapkan ikon apl";
+"preference.detail.appicon" = "Membolehkan anda memilih antara ikon Skrin Utama yang berbeza untuk PojavLauncher.";
+"preference.title.appicon-default" = "Lampu PojavLauncher yang biasa";
 
 "preference.title.reset_settings" = "Tetapkan semula semua tetapan";
 "preference.title.confirm.reset_settings" = "Ini akan mengalih keluar semua pilihan tersuai anda, termasuk resolusi, saiz butang dan argumen Java.";
@@ -110,11 +150,66 @@
 "preference.title.gyroscope_sensitivity" = "Giroskop mengawal sensitiviti";
 
 "preference.title.java_args" = "Argument Pelancaran JVM";
+"preference.placeholder.java_args" = "Nyatakan argrumen...";
+"preference.title.env_variables" = "Pembolehubah persekitaran";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Membenarkan pelaras RAM automatik";
+"preference.warn.auto_ram" = "Melumpuhkan pilihan ini pada peranti yang tidak jailbroken boleh mewujudkan ketidakstabilan jika diubah. Teruskan dengan berhati-hati.";
+"preference.title.allocated_memory" = "Peruntukan memori (MB)";
 "preference.detail.allocated_memory" = "Mengawal berapa banyak memori yang diberikan kepada Minecraft";
+"preference.warn.allocated_memory" = "Disebabkan oleh pengehadan dalam sistem pengendalian itu sendiri, pilihan ini boleh menyebabkan ketidakstabilan pada ini dan nilai yang lebih tinggi. Teruskan dengan berhati-hati.";
+"preference.title.custom_env" = "Pembolehubah persekitaran";
+
+"preference.title.debug_skip_wait_jit" = "Langkau dialog \"Menunggu JIT\"";
+"preference.detail.debug_skip_wait_jit" = "Ini tidak membenarkan anda melancarkan tanpa JIT, sebaliknya ini melangkau semakan penyahpepijat, kerana semakan gagal pada jailbreak tertentu.";
+"preference.title.debug_ipad_ui" = "Buka kunci iPadOS UI";
+"preference.detail.debug_ipad_ui" = "Buka kunci UI eksklusif iPad (makluman, papan kekunci, dll.) jika didayakan atau UI iPhone jika dilumpuhkan.";
+"preference.title.debug_auto_correction" = "Pembetulan automatik";
+"preference.detail.debug_auto_correction" = "Dayakan pembetulan automatik apabila menaip teks dalam permainan.";
+"preference.title.debug_hide_home_indicator" = "Sembunyikan penunjuk rumah";
+"preference.detail.debug_hide_home_indicator" = "Ini akan melumpuhkan penguncian penunjuk rumah. Anda perlu menggunakan Akses Berpandu untuk menyembunyikan dan mengunci penunjuk rumah pada masa yang sama.";
 
 "preference.profile.title.name" = "Nama";
 "preference.profile.title.version" = "Versi";
 "profile.title.create" = "Buat profil baharu";
+
+"controller_configurator.title.current" = "Fail konfigurasi gamepad";
+"controller_configurator.title.type.xbox" = "Xbox";
+"controller_configurator.title.type.playstation" = "PlayStation";
+
+"controller_configurator.xbox.title.bumper_left" = "Bumper kiri";
+"controller_configurator.xbox.title.bumper_right" = "Bampar kanan";
+"controller_configurator.xbox.title.trigger_left" = "Pencetus kiri";
+"controller_configurator.xbox.title.trigger_right" = "Pencetus kanan";
+"controller_configurator.xbox.title.named_back" = "Panduan";
+"controller_configurator.xbox.title.named_start" = "Menu";
+"controller_configurator.xbox.title.named_a" = "A";
+"controller_configurator.xbox.title.named_b" = "B";
+"controller_configurator.xbox.title.named_x" = "X";
+"controller_configurator.xbox.title.named_y" = "Y";
+"controller_configurator.xbox.title.dpad_up" = "Atas";
+"controller_configurator.xbox.title.dpad_down" = "Bawah";
+"controller_configurator.xbox.title.dpad_left" = "Kiri";
+"controller_configurator.xbox.title.dpad_right" = "Kanan";
+"controller_configurator.xbox.title.thumb_left" = "Klik batang ibu jari kiri";
+"controller_configurator.xbox.title.thumb_right" = "Klik batang ibu jari kanan";
+
+"controller_configurator.playstation.title.bumper_left" = "L1";
+"controller_configurator.playstation.title.bumper_right" = "R1";
+"controller_configurator.playstation.title.trigger_left" = "L2";
+"controller_configurator.playstation.title.trigger_right" = "R2";
 "controller_configurator.playstation.title.named_back" = "Pilih";
+"controller_configurator.playstation.title.named_start" = "Start";
+"controller_configurator.playstation.title.named_a" = "Cross";
+"controller_configurator.playstation.title.named_b" = "Bulat";
+"controller_configurator.playstation.title.named_x" = "Segi empat";
+"controller_configurator.playstation.title.named_y" = "Segi tiga";
+"controller_configurator.playstation.title.dpad_up" = "Atas";
+"controller_configurator.playstation.title.dpad_down" = "Bawah";
+"controller_configurator.playstation.title.dpad_left" = "Kiri";
+"controller_configurator.playstation.title.dpad_right" = "Kanan";
+"controller_configurator.playstation.title.thumb_left" = "L3";
+"controller_configurator.playstation.title.thumb_right" = "R3";
+
+"controller_configurator.section.config_files" = "Fail konfigurasi semasa";
+"controller_configurator.section.game_mappings" = "Pemetaan permainan";
