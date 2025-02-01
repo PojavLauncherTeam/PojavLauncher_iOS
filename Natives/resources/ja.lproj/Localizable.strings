@@ -97,7 +97,7 @@
 "login.option.add" = "アカウントを追加";
 "login.option.select" = "アカウントを選択";
 "login.option.demo" = "デモアカウント";
-"login.option.microsoft" = "Microsoft アカウント";
+"login.option.microsoft" = "マイクロソフトアカウント";
 "login.option.local" = "ローカルアカウント";
 
 "login.warn.title.legacy_device" = "次の PojavLauncher のリリースはこのデバイスと互換性がありません。";
@@ -259,18 +259,18 @@
 
 "preference.profile.title.name" = "名前";
 "preference.profile.title.loader_type" = "ローダータイプ";
-"preference.profile.title.loader_vendor" = "ローダーのベンダー:";
-"preference.profile.title.loader_version" = "ローダーのバージョン";
+"preference.profile.title.loader_vendor" = "ローダーベンダー";
+"preference.profile.title.loader_version" = "ローダーバージョン";
 "preference.profile.title.version" = "バージョン";
 "preference.profile.title.version_type" = "バージョンタイプ";
 "preference.profile.title.default_touch_control" = "タッチコントロール";
 "preference.profile.title.default_gamepad_control" = "ゲームパッドコントロール";
 
 "profile.error.name_exists" = "その名前があるプロフィールは既に存在している。 ユニークな名前を使用する。";
-"profile.section.instance" = "ゲームインスタンスの設定";
+"profile.section.instance" = "ゲームインスタンス設定";
 "profile.section.profiles" = "このインスタンスのプロファイル";
 "profile.title.create" = "新規プロフィールの作成";
-"profile.title.separate_preference" = "単離設定";
+"profile.title.separate_preference" = "分離設定";
 "profile.detail.separate_preference" = "このオプションを有効にすると、設定で行われた変更を隔離します。リセットを行うと、デフォルトの設定ではなくグローバル設定に戻ります。";
 "profile.title.install_fabric_quilt" = "Fabric/Quilt をインストール";
 
