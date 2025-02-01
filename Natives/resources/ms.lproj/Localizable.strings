@@ -137,10 +137,19 @@
 "preference.title.appicon" = "Tetapkan ikon apl";
 "preference.detail.appicon" = "Membolehkan anda memilih antara ikon Skrin Utama yang berbeza untuk PojavLauncher.";
 "preference.title.appicon-default" = "Lampu PojavLauncher yang biasa";
+"preference.title.hidden_sidebar" = "Hilangkan menu utama bar sisi secara default";
+"preference.detail.hidden_sidebar" = "Membolehkan anda untuk menghilangkan bar sisi pada menu utama secara default dan apabila berputar.";
+
+"preference.title.reset_warnings" = "Set semula semua amaran";
+"preference.title.done.reset_warnings" = "Semua amaran telah diset semula.";
 
 "preference.title.reset_settings" = "Tetapkan semula semua tetapan";
 "preference.title.confirm.reset_settings" = "Ini akan mengalih keluar semua pilihan tersuai anda, termasuk resolusi, saiz butang dan argumen Java.";
 "preference.title.done.reset_settings" = "Semua tetapan lalai telah dipulihkan.";
+
+"preference.title.erase_demo_data" = "Padam data permainan Demo";
+"preference.title.confirm.erase_demo_data" = "Ini akan memadam semua versi permainan Demo dan data digunakan untuk Demo akaun.";
+"preference.title.done.erase_demo_data" = "Semua data permainan Demo telah dipadamkan.";
 
 "preference.title.renderer" = "Renderer";
 "preference.title.silence_with_switch" = "Nyahdayakan audio dengan suis senyap dan tolak input mikrofon";
