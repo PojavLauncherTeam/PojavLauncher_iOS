@@ -4,12 +4,17 @@
 */
 
 "game.menu.force_close" = "Paksa tutup";
+"game.menu.confirm.force_close" = "Adakah anda pasti mahu menutup dengan paksa?";
 "game.menu.log_output" = "Log output";
 "game.menu.custom_controls" = "Kawalan custom";
 
+"game.note.airplay" = "Minecraft sedang dipapar di dalam paparan bercermin AirPlay";
+
+"game.title.exit_code" = "Game terkeluar dengan kod %d";
+
 // The play button
 "Play" = "Main";
-"Snapshot" = "Petikan";
+"Snapshot" = "Snapshot";
 "Old-beta" = "Beta-lama";
 "Old-alpha" = "Alfa-lama";
 "Edit" = "Sunting";
@@ -25,7 +30,7 @@
 "custom_controls.button_edit.bg_color" = "Warna Latar Belakang";
 "custom_controls.button_edit.stroke_color" = "Warna ayunan";
 
-"custom_controls.button_menu.add_subbutton" = "Tambah sub-button";
+"custom_controls.button_menu.add_subbutton" = "Tambah sub-butang";
 "custom_controls.control_menu.exit" = "Keluar";
 "custom_controls.control_menu.save" = "Simpan";
 "custom_controls.control_menu.load" = "Memuat";
@@ -45,13 +50,13 @@
 "preference.section.debug" = "Tetapan UI Penyahpepijat";
 "preference.section.footer.debug" = "Anda mungkin perlu memulakan semula pelancar untuk perubahan berkuat kuasa.";
 //"preference.section.footer.control" = "";
-"preference.section.java" = "Pelarasan kecil JAVA";
+"preference.section.java" = "Java Tweaks";
 //"preference.section.footer.java" = "";
 
 "preference.title.confirm" = "Adakah anda pasti?";
 
 "preference.title.game_directory" = "Direktori permainan";
-"preference.title.cosmetica" = "Mantel Cosmetica";
+"preference.title.cosmetica" = "Cosmetica Capes";
 "preference.detail.debug_logging" = "Mengelog tetapan dan tindakan dalaman ke latestlog.txt. Ini membantu pembangun mencari isu dengan lebih mudah, tetapi Minecraft mungkin berjalan lebih perlahan kerana log akan ditulis dengan lebih kerap.";
 
 "preference.title.reset_settings" = "Tetapkan semula semua tetapan";
@@ -65,7 +70,7 @@
 "preference.title.gyroscope_enable" = "Membolehkan kawalan giroskop";
 "preference.title.gyroscope_sensitivity" = "Giroskop mengawal sensitiviti";
 
-"preference.title.java_args" = "JVM Launch arguments";
+"preference.title.java_args" = "Argument Pelancaran JVM";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Membenarkan pelaras RAM automatik";
 "preference.detail.allocated_memory" = "Mengawal berapa banyak memori yang diberikan kepada Minecraft";
