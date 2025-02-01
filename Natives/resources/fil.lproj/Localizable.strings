@@ -155,7 +155,9 @@
 "preference.detail.appicon" = "Allows you to choose between different Home Screen icons for PojavLauncher.";
 "preference.title.appicon-default" = "Familiar PojavLauncher light";
 "preference.title.appicon-dark" = "Familiar PojavLauncher dark";
+"preference.title.appicon-development" = "Paunang Pag-unlad";
 "preference.title.hidden_sidebar" = "Hide main menu sidebar by default";
+"preference.detail.hidden_sidebar" = "Itago ang sidebar sa main menu.";
 
 "preference.title.reset_warnings" = "I-reset ang lahat ng mga babala";
 "preference.title.done.reset_warnings" = "Ang lahat ng mga babala ay na-reset.";
@@ -163,6 +165,10 @@
 "preference.title.reset_settings" = "I-reset lahat ng mga setting";
 "preference.title.confirm.reset_settings" = "Aalisin nito ang lahat ng iyong custom na kagustuhan, kabilang ang resolution, laki ng button, at Java arguments.";
 "preference.title.done.reset_settings" = "Ang lahat ng mga default na setting ay naibalik.";
+
+"preference.title.erase_demo_data" = "Burahin ang data ng demo game";
+"preference.title.confirm.erase_demo_data" = "Buburahin nito ang lahat ng bersyon ng Demo game at data na ginamit para sa mga Demo account.";
+"preference.title.done.erase_demo_data" = "Ang lahat ng data ng Demo game ay nabura na.";
 
 "preference.title.renderer" = "Renderer";
 
@@ -176,22 +182,33 @@
 "preference.title.renderer.debug.angle" = "tinygl4angle (1.17+) - ini-export ang OpenGL 3.2 (Core Profile, limitado)";
 "preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - ini-export ang OpenGL 4.1";
 
-"preference.detail.renderer" = "Baguhin ang OpenGL render engine na gagamitin";
+"preference.detail.renderer" = "Baguhin ang OpenGL render engine na gagamitin. Pansamantalang naka-disable ang Zink sa iOS 16 at mas bago para masuri ang mga isyu.";
 
 "preference.title.resolution" = "Resolusyon (%)";
 "preference.detail.resolution" = "Binibigyang-daan kang bawasan ang resolution ng laro.";
+"preference.title.max_framerate" = "Maximum na framerate";
+"preference.detail.max_framerate" = "Pinapayagan nitong limitahan ang framerate ng laro sa 60FPS sa mga ProMotion display.";
 
 "preference.title.performance_hud" = "pakita ang Performance HUD";
 "preference.detail.performance_hud" = "Kapag meron, ipakita ang overlay ng pagsubaybay sa performance.";
 
 "preference.title.fullscreen_airplay" = "Fullscreen AirPlay";
 "preference.detail.fullscreen_airplay" = "Allows presenting fullscreen game window on the external display rather than mirroring everything on screen.";
+"preference.title.silence_other_audio" = "I-pause ang audio kapag nagbukas ang laro";
+"preference.detail.silence_other_audio" = "Paganahin para payagan ang PojavLauncher na i-pause ang audio mula sa ibang apps, tulad ng Music, kapag naglulunsad ng laro.";
 "preference.title.silence_with_switch" = "Patayin ang audio sa pamamagitan ng silent switch at huwag payagan ang mikropono na makarinig.";
 "preference.detail.silence_with_switch" = "Paganahin para i-disable ang audio kapag naka-on ang Silent Mode, at itanggi ang input ng mikropono. Hindi maaapektuhan ang mga headphone at external speaker.";
+"preference.title.default_gamepad_ctrl" = "Konfigurasyon ng controller";
+"preference.title.hardware_hide" = "Itago ang mga kontrol kapag nakakonekta ang hardware";
+"preference.detail.hardware_hide" = "Paganahin ang behavior na awtomatikong mag-disable ng on-screen control overlay kapag nakakonekta ang mouse o game controller.";
 "preference.title.recording_hide" = "Itago ang mga kontrol mula sa pag-record ng screen";
 "preference.detail.recording_hide" = "Itinatago ang mga kontrol sa screenshot at pag-record ng screen habang nananatili itong visible sa screen.
 
 ";
+"preference.title.gesture_mouse" = "Mga gestures ng mouse";
+"preference.detail.gesture_mouse" = "Pinapagana ang mga gesture, tulad ng tap para maglagay ng block, hold para masira ang block, pag-scroll gamit ang 2 daliri";
+"preference.title.gesture_hotbar" = "Mga gesture ng hotbar";
+"preference.detail.gesture_hotbar" = "Pinapagana ang mga gesture, tulad ng pag-touch sa hotbar slot, pagpalit ng mga item sa pagitan ng kamay";
 "preference.title.disable_haptics" = "I-disable ang on-screen haptics";
 "preference.title.press_duration" = "Tagal ng pagpindot nang long-press (ms)";
 "preference.detail.press_duration" = "Trigger press duration for destroying blocks and dropping items.";
@@ -207,7 +224,11 @@
 "preference.detail.slideable_hotbar" = "Gawing slideable ang hotbar na parang gulong ng mouse";
 
 "preference.title.gyroscope_enable" = "I-enable ang mga kontrol ng gyroscope";
+"preference.detail.gyroscope_enable" = "Sa pamamagitan nito, maaari kang lumingon sa laro gamit ang pag-ikot ng iyong device";
+"preference.title.gyroscope_invert_x_axis" = "Baligtarin ang kaliwa at kanang gyroscope";
+"preference.detail.gyroscope_invert_x_axis" = "Binabaligtad ang X-axis ng gyroscope";
 "preference.title.gyroscope_sensitivity" = "Sensitivity ng kontrol ng gyroscope";
+"preference.detail.gyroscope_sensitivity" = "Adjust the sensitivity of gyroscope controls";
 
 "preference.title.manage_runtime" = "Pangasiwaan ang mga runtime";
 "preference.title.confirm.delete_runtime" = "Ang %@ ay buburahin";
@@ -259,4 +280,49 @@
 "profile.title.separate_preference" = "Ihiwalay ang mga setting";
 "profile.detail.separate_preference" = "Paganahin ang opsyon na ito para ihiwalay ang anumang mga pagbabagong ginawa sa mga setting. Ang pag-Reset ay magbabalik sa mga global setting sa halip na mga default setting.";
 "profile.title.install_fabric_quilt" = "I-install ang Fabric/Quilt";
+
+"controller_configurator.title.current" = "File ng configuration ng gamepad";
+"controller_configurator.title.type.xbox" = "Xbox";
+"controller_configurator.title.type.playstation" = "PlayStation";
+
+"controller_configurator.xbox.title.bumper_left" = "Kaliwang Bumper";
+"controller_configurator.xbox.title.bumper_right" = "Kanang bumper";
+"controller_configurator.xbox.title.trigger_left" = "Kaliwang trigger";
+"controller_configurator.xbox.title.trigger_right" = "Kanang trigger";
+"controller_configurator.xbox.title.named_back" = "Gabay";
+"controller_configurator.xbox.title.named_start" = "Menu";
+"controller_configurator.xbox.title.named_a" = "A";
+"controller_configurator.xbox.title.named_b" = "B";
+"controller_configurator.xbox.title.named_x" = "X";
+"controller_configurator.xbox.title.named_y" = "Y";
+"controller_configurator.xbox.title.dpad_up" = "Taas";
+"controller_configurator.xbox.title.dpad_down" = "Baba";
+"controller_configurator.xbox.title.dpad_left" = "Kaliwa";
+"controller_configurator.xbox.title.dpad_right" = "Kanan";
+"controller_configurator.xbox.title.thumb_left" = "Pindot sa left thumbstick";
+"controller_configurator.xbox.title.thumb_right" = "Pindot sa right thumbstick";
+
+"controller_configurator.playstation.title.bumper_left" = "L1";
+"controller_configurator.playstation.title.bumper_right" = "R1";
+"controller_configurator.playstation.title.trigger_left" = "L2";
+"controller_configurator.playstation.title.trigger_right" = "R2";
 "controller_configurator.playstation.title.named_back" = "Iselekta";
+"controller_configurator.playstation.title.named_start" = "Start";
+"controller_configurator.playstation.title.named_a" = "Cross";
+"controller_configurator.playstation.title.named_b" = "Circle";
+"controller_configurator.playstation.title.named_x" = "Square";
+"controller_configurator.playstation.title.named_y" = "Triangle";
+"controller_configurator.playstation.title.dpad_up" = "Taas";
+"controller_configurator.playstation.title.dpad_down" = "Baba";
+"controller_configurator.playstation.title.dpad_left" = "Kaliwa";
+"controller_configurator.playstation.title.dpad_right" = "Kanan";
+"controller_configurator.playstation.title.thumb_left" = "L3";
+"controller_configurator.playstation.title.thumb_right" = "R3";
+
+"controller_configurator.section.config_files" = "Kasalukuyang configuration file";
+"controller_configurator.section.game_mappings" = "Mga mapping ng laro";
+"controller_configurator.section.footer.game_mappings" = "Mga binding kapag naka-lock ang mouse sa laro.";
+"controller_configurator.section.menu_mappings" = "Mga mapping ng menu:";
+"controller_configurator.section.footer.menu_mappings" = "Mga binding kapag hindi naka-lock ang mouse, tulad ng sa title screen o sa pause menu.";
+"controller_configurator.section.controller_style" = "Uri ng controller";
+"controller_configurator.section.footer.controller_style" = "Ipakita ang iba't ibang pangalan ng button ng controller sa configurator na ito.";
