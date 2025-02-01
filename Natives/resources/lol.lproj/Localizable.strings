@@ -4,16 +4,30 @@
 */
 
 "game.menu.force_close" = "Force close";
+"game.menu.confirm.force_close" = "r u want to bye bye fr fr rn?";
 "game.menu.log_output" = "tree input";
-"game.menu.custom_controls" = "Custom controls";
+"game.menu.custom_controls" = "Costolum ctrls";
+
+"game.note.airplay" = "mc is displayed in applepay mirrord display";
+
+"game.title.exit_code" = "game is bye bye with %d";
 
 // The play button
 "Play" = "Pulay";
+
+// Version categories
+"Installed" = "Got it";
 "Snapshot" = "Snapshot";
+"Releases" = "releyses";
 "Old-beta" = "Old-beat";
 "Old-alpha" = "Old-alaf";
+
+// Custom controls
+"Copy" = "steal";
 "Edit" = "Edit";
+"Move" = "move";
 "Remove" = "Remoev";
+"Resize" = "difrent size";
 
 "custom_controls.button_edit.forward_lock" = "Forward lock and keyz";
 "custom_controls.button_edit.name" = "Naym";
@@ -21,31 +35,97 @@
 "custom_controls.button_edit.mapping" = "Mappin’";
 "custom_controls.button_edit.orientation" = "Direksion";
 "custom_controls.button_edit.toggleable" = "Toggleabel";
+"custom_controls.button_edit.mouse_pass" = "mouse go";
 "custom_controls.button_edit.swipeable" = "Scratchable";
-"custom_controls.button_edit.bg_color" = "Bakground colour";
+"custom_controls.button_edit.bg_color" = "Bekround coloure";
 "custom_controls.button_edit.stroke_color" = "Strok colour";
+"custom_controls.button_edit.corner_radius" = "corner size";
+"custom_controls.button_edit.opacity" = "Visibility thingy (%)";
 
 "custom_controls.button_menu.add_subbutton" = "Add b’low-buton";
+"custom_controls.control_menu.discard_changes" = "Don't care about changes";
 "custom_controls.control_menu.exit" = "Exit";
+"custom_controls.control_menu.exit.warn" = "u exit with saved changes.";
 "custom_controls.control_menu.save" = "Saev";
+"custom_controls.control_menu.save.error.json" = "jason error";
+"custom_controls.control_menu.save.error.write" = "error savin file";
 "custom_controls.control_menu.load" = "Load";
-"custom_controls.control_menu.add_button" = "Add button";
+"custom_controls.control_menu.make_default" = "make normal";
+"custom_controls.control_menu.safe_area" = "Cool place";
+"custom_controls.control_menu.add_button" = "meyk button";
+"custom_controls.control_menu.add_drawer" = "add complexz buttons+";
 "custom_controls.control_menu.add_joystick" = "Add stick control";
+"custom_controls.error.incompatible" = "ur launcer so old, cant handle these contols version %d is not in this build.";
+"custom_controls.hint" = "Press more on screen for more adjustable thingys";
 
-"launcher.menu.custom_controls" = "Custom controls";
+"init.migrateDir" = "ur pojav is tp at %@. go there.";
+
+"launcher.mcl.downloading_file" = "Taking informarion%@";
+"launcher.mcl.error_download" = "Failed to take information (bruh) %@: %@";
+
+"launcher.menu.custom_controls" = "Costolum ctrls";
+
+"launcher.wait_jit.title" = "waitin for sJIT";
+"launcher.wait_jit.message" = "pojijovlancha needs sJIT compiled to have jawa in max fps.";
+
+"login.error.username.outOfRange" = "ur nick needs 3 chars and max 16 chars to survive";
+
+"login.alert.field.username" = "Cool name";
+
+"login.jit.checking" = "Looking for sJIT";
+"login.jit.enabled" = "sJIT cant be yes";
+"login.jit.fail" = "sJIT cant be yes.";
+"login.jit.fail.title" = "JIT cant be yes on ur mashine.";
+"login.jit.fail.description" = "ur device so bad, needs to enable sJIT manually. wrong things are at latestlog.txt.";
+
+// Login buttons
+"login.menu.sendlogs" = "send logs;-)";
 "login.option.add" = "Add block game account";
 "login.option.select" = "what acc?";
+"login.option.demo" = "bad acc";
+"login.option.microsoft" = "ms acc";
+"login.option.local" = "no internet (T=T) acc";
+
+"login.warn.title.legacy_device" = "ur device so bad, cant have new pojav.";
+"login.warn.message.legacy_device" = "ur mashine needs can run ios 14 4nex big pojav.";
+"login.warn.title.legacy_ios" = "u need to update ur mashine for new pojav.";
+"login.warn.message.legacy_ios" = "u need ios 14 or more for new pojav.";
+"login.warn.title.limited_ram" = "Ur phone so bad it have limited amount of Ram.";
+"login.warn.message.limited_ram" = "I'mma suggest that you leaving Auto RAM enabled to have performance good or I'mma crash.";
+
+"login.warn.title.demomode" = "ur acc is bad acc";
+
+"login.warn.title.localmode" = "offline is now no internet (T=T) mode.";
+"login.msa.progress.acquireXSTS" = "geting xsts";
 
 "News" = "Newz";
 "Settings" = "Settinz";
+"preference.section.video" = "Mp4 and Mp3 Settingys";
 "preference.section.control" = "Control customization";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java Tweakz";
+//"preference.section.footer.java" = "";
+
+"preference.title.confirm" = "You cool with it?";
 
 "preference.title.game_directory" = "Gamez’ direktory";
+"preference.multidir.add_directory" = "Add game directing thingy";
+
+"preference.title.check_sha" = "Take a look at the files after downloading";
 "preference.title.cosmetica" = "Cosmetica Capes just like superman'";
+"preference.title.debug_logging" = "Sanitize logging from bugz";
+"preference.title.appicon" = "Set cool icon";
+"preference.title.done.erase_demo_data" = "All Demo game data is gone rn.";
 
 "preference.title.renderer" = "Renderer";
+"preference.title.max_framerate" = "Maximum framerate";
+
+"preference.title.fullscreen_airplay" = "EntireScreen AirPlay";
+"preference.title.default_gamepad_ctrl" = "Controlly thingy configuration";
+"preference.title.mouse_scale" = "Resize mousy(food) (%)";
+"preference.detail.mouse_scale" = "Change the size of not real mouse";
+"preference.title.virtmouse_enable" = "Unreal mouse";
+"preference.title.slideable_hotbar" = "Slippery hotbar";
 
 "preference.title.gyroscope_enable" = "enable gyroscopz controlz like a pro gamer";
 "preference.title.gyroscope_sensitivity" = "Gyroscope controls sensitivity like a sigma";
@@ -55,7 +135,35 @@
 "preference.detail.auto_ram" = "Enablez automatic RAM adjustah";
 "preference.detail.allocated_memory" = "Controls how mutch RAM iz given 2 Minecraft";
 
+"preference.title.debug_skip_wait_jit" = "Don't care about \"Waiting for JIT\" thingy";
+"preference.title.debug_auto_correction" = "Auto fixing";
+"preference.title.debug_hide_home_indicator" = "Lost home way";
+
 "preference.profile.title.name" = "Naym";
 "preference.profile.title.version" = "Type of cat";
 "profile.title.create" = "Create new profile like";
-"controller_configurator.playstation.title.named_back" = "Select";
+"controller_configurator.title.type.xbox" = "Xbox";
+"controller_configurator.title.type.playstation" = "PlayStation";
+"controller_configurator.xbox.title.named_back" = "Show me the way";
+"controller_configurator.xbox.title.named_a" = "A";
+"controller_configurator.xbox.title.named_b" = "B";
+"controller_configurator.xbox.title.named_x" = "X";
+"controller_configurator.xbox.title.dpad_left" = "Left";
+"controller_configurator.xbox.title.dpad_right" = "Right";
+
+"controller_configurator.playstation.title.bumper_left" = "L1";
+"controller_configurator.playstation.title.bumper_right" = "R1";
+"controller_configurator.playstation.title.trigger_left" = "L2";
+"controller_configurator.playstation.title.trigger_right" = "R2";
+"controller_configurator.playstation.title.named_back" = "Selec";
+"controller_configurator.playstation.title.named_start" = "Run";
+"controller_configurator.playstation.title.named_b" = "No corner geometry thingy";
+"controller_configurator.playstation.title.named_x" = "Four corner geometry thingy";
+"controller_configurator.playstation.title.named_y" = "Three corner geometry thingy";
+"controller_configurator.playstation.title.dpad_left" = "Left";
+"controller_configurator.playstation.title.dpad_right" = "Right";
+"controller_configurator.playstation.title.thumb_left" = "L3";
+"controller_configurator.playstation.title.thumb_right" = "R3";
+"controller_configurator.section.menu_mappings" = "Menu mapping thingy";
+"controller_configurator.section.controller_style" = "What controller";
+"controller_configurator.section.footer.controller_style" = "Show another controlling thingy button name in this configuratory thingy.";
