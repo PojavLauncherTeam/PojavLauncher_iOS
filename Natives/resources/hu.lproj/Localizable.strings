@@ -78,6 +78,7 @@
 "launcher.menu.execute_jar" = ".jar futtatása";
 
 "launcher.wait_jit.title" = "Várakozás JIT-re";
+"launcher.wait_jit.message" = "A PojavLauncher a Just-in-Time összeállításra támaszkodik a Java-hoz, azért, hogy a maximum teljesítményen dolgozzon.";
 "launcher.wait_jit_trollstore.message" = "Hogyha ezt az üzenetet látod, kérlek, engedélyezd az URL-sémát a TrollStore-ban.";
 
 "login.error.username.outOfRange" = "A felhasználónév legalább 3 vagy legfeljebb 16 karakter hosszú kell hogy legyen, és csakis betűt, számokat 0-tól 9-ig és alsóvonalat (_) tartalmazhat.";
@@ -107,6 +108,7 @@
 "login.warn.message.limited_ram" = "Ajánljuk azt, hogy bekapcsolva hagyd az automatikus RAM-ot, hogy elkerüld az instabilitást és a problémás teljesítményeket.";
 
 "login.warn.title.demomode" = "Ez a fiók egy demó fiók";
+"login.warn.message.demomode" = "Az offline és helyi mód áthelyezésével, a Demó mód lehetővé teszi, hogy be tudj jelentkezni egy olyan Microsoft-fiókkal, amivel nem a játék tulajdonával, és játszhatja le a Java Edition próbaverzióját, amit az 1.3.1-es és újabb verziókban vezettek be.";
 
 "login.warn.title.localmode" = "Az offline mód mostantól \"helyi fiók\" mód.";
 "login.warn.message.localmode" = "Továbbra is játszhatsz a telepített verziókkal, de nem lesz lehetőséged letölteni a Minectaft-ot fizetett fiók nélkül. Semmilyen segítséget nem adhatunk helyi fiókokon, vagy a Minecraft megszerzésével.";
@@ -149,12 +151,14 @@ jobb teljesítményhez.";
 "preference.title.cosmetica" = "Cosmetica köpenyek";
 "preference.detail.cosmetica" = "Engedélyezi a köpenyeket a Cosmetica-ról (Régebben Arc). További infóért látogasd meg a https://cosmetica.cc weboldalt. OptiFine szükseges";
 "preference.title.debug_logging" = "Hibakeresési naplózás";
+"preference.detail.debug_logging" = "Naplók belső beállításai és műveletei a \"latestlog.txt\" fájlban vannak elmentve. Ez segít a fejlesztőknek megoldani egyes problémákat, de a Minecraft lassan futhat, mivel a naplózás egyre gyakrabban bővül.";
 "preference.title.appicon" = "Applikáció ikonjának beállítása";
 "preference.detail.appicon" = "Engedélyezi számodra, hogy válassz a Home Screen ikonjai között a PojavLauncher-ben.";
 "preference.title.appicon-default" = "Ismerős PojavLauncher világos";
 "preference.title.appicon-dark" = "Ismerős PojavLauncher sötét";
 "preference.title.appicon-development" = "Ceruzával írt Fejlesztés";
 "preference.title.hidden_sidebar" = "Menü oldalsáv elrejtése alapértelmezetten";
+"preference.detail.hidden_sidebar" = "Engedélyezi számodra, hogy elrejtsd az oldalsávot a főmenüben alapértelmezetten és amikor az eszközödet forgatod.";
 
 "preference.title.reset_warnings" = "Összes figyelmeztetés visszaállítása";
 "preference.title.done.reset_warnings" = "Az összes figyelmeztetés visszaállítva.";
@@ -197,13 +201,16 @@ jobb teljesítményhez.";
 "preference.detail.silence_with_switch" = "Audió engedélyezése vagy letiltása, mikor a Silent Mode be van kapcsolva, és letiltja a mikrofon bemenetet. Fejhallgatókra és küldő hangszórókra ez nem fog hatni.";
 "preference.title.default_gamepad_ctrl" = "Kontroller konfiguráció";
 "preference.title.hardware_hide" = "Vezérlések elrejtése ha egy új hardware van csatlakoztatva";
+"preference.detail.hardware_hide" = "Engedélyezi a képernyőn megjelenő vezérlőréteg automatikus letiltását, amikor az egér vagy a kontroller csatlakoztatva van.";
 "preference.title.recording_hide" = "Irányítópult elrejtése a feltétel közben";
 "preference.detail.recording_hide" = "Irányítópult elrejtése a képernyőkép és képernyőfelvétel készítése közben, de ugyanúgy látható lesz számodra.";
 "preference.title.gesture_mouse" = "Egér gesztusok";
 "preference.detail.gesture_mouse" = "Gesztusok engedélyezése, mint pl. koppints a bollok elhelyezésekor, tartsd nyomva, hogy blokkokat törj, 2 ujjal való görgetés";
 "preference.title.gesture_hotbar" = "Hotbar gesztusok";
+"preference.detail.gesture_hotbar" = "Engedélyezi a gesztusokat, mint pl. a hotbar sor érintése, tárgyak cseréje a 2 kéz között, tárgyak eldobása";
 "preference.title.disable_haptics" = "Rezgés letiltása";
 "preference.title.press_duration" = "Hosszan nyomva tartás (ms)";
+"preference.detail.press_duration" = "Hosszan nyomva tartásának hossza a blokkok széttöréséhez vagy azok eldobásához.";
 "preference.title.button_scale" = "Gomb mérete a kijelzőn (%)";
 "preference.detail.button_scale" = "Skálázd fel, hogyha a gombok túl kicsik. Általában ez iPad felhasználóknak hasznosabb.";
 "preference.title.mouse_scale" = "Egér mérete (%)";
@@ -240,6 +247,7 @@ jobb teljesítményhez.";
 "preference.placeholder.env_variables" = "Változók megadása...";
 "preference.title.auto_ram" = "Automatikus RAM";
 "preference.detail.auto_ram" = "Engedélyezi az automatikus RAM beállítását";
+"preference.warn.auto_ram" = "Ez az opció letiltásával egy nem Jailbroken eszközön létrehozhat instabilitást hogyha megváltoztatják. Folytasd ezzel a tudomással.";
 "preference.title.allocated_memory" = "Memória kiosztása (MB)";
 "preference.detail.allocated_memory" = "Kezeli, hogy mennyi memóriát foglaljon le a Minecraft-nak";
 "preference.warn.allocated_memory" = "Korlátozások miatt, az operációs rendszerben ez az opció instabilitást okozhat, ha a megadott érték magasabb. Folytasd ezzel a tudomással.";
@@ -314,5 +322,6 @@ jobb teljesítményhez.";
 "controller_configurator.section.game_mappings" = "Játék összekötések";
 "controller_configurator.section.footer.game_mappings" = "Összeköti, mikor az egér zárolva van a játékban.";
 "controller_configurator.section.menu_mappings" = "Menü összekötések";
+"controller_configurator.section.footer.menu_mappings" = "Összeköti, amikor az egér nincs zárolva a főképernyőn vagy mint a szünet menüben.";
 "controller_configurator.section.controller_style" = "Kontrollertípus";
 "controller_configurator.section.footer.controller_style" = "Különböző gombok nevét jeleníti meg ebben a konfigurációban.";
