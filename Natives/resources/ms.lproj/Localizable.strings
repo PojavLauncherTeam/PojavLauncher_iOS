@@ -74,9 +74,11 @@
 "launcher.mcl.error_download" = "Gagal untuk muat turun %@: %@";
 
 "launcher.menu.custom_controls" = "Kawalan custom";
+"launcher.menu.execute_jar" = "Lancarkan .jar";
 
 "launcher.wait_jit.title" = "Menunggu untuk JIT";
 "launcher.wait_jit.message" = "PojavLauncher bergantung kepada kompilasi Just-in-time untuk Java dalam prestasi maksimum.";
+"launcher.wait_jit_trollstore.message" = "Jika anda masih nampak mesej ini, sila hidupkan URL Scheme dalam Trollstore.";
 
 "login.error.username.outOfRange" = "Nama pengguna mestilah sekurang-kurangnya 3 aksara dan maksimum 16 aksara";
 
@@ -87,6 +89,7 @@
 "login.jit.fail" = "JIT tidak dapat didayakan.";
 "login.jit.fail.title" = "JIT tidak dapat didayakan pada peranti anda.";
 "login.jit.fail.description" = "Tiada penyepaduan boleh digunakan untuk mendayakan JIT secara automatik pada peranti anda, dan ia kini mesti didayakan secara manual. Ralat telah dilog ke latestlog.txt.";
+"login.jit.fail.description_unsupported" = "Kaedah memasang tidak sokong telah dikesan. Sila memasangkan dengan kaedah yang sedia ada.";
 
 // Login buttons
 "login.menu.sendlogs" = "Hantar log anda";
@@ -107,6 +110,7 @@
 "login.warn.message.demomode" = "Sebagai pengganti kepada mod luar talian dan tempatan, mod demo akan membolehkan anda melog masuk ke akaun Microsoft yang tidak memiliki permainan dan bermain percubaan Edisi Java, yang diperkenalkan dalam versi 1.3.1 dan lebih baharu. Versi lama mengandungi permainan penuh, kerana pelancar rasmi tidak meletakkan sekatan ini. Lihat tapak web kami untuk mengetahui lebih lanjut tentang peralihan ini daripada mod luar talian.";
 
 "login.warn.title.localmode" = "Mod luar talian kini menjadi mod Local.";
+"login.warn.message.localmode" = "Anda boleh sahaja teruskan main versi yang telah dipasang, tetapi anda tidak boleh lagi muat turun Minecraft tanpa akaun berbayar. Tiada sokongan boleh diberi untuk isu dengan akaun lokal, atau makna yang lain dari mendapatkan Minecraft.";
 
 "login.msa.error.xsts.noxboxacc" = "Profil Xbox tidak didaftarkan untuk akaun Microsoft ini. Sila pastikan anda telah membuat profil Xbox.\nKod ralat: 2148916233";
 "login.msa.error.xsts.noxbox" = "Xbox Live tidak tersedia di negara anda pada masa ini.\nKod ralat: 2148916235";
@@ -121,10 +125,12 @@
 "login.msa.progress.checkMCProfile" = "(5/5) Menyemak profil Minecraft";
 
 "News" = "Berita";
+"Profiles" = "Profil";
 "Settings" = "Tetapan";
 
 "preference.section.general" = "Tetapan Umum";
 "preference.section.video" = "Tetapan Video";
+"preference.section.footer.video" = "Auto renderer membenarkan PojavLauncher untuk memilih pilihan yang terbaik berdasarkan versi Minecraft. Mengurangkan resolusi akan kurangkan GPU beban kerja untuk prestasi terbaik.";
 "preference.section.control" = "Pengubahsuaian kawalan";
 "preference.section.debug" = "Tetapan UI Penyahpepijat";
 "preference.section.footer.debug" = "Anda mungkin perlu memulakan semula pelancar untuk perubahan berkuat kuasa.";
@@ -163,6 +169,11 @@
 
 "preference.title.renderer" = "Renderer";
 
+"preference.title.renderer.release.auto" = "Auto";
+"preference.title.renderer.release.gl4es" = "holy gl4es";
+"preference.title.renderer.release.angle" = "ANGLE";
+"preference.title.renderer.release.zink" = "Zink";
+
 "preference.title.renderer.debug.auto" = "Auto: gl4es atau ANGLE";
 "preference.title.renderer.debug.gl4es" = "holy gl4es - eksport OpenGL 2.1";
 "preference.title.renderer.debug.angle" = "ANGLE (1.17+) - eksport OpenGL 3.2 (Profil Teras, terhad)";
@@ -175,6 +186,9 @@
 "preference.title.max_framerate" = "Maksimum framerate";
 "preference.detail.max_framerate" = "Membenarkan anda untuk menghadkan permainan framerate kepada 60FPS dalam paparan ProMotion.";
 
+"preference.title.performance_hud" = "Tunjukkan Prestasi Hud";
+"preference.detail.performance_hud" = "Apabila tersedia, tunjuk tindanan prestasi pemantauan.";
+
 "preference.title.fullscreen_airplay" = "Skrin penuh AirPlay";
 "preference.detail.fullscreen_airplay" = "Membenarkan mempersembahkan skrin penuh window pada paparan luaran daripada mencerminkan semua kepada skrin.";
 "preference.title.silence_other_audio" = "Berhenti audio sebentar apabila buka permainan";
@@ -184,10 +198,13 @@
 "preference.title.default_gamepad_ctrl" = "Konfigurasi kawalan";
 "preference.title.hardware_hide" = "Hilangkan kawalan apabila hardware disambungkan";
 "preference.detail.hardware_hide" = "Membolehkan secara automatik melumpuhkan tindanan kawalan on-screen apabila tetikus atau kawalan permainan disambungkan.";
+"preference.title.recording_hide" = "Hilangkan kawalan dari screen recording";
+"preference.detail.recording_hide" = "Hilangkan kawalan dari screenshot dan screen recording sementara kawalan masih ada pada skrin.";
 "preference.title.gesture_mouse" = "Gerak isyarat tetikus";
 "preference.detail.gesture_mouse" = "Membolehkan gerakan isyarat, seperti tekan untuk letakkan blok, tekan lama untuk hancurkan blok, menatal dengan dua jari";
 "preference.title.gesture_hotbar" = "Gerak isyarat hotbar";
 "preference.detail.gesture_hotbar" = "Membolehkan gerak isyarat, seperti sentuh hotbar slot, tukar barang antara tangan, buang barang";
+"preference.title.disable_haptics" = "Lumpuhkan haptik on-screen";
 "preference.title.press_duration" = "Durasi tekan lama (ms)";
 "preference.detail.press_duration" = "Durasi tekan pencetus untuk menghancurkan blok dan buang barang.";
 "preference.title.button_scale" = "Skala butang pada skrin (%)";
@@ -202,9 +219,22 @@
 "preference.title.gyroscope_enable" = "Membolehkan kawalan giroskop";
 "preference.title.gyroscope_sensitivity" = "Giroskop mengawal sensitiviti";
 
+"preference.title.manage_runtime" = "Pengurusan runtimes";
+"preference.title.confirm.delete_runtime" = "%@ akan dipadamkan";
+"preference.manage_runtime.header.default" = "Versi Java yang diutamakan";
+"preference.manage_runtime.default.1165" = "1.16.5 dan versi lama";
+"preference.manage_runtime.default.117" = "1.17 dan versi baru";
+"preference.manage_runtime.footer.default" = "Minecraft 1.16.5 dan versi lama mungkin akan lancar dengan versi Java baru, tetapi keserasian dengan mod tidak dijaminkan. Runtimes luaran boleh diletak di dalam “java_runtimes” fail. Tukar versi Java untuk “Lancarkan .jar” hanya ambil tindakan jika pemasang tidak jangkakan versi Java baru.";
+"preference.manage_runtime.footer.java8" = "Ini versi default untuk Minecraft 1.16.5 dan versi lama.";
+"preference.manage_runtime.footer.java17" = "Ini versi default untuk Minecraft 1.17 dan versi baru.";
+"preference.manage_runtime.header.invalid" = "Runtimes tidak sah";
+
 "preference.title.java_args" = "Argument Pelancaran JVM";
+"preference.detail.java_args" = "Letakkan argument kepada Java apabila lancarkan Minecraft. Berhati-hati, kerana ia boleh menyebabkan game crash jika diubahsuai dengan salah.";
 "preference.placeholder.java_args" = "Nyatakan argrumen...";
 "preference.title.env_variables" = "Pembolehubah persekitaran";
+"preference.detail.env_variables" = "Tetapkan custom environment variables apabila lancarkan Minecraft. Berhati-hati, kerana ia boleh menyebabkan game crash jika diubahsuai dengan salah.";
+"preference.placeholder.env_variables" = "Nyatakan variables...";
 "preference.title.auto_ram" = "Auto RAM";
 "preference.detail.auto_ram" = "Membenarkan pelaras RAM automatik";
 "preference.warn.auto_ram" = "Melumpuhkan pilihan ini pada peranti yang tidak jailbroken boleh mewujudkan ketidakstabilan jika diubah. Teruskan dengan berhati-hati.";
@@ -212,6 +242,7 @@
 "preference.detail.allocated_memory" = "Mengawal berapa banyak memori yang diberikan kepada Minecraft";
 "preference.warn.allocated_memory" = "Disebabkan oleh pengehadan dalam sistem pengendalian itu sendiri, pilihan ini boleh menyebabkan ketidakstabilan pada ini dan nilai yang lebih tinggi. Teruskan dengan berhati-hati.";
 "preference.title.custom_env" = "Pembolehubah persekitaran";
+"preference.detail.custom_env" = "Tetapan ini sedang dalam pembinaan. Buat dan ubah custom_env.txt sementara waktu.";
 
 "preference.title.debug_skip_wait_jit" = "Langkau dialog \"Menunggu JIT\"";
 "preference.detail.debug_skip_wait_jit" = "Ini tidak membenarkan anda melancarkan tanpa JIT, sebaliknya ini melangkau semakan penyahpepijat, kerana semakan gagal pada jailbreak tertentu.";
@@ -223,8 +254,21 @@
 "preference.detail.debug_hide_home_indicator" = "Ini akan melumpuhkan penguncian penunjuk rumah. Anda perlu menggunakan Akses Berpandu untuk menyembunyikan dan mengunci penunjuk rumah pada masa yang sama.";
 
 "preference.profile.title.name" = "Nama";
+"preference.profile.title.loader_type" = "Jenis loader";
+"preference.profile.title.loader_vendor" = "Loader vendor";
+"preference.profile.title.loader_version" = "Versi loader";
 "preference.profile.title.version" = "Versi";
+"preference.profile.title.version_type" = "Jenis versi vers";
+"preference.profile.title.default_touch_control" = "Kawalan sentuhan";
+"preference.profile.title.default_gamepad_control" = "Kawalan gamepad";
+
+"profile.error.name_exists" = "Profil dengan nama itu sudah wujud. Sila guna nama lain.";
+"profile.section.instance" = "Tetapan Game Instance";
+"profile.section.profiles" = "Profil di dalam instance ini";
 "profile.title.create" = "Buat profil baharu";
+"profile.title.separate_preference" = "Asingkan tetapan";
+"profile.detail.separate_preference" = "Membolehkan tetapan ini untuk mengasingkan apa-apa perubahan pada tetapan. Tekan Reset akan kembalikan ke tetapan global daripada tetapan default.";
+"profile.title.install_fabric_quilt" = "Pasang Fabric/Quilt";
 
 "controller_configurator.title.current" = "Fail konfigurasi gamepad";
 "controller_configurator.title.type.xbox" = "Xbox";
