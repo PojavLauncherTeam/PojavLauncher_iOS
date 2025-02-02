@@ -48,6 +48,7 @@
 "custom_controls.button_edit.stroke_color" = "Warna ayunan";
 "custom_controls.button_edit.corner_radius" = "Jejari Penjuru";
 "custom_controls.button_edit.opacity" = "Kelegapan (%)";
+"custom_controls.button_edit.visibility" = "Keterlihatan";
 
 "custom_controls.button_menu.add_subbutton" = "Tambah sub-butang";
 "custom_controls.control_menu.discard_changes" = "Buang perubahan";
@@ -153,6 +154,8 @@
 "preference.title.appicon" = "Tetapkan ikon apl";
 "preference.detail.appicon" = "Membolehkan anda memilih antara ikon Skrin Utama yang berbeza untuk PojavLauncher.";
 "preference.title.appicon-default" = "Lampu PojavLauncher yang biasa";
+"preference.title.appicon-dark" = "Gelap PojavLauncher yang biasa";
+"preference.title.appicon-development" = "Perkembangan Pensil";
 "preference.title.hidden_sidebar" = "Hilangkan menu utama bar sisi secara default";
 "preference.detail.hidden_sidebar" = "Membenarkan anda untuk menghilangkan bar sisi pada menu utama secara default dan apabila berputar.";
 
@@ -215,9 +218,15 @@
 "preference.detail.mouse_speed" = "Ubah kelajuan tetikus maya";
 "preference.title.virtmouse_enable" = "Tetikus maya";
 "preference.detail.virtmouse_enable" = "Membolehkan pilihan ini untuk memulakan dengan tetikus maya";
+"preference.title.slideable_hotbar" = "Hotbar boleh slide";
+"preference.detail.slideable_hotbar" = "Jadikan hotbar boleh gelongsor seperti roda tetikus";
 
 "preference.title.gyroscope_enable" = "Membolehkan kawalan giroskop";
+"preference.detail.gyroscope_enable" = "Mendayakan ini akan membolehkan anda menghidupkan permainan dengan memusingkan peranti anda";
+"preference.title.gyroscope_invert_x_axis" = "Terbalikkan giroskop ke kiri dan kanan";
+"preference.detail.gyroscope_invert_x_axis" = "Terbalikkan paksi X giroskop";
 "preference.title.gyroscope_sensitivity" = "Giroskop mengawal sensitiviti";
+"preference.detail.gyroscope_sensitivity" = "Laraskan sensitiviti kawalan giroskop";
 
 "preference.title.manage_runtime" = "Pengurusan runtimes";
 "preference.title.confirm.delete_runtime" = "%@ akan dipadamkan";
@@ -310,3 +319,8 @@
 
 "controller_configurator.section.config_files" = "Fail konfigurasi semasa";
 "controller_configurator.section.game_mappings" = "Pemetaan permainan";
+"controller_configurator.section.footer.game_mappings" = "Pengikatan apabila tetikus dikunci dalam permainan.";
+"controller_configurator.section.menu_mappings" = "Pemetaan menu";
+"controller_configurator.section.footer.menu_mappings" = "Mengikat apabila tetikus tidak dikunci, seperti pada skrin tajuk atau dalam menu jeda.";
+"controller_configurator.section.controller_style" = "Jenis pengawal";
+"controller_configurator.section.footer.controller_style" = "Tunjukkan nama butang pengawal yang berbeza dalam konfigurasi ini.";
