@@ -14,11 +14,13 @@
 
 // The play button
 "Play" = "Main";
+"Details" = "Butiran";
 
 // Version categories
 "Installed" = "Dipasang";
 "Snapshot" = "Snapshot";
 "Releases" = "Rilis";
+"Unstable" = "Tidak stabil";
 "Old-beta" = "Beta-lama";
 "Old-alpha" = "Alfa-lama";
 
@@ -28,6 +30,10 @@
 "Move" = "Gerak";
 "Remove" = "Hapus";
 "Resize" = "Ubah saiz";
+// Visibility
+"Always" = "Sentiasa";
+"In game" = "Dalam permainan";
+"In menu" = "Dalam menu";
 
 "custom_controls.button_edit.forward_lock" = "Kunci hadapan";
 "custom_controls.button_edit.name" = "Nama";
@@ -38,6 +44,7 @@
 "custom_controls.button_edit.mouse_pass" = "Pas tetikus";
 "custom_controls.button_edit.swipeable" = "Boleh leret";
 "custom_controls.button_edit.bg_color" = "Warna Latar Belakang";
+"custom_controls.button_edit.stroke_width" = "Lebar lejang (dp)";
 "custom_controls.button_edit.stroke_color" = "Warna ayunan";
 "custom_controls.button_edit.corner_radius" = "Jejari Penjuru";
 "custom_controls.button_edit.opacity" = "Kelegapan (%)";
@@ -59,6 +66,9 @@
 "custom_controls.hint" = "Tekan lama di mana-mana sahaja di dalam skrin untuk membuka tetapan";
 
 "init.migrateDir" = "Tempat data PojavLauncher sekarang di %@. Semua data yang anda ada telah dipindahkan ke lokasi baru.";
+
+"java.error.missing_main_class" = "%@ hilang kelas utama atribut. Jika ini adalah mod, sila letaknya ke dalam \"mods\" folder yang instance dipilih.";
+"java.error.missing_runtime" = "%@ memerlukan Java %d atau terkini untuk melancarkannya. Tolong memasangkan dahulu dan nyatakan dalam Pengurusan Runtimes.";
 
 "launcher.mcl.downloading_file" = "Memuat turun %@";
 "launcher.mcl.error_download" = "Gagal untuk muat turun %@: %@";
@@ -173,10 +183,13 @@
 "preference.detail.silence_with_switch" = "Dayakan untuk menyahdayakan audio apabila Mod Senyap dihidupkan dan tolak input mikrofon. Fon kepala dan pembesar suara luaran tidak terjejas.";
 "preference.title.default_gamepad_ctrl" = "Konfigurasi kawalan";
 "preference.title.hardware_hide" = "Hilangkan kawalan apabila hardware disambungkan";
+"preference.detail.hardware_hide" = "Membolehkan secara automatik melumpuhkan tindanan kawalan on-screen apabila tetikus atau kawalan permainan disambungkan.";
 "preference.title.gesture_mouse" = "Gerak isyarat tetikus";
 "preference.detail.gesture_mouse" = "Membolehkan gerakan isyarat, seperti tekan untuk letakkan blok, tekan lama untuk hancurkan blok, menatal dengan dua jari";
 "preference.title.gesture_hotbar" = "Gerak isyarat hotbar";
+"preference.detail.gesture_hotbar" = "Membolehkan gerak isyarat, seperti sentuh hotbar slot, tukar barang antara tangan, buang barang";
 "preference.title.press_duration" = "Durasi tekan lama (ms)";
+"preference.detail.press_duration" = "Durasi tekan pencetus untuk menghancurkan blok dan buang barang.";
 "preference.title.button_scale" = "Skala butang pada skrin (%)";
 "preference.detail.button_scale" = "Membesarkan jika butangnya terlalu kecil, selalunya digunakan untuk pengguna iPad.";
 "preference.title.mouse_scale" = "Skala tetikus (%)";
