@@ -115,6 +115,15 @@
 "preference.title.cosmetica" = "Cosmetica Capes just like superman'";
 "preference.title.debug_logging" = "Sanitize logging from bugz";
 "preference.title.appicon" = "Set cool icon";
+
+"preference.title.reset_warnings" = "fr make warnings gone";
+"preference.title.done.reset_warnings" = "all warnings skibidi gone.";
+
+"preference.title.reset_settings" = "bro fr wants all of it to be gone";
+"preference.title.done.reset_settings" = "all settingz are fr restored.";
+
+"preference.title.erase_demo_data" = "demo account be gone fr";
+"preference.title.confirm.erase_demo_data" = "all demo game verzions and skibidi data used will be fr gone.";
 "preference.title.done.erase_demo_data" = "All Demo game data is gone rn.";
 
 "preference.title.renderer" = "Renderer";
@@ -131,7 +140,7 @@
 "preference.title.gyroscope_sensitivity" = "Gyroscope controls sensitivity like a sigma";
 
 "preference.title.java_args" = "CCz’UM L’unch argumentz";
-"preference.title.auto_ram" = "Auto RAM";
+"preference.title.auto_ram" = "withcraft ram";
 "preference.detail.auto_ram" = "Enablez automatic RAM adjustah";
 "preference.detail.allocated_memory" = "Controls how mutch RAM iz given 2 Minecraft";
 
