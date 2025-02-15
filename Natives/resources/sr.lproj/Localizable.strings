@@ -14,11 +14,14 @@
 "Old-alpha" = "Стари-Аlpha";
 "Edit" = "Измени";
 "Remove" = "Уклони";
+
+"custom_controls.button_edit.forward_lock" = "Zaključavanje unapred";
 "custom_controls.button_edit.name" = "Име";
 "custom_controls.button_edit.size" = "Величина";
 "custom_controls.button_edit.mapping" = "Мапирање";
 "custom_controls.button_edit.orientation" = "Оријентација";
 "custom_controls.button_edit.toggleable" = "Тогелабле";
+"custom_controls.button_edit.swipeable" = "Prevlačenje";
 "custom_controls.button_edit.bg_color" = "Боја позадине";
 "custom_controls.button_edit.stroke_color" = "Боја потеза";
 
@@ -27,6 +30,7 @@
 "custom_controls.control_menu.save" = "Сачувај";
 "custom_controls.control_menu.load" = "Учитај";
 "custom_controls.control_menu.add_button" = "Додај дугме";
+"custom_controls.control_menu.add_joystick" = "Dodaj džojstik";
 
 "launcher.menu.custom_controls" = "Прилагођене контроле";
 "login.option.select" = "Изаберите налог";
@@ -42,3 +46,4 @@
 "preference.detail.allocated_memory" = "Колико меморије може да корости Minecraft";
 
 "preference.profile.title.name" = "Име";
+"controller_configurator.playstation.title.named_back" = "Izaberi";
