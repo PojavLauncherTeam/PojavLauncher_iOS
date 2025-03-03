@@ -54,4 +54,5 @@
 
 "preference.profile.title.name" = "Naam";
 "preference.profile.title.version" = "Versie";
+"profile.title.create" = "Nieuw profiel aanmaken";
 "controller_configurator.playstation.title.named_back" = "Selecteer";
