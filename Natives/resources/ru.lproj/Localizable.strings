@@ -189,7 +189,7 @@
 "preference.title.max_framerate" = "Максимальная частота кадров";
 "preference.detail.max_framerate" = "Позволяет включить ограничение частоты обновления в 60 кадров в секунду на дисплеях ProMotion.";
 
-"preference.title.performance_hud" = "Метрики производительности";
+"preference.title.performance_hud" = "Показать HUD производительности";
 "preference.detail.performance_hud" = "Показывать панель мониторинга производительности, если доступно.";
 
 "preference.title.fullscreen_airplay" = "Полноэкранный AirPlay";
@@ -201,8 +201,8 @@
 "preference.title.default_gamepad_ctrl" = "Настройки контроллера";
 "preference.title.hardware_hide" = "Скрывать раскладку при подключении внешних устройств ввода";
 "preference.detail.hardware_hide" = "Автоматически скрывать раскладку экранного управления при подключении мыши или контроллера.";
-"preference.title.recording_hide" = "Скрыть элементы управления от записи";
-"preference.detail.recording_hide" = "Скрывает раскладку управления от записи видео с экрана и скриншотов, сохраняя их видимыми для игрока.";
+"preference.title.recording_hide" = "Скрыть элементы управления из записи экрана";
+"preference.detail.recording_hide" = "Скрывает элементы управления с скриншота и записи экрана, пока они остаются видимыми на экране.";
 "preference.title.gesture_mouse" = "Жесты мыши";
 "preference.detail.gesture_mouse" = "Переключение жестов размещения/разрушения блока при касании/удерживании экрана и прокрутки двумя пальцами.";
 "preference.title.gesture_hotbar" = "Жесты панели инструментов";
@@ -271,7 +271,7 @@
 "preference.profile.title.default_touch_control" = "Сенсорное управление";
 "preference.profile.title.default_gamepad_control" = "Контроллер";
 
-"profile.error.name_exists" = "Профиль с таким именем уже существует. Введите другое имя.";
+"profile.error.name_exists" = "Профиль с таким именем уже существует. Пожалуйста, введите другое имя.";
 "profile.section.instance" = "Настройки игрового экземпляра";
 "profile.section.profiles" = "Профили в данном экземпляре";
 "profile.title.create" = "Новый профиль";
