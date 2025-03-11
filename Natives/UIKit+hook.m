@@ -14,9 +14,26 @@ void swizzleClass(Class class, SEL originalAction, SEL swizzledAction) {
     method_exchangeImplementations(class_getClassMethod(class, originalAction), class_getClassMethod(class, swizzledAction));
 }
 
+void swizzleUIImageMethod(SEL originalAction, SEL swizzledAction) {
+    Class class = [UIImage class];
+    Method originalMethod = class_getInstanceMethod(class, originalAction);
+    Method swizzledMethod = class_getInstanceMethod(class, swizzledAction);
+    
+    if (originalMethod && swizzledMethod) {
+        method_exchangeImplementations(originalMethod, swizzledMethod);
+    } else {
+        NSLog(@"[UIKit+hook] Warning: Could not swizzle UIImage methods (%@ and %@)", 
+              NSStringFromSelector(originalAction), 
+              NSStringFromSelector(swizzledAction));
+    }
+}
+
 void init_hookUIKitConstructor(void) {
     swizzle(UIDevice.class, @selector(userInterfaceIdiom), @selector(hook_userInterfaceIdiom));
     swizzle(UIImageView.class, @selector(setImage:), @selector(hook_setImage:));
+    
+    // Add this line to swizzle the _imageWithSize: method
+    swizzleUIImageMethod(NSSelectorFromString(@"_imageWithSize:"), @selector(hook_imageWithSize:));
 
     if (realUIIdiom == UIUserInterfaceIdiomTV) {
         if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
@@ -68,6 +85,39 @@ void init_hookUIKitConstructor(void) {
     } else {
         [self hook_setImage:image];
     }
+}
+
+@end
+
+// Implementation of UIImage hook for proper sizing across iOS versions
+@implementation UIImage(hook)
+
+- (UIImage *)hook_imageWithSize:(CGSize)size {
+    if (CGSizeEqualToSize(self.size, size)) {
+        return self;
+    }
+    
+    UIGraphicsImageRendererFormat *format = [UIGraphicsImageRendererFormat defaultFormat];
+    format.scale = self.scale;
+    UIGraphicsImageRenderer *renderer = [[UIGraphicsImageRenderer alloc] initWithSize:size format:format];
+    
+    UIImage *newImage = [renderer imageWithActions:^(UIGraphicsImageRendererContext * _Nonnull context) {
+        // Calculate proper proportions
+        CGFloat widthRatio = size.width / self.size.width;
+        CGFloat heightRatio = size.height / self.size.height;
+        CGFloat ratio = MIN(widthRatio, heightRatio);
+        
+        CGFloat newWidth = self.size.width * ratio;
+        CGFloat newHeight = self.size.height * ratio;
+        
+        // Center the image
+        CGFloat x = (size.width - newWidth) / 2;
+        CGFloat y = (size.height - newHeight) / 2;
+        
+        [self drawInRect:CGRectMake(x, y, newWidth, newHeight)];
+    }];
+    
+    return [newImage imageWithRenderingMode:self.renderingMode];
 }
 
 @end
