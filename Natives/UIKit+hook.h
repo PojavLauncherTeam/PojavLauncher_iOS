@@ -11,6 +11,10 @@
 @property(nonatomic) BOOL isSizeFixed;
 @end
 
+@interface UIImage(hook)
+- (UIImage *)hook_imageWithSize:(CGSize)size;
+@end
+
 // private functions
 @interface UIContextMenuInteraction(private)
 - (void)_presentMenuAtLocation:(CGPoint)location;
