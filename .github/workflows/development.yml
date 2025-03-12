@@ -18,13 +18,12 @@ jobs:
         include:
           - platform: 2
             platform_name: ios
-          - platform: 7
-            platform_name: iossimulator
-          - platform: 8
-            platform_name: tvossimulator
-    
-    runs-on: MacStadium
+
+    runs-on: macos-latest
     steps:
+      - name: Install include tools
+        run: brew install temurin@8 ldid make
+
       - name: Remove work folders
         env:
           password: ${{ secrets.ELLIE_MINI_SECRET }}
@@ -37,19 +36,24 @@ jobs:
           ls -lah ./
           
       - name: Checkout repository
-        uses: actions/checkout@main
+        uses: actions/checkout@v3
 
       - name: Checkout repository submodules
         run: git submodule update --init --recursive
 
+      - name: Set API Key Environment Variable
+        run: echo "CURSEFORGE_API_KEY=${{ secrets.CURSEFORGE_API_KEY }}" >> $GITHUB_ENV
+
       - name: Get gl4es latest commit hash
         id: gl4es-sha
-        run: echo "::set-output name=sha::$(echo $(git ls-remote https://github.com/PojavLauncherTeam/gl4es-114-extra refs/heads/master | grep -io '^\S*'))"
-        shell: bash
+        run: |
+          # Grab the latest commit SHA for gl4es-114-extra
+          GIT_SHA=$(git ls-remote https://github.com/PojavLauncherTeam/gl4es-114-extra refs/heads/master | grep -io '^\S*')
+          echo "sha=$GIT_SHA" >> "$GITHUB_OUTPUT"
 
       - name: Cache gl4es
-        uses: actions/cache@main
-        if: false # use gl4es 1.1.5
+        uses: actions/cache@v3
+        if: false
         id: gl4es-cache
         with:
           path: gl4es/libs
@@ -57,7 +61,7 @@ jobs:
 
       - name: Get gl4es
         if: false && steps.gl4es-cache.outputs.cache-hit != 'true'
-        uses: actions/checkout@main
+        uses: actions/checkout@v3
         with:
           repository: 'PojavLauncherTeam/gl4es-114-extra'
           path: 'gl4es'
@@ -78,7 +82,7 @@ jobs:
           cp -R lib/libGL.dylib ../Natives/resources/Frameworks/libgl4es_114.dylib
           
       - name: Push gl4es
-        if: false && github.event != 'pull_request' && github.ref_name == 'main' && steps.gl4es-cache.outputs.cache-hit != 'true'
+        if: false && github.event_name != 'pull_request' && github.ref_name == 'main' && steps.gl4es-cache.outputs.cache-hit != 'true'
         continue-on-error: true
         run: |
           git add Natives/resources/Frameworks/libgl4es_114.dylib
@@ -88,7 +92,7 @@ jobs:
       - name: Get JRE8
         uses: dawidd6/action-download-artifact@v2
         with:
-          github_token: ${{secrets.GITHUB_TOKEN}}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow: build.yml
           path: depends
           workflow_conclusion: success
@@ -100,7 +104,7 @@ jobs:
       - name: Get JRE17
         uses: dawidd6/action-download-artifact@v2
         with:
-          github_token: ${{secrets.GITHUB_TOKEN}}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow: build.yml
           path: depends
           workflow_conclusion: completed
@@ -112,7 +116,7 @@ jobs:
       - name: Get JRE21
         uses: dawidd6/action-download-artifact@v2
         with:
-          github_token: ${{secrets.GITHUB_TOKEN}}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow: build.yml
           path: depends
           workflow_conclusion: completed
@@ -128,44 +132,41 @@ jobs:
           export PATH=/opt/procursus/bin:/opt/homebrew/bin:$PATH
           export RUNNER=1 SLIMMED=1
           if [ "${{ matrix.platform_name }}" == "ios" ]; then
-            # Build ipa and tipa for iOS
-            gmake -j$(sysctl -n hw.ncpu) dsym package PLATFORM=${{ matrix.platform }}
-            gmake -j$(sysctl -n hw.ncpu) dsym package PLATFORM=${{ matrix.platform }} TROLLSTORE_JIT_ENT=1
+            gmake -j"$(sysctl -n hw.ncpu)" dsym package PLATFORM=${{ matrix.platform }}
+            gmake -j"$(sysctl -n hw.ncpu)" dsym package PLATFORM=${{ matrix.platform }} TROLLSTORE_JIT_ENT=1
           elif [ "${{ matrix.platform_name }}" == "tvos" ]; then
-            # Build tipa only for tvOS
-            gmake -j$(sysctl -n hw.ncpu) dsym package PLATFORM=${{ matrix.platform }} TROLLSTORE_JIT_ENT=1
+            gmake -j"$(sysctl -n hw.ncpu)" dsym package PLATFORM=${{ matrix.platform }} TROLLSTORE_JIT_ENT=1
           else
-            # Build ipa only for everything else
-            gmake -j$(sysctl -n hw.ncpu) dsym package PLATFORM=${{ matrix.platform }}
+            gmake -j"$(sysctl -n hw.ncpu)" dsym package PLATFORM=${{ matrix.platform }}
           fi
 
       - name: Upload regular ipa
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v4
         with:
           name: net.kdt.pojavlauncher-${{ matrix.platform_name }}.ipa
           path: artifacts/net.kdt.pojavlauncher-*-${{ matrix.platform_name }}.ipa
 
       - name: Upload regular tipa
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v4
         with:
           name: net.kdt.pojavlauncher-${{ matrix.platform_name }}-trollstore.tipa
           path: artifacts/net.kdt.pojavlauncher-*-${{ matrix.platform_name }}-trollstore.tipa
 
       - name: Upload slimmed ipa
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v4
         with:
           name: net.kdt.pojavlauncher.slimmed-${{ matrix.platform_name }}.ipa
           path: artifacts/net.kdt.pojavlauncher.slimmed-*-${{ matrix.platform_name }}.ipa
 
       - name: Upload slimmed tipa
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v4
         with:
           name: net.kdt.pojavlauncher.slimmed-${{ matrix.platform_name }}-trollstore.tipa
           path: artifacts/net.kdt.pojavlauncher.slimmed-*-${{ matrix.platform_name }}-trollstore.tipa
 
       - name: Upload PojavLauncher.dSYM
-        uses: actions/upload-artifact@main
         if: matrix.platform_name == 'ios'
+        uses: actions/upload-artifact@v4
         with:
           name: PojavLauncher.dSYM
           path: artifacts/PojavLauncher.dSYM
