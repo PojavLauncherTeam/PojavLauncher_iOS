@@ -3,3 +3,4 @@
 "custom_controls.control_menu.save" = "Tallenna";
 "login.option.select" = "Valitse tili";
 "Settings" = "Asetukset";
+"preference.profile.title.version" = "Versio";

@@ -9,12 +9,28 @@
 
 // The play button
 "Play" = "Žaisti";
+"Details" = "Išsamiau";
+
+// Version categories
+"Installed" = "Instaliuota";
 "Snapshot" = "Naujinimai";
+"Releases" = "Leidimai";
+"Unstable" = "Nestabilu";
 "Old-beta" = "Beta";
 "Old-alpha" = "Alpha";
-"Edit" = "Redaguoti";
-"Remove" = "Pašalinti";
 
+// Custom controls
+"Copy" = "Kopijuoti";
+"Edit" = "Redaguoti";
+"Move" = "Perkelti";
+"Remove" = "Pašalinti";
+"Resize" = "Keisti dydį";
+// Visibility
+"Always" = "Visada";
+"In game" = "Žaidime";
+"In menu" = "meniu";
+
+"custom_controls.button_edit.forward_lock" = "Ėjimo į priekį fiksavimas";
 "custom_controls.button_edit.name" = "Pavadinimas";
 "custom_controls.button_edit.size" = "Dydis";
 "custom_controls.button_edit.mapping" = "Mygtukų sąrašas";
@@ -22,30 +38,91 @@
 "custom_controls.button_edit.toggleable" = "Perjungiama";
 "custom_controls.button_edit.swipeable" = "Perbraukiamas";
 "custom_controls.button_edit.bg_color" = "Fono spalva";
+"custom_controls.button_edit.stroke_width" = "Linijos plotis (dp)";
 "custom_controls.button_edit.stroke_color" = "Linijos spalva";
+"custom_controls.button_edit.opacity" = "Permatomumas (%)";
+"custom_controls.button_edit.visibility" = "Matomumas";
 
 "custom_controls.button_menu.add_subbutton" = "Pridetį mygtukų spintos mygtuką";
+"custom_controls.control_menu.discard_changes" = "Atmesti pakeitimus";
 "custom_controls.control_menu.exit" = "Išeiti";
 "custom_controls.control_menu.save" = "Išsaugoti";
+"custom_controls.control_menu.save.error.json" = "JSON klaida";
+"custom_controls.control_menu.save.error.write" = "Klaida išsaugant failą";
 "custom_controls.control_menu.load" = "Įjungti";
 "custom_controls.control_menu.add_button" = "Pridėti mygtuką";
+"custom_controls.control_menu.add_joystick" = "Pridėti vairasvirte";
 
 "launcher.menu.custom_controls" = "Kontrolės";
-"launcher.menu.install_jar" = "Instaliuoti .jar";
+"login.jit.fail" = "JIT negalėjo būti įjungtas.";
+"login.jit.fail.title" = "JIT negalėjo būti įjungtas ant tavo įrenginio.";
+
+// Login buttons
+"login.menu.sendlogs" = "Siųsti žurnalus";
+"login.option.add" = "Pridėti accounta";
 "login.option.select" = "Pasirinkti paskyrą";
+"login.option.demo" = "Demonstracinė paskyra";
+"login.option.microsoft" = "Microsoft paskyra";
+"login.option.local" = "Vietinė paskyra";
+
+"login.warn.title.demomode" = "Tavo paskyra yra bandomoji";
 
 "News" = "Naujienos";
 "Settings" = "Nustatymai";
+
+"preference.section.general" = "Bendrieji nustatymai";
+"preference.section.video" = "Vaizdo ir Garso Nustatymai";
 "preference.section.control" = "Kontrolių redagavimas";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Java redagavimas";
+//"preference.section.footer.java" = "";
+
+"preference.title.confirm" = "Ar jūs įsitikinę?";
 
 "preference.title.game_directory" = "Žaidimo failų vieta";
+"preference.multidir.add_directory" = "pridėti žaidimo direktoriją";
+
+"preference.title.check_sha" = "Patikrinti failus po atsisiuntimo";
 "preference.title.cosmetica" = "\"Cosmetica\" apvalkalai";
+"preference.title.appicon" = "Nustatyti programos ikoną";
 
 "preference.title.renderer" = "Vaizdo generatorius";
+
+"preference.title.resolution" = "Resoliucija (%)";
+"preference.title.virtmouse_enable" = "Virtuali pelė";
+
+"preference.title.gyroscope_enable" = "Įjungti gyroskopo kontroles";
+"preference.title.gyroscope_sensitivity" = "Gyroskopo kontroliu sensityvumas";
+
 "preference.title.java_args" = "JVM Paleidimo argumentai";
+"preference.placeholder.java_args" = "Nurodyti argumentus...";
 "preference.title.auto_ram" = "Automatiškas RAM";
 "preference.detail.auto_ram" = "Įjungia automatišką RAM keitėją";
+"preference.title.allocated_memory" = "Atminties priskyrimas (MB)";
 "preference.detail.allocated_memory" = "Kontroliuoja kiek RAM atminties duodama Minecraft";
+
+"preference.profile.title.name" = "Pavadinimas";
+"preference.profile.title.version" = "Versija";
+"profile.title.create" = "Sukurti naują profilį";
+"controller_configurator.xbox.title.named_start" = "Meniu";
+"controller_configurator.xbox.title.named_a" = "A";
+"controller_configurator.xbox.title.named_b" = "B";
+"controller_configurator.xbox.title.named_x" = "X";
+"controller_configurator.xbox.title.named_y" = "Y";
+"controller_configurator.xbox.title.dpad_up" = "Aukštyn";
+"controller_configurator.xbox.title.dpad_down" = "Žemyn";
+"controller_configurator.xbox.title.dpad_left" = "Kairėn";
+"controller_configurator.xbox.title.dpad_right" = "Dešinėn";
+
+"controller_configurator.playstation.title.bumper_left" = "L1";
+"controller_configurator.playstation.title.bumper_right" = "R1";
+"controller_configurator.playstation.title.trigger_left" = "L2";
+"controller_configurator.playstation.title.trigger_right" = "R2";
 "controller_configurator.playstation.title.named_back" = "Pasirinkti";
+"controller_configurator.playstation.title.named_start" = "Pradžios";
+"controller_configurator.playstation.title.dpad_up" = "Aukštyn";
+"controller_configurator.playstation.title.dpad_down" = "Žemyn";
+"controller_configurator.playstation.title.dpad_left" = "Kairėn";
+"controller_configurator.playstation.title.dpad_right" = "Dešinėn";
+"controller_configurator.playstation.title.thumb_left" = "L3";
+"controller_configurator.playstation.title.thumb_right" = "R3";

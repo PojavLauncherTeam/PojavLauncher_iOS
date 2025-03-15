@@ -4,42 +4,316 @@
 */
 
 "game.menu.force_close" = "Αναγκαστικό κλείσιμο εφαρμογής";
+"game.menu.confirm.force_close" = "Είστε βέβαιοι ότι θέλετε να αναγκάσετε το κλείσιμο;";
 "game.menu.log_output" = "Αρχείο Καταγραφής";
 "game.menu.custom_controls" = "Προσαρμοσμένα controls";
 
+"game.note.airplay" = "Το Minecraft εμφανίζεται στην οθόνη καθρέφτη AirPlay";
+
+"game.title.exit_code" = "Το παιχνίδι τερματίστηκε με κωδικό %d";
+
 // The play button
 "Play" = "Παίξε";
+"Details" = "Λεπτομέρειες";
+
+// Version categories
+"Installed" = "Εγκατεστημένο";
 "Snapshot" = "Στιγμιότυπο";
+"Releases" = "Εκδόσεις";
+"Unstable" = "Ασταθής";
 "Old-beta" = "Παλιά-Beta";
 "Old-alpha" = "Παλιά-alpha";
-"Edit" = "Επεξεργασία";
-"Remove" = "Αφαίρεσε";
 
+// Custom controls
+"Copy" = "Αντιγραφή";
+"Edit" = "Επεξεργασία";
+"Move" = "Κίνηση";
+"Remove" = "Αφαίρεσε";
+"Resize" = "Αλλαγή μεγέθους";
+// Visibility
+"Always" = "Πάντα";
+"In game" = "Εντός Παιχνιδιού";
+"In menu" = "Στο μενού";
+
+"custom_controls.button_edit.forward_lock" = "Κλείδωμα ευθείας κινήσεως";
 "custom_controls.button_edit.name" = "Όνομα";
 "custom_controls.button_edit.size" = "Μέγεθος";
 "custom_controls.button_edit.mapping" = "Χαρτογράφηση";
 "custom_controls.button_edit.orientation" = "Προσανατολισμός";
 "custom_controls.button_edit.toggleable" = "Εναλλασσόμενο";
+"custom_controls.button_edit.mouse_pass" = "Πέρασμα ποντικιού";
 "custom_controls.button_edit.swipeable" = "Ευέλικτο";
 "custom_controls.button_edit.bg_color" = "Χρώμα φόντου";
+"custom_controls.button_edit.stroke_width" = "Πλάτος περιγράμματος";
 "custom_controls.button_edit.stroke_color" = "Χρώμα περιγράμματος";
+"custom_controls.button_edit.corner_radius" = "Ακτίνα γωνίας (%)";
+"custom_controls.button_edit.opacity" = "Αδιαφάνεια (%)";
+"custom_controls.button_edit.visibility" = "Ορατότητα";
 
-"custom_controls.button_menu.add_subbutton" = "Προσθήκη κουμπιού";
+"custom_controls.button_menu.add_subbutton" = "Προσθήκη υπο-κουμπιού";
+"custom_controls.control_menu.discard_changes" = "Απόρριψη αλλαγών";
 "custom_controls.control_menu.exit" = "Έξοδος";
+"custom_controls.control_menu.exit.warn" = "Πρόκειται να βγείτε χωρίς να αποθηκεύσετε αλλαγές.";
 "custom_controls.control_menu.save" = "Αποθήκευση";
+"custom_controls.control_menu.save.error.json" = "Σφάλμα JSON";
+"custom_controls.control_menu.save.error.write" = "Σφάλμα αποθήκευσης αρχείου";
 "custom_controls.control_menu.load" = "Φόρτωση";
+"custom_controls.control_menu.make_default" = "Ορισμός ως προεπιλογή";
+"custom_controls.control_menu.safe_area" = "Ασφαλής περιοχή";
 "custom_controls.control_menu.add_button" = "Προσθήκη κουμπιού";
+"custom_controls.control_menu.add_drawer" = "Προσθήκη συρταριού";
+"custom_controls.control_menu.add_joystick" = "Προσθήκη χειριστηρίου (joystick)";
+"custom_controls.error.incompatible" = "Αυτή η έκδοση ελέγχου (κωδικός %d) δεν έχει υλοποιηθεί σε αυτήν την έκδοση εκκινητή.";
+"custom_controls.hint" = "Πατήστε παρατεταμένα οπουδήποτε στην οθόνη για περισσότερες επιλογές";
+
+"init.migrateDir" = "Ο κατάλογος δεδομένων του PojavLauncher είναι τώρα %@. Όλα τα υπάρχοντα δεδομένα σας έχουν μεταφερθεί στη νέα θέση.";
+
+"java.error.missing_main_class" = "Το %@ λείπει το κύριο χαρακτηριστικό κλάσης. Αν αυτό είναι ένα mod, βάλτε το στο φάκελο “mods” της επιλεγμένης παρουσίας σας.";
+"java.error.missing_runtime" = "Το %@ απαιτεί Java %d ή νεότερη έκδοση. Παρακαλώ εγκαταστήστε το πρώτα και καθορίστε το στη Διαχείριση Εκτέλεσης.";
+
+"launcher.mcl.downloading_file" = "Γίνεται λήψη %@";
+"launcher.mcl.error_download" = "Αποτυχία λήψης %@: %@";
 
 "launcher.menu.custom_controls" = "Προσαρμοσμένα controls";
+"launcher.menu.execute_jar" = "Εκτέλεση .jar";
+
+"launcher.wait_jit.title" = "Αναμονή για JIT";
+"launcher.wait_jit.message" = "Το PojavLauncher βασίζεται στη συλλογή Just-in-time για να δουλέψει η Java στη μέγιστη απόδοση.";
+"launcher.wait_jit_trollstore.message" = "Αν εξακολουθείτε να βλέπετε αυτό το μήνυμα, παρακαλούμε ενεργοποιήστε το σύστημα URL στο TrollStore.";
+
+"login.error.username.outOfRange" = "Το όνομα χρήστη πρέπει να είναι τουλάχιστον 3 χαρακτήρες και το πολύ 16 χαρακτήρες";
+
+"login.alert.field.username" = "Όνομα χρήστη";
+
+"login.jit.checking" = "Έλεγχος για JIT";
+"login.jit.enabled" = "Το JIT ενεργοποιήθηκε";
+"login.jit.fail" = "Το JIT δεν μπόρεσε να ενεργοποιηθεί.";
+"login.jit.fail.title" = "Δεν ήταν δυνατή η ενεργοποίηση του JIT στη συσκευή σας.";
+"login.jit.fail.description" = "Καμία ενσωμάτωση δεν θα μπορούσε να χρησιμοποιηθεί για την αυτόματη ενεργοποίηση της JIT στη συσκευή σας, και τώρα πρέπει να ενεργοποιηθεί χειροκίνητα. Σφάλματα έχουν καταγραφεί στο latestlog.txt.";
+"login.jit.fail.description_unsupported" = "Έχει εντοπιστεί μια μη υποστηριζόμενη μέθοδος εγκατάστασης. Παρακαλώ επανεγκαταστήστε χρησιμοποιώντας μία από τις υποστηριζόμενες μεθόδους.";
+
+// Login buttons
+"login.menu.sendlogs" = "Αποστολή αρχείων καταγραφής";
+"login.option.add" = "Προσθήκη λογαριασμού";
 "login.option.select" = "Επιλέξτε λογαριασμό";
+"login.option.demo" = "Λογαριασμός επίδειξης";
+"login.option.microsoft" = "Λογαριασμός Microsoft";
+"login.option.local" = "Τοπικός λογαριασμός";
+
+"login.warn.title.legacy_device" = "Η επόμενη έκδοση του PojavLauncher δεν θα είναι συμβατή με αυτήν τη συσκευή.";
+"login.warn.message.legacy_device" = "Για να εκτελέσετε την επόμενη μεγάλη έκδοση, απαιτείται μια συσκευή ικανή να τρέχει iOS 14.";
+"login.warn.title.legacy_ios" = "Η επόμενη έκδοση του PojavLauncher θα απαιτήσει ενημέρωση του συστήματος.";
+"login.warn.message.legacy_ios" = "Για να εκτελέσετε την επόμενη μεγάλη έκδοση, απαιτείται μια συσκευή ικανή να τρέχει iOS 14.";
+"login.warn.title.limited_ram" = "Αυτή η συσκευή έχει περιορισμένη διαθέσιμη μνήμη.";
+"login.warn.message.limited_ram" = "Σας συνιστούμε να αφήσετε την αυτόματη δέσμευση μνήμης ενεργοποιημένη για να αποτραπούν αστάθεια και ζητήματα επιδόσεων.";
+
+"login.warn.title.demomode" = "Ο λογαριασμός σας είναι Demo";
+"login.warn.message.demomode" = "Ως αντικατάσταση σε offline και τοπική λειτουργία, η δοκιμαστική λειτουργία θα σας επιτρέψει να συνδεθείτε σε έναν λογαριασμό Microsoft που δεν κατέχει το παιχνίδι και να παίξετε τη δοκιμαστική έκδοση Java, που εισήχθη στην 1.3.1 και νεότερα. Οι παλαιότερες εκδόσεις περιέχουν το πλήρες παιχνίδι, καθώς ο επίσημος εκκινητής δεν θέτει αυτούς τους περιορισμούς. Δείτε την ιστοσελίδα μας για να μάθετε περισσότερα σχετικά με αυτή τη μετάβαση από offline λειτουργία.";
+
+"login.warn.title.localmode" = "Η λειτουργία χωρίς σύνδεση είναι τώρα σε Τοπική λειτουργία.";
+"login.warn.message.localmode" = "Μπορείς να συνεχίσεις να παίζεις εγκατεστημένες εκδόσεις, αλλά δεν μπορείς πλέον να κατεβάσεις το Minecraft χωρίς πληρωμένο λογαριασμό. Δεν θα παρέχεται υποστήριξη για ζητήματα με τοπικούς λογαριασμούς, ή άλλα μέσα για την απόκτηση του Minecraft.";
+
+"login.msa.error.xsts.noxboxacc" = "Ένα προφίλ Xbox δεν έχει καταχωρηθεί για αυτόν το λογαριασμό Microsoft. Βεβαιωθείτε ότι έχετε κάνει ένα προφίλ Xbox.\nΚωδικός σφάλματος: 2148916233";
+"login.msa.error.xsts.noxbox" = "Το Xbox Live δεν είναι διαθέσιμο στη χώρα σας.\nΚωδικός σφάλματος: 2148916235";
+"login.msa.error.xsts.krverify" = "Ο λογαριασμός σας πρέπει να επαληθευτεί από τους γονείς σας προτού μπορέσετε να συνεχίσετε.\nΚωδικός σφάλματος: 2148916236 ή 2148916237.";
+"login.msa.error.xsts.underage" = "Ο λογαριασμός σας πρέπει να συνδεθεί με γονικό λογαριασμό για να μπορέσετε να συνεχίσετε.\nΚωδικός σφάλματος: 2148916238";
+
+"login.msa.progress.acquireAccessToken" = "(1/5) Απόκτηση του διακριτικού πρόσβασης";
+"login.msa.progress.acquireXBLToken" = "(2/5) Απόκτηση του διακριτικού Xbox Live";
+"login.msa.progress.acquireXSTS" = "Απόκτηση XSTS";
+"login.msa.progress.acquireXboxProfile" = "(3/5) Απόκτηση του προφίλ Xbox";
+"login.msa.progress.acquireMCToken" = "(4/5) Απόκτηση του διακριτικού του Minecraft";
+"login.msa.progress.checkMCProfile" = "(5/5) Έλεγχος του προφίλ Minecraft";
 
 "News" = "Νέα";
+"Profiles" = "Προφίλ";
 "Settings" = "Ρυθμίσεις";
 
+"preference.section.general" = "Γενικές ρυθμίσεις";
+"preference.section.video" = "Ρυθμίσεις βίντεο και ήχου";
+"preference.section.footer.video" = "Η αυτόματη αποτύπωση επιτρέπει στο PojavLauncher να επιλέξει την καλύτερη επιλογή με βάση την έκδοση του Minecraft. Η μείωση της ανάλυσης μειώνει το φόρτο εργασίας GPU για καλύτερη απόδοση.";
+"preference.section.control" = "Προσαρμογή ελέγχου";
+"preference.section.debug" = "Ρυθμίσεις εντοπισμού σφαλμάτων UI";
+"preference.section.footer.debug" = "Ίσως χρειαστεί να επανεκκινήσετε τον εκκινητή για να τεθούν σε ισχύ οι αλλαγές.";
+//"preference.section.footer.control" = "";
+"preference.section.java" = "Java Tweaks";
+//"preference.section.footer.java" = "";
+
+"preference.title.confirm" = "Είστε σίγουρος/η;";
+
 "preference.title.game_directory" = "Κατάλογος παιχνιδιού";
+"preference.title.confirm.delete_game_directory" = "Η παρουσία %@ θα διαγραφεί για πάντα και δεν μπορεί να αποκατασταθεί.";
+"preference.multidir.add_directory" = "προσθήκη καταλόγου παιχνιδιού";
+
+"preference.title.check_sha" = "Έλεγχος αρχείων μετά τη λήψη";
+"preference.detail.check_sha" = "Αυτή η επιλογή αναγκάζει τον εκκινητή να ελέγξει το hash του αρχείου αν είναι διαθέσιμο. Αποτρέπει τις κατεστραμμένες λήψεις.";
+"preference.title.cosmetica" = "Κάπες Cosmetica";
+"preference.detail.cosmetica" = "Ενεργοποιεί κάπες από τη Cosmetica (προηγουμένως Arc). Για περισσότερες πληροφορίες, παρακαλώ επισκεφθείτε την ιστοσελίδα https://cosmetica.cc. Απαιτείται το OptiFine";
+"preference.title.debug_logging" = "Καταγραφή εντοπισμού σφαλμάτων";
+"preference.detail.debug_logging" = "Καταγραφή εσωτερικών ρυθμίσεων και ενεργειών στο latestlog.txt. Αυτό βοηθά τους προγραμματιστές να βρουν προβλήματα ευκολότερα, αλλά το Minecraft μπορεί να τρέξει πιο αργά, καθώς τα αρχεία καταγραφής θα γράφονται πιο συχνά.";
+"preference.title.appicon" = "Ορισμός εικονιδίου εφαρμογής";
+"preference.detail.appicon" = "Σας επιτρέπει να επιλέξετε μεταξύ διαφορετικών εικονιδίων αρχικής οθόνης για το PojavLauncher.";
+"preference.title.appicon-default" = "Γνωστό PojavLauncher ανοιχτόχρωμο";
+"preference.title.appicon-dark" = "Γνωστό PojavLauncher σκουρόχρωμο";
+"preference.title.appicon-development" = "Περιφραγμένη Ανάπτυξη";
+"preference.title.hidden_sidebar" = "Απόκρυψη πλαϊνής γραμμής μενού από προεπιλογή";
+"preference.detail.hidden_sidebar" = "Σας επιτρέπει να αποκρύψετε την πλαϊνή μπάρα στο κύριο μενού από προεπιλογή και κατά την περιστροφή.";
+
+"preference.title.reset_warnings" = "Επαναφορά όλων των προειδοποιήσεων";
+"preference.title.done.reset_warnings" = "Όλες οι προειδοποιήσεις έχουν επανέλθει.";
+
+"preference.title.reset_settings" = "Επαναφορά όλων των ρυθμίσεων";
+"preference.title.confirm.reset_settings" = "Αυτό θα καταργήσει όλες τις προσαρμοσμένες προτιμήσεις σας, συμπεριλαμβανομένης της ανάλυσης, του μεγέθους του κουμπιού και των παραμέτρων Java.";
+"preference.title.done.reset_settings" = "Όλες οι προεπιλεγμένες ρυθμίσεις έχουν αποκατασταθεί.";
+
+"preference.title.erase_demo_data" = "Διαγραφή δεδομένων παιχνιδιού επίδειξης";
+"preference.title.confirm.erase_demo_data" = "Αυτό θα διαγράψει όλες τις εκδόσεις και τα δεδομένα που χρησιμοποιούνται για λογαριασμούς επίδειξης.";
+"preference.title.done.erase_demo_data" = "Όλα τα δεδομένα του παιχνιδιού Demo έχουν διαγραφεί.";
 
 "preference.title.renderer" = "Απόδοση";
+
+"preference.title.renderer.release.auto" = "Αυτόματο";
+"preference.title.renderer.release.gl4es" = "holy gl4es";
+"preference.title.renderer.release.angle" = "ΓΩΝΙΑ";
+"preference.title.renderer.release.zink" = "Zink";
+
+"preference.title.renderer.debug.auto" = "Auto: gl4es ή ANGLE";
+"preference.title.renderer.debug.gl4es" = "holy gl4es - exports OpenGL 2.1";
+"preference.title.renderer.debug.angle" = "ANGLE (1.17+) - εξαγωγές OpenGL 3.2 (Βασικό Προφίλ, περιορισμένο)";
+"preference.title.renderer.debug.zink" = "Zink (Mesa 21.0) - exports OpenGL 4.1";
+
+"preference.detail.renderer" = "Αλλάξτε τη μηχανή απόδοσης OpenGL για χρήση. Το Zink είναι προσωρινά απενεργοποιημένο στο iOS 16 και αργότερα για να εντοπιστούν προβλήματα.";
+
+"preference.title.resolution" = "Ανάλυση (%)";
+"preference.detail.resolution" = "Σας επιτρέπει να μειώσετε την ανάλυση του παιχνιδιού.";
+"preference.title.max_framerate" = "Μέγιστος αριθμός καρέ";
+"preference.detail.max_framerate" = "Σας επιτρέπει να περιορίσετε το πλαίσιο παιχνιδιού σε 60FPS στις οθόνες ProMotion.";
+
+"preference.title.fullscreen_airplay" = "Πλήρης Οθόνη AirPlay";
+"preference.detail.fullscreen_airplay" = "Επιτρέπει την παρουσίαση του παραθύρου του παιχνιδιού πλήρους οθόνης στην εξωτερική οθόνη αντί να αντικατοπτρίζει τα πάντα στην οθόνη.";
+"preference.title.silence_other_audio" = "Παύση ήχου όταν ανοίγει το παιχνίδι";
+"preference.detail.silence_other_audio" = "Ενεργοποιήστε για να επιτρέψετε στο PojavLauncher να κάνει παύση ήχου από άλλες εφαρμογές, όπως η Μουσική, κατά την εκκίνηση του παιχνιδιού.";
+"preference.title.default_gamepad_ctrl" = "Διαμόρφωση χειριστηρίου";
+"preference.title.hardware_hide" = "Απόκρυψη στοιχείων ελέγχου όταν η συσκευή είναι συνδεδεμένη";
+"preference.detail.hardware_hide" = "Ενεργοποιήστε τη συμπεριφορά της αυτόματης απενεργοποίησης της επικάλυψης ελέγχου οθόνης όταν ένα χειριστήριο ποντικιού ή παιχνιδιού είναι συνδεδεμένο.";
+"preference.title.gesture_mouse" = "Χειρονομίες Ποντικιού";
+"preference.detail.gesture_mouse" = "Ενεργοποιεί χειρονομίες, όπως το πάτημα για τοποθέτηση μπλοκ, κρατήστε πατημένο για να σπάσει το μπλοκ, κύλιση με 2 δάχτυλα";
+"preference.title.gesture_hotbar" = "Χειρονομίες hotbar";
+"preference.detail.gesture_hotbar" = "Ενεργοποιεί χειρονομίες, όπως να αγγίξετε την υποδοχή hotbar, να ανταλλάξετε αντικείμενα μεταξύ των χεριών, να ρίξετε αντικείμενα";
+"preference.title.disable_haptics" = "Απενεργοποίηση απτικών στην οθόνη";
+"preference.title.press_duration" = "Διάρκεια παρατεταμένης πίεσης (ms)";
+"preference.detail.press_duration" = "Αλλαγή παρατεταμένου πατήματος καθυστέρηση ενεργοποίησης για την καταστροφή των μπλοκ και ρίξιμο αντικειμένων.";
+"preference.title.button_scale" = "Κλίμακα κουμπιών οθόνης (%)";
+"preference.detail.button_scale" = "Μεγάλωμα αν τα κουμπιά είναι πολύ μικρά, συνήθως απαιτούνται για τους χρήστες iPad.";
+"preference.title.mouse_scale" = "Κλιμάκωση ποντικιού (%)";
+"preference.detail.mouse_scale" = "Αλλαγή μεγέθους εικονικού ποντικιού";
+"preference.title.mouse_speed" = "Ταχύτητα ποντικιού (%)";
+"preference.detail.mouse_speed" = "Αλλάζει την ταχύτητα του εικονικού ποντικιού";
+"preference.title.virtmouse_enable" = "Εικονικό ποντίκι";
+"preference.detail.virtmouse_enable" = "Ενεργοποιήστε αυτή την επιλογή για να ξεκινήσετε με εικονικό ποντίκι";
+"preference.title.slideable_hotbar" = "Συρόμενο hotbar";
+"preference.detail.slideable_hotbar" = "Κάντε το hotbar slideable όπως ο τροχός του ποντικιού";
+
+"preference.title.gyroscope_enable" = "Ενεργοποίηση εξομάλυνσης γυροσκοπίου";
+"preference.detail.gyroscope_enable" = "Ενεργοποιώντας το, θα σας επιτρέψει να γυρίσετε τον χαρακτήρα σας μέσα στο παιχνίδι γυρίζοντας το τηλέφωνό σας";
+"preference.title.gyroscope_invert_x_axis" = "Αντιστροφή γυροσκοπίου αριστερά και δεξιά";
+"preference.detail.gyroscope_invert_x_axis" = "Αντιστρέφει τον άξονα Χ του γυροσκοπίου";
+"preference.title.gyroscope_sensitivity" = "Ευαισθησία ελέγχων γυροσκοπίου";
+"preference.detail.gyroscope_sensitivity" = "Προσαρμόστε την ευαισθησία των ελέγχων γυροσκοπίου";
+
+"preference.title.manage_runtime" = "Διαχείριση runtimes";
+"preference.title.confirm.delete_runtime" = "Το %@ θα διαγραφεί";
+"preference.manage_runtime.header.default" = "Προτιμώμενη έκδοση Java";
+"preference.manage_runtime.default.1165" = "1.16.5 και παλαιότερα";
+"preference.manage_runtime.default.117" = "1.17 και νεότερη";
+"preference.manage_runtime.footer.default" = "Το Minecraft 1.16.5 και παλαιότερο μπορεί να τρέξει με μια νεότερη έκδοση Java, ωστόσο η συμβατότητα με τα mods δεν είναι εγγυημένη. Εξωτερικά runtimes μπορούν να τοποθετηθούν στο φάκελο \"java_runtimes\". Η αλλαγή της έκδοσης Java για το “Execute .jar” τίθεται σε ισχύ μόνο εάν ο εγκαταστάτης δεν αναμένει νεότερη έκδοση Java.";
+"preference.manage_runtime.footer.java8" = "Αυτή είναι η προεπιλεγμένη έκδοση για το Minecraft 1.16.5 και κάτω.";
+"preference.manage_runtime.footer.java17" = "Αυτή είναι η προεπιλεγμένη έκδοση για το Minecraft 1.17. και πάνω.";
+"preference.manage_runtime.header.invalid" = "Μη έγκυρα runtimes";
+
 "preference.title.java_args" = "JVM Εντολές εκκίνησης";
+"preference.detail.java_args" = "Μετακινήστε τις παραμέτρους στην Java κατά την εκκίνηση του Minecraft. Προσέξτε, αυτό μπορεί να προκαλέσει σφάλμα του παιχνιδιού αν δεν τροποποιηθεί σωστά.";
+"preference.placeholder.java_args" = "Καθορισμός παραμέτρων...";
+"preference.title.env_variables" = "Μεταβλητές περιβάλλοντος";
+"preference.detail.env_variables" = "Μετακινήστε τις παραμέτρους στην Java κατά την εκκίνηση του Minecraft. Προσέξτε, αυτό μπορεί να προκαλέσει σφάλμα του παιχνιδιού αν δεν τροποποιηθεί σωστά.";
+"preference.placeholder.env_variables" = "Καθορισμός μεταβλητών...";
 "preference.title.auto_ram" = "Αυτόματη RAM";
 "preference.detail.auto_ram" = "Ενεργοποιεί τον αυτόματο ρυθμιστή RAM";
+"preference.warn.auto_ram" = "Η απενεργοποίηση αυτής της επιλογής σε μια συσκευή unjailbroken μπορεί να δημιουργήσει αστάθεια αν μεταβληθεί. Συνεχίστε με προσοχή.";
+"preference.title.allocated_memory" = "Κατανομή μνήμης (MB)";
 "preference.detail.allocated_memory" = "Ελέγχει πόση μνήμη δίνεται στο Minecraft";
+"preference.warn.allocated_memory" = "Λόγω των περιορισμών στο ίδιο το λειτουργικό σύστημα, αυτή η επιλογή μπορεί να προκαλέσει αστάθεια σε αυτή και υψηλότερες τιμές.";
+"preference.title.custom_env" = "Μεταβλητές περιβάλλοντος";
+"preference.detail.custom_env" = "Αυτή η επιλογή είναι υπό κατασκευή. Δημιουργήστε και επεξεργαστείτε custom_env.txt εν τω μεταξύ.";
+
+"preference.title.debug_skip_wait_jit" = "Παράλειψη διαλόγου \"Αναμονή για JIT\"";
+"preference.detail.debug_skip_wait_jit" = "Αυτό δεν σας επιτρέπει να εκκινήσετε χωρίς JIT, αντίθετα, αυτό παραλείπει τον έλεγχο αποσφαλμάτωσης, επειδή ο έλεγχος αποτυγχάνει σε ορισμένα jailbreaks.";
+"preference.title.debug_ipad_ui" = "Ξεκλείδωμα iPadOS UI";
+"preference.detail.debug_ipad_ui" = "Ξεκλειδώστε αποκλειστικό περιβάλλον εργασίας iPad (ειδοποίηση, πληκτρολόγιο, κλπ.) εάν είναι ενεργοποιημένο ή iPhone εάν είναι απενεργοποιημένο.";
+"preference.title.debug_auto_correction" = "Αυτόματη διόρθωση";
+"preference.detail.debug_auto_correction" = "Ενεργοποίηση αυτόματης διόρθωσης κατά την πληκτρολόγηση κειμένου στο παιχνίδι.";
+"preference.title.debug_hide_home_indicator" = "Απόκρυψη ένδειξης αρχικής οθόνης";
+"preference.detail.debug_hide_home_indicator" = "Αυτό θα απενεργοποιήσει το κλείδωμα της εγχώριας ένδειξης. Θα πρέπει να χρησιμοποιήσετε την Κατευθυνόμενη Πρόσβαση για να αποκρύψετε και να κλειδώσετε την αρχική ένδειξη ταυτόχρονα.";
+
+"preference.profile.title.name" = "Όνομα";
+"preference.profile.title.loader_type" = "Τύπος φορτωτή";
+"preference.profile.title.loader_vendor" = "Προμηθευτής φορτωτή";
+"preference.profile.title.loader_version" = "Έκδοση φορτωτή";
+"preference.profile.title.version" = "Έκδοση";
+"preference.profile.title.version_type" = "Είδος έκδοσης";
+"preference.profile.title.default_touch_control" = "Στοιχεία ελέγχου αφής";
+"preference.profile.title.default_gamepad_control" = "Έλεγχοι Gamepad";
+
+"profile.error.name_exists" = "Προφίλ με αυτό το όνομα υπάρχει ήδη. Παρακαλούμε χρησιμοποιήστε άλλο όνομα.";
+"profile.section.instance" = "Ρυθμίσεις Instance παιχνιδιού";
+"profile.section.profiles" = "Προφίλ σε αυτό το Instance";
+"profile.title.create" = "Δημιουργία νέου προφίλ";
+"profile.title.separate_preference" = "Απομονωμένες ρυθμίσεις";
+"profile.detail.separate_preference" = "Ενεργοποιήστε αυτή την επιλογή για να απομονώσετε τυχόν αλλαγές που έγιναν στις ρυθμίσεις. Αν κάνετε επαναφορά σε καθολικές ρυθμίσεις θα ρυθμιστούν αυτές και όχι οι προκαθορισμένες.";
+"profile.title.install_fabric_quilt" = "Εγκατάσταση Fabric/Quilt";
+
+"controller_configurator.title.current" = "Αρχείο ρυθμίσεων Gamepad";
+"controller_configurator.title.type.xbox" = "Xbox";
+"controller_configurator.title.type.playstation" = "PlayStation";
+
+"controller_configurator.xbox.title.bumper_left" = "Αριστερό μπροστινό κουμπί";
+"controller_configurator.xbox.title.bumper_right" = "Δεξιό μπροστινό κουμπί";
+"controller_configurator.xbox.title.trigger_left" = "Αριστερή σκανδάλη";
+"controller_configurator.xbox.title.trigger_right" = "Δεξιά σκανδάλη";
+"controller_configurator.xbox.title.named_back" = "Οδηγός";
+"controller_configurator.xbox.title.named_start" = "Μενού";
+"controller_configurator.xbox.title.named_a" = "A";
+"controller_configurator.xbox.title.named_b" = "B";
+"controller_configurator.xbox.title.named_x" = "X";
+"controller_configurator.xbox.title.named_y" = "Y";
+"controller_configurator.xbox.title.dpad_up" = "Πάνω";
+"controller_configurator.xbox.title.dpad_down" = "Κάτω";
+"controller_configurator.xbox.title.dpad_left" = "Αριστερά";
+"controller_configurator.xbox.title.dpad_right" = "Δεξιά";
+"controller_configurator.xbox.title.thumb_left" = "Αριστερό κλικ αντίχειρα";
+"controller_configurator.xbox.title.thumb_right" = "Δεξί κλικ αντίχειρα";
+
+"controller_configurator.playstation.title.bumper_left" = "L1";
+"controller_configurator.playstation.title.bumper_right" = "R1";
+"controller_configurator.playstation.title.trigger_left" = "L2";
+"controller_configurator.playstation.title.trigger_right" = "R2";
+"controller_configurator.playstation.title.named_back" = "Επιλέξτε";
+"controller_configurator.playstation.title.named_start" = "Έναρξη";
+"controller_configurator.playstation.title.named_a" = "Σταυρός";
+"controller_configurator.playstation.title.named_b" = "Κύκλος";
+"controller_configurator.playstation.title.named_x" = "Τετράγωνο";
+"controller_configurator.playstation.title.named_y" = "Τρίγωνο";
+"controller_configurator.playstation.title.dpad_up" = "Πάνω";
+"controller_configurator.playstation.title.dpad_down" = "Κάτω";
+"controller_configurator.playstation.title.dpad_left" = "Αριστερά";
+"controller_configurator.playstation.title.dpad_right" = "Δεξιά";
+"controller_configurator.playstation.title.thumb_left" = "L3";
+"controller_configurator.playstation.title.thumb_right" = "R3";
+
+"controller_configurator.section.config_files" = "Τρέχουσα διαμόρφωση αρχείου";
+"controller_configurator.section.game_mappings" = "Χαρτογραφήσεις παιχνιδιού";
+"controller_configurator.section.footer.game_mappings" = "Δεσμοί όταν το ποντίκι είναι κλειδωμένο στο παιχνίδι.";
+"controller_configurator.section.menu_mappings" = "Χαρτογραφήσεις μενού";
+"controller_configurator.section.footer.menu_mappings" = "Δεσμοί όταν το ποντίκι δεν είναι κλειδωμένο, όπως στην οθόνη τίτλου ή στο μενού παύσης.";
+"controller_configurator.section.controller_style" = "Τύπος χειριστηρίου";
+"controller_configurator.section.footer.controller_style" = "Εμφάνιση διαφορετικών ονομάτων κουμπιών ελεγκτή σε αυτό το ρυθμιστή.";

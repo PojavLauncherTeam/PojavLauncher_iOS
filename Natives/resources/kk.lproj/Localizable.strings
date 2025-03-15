@@ -14,7 +14,6 @@
 "Old-alpha" = "Ескі альфа";
 "Edit" = "Өңдеу";
 "Remove" = "Алып тастау";
-
 "custom_controls.button_edit.name" = "Атауы";
 "custom_controls.button_edit.size" = "Көлемі";
 "custom_controls.button_edit.toggleable" = "Ауысқыш";
@@ -30,6 +29,9 @@
 "Settings" = "Баптау";
 
 "preference.title.renderer" = "Рендерер";
+
 "preference.title.java_args" = "JVM қосу аргументі";
 "preference.title.auto_ram" = "Авто ОЕСҚ";
 "preference.detail.auto_ram" = "Автоматты түрде ОЕСҚ-ны басқарады";
+
+"preference.profile.title.name" = "Атауы";

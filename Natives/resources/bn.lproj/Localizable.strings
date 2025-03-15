@@ -1,4 +1,30 @@
+/*
+  Localizable.strings
+  StringLocalization
+*/
+
+"game.menu.force_close" = "ফোর্স ক্লোজ করুন";
 "game.menu.log_output" = "লগ আউটপুট";
+"game.menu.custom_controls" = "কাস্টম কন্ট্রোল";
 
 "game.title.exit_code" = "গেম কোড সহ প্রস্থান করেছে %d";
+"Snapshot" = "স্ন্যাপশট";
+"Old-beta" = "পুরোনো-বেটা";
+"Old-alpha" = "পুরোনো-আলফা";
+"custom_controls.button_edit.name" = "নেম";
+"custom_controls.control_menu.save" = "সেভ";
+"custom_controls.control_menu.load" = "লোড";
+
+"launcher.menu.custom_controls" = "কাস্টম কন্ট্রোল";
 "login.option.select" = "আ্যকাউন্ট নির্বাচন করুন";
+"Settings" = "সেটিংস";
+"preference.section.control" = "কন্ট্রোল কাস্টোমাইজ করুন";
+//"preference.section.footer.control" = "";
+"preference.section.java" = "জাভা tweaks";
+
+"preference.title.renderer" = "রেন্ডারার";
+
+"preference.title.java_args" = "JVM লঞ্চ আর্গুমেন্ট";
+
+"preference.profile.title.name" = "নেম";
+"controller_configurator.playstation.title.named_back" = "বাছুন";
