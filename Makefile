@@ -10,7 +10,7 @@ WORKINGDIR  := $(SOURCEDIR)/Natives/build
 DETECTPLAT  := $(shell uname -s)
 DETECTARCH  := $(shell uname -m)
 VERSION     := 3.0
-BRANCH      := $(shell git branch --show-current)
+BRANCH      ?= $(shell git branch --show-current)
 COMMIT      := $(shell git log --oneline | sed '2,10000000d' | cut -b 1-7)
 PLATFORM    ?= 2
 
@@ -28,8 +28,8 @@ SLIMMED_ONLY ?= 0
 
 # If not in a GitHub repository, default to these
 # so that compiling doesn't fail
-BRANCH ?= "unknown"
-COMMIT ?= "unknown"
+BRANCH := $(if $(BRANCH),$(BRANCH),"unknown")
+COMMIT := $(if $(COMMIT),$(COMMIT),"unknown")
 
 # Team IDs and provisioning profile for the codesign function
 # Default to -1 for check
