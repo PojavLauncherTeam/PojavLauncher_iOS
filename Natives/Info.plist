@@ -107,8 +107,8 @@
 	</array>
 	<key>GCSupportsControllerUserInteraction</key>
 	<true/>
-    <key>GCSupportsGameMode</key>
-    <true/>
+	<key>GCSupportsGameMode</key>
+	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>filza</string>

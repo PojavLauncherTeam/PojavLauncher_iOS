@@ -68,6 +68,17 @@
               @"type": self.typeSwitch,
               @"enableCondition": whenNotInGame
             },
+            @{@"key": @"game_mode",
+              @"hasDetail": @YES,
+              @"icon": @"gamecontroller",
+              @"type": self.typeSwitch,
+              @"enableCondition": whenNotInGame,
+              @"action": ^(BOOL enabled){
+                  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                  [defaults setBool:enabled forKey:@"GCSupportsGameMode"];
+                  [defaults synchronize];
+              }
+            },
             @{@"key": @"debug_logging",
               @"hasDetail": @YES,
               @"icon": @"doc.badge.gearshape",
