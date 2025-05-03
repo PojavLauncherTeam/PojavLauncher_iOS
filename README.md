@@ -17,7 +17,7 @@ PojavLauncher is a Minecraft: Java Edition launcher for Android, iOS, and iPadOS
 This repository contains the code for our iOS and iPadOS port of PojavLauncher. Looking for [Android?](https://github.com/PojavLauncherTeam/PojavLauncher)
 
 ## Getting started with PojavLauncher
-The [PojavLauncher Website](https://pojavlauncherteam.github.io/INSTALL.html#ios) has extensive documentation on how to install, set up, and play! For those who wish to install quickly, here's the basics:
+The [PojavLauncher Website](https://pojavlauncher.app/wiki/getting_started/INSTALL.html#ios) has extensive documentation on how to install, set up, and play! For those who wish to install quickly, here's the basics:
 
 ### Requirements
 At the minimum, you'll need one of the following devices on **iOS 14.0** and later:
@@ -37,7 +37,7 @@ However, we recommend one of the following devices on **iOS 14.0** and later:
 
 Recommended devices provide a smoother and more enjoyable gameplay experience compared to other supported devices.
 - tvOS support is in development.
-- iOS 17.x and iOS 18.x is supported. However, a computer is required. These methods will ultilized usage of pymobiledevice3. Python 3.11.(x) must be properly set up on your computer. For more information, please check out the official Wiki: https://pojavlauncherteam.github.io/JIT.html#what-are-the-methods-to-enable-jit
+- iOS 17.x and iOS 18.x is supported. However, a computer is required. These methods will ultilized usage of pymobiledevice3. Python 3.11.(x) must be properly set up on your computer. For more information, please check out the official Wiki: https://pojavlauncher.app/wiki/faq//ios/JIT.html#what-are-the-methods-to-enable-jit
 
 ### Setting up to sideload
 PojavLauncher can be sideloaded in many ways. Our recommended solution is to install [TrollStore](https://github.com/opa334/TrollStore) if your iOS version supports it. Installing with TrollStore allows you to permenantly sign the application, automatically enable JIT, and increase memory limits.
@@ -66,13 +66,14 @@ If you cannot, [AltStore](https://altstore.io) and [SideStore](https://sidestore
 
 ### Enabling JIT
 PojavLauncher makes use of **just-in-time compilation**, or JIT, to provide usable speeds for the end user. JIT is not supported on iOS without the application being debugged, so workarounds are required to enable it. You can use this chart to determine the best solution for you and your setup.
-| Application         | AltStore | SideStore | TrollStore | Jitterbug          | Jailbroken |
-|---------------------|----------|-----------|------------|--------------------|------------|
-| Requires ext-device | Yes      | No        | No         | If VPN unavailable | No         |
-| Requires Wi-Fi      | Yes      | Yes       | No         | Yes                | No         |
-| Auto enabled        | Yes(*)   | No        | Yes        | No                 | Yes        |
+| Application         | AltStore | SideStore | StikJIT | TrollStore | Jitterbug          | Jailbroken |
+|---------------------|----------|-----------|---------|------------|--------------------|------------|
+| Requires ext-device | Yes      | No (#)    | No (#)  | No         | If VPN unavailable | No         |
+| Requires Wi-Fi      | Yes      | No (#)    | No (#)  | No         | Yes                | No         |
+| Auto enabled        | Yes(*)   | No        | Yes     | Yes        | No                 | Yes        |
 
 (*) AltServer running on the local network is required.
+(#) Required the first time.
 
 ## Contributors
 PojavLauncher is amazing, and surprisingly stable, and it wouldn't be this way without the commmunity that helped and contribute to the project! Some notable names:
