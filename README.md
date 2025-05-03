@@ -40,7 +40,7 @@ Recommended devices provide a smoother and more enjoyable gameplay experience co
 - iOS 17.x and iOS 18.x is supported. However, a computer is required. For more information, please check out the official wiki: https://pojavlauncher.app/wiki/faq/ios/JIT.html#what-are-the-methods-to-enable-jit
 
 ### Setting up to sideload
-PojavLauncher can be sideloaded in many ways. Our recommended solution is to install [TrollStore](https://github.com/opa334/TrollStore) if your iOS version supports it. Installing with TrollStore allows you to permenantly sign the application, automatically enable JIT, and increase memory limits.
+PojavLauncher can be sideloaded in many ways. Our recommended solution is to install [TrollStore](https://github.com/opa334/TrollStore) if your iOS version supports it. Installing with TrollStore allows you to permanently sign the application, automatically enable JIT, and increase memory limits.
 
 For iOS/iPadOS 17.0: Unfortunately,the above process will not work. It is required that you must use [TrollRestore](https://github.com/JJTech0130/TrollRestore). Any versions above iOS/iPadOS 17.0 will NOT be supported (as of December 23, 2024).
 
@@ -48,7 +48,7 @@ If you cannot, [AltStore](https://altstore.io) and [SideStore](https://sidestore
 - Signing services that do not use your UDID (and use distribution certificates) are not supported, as PojavLauncher requires capabilities they do not allow. However, if you do managed to gain access to a Development certificate, due to it having the necessary entitlement (being com.apple.security.get-task-allow) to attach a debugger to the running process (enabling JIT), you may use a Development certificate.
   
 - Only install sideloading software and PojavLauncher from trusted sources. We are not responsible for any harm caused by using unofficial software.
-- Jailbreaks also benefit from permenant signing, autoJIT, and increased memory limits, however we do not recommend them for regular use.
+- Jailbreaks also benefit from permenant signing, autoJIT, and increased memory limits. However, we do not recommend them for regularly used devices.
 
 ### Installing PojavLauncher
 #### Release build (TrollStore)
