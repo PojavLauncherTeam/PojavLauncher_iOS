@@ -42,7 +42,7 @@ Recommended devices provide a smoother and more enjoyable gameplay experience co
 ### Setting up to sideload
 PojavLauncher can be sideloaded in many ways. Our recommended solution is to install [TrollStore](https://github.com/opa334/TrollStore) if your iOS version supports it. Installing with TrollStore allows you to permenantly sign the application, automatically enable JIT, and increase memory limits.
 
-For iOS/iPadOS 17.0: Unfortunately,the above process will not work. It is required that you must use [TrollRestore](https://github.com/JJTech0130/TrollRestore). Any versions above iOS/iPadOS 17.0 will NOT be supported (as of December 23, 2024).
+For iOS/iPadOS 17.0: Unfortunately,the above process will not work. It is required that you must use [TrollRestore](https://github.com/JJTech0130/TrollRestore) (TrollStore will NOT be supported by any versions above iOS/iPadOS 17.0 as of December 23, 2024).
 
 If you cannot, [AltStore](https://altstore.io) and [SideStore](https://sidestore.io) are your next best options.
 - Signing services that do not use your UDID (and use distribution certificates) are not supported, as PojavLauncher requires capabilities they do not allow. However, if you do managed to gain access to a Development certificate, due to it having the necessary entitlement (being com.apple.security.get-task-allow) to attach a debugger to the running process (enabling JIT), you may use a Development certificate.
