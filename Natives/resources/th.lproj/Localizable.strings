@@ -4,53 +4,126 @@
 */
 
 "game.menu.force_close" = "บังคับปิด";
+"game.menu.confirm.force_close" = "คุณแน่ใจหรือไม่ว่าคุณต้องการบังคับปิด?";
 "game.menu.log_output" = "ประวัติที่บันทึกไว้";
 "game.menu.custom_controls" = "การควบคุมกำหนดเอง";
 
-// The play button
-"Play" = "เล่น";
-"Snapshot" = "ภาพรวม";
-"Old-beta" = "เบตาเก่า";
-"Old-alpha" = "Old-alpha";
-"Edit" = "แก้ไข";
-"Remove" = "ถอดออก";
+"game.note.airplay" = "มายคราฟในขณะนี้เเสดงบนระบบหน้าจอ Airplay mirrored";
 
+"game.title.exit_code" = "เกมถูกบังคับปิดด้วยโค้ด %d";
+
+// The play button
+"Play" = "เริ่ม";
+
+// Version categories
+"Installed" = "ติดตั้งแล้ว";
+"Snapshot" = "ตัวเกมพรีวิว ( snapshot )";
+"Releases" = "เผยแพร่";
+"Old-beta" = "เบต้าเก่า";
+"Old-alpha" = "อัลฟ่าเก่า";
+
+// Custom controls
+"Copy" = "คัดลอก";
+"Edit" = "แก้ไข";
+"Move" = "ย้าย";
+"Remove" = "ถอดออก";
+"Resize" = "ปรับขนาด";
+
+"custom_controls.button_edit.forward_lock" = "ล็อคไปข้างหน้า ( วิ่ง )";
 "custom_controls.button_edit.name" = "ชื่อ";
 "custom_controls.button_edit.size" = "ขนาด";
 "custom_controls.button_edit.mapping" = "ปุ่มที่ให้กด";
-"custom_controls.button_edit.orientation" = "ทิคทางการหัน";
-"custom_controls.button_edit.toggleable" = "ค้างไว้";
+"custom_controls.button_edit.orientation" = "ทิดทางการหัน";
+"custom_controls.button_edit.toggleable" = "สามารถกดค้าง";
+"custom_controls.button_edit.mouse_pass" = "เมาส์จำลองผ่านได้";
 "custom_controls.button_edit.swipeable" = "ลากได้";
 "custom_controls.button_edit.bg_color" = "สีพื้นหลัง";
-"custom_controls.button_edit.stroke_color" = "สีของเส้นขึด";
+"custom_controls.button_edit.stroke_color" = "สีของเส้นขอบ";
+"custom_controls.button_edit.corner_radius" = "ระยะของมุม (%)";
+"custom_controls.button_edit.opacity" = "ความสว่าง (%)";
 
 "custom_controls.button_menu.add_subbutton" = "เพื่มปุ่มรอง";
+"custom_controls.control_menu.discard_changes" = "ยกเลิกการเปลี่ยนแปลง";
 "custom_controls.control_menu.exit" = "ออก";
+"custom_controls.control_menu.exit.warn" = "คุณกำลังจะออกโดยลืมการบันทึกการเปลี่ยนเเปลง";
 "custom_controls.control_menu.save" = "บันทึก";
+"custom_controls.control_menu.save.error.json" = "ข้อผิดพลาดบน JSON";
+"custom_controls.control_menu.save.error.write" = "เกิดข้อผิดพลาดในการบันทึกไฟล์";
 "custom_controls.control_menu.load" = "โหลด";
+"custom_controls.control_menu.make_default" = "ทำให้เป็นค่าเริ่มต้น";
+"custom_controls.control_menu.safe_area" = "ขอบเขตปลอดภัย";
 "custom_controls.control_menu.add_button" = "เพิ่มปุ่ม";
+"custom_controls.control_menu.add_drawer" = "เพิ่มลิ้นชัก";
+"custom_controls.control_menu.add_joystick" = "เพิ่มจอยสติ๊ก ( สำหรับเคลื่อนที่ )";
+"custom_controls.error.incompatible" = "Ret";
+"custom_controls.hint" = "I'm ";
+
+"init.migrateDir" = "Mmk";
+
+"launcher.mcl.downloading_file" = "กำลังดาวน์โหลด %@";
+"launcher.mcl.error_download" = "ล้มเหลวที่จะโหลด %@: %@";
 
 "launcher.menu.custom_controls" = "การควบคุมกำหนดเอง";
-"launcher.menu.install_jar" = "ติดตั้ง .jar";
+
+"launcher.wait_jit.title" = "กำลังรอ JIT";
+"launcher.wait_jit.message" = "PojavLauncher relies on Just-in-time compilation for Java to work at maximum performance.";
+
+"login.error.username.outOfRange" = "ชื่อผู้ใช้ต้องมีอย่างน้อย 3 ตัวอักษร และไม่เกิน 16 ตัวอักษร";
+
+"login.alert.field.username" = "ชื่อผู้ใช้";
+
+"login.jit.checking" = "กำลังตรวจสอบ JIT";
+"login.jit.enabled" = "JIT ได้เปิดเเล้ว";
+"login.jit.fail" = "JIT เปิดไม่ได้";
+"login.jit.fail.title" = "JIT เปิดบนเครื่องนี้ไม่ได้";
+"login.jit.fail.description" = "ไม่มีการผสานรวมใดๆ ที่สามารถใช้เพื่อเปิดใช้งาน JIT บนอุปกรณ์ของคุณโดยอัตโนมัติได้ และตอนนี้คุณจำเป็นต้องเปิดใช้งานด้วยตนเอง ข้อผิดพลาดต่างๆ ได้ถูกบันทึกไว้ใน latestlog.txt แล้ว";
+
+// Login buttons
+"login.menu.sendlogs" = "ส่งบันทึกของคุณ";
 "login.option.add" = "เพิ่มบัญชี";
 "login.option.select" = "เลือกบัญชี";
+"login.option.demo" = "บัญชีทดลอง";
+"login.option.microsoft" = "บัญชี ไมโครซอฟท์";
+"login.option.local" = "บัญชีในเครื่อง";
+
+"login.warn.title.legacy_device" = "Pojavlauncher รุ่นใหม่นี้จะไม่รองรับอุปกรณ์ของคุณอีกต่อไป";
+"login.warn.message.legacy_device" = "ในการรันรุ่นหลักถัดไป จำเป็นต้องใช้อุปกรณ์ที่รองรับ iOS 14";
+"login.warn.title.legacy_ios" = "PojavLauncher รุ่นถัดไป จำเป็นต้องมีการอัปเดตระบบ";
+"login.warn.message.legacy_ios" = "ในการรันรุ่นหลักถัดไป อุปกรณ์นี้จะต้องใช้ iOS 14 ขึ้นไป";
+"login.warn.title.limited_ram" = "เครื่องนี้มีเเรมที่เหลือจำกัด";
+"login.warn.message.limited_ram" = "พวกเราขอเเนะนำให้ปล่อย auto Ram เปิดไว้เพื่อป้องกันการกระตุกเเละไม่เสถียร";
+
+"login.warn.title.demomode" = "บัญชีของคุณเป็นบัญชีเดโม";
+"login.warn.message.demomode" = "โหมดเดโมนี้ใช้แทนที่โหมดออฟไลน์และโหมด Local โดยจะอนุญาตให้คุณลงชื่อเข้าใช้บัญชี Microsoft ที่ไม่ได้เป็นเจ้าของเกม เพื่อเล่น Java Edition รุ่นทดลอง (มีในเวอร์ชัน 1.3.1 ขึ้นไป) สำหรับเวอร์ชันเก่ากว่านั้นจะยังคงเป็นเกมตัวเต็ม เนื่องจากตัวเปิดเกมอย่างเป็นทางการไม่มีข้อจำกัดเหล่านี้ ดูข้อมูลเพิ่มเติมเกี่ยวกับการเปลี่ยนแปลงจากโหมดออฟไลน์นี้ได้ที่เว็บไซต์ของเรา";
+
+"login.warn.title.localmode" = "โหมดออฟไลน์ ตอนนี้คือ โหมด Local";
+
+"login.msa.error.xsts.noxboxacc" = "ไม่มีโปรไฟล์ Xbox ที่ลงทะเบียนไว้สำหรับบัญชี Microsoft นี้ โปรดตรวจสอบให้แน่ใจว่าคุณได้สร้างโปรไฟล์ Xbox แล้ว\nรหัสข้อผิดพลาด: 2148916233";
+"login.msa.error.xsts.noxbox" = "ปัจจุบัน Xbox Live ยังไม่มีให้บริการในประเทศของคุณ\nรหัสข้อผิดพลาด: 2148916235";
 
 "News" = "ข่าวสาร";
 "Settings" = "การตั้งค่า";
+
+"preference.section.general" = "การตั้งค่าทั่วไป";
 "preference.section.control" = "ปรับเเต่งการควบคุม";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "จาวาทวิก";
 
-"preference.title.game_directory" = "ตำเเห่งโฟรเดอร์เกม";
+"preference.title.game_directory" = "ตำเเหน่งโฟรเดอร์เกม";
 "preference.title.cosmetica" = "ผ้าคลุมที่มีภาพ";
 
-"preference.title.renderer" = "การแสดงผล";
+"preference.title.renderer" = "ตัวแสดงผล";
 
 "preference.title.gyroscope_enable" = "เปิดใช้งานการควบคุมไจโรสโคป";
 "preference.title.gyroscope_sensitivity" = "ความรวดเร็วในการควบคุมไจโร";
 "preference.detail.gyroscope_sensitivity" = "ปรับความไวของการควบคุมไจโรสโคป";
-"preference.title.java_args" = "JVM Launch arguments";
+
+"preference.title.java_args" = "อาร์กิวเมนต์เปิดใช้ JVM";
 "preference.title.auto_ram" = "RAM อัตโนมัติ";
 "preference.detail.auto_ram" = "เปิดใช้งานตัวปรับ RAM อัตโนมัติ";
 "preference.detail.allocated_memory" = "ควบคุมเเรมที่จะให้กับเกมมายคราฟ";
+
+"preference.profile.title.name" = "ชื่อ";
+"preference.profile.title.version" = "เวอร์ชัน";
+"profile.title.create" = "สร้างโปรไฟล์ใหม่";
 "controller_configurator.playstation.title.named_back" = "เลือก";

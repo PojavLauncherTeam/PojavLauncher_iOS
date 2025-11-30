@@ -4,39 +4,105 @@
 */
 
 "game.menu.force_close" = "Vynútené ukončenie";
-"game.menu.log_output" = "Záznam výstupu";
+"game.menu.confirm.force_close" = "Ste si istí, že chcete vynútiť ukončenie hry?";
+"game.menu.log_output" = "Záznam logu";
 "game.menu.custom_controls" = "Vlastné ovládacie prvky";
+
+"game.note.airplay" = "Minecraft je zobrazovaný v zrkadlení obrazovky AirPlay";
+
+"game.title.exit_code" = "Hra sa ukončila s kódom %d";
 
 // The play button
 "Play" = "Hrať";
+
+// Version categories
+"Installed" = "Nainštalované";
 "Snapshot" = "Snapshot";
+"Releases" = "Vydania";
 "Old-beta" = "Stará beta";
 "Old-alpha" = "Stará alfa";
-"Edit" = "Upraviť";
-"Remove" = "Odstrániť";
 
+// Custom controls
+"Copy" = "Kopírovať";
+"Edit" = "Upraviť";
+"Move" = "Presunúť";
+"Remove" = "Odstrániť";
+"Resize" = "Zmeniť veľkosť";
+
+"custom_controls.button_edit.forward_lock" = "Zámok chodenia vpred";
 "custom_controls.button_edit.name" = "Názov";
 "custom_controls.button_edit.size" = "Veľkosť";
-"custom_controls.button_edit.mapping" = "Priradenie ku klávese (bind)";
+"custom_controls.button_edit.mapping" = "Bindy";
 "custom_controls.button_edit.orientation" = "Orientácia";
-"custom_controls.button_edit.toggleable" = "Prepnuteľné (toggle) - po ťuknutí klávesa ostane stlačená";
+"custom_controls.button_edit.toggleable" = "Prepínateľné (toggle)";
+"custom_controls.button_edit.mouse_pass" = "Prechod myši";
 "custom_controls.button_edit.swipeable" = "Posunovateľné";
 "custom_controls.button_edit.bg_color" = "Farba pozadia tlačidla";
 "custom_controls.button_edit.stroke_color" = "Farba obrysu tlačidla";
+"custom_controls.button_edit.corner_radius" = "Zaoblenie rohov tlačidla (%)";
+"custom_controls.button_edit.opacity" = "Priehľadnosť (%)";
 
 "custom_controls.button_menu.add_subbutton" = "Pridať podtlačidlo";
+"custom_controls.control_menu.discard_changes" = "Zrušiť zmeny";
 "custom_controls.control_menu.exit" = "Skončiť";
+"custom_controls.control_menu.exit.warn" = "Chystáte sa odísť bez uloženia zmien.";
 "custom_controls.control_menu.save" = "Uložiť";
-"custom_controls.control_menu.load" = "Načítať";
+"custom_controls.control_menu.save.error.json" = "Chyba v JSONe";
+"custom_controls.control_menu.save.error.write" = "Chyba pri ukladaní súboru";
+"custom_controls.control_menu.load" = "Otvoriť";
+"custom_controls.control_menu.make_default" = "Nastaviť ako predvolené";
+"custom_controls.control_menu.safe_area" = "Bezpečná oblasť";
 "custom_controls.control_menu.add_button" = "Pridať tlačidlo";
+"custom_controls.control_menu.add_drawer" = "Pridať šuflík";
+"custom_controls.control_menu.add_joystick" = "Pridať joystick";
+"custom_controls.error.incompatible" = "Táto verzia ovládacích prvkov (kód %d) nie je implementovaná v tejto zostave spúšťača.";
+"custom_controls.hint" = "Pre ďalšie možnosti dlhšie podržte kdekoľvek na obrazovke";
+
+"init.migrateDir" = "PojavLauncher priečinok dát je odteraz %@. Všetky vaše existujúce dáta boli presunuté do nového umiestnenia.";
+
+"launcher.mcl.downloading_file" = "Sťahuje sa %@";
+"launcher.mcl.error_download" = "Nepodarilo sa stiahnuť %@: %@";
 
 "launcher.menu.custom_controls" = "Vlastné ovládacie prvky";
-"launcher.menu.install_jar" = "Inštalovať .jar";
+
+"launcher.wait_jit.title" = "Čakanie na JIT";
+"launcher.wait_jit.message" = "PojavLauncher sa spolieha na Java Just-in-time kompiláciu, aby pracoval v najvyššom výkone.";
+
+"login.error.username.outOfRange" = "Používateľské meno musí mať najmenej 3 a najviac 16 znakov";
+
+"login.alert.field.username" = "Používateľské meno";
+
+"login.jit.checking" = "Kontrola JIT";
+"login.jit.enabled" = "JIT bola zapnutá";
+"login.jit.fail" = "JIT nemohla byť zapnutá.";
+"login.jit.fail.title" = "JIT nemohla byť zapnutá na vašom zariadení.";
+"login.jit.fail.description" = "Na vašom zariadení nemohli byť automaticky použité žiadne integrácie na zapnutie JIT, a teraz musí byť zapnutá manuálne. Chyby boli zapísané do súboru latestlog.txt.";
+
+// Login buttons
+"login.menu.sendlogs" = "Odoslať záznamy";
 "login.option.add" = "Pridať účet";
 "login.option.select" = "Vybrať účet";
+"login.option.demo" = "Skúšobný účet";
+"login.option.microsoft" = "Microsoft účet";
+"login.option.local" = "Lokálny účet";
+
+"login.warn.title.legacy_device" = "Ďalšie vydanie PojavLauncheru nebude kompatibilné s týmto zariadením.";
+"login.warn.message.legacy_device" = "Na rozbehnutie ďalšieho veľkého vydania potrebujete zariadenie s verziou iOS 14.";
+"login.warn.title.legacy_ios" = "Ďalšie vydanie PojavLauncheru bude vyžadovať aktualizáciu systému.";
+"login.warn.message.legacy_ios" = "Na rozbehnutie ďalšieho veľkého vydania potrebujete zariadenie s verziou iOS 14 alebo väčšou.";
+"login.warn.title.limited_ram" = "Toto zariadenie má dostupné obmedzené množstvo pamäte.";
+"login.warn.message.limited_ram" = "Odporúčame nechať funkciu auto RAM zapnutú, aby ste predišli nestabilite a problémom s výkonom.";
+
+"login.warn.title.demomode" = "Váš účet je Skúšobný";
+"login.warn.message.demomode" = "Ako náhradu za offline a lokálny režim, demo režim povolí prihlásenie do Microsoft účtu, ktorý hru nevlastní, a hranie skúšobnej verzie Java edície, pridanej v 1.3.1 a novších verziách. Staršie verzie obsahujú plnú hru, keďže ani oficiálny spúšťač nekladie tieto obmedzenia. Navštívte našu webstránku pre viac informácií o tomto prechode z offline režimu.";
+
+"login.warn.title.localmode" = "Offline režim je odteraz Lokálny režim.";
+
+"login.msa.error.xsts.noxboxacc" = "Žiadny Xbox profil nie je registrovaný k tomuto Microsoft účtu. Uistite sa, že ste si vytvorili Xbox profil.\nKód chyby: 2148916233";
+"login.msa.error.xsts.noxbox" = "Služba Xbox Live nie je momentálne dostupná vo vašej krajine.\nKód chyby: 2148916235";
 
 "News" = "Novinky";
-"Settings" = "Nastavenie";
+"Settings" = "Nastavenia";
 "preference.section.control" = "Ovládanie";
 //"preference.section.footer.control" = "";
 "preference.section.java" = "Nastavenia Javy";
@@ -44,8 +110,20 @@
 "preference.title.game_directory" = "Zložka hry";
 "preference.title.cosmetica" = "Cosmetica Capeky";
 
-"preference.title.renderer" = "Renderer";
+"preference.title.renderer" = "Vykresľovač";
+"preference.detail.fullscreen_airplay" = "Umožňuje zobrazovať okno hry na celej obrazovke na externom displeji bez zrkadlenia všetkého na obrazovke.";
+"preference.title.silence_other_audio" = "Pozastaviť zvuk, keď sa hra otvorí";
+
+"preference.title.gyroscope_enable" = "Ovládanie gyroskopom";
+"preference.title.gyroscope_sensitivity" = "Citlivosť gyroskopu";
+"preference.detail.gyroscope_sensitivity" = "Uprav si citlivosť gyroskopu na otáčanie";
+
 "preference.title.java_args" = "Spúštacie argumenty pre JVM";
 "preference.title.auto_ram" = "Auto RAM";
-"preference.detail.auto_ram" = "Automaticky bude meniť množstvo RAM";
+"preference.detail.auto_ram" = "Automaticky bude meniť alokovanú RAM";
 "preference.detail.allocated_memory" = "Určite, koľko pamäti bude mať Minecraft";
+
+"preference.profile.title.name" = "Názov";
+"preference.profile.title.version" = "Verzia";
+"profile.title.create" = "Vytvoriť nový profil";
+"controller_configurator.playstation.title.named_back" = "Vyber";

@@ -14,7 +14,6 @@
 "Old-alpha" = "Старыя альфа";
 "Edit" = "Править";
 "Remove" = "Удалить";
-
 "custom_controls.button_edit.name" = "Имя";
 "custom_controls.button_edit.size" = "Размѣръ";
 "custom_controls.button_edit.mapping" = "Кнопки";
@@ -39,7 +38,11 @@
 "preference.title.game_directory" = "Папка игры";
 
 "preference.title.renderer" = "Визуализаторъ";
+
 "preference.title.java_args" = "Аргументы запуска J.V.M.";
 "preference.title.auto_ram" = "Автоматическое выдѣленіе О.З.У.";
 "preference.detail.auto_ram" = "Автоматически управляетъ количествомъ выдѣленнаго О.З.У.";
 "preference.detail.allocated_memory" = "Управляетъ выдѣленіемъ памяти для Minecraft";
+
+"preference.profile.title.name" = "Имя";
+"controller_configurator.playstation.title.named_back" = "Сдѣлать выборъ";

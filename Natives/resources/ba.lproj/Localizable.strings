@@ -1,4 +1,5 @@
 "game.menu.log_output" = "Журнал";
+"game.menu.custom_controls" = "Ҡулланыусы идара итеү элементтары";
 
 // The play button
 "Play" = "Уйнарға";
@@ -7,15 +8,20 @@
 "Old-alpha" = "Иҫке альфалар";
 "Edit" = "Үҙгәртергә";
 "Remove" = "Юйырға";
-
 "custom_controls.button_edit.name" = "Исем";
 "custom_controls.control_menu.exit" = "Сығырға";
 "custom_controls.control_menu.save" = "Һаҡларға";
 "custom_controls.control_menu.load" = "Йөкләү";
 "custom_controls.control_menu.add_button" = "Төймәне булдырырға";
+
+"launcher.menu.custom_controls" = "Ҡулланыусы идара итеү элементтары";
 "login.option.select" = "Хисап яҙмалар";
 
 "News" = "Яңылыҡтар";
 "Settings" = "Көйләүҙәр";
 
 "preference.title.renderer" = "Рендерер";
+
+"preference.title.java_args" = "JVM-ды эшләтеп ебәреү аргументтары";
+
+"preference.profile.title.name" = "Исем";

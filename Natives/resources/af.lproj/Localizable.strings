@@ -1,2 +1,15 @@
-// sha check
-// home symlink
+"game.menu.custom_controls" = "Benutzerdefinierte Steuerung";
+"Snapshot" = "Entwicklungsversionen";
+"Old-beta" = "Alte Beta";
+"Old-alpha" = "Alte Alpha";
+"custom_controls.button_edit.name" = "Name";
+"custom_controls.control_menu.save" = "Speichern";
+"custom_controls.control_menu.load" = "Laden";
+
+"launcher.menu.custom_controls" = "Benutzerdefinierte Steuerung";
+
+"preference.title.renderer" = "Renderer";
+
+"preference.title.java_args" = "JVM-Startargumente";
+
+"preference.profile.title.name" = "Name";
